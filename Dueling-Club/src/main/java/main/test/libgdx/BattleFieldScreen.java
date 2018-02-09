@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import main.data.filesys.PathFinder;
+import main.libgdx.bf.mouse.DungeonInputController;
 import main.libgdx.bf.mouse.InputController;
 
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class BattleFieldScreen implements Screen {
         stage.addActor(actor2);
 
 
-        controller = new InputController(camera);
+        controller = new DungeonInputController(camera);
         Gdx.input.setInputProcessor(controller);
 //        stage.setKeyboardFocus(actor);
 //        Gdx.input.setInputProcessor(stage);

@@ -6,7 +6,7 @@ import main.game.module.adventure.entity.MacroObj;
 import main.game.module.adventure.global.World;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 
 public class MacroRef extends Ref {
 

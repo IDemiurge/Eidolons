@@ -12,7 +12,7 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.menu.GameMenu;
-import main.libgdx.screens.DungeonScreen;
+import main.system.math.MathMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -25,10 +25,8 @@ import static com.badlogic.gdx.Input.Keys.*;
 /**
  * Created by PC on 25.10.2016.
  */
-public class InputController implements InputProcessor, GestureDetector.GestureListener {
+public abstract class InputController implements InputProcessor, GestureDetector.GestureListener {
     private static final float MARGIN = 300;
-    private float xCamPos;
-    private float yCamPos;
     private OrthographicCamera camera;
     private boolean isLeftClick = false;
     private boolean alt = false;
@@ -42,6 +40,8 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     private static float zoomStep= OptionsMaster.getGraphicsOptions().
      getIntValue(GRAPHIC_OPTION.ZOOM_STEP)/new Float(100);
     private int mouseButtonPresed;
+    private float xTouchPos;
+    private float yTouchPos;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -142,12 +142,15 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         if (isBlocked())
             return true;
         if (button == LEFT) {
-            xCamPos = screenX;
-            yCamPos = screenY;
+            xTouchPos = screenX;
+            yTouchPos = screenY;
             isLeftClick = true;
         } mouseButtonPresed = button;
-        DungeonScreen.getInstance().getGuiStage().outsideClick();
+        outsideClick();
         return false;
+    }
+
+    protected void outsideClick() {
     }
 
     @Override
@@ -169,39 +172,38 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
         if (mouseButtonPresed == LEFT || mouseButtonPresed== RIGHT) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
-            DungeonScreen.getInstance().cameraStop();
+            cameraStop();
         }
 
         return false;
     }
 
+    protected void cameraStop() {
+    }
+
     private void tryPullCameraY(int screenY) {
-        float diffY = (yCamPos - screenY) * camera.zoom;
-        if (checkCameraPosLimitY(camera.position.y - diffY)) {
-            camera.position.y -= diffY;
-            yCamPos = screenY;
-        }
+        float diffY = (yTouchPos - screenY) * camera.zoom;
+            camera.position.y=  MathMaster.getMinMax(camera.position.y - diffY,
+             halfHeight,
+             getHeight() - halfHeight);
+            yTouchPos=screenY;
     }
 
     private void tryPullCameraX(int screenX) {
-        float diffX = (xCamPos - screenX) * camera.zoom;
-        float max = MARGIN +
-         DungeonScreen.getInstance().getGridPanel().getCols()
-          * GridConst.CELL_W * camera.zoom;
-        float min = -MARGIN;
-        if (!(diffX > 0 && camera.position.x + diffX > max)
-         || !(diffX < 0 && camera.position.x + diffX < min)) {
-            camera.position.x += diffX;
-            xCamPos = screenX;
-        }
+        float diffX = (xTouchPos - screenX) * camera.zoom;
+        camera.position.x=  MathMaster.getMinMax(camera.position.x + diffX,
+         halfWidth,
+         getWidth() - halfWidth);
+            xTouchPos=screenX;
     }
 
-    private boolean checkCameraPosLimitY(float y) {
-        float max = MARGIN +
-         DungeonScreen.getInstance().getGridPanel().getRows() * GridConst.CELL_H * camera.zoom;
-        float min = -MARGIN;
-        return !(y > max || y < min);
+
+    protected float getMargin() {
+        return MARGIN;
     }
+
+    protected abstract float getWidth();
+    protected abstract float getHeight();
 
     public void setDefaultPos() {
         centerAt(DC_Game.game.getPlayer(true).getHeroObj().getCoordinates());
@@ -268,11 +270,11 @@ public class InputController implements InputProcessor, GestureDetector.GestureL
     }
 
     public float getXCamPos() {
-        return xCamPos;
+        return camera.position.x;
     }
 
     public float getYCamPos() {
-        return yCamPos;
+        return camera.position.y;
     }
 
     @Override

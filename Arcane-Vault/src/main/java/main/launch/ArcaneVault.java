@@ -113,9 +113,15 @@ public class ArcaneVault {
 
     public static void main(String[] args) {
         CoreEngine.setArcaneVault(true);
+            if (args.length > 0) {
+                setMacroMode(true);
+                if (args.length > 1) {
+                    worldEditAutoInit = true;
+                }
+                selectiveLaunch=false;
+        }
 
         GuiManager.init();
-
         if (selectiveLaunch) {
 
             int init = DialogMaster.optionChoice("Launch Options", LAUNCH_OPTIONS);
@@ -178,14 +184,7 @@ public class ArcaneVault {
         }
         ItemGenerator.setGenerationOn(!ENABLE_ITEM_GENERATION);
         LogMaster.PERFORMANCE_DEBUG_ON = showTime;
-        if (args != null) {
-            if (args.length > 0) {
-                setMacroMode(true);
-                if (args.length > 1) {
-                    worldEditAutoInit = true;
-                }
-            }
-        }
+
 
         LogMaster
          .log(3,

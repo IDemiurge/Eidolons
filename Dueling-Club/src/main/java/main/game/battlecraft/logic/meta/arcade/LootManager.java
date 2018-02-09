@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.meta.arcade;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_CONSTS.MAGICAL_ITEM_LEVEL;
 import main.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_ENCHANTMENT;
 import main.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_TRAIT;
@@ -52,7 +52,7 @@ public class LootManager {
 
     }
 
-    public void awardLoot(PartyObj party, Dungeon dungeon) {
+    public void awardLoot(Party party, Dungeon dungeon) {
         ARCADE_LOOT_TYPE loot_type = null;
         int amount = 0; // measure in GOLD, of course!
 

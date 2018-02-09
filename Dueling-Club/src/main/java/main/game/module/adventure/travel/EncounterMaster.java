@@ -14,6 +14,7 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Route;
 import main.swing.generic.services.dialog.DialogMaster;

@@ -11,6 +11,7 @@ import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.Journal;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.map.Place;

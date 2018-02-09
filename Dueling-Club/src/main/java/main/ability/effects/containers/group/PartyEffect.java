@@ -1,6 +1,6 @@
 package main.ability.effects.containers.group;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.EmptyCondition;
@@ -35,7 +35,7 @@ public class PartyEffect extends GroupObjModifyEffect {
 
     @Override
     protected List<Obj> getObjectsToModify() {
-        PartyObj party = (PartyObj) ref.getSourceObj().getRef()
+        Party party = (Party) ref.getSourceObj().getRef()
                 .getObj(KEYS.PARTY);
         List<Unit> list = party.getMembers();
 

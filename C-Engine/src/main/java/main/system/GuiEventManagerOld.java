@@ -20,29 +20,29 @@ public class GuiEventManagerOld {
      SCREEN_LOADED,
      LOAD_SCREEN,
     };
-    private Map<GuiEventType, EventCallback> eventMap = new HashMap<>();
+    private Map<EventType, EventCallback> eventMap = new HashMap<>();
     private List<Runnable> eventQueue = new ArrayList<>();
     private Lock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
 
-    private Map<GuiEventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
+    private Map<EventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
 
     public static void cleanUp() {
         getInstance()._cleanUp();
     }
 
-    public static void bind(GuiEventType type, final EventCallback event) {
+    public static void bind(EventType type, final EventCallback event) {
         getInstance().bind_(type, event);
     }
-    public static void removeBind(GuiEventType type ) {
+    public static void removeBind(EventType type ) {
         getInstance().removeBind_(type );
     }
 
-    private void removeBind_(GuiEventType type) {
+    private void removeBind_(EventType type) {
         eventMap.remove(type);
     }
 
-    public static void trigger(final GuiEventType type, Object obj) {
+    public static void trigger(final EventType type, Object obj) {
         EventCallbackParam eventCallback;
 
         if (obj instanceof EventCallbackParam) {
@@ -85,8 +85,8 @@ public class GuiEventManagerOld {
 //        } catch (InterruptedException e) {
 //            main.system.ExceptionMaster.printStackTrace(e);
 //        }
-        Map<GuiEventType, EventCallback> cache = new HashMap<>();
-        for (GuiEventType eventType : savedBindings) {
+        Map<EventType, EventCallback> cache = new HashMap<>();
+        for (EventType eventType : savedBindings) {
             EventCallback saved = eventMap.get(eventType);
             cache.put(eventType, saved);
         }
@@ -94,12 +94,12 @@ public class GuiEventManagerOld {
         eventQueue.clear();
         onDemand.clear();
 
-        for (GuiEventType eventType : cache.keySet()) {
+        for (EventType eventType : cache.keySet()) {
             eventMap.put(eventType, cache.get(eventType));
         }
     }
 
-    public void bind_(GuiEventType type, final EventCallback event) {
+    public void bind_(EventType type, final EventCallback event) {
         if (event != null) {
             if (onDemand.containsKey(type)) {
                 lock.lock();
@@ -128,7 +128,7 @@ public class GuiEventManagerOld {
         }
     }
 
-    public void trigger_(final GuiEventType type, final EventCallbackParam obj) {
+    public void trigger_(final EventType type, final EventCallbackParam obj) {
         EventCallback event = eventMap.get(type);
         if (event!=null ) {
             lock.lock();

@@ -5,6 +5,7 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroObj;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
 import main.game.module.adventure.map.Route;

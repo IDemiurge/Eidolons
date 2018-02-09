@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.dungeon.test;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.data.XList;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.GroupAI;
@@ -73,7 +73,7 @@ public class TestSpawner extends Spawner<TestDungeon> {
     }
 
 
-    public void spawnPartyAt(PartyObj party, Coordinates coordinates) {
+    public void spawnPartyAt(Party party, Coordinates coordinates) {
         spawnUnitsAt(party.getMembers(), coordinates);
     }
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {

@@ -16,6 +16,8 @@ public enum MACRO_PROPS implements PROPERTY {
     AMBUSHING_GROUPS(true, null, true, "route", "place"),
     FACTION_RELATIONS(true, null, false, "town", "party"),
     DUNGEON_LEVELS(false, null, true, "place", "mission"),
+
+    MAP_ICON(false, null, false, "town","place"),
     BOSS_LEVEL_POOL(false, null, true, "place"),
     ROOT_POOL(false, null, true, "place"),
     SUBLEVEL_GROUP_POOL(false, null, true, "place"),
@@ -111,8 +113,7 @@ public enum MACRO_PROPS implements PROPERTY {
     // FACTIONS
 
     // ARMY
-
-    ;
+;
 
     private Metainfo metainfo;
     private String shortName;

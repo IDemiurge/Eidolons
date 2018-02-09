@@ -1,7 +1,9 @@
 package main.game.battlecraft.logic.meta.universal;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
+import main.content.DC_TYPE;
 import main.content.PROPS;
+import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -12,12 +14,14 @@ import main.libgdx.bf.TargetRunnable;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static main.system.GuiEventType.ADD_FLOATING_TEXT;
@@ -25,7 +29,8 @@ import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
 
 public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E> {
 
-    protected PartyObj party;
+    protected static String selectedHero;
+    protected Party party;
     protected boolean chooseOneHero;
     protected boolean randomOneHero;
     protected int partyLevel;
@@ -34,9 +39,13 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         super(master);
     }
 
-    public abstract PartyObj initPlayerParty();
+    public static void setSelectedHero(String selectedHero) {
+        PartyManager.selectedHero = selectedHero;
+    }
 
-    public PartyObj getParty() {
+    public abstract Party initPlayerParty();
+
+    public Party getParty() {
         return party;
     }
 
@@ -97,14 +106,12 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         return unit.getName();
     }
 
-    protected void mainHeroSelected(PartyObj party, Unit hero) {
+    protected void mainHeroSelected(Party party, Unit hero) {
         party.getMembers().forEach(member -> {
-            if (chooseOneHero)
-            {
-                if (member!=hero)
+            if (chooseOneHero) {
+                if (member != hero)
                     member.kill(member, false, true);
-            }
-            else
+            } else
                 member.setMainHero(false);
         });
         hero.getOwner().setHeroObj(hero);
@@ -117,6 +124,16 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     public void preStart() {
 
+    }
+
+    protected String chooseHero(List<String> members) {
+        GuiEventManager.trigger(
+         GuiEventType.SHOW_SELECTION_PANEL, DataManager.toTypeList(members, DC_TYPE.CHARS));
+
+        selectedHero = (String) WaitMaster.
+         waitForInput(WAIT_OPERATIONS.SELECTION);
+        main.system.auxiliary.log.LogMaster.log(1, "+++++++++selectedHero = " + selectedHero);
+        return selectedHero;
     }
 
     public boolean isChooseOneHero() {

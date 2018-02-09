@@ -1,12 +1,12 @@
-package main.game.module.adventure.party;
+package main.game.module.adventure.entity.party;
 
 import main.content.PARAMS;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.unit.Unit;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.system.math.MathMaster;
 
-public class MacroPartyManager {
+public class MacroPartyUtils {
 
     public static void reduceSharedGold(MacroParty party, int amount) {
 

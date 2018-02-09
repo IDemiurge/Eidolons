@@ -13,17 +13,17 @@ import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridUnitView;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.screens.DungeonScreen;
-import main.libgdx.stage.BattleGuiStage;
+import main.libgdx.stage.GuiStage;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
-    private final BattleGuiStage guiStage;
+    private final  GuiStage guiStage;
     private Cell actorCell;
 
-    public ToolTipManager(BattleGuiStage battleGuiStage) {
+    public ToolTipManager( GuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
 

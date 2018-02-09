@@ -22,7 +22,7 @@ import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroManager;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.travel.RestMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PartyObj extends Obj {
+public class Party extends Obj {
     // TODO ++ EMBLEM!
     // arcade/skirmish mode
 
@@ -50,7 +50,7 @@ public class PartyObj extends Obj {
 
     // private ARCADE_STATUS arcadeStatus;
 
-    public PartyObj(ObjType type, Unit hero) {
+    public Party(ObjType type, Unit hero) {
         super(type, hero.getOwner(), type.getGame(), new Ref(type.getGame()));
         this.leader = hero;
         addMember(leader);
@@ -69,7 +69,7 @@ public class PartyObj extends Obj {
     /**
      * load
      */
-    public PartyObj(ObjType type) {
+    public Party(ObjType type) {
         super(type, Player.NEUTRAL, type.getGame(), new Ref(type.getGame()));
         initMembers();
 

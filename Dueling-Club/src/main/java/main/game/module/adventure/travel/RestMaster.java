@@ -11,6 +11,7 @@ import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.game.module.adventure.town.Tavern;

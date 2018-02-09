@@ -474,6 +474,9 @@ public abstract class Entity extends DataModel implements OBJ {
     public String getImagePath() {
         return getProperty(G_PROPS.IMAGE);
     }
+    public String getEmblemPath() {
+        return getProperty(G_PROPS.EMBLEM);
+    }
 
     public void resetRawValues() {
         if (isRawValuesOn())

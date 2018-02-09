@@ -1,6 +1,6 @@
 package main.game.module.adventure.gui.map.obj;
 
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.system.images.ImageManager.BORDER;
 
 import java.awt.*;

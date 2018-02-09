@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.meta.arcade;
 
 import main.client.cc.logic.HeroLevelManager;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
@@ -98,7 +98,7 @@ public class ArcadeManager {
      * Persistence >> death >> durability
      */
     private Arcade arcade;
-    private PartyObj party;
+    private Party party;
     private Dungeon dungeon;
     private ARCADE_REGION region;
     private LootManager lootManager;
@@ -127,7 +127,7 @@ public class ArcadeManager {
         // overwrite previous arcade data!
     }
 
-    public void initializeSkirmish(PartyObj party) {
+    public void initializeSkirmish(Party party) {
         List<String> fullPool = DataManager.getTypeNames(DC_TYPE.DUNGEONS);
 
         FilterMaster.filterByProp(fullPool, G_PROPS.GROUP.getName(), StringMaster.ARCADE,
@@ -136,7 +136,7 @@ public class ArcadeManager {
         party.setProperty(G_PROPS.DUNGEONS_PENDING, StringMaster.constructContainer(fullPool), true);
     }
 
-    public void initializeArcade(PartyObj party) {
+    public void initializeArcade(Party party) {
         arcade = new Arcade();
         this.party = party;
         region = null;
@@ -151,7 +151,7 @@ public class ArcadeManager {
         // generate quality/material ranges per shop level!
     }
 
-    private boolean checkRegionComplete(PartyObj party) {
+    private boolean checkRegionComplete(Party party) {
         return StringMaster.compareContainersIdentical(party
                 .getProperty(G_PROPS.DUNGEONS_COMPLETED), party
                 .getProperty(G_PROPS.DUNGEONS_PENDING), true, ";");

@@ -9,7 +9,7 @@ import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.gui.map.obj.MapObjComp;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
-import main.game.module.adventure.travel.MacroCoordinates;
+import main.game.module.adventure.map.MacroCoordinates;
 
 public abstract class MapObj extends MacroObj {
 

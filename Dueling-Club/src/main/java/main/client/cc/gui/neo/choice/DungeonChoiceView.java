@@ -1,6 +1,6 @@
 package main.client.cc.gui.neo.choice;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
@@ -20,9 +20,9 @@ import main.system.graphics.GuiManager;
 
 public class DungeonChoiceView extends EntityChoiceView {
     private static final int MAX_SIZE = 6;
-    private PartyObj party;
+    private Party party;
 
-    public DungeonChoiceView(ChoiceSequence choiceSequence, PartyObj party) {
+    public DungeonChoiceView(ChoiceSequence choiceSequence, Party party) {
         super(choiceSequence, party.getLeader());
         this.party = party;
     }

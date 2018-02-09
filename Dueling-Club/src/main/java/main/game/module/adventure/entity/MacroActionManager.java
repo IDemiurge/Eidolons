@@ -14,7 +14,6 @@ import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
-import main.game.module.adventure.travel.MacroParty;
 import main.game.module.adventure.travel.RestMaster;
 import main.game.module.adventure.travel.TravelMaster;
 import main.system.auxiliary.StringMaster;

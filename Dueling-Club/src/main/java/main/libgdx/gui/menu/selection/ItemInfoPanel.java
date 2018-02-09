@@ -19,7 +19,7 @@ import main.system.images.ImageManager;
  */
 public class ItemInfoPanel extends TablePanel {
 
-    private final boolean ninepatch = false;
+
     protected DescriptionPanel description;
     protected Image preview;
     protected Image fullsizePortrait;
@@ -28,14 +28,30 @@ public class ItemInfoPanel extends TablePanel {
 
     public ItemInfoPanel(SelectableItemData item) {
         //bg
-        if (ninepatch)
-            setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
-        else
-            setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
-//
-        if (GdxMaster.getFontSizeMod() != 1) {
-            setSize(GdxMaster.adjustSize(1020), 900);
+        initBg();
+        initSize();
+        initComponents();
+        TablePanel<Actor> header = new TablePanel<>();
+        initHeader(header);
+
+//        TablePanel<Actor> centered = new TablePanel<>();
+//        centered.addNoGrow(header).  center().padLeft(100);//.height(128);
+
+        addElement(header).left().padTop(30)
+//         .maxWidth(700).maxHeight(700)
+        ;
+        row();
+    if (description!=null )
+        addElement(description).left().padLeft(30);
+        if (fullsizePortrait!=null ) {
+            addNormalSize(fullsizePortrait).right().padBottom(70).padRight(25);
+            fullsizePortrait.setZIndex(0);
         }
+        if (item != null)
+            setItem(item);
+    }
+
+    protected void initComponents() {
         description = new DescriptionPanel();
         description.setText(getDefaultText());
         title = new Label(getDefaultTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 30));
@@ -43,23 +59,24 @@ public class ItemInfoPanel extends TablePanel {
         fullsizePortrait =
          new Image(TextureCache.getOrCreateR(getEmptyImagePathFullSize()));
 
-        TablePanel<Actor> header = new TablePanel<>();
-        initHeader(header);
 
-//        TablePanel<Actor> centered = new TablePanel<>();
-//        centered.addNoGrow(header).  center().padLeft(100);//.height(128);
+    }
 
-        addElement(header).left().padTop(30).maxWidth(700).maxHeight(700);
-        row();
+    protected void initSize() {
+        if (GdxMaster.getFontSizeMod() != 1) {
+            setSize(GdxMaster.adjustSize(1020), 900);
+        }
+    }
+        protected void initBg() {
+        if (isNinepatch())
+            setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
+        else
+            setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
+//
+    }
 
-
-        addElement(description).left().padLeft(30);
-        addNormalSize(fullsizePortrait).right().padBottom(70).padRight(25);
-        ;
-        fullsizePortrait.setZIndex(0);
-
-        if (item != null)
-            setItem(item);
+    protected boolean isNinepatch() {
+        return false;
     }
 
     protected void initHeader(TablePanel<Actor> header) {

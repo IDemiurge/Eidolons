@@ -4,7 +4,7 @@ import main.client.cc.CharacterCreator;
 import main.client.cc.gui.neo.HeroPanel;
 import main.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.client.cc.gui.neo.tabs.TabChangeListener;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -175,14 +175,14 @@ public class HeroTabsPanel extends G_Panel implements TabChangeListener {
     public static class PartyHeader extends G_Panel {
 
         private static final VISUALS V = VISUALS.VALUE_BOX_BIG;
-        private PartyObj party;
+        private Party party;
         private ValueTextComp gloryComp;
         private ValueTextComp orgComp;
         private ValueTextComp bsComp;
         private TextCompDC nameComp;
 
         // ++ rank/level
-        public PartyHeader(PartyObj party) {
+        public PartyHeader(Party party) {
             super();
             this.party = party;
             init();

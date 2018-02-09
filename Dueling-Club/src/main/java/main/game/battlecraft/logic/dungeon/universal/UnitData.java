@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.dungeon.universal;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
@@ -13,10 +13,10 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
 
     public static final Boolean FORMAT =false ;
 
-    public UnitData(PartyObj partyObj) {
+    public UnitData(Party party) {
         this(PARTY_VALUE.MEMBERS+
           DataUnitFactory.getPairSeparator(FORMAT)+
-         StringMaster.joinList(partyObj.getMembers().stream().
+         StringMaster.joinList(party.getMembers().stream().
          map(s -> s.getName()).collect(Collectors.toList())
 //         ,
         )+ DataUnitFactory.getSeparator(FORMAT));

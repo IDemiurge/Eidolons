@@ -1,6 +1,6 @@
 package main.game.module.dungeoncrawl.explore;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.ai.AggroMaster;
 import main.libgdx.anims.AnimMaster;
@@ -92,7 +92,7 @@ public class ExplorationMaster {
         explorationToggled();
     }
 
-    private ExplorerUnit createExplorerUnit(PartyObj partyObj) {
+    private ExplorerUnit createExplorerUnit(Party party) {
         ExplorerUnit e = new ExplorerUnit(null);
 
         return e;

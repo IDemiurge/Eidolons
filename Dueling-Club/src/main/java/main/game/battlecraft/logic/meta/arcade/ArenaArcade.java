@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.meta.arcade;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
@@ -16,7 +16,7 @@ public class ArenaArcade extends Entity {
     List<String> heroData;
     String path;
     Faction factionData;
-    PartyObj party;
+    Party party;
 
     public ArenaArcade(ObjType type, DC_Game game) {
         super(type, Player.NEUTRAL, game, new Ref(game));
@@ -60,11 +60,11 @@ public class ArenaArcade extends Entity {
         this.factionData = factionData;
     }
 
-    public PartyObj getParty() {
+    public Party getParty() {
         return party;
     }
 
-    public void setParty(PartyObj party) {
+    public void setParty(Party party) {
         this.party = party;
     }
 

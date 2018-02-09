@@ -127,7 +127,7 @@ public class WaitMaster {
         ACTION_COMPLETE,
         UNIT_OBJ_INIT,
         READING_DONE,
-        GUI_READY,GDX_READY,
+        GUI_READY, DUNGEON_SCREEN_READY,
         SELECTION,
         ANIMATION_FINISHED,
         OPTION_DIALOG,

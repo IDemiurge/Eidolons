@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.meta.tutorial;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -17,9 +17,9 @@ public class TutorialPartyManager extends PartyManager<TutorialMeta> {
         super(tutorialMetaMaster);
     }
     @Override
-    public PartyObj initPlayerParty() {
+    public Party initPlayerParty() {
         ObjType type = DataManager.getType(TUTORIAL_PARTY, DC_TYPE.PARTY);
-        party = new PartyObj(type);
+        party = new Party(type);
 
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));

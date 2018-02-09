@@ -17,6 +17,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 
@@ -209,12 +210,12 @@ public class ContentManager {
 
 
     public static PARAMETER getRegenParam(PARAMETER param) {
-        PARAMETER regenParam =  regenCache.get(param);
+        PARAMETER regenParam = regenCache.get(param);
         if (regenParam != null) {
             return regenParam;
         }
         regenParam = getPARAM(param.getName() + StringMaster.REGEN, true);
-        regenCache.put(param, regenParam );
+        regenCache.put(param, regenParam);
         return regenParam;
     }
 
@@ -803,12 +804,23 @@ public class ContentManager {
             return typeMaster.getOBJ_TYPE(typeName);
         }
 
-        OBJ_TYPE type = DC_TYPE.getType(typeName);
+        OBJ_TYPE type = null;
 
-        if (type == null || XML_Reader.isMacro()) {
+        if (XML_Reader.isMacro()) {
             type = MACRO_OBJ_TYPES.getType(typeName);
+        } else {
+            type = DC_TYPE.getType(typeName);
         }
 
+        if (type == null) {
+            if (CoreEngine.isArcaneVault())
+                return null ;
+        if (!XML_Reader.isMacro()) {
+            type = MACRO_OBJ_TYPES.getType(typeName);
+        } else {
+            type = DC_TYPE.getType(typeName);
+        }
+        }
         return type;
     }
 

@@ -1,4 +1,4 @@
-package main.game.module.adventure.travel;
+package main.game.module.adventure.map;
 
 import main.game.bf.Coordinates;
 

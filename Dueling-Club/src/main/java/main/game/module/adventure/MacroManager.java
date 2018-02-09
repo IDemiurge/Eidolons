@@ -11,12 +11,18 @@ import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.meta.macro.MacroPartyManager;
+import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import main.game.battlecraft.logic.meta.universal.PartyManager;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.Campaign;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.gui.WorldEditorInterface;
 import main.game.module.adventure.gui.map.MapView;
+import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
-import main.game.module.adventure.travel.MacroParty;
+import main.system.GuiEventManager;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
@@ -25,6 +31,11 @@ import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static main.system.GuiEventType.SCREEN_LOADED;
+import static main.system.MapEvent.CREATE_PARTY;
+import static main.system.MapEvent.CREATE_PLACE;
+import static main.system.MapEvent.MAP_READY;
 
 public class MacroManager {
     private final static String defaultWorldName = "Test World";
@@ -51,6 +62,8 @@ public class MacroManager {
     private static boolean save;
     private static boolean turnProcessing;
     private static boolean load;
+    private static String scenario = "Mistfall";
+    private static MetaGameMaster metaMaster;
 
     public static void loadGame(String path) {
 
@@ -58,11 +71,36 @@ public class MacroManager {
 
     public static void newGame() {
         load = false;
+        metaMaster = new ScenarioMetaMaster(scenario ){
+            @Override
+            protected PartyManager  createPartyManager() {
+                return new MacroPartyManager(this);
+            }
+        };
+        metaMaster.init();
+        if (metaMaster.getPartyManager().getParty() == null)
+            return;
         game = new MacroGame();
         MacroGame.setGame(game);
         game.init();
-        MacroEngine.init();
-        game.start(true);
+//        MacroEngine.init();
+//        game.start(true);
+
+        GuiEventManager.bind(MAP_READY, p->{
+            initComponents();
+        });
+        GuiEventManager.trigger(SCREEN_LOADED);
+    }
+
+    private static void initComponents() {
+        GuiEventManager.trigger(CREATE_PARTY,
+        game.getPlayerParty());
+        for (Region sub:     game.getWorld().getRegions()) {
+            for (Place sub1 : sub.getPlaces()) {
+                GuiEventManager.trigger(CREATE_PLACE,
+                 sub1);
+            }
+        }
     }
 
     public static void exitGame() {
@@ -101,7 +139,7 @@ public class MacroManager {
             custom_OBJ_TYPES.add(t);
             String xml = FileManager.readFile(file);
             customTypes.addAll(XML_Reader.createCustomTypeList(xml, t, MacroGame.getGame(),
-                    !isEditMode(), true, false));
+             !isEditMode(), true, false));
 
             // full type data or on top of base type?
         }
@@ -148,7 +186,7 @@ public class MacroManager {
 
     private static String getTypeDataPath() {
         return PathFinder.getTYPES_PATH() + (!isSave() ? "\\campaign\\" : "\\save\\")
-                + getCampaignName() + "\\";
+         + getCampaignName() + "\\";
     }
 
     public static boolean isSave() {

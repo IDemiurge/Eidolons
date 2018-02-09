@@ -1,6 +1,6 @@
 package main.game.module.adventure;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -12,16 +12,16 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
+import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
-import main.game.module.adventure.MacroRef.MACRO_KEYS;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
+import main.game.module.adventure.rules.HungerRule;
 import main.game.module.adventure.rules.TurnRule;
 import main.game.module.adventure.town.Town;
-import main.game.module.adventure.travel.HungerRule;
-import main.game.module.adventure.travel.MacroParty;
 import main.system.datatypes.DequeImpl;
 
 /*
@@ -38,8 +38,12 @@ public class MacroGame extends Game {
     MacroRef ref; // with active party/route/region/place/town
     DequeImpl<TurnRule> turnRules;
     private main.game.module.adventure.global.Campaign campaign;
+    private GameLoop loop;
 
     // ...masters
+
+    public MacroGame() {
+    }
 
     public static MacroGame getGame() {
         return game;
@@ -56,9 +60,11 @@ public class MacroGame extends Game {
 
     @Override
     public void init() {
+        loop = new MacroGameLoop(this);
         ref = new MacroRef(this);
         state = new MacroGameState(this);
         manager = new MacroGameManager(this);
+        master = new MacroGameMaster(this);
         logManager = new main.game.module.adventure.global.Journal(this);
         idManager = new DC_IdManager();
         turnRules = new DequeImpl<>();
@@ -67,15 +73,14 @@ public class MacroGame extends Game {
         ObjType cType = DataManager.getType(MacroManager.getCampaignName(),
                 MACRO_OBJ_TYPES.CAMPAIGN);
         campaign = new main.game.module.adventure.global.Campaign(this, cType, ref);
-        MacroManager.setCampaignName(campaign.getName());
+
         main.game.module.adventure.global.TimeMaster.setCampaign(campaign);
         world = main.game.module.adventure.global.WorldGenerator.generateWorld(ref);
-        ref.setMacroId(MACRO_KEYS.WORLD, world.getId());
         MacroManager.setWorldName(world.getName());
-        Region region;
-        region = world.getRegion(campaign.getProperty(MACRO_PROPS.REGION));
-        ref.setID(MACRO_KEYS.REGION.toString(), region.getId());
-        ref.setRegion(region);
+//        Region region;
+//        region = world.getRegion(campaign.getProperty(MACRO_PROPS.REGION));
+//        ref.setID(MACRO_KEYS.REGION.toString(), region.getId());
+//        ref.setRegion(region);
 
         if (MacroManager.isEditMode()) {
             String partyName = campaign.getProperty(MACRO_PROPS.CAMPAIGN_PARTY);
@@ -88,24 +93,24 @@ public class MacroGame extends Game {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-
-        if (PartyHelper.getParty() == null) {
+        Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
+        if (party == null) {
             return;
         }
 
         playerParty = new MacroParty(
-                getMacroPartyType(PartyHelper.getParty()), this, ref,
-                PartyHelper.getParty());
-        if (!MacroManager.isLoad()) {
-            Place location = region.getPlace(campaign
-                    .getProperty(MACRO_PROPS.STARTING_LOCATION));
-            playerParty.setRegion(region);
-            playerParty.setCurrentPlace(location);
-        }
+                getMacroPartyType(party), this, ref,
+         party);
+//        if (!MacroManager.isLoad()) {
+//            Place location = region.getPlace(campaign
+//                    .getProperty(MACRO_PROPS.STARTING_LOCATION));
+//            playerParty.setRegion(region);
+//            playerParty.setCurrentPlace(location);
+//        }
 
     }
 
-    private ObjType getMacroPartyType(PartyObj party) {
+    private ObjType getMacroPartyType(Party party) {
         ObjType type = new ObjType(party.getType());
         type.initType();
         return type;
@@ -207,4 +212,11 @@ public class MacroGame extends Game {
         this.turnRules = turnRules;
     }
 
+    public GameLoop getLoop() {
+        return loop;
+    }
+
+    public void setLoop(GameLoop loop) {
+        this.loop = loop;
+    }
 }

@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.List;
 
 public class VariableManager {
@@ -117,7 +116,13 @@ public class VariableManager {
 
     }
 
-    public static List<String> getVarList(String vars) {
+    public static String substitute(String text, Object...vars) {
+        for (Object sub : vars) {
+            text =StringMaster.replaceFirst( text,VARIABLE, sub.toString());
+        }
+        return text;
+    }
+        public static List<String> getVarList(String vars) {
         vars = getVarPart(vars);
         vars = StringMaster.cropParenthesises(vars);
         List<String> varList = new ArrayList<>();

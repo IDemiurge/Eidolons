@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.meta.party;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.entity.Entity;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
@@ -66,7 +66,7 @@ public class FormationMaster extends MetaPartyHandler  {
 
     }
 
-    public void formationArrives(FORMATION formation, PartyObj party) {
+    public void formationArrives(FORMATION formation, Party party) {
 
         Coordinates origin = getDefaultPoint(getMaster().getDungeonMaster().
           getDungeon(), formation

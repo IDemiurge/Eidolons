@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.entity.Entity;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.menu.selection.SelectionPanel;
+import main.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import main.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import main.libgdx.gui.menu.selection.manual.ManualPanel;
 import main.libgdx.stage.UiStage;
@@ -19,7 +20,10 @@ import main.system.options.OptionsMaster;
 
 import java.util.List;
 
+import static main.system.GuiEventType.SHOW_SELECTION_PANEL;
+
 public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
+    private static final Object DIFFICULTY_PANEL_ARG = 1;
     protected UiStage overlayStage;
     protected VideoMaster video;
     protected boolean looped;
@@ -45,18 +49,23 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     @Override
     protected void preLoad() {
         super.preLoad();
-        GuiEventManager.bind(true, GuiEventType.SHOW_SELECTION_PANEL, p -> {
-            if (selectionPanel != null)
-                selectionPanel.closed(null);
-            if (p.get() == null) {
-                selectionPanelClosed();
-                updateInputController();
-                return;
+        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
+            if (p.get() != DIFFICULTY_PANEL_ARG) {
+                if (selectionPanel != null)
+                    selectionPanel.closed(null);
+                if (p.get() == null) {
+                    selectionPanelClosed();
+                    updateInputController();
+                    return;
+                }
             }
             selectionPanel =
              createSelectionPanel(p);
             addSelectionPanel(selectionPanel);
 
+        });
+        GuiEventManager.bind(true, GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL, p -> {
+            GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_MANUAL_PANEL, p -> {
             if (manualPanel != null)
@@ -97,6 +106,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
+        if (p.get()==DIFFICULTY_PANEL_ARG ){
+            return new DifficultySelectionPanel();
+        }
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
     }

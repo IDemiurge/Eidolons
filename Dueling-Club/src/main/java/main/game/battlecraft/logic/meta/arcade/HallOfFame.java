@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.meta.arcade;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.data.DataManager;
@@ -25,7 +25,7 @@ public class HallOfFame {
                 DC_TYPE.PARTY, false);
     }
 
-    public static int getPlace(PartyObj party) {
+    public static int getPlace(Party party) {
         return DataManager.toTypeList(getSortedArcadeParties(),
                 DC_TYPE.PARTY).indexOf(party) + 1;
     }
@@ -58,7 +58,7 @@ public class HallOfFame {
         return "... No comment";
     }
 
-    public void nominate(PartyObj party) {
+    public void nominate(Party party) {
         /**
          * equate to some unit from same aspect as main hero... calculate
          * statistics for each hero and party as a whole... calculate deaths and

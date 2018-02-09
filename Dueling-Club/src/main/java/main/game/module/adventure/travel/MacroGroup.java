@@ -6,7 +6,9 @@ import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.module.adventure.map.Area;
+import main.game.module.adventure.map.MacroCoordinates;
 import main.game.module.adventure.map.Region;
+import main.game.module.adventure.map.area.AreaManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

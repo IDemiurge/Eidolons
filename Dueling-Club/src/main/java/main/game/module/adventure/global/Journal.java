@@ -4,7 +4,7 @@ import main.entity.Ref;
 import main.game.core.game.Game;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.system.text.LogManager;
 
 public class Journal extends LogManager {

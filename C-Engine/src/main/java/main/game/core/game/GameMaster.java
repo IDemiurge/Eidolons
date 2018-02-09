@@ -14,6 +14,7 @@ public class GameMaster {
         this.game= game;
     }
 
+
     public Obj getObjectById(Integer id) {
         if (id == null) {
             LogMaster.log(LogMaster.CORE_DEBUG,

@@ -16,6 +16,7 @@ import main.libgdx.stage.ChainedStage;
 import main.libgdx.stage.LoadingStage;
 import main.system.EventCallbackParam;
 import main.system.audio.MusicMaster;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 11/28/2017.
@@ -77,6 +78,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isWaitForInput() {
+        if (CoreEngine.isIDE())
+            return false;
         return true;
     }
 
@@ -137,13 +140,22 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+
+        checkShader();
         renderLoader(delta);
         if (waitingForInput) {
             waited(delta);
-
         }
+        checkShaderReset();
     }
 
+    protected void checkShaderReset() {
+    }
+
+    protected void checkShader() {
+
+
+    }
     protected void waited(float delta) {
         timeWaited += delta;
         batch.begin();

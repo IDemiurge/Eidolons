@@ -18,8 +18,8 @@ import main.game.module.adventure.entity.MacroObj;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.gui.map.MapComp;
 import main.game.module.adventure.rules.TurnRule;
-import main.game.module.adventure.travel.AreaManager;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.map.area.AreaManager;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.travel.TravelMaster;
 import main.game.module.adventure.utils.SaveMaster;
 import main.system.audio.DC_SoundMaster;
@@ -37,6 +37,7 @@ public class MacroGameManager extends GameManager {
 
     public MacroGameManager(MacroGame macroGame) {
         this.game = macroGame;
+        setState(macroGame.getState());
     }
 
     public void newTurn() {

@@ -3,7 +3,7 @@ package main.entity.obj.unit;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.client.cc.CharacterCreator;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.CONTENT_CONSTS.FLIP;
@@ -1063,9 +1063,9 @@ if (ExplorationMaster.isExplorationOn())
 
     public boolean isLeader() {
         Obj obj = ref.getObj(KEYS.PARTY);
-        if (obj instanceof PartyObj) {
-            PartyObj partyObj = (PartyObj) obj;
-            return partyObj.getLeader().equals(this);
+        if (obj instanceof Party) {
+            Party party = (Party) obj;
+            return party.getLeader().equals(this);
         }
         return false;
     }

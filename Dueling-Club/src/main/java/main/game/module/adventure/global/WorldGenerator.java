@@ -6,7 +6,6 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.faction.FactionMaster;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
@@ -15,8 +14,8 @@ import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
+import main.game.module.adventure.map.area.AreaManager;
 import main.game.module.adventure.town.Town;
-import main.game.module.adventure.travel.AreaManager;
 import main.game.module.adventure.travel.TravelMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -34,8 +33,8 @@ public class WorldGenerator {
         game = ref.getGame();
         world = new World(ref.getGame(), wType, ref);
         ref.getGame().setWorld(world);
-        world.setRegions(generateRegions(ref));
-        FactionMaster.generateFactions(ref);
+//        world.setRegions(generateRegions(ref));
+//        FactionMaster.generateFactions(ref);
         // parties
         return world;
 

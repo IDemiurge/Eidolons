@@ -13,6 +13,7 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -60,7 +61,6 @@ Label title;
 
         padRight(50);
 
-
     }
 
     protected boolean isDoneSupported() {
@@ -89,11 +89,14 @@ Label title;
         
             return false;
     }
-    
 
     public void init() {
         listPanel.setItems(createListData());
         listener= new SelectionInputListener(this);
+
+        if (CoreEngine.isIDE()){
+            tryDone();
+        }
     }
     @Override
     protected void setStage(Stage stage) {

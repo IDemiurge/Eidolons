@@ -1,6 +1,6 @@
 package main.game.module.adventure.town;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.HC_SequenceMaster;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
@@ -24,7 +24,7 @@ public class Town extends Place {
     DequeImpl<Tavern> taverns = new DequeImpl<>();
     DequeImpl<TownPlace> townPlaces = new DequeImpl<>();
     DequeImpl<FactionQuarters> fqs = new DequeImpl<>();
-    DequeImpl<PartyObj> parties = new DequeImpl<>();
+    DequeImpl<Party> parties = new DequeImpl<>();
 
     FactionObj ownerFaction;
     private boolean readyToInit;
@@ -135,7 +135,7 @@ public class Town extends Place {
         return fqs;
     }
 
-    public DequeImpl<PartyObj> getParties() {
+    public DequeImpl<Party> getParties() {
         return parties;
     }
 

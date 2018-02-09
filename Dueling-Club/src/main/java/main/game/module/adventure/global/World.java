@@ -23,7 +23,6 @@ public class World extends MacroObj {
 
     @Override
     public void setRef(Ref ref) {
-        ref.setID("world", getId());
         this.ref = ref;
     }
 

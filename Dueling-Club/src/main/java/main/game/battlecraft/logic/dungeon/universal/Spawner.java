@@ -2,7 +2,7 @@ package main.game.battlecraft.logic.dungeon.universal;
 
 import main.ability.UnitTrainingMaster;
 import main.client.cc.logic.UnitLevelManager;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher;
 import main.content.C_OBJ_TYPE;
 import main.content.PROPS;
@@ -86,7 +86,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         GuiEventManager.trigger(SCREEN_LOADED,
          new BFDataCreatedEvent(cellsX, cellsY, game.getBfObjects()));
 
-        //WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        //WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
     private SPAWN_MODE getSpawnMode(DC_Player player, boolean first) {
@@ -188,7 +188,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         DC_Player player = game.getPlayer(me);
         if (BooleanMaster.isTrue(me)) {
-            PartyObj party = PartyHelper.getParty();
+            Party party = PartyHelper.getParty();
             if (party != null) {
                 DC_SoundMaster.playEffectSound(SOUNDS.READY, party.getLeader());
                 spawnPlayerParty(party, partyData);
@@ -210,7 +210,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
 
-    private void spawnPlayerParty(PartyObj party, String partyData) {
+    private void spawnPlayerParty(Party party, String partyData) {
 
         DC_ObjInitializer.initializePartyPositions(partyData, party.getMembers());
         int i = 0;

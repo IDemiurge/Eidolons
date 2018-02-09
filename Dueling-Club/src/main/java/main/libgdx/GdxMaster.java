@@ -38,16 +38,16 @@ return         size
         return GdxMaster.getHeight() / 2 - actor.getHeight() / 2;
     }
 
-    public static float top(Actor actor) {
-        if (actor.getParent() != null)
-            return actor.getParent().getHeight() - actor.getHeight();
-        return GdxMaster.getHeight() - actor.getHeight();
-    }
-
     public static float right(Actor actor) {
         if (actor.getParent() != null &&actor.getParent().getWidth()!=0 )
             return actor.getParent().getWidth() - actor.getWidth();
         return GdxMaster.getWidth() - actor.getWidth();
+    }
+
+    public static float top(Actor actor) {
+        if (actor.getParent() != null)
+            return actor.getParent().getHeight() - actor.getHeight();
+        return GdxMaster.getHeight() - actor.getHeight();
     }
 
     public static Vector3 getCursorPosition() {

@@ -4,7 +4,7 @@ import main.content.VALUE;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.swing.components.panels.ValueBox;
 import main.swing.components.panels.page.info.PropertyPage;
 import main.swing.components.panels.page.info.element.ValueTextComp;

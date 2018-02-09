@@ -1,17 +1,15 @@
 package main.game.battlecraft.logic.meta.scenario;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.UnitData;
+import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.game.battlecraft.logic.meta.universal.PartyManager;
 import main.game.core.Eidolons;
-import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -27,9 +25,8 @@ import java.util.List;
  */
 public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
-    private static String selectedHero;
 
-    public ScenarioPartyManager(ScenarioMetaMaster master) {
+    public ScenarioPartyManager(MetaGameMaster master) {
         super(master);
     }
 
@@ -39,8 +36,15 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     }
 
-    public static void setSelectedHero(String selectedHero) {
-        ScenarioPartyManager.selectedHero = selectedHero;
+    @Override
+    protected String chooseHero(List<String> members) {
+        if (isWaitForGdx())
+        WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
+        return super.chooseHero(members);
+    }
+
+    protected boolean isWaitForGdx() {
+        return true;
     }
 
     @Override
@@ -71,14 +75,15 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     public void gameStarted() {
         Unit hero = getGame().getMaster().getUnitByName(
-         selectedHero, true, null, null, getGame().getPlayer(true),
+         PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
          null);
         //will find 1st if name==null
         mainHeroSelected(party, hero);
     }
 
+
     @Override
-    public PartyObj initPlayerParty() {
+    public Party initPlayerParty() {
         if (!getMaster().getMetaGame().isPartyRespawn())
         {
             party = Eidolons.getParty();
@@ -114,7 +119,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                 type.setProperty(PROPS.MEMBERS, hero);
             }
         }
-        party = new PartyObj(type);
+        party = new Party(type);
 
 //        if (party.getNextMission().isEmpty()) {
 //            String missions = StringMaster.joinList(getMetaGame().getScenario().getAvailableMissions());
@@ -135,19 +140,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     }
 
-    private String chooseHero(List<String> members) {
-        if (isSwingOn()) {
-            return ListChooser.chooseType(
-             members, DC_TYPE.CHARS);
-        }
-        WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-        GuiEventManager.trigger(
-         GuiEventType.SHOW_SELECTION_PANEL, DataManager.toTypeList(members, DC_TYPE.CHARS));
-        selectedHero = (String) WaitMaster.
-         waitForInput(WAIT_OPERATIONS.SELECTION);
-        main.system.auxiliary.log.LogMaster.log(1, "+++++++++selectedHero = " + selectedHero);
-        return selectedHero;
-    }
 
     private boolean isSwingOn() {
         return false;

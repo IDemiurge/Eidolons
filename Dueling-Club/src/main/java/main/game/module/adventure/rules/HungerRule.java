@@ -1,8 +1,9 @@
-package main.game.module.adventure.travel;
+package main.game.module.adventure.rules;
 
 import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroManager;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.rules.TurnRule;
 
 public class HungerRule extends TurnRule {

@@ -9,7 +9,9 @@ package main.system;
 //public enum GRID_EVENT implements GraphicEvent{
 //
 //}
-public enum GuiEventType {
+public enum GuiEventType implements EventType{
+
+
     MUSIC_START,
     MUSIC_PAUSE,
     MUSIC_STOP,
@@ -98,5 +100,5 @@ public enum GuiEventType {
     SHOW_TEAM_COLOR_BORDER,
     HP_BAR_UPDATE,    HP_BAR_UPDATE_MANY,
     SHOW_SELECTION_PANEL,
-    SHOW_MANUAL_PANEL,
+    SHOW_MANUAL_PANEL, SHOW_DIFFICULTY_SELECTION_PANEL,
 }

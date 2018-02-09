@@ -11,8 +11,8 @@ import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.entity.MapObj;
 import main.game.module.adventure.gui.map.obj.PlaceComp;
-import main.game.module.adventure.travel.AreaManager;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.map.area.AreaManager;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.travel.TravelMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -135,6 +135,10 @@ public class Place extends MapObj {
 
     public boolean isLinkedToRoute(Route route) {
         return route.getLinkedPlaces().contains(this);
+    }
+
+    public String getIconPath() {
+        return getProperty(MACRO_PROPS.MAP_ICON);
     }
 
     public enum PLACE_VISIBILITY_STATUS {

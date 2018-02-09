@@ -12,7 +12,7 @@ import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.gui.MacroGuiManager;
 import main.game.module.adventure.gui.map.obj.RouteComp;
 import main.game.module.adventure.town.Town;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 

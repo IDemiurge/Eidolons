@@ -14,6 +14,7 @@ import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.Eidolons;
 import main.libgdx.anims.Assets;
 import main.libgdx.screens.*;
+import main.libgdx.screens.map.MapScreen;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
@@ -166,6 +167,13 @@ public class GenericLauncher extends Game {
     public void resize(int width, int height) {
 //        viewport.update(width, height);
         screen.resize(width, height);
+//        if (VignetteShader.isUsed()) {
+//            ShaderProgram program = VignetteShader.getShader();
+//      try{
+//        program.use();
+//        program.setUniformf("resolution", Display.getWidth(), Display.getHeight());
+//      }catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+//    }
     }
 
     @Override
@@ -176,8 +184,7 @@ public class GenericLauncher extends Game {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        }
-        else
+        } else
             render_();
     }
 
@@ -204,8 +211,6 @@ public class GenericLauncher extends Game {
 
     protected void triggerLoaded(ScreenData meta) {
         switch (meta.getType()) {
-            case HEADQUARTERS:
-                break;
             case BATTLE:
                 if (firstInitDone)
                     return;
@@ -221,11 +226,13 @@ public class GenericLauncher extends Game {
                     }
                 }, " thread").start();
                 break;
-            case PRE_BATTLE:
-                break;
             case MAIN_MENU:
-                GuiEventManager.trigger(SCREEN_LOADED, new ScreenData(ScreenType.MAIN_MENU, null));
+                GuiEventManager.trigger(SCREEN_LOADED,
+                 new ScreenData(ScreenType.MAIN_MENU, null));
                 break;
+            default:
+                GuiEventManager.trigger(SCREEN_LOADED,
+                 new ScreenData(meta.getType(), null));
         }
     }
 
@@ -238,6 +245,9 @@ public class GenericLauncher extends Game {
                     break;
                 case BATTLE:
                     switchScreen(DungeonScreen::new, newMeta);
+                    break;
+                case MAP:
+                    switchScreen(()->MapScreen.getInstance(), newMeta);
                     break;
                 case PRE_BATTLE:
                     break;

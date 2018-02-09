@@ -62,7 +62,7 @@ public class ObjCreator extends Master {
         if (CoreEngine.isLevelEditor()) {
             return obj;
         }
-        //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.GDX_READY))
+        //if (WaitMaster.getCompleteOperations().contains(WAIT_OPERATIONS.DUNGEON_SCREEN_READY))
         GuiEventManager.trigger(GuiEventType.UNIT_CREATED, obj);
         game.getState().addObject(obj);
 

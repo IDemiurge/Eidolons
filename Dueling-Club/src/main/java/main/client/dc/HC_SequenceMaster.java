@@ -3,7 +3,7 @@ package main.client.dc;
 import main.client.cc.CharacterCreator;
 import main.client.cc.HC_Master;
 import main.client.cc.gui.neo.choice.*;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher.VIEWS;
 import main.content.*;
 import main.content.enums.entity.HeroEnums.RACE;
@@ -72,7 +72,7 @@ public class HC_SequenceMaster implements SequenceManager {
         };
     }
 
-    public void chooseNewMember(PartyObj party) {
+    public void chooseNewMember(Party party) {
 
         Unit leader = party.getLeader();
         Conditions filterConditions = new Conditions(){

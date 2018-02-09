@@ -7,7 +7,7 @@ import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.ContinuousEffect;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.enums.system.MetaEnums.DC_OBJ_CLASSES;
@@ -263,7 +263,7 @@ public class StateCloner {
             case ABILS:
                 return (Obj) AbilityConstructor.newAbility(e.getName(), e.getRef().getSourceObj(), e instanceof PassiveAbilityObj);
             case PARTY:
-                return new PartyObj(e.getType(), ((PartyObj) e).getLeader());
+                return new Party(e.getType(), ((Party) e).getLeader());
 
 //        case JEWELRY:
 //            return new DC_JewelryObj();

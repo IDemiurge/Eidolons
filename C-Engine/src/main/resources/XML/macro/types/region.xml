@@ -1,1 +1,8 @@
-<XML></XML>
+<XML>
+<Test>
+<Test1>
+<params></params>
+<props><Name>Test1</Name><Image>global\place\1v.jpg</Image></props>
+</Test1>
+</Test>
+</XML>

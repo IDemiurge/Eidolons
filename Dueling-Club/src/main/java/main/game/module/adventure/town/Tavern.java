@@ -2,7 +2,7 @@ package main.game.module.adventure.town;
 
 import main.client.cc.gui.neo.choice.ChoiceSequence;
 import main.client.cc.gui.neo.choice.TavernView;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.HC_SequenceMaster;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
@@ -20,7 +20,7 @@ import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.global.TimeMaster;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.utils.HeroGenerator;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
@@ -38,7 +38,7 @@ public class Tavern extends TownPlace {
     private List<Unit> heroes = new ArrayList<>();
     // buy drinks...
     private List<Unit> mercs;
-    private List<PartyObj> stayingParties;
+    private List<Party> stayingParties;
     private TAVERN_MODIFIER modifier;
 
     public Tavern(MacroGame game, ObjType type, Ref ref) {

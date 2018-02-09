@@ -4,7 +4,7 @@ import main.client.cc.gui.HeroTabsPanel;
 import main.client.cc.gui.MainPanel;
 import main.client.cc.gui.neo.HeroPanel;
 import main.client.cc.logic.HeroCreator;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.Simulation;
@@ -56,7 +56,7 @@ public class CharacterCreator {
     private static HeroTabsPanel tabPanel;
 
     private static boolean partyMode;
-    private static PartyObj party;
+    private static Party party;
     private static boolean arcadeMode;
     private static boolean AV;
     private static HeroManager dc_HeroManager;
@@ -391,11 +391,11 @@ public class CharacterCreator {
         AV = aV;
     }
 
-    public static PartyObj getParty() {
+    public static Party getParty() {
         return party;
     }
 
-    public static void setParty(PartyObj party) {
+    public static void setParty(Party party) {
         CharacterCreator.party = party;
     }
 

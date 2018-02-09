@@ -4,23 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import main.libgdx.DialogScenario;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.particles.ParticleManager;
@@ -29,6 +23,7 @@ import main.libgdx.bf.GridConst;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.bf.GridPanel;
 import main.libgdx.bf.menu.GameMenu;
+import main.libgdx.bf.mouse.DungeonInputController;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.launch.GenericLauncher;
 import main.libgdx.shaders.DarkShader;
@@ -43,8 +38,6 @@ import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.List;
-
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.*;
 
@@ -55,7 +48,7 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DungeonScreen extends GameScreen {
-    private static  float FRAMERATE_DELTA_CONTROL =
+    private static float FRAMERATE_DELTA_CONTROL =
      new Float(1) / GenericLauncher.FRAMERATE * 3;
     private static DungeonScreen instance;
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
@@ -63,7 +56,6 @@ public class DungeonScreen extends GameScreen {
 
     private RealTimeGameLoop realTimeGameLoop;
     private ParticleManager particleManager;
-    private TextureRegion backTexture;
     private Stage gridStage;
     private BattleGuiStage guiStage;
     private GridPanel gridPanel;
@@ -89,24 +81,11 @@ public class DungeonScreen extends GameScreen {
         instance = this;
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GUI_READY);
         super.preLoad();
-
         gridStage = new Stage(viewPort, getBatch());
 
         guiStage = new BattleGuiStage(null, getBatch());
 
-
-        GL30 gl = Gdx.graphics.getGL30();
-        if (gl != null) {
-            gl.glEnable(GL30.GL_BLEND);
-            gl.glEnable(GL30.GL_TEXTURE_2D);
-            gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
-        } else {
-            GL20 gl20 = Gdx.graphics.getGL20();
-            gl20.glEnable(GL20.GL_BLEND);
-            gl20.glEnable(GL20.GL_TEXTURE_2D);
-            gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        }
-
+        initGl();
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
@@ -117,27 +96,17 @@ public class DungeonScreen extends GameScreen {
 
         });
 
+        initDialogue();
 
-        GuiEventManager.bind(DIALOG_SHOW, obj -> {
-            DialogueHandler handler = (DialogueHandler) obj.get();
-            final List<DialogScenario> list = handler.getList();
-            if (dialogsStage == null) {
-                dialogsStage = new ChainedStage(viewPort, getBatch(), list);
-                updateInputController();
-            } else {
-                dialogsStage.play(list);
-            }
-            dialogsStage.setDialogueHandler(handler);
-        });
-
-        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
+
 
     @Override
     public void dispose() {
         super.dispose();
-        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GDX_READY);
+        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
     protected void checkGraphicsUpdates() {
@@ -161,14 +130,14 @@ public class DungeonScreen extends GameScreen {
     @Override
     protected void afterLoad() {
 
-        cam =   (OrthographicCamera) viewPort.getCamera();
-        controller = new InputController(cam);
+        cam = (OrthographicCamera) viewPort.getCamera();
+        controller = new DungeonInputController(cam);
+        particleManager = new ParticleManager();
 
         soundMaster = new DC_SoundMaster(this);
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         gridStage.addActor(gridPanel);
-        particleManager = new ParticleManager();
         gridStage.addActor(particleManager.getEmitterMap());
         try {
             controller.setDefaultPos();
@@ -245,9 +214,11 @@ public class DungeonScreen extends GameScreen {
 
         return current;
     }
+
     protected void selectionPanelClosed() {
         getOverlayStage().setActive(false);
     }
+
     protected void triggerInitialEvents() {
 //        DC_Game.game.getVisionMaster().triggerGuiEvents();
         GuiEventManager.trigger(UPDATE_LIGHT);
@@ -310,7 +281,6 @@ public class DungeonScreen extends GameScreen {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        checkShaderReset();
     }
 
 
@@ -338,24 +308,22 @@ public class DungeonScreen extends GameScreen {
                     GuiEventManager.trigger(UPDATE_GUI);
                 }
             }
-            checkShader();
             super.render(delta);
 
         }
-        }
-
-    private void checkShaderReset() {
+    }
+    protected void checkShaderReset() {
         if (batch.getShader() == DarkShader.getShader())
             batch.setShader(bufferedShader);
     }
 
-    private void checkShader() {
+    protected void checkShader() {
 
-        if (batch.getShader() !=DarkShader.getShader())
+        if (batch.getShader() != DarkShader.getShader())
             if (isBlocked() || ExplorationMaster.isWaiting()) {
-            bufferedShader = batch.getShader();
-            batch.setShader(DarkShader.getShader());
-        }
+                bufferedShader = batch.getShader();
+                batch.setShader(DarkShader.getShader());
+            }
 
     }
 

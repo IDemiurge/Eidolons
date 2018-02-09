@@ -1,6 +1,6 @@
 package main.game.battlecraft.ai;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
@@ -22,7 +22,7 @@ public class GroupAI {
     private ENCOUNTER_TYPE encounterType;
     private Unit leader;
     private DequeImpl<Unit> members = new DequeImpl<>();
-    private PartyObj party;
+    private Party party;
     private Wave creepGroup;
     private ENGAGEMENT_LEVEL engagementLevel;
     private AI_BEHAVIOR_MODE behaviorPref;
@@ -188,7 +188,7 @@ public class GroupAI {
         this.wanderDistance = wanderDistance;
     }
 
-    public PartyObj getParty() {
+    public Party getParty() {
         return party;
     }
 

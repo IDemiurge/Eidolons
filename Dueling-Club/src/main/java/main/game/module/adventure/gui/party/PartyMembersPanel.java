@@ -2,7 +2,7 @@ package main.game.module.adventure.gui.party;
 
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroGame;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
 

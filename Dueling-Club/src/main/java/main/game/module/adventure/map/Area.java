@@ -5,7 +5,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroObj;
-import main.game.module.adventure.travel.MacroCoordinates;
 import main.game.module.adventure.travel.MacroGroup;
 import main.system.auxiliary.StringMaster;
 

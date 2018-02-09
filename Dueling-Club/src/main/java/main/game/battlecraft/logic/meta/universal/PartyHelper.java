@@ -4,7 +4,7 @@ import main.ability.InventoryTransactionManager;
 import main.client.cc.CharacterCreator;
 import main.client.cc.logic.HeroCreator;
 import main.client.cc.logic.HeroLevelManager;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.MetaManager;
 import main.client.dc.Simulation;
 import main.content.DC_TYPE;
@@ -46,9 +46,9 @@ public class PartyHelper {
     private static final String XML_ROOT = "Party";
     private static final String PARTY_NAME_TIP = "This fellowship was called...";
     private static final int MAX_PARTY_MEMBERS_DEFAULT = 4;
-    static PartyObj party;
-    private static PartyObj enemyParty;
-    private static List<PartyObj> parties = new ArrayList<>();
+    static Party party;
+    private static Party enemyParty;
+    private static List<Party> parties = new ArrayList<>();
 
     private static File getPartyFile(String typeName) {
         return FileManager.getFile(getPartyFolderPath() + "\\" + typeName + ".xml");
@@ -73,7 +73,7 @@ public class PartyHelper {
         }
     }
 
-    public static PartyObj newParty(Unit hero) {
+    public static Party newParty(Unit hero) {
         String newName = "";
 
         if (CharacterCreator.isArcadeMode()) {
@@ -89,7 +89,7 @@ public class PartyHelper {
             }
         }
 
-        PartyObj party = createParty(hero);
+        Party party = createParty(hero);
         // party.getLeader().getProperty(G_PROPS.NAME) +
         // StringMaster.PARTY_SUFFIX;
         party.setProperty(G_PROPS.NAME, newName, true);
@@ -102,11 +102,11 @@ public class PartyHelper {
         return party;
     }
 
-    public static PartyObj createParty(Unit hero) {
+    public static Party createParty(Unit hero) {
         return createParty(getType(), hero);
     }
 
-    public static PartyObj createParty(ObjType type, Unit hero) {
+    public static Party createParty(ObjType type, Unit hero) {
         party = newParty(type);
         party.setLeader(hero);
         party.addMember(hero);
@@ -118,7 +118,7 @@ public class PartyHelper {
         return party;
     }
 
-    public static void saveParty(PartyObj party) {
+    public static void saveParty(Party party) {
         saveParty(party, false);
     }
 
@@ -141,7 +141,7 @@ public class PartyHelper {
 
     }
 
-    public static void saveParty(PartyObj party, boolean newType) {
+    public static void saveParty(Party party, boolean newType) {
 
         if (party.getName().equals(DEFAULT_TYPE_NAME)) {
             party.setProperty(G_PROPS.NAME, party.getLeader().getProperty(G_PROPS.NAME)
@@ -241,7 +241,7 @@ public class PartyHelper {
             getParty().setName(newName);
             saveParty();
         } else {
-            PartyObj exportedParty = newParty(newType);
+            Party exportedParty = newParty(newType);
             exportedParty.setProperty(G_PROPS.GROUP, StringMaster.PRESET, true);
             exportedParty.setName(newName);
             saveParty(exportedParty, true);
@@ -249,13 +249,13 @@ public class PartyHelper {
 
     }
 
-    private static PartyObj newParty(ObjType newType) {
-        PartyObj partyObj = new PartyObj(newType);
-        DC_Game.game.getState().addObject(partyObj);
+    private static Party newParty(ObjType newType) {
+        Party party = new Party(newType);
+        DC_Game.game.getState().addObject(party);
         if (DC_Game.game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
 //            DC_Game.game.getArenaArcadeMaster().init(partyObj);
         }
-        return partyObj;
+        return party;
     }
 
     private static boolean checkPartyName(String newName) {
@@ -279,7 +279,7 @@ public class PartyHelper {
         return true;
     }
 
-    private static String getFileName(PartyObj party) {
+    private static String getFileName(Party party) {
         return party.getName() + ".xml";
     }
 
@@ -324,11 +324,11 @@ public class PartyHelper {
         CharacterCreator.partyMemberRemoved(hero);
     }
 
-    public static PartyObj getParty() {
+    public static Party getParty() {
         return party;
     }
 
-    public static void setParty(PartyObj party) {
+    public static void setParty(Party party) {
         PartyHelper.party = party;
 
         DC_Game.game.getState().addObject(party);
@@ -359,7 +359,7 @@ public class PartyHelper {
         }
     }
 
-    public static PartyObj initParty(String last) {
+    public static Party initParty(String last) {
         ObjType type = DataManager.getType(last, DC_TYPE.PARTY);
 
         return newParty(type);
@@ -379,11 +379,11 @@ public class PartyHelper {
         return checkPartySize(party);
     }
 
-    private static boolean checkPartySize(PartyObj party2) {
+    private static boolean checkPartySize(Party party2) {
         return party2.getMembers().size() <= getMaxPartyMembers(party2);
     }
 
-    private static int getMaxPartyMembers(PartyObj party) {
+    private static int getMaxPartyMembers(Party party) {
         Integer max = party.getIntParam(PARAMS.MAX_HEROES);
         if (max == 0) {
             return MAX_PARTY_MEMBERS_DEFAULT;
@@ -391,7 +391,7 @@ public class PartyHelper {
         return max;
     }
 
-    public static Conditions getPrincipleConditions(PartyObj party) {
+    public static Conditions getPrincipleConditions(Party party) {
         Conditions principlesConditions = new Conditions();
         for (Unit m : party.getMembers()) {
             String principles = m.getProperty(G_PROPS.PRINCIPLES);
@@ -403,7 +403,7 @@ public class PartyHelper {
         return principlesConditions;
     }
 
-    public static List<PartyObj> getParties() {
+    public static List<Party> getParties() {
         return parties;
     }
 
@@ -417,10 +417,10 @@ public class PartyHelper {
 
     }
 
-    public static PartyObj addCreepParty(Unit leader, String name, List<Unit> units,
-                                         ObjType newType) {
+    public static Party addCreepParty(Unit leader, String name, List<Unit> units,
+                                      ObjType newType) {
         newType.setName(name);
-        PartyObj p = createParty(newType, leader);
+        Party p = createParty(newType, leader);
         for (Unit unit : units) {
             p.addMember(unit);
         }

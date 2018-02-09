@@ -171,7 +171,12 @@ public class GenericEnums {
         private int healthPercentageAlly;
         private int healthPercentageMainHero;
 
-        DIFFICULTY(int powerPercentage, int roundsToFightMod, int healthPercentageEnemy, int healthPercentageAlly, int healthPercentageMainHero) {
+
+        DIFFICULTY(int powerPercentage,
+                   int roundsToFightMod, int healthPercentageEnemy,
+                   int healthPercentageAlly, int healthPercentageMainHero
+
+        ) {
             this.powerPercentage = powerPercentage;
             this.roundsToFightMod = roundsToFightMod;
             this.healthPercentageEnemy = healthPercentageEnemy;

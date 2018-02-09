@@ -633,6 +633,13 @@ public class Ref implements Cloneable, Serializable {
 
         IMAGE,
         OBJECTIVE, BLOCK,
+        //macro
+        REGION,
+        ROUTE,
+        PLACE,
+        ENCOUNTER,
+        FACTION,
+        AREA,
     }
 
 }

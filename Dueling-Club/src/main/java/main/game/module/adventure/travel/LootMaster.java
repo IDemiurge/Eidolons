@@ -1,6 +1,6 @@
 package main.game.module.adventure.travel;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -22,6 +22,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.core.game.DC_Game;
+import main.game.module.adventure.entity.MacroParty;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -113,7 +114,7 @@ public class LootMaster {
     }
 
     private static int awardXp(DequeImpl<Unit> enemiesSlain,
-                               Unit her, PartyObj party) {
+                               Unit her, Party party) {
         for (Unit unit : enemiesSlain) {
             Obj killer = unit.getRef().getObj(KEYS.KILLER);
             for (Unit h : party.getMembers()) {

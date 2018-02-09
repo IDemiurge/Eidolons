@@ -1,17 +1,23 @@
 package main.game.module.adventure.entity;
 
+import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.map.MacroCoordinates;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.utils.MacroContentManager;
 
 public class MacroObj extends Obj {
 
+    private int x;
+    private int y;
     private Region region;
+    private MacroCoordinates coordinates;
 
     public MacroObj(MacroGame game, ObjType type, Ref ref, Player owner) {
         super(type, owner, game, ref);
@@ -32,6 +38,35 @@ public class MacroObj extends Obj {
     public void newTurn() {
 
     }
+
+    public Coordinates getCoordinates() {
+        if (coordinates == null) {
+            coordinates = new MacroCoordinates(getX(), getY());
+        }
+        return coordinates;
+    }
+
+    public void setCoordinates(MacroCoordinates coordinates) {
+        this.coordinates = coordinates;
+        setX(coordinates.getX());
+        setY(coordinates.getY());
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+        setParam(MACRO_PARAMS.MAP_POS_Y, y, true);
+        getCoordinates().setY(y);
+    }
+    public void setX(int x) {
+        this.x = x;
+        setParam(MACRO_PARAMS.MAP_POS_Y, x, true);
+        getCoordinates().setY(x);
+    }
+ 
 
     @Override
     public MacroRef getRef() {

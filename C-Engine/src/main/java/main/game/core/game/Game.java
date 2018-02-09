@@ -5,8 +5,10 @@ import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.ValueManager;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.GenericItemGenerator;
+import main.data.xml.XML_Reader;
 import main.elements.conditions.RequirementsManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -25,6 +27,7 @@ import main.system.auxiliary.secondary.Log;
 import main.system.entity.ConditionMaster;
 import main.system.entity.IdManager;
 import main.system.entity.ValueHelper;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.text.LogManager;
 
@@ -183,6 +186,9 @@ public abstract class Game  implements Serializable {
     }
 
     protected OBJ_TYPE[] getOBJ_TYPES() {
+        if (CoreEngine.isArcaneVault())
+            if (XML_Reader.isMacro())
+                return MACRO_OBJ_TYPES.values();
         return DC_TYPE.values();
     }
 

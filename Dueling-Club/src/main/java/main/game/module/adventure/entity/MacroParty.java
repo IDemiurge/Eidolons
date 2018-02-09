@@ -1,6 +1,6 @@
-package main.game.module.adventure.travel;
+package main.game.module.adventure.entity;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.PARAMS;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -13,13 +13,13 @@ import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
-import main.game.module.adventure.entity.MacroObj;
-import main.game.module.adventure.global.World;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
 import main.game.module.adventure.town.Town;
+import main.game.module.adventure.travel.RestMaster;
+import main.game.module.adventure.travel.TravelMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.MathMaster;
 
@@ -33,13 +33,13 @@ public class MacroParty extends MacroObj {
     private Town town;
     private Place lastLocation;
     private Place currentDestination;
-    private PartyObj party;
+    private Party party;
     private MACRO_STATUS status;
     private Area area;
     private Place currentExploration;
 
     public MacroParty(ObjType macroPartyType, MacroGame macroGame,
-                      MacroRef ref, PartyObj party) {
+                      MacroRef ref, Party party) {
         super(macroGame, macroPartyType, ref);
         this.party = party;
         toBase();
@@ -47,16 +47,17 @@ public class MacroParty extends MacroObj {
     }
 
     public void initObjects() {
-
-        World world = getRef().getWorld();
-        setRegion(world.getRegion(getProperty(MACRO_PROPS.REGION)));
-        setCurrentPlace(region.getPlace(getProperty(MACRO_PROPS.PLACE)));
-        setCurrentRoute(region.getRoute(getProperty(MACRO_PROPS.ROUTE)));
-        setCurrentDestination(region
-                .getPlace(getProperty(MACRO_PROPS.DESTINATION)));
+setX(500);
+setY(500);
+//        World world = getRef().getWorld();
+//        setRegion(world.getRegion(getProperty(MACRO_PROPS.REGION)));
+//        setCurrentPlace(region.getPlace(getProperty(MACRO_PROPS.PLACE)));
+//        setCurrentRoute(region.getRoute(getProperty(MACRO_PROPS.ROUTE)));
+//        setCurrentDestination(region
+//                .getPlace(getProperty(MACRO_PROPS.DESTINATION)));
         // backwards
-        setCurrentExploration(region
-                .getPlace(getProperty(MACRO_PROPS.CURRENT_EXPLORATION)));
+//        setCurrentExploration(region
+//                .getPlace(getProperty(MACRO_PROPS.CURRENT_EXPLORATION)));
         resetMacroStatus();
         //
 
@@ -349,7 +350,7 @@ public class MacroParty extends MacroObj {
         return 0;
     }
 
-    public PartyObj getMicroParty() {
+    public Party getMicroParty() {
         return party;
     }
 

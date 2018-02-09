@@ -1,5 +1,7 @@
 package main.system.auxiliary;
 
+import java.util.List;
+
 /**
  * Created by JustMe on 8/18/2017.
  */
@@ -39,4 +41,7 @@ public class StrPathBuilder  {
     }
 
 
+    public static String build(List<String> list) {
+        return build(list.toArray(new String[list.size()]));
+    }
 }

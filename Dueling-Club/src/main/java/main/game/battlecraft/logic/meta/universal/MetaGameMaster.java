@@ -88,8 +88,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
             game.setMetaMaster(this);
         metaGame = initializer.initMetaGame(data);
         preStart();
-        if (partyManager.initPlayerParty()==null )
-            Eidolons.getMainGame().setAborted(true);
+        if (partyManager.initPlayerParty() != null) {
+            if (getBattleMaster().getOptionManager().chooseDifficulty())
+                return;
+        }
+        Eidolons.getMainGame().setAborted(true);
+
     }
 
     public void preStart() {
@@ -161,12 +165,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void next(Boolean outcome) {
 
         String
-            message = (outcome != null) ? "next level!" : "game restarted!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+         message = (outcome != null) ? "next level!" : "game restarted!";
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
 
 
         gameExited();
-        game.reinit(outcome==null );
+        game.reinit(outcome == null);
         //or selective clear() - removeIf() ...
 //        for (Unit hero : getPartyManager().getParty().getMembers()) {
 //            for (ActiveObj activeObj : hero.getActives()) {

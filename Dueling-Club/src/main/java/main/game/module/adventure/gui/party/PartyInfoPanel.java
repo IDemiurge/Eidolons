@@ -3,7 +3,7 @@ package main.game.module.adventure.gui.party;
 import main.content.PARAMS;
 import main.content.VALUE;
 import main.content.values.parameters.MACRO_PARAMS;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.MacroParty;
 
 import java.util.Arrays;
 

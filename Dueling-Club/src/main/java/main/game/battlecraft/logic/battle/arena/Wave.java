@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.battle.arena;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.PARAMS;
 import main.content.PROPS;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
@@ -30,7 +30,7 @@ public class Wave extends DC_Obj {
     private Integer power;
     private List<Unit> units = new ArrayList<>();
     private Unit leader;
-    private PartyObj party;
+    private Party party;
     private MapBlock block;
     private int preferredPower;
     private boolean adjustmentDisabled;
@@ -206,11 +206,11 @@ public class Wave extends DC_Obj {
         this.units = units;
     }
 
-    public PartyObj getParty() {
+    public Party getParty() {
         return party;
     }
 
-    public void setParty(PartyObj party) {
+    public void setParty(Party party) {
         this.party = party;
 
     }

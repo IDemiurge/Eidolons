@@ -1,4 +1,4 @@
-package main.game.module.adventure.travel;
+package main.game.module.adventure.map.area;
 
 import main.content.DC_TYPE;
 import main.content.PARAMS;
@@ -14,6 +14,9 @@ import main.game.module.adventure.gui.MacroGuiManager;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
+import main.game.module.adventure.travel.EncounterMaster;
+import main.game.module.adventure.map.MacroCoordinates;
+import main.game.module.adventure.travel.MacroGroup;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.entity.FilterMaster;

@@ -2,6 +2,7 @@ package main.game.module.adventure.travel;
 
 import main.game.battlecraft.logic.battle.arena.Wave;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Route;
 import main.system.auxiliary.StringMaster;
 

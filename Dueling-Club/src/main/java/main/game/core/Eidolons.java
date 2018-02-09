@@ -6,11 +6,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import main.client.cc.CharacterCreator;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.entity.obj.unit.Unit;
 import main.game.EidolonsGame;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import main.game.battlecraft.logic.meta.scenario.ScenarioPartyManager;
+import main.game.battlecraft.logic.meta.universal.PartyManager;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_GameManager;
 import main.game.core.game.DC_GameMaster;
@@ -50,7 +50,8 @@ public class Eidolons {
     private static RESOLUTION resolution;
     private static ScreenViewport mainViewport;
     private static GenericLauncher launcher;
-    private static PartyObj party;
+    private static Party party;
+    private static boolean battleRunning;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -193,7 +194,7 @@ public class Eidolons {
 
     public static void gameExited() {
 //        DC_Game toFinilize = game;
-        ScenarioPartyManager.setSelectedHero(null);
+         PartyManager.setSelectedHero(null);
         game.getMetaMaster().gameExited();
         game = null;
         mainHero=null;
@@ -210,11 +211,19 @@ public class Eidolons {
         return launcher;
     }
 
-    public static void setParty(PartyObj party) {
+    public static void setParty(Party party) {
         Eidolons.party = party;
     }
 
-    public static PartyObj getParty() {
+    public static Party getParty() {
         return party;
+    }
+
+    public static boolean isBattleRunning() {
+        return battleRunning;
+    }
+
+    public static void setBattleRunning(boolean battleRunning) {
+        Eidolons.battleRunning = battleRunning;
     }
 }

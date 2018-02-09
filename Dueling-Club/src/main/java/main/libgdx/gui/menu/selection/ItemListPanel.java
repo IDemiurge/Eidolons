@@ -14,6 +14,7 @@ import main.libgdx.gui.panels.dc.logpanel.ScrollPanel;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
@@ -116,6 +117,8 @@ public abstract class ItemListPanel extends TablePanel {
         available.removeIf(btn -> isBlocked(btn));
         SelectableItemData item = new RandomWizard<SelectableItemData>().
          getRandomListItem(available);
+        currentItem= item;
+        if (ListMaster.isNotEmpty(buttons))
         clicked(items.indexOf(item));
     }
 

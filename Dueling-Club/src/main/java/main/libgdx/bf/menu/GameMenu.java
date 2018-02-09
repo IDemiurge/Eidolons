@@ -2,6 +2,7 @@ package main.libgdx.bf.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
@@ -37,14 +38,18 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 
     @Override
     public void open() {
-        DC_Game.game.getLoop().setPaused(true);
+        getLoop().setPaused(true);
         GameMenu.menuOpen = true;
         super.open();
     }
 
+    protected GameLoop getLoop() {
+        return DC_Game.game.getLoop();
+    }
+
     @Override
     public void close() {
-        DC_Game.game.getLoop().setPaused(false);
+        getLoop().setPaused(false);
         GameMenu.menuOpen = false;
         super.close();
     }

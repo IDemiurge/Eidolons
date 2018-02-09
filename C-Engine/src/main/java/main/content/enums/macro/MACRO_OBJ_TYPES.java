@@ -24,14 +24,16 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     TOWN("town", MACRO_PROPS.AREA, 5, MACRO_PROPS.REGION),
     ROUTE("route", MACRO_PROPS.AREA, 6, MACRO_PROPS.REGION),
     // DIALOGUE(("dialogue"), G_PROPS.GROUP, 8, MACRO_PROPS.ACTOR, true),
-    // FACTION("faction", G_PROPS.GROUP, 7),
+     FACTION("faction", G_PROPS.GROUP, 7),
     CAMPAIGN("campaign", G_PROPS.GROUP, 8),
     AREA("area", MACRO_PROPS.REGION, 9),
     TOWN_PLACE("town place", MACRO_PROPS.REGION, 10),
 
     MISSION("missions", G_PROPS.GROUP, 11, MACRO_PROPS.MISSION_TYPE),
 
-    DIALOGUE("dialogue", G_PROPS.GROUP,12 );
+    DIALOGUE("dialogue", G_PROPS.GROUP,12 ),
+    TAVERN("tavern", G_PROPS.GROUP,13 ),
+    ;
     // MACRO_CHAR(OBJ_TYPES.CHARS, "MACRO_CHAR", 7),
     // MACRO_UNIT(OBJ_TYPES.UNITS, "MACRO_UNIT", 8),
 

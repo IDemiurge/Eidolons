@@ -30,6 +30,8 @@ public class EidolonsGame {
     }
 
     public void setAborted(boolean aborted) {
+        if(aborted)     main.system.auxiliary.log.LogMaster.log
+         (1, "game aborted!!!!!!"  );
         this.aborted = aborted;
     }
     // config for engine

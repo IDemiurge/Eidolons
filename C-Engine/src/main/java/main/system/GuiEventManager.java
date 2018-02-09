@@ -21,10 +21,10 @@ public class GuiEventManager {
         GuiEventManager.vertx = vertx;
     }
 
-    public static void bind(GuiEventType type, final EventCallback event) {
+    public static void bind(EventType type, final EventCallback event) {
 bind(false, type, event);
     }
-        public static void bind( boolean removePreviousBind, GuiEventType type, final EventCallback event) {
+        public static void bind( boolean removePreviousBind, EventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
         if (!vertx) {
@@ -47,19 +47,19 @@ bind(false, type, event);
 
     }
 
-    public static void bindSound(GuiEventType type, final EventCallback event) {
+    public static void bindSound(EventType type, final EventCallback event) {
 
     }
 
-    private static void checkSoundEvent(GuiEventType type, Object obj) {
+    private static void checkSoundEvent(EventType type, Object obj) {
 
     }
 
-    public static void trigger(final GuiEventType type) {
+    public static void trigger(final EventType type) {
         trigger(type, null);
     }
 
-    public static void trigger(final GuiEventType type, Object obj) {
+    public static void trigger(final EventType type, Object obj) {
         if (CoreEngine.isGraphicsOff())
             return;
         checkSoundEvent(type, obj);

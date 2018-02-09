@@ -1,6 +1,6 @@
 package main.game.battlecraft.logic.dungeon.location;
 
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.content.DC_TYPE;
 import main.content.PROPS;
 import main.data.DataManager;
@@ -53,7 +53,7 @@ public class LocationSpawner extends Spawner<Location> {
                 return spawnUnitGroup(player.isMe(), units);
         }
         if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster() != null) {
-            PartyObj party = getGame().getMetaMaster().getPartyManager()
+            Party party = getGame().getMetaMaster().getPartyManager()
              .getParty();
             if (party==null ){
                 return new LinkedList<>();

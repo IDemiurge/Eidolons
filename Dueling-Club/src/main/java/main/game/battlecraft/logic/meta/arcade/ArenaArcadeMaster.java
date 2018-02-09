@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.meta.arcade;
 
 import main.client.cc.gui.neo.choice.ChoiceSequence;
-import main.client.cc.logic.party.PartyObj;
+import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
@@ -58,7 +58,7 @@ public class ArenaArcadeMaster {
         // difficulty
     }
 
-    public void init(PartyObj party) {
+    public void init(Party party) {
         if (arcade == null) {
             arcade = constructArcade(TEST_ARCADE);
             arcade.setParty(party);
@@ -102,7 +102,7 @@ public class ArenaArcadeMaster {
 
     }
 
-    public void continueArcade(PartyObj party) {
+    public void continueArcade(Party party) {
         if (arcade == null) {
             init(party);
         }

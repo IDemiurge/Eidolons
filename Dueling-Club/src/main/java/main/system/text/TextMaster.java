@@ -15,9 +15,11 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
 import main.game.battlecraft.DC_Engine;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -412,5 +414,14 @@ public class TextMaster {
 
     public static void setLocale(String locale) {
         TextMaster.locale = locale;
+    }
+
+    public static String readResource(String... parts) {
+         List<String> list =
+        new ListMaster<String>().getList(parts);
+        list.add(0,  locale);
+        list.add(0,  PathFinder.getTextPath());
+        return FileManager.readFile(StrPathBuilder.build(list ));
+
     }
 }

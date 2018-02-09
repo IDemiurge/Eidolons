@@ -6,8 +6,8 @@ import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.global.TimeMaster;
-import main.game.module.adventure.party.MacroPartyManager;
-import main.game.module.adventure.travel.MacroParty;
+import main.game.module.adventure.entity.party.MacroPartyUtils;
+import main.game.module.adventure.entity.MacroParty;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -54,7 +54,7 @@ public class TavernMaster {
         // preCheck(cost, party) return;
         // MathManager.addFactor(amount, goldMod)
         // applyAverageQuality(tavern.getIntParam(MACRO_PARAMS.FOOD_QUALITY));
-        MacroPartyManager.reduceSharedGold(party, cost);
+        MacroPartyUtils.reduceSharedGold(party, cost);
         party.modifyParameter(MACRO_PARAMS.C_PROVISIONS, amount);
         // ++ nice doing business with you!
     }
