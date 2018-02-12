@@ -19,6 +19,7 @@ import main.gui.components.table.TableMouseListener;
 import main.gui.tree.AV_T3View;
 import main.launch.ArcaneVault;
 import main.libgdx.anims.AnimationConstructor;
+import main.libgdx.screens.map.editor.MapEditor;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
@@ -189,6 +190,8 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 break;
             }
             case "Edit": {
+//                if (ArcaneVault.getSelectedType() != null)
+                MapEditor.launch( );
 //				if (ArcaneVault.getSelectedOBJ_TYPE() == MACRO_OBJ_TYPES.CAMPAIGN) {
 //					if (ArcaneVault.getSelectedType() != null)
 //						WorldEditor.editCampaign(ArcaneVault.getSelectedType());

@@ -1,7 +1,39 @@
 package main.libgdx.screens.map.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Group;
+import main.game.module.adventure.global.GameDate;
+import main.libgdx.gui.tooltips.DynamicTooltip;
+
 /**
  * Created by JustMe on 2/9/2018.
+ * rotate moon circle?
+ * control the middle-'sun' brightness
+ * cut the circle in two, don't show the upper part...
+ * tooltip
+ *
+ * Month
+ * where to show date?
+ * perhaps I will now display what later will become a tooltip?
+ * date could be displayed in a corner, classic fashion
+ *
+ * dawn/noon/dusk/night
  */
-public class MapTimePanel {
+public class MapTimePanel extends Group{
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    public void init(){
+        addListener(new DynamicTooltip(()-> getDateString()).getController());
+    }
+
+    private String getDateString() {
+        //show exact time on tooltip?
+
+        GameDate date;
+//        getPhase();
+        String string="";
+        return string;
+    }
 }

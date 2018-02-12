@@ -133,6 +133,7 @@ public class Eidolons {
             Gdx.graphics.setWindowedMode(width,
              LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getApplicationListener().resize(width, height);
+          if (getMainViewport()!=null )
             getMainViewport().setScreenSize(width, height);
 
         } else {

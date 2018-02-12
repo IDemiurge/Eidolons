@@ -19,7 +19,7 @@ import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
 import main.game.module.adventure.town.Town;
 import main.game.module.adventure.travel.RestMaster;
-import main.game.module.adventure.travel.TravelMaster;
+import main.game.module.adventure.travel.TravelMasterOld;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.MathMaster;
 
@@ -37,9 +37,15 @@ public class MacroParty extends MacroObj {
     private MACRO_STATUS status;
     private Area area;
     private Place currentExploration;
+    private float routeProgress;
 
     public MacroParty(ObjType macroPartyType, MacroGame macroGame,
-                      MacroRef ref, Party party) {
+                      MacroRef ref  ) {
+        super(macroGame, macroPartyType, ref);
+
+    }
+    public MacroParty(ObjType macroPartyType, MacroGame macroGame,
+         MacroRef ref, Party party) {
         super(macroGame, macroPartyType, ref);
         this.party = party;
         toBase();
@@ -47,8 +53,6 @@ public class MacroParty extends MacroObj {
     }
 
     public void initObjects() {
-setX(500);
-setY(500);
 //        World world = getRef().getWorld();
 //        setRegion(world.getRegion(getProperty(MACRO_PROPS.REGION)));
 //        setCurrentPlace(region.getPlace(getProperty(MACRO_PROPS.PLACE)));
@@ -87,7 +91,7 @@ setY(500);
         resetGoldShares();
         for (Unit hero : getMembers()) {
             hero.setParam(MACRO_PARAMS.TRAVEL_SPEED,
-                    "" + TravelMaster.getTravelSpeedDynamic(hero)
+                    "" + TravelMasterOld.getTravelSpeedDynamic(hero)
                     // , true //TODO
             );
         }
@@ -200,6 +204,9 @@ setY(500);
     }
 
     public Unit getLeader() {
+        if (party == null) {
+
+        }
         return party.getLeader();
     }
 
@@ -350,6 +357,10 @@ setY(500);
         return 0;
     }
 
+    public int getTravelSpeed() {
+        return 300;
+//        return getMinParam(MACRO_PARAMS.TRAVEL_SPEED); //meters per minute
+    }
     public Party getMicroParty() {
         return party;
     }
@@ -367,4 +378,23 @@ setY(500);
         this.currentExploration = place;
     }
 
+    public float getRouteProgress() {
+        return routeProgress;
+    }
+
+    public void setRouteProgress(float routeProgress) {
+        this.routeProgress = routeProgress;
+    }
+
+    public MACRO_STATUS getStatus(Unit hero) {
+        return MACRO_STATUS.CAMPING;
+    }
+
+    public String getMemberRank(Unit hero) {
+        if (hero.equals(getLeader())) {
+            return "Leader";
+        }
+        return "Companion";
+//        return "Mercenary";
+    }
 }

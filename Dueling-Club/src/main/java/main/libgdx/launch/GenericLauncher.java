@@ -12,6 +12,7 @@ import main.data.filesys.PathFinder;
 import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.core.Eidolons;
+import main.game.module.adventure.MacroManager;
 import main.libgdx.anims.Assets;
 import main.libgdx.screens.*;
 import main.libgdx.screens.map.MapScreen;
@@ -22,6 +23,8 @@ import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.frontend.RESOLUTION;
 
 import java.awt.*;
@@ -65,7 +68,8 @@ public class GenericLauncher extends Game {
     protected void screenInit() {
         ScreenData data = new ScreenData(ScreenType.MAIN_MENU, "Loading...");
         screenSwitcher(new EventCallbackParam(data));
-
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
 
     }
 
@@ -166,7 +170,7 @@ public class GenericLauncher extends Game {
     @Override
     public void resize(int width, int height) {
 //        viewport.update(width, height);
-        screen.resize(width, height);
+        if (screen != null) screen.resize(width, height);
 //        if (VignetteShader.isUsed()) {
 //            ShaderProgram program = VignetteShader.getShader();
 //      try{
@@ -248,6 +252,8 @@ public class GenericLauncher extends Game {
                     break;
                 case MAP:
                     switchScreen(()->MapScreen.getInstance(), newMeta);
+                    if (newMeta.getName() != null)
+                    MacroManager.setScenario(newMeta.getName());
                     break;
                 case PRE_BATTLE:
                     break;

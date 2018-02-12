@@ -30,7 +30,7 @@ public class FastDcTest {
     @Before
     public void init() {
         LogMaster.setOff(true); //log everything* or nothing to speed up
-        CoreEngine.setGraphicsOff(true);
+        CoreEngine.setGraphicsOff(isGraphicsOff());
 
         FAST_DC.main(new String[]{
          FAST_DC.PRESET_OPTION_ARG+ StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
@@ -56,6 +56,11 @@ public class FastDcTest {
 //        game.start(true); //TODO
 //        game.setStarted(true);
     }
+
+    protected boolean isGraphicsOff() {
+        return true;
+    }
+
     protected Unit getHero() {
         return game.getManager().getMainHero();
     }

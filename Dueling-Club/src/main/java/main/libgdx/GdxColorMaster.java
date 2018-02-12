@@ -197,4 +197,8 @@ public class GdxColorMaster {
         }
         return null;
     }
+
+    public static Color getDefaultTextColor() {
+        return GOLDEN_WHITE;
+    }
 }

@@ -125,9 +125,9 @@ public class ExploreMaster {
 
         if (destination != null) {
             if (destination instanceof Route) {
-                TravelMaster.enterRoute(party, (Route) destination);
+                TravelMasterOld.enterRoute(party, (Route) destination);
             } else {
-                TravelMaster.enterPlace(party, destination);
+                TravelMasterOld.enterPlace(party, destination);
             }
             // TODO spend the "rest" of the progress there?
         }

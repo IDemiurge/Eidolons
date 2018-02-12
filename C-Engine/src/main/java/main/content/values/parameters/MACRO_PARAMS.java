@@ -34,8 +34,8 @@ public enum MACRO_PARAMS implements PARAMETER {
 
     ROUTE_PROGRESS(null, "", true, 0, "party"),
     ROUTE_PROGRESS_PERCENTAGE(null, "", false, 0, "place", "route", "town"),
-    MAP_POS_X(null, "", false, 0, "place", "route", "town", "party"),
-    MAP_POS_Y(null, "", false, 0, "place", "route", "town", "party"),
+    MAP_POS_X(null, "", false, 0, "place", "route", "town", "party", "region"),
+    MAP_POS_Y(null, "", false, 0, "place", "route", "town", "party", "region"),
     COMBAT_READINESS("Combat Readiness", "", true, 50, "chars"),
     ONENESS("Oneness", "", true, 50, "chars"),
     VIGOR("Vigor", "", true, 100, "chars"),

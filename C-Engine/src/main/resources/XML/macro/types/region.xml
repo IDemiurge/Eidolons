@@ -1,8 +1,1 @@
-<XML>
-<Test>
-<Test1>
-<params></params>
-<props><Name>Test1</Name><Image>global\place\1v.jpg</Image></props>
-</Test1>
-</Test>
-</XML>
+<XML><Test><Test><params></params><props><Unique_Id>region Test-4958212800825370466</Unique_Id><Name>Test</Name><Version>0.333</Version><Image>global\place\1v.jpg</Image><Places>Dark Tavern(155,380,);</Places><Type>region</Type><Area>Test</Area></props></Test><Test2><params></params><props><Displayed_Name>Test2</Displayed_Name><Version>0.333</Version><Image>global\place\1v.jpg</Image><Places>Dark Tavern(155,380,);</Places><Unique_Id>region Test-4958212800825370466</Unique_Id><Name>Test2</Name><Type>region</Type><Area>Test</Area></props></Test2><Ravenwood><params></params><props><Description>1243 2083</Description><Displayed_Name>Ravenwood</Displayed_Name><Version>0.333</Version><Image>global\place\1v.jpg</Image><Places>Dark Tavern(155,380,);</Places><Unique_Id>region Test-4958212800825370466</Unique_Id><Name>Ravenwood</Name><Type>region</Type><Area>Test</Area></props></Ravenwood></Test></XML>

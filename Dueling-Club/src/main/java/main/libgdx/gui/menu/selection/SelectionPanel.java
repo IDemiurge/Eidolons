@@ -28,10 +28,12 @@ public abstract class SelectionPanel extends TablePanel {
     protected ButtonStyled backButton;
     protected TextButtonX startButton;
     protected SelectionInputListener listener;
-Label title;
+    Label title;
+
     public SelectionPanel() {
 //        setBackground(TextureCache.getOrCreateTextureRegionDrawable
 //         (getBackgroundPath()));
+        debug();
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         listPanel = createListPanel();
         infoPanel = createInfoPanel();
@@ -47,15 +49,15 @@ Label title;
         addNormalSize(infoPanel).right();
 
         row();
-        TablePanel buttonPanel= new TablePanel<>();
+        TablePanel buttonPanel = new TablePanel<>();
         buttonPanel
 //         .padRight(300)
          .setWidth(getWidth());
         if (isDoneSupported())
-        addElement(buttonPanel).bottom().size(getWidth(), 70);
+            addElement(buttonPanel).bottom().size(getWidth(), 70);
         if (isBackSupported())
-            buttonPanel.addNormalSize(backButton).left() ;
-        buttonPanel.addNormalSize(startButton).right() ;
+            buttonPanel.addNormalSize(backButton).left();
+        buttonPanel.addNormalSize(startButton).right();
         if (isReadyToBeInitialized())
             init();
 
@@ -82,29 +84,37 @@ Label title;
     }
 
     protected boolean isDoneDisabled() {
-        if (listPanel.getCurrentItem()==null )
+        if (listPanel.getCurrentItem() == null)
             return true;
-        if (listPanel.isBlocked() )
+        if (listPanel.isBlocked())
             return true;
-        
-            return false;
+
+        return false;
     }
 
     public void init() {
         listPanel.setItems(createListData());
-        listener= new SelectionInputListener(this);
+        listener = new SelectionInputListener(this);
 
         if (CoreEngine.isIDE()){
             tryDone();
         }
     }
+
     @Override
-    protected void setStage(Stage stage) {
-        super.setStage(stage);
-        if (getStage()!=null )
-            getStage().addListener(listener);
-        else
+    public void setStage(Stage stage) {
+        if (stage != null) {
+            stage.addListener(listener);
+        } else {
             getStage().removeListener(listener);
+        }
+        super.setStage(stage);
+    }
+
+    @Override
+    public boolean remove() {
+        getStage().removeListener(listener);
+        return super.remove();
     }
 
     protected boolean isBackSupported() {
@@ -132,18 +142,19 @@ Label title;
 
     public void tryDone() {
         if (listPanel.getCurrentItem() == null) {
-            if (isRandom()){
+            if (isRandom()) {
                 listPanel.selectRandomItem();
                 WaitMaster.WAIT(400);
             } else
                 return;
         }
-        if (listPanel.isBlocked(listPanel.getCurrentItem())){
-            return ;
+        if (listPanel.isBlocked(listPanel.getCurrentItem())) {
+            return;
         }
         done();
     }
-        public void done() {
+
+    public void done() {
         close();
     }
 
@@ -165,7 +176,7 @@ Label title;
         if (listPanel.getCurrentItem() != null)
             WaitMaster.receiveInput(getWaitOperation(), selection);
         else
-            WaitMaster.interrupt(getWaitOperation() );
+            WaitMaster.interrupt(getWaitOperation());
         setVisible(false);
     }
 

@@ -14,16 +14,16 @@ import main.game.module.adventure.map.Place;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.particles.ParticleManager;
+import main.libgdx.bf.mouse.InputController;
 import main.libgdx.bf.mouse.MapInputController;
 import main.libgdx.gui.menu.selection.SelectionPanel;
 import main.libgdx.screens.GameScreen;
-import main.libgdx.screens.map.obj.PartyActor;
-import main.libgdx.screens.map.obj.PartyActorFactory;
-import main.libgdx.screens.map.obj.PlaceActor;
-import main.libgdx.screens.map.obj.PlaceActorFactory;
+import main.libgdx.screens.map.editor.EditorMapView;
+import main.libgdx.screens.map.obj.*;
 import main.libgdx.shaders.DarkShader;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.launch.CoreEngine;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.MapEvent.*;
@@ -37,16 +37,18 @@ public class MapScreen extends GameScreen {
     private static MapScreen instance;
     //    private RealTimeGameLoop realTimeGameLoop;
     private ParticleManager particleManager;
-    private MapGuiStage guiStage;
+    protected MapGuiStage guiStage;
     private Stage objectStage;
     private  Stage mapStage;
     private Image map;
 
-    private MapScreen() {
+    protected MapScreen() {
 
     }
 
     public static MapScreen getInstance() {
+        if (CoreEngine.isMapEditor())
+            return EditorMapView.getInstance();
         if (instance == null) {
             instance = new MapScreen();
         }
@@ -55,10 +57,10 @@ public class MapScreen extends GameScreen {
 
     @Override
     protected void preLoad() {
-        guiStage = new MapGuiStage( new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
-         GdxMaster.getHeight(), new OrthographicCamera()), getBatch());
+        guiStage =createGuiStage();
         objectStage = new Stage(viewPort, getBatch());
         mapStage = new  Stage(viewPort, getBatch());
+//        emitterMap = new MacroEmitterMap();
         super.preLoad();
         initGl();
         initDialogue();
@@ -70,7 +72,9 @@ public class MapScreen extends GameScreen {
             map = new Image(backTexture);
             mapStage.addActor(map);
         });
+
         new Thread(() -> {
+            //if
             XML_Reader.readTypes(true);
             MacroManager.newGame();
         }, " thread").start();
@@ -83,28 +87,47 @@ public class MapScreen extends GameScreen {
 //        WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
+    protected MapGuiStage createGuiStage() {
+        return new MapGuiStage( new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+         GdxMaster.getHeight(), new OrthographicCamera()), getBatch());
+    }
+
     @Override
     protected void afterLoad() {
         GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, defaultPath);
         cam = (OrthographicCamera) viewPort.getCamera();
-        controller = new MapInputController(cam);
+        controller =initController();
 //        particleManager = new ParticleManager();
         bindEvents();
 
         GuiEventManager.trigger(MAP_READY);
     }
 
+    protected InputController initController() {
+        return new MapInputController(cam);
+    }
+
     private void bindEvents() {
 
         GuiEventManager.bind(CREATE_PARTY, param -> {
             MacroParty party = (MacroParty) param.get();
-            PartyActor partyActor = PartyActorFactory.get(party);
+            if (party == null) {
+                return ;
+            }
+            PartyActor partyActor = PartyActorFactory.getParty(party);
             objectStage.addActor(partyActor);
+            if (party.isMine()) {
+                guiStage.setParty(party);
+            }
         });
         GuiEventManager.bind(CREATE_PLACE, param -> {
             Place place = (Place) param.get();
-            PlaceActor placeActor = PlaceActorFactory.get(place);
+            PlaceActor placeActor = PlaceActorFactory.getPlace(place);
             objectStage.addActor(placeActor);
+        });
+        GuiEventManager.bind(REMOVE_MAP_OBJ, param -> {
+            MapActor actor = (MapActor) param.get();
+            actor.remove();
         });
     }
 
@@ -132,6 +155,11 @@ public class MapScreen extends GameScreen {
         }
 
         return current;
+    }
+
+    @Override
+    protected boolean isWaitForInput() {
+        return false;
     }
     /*
 
@@ -164,13 +192,14 @@ public class MapScreen extends GameScreen {
             if (isBlocked() || ExplorationMaster.isWaiting()) {
                 batch.setShader(DarkShader.getShader());
             } else {
-//                batch.setShader(VignetteShader.getShader());
             }
         }
 
     }
 
     private boolean isBlocked() {
+        if (CoreEngine.isMapEditor())
+            return false;
         return guiStage.getGameMenu().isVisible();
     }
 }

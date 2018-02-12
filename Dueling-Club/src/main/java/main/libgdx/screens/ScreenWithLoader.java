@@ -29,7 +29,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected ChainedStage introStage;
     protected Batch batch;
     protected Label waitingLabel;
-    protected  boolean waitingForInput;
+    private boolean waitingForInput;
     protected  EventCallbackParam param;
     protected  float timeWaited;
 
@@ -71,7 +71,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             }
         }
         if (isWaitForInput()) {
-            waitingForInput = true;
+            setWaitingForInput(true);
             this.param = param;
             updateInputController();
         } else done(param);
@@ -88,14 +88,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             @Override
             public boolean keyTyped(char character) {
                 done(param);
-                waitingForInput = false;
+                setWaitingForInput(false);
                 return true;
             }
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 done(param);
-                waitingForInput = false;
+                setWaitingForInput(false);
                 return true;
             }
         };
@@ -143,7 +143,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         checkShader();
         renderLoader(delta);
-        if (waitingForInput) {
+        if (isWaitingForInput()) {
             waited(delta);
         }
         checkShaderReset();
@@ -212,7 +212,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected InputMultiplexer getInputController() {
-        if (waitingForInput)
+        if (isWaitingForInput())
             return getWaitForInputController(param);
         return introStage != null ?
          new InputMultiplexer(loadingStage, introStage) :
@@ -220,7 +220,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected void updateInputController() {
-        Gdx.input.setInputProcessor(getInputController());
+        GdxMaster.setInputProcessor(getInputController());
     }
 
     public void initLoadingStage(ScreenData meta) {
@@ -230,5 +230,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public boolean isLoadingDone() {
         return hideLoader;
+    }
+
+    public void setWaitingForInput(boolean waitingForInput) {
+        main.system.auxiliary.log.LogMaster.log(1,"waitingForInput from " +
+         this.waitingForInput +
+         " to " +waitingForInput); 
+        this.waitingForInput = waitingForInput;
+
     }
 }

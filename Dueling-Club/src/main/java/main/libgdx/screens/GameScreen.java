@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.ChainedStage;
@@ -32,6 +33,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
     protected ShaderProgram bufferedShader;
     protected Float speed;
     protected TextureRegion backTexture;
+    private RealTimeGameLoop realTimeGameLoop;
 
     public TextureRegion getBackTexture() {
         return backTexture;
@@ -63,5 +65,13 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
             }
             dialogsStage.setDialogueHandler(handler);
         });
+    }
+
+    public RealTimeGameLoop getRealTimeGameLoop() {
+        return realTimeGameLoop;
+    }
+
+    public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
+        this.realTimeGameLoop = realTimeGameLoop;
     }
 }

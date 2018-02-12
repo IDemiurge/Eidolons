@@ -1,16 +1,13 @@
 package main.game.module.adventure;
 
 import main.client.cc.logic.party.Party;
-import main.client.dc.Launcher;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
-import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.bf.Coordinates;
 import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
@@ -31,7 +28,7 @@ import main.system.datatypes.DequeImpl;
  * 
  */
 public class MacroGame extends Game {
-    static MacroGame game;
+    public static MacroGame game;
     DC_Game microGame;
     MacroParty playerParty;
     main.game.module.adventure.global.World world;
@@ -43,6 +40,7 @@ public class MacroGame extends Game {
     // ...masters
 
     public MacroGame() {
+         game = this;
     }
 
     public static MacroGame getGame() {
@@ -83,16 +81,16 @@ public class MacroGame extends Game {
 //        ref.setRegion(region);
 
         if (MacroManager.isEditMode()) {
-            String partyName = campaign.getProperty(MACRO_PROPS.CAMPAIGN_PARTY);
-            if (partyName.isEmpty()) {
-                partyName = Launcher.FAST_TEST_PARTY;
-            }
-            try {
-                PartyHelper.loadParty(partyName);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
+//            String partyName = campaign.getProperty(MACRO_PROPS.CAMPAIGN_PARTY);
+//            if (partyName.isEmpty()) {
+//                partyName = Launcher.FAST_TEST_PARTY;
+//            }
+//            try {
+//                PartyHelper.loadParty(partyName);
+//            } catch (Exception e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
+        } else {
         Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
         if (party == null) {
             return;
@@ -101,6 +99,7 @@ public class MacroGame extends Game {
         playerParty = new MacroParty(
                 getMacroPartyType(party), this, ref,
          party);
+        }
 //        if (!MacroManager.isLoad()) {
 //            Place location = region.getPlace(campaign
 //                    .getProperty(MACRO_PROPS.STARTING_LOCATION));

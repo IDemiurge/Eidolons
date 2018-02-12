@@ -45,6 +45,10 @@ public class GameLoop {
         this.game = game;
     }
 
+    public GameLoop() {
+
+    }
+
     public void start() {
         if (!CoreEngine.isGraphicsOff()) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);

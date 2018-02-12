@@ -10,27 +10,31 @@ import main.libgdx.texture.TextureCache;
 /**
  * Created by JustMe on 2/7/2018.
  */
-public class PlaceActorFactory {
-public static class PlaceActorParameters{
-    public TextureRegion mainIcon;
-    public TextureRegion border;
-    public MAP_OBJ_INFO_LEVEL visibility;
-    public  Vector2 position;
-    public Color color;
-    TextureRegion preview;
-    public String name;
-}
-    public static PlaceActor get(Place place) {
+public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
+    private static PlaceActorFactory instance;
+
+    public static PlaceActorFactory getInstance() {
+        if (instance == null) {
+            instance = new PlaceActorFactory();
+        }
+        return instance;
+    }
+
+    public static PlaceActor getPlace(Place party) {
+        return getInstance().create(party);
+    }
+
+    public PlaceActor get(Place place) {
         PlaceActorParameters parameters = new PlaceActorParameters();
         parameters.mainIcon = TextureCache.getOrCreateR(place.getIconPath());
         parameters.name = place.getName();
         parameters.position = new Vector2(
-         place .getX(),
-         place .getY());
+         place.getX(),
+         place.getY());
         //TODO size?
         parameters.preview =
          TextureCache.getOrCreateR(
-         place.getImagePath());
+          place.getImagePath());
 //        parameters.color=  GdxColorMaster.getColor(place.getLeader().getOwner().getFlagColor());
 
 //        ToolTipManager ;
@@ -38,5 +42,15 @@ public static class PlaceActorParameters{
 
         PlaceActor actor = new PlaceActor(parameters);
         return actor;
+    }
+
+    public static class PlaceActorParameters {
+        public TextureRegion mainIcon;
+        public TextureRegion border;
+        public MAP_OBJ_INFO_LEVEL visibility;
+        public Vector2 position;
+        public Color color;
+        public String name;
+        TextureRegion preview;
     }
 }

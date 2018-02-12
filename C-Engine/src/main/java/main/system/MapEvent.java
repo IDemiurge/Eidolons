@@ -10,5 +10,6 @@ public enum MapEvent implements EventType  {
     REMOVE_PLACE,
     CREATE_PARTY,
     REMOVE_PARTY,
+    REMOVE_MAP_OBJ,
 
 }

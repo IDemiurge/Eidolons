@@ -13,7 +13,7 @@ import main.game.module.adventure.entity.MapObj;
 import main.game.module.adventure.gui.map.obj.PlaceComp;
 import main.game.module.adventure.map.area.AreaManager;
 import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.travel.TravelMaster;
+import main.game.module.adventure.travel.TravelMasterOld;
 import main.system.datatypes.DequeImpl;
 
 public class Place extends MapObj {
@@ -130,7 +130,7 @@ public class Place extends MapObj {
         if (party.getCurrentLocation() == this) {
             return true;
         }
-        return TravelMaster.getAvailablePlaces(party).contains(this);
+        return TravelMasterOld.getAvailablePlaces(party).contains(this);
     }
 
     public boolean isLinkedToRoute(Route route) {

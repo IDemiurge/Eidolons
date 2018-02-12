@@ -14,9 +14,8 @@ import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
-import main.game.module.adventure.map.area.AreaManager;
 import main.game.module.adventure.town.Town;
-import main.game.module.adventure.travel.TravelMaster;
+import main.game.module.adventure.travel.TravelMasterOld;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class WorldGenerator {
         game = ref.getGame();
         world = new World(ref.getGame(), wType, ref);
         ref.getGame().setWorld(world);
-//        world.setRegions(generateRegions(ref));
+        world.setRegions(generateRegions(ref));
 //        FactionMaster.generateFactions(ref);
         // parties
         return world;
@@ -47,10 +46,10 @@ public class WorldGenerator {
             ObjType type = DataManager.getType(s, MACRO_OBJ_TYPES.REGION);
             region = createRegion(type, ref);
             regions.add(region);
-            AreaManager.assignPlacesToAreas(region);
-            if (!MacroManager.isEditMode()) {
-                AreaManager.initRegionAreas(region);
-            }
+//            AreaManager.assignPlacesToAreas(region);
+//            if (!MacroManager.isEditMode()) {
+//                AreaManager.initRegionAreas(region);
+//            }
 
         }
         return regions;
@@ -182,7 +181,7 @@ public class WorldGenerator {
         r.setOrigin(orig);
         r.setDestination(dest);
         r.setParam(MACRO_PARAMS.ROUTE_LENGTH,
-                TravelMaster.calculateRouteLength(r), true);
+                TravelMasterOld.calculateRouteLength(r), true);
         return r;
     }
 
@@ -193,7 +192,7 @@ public class WorldGenerator {
         region.getPlace(origin).getRoutes().add(r);
         region.getPlace(destination).getRoutes().add(r);
         r.setParam(MACRO_PARAMS.ROUTE_LENGTH,
-                TravelMaster.calculateRouteLength(r), true);
+                TravelMasterOld.calculateRouteLength(r), true);
         return r;
     }
 

@@ -102,8 +102,16 @@ public class GridCellContainer extends GridCell {
      , float perImageOffsetY, int i) {
         perImageOffsetX = perImageOffsetX;// * getPosDiffFactorX();
         perImageOffsetY = perImageOffsetY;// * getPosDiffFactorY();
-        actor.setX(perImageOffsetX * i);
-        actor.setY(perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
+        actor.setX(getViewX(perImageOffsetX, i) );
+        actor.setY(getViewY(perImageOffsetY, (getUnitViewCountEffective() - 1) - i++));
+//         perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
+    }
+
+    public float getViewX(float perImageOffsetX, int i) {
+        return perImageOffsetX * i;
+    }
+    public float getViewY(float perImageOffsetY, int i) {
+        return perImageOffsetY * i;
     }
 
     private void recalcImagesPos() {
@@ -131,7 +139,7 @@ public class GridCellContainer extends GridCell {
 //
 //        }
 //    }
-    private float getUnitViewSize() {
+    public float getUnitViewSize() {
         return GridConst.CELL_W - getUnitViewOffset() * (getUnitViewCount() - 1);
     }
 
@@ -205,7 +213,7 @@ public class GridCellContainer extends GridCell {
     }
 
 
-    private int getUnitViewOffset() {
+    public int getUnitViewOffset() {
         return Math.round(getWidth() /
          (getSizeFactorPerView() * getUnitViewCountEffective()));
     }

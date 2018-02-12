@@ -37,14 +37,14 @@ public class ItemInfoPanel extends TablePanel {
 //        TablePanel<Actor> centered = new TablePanel<>();
 //        centered.addNoGrow(header).  center().padLeft(100);//.height(128);
 
-        addElement(header).left().padTop(30)
+        addElement(header).left().padTop(35)
 //         .maxWidth(700).maxHeight(700)
         ;
         row();
     if (description!=null )
         addElement(description).left().padLeft(30);
         if (fullsizePortrait!=null ) {
-            addNormalSize(fullsizePortrait).right().padBottom(70).padRight(25);
+            addNormalSize(fullsizePortrait).right().padBottom(75).padRight(35);
             fullsizePortrait.setZIndex(0);
         }
         if (item != null)
@@ -80,7 +80,7 @@ public class ItemInfoPanel extends TablePanel {
     }
 
     protected void initHeader(TablePanel<Actor> header) {
-        header.addNormalSize(preview).left().padLeft(40);
+        header.addNormalSize(preview).left().padLeft(50).padTop(15);
         header.addElement(title).right();
 
     }

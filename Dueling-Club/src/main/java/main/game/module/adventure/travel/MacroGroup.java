@@ -60,7 +60,7 @@ public class MacroGroup { // macro obj type?
         for (String s : types) { // PROPS.UNIT_TYPES - all possible types?
             ObjType type = DataManager.getType(s, C_OBJ_TYPE.UNITS_CHARS);
             if (type != null) {
-                travelSpeed += TravelMaster.getTravelSpeed(type);
+                travelSpeed += TravelMasterOld.getTravelSpeed(type);
             } else {
                 size--;
             }

@@ -70,6 +70,8 @@ public class ArcaneVault {
     private static final String actions = "actions;spells;buffs;abils;";
     private static final String skills = "skills;classes;buffs;abils;";
     private static final String units = "chars;units;deities;dungeons;factions;";
+    private static final String microForMacro =
+     "party;scenarios;dungeons;factions;";
     private static final String items = "weapons;armor;actions;";
     public static boolean selectiveInit = true;
     public static boolean arcaneTower;
@@ -119,6 +121,7 @@ public class ArcaneVault {
                     worldEditAutoInit = true;
                 }
                 selectiveLaunch=false;
+                types=microForMacro;
         }
 
         GuiManager.init();

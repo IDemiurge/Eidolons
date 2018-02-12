@@ -49,6 +49,7 @@ public class CoreEngine {
     private static boolean itemGenerationOff;
     private static boolean jar;
     private static boolean exe;
+    private static boolean mapEditor;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -322,5 +323,13 @@ public class CoreEngine {
 
     public static boolean isDefaultValuesAddedDynamically() {
         return false;
+    }
+
+    public static void setMapEditor(boolean mapEditor) {
+        CoreEngine.mapEditor = mapEditor;
+    }
+
+    public static boolean isMapEditor() {
+        return mapEditor;
     }
 }

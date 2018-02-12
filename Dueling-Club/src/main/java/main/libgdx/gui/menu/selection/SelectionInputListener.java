@@ -24,6 +24,11 @@ public class SelectionInputListener extends InputListener {
     }
 
     @Override
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        return true;
+    }
+
+    @Override
     public boolean keyDown(InputEvent event, int keycode) {
         switch (keycode) {
             case Keys.UP:

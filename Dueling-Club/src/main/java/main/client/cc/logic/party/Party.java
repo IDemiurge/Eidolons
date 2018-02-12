@@ -172,6 +172,11 @@ public class Party extends Obj {
         return leader;
     }
 
+    @Override
+    public Player getOwner() {
+        return leader.getOwner();
+    }
+
     public void setLeader(Unit leader) {
         this.leader = leader;
     }

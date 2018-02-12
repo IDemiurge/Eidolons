@@ -95,6 +95,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
                 getMainStage().addActor(selectionPanel);
         }
         getOverlayStage().setActive(true);
+//        selectionPanel.setStage(getOverlayStage());
         updateInputController();
         selectionPanel.setVisible(true);
         selectionPanel.setPosition(
@@ -103,6 +104,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected void selectionPanelClosed() {
+        selectionPanel.setStage(null);
     }
 
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {

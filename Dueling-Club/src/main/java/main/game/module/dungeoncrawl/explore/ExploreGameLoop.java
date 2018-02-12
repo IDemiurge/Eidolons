@@ -11,6 +11,7 @@ import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.screens.DungeonScreen;
+import main.libgdx.screens.GameScreen;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
 import main.system.launch.CoreEngine;
@@ -39,6 +40,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     }
 
+    public ExploreGameLoop() {
+        super();
+    }
+
     protected static void startRealTimeLogic() {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
@@ -46,7 +51,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
                 Gdx.app.postRunnable(() ->
                  {
-
                      try {
                          AnimMaster.getInstance().getConstructor().preconstructAll(unit);
                      } catch (Exception e) {
@@ -73,12 +77,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         }
     }
 
+    protected GameScreen getGdxScreen() {
+        return DungeonScreen.getInstance();
+    }
     @Override
     public Thread startInNewThread() {
         if (!CoreEngine.isGraphicsOff()) {
-            if (DungeonScreen.getInstance() == null)
-                WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);//, 2000);
-            DungeonScreen.getInstance().setRealTimeGameLoop(this);
+            if (getGdxScreen() == null)
+                WaitMaster.waitForInput(getOperationToWaitFor());//, 2000);
+            getGdxScreen().setRealTimeGameLoop(this);
         }
         if (realTimeThread == null) {
             realTimeThread = new Thread(() -> {
@@ -88,6 +95,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         }
 
         return super.startInNewThread();
+    }
+
+    protected WAIT_OPERATIONS getOperationToWaitFor() {
+        return WAIT_OPERATIONS.GUI_READY;
     }
 
     @Override
@@ -327,7 +338,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public void end() {
-        DungeonScreen.getInstance().setRealTimeGameLoop(null);
+        getGdxScreen().setRealTimeGameLoop(null);
     }
 
     @Override

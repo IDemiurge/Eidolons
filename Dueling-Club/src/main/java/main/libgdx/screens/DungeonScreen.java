@@ -54,7 +54,6 @@ public class DungeonScreen extends GameScreen {
     private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
 
 
-    private RealTimeGameLoop realTimeGameLoop;
     private ParticleManager particleManager;
     private Stage gridStage;
     private BattleGuiStage guiStage;
@@ -216,6 +215,7 @@ public class DungeonScreen extends GameScreen {
     }
 
     protected void selectionPanelClosed() {
+        super.selectionPanelClosed();
         getOverlayStage().setActive(false);
     }
 
@@ -399,14 +399,6 @@ public class DungeonScreen extends GameScreen {
 
     public void setSpeed(Float speed) {
         this.speed = speed;
-    }
-
-    public RealTimeGameLoop getRealTimeGameLoop() {
-        return realTimeGameLoop;
-    }
-
-    public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
-        this.realTimeGameLoop = realTimeGameLoop;
     }
 
     public void activeUnitSelected(BattleFieldObject hero) {

@@ -26,6 +26,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
+import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import java.io.File;
@@ -69,7 +70,14 @@ public class MacroManager {
 
     }
 
+    public static void setScenario(String scenario) {
+        MacroManager.scenario = scenario;
+    }
+
     public static void newGame() {
+        newGame(scenario);
+    }
+        public static void newGame(String scenario) {
         load = false;
         metaMaster = new ScenarioMetaMaster(scenario ){
             @Override
@@ -77,9 +85,11 @@ public class MacroManager {
                 return new MacroPartyManager(this);
             }
         };
+            if (!CoreEngine.isMapEditor()) {
         metaMaster.init();
         if (metaMaster.getPartyManager().getParty() == null)
             return;
+            }
         game = new MacroGame();
         MacroGame.setGame(game);
         game.init();
@@ -103,6 +113,14 @@ public class MacroManager {
         }
     }
 
+    public static void saveTheWorld() {
+        //all locations to regions, etc
+    for (Place sub:     getGame().getState().getPlaces()){
+
+        }
+
+
+    }
     public static void exitGame() {
         if (game == null) {
             return;
@@ -291,13 +309,9 @@ public class MacroManager {
     }
 
     public static boolean isEditMode() {
-        return editMode;
+        return CoreEngine.isMapEditor();
     }
 
-    public static void setEditMode(boolean b) {
-        editMode = b;
-
-    }
 
     public static String getDefaultworldname() {
         return defaultWorldName;
@@ -480,6 +494,7 @@ public class MacroManager {
     public static boolean isLoad() {
         return load;
     }
+
 
     // each object must maintain its values dynamically, always...
 

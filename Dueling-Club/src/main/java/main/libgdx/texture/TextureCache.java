@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
+import main.libgdx.GdxImageTransformer;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GreyscaleUtils;
@@ -79,6 +80,18 @@ public class TextureCache {
         return textureCache._getOrCreate(path);
     }
 
+    public static TextureRegion getOrCreateRoundedRegion(String path) {
+        TextureRegion region = getOrCreateR(getRoundedPath(path));
+        if (!region.getTexture().equals(emptyTexture)) {
+            return region;
+        }
+        return GdxImageTransformer.round(path, true);
+    }
+
+    public static String getRoundedPath(String path) {
+        return StringMaster.cropFormat(path) + " rounded.png";
+    }
+
     public static TextureRegion getOrCreateR(String path) {
         if (textureCache == null) {
             init();
@@ -109,7 +122,8 @@ public class TextureCache {
         }
 
         region = new TextureRegion(textureCache._getOrCreate(path));
-        regionCache.put(path, region);
+        if (region.getTexture()!=emptyTexture)
+            regionCache.put(path, region);
         return region;
     }
 
@@ -168,7 +182,7 @@ public class TextureCache {
 
     public static String formatTexturePath(String path) {
         path = path.toLowerCase().replace("\\\\", "\\")
-         .replace("\\", "/"  );
+         .replace("\\", "/");
         if (path.endsWith("/"))
             return path.substring(0, path.length() - 1);
         return path;

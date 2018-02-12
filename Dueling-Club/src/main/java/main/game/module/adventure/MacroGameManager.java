@@ -20,7 +20,7 @@ import main.game.module.adventure.gui.map.MapComp;
 import main.game.module.adventure.rules.TurnRule;
 import main.game.module.adventure.map.area.AreaManager;
 import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.travel.TravelMaster;
+import main.game.module.adventure.travel.TravelMasterOld;
 import main.game.module.adventure.utils.SaveMaster;
 import main.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -62,7 +62,7 @@ public class MacroGameManager extends GameManager {
         for (TurnRule r : getGame().getTurnRules()) {
             r.newTurn();
         }
-        TravelMaster.newTurn();
+        TravelMasterOld.newTurn();
         AreaManager.newTurn();
         refreshAll();
         getMapComp().refresh();

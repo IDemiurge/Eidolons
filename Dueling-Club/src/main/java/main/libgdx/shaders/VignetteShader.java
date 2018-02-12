@@ -63,6 +63,7 @@ public class VignetteShader {
      "uniform mat4 u_projTrans;\n" +
      "vColor = Color;\n" +
      "vTexCoord = TexCoord;\n" +
+     "gl_Position = u_projTrans * a_position;\n" +
      "gl_Position = u_projView * vec4(Position, 0.0, 1.0);\n" +
      "}";
     private static boolean used;

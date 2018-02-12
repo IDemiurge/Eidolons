@@ -3,7 +3,6 @@ package main.libgdx.screens.menu;
 import com.badlogic.gdx.Gdx;
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.game.module.adventure.MacroManager;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -30,7 +29,7 @@ public class MainMenuHandler {
             case ADVENTURE:
 
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
-                 ScreenType.MAP, "Map"));
+                 ScreenType.MAP, "Mistfall"));
 
                 return null  ;
             case OPTIONS:

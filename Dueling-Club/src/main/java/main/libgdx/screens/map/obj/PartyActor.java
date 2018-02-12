@@ -22,6 +22,10 @@ public class PartyActor extends MapActor {
         emblem = new Image(parameters.emblem);
         addActor(emblem);
         emblem.setPosition(GdxMaster.right(emblem), GdxMaster.top(emblem) );
+       getPortrait(). setSize(96*GdxMaster.getFontSizeMod(),
+         96*GdxMaster.getFontSizeMod() );
+        emblem.setSize(32*GdxMaster.getFontSizeMod(),
+         32*GdxMaster.getFontSizeMod() );
     }
 
     @Override

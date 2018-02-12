@@ -784,7 +784,10 @@ public class StringMaster {
         return true;
     }
 
-    public static String getOrdinalEnding(int number) {
+    public static String getOrdinal(int number) {
+        return number+getOrdinalEnding(number);
+    }
+        public static String getOrdinalEnding(int number) {
         int lastDigit = number % 10;
         if (lastDigit == 1) {
             return "st";

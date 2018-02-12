@@ -15,7 +15,7 @@ import main.game.module.adventure.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
 import main.game.module.adventure.travel.RestMaster;
-import main.game.module.adventure.travel.TravelMaster;
+import main.game.module.adventure.travel.TravelMasterOld;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class MacroActionManager {
             case EXPLORE:
                 // choose route? or choose current location to explore around...
                 party.setStatus(MACRO_STATUS.EXPLORING);
-                set = TravelMaster.getAvailableRoutesAsPlaces(party, null);
+                set = TravelMasterOld.getAvailableRoutesAsPlaces(party, null);
                 if (party.getCurrentLocation() != null) {
                     set.add(party.getCurrentLocation()); // else?
                 }
@@ -90,13 +90,13 @@ public class MacroActionManager {
             case TRAVEL:
                 // extract into effect???
                 party.setStatus(MACRO_STATUS.TRAVELING);
-                set = TravelMaster.getAvailablePlaces(party);
+                set = TravelMasterOld.getAvailablePlaces(party);
                 // set.addAll(TravelMaster.getAvailableRoutes(party));
                 place = selectMapObj(set);
                 if (place == null) {
                     return;
                 }
-                set = TravelMaster.getAvailableRoutesAsPlaces(party, place);
+                set = TravelMasterOld.getAvailableRoutesAsPlaces(party, place);
                 // MacroManager.getMapView().getMapComp().displayRoutes(set);
 
                 route = (Route) selectMapObj(set);
@@ -133,8 +133,10 @@ public class MacroActionManager {
 
     private static List<MacroAction> getPartyActions(MacroParty playerParty) {
         List<MacroAction> list = new ArrayList<>();
-        list.add(getAction(MACRO_PARTY_ACTIONS.TRAVEL.toString(), playerParty));
         list.add(getAction(MACRO_PARTY_ACTIONS.EXPLORE.toString(), playerParty));
+        list.add(getAction(MACRO_PARTY_ACTIONS.WAIT.toString(), playerParty));
+        list.add(getAction(MACRO_PARTY_ACTIONS.HIDE.toString(), playerParty));
+        list.add(getAction(MACRO_PARTY_ACTIONS.TRAVEL.toString(), playerParty));
         // TODO perhaps just block them
         // if (playerParty.getTown() == null)
         list.add(getAction(MACRO_PARTY_ACTIONS.CAMP.toString(), playerParty));
@@ -209,7 +211,9 @@ public class MacroActionManager {
     }
 
     public enum MACRO_PARTY_ACTIONS {
-        EXPLORE, CAMP, AMBUSH, TRAVEL;
+         CAMP, WAIT,HIDE, EXPLORE,
+
+        AMBUSH, TRAVEL;
 
         public String toString() {
             return StringMaster.getWellFormattedString(name());

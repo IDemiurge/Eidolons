@@ -49,10 +49,11 @@ public class EmitterMap extends Group {
             }
 
         });
-
-        COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
+        if (Eidolons.game instanceof DC_Game) {
+            COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
         if (colorTheme != null)
             color = GdxColorMaster.getColorForTheme(colorTheme);
+        }
     }
 
     public static Boolean getOn() {

@@ -1,6 +1,8 @@
 package main.libgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
@@ -102,5 +104,20 @@ return         size
          new FileHandle( PathFinder.getImagePath()+"big\\screenshots\\" +
           main.system.auxiliary.TimeMaster.getTimeStamp()+(".png")), pixmap);
         pixmap.dispose();
+    }
+
+
+    public static void setInputProcessor(InputProcessor inputController) {
+        if (inputController instanceof InputMultiplexer) {
+            main.system.auxiliary.log.LogMaster.log(1,">>>>> setInputProcessor InputMultiplexer: " +inputController);
+
+            for (InputProcessor sub : ((InputMultiplexer) inputController).getProcessors()) {
+                main.system.auxiliary.log.LogMaster.log(1,"Processor: " +sub);
+            }
+        }
+        else
+            main.system.auxiliary.log.LogMaster.log(1,">>>>> setInputProcessor: " +inputController);
+
+        Gdx.input.setInputProcessor(inputController);
     }
 }

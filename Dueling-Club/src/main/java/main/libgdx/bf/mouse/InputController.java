@@ -183,17 +183,19 @@ public abstract class InputController implements InputProcessor, GestureDetector
 
     private void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom;
-            camera.position.y=  MathMaster.getMinMax(camera.position.y - diffY,
+            camera.position.y=  MathMaster.getMinMax(
+             camera.position.y - diffY-getMargin(),
              halfHeight,
-             getHeight() - halfHeight);
+             getHeight() - halfHeight+getMargin());
             yTouchPos=screenY;
     }
 
     private void tryPullCameraX(int screenX) {
         float diffX = (xTouchPos - screenX) * camera.zoom;
-        camera.position.x=  MathMaster.getMinMax(camera.position.x + diffX,
+        camera.position.x=  MathMaster.getMinMax(
+         camera.position.x + diffX-getMargin(),
          halfWidth,
-         getWidth() - halfWidth);
+         getWidth() - halfWidth+getMargin());
             xTouchPos=screenX;
     }
 

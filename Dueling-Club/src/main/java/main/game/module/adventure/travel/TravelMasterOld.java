@@ -24,7 +24,7 @@ import main.system.math.PositionMaster;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TravelMaster {
+public class TravelMasterOld {
 
     private static final int DEFAULT_TRAVEL_SPEED = 4;
     private static boolean testMode = true;
