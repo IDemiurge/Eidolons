@@ -8,6 +8,7 @@ import main.entity.obj.DC_Obj;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 import org.junit.Test;
@@ -53,17 +54,43 @@ public class JUnitClearshotTest extends FastDcTest {
     protected void checkObj(DC_Obj sub, boolean hero_inside, boolean inside) {
         OUTLINE_TYPE outline = sub.getOutlineType();
         boolean blocked = hero_inside != inside;
-
+        LogMaster.setOff(false);
         if (blocked)
             if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline)
-                assertTrue(game.getVisionMaster().getSightMaster().getClearShotCondition().check(getHero(), sub));
+            {
+                boolean result = game.getVisionMaster().getSightMaster().
+                 getClearShotCondition().check(getHero(), sub);
+                if (!result) {
+                    main.system.auxiliary.log.LogMaster.log(1,"Failed ClearShotCondition:" +
+                     " "+sub +
+                     "; hero_inside= " +
+                     hero_inside +
+                     "; inside="+ inside );
+
+                    assertTrue(false);
+                }
+            }
         else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline)
-            assertTrue(false);
+            {
+                main.system.auxiliary.log.LogMaster.log(1,"Failed BLOCKED_OUTLINE:" +
+                 " "+sub +
+                 "; hero_inside= " +
+                 hero_inside +
+                 "; inside="+ inside );
+                assertTrue(false);
+            }
 
         if (sub instanceof BattleFieldObject)
             if (!sub.isMine())
                 if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN)
+                {
+                    main.system.auxiliary.log.LogMaster.log(1,"Failed UNSEEN:" +
+                     " "+sub +
+                     "; hero_inside= " +
+                     hero_inside +
+                     "; inside="+ inside );
                     assertTrue(false);
+                }
     }
 
 

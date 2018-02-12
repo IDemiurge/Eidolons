@@ -57,8 +57,7 @@ public class MapGuiStage extends GuiStage {
             actionPanel.setPosition(GdxMaster.centerWidth(actionPanel)
              , 0);
             partyInfoPanel.setPosition(0,
-             500
-             //GdxMaster.top(partyInfoPanel)
+             GdxMaster.top(partyInfoPanel)
             );
             dirty = false;
         }

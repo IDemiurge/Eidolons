@@ -147,6 +147,8 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
         for (MapZone zone : plan.getZones()) {
             ObjType wallType = DataManager.getType(zone.getFillerType(), DC_TYPE.BF_OBJ);
+          if (wallType==null )
+              continue;
             List<Coordinates> list = zone.getCoordinates();
             for (MapBlock b : zone.getBlocks()) {
                 list.removeAll(b.getCoordinates());

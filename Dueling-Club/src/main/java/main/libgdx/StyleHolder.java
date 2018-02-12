@@ -3,6 +3,7 @@ package main.libgdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.data.filesys.PathFinder;
 import main.libgdx.gui.panels.dc.ButtonStyled;
+import main.libgdx.texture.TextureCache;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -47,6 +49,7 @@ public class StyleHolder {
     private static Map<FONT, Map<Color, Label.LabelStyle>> colorLabelStyleMap = new HashMap<>();
     private static Map<FONT, Map<Integer, Label.LabelStyle>> sizeLabelStyleMap = new HashMap<>();
     private static Map<FONT, Map<Pair<Integer, Color>, Label.LabelStyle>> sizeColorLabelStyleMap = new HashMap<>();
+    private static TextButtonStyle defaultTabStyle;
 
     public static Label.LabelStyle getStyledLabelStyle(Label.LabelStyle style, boolean italic, boolean bold) {
         //TODO
@@ -61,14 +64,15 @@ public class StyleHolder {
                                                              Integer size, Color color) {
         return getSizedColoredLabelStyle(0, fontStyle, size, color);
     }
-        public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
-                                                                 FONT fontStyle,
-         Integer size, Color color) {
-        if (adjustSizeCoef>0)
-        if (GdxMaster.getFontSizeMod() != 1) {
-            int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
-            size +=mod;
-        }
+
+    public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
+                                                             FONT fontStyle,
+                                                             Integer size, Color color) {
+        if (adjustSizeCoef > 0)
+            if (GdxMaster.getFontSizeMod() != 1) {
+                int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
+                size += mod;
+            }
         Map<Pair<Integer, Color>, LabelStyle> map = getSizedColoredLabelStyleMap(fontStyle, size, color);
 
         ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
@@ -196,8 +200,8 @@ public class StyleHolder {
                 textButtonStyle.disabled = button.getTextureDisabled();
                 textButtonStyle.checked = button.getTextureChecked();
             } else {
-            textButtonStyle.down = button.getTexture();
-            textButtonStyle.over = button.getTexture();
+                textButtonStyle.down = button.getTexture();
+                textButtonStyle.over = button.getTexture();
                 textButtonStyle.disabled = button.getTexture();
             }
         }
@@ -273,4 +277,20 @@ public class StyleHolder {
 
         return style;
     }
+
+    public static TextButtonStyle getTabStyle(TextButtonStyle style) {
+        TextureRegion buttonTexture = TextureCache.getOrCreateR("/UI/components/infopanel/buttons.png");
+        TextureRegion pressed = new TextureRegion(buttonTexture, 0, 0, 59, 28);
+        TextureRegion released = new TextureRegion(buttonTexture, 60, 0, 59, 28);
+        style.checked = style.down = new TextureRegionDrawable(pressed);
+        style.up = new TextureRegionDrawable(released);
+        return style;
+    }
+
+    public static TextButtonStyle getDefaultTabStyle() {
+        if (defaultTabStyle == null)
+            defaultTabStyle = getTabStyle(getDefaultTextButtonStyle());
+        return defaultTabStyle;
+    }
+
 }

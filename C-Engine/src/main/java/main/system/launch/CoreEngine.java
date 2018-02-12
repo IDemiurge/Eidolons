@@ -265,7 +265,7 @@ public class CoreEngine {
 //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
-        // if (!macro)
+         if (!macro)
         try {
             Chronos.mark("MAPPER INIT");
             Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),

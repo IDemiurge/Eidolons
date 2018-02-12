@@ -27,7 +27,7 @@ public class GdxUnitPosSizeTest extends GdxJUnit {
 
     private static final int X = 0;
     private static final int Y = 0;
-    private static final String UNIT_TYPE = "Pirate";
+    private static final String UNIT_TYPE = "Spiderling";
     private Player player;
     private GridCellContainer container;
 

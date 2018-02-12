@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.entity.MacroObj;
 import main.libgdx.GdxColorMaster;
+import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.graphics.FontMaster.FONT;
@@ -15,8 +16,20 @@ import main.system.graphics.FontMaster.FONT;
  * Created by JustMe on 2/9/2018.
  */
 public class EditorControlPanel extends TablePanel {
+    public EditorControlPanel() {
+        updateRequired = true;
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        super.updateAct(delta);
+        init();
+    }
+
     public void init() {
 //
+        debug();
+        setSize(GdxMaster.getWidth()/ 3 * 2, 64);
         TextButtonStyle style = StyleHolder.getTextButtonStyle(FONT.AVQ,
          GdxColorMaster.GOLDEN_WHITE, 18);
         for (MAP_EDITOR_FUNCTION sub : MAP_EDITOR_FUNCTION.values()) {

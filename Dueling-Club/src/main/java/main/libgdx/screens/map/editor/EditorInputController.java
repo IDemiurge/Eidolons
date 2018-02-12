@@ -59,7 +59,7 @@ public class EditorInputController extends MapInputController {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if (button ==RIGHT)
+        if (button ==1)
         {
             EditorManager.add(screenX, screenY);
             return true;

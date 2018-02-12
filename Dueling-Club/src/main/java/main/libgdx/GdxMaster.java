@@ -48,6 +48,7 @@ return         size
 
     public static float top(Actor actor) {
         if (actor.getParent() != null)
+            if (actor.getParent().getHeight() != 0)
             return actor.getParent().getHeight() - actor.getHeight();
         return GdxMaster.getHeight() - actor.getHeight();
     }

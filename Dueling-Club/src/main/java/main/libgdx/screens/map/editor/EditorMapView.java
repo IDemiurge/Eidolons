@@ -36,7 +36,9 @@ public class EditorMapView extends  MapScreen{
 
     @Override
     protected InputMultiplexer getInputController() {
-        return super.getInputController();
+        return
+         new InputMultiplexer(guiStage,
+          super.getInputController());
     }
 
     protected InputController initController() {

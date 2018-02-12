@@ -9,6 +9,7 @@ import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.entity.MacroObj;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
+import main.libgdx.GdxMaster;
 import main.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import main.libgdx.screens.map.obj.MapActor;
 import main.system.GuiEventManager;
@@ -22,24 +23,26 @@ import java.util.Map;
  */
 public class EditorManager {
     static MAP_EDITOR_MOUSE_MODE mode;
-    static EditorMapView view;
     private static Map<MapActor, MacroObj> actorObjMap = new HashMap<>();
 
     public static void add(int screenX, int screenY) {
-        ObjType type = view.getGuiStage().getPalette().getSelectedType();
-
+        ObjType type = EditorMapView.getInstance().getGuiStage().getPalette().getSelectedType();
+if (type==null )
+    return ;
         MacroObj obj = create(type);
         added(obj, screenX, screenY);
     }
 
     public static void added(MacroObj obj, Integer screenX, Integer screenY) {
         if (screenX != null)
-            obj.setX(screenX);
+            obj.setX((int) (screenX+EditorMapView.getInstance().getCamera().position.x
+            -GdxMaster.getWidth()/2));
         if (screenY != null)
-            obj.setY(screenY);
+            obj.setY((int) (GdxMaster.getHeight()/2- screenY+
+             EditorMapView.getInstance().getCamera().position.y  ));
         GuiEventManager.trigger((obj instanceof Place) ?
          MapEvent.CREATE_PLACE :
-         MapEvent.CREATE_PARTY);
+         MapEvent.CREATE_PARTY, obj);
     }
 
     private static <E extends MapActor> MacroObj create(ObjType type) {

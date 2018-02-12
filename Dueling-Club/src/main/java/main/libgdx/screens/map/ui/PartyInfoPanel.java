@@ -13,6 +13,7 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
@@ -34,23 +35,30 @@ public class PartyInfoPanel extends TablePanel{
 
     }
     public void init(MacroParty party) {
-        debug();
-        clearChildren();
+//        debug();
+        clearChildren(); clearListeners();
         this.party = party;
         TablePanel main= new TablePanel();
-        setX(-getMainWidth());
-        this.columnDefaults(0).width(getMainWidth());
-        this.columnDefaults(0).minWidth(getMainWidth());
+        addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//                updateRequired = true;
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+//        setX(-getMainWidth());
+        this.columnDefaults(0).width(getMainWidth() );
+        this.columnDefaults(0).minWidth(getMainWidth() );
     for (Unit sub:     party.getMembers()){
         PartyMemberComponent component = new PartyMemberComponent(sub);
-        main. add(component).maxWidth(getMainWidth());
+        main. add(component) .maxWidth(getMainWidth());
         main. row();
         }
 //        getColumnPrefWidth(1)
-
-        add(main);
+        setSize((getMainWidth()  ) +STD_IMAGES.DIRECTION_POINTER.getWidth(), 128 * party.getMembers().size());
+        add(main)  ;//;
          arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
-       arrow. setRotation(90);
+       arrow. setRotation(270);
         arrow.setOrigin(arrow.getWidth()/2,arrow.getHeight()/2);
         arrow.addListener(new ClickListener(){
             @Override
@@ -62,6 +70,7 @@ public class PartyInfoPanel extends TablePanel{
             }
         });
         add(arrow).left(); //rotate on click
+        setX(0);
     }
 
     private void open() {
@@ -72,10 +81,10 @@ public class PartyInfoPanel extends TablePanel{
         toggle(!isOpen());
     }
         private void toggle(boolean open) {
-        int toX =!open?-getMainWidth() :  0;
+        int toX =  open ? 0 : -getMainWidth();
 
         ActorMaster.addMoveToAction(
-          this, toX, getY(), getSpeed());
+          this, toX, getY(), getDuration());
 
         ActorMaster.addRotateByAction(
          arrow.getContent(),180);
@@ -85,12 +94,12 @@ public class PartyInfoPanel extends TablePanel{
         return getX()>=0;
     }
 
-    private float getSpeed() {
-        return 2000;
+    private float getDuration() {
+        return 0.5f;
     }
 
     private int getMainWidth() {
-   return (int) GdxMaster.adjustSize(500);
+   return (int) GdxMaster.adjustSize(256);
     }
 
     @Override
@@ -101,21 +110,18 @@ public class PartyInfoPanel extends TablePanel{
 /*
 header for the party?
  */
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
     public class PartyMemberComponent extends TablePanel {
         SuperContainer portrait;
-
-        Label name;
-        Label subname;
-        Label rank;
-        Label status;
-        //subname - level, classes, ...
-        //rank - mercenary, companion, sojourn
-        //status
-        //function icons - dismiss, talk, inv, challenge
         Unit hero;
 
         public PartyMemberComponent(Unit hero) {
-            debug();
+//            debug();
             this.hero = hero;
             portrait = new ImageContainer(hero);
             portrait.addListener(new ClickListener(){
@@ -130,16 +136,16 @@ header for the party?
             addNormalSize(portrait);
             LabelStyle style = StyleHolder.getSizedColoredLabelStyle
              (FONT.MAIN, 18, GdxColorMaster.getDefaultTextColor());
-            name = new Label(hero.getName(), style);
+            ValueContainer name = new ValueContainer(new Label(hero.getName(), style));
             style = StyleHolder.getSizedColoredLabelStyle
              (FONT.MAIN, 16, GdxColorMaster.getDefaultTextColor());
             //class and level?
             String text = "Level "+hero.getLevel();
-            subname = new Label(text, style);
+            ValueContainer  subname = new ValueContainer(new Label(text, style));
             text=party.getMemberRank(hero);
-            rank = new Label(text, style);
+            ValueContainer    rank = new ValueContainer(new Label(text, style));
             text=party.getStatus(hero).toString();
-             status=new Label(text, style);
+            ValueContainer   status=new ValueContainer(new Label(text, style));
 
             TablePanel tablePanel = new TablePanel();   tablePanel.debug();
             tablePanel.add(name);//.maxWidth(getMainWidth()-128);
@@ -149,7 +155,7 @@ header for the party?
             tablePanel.add(rank);//.maxWidth(getMainWidth()-128);
             tablePanel.row();
             tablePanel.add(status);//.maxWidth(getMainWidth()-128);
-            addNormalSize(tablePanel).left().padLeft(10). maxWidth(getMainWidth()-128);
+            add(tablePanel).left().  maxWidth(getMainWidth()-128);
 
         }
     }

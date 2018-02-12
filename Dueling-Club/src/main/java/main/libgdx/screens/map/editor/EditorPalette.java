@@ -27,45 +27,74 @@ import java.util.ArrayList;
  */
 public class EditorPalette extends TabbedPanel {
     private ValueContainer selected;
+    private SuperContainer selectionBorder;
 
     public EditorPalette() {
+        updateRequired = true;
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        super.updateAct(delta);
         init();
     }
 
-    public void refresh() {
-        clearChildren();
-        init();
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
-        public void init() {
-        int columns = GdxMaster.getWidth() / 64 / 3 * 2;
+
+    public void init() {
+        clearChildren();
+        clearListeners();
+        addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//               updateRequired=true;
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        debugAll();
+        setSize(GdxMaster.getWidth() / 3 * 2, 256);
+        int columns = (int) (getWidth() / 64);
         for (EDITOR_PALETTE sub : EDITOR_PALETTE.values()) {
             TabbedPanel tabbedPanel = new TabbedPanel();
             OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(sub.name());
             TablePanel<Actor> table;
-if (TYPE==null )
-    continue;
+            if (TYPE == null)
+                continue;
             for (String group : DataManager.getTabsGroup(TYPE)) {
                 table = new TablePanel<>();
+                table.defaults().width(64).height(64);
+                table.top().left().padLeft(64).padTop(64);
+                table.setFillParent(true);
                 ArrayList<ObjType> types = new ArrayList<>(DataManager.getTypesGroup(TYPE, group));
                 int i = 0;
+                int rows = 0;
                 for (ObjType type : types) {
                     TextureRegion texture = TextureCache.getOrCreateR(type.getImagePath());
                     ValueContainer item = new ValueContainer(texture);
                     item.overrideImageSize(64, 64);
                     item.addListener(new ValueTooltip(type.getName()).getController());
                     item.addListener(getItemListener(item));
-                    table.addNormalSize(item);
+                    table.add(item).left();
                     item.setUserObject(type);
                     i++;
                     if (i >= columns) {
                         i = 0;
                         table.row();
+                        rows++;
                     }
                 }
-
-                ScrollPanel scrollPanel = new ScrollPanel();
-                scrollPanel.addElement(table);
-                tabbedPanel.addTab(table, group);
+                table.pack();
+                table.debugAll();
+                if (rows > 3) {
+                    ScrollPanel scrollPanel = new ScrollPanel();
+                    scrollPanel.addElement(table);
+                    tabbedPanel.addTab(scrollPanel, group);
+                } else {
+                    tabbedPanel.addTab(table, group);
+                }
             }
             addTab(tabbedPanel, sub.name());
         }
@@ -76,33 +105,35 @@ if (TYPE==null )
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-               itemClicked(item);
+                itemClicked(item);
                 return super.touchDown(event, x, y, pointer, button);
             }
         };
     }
 
     private void itemClicked(ValueContainer item) {
-        if (selected!=null ){
-            selected.clearChildren();
+        if (selected != null) {
+            getSelectionBorder().remove();
         }
         selected = item;
         selected.add(getSelectionBorder());
     }
 
     private Actor getSelectionBorder() {
-        SuperContainer border = new SuperContainer(new Image(
+        if (selectionBorder==null )
+          selectionBorder = new SuperContainer(new Image(
          TextureCache.getOrCreateR(BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath()
          )), true);
 //        border.setSize(75, 75);
-        return border;
+        return selectionBorder;
     }
 
     public ObjType getSelectedType() {
-        if (selected==null )
+        if (selected == null)
             return null;
         return (ObjType) selected.getUserObject();
     }
+
     public ValueContainer getSelected() {
         return selected;
     }

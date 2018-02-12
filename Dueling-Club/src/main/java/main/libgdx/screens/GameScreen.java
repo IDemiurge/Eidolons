@@ -74,4 +74,8 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
     public void setRealTimeGameLoop(RealTimeGameLoop realTimeGameLoop) {
         this.realTimeGameLoop = realTimeGameLoop;
     }
+
+    public OrthographicCamera getCamera() {
+        return cam;
+    }
 }

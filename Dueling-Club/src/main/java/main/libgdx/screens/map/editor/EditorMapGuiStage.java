@@ -2,6 +2,8 @@ package main.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.layout.DragPane;
+import com.kotcrab.vis.ui.widget.Draggable;
 import main.libgdx.GdxMaster;
 import main.libgdx.screens.map.MapGuiStage;
 
@@ -21,11 +23,23 @@ public class EditorMapGuiStage extends MapGuiStage {
     }
     @Override
     protected void init() {
-         palette = new EditorPalette();
-        addActor(palette);
         controlPanel = new EditorControlPanel();
-        controlPanel.setPosition(0, GdxMaster.top(controlPanel)-125);
+        DragPane dragPane = new DragPane(controlPanel);
+        Draggable listener = new Draggable();
+        listener.setKeepWithinParent(false);
+        controlPanel.addListener(listener);
+//        dragPane.setPosition(0, GdxMaster.top(controlPanel)-225);
+//        addActor(dragPane);
+        controlPanel.setPosition(0, GdxMaster.top(controlPanel)-225);
         addActor(controlPanel);
+
+         palette = new EditorPalette();
+        palette.addListener(new Draggable());
+        dragPane = new DragPane(palette);
+//        dragPane.setPosition(0,  125);
+//        addActor(dragPane);
+        palette.setPosition(0,  125);
+        addActor(palette);
     }
 
     public EditorPalette getPalette() {

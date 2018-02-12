@@ -16,6 +16,8 @@ public class ValueContainer extends TablePanel {
     protected Cell<Label> valueContainer;
     private float imageScaleX;
     private float imageScaleY;
+    private Label valueLabel;
+    private Label nameLabel;
 
     protected ValueContainer() {
 
@@ -42,7 +44,12 @@ public class ValueContainer extends TablePanel {
     }
 
     public ValueContainer(Label actor) {
-        init(null, actor.getText().toString(), "");
+        this(actor, null);
+    }
+    public ValueContainer(Label nameLabel, Label valueLabel) {
+        this.nameLabel = nameLabel;
+        this.valueLabel = valueLabel;
+        init(null, null , null );
     }
 
     @Override
@@ -74,8 +81,11 @@ public class ValueContainer extends TablePanel {
 
         if (name != null) {
             setName(name);
-            nameContainer.setActor(new Label(name, StyleHolder.getDefaultLabelStyle())).grow().center().padRight(12);
+            nameLabel  =new Label(name, StyleHolder.getDefaultLabelStyle());
         }
+        nameContainer.setActor(
+         nameLabel
+        ).grow().center().padRight(12);
 
         valueContainer = addElement(null);
 
@@ -84,9 +94,10 @@ public class ValueContainer extends TablePanel {
         }
 
         if (StringUtils.isNotEmpty(value)) {
-            valueContainer.setActor(new Label(value, StyleHolder.getDefaultLabelStyle())).grow().center();
+            valueLabel =  new Label(value, StyleHolder.getDefaultLabelStyle());
         }
-
+        valueContainer.setActor(
+         valueLabel).grow().center();
         setNameAlignment(Align.center);
         setValueAlignment(Align.center);
     }

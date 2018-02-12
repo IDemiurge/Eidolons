@@ -144,6 +144,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.kotcrab.vis</groupId>
+            <artifactId>vis-runtime</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kotcrab.vis</groupId>
+            <artifactId>vis-ui</artifactId>
+            <version>1.1.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
             <version>${libgdx.version}</version>

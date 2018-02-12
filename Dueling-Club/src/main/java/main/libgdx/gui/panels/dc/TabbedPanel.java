@@ -77,6 +77,7 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     }
 
     protected TextButton.TextButtonStyle getButtonStyle() {
-        return StyleHolder.getDefaultTextButtonStyle();
+        return
+         StyleHolder.getDefaultTabStyle() ;
     }
 }

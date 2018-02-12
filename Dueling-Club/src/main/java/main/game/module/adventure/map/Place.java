@@ -96,9 +96,7 @@ public class Place extends MapObj {
         this.comp = comp;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
+
 
     public int getDefaultSize() {
         return PlaceComp.DEFAULT_SIZE;
