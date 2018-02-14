@@ -67,4 +67,49 @@ public class ArrayMaster<T> {
         }
         return false;
     }
+    public static   void rotateMatrix_(Object[][] matrix){
+        new ArrayMaster<>().rotateMatrix(matrix);
+    }
+        public   void rotateMatrix(T[][] matrix){
+        if(matrix == null)
+            return;
+        if(matrix.length != matrix[0].length)//INVALID INPUT
+            return;
+        getTranspose(matrix);
+        rorateAlongMidRow(matrix);
+    }
+
+    private   void getTranspose(T[][] matrix) {
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = i+1; j < matrix.length ; j++){
+                T temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+    }
+
+    private   void rorateAlongMidRow(T[][] matrix) {
+        int len = matrix.length ;
+        for(int i = 0; i < len/2; i++){
+            for(int j = 0;j < len; j++){
+                T temp = matrix[i][j];
+                matrix[i][j] = matrix[len-1 -i][j];
+                matrix[len -1 -i][j] = temp;
+            }
+        }
+    }
+
+//     for making it rotate clock-wise, just change the function getTranspose() to rotateAlongDiagonal() in rotateMatrix() function.
+    private static void rotateAlongDiagonal(int[][] matrix) {
+        int len = matrix.length;
+        for(int i = 0; i < len; i++){
+            for(int j = 0; j < len - 1 - i ; j++){
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[len -1 - j][len-1-i];
+                matrix[len -1 - j][len-1-i] = temp;
+            }
+        }
+    }
+
 }
