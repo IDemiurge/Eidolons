@@ -1,22 +1,19 @@
 package main.game.battlecraft.logic.dungeon.generator.model;
 
 import main.data.filesys.PathFinder;
-import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TEMPLATE;
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums;
 import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums.EXIT_TEMPLATE;
 import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import main.game.battlecraft.logic.dungeon.generator.LevelData;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -32,9 +29,10 @@ import java.util.Map;
 public class RoomTemplateMaster {
 
     private static final String MODEL_SPLITTER = "=";
+    private static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE =FACING_DIRECTION.EAST ;
     private final LevelData levelData;
-    private ROOM_TEMPLATE_GROUP group;
-    private Map<ROOM_TEMPLATE, List<RoomModel>> templateMap;
+    private ROOM_TEMPLATE_GROUP group=ROOM_TEMPLATE_GROUP.CRYPT;
+    private Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>> templateMap;
 
     public RoomTemplateMaster(LevelData data, LevelModel model) {
         levelData = data;
@@ -43,10 +41,14 @@ public class RoomTemplateMaster {
     }
 
     public void generateTemplateMap() {
-        templateMap = new HashMap<ROOM_TEMPLATE, List<RoomModel>>();
-        for (ROOM_TEMPLATE sub : ROOM_TEMPLATE.values()) {
-            List<RoomModel> roomModels = loadModels(group, sub);
-            templateMap.put(sub, roomModels);
+        templateMap = new HashMap<>();
+        for (ROOM_TYPE sub : ROOM_TYPE.values()) {
+            Map<EXIT_TEMPLATE, List<RoomModel>> map = new HashMap<>();
+            for (EXIT_TEMPLATE exitTemplate : EXIT_TEMPLATE.values()) {
+                List<RoomModel> roomModels = loadModels(group, sub, exitTemplate);
+                map.put(exitTemplate, roomModels);
+            }
+            templateMap.put(sub, map);
         }
     }
 
@@ -57,48 +59,95 @@ public class RoomTemplateMaster {
         //room namespace
         String path =
          PathFinder.getXML_PATH() + "Level Editor//" +
-          "room templates//" + group + "//" + type+ "//" + exitTemplate;
+          "room templates//" + group  + "//" + exitTemplate;
         List<RoomModel> list = new ArrayList<>();
-        for (File sub : FileManager.getFilesFromDirectory(path, false)) {
-            String text = FileManager.readFile(sub);
+        File sub = new File(path + "//" + getRoomTypePath(type)+".txt");
+//        for (File sub : FileManager.getFilesFromDirectory(path, false)) {
+            String text = FileManager.readFile(sub).trim();
             //hor/vert ?
             for (String string : text.split(MODEL_SPLITTER))
                 list.add(createRoomModel(string, exitTemplate, type));
-        }
+//        }
         return list;
     }
 
-    private RoomModel createMirrorRoomModel(RoomModel roomModel ) {
+    private String getRoomTypePath(ROOM_TYPE type) {
+        if (type == ROOM_TYPE.THRONE_ROOM) {
+            return "main";
+        }
+        return type.toString().split("_")[0];
+    }
+
+    private RoomModel createMirrorRoomModel(RoomModel roomModel) {
 
         return roomModel;
     }
+
     private RoomModel createRoomModel(String data,
                                       EXIT_TEMPLATE exit,
                                       ROOM_TYPE template) {
-        String[] array = data.split(StringMaster.NEW_LINE);
-        String[][] cells = new String[array[0].length()+1][array.length+1];
+        String[] array = data.trim().split(StringMaster.NEW_LINE);
+        String[][] cells = new String[array[0].length() + 2][array.length + 2];
 
-        int i = 0;
+        ArrayMaster.rotateMatrix_(cells);
+        int i = 1;
         for (String row : array) {
+            if (cells.length<=i)
+                continue;
             cells[i] = row.split(""); //TODO won't work?
             i++;
         }
-        ArrayMaster.rotateMatrix_(cells);
-        wrapInWalls(cells);
         RoomModel model = new RoomModel(cells, template, exit);
+        main.system.auxiliary.log.LogMaster.log(1,template+ " Model with exit "
+         + exit+": "+data );
+        main.system.auxiliary.log.LogMaster.log(1,"Cells: "
+         +model.getCellsString() );
+        RoomModelTransformer.wrapInWalls(cells);
+          model = new RoomModel(cells, template, exit);
+        main.system.auxiliary.log.LogMaster.log(1,"Wrapped Cells: "
+         +model.getCellsString() );
         return model;
     }
 
 
     public void getTemplates(EXIT_TEMPLATE template, ROOM_TYPE roomType) {
-        list = templateMap.get(roomType);
+//        list = templateMap.get(roomType);
+    }
+//size constraints?
+    public RoomModel getRandomModel(ROOM_TYPE roomType, EXIT_TEMPLATE template,
+                                    FACING_DIRECTION entrance) {
+        List<RoomModel> models = templateMap.get(roomType).get(template);
+        Boolean[] rotations =
+         getRotations(  entrance, DEFAULT_ENTRANCE_SIDE);
+        RoomModel model = new RandomWizard<RoomModel>().getRandomListItem(models);
+
+        main.system.auxiliary.log.LogMaster.log(1,roomType+ " Model chosen with exit "
+         + template+": "+model.getCellsString() );
+        model =clone(model);
+//        if (model.isHorizontal())
+        model = RoomModelTransformer.rotate(model, rotations);
+        return model;
     }
 
-    private RoomModel chooseTemplate(ROOM_TYPE roomType, FACING_DIRECTION... exits) {
-        List<RoomModel> models = templateMap.get(roomType);
-
-        return null;
+    private Boolean[] getRotations(FACING_DIRECTION from, FACING_DIRECTION to) {
+        if (from==null )
+            return new Boolean[0] ;
+        if (to==null )
+            return new Boolean[0] ;
+        int dif = from.getDirection().getDegrees() - to.getDirection().getDegrees();
+        int turns = dif / 90;
+        boolean clockwise=true;
+        if (turns<0)
+            clockwise = false;
+        Boolean[] bools = new Boolean[Math.abs(turns)];
+        Arrays.fill(bools, clockwise);
+        return bools;
     }
+
+    private RoomModel clone(RoomModel model) {
+        return new RoomModel(model.getCells(), model.getType(), model.getExitTemplate());
+    }
+
 
     public String generate(int x, int y, float irregularity) {
         String result = "";

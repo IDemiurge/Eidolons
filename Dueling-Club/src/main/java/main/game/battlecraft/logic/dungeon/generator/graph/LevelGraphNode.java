@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.dungeon.generator.graph;
 
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.game.battlecraft.logic.dungeon.generator.graph.LevelGraph.GRAPH_NODE_APPENDIX;
+import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums.GRAPH_NODE_APPENDIX;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -36,6 +36,7 @@ public class LevelGraphNode {
 
     @Override
     public String toString() {
-        return super.toString();
+        return roomType+" node #"+index;
+
     }
 }

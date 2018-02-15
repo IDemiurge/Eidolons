@@ -28,30 +28,59 @@ public class LevelModel {
     private Point bottomMost;
 
     private void addCapes(Point p, RoomModel roomModel) {
-        if (p.x<leftMost.x)
+        if (leftMost==null ||  p.x<leftMost.x)
             leftMost = p;
-        if (p.x>rightMost.x)
+        if (rightMost==null ||  p.x>rightMost.x)
             rightMost = p;
-        if (p.y>bottomMost.y)
+        if (bottomMost==null ||  p.y>bottomMost.y)
             bottomMost = p;
-        if (p.y<topMost.y)
+        if (topMost==null ||  p.y<topMost.y)
             topMost = p;
 
     }
+
+    public void setCells(ROOM_CELL[][] cells) {
+        this.cells = cells;
+    }
+
     public int getCurrentWidth() {
         return Math.abs(leftMost.x - rightMost.x);
     }
     public int getCurrentHeight() {
         return Math.abs(topMost.y - bottomMost.y);
     }
-    public void addRoom(int x, int y, RoomModel roomModel) {
+    public boolean addRoom(Point point, RoomModel roomModel) {
+        return addRoom(point.x, point.y, roomModel);
+    }
+        public boolean addRoom(int x, int y, RoomModel roomModel) {
         Point p=new Point(x,y);
+        if (!canPlace(roomModel, p))
+        {
+            main.system.auxiliary.log.LogMaster.log(1,"Cannot place " +roomModel + " at " +
+             x +
+             " "+y);
+            return false;
+        }
         roomModel.setPoint(p);
         modelMap.put(p, roomModel);
         addOccupied(p, roomModel);
         addCapes(p, roomModel);
+            main.system.auxiliary.log.LogMaster.log(1,"Placed " +roomModel + " at " +
+             x +
+             " "+y);
+            return true;
     }
 
+    public boolean canPlace(
+     RoomModel roomModel, Point p) {
+        for (int x = p.x; x < p.x + roomModel.getWidth(); x++) {
+            for (int y = p.y; y < p.y + roomModel.getHeight(); y++) {
+                if (getOccupiedCells().contains(new Point(x, y)))
+                    return false;
+            }
+        }
+        return true;
+    }
     private void addOccupied(Point p, RoomModel roomModel) {
         for (int x = p.x; x < p.x + roomModel.getWidth(); x++) {
             for (int y = p.y; y < p.y + roomModel.getHeight(); y++) {
@@ -68,4 +97,27 @@ public class LevelModel {
         return occupiedCells;
     }
 
+    public ROOM_CELL[][] getCells() {
+        return cells;
+    }
+
+    public Map<Point, RoomModel> getModelMap() {
+        return modelMap;
+    }
+
+    public Point getLeftMost() {
+        return leftMost;
+    }
+
+    public Point getRightMost() {
+        return rightMost;
+    }
+
+    public Point getTopMost() {
+        return topMost;
+    }
+
+    public Point getBottomMost() {
+        return bottomMost;
+    }
 }

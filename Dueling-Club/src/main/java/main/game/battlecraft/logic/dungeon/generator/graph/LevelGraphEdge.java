@@ -1,6 +1,7 @@
 package main.game.battlecraft.logic.dungeon.generator.graph;
 
-import main.game.battlecraft.logic.dungeon.generator.graph.LevelGraph.LEVEL_GRAPH_LINK_TYPE;
+import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums;
+import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums.LEVEL_GRAPH_LINK_TYPE;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -12,7 +13,7 @@ public class LevelGraphEdge {
 
     public LevelGraphEdge(
      LevelGraphNode nodeOne, LevelGraphNode nodeTwo) {
-        this(LEVEL_GRAPH_LINK_TYPE.NORMAL, nodeOne, nodeTwo);
+        this(GeneratorEnums.LEVEL_GRAPH_LINK_TYPE.NORMAL, nodeOne, nodeTwo);
     }
 
     public LevelGraphEdge(LEVEL_GRAPH_LINK_TYPE linkType, LevelGraphNode nodeOne, LevelGraphNode nodeTwo) {
@@ -31,5 +32,12 @@ public class LevelGraphEdge {
 
     public LevelGraphNode getNodeTwo() {
         return nodeTwo;
+    }
+
+
+    @Override
+    public String toString() {
+        return " link: "+nodeOne+" with "+nodeTwo;
+
     }
 }

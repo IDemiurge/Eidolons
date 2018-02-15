@@ -4,42 +4,81 @@ package main.game.battlecraft.logic.dungeon.generator;
  * Created by JustMe on 2/14/2018.
  */
 public class GeneratorEnums {
-    public enum ROOM_CELL {
-        WALL ( "#"),
-        FLOOR ( "O"),
-        CONTAINER ( "C"),
-        DOOR ( "D"),
-        ART_OBJ ( "A"),,
-        DESTRUCTIBLE_WALL ( "@"),
-        SECRET_DOOR ( "S"),
-        TRAP ( "T"),
-        GUARD ( "G"),
-        
-        LIGHT_EMITTER( "L"),
-        WALL_WITH_LIGHT_OVERLAY( "@"),
-        WALL_WITH_DECOR_OVERLAY( "$"),
-        LOCAL_KEY( "k"),
-        GLOBAL_KEY( "K"),
-        DESTRUCTIBLE( "X"),
+    public  enum EXIT_TEMPLATE {
+        THROUGH,
+        ANGLE,
+        CROSSROAD,
+        FORK,
+        CUL_DE_SAC,
+    }
 
-        SPECIAL_CONTAINER ( "c"),
-        SPECIAL_DOOR ( "d"),
-        SPECIAL_ART_OBJ ( "a"),
+    public enum GRAPH_NODE_APPENDIX {
+        LOCK,
+    }
+
+    public enum GRAPH_RULE {
+        EXTEND,
+        LOCK,
+        SHORTCUT,
+        DUPLICATE,
+        TWIN_PATH,
+        BLOCK,
+        CIRCLE_BACK,
+    }
+
+    public enum LEVEL_GRAPH_LINK_TYPE {
+        NORMAL, AMBUSH, LONG, LOCKED,
+    }
+
+    public enum PATH_TYPE {
+        secret, hard, easy,
+    }
+
+    public enum ROOM_CELL {
+        WALL("#"),
+        FLOOR("O"),
+        CONTAINER("C"),
+        DOOR("D"),
+        ART_OBJ("A"),
+        DESTRUCTIBLE_WALL("@"),
+        SECRET_DOOR("S"),
+        TRAP("T"),
+        GUARD("G"),
+
+        LIGHT_EMITTER("L"),
+        WALL_WITH_LIGHT_OVERLAY("@"),
+        WALL_WITH_DECOR_OVERLAY("$"),
+        LOCAL_KEY("k"),
+        GLOBAL_KEY("K"),
+        DESTRUCTIBLE("X"),
+
+        SPECIAL_CONTAINER("c"),
+        SPECIAL_DOOR("d"),
+        SPECIAL_ART_OBJ("a"),
             /*
         false_wall,
         BUTTON,
         SHRINE,
 
-         */
-        ;
+         */;
+        static ROOM_CELL[] vals = ROOM_CELL.values();
         public final String symbol;
+
+        ROOM_CELL(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public static ROOM_CELL getBySymbol(String symbol) {
+            for (ROOM_CELL sub : vals) {
+                if (sub.getSymbol().equals(symbol)) {
+                    return sub;
+                }
+            }
+            return null;
+        }
 
         public String getSymbol() {
             return symbol;
-        }
-
-        ROOM_CELL(String symbol) {
-            this.symbol=symbol;
         }
     }
 
@@ -53,13 +92,5 @@ public class GeneratorEnums {
         RANDOM,
         RANDOM_INTERIOR,
 
-    }
-
-    public static enum EXIT_TEMPLATE {
-        THROUGH,
-        ANGLE,
-        CROSSROAD,
-        FORK,
-        CUL_DE_SAC,
     }
 }

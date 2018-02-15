@@ -6,10 +6,8 @@ import main.game.battlecraft.logic.dungeon.generator.graph.LevelGraph;
 import main.game.battlecraft.logic.dungeon.generator.graph.LevelGraphMaster;
 import main.game.battlecraft.logic.dungeon.generator.model.LevelModel;
 import main.game.battlecraft.logic.dungeon.generator.model.LevelModelGenerator;
-import main.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
+import main.game.battlecraft.logic.dungeon.generator.tilemap.TileMapper;
 import main.game.module.adventure.map.Place;
-import main.game.module.adventure.town.TownHall.Quest;
-import main.game.module.dungeoncrawl.dungeon.Location;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -24,14 +22,19 @@ import main.game.module.dungeoncrawl.dungeon.Location;
  */
 public class LevelGenerator {
 
+    public static void main(String[] args) {
+       new LevelGenerator().generateLevel(getLevelData(0));
+    }
+
     public void generateLevels(Place place,ObjType mission){
 
     }
         public String generateLevel(LevelData data){
-        LevelGraph graph=new LevelGraphMaster().buildGraph(data);
-            LevelModel model = new LevelModelGenerator().buildModel(graph);
-fill();
-    }
+        LevelGraph graph=new LevelGraphMaster(data).buildGraph();
+            LevelModel model = new LevelModelGenerator(data).buildModel(graph);
+            new TileMapper(model, data).createLevel();
+            return null;
+        }
 
 //
 //    private void fill() {
@@ -41,12 +44,13 @@ fill();
 //        placeDecor();
 //    }
 
-    public LevelData getLevelData(Place place, ObjType mission,
-                                  int sublevel,
-                                  Location location,
-                                   Quest quest,
-//                                  BOSS_TYPE bossType,
-                                  OBJECTIVE_TYPE objectiveType
+    public static LevelData getLevelData(
+     int sublevel
+//     ,Place place, ObjType mission,
+//                                  Location location,
+//                                   Quest quest,
+////                                  BOSS_TYPE bossType,
+//                                  OBJECTIVE_TYPE objectiveType
 
     ){
         int x = 30;

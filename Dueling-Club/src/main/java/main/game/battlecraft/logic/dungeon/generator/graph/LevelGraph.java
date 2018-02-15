@@ -15,12 +15,19 @@ public class LevelGraph {
     private Set<LevelGraphNode> nodes;
     private Set<LevelGraphEdge> edges;
     private Map<LevelGraphNode, Set<LevelGraphEdge>> adjList;
+    Set<GraphPath> paths;
 
     public LevelGraph() {
         index = 0;
         nodes = new HashSet<>();
         edges = new HashSet<>();
         adjList = new HashMap<>();
+
+        paths = new HashSet<>();
+    }
+
+    public Set<GraphPath> getPaths() {
+        return paths;
     }
 
     public LevelGraphNode addNode(ROOM_TYPE roomType) {
@@ -38,21 +45,11 @@ public class LevelGraph {
     }
 
     public LevelGraphNode getNodeById(int i) {
-        int n=0;
         for (LevelGraphNode sub : nodes) {
-            if (n==i)
+            if (sub.getIndex()==i)
                 return sub;
-            n++;
         }
         return null ;
-    }
-
-    public enum GRAPH_NODE_APPENDIX {
-        LOCK,
-    }
-
-    public enum LEVEL_GRAPH_LINK_TYPE {
-        NORMAL, AMBUSH, LONG, LOCKED,
     }
 
     public boolean addNode(LevelGraphNode v) {

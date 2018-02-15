@@ -1,23 +1,22 @@
 package main.game.battlecraft.logic.dungeon.generator.graph;
 
-import main.game.battlecraft.logic.dungeon.generator.graph.LevelGraphMaster.PATH_TYPE;
+import main.game.battlecraft.logic.dungeon.generator.GeneratorEnums.PATH_TYPE;
 
 import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
 
 /**
  * Created by JustMe on 2/14/2018.
  */
 public class GraphPath {
-    LinkedHashSet<LevelGraphNode> nodes;
+    LinkedHashMap<Integer, LevelGraphNode> nodes;
     //links
     LevelGraphNode  startNode;
     LevelGraphNode  endNode;
     LevelGraph graph;
     PATH_TYPE type;
 
-    public GraphPath(LinkedHashSet<LevelGraphNode> nodes, LevelGraphNode startNode, LevelGraphNode endNode, LevelGraph graph, PATH_TYPE type) {
+    public GraphPath(LinkedHashMap<Integer, LevelGraphNode> nodes, LevelGraphNode startNode, LevelGraphNode endNode, LevelGraph graph, PATH_TYPE type) {
         this.nodes = nodes;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -25,19 +24,32 @@ public class GraphPath {
         this.type = type;
     }
 
-    public GraphPath(LinkedHashSet<LevelGraphNode> nodes, PATH_TYPE type) {
-        this.nodes = nodes;
-        this.type = type;
-        sortNodes();
-        node = startNode;
-        while (n < nodes.size()) {
-            n++;
-            node = findLinked(node, nodes);
-        }
+    private void sortNodes() {
+//        nodes = new LinkedHashSet<>(nodes.stream().sorted(getComparator()).collect(Collectors.toSet()));
+//        while (n < nodes.size()) {
+//            n++;
+//            node = findLinked(node, nodes);
+//        }
     }
 
-    private void sortNodes() {
-        nodes = new LinkedHashSet<>(nodes.stream().sorted(getComparator()).collect(Collectors.toSet()));
+    public LinkedHashMap<Integer, LevelGraphNode> getNodes() {
+        return nodes;
+    }
+
+    public LevelGraphNode getStartNode() {
+        return startNode;
+    }
+
+    public LevelGraphNode getEndNode() {
+        return endNode;
+    }
+
+    public LevelGraph getGraph() {
+        return graph;
+    }
+
+    public PATH_TYPE getType() {
+        return type;
     }
 
     private Comparator<? super LevelGraphNode> getComparator() {
