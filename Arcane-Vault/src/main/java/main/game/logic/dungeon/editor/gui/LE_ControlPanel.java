@@ -4,6 +4,7 @@ import main.game.logic.dungeon.editor.LE_DataMaster;
 import main.game.logic.dungeon.editor.LE_MapMaster;
 import main.game.logic.dungeon.editor.LE_ObjMaster;
 import main.game.logic.dungeon.editor.LevelEditor;
+import main.game.logic.dungeon.generator.LevelGenerator;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.StringMaster;
@@ -39,9 +40,16 @@ public class LE_ControlPanel extends G_Panel {
                 LE_DataMaster.removeSelected();
                 break;
             case GENERATE:
+                if (!alt){
+                    LevelGenerator.generate(LevelEditor.getCurrentMission(),
+                     LevelEditor
+                      .getCurrentLevel());
+                    break;
+                }
                 LE_MapMaster.generateNew(LevelEditor.getCurrentMission(),
                  LevelEditor
                         .getCurrentLevel(), !alt);
+
                 break;
             case LOAD_LEVEL:
                 LE_DataMaster.loadLevel();

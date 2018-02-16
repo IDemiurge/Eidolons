@@ -85,6 +85,16 @@ public class ArrayMaster<T> {
         rotateAlongMidRow(matrix);
     }
 
+    public String getCellsString(T[][] cells) {
+        String cellsString = "";
+        for (T[] sub : cells) {
+            for (T sub1 : sub) {
+                cellsString += sub1;
+            }
+            cellsString += "\n";
+        }
+        return cellsString;
+    }
     private   void getTranspose(T[][] matrix) {
         for(int i = 0; i < matrix.length; i++){
             for(int j = i+1; j < matrix.length ; j++){

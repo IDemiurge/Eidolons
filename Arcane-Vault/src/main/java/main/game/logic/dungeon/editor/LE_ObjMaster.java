@@ -19,6 +19,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.logic.dungeon.editor.gui.LE_MapViewComp;
+import main.game.logic.dungeon.generator.tilemap.Tile;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -27,6 +28,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.util.*;
@@ -448,6 +450,22 @@ public class LE_ObjMaster {
         return obj;
     }
 
+    public   void initTileMap(Tile[][] tiles) {
+
+        for (int x = 0; x < tiles.length; x++) {
+            int y=0;
+            for (Tile sub : tiles[x]) {
+                for (Pair<String, OBJ_TYPE> data : sub.getData()) {
+                    ObjType type = DataManager.getType(data.getKey(),
+//                     ContentManager.getOBJ_TYPE
+                      (data.getValue()));
+                addObj(type, new Coordinates(x, y));
+                }  y++;
+            }
+        }
+
+    }
+
     public void editObj(Obj obj) {
 
     }
@@ -463,5 +481,4 @@ public class LE_ObjMaster {
     public void fillAreaRandomFromPalette() {
 
     }
-
 }
