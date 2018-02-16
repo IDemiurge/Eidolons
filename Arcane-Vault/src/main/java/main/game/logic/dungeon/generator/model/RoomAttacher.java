@@ -1,12 +1,12 @@
 package main.game.logic.dungeon.generator.model;
 
 import main.game.battlecraft.logic.battlefield.FacingMaster;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.dungeon.generator.GeneratorEnums.EXIT_TEMPLATE;
 import main.game.logic.dungeon.generator.LevelData;
 import main.game.logic.dungeon.generator.graph.LevelGraph;
 import main.game.logic.dungeon.generator.graph.LevelGraphEdge;
 import main.game.logic.dungeon.generator.graph.LevelGraphNode;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 
 import java.awt.*;
 import java.util.List;
@@ -33,13 +33,14 @@ public class RoomAttacher {
         FACING_DIRECTION[] exits = getExits(exitTemplate);
         int i = 0;
         if (rotated != null)
-        for (Boolean bool : rotated) {
-            i = 0;
-            for (FACING_DIRECTION exit : exits) {
-                exits[i] = FacingMaster.rotate(exit, bool);
-                i++; }
+            for (Boolean bool : rotated) {
+                i = 0;
+                for (FACING_DIRECTION exit : exits) {
+                    exits[i] = FacingMaster.rotate(exit, bool);
+                    i++;
+                }
 
-        }
+            }
         return exits;
     }
 
@@ -69,8 +70,8 @@ public class RoomAttacher {
     }
 
     public static FACING_DIRECTION[] getExits(LevelGraphNode node, LevelGraph graph,
-                                       Set<LevelGraphEdge> links,
-                                       List<LevelGraphNode> linkedNodes) {
+                                              Set<LevelGraphEdge> links,
+                                              List<LevelGraphNode> linkedNodes) {
         //can we have duplicates in linkedNodes?
         FacingMaster.getRandomFacing();
         //rotate? mirror?
@@ -83,7 +84,7 @@ public class RoomAttacher {
     }
 
     public static Point adjust(Point point, FACING_DIRECTION side, RoomModel parent,
-                        boolean getEntranceOrRoomPoint) {
+                               boolean getEntranceOrRoomPoint) {
         int x = point.x;
         int y = point.y;
         int i = 1;
@@ -103,7 +104,7 @@ public class RoomAttacher {
         return new Point(x, y);
     }
 
-    public static Point getExitPoint(Room  link, FACING_DIRECTION side) {
+    public static Point getExitPoint(Room link, FACING_DIRECTION side) {
         return adjust(link.getPoint(), side, link, true);
 //        +link.getWidth()
     }
@@ -118,11 +119,12 @@ public class RoomAttacher {
 
     }
 
-    public void attach(Room  to, Room attached, FACING_DIRECTION entrance) {
+    public void attach(Room to, Room attached, FACING_DIRECTION entrance) {
         Point p = getAttachPoint(to, attached, entrance);
-        //exit side?
-        model.addRoom(p, attached).setEntrance(entrance);
-
+        //check
+        Point newPoint = model.addRoom(p, attached).setNewEntrance(entrance);
+        model.getRoomMap().remove(p);
+        model.getRoomMap().put(newPoint, attached);
 
     }
 

@@ -38,16 +38,18 @@ public class LevelGraphMaster {
     }
 
     private void createNodes(LevelGraph graph, LevelData data) {
+        float sizeMode = new Float(data.getX()) * data.getY() / 100;
+
         graph.addNode(ROOM_TYPE.ENTRANCE_ROOM);
         graph.addNode(ROOM_TYPE.EXIT_ROOM);
         graph.addNode(ROOM_TYPE.THRONE_ROOM);
-        int n = RandomWizard.getRandomInt(4);
+        int n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
         graph.addNodes(ROOM_TYPE.TREASURE_ROOM, n);
-        n = RandomWizard.getRandomInt(4);
+        n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
         graph.addNodes(ROOM_TYPE.GUARD_ROOM, n);
-        n = RandomWizard.getRandomInt(4);
+        n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
         graph.addNodes(ROOM_TYPE.DEATH_ROOM, n);
-        n = RandomWizard.getRandomInt(4);
+        n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
         graph.addNodes(ROOM_TYPE.SECRET_ROOM, n);
         unconnected =     new ArrayList<>(graph.getNodes());
         unconnected.removeIf(node ->  ListMaster.isNotEmpty(graph.getAdjList().get(node)));

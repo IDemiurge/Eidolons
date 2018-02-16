@@ -19,11 +19,19 @@ public class LevelGraph {
 
     public LevelGraph() {
         index = 0;
-        nodes = new HashSet<>();
-        edges = new HashSet<>();
+        nodes = new LinkedHashSet<>();
+        edges = new LinkedHashSet<>();
         adjList = new HashMap<>();
 
         paths = new HashSet<>();
+    }
+
+    @Override
+    public String toString() {
+        return "LevelGraph: \n"+paths.size()+" paths: "+paths +
+         "\n"+nodes.size()+" nodes: "+nodes +
+         "\n"+edges.size()+" edges: "+edges +
+         "\n" ;
     }
 
     public Set<GraphPath> getPaths() {

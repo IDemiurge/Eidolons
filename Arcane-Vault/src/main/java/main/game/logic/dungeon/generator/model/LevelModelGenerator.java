@@ -28,7 +28,7 @@ public class LevelModelGenerator {
     private LevelGraph graph;
     private RoomAttacher attacher;
     private RoomTemplateMaster templateMaster;
-    private Map<LevelGraphNode, Room > nodeModelMap = new HashMap<>();
+    private Map<LevelGraphNode, Room> nodeModelMap = new HashMap<>();
 
     public LevelModelGenerator(LevelData data) {
         this.data = data;
@@ -71,13 +71,13 @@ public class LevelModelGenerator {
         return getRandomSingleExitTemplate();
     }
 
-    private void buildLinked(LevelGraphNode sub, Room  link, FACING_DIRECTION side) {
+    private void buildLinked(LevelGraphNode sub, Room link, FACING_DIRECTION side) {
         build(sub, attacher.getExitPoint(link, side), side);
 
     }
 
-    public Room  build(LevelGraphNode node, Point entrancePoint, FACING_DIRECTION entrance) { //'parent' in args? point?
-        Room  room = nodeModelMap.get(node);
+    public Room build(LevelGraphNode node, Point entrancePoint, FACING_DIRECTION entrance) { //'parent' in args? point?
+        Room room = nodeModelMap.get(node);
         if (room != null)
             return room;
         Set<LevelGraphEdge> links = graph.getAdjList().get(node);
@@ -105,6 +105,7 @@ public class LevelModelGenerator {
          , entrance);
         if (room == null) return null; //don't break the chain!
         nodeModelMap.put(node, room);
+        room.setExitTemplate(roomExitTemplate);
         //recursive build - will it ensure that Main Paths are built?
         if (!mergeLinks) {
             int i = 0;
@@ -113,9 +114,10 @@ public class LevelModelGenerator {
                     break;
                 }
                 FACING_DIRECTION side = room.getExits()[i++];// getAttachSide(roomModel, edge);
+                room.makeExit(side);
                 if (entrance == null)
                     entrancePoint = attacher.adjust(entrancePoint, side, room, true);
-                Room  link = findFittingAndAttach(entrancePoint, getRandomSingleExitTemplate(),
+                Room link = findFittingAndAttach(entrancePoint, getRandomSingleExitTemplate(),
                  ROOM_TYPE.CORRIDOR, side);
                 if (link == null) {
                     //link-less attach
@@ -126,11 +128,11 @@ public class LevelModelGenerator {
                 build(edge.getNodeTwo(), entrancePoint, side);
             }
         } else {
-            FACING_DIRECTION side = getExit(roomExitTemplate, entrance); //link entrance
-            Room  link = findFittingAndAttach
+            FACING_DIRECTION side = getExit(roomExitTemplate, entrance);//link entrance
+            room.makeExit(side);
+            Room link = findFittingAndAttach
              (new PointX(x, y), exitTemplate,
               ROOM_TYPE.CORRIDOR, side);
-
 
             side = getExit(exitTemplate, side); //now for node entrance
             attacher.attach(room, link, side);
@@ -153,35 +155,40 @@ public class LevelModelGenerator {
 //        if (models.contains(linkedNodes.get(i))) nodes!
     }
 
-    private Room  findFittingAndAttach(Point entrancePoint, EXIT_TEMPLATE roomExitTemplate,
-                                           ROOM_TYPE roomType, FACING_DIRECTION entrance) {
+    private Room findFittingAndAttach(Point entrancePoint, EXIT_TEMPLATE roomExitTemplate,
+                                      ROOM_TYPE roomType, FACING_DIRECTION entrance) {
         Loop loop = new Loop(50);
         RoomModel roomModel = null;
-        Room room=null ;
-        while (true) {
+        Room room = null;
+        Point roomPoint;  while (true) {
             roomModel = templateMaster.getRandomModel(roomType,
              roomExitTemplate
              , entrance);
-            Point roomPoint = entrancePoint;
+              roomPoint = entrancePoint;
             if (entrance != null) {
                 roomPoint = attacher.getRoomPoint(entrancePoint, FacingMaster.rotate180(entrance), roomModel);
             }
             room = model.addRoom(roomPoint, roomModel);
-            if (room!=null ) {
+            if (room != null) {
                 break;
             }
             if (loop.ended())
                 return null;
         }
-        if (entrance!=null )
-        room.setEntrance(entrance);
+        if (entrance != null)
+        {
+            Point newPoint = room.setNewEntrance(entrance);
+            model.getRoomMap().remove(roomPoint);
+            model.getRoomMap().put(newPoint, room);
+        }
         return room;
     }
 
 
     private void attach(LevelGraphNode to, RoomModel from, FACING_DIRECTION side) {
-//        RoomModel roomModel = build(to, attacher.getAttachPoint(from, side), side);
-//        attacher.attach(roomModel, from, side);// give real points
+/*       RoomModel roomModel = build(to, attacher.getAttachPoint(from, side), side);
+*/
+//attacher.attach(roomModel, from, side);// give real points
     }
 
     private FACING_DIRECTION getAttachSide(RoomModel roomModel, LevelGraphEdge edge) {

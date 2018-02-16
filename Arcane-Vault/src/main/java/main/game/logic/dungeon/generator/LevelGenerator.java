@@ -54,6 +54,8 @@ public class LevelGenerator {
     public static TileMap generateTileMap(LevelData data){
         LevelGraph graph=new LevelGraphMaster(data).buildGraph();
         LevelModel model = new LevelModelGenerator(data).buildModel(graph);
+        main.system.auxiliary.log.LogMaster.log(1,"model: " +model);
+        main.system.auxiliary.log.LogMaster.log(1,"graph: " +graph);
         TileMap map = new TileMapper(model, data).map();
         return map;
     }

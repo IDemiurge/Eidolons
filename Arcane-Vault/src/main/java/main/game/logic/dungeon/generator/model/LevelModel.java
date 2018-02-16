@@ -33,7 +33,13 @@ public class LevelModel {
     public LevelModel(LevelData data) {
         this.data = data;
     }
+    @Override
+    public String toString() {
+        return "LevelModel: \n"+roomMap.size()+" rooms: "+roomMap.values();
+//         + "\n"+ " cells: "  +
+//         new ArrayMaster<ROOM_CELL>().getCellsString(cells);
 
+    }
     private void addCapes(Point p, RoomModel roomModel) {
         int x = p.x;
         int x1 = p.x+roomModel.getWidth();
@@ -92,11 +98,7 @@ public class LevelModel {
             return room;
     }
 
-    @Override
-    public String toString() {
 
-        return super.toString();
-    }
 
     public boolean canPlace(
      RoomModel roomModel, Point p) {

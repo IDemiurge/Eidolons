@@ -45,8 +45,10 @@ public class RoomTemplateMaster {
         templateMap = new HashMap<>();
         for (ROOM_TYPE sub : ROOM_TYPE.values()) {
             Map<EXIT_TEMPLATE, List<RoomModel>> map = new HashMap<>();
+                 List<RoomModel> common = loadModels(group, sub, null );
             for (EXIT_TEMPLATE exitTemplate : EXIT_TEMPLATE.values()) {
                 List<RoomModel> roomModels = loadModels(group, sub, exitTemplate);
+                roomModels.addAll(common);
                 map.put(exitTemplate, roomModels);
             }
             templateMap.put(sub, map);
@@ -60,7 +62,10 @@ public class RoomTemplateMaster {
         //room namespace
         String path =
          PathFinder.getXML_PATH() + "Level Editor//" +
-          "room templates//" + group + "//" + exitTemplate;
+          "room templates//" + group;
+        if (exitTemplate!=null )
+            path += "//" + exitTemplate;
+        //else => common templates
         List<RoomModel> list = new ArrayList<>();
         File sub = new File(path + "//" + getRoomTypePath(type) + ".txt");
         if (!sub.exists())

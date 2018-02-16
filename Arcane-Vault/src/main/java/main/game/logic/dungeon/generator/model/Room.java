@@ -1,8 +1,9 @@
 package main.game.logic.dungeon.generator.model;
 
-import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.logic.dungeon.generator.GeneratorEnums.EXIT_TEMPLATE;
 import main.game.logic.dungeon.generator.GeneratorEnums.ROOM_CELL;
+import main.swing.PointX;
 import main.system.auxiliary.data.ArrayMaster;
 
 import java.awt.*;
@@ -36,7 +37,7 @@ public class Room extends RoomModel {
             p.y--;
         if (p.x==getWidth())
             p.x--;
-        cells[p.x][p.y] = ROOM_CELL.FLOOR.getSymbol();
+        cells[p.x][p.y] = ROOM_CELL.DOOR.getSymbol();
     }
     public FACING_DIRECTION[] getExits() {
         if (exits == null) {
@@ -54,9 +55,43 @@ public class Room extends RoomModel {
         return entrance;
     }
 
-    public void setEntrance(FACING_DIRECTION entrance) {
+    public Point setNewEntrance(FACING_DIRECTION entrance) {
         this.entrance = entrance;
-        makeExit(FacingMaster.rotate180(entrance));
+//        makeExit(FacingMaster.rotate180(entrance));
+
+         return shearWallsFromSide(entrance);
+    }
+
+    private Point shearWallsFromSide(FACING_DIRECTION entrance) {
+        int offsetX=0;
+        int offsetY=0;
+        int cropX=0;
+        int cropY=0;
+        switch (entrance) {
+            case NORTH:
+                offsetY=1;
+                break;
+            case WEST:
+                offsetX=1;
+                break;
+            case EAST:
+                cropX=1;
+                break;
+            case SOUTH:
+                cropY=1;
+                break;
+        }
+        int w=getWidth()-offsetX;
+        int h=getHeight()-offsetY;
+        String[][]  newCells = new String[w][h];
+        for (int x = 0; x < w-cropX ; x++) {
+            for (int y = 0; y < h-cropY ; y++) {
+                newCells[x][y] = cells[x + offsetX][y + offsetY];
+            }
+        }
+        cells= newCells;
+        point = new PointX(point.x - offsetX, point.y - offsetY);
+         return point;
     }
 
     public Point getPoint() {
@@ -67,4 +102,7 @@ public class Room extends RoomModel {
         this.point = point;
     }
 
+    public void setExitTemplate(EXIT_TEMPLATE exitTemplate) {
+        this.exitTemplate = exitTemplate;
+    }
 }

@@ -7,9 +7,9 @@ import main.game.logic.dungeon.generator.GeneratorEnums.EXIT_TEMPLATE;
  * Created by JustMe on 2/13/2018.
  */
 public class RoomModel {
-    protected final EXIT_TEMPLATE exitTemplate;
+    protected   EXIT_TEMPLATE exitTemplate;
     protected final ROOM_TYPE type;
-    protected final String[][] cells;
+    protected   String[][] cells;
     protected String cellsString;
     protected Boolean[] rotated;
 
