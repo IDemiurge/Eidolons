@@ -2,6 +2,7 @@ package main.game.logic.dungeon.generator.model;
 
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
 import main.game.logic.dungeon.generator.GeneratorEnums.EXIT_TEMPLATE;
+import main.system.auxiliary.data.ArrayMaster;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -26,6 +27,16 @@ public class RoomModel {
 
     public void setRotated(Boolean[] rotated) {
         this.rotated = rotated;
+        if (getRotated()!=null )
+            for (Boolean sub : getRotated()) {
+                main.system.auxiliary.log.LogMaster.log(1, sub+ "wise rotating: "
+                 +getCellsString() );
+                cells = (String[][])
+                 new ArrayMaster<String>().rotateMatrix ( getCells(), sub);
+
+                main.system.auxiliary.log.LogMaster.log(1, sub+"wise rotated: "
+                 +getCellsString() );
+            }
     }
 
     public EXIT_TEMPLATE getExitTemplate() {

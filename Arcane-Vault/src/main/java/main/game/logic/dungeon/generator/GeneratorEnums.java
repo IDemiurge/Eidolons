@@ -37,6 +37,8 @@ public class GeneratorEnums {
     public enum ROOM_CELL {
         WALL("#"),
         FLOOR("O"),
+        ENTRANCE("E"),
+        EXIT("e"),
         CONTAINER("C"),
         DOOR("D"),
         ART_OBJ("A"),

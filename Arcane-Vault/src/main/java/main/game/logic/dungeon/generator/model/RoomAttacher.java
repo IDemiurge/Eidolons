@@ -111,11 +111,11 @@ public class RoomAttacher {
 
     public static Point getAttachPoint(Room parent, Room model, FACING_DIRECTION side
     ) {
-        int x = parent.getPoint().x + (parent.getWidth() //- model.getWidth() ???
-        ) / 2;
-        int y = parent.getPoint().y + (parent.getHeight()// - model.getHeight()
-        ) / 2;
-        return adjust(new Point(x, y), side, parent, true);
+        return
+         adjust(
+          adjust(parent.getPoint(), side, parent, true),
+          FacingMaster.rotate180(side), model, false)
+         ;
 
     }
 

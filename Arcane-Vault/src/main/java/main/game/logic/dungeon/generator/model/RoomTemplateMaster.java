@@ -34,6 +34,8 @@ public class RoomTemplateMaster {
     private final LevelData levelData;
     private ROOM_TEMPLATE_GROUP group = ROOM_TEMPLATE_GROUP.CRYPT;
     private Map<ROOM_TYPE, Map<EXIT_TEMPLATE, List<RoomModel>>> templateMap;
+    private List<RoomModel> lastPool;
+    private ArrayList randomPool;
 
     public RoomTemplateMaster(LevelData data, LevelModel model) {
         levelData = data;
@@ -134,13 +136,19 @@ public class RoomTemplateMaster {
     public RoomModel getRandomModel(ROOM_TYPE roomType, EXIT_TEMPLATE template,
                                     FACING_DIRECTION entrance) {
         List<RoomModel> models = templateMap.get(roomType).get(template);
+        if (lastPool!=models){
+            randomPool = new ArrayList<>(models);
+            lastPool = models;
+        } else {
+            models = randomPool;
+        }
         if (!ListMaster.isNotEmpty(models)) {
             models = templateMap.get(ROOM_TYPE.COMMON_ROOM).get(template);
         }
         Boolean[] rotations =
          getRotations(entrance, DEFAULT_ENTRANCE_SIDE);
         RoomModel model = new RandomWizard<RoomModel>().getRandomListItem(models);
-
+        randomPool.remove(model);
 //        main.system.auxiliary.log.LogMaster.log(1, roomType + " Model chosen with exit "
 //         + template + ": " + model.getCellsString());
         model = clone(model);

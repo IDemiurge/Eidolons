@@ -103,30 +103,15 @@ public class LevelModelGenerator {
 
         room = findFittingAndAttach(entrancePoint, roomExitTemplate, node.getRoomType()
          , entrance);
-        if (room == null) return null; //don't break the chain!
+        if (room == null)
+        {
+            return null; //don't break the chain!
+        }
         nodeModelMap.put(node, room);
         room.setExitTemplate(roomExitTemplate);
         //recursive build - will it ensure that Main Paths are built?
         if (!mergeLinks) {
-            int i = 0;
-            for (LevelGraphEdge edge : links) {
-                if (room.getExits().length <= i) {
-                    break;
-                }
-                FACING_DIRECTION side = room.getExits()[i++];// getAttachSide(roomModel, edge);
-                room.makeExit(side);
-                if (entrance == null)
-                    entrancePoint = attacher.adjust(entrancePoint, side, room, true);
-                Room link = findFittingAndAttach(entrancePoint, getRandomSingleExitTemplate(),
-                 ROOM_TYPE.CORRIDOR, side);
-                if (link == null) {
-                    //link-less attach
-                    entrancePoint = attacher.getExitPoint(room, side);
-                } else {
-                    entrancePoint = attacher.getExitPoint(link, side);
-                }
-                build(edge.getNodeTwo(), entrancePoint, side);
-            }
+            buildLinks(entrancePoint, entrance, room, links);
         } else {
             FACING_DIRECTION side = getExit(roomExitTemplate, entrance);//link entrance
             room.makeExit(side);
@@ -155,18 +140,48 @@ public class LevelModelGenerator {
 //        if (models.contains(linkedNodes.get(i))) nodes!
     }
 
+    public void buildLinks(Point entrancePoint, FACING_DIRECTION entrance, Room room, Set<LevelGraphEdge> links) {
+        int i = 0;
+        for (LevelGraphEdge edge : links) {
+            if (room.getExits().length <= i) {
+                break;
+            }
+            FACING_DIRECTION side = room.getExits()[i++];// getAttachSide(roomModel, edge);
+            room.makeExit(side);
+            if (entrance == null)
+                entrancePoint = attacher.adjust(entrancePoint, side, room, true);
+            Room link = findFittingAndAttach(entrancePoint, getRandomSingleExitTemplate(),
+             ROOM_TYPE.CORRIDOR, side);
+            if (link == null) {
+                //link-less attach
+                entrancePoint = attacher.getExitPoint(room, side);
+//                    entrancePoint = attacher.getAttachPoint()
+            } else {
+                entrancePoint = attacher.getExitPoint(link, side);
+            }
+            Room newRoom = build(edge.getNodeTwo(), entrancePoint, FacingMaster.rotate180(side));
+            if (newRoom==null ) {
+                for (int n = 0; n < 4; n++) {
+            side =FacingMaster.rotate(side, true);
+                buildLinks(entrancePoint, entrance, room, links);
+            }
+            }
+        }
+    }
+
     private Room findFittingAndAttach(Point entrancePoint, EXIT_TEMPLATE roomExitTemplate,
-                                      ROOM_TYPE roomType, FACING_DIRECTION entrance) {
+                                      ROOM_TYPE roomType, FACING_DIRECTION parentEntrance) {
         Loop loop = new Loop(50);
         RoomModel roomModel = null;
         Room room = null;
         Point roomPoint;  while (true) {
             roomModel = templateMaster.getRandomModel(roomType,
              roomExitTemplate
-             , entrance);
+             , parentEntrance);
               roomPoint = entrancePoint;
-            if (entrance != null) {
-                roomPoint = attacher.getRoomPoint(entrancePoint, FacingMaster.rotate180(entrance), roomModel);
+            if (parentEntrance != null) {
+                roomPoint = attacher.getRoomPoint(entrancePoint,// FacingMaster.rotate180
+                 (parentEntrance), roomModel);
             }
             room = model.addRoom(roomPoint, roomModel);
             if (room != null) {
@@ -175,9 +190,9 @@ public class LevelModelGenerator {
             if (loop.ended())
                 return null;
         }
-        if (entrance != null)
+        if (parentEntrance != null)
         {
-            Point newPoint = room.setNewEntrance(entrance);
+            Point newPoint = room.setNewEntrance(parentEntrance);
             model.getRoomMap().remove(roomPoint);
             model.getRoomMap().put(newPoint, room);
         }

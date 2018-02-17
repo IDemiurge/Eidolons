@@ -24,12 +24,7 @@ public class Room extends RoomModel {
     public Room(RoomModel model) {
         super(model.cells, model.type, model.exitTemplate);
         //TODO won't work for non-square!!!
-        if (getRotated()!=null )
-        for (Boolean sub : getRotated()) {
-            ArrayMaster.rotateMatrix_(model.getCells(), sub);
-            main.system.auxiliary.log.LogMaster.log(1,model+" rotated: "
-             +model.getCellsString() );
-        }
+
     }
     public void makeExit(FACING_DIRECTION exit){
         Point p = RoomAttacher.adjust(new Point(0, 0),(exit), this, true);
@@ -71,26 +66,26 @@ public class Room extends RoomModel {
             case NORTH:
                 offsetY=1;
                 break;
-            case WEST:
-                offsetX=1;
-                break;
             case EAST:
                 cropX=1;
+                break;
+            case WEST:
+                offsetX=1;
                 break;
             case SOUTH:
                 cropY=1;
                 break;
         }
-        int w=getWidth()-offsetX;
-        int h=getHeight()-offsetY;
+        int w=getWidth()-offsetX-cropX;
+        int h=getHeight()-offsetY-cropY;
         String[][]  newCells = new String[w][h];
-        for (int x = 0; x < w-cropX ; x++) {
-            for (int y = 0; y < h-cropY ; y++) {
+        for (int x = 0; x < w-cropX-offsetX ; x++) {
+            for (int y = 0; y < h-cropY-offsetY ; y++) {
                 newCells[x][y] = cells[x + offsetX][y + offsetY];
             }
         }
         cells= newCells;
-        point = new PointX(point.x - offsetX, point.y - offsetY);
+        point = new PointX(point.x - offsetX+cropX, point.y - offsetY+cropY);
          return point;
     }
 
