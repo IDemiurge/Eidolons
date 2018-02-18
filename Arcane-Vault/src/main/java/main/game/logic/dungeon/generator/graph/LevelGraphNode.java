@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.generator.graph;
 
 import main.game.battlecraft.logic.dungeon.building.DungeonBuilder.ROOM_TYPE;
-import main.game.logic.dungeon.generator.GeneratorEnums.GRAPH_NODE_APPENDIX;
+import main.game.logic.dungeon.generator.GeneratorEnums.GRAPH_NODE_ATTRIBUTE;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -9,9 +9,9 @@ import main.game.logic.dungeon.generator.GeneratorEnums.GRAPH_NODE_APPENDIX;
 public class LevelGraphNode {
     int index;
     ROOM_TYPE roomType;
-    GRAPH_NODE_APPENDIX[] appendices;
+    GRAPH_NODE_ATTRIBUTE[] appendices;
 
-    public LevelGraphNode(ROOM_TYPE roomType, GRAPH_NODE_APPENDIX... appendices) {
+    public LevelGraphNode(ROOM_TYPE roomType, GRAPH_NODE_ATTRIBUTE... appendices) {
         this.roomType = roomType;
         this.appendices = appendices;
         index = LevelGraph.index++;
@@ -25,7 +25,7 @@ public class LevelGraphNode {
         return roomType;
     }
 
-    public GRAPH_NODE_APPENDIX[] getAppendices() {
+    public GRAPH_NODE_ATTRIBUTE[] getAppendices() {
         return appendices;
     }
 

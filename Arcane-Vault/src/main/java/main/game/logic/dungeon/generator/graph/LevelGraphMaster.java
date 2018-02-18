@@ -30,7 +30,8 @@ public class LevelGraphMaster {
         unconnected =     new ArrayList<>(graph.getNodes());
         buildMainPaths();
         createNodes(graph, data);
-        buildCustomPaths();
+        //TODO shortcuts!
+        buildBonusPaths();
         connectNodesRandomly(graph, data, unconnected); //the remainder
 //        applyRules(graph, data);
         unconnected.forEach(node-> graph.removeLevelGraphNode(node));
@@ -40,8 +41,6 @@ public class LevelGraphMaster {
     private void createNodes(LevelGraph graph, LevelData data) {
         float sizeMode = new Float(data.getX()) * data.getY() / 100;
 
-        graph.addNode(ROOM_TYPE.ENTRANCE_ROOM);
-        graph.addNode(ROOM_TYPE.EXIT_ROOM);
         graph.addNode(ROOM_TYPE.THRONE_ROOM);
         int n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
         graph.addNodes(ROOM_TYPE.TREASURE_ROOM, n);
@@ -67,7 +66,7 @@ public class LevelGraphMaster {
         LevelGraphNode exitNode = graph.addNode(ROOM_TYPE.EXIT_ROOM);
         buildPaths(numberOfMainPaths, startNode, exitNode);
     }
-    private void buildCustomPaths() {
+    private void buildBonusPaths() {
         int numberOfTreasurePaths = 2;
         GraphPath path = getPaths().iterator().next();
         LevelGraphNode startNode = path.getNodes().get(path.getNodes().size() / 2);

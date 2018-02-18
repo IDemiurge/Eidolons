@@ -81,13 +81,6 @@ public class LevelModelGenerator {
         if (room != null)
             return room;
         Set<LevelGraphEdge> links = graph.getAdjList().get(node);
-        //this is actually two-side, so crop built nodes!
-//        links.removeIf(link->{
-//            if (builtNodes.contains(link.getNodeTwo()))
-//                if (builtNodes.contains(link.getNodeOne()))
-//                    return true;
-//            return false;
-//        });
 
         //sort by relevance?
         List<LevelGraphNode> linkedNodes = new ArrayList<>();

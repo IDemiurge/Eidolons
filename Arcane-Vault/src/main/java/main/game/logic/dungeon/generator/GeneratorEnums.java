@@ -12,7 +12,7 @@ public class GeneratorEnums {
         CUL_DE_SAC,
     }
 
-    public enum GRAPH_NODE_APPENDIX {
+    public enum GRAPH_NODE_ATTRIBUTE {
         LOCK,
     }
 
@@ -34,7 +34,7 @@ public class GeneratorEnums {
         secret, hard, easy,
     }
 
-    public enum ROOM_CELL {
+    public enum ROOM_CELL { //water, void
         WALL("#"),
         FLOOR("O"),
         ENTRANCE("E"),
