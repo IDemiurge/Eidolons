@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.xml.XML_Reader;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.entity.MacroParty;
@@ -19,7 +20,9 @@ import main.libgdx.gui.menu.selection.SelectionPanel;
 import main.libgdx.screens.GameScreen;
 import main.libgdx.screens.map.editor.EditorMapView;
 import main.libgdx.screens.map.obj.*;
-import main.libgdx.screens.map.sfx.MapParticleManager;
+import main.libgdx.screens.map.sfx.MapAlphaLayers;
+import main.libgdx.screens.map.sfx.MapMoveLayers;
+import main.libgdx.screens.map.sfx.MapParticles;
 import main.libgdx.shaders.DarkShader;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -33,14 +36,15 @@ import static main.system.MapEvent.*;
  */
 public class MapScreen extends GameScreen {
 
-    public final static String defaultPath = "global\\Ersidris Print mixed no text.png";
+    public final static String defaultPath = "global\\map\\ersidris plain.jpg";
     private static MapScreen instance;
     //    private RealTimeGameLoop realTimeGameLoop;
-    private MapParticleManager particleManager;
+    private MapParticles particleManager;
     protected MapGuiStage guiStage;
     private Stage objectStage;
     private  Stage mapStage;
     private Image map;
+    private MapMoveLayers moveLayerMaster;
 
     protected MapScreen() {
 
@@ -60,6 +64,8 @@ public class MapScreen extends GameScreen {
         guiStage =createGuiStage();
         objectStage = new Stage(viewPort, getBatch());
         mapStage = new  Stage(viewPort, getBatch());
+        new MapAlphaLayers(mapStage).init();
+        new MapParticles(mapStage).init();
 //        emitterMap = new MacroEmitterMap();
         super.preLoad();
         initGl();
@@ -71,6 +77,11 @@ public class MapScreen extends GameScreen {
                 map.remove();
             map = new Image(backTexture);
             mapStage.addActor(map);
+            map.setZIndex(0);
+            moveLayerMaster = new MapMoveLayers(backTexture.getRegionWidth(),
+             backTexture.getRegionHeight());
+            mapStage.addActor(moveLayerMaster);
+            moveLayerMaster.setTime(DAY_TIME.NOON);
         });
 
         new Thread(() -> {

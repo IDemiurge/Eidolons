@@ -44,4 +44,8 @@ public  class SuperContainer extends SuperActor {
         if (fluctuateAlpha)
         super.alphaFluctuation(content, delta);
     }
+
+    public void setFluctuateAlpha(boolean fluctuateAlpha) {
+        this.fluctuateAlpha = fluctuateAlpha;
+    }
 }

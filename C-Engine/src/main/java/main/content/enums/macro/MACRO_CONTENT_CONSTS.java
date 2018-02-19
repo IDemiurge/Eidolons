@@ -4,7 +4,10 @@ public class MACRO_CONTENT_CONSTS {
 
     public static final String PLACE_POSITION_VAR = "x;y";
 
-    public enum TERRAIN_TYPE {
+    public enum DAY_TIME {
+        DAWN, NOON, DUSK, MIDNIGHT
+    }
+        public enum TERRAIN_TYPE {
         PLAINS, MOUNTAINS, UNDERGROUND, HILLS, FOREST, SWAMP, TUNDRA, DESERT,
         JUNGLE, SEA, CITY
 

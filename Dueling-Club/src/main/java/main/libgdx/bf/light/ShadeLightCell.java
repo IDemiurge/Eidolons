@@ -205,10 +205,7 @@ public class ShadeLightCell extends SuperContainer {
         return new Float(RandomWizard.getRandomInt((int) (super.getAlphaFluctuationPerDelta() * 50))) / 100;
     }
 
-    @Override
-    protected float getFluctuatingAlpha() {
-        return super.getFluctuatingAlpha();
-    }
+
 
     @Override
     public void act(float delta) {
