@@ -86,4 +86,6 @@ public class MapGuiStage extends GuiStage {
         actionPanel.setUserObject(party);
         dirty = true;
     }
+
+
 }

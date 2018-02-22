@@ -6,10 +6,13 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.gui.map.obj.MapObjComp;
 import main.game.module.adventure.map.Area;
-import main.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
 import main.game.module.adventure.map.MacroCoordinates;
+import main.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
+import main.game.module.adventure.map.Region;
+import main.system.auxiliary.StringMaster;
 
 public abstract class MapObj extends MacroObj {
 
@@ -39,7 +42,14 @@ public abstract class MapObj extends MacroObj {
         setMapRenderPoint(new MacroCoordinates(x, y));
 
     }
-
+    public void setRegion(Region region) {
+        getRef().setMacroId(MACRO_KEYS.REGION, region.getId());
+        this.region = region;
+    }
+    @Override
+    public String getNameAndCoordinate() {
+        return getName() + StringMaster.wrapInParenthesis(getX() + "," + getY());
+    }
     public abstract int getDefaultSize();
 
     public Coordinates getDefaultMapRenderPoint() {

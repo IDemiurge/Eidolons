@@ -1,14 +1,17 @@
 package main.libgdx.screens.map.editor;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.entity.type.ObjType;
 import main.game.module.adventure.MacroGame;
+import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.entity.MacroObj;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
+import main.game.module.adventure.map.Region;
 import main.libgdx.GdxMaster;
 import main.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import main.libgdx.screens.map.obj.MapActor;
@@ -26,23 +29,56 @@ public class EditorManager {
     private static Map<MapActor, MacroObj> actorObjMap = new HashMap<>();
 
     public static void add(int screenX, int screenY) {
+        MAP_EDITOR_MOUSE_MODE mode = EditorManager.getMode();
+       /*
+       add listener to each actor
+        */
+        Vector2 v = EditorMapView.getInstance().getMapStage().
+         screenToStageCoordinates(new Vector2(screenX, screenY));
+        int x = (int) v.x;
+        int y = (int) v.y;
+        if (mode != null)
+            switch (mode) {
+                case POINT:
+                    MacroManager.getPointMaster().clicked(x, y);
+                    return ;
+                case EMITTER:
+                    try {
+                        EditorMapView.getInstance().getEditorParticles().clicked( x, y);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+                    return;
+            }
+
         ObjType type = EditorMapView.getInstance().getGuiStage().getPalette().getSelectedType();
-if (type==null )
-    return ;
+        if (type == null)
+            return;
         MacroObj obj = create(type);
         added(obj, screenX, screenY);
     }
 
-    public static void added(MacroObj obj, Integer screenX, Integer screenY) {
-        if (screenX != null)
-            obj.setX((int) (screenX+EditorMapView.getInstance().getCamera().position.x
-            -GdxMaster.getWidth()/2));
-        if (screenY != null)
-            obj.setY((int) (GdxMaster.getHeight()/2- screenY+
-             EditorMapView.getInstance().getCamera().position.y  ));
+    public static void added(MacroObj obj, Integer x, Integer y) {
+        if (x != null)
+            obj.setX((int) (x + EditorMapView.getInstance().getCamera().position.x
+             - GdxMaster.getWidth() / 2));
+        if (y != null)
+            obj.setY((int) (GdxMaster.getHeight() / 2 - y +
+             EditorMapView.getInstance().getCamera().position.y));
+        assignRegion(obj, x, y);
         GuiEventManager.trigger((obj instanceof Place) ?
          MapEvent.CREATE_PLACE :
          MapEvent.CREATE_PARTY, obj);
+    }
+
+    private static void assignRegion(MacroObj obj, Integer x, Integer y) {
+        Region r= null ;
+    for (Region sub:     obj.getGame().getRegions()){
+//        if (new Rectangle(sub.getX(), sub.getY(), sub.getWidth(),
+//         sub.getHeight()).contains(new Point(x, y)))
+            r = sub;
+        }
+        obj.getRef().setRegion(r);
     }
 
     private static <E extends MapActor> MacroObj create(ObjType type) {
@@ -74,5 +110,19 @@ if (type==null )
 
     public static void map(MapActor actor, MacroObj obj) {
         actorObjMap.put(actor, obj);
+    }
+
+    public static void undo() {
+        switch (mode) {
+            case CLEAR:
+                break;
+            case TRACE:
+                break;
+            case ADD:
+                break;
+            case EMITTER:
+                EditorMapView.getInstance().getEditorParticles().removeLast();
+                break;
+        }
     }
 }

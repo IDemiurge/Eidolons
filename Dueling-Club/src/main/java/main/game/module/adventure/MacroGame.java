@@ -2,6 +2,7 @@ package main.game.module.adventure;
 
 import main.client.cc.logic.party.Party;
 import main.content.OBJ_TYPE;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.DC_IdManager;
@@ -19,6 +20,7 @@ import main.game.module.adventure.map.Route;
 import main.game.module.adventure.rules.HungerRule;
 import main.game.module.adventure.rules.TurnRule;
 import main.game.module.adventure.town.Town;
+import main.libgdx.screens.map.editor.PointMaster;
 import main.system.datatypes.DequeImpl;
 
 /*
@@ -36,6 +38,10 @@ public class MacroGame extends Game {
     DequeImpl<TurnRule> turnRules;
     private main.game.module.adventure.global.Campaign campaign;
     private GameLoop loop;
+    private DAY_TIME time=DAY_TIME.NOON;
+    private PointMaster pointMaster;
+    private RouteMaster routeMaster;
+    private Thread gameLoopThread;
 
     // ...masters
 
@@ -107,7 +113,12 @@ public class MacroGame extends Game {
 //            playerParty.setCurrentPlace(location);
 //        }
 
+
+        pointMaster = new PointMaster();
+        routeMaster=new RouteMaster();
+
     }
+
 
     private ObjType getMacroPartyType(Party party) {
         ObjType type = new ObjType(party.getType());
@@ -129,7 +140,11 @@ public class MacroGame extends Game {
     @Override
     public void start(boolean host) {
         getManager().getStateManager().resetAllSynchronized();
+        loop = new MacroGameLoop(this);
+        setGameLoopThread(loop.startInNewThread());
 
+        setRunning(true);
+        setStarted(true);
     }
 
     @Override
@@ -217,5 +232,25 @@ public class MacroGame extends Game {
 
     public void setLoop(GameLoop loop) {
         this.loop = loop;
+    }
+
+    public DAY_TIME getTime() {
+        return time;
+    }
+
+    public void setTime(DAY_TIME time) {
+        this.time = time;
+    }
+
+    public PointMaster getPointMaster() {
+        return pointMaster;
+    }
+
+    public void setGameLoopThread(Thread gameLoopThread) {
+        this.gameLoopThread = gameLoopThread;
+    }
+
+    public Thread getGameLoopThread() {
+        return gameLoopThread;
     }
 }

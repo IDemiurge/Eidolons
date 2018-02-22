@@ -11,7 +11,6 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -27,14 +26,14 @@ import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
 import main.swing.generic.services.dialog.DialogMaster;
-import main.system.content.BfObjPropGenerator;
-import main.system.content.ContentGenerator;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.content.BfObjPropGenerator;
+import main.system.content.ContentGenerator;
 import main.system.math.DC_MathManager;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
@@ -49,8 +48,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ModelManager {
@@ -781,7 +780,7 @@ public class ModelManager {
             if (ArcaneVault.isMacroMode()) {
 
                 for (String type : XML_Reader.getTypeMaps().keySet()) {
-                    save(MACRO_OBJ_TYPES.getType(type));
+                    save(ContentManager.getOBJ_TYPE(type));
 
                 }
             } else {

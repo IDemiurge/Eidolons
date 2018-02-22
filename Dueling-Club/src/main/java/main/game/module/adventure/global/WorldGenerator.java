@@ -1,5 +1,6 @@
 package main.game.module.adventure.global;
 
+import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
@@ -10,6 +11,7 @@ import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
@@ -68,7 +70,12 @@ public class WorldGenerator {
             region.getAreas().add(area);
         }
         for (String s : StringMaster.open(region
-                .getProperty(MACRO_PROPS.PLACES))) {
+         .getProperty(MACRO_PROPS.PARTIES))) {
+            MacroParty party = createParty(ref, s);
+            region.addParty(party);
+        }
+        for (String s : StringMaster.open(region
+         .getProperty(MACRO_PROPS.PLACES))) {
             Place place = createPlace(ref, s);
             region.addPlace(place);
         }
@@ -87,6 +94,10 @@ public class WorldGenerator {
 		 * "default" (preset) and then we can generate additional randomized
 		 * routes For non-preset Places, we can use some metrics...
 		 */
+    }
+
+    private static MacroParty createParty(MacroRef ref, String s) {
+        return new MacroParty(DataManager.getType(s, DC_TYPE.PARTY), ref.getGame(), ref);
     }
 
     private static void generateRoutes() {

@@ -4,6 +4,7 @@ import main.client.dc.Launcher;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -22,6 +23,7 @@ import main.game.module.adventure.gui.WorldEditorInterface;
 import main.game.module.adventure.gui.map.MapView;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
+import main.libgdx.screens.map.editor.PointMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
@@ -34,9 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
-import static main.system.MapEvent.CREATE_PARTY;
-import static main.system.MapEvent.CREATE_PLACE;
-import static main.system.MapEvent.MAP_READY;
+import static main.system.MapEvent.*;
 
 public class MacroManager {
     private final static String defaultWorldName = "Test World";
@@ -77,36 +77,42 @@ public class MacroManager {
     public static void newGame() {
         newGame(scenario);
     }
-        public static void newGame(String scenario) {
+
+    public static void newGame(String scenario) {
         load = false;
-        metaMaster = new ScenarioMetaMaster(scenario ){
+        metaMaster = new ScenarioMetaMaster(scenario) {
             @Override
-            protected PartyManager  createPartyManager() {
+            protected PartyManager createPartyManager() {
                 return new MacroPartyManager(this);
             }
         };
-            if (!CoreEngine.isMapEditor()) {
-        metaMaster.init();
-        if (metaMaster.getPartyManager().getParty() == null)
-            return;
-            }
+        if (!CoreEngine.isMapEditor()) {
+            metaMaster.init();
+            if (metaMaster.getPartyManager().getParty() == null)
+                return;
+        }
         game = new MacroGame();
         MacroGame.setGame(game);
         game.init();
 //        MacroEngine.init();
-//        game.start(true);
+        game.start(true);
 
-        GuiEventManager.bind(MAP_READY, p->{
+        GuiEventManager.bind(MAP_READY, p -> {
             initComponents();
         });
         GuiEventManager.trigger(SCREEN_LOADED);
+
     }
 
     private static void initComponents() {
         GuiEventManager.trigger(CREATE_PARTY,
-        game.getPlayerParty());
-        for (Region sub:     game.getWorld().getRegions()) {
-            for (Place sub1 : sub.getPlaces()) {
+         game.getPlayerParty());
+        for (Region sub : game.getWorld().getRegions()) {
+            for (MacroParty sub1 : sub.getParties()) {
+                GuiEventManager.trigger(CREATE_PARTY,
+                 sub1);
+            }
+                for (Place sub1 : sub.getPlaces()) {
                 GuiEventManager.trigger(CREATE_PLACE,
                  sub1);
             }
@@ -115,12 +121,30 @@ public class MacroManager {
 
     public static void saveTheWorld() {
         //all locations to regions, etc
-    for (Place sub:     getGame().getState().getPlaces()){
+        for (Region region : getGame().getState().getRegions()) {
+            String places = "";
+            for (Place sub : getGame().getPlaces()) {
+                if (sub.getRegion()!=region)
+                    continue;
+                places +=
+                 sub.getNameAndCoordinate()+";";
+            }
+            region.setProperty(MACRO_PROPS.PLACES, places, true);
+
+            String parties = "";
+            for (MacroParty sub : getGame().getParties()) {
+              if (sub.getRegion()!=region)
+                    continue;
+                places +=
+                 sub.getNameAndCoordinate()+";";
+            }
+            region.setProperty(MACRO_PROPS.PARTIES, parties, true);
 
         }
-
+        XML_Writer.writeXML_ForTypeGroup(MACRO_OBJ_TYPES.REGION);
 
     }
+
     public static void exitGame() {
         if (game == null) {
             return;
@@ -494,6 +518,11 @@ public class MacroManager {
     public static boolean isLoad() {
         return load;
     }
+
+    public static PointMaster getPointMaster() {
+        return getGame().getPointMaster();
+    }
+
 
 
     // each object must maintain its values dynamically, always...

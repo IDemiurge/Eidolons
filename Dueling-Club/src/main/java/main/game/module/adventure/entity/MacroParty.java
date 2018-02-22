@@ -15,7 +15,6 @@ import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
-import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
 import main.game.module.adventure.town.Town;
 import main.game.module.adventure.travel.RestMaster;
@@ -26,10 +25,9 @@ import main.system.math.MathMaster;
 import javax.swing.*;
 import java.util.List;
 
-public class MacroParty extends MacroObj {
+public class MacroParty extends MapObj {
     private Route currentRoute;
     private Place currentPlace;
-    private Region region;
     private Town town;
     private Place lastLocation;
     private Place currentDestination;
@@ -262,14 +260,6 @@ public class MacroParty extends MacroObj {
 
     }
 
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        getRef().setMacroId(MACRO_KEYS.REGION, region.getId());
-        this.region = region;
-    }
 
     public Town getTown() {
         return town;
@@ -396,5 +386,10 @@ public class MacroParty extends MacroObj {
         }
         return "Companion";
 //        return "Mercenary";
+    }
+
+    @Override
+    public int getDefaultSize() {
+        return 96;
     }
 }

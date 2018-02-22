@@ -115,8 +115,8 @@ public class EmitterPresetMaster {
         }
         String name = StringMaster.getLastPathSegment(imagePath);
         //generic
-        imagePath = PathFinder.getParticleImagePath() + "\\" + name;
-        file = Gdx.files.internal(imagePath);
+        imagePath = PathFinder.getParticleImagePath();
+        file = Gdx.files.internal(imagePath + "\\" + name);
         if (file.exists()) {
             return imagePath;
         }
@@ -130,7 +130,7 @@ public class EmitterPresetMaster {
 //            return imagePath;
 
         imagePath += "particles\\";
-        file = Gdx.files.internal(imagePath);
+        file = Gdx.files.internal(imagePath + "\\" + name);
         if (file.exists()) {
             return imagePath;
         }
@@ -173,9 +173,12 @@ public class EmitterPresetMaster {
     }
 
     public String getImagePath(String path) {
+        String imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
+        if (StringMaster.isEmpty(imgPath)) {
+            imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
+        }
+        return imgPath;
 
-        return
-                getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
     }
 
     public String getValueFromGroup(String path, EMITTER_VALUE_GROUP group, String value) {
@@ -288,7 +291,7 @@ public class EmitterPresetMaster {
 
     public String getGroupText(String data, EMITTER_VALUE_GROUP group) {
         //TODO for multi emitters?!
-        String[] parts = data.split(group.name + " - \n");
+        String[] parts = data.split(group.name + "s - \n");
         String valuePart = null;
 
         if (parts.length == 1) {
@@ -358,7 +361,7 @@ public class EmitterPresetMaster {
         Rotation(true),
         Scale,
         Premultiplied_Alpha,
-        Percentage_Of_Lagging_Particles;
+        Percentage_Of_Lagging_Particles, Image_Paths;
         private boolean container;
         private String name;
 

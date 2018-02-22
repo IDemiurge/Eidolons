@@ -2,6 +2,8 @@ package main.libgdx.screens.map.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import main.game.module.adventure.global.GameDate;
+import main.libgdx.bf.generic.ImageContainer;
+import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.DynamicTooltip;
 
 /**
@@ -19,9 +21,30 @@ import main.libgdx.gui.tooltips.DynamicTooltip;
  * dawn/noon/dusk/night
  */
 public class MapTimePanel extends Group{
+
+    ImageContainer sun;
+    ImageContainer activeMoon;
+    ImageContainer moonCircle;
+    ValueContainer dateContainer;
+
     @Override
     public void act(float delta) {
         super.act(delta);
+       /*
+       elapsed+=delta*mod;
+        DAY_TIME time;
+        if (time!=this.time){
+            update();
+        }
+
+
+
+        moveSun();
+        moveMoons();
+        adjustSun();
+        adjustMoons();
+        rotate();
+        */
     }
 
     public void init(){

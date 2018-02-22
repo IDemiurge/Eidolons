@@ -38,14 +38,14 @@ public class MacroGameState extends GameState {
         }
 
         if (obj instanceof Place) {
-            places.add((Place) obj);
 
             if (obj instanceof Town) {
                 towns.add((Town) obj);
-            }
+            } else
             if (obj instanceof Route) {
                 routes.add((Route) obj);
-            }
+            } else
+                places.add((Place) obj);
 
         } else if (obj instanceof Region) {
             regions.add((Region) obj);

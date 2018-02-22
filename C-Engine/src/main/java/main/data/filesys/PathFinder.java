@@ -293,4 +293,23 @@ public class PathFinder {
         return StrPathBuilder.build(getEnginePathPlusNewResourceProject(),
          "video") + StringMaster.getPathSeparator();
     }
+
+    public static String getMacroImgPath() {
+        return StrPathBuilder.build(getImagePath(),
+         "global") + StringMaster.getPathSeparator();
+    }
+
+    public static String getMacroPath() {
+        return StrPathBuilder.build(getXML_PATH(),
+         "macro") + StringMaster.getPathSeparator();
+    }
+
+    public static String getRouteImagePath() {
+        return
+        StrPathBuilder.build(getMacroImgPath(), "routes")+ StringMaster.getPathSeparator();
+    }
+
+    public static String getMapLayersPath() {
+        return StrPathBuilder.build(getMacroImgPath(), "map", "layers")+ StringMaster.getPathSeparator();
+    }
 }

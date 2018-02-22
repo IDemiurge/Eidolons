@@ -34,29 +34,32 @@ public class MapAlphaLayers {
 //        VOLCANO_FIRE,
 //        NIGHT_TIME,
 //        SMOKE,
-        FULL(0.1f, 0.5f, 0.5f),
+FULL(0.1f, 0.5f, 0.5f, 0.5f),
+        MIST_SHADOW(0.1f, 0.8f, 0.6f, 0.1f),
     ;
         float alphaStep;
         float alphaMin;
         float alphaMax;
-        float pauses;
+        float pauseAtZero;
+        float pauseAtFull;
         float randomness;
         float x, y=0;
 
         MAP_LAYER_TYPE() {
         }
 
-        MAP_LAYER_TYPE(float alphaStep, float pauses, float randomness) {
+        MAP_LAYER_TYPE(float alphaStep, float randomness,float pauseAtZero, float pauseAtFull) {
             this.alphaStep = alphaStep;
-            this.pauses = pauses;
+            this.pauseAtZero = pauseAtZero;
+            this.pauseAtFull = pauseAtFull;
             this.randomness = randomness;
         }
 
-        MAP_LAYER_TYPE(float alphaStep, float alphaMin, float alphaMax, float pauses, float randomness) {
+        MAP_LAYER_TYPE(float alphaStep, float alphaMin, float alphaMax, float pauseAtZero, float randomness) {
             this.alphaStep = alphaStep;
             this.alphaMin = alphaMin;
             this.alphaMax = alphaMax;
-            this.pauses = pauses;
+            this.pauseAtZero = pauseAtZero;
             this.randomness = randomness;
         }
         //IDEA: link layers in alpha sync or conter-phase
@@ -95,8 +98,8 @@ public class MapAlphaLayers {
                 container.setFluctuateAlpha(true);
                 layers.add( container);
                 container.setFluctuatingAlpha(RandomWizard.getRandomFloatBetween(type.alphaMin, type.alphaMax));
-                container.setFluctuatingAlphaPauseDuration(type.pauses);
-                container.setFluctuatingFullAlphaDuration(type.pauses);
+                container.setFluctuatingAlphaPauseDuration(type.pauseAtZero);
+                container.setFluctuatingFullAlphaDuration(type.pauseAtFull);
                 container.setAlphaStep(type.alphaStep);
                 container.setFluctuatingAlphaRandomness(type.randomness);
 

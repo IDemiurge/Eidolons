@@ -16,7 +16,14 @@ import java.util.List;
 public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     protected HashMap<String, T> tabsToNamesMap;
     private List<T> tabs = new ArrayList<>();
-    private ButtonGroup<Button> buttonGroup = new ButtonGroup<>();
+    private String selectedTab;
+    private ButtonGroup<Button> buttonGroup = new ButtonGroup<Button>(){
+        @Override
+        public void setChecked(String tabName) {
+            super.setChecked(tabName);
+            selectedTab = tabName;
+        }
+    };
     private Cell<T> panelLayout;
     private TablePanel<Button> buttonLayout;
 
@@ -44,6 +51,10 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         initContainer();
     }
 
+    public String getSelectedTab() {
+        return selectedTab;
+    }
+
     public void addTab(T actor, String tabName) {
         TextButton b = new TextButton(tabName, getButtonStyle());
 
@@ -51,21 +62,27 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
             initContainer();
         }
 
-        int indx = tabs.size();
         b.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                buttonGroup.setChecked(tabName);
-                panelLayout.setActor(tabs.get(indx));
+               tabSelected(tabName);
                 return true;
+
             }
-        });
+        }
+        );
+
         buttonGroup.add(b);
         buttonLayout.add(b).left();
 
         tabs.add(actor);
         buttonGroup.setChecked(tabName);
         tabsToNamesMap.put(tabName, actor);
+    }
+
+    public void tabSelected(String tabName) {
+        buttonGroup.setChecked(tabName);
+        panelLayout.setActor(tabsToNamesMap.get(tabName));
     }
 
     public void resetCheckedTab() {

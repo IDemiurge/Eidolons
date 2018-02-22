@@ -1,6 +1,7 @@
 package main.libgdx.stage;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -17,6 +18,7 @@ import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
+import main.libgdx.utils.TextInputPanel;
 import main.system.GuiEventManager;
 
 import java.util.ArrayList;
@@ -28,6 +30,9 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
  * Created by JustMe on 2/9/2018.
  */
 public class GuiStage extends Stage implements StageWithClosable{
+
+    private TextInputPanel tf;
+
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
@@ -166,6 +171,15 @@ public class GuiStage extends Stage implements StageWithClosable{
             return true;
         return super.keyTyped(character);
     }
+    public void textInput(TextInputListener textInputListener, String title, String text, String hint) {
+if (tf==null )
+    tf = new TextInputPanel(title, text, hint, textInputListener);
+        tf.setPosition(GdxMaster.centerWidth(tf),GdxMaster.centerHeight(tf));
+//textInputListener.input(text);
+        tf.setVisible(true);
+
+    }
+
 
     protected boolean handleKeyTyped(char character) {
        return DC_Game.game.getKeyManager().handleKeyTyped(0, character); }

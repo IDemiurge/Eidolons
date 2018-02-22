@@ -39,6 +39,10 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
         return backTexture;
     }
 
+    public InputController getController() {
+        return controller;
+    }
+
     protected void initGl() {
         GL30 gl = Gdx.graphics.getGL30();
         if (gl != null) {

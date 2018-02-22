@@ -14,6 +14,7 @@ import main.game.module.adventure.gui.map.obj.PlaceComp;
 import main.game.module.adventure.map.area.AreaManager;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.travel.TravelMasterOld;
+import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 public class Place extends MapObj {
@@ -32,6 +33,7 @@ public class Place extends MapObj {
 
         }
     }
+
 
     public Area getArea() {
         if (area == null) {

@@ -20,28 +20,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
-import static com.badlogic.gdx.Input.Keys.*;
+import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
+import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
 
 /**
  * Created by PC on 25.10.2016.
  */
 public abstract class InputController implements InputProcessor, GestureDetector.GestureListener {
-    private static final float MARGIN = 300;
-    private OrthographicCamera camera;
-    private boolean isLeftClick = false;
-    private boolean alt = false;
-    private boolean ctrl = false;
-    private char lastTyped;
-    private List<String> charsUp = new ArrayList<>();
-    private float width;
-    private float height;
+    protected static final float MARGIN = 300;
+    protected OrthographicCamera camera;
+    protected boolean isLeftClick = false;
+    protected boolean alt = false;
+    protected boolean ctrl = false;
+    protected char lastTyped;
+    protected List<String> charsUp = new ArrayList<>();
+    protected float width;
+    protected float height;
     float halfWidth;
     float halfHeight;
-    private static float zoomStep= OptionsMaster.getGraphicsOptions().
+    protected static float zoomStep= OptionsMaster.getGraphicsOptions().
      getIntValue(GRAPHIC_OPTION.ZOOM_STEP)/new Float(100);
-    private int mouseButtonPresed;
-    private float xTouchPos;
-    private float yTouchPos;
+    protected int mouseButtonPresed;
+    protected float xTouchPos;
+    protected float yTouchPos;
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -79,7 +80,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         // alt = 57, crtl = 129
     }
 
-    private boolean isBlocked() {
+    protected boolean isBlocked() {
         if (OptionsMaster.isMenuOpen()|| GameMenu.menuOpen)
             return true;
         return false;
@@ -141,7 +142,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         mouseInput();
         if (isBlocked())
             return true;
-        if (button == LEFT) {
+        if (button == LEFT || button == 1 ) {
             xTouchPos = screenX;
             yTouchPos = screenY;
             isLeftClick = true;
@@ -169,7 +170,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         mouseInput();
         if (isBlocked())
             return true;
-        if (mouseButtonPresed == LEFT || mouseButtonPresed== RIGHT) {
+        if (mouseButtonPresed == LEFT  ) {
             tryPullCameraX(screenX);
             tryPullCameraY(screenY);
             cameraStop();
@@ -181,20 +182,20 @@ public abstract class InputController implements InputProcessor, GestureDetector
     protected void cameraStop() {
     }
 
-    private void tryPullCameraY(int screenY) {
+    protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom;
             camera.position.y=  MathMaster.getMinMax(
-             camera.position.y - diffY-getMargin(),
-             halfHeight,
+             camera.position.y - diffY,
+             halfHeight-getMargin(),
              getHeight() - halfHeight+getMargin());
             yTouchPos=screenY;
     }
 
-    private void tryPullCameraX(int screenX) {
+    protected void tryPullCameraX(int screenX) {
         float diffX = (xTouchPos - screenX) * camera.zoom;
         camera.position.x=  MathMaster.getMinMax(
-         camera.position.x + diffX-getMargin(),
-         halfWidth,
+         camera.position.x + diffX,//-getMargin(),
+         halfWidth-getMargin(),
          getWidth() - halfWidth+getMargin());
             xTouchPos=screenX;
     }
@@ -211,7 +212,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         centerAt(DC_Game.game.getPlayer(true).getHeroObj().getCoordinates());
     }
 
-    private void centerAt(Coordinates coordinates) {
+    protected void centerAt(Coordinates coordinates) {
         float x = coordinates.x * GridConst.CELL_W * camera.zoom;
         float y = coordinates.x * GridConst.CELL_W * camera.zoom;
         camera.position.set(x, y, 0);
@@ -232,7 +233,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         return false;
     }
 
-    private void zoom(int i) {
+    protected void zoom(int i) {
         if (!alt && !ctrl) {
             if (i == 1) {
 

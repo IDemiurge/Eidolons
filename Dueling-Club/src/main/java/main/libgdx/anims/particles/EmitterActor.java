@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.game.bf.Coordinates;
+import main.libgdx.bf.SuperActor;
 
 /**
  * Created by JustMe on 1/10/2017.
  */
-public class EmitterActor extends Actor implements ParticleInterface {
+public class EmitterActor extends SuperActor implements ParticleInterface {
 
     static public boolean spriteEmitterTest = false;
     private final int defaultCapacity = 12;
@@ -28,6 +28,10 @@ public class EmitterActor extends Actor implements ParticleInterface {
     private Coordinates target;
     private boolean test;
 
+    @Override
+    public boolean isIgnored() {
+        return super.isIgnored();
+    }
 
     public EmitterActor(SFX fx) {
         this(fx.path);
@@ -138,5 +142,9 @@ public class EmitterActor extends Actor implements ParticleInterface {
 
     public void reset() {
         getEffect().reset();
+    }
+
+    public String getPath() {
+        return path;
     }
 }

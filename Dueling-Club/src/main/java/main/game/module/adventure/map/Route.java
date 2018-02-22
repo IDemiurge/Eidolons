@@ -9,10 +9,10 @@ import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.gui.MacroGuiManager;
 import main.game.module.adventure.gui.map.obj.RouteComp;
 import main.game.module.adventure.town.Town;
-import main.game.module.adventure.entity.MacroParty;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -26,6 +26,8 @@ public class Route extends Place {
     private DequeImpl<Town> towns = new DequeImpl<>();
     private DequeImpl<Route> routes = new DequeImpl<>();
     private boolean coordinatesValid;
+    private String destinationPoint;
+    private String originPoint;
 
     public Route(MacroGame game, ObjType type, MacroRef ref) {
         super(game, type, ref);
@@ -45,6 +47,15 @@ public class Route extends Place {
         if (getArea() == null) {
             setArea(orig.getArea());
         }
+        setCoordinates(new Coordinates(true, getRouteImage().split("_")[1]));
+    }
+
+    public Route(ObjType type, String img, String orig, String dest, Coordinates coordinates) {
+        super(MacroGame.getGame(), type, new MacroRef());
+        originPoint = orig;
+      destinationPoint = dest;
+        setProperty(MACRO_PROPS.MAP_IMAGE, img, true);
+        setCoordinates(coordinates);
     }
 
     public DequeImpl<Route> getLinkedRoutes() {
@@ -77,6 +88,9 @@ public class Route extends Place {
 
     public void setDestination(Place dest) {
         this.dest = dest;
+        if (dest != null)
+        dest.addRoute(this);
+
     }
 
     public Area getArea() {
@@ -95,6 +109,8 @@ public class Route extends Place {
 
     public void setOrigin(Place orig) {
         this.orig = orig;
+        if (orig != null)
+        orig.addRoute(this);
     }
 
     public void addLinkedPlace(Place place) {
@@ -203,5 +219,21 @@ public class Route extends Place {
     @Override
     public int getDefaultSize() {
         return RouteComp.DEFAULT_SIZE;
+    }
+
+    public String getRouteImage() {
+        return getProperty(MACRO_PROPS.MAP_IMAGE);
+    }
+
+    public String getDestinationPoint() {
+        return destinationPoint;
+    }
+
+    public void setDestinationPoint(String destinationPoint) {
+        this.destinationPoint = destinationPoint;
+    }
+
+    public String getOriginPoint() {
+        return originPoint;
     }
 }

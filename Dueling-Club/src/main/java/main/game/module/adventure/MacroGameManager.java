@@ -1,5 +1,6 @@
 package main.game.module.adventure;
 
+import com.badlogic.gdx.math.Vector2;
 import main.ability.effects.Effect;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.elements.Filter;
@@ -10,16 +11,18 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.game.core.game.GameManager;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.module.adventure.entity.MacroActionManager;
 import main.game.module.adventure.entity.MacroObj;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.gui.map.MapComp;
-import main.game.module.adventure.rules.TurnRule;
+import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.area.AreaManager;
-import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.rules.TurnRule;
 import main.game.module.adventure.travel.TravelMasterOld;
 import main.game.module.adventure.utils.SaveMaster;
 import main.system.audio.DC_SoundMaster;
@@ -242,4 +245,20 @@ public class MacroGameManager extends GameManager {
     }
 
 
+    public Place getPlaceForPoint(String point) {
+//        Map<String, Place> map = new HashMap<>();
+        //get closest?
+        float minDistance = Float.MAX_VALUE;
+        Coordinates c = getGame().getPointMaster().getCoordinates(point);
+        Place place=null ;
+        for (Place sub : getGame().getPlaces()) {
+            float distance = new Vector2(c.x, c.y).dst(new Vector2(sub.getX(), sub.getY()));
+            if (distance < minDistance) {
+                minDistance=distance;
+                place = sub;
+            }
+            //can we not attach click listeners to emtiterActors?!
+        }
+        return place;
+    }
 }

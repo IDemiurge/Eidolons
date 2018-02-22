@@ -27,6 +27,7 @@ public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
     public PlaceActor get(Place place) {
         PlaceActorParameters parameters = new PlaceActorParameters();
         parameters.mainIcon = TextureCache.getOrCreateR(place.getIconPath());
+        parameters.place = place ;
         parameters.name = place.getName();
         parameters.position = new Vector2(
          place.getX(),
@@ -52,5 +53,6 @@ public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
         public Color color;
         public String name;
         TextureRegion preview;
+          Place place;
     }
 }

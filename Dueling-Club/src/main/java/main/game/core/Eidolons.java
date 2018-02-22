@@ -19,6 +19,7 @@ import main.game.core.state.DC_StateManager;
 import main.libgdx.GdxMaster;
 import main.libgdx.launch.GenericLauncher;
 import main.libgdx.launch.ScenarioLauncher;
+import main.libgdx.screens.GameScreen;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.GuiEventManager;
@@ -52,6 +53,7 @@ public class Eidolons {
     private static GenericLauncher launcher;
     private static Party party;
     private static boolean battleRunning;
+    private static GameScreen screen;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -227,4 +229,9 @@ public class Eidolons {
     public static void setBattleRunning(boolean battleRunning) {
         Eidolons.battleRunning = battleRunning;
     }
+
+    public static GameScreen getScreen() {
+        return (GameScreen) getLauncher().getScreen();
+    }
+
 }

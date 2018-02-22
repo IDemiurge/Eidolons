@@ -7,9 +7,12 @@ import main.entity.type.ObjType;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.entity.MacroObj;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.town.Town;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
+
+import java.util.List;
 
 public class Region extends MacroObj {
     private float milesToPixels;
@@ -23,6 +26,7 @@ public class Region extends MacroObj {
     private DequeImpl<Town> towns = new DequeImpl<>();
     private DequeImpl<Route> routes = new DequeImpl<>();
     private DequeImpl<Area> areas = new DequeImpl<>();
+    private List<MacroParty> parties;
 
     // ++ AREAS?
     public Region(MacroGame game, ObjType type, Ref ref) {
@@ -128,6 +132,7 @@ public class Region extends MacroObj {
     public void addRoute(Route route) {
         if (!getRoutes().contains(route)) {
             getRoutes().add(route);
+            route.setRegion(this);
         }
     }
 
@@ -147,4 +152,15 @@ public class Region extends MacroObj {
         return getArea(type.getProperty(MACRO_PROPS.AREA));
     }
 
+    public List<MacroParty> getParties() {
+        return parties;
+    }
+
+    public void addParty(MacroParty party) {
+        if (parties.contains(party)) {
+            return;
+        }
+        party.setRegion(this);
+        parties.add(party);
+    }
 }

@@ -14,10 +14,10 @@ import main.game.module.adventure.utils.MacroContentManager;
 
 public class MacroObj extends Obj {
 
-    private int x;
-    private int y;
-    private Region region;
-    private MacroCoordinates coordinates;
+    protected int x;
+    protected int y;
+    protected Region region;
+    protected MacroCoordinates coordinates;
 
     public MacroObj(MacroGame game, ObjType type, Ref ref, Player owner) {
         super(type, owner, game, ref);
@@ -90,10 +90,10 @@ public class MacroObj extends Obj {
     }
 
     public Region getRegion() {
-        if (region == null) {
-            region = getRef().getRegion();
-        }
-        return region;
+//        if (region == null) {
+           return  getRef().getRegion();
+//        }
+//        return region;
     }
 
 	/*

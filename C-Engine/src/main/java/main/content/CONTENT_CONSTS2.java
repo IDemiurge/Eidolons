@@ -7,6 +7,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -43,7 +44,27 @@ public class CONTENT_CONSTS2 {
         LIMB, HEAD, BODY, INTERNAL
     }
 
-    public enum SFX {
+    public enum MIST_SFX_SUFFIX {
+        LIGHT,
+        THICK,
+        WIND,
+
+    }
+        public enum MIST_SFX {
+            WHITE_MIST,
+            CYAN_MIST,
+            DARK_MIST,
+            CLOUDS,
+            ;
+public String getPath(){
+    return StrPathBuilder.build("mist", name().replace("_", " "));
+}
+            MIST_SFX() {
+
+            }
+        }
+        public enum SFX {
+        DARK_MIST("mist\\dark mist"),
         SMOKE_TEST("Smoke_Test1.pt"),
         DARK_SOULS("dark souls"),
         DARK_SOULS2("dark souls2"),

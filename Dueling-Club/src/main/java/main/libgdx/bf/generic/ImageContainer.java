@@ -22,7 +22,7 @@ public class ImageContainer extends  SuperContainer {
 
     @Override
     public void setPosition(float x, float y) {
-        getContent().setPosition(x, y);
+        super.setPosition(x, y);
     }
 
     @Override

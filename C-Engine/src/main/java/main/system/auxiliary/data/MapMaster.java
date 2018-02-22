@@ -17,6 +17,14 @@ public class MapMaster<E, T> {
             map.put(key, new Integer(i + n));
         }
     }
+    public static void addToFloatMap(Map map, Object key, Float n) {
+        Float i = (Float) map.get(key);
+        if (i == null) {
+            map.put(key, n);
+        } else {
+            map.put(key, new Float(i + n));
+        }
+    }
 
     public HashMap<E, T> cloneHashMap(Map<E, T> map) {
         HashMap<E, T> clone = new HashMap<E, T>();

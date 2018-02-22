@@ -3,8 +3,10 @@ package main.game.module.adventure.entity;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.DC_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
+import main.data.DataManager;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -172,7 +174,10 @@ public class MacroActionManager {
         }
         MacroRef ref = new MacroRef(obj);
         // objType.initType(); aut0
-        action = new MacroAction(getBaseType(), ref);
+        ObjType objType = DataManager.getType(actionName, MACRO_OBJ_TYPES.MAP_ACTIONS);
+        if (objType==null )
+            objType=getBaseType();
+        action = new MacroAction(objType, ref);
         actionMap.put(actionName, action);
         return action;
     }

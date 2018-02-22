@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.game.core.Eidolons;
 import main.libgdx.GdxColorMaster;
-import main.libgdx.screens.DungeonScreen;
+import main.libgdx.bf.mouse.InputController;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 
@@ -89,12 +90,16 @@ public abstract class SuperActor extends Group implements Borderable {
 //            return true; TODO why was this here?.. not to draw?
         if (isCullingOff())
             return false;
-            if (!DungeonScreen.getInstance().getController().
+            if (! getController().
              isWithinCamera(
               this)) {
                 return true;
             }
         return false;
+    }
+
+    public InputController getController() {
+        return Eidolons.getScreen().getController();
     }
 
     @Override

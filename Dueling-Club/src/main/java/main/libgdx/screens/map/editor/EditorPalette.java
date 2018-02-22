@@ -6,17 +6,20 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.generic.SuperContainer;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.logpanel.ScrollPanel;
 import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager.BORDER;
 
@@ -28,6 +31,7 @@ import java.util.ArrayList;
 public class EditorPalette extends TabbedPanel {
     private ValueContainer selected;
     private SuperContainer selectionBorder;
+    private EmitterPalette emitterPalette;
 
     public EditorPalette() {
         updateRequired = true;
@@ -54,12 +58,15 @@ public class EditorPalette extends TabbedPanel {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-        debugAll();
         setSize(GdxMaster.getWidth() / 3 * 2, 256);
         int columns = (int) (getWidth() / 64);
         for (EDITOR_PALETTE sub : EDITOR_PALETTE.values()) {
-            TabbedPanel tabbedPanel = new TabbedPanel();
             OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(sub.name());
+            if (TYPE==null ){
+                addCustomTab(sub);
+                continue;
+            }
+            TabbedPanel tabbedPanel = new TabbedPanel();
             TablePanel<Actor> table;
             if (TYPE == null)
                 continue;
@@ -74,6 +81,7 @@ public class EditorPalette extends TabbedPanel {
                 for (ObjType type : types) {
                     TextureRegion texture = TextureCache.getOrCreateR(type.getImagePath());
                     ValueContainer item = new ValueContainer(texture);
+                    item.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
                     item.overrideImageSize(64, 64);
                     item.addListener(new ValueTooltip(type.getName()).getController());
                     item.addListener(getItemListener(item));
@@ -101,6 +109,19 @@ public class EditorPalette extends TabbedPanel {
         //scrollable?
     }
 
+    private void addEmitterTab() {
+        emitterPalette = new EmitterPalette();
+        addTab(emitterPalette,EDITOR_PALETTE.EMITTERS.name());
+    }
+    private void addCustomTab(EDITOR_PALETTE sub) {
+        switch (sub) {
+            case EMITTERS:
+                addEmitterTab();
+                break;
+        }
+    }
+
+
     private EventListener getItemListener(ValueContainer item) {
         return new ClickListener() {
             @Override
@@ -117,6 +138,7 @@ public class EditorPalette extends TabbedPanel {
         }
         selected = item;
         selected.add(getSelectionBorder());
+        EditorManager.setMode(MAP_EDITOR_MOUSE_MODE.ADD);
     }
 
     private Actor getSelectionBorder() {
@@ -138,7 +160,11 @@ public class EditorPalette extends TabbedPanel {
         return selected;
     }
 
+    public EmitterPalette getEmitterPalette() {
+        return emitterPalette;
+    }
+
     public enum EDITOR_PALETTE {
-        PLACE, SHOP, TAVERN, PARTY, ENCOUNTER,
+        EMITTERS ,LOCATION, PLACE, SHOP, TAVERN, PARTY, ENCOUNTER,;
     }
 }
