@@ -1,13 +1,11 @@
 package main.game.module.adventure;
 
-import com.badlogic.gdx.Gdx;
+import main.game.core.ActionInput;
 import main.game.core.Eidolons;
+import main.game.core.GameLoop;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import main.libgdx.anims.AnimMaster;
 import main.libgdx.screens.map.MapScreen;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import java.util.concurrent.locks.Condition;
@@ -17,69 +15,98 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class MacroGameLoop extends ExploreGameLoop implements RealTimeGameLoop{
-
-    MacroTimeMaster timeMaster;
+public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
     private static Thread realTimeThread;
+    MacroTimeMaster timeMaster;
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
     MacroGame game;
+
     public MacroGameLoop(MacroGame game) {
         super();
         this.game = game;
+        timeMaster = new MacroTimeMaster();
     }
+    @Override
+    protected Boolean makeAction() {
+        if (exited)
+            return true;
+        if (actionQueue.isEmpty()) {
+        }
 
-    public void combatFinished(){
-        setPaused(false);
+        ActionInput playerAction = actionQueue.removeLast();
+//        if (checkActionInputValid(playerAction)) {
+//            game.getMovementManager().cancelAutomove(activeUnit);
+//
+//        }
+
+            return null ;
     }
-        public void enterCombat(){
-        //some time will pass in combat
+    public void signal() {
+        lock.lock();
+        waiting.signal();
+        lock.unlock();
+
+    }
+    @Override
+    public void actionInput(ActionInput actionInput) {
+        if (isPaused())
+            return;
+        if (ExplorationMaster.isWaiting()) {
+            ExplorationMaster.setWaiting(false);
+            return;
+        }
+        queueActionInput(actionInput);
+        signal();
 
     }
 
     @Override
-    public void setPaused(boolean paused) {
+    public void start() {
+        super.start();
+        startRealTimeLogic();
     }
 
-    protected static void startRealTimeLogic() {
+    public    void startRealTimeLogic() {
+        new Thread(() -> realTimeLogic(), "Map RT thread").start();
+    }
+
+    protected   void realTimeLogic() {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
-        if (!CoreEngine.isGraphicsOff())
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
-                Gdx.app.postRunnable(() ->
-                 {
-
-                     try {
-                         AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                     } catch (Exception e) {
-                         main.system.ExceptionMaster.printStackTrace(e);
-                     }
-                 }
-                );
-            });
 
         while (true) {
 
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
-            if (Eidolons.getGame()==null  )
+
+            timeMaster.timedCheck();
+
+            if (Eidolons.getGame() == null)
                 return;
             if (Eidolons.getGame().isPaused()) continue;
-            if (!ExplorationMaster.isExplorationOn()) continue;
-            if (ExplorationMaster.isRealTimePaused()) continue;
-            try {
-                Eidolons.getGame().getDungeonMaster().getExplorationMaster().
-                 getTimeMaster().checkTimedEvents();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+
         }
     }
 
+    public void combatFinished() {
+        timeMaster.hoursPassed(12);
+        setPaused(false);
+    }
+
+    public void enterCombat() {
+        //some time will pass in combat
+setPaused(true);
+    }
+
+    @Override
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
 
     protected MapScreen getGdxScreen() {
-            return MapScreen.getInstance();
+        return MapScreen.getInstance();
     }
 
     @Override
@@ -89,6 +116,12 @@ public class MacroGameLoop extends ExploreGameLoop implements RealTimeGameLoop{
 
     @Override
     public void act(float delta) {
+        if (isPaused())
+            return;
         timeMaster.act(delta);
+    }
+
+    public MacroTimeMaster getTimeMaster() {
+        return timeMaster;
     }
 }

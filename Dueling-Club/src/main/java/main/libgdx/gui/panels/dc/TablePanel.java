@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.libgdx.gui.NinePatchFactory;
 
 import java.util.function.Supplier;
 
@@ -91,5 +93,10 @@ public class TablePanel<T extends Actor> extends Table {
 
     public void setUpdateRequired(boolean updateRequired) {
         this.updateRequired = updateRequired;
+    }
+
+    public TablePanel<T> initDefaultBackground() {
+        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+    return         this;
     }
 }

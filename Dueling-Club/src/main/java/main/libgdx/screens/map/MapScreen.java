@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import main.data.xml.XML_Reader;
+import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
+import main.game.module.adventure.MacroTimeMaster;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -33,11 +35,12 @@ import static main.system.MapEvent.*;
 public class MapScreen extends GameScreen {
 
     public final static String defaultPath = "global\\map\\ersidris plain.jpg";
+    public final static String timeVersionRootPath = "global\\map\\ersidris at ";
     protected static MapScreen instance;
     //    protected RealTimeGameLoop realTimeGameLoop;
     protected MapGuiStage guiStage;
     protected Stage objectStage;
-    protected  MapStage mapStage;
+    protected MapStage mapStage;
 
     protected MapScreen() {
 
@@ -54,9 +57,9 @@ public class MapScreen extends GameScreen {
 
     @Override
     protected void preLoad() {
-        guiStage =createGuiStage();
+        guiStage = createGuiStage();
         objectStage = new Stage(viewPort, getBatch());
-        mapStage = new  MapStage(viewPort, getBatch());
+        mapStage = new MapStage(viewPort, getBatch());
         super.preLoad();
         initGl();
         initDialogue();
@@ -77,7 +80,7 @@ public class MapScreen extends GameScreen {
 
 
     protected MapGuiStage createGuiStage() {
-        return new MapGuiStage( new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+        return new MapGuiStage(new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
          GdxMaster.getHeight(), new OrthographicCamera()), getBatch());
     }
 
@@ -85,7 +88,7 @@ public class MapScreen extends GameScreen {
     protected void afterLoad() {
         GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, defaultPath);
         cam = (OrthographicCamera) viewPort.getCamera();
-        controller =initController();
+        controller = initController();
 //        particleManager = new ParticleManager();
         bindEvents();
 
@@ -101,7 +104,7 @@ public class MapScreen extends GameScreen {
         GuiEventManager.bind(CREATE_PARTY, param -> {
             MacroParty party = (MacroParty) param.get();
             if (party == null) {
-                return ;
+                return;
             }
             PartyActor partyActor = PartyActorFactory.getParty(party);
             objectStage.addActor(partyActor);
@@ -155,24 +158,48 @@ public class MapScreen extends GameScreen {
 
      */
 
+    @Override
+    protected boolean canShowScreen() {
+        if (MacroGame.getGame() == null)
+            return false;
+        return super.canShowScreen();
+    }
+
     public void renderMain(float delta) {
 //        VignetteShader.getShader().begin();
 //        getBatch().setShader(VignetteShader.getShader());
         if (canShowScreen()) {
+            if (!CoreEngine.isMapEditor())
+                MacroGame.getGame().getRealtimeLoop().act(delta);
+
+            delta =
+             delta + 0.1f * delta * (getTimeMaster().getSpeed() - 1);
+            checkShader();
             mapStage.act(delta);
             objectStage.act(delta);
             guiStage.act(delta);
 
             mapStage.draw();
-            if (!Gdx.input.isKeyJustPressed(Keys.O)) {
+            if (!Gdx.input.isKeyPressed(Keys.O)) {
                 objectStage.draw();
             }
-            if (!Gdx.input.isKeyJustPressed(Keys.G)) {
+            if (!Gdx.input.isKeyPressed(Keys.G)) {
                 guiStage.draw();
+            } else {
+                getBatch().begin();
+                guiStage.getVignette().draw(getBatch(), 1f);
+                getBatch().end();
             }
+            checkShaderReset();
         }
+
 //        VignetteShader.getShader().end();
     }
+
+    private MacroTimeMaster getTimeMaster() {
+        return MacroGame.getGame().getLoop().getTimeMaster();
+    }
+
     protected void checkShaderReset() {
         if (batch.getShader() == DarkShader.getShader())
             batch.setShader(bufferedShader);
@@ -193,6 +220,8 @@ public class MapScreen extends GameScreen {
     protected boolean isBlocked() {
         if (CoreEngine.isMapEditor())
             return false;
+        if (getTimeMaster().isPlayerCamping())
+            return true;
         return guiStage.getGameMenu().isVisible();
     }
 

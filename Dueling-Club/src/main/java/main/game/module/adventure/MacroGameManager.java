@@ -19,7 +19,6 @@ import main.game.module.adventure.entity.MacroActionManager;
 import main.game.module.adventure.entity.MacroObj;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.TimeMaster;
-import main.game.module.adventure.gui.map.MapComp;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.area.AreaManager;
 import main.game.module.adventure.rules.TurnRule;
@@ -30,8 +29,6 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 public class MacroGameManager extends GameManager {
@@ -68,12 +65,16 @@ public class MacroGameManager extends GameManager {
         TravelMasterOld.newTurn();
         AreaManager.newTurn();
         refreshAll();
-        getMapComp().refresh();
     }
 
     @Override
     public MacroGame getGame() {
         return (MacroGame) super.getGame();
+    }
+
+    @Override
+    public void refreshAll() {
+
     }
 
     public void dataChanged() {
@@ -84,33 +85,6 @@ public class MacroGameManager extends GameManager {
         }
     }
 
-    @Override
-    public void infoSelect(Obj obj) {
-        if (MacroManager.isEditMode()) {
-            MacroManager.getEditorView().setInfoObj(obj);
-        } else {
-            MacroManager.getMapView().getMacroInfoPanel().setInfoObj(obj);
-        }
-        if (getInfoObj() != null) {
-            getInfoObj().setInfoSelected(false);
-        }
-        super.infoSelect(obj);
-        if (obj != null) {
-            obj.setInfoSelected(true);
-        }
-
-        getMapComp().refresh();
-    }
-
-    @Override
-    public void refreshAll() {
-        if (MacroManager.isEditMode()) {
-            MacroManager.getEditorView().refresh();
-        } else {
-            MacroManager.getMapView().refresh();
-        }
-
-    }
 
     public void objClicked(Obj obj) {
         if (isSelecting()) {
@@ -134,19 +108,19 @@ public class MacroGameManager extends GameManager {
         MacroActionManager.setActionsBlocked(false);
     }
 
-    public Integer select(Collection<? extends Obj> objects) {
-        setSelecting(true);
-        selectionSet = new HashSet<>();
-        for (Obj o : objects) {
-            selectionSet.add(o);
-        }
-        highlight(selectionSet);
-        Integer id = (Integer) WaitMaster
-                .waitForInput(WAIT_OPERATIONS.SELECT_MAP_OBJ);
-        setSelecting(false);
-        highlightsOff();
-        return id;
-    }
+//    public Integer select(Collection<? extends Obj> objects) {
+//        setSelecting(true);
+//        selectionSet = new HashSet<>();
+//        for (Obj o : objects) {
+//            selectionSet.add(o);
+//        }
+//        highlight(selectionSet);
+//        Integer id = (Integer) WaitMaster
+//                .waitForInput(WAIT_OPERATIONS.SELECT_MAP_OBJ);
+//        setSelecting(false);
+//        highlightsOff();
+//        return id;
+//    }
 
     @Override
     public Integer select(Filter<Obj> filter, Ref ref) {
@@ -154,22 +128,7 @@ public class MacroGameManager extends GameManager {
         return select(filter.getObjects(ref), ref);
     }
 
-    public void highlight(Set<Obj> set) {
-        getMapComp().highlight(set);
 
-    }
-
-    public void highlightsOff() {
-        getMapComp().highlightsOff();
-
-    }
-
-    public MapComp getMapComp() {
-        if (MacroManager.isEditMode()) {
-            return MacroManager.getEditorView().getMapComp();
-        }
-        return MacroManager.getMapView().getMapComp();
-    }
 
     public Set<Obj> getSelectionSet() {
         return selectionSet;

@@ -299,7 +299,7 @@ public class PathFinder {
          "global") + StringMaster.getPathSeparator();
     }
 
-    public static String getMacroPath() {
+    public static String getMacroXmlPath() {
         return StrPathBuilder.build(getXML_PATH(),
          "macro") + StringMaster.getPathSeparator();
     }
@@ -309,7 +309,16 @@ public class PathFinder {
         StrPathBuilder.build(getMacroImgPath(), "routes")+ StringMaster.getPathSeparator();
     }
 
+    public static String getMacroPath() {
+        return "global";
+    }
     public static String getMapLayersPath() {
-        return StrPathBuilder.build(getMacroImgPath(), "map", "layers")+ StringMaster.getPathSeparator();
+        return StrPathBuilder.build(getMacroPath(), "map", "layers")+ StringMaster.getPathSeparator();
+    }
+
+    public static String getMacroUiPath() {
+        return   StrPathBuilder.build(
+         "ui","macro")+ StringMaster.getPathSeparator();
+
     }
 }

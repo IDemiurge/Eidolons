@@ -37,8 +37,6 @@ public class MapTimePanel extends Group{
             update();
         }
 
-
-
         moveSun();
         moveMoons();
         adjustSun();

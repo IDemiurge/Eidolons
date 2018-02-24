@@ -5,6 +5,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
@@ -60,5 +61,15 @@ public class RouteMaster {
         for (Route sub : MacroGame.getGame().getRoutes()) {
             GuiEventManager.trigger(MapEvent.ROUTE_ADDED, sub);
         }
+    }
+
+    public static int getDistance(Place location, Place sub) {
+//dijstra!
+        for (Route route : location.getRoutes()) {
+            if (sub.getRoutes().contains(route)) {
+                return route.getLength();
+            }
+        }
+        return Integer.MAX_VALUE; //by pixels?
     }
 }

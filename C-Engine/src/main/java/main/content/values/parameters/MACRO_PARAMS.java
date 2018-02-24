@@ -48,6 +48,10 @@ public enum MACRO_PARAMS implements PARAMETER {
     TRAVEL_SPEED("TRAVEL_SPEED", "", false, 4, "party", "chars", "macro units"),
     EXPLORE_SPEED("EXPLORE_SPEED", "", false, 2, "party", "chars", "macro units"),
     PROVISIONS("PROVISIONS", "", false, 0, "party"),
+    WATER(null , "", false, 0, "party"),
+    SOULGEMS(null , "", false, 0, "party"),
+    C_WATER(null , "", true, 0, "party"),
+    C_SOULGEMS(null , "", true, 0, "party"),
     C_PROVISIONS("PROVISIONS", "", true, 0, "party"),
     CONSUMPTION("CONSUMPTION", "", false, 1, "party", "chars", "macro units"),
     ROUTE_LENGTH("ROUTE_LENGTH", "", false, 4, "route"),
@@ -89,6 +93,7 @@ public enum MACRO_PARAMS implements PARAMETER {
     // ESTEEM,
     // TREPIDATION, // AWE?
     // HATRED
+
     ;
 
     private String shortName;

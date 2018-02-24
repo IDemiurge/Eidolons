@@ -1,5 +1,6 @@
 package main.game.module.adventure.global;
 
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.module.adventure.global.GameDate.TIME_UNITS;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
@@ -25,6 +26,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
     private int hour;
     private boolean day_or_night; // pm or am
     private boolean humanMonthsDisplayed = true;
+    private DAY_TIME dayTime;
 
     // midnight
     public GameDate(String era, int year, MONTH month, int day,
@@ -67,7 +69,21 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return HOUR_OFFSET;
     }
 
-    public void nextTurn() {
+    public boolean nextDay() {
+        if (day < getMonth().getDays()) {
+            day++;
+            return false;
+        } else {
+            day = 1;
+            if (getMonth().isLastMonthInYear()) {
+                year++;
+
+            }
+            month = getMonth().getNextMonth();
+            return true;
+        }
+    }
+        public void nextTurn() {
         setHour(0);
         day_or_night = !day_or_night;
         if (!day_or_night) {
@@ -149,6 +165,14 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public void setHour(int hour) {
         this.hour = hour;
+    }
+
+    public void setDayTime(DAY_TIME dayTime) {
+        this.dayTime = dayTime;
+    }
+
+    public DAY_TIME getDayTime() {
+        return dayTime;
     }
 
     public enum TIME_UNITS {

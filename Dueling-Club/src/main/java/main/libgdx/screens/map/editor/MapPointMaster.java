@@ -3,6 +3,7 @@ package main.libgdx.screens.map.editor;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_POINTS;
 import main.libgdx.utils.GdxDialogMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
@@ -17,12 +18,12 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/22/2018.
  */
-public class PointMaster {
+public class MapPointMaster {
 
     Map<String, Coordinates> map;
     private String last;
 
-    public PointMaster() {
+    public MapPointMaster() {
         load();
     }
 
@@ -48,11 +49,14 @@ public class PointMaster {
             map.put(VariableManager.removeVarPart(substring),
              new Coordinates(true, VariableManager.getVar(substring)));
         }
-
+        for (MAP_POINTS sub : MAP_POINTS.values()) {
+            map.put( StringMaster.getWellFormattedString(sub.name()),
+             new Coordinates(true, sub.x, sub.y));
+        }
     }
 
     private String getPath() {
-        return StrPathBuilder.build(PathFinder.getMacroPath(), "map", "locations.txt");
+        return StrPathBuilder.build(PathFinder.getMacroXmlPath(), "map", "locations.txt");
     }
 
     public void removeClosest(int x, int y) {

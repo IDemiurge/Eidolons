@@ -24,6 +24,7 @@ import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager.BORDER;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 2/10/2018.
@@ -70,7 +71,10 @@ public class EditorPalette extends TabbedPanel {
             TablePanel<Actor> table;
             if (TYPE == null)
                 continue;
-            for (String group : DataManager.getTabsGroup(TYPE)) {
+            List<String> list = DataManager.getTabsGroup(TYPE);
+            if (list.isEmpty())
+                list.add("");
+            for (String group : list) {
                 table = new TablePanel<>();
                 table.defaults().width(64).height(64);
                 table.top().left().padLeft(64).padTop(64);
@@ -95,7 +99,6 @@ public class EditorPalette extends TabbedPanel {
                     }
                 }
                 table.pack();
-                table.debugAll();
                 if (rows > 3) {
                     ScrollPanel scrollPanel = new ScrollPanel();
                     scrollPanel.addElement(table);

@@ -20,7 +20,6 @@ import java.util.List;
 public class CampEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
-
         /*
         restore fully, dispel all timed buffs, apply bonus
          */

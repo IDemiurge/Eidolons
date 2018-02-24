@@ -20,7 +20,8 @@ import main.game.module.adventure.map.Route;
 import main.game.module.adventure.rules.HungerRule;
 import main.game.module.adventure.rules.TurnRule;
 import main.game.module.adventure.town.Town;
-import main.libgdx.screens.map.editor.PointMaster;
+import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import main.libgdx.screens.map.editor.MapPointMaster;
 import main.system.datatypes.DequeImpl;
 
 /*
@@ -39,7 +40,7 @@ public class MacroGame extends Game {
     private main.game.module.adventure.global.Campaign campaign;
     private GameLoop loop;
     private DAY_TIME time=DAY_TIME.NOON;
-    private PointMaster pointMaster;
+    private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
     private Thread gameLoopThread;
 
@@ -47,6 +48,7 @@ public class MacroGame extends Game {
 
     public MacroGame() {
          game = this;
+         init();
     }
 
     public static MacroGame getGame() {
@@ -114,7 +116,7 @@ public class MacroGame extends Game {
 //        }
 
 
-        pointMaster = new PointMaster();
+        pointMaster = new MapPointMaster();
         routeMaster=new RouteMaster();
 
     }
@@ -139,7 +141,7 @@ public class MacroGame extends Game {
 
     @Override
     public void start(boolean host) {
-        getManager().getStateManager().resetAllSynchronized();
+//        getManager().getStateManager().resetAllSynchronized();
         loop = new MacroGameLoop(this);
         setGameLoopThread(loop.startInNewThread());
 
@@ -226,8 +228,11 @@ public class MacroGame extends Game {
         this.turnRules = turnRules;
     }
 
-    public GameLoop getLoop() {
-        return loop;
+    public MacroGameLoop getLoop() {
+        return (MacroGameLoop) loop;
+    }
+    public RealTimeGameLoop getRealtimeLoop() {
+        return (RealTimeGameLoop) loop;
     }
 
     public void setLoop(GameLoop loop) {
@@ -242,7 +247,7 @@ public class MacroGame extends Game {
         this.time = time;
     }
 
-    public PointMaster getPointMaster() {
+    public MapPointMaster getPointMaster() {
         return pointMaster;
     }
 

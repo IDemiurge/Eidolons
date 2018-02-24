@@ -19,7 +19,7 @@ public class MapEditor extends GenericLauncher {
 
     private static final String DEFAULT = "Mistfall";
     private static final String microForMacro =
-     "party;scenarios;dungeons;factions;";
+     "party;scenarios;dungeons;factions;chars;";
 
     public static void launch() {
         launch(DEFAULT);

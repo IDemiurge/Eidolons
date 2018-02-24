@@ -10,6 +10,7 @@ import main.game.module.adventure.MacroRef.MACRO_KEYS;
 import main.game.module.adventure.gui.map.obj.MapObjComp;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.MacroCoordinates;
+import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import main.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
 import main.game.module.adventure.map.Region;
 import main.system.auxiliary.StringMaster;
@@ -21,6 +22,9 @@ public abstract class MapObj extends MacroObj {
     protected PLACE_VISIBILITY_STATUS visibilityStatus;
     protected MapObjComp comp;
     protected Area area;
+    private boolean detected;
+    private boolean hidden;
+    private MAP_OBJ_INFO_LEVEL infoLevel;
 
     public MapObj(ObjType type, MacroRef ref) {
         super(type, ref);
@@ -60,4 +64,27 @@ public abstract class MapObj extends MacroObj {
         this.mapRenderPoint = mapRenderPoint;
     }
 
+    public void setDetected(boolean detected) {
+        this.detected = detected;
+    }
+
+    public boolean isDetected() {
+        return detected;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public void setInfoLevel(MAP_OBJ_INFO_LEVEL infoLevel) {
+        this.infoLevel = infoLevel;
+    }
+
+    public MAP_OBJ_INFO_LEVEL getInfoLevel() {
+        return infoLevel;
+    }
 }

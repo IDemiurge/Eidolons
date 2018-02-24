@@ -118,8 +118,35 @@ public class Event implements Referred {
         ref.setTriggered(triggered);
     }
 
-    public enum STANDARD_EVENT_TYPE implements EVENT_TYPE {
+    public enum MAP_EVENT_TYPE implements EVENT_TYPE {
 
+        CAMPING_STARTED;
+
+
+        private String arg;
+
+        public boolean equals(EVENT_TYPE type) {
+            if (type instanceof EventType) {
+                return false;
+            }
+            if (arg.equals("")) {
+                return (this == type);
+            }
+
+            return (this == type) && (arg.equals(type.getArg()));
+
+        }
+
+        public String getArg() {
+            return arg;
+        }
+
+        public void setArg(String arg) {
+            this.arg = arg;
+        }
+    }
+
+        public enum STANDARD_EVENT_TYPE implements EVENT_TYPE {
         //ACTION
         COSTS_HAVE_BEEN_PAID,
         COSTS_ARE_BEING_PAID,

@@ -12,8 +12,6 @@ import main.game.module.adventure.town.Town;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.List;
-
 public class Region extends MacroObj {
     private float milesToPixels;
     /*
@@ -26,7 +24,7 @@ public class Region extends MacroObj {
     private DequeImpl<Town> towns = new DequeImpl<>();
     private DequeImpl<Route> routes = new DequeImpl<>();
     private DequeImpl<Area> areas = new DequeImpl<>();
-    private List<MacroParty> parties;
+    private DequeImpl<MacroParty> parties= new DequeImpl<>();
 
     // ++ AREAS?
     public Region(MacroGame game, ObjType type, Ref ref) {
@@ -152,7 +150,7 @@ public class Region extends MacroObj {
         return getArea(type.getProperty(MACRO_PROPS.AREA));
     }
 
-    public List<MacroParty> getParties() {
+    public DequeImpl<MacroParty> getParties() {
         return parties;
     }
 

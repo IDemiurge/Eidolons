@@ -1,12 +1,10 @@
 package main.game.module.adventure.entity;
 
-import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.values.properties.G_PROPS;
 import main.data.ConcurrentMap;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -14,16 +12,12 @@ import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
-import main.game.module.adventure.map.Place;
-import main.game.module.adventure.map.Route;
-import main.game.module.adventure.travel.RestMaster;
-import main.game.module.adventure.travel.TravelMasterOld;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class MacroActionManager {
     // "Explore Route" => still coming forward at 1/2 speed...
@@ -36,11 +30,14 @@ public class MacroActionManager {
     private static boolean actionsBlocked;
 
     public static String getMacroPartyActionImagePathPrefix() {
-        return "macro\\actions\\party\\";
+
+        return
+         StrPathBuilder.build(PathFinder.getMacroPath() , "actions", "party")+StringMaster.getPathSeparator();
     }
 
     public static String getMacroModeImagePathPrefix() {
-        return "macro\\actions\\modes\\";
+        return
+         StrPathBuilder.build(PathFinder.getMacroPath() , "actions", "Mode");
     }
 
     public static List<MacroAction> getMacroActions(MACRO_ACTION_GROUPS group,
@@ -61,77 +58,6 @@ public class MacroActionManager {
         return null;
     }
 
-    public static void partyAction(MACRO_PARTY_ACTIONS action, MacroParty party) {
-        Set<Place> set;
-        Route route;
-        Place place;
-        switch (action) {
-            case AMBUSH:
-                party.setStatus(MACRO_STATUS.IN_AMBUSH);
-                // for 'encounters' to happen more likely...
-                break;
-            case CAMP:
-                RestMaster.rest(party);
-
-                break;
-            case EXPLORE:
-                // choose route? or choose current location to explore around...
-                party.setStatus(MACRO_STATUS.EXPLORING);
-                set = TravelMasterOld.getAvailableRoutesAsPlaces(party, null);
-                if (party.getCurrentLocation() != null) {
-                    set.add(party.getCurrentLocation()); // else?
-                }
-                place = selectMapObj(set);
-
-                if (place == null) {
-                    return;
-                }
-                party.setCurrentExploration(place);
-
-                break;
-            case TRAVEL:
-                // extract into effect???
-                party.setStatus(MACRO_STATUS.TRAVELING);
-                set = TravelMasterOld.getAvailablePlaces(party);
-                // set.addAll(TravelMaster.getAvailableRoutes(party));
-                place = selectMapObj(set);
-                if (place == null) {
-                    return;
-                }
-                set = TravelMasterOld.getAvailableRoutesAsPlaces(party, place);
-                // MacroManager.getMapView().getMapComp().displayRoutes(set);
-
-                route = (Route) selectMapObj(set);
-                if (route == null) {
-                    return;
-                }
-                party.setCurrentDestination(place);
-                if (route.getOrigin() == place) {
-                    party.addProperty(G_PROPS.DYNAMIC_BOOLS,
-                            DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
-                } else {
-                    party.removeProperty(G_PROPS.DYNAMIC_BOOLS,
-                            DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
-                }
-
-                party.setCurrentRoute(route);
-
-                break;
-            default:
-                break;
-
-        }
-        MacroManager.refreshGui();
-    }
-
-    private static Place selectMapObj(Set<Place> set) {
-        Integer id = MacroGame.getGame().getManager().select(set);
-        if (id == null) {
-            return null;
-        }
-        Place place = (Place) MacroGame.getGame().getObjectById(id);
-        return place;
-    }
 
     private static List<MacroAction> getPartyActions(MacroParty playerParty) {
         List<MacroAction> list = new ArrayList<>();
@@ -196,7 +122,8 @@ public class MacroActionManager {
         // perhaps not, just apply to
         // different entities
         for (MACRO_MODES m : MACRO_MODES.values()) {
-            MacroAction action = new MacroAction(getBaseType(), new MacroRef(), m);
+            MacroAction action =
+             new MacroAction(getBaseType(), new MacroRef(), m);
             actionMap.put((m.toString()), action);
         }
         for (MACRO_PARTY_ACTIONS m : MACRO_PARTY_ACTIONS.values()) {
@@ -226,7 +153,7 @@ public class MacroActionManager {
 
         public String getImagePath() {
             return MacroActionManager.getMacroPartyActionImagePathPrefix()
-                    + toString() + ".jpg";
+                    + toString() + ".png";
         }
 
         ;

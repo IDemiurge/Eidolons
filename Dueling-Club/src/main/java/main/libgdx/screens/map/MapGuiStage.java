@@ -7,8 +7,7 @@ import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.menu.GameMenu;
-import main.libgdx.screens.map.ui.MapActionPanel;
-import main.libgdx.screens.map.ui.PartyInfoPanel;
+import main.libgdx.screens.map.ui.*;
 import main.libgdx.stage.GuiStage;
 import main.libgdx.texture.TextureCache;
 
@@ -20,16 +19,32 @@ public class MapGuiStage extends GuiStage {
     private PartyInfoPanel partyInfoPanel;
     private MapActionPanel actionPanel;
     private boolean dirty;
+    private MapResourcesPanel resources;
+    private MapTimePanel timePanel;
+    private MapDatePanel datePanel;
+    private SuperContainer vignette;
 
     public MapGuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
         if (isVignetteOn()) {
-            SuperContainer vignette = new SuperContainer(
+             vignette = new SuperContainer(
              new Image(TextureCache.getOrCreateR(vignettePath)),
-             true);
+             true){
+                @Override
+                protected float getAlphaFluctuationMin() {
+                    return 0.3f;
+                }
+                @Override
+                protected float getAlphaFluctuationMax() {
+                    return 1;
+                }
+            };
             vignette.setWidth(GdxMaster.getWidth());
             vignette.setHeight(GdxMaster.getHeight());
+            vignette.setAlphaStep(0.1f);
+            vignette.setFluctuatingAlphaRandomness(0.3f);
+            vignette.setFluctuatingFullAlphaDuration(1.5f);
             addActor(vignette);
         }
         init();
@@ -48,6 +63,21 @@ public class MapGuiStage extends GuiStage {
 
         actionPanel= new MapActionPanel();
         addActor(actionPanel);
+        //background? roll out decorator
+
+        resources = new MapResourcesPanel();
+        addActor(resources);
+        resources.setPosition(GdxMaster.centerWidth(resources),
+         GdxMaster.top(resources));
+
+        datePanel = new MapDatePanel();
+        addActor(datePanel);
+
+        timePanel = new MapTimePanel();
+        addActor(timePanel);
+        timePanel.setPosition(GdxMaster.centerWidth(timePanel),
+         GdxMaster.top(timePanel));
+
     }
 
     @Override
@@ -57,7 +87,7 @@ public class MapGuiStage extends GuiStage {
             actionPanel.setPosition(GdxMaster.centerWidth(actionPanel)
              , 0);
             partyInfoPanel.setPosition(0,
-             GdxMaster.top(partyInfoPanel)
+             GdxMaster.top(partyInfoPanel)-50
             );
             dirty = false;
         }
@@ -88,4 +118,7 @@ public class MapGuiStage extends GuiStage {
     }
 
 
+    public SuperContainer getVignette() {
+        return vignette;
+    }
 }

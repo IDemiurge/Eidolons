@@ -22,24 +22,26 @@ import main.system.images.ImageManager.STD_IMAGES;
 
 /**
  * Created by JustMe on 2/10/2018.
- vertical
- click to show UnitInfo
- move on click arrow
- SelectionPanel based?
+ * vertical
+ * click to show UnitInfo
+ * move on click arrow
+ * SelectionPanel based?
  */
-public class PartyInfoPanel extends TablePanel{
+public class PartyInfoPanel extends TablePanel {
     MacroParty party;
     private ImageContainer arrow;
 
-    public PartyInfoPanel( ) {
+    public PartyInfoPanel() {
 
     }
+
     public void init(MacroParty party) {
 //        debug();
-        clearChildren(); clearListeners();
+        clearChildren();
+        clearListeners();
         this.party = party;
-        TablePanel main= new TablePanel();
-        addListener(new ClickListener(){
+        TablePanel main = new TablePanel();
+        addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 //                updateRequired = true;
@@ -47,25 +49,25 @@ public class PartyInfoPanel extends TablePanel{
             }
         });
 //        setX(-getMainWidth());
-        this.columnDefaults(0).width(getMainWidth() );
-        this.columnDefaults(0).minWidth(getMainWidth() );
-    for (Unit sub:     party.getMembers()){
-        PartyMemberComponent component = new PartyMemberComponent(sub);
-        main. add(component) .maxWidth(getMainWidth());
-        main. row();
+        this.columnDefaults(0).width(getMainWidth());
+        this.columnDefaults(0).minWidth(getMainWidth());
+        for (Unit sub : party.getMembers()) {
+            PartyMemberComponent component = new PartyMemberComponent(sub);
+            main.add(component).maxWidth(getMainWidth());
+            main.row();
         }
 //        getColumnPrefWidth(1)
-        setSize((getMainWidth()  ) +STD_IMAGES.DIRECTION_POINTER.getWidth(), 128 * party.getMembers().size());
-        add(main)  ;//;
-         arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
-       arrow. setRotation(270);
-        arrow.setOrigin(arrow.getWidth()/2,arrow.getHeight()/2);
-        arrow.addListener(new ClickListener(){
+        setSize((getMainWidth()) + STD_IMAGES.DIRECTION_POINTER.getWidth(), 128 * party.getMembers().size());
+        add(main);//;
+        arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
+        arrow.setRotation(270);
+        arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
+        arrow.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-               if (getActions().size>0)
-                   return true;
-               toggle();
+                if (getActions().size > 0)
+                    return true;
+                toggle();
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
@@ -77,21 +79,23 @@ public class PartyInfoPanel extends TablePanel{
         //wait for non-moving
         toggle(true);
     }
+
     private void toggle() {
         toggle(!isOpen());
     }
-        private void toggle(boolean open) {
-        int toX =  open ? 0 : -getMainWidth();
+
+    private void toggle(boolean open) {
+        int toX = open ? 0 : -getMainWidth();
 
         ActorMaster.addMoveToAction(
-          this, toX, getY(), getDuration());
+         this, toX, getY(), getDuration());
 
         ActorMaster.addRotateByAction(
-         arrow.getContent(),180);
+         arrow.getContent(), 180);
     }
 
     private boolean isOpen() {
-        return getX()>=0;
+        return getX() >= 0;
     }
 
     private float getDuration() {
@@ -99,7 +103,7 @@ public class PartyInfoPanel extends TablePanel{
     }
 
     private int getMainWidth() {
-   return (int) GdxMaster.adjustSize(256);
+        return (int) GdxMaster.adjustSize(256);
     }
 
     @Override
@@ -124,14 +128,14 @@ header for the party?
 //            debug();
             this.hero = hero;
             portrait = new ImageContainer(hero);
-            portrait.addListener(new ClickListener(){
+            portrait.addListener(new ClickListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, hero);
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
-             defaults().width(128);
+            defaults().width(128);
 
             addNormalSize(portrait);
             LabelStyle style = StyleHolder.getSizedColoredLabelStyle
@@ -140,22 +144,26 @@ header for the party?
             style = StyleHolder.getSizedColoredLabelStyle
              (FONT.MAIN, 16, GdxColorMaster.getDefaultTextColor());
             //class and level?
-            String text = "Level "+hero.getLevel();
-            ValueContainer  subname = new ValueContainer(new Label(text, style));
-            text=party.getMemberRank(hero);
-            ValueContainer    rank = new ValueContainer(new Label(text, style));
-            text=party.getStatus(hero).toString();
-            ValueContainer   status=new ValueContainer(new Label(text, style));
-
-            TablePanel tablePanel = new TablePanel();   tablePanel.debug();
+            String text = "Level " + hero.getLevel();
+            ValueContainer subname = new ValueContainer(new Label(text, style));
+            text = party.getMemberRank(hero);
+            ValueContainer rank = new ValueContainer(new Label(text, style));
+            text = party.getStatus(hero).toString();
+            ValueContainer status = new ValueContainer(new Label(text, style));
+            TablePanel tablePanel = new TablePanel().initDefaultBackground();
             tablePanel.add(name);//.maxWidth(getMainWidth()-128);
             tablePanel.row();
             tablePanel.add(subname);//.maxWidth(getMainWidth()-128);
-            tablePanel.row();
-            tablePanel.add(rank);//.maxWidth(getMainWidth()-128);
-            tablePanel.row();
-            tablePanel.add(status);//.maxWidth(getMainWidth()-128);
-            add(tablePanel).left().  maxWidth(getMainWidth()-128);
+
+            TablePanel tablePanel2 = new TablePanel().initDefaultBackground();
+            tablePanel2.add(rank);//.maxWidth(getMainWidth()-128);
+            tablePanel2.row();
+            tablePanel2.add(status);//.maxWidth(getMainWidth()-128);
+
+
+            add(tablePanel).left().maxWidth(getMainWidth() - 128);
+            row();
+            add(tablePanel2).left().maxWidth(getMainWidth() - 128);
 
         }
     }

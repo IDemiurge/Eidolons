@@ -3,8 +3,9 @@ package main.libgdx.screens.map.obj;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import main.game.module.adventure.map.Place;
-import main.libgdx.screens.map.obj.MapActor.MAP_OBJ_INFO_LEVEL;
+import main.libgdx.screens.map.ui.tooltips.PlaceTooltip;
 import main.libgdx.texture.TextureCache;
 
 /**
@@ -38,10 +39,8 @@ public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
           place.getImagePath());
 //        parameters.color=  GdxColorMaster.getColor(place.getLeader().getOwner().getFlagColor());
 
-//        ToolTipManager ;
-//      actor.addListener()
-
         PlaceActor actor = new PlaceActor(parameters);
+        actor.addListener(new PlaceTooltip(place, actor).getController());
         return actor;
     }
 

@@ -594,7 +594,7 @@ public class DataManager {
     }
 
     public static List<ObjType> getTypesGroup(OBJ_TYPE TYPE, String group) {
-        if (group == null) {
+        if (StringMaster.isEmpty(group)) {
             return getTypes(TYPE);
         }
         List<ObjType> list = new ArrayList<>();
@@ -761,7 +761,9 @@ public class DataManager {
             }
             return group;
         }
-
+        if (!ListMaster.isNotEmpty(XML_Reader.getTabGroupMap().get(TYPE.getName()))) {
+            return new ArrayList<>();
+        }
         return new ArrayList<>(XML_Reader.getTabGroupMap().get(TYPE.getName()));
     }
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.libgdx.screens.map.sfx.MapAlphaLayers;
 import main.libgdx.screens.map.sfx.MapMoveLayers;
@@ -13,6 +14,7 @@ import main.libgdx.screens.map.sfx.MapParticles;
 import main.libgdx.screens.map.sfx.MapRoutes;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.MapEvent;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
@@ -32,7 +34,12 @@ public class MapStage extends Stage {
          addActor(particles= new MapParticles());
          addActor(routes= new MapRoutes());
 
-        GuiEventManager.bind(UPDATE_MAP_BACKGROUND, param -> {
+        GuiEventManager.bind(MapEvent.TIME_CHANGED, param -> {
+            DAY_TIME time = (DAY_TIME) param.get();
+           String path= getBackgroundPath(time);
+GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, path);
+        });
+            GuiEventManager.bind(UPDATE_MAP_BACKGROUND, param -> {
             final String path = (String) param.get();
             TextureRegion backTexture = getOrCreateR(path);
             if (map != null)
@@ -49,9 +56,14 @@ public class MapStage extends Stage {
 
         });
         topLayer= new Group();
-        topLayer.addActor(new Image(TextureCache.getOrCreateR(
-         PathFinder.getMapLayersPath()+"top layer.png")));
+        TextureRegion tex = TextureCache.getOrCreateR(
+         PathFinder.getMapLayersPath() + "top layer.png");
+        topLayer.addActor(new Image(tex));
 
+    }
+
+    private String getBackgroundPath(DAY_TIME time) {
+        return MapScreen.timeVersionRootPath +time.toString()+".jpg";
     }
 
     public MapMoveLayers getMoveLayerMaster() {

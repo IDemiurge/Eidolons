@@ -41,10 +41,10 @@ public class EditorManager {
             switch (mode) {
                 case POINT:
                     MacroManager.getPointMaster().clicked(x, y);
-                    return ;
+                    return;
                 case EMITTER:
                     try {
-                        EditorMapView.getInstance().getEditorParticles().clicked( x, y);
+                        EditorMapView.getInstance().getEditorParticles().clicked(x, y);
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
@@ -72,8 +72,8 @@ public class EditorManager {
     }
 
     private static void assignRegion(MacroObj obj, Integer x, Integer y) {
-        Region r= null ;
-    for (Region sub:     obj.getGame().getRegions()){
+        Region r = null;
+        for (Region sub : obj.getGame().getRegions()) {
 //        if (new Rectangle(sub.getX(), sub.getY(), sub.getWidth(),
 //         sub.getHeight()).contains(new Point(x, y)))
             r = sub;
@@ -86,7 +86,13 @@ public class EditorManager {
         if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE)
             return new Place(MacroGame.game, type, ref);
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.PARTY)
-            return new MacroParty(type, MacroGame.game, ref);
+            try {
+                MacroParty party = new MacroParty(type, MacroGame.game, ref);
+                party.getParty().initMembers();
+                return party;
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         return null;
     }
 

@@ -17,6 +17,11 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
     }
 
+    @Override
+    public boolean isTouchable() {
+        return false;
+    }
+
     public InputListener getController() {
         return new InputListener() {
             @Override

@@ -9,6 +9,7 @@ import main.game.module.adventure.MacroGame;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class MapMoveLayers extends Group {
     }
 
     public void setTime(DAY_TIME time) {
-        if (this.time == time )
+        if (this.time == time)
             return;
         this.time = time;
         dirty = true;
@@ -77,7 +78,7 @@ public class MapMoveLayers extends Group {
         }
         MAP_AREA mapArea = sub.spawnAreas[RandomWizard.getRandomInt(sub.spawnAreas.length)];
         //area , number
-        MapMoveLayer container = new MapMoveLayer(new Image(texture), mapArea, sub){
+        MapMoveLayer container = new MapMoveLayer(new Image(texture), mapArea, sub) {
             @Override
             protected float getAlphaFluctuationMin() {
                 return 0f;
@@ -106,15 +107,17 @@ public class MapMoveLayers extends Group {
 
     @Override
     public void act(float delta) {
+        if (MacroGame.getGame() == null)
+            return ;
 
             setTime(MacroGame.getGame().getTime());
         if (dirty)
             spawn();
         for (MAP_MOVING_LAYER_TYPE sub : MAP_MOVING_LAYER_TYPE.values()) {
             MapMaster.addToFloatMap(timerMap, sub, delta);
-            if (timerMap.get(sub) > triggerMap.get(sub)) {
+            if (triggerMap.get(sub) == null || timerMap.get(sub) > triggerMap.get(sub)) {
                 spawn(sub);
-                float willSpawnOn = RandomWizard.getRandomFloatBetween(sub.frequency, 2*sub.frequency);
+                float willSpawnOn = RandomWizard.getRandomFloatBetween(sub.frequency, 2 * sub.frequency);
                 triggerMap.put(sub, willSpawnOn);
                 timerMap.put(sub, 0f);
             }
@@ -126,8 +129,8 @@ public class MapMoveLayers extends Group {
             sub.getContent().setPosition(x, y);
             float distance = new Vector2(sub.getContent().getX(), sub.getContent().getY()).dst(new Vector2(sub.getOriginalX(), sub.getOriginalY()));
             float maxDistance = sub.getMaxDistance();
-            if (x > getWidth() || x<-sub.getWidth())
-                if (y > getHeight()+sub.getHeight() || y<0)
+            if (x > getWidth() || x < -sub.getWidth())
+                if (y > getHeight() + sub.getHeight() || y < 0)
                     sub.remove();
             //center to edge? direction? better check sumis <> maxWidth or 0
             if (distance > maxDistance) {
@@ -179,45 +182,18 @@ public class MapMoveLayers extends Group {
     }
 
 
-    public enum MAP_POINTS {
-        //HINTERLANDS
-        MONASTERY(1754,1874),
-        MONASTERY_CLOISTER(1804,1894),
-        GREENTORCH(1350,1568),
-        ELF_CEMETERY(1564,1554),
-        ELF_BARROWS(1587,1530),
-        NAUROG(1298,1435),
-        WAR_CEMETERY(1228,1622),
-        WRAITH_MARSH(1228,1622),
-        ASHWOOD(1396, 1724),
-        SEALED_KINGDOM(1448, 2124),
-        SEALED_KINGDOM_WATERFALLS(1543, 2068),
-        SEALED_KINGDOM_PASS(1228,1622),
-        WISP_GROVE(1098,1752),
-        TAL_MERETH(1474,1484),
-        STONESHIELD_HALL(1704,1452),
-        RIVEREND(868,1684),
-        WARDEN_SHRINE(976,1412),
-        BLACKWOOD(1234,1416),
-        GRAY_SWAMP(1280,1892),
-
-
-        ;
-
-        MAP_POINTS(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        int x,y;
-
-    }
-        public enum MAP_AREA {
+    public enum MAP_AREA {
         PALE_MOUNTAINS_SOUTH(1000, 1200, 500, 500),
-        PALE_MOUNTAINS_NORTH(600, 800, 500, 500),
-        ;
+        PALE_MOUNTAINS_NORTH(600, 800, 500, 500),;
 
         int x, y, w, h;
+        String centerPoint;
+
+        MAP_AREA(String centerPoint, int w, int h) {
+            this.centerPoint = centerPoint;
+            this.w = w;
+            this.h = h;
+        }
 
         MAP_AREA(int x, int y, int w, int h) {
             this.x = x;
@@ -228,7 +204,12 @@ public class MapMoveLayers extends Group {
     }
 
     public enum MAP_MOVING_LAYER_TYPE {
-        CLOUD(MOVE_DIRECTION.WIND, 50,3, MAP_AREA.PALE_MOUNTAINS_SOUTH, MAP_AREA.PALE_MOUNTAINS_NORTH),
+        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH),
+        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH),
+        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH),
 //        SHADOW,
 //        WAVE,
 //        SMOKE,
@@ -242,7 +223,7 @@ public class MapMoveLayers extends Group {
         int speed;
         float shakiness;
 
-        MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed,float frequency, MAP_AREA... areas) {
+        MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed, float frequency, MAP_AREA... areas) {
             this.direction = direction;
             this.speed = speed;
             this.spawnAreas = areas;
@@ -251,10 +232,41 @@ public class MapMoveLayers extends Group {
         }
 
         public String getTexturePath() {
-            return StrPathBuilder.build(getMainPath(), name() + ".png");
+            return StrPathBuilder.build(getMainPath(),  StringMaster.getWellFormattedString(name()) + ".png");
         }
 
 //AlphaFluctuation fluctuation;
+    }
+
+    public enum MAP_POINTS {
+        //HINTERLANDS
+        MONASTERY(1754, 1874),
+        MONASTERY_CLOISTER(1804, 1894),
+        GREENTORCH(1350, 1568),
+        ELF_CEMETERY(1564, 1554),
+        ELF_BARROWS(1587, 1530),
+        NAUROG(1298, 1435),
+        WAR_CEMETERY(1228, 1622),
+        WRAITH_MARSH(1228, 1622),
+        ASHWOOD(1396, 1724),
+        SEALED_KINGDOM(1448, 2124),
+        SEALED_KINGDOM_WATERFALLS(1543, 2068),
+        SEALED_KINGDOM_PASS(1228, 1622),
+        WISP_GROVE(1098, 1752),
+        TAL_MERETH(1474, 1484),
+        STONESHIELD_HALL(1704, 1452),
+        RIVEREND(868, 1684),
+        WARDEN_SHRINE(976, 1412),
+        BLACKWOOD(1234, 1416),
+        GRAY_SWAMP(1280, 1892),;
+
+        public int x, y;
+
+        MAP_POINTS(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
     }
 
     public enum MOVE_DIRECTION {

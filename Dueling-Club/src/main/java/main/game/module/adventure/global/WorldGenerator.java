@@ -30,7 +30,7 @@ public class WorldGenerator {
 
     public static World generateWorld(MacroRef ref) {
         ObjType wType = DataManager.getType(MacroManager.getWorldName(),
-                MACRO_OBJ_TYPES.WORLD);
+         MACRO_OBJ_TYPES.WORLD);
         game = ref.getGame();
         world = new World(ref.getGame(), wType, ref);
         ref.getGame().setWorld(world);
@@ -44,7 +44,7 @@ public class WorldGenerator {
     public static List<Region> generateRegions(MacroRef ref) {
         List<Region> regions = new ArrayList<>();
         for (String s : StringMaster.open(world
-                .getProperty(MACRO_PROPS.REGIONS))) {
+         .getProperty(MACRO_PROPS.REGIONS))) {
             ObjType type = DataManager.getType(s, MACRO_OBJ_TYPES.REGION);
             region = createRegion(type, ref);
             regions.add(region);
@@ -64,15 +64,19 @@ public class WorldGenerator {
         region = new Region(game, type, ref);
         // init default towns/places ; then add randomized
         for (String s : StringMaster.open(region
-                .getProperty(MACRO_PROPS.AREAS))) {
+         .getProperty(MACRO_PROPS.AREAS))) {
             type = DataManager.getType(s, MACRO_OBJ_TYPES.AREA);
             Area area = new Area(ref.getGame(), type, ref);
             region.getAreas().add(area);
         }
         for (String s : StringMaster.open(region
          .getProperty(MACRO_PROPS.PARTIES))) {
-            MacroParty party = createParty(ref, s);
-            region.addParty(party);
+            try {
+                MacroParty party = createParty(ref, s);
+                region.addParty(party);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         for (String s : StringMaster.open(region
          .getProperty(MACRO_PROPS.PLACES))) {
@@ -80,7 +84,7 @@ public class WorldGenerator {
             region.addPlace(place);
         }
         for (String s : StringMaster.open(region
-                .getProperty(MACRO_PROPS.TOWNS))) {
+         .getProperty(MACRO_PROPS.TOWNS))) {
             Town town = createTown(ref, s);
             region.addTown(town);
         }
@@ -105,7 +109,7 @@ public class WorldGenerator {
         String property = region.getProperty(MACRO_PROPS.INTERNAL_ROUTES);
         for (String routeTypeName : StringMaster.open(property)) {
             ObjType routeType = DataManager.getType(routeTypeName,
-                    MACRO_OBJ_TYPES.ROUTE);
+             MACRO_OBJ_TYPES.ROUTE);
             Route r;
             try {
                 r = createRoute(routeType);
@@ -116,7 +120,7 @@ public class WorldGenerator {
             region.addRoute(r);
         }
         /*
-		 * discovering stuff... route exploration will add to Route Progress
+         * discovering stuff... route exploration will add to Route Progress
 		 * and when reaching those peripherals, there'll be a chance... and
 		 * perhaps it should be offered to go off towards them, and then we
 		 * can calc if the place can be reached or not...
@@ -169,15 +173,15 @@ public class WorldGenerator {
         // }
         for (Route r : region.getRoutes()) {
             for (String p : StringMaster.open(r
-                    .getProperty(MACRO_PROPS.LINKED_PLACES))) {
+             .getProperty(MACRO_PROPS.LINKED_PLACES))) {
                 r.addLinkedPlace(region.getPlace(p));
             }
             for (String p : StringMaster.open(r
-                    .getProperty(MACRO_PROPS.LINKED_TOWNS))) {
+             .getProperty(MACRO_PROPS.LINKED_TOWNS))) {
                 r.addLinkedTown(region.getTown(p));
             }
             for (String p : StringMaster.open(r
-                    .getProperty(MACRO_PROPS.LINKED_ROUTES))) {
+             .getProperty(MACRO_PROPS.LINKED_ROUTES))) {
                 r.addLinkedRoute(region.getRoute(p));
             }
         }
@@ -192,18 +196,18 @@ public class WorldGenerator {
         r.setOrigin(orig);
         r.setDestination(dest);
         r.setParam(MACRO_PARAMS.ROUTE_LENGTH,
-                TravelMasterOld.calculateRouteLength(r), true);
+         TravelMasterOld.calculateRouteLength(r), true);
         return r;
     }
 
     private static Route createRoute(String origin, String destination,
                                      ObjType t) {
         Route r = new Route(game, t, region.getRef(), region.getPlace(origin),
-                region.getPlace(destination));
+         region.getPlace(destination));
         region.getPlace(origin).getRoutes().add(r);
         region.getPlace(destination).getRoutes().add(r);
         r.setParam(MACRO_PARAMS.ROUTE_LENGTH,
-                TravelMasterOld.calculateRouteLength(r), true);
+         TravelMasterOld.calculateRouteLength(r), true);
         return r;
     }
 
@@ -226,7 +230,7 @@ public class WorldGenerator {
     private static Town createTown(MacroRef ref, String s) {
         s = formatPointVarString(s);
         ObjType t = DataManager.getType(VariableManager.removeVarPart(s),
-                MACRO_OBJ_TYPES.TOWN);
+         MACRO_OBJ_TYPES.TOWN);
         Town town = new Town(game, t, ref);
         if (VariableManager.getVarPart(s).contains("-")) {
             Coordinates c = new Coordinates(true, VariableManager.getVarPart(s));
@@ -244,7 +248,7 @@ public class WorldGenerator {
             s = StringMaster.cropLast(s, 1);
         }
         s = s.replace(StringMaster.getVarSeparator(),
-                StringMaster.getCoordinatesSeparator());
+         StringMaster.getCoordinatesSeparator());
         return s;
     }
 

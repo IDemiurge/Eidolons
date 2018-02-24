@@ -23,7 +23,7 @@ import main.game.module.adventure.gui.WorldEditorInterface;
 import main.game.module.adventure.gui.map.MapView;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
-import main.libgdx.screens.map.editor.PointMaster;
+import main.libgdx.screens.map.editor.MapPointMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
@@ -92,10 +92,10 @@ public class MacroManager {
                 return;
         }
         game = new MacroGame();
-        MacroGame.setGame(game);
-        game.init();
-//        MacroEngine.init();
-        game.start(true);
+        if (!CoreEngine.isMapEditor()) {
+            MacroEngine.init();
+            game.start(true);
+        }
 
         GuiEventManager.bind(MAP_READY, p -> {
             initComponents();
@@ -135,7 +135,7 @@ public class MacroManager {
             for (MacroParty sub : getGame().getParties()) {
               if (sub.getRegion()!=region)
                     continue;
-                places +=
+                parties +=
                  sub.getNameAndCoordinate()+";";
             }
             region.setProperty(MACRO_PROPS.PARTIES, parties, true);
@@ -151,8 +151,6 @@ public class MacroManager {
         }
         // try { save();
         game = null;
-        mapView = null;
-        mapComponent = null;
         campaignName = null;
         worldName = null;
         MacroGame.setGame(null);
@@ -255,16 +253,6 @@ public class MacroManager {
         return copyTypes;
     }
 
-    public static JComponent getMacroViewComponent() {
-        if (mapView == null) {
-            mapView = new MapView();
-            mapView.init();
-        }
-        if (mapComponent == null) {
-            mapComponent = mapView.build();
-        }
-        return mapComponent;
-    }
 
     public static String getWorldName() {
         if (worldName == null) {
@@ -277,12 +265,8 @@ public class MacroManager {
         MacroManager.worldName = worldName;
     }
 
-    public static MapView getMapView() {
-        return mapView;
-    }
-
     public static void refreshGui() {
-        mapView.refresh();
+//        mapView.refresh();
 
     }
 
@@ -519,7 +503,7 @@ public class MacroManager {
         return load;
     }
 
-    public static PointMaster getPointMaster() {
+    public static MapPointMaster getPointMaster() {
         return getGame().getPointMaster();
     }
 

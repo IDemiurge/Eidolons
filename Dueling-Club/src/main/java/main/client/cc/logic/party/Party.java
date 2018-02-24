@@ -19,19 +19,19 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.arcade.ArcadeManager.ARCADE_STATUS;
 import main.game.bf.Coordinates;
-import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.travel.RestMaster;
+import main.game.module.adventure.travel.RestMasterOld;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.MathMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -80,8 +80,10 @@ public class Party extends Obj {
         for (String heroName : StringMaster.openContainer
          (type.getProperty(PROPS.MEMBERS))) {
             //TODO refactor
-            heroName = Eidolons.getGame().getMetaMaster().getPartyManager().
+            if (DC_Game.game.getMetaMaster()!=null )
+            heroName = DC_Game.game.getMetaMaster().getPartyManager().
              checkLeveledHeroVersionNeeded(heroName);
+
             addMember(HeroCreator.initHero(heroName));
         }
         if (!getMembers().isEmpty()) {
@@ -419,7 +421,7 @@ public class Party extends Obj {
             // apply macro mode effects!
             if (MacroManager.isMacroGame()) {
                 for (Unit h : members) {
-                    RestMaster.applyMacroModeContinuous(h);
+                    RestMasterOld.applyMacroModeContinuous(h);
                 }
             }
         }

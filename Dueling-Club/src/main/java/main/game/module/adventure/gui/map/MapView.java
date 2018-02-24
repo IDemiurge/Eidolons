@@ -5,7 +5,7 @@ import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.gui.MacroInfoPanel;
 import main.game.module.adventure.gui.party.PartyTabPanel;
-import main.game.module.adventure.travel.RestMaster;
+import main.game.module.adventure.travel.RestMasterOld;
 import main.swing.components.buttons.CustomButton;
 import main.swing.generic.components.Builder;
 import main.swing.generic.components.G_Component;
@@ -62,7 +62,7 @@ public class MapView extends Builder {
                         if (MacroManager.getActiveParty().getStatus() == null) {
                             if (DialogMaster
                                     .confirm("No orders given; should the party rest?")) {
-                                if (!RestMaster.rest(MacroManager
+                                if (!RestMasterOld.rest(MacroManager
                                         .getActiveParty())) {
                                     return;
                                 }

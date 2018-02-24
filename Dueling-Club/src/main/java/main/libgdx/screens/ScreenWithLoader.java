@@ -219,7 +219,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
          new InputMultiplexer(loadingStage);
     }
 
-    protected void updateInputController() {
+    public void updateInputController() {
         GdxMaster.setInputProcessor(getInputController());
     }
 

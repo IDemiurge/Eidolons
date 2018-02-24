@@ -16,7 +16,15 @@ public class MapRoutes extends Group {
     Map<Route, RouteActor> map = new HashMap<>();
 
     public MapRoutes() {
-        GuiEventManager.bind(MapEvent.ROUTE_ADDED, p -> {
+        GuiEventManager.bind(MapEvent.ROUTE_HOVERED, p -> {
+            Route r = (Route) p.get();
+            for (RouteActor sub : map.values()) {
+                sub.setHighlighted(false);
+            }
+            if (r!=null )
+            map.get(r).setHighlighted(true);
+        });
+            GuiEventManager.bind(MapEvent.ROUTE_ADDED, p -> {
             Route sub = (Route) p.get();
             RouteActor actor = new RouteActor(sub);
             map.put(sub, actor);
@@ -40,4 +48,11 @@ public class MapRoutes extends Group {
 //init();
     }
 
+    public boolean isRouteHighlighted() {
+        for (RouteActor sub : map.values()) {
+            if ( (sub).isHighlighted())
+                return true;
+        }
+        return false;
+    }
 }

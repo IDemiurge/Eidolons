@@ -47,4 +47,12 @@ public class RouteActor extends ImageContainer {
             return 0.1f;
         return super.getAlphaFluctuationMax();
     }
+
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
 }

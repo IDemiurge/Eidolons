@@ -1,7 +1,5 @@
 package main.game.module.adventure.gui;
 
-import main.game.module.adventure.MacroManager;
-
 public class MacroGuiManager {
     public static final int PARTY_MAP_DISPLACEMENT_X = -12;
     public static final int PARTY_MAP_DISPLACEMENT_Y = -12;
@@ -23,11 +21,13 @@ public class MacroGuiManager {
     }
 
     public static int getMapOffsetX() {
-        return MacroManager.getMapView().getMapOffsetX();
+        return 0;
+//        return MacroManager.getMapView().getMapOffsetX();
     }
 
     public static int getMapOffsetY() {
-        return MacroManager.getMapView().getMapOffsetY();
+//        return MacroManager.getMapView().getMapOffsetY();
+        return 0;
     }
 
 }

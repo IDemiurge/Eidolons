@@ -58,6 +58,11 @@ public class ValueContainer extends TablePanel {
         return this;
     }
 
+    @Override
+    public ValueContainer initDefaultBackground() {
+        return (ValueContainer) super.initDefaultBackground();
+    }
+
     protected void init(TextureRegion texture, String name, String value) {
         imageContainer = addElement(null);
         setName(name);
@@ -251,5 +256,7 @@ public class ValueContainer extends TablePanel {
     public Cell<Image> getImageContainer() {
         return imageContainer;
     }
+
+
 }
 

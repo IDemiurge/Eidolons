@@ -185,7 +185,7 @@ public class Launcher {
         if (fastMacroTest) {
             PartyHelper.loadParty(FAST_TEST_PARTY);
             MacroManager.newGame();
-            setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
+//            setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
         } else if (preset != null || HC_TEST_MODE || CHOICE_TEST_MODE) {
             getMainManager().setCurrentItem(MAIN_MENU_ITEMS.PRESET_HERO);
             getMainManager().launchSelection(DC_TYPE.CHARS, StringMaster.PRESET,
@@ -638,7 +638,6 @@ public class Launcher {
                 frame.setVisible(true);
                 break;
             case MAP:
-                setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
                 break;
             case MENU:
                 frame.setVisible(true);

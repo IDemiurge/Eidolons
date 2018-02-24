@@ -2,6 +2,7 @@ package main.libgdx.screens.map.obj;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import main.libgdx.bf.BaseView;
 
 /**
@@ -33,7 +34,4 @@ public class MapActor extends BaseView {
         return portrait.getHeight();
     }
 
-    public enum MAP_OBJ_INFO_LEVEL {
-
-    }
 }

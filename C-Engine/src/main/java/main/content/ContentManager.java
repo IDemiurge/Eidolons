@@ -813,8 +813,9 @@ public class ContentManager {
         }
 
         if (type == null) {
-            if (CoreEngine.isArcaneVault())
-                return null ;
+            if (!CoreEngine.isMapEditor())
+                if (CoreEngine.isArcaneVault())
+                    return null ;
         if (!XML_Reader.isMacro()) {
             type = MACRO_OBJ_TYPES.getType(typeName);
         } else {

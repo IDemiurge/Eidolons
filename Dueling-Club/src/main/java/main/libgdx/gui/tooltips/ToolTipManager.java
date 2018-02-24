@@ -188,7 +188,15 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        return null;//this is untouchable element
+        if (actorCell.getActor()!=null ){
+                if ( actorCell.getActor().isTouchable()) {
+                    return super.hit(x, y, touchable);
+
+            }
+        }
+        return null;
+
+        //this is untouchable element
     }
 
 }

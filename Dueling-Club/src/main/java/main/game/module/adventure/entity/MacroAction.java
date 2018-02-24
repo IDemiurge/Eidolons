@@ -65,14 +65,13 @@ public class MacroAction extends MacroObj implements ActiveObj {
             // perhaps, by clicking Members?
             Unit hero = MacroManager.getSelectedPartyMember();
             hero.setMacroMode(mode);
-            MacroManager.getMapView().getMacroActionPanel().refresh();
             return true;
         }
         if (mpa != null) {
             // getOrCreate active party - consider that for real Dynamics, the world
             // should be filled with real parties that take real actions!
 
-            MacroActionManager.partyAction(mpa, ref.getParty());
+            MapActionHandler.partyAction(mpa, ref.getParty());
         }
         // costs?
         return false;

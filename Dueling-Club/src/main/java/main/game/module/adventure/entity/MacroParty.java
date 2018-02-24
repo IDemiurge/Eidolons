@@ -17,7 +17,7 @@ import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
 import main.game.module.adventure.town.Town;
-import main.game.module.adventure.travel.RestMaster;
+import main.game.module.adventure.travel.RestMasterOld;
 import main.game.module.adventure.travel.TravelMasterOld;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.MathMaster;
@@ -82,9 +82,9 @@ public class MacroParty extends MapObj {
             return;
         }
         super.toBase();
-        if (party != null) {
-            party.setMacroParty(this);
-            party.toBase();
+        if (getParty() != null) {
+            getParty().setMacroParty(this);
+            getParty().toBase();
         }
         resetGoldShares();
         for (Unit hero : getMembers()) {
@@ -129,7 +129,7 @@ public class MacroParty extends MapObj {
     public void newTurn() {
         toBase();
         if (status == MACRO_STATUS.CAMPING) {
-            RestMaster.applyMacroMode(this);
+            RestMasterOld.applyMacroMode(this);
         }
     }
 
@@ -153,59 +153,57 @@ public class MacroParty extends MapObj {
     }
 
     public int getMaxParam(PARAMETER p) {
-        return party.getMaxParam(p, false);
+        return getParty().getMaxParam(p, false);
     }
 
     public int getMinParam(PARAMETER p) {
-        return party.getMinParam(p, false);
+        return getParty().getMinParam(p, false);
     }
 
     public int getParamSum(PARAMETER p) {
-        return party.getParamSum(p, false);
+        return getParty().getParamSum(p, false);
     }
 
     public int getMinParam(PARAMETER p, boolean units) {
-        return party.getMinParam(p, units);
+        return getParty().getMinParam(p, units);
     }
 
     public int getMaxParam(PARAMETER p, boolean units) {
-        return party.getMaxParam(p, units);
+        return getParty().getMaxParam(p, units);
     }
 
     public ImageIcon getIcon() {
-        return party.getIcon();
+        return getParty().getIcon();
     }
 
     public String getImagePath() {
-        return party.getImagePath();
+        return getParty().getImagePath();
     }
 
     public Player getOwner() {
-        return party.getOwner();
+        return getParty().getOwner();
     }
 
     public Player getOriginalOwner() {
-        return party.getOriginalOwner();
+        return getParty().getOriginalOwner();
     }
 
     public void addMember(Unit hero) {
-        party.addMember(hero);
+        getParty().addMember(hero);
 
     }
 
     public void removeMember(Unit hero) {
-        party.removeMember(hero);
+        getParty().removeMember(hero);
     }
 
     public List<Unit> getMembers() {
-        return party.getMembers();
+        return getParty().getMembers();
     }
 
     public Unit getLeader() {
-        if (party == null) {
 
-        }
-        return party.getLeader();
+        return getParty().getLeader();
     }
 
 
@@ -334,7 +332,7 @@ public class MacroParty extends MapObj {
     }
 
     public int getExploreCapacity() {
-        int capacity = party.getMaxParam(PARAMS.DETECTION);
+        int capacity = getParty().getMaxParam(PARAMS.DETECTION);
         // ++ speed;
         for (Unit m : getMembers()) {
             capacity += m.getIntParam(PARAMS.DETECTION) / 2;
@@ -352,7 +350,7 @@ public class MacroParty extends MapObj {
 //        return getMinParam(MACRO_PARAMS.TRAVEL_SPEED); //meters per minute
     }
     public Party getMicroParty() {
-        return party;
+        return getParty();
     }
 
     public Place getCurrentExploration() {
@@ -391,5 +389,12 @@ public class MacroParty extends MapObj {
     @Override
     public int getDefaultSize() {
         return 96;
+    }
+
+    public Party getParty() {
+        if (party==null ){
+            party = new Party(getType());
+        }
+        return party;
     }
 }

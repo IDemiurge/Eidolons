@@ -167,8 +167,6 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                 // break;
 
                 case MAP:
-                    Launcher.setView(MacroManager.getMacroViewComponent(), VIEWS.MAP);
-                    MacroManager.refreshGui();
                     break;
                 case TAVERNS:
                     Tavern tavern = MacroManager.getActiveParty().getTown().selectTavern();

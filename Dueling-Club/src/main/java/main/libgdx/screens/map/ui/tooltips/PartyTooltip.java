@@ -1,0 +1,176 @@
+package main.libgdx.screens.map.ui.tooltips;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import main.content.PARAMS;
+import main.game.module.adventure.MacroGame;
+import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
+import main.libgdx.GdxColorMaster;
+import main.libgdx.StyleHolder;
+import main.libgdx.anims.ActorMaster;
+import main.libgdx.bf.generic.SuperContainer;
+import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import main.libgdx.gui.NinePatchFactory;
+import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.screens.map.obj.PartyActor;
+import main.libgdx.texture.TextureCache;
+import main.system.graphics.FontMaster.FONT;
+
+/**
+ * Created by JustMe on 2/23/2018.
+ */
+public class PartyTooltip extends ToolTip {
+    private final MacroParty party;
+    private final PartyActor actor;
+    private final ValueContainer leader;
+    private final ValueContainer members;
+    private final Label threatLabel;
+    private final Label allegiance;
+    private final ValueContainer main;
+    private SuperContainer highlight;
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(1,1,1,1);
+        super.draw(batch, parentAlpha);
+    }
+
+    public PartyTooltip(MacroParty party, PartyActor actor) {
+        this.party = party;
+        this.actor = actor;
+
+        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+
+        highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
+         SHADE_LIGHT.LIGHT_EMITTER.getTexturePath())), true){
+            @Override
+            protected float getAlphaFluctuationMin() {
+                return super.getAlphaFluctuationMin();
+            }
+        };
+        highlight.setTouchable(Touchable.disabled);
+        highlight.setAlphaStep(0.1f);
+        main = new ValueContainer(TextureCache.getOrCreateR(
+         party.getEmblemPath()),
+         party.getName());
+        leader = new ValueContainer(TextureCache.getOrCreateR(
+         party.getLeader().getImagePath()),
+         "Leader: ",
+         party.getName());
+        //set to "known members: " if...
+        members = new ValueContainer(party.getMembers().size() + " ", "Members");
+        allegiance = new Label("", StyleHolder.getDefaultLabelStyle());
+
+//        Label status; //traveling, guarding, ..
+//        Label visibility; //in sight, known
+
+        threatLabel = new Label("", StyleHolder.getDefaultLabelStyle());
+//        TextBuilder builder = new TextBuilder();
+        defaults().uniform(true, false).space(5);
+
+        add(main).row();
+        add(leader).row();
+        add(members).row();
+        add(allegiance).row();
+        add(threatLabel).row();
+
+        main.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+        leader.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+        members.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+
+    }
+
+
+
+    private THREAT_LEVEL getThreatLevel(MacroParty party, MacroParty playerParty) {
+        int percentage = party.getParamSum(PARAMS.POWER)
+         * 100 / playerParty.getParamSum(PARAMS.POWER);
+        THREAT_LEVEL level = null;
+        for (THREAT_LEVEL sub : THREAT_LEVEL.values()) {
+            level = sub;
+            if (sub.powerPercentage <= percentage)
+                break;
+        }
+        return level;
+    }
+
+
+    @Override
+    public void updateAct(float delta) {
+        String text = "Unknown";
+        boolean showThreat = false;
+        if (party.getInfoLevel() == MAP_OBJ_INFO_LEVEL.VISIBLE) {
+            text = "Neutral";
+            if (!party.getOwner().isMe()) {
+                if (party.getOwner().isNeutral()) {
+                    showThreat = true;
+                    text = "Neutral";
+                } else {
+                    text = party.getOwner().isHostileTo(MacroGame.game.getPlayerParty().getOwner()) ? "Hostile" : "Friendly";
+
+                }
+            }
+        }
+        this.allegiance.setText(text);
+
+        if (showThreat) {
+            THREAT_LEVEL threat = getThreatLevel(party, MacroGame.getGame().getPlayerParty());
+            threatLabel.setText(threat.name());
+            threatLabel.setStyle(StyleHolder.getSizedColoredLabelStyle(FONT.AVQ, 20, threat.color));
+        } else
+            threatLabel.setText("");
+    }
+
+    @Override
+    protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+        super.onMouseEnter(event, x, y, pointer, fromActor);
+        ActorMaster.addScaleAction(actor, 1.2f, 1.2f, 0.4f);
+        ActorMaster.addScaleAction(highlight.getContent(), 1.25f, 1.25f, 0.5f);
+        //highlight underlay?
+        actor.getParent().addActor(highlight);
+        highlight.setPosition(actor.getX(), actor.getY());
+        highlight.setZIndex(0);
+        highlight.setVisible(true);
+    }
+
+    @Override
+    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
+       super.onMouseExit(event, x, y, pointer, toActor);
+        ActorMaster.addScaleAction(actor, 1.0f, 1.0f, 0.5f);
+        ActorMaster.addScaleAction(highlight.getContent(), 0.0f, 0.0f, 1.0f);
+//        highlight.setVisible(false);
+//        actor.getParent().removeActor(highlight);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+    }
+
+    public enum THREAT_LEVEL {
+        DEADLY(GdxColorMaster.PURPLE, 250),
+        OVERPOWERING(GdxColorMaster.RED, 175),
+        CHALLENGING(GdxColorMaster.ORANGE, 125),
+        EVEN(GdxColorMaster.YELLOW, 100),
+        MODERATE(GdxColorMaster.BLUE, 75),
+        EASY(GdxColorMaster.GREEN, 50),
+        EFFORTLESS(GdxColorMaster.WHITE, 25),;
+        public final Color color;
+        public final int powerPercentage;
+
+        THREAT_LEVEL(Color color, int powerPercentage) {
+            this.color = color;
+            this.powerPercentage = powerPercentage;
+        }
+
+    }
+}
