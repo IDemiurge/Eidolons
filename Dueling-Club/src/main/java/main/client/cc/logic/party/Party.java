@@ -75,21 +75,27 @@ public class Party extends Obj {
 
         // HeroCreator.initHero(type.getProperty(PROPS.LEADER));
     }
+
     public void initMembers() {
         members.clear();
         for (String heroName : StringMaster.openContainer
          (type.getProperty(PROPS.MEMBERS))) {
             //TODO refactor
-            if (DC_Game.game.getMetaMaster()!=null )
-            heroName = DC_Game.game.getMetaMaster().getPartyManager().
-             checkLeveledHeroVersionNeeded(heroName);
+            if (DC_Game.game.getMetaMaster() != null)
+                heroName = DC_Game.game.getMetaMaster().getPartyManager().
+                 checkLeveledHeroVersionNeeded(heroName);
 
-            addMember(HeroCreator.initHero(heroName));
+            try {
+                addMember(HeroCreator.initHero(heroName));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
         if (!getMembers().isEmpty()) {
             this.leader = getMembers().get(0); // how safe is that?
         }
     }
+
     public String getMemberString() {
         return StringMaster.constructContainer(ListMaster.toNameList(getMembers()));
     }
@@ -105,7 +111,6 @@ public class Party extends Obj {
     }
 
 
-
     public void resetMembers() {
         for (Unit hero : members) {
             hero.fullReset(Simulation.getGame());
@@ -113,29 +118,29 @@ public class Party extends Obj {
     }
 
     public void addMember(Unit hero) {
-        if (hero==null )
-            return ;
+        if (hero == null)
+            return;
         if (members.contains(hero))
             return;
         if (checkDuplicateHero(hero))
-            return ;
-        if (leader!=null )
+            return;
+        if (leader != null)
             setLeader(hero);
         members.add(hero);
         addProperty(PROPS.MEMBERS, hero.getName()); //no duplicates ?
 //        type.addProperty(PROPS.MEMBERS, hero.getName());
         if (!getType().getProperty(G_PROPS.EMBLEM).isEmpty())
-             hero.setProperty(G_PROPS.EMBLEM, getType().getProperty(G_PROPS.EMBLEM), true);
+            hero.setProperty(G_PROPS.EMBLEM, getType().getProperty(G_PROPS.EMBLEM), true);
         hero.getRef().setID(KEYS.PARTY, getId());
     }
 
     private boolean checkDuplicateHero(Unit hero) {
         for (Unit sub : getMembers()) {
             if (hero.getName().contains(" v"))
-            if (sub.getName().contains(StringMaster.
-             cropLastSegment(hero.getName(), " "))){
-                return true;
-            }
+                if (sub.getName().contains(StringMaster.
+                 cropLastSegment(hero.getName(), " "))) {
+                    return true;
+                }
         }
         return false;
     }
@@ -174,13 +179,28 @@ public class Party extends Obj {
         return leader;
     }
 
+    public void setLeader(Unit leader) {
+        this.leader = leader;
+    }
+
     @Override
     public Player getOwner() {
+        if (owner!=null )
+            return owner;
         return leader.getOwner();
     }
 
-    public void setLeader(Unit leader) {
-        this.leader = leader;
+    @Override
+    public void setOriginalOwner(Player owner) {
+        this.originalOwner = owner;
+        if (members!=null&& owner!=null )
+        members.forEach(hero -> hero.setOriginalOwner(owner));
+    }
+    @Override
+    public void setOwner(Player owner) {
+        this.owner = owner;
+        if (members!=null&& owner!=null)
+            members.forEach(hero -> hero.setOwner(owner));
     }
 
     public boolean isArcade() {
@@ -190,7 +210,7 @@ public class Party extends Obj {
     public ARCADE_STATUS getArcadeStatus() {
 
         return new EnumMaster<ARCADE_STATUS>().retrieveEnumConst(ARCADE_STATUS.class,
-                getProperty(PROPS.ARCADE_STATUS));
+         getProperty(PROPS.ARCADE_STATUS));
 
     }
 
@@ -240,13 +260,13 @@ public class Party extends Obj {
 
         for (Unit m : members) {
             m.setParam(PARAMS.ORGANIZATION,
-                    // Math.min(
-                    // DC_Formulas.INTELLIGENCE_ORGANIZATION_CAP_MOD
-                    // * m.getIntParam(PARAMS.INTELLIGENCE),
-                    MathMaster.applyMod(getIntParam(PARAMS.ORGANIZATION), m
-                            .getIntParam(PARAMS.INTEGRITY)));
+             // Math.min(
+             // DC_Formulas.INTELLIGENCE_ORGANIZATION_CAP_MOD
+             // * m.getIntParam(PARAMS.INTELLIGENCE),
+             MathMaster.applyMod(getIntParam(PARAMS.ORGANIZATION), m
+              .getIntParam(PARAMS.INTEGRITY)));
             m.setParam(PARAMS.BATTLE_SPIRIT, MathMaster.applyMod(getIntParam(PARAMS.BATTLE_SPIRIT),
-                    !m.isHero() ? 100 : m.getIntParam(PARAMS.INTEGRITY)));
+             !m.isHero() ? 100 : m.getIntParam(PARAMS.INTEGRITY)));
             m.resetMorale();
         }
     }
@@ -282,8 +302,8 @@ public class Party extends Obj {
         int avrgIntelligence = intelligence / i;
 
         int organization = Math.round(new Float(100) - (new Float(10) - new Float(maxTactics) / 5)
-                * i + 50 * Math.min(5 + new Float(maxTactics) / i, new Float(avrgIntelligence) / i)
-                * (maxTactics + minIntelligence) / 100);
+         * i + 50 * Math.min(5 + new Float(maxTactics) / i, new Float(avrgIntelligence) / i)
+         * (maxTactics + minIntelligence) / 100);
         setParam(PARAMS.ORGANIZATION, organization);
 
         if (!getOwner().isMe()) {
@@ -321,13 +341,13 @@ public class Party extends Obj {
 
             for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
                 Integer hero_identity = hero.getIntParam(DC_ContentManager
-                        .getIdentityParamForPrinciple(principle));
+                 .getIdentityParamForPrinciple(principle));
                 for (Unit m : members) {
                     if (m == hero || m.isDead()) {
                         continue;
                     }
                     Integer member_identity = m.getIntParam(DC_ContentManager
-                            .getIdentityParamForPrinciple(principle));
+                     .getIdentityParamForPrinciple(principle));
                     if (hero_identity > 0) {
                         if (member_identity < 0) {
                             principleClashes += Math.min(hero_identity, Math.abs(member_identity));
@@ -339,7 +359,7 @@ public class Party extends Obj {
                             principleClashes += Math.min(Math.abs(hero_identity), member_identity);
                         } else {
                             sharedPrinciples += Math.min(Math.abs(hero_identity), Math
-                                    .abs(member_identity));
+                             .abs(member_identity));
                         }
                     }
 
@@ -366,7 +386,7 @@ public class Party extends Obj {
             sd_mod = Math.max(sd_mod, 1);
 
             int maxLeadership = getMaxParam(ContentManager
-                    .getMasteryScore(PARAMS.LEADERSHIP_MASTERY));
+             .getMasteryScore(PARAMS.LEADERSHIP_MASTERY));
             // if (!leader.getOwner().isMe()) {
             // // mod /= 2; ???
             // maxLeadership += 10;
@@ -382,12 +402,12 @@ public class Party extends Obj {
             int sharedDeitiesBonus = 5 * sd_mod / 100 * (sharedDeities);
             int leadershipBonus = Math.round((float) Math.sqrt(i) * maxLeadership);
             int principleBonus = MathMaster.getMinMax(sharedPrinciplesBonus
-                    - principleClashesPenalty, -75, 200);
+             - principleClashesPenalty, -75, 200);
             int deityBonus = MathMaster.getMinMax(sharedDeitiesBonus - deityClashesPenalty, -50,
-                    150);
+             150);
             int battleSpirit = 100 + principleBonus + deityBonus
-                    // should it be PC^2*5 instead?
-                    + leadershipBonus;
+             // should it be PC^2*5 instead?
+             + leadershipBonus;
             // TODO
 
             setParam(PARAMS.BATTLE_SPIRIT, Math.min(300, battleSpirit));
@@ -498,8 +518,6 @@ public class Party extends Obj {
     }
 
 
-
-
     public Map<Unit, Coordinates> getPartyCoordinates() {
         return partyCoordinates;
     }
@@ -512,7 +530,6 @@ public class Party extends Obj {
     public void setMacroParty(MacroParty macroParty) {
         this.macroParty = macroParty;
     }
-
 
 
     public String getMission() {

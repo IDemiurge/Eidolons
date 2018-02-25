@@ -330,4 +330,8 @@ public class GameLoop {
             main.system.ExceptionMaster.printStackTrace(e);
         }
     }
+
+    public void togglePaused() {
+        setPaused(!isPaused());
+    }
 }

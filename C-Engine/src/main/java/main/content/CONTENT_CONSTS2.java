@@ -392,7 +392,7 @@ public String getPath(){
     }
 
     public enum MACRO_STATUS {
-        CAMPING, EXPLORING, TRAVELING, IN_AMBUSH,
+        CAMPING, EXPLORING, TRAVELING, IN_AMBUSH, IDLE,
     }
 
     public enum SHOP_LEVEL { // quality and materials - filter in and Type will

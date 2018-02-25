@@ -64,6 +64,10 @@ public class MapParticles extends Group {
     List<EmitterActor> displayed = new ArrayList<>();
     private boolean dirty;
 
+    public Map<DAY_TIME, List<EmitterActor>> getEmitterMap() {
+        return emitterMap;
+    }
+
     @Override
     public void act(float delta) {
         if (time != getTime()) {

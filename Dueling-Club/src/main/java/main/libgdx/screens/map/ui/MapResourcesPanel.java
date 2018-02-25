@@ -1,7 +1,6 @@
 package main.libgdx.screens.map.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
@@ -12,11 +11,19 @@ import main.data.filesys.PathFinder;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxMaster;
+import main.libgdx.StyleHolder;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.texture.TextureCache;
+import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster.FONT;
+import main.system.images.ImageManager.STD_IMAGES;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 2/9/2018.
@@ -33,6 +40,8 @@ public class MapResourcesPanel extends TablePanel {
     MAP_RESOURCE[] resourceGroupTwo = {
      MAP_RESOURCE.GOLD, MAP_RESOURCE.SOULGEMS
     };
+    private List<MapResourcePanel> elements=    new ArrayList<>() ;
+
 
     public MapResourcesPanel() {
         updateRequired = true;
@@ -44,6 +53,18 @@ public class MapResourcesPanel extends TablePanel {
     }
 
     private static String getImgPath(MAP_RESOURCE resource) {
+        switch (resource) {
+            case PROVISIONS:
+                return STD_IMAGES.BAG.getPath();
+            case WATER:
+                return "UI\\components\\small\\glory.png";
+            case SANITY:
+                break;
+            case GOLD:
+                return VISUALS.GOLD.getImgPath();
+            case SOULGEMS:
+                return VISUALS.XP.getImgPath();
+        }
         return PathFinder.getMacroUiPath() + "values"
          + StringMaster.getPathSeparator()
          + resource.toString();
@@ -69,8 +90,11 @@ public class MapResourcesPanel extends TablePanel {
         HorizontalFlowGroup group = new HorizontalFlowGroup(5);
         group.setWidth(GdxMaster.adjustSize(WIDTH));
         for (MAP_RESOURCE sub : resourceGroup) {
-            group.addActor(new MapResourcePanel(sub));
+            MapResourcePanel res = new MapResourcePanel(sub);
+            group.addActor(res);
+            elements.add(res);
         }
+
         add(group).center();
     }
 
@@ -80,10 +104,8 @@ public class MapResourcesPanel extends TablePanel {
             if (MacroGame.game == null) return;   party = MacroGame.game.getPlayerParty();
         }
         super.updateAct(delta);
-        for (Actor sub : getChildren()) {
-            if (sub instanceof TablePanel) {
-                ((TablePanel) sub).setUpdateRequired(true);
-            }
+        for (TablePanel sub : elements) {
+                sub.setUpdateRequired(true);
         }
     }
 
@@ -106,9 +128,11 @@ public class MapResourcesPanel extends TablePanel {
         public void updateAct(float delta) {
             super.updateAct(delta);
             clearChildren();
-            String val = party.getParam(getParam(resource));
+            String val = RandomWizard.getRandomInt(100)+"";// party.getParam(getParam(resource));
             TextureRegion tex = TextureCache.getOrCreateR(getImgPath(resource));
             ValueContainer container = new ValueContainer(tex, val);
+            container.defaults().space(20).width(40);
+             container.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 18));
             addActor(container);
         }
     }

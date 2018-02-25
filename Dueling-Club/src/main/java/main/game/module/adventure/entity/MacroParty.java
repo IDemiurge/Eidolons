@@ -188,6 +188,16 @@ public class MacroParty extends MapObj {
         return getParty().getOriginalOwner();
     }
 
+    @Override
+    public void setOwner(Player owner) {
+        getParty().setOwner(owner);
+    }
+
+    @Override
+    public void setOriginalOwner(Player originalOwner) {
+        getParty().setOriginalOwner(originalOwner);
+    }
+
     public void addMember(Unit hero) {
         getParty().addMember(hero);
 
@@ -375,7 +385,11 @@ public class MacroParty extends MapObj {
     }
 
     public MACRO_STATUS getStatus(Unit hero) {
-        return MACRO_STATUS.CAMPING;
+        MACRO_STATUS heroStatus = new EnumMaster<MACRO_STATUS>().retrieveEnumConst(MACRO_STATUS.class,
+         hero.getProperty(MACRO_PROPS.MACRO_STATUS));
+        if (heroStatus!=null )
+            return heroStatus;
+        return MACRO_STATUS.IDLE;
     }
 
     public String getMemberRank(Unit hero) {

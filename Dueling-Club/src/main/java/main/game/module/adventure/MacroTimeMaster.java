@@ -13,6 +13,7 @@ import main.system.options.OptionsMaster;
  * Created by JustMe on 2/10/2018.
  */
 public class MacroTimeMaster {
+    private static final int DEFAULT_DAY_TIME = 0;
 //public static final float
 
     int period = 24 / DAY_TIME.values().length;
@@ -54,23 +55,29 @@ public class MacroTimeMaster {
 
     private void updateDate() {
         //default: second == minute
+        if (dayTime == null)
+        {
+            newDayTime(DEFAULT_DAY_TIME);
+        }
+
         if (minuteCounter < 60) {
             return;
         }
-        minuteCounter -= 60;
+        float passed = minuteCounter / 60;
+        minuteCounter = minuteCounter%60;
         GameDate date = getDate();
         int hour = date.getHour();
-        hour++;
+        hour+=passed;
         boolean newDay = false;
         if (hour > 24) {
             newDay = true;
-            hour = 1;
+            hour =hour-24;
         }
         if (newDay)
             date.nextDay();
         date.setHour(hour);
         //check month changes too
-        int newPeriod = hour % getPeriod();
+        int newPeriod = hour / getPeriod();
         if (newPeriod >= getPeriods())
             newPeriod = 0;
         if (dayTime == null || newPeriod != lastPeriod) {
@@ -157,10 +164,29 @@ public class MacroTimeMaster {
     }
 
     public void resetSpeed() {
-        setSpeed(defaultSpeed);
+        if (MacroGame.getGame().getLoop().isPaused()) {
+            setSpeed(defaultSpeed/4);
+        } else {
+            setSpeed(defaultSpeed);
+        }
     }
 
     public float getSpeed() {
         return speed;
+    }
+
+    public float getMinuteCounter() {
+        return minuteCounter;
+    }
+
+    public void speedDown() {
+        speed-=defaultSpeed/3;
+        if (speed<=0.1f)
+            speed=0.1f;
+    }
+    public void speedUp() {
+        speed+=defaultSpeed/3;
+        if (speed>=10f)
+            speed=10f;
     }
 }

@@ -6,8 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import main.data.filesys.PathFinder;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
 public class ButtonStyled extends Image implements EventListener {
@@ -74,8 +76,10 @@ public class ButtonStyled extends Image implements EventListener {
                 return false;
             }
         },
-//        NEXT, LEVEL_UP,
-        ;
+        //        NEXT, LEVEL_UP,
+        PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(),"component", "time panel", "pause.png")),
+        SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component","time panel", "SPEED UP.png")),
+        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component","time panel", "SPEED DOWN.png")),;
         String path;
         private Drawable texture;
 

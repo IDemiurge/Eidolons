@@ -162,6 +162,9 @@ public class MapScreen extends GameScreen {
     protected boolean canShowScreen() {
         if (MacroGame.getGame() == null)
             return false;
+        if (!CoreEngine.isMapEditor())
+        if (!MacroGame.getGame().isStarted()  )
+            return false;
         return super.canShowScreen();
     }
 
@@ -171,10 +174,8 @@ public class MapScreen extends GameScreen {
         if (canShowScreen()) {
             if (!CoreEngine.isMapEditor())
                 MacroGame.getGame().getRealtimeLoop().act(delta);
-
             delta =
              delta + 0.1f * delta * (getTimeMaster().getSpeed() - 1);
-            checkShader();
             mapStage.act(delta);
             objectStage.act(delta);
             guiStage.act(delta);
@@ -190,7 +191,6 @@ public class MapScreen extends GameScreen {
                 guiStage.getVignette().draw(getBatch(), 1f);
                 getBatch().end();
             }
-            checkShaderReset();
         }
 
 //        VignetteShader.getShader().end();
@@ -218,6 +218,9 @@ public class MapScreen extends GameScreen {
     }
 
     protected boolean isBlocked() {
+        if (!canShowScreen())
+            return false;
+
         if (CoreEngine.isMapEditor())
             return false;
         if (getTimeMaster().isPlayerCamping())
@@ -235,5 +238,9 @@ public class MapScreen extends GameScreen {
 
     public InputController getController() {
         return controller;
+    }
+
+    public int getMapWidth() {
+        return (int) getMapStage().getMap().getWidth();
     }
 }

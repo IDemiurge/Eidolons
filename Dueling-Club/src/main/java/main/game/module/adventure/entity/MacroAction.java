@@ -73,6 +73,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
 
             MapActionHandler.partyAction(mpa, ref.getParty());
         }
+        getGame().getLoop().actionInput(null );//new ActionInput(this, new Context(ref)));
         // costs?
         return false;
     }

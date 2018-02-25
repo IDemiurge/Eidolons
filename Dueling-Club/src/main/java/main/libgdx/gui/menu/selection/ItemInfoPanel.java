@@ -123,6 +123,8 @@ public class ItemInfoPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
+        if (getUserObject()==null )
+            return;
         super.updateAct(delta);
         description.setText(item.description);
         if (item.imagePath == null)

@@ -33,13 +33,19 @@ public class PlaceTooltip extends ToolTip {
 
         GuiEventManager.bind(MapEvent.ROUTES_PANEL_HOVER_OFF, r -> {
                 super.onMouseExit(null , 0, 0, 0, null );
+                main.system.auxiliary.log.LogMaster.log(1,"ROUTES_PANEL_HOVER_OFF" );
+        });
+        GuiEventManager.bind(MapEvent.PLACE_HOVER, r -> {
+            if (r.get()==null ){
                 main.system.auxiliary.log.LogMaster.log(1,"NULL PLACE_HOVERED!!! " );
+                super.onMouseExit(null , 0, 0, 0, null );
+            }
         });
             GuiEventManager.bind(MapEvent.ROUTE_HOVERED, r->{
-            if (r.get()==null ){
-                GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
-                main.system.auxiliary.log.LogMaster.log(1,"NULL ROUTE_HOVERED!!! " );
-            }
+//            if (r.get()==null ){
+//                GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
+//                main.system.auxiliary.log.LogMaster.log(1,"NULL ROUTE_HOVERED!!! " );
+//            }
         });
     }
 

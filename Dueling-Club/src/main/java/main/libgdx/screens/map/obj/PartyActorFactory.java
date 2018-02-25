@@ -15,16 +15,8 @@ import main.libgdx.texture.TextureCache;
 /**
  * Created by JustMe on 2/7/2018.
  */
-public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty>{
+public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty> {
 
-    public static class PartyActorParameters{
-        public TextureRegion emblem;
-        public TextureRegion border;
-        public MAP_OBJ_INFO_LEVEL visibility;
-        public  Vector2 position;
-        public Color color;
-        TextureRegion mainTexture;
-    }
     private static PartyActorFactory instance;
 
     public static PartyActorFactory getInstance() {
@@ -34,12 +26,11 @@ public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty>{
         return instance;
     }
 
-
-
     public static PartyActor getParty(MacroParty party) {
         return getInstance().create(party);
     }
-        public   PartyActor get(MacroParty party) {
+
+    public PartyActor get(MacroParty party) {
         PartyActorParameters parameters = new PartyActorParameters();
         Unit leader = party.getLeader();
         parameters.emblem = TextureCache.getOrCreateR(leader.getEmblemPath());
@@ -53,12 +44,22 @@ public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty>{
         //TODO size?
         parameters.mainTexture =
          TextureCache.getOrCreateRoundedRegion(
-         party.getLeader().getImagePath());
-        parameters.color=  GdxColorMaster.getColor(party.getLeader().getOwner().getFlagColor());
+          party.getLeader().getImagePath());
+        parameters.color = GdxColorMaster.getColor(party.getLeader().getOwner().getFlagColor());
 
         PartyActor actor = new PartyActor(parameters);
-            actor.addListener(new PartyTooltip(party, actor).getController());
-        ActorMaster.addMoveToAction(actor, GdxMaster.getWidth(), GdxMaster.getHeight(), 50);
+        actor.addListener(new PartyTooltip(party, actor).getController());
+        if (party.isMine())
+            ActorMaster.addMoveToAction(actor, GdxMaster.getWidth(), GdxMaster.getHeight(), 50);
         return actor;
+    }
+
+    public static class PartyActorParameters {
+        public TextureRegion emblem;
+        public TextureRegion border;
+        public MAP_OBJ_INFO_LEVEL visibility;
+        public Vector2 position;
+        public Color color;
+        TextureRegion mainTexture;
     }
 }

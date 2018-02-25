@@ -11,6 +11,7 @@ import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
+import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
@@ -38,7 +39,9 @@ public class BattleGuiStage extends GuiStage {
 
         addActor(new UnitInfoPanel(0, 0));
 init();
-
+        InventoryWithAction inventoryForm = new InventoryWithAction();
+        inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
+        this.addActor(inventoryForm);
     }
 
 

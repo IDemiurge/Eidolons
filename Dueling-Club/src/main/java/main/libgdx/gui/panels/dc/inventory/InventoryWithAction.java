@@ -120,6 +120,8 @@ public class InventoryWithAction extends TablePanel implements Closable{
 
     @Override
     public void updateAct(float delta) {
+        if (getUserObject()==null )
+            return ;
         super.updateAct(delta);
 
         final InventoryDataSource source = (InventoryDataSource) getUserObject();

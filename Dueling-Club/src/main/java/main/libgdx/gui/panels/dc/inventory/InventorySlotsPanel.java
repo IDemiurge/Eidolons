@@ -20,6 +20,8 @@ public class InventorySlotsPanel extends TablePanel {
 
     @Override
     public void afterUpdateAct(float delta) {
+        if (getUserObject()==null )
+            return ;
         clear();
         super.afterUpdateAct(delta);
         final List<InventoryValueContainer> inventorySlots =

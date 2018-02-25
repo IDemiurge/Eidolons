@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -14,6 +15,7 @@ public class ValueContainer extends TablePanel {
     protected Cell<Image> imageContainer;
     protected Cell<Label> nameContainer;
     protected Cell<Label> valueContainer;
+    private LabelStyle style=StyleHolder.getDefaultLabelStyle();
     private float imageScaleX;
     private float imageScaleY;
     private Label valueLabel;
@@ -22,6 +24,12 @@ public class ValueContainer extends TablePanel {
     protected ValueContainer() {
 
     }
+
+    public ValueContainer(LabelStyle style, TextureRegion texture, String name, String value) {
+        this.style = style;
+        init(texture, name, value);
+    }
+
 
     public ValueContainer(TextureRegion texture, String name, String value) {
         init(texture, name, value);
@@ -46,10 +54,27 @@ public class ValueContainer extends TablePanel {
     public ValueContainer(Label actor) {
         this(actor, null);
     }
+
     public ValueContainer(Label nameLabel, Label valueLabel) {
         this.nameLabel = nameLabel;
         this.valueLabel = valueLabel;
-        init(null, null , null );
+        init(null, null, null);
+    }
+
+    public Cell<Label> getNameContainer() {
+        return nameContainer;
+    }
+
+    public Cell<Label> getValueContainer() {
+        return valueContainer;
+    }
+
+    public Label getValueLabel() {
+        return valueLabel;
+    }
+
+    public Label getNameLabel() {
+        return nameLabel;
     }
 
     @Override
@@ -68,9 +93,9 @@ public class ValueContainer extends TablePanel {
         setName(name);
         if (texture != null) {
             imageContainer.setActor(new Image(texture))
-                    .height(texture.getRegionHeight())
-                    .width(texture.getRegionWidth())
-                    .center();
+             .height(texture.getRegionHeight())
+             .width(texture.getRegionWidth())
+             .center();
         } else {
             imageContainer.fill(false).expand(0, 0);
         }
@@ -86,7 +111,7 @@ public class ValueContainer extends TablePanel {
 
         if (name != null) {
             setName(name);
-            nameLabel  =new Label(name, StyleHolder.getDefaultLabelStyle());
+            nameLabel = new Label(name, style);
         }
         nameContainer.setActor(
          nameLabel
@@ -99,7 +124,7 @@ public class ValueContainer extends TablePanel {
         }
 
         if (StringUtils.isNotEmpty(value)) {
-            valueLabel =  new Label(value, StyleHolder.getDefaultLabelStyle());
+            valueLabel = new Label(value, style);
         }
         valueContainer.setActor(
          valueLabel).grow().center();
@@ -205,7 +230,6 @@ public class ValueContainer extends TablePanel {
     }
 
 
-
     public float getImageScaleX() {
         return imageScaleX;
     }
@@ -219,27 +243,27 @@ public class ValueContainer extends TablePanel {
             w = Math.max(0, w);
             h = Math.max(0, h);
             if (isScaledOnHover()) {
-                imageScaleX =w/imageContainer.getActor().getWidth();
-                imageScaleY=h/imageContainer.getActor().getHeight();
+                imageScaleX = w / imageContainer.getActor().getWidth();
+                imageScaleY = h / imageContainer.getActor().getHeight();
                 if (isScaledOnHover())
                     imageContainer.getActor().setScale(getImageScaleX(), getImageScaleY());
-                imageContainer.setActorX(w-imageContainer.getActor().getWidth() );
-            }else
-            imageContainer.size(w, h);
+                imageContainer.setActorX(w - imageContainer.getActor().getWidth());
+            } else
+                imageContainer.size(w, h);
         }
     }
 
     @Override
     public float getWidth() {
-        if (imageScaleX!=0)
-            return super.getWidth()*imageScaleX;
+        if (imageScaleX != 0)
+            return super.getWidth() * imageScaleX;
         return super.getWidth();
     }
 
     @Override
     public float getHeight() {
-        if (imageScaleY!=0)
-            return super.getHeight()*imageScaleY;
+        if (imageScaleY != 0)
+            return super.getHeight() * imageScaleY;
         return super.getHeight();
     }
 
@@ -258,5 +282,11 @@ public class ValueContainer extends TablePanel {
     }
 
 
+    public void setStyle(LabelStyle labelStyle) {
+        if (getNameLabel() != null)
+            getNameLabel().setStyle(labelStyle);
+        if (getValueLabel() != null)
+            getValueLabel().setStyle(labelStyle);
+    }
 }
 

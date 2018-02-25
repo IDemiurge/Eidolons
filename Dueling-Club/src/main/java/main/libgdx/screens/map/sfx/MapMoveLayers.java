@@ -50,7 +50,7 @@ public class MapMoveLayers extends Group {
     }
 
     public void spawn() {
-        clearChildren();
+//        clearChildren();
         displayed = map.get(time);
         if (displayed.size() > 0) {
             dirty = false;
@@ -84,8 +84,20 @@ public class MapMoveLayers extends Group {
                 return 0f;
             }
         }; //cache!
-        container.setDirectionModX(getModX(sub.direction));
-        container.setDirectionModY(getModY(sub.direction));
+
+        container.setDirectionModX(getModX(sub.direction)
+         + getModX(sub.direction) * (RandomWizard.getRandomFloatBetween(-sub.randomness, sub.randomness))
+        );
+        container.setDirectionModY(getModY(sub.direction)+ getModY(sub.direction)
+         * (RandomWizard.getRandomFloatBetween(-sub.randomness, sub.randomness))
+        );
+        float scale = 1 + RandomWizard.getRandomFloatBetween(-sub.sizeRange, sub.sizeRange);
+        container.setScale(scale);
+
+        if (sub.rotation != 0) {
+            container.setRotation(RandomWizard.getRandomInt(360));
+        }
+
         container.setMaxDistance(getMaxDistance(mapArea, sub));
         container.setShakiness(sub.shakiness);
         container.setSpeed(sub.speed);
@@ -136,6 +148,9 @@ public class MapMoveLayers extends Group {
             if (distance > maxDistance) {
                 sub.remove();
             }
+            if (type.rotation != 0) {
+                sub.setRotation(sub.getRotation()+type.rotation);
+            }
             //++ shakiness
             //checkRemove or reset
         }
@@ -184,7 +199,11 @@ public class MapMoveLayers extends Group {
 
     public enum MAP_AREA {
         PALE_MOUNTAINS_SOUTH(1000, 1200, 500, 500),
-        PALE_MOUNTAINS_NORTH(600, 800, 500, 500),;
+        PALE_MOUNTAINS_NORTH(600, 800, 500, 500),
+        ASHWOOD(MAP_POINTS.ASHWOOD.name(),   500, 500),
+        WISP_GROVE(MAP_POINTS.WISP_GROVE.name(),   500, 500),
+        WRAITH_MARSH(MAP_POINTS.WRAITH_MARSH.name(),   500, 500),
+        BOTTOM_LEFT(0, 0, 300, 300);
 
         int x, y, w, h;
         String centerPoint;
@@ -202,14 +221,20 @@ public class MapMoveLayers extends Group {
             this.h = h;
         }
     }
-
+static {
+    MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
+     DAY_TIME.NOON, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
+    };
+    MAP_MOVING_LAYER_TYPE.CLOUD_HEAVY.times = new DAY_TIME[]{
+     DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.DUSK
+    };
+}
     public enum MAP_MOVING_LAYER_TYPE {
-        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.WRAITH_MARSH, MAP_AREA.PALE_MOUNTAINS_SOUTH,
          MAP_AREA.PALE_MOUNTAINS_NORTH),
-        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 30, 2,MAP_AREA.WISP_GROVE,  MAP_AREA.PALE_MOUNTAINS_SOUTH,
          MAP_AREA.PALE_MOUNTAINS_NORTH),
-        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-         MAP_AREA.PALE_MOUNTAINS_NORTH),
+        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 3,0.5f, 1f, 0.3f, MAP_AREA.BOTTOM_LEFT),
 //        SHADOW,
 //        WAVE,
 //        SMOKE,
@@ -222,12 +247,23 @@ public class MapMoveLayers extends Group {
         MOVE_DIRECTION direction;
         int speed;
         float shakiness;
-
+        float randomness  ;
+        float rotation; //degrees per second
+        float sizeRange;
         MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed, float frequency, MAP_AREA... areas) {
+
+        }
+
+            MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed,
+                                  float frequency,
+                                  float randomness,float rotation,float sizeRange, MAP_AREA... areas) {
             this.direction = direction;
             this.speed = speed;
             this.spawnAreas = areas;
-            this.frequency = frequency;
+                this.frequency = frequency;
+                this.randomness = randomness;
+                this.rotation = rotation;
+                this.sizeRange = sizeRange;
             times = DAY_TIME.values();
         }
 

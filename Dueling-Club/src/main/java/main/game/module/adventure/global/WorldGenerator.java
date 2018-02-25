@@ -7,6 +7,7 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
@@ -101,7 +102,16 @@ public class WorldGenerator {
     }
 
     private static MacroParty createParty(MacroRef ref, String s) {
-        return new MacroParty(DataManager.getType(s, DC_TYPE.PARTY), ref.getGame(), ref);
+        String name = VariableManager.removeVarPart(s);
+        Coordinates coordinates = new Coordinates(true,
+         Integer.valueOf(VariableManager.getVar(s, 0)),
+         Integer.valueOf(VariableManager.getVar(s, 1)));
+        //TODO allegiance!!!
+        MacroParty party = new MacroParty(DataManager.getType(name, DC_TYPE.PARTY), ref.getGame(), ref);
+       party.setOriginalOwner(new DC_Player("" , null ,false));
+        party.setOwner(new DC_Player("" , null ,false));
+        party.setCoordinates(coordinates);
+        return party;
     }
 
     private static void generateRoutes() {

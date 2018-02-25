@@ -3,7 +3,6 @@ package main.libgdx.screens.map.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.module.adventure.global.GameDate;
 import main.game.module.adventure.global.TimeMaster;
 import main.libgdx.GdxMaster;
@@ -24,7 +23,6 @@ public class MapDatePanel extends TablePanel {
     private static final float HEIGHT = 60;
     private Label firstLabel;
     private Label secondLabel;
-    private Label thirdLabel;
     private GameDate date;
     private boolean initialized;
 
@@ -45,14 +43,12 @@ public class MapDatePanel extends TablePanel {
         LabelStyle style = StyleHolder.getSizedLabelStyle(FONT.AVQ, 18);
         firstLabel = new Label(getFirstLabelText(), style);
         secondLabel = new Label(getSecondLabelText(), style);
-        thirdLabel = new Label(getThirdLabelText(), style);
 
-        defaults().space(10).width(getWidth() / 3);
+//        defaults().space(10).width(getWidth() / 3);
 
-        add(firstLabel).center();
+        add(firstLabel).left();
         row();
-        add(secondLabel).center();
-        add(thirdLabel).center();
+        add(secondLabel).left();
         initialized = true;
     }
 
@@ -62,22 +58,20 @@ public class MapDatePanel extends TablePanel {
     }
 
     private String getSecondLabelText() {
-        return StringMaster.getOrdinal(date.getDay()) + " of " +
+        return date.getDayTime().getText()+", " +StringMaster.getOrdinal(date.getDay()) + " of " +
          date.getMonth().getName();
     }
 
-    private String getThirdLabelText() {
-        return DAY_TIME.HOUR_OF_WOLF.getText();
-//        return (date.getDayTime().getText());
-    }
 
     @Override
     public void updateAct(float delta) {
+        debug();
+        if (date==null )
+            return ;
         if (!initialized)
             init();
         firstLabel.setText(getFirstLabelText());
         secondLabel.setText(getSecondLabelText());
-        thirdLabel.setText(getThirdLabelText());
         pack();
     }
 }

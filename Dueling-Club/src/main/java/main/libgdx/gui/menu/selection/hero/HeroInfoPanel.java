@@ -37,6 +37,8 @@ public class HeroInfoPanel extends ItemInfoPanel {
 
     @Override
     public void updateAct(float delta) {
+        if (getUserObject()==null )
+            return;
         super.updateAct(delta);
         emblem.setDrawable( TextureCache.getOrCreateTextureRegionDrawable(item.getEntity().getProperty(G_PROPS.EMBLEM)));
         mainInfo.setText(HelpMaster.getHeroMainInfoText(item.getName()));

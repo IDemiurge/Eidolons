@@ -1,9 +1,7 @@
 package main.game.module.adventure;
 
 import main.game.core.ActionInput;
-import main.game.core.Eidolons;
 import main.game.core.GameLoop;
-import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.screens.map.MapScreen;
 import main.system.threading.WaitMaster;
@@ -36,7 +34,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         if (actionQueue.isEmpty()) {
         }
 
-        ActionInput playerAction = actionQueue.removeLast();
+//        ActionInput playerAction = actionQueue.removeLast();
 //        if (checkActionInputValid(playerAction)) {
 //            game.getMovementManager().cancelAutomove(activeUnit);
 //
@@ -54,19 +52,19 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public void actionInput(ActionInput actionInput) {
         if (isPaused())
             return;
-        if (ExplorationMaster.isWaiting()) {
-            ExplorationMaster.setWaiting(false);
-            return;
-        }
-        queueActionInput(actionInput);
-        signal();
-
+        //check blocked
+//        queueActionInput(actionInput);
+//        signal();
+//        GuiEventManager.trigger(MapEvent.MAP_GUI_UPDATE);
     }
 
     @Override
     public void start() {
-        super.start();
+
         startRealTimeLogic();
+        while(true){
+            makeAction();
+        }
     }
 
     public    void startRealTimeLogic() {
@@ -74,8 +72,6 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     protected   void realTimeLogic() {
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
 
         while (true) {
 
@@ -83,9 +79,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
             timeMaster.timedCheck();
 
-            if (Eidolons.getGame() == null)
-                return;
-            if (Eidolons.getGame().isPaused()) continue;
+//            if (Eidolons.getMacroGame().isPaused()) continue;
 
         }
     }

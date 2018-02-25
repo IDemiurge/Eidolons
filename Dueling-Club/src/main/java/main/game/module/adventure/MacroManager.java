@@ -112,8 +112,14 @@ public class MacroManager {
                 GuiEventManager.trigger(CREATE_PARTY,
                  sub1);
             }
-                for (Place sub1 : sub.getPlaces()) {
+            for (Place sub1 : sub.getPlaces()) {
                 GuiEventManager.trigger(CREATE_PLACE,
+                 sub1);
+            }
+            for (MacroParty sub1 : sub.getParties()) {
+                if ( game.getPlayerParty()==sub1)
+                    continue;
+                GuiEventManager.trigger(CREATE_PARTY,
                  sub1);
             }
         }

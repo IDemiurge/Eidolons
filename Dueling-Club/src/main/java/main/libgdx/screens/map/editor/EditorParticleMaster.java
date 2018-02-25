@@ -32,6 +32,7 @@ public class EditorParticleMaster extends Group {
 
     public EditorParticleMaster(MapParticles particles) {
         this.particles = particles;
+
         for (DAY_TIME sub : DAY_TIME.values()) {
             layers.put(sub, new Group());
             map.put(sub, new ArrayList<>());
@@ -116,7 +117,13 @@ public class EditorParticleMaster extends Group {
     }
 
     public void save(DAY_TIME time) {
-        List<EmitterActor> emitterActors = map.get(time);
+        List<EmitterActor> emitterActors = new ArrayList<>(map.get(time));
+        try {
+            emitterActors.addAll(particles.getEmitterMap().get(time));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+
         String contents = "";
         for (EmitterActor sub : emitterActors) {
             String s = sub.getPath() + StringMaster.wrapInParenthesis(

@@ -1,15 +1,21 @@
 package main.libgdx.screens.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.menu.GameMenu;
+import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.screens.map.ui.*;
 import main.libgdx.stage.GuiStage;
 import main.libgdx.texture.TextureCache;
+import main.system.GuiEventManager;
+import main.system.MapEvent;
 
 /**
  * Created by JustMe on 2/9/2018.
@@ -23,6 +29,7 @@ public class MapGuiStage extends GuiStage {
     private MapTimePanel timePanel;
     private MapDatePanel datePanel;
     private SuperContainer vignette;
+    private MapKeyHandler keyHandler = new MapKeyHandler();
 
     public MapGuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -48,6 +55,10 @@ public class MapGuiStage extends GuiStage {
             addActor(vignette);
         }
         init();
+
+        GuiEventManager.bind(MapEvent.DATE_CHANGED, p->{
+            update();
+        });
     }
 
     @Override
@@ -65,10 +76,10 @@ public class MapGuiStage extends GuiStage {
         addActor(actionPanel);
         //background? roll out decorator
 
-        resources = new MapResourcesPanel();
-        addActor(resources);
-        resources.setPosition(GdxMaster.centerWidth(resources),
-         GdxMaster.top(resources));
+//        resources = new MapResourcesPanel();
+//        addActor(resources);
+//        resources.setPosition(GdxMaster.centerWidth(resources),
+//         GdxMaster.top(resources));
 
         datePanel = new MapDatePanel();
         addActor(datePanel);
@@ -76,7 +87,7 @@ public class MapGuiStage extends GuiStage {
         timePanel = new MapTimePanel();
         addActor(timePanel);
         timePanel.setPosition(GdxMaster.centerWidth(timePanel),
-         GdxMaster.top(timePanel));
+         GdxMaster.top(timePanel)+12);
 
     }
 
@@ -84,10 +95,11 @@ public class MapGuiStage extends GuiStage {
     public void act(float delta) {
         super.act(delta);
         if (dirty){
+            actionPanel.layout();
             actionPanel.setPosition(GdxMaster.centerWidth(actionPanel)
              , 0);
             partyInfoPanel.setPosition(0,
-             GdxMaster.top(partyInfoPanel)-50
+             GdxMaster.top(partyInfoPanel)-70
             );
             dirty = false;
         }
@@ -99,6 +111,7 @@ public class MapGuiStage extends GuiStage {
 
     @Override
     public boolean keyDown(int keyCode) {
+        keyHandler.keyDown(keyCode);
         return true;
     }
     @Override
@@ -108,6 +121,7 @@ public class MapGuiStage extends GuiStage {
 
     @Override
     protected boolean handleKeyTyped(char character) {
+        keyHandler.handleKeyTyped(character);
         return true; //TODO
     }
 
@@ -116,7 +130,19 @@ public class MapGuiStage extends GuiStage {
         actionPanel.setUserObject(party);
         dirty = true;
     }
+        public void update(){
+//            update(getRoot().getChildren());
+}
 
+    private void update(SnapshotArray<Actor> children) {
+        for (Actor sub : children) {
+            if (sub instanceof TablePanel) {
+                ((TablePanel) sub).setUpdateRequired(true);
+            }
+            if (sub instanceof Group)
+            update(((Group) sub).getChildren());
+        }
+    }
 
     public SuperContainer getVignette() {
         return vignette;

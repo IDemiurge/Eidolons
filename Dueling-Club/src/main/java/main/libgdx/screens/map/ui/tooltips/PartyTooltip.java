@@ -11,18 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.content.PARAMS;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.gui.NinePatchFactory;
+import main.libgdx.gui.panels.HorGroup;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.screens.map.obj.PartyActor;
 import main.libgdx.texture.TextureCache;
 import main.system.graphics.FontMaster.FONT;
+
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 2/23/2018.
@@ -32,6 +34,7 @@ public class PartyTooltip extends ToolTip {
     private final PartyActor actor;
     private final ValueContainer leader;
     private final ValueContainer members;
+    private final HorGroup<Image> membersPics;
     private final Label threatLabel;
     private final Label allegiance;
     private final ValueContainer main;
@@ -67,6 +70,10 @@ public class PartyTooltip extends ToolTip {
          party.getName());
         //set to "known members: " if...
         members = new ValueContainer(party.getMembers().size() + " ", "Members");
+        membersPics=
+         new HorGroup<>(Math.max(256, party.getMembers().size() * 128 / 3), 0, party.getMembers().stream().map(hero ->
+          new Image(TextureCache.getOrCreateR(hero.getImagePath()))
+         ).collect(Collectors.toList()));
         allegiance = new Label("", StyleHolder.getDefaultLabelStyle());
 
 //        Label status; //traveling, guarding, ..
@@ -79,6 +86,7 @@ public class PartyTooltip extends ToolTip {
         add(main).row();
         add(leader).row();
         add(members).row();
+        add(membersPics).row();
         add(allegiance).row();
         add(threatLabel).row();
 
@@ -107,18 +115,18 @@ public class PartyTooltip extends ToolTip {
     public void updateAct(float delta) {
         String text = "Unknown";
         boolean showThreat = false;
-        if (party.getInfoLevel() == MAP_OBJ_INFO_LEVEL.VISIBLE) {
+//        if (party.getInfoLevel() == MAP_OBJ_INFO_LEVEL.VISIBLE) {
             text = "Neutral";
             if (!party.getOwner().isMe()) {
+                showThreat = true;
                 if (party.getOwner().isNeutral()) {
-                    showThreat = true;
                     text = "Neutral";
                 } else {
                     text = party.getOwner().isHostileTo(MacroGame.game.getPlayerParty().getOwner()) ? "Hostile" : "Friendly";
 
                 }
             }
-        }
+//        }
         this.allegiance.setText(text);
 
         if (showThreat) {
@@ -139,6 +147,7 @@ public class PartyTooltip extends ToolTip {
         highlight.setPosition(actor.getX(), actor.getY());
         highlight.setZIndex(0);
         highlight.setVisible(true);
+        updateRequired=true;
     }
 
     @Override

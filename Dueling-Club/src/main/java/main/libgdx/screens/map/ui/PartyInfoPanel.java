@@ -16,6 +16,8 @@ import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.MapEvent;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager.STD_IMAGES;
 
@@ -118,6 +120,9 @@ header for the party?
     @Override
     public void act(float delta) {
         super.act(delta);
+        GuiEventManager.bind(MapEvent.MAP_GUI_UPDATE, p->{
+            setUpdateRequired(true);
+        });
     }
 
     public class PartyMemberComponent extends TablePanel {
@@ -125,7 +130,6 @@ header for the party?
         Unit hero;
 
         public PartyMemberComponent(Unit hero) {
-//            debug();
             this.hero = hero;
             portrait = new ImageContainer(hero);
             portrait.addListener(new ClickListener() {
@@ -148,7 +152,7 @@ header for the party?
             ValueContainer subname = new ValueContainer(new Label(text, style));
             text = party.getMemberRank(hero);
             ValueContainer rank = new ValueContainer(new Label(text, style));
-            text = party.getStatus(hero).toString();
+            text = StringMaster.getWellFormattedString(party.getStatus(hero).toString());
             ValueContainer status = new ValueContainer(new Label(text, style));
             TablePanel tablePanel = new TablePanel().initDefaultBackground();
             tablePanel.add(name);//.maxWidth(getMainWidth()-128);
@@ -161,10 +165,14 @@ header for the party?
             tablePanel2.add(status);//.maxWidth(getMainWidth()-128);
 
 
-            add(tablePanel).left().maxWidth(getMainWidth() - 128);
-            row();
-            add(tablePanel2).left().maxWidth(getMainWidth() - 128);
+            TablePanel container = new TablePanel() ;
+            container.add(tablePanel).left().maxWidth(getMainWidth() - 128);
+            container. row();
+            container.add(tablePanel2).left().maxWidth(getMainWidth() - 128);
 
+            add(container).left().maxWidth(getMainWidth() - 128);
+
+            initDefaultBackground();
         }
     }
 

@@ -23,47 +23,67 @@ import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
  * Created by JustMe on 2/20/2018.
  */
 public class MapStage extends Stage {
-    private   Group topLayer;
-    private   Image map;
     protected MapMoveLayers moveLayerMaster;
     protected MapParticles particles;
+    private Group topLayer;
+    private Image map;
     private MapRoutes routes;
+
     public MapStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
         new MapAlphaLayers(this).init();
-         addActor(particles= new MapParticles());
-         addActor(routes= new MapRoutes());
+        addActor(particles = new MapParticles());
+        addActor(routes = new MapRoutes());
 
         GuiEventManager.bind(MapEvent.TIME_CHANGED, param -> {
             DAY_TIME time = (DAY_TIME) param.get();
-           String path= getBackgroundPath(time);
-GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, path);
+            String path = getBackgroundPath(time);
+            GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, path);
         });
-            GuiEventManager.bind(UPDATE_MAP_BACKGROUND, param -> {
+        GuiEventManager.bind(UPDATE_MAP_BACKGROUND, param -> {
             final String path = (String) param.get();
             TextureRegion backTexture = getOrCreateR(path);
             if (map != null)
                 map.remove();
             map = new Image(backTexture);
-              addActor(map);
+            addActor(map);
             map.setZIndex(0);
+            if (moveLayerMaster==null )
             if (isMovingLayersOn()) {
                 moveLayerMaster = new MapMoveLayers(backTexture.getRegionWidth(),
                  backTexture.getRegionHeight());
-                 addActor(moveLayerMaster);
-                 topLayer.setZIndex(Integer.MAX_VALUE);
+                addActor(moveLayerMaster);
             }
 
+            topLayer.setWidth(map.getImageWidth());
+            topLayer.setHeight(map.getImageHeight());
+
         });
-        topLayer= new Group();
+        topLayer = new Group();
         TextureRegion tex = TextureCache.getOrCreateR(
          PathFinder.getMapLayersPath() + "top layer.png");
         topLayer.addActor(new Image(tex));
 
     }
 
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        resetZIndices();
+    }
+
+    private void resetZIndices() {
+
+        map.setZIndex(0);
+        particles.setZIndex(Integer.MAX_VALUE);
+        moveLayerMaster.setZIndex(Integer.MAX_VALUE);
+        routes.setZIndex(Integer.MAX_VALUE);
+        topLayer.setZIndex(Integer.MAX_VALUE);
+    }
+
     private String getBackgroundPath(DAY_TIME time) {
-        return MapScreen.timeVersionRootPath +time.toString()+".jpg";
+        return MapScreen.timeVersionRootPath + time.toString() + ".jpg";
     }
 
     public MapMoveLayers getMoveLayerMaster() {
@@ -82,6 +102,7 @@ GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, path);
 //        return !CoreEngine.isMapEditor();
         return true;
     }
+
     private boolean isAlphaLayersOn() {
 //        return !CoreEngine.isMapEditor();
         return true;

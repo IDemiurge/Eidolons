@@ -105,6 +105,8 @@ public class InventoryPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
+        if (getUserObject()==null )
+            return ;
         clear();
         super.updateAct(delta);
 

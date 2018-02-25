@@ -29,6 +29,8 @@ public class RingSlotsPanel extends TablePanel {
 
     @Override
     public void afterUpdateAct(float delta) {
+        if (getUserObject()==null )
+            return ;
         clear();
         super.afterUpdateAct(delta);
         final List<InventoryValueContainer> rings =

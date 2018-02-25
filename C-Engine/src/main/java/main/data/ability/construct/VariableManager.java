@@ -136,6 +136,10 @@ public class VariableManager {
     public static String getVar(String typeName) {
         return StringMaster.cropParenthesises(getVarPart(typeName));
     }
+    public static String getVar(String typeName, int i) {
+        return
+         StringMaster.cropParenthesises(getVarPart(typeName)).split(",")[i];
+    }
 
     public static String getVarPart(String typeName) {
         int index = typeName.indexOf(VAR_CHAR);

@@ -9,12 +9,11 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.entity.MapObj;
 import main.game.module.adventure.gui.map.obj.PlaceComp;
 import main.game.module.adventure.map.area.AreaManager;
-import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.travel.TravelMasterOld;
-import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 
 public class Place extends MapObj {
@@ -31,6 +30,9 @@ public class Place extends MapObj {
             // objType =
             // ref.getMacroObj(MACRO_KEYS.AREA);
 
+        }
+        if (!checkProperty(MACRO_PROPS.MAP_ICON)){
+            setProperty(MACRO_PROPS.MAP_ICON, "UI\\macro\\sign.png",true);
         }
     }
 

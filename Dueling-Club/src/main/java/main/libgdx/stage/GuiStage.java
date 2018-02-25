@@ -65,9 +65,7 @@ public class GuiStage extends Stage implements StageWithClosable{
 //         GdxMaster.getHeight() - helpButton.getHeight());
 //        addActor(helpButton);
 
-        InventoryWithAction inventoryForm = new InventoryWithAction();
-        inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
-        this.addActor(inventoryForm);
+
 
         SimpleLogPanel log = new SimpleLogPanel();
         log.setPosition(GdxMaster.getWidth() - log.getWidth(), 0);

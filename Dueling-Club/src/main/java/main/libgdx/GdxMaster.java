@@ -17,22 +17,31 @@ import main.libgdx.screens.DungeonScreen;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
+    public static final float fontSizeAdjustCoef = 0.3f;
     private static final int DEFAULT_WIDTH = 1600;
     private static final int DEFAULT_HEIGHT = 900;
     private static int width;
     private static int height;
     private static Float fontSizeMod;
-    public static final float fontSizeAdjustCoef=0.3f;
+
+    public static float adjustPos(boolean x, float pos) {
+        if (x)
+            return pos
+             - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
+        return pos
+         + (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
+    }
+
     public static float adjustSize(float size) {
-return         size
+        return size
          + size
-         * (GdxMaster.getFontSizeMod()-1)*  fontSizeAdjustCoef;
+         * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef;
     }
 
     public static float centerWidth(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getWidth() != 0)
-            return (actor.getParent().getWidth() - actor.getWidth())/2;
+                return (actor.getParent().getWidth() - actor.getWidth()) / 2;
         return GdxMaster.getWidth() / 2 - actor.getWidth() / 2;
     }
 
@@ -41,7 +50,7 @@ return         size
     }
 
     public static float right(Actor actor) {
-        if (actor.getParent() != null &&actor.getParent().getWidth()!=0 )
+        if (actor.getParent() != null && actor.getParent().getWidth() != 0)
             return actor.getParent().getWidth() - actor.getWidth();
         return GdxMaster.getWidth() - actor.getWidth();
     }
@@ -49,7 +58,7 @@ return         size
     public static float top(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getHeight() != 0)
-            return actor.getParent().getHeight() - actor.getHeight();
+                return actor.getParent().getHeight() - actor.getHeight();
         return GdxMaster.getHeight() - actor.getHeight();
     }
 
@@ -68,11 +77,18 @@ return         size
         return width;
     }
 
+    public static void setWidth(int width) {
+        GdxMaster.width = width;
+    }
 
     public static int getHeight() {
         if (height == 0)
             height = Gdx.graphics.getHeight();
         return height;
+    }
+
+    public static void setHeight(int height) {
+        GdxMaster.height = height;
     }
 
     public static boolean isGuiReady() {
@@ -88,13 +104,6 @@ return         size
         return fontSizeMod;
     }
 
-    public static void setWidth(int width) {
-        GdxMaster.width = width;
-    }
-    public static void setHeight(int height) {
-        GdxMaster.height = height;
-    }
-
     public static void takeScreenShot() {
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 
@@ -102,22 +111,21 @@ return         size
          Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(
-         new FileHandle( PathFinder.getImagePath()+"big\\screenshots\\" +
-          main.system.auxiliary.TimeMaster.getTimeStamp()+(".png")), pixmap);
+         new FileHandle(PathFinder.getImagePath() + "big\\screenshots\\" +
+          main.system.auxiliary.TimeMaster.getTimeStamp() + (".png")), pixmap);
         pixmap.dispose();
     }
 
 
     public static void setInputProcessor(InputProcessor inputController) {
         if (inputController instanceof InputMultiplexer) {
-            main.system.auxiliary.log.LogMaster.log(1,">>>>> setInputProcessor InputMultiplexer: " +inputController);
+            main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor InputMultiplexer: " + inputController);
 
             for (InputProcessor sub : ((InputMultiplexer) inputController).getProcessors()) {
-                main.system.auxiliary.log.LogMaster.log(1,"Processor: " +sub);
+                main.system.auxiliary.log.LogMaster.log(1, "Processor: " + sub);
             }
-        }
-        else
-            main.system.auxiliary.log.LogMaster.log(1,">>>>> setInputProcessor: " +inputController);
+        } else
+            main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor: " + inputController);
 
         Gdx.input.setInputProcessor(inputController);
     }

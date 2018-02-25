@@ -1,5 +1,7 @@
 package main.game.module.adventure.travel;
 
+import main.content.CONTENT_CONSTS2.MACRO_STATUS;
+import main.content.values.properties.MACRO_PROPS;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.screens.map.MapScreen;
@@ -24,7 +26,9 @@ public class RestMaster {
             MacroGame.getGame().getLoop().getTimeMaster().setPlayerCamping(true);
             float speed = 60f;
             MacroGame.getGame().getLoop().getTimeMaster().setSpeed(speed);
-
+            party.getMembers().forEach(member->{
+                member.setProperty(MACRO_PROPS.MACRO_STATUS, MACRO_STATUS.CAMPING.toString());
+            });
 //            MacroGame.getGame().fireEvent(
 //             new Event(MAP_EVENT_TYPE.CAMPING_STARTED, party.getRef()));
 

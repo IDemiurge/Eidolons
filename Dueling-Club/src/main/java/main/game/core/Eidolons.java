@@ -16,6 +16,7 @@ import main.game.core.game.DC_GameManager;
 import main.game.core.game.DC_GameMaster;
 import main.game.core.game.Game;
 import main.game.core.state.DC_StateManager;
+import main.game.module.adventure.MacroGame;
 import main.libgdx.GdxMaster;
 import main.libgdx.launch.GenericLauncher;
 import main.libgdx.launch.ScenarioLauncher;
@@ -234,4 +235,7 @@ public class Eidolons {
         return (GameScreen) getLauncher().getScreen();
     }
 
+    public static MacroGame getMacroGame() {
+        return MacroGame.game;
+    }
 }
