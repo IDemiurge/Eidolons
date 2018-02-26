@@ -78,7 +78,8 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 break;
             case NEXT_TIME:
                 int i = EnumMaster.getEnumConstIndex(DAY_TIME.class, MacroGame.getGame().getTime());
-                if (DAY_TIME.values().length<=i)
+               i++;
+               if (DAY_TIME.values().length<=i)
                     i=0;
                 DAY_TIME time = DAY_TIME.values()[i];
                 MacroGame.getGame().setTime(time);

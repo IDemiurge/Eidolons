@@ -34,6 +34,10 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         pad(0, 10, 0, 10);
     }
 
+    protected void clearTabs() {
+        buttonLayout.clearChildren();
+        tabsToNamesMap.clear();
+    }
     private void initContainer() {
         buttonLayout = new TablePanel<>();
         add(buttonLayout).expand(0, 0).fill(0, 0).left();

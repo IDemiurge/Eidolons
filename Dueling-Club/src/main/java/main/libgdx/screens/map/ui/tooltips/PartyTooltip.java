@@ -85,15 +85,15 @@ public class PartyTooltip extends ToolTip {
 
         add(main).row();
         add(leader).row();
-        add(members).row();
-        add(membersPics).row();
         add(allegiance).row();
         add(threatLabel).row();
+        add(members).row();
+        add(membersPics).row();
 
         main.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         leader.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         members.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
-
+//        membersPics.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
     }
 
 

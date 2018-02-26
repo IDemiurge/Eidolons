@@ -37,6 +37,7 @@ public class MapScreen extends GameScreen {
     public final static String defaultPath = "global\\map\\ersidris plain.jpg";
     public final static String timeVersionRootPath = "global\\map\\ersidris at ";
     protected static MapScreen instance;
+    public static final int defaultSize=2988;
     //    protected RealTimeGameLoop realTimeGameLoop;
     protected MapGuiStage guiStage;
     protected Stage objectStage;
@@ -187,9 +188,9 @@ public class MapScreen extends GameScreen {
             if (!Gdx.input.isKeyPressed(Keys.G)) {
                 guiStage.draw();
             } else {
-                getBatch().begin();
-                guiStage.getVignette().draw(getBatch(), 1f);
-                getBatch().end();
+//                getBatch().begin();
+//                try{}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);} guiStage.getVignette().draw(getBatch(), 1f);
+//                getBatch().end();
             }
         }
 

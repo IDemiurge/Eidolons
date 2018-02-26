@@ -4,7 +4,7 @@ import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_POINTS;
-import main.libgdx.utils.GdxDialogMaster;
+import main.swing.generic.services.dialog.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.StrPathBuilder;
@@ -68,7 +68,7 @@ public class MapPointMaster {
 
         new Thread(new Runnable() {
             public void run() {
-                String name = GdxDialogMaster.inputText("Enter location's name", last);
+                String name =  DialogMaster.inputText("Enter location's name", last);
                 if (name != null) last = name;
                 else return;
                 map.put(name, new Coordinates(true, x, y));

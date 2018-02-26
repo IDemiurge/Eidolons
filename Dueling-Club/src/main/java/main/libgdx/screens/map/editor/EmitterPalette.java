@@ -14,6 +14,8 @@ import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
+import main.system.GuiEventManager;
+import main.system.MapEvent;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
@@ -34,6 +36,7 @@ public class EmitterPalette extends TabbedPanel {
 
     public EmitterPalette() {
         updateRequired = true;
+        GuiEventManager.bind(MapEvent.TIME_CHANGED, p -> setUpdateRequired(true));
     }
 
     @Override
@@ -42,11 +45,17 @@ public class EmitterPalette extends TabbedPanel {
         init();
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
     public String getSelectedEmitterPath() {
         return selected;
     }
 
     public void init() {
+        clear();
         setSize(GdxMaster.getWidth() -300, 256);
 //        int columns = (int) (getWidth() / 64);
         defaults().padLeft(200). top().right(). width(GdxMaster.getWidth() - 300);
@@ -92,6 +101,7 @@ public class EmitterPalette extends TabbedPanel {
         }
 
     }
+
 
     public enum EMITTER_PALETTE_TAB {
         MIST,

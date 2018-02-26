@@ -91,7 +91,7 @@ public class MacroTimeMaster {
     private void newDayTime(int newPeriod) {
         dayTime = times[newPeriod];
         MacroGame.getGame().setTime(dayTime);
-        date.setDayTime(dayTime);
+        getDate().setDayTime(dayTime);
         GuiEventManager.trigger(MapEvent.TIME_CHANGED, dayTime);
     }
 

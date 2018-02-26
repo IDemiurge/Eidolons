@@ -20,10 +20,10 @@ import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
-    private final  GuiStage guiStage;
+    private final GuiStage guiStage;
     private Cell actorCell;
 
-    public ToolTipManager( GuiStage battleGuiStage) {
+    public ToolTipManager(GuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
 
@@ -38,7 +38,7 @@ public class ToolTipManager extends TablePanel {
 
         GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
             if (DungeonScreen.getInstance().isBlocked())
-                return ;
+                return;
             BaseView object = (BaseView) event.get();
 //            if (object.getScaleX()==getDefaultScale(object))
 //                if (object.getScaleX()==getDefaultScale(object))
@@ -155,19 +155,22 @@ public class ToolTipManager extends TablePanel {
 
             actorCell.left().top();
             float y = (v2.y - toolTip.getPrefHeight() - getPreferredPadding());
+            boolean bot = false;
             if (y < 0) {
                 actorCell.bottom();
                 actorCell.padBottom(
                  Math.max(-y / 2 - getPreferredPadding(), 64));
-
+                bot = true;
             }
 
             y = v2.y + toolTip.getPrefHeight() + getPreferredPadding();
             if (y > GdxMaster.getHeight()) {
-                actorCell.top();
+                if (bot) {
+                    actorCell.center();
+                } else
+                    actorCell.top();
                 actorCell.padTop((y - GdxMaster.getHeight()) / 2 - getPreferredPadding());
             }
-
             float x = v2.x - toolTip.getPrefWidth() - getPreferredPadding();
             if (x < 0) {
                 actorCell.left();
@@ -188,9 +191,9 @@ public class ToolTipManager extends TablePanel {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (actorCell.getActor()!=null ){
-                if ( actorCell.getActor().isTouchable()) {
-                    return super.hit(x, y, touchable);
+        if (actorCell.getActor() != null) {
+            if (actorCell.getActor().isTouchable()) {
+                return super.hit(x, y, touchable);
 
             }
         }

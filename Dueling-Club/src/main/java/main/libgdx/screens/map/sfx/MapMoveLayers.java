@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
+import main.libgdx.screens.map.MapScreen;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
@@ -21,13 +23,43 @@ import java.util.Map;
  * Created by JustMe on 2/19/2018.
  */
 public class MapMoveLayers extends Group {
+    private static final int DEFAULT_AREA_SIZE = 300;
+
+    static {
+        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
+         DAY_TIME.NOON, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
+        };
+        MAP_MOVING_LAYER_TYPE.CLOUD_HEAVY.times = new DAY_TIME[]{
+         DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.DUSK
+        };
+    }
+
+    static {
+        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE.spawnAreas = new MAP_AREA[]{
+         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        };
+        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN.spawnAreas = new MAP_AREA[]{
+         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        };
+        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED.spawnAreas = new MAP_AREA[]{
+         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        };
+        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED.spawnAreas = new MAP_AREA[]{
+         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        };
+    }
+
     DAY_TIME time;
     List<MapMoveLayer> displayed;
     Map<DAY_TIME, List<MapMoveLayer>> map = new HashMap<>();
     Map<MAP_MOVING_LAYER_TYPE, TextureRegion> textureMap = new HashMap<>();
     Map<MAP_MOVING_LAYER_TYPE, Float> timerMap = new HashMap<>();
     Map<MAP_MOVING_LAYER_TYPE, Float> triggerMap = new HashMap<>();
-
+    Map<MapMoveLayer, Float> durationMap = new HashMap<>();
     private boolean dirty;
 
     public MapMoveLayers(float x, float y) {
@@ -51,11 +83,11 @@ public class MapMoveLayers extends Group {
 
     public void spawn() {
 //        clearChildren();
-        displayed = map.get(time);
-        if (displayed.size() > 0) {
-            dirty = false;
-            return;
-        }
+//        displayed = map.get(time);
+//        if (displayed.size() > 0) {
+//            dirty = false;
+//            return;
+//        }
         for (MAP_MOVING_LAYER_TYPE sub : MAP_MOVING_LAYER_TYPE.values()) {
             MapMaster.addToFloatMap(timerMap, sub, 0f);
             MapMaster.addToFloatMap(triggerMap, sub, 0f);
@@ -76,7 +108,11 @@ public class MapMoveLayers extends Group {
             texture = TextureCache.getOrCreateR(sub.getTexturePath());
             textureMap.put(sub, texture);
         }
-        MAP_AREA mapArea = sub.spawnAreas[RandomWizard.getRandomInt(sub.spawnAreas.length)];
+        MAP_AREA mapArea = null;
+        if (sub.spawnAreas == null) {
+            //mapArea = MAP_AREA.values()[RandomWizard.getRandomInt(MAP_AREA.values().length)];
+        } else mapArea =
+         sub.spawnAreas[RandomWizard.getRandomInt(sub.spawnAreas.length)];
         //area , number
         MapMoveLayer container = new MapMoveLayer(new Image(texture), mapArea, sub) {
             @Override
@@ -88,7 +124,7 @@ public class MapMoveLayers extends Group {
         container.setDirectionModX(getModX(sub.direction)
          + getModX(sub.direction) * (RandomWizard.getRandomFloatBetween(-sub.randomness, sub.randomness))
         );
-        container.setDirectionModY(getModY(sub.direction)+ getModY(sub.direction)
+        container.setDirectionModY(getModY(sub.direction) + getModY(sub.direction)
          * (RandomWizard.getRandomFloatBetween(-sub.randomness, sub.randomness))
         );
         float scale = 1 + RandomWizard.getRandomFloatBetween(-sub.sizeRange, sub.sizeRange);
@@ -101,12 +137,20 @@ public class MapMoveLayers extends Group {
         container.setMaxDistance(getMaxDistance(mapArea, sub));
         container.setShakiness(sub.shakiness);
         container.setSpeed(sub.speed);
-        container.setFluctuateAlpha(true);
-        container.setFluctuatingAlphaRandomness(0.2f);
-        container.setFluctuatingFullAlphaDuration(2.5f);
+        if ((sub.alphaStep > 0)) {
+            container.setFluctuateAlpha(true);
+            container.setFluctuatingAlphaRandomness(0.2f);
+            container.setFluctuatingFullAlphaDuration(2.5f);
 
-        container.setAlphaStep(0.5f);
-        map.get(time).add(container);
+            container.setFluctuatingAlphaRandomness(sub.alphaRandomness);
+            container.setFluctuatingAlphaPauseDuration(sub.pauseDuration);
+            container.setFluctuatingFullAlphaDuration(sub.fullAlphaDuration);
+            container.setAlphaStep(sub.alphaStep);
+        }
+        durationMap.put(container, 0f);
+        for (DAY_TIME day_time : sub.times) {
+            map.get(day_time).add(container);
+        }
         spawn(container, mapArea);
 //alpha should reduce as it goes away
 //        container.setFluctuateAlpha(true);
@@ -120,9 +164,9 @@ public class MapMoveLayers extends Group {
     @Override
     public void act(float delta) {
         if (MacroGame.getGame() == null)
-            return ;
+            return;
 
-            setTime(MacroGame.getGame().getTime());
+        setTime(MacroGame.getGame().getTime());
         if (dirty)
             spawn();
         for (MAP_MOVING_LAYER_TYPE sub : MAP_MOVING_LAYER_TYPE.values()) {
@@ -136,20 +180,27 @@ public class MapMoveLayers extends Group {
         }
         for (MapMoveLayer sub : displayed) {
             MAP_MOVING_LAYER_TYPE type = sub.getType();
+//            if (Math.abs(sub.getSpeed() )> 0) {
+//            }
             float x = sub.getContent().getX() + sub.getSpeed() * delta * getModX(type.direction);
             float y = sub.getContent().getY() + sub.getSpeed() * delta * getModY(type.direction);
             sub.getContent().setPosition(x, y);
             float distance = new Vector2(sub.getContent().getX(), sub.getContent().getY()).dst(new Vector2(sub.getOriginalX(), sub.getOriginalY()));
             float maxDistance = sub.getMaxDistance();
-            if (x > getWidth() || x < -sub.getWidth())
-                if (y > getHeight() + sub.getHeight() || y < 0)
-                    sub.remove();
-            //center to edge? direction? better check sumis <> maxWidth or 0
-            if (distance > maxDistance) {
-                sub.remove();
-            }
+            if (x > getWidth() || x < -sub.getWidth()
+             && (y > getHeight() + sub.getHeight() || y < 0))
+                 remove(sub);
+                //center to edge? direction? better check sumis <> maxWidth or 0
+            else if (distance > maxDistance) {
+                 remove(sub);
+            } else if (type.maxDuration != null)
+                if (durationMap.get(sub) > type.maxDuration) {
+                    remove(sub);
+                } else
+                    MapMaster.addToFloatMap(durationMap, sub, delta);
+
             if (type.rotation != 0) {
-                sub.setRotation(sub.getRotation()+type.rotation);
+                sub.setRotation(sub.getRotation() + type.rotation);
             }
             //++ shakiness
             //checkRemove or reset
@@ -157,16 +208,45 @@ public class MapMoveLayers extends Group {
         super.act(delta);
     }
 
-    private void spawn(MapMoveLayer container, MAP_AREA mapArea) {
+    private void remove(MapMoveLayer sub) {
+        sub.remove();
+        durationMap.remove(sub);
+        displayed.remove(sub);
+    }
 
-        int x = RandomWizard.getRandomIntBetween(mapArea.x,
-         mapArea.x + mapArea.w); //can overlap!
-        int y = RandomWizard.getRandomIntBetween(mapArea.y,
-         mapArea.y + mapArea.h);
+    private void spawn(MapMoveLayer container, String mapArea) {
+        Coordinates c= MacroGame.getGame().getPointMaster().getCoordinates(mapArea);
+        spawn(container, c.x, c.y, DEFAULT_AREA_SIZE, DEFAULT_AREA_SIZE);
+    }
+    private void spawn(MapMoveLayer container, MAP_AREA mapArea) {
+        int x = 0;
+        int y = 0;
+        int w = 0;
+        int h = 0;
+        if (mapArea == null) {
+            x = 0;
+            y = 0;
+            w = MapScreen.defaultSize;
+            h = MapScreen.defaultSize;
+        } else {
+            x =   mapArea.x   ;
+            y =   mapArea.y ;
+            w =   mapArea.w ;
+            h  =   mapArea.h ;
+            container.setSpawnArea(mapArea);
+        }
+        spawn(container, x, y, w, h);
+    }
+        private void spawn(MapMoveLayer container, int x, int y, int w, int h) {
+
+            x = RandomWizard.getRandomIntBetween(x,
+            x +w); //can overlap!}
+            y = RandomWizard.getRandomIntBetween(y,
+            y +h);
+
         addActor(container);
         container.setOriginalX(x);
         container.setOriginalY(y);
-        container.setSpawnArea(mapArea);
         container.getContent().setPosition(x, y);
         container.setFluctuatingAlpha(0);
         //alpha to 0
@@ -196,13 +276,19 @@ public class MapMoveLayers extends Group {
         return 0;
     }
 
-
     public enum MAP_AREA {
-        PALE_MOUNTAINS_SOUTH(1000, 1200, 500, 500),
-        PALE_MOUNTAINS_NORTH(600, 800, 500, 500),
-        ASHWOOD(MAP_POINTS.ASHWOOD.name(),   500, 500),
-        WISP_GROVE(MAP_POINTS.WISP_GROVE.name(),   500, 500),
-        WRAITH_MARSH(MAP_POINTS.WRAITH_MARSH.name(),   500, 500),
+        NEUGARD_SOUTH(1000, 1200, 500, 500),
+        NEUGARD_NORTH(600, 800, 500, 500),
+        PALE_MOUNTAINS_NORTH(2250, 2050, 300, 300),
+        PALE_MOUNTAINS_CENTER(2150, 1665, 300, 300),
+        PALE_MOUNTAINS_WEST(1680, 1965, 300, 300),
+        PALE_MOUNTAINS_EAST(2550, 1965, 300, 300),
+        PALE_MOUNTAINS_SOUTH(2150, 1465, 300, 300),
+        PALE_MOUNTAINS_SOUTH_SOUTH(2050, 1165, 300, 300),
+
+        ASHWOOD(MAP_POINTS.ASHWOOD.name(), 500, 500),
+        WISP_GROVE(MAP_POINTS.WISP_GROVE.name(), 500, 500),
+        WRAITH_MARSH(MAP_POINTS.WRAITH_MARSH.name(), 500, 500),
         BOTTOM_LEFT(0, 0, 300, 300);
 
         int x, y, w, h;
@@ -221,54 +307,91 @@ public class MapMoveLayers extends Group {
             this.h = h;
         }
     }
-static {
-    MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
-     DAY_TIME.NOON, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
-    };
-    MAP_MOVING_LAYER_TYPE.CLOUD_HEAVY.times = new DAY_TIME[]{
-     DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.DUSK
-    };
-}
+
     public enum MAP_MOVING_LAYER_TYPE {
-        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.WRAITH_MARSH, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-         MAP_AREA.PALE_MOUNTAINS_NORTH),
-        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 30, 2,MAP_AREA.WISP_GROVE,  MAP_AREA.PALE_MOUNTAINS_SOUTH,
-         MAP_AREA.PALE_MOUNTAINS_NORTH),
-        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 3,0.5f, 1f, 0.3f, MAP_AREA.BOTTOM_LEFT),
-//        SHADOW,
+        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.WRAITH_MARSH, MAP_AREA.NEUGARD_SOUTH,
+         MAP_AREA.NEUGARD_NORTH),
+        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 30, 2, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
+         MAP_AREA.NEUGARD_NORTH),
+        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 3, 0.5f, 1f, 0.3f, MAP_AREA.BOTTOM_LEFT),
+        //        SHADOW,
 //        WAVE,
 //        SMOKE,
 //        WATER_REFLECTION,
 //        SUNSHINE,
-        ;
+        HEAVENLY_LIGHT_LARGE(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),
+        HEAVENLY_LIGHT_LARGE_GOLDEN(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),
+
+        HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),
+        HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),
+
+        LIGHT_SPREAD_SILVER(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),
+        LIGHT_SPREAD_GOLDEN(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),
+        LIGHT_SPREAD(MOVE_DIRECTION.SUN, 0, 6, 0, 0, 0.2f, 0,
+         0.2f, 1f, 2f, 10f, 0.4f, DAY_TIME.NOON),;
+        public float alphaStep = 0.5f;
+        public float fullAlphaDuration;
+        public float pauseDuration;
+        public float alphaRandomness;
+        public Float maxDuration;
         DAY_TIME[] times;
         float frequency;
         MAP_AREA[] spawnAreas;
         MOVE_DIRECTION direction;
         int speed;
         float shakiness;
-        float randomness  ;
+        float randomness;
         float rotation; //degrees per second
         float sizeRange;
-        MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed, float frequency, MAP_AREA... areas) {
 
+        MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed, float frequency, MAP_AREA... areas) {
+            this(direction, speed,
+             frequency, 0, 0, 0, areas);
         }
 
-            MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed,
-                                  float frequency,
-                                  float randomness,float rotation,float sizeRange, MAP_AREA... areas) {
+
+        MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction,
+                              int speed, float frequency, float randomness,
+                              float rotation, float sizeRange, float shakiness,
+                              float alphaStep, float fullAlphaDuration, float pauseDuration,
+                              float maxDuration, float alphaRandomness, DAY_TIME... times) {
+            this.frequency = frequency;
+            this.times = times;
+            this.direction = direction;
+            this.maxDuration = maxDuration;
+            this.speed = speed;
+            this.shakiness = shakiness;
+            this.randomness = randomness;
+            this.rotation = rotation;
+            this.sizeRange = sizeRange;
+            this.alphaStep = alphaStep;
+            this.fullAlphaDuration = fullAlphaDuration;
+            this.pauseDuration = pauseDuration;
+            this.alphaRandomness = alphaRandomness;
+        }
+
+        MAP_MOVING_LAYER_TYPE(MOVE_DIRECTION direction, int speed,
+                              float frequency,
+                              float randomness, float rotation, float sizeRange,
+                              MAP_AREA... areas) {
             this.direction = direction;
             this.speed = speed;
             this.spawnAreas = areas;
-                this.frequency = frequency;
-                this.randomness = randomness;
-                this.rotation = rotation;
-                this.sizeRange = sizeRange;
+            this.frequency = frequency;
+            this.randomness = randomness;
+            this.rotation = rotation;
+            this.sizeRange = sizeRange;
             times = DAY_TIME.values();
         }
 
         public String getTexturePath() {
-            return StrPathBuilder.build(getMainPath(),  StringMaster.getWellFormattedString(name()) + ".png");
+            return StrPathBuilder.build(getMainPath(), StringMaster.getWellFormattedString(name()) + ".png");
         }
 
 //AlphaFluctuation fluctuation;
