@@ -11,6 +11,7 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.mouse.InputController;
+import main.libgdx.screens.map.sfx.Blackout;
 import main.libgdx.stage.ChainedStage;
 import main.system.GuiEventManager;
 import main.system.audio.DC_SoundMaster;
@@ -34,6 +35,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
     protected Float speed;
     protected TextureRegion backTexture;
     private RealTimeGameLoop realTimeGameLoop;
+
 
     public TextureRegion getBackTexture() {
         return backTexture;

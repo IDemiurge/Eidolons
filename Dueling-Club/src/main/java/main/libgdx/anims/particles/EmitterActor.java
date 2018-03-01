@@ -27,6 +27,16 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private boolean generated;
     private Coordinates target;
     private boolean test;
+    private float speed=1;
+
+    @Override
+    public String toString() {
+        if (path!=null )
+            return "emitter: " + path;
+        if (sfx!=null )
+            return "emitter: " + sfx.path;
+        return super.toString();
+    }
 
     @Override
     public boolean isIgnored() {
@@ -82,8 +92,9 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         effect.setPosition(getX(), getY());
 //        sprite = effect.getEmitters().first().getSprite();
 //        sprite.setRotation(new Random().nextInt(360));
-
-        effect.draw(batch, Gdx.graphics.getDeltaTime());
+//        if (speed!=null )
+        float delta = Gdx.graphics.getDeltaTime() * speed;
+        effect.draw(batch, delta);
 
     }
 
@@ -146,5 +157,13 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
 
     public String getPath() {
         return path;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+        return speed;
     }
 }

@@ -2,8 +2,12 @@ package main.game.module.adventure.global;
 
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.module.adventure.global.GameDate.TIME_UNITS;
+import main.libgdx.screens.map.ui.time.MapTimePanel.MOON;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
+
+import static main.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
 
 /**
  * months?
@@ -55,14 +59,14 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public String getShortString() {
         return
-                // ((day_or_night) ? MORNING : EVENING) +
-                getHourString() + " on the " + day + StringMaster.getOrdinalEnding(day)
-                        + " of " + month.toString();
+         // ((day_or_night) ? MORNING : EVENING) +
+         getHourString() + " on the " + day + StringMaster.getOrdinalEnding(day)
+          + " of " + month.toString();
     }
 
     private String getHourString() {
         return (getHour() + getHourOffset()) + " "
-                + ((day_or_night) ? DAY : NIGHT);
+         + ((day_or_night) ? DAY : NIGHT);
     }
 
     private int getHourOffset() {
@@ -74,16 +78,23 @@ public class GameDate extends DataUnit<TIME_UNITS> {
             day++;
             return false;
         } else {
-            day = 1;
-            if (getMonth().isLastMonthInYear()) {
-                year++;
-
-            }
-            month = getMonth().getNextMonth();
+            nextMonth();
             return true;
         }
     }
-        public void nextTurn() {
+
+    public boolean nextMonth() {
+        day = 1;
+        if (getMonth().isLastMonthInYear()) {
+            year++;
+            month = HUMAN_MONTHS.values()[0];
+            return true;
+        }
+        month = getMonth().getNextMonth();
+        return false;
+    }
+
+    public void nextTurn() {
         setHour(0);
         day_or_night = !day_or_night;
         if (!day_or_night) {
@@ -104,12 +115,12 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return era;
     }
 
-    public void setEra(int era) {
-        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
-    }
-
     public void setEra(String era) {
         this.era = era;
+    }
+
+    public void setEra(int era) {
+        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
     }
 
     public int getYear() {
@@ -167,97 +178,21 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         this.hour = hour;
     }
 
-    public void setDayTime(DAY_TIME dayTime) {
-        this.dayTime = dayTime;
-    }
-
     public DAY_TIME getDayTime() {
         return dayTime;
     }
 
-    public enum TIME_UNITS {
-        ERA, YEAR, MONTH, DAY, HOUR
-
-    }
-
-    public enum HUMAN_MONTHS implements MONTH {
-        // JANUARY(1, 31, "January", "February", "December"),
-        // FEBRUARY(2, 28, "February", "March", "January"),
-        // MARCH(3, 31, "March", "April", "February"),
-
-        SNOWFALL(1, 31, "Snowfall", "Winterdeep", "Winterdeep"),
-        WINTERDEEP(2, 31, "Winterdeep", "Icebreak", "Snowfall"),
-        ICEBREAK(3, 31, "Icebreak", "Icebreak", "Snowfall"),
-        GREYFIELD(4, 31, "Winterdeep", "Sapling", "Icebreak"),
-
-        // SCYTHE, SEEDLING, MISTWIND, COLDWIND, CLOUDSKY, CHANGE, REAPER,
-        // NEW_SUN, NEW_MOON,
-        // BRIGHTSTAR, EQUINOX, LAST_SEED, LAST_LEAVES, ICESTORM,
-
-        // EAGLE, RAVEN, WOLF, KING,
-        ;
-
-        private int n;
-        private int days;
-        private String prevName;
-        private String nextName;
-        private String name;
-        private boolean last;
-
-        HUMAN_MONTHS(int n, int days, String name, String nextName,
-                     String prevName) {
-            this(n, days, name, nextName, prevName, false);
-        }
-
-        HUMAN_MONTHS(int n, int days, String name, String nextName,
-                     String prevName, boolean last) {
-            this.n = n;
-            this.days = days;
-            this.name = name;
-            this.nextName = nextName;
-            this.prevName = prevName;
-            this.last = last;
-        }
-
-        @Override
-        public int getMonthNumber() {
-            return n;
-        }
-
-        @Override
-        public int getDays() {
-            return days;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return getName();
-        }
-
-        @Override
-        public MONTH getNextMonth() {
-            return HUMAN_MONTHS.valueOf(nextName.toUpperCase());
-        }
-
-        @Override
-        public MONTH getPreviousMonth() {
-            return HUMAN_MONTHS.valueOf(prevName.toUpperCase());
-        }
-
-        @Override
-        public boolean isLastMonthInYear() {
-            return last;
-        }
-
+    public void setDayTime(DAY_TIME dayTime) {
+        this.dayTime = dayTime;
     }
 
     public enum ELEDARI_MONTHS implements MONTH {
-        JANUARY(1, 31, "January", "February", "December"),;
+        JANUARY(1, 30, "January", "February", "December") {
+            @Override
+            public MOON getActiveMoon(boolean night) {
+                return null;
+            }
+        },;
 
         private int n;
         private int days;
@@ -313,6 +248,95 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     }
 
+    public enum HUMAN_MONTHS implements MONTH {
+
+
+        LIGHTWIND(30, false, RIME, FAE),
+        GREYFIELD(31, false, FAE, FEL),
+        BLOSSOM(30, false, FAE, HAVEN),
+
+        BRIGHTSTAR(30, false, TEMPEST, HAVEN),
+        ARDENT(31, false, TEMPEST, HAVEN),
+        HARVESTING(30, false, HAVEN, FEL),
+
+        STORMGALE(30, true, SHADE, TEMPEST),
+        BLACKLEAF(31, true, SHADE, FAE),
+        HOLLOWMOURN(30, true, SHADE, FEL),
+
+        RIMEMYST(30, true, RIME, SHADE),
+        WINTERDEEP(31, true, RIME, FEL),
+        ICEBREAK(31, true, RIME, TEMPEST) {
+            @Override
+            public boolean isLastMonthInYear() {
+                return true;
+            }
+        },
+
+        // BRIGHTSTAR,   ICESTORM,
+        ;
+
+        private MOON[] moons;
+        private boolean nightly;
+        private int days;
+
+        HUMAN_MONTHS(int days, boolean nightly, MOON... moons) {
+            this.days = days;
+            this.nightly = nightly;
+            this.moons = moons;
+        }
+
+
+        @Override
+        public MOON getActiveMoon(boolean night) {
+            if (nightly) night = !night;
+            int i = night ? 1 : 0;
+            return moons[i];
+        }
+
+        @Override
+        public int getMonthNumber() {
+            return EnumMaster.getEnumConstIndex(HUMAN_MONTHS.class, this);
+        }
+
+        @Override
+        public int getDays() {
+            return days;
+        }
+
+        @Override
+        public String getName() {
+            return StringMaster.getWellFormattedString(name());
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+
+        @Override
+        public MONTH getNextMonth() {
+            return HUMAN_MONTHS.values()[EnumMaster.getEnumConstIndex(HUMAN_MONTHS.class, this) + 1];
+        }
+
+        @Override
+        public MONTH getPreviousMonth() {
+            return HUMAN_MONTHS.values()
+             [EnumMaster.getEnumConstIndex(HUMAN_MONTHS.class, this) - 1];
+
+        }
+
+        @Override
+        public boolean isLastMonthInYear() {
+            return false;
+        }
+
+    }
+
+    public enum TIME_UNITS {
+        ERA, YEAR, MONTH, DAY, HOUR
+
+    }
+
     public interface MONTH {
         int getMonthNumber();
 
@@ -326,6 +350,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
         boolean isLastMonthInYear();
 
+        MOON getActiveMoon(boolean night);
     }
 
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import main.data.filesys.PathFinder;
+import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.DungeonScreen;
 
 /**
@@ -46,6 +47,9 @@ public class GdxMaster {
     }
 
     public static float centerHeight(Actor actor) {
+        if (actor.getParent() != null)
+            if (actor.getParent().getHeight() != 0)
+                return actor.getParent().getHeight()/2 - actor.getHeight()/2;
         return GdxMaster.getHeight() / 2 - actor.getHeight() / 2;
     }
 
@@ -128,5 +132,9 @@ public class GdxMaster {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor: " + inputController);
 
         Gdx.input.setInputProcessor(inputController);
+    }
+
+    public static void centerAndAdjust(ImageContainer actor) {
+        actor.setPosition(adjustPos(true, centerWidth(actor)), adjustPos(false, centerHeight(actor)));
     }
 }

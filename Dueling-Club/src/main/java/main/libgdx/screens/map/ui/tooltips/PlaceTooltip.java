@@ -60,7 +60,8 @@ public class PlaceTooltip extends ToolTip {
             main.system.auxiliary.log.LogMaster.log(1,"Waiting!!! " );
             WaitMaster.WAIT(500);
             if (!MapScreen.getInstance().getMapStage().getRoutes().isRouteHighlighted()) {
-                GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
+//                GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
+                super.onMouseExit(event , 0, 0, 0, toActor );
                 main.system.auxiliary.log.LogMaster.log(1, "REMOVED!!! ");
             } else {
                 main.system.auxiliary.log.LogMaster.log(1,"Nothing!!! " );
@@ -114,6 +115,7 @@ public class PlaceTooltip extends ToolTip {
                 GuiEventManager.trigger(MapEvent.ROUTES_PANEL_HOVER_OFF );
             }
         });
+        int i=0;
         for (Route sub : place.getRoutes()) {
             //reverse pic pos
             TextureRegion tex = TextureCache.getOrCreateR(sub.getImagePath());
@@ -143,7 +145,9 @@ public class PlaceTooltip extends ToolTip {
                     GuiEventManager.trigger(MapEvent.ROUTE_HOVERED, sub);
                 }
             });
-            routeInfo.row();
+            if (i%2==1)
+            routesInfo.row();
+            i++;
         }
     }
 }

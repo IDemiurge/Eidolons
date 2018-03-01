@@ -11,15 +11,17 @@ import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
-import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import main.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
+import main.libgdx.screens.map.sfx.Blackout;
 import main.libgdx.utils.TextInputPanel;
 import main.system.GuiEventManager;
+import main.system.MapEvent;
+import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +31,7 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GuiStage extends Stage implements StageWithClosable{
-
-    private TextInputPanel tf;
-
-    public GuiStage(Viewport viewport, Batch batch) {
-        super(viewport, batch);
-
-    }
-
-    private List<String> charsUp = new ArrayList<>();
-    private char lastTyped;
+public class GuiStage extends Stage implements StageWithClosable {
 
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
@@ -47,10 +39,21 @@ public class GuiStage extends Stage implements StageWithClosable{
     protected Closable displayedClosable;
     protected GameMenu gameMenu;
     protected OutcomePanel outcomePanel;
+    protected Blackout blackout;
+    private TextInputPanel tf;
+    private List<String> charsUp = new ArrayList<>();
+    private char lastTyped;
+    public GuiStage(Viewport viewport, Batch batch) {
+        super(viewport, batch);
 
+    }
+
+    public void blackout(float dur) {
+        blackout.fadeOutAndBack(dur);
+    }
 
     protected void init() {
-        gameMenu =createGameMenu();
+        gameMenu = createGameMenu();
         addActor(gameMenu);
         gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
 
@@ -66,11 +69,10 @@ public class GuiStage extends Stage implements StageWithClosable{
 //        addActor(helpButton);
 
 
-
         SimpleLogPanel log = new SimpleLogPanel();
         log.setPosition(GdxMaster.getWidth() - log.getWidth(), 0);
         addActor(log);
-
+        addActor(blackout = new Blackout());
         addActor(new FullLogPanel(100, 200));
 
         radial = new RadialMenu();
@@ -120,7 +122,9 @@ public class GuiStage extends Stage implements StageWithClosable{
         GuiEventManager.bind(SHOW_TEXT_CENTERED, p -> {
             showText((String) p.get());
         });
+
     }
+
     protected void showText(String s) {
         if (s == null) {
             textPanel.close();
@@ -129,6 +133,7 @@ public class GuiStage extends Stage implements StageWithClosable{
         textPanel.setText(s);
         textPanel.open();
     }
+
     @Override
     public boolean keyUp(int keyCode) {
         String c = Keys.toString(keyCode);
@@ -161,7 +166,7 @@ public class GuiStage extends Stage implements StageWithClosable{
 
         boolean result = false;
         try {
-            result =  handleKeyTyped(  character);
+            result = handleKeyTyped(character);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -169,10 +174,11 @@ public class GuiStage extends Stage implements StageWithClosable{
             return true;
         return super.keyTyped(character);
     }
+
     public void textInput(TextInputListener textInputListener, String title, String text, String hint) {
-if (tf==null )
-    tf = new TextInputPanel(title, text, hint, textInputListener);
-        tf.setPosition(GdxMaster.centerWidth(tf),GdxMaster.centerHeight(tf));
+        if (tf == null)
+            tf = new TextInputPanel(title, text, hint, textInputListener);
+        tf.setPosition(GdxMaster.centerWidth(tf), GdxMaster.centerHeight(tf));
 //textInputListener.input(text);
         tf.setVisible(true);
 
@@ -180,7 +186,8 @@ if (tf==null )
 
 
     protected boolean handleKeyTyped(char character) {
-       return DC_Game.game.getKeyManager().handleKeyTyped(0, character); }
+        return DC_Game.game.getKeyManager().handleKeyTyped(0, character);
+    }
 
     public void outsideClick() {
         if (textPanel.isVisible()) {

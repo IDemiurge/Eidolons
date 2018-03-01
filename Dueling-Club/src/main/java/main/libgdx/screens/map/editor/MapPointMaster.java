@@ -1,16 +1,25 @@
 package main.libgdx.screens.map.editor;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.libgdx.gui.tooltips.ValueTooltip;
+import main.libgdx.screens.map.MapScreen;
 import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_POINTS;
+import main.libgdx.texture.TextureCache;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.images.ImageManager.STD_IMAGES;
+import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,12 +27,23 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/22/2018.
  */
-public class MapPointMaster {
+public class MapPointMaster  {
 
     Map<String, Coordinates> map;
     private String last;
 
     public MapPointMaster() {
+        if (CoreEngine.isMapEditor()) {
+        GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
+            Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
+            TextureRegion region= TextureCache.getOrCreateR(STD_IMAGES.MAP_PLACE.getPath());
+            Actor actor= new Image(region);
+            actor.addListener(new ValueTooltip(pair.getKey()).getController());
+            Coordinates c = pair.getValue();
+            actor.setPosition(c.x-region.getRegionWidth()/2,c.y-region.getRegionHeight()/2);
+            MapScreen.getInstance().getObjectStage().  addActor(actor);
+        });
+        }
         load();
     }
 

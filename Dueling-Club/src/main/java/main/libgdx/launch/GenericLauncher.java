@@ -86,7 +86,7 @@ public class GenericLauncher extends Game {
     }
 
     protected boolean isStopOnInactive() {
-        return true;
+        return false;
     }
 
     public LwjglApplicationConfiguration getConf() {

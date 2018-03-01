@@ -59,17 +59,19 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        Actor actor = event.getRelatedActor();
-        if (toActor == this) {
-            addListener(new InputListener() {
-                @Override
-                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                    if (toActor != actor)
-                        onMouseExit(event, x, y, pointer, toActor);
-                    super.exit(event, x, y, pointer, toActor);
-                }
-            });
-            return;
+        if (event != null) {
+            Actor actor = event.getRelatedActor();
+            if (toActor == this) {
+                addListener(new InputListener() {
+                    @Override
+                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                        if (toActor != actor)
+                            onMouseExit(event, x, y, pointer, toActor);
+                        super.exit(event, x, y, pointer, toActor);
+                    }
+                });
+                return;
+            }
         }
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
         showing = false;

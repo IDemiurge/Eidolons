@@ -19,36 +19,64 @@ public abstract class SuperActor extends Group implements Borderable {
     protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.4f;
     protected static final float DEFAULT_ALPHA_MIN = 0.2f;
     protected static final float DEFAULT_ALPHA_MAX = 1f;
-    protected static boolean alphaFluctuationOn=true;
+    protected static boolean alphaFluctuationOn = true;
+    private static boolean cullingOff;
     protected Image border = null;
     protected TextureRegion borderTexture;
     protected float fluctuatingAlpha = 1f;
     protected boolean alphaGrowing = false;
     protected boolean teamColorBorder;
     protected Color teamColor;
-    protected float scaledWidth=1;
-    protected float scaledHeight=1;
+    protected float scaledWidth = 1;
+    protected float scaledHeight = 1;
     protected boolean hovered;
     protected boolean active;
-    private static boolean cullingOff;
+    ALPHA_TEMPLATE alphaTemplate;
+    private float alphaPause;
     private boolean hoverResponsive;
-    private float alphaStep=-1;
+    private float alphaStep = -1;
     private float fluctuatingAlphaPauseDuration;
     private float fluctuatingFullAlphaDuration;
-    private float alphaPause;
-    private float fluctuatingAlphaRandomness;
+    private float fluctuatingAlphaRandomness, fluctuatingAlphaMin, fluctuatingAlphaMax;
+
+    public SuperActor() {
+    }
+
+    public SuperActor(ALPHA_TEMPLATE alphaTemplate) {
+        setAlphaTemplate(alphaTemplate);
+    }
 
     public static boolean isCullingOff() {
         return cullingOff;
     }
 
+    public static void setCullingOff(boolean cullingOff) {
+        SuperActor.cullingOff = cullingOff;
+    }
+
+    public void setAlphaTemplate(ALPHA_TEMPLATE alphaTemplate) {
+
+        this.alphaTemplate = alphaTemplate;
+        this.alphaStep = alphaTemplate.alphaStep;
+        this.fluctuatingAlphaMax = alphaTemplate.max;
+        this.fluctuatingAlphaMin = alphaTemplate.min;
+        this.fluctuatingAlphaPauseDuration = alphaTemplate.fluctuatingAlphaPauseDuration;
+        this.fluctuatingFullAlphaDuration = alphaTemplate.fluctuatingFullAlphaDuration;
+        this.fluctuatingAlphaRandomness = alphaTemplate.fluctuatingAlphaRandomness;
+
+    }
+
+    public void setFluctuatingAlphaMin(float fluctuatingAlphaMin) {
+        this.fluctuatingAlphaMin = fluctuatingAlphaMin;
+    }
+
+    public void setFluctuatingAlphaMax(float fluctuatingAlphaMax) {
+        this.fluctuatingAlphaMax = fluctuatingAlphaMax;
+    }
+
     @Override
     public TextureRegion getBorder() {
         return borderTexture;
-    }
-
-    public static void setCullingOff(boolean cullingOff) {
-        SuperActor.cullingOff = cullingOff;
     }
 
     @Override
@@ -74,10 +102,10 @@ public abstract class SuperActor extends Group implements Borderable {
         if (border != null) {
             border.setX(-6);
             border.setY(-6);
-            if (getHeight()==0)
-                return ;
-            if (getWidth()==0)
-                return ;
+            if (getHeight() == 0)
+                return;
+            if (getWidth() == 0)
+                return;
             border.setHeight(getHeight() + 12);
             border.setWidth(getWidth() + 12);
         }
@@ -90,11 +118,11 @@ public abstract class SuperActor extends Group implements Borderable {
 //            return true; TODO why was this here?.. not to draw?
         if (isCullingOff())
             return false;
-            if (! getController().
-             isWithinCamera(
-              this)) {
-                return true;
-            }
+        if (!getController().
+         isWithinCamera(
+          this)) {
+            return true;
+        }
         return false;
     }
 
@@ -134,14 +162,14 @@ public abstract class SuperActor extends Group implements Borderable {
     protected void alphaFluctuation(Actor image, float delta) {
         if (!isAlphaFluctuationOn())
             return;
-        if (alphaPause>0){
-            alphaPause =   alphaPause - delta ;
-            if (alphaPause>=0) return ;
+        if (alphaPause > 0) {
+            alphaPause = alphaPause - delta;
+            if (alphaPause >= 0) return;
             delta = delta - (-alphaPause);
-            if (delta<=0)
-            return;
+            if (delta <= 0)
+                return;
         }
-        Color color =null ;
+        Color color = null;
         if (image != null)
             color = image.getColor();
         else color = GdxColorMaster.WHITE;
@@ -150,7 +178,7 @@ public abstract class SuperActor extends Group implements Borderable {
             if (getTeamColor() != null) {
                 color = getTeamColor();
             }
-        fluctuatingAlpha = fluctuatingAlpha +  randomizeAlpha(getAlphaFluctuation(delta));
+        fluctuatingAlpha = fluctuatingAlpha + randomizeAlpha(getAlphaFluctuation(delta));
 
         fluctuatingAlpha = MathMaster.getMinMax(
          fluctuatingAlpha, getAlphaFluctuationMin(),
@@ -161,31 +189,29 @@ public abstract class SuperActor extends Group implements Borderable {
     }
 
     private float randomizeAlpha(float fluctuatingAlpha) {
-        if (fluctuatingAlphaRandomness>0){
+        if (fluctuatingAlphaRandomness > 0) {
 //            if (RandomWizard.chance())
-            int alpha =(int) (fluctuatingAlphaRandomness * 100);
+            int alpha = (int) (fluctuatingAlphaRandomness * 100);
             int mod =
              RandomWizard.getRandomIntBetween(
               -alpha, alpha);
             return
-             fluctuatingAlpha+
-             fluctuatingAlpha/100*mod;
+             fluctuatingAlpha +
+              fluctuatingAlpha / 100 * mod;
         }
         return fluctuatingAlpha;
     }
 
     protected float getAlphaFluctuation(float delta) {
         float fluctuation = delta * getAlphaFluctuationPerDelta();
-        if (getFluctuatingAlpha() <= getAlphaFluctuationMin()  )
-        {
-            if (alphaGrowing){
-                    alphaPause = getFluctuatingFullAlphaDuration();
-            }else {
+        if (getFluctuatingAlpha() <= getAlphaFluctuationMin()) {
+            if (alphaGrowing) {
+                alphaPause = getFluctuatingFullAlphaDuration();
+            } else {
                 alphaPause = getFluctuatingAlphaPauseDuration();
             }
             alphaGrowing = !alphaGrowing;
-        }
-        else if (fluctuatingAlpha >= getAlphaFluctuationMax()  )
+        } else if (fluctuatingAlpha >= getAlphaFluctuationMax())
             alphaGrowing = !alphaGrowing;
 
         if (!alphaGrowing)
@@ -197,16 +223,24 @@ public abstract class SuperActor extends Group implements Borderable {
         return fluctuatingAlpha;
     }
 
+    public void setFluctuatingAlpha(float fluctuatingAlpha) {
+        this.fluctuatingAlpha = fluctuatingAlpha;
+    }
+
     protected float getAlphaFluctuationMin() {
+        if (fluctuatingAlphaMin != 0)
+            return fluctuatingAlphaMin;
         return DEFAULT_ALPHA_MIN;
     }
 
     protected float getAlphaFluctuationMax() {
+        if (fluctuatingAlphaMax != 0)
+            return fluctuatingAlphaMax;
         return DEFAULT_ALPHA_MAX;
     }
 
     protected float getAlphaFluctuationPerDelta() {
-        if (alphaStep!=-1 )
+        if (alphaStep != -1)
             return alphaStep;
         return DEFAULT_ALPHA_FLUCTUATION;
     }
@@ -217,10 +251,6 @@ public abstract class SuperActor extends Group implements Borderable {
 
     public static void setAlphaFluctuationOn(boolean alphaFluctuationOn) {
         SuperActor.alphaFluctuationOn = alphaFluctuationOn;
-    }
-
-    public void setFluctuatingAlpha(float fluctuatingAlpha) {
-        this.fluctuatingAlpha = fluctuatingAlpha;
     }
 
     @Override
@@ -285,35 +315,69 @@ public abstract class SuperActor extends Group implements Borderable {
         this.hoverResponsive = hoverResponsive;
     }
 
-    public void setAlphaStep(float alphaStep) {
-        this.alphaStep = alphaStep;
-    }
-
     public float getAlphaStep() {
         return alphaStep;
     }
 
-    public void setFluctuatingAlphaPauseDuration(float fluctuatingAlphaPauseDuration) {
-        this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
+    public void setAlphaStep(float alphaStep) {
+        this.alphaStep = alphaStep;
     }
 
     public float getFluctuatingAlphaPauseDuration() {
         return fluctuatingAlphaPauseDuration;
     }
 
-    public void setFluctuatingFullAlphaDuration(float fluctuatingFullAlphaDuration) {
-        this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
+    public void setFluctuatingAlphaPauseDuration(float fluctuatingAlphaPauseDuration) {
+        this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
     }
 
     public float getFluctuatingFullAlphaDuration() {
         return fluctuatingFullAlphaDuration;
     }
 
-    public void setFluctuatingAlphaRandomness(float fluctuatingAlphaRandomness) {
-        this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
+    public void setFluctuatingFullAlphaDuration(float fluctuatingFullAlphaDuration) {
+        this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
     }
 
     public float getFluctuatingAlphaRandomness() {
         return fluctuatingAlphaRandomness;
+    }
+
+    public void setFluctuatingAlphaRandomness(float fluctuatingAlphaRandomness) {
+        this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
+    }
+
+    public enum ALPHA_TEMPLATE {
+        MOON(0.1f, 0, 1, 0.5f),
+        SUN(0.1f, 0, 5, 0.5f, 0.7f, 1f),
+        TOP_LAYER(0.2f, 1, 2, 0.6f, 0.15f, 0.5f),
+        LIGHT(0.24f, 3, 1, 2.6f, 0.1f, 0.5f),
+        MOONLIGHT(0.4f, 5, 0.5F, 2.6f, 0.1f, 0.9f),
+        CLOUD(0.2f, 0, 3, 0.7f, 0.05f, 1f),;
+
+        float alphaStep;
+        float fluctuatingAlphaPauseDuration;
+        float fluctuatingFullAlphaDuration;
+        float fluctuatingAlphaRandomness;
+        float min, max;
+
+        ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration, float fluctuatingFullAlphaDuration, float fluctuatingAlphaRandomness, float min, float max) {
+            this.alphaStep = alphaStep;
+            this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
+            this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
+            this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
+            this.min = min;
+            this.max = max;
+        }
+
+        ALPHA_TEMPLATE(float alphaStep, float fluctuatingAlphaPauseDuration,
+                       float fluctuatingFullAlphaDuration,
+                       float fluctuatingAlphaRandomness) {
+            this.alphaStep = alphaStep;
+            this.fluctuatingAlphaPauseDuration = fluctuatingAlphaPauseDuration;
+            this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
+            this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
+        }
+
     }
 }

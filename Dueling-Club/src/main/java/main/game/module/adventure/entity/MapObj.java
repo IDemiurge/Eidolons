@@ -38,9 +38,7 @@ public abstract class MapObj extends MacroObj {
         this.coordinates = coordinates;
         setParam(G_PARAMS.POS_X, coordinates.x);
         setParam(G_PARAMS.POS_Y, coordinates.y);
-        int x = this.coordinates.x - getDefaultSize() / 2;
-        int y = this.coordinates.y - getDefaultSize() / 2;
-        setX(x);setY(y);
+        setX(coordinates.x);setY(coordinates.y);
         setParam(MACRO_PARAMS.MAP_POS_X, x, true);
         setParam(MACRO_PARAMS.MAP_POS_Y, y, true);
         setMapRenderPoint(new MacroCoordinates(x, y));

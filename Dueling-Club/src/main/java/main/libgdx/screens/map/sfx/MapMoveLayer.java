@@ -1,9 +1,9 @@
 package main.libgdx.screens.map.sfx;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_AREA;
 import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_MOVING_LAYER_TYPE;
+import main.system.auxiliary.RandomWizard;
 
 /**
  * Created by JustMe on 2/19/2018.
@@ -12,15 +12,22 @@ public class MapMoveLayer extends ImageContainer {
     private float originalX, originalY, maxDistance, speed, shakiness, directionModX, directionModY;
     private MAP_AREA spawnArea;
     MAP_MOVING_LAYER_TYPE type;
+    public float rotationMod= RandomWizard.random()? 1: -1;
 
-    public MapMoveLayer(Actor content, MAP_AREA spawnArea, MAP_MOVING_LAYER_TYPE type) {
-        super(content);
+    public MapMoveLayer(String path, MAP_AREA spawnArea, MAP_MOVING_LAYER_TYPE type) {
+        super(path);
         this.spawnArea = spawnArea;
         this.type = type;
-    }
+        if (type.flipX)
+            if (RandomWizard.random())
+            setFlipX(RandomWizard.random());
+        if (type.flipY)
+            if (RandomWizard.random())
+            setFlipY(RandomWizard.random());
 
-    public MapMoveLayer(Actor content) {
-        super(content);
+        if (RandomWizard.random())
+        setRotation(RandomWizard.getRandomFloatBetween(0,360* type.rotation));
+        setScale(RandomWizard.getRandomFloatBetween(1-type.sizeRange, 1+type.sizeRange));
     }
 
     public float getMaxDistance() {

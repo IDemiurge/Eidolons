@@ -31,6 +31,14 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     protected Boolean makeAction() {
         if (exited)
             return true;
+        lock.lock();
+        try {
+            waiting.await();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
         if (actionQueue.isEmpty()) {
         }
 
@@ -54,7 +62,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
             return;
         //check blocked
 //        queueActionInput(actionInput);
-//        signal();
+        signal();
 //        GuiEventManager.trigger(MapEvent.MAP_GUI_UPDATE);
     }
 

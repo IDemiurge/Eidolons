@@ -61,15 +61,7 @@ public class EditorMapView extends  MapScreen{
     protected void preLoad() {
         super.preLoad();
         mapStage.addActor(editorParticles = new EditorParticleMaster(mapStage.getParticles()));
-        GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
-            Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
-            TextureRegion region= TextureCache.getOrCreateR(STD_IMAGES.MAP_PLACE.getPath());
-            Actor actor= new Image(region);
-            actor.addListener(new ValueTooltip(pair.getKey()).getController());
-            Coordinates c = pair.getValue();
-            actor.setPosition(c.x-region.getRegionWidth()/2,c.y-region.getRegionHeight()/2);
-            mapStage. addActor(actor);
-        });
+
     }
 
     @Override

@@ -65,9 +65,6 @@ public class MapDatePanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        debug();
-        if (date==null )
-            return ;
         if (!initialized)
             init();
         firstLabel.setText(getFirstLabelText());

@@ -53,6 +53,7 @@ public class TimeMaster {
     public static GameDate getDate() {
         if (date == null) {
             date = new GameDate();
+            date.setHour(1);
             date.setEra(MacroGame.getGame().getCampaign()
                     .getIntParam(MACRO_PARAMS.ERA));
             date.setYear(MacroGame.getGame().getCampaign()

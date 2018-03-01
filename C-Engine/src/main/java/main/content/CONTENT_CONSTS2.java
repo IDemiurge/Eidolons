@@ -75,7 +75,12 @@ public String getPath(){
 
         //TODO sub-emitters
 
-        ;
+            SNOW("snow\\snow"),
+            SNOW_TIGHT("snow\\snow tight"),
+            SNOW_TIGHT2("snow\\snow tight2"),
+            SNOWFALL_SMALL("snow\\snowfall small"),
+            SNOWFALL("snow\\snowfall"),
+            ;
         public String path;
 
         SFX(String path) {

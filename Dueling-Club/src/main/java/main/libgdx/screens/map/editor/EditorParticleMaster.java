@@ -1,5 +1,6 @@
 package main.libgdx.screens.map.editor;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,6 +17,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.*;
 
@@ -67,11 +69,20 @@ public class EditorParticleMaster extends Group {
 
     public void removeClosest(int x, int y) {
         float minDistance = Float.MAX_VALUE;
-        for (Actor sub : layers.get(time).getChildren()) {
-//            distance = new Vector2(x, y).dst(new Vector2(sub.getX(), sub.getY()));
-
+        Actor actor = null;
+        DequeImpl<Actor> list = new DequeImpl<>(particles.getEmitterMap().get(time));
+        list.addAll(map.get(time));
+        for (Actor sub : list) {
+            if (sub instanceof EmitterActor) {
+                float distance = new Vector2(x, y).dst(new Vector2(sub.getX(), sub.getY()));
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    actor = sub;
+                }
+            }
             //can we not attach click listeners to emtiterActors?!
         }
+        removeEmitter((EmitterActor) actor, time);
     }
 
     public void removeLast() {
@@ -83,6 +94,7 @@ public class EditorParticleMaster extends Group {
 
     private void removeEmitter(EmitterActor actor, DAY_TIME time) {
         map.get(time).remove(actor);
+        particles.getEmitterMap().get(time).remove(actor);
         actor.remove();
         GuiEventManager.trigger(MapEvent.EMITTER_REMOVED, actor);
     }

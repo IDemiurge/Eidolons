@@ -14,8 +14,6 @@ import main.libgdx.GdxColorMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.gui.NinePatchFactory;
-import main.system.GuiEventManager;
-import main.system.MapEvent;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -76,14 +74,16 @@ public class EditorControlPanel extends HorizontalFlowGroup {
 //                MacroManager.saveCustomTypes();
                 //data into World/Campaign type?
                 break;
+            case ALL_TIMES:
+                MacroGame.getGame().prepareSetTime(null );
+                break;
             case NEXT_TIME:
                 int i = EnumMaster.getEnumConstIndex(DAY_TIME.class, MacroGame.getGame().getTime());
                i++;
                if (DAY_TIME.values().length<=i)
                     i=0;
                 DAY_TIME time = DAY_TIME.values()[i];
-                MacroGame.getGame().setTime(time);
-                GuiEventManager.trigger(MapEvent.TIME_CHANGED, time);
+                MacroGame.getGame().prepareSetTime(time);
                 break;
             case UNDO:
                 EditorManager.undo();
@@ -131,7 +131,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
         SAVE,
         UNDO,
         NEXT_TIME,
-        REFRESH
+        ALL_TIMES, REFRESH
     }
 
     public enum MAP_EDITOR_MOUSE_MODE {

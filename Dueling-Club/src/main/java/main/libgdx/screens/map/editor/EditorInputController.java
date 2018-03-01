@@ -1,5 +1,7 @@
 package main.libgdx.screens.map.editor;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -65,6 +67,10 @@ public class EditorInputController extends MapInputController {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if (button == 1) {
+            if (Gdx.input.isKeyJustPressed(Keys.ALT_LEFT)||
+             Gdx.input.isKeyPressed(Keys.ALT_LEFT))
+                EditorManager.remove(screenX, screenY);
+            else
             EditorManager.add(screenX, screenY);
 
         }

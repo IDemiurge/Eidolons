@@ -229,6 +229,10 @@ public class MapScreen extends GameScreen {
         return guiStage.getGameMenu().isVisible();
     }
 
+    public Stage getObjectStage() {
+        return objectStage;
+    }
+
     public MapStage getMapStage() {
         return mapStage;
     }

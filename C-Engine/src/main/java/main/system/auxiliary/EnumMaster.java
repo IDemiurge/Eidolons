@@ -550,4 +550,9 @@ public class EnumMaster<T> {
         return -1;
     }
 
+    public T getNextEnumConst(Class<T> clazz, T c) {
+        int i = getEnumConstIndex(clazz, c)+1;
+        if (i>=clazz.getEnumConstants().length) i=0;
+        return         clazz.getEnumConstants()[i];
+    }
 }

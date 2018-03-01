@@ -1,8 +1,10 @@
-package main.libgdx.screens.map.ui;
+package main.libgdx.screens.map.ui.time;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.game.module.adventure.MacroGame;
@@ -10,6 +12,7 @@ import main.game.module.adventure.global.GameDate;
 import main.game.module.adventure.global.TimeMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
+import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TextButtonX;
@@ -24,7 +27,7 @@ import main.system.graphics.FontMaster.FONT;
 import java.util.HashMap;
 import java.util.Map;
 
-import static main.libgdx.screens.map.ui.MapTimePanel.MOON.*;
+import static main.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
 
 
 /**
@@ -46,8 +49,8 @@ public class MapTimePanel extends Group {
     private static final float SIZE = 64;
     ImageContainer sun;
     ImageContainer undersun;
-    Map<MOON, ImageContainer> moonMap = new HashMap<>();
-    ImageContainer[] displayedMoons = new ImageContainer[3];
+    Map<MOON, MoonActor> moonMap = new HashMap<>();
+    MoonActor[] displayedMoons = new MoonActor[3];
     Label timeLabel;
     Image stoneCircle = new Image(TextureCache.getOrCreateR(
      StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "stone circle.png")));
@@ -58,12 +61,12 @@ public class MapTimePanel extends Group {
 
     boolean movingUp;
     boolean moving;
-    PointX timeLabelPoint= new PointX(138, 72);
+    PointX timeLabelPoint = new PointX(138, 80);
     PointX pauseBtnPoint = new PointX(118, 25);
     PointX speedUpBtnPoint = new PointX(162, 59);
     PointX speedDownBtnPoint = new PointX(98, 59);
     TextButtonX pauseButton;
-    ImageContainer activeMoon;
+    MoonActor activeMoon;
     ImageContainer activeMoonCircle;
     private TextButtonX speedUpBtn;
     private TextButtonX speedDownBtn;
@@ -102,26 +105,20 @@ public class MapTimePanel extends Group {
         addListener(new DynamicTooltip(() -> getDateString()).getController());
         //display DatePanel?
         for (MOON moon : MOON.values()) {
-            ImageContainer container = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
-             , "component", "time panel", "moons", moon.name() + ".png"));
-            //highlight?
-            ImageContainer hl = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
-             , "component", "time panel", "moons", moon.name() + " hl.png"));
-            container.setSize(moonSize, moonSize);
+            MoonActor container = new MoonActor(moon);
             moonMap.put(moon, container);
         }
         float sunSize = moonSize * 2f;
         sun = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
          , "component", "time panel", "sun.png"));
-        sun.setAlphaStep(0.1f);
-        sun.setFluctuatingAlphaRandomness(0.3f);
-        sun.setFluctuatingFullAlphaDuration(3.5f);
+        sun.setAlphaTemplate(ALPHA_TEMPLATE.SUN);
         sun.setSize(sunSize, sunSize);
         sun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
          GdxMaster.adjustPos(false, sunPoint.y));
         sun.setVisible(false);
         undersun = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
          , "component", "time panel", "undersun.png"));
+        undersun.setAlphaTemplate(ALPHA_TEMPLATE.SUN);
         undersun.setSize(sunSize, sunSize);
         undersun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
          GdxMaster.adjustPos(false, sunPoint.y));
@@ -146,7 +143,23 @@ public class MapTimePanel extends Group {
         GuiEventManager.bind(MapEvent.TIME_CHANGED, p -> {
             update((DAY_TIME) p.get());
         });
+        sun.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                MacroGame.getGame().getLoop().getTimeMaster().newMonth();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        undersun.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                MacroGame.getGame().getLoop().getTimeMaster().newMonth();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        stoneCircle.setOrigin(stoneCircle.getImageWidth()/2, stoneCircle.getImageHeight()*2);
     }
+
     private void resetZIndices() {
         stoneCircle.setZIndex(0);
         pauseButton.setZIndex(Integer.MAX_VALUE);
@@ -160,7 +173,7 @@ public class MapTimePanel extends Group {
         MOON[] moons = getDisplayedMoons();
         main.system.auxiliary.log.LogMaster.log(1, "update: " + time);
         int i = 0;
-        for (ImageContainer sub : displayedMoons) {
+        for (MoonActor sub : displayedMoons) {
             if (sub != null) sub.remove();
         }
         for (MOON sub : moons) {
@@ -170,33 +183,50 @@ public class MapTimePanel extends Group {
             displayedMoons[i] = moonMap.get(sub);
             displayedMoons[i].setVisible(true);
             addActor(displayedMoons[i]);
-            displayedMoons[i].setPosition(GdxMaster.adjustPos(true, points[i].x),
-             GdxMaster.adjustPos(false, points[i].y));
+            int offset = 7;
+            displayedMoons[i].setPosition(GdxMaster.adjustPos(true, points[i].x - offset),
+             GdxMaster.adjustPos(false, points[i].y - offset));
             i++;
         }
+        MOON m = TimeMaster.getDate().getMonth().getActiveMoon(time.isNight());
+        if (activeMoon != null)
+            activeMoon.setActive(false);
+        activeMoon = moonMap.get(m);
+        activeMoon.setActive(true);
     }
 
     @Override
     public void act(float delta) {
-        timeLabel.setText(TimeMaster.getDate().getHour()
-         + ":" + (int) MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter());
+        String text=TimeMaster.getDate().getHour()+"";
+        int minutes = (int) MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter();
+        if (minutes / 10 == 0) {
+            text += ":0" + minutes;
+        } else
+            text +=   ":" +minutes;
+        timeLabel.setText(text);
 
         delta = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed();
         super.act(delta);
-        resetZIndices();
-       /*
-       elapsed+=delta*mod;
-        DAY_TIME time;
-        if (time!=this.time){
-            update();
-        }
-
         moveSun();
-        moveMoons();
-        adjustSun();
-        adjustMoons();
-        rotate();
-        */
+        resetZIndices();
+
+        float r = stoneCircle.getRotation();
+        float dx = 0.5f * delta;
+        if (r>180)
+            movingUp=true;
+        if (movingUp)
+            if (r<=0)
+                movingUp=false;
+
+        if (movingUp)
+            dx=-dx;
+//        stoneCircle.setRotation(r+dx);
+    }
+
+    private void moveSun() {
+        // in time X, it must go from -H to H; maybe LEFT TO RIGHT INSTEAD??
+
+
     }
 
 

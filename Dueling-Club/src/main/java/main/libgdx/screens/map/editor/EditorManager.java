@@ -28,7 +28,21 @@ public class EditorManager {
     static MAP_EDITOR_MOUSE_MODE mode;
     private static Map<MapActor, MacroObj> actorObjMap = new HashMap<>();
 
+    public static void remove(int screenX, int screenY) {
+        try {
+            modify(false, screenX, screenY);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
     public static void add(int screenX, int screenY) {
+        try {
+            modify(true, screenX, screenY);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
+        public static void modify(boolean addOrRemove, int screenX, int screenY) {
         MAP_EDITOR_MOUSE_MODE mode = EditorManager.getMode();
        /*
        add listener to each actor
@@ -43,11 +57,14 @@ public class EditorManager {
                     MacroManager.getPointMaster().clicked(x, y);
                     return;
                 case EMITTER:
-                    try {
+                    if (addOrRemove) {
                         EditorMapView.getInstance().getEditorParticles().clicked(x, y);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
+
+                    } else {
+                        EditorMapView.getInstance().getEditorParticles().removeClosest(x, y);
                     }
+
+
                     return;
             }
 
@@ -131,4 +148,5 @@ public class EditorManager {
                 break;
         }
     }
+
 }

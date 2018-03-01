@@ -17,7 +17,7 @@ public class ActorMaster {
     public static final Map<Class, ActionPool> poolMap = new HashMap<>();
 
     public static void addAfter(Actor actor, Action action) {
-        if (getActionsOfClass(actor, AfterAction.class).size()>0){
+        if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
             return;
         }
         AfterAction aa = (AfterAction) getAction(AfterAction.class);
@@ -70,7 +70,6 @@ public class ActorMaster {
     }
 
 
-
     public static AlphaAction addFadeInOrOut(Actor actor, float duration) {
         float alpha = actor.getColor().a;
         AlphaAction action = (AlphaAction) getAction(AlphaAction.class);// new AlphaAction();
@@ -87,6 +86,30 @@ public class ActorMaster {
 
     public static AlphaAction addFadeInAction(Actor actor, float dur) {
         return addFadeAction(actor, dur, false);
+    }
+
+    public static void addFadeInAndOutAction(Actor actor, float dur, boolean remove) {
+        actor.setColor(actor.getColor().r, actor.getColor().g, actor.getColor().b, 0);
+        AlphaAction in = (AlphaAction) getAction(AlphaAction.class);
+        in.setAlpha(1);
+        in.setDuration(dur / 2);
+        in.setTarget(actor);
+
+        AlphaAction out = (AlphaAction) getAction(AlphaAction.class);
+        out.setAlpha(0);
+        out.setDuration(dur / 2);
+        out.setTarget(actor);
+        SequenceAction sequence;
+        if (remove) {
+//            Actions.sequence(in, out, remove);
+            RemoveActorAction r = new RemoveActorAction();
+            r.setTarget(actor);
+            sequence = Actions.sequence(in, out,r);
+        } else {
+            sequence = Actions.sequence(in, out);
+        }
+        actor.addAction(sequence);
+        sequence.setTarget(actor);
     }
 
     public static AlphaAction addFadeAction(Actor actor, float dur, boolean out) {
@@ -121,7 +144,7 @@ public class ActorMaster {
             action.setAmount((action.getAmount() + 360) % 360);
 
 //        main.system.auxiliary.log.LogMaster.log(1,from+ "from; to: " +to + "; amount = " + action.getAmount());
-        float speed = 180*AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
+        float speed = 180 * AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);
         actor.addAction(action);
@@ -135,7 +158,8 @@ public class ActorMaster {
         actor.addAction(action);
         action.setTarget(actor);
     }
-    public static MoveToAction getMoveToAction( float x, float y, float v) {
+
+    public static MoveToAction getMoveToAction(float x, float y, float v) {
         MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);
         action.setDuration(v);

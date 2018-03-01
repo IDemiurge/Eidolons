@@ -22,6 +22,8 @@ import main.game.module.adventure.rules.TurnRule;
 import main.game.module.adventure.town.Town;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.screens.map.editor.MapPointMaster;
+import main.system.GuiEventManager;
+import main.system.MapEvent;
 import main.system.datatypes.DequeImpl;
 
 /*
@@ -39,7 +41,7 @@ public class MacroGame extends Game {
     DequeImpl<TurnRule> turnRules;
     private main.game.module.adventure.global.Campaign campaign;
     private GameLoop loop;
-    private DAY_TIME time=DAY_TIME.NOON;
+    private DAY_TIME time = DAY_TIME.NOON;
     private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
     private Thread gameLoopThread;
@@ -47,8 +49,8 @@ public class MacroGame extends Game {
     // ...masters
 
     public MacroGame() {
-         game = this;
-         init();
+        game = this;
+        init();
     }
 
     public static MacroGame getGame() {
@@ -77,7 +79,7 @@ public class MacroGame extends Game {
         turnRules.add(new HungerRule());
         initObjTypes();
         ObjType cType = DataManager.getType(MacroManager.getCampaignName(),
-                MACRO_OBJ_TYPES.CAMPAIGN);
+         MACRO_OBJ_TYPES.CAMPAIGN);
         campaign = new main.game.module.adventure.global.Campaign(this, cType, ref);
 
         main.game.module.adventure.global.TimeMaster.setCampaign(campaign);
@@ -99,14 +101,14 @@ public class MacroGame extends Game {
 //                main.system.ExceptionMaster.printStackTrace(e);
 //            }
         } else {
-        Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
-        if (party == null) {
-            return;
-        }
+            Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
+            if (party == null) {
+                return;
+            }
 
-        playerParty = new MacroParty(
-                getMacroPartyType(party), this, ref,
-         party);
+            playerParty = new MacroParty(
+             getMacroPartyType(party), this, ref,
+             party);
         }
 //        if (!MacroManager.isLoad()) {
 //            Place location = region.getPlace(campaign
@@ -117,7 +119,7 @@ public class MacroGame extends Game {
 
 
         pointMaster = new MapPointMaster();
-        routeMaster=new RouteMaster();
+        routeMaster = new RouteMaster();
 
     }
 
@@ -231,12 +233,13 @@ public class MacroGame extends Game {
     public MacroGameLoop getLoop() {
         return (MacroGameLoop) loop;
     }
-    public RealTimeGameLoop getRealtimeLoop() {
-        return (RealTimeGameLoop) loop;
-    }
 
     public void setLoop(GameLoop loop) {
         this.loop = loop;
+    }
+
+    public RealTimeGameLoop getRealtimeLoop() {
+        return (RealTimeGameLoop) loop;
     }
 
     public DAY_TIME getTime() {
@@ -247,15 +250,20 @@ public class MacroGame extends Game {
         this.time = time;
     }
 
+    public void prepareSetTime(DAY_TIME time) {
+        GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED, time);
+        setTime(time);
+    }
+
     public MapPointMaster getPointMaster() {
         return pointMaster;
     }
 
-    public void setGameLoopThread(Thread gameLoopThread) {
-        this.gameLoopThread = gameLoopThread;
-    }
-
     public Thread getGameLoopThread() {
         return gameLoopThread;
+    }
+
+    public void setGameLoopThread(Thread gameLoopThread) {
+        this.gameLoopThread = gameLoopThread;
     }
 }

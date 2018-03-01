@@ -5,6 +5,7 @@ import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.GameDate;
 import main.game.module.adventure.global.TimeMaster;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.MapEvent;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
@@ -58,6 +59,7 @@ public class MacroTimeMaster {
         if (dayTime == null)
         {
             newDayTime(DEFAULT_DAY_TIME);
+            return ;
         }
 
         if (minuteCounter < 60) {
@@ -74,13 +76,15 @@ public class MacroTimeMaster {
             hour =hour-24;
         }
         if (newDay)
-            date.nextDay();
+           date.nextDay();
+
         date.setHour(hour);
         //check month changes too
         int newPeriod = hour / getPeriod();
         if (newPeriod >= getPeriods())
             newPeriod = 0;
-        if (dayTime == null || newPeriod != lastPeriod) {
+
+        if ( newPeriod != lastPeriod) {
             lastPeriod = newPeriod;
             newDayTime(newPeriod);
         }
@@ -88,11 +92,21 @@ public class MacroTimeMaster {
         //recalc from start? or accrue?
     }
 
+    public void nextPeriod() {
+        hoursPassed(4);
+
+    }
+        public void newMonth() {
+        date.nextMonth();
+        MacroGame.getGame().prepareSetTime(DAY_TIME.DAWN);
+//        GuiEventManager.trigger(MapEvent.DATE_CHANGED, date);
+    }
+
     private void newDayTime(int newPeriod) {
         dayTime = times[newPeriod];
-        MacroGame.getGame().setTime(dayTime);
+        MacroGame.getGame().prepareSetTime(dayTime);
         getDate().setDayTime(dayTime);
-        GuiEventManager.trigger(MapEvent.TIME_CHANGED, dayTime);
+        GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, dayTime.getLogEntry());
     }
 
     private int getPeriods() {
@@ -180,12 +194,16 @@ public class MacroTimeMaster {
     }
 
     public void speedDown() {
-        speed-=defaultSpeed/3;
+        if (speed>defaultSpeed)
+            speed=speed-defaultSpeed/2;
+        else speed -= speed/3;
         if (speed<=0.1f)
             speed=0.1f;
     }
     public void speedUp() {
-        speed+=defaultSpeed/3;
+        if (speed<defaultSpeed)
+        speed=speed+defaultSpeed/2;
+        else speed += speed/3;
         if (speed>=10f)
             speed=10f;
     }

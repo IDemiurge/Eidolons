@@ -13,7 +13,8 @@ public class MapInputController extends InputController {
 
     @Override
     protected float getWidth() {
-        return MapScreen.getInstance().getMapStage().getMap().getImageWidth();
+        return MapScreen.defaultSize;
+//         MapScreen.getInstance().getMapStage().getMap().getWidth();
 
     }
 
@@ -24,6 +25,7 @@ public class MapInputController extends InputController {
 
     @Override
     protected float getHeight() {
-        return MapScreen.getInstance().getMapStage().getMap().getImageHeight();
+        return MapScreen.defaultSize;
+//        return MapScreen.getInstance().getMapStage().getMap().getImageHeight();
     }
 }

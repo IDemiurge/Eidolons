@@ -10,9 +10,24 @@ public  class SuperContainer extends SuperActor {
     Actor content;
     private boolean fluctuateAlpha;
 
+
+    public SuperContainer( ) {
+
+    }
     public SuperContainer(Actor content) {
         this.content = content;
         addActor(content);
+    }
+
+    @Override
+    public void setAlphaTemplate(ALPHA_TEMPLATE alphaTemplate) {
+        setFluctuateAlpha(true);
+        super.setAlphaTemplate(alphaTemplate);
+    }
+
+    public SuperContainer(ALPHA_TEMPLATE alphaTemplate) {
+        super(alphaTemplate);
+        this.fluctuateAlpha = true;
     }
 
     public SuperContainer(Actor content, boolean fluctuateAlpha) {
@@ -47,5 +62,12 @@ public  class SuperContainer extends SuperActor {
 
     public void setFluctuateAlpha(boolean fluctuateAlpha) {
         this.fluctuateAlpha = fluctuateAlpha;
+    }
+
+    public void setContents(Actor contents) {
+        if (this.content!=null )
+            this.content.remove();
+        this.content = contents;
+        addActor(contents);
     }
 }

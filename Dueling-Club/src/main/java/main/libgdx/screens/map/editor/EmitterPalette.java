@@ -71,14 +71,16 @@ public class EmitterPalette extends TabbedPanel {
         });
         LabelStyle style = StyleHolder.getSizedLabelStyle(FONT.MAIN, 15);
         for (String sub : presets.keySet()) {
-            HorizontalFlowGroup table = new HorizontalFlowGroup (10);
+            HorizontalFlowGroup table = new HorizontalFlowGroup (0);
             table.setWidth(getWidth()-100);
+            boolean bg = presets.get(sub).size() < 55;
             for (File preset : presets.get(sub)) {
                 ValueContainer label = //textButton?
                  new ValueContainer(new Label(preset.getName(), style));
                 NinePatch patch=NinePatchFactory.getTooltip();
                 patch.scale(0.7f,0.7f);
-                label.setBackground(new NinePatchDrawable( patch));
+                if (bg)
+                    label.setBackground(new NinePatchDrawable( patch));
                 label.addListener(new ClickListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

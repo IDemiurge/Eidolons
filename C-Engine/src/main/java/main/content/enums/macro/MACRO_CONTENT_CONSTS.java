@@ -1,5 +1,6 @@
 package main.content.enums.macro;
 
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
 public class MACRO_CONTENT_CONSTS {
@@ -12,23 +13,29 @@ public class MACRO_CONTENT_CONSTS {
     }
 
     public enum DAY_TIME { //different names in summer?..
-        DAWN(4, true, true)  ,
-        MORNING(8, false, true),
-        NOON(12, false, true),
-        DUSK(16, false, true),
-        NIGHTFALL(20, false, false),
-        MIDNIGHT(24, true, false),
+        MIDNIGHT(true,24, true, false, "It is midnight."),
+        DAWN(false, 4, true, true, "The sun rises...")  ,
+        MORNING(false, 8, false, true, "It is morning"),
+        NOON(false, 12, false, true, "It is noon."),
+        DUSK(true, 16, false, true, "The sun sets..."),
+        NIGHTFALL(true,20, false, false, "The night falls..."),
         ;
+        public static DAY_TIME[] values=values();
         //8, 12, 16, 20, 24, 4
         int hour;
         private boolean undersunVisible;
         private boolean sunVisible;
+        private String logEntry;
+        private boolean night;
 
-        DAY_TIME(int hour, boolean undersunVisible, boolean sunVisible) {
+        DAY_TIME(boolean night,int hour, boolean undersunVisible, boolean sunVisible, String logEntry) {
             this.hour = hour;
             this.undersunVisible = undersunVisible;
             this.sunVisible = sunVisible;
+            this.night = night;
+            this.logEntry = logEntry;
         }
+
 
         public String getText() {
             return StringMaster.getWellFormattedString(toString());
@@ -43,6 +50,21 @@ public class MACRO_CONTENT_CONSTS {
             return sunVisible;
         }
 
+        public String getLogEntry() {
+            return logEntry;
+        }
+
+        public boolean isNight() {
+            return night;
+        }
+
+        public void setNight(boolean night) {
+            this.night = night;
+        }
+
+        public DAY_TIME getNext() {
+            return  new EnumMaster<DAY_TIME>().getNextEnumConst(DAY_TIME.class, this);
+        }
     }
 
     public enum MISSION {
