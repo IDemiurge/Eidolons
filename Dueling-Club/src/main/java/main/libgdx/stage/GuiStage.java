@@ -20,8 +20,6 @@ import main.libgdx.gui.tooltips.ToolTipManager;
 import main.libgdx.screens.map.sfx.Blackout;
 import main.libgdx.utils.TextInputPanel;
 import main.system.GuiEventManager;
-import main.system.MapEvent;
-import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +41,8 @@ public class GuiStage extends Stage implements StageWithClosable {
     private TextInputPanel tf;
     private List<String> charsUp = new ArrayList<>();
     private char lastTyped;
+    private ToolTipManager tooltips;
+
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
@@ -77,7 +77,7 @@ public class GuiStage extends Stage implements StageWithClosable {
 
         radial = new RadialMenu();
         addActor(radial);
-        addActor(new ToolTipManager(this));
+        addActor(tooltips=new ToolTipManager(this));
 
         textPanel = new OverlayTextPanel();
         addActor(textPanel);
@@ -216,5 +216,14 @@ public class GuiStage extends Stage implements StageWithClosable {
 
     public OutcomePanel getOutcomePanel() {
         return outcomePanel;
+    }
+
+    public void resetZIndices() {
+        tooltips.setZIndex(Integer.MAX_VALUE);
+        blackout.setZIndex(Integer.MAX_VALUE);
+    }
+
+    public Blackout getBlackout() {
+        return blackout;
     }
 }

@@ -20,6 +20,7 @@ import main.libgdx.stage.GuiStage;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 /**
@@ -67,16 +68,10 @@ public class MapGuiStage extends GuiStage {
         GuiEventManager.bind(MapEvent.DATE_CHANGED, p -> {
             update();
         });
-    }
+        GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
 
-    @Override
-    protected void bindEvents() {
-        super.bindEvents();
-        GuiEventManager.bind(MapEvent.TIME_UPDATED, p -> {
-            blackout.fadeIn(1.25f);
-        });
-            GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
-            blackout.fadeOut(1.25f);
+            if (!CoreEngine.isMapEditor())
+                blackout.fadeOut(1.25f);
             MacroGame.getGame().setTime((DAY_TIME) p.get());
             new Thread(new Runnable() {
                 public void run() {
@@ -86,6 +81,25 @@ public class MapGuiStage extends GuiStage {
             }, " thread").start();
 
         });
+        resetZIndices();
+    }
+
+    public void resetZIndices() {
+        super.resetZIndices();
+        lights.setZIndex(0);
+        vignette.setZIndex(0);
+
+    }
+
+    @Override
+    protected void bindEvents() {
+        super.bindEvents();
+        GuiEventManager.bind(MapEvent.TIME_UPDATED, p -> {
+
+            if (!CoreEngine.isMapEditor())
+                blackout.fadeIn(1.25f);
+        });
+
     }
 
     @Override

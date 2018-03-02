@@ -42,6 +42,7 @@ public class MapScreen extends GameScreen {
     protected MapGuiStage guiStage;
     protected Stage objectStage;
     protected MapStage mapStage;
+    private boolean loaded;
 
     protected MapScreen() {
 
@@ -87,6 +88,11 @@ public class MapScreen extends GameScreen {
 
     @Override
     protected void afterLoad() {
+        if (loaded)
+        {
+            GuiEventManager.trigger(MAP_READY);
+            return ; //fix this!
+        }
         GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, defaultPath);
         cam = (OrthographicCamera) viewPort.getCamera();
         controller = initController();
@@ -94,6 +100,7 @@ public class MapScreen extends GameScreen {
         bindEvents();
 
         GuiEventManager.trigger(MAP_READY);
+        loaded = true;
     }
 
     protected InputController initController() {
@@ -101,7 +108,6 @@ public class MapScreen extends GameScreen {
     }
 
     protected void bindEvents() {
-
         GuiEventManager.bind(CREATE_PARTY, param -> {
             MacroParty party = (MacroParty) param.get();
             if (party == null) {

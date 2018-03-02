@@ -327,7 +327,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         MAP_MOVING_LAYER_TYPE.CLOUD_HEAVY.setEmitterPaths(SFX.SNOW_TIGHT2.path);
         MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.setEmitterPaths(SFX.SNOW.path);
         MAP_MOVING_LAYER_TYPE.CLOUD_LIGHT.setEmitterPaths(SFX.SNOW.path);
-        MAP_MOVING_LAYER_TYPE.CLOUD.setEmitterPaths(SFX.SNOWFALL_SMALL.path);
+        MAP_MOVING_LAYER_TYPE.CLOUD.setEmitterPaths(SFX.SNOW_TIGHT2.path);
 
 
         MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;

@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import main.data.filesys.PathFinder;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.DungeonScreen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 8/30/2017.
@@ -24,6 +28,18 @@ public class GdxMaster {
     private static int width;
     private static int height;
     private static Float fontSizeMod;
+
+    public static List<Group> getAncestors(Actor actor) {
+        List<Group> list = new ArrayList<>();
+        while (true) {
+            actor = actor.getParent();
+            if (actor == null) {
+                break;
+            }
+            list.add(actor.getParent());
+        }
+        return list;
+    }
 
     public static float adjustPos(boolean x, float pos) {
         if (x)
@@ -49,7 +65,7 @@ public class GdxMaster {
     public static float centerHeight(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getHeight() != 0)
-                return actor.getParent().getHeight()/2 - actor.getHeight()/2;
+                return actor.getParent().getHeight() / 2 - actor.getHeight() / 2;
         return GdxMaster.getHeight() / 2 - actor.getHeight() / 2;
     }
 

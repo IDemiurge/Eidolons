@@ -1441,9 +1441,10 @@ public class ImageManager {
     }
 
     public enum BORDER {
-        DEFAULT("default.png"),
+        MAP_PARTY_CIRCLE("MAP PARTY CIRCLE.png"),
         GOLDEN("128_golden.png"),
 
+        DEFAULT("default.png"),
         HIGHLIGHTED_256("256 highlight.png"),
         HIGHLIGHTED("HIGHLIGHTED.png") {
             @Override

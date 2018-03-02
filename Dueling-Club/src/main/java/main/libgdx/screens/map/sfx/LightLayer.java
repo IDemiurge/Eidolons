@@ -23,6 +23,11 @@ import java.util.Map;
  */
 public class LightLayer extends MapTimedLayer<LightContainer> {
 
+    static {
+        LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths("woods\\stars");
+//        LIGHT_LAYER.VERTICAL_LIGHT.setEmitterPaths("woods\\leaves");
+    }
+
     boolean uiStage;
     Map<LIGHT_LAYER, Float> timerMap = new HashMap<>();
     Map<LIGHT_LAYER, Float> triggerMap = new HashMap<>();
@@ -114,17 +119,17 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     private void adjust(LightContainer container) {
         float scaleRange = container.lightLayer.scaleRange;
-        container.getContent().setScale(RandomWizard.getRandomFloatBetween(1+scaleRange/2, 1+scaleRange));
+        container.getContent().setScale(RandomWizard.getRandomFloatBetween(1 + scaleRange / 2, 1 + scaleRange));
         container.setVisible(true);
         addActor(container);
         Boolean flipX = null;
         float y, x = 0;
         if (container.lightLayer.vertical) {
-            x =getWidth()/3+
-             RandomWizard.getRandomInt((int) getWidth()/3)-container.getWidth()/2;
-            y = getHeight()-
+            x = getWidth() / 3 +
+             RandomWizard.getRandomInt((int) getWidth() / 3) - container.getWidth() / 2;
+            y = getHeight() -
              RandomWizard.getRandomFloatBetween(100,
-                           container.getContent().getScaleY()* container.getHeight()-100);
+              container.getContent().getScaleY() * container.getHeight() - 100);
             flipX = RandomWizard.random();
         } else {
             flipX = false;
@@ -144,17 +149,23 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         container.setFlipX(flipX);
         container.setPosition(x, y);
 
-        if (  container.lightLayer.emitterPaths!=null )
-        {
+        if (container.lightLayer.emitterPaths != null) {
             for (String sub : container.lightLayer.emitterPaths) {
                 EmitterActor emitter = new EmitterActor(sub);
                 container.addActor(emitter);
-                emitter.setPosition(container.getWidth()/2,container.getHeight()/2 );
+                emitter.setPosition(container.getWidth() / 2,
+                 GdxMaster.getHeight() - 25);
+                emitter.setSpeed(0.5f);
                 emitter.start();
-                emitter.getEffect().getEmitters().get(0).scaleSize(container.getScaleX()+0.25f);
+                emitter.getEffect().getEmitters().get(0).scaleSize(container.getScaleX() + 0.25f);
             }
             container.getContent().setZIndex(0);
         }
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return null ;
     }
 
     @Override
@@ -166,10 +177,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     protected void clearLayer() {
         super.clearLayer();
     }
-static {
-    LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths("woods\\wisps");
-    LIGHT_LAYER.VERTICAL_LIGHT.setEmitterPaths("woods\\leaves");
-}
+
     public enum LIGHT_LAYER {
         HEAVENLY_LIGHT_LARGE(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
         HEAVENLY_LIGHT_LARGE_GOLDEN(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
@@ -181,10 +189,10 @@ static {
         LIGHT_SPREAD_GOLDEN(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
         LIGHT_SPREAD(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.NOON),
 
-        VERTICAL_MOONLIGHT(1f,-0.15f, 5, ALPHA_TEMPLATE.MOONLIGHT,true,
+        VERTICAL_MOONLIGHT(0.4f, -0.15f, 6, ALPHA_TEMPLATE.MOONLIGHT, true,
          DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT),
 
-        VERTICAL_LIGHT(1f,-0.25f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.NOON, DAY_TIME.MORNING),
+        VERTICAL_LIGHT(1f, -0.25f, 5, ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.NOON, DAY_TIME.MORNING),
 //        VERTICAL_LIGHT_LARGE_GOLDEN(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK),
 //        VERTICAL_LIGHT_LARGE_GOLDEN_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK, DAY_TIME.NOON),
 //        VERTICAL_LIGHT_LARGE_SILVER_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.MORNING),
@@ -192,17 +200,13 @@ static {
 //        MOON_LIGHT(5, ALPHA_TEMPLATE.SUN, DAY_TIME.NOON), //colorize per active moon?
         ;
 
-        private   float scaleRange=0.15f;
         public float delay = 0.5f;
+        public boolean vertical;
+        public String[] emitterPaths;
         int maxCount;
         ALPHA_TEMPLATE alphaTemplate;
         DAY_TIME[] times;
-        public boolean vertical;
-        public String[] emitterPaths;
-
-        public void setEmitterPaths(String... emitterPaths) {
-            this.emitterPaths = emitterPaths;
-        }
+        private float scaleRange = 0.15f;
 
         LIGHT_LAYER(float delay, float scaleRange, int maxCount, ALPHA_TEMPLATE alphaTemplate, boolean vertical, DAY_TIME... times) {
             this.delay = delay;
@@ -217,6 +221,10 @@ static {
             this.maxCount = maxCount;
             this.alphaTemplate = alphaTemplate;
             this.times = times;
+        }
+
+        public void setEmitterPaths(String... emitterPaths) {
+            this.emitterPaths = emitterPaths;
         }
 
     }

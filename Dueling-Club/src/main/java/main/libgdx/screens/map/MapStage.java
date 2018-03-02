@@ -17,6 +17,7 @@ import main.libgdx.screens.map.sfx.*;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,8 @@ public class MapStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         resetZIndices();
+if (CoreEngine.isMapEditor())
+    return ;
         Color color = nextMap.getContent().getColor();
         float percentage=0.25f* (TimeMaster.getDate().getHour()%4+
          + MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter()/60);

@@ -21,13 +21,25 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     public boolean isTouchable() {
         return false;
     }
-
+//refactor - why not implement?
     public InputListener getController() {
         return new InputListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 onMouseMoved(event, x, y);
                 return true;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onTouchDown(event, x, y);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                onTouchUp(event, x, y);
+                super.touchUp(event, x, y, pointer, button);
             }
 
             @Override
@@ -38,10 +50,15 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-
                 onMouseExit(event, x, y, pointer, toActor);
             }
         };
+    }
+
+    protected void onTouchUp(InputEvent event, float x, float y) {
+    }
+
+    protected void onTouchDown(InputEvent event, float x, float y) {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {
@@ -61,6 +78,8 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         if (event != null) {
             Actor actor = event.getRelatedActor();
+            if (!checkActorExitRemoves(toActor))
+                return ;
             if (toActor == this) {
                 addListener(new InputListener() {
                     @Override
@@ -80,6 +99,11 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
             if (manager != null) {
                 manager.entityHoverOff(getEntity());
             }
+    }
+
+    protected boolean checkActorExitRemoves(Actor toActor) {
+
+        return true;
     }
 
     public Entity getEntity() {

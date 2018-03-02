@@ -105,8 +105,24 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
     private EmitterActor create(String path, int x, int y, DAY_TIME time) {
         EmitterActor actor = EmitterPools.getEmitterActor(path);// new EmitterActor(sfx.sfxPath);
         actor.setPosition(x, y);
+        actor.setSpeed(getSpeed(path));
         MapMaster.addToListMap(map, time, actor);
         return actor;
+    }
+
+    private float getSpeed(String path) {
+        List<String> paths = StringMaster.getPathSegments(path);
+        if (paths.size() > 1) {
+            switch (paths.get(1)) {
+                case "leaves": return 0.3f;
+            }
+
+        }
+        switch (paths.get(0)) {
+            case "smokes":
+                return 0.5f;
+        }
+        return 1;
     }
 
     public EmitterActor create(String path, int x, int y) {

@@ -129,7 +129,7 @@ public class EditorParticleMaster extends Group {
     }
 
     public void save(DAY_TIME time) {
-        List<EmitterActor> emitterActors = new ArrayList<>(map.get(time));
+        Set<EmitterActor> emitterActors = new LinkedHashSet<>(map.get(time));
         try {
             emitterActors.addAll(particles.getEmitterMap().get(time));
         } catch (Exception e) {

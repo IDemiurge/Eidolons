@@ -166,7 +166,10 @@ public class ActorMaster {
         return action;
     }
 
-    public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
+    public static void addScaleAction(Actor actor, float scale, float v) {
+        addScaleAction(actor, scale, scale, v);
+    }
+        public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
         ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);// new ScaleToAction();
         action.setScale(scaleX, scaleY);
         action.setDuration(v);

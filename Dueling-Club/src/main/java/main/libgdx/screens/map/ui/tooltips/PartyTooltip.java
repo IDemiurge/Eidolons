@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -13,15 +12,14 @@ import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.StyleHolder;
-import main.libgdx.anims.ActorMaster;
-import main.libgdx.bf.generic.SuperContainer;
-import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.HorGroup;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.screens.map.obj.PartyActor;
 import main.libgdx.texture.TextureCache;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.stream.Collectors;
@@ -38,13 +36,6 @@ public class PartyTooltip extends ToolTip {
     private final Label threatLabel;
     private final Label allegiance;
     private final ValueContainer main;
-    private SuperContainer highlight;
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        batch.setColor(1,1,1,1);
-        super.draw(batch, parentAlpha);
-    }
 
     public PartyTooltip(MacroParty party, PartyActor actor) {
         this.party = party;
@@ -52,15 +43,6 @@ public class PartyTooltip extends ToolTip {
 
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 
-        highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
-         SHADE_LIGHT.LIGHT_EMITTER.getTexturePath())), true){
-            @Override
-            protected float getAlphaFluctuationMin() {
-                return super.getAlphaFluctuationMin();
-            }
-        };
-        highlight.setTouchable(Touchable.disabled);
-        highlight.setAlphaStep(0.1f);
         main = new ValueContainer(TextureCache.getOrCreateR(
          party.getEmblemPath()),
          party.getName());
@@ -70,7 +52,7 @@ public class PartyTooltip extends ToolTip {
          party.getName());
         //set to "known members: " if...
         members = new ValueContainer(party.getMembers().size() + " ", "Members");
-        membersPics=
+        membersPics =
          new HorGroup<>(Math.max(256, party.getMembers().size() * 128 / 3), 0, party.getMembers().stream().map(hero ->
           new Image(TextureCache.getOrCreateR(hero.getImagePath()))
          ).collect(Collectors.toList()));
@@ -96,7 +78,11 @@ public class PartyTooltip extends ToolTip {
 //        membersPics.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
     }
 
-
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(1, 1, 1, 1);
+        super.draw(batch, parentAlpha);
+    }
 
     private THREAT_LEVEL getThreatLevel(MacroParty party, MacroParty playerParty) {
         int percentage = party.getParamSum(PARAMS.POWER)
@@ -115,17 +101,18 @@ public class PartyTooltip extends ToolTip {
     public void updateAct(float delta) {
         String text = "Unknown";
         boolean showThreat = false;
+        setVisible(showing);
 //        if (party.getInfoLevel() == MAP_OBJ_INFO_LEVEL.VISIBLE) {
-            text = "Neutral";
-            if (!party.getOwner().isMe()) {
-                showThreat = true;
-                if (party.getOwner().isNeutral()) {
-                    text = "Neutral";
-                } else {
-                    text = party.getOwner().isHostileTo(MacroGame.game.getPlayerParty().getOwner()) ? "Hostile" : "Friendly";
+        text = "Neutral";
+        if (!party.getOwner().isMe()) {
+            showThreat = true;
+            if (party.getOwner().isNeutral()) {
+                text = "Neutral";
+            } else {
+                text = party.getOwner().isHostileTo(MacroGame.game.getPlayerParty().getOwner()) ? "Hostile" : "Friendly";
 
-                }
             }
+        }
 //        }
         this.allegiance.setText(text);
 
@@ -138,26 +125,44 @@ public class PartyTooltip extends ToolTip {
     }
 
     @Override
+    protected void onTouchDown(InputEvent event, float x, float y) {
+        if (event.getButton() != 1)
+            return;
+        showing = true;
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
+    }
+
+    @Override
+    protected void onTouchUp(InputEvent event, float x, float y) {
+        showing = false;
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
+    }
+
+    @Override
+    protected void onMouseMoved(InputEvent event, float x, float y) {
+
+    }
+
+    @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        super.onMouseEnter(event, x, y, pointer, fromActor);
-        ActorMaster.addScaleAction(actor, 1.2f, 1.2f, 0.4f);
-        ActorMaster.addScaleAction(highlight.getContent(), 1.25f, 1.25f, 0.5f);
-        //highlight underlay?
-        actor.getParent().addActor(highlight);
-        highlight.setPosition(actor.getX(), actor.getY());
-        highlight.setZIndex(0);
-        highlight.setVisible(true);
-        updateRequired=true;
+//        super.onMouseEnter(event, x, y, pointer, fromActor);
+//        ActorMaster.addScaleAction(actor, 1.2f, 1.2f, 0.4f);
+
+        updateRequired = true;
+
+        actor.hover();
     }
 
     @Override
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-
-       super.onMouseExit(event, x, y, pointer, toActor);
-        ActorMaster.addScaleAction(actor, 1.0f, 1.0f, 0.5f);
-        ActorMaster.addScaleAction(highlight.getContent(), 0.0f, 0.0f, 1.0f);
-//        highlight.setVisible(false);
-//        actor.getParent().removeActor(highlight);
+        if (toActor == actor.getEmblem() || toActor == actor.getPortrait())
+            return;
+        if (toActor != null)
+            if (toActor.getParent() == actor)
+                return;
+        if (toActor == actor)
+            return ;
+        actor.minimize();
     }
 
     @Override

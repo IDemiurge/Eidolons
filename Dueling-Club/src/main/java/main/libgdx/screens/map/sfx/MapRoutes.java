@@ -3,6 +3,8 @@ package main.libgdx.screens.map.sfx;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
+import main.libgdx.GdxMaster;
+import main.libgdx.anims.ActorMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 
@@ -19,10 +21,11 @@ public class MapRoutes extends Group {
         GuiEventManager.bind(MapEvent.ROUTE_HOVERED, p -> {
             Route r = (Route) p.get();
             for (RouteActor sub : map.values()) {
-                sub.setHighlighted(false);
+
+                hoverOff(sub);
             }
             if (r!=null )
-            map.get(r).setHighlighted(true);
+            hover(map.get(r) );
         });
             GuiEventManager.bind(MapEvent.ROUTE_ADDED, p -> {
             Route sub = (Route) p.get();
@@ -46,6 +49,15 @@ public class MapRoutes extends Group {
         });
 
 //init();
+    }
+
+    private void hoverOff(RouteActor sub) {
+        sub.setHighlighted(false);
+        ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY(), 0.5f);
+    }
+    private void hover(RouteActor sub) {
+        sub.setHighlighted(true);
+        ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY()+ GdxMaster.adjustSize(25), 0.5f);
     }
 
     public boolean isRouteHighlighted() {

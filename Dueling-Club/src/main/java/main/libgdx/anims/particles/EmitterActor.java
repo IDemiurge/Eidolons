@@ -39,6 +39,20 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof EmitterActor) {
+            EmitterActor e = ((EmitterActor) obj);
+            if ( e.getPath().equals(getPath())|| e.getEffect().equals(getEffect())) {
+                if (getX()==e.getX())
+                    if (getY()==e.getY())
+                        return true;
+            }
+
+        }
+        return super.equals(obj);
+    }
+
+    @Override
     public boolean isIgnored() {
         return super.isIgnored();
     }

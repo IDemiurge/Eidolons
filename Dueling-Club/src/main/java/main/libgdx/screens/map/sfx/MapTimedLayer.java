@@ -48,28 +48,37 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
     }
 
     protected void tint(Color color) {
+        color.r= 1f;
+        color.g= 1f;
+        color.b= 1f;
         switch (time) {
 
             case DAWN:
                 color.g= 0.94f;
                 break;
             case MORNING:
-                color.r= 0.94f;
+                color.r= 0.96f;
                 break;
             case NOON:
                 color.b= 0.94f;
                 break;
             case DUSK:
-                color.b= 0.84f;
+                color.b= 0.86f;
                 break;
             case NIGHTFALL:
                 color.r=0.84f;
-                color.g=0.84f;
+                color.g=0.87f;
                 break;
             case MIDNIGHT:
-                color.r=0.84f;
+                color.r=0.89f;
+                color.g=0.94f;
                 break;
         }
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return super.hit(x, y, touchable);
     }
 
     public void update() {

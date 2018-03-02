@@ -108,10 +108,6 @@ public class MacroManager {
         GuiEventManager.trigger(CREATE_PARTY,
          game.getPlayerParty());
         for (Region sub : game.getWorld().getRegions()) {
-            for (MacroParty sub1 : sub.getParties()) {
-                GuiEventManager.trigger(CREATE_PARTY,
-                 sub1);
-            }
             for (Place sub1 : sub.getPlaces()) {
                 GuiEventManager.trigger(CREATE_PLACE,
                  sub1);
