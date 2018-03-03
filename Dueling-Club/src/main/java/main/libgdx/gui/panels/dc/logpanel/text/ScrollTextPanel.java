@@ -1,9 +1,9 @@
 package main.libgdx.gui.panels.dc.logpanel.text;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.GdxMaster;
+import main.libgdx.gui.panels.GroupX;
 import main.libgdx.gui.panels.dc.logpanel.ScrollPanel;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
@@ -12,7 +12,7 @@ import main.system.graphics.FontMaster.FONT;
 /**
  * Created by JustMe on 11/29/2017.
  */
-public class ScrollTextPanel extends Group {
+public class ScrollTextPanel extends GroupX {
     protected boolean updatePos = false;
     protected float offsetX = 20;
     protected ScrollPanel<Message> scrollPanel;

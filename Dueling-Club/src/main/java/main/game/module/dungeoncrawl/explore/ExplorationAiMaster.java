@@ -63,7 +63,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
                 continue;
             double distance = PositionMaster.getExactDistance(ai.getUnit().getCoordinates(),
              Eidolons.getMainHero().getCoordinates());
-            if (distance>getMaxDistance(ai) )
+            if (distance > getMaxDistance(ai))
                 continue;
             try {
                 if (tryMoveAi(ai))
@@ -73,8 +73,7 @@ public class ExplorationAiMaster extends ExplorationHandler {
             }
 
         }
-        if (isAiActs)
-        {
+        if (isAiActs) {
             aiActs = true;
             if (ExplorationMaster.isExplorationOn())
                 master.getLoop().signal();
@@ -114,7 +113,12 @@ public class ExplorationAiMaster extends ExplorationHandler {
 
     private boolean tryMoveAiTurnBased(UnitAI ai, float timePercentage) {
         if (ai.getStandingOrders() == null) {
-            ai.setStandingOrders(getOrders(ai));
+            try {
+                ai.setStandingOrders(getOrders(ai));
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return false;
+            }
         }
         if (ai.getStandingOrders() == null) {
             return false;
@@ -179,7 +183,6 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
 
-
     public DequeImpl<UnitAI> getActiveUnitAIs() {
         return getActiveUnitAIs(false);
     }
@@ -215,8 +218,8 @@ public class ExplorationAiMaster extends ExplorationHandler {
         DequeImpl<UnitAI> deque = new DequeImpl<>(allies.stream().map
          (unit -> unit.getAI()).collect(Collectors.toList()), getActiveUnitAIs());
 
-            deque.removeIf(ai -> ai.getUnit().isAnnihilated()||
-             (outOfBattleOnly&&!ai.isOutsideCombat()) );
+        deque.removeIf(ai -> ai.getUnit().isAnnihilated() ||
+         (outOfBattleOnly && !ai.isOutsideCombat()));
         return deque;
     }
 

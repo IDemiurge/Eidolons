@@ -33,7 +33,7 @@ public abstract class SelectionPanel extends TablePanel {
     public SelectionPanel() {
 //        setBackground(TextureCache.getOrCreateTextureRegionDrawable
 //         (getBackgroundPath()));
-        debug();
+//        debug();
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         listPanel = createListPanel();
         infoPanel = createInfoPanel();

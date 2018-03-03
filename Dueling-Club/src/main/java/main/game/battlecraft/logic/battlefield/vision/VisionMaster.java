@@ -294,9 +294,9 @@ public class VisionMaster implements GenericVisionManager {
                             target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.CONCEALED);
                     } else {
                         target.setDetected(true);
-                        if (player.isMe()) {
+//                        if (player.isMe()) {
                             target.setDetectedByPlayer(true);
-                        }
+//                        }
                         if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
                             target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
                         } else {

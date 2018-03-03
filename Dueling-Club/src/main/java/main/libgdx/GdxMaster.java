@@ -55,7 +55,13 @@ public class GdxMaster {
          * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef;
     }
 
-    public static float centerWidth(Actor actor) {
+    public static float centerHeightScreen(Actor actor) {
+        return GdxMaster.getHeight() / 2 - actor.getHeight() / 2;
+    }
+    public static float centerWidthScreen(Actor actor) {
+        return GdxMaster.getWidth() / 2 - actor.getWidth() / 2;
+    }
+        public static float centerWidth(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getWidth() != 0)
                 return (actor.getParent().getWidth() - actor.getWidth()) / 2;
@@ -73,6 +79,14 @@ public class GdxMaster {
         if (actor.getParent() != null && actor.getParent().getWidth() != 0)
             return actor.getParent().getWidth() - actor.getWidth();
         return GdxMaster.getWidth() - actor.getWidth();
+    }
+
+    public static float rightScreen(Actor actor) {
+        return GdxMaster.getWidth() - actor.getWidth();
+    }
+
+    public static float topScreen(Actor actor) {
+        return GdxMaster.getHeight() - actor.getHeight();
     }
 
     public static float top(Actor actor) {

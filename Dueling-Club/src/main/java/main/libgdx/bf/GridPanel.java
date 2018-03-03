@@ -606,6 +606,8 @@ public class GridPanel extends Group {
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         for (BattleFieldObject object : units) {
             Coordinates c = object.getCoordinates();
+            if (c==null )
+                continue;
             if (!map.containsKey(c)) {
                 map.put(c, new ArrayList<>());
             }
@@ -804,7 +806,7 @@ public class GridPanel extends Group {
                                     y = v.y;
                                 }
                                 HpBar hpBar = ((UnitView) sub).getHpBar();
-                                hpBar.scaleBy(scale, (1 + scale) / 2);
+                                hpBar.setScale(scale, (1 + scale) / 2);
                                 hpBar.act(Gdx.graphics.getDeltaTime());
                                 hpBar.drawAt(batch, x, y);
 

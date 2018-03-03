@@ -29,7 +29,7 @@ public class FastDcTest {
     }
     @Before
     public void init() {
-        LogMaster.setOff(true); //log everything* or nothing to speed up
+        LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(isGraphicsOff());
 
         FAST_DC.main(new String[]{
@@ -55,6 +55,10 @@ public class FastDcTest {
 //        game = launcher.initDC_Game();
 //        game.start(true); //TODO
 //        game.setStarted(true);
+    }
+
+    protected boolean isLoggingOff() {
+        return true;
     }
 
     protected boolean isGraphicsOff() {

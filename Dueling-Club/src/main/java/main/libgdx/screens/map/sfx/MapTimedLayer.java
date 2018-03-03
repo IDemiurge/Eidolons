@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.game.module.adventure.MacroGame;
 import main.libgdx.screens.map.MapScreen;
 
@@ -72,6 +73,29 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
             case MIDNIGHT:
                 color.r=0.89f;
                 color.g=0.94f;
+                break;
+        }
+        tintWithWeather(color, MacroGame.getGame().getLoop().getTimeMaster().getWeather());
+    }
+
+    private void tintWithWeather(Color color, WEATHER weather) {
+        switch (weather) {
+            case CLEAR:
+                break;
+            case OVERCAST:
+                color.r=color.r*0.89f;
+                color.g=color.g*0.90f;
+                color.b=color.b*0.94f;
+                break;
+            case STORM:
+                color.r=color.r*0.81f;
+                color.g=color.g*0.80f;
+                color.b=color.b*0.90f;
+                break;
+            case MISTY:
+                color.r=color.r*0.92f;
+                color.g=color.g*0.95f;
+                color.b=color.b*0.97f;
                 break;
         }
     }

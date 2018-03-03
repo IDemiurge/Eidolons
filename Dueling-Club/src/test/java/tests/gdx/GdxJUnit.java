@@ -7,6 +7,9 @@ import tests.FastDcTest;
  */
 public class GdxJUnit extends FastDcTest {
 
+    protected boolean isLoggingOff() {
+        return false;
+    }
     @Override
     protected boolean isGraphicsOff() {
         return false;

@@ -12,12 +12,17 @@ public class MACRO_CONTENT_CONSTS {
 
     }
 
-    public enum DAY_TIME { //different names in summer?..
+    public enum WEATHER {
+        CLEAR, OVERCAST, STORM,
+        MISTY,
+
+    }
+        public enum DAY_TIME { //different names in summer?..
         MIDNIGHT(true,24, true, false, "It is midnight."),
-        DAWN(false, 4, true, true, "The sun rises...")  ,
+        DAWN(true, 4, true, true, "The sun rises...")  ,
         MORNING(false, 8, false, true, "It is morning"),
         NOON(false, 12, false, true, "It is noon."),
-        DUSK(true, 16, false, true, "The sun sets..."),
+        DUSK(false, 16, false, true, "The sun sets..."),
         NIGHTFALL(true,20, false, false, "The night falls..."),
         ;
         public static DAY_TIME[] values=values();

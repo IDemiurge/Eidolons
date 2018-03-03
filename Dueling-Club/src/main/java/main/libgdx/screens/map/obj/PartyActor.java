@@ -1,6 +1,7 @@
 package main.libgdx.screens.map.obj;
 
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
@@ -41,7 +42,8 @@ public class PartyActor extends MapActor {
     }
 
     public void hover() {
-
+if (getAllChildrenActions(MoveToAction.class).size>0)
+    return ;
         hovered = true;
         ActorMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
         //highlight underlay?
@@ -81,6 +83,8 @@ public class PartyActor extends MapActor {
     }
 
     public void minimize() {
+        if (getAllChildrenActions(MoveToAction.class).size>0)
+            return ;
         hovered = false;
         emblem.setTouchable(Touchable.enabled);
         ActorMaster.addFadeOutAction(ironBorder, 1.25f);

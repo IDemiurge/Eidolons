@@ -39,7 +39,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     protected String chooseHero(List<String> members) {
         if (isWaitForGdx())
-        WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
+        WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
         return super.chooseHero(members);
     }
 

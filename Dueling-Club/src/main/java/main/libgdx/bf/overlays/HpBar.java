@@ -19,6 +19,7 @@ import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.actions.FloatActionLimited;
 import main.libgdx.bf.GridConst;
+import main.libgdx.bf.GridUnitView;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import main.libgdx.screens.DungeonScreen;
@@ -78,6 +79,21 @@ public class HpBar extends SuperActor {
     private boolean dirty;
     private Float lastOfferedToughness;
     private Float lastOfferedEndurance;
+
+    @Override
+    public void setScaleX(float scaleX) {
+        super.setScaleX(scaleX);
+    }
+
+    @Override
+    public void setScale(float scaleXY) {
+        super.setScale(scaleXY);
+    }
+
+    @Override
+    public void setScale(float scaleX, float scaleY) {
+        super.setScale(scaleX, scaleY);
+    }
 
     public HpBar(ResourceSourceImpl dataSource) {
         this.dataSource = dataSource;
@@ -148,8 +164,9 @@ public class HpBar extends SuperActor {
 //            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar not visible " +
 //             dataSource);
             return;
-        }
-        getActions().clear();
+        }if (getActions().size != 0)
+//        getActions().clear();
+        return ;
 //        if (getActions().size != 0)
 //        {
 //            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar already being animated " +
@@ -200,21 +217,26 @@ public class HpBar extends SuperActor {
     public void act(float delta) {
         super.act(delta);
         if (!queue && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-            label_t.setVisible(true);
-            label.setVisible(true);
+            if (!label.isVisible()){
+                label_t.setVisible(true);
+                label.setVisible(true);
+                label_t.setZIndex(Integer.MAX_VALUE);
+                label.setZIndex(Integer.MAX_VALUE);
+            }
         } else {
-            label_t.setVisible(labelsDisplayed);
-            label.setVisible(labelsDisplayed);
+            label_t.setVisible(false);
+            label.setVisible(false);
         }
-        if (isAnimated()) {
-            if (getActions().size == 0)
-                return;
+        if (isAnimated()&& getActions().size> 0){
+            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " WAS " +displayedEndurancePerc);
             displayedEndurancePerc = MathMaster.minMax(enduranceAction.getValue(),
              Math.min(previousEndurancePerc, endurancePerc), Math.max(previousEndurancePerc, endurancePerc));
             displayedToughnessPerc = MathMaster.minMax(toughnessAction.getValue(),
              Math.min(previousToughnessPerc, toughnessPerc), Math.max(previousToughnessPerc, toughnessPerc));
-
-        } else if (!dirty) return;
+            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
+        } else
+            if (!dirty)
+            return;
         String text = "" + Math.round(dataSource.getIntParam(PARAMS.ENDURANCE) * displayedEndurancePerc)
          + "/" + dataSource.getIntParam(PARAMS.ENDURANCE);
         label.setText(text);
@@ -264,6 +286,8 @@ public class HpBar extends SuperActor {
 
     @Override
     protected boolean isIgnored() {
+        if (isDisplayedAlways())
+            return false;
         if (displayedEndurancePerc == 0)
             return true;
         if (fullLengthPerc == 0) {
@@ -273,6 +297,11 @@ public class HpBar extends SuperActor {
             fullLengthPerc = displayedEndurancePerc;
         }
         return false;
+    }
+
+    private boolean isDisplayedAlways() {
+        return GridUnitView.getHpAlwaysVisible()==true;
+
     }
 
     public void drawAt(Batch batch, float x, float y) {
@@ -405,6 +434,8 @@ public class HpBar extends SuperActor {
 
     public void setPreviousToughnessPerc(Float previousToughnessPerc) {
 
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> TOUGHNESS " +
+         " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
         this.previousToughnessPerc = previousToughnessPerc;
     }
 
@@ -415,7 +446,7 @@ public class HpBar extends SuperActor {
     public void setPreviousEndurancePerc(Float previousEndurancePerc) {
 //        if (previousEndurancePerc!=0 )
 //            if (previousEndurancePerc!=1 )
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>>" +
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> ENDURANCE " +
          " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
         this.previousEndurancePerc = previousEndurancePerc;
     }

@@ -5,9 +5,12 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.menu.GameMenu;
+import main.libgdx.gui.RollDecorator;
+import main.libgdx.gui.RollDecorator.RollableGroup;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
@@ -70,8 +73,10 @@ public class GuiStage extends Stage implements StageWithClosable {
 
 
         SimpleLogPanel log = new SimpleLogPanel();
-        log.setPosition(GdxMaster.getWidth() - log.getWidth(), 0);
-        addActor(log);
+        RollableGroup decorated = RollDecorator.decorate(log, FACING_DIRECTION.EAST);
+        addActor(decorated);
+        decorated.
+         setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);
         addActor(blackout = new Blackout());
         addActor(new FullLogPanel(100, 200));
 
@@ -219,7 +224,9 @@ public class GuiStage extends Stage implements StageWithClosable {
     }
 
     public void resetZIndices() {
+        if (tooltips!=null )
         tooltips.setZIndex(Integer.MAX_VALUE);
+        if (blackout!=null )
         blackout.setZIndex(Integer.MAX_VALUE);
     }
 

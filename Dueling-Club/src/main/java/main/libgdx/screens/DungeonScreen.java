@@ -97,15 +97,15 @@ public class DungeonScreen extends GameScreen {
 
         initDialogue();
 
-        WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
     }
 
 
     @Override
     public void dispose() {
         super.dispose();
-        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
+        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
     }
 
     protected void checkGraphicsUpdates() {
@@ -163,6 +163,8 @@ public class DungeonScreen extends GameScreen {
         }
 
 
+        WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
     private void bindEvents() {

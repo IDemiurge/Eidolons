@@ -9,7 +9,6 @@ import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
-import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.gui.panels.dc.TablePanel;
@@ -19,7 +18,6 @@ import main.system.GuiEventType;
 import main.system.MapEvent;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import main.system.images.ImageManager.STD_IMAGES;
 
 
 /**
@@ -43,14 +41,6 @@ public class PartyInfoPanel extends TablePanel {
         clearListeners();
         this.party = party;
         TablePanel main = new TablePanel();
-        addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                updateRequired = true;
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-//        setX(-getMainWidth());
         this.columnDefaults(0).width(getMainWidth());
         this.columnDefaults(0).minWidth(getMainWidth());
         for (Unit sub : party.getMembers()) {
@@ -59,42 +49,45 @@ public class PartyInfoPanel extends TablePanel {
             main.row();
         }
 //        getColumnPrefWidth(1)
-        setSize((getMainWidth()) + STD_IMAGES.DIRECTION_POINTER.getWidth(), 128 * party.getMembers().size());
+        setSize((getMainWidth())
+//          + STD_IMAGES.DIRECTION_POINTER.getWidth()
+         , 128 * party.getMembers().size());
         add(main);//;
-        arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
-        arrow.setRotation(270);
-        arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
-        arrow.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (getActions().size > 0)
-                    return true;
-                toggle();
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-        add(arrow).left(); //rotate on click
+
+//        arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
+//        arrow.setRotation(270);
+//        arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
+//        arrow.addListener(new ClickListener() {
+//            @Override
+//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//                if (getActions().size > 0)
+//                    return true;
+//                toggle();
+//                return super.touchDown(event, x, y, pointer, button);
+//            }
+//        });
+//        add(arrow).left(); //rotate on click
         setX(0);
     }
 
-    private void open() {
-        //wait for non-moving
-        toggle(true);
-    }
-
-    private void toggle() {
-        toggle(!isOpen());
-    }
-
-    private void toggle(boolean open) {
-        int toX = open ? 0 : -getMainWidth();
-
-        ActorMaster.addMoveToAction(
-         this, toX, getY(), getDuration());
-
-        ActorMaster.addRotateByAction(
-         arrow.getContent(), 180);
-    }
+//    private void open() {
+//        //wait for non-moving
+//        toggle(true);
+//    }
+//
+//    private void toggle() {
+//        toggle(!isOpen());
+//    }
+//
+//    private void toggle(boolean open) {
+//        int toX = open ? 0 : -getMainWidth();
+//
+//        ActorMaster.addMoveToAction(
+//         this, toX, getY(), getDuration());
+//
+//        ActorMaster.addRotateByAction(
+//         arrow.getContent(), 180);
+//    }
 
     private boolean isOpen() {
         return getX() >= 0;

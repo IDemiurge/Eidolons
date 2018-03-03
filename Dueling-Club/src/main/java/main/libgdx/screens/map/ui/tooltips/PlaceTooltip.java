@@ -111,18 +111,21 @@ public class PlaceTooltip extends ToolTip {
         TablePanel<ValueContainer> routesInfo = new TablePanel<>();
         routesInfo.defaults().space(5);
         add(routesInfo);
-        routesInfo.addListener(new ClickListener() {
+       routesInfo. addListener(new ClickListener() {
 
 
                                    @Override
                                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                                       if (toActor != routesInfo.getParent())
-                                           if (toActor.getParent().getParent() == routesInfo)
-                                               if (toActor.getParent() == routesInfo)
-                                                   return;
-
                                        if (toActor == routesInfo)
                                            return;
+                                       if (toActor == null )
+                                       {
+                                           if (getWidth()>=x)
+                                               return;
+                                           if (getWidth()>=y)
+                                               return;
+                                       }
+
                                        if (GdxMaster.getAncestors(toActor).contains(routesInfo))
                                            return;
                                        if (!checkActorExitRemoves(toActor))
@@ -175,8 +178,9 @@ public class PlaceTooltip extends ToolTip {
             return false;
         if ( MapScreen.getInstance().getGuiStage().getVignette().getContent() .equals(toActor ))
             return false;
-        if (toActor == MapScreen.getInstance().getGuiStage().getBlackout())
+        if (MapScreen.getInstance().getGuiStage().getBlackout().equals(toActor.getParent())) {
             return false;
+        }
         return super.checkActorExitRemoves(toActor);
     }
 }

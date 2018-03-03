@@ -15,10 +15,14 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static main.libgdx.screens.map.sfx.MapMoveLayers.MAP_MOVING_LAYER_TYPE.*;
 
 /**
  * Created by JustMe on 2/19/2018.
@@ -94,8 +98,11 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
             map.get(day_time).add(container);
         }
         if (sub.areaGroup!=null )
+        {
+            if (RandomWizard.random())
             spawn(container, sub.areaGroup);
-        else
+            return;
+        }
         spawn(container, mapArea);
 //alpha should reduce as it goes away
 //        container.setFluctuateAlpha(true);
@@ -113,7 +120,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
 //        if (dirty)
 //            spawn();
-        for (MAP_MOVING_LAYER_TYPE sub : MAP_MOVING_LAYER_TYPE.values()) {
+        for (MAP_MOVING_LAYER_TYPE sub : values()) {
             MapMaster.addToFloatMap(timerMap, sub, delta);
             for (DAY_TIME day_time : sub.times) {
                 if (time != day_time) {
@@ -171,13 +178,16 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     private void spawn(MapMoveLayer container, MAP_AREA_GROUP group) {
         int i = 0;
+         List<Coordinates> list = new ArrayList<>();;
         while (true) {
             i++;
             Coordinates c = MacroGame.getGame().getPointMaster().getCoordinates(group.name().toLowerCase() + i);
            if (c==null )
-               return;
-            spawn(container, c.x, c.y, DEFAULT_AREA_SIZE, DEFAULT_AREA_SIZE);
+               break;
+           list.add(c);
         }
+        Coordinates c = list.get(RandomWizard.getRandomListIndex(list));
+        spawn(container, c.x, c.y, DEFAULT_AREA_SIZE, DEFAULT_AREA_SIZE);
     }
 
     private void spawn(MapMoveLayer container, String mapArea) {
@@ -245,6 +255,8 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     @Override
     protected boolean isTinted(MapMoveLayer sub) {
+        if (CoreEngine.isMapEditor())
+            return false;
         return sub.type.tinted;
     }
 
@@ -318,37 +330,35 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     static {
 
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD.tinted =false;
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_GOLDEN.tinted =false;
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_SILVER.tinted =false;
+        LIGHT_SPREAD.tinted =false;
+        LIGHT_SPREAD_GOLDEN.tinted =false;
+        LIGHT_SPREAD_SILVER.tinted =false;
 //        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
 //         DAY_TIME.NOON, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
 //        };
-        MAP_MOVING_LAYER_TYPE.CLOUD_HEAVY.setEmitterPaths(SFX.SNOW_TIGHT2.path);
-        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.setEmitterPaths(SFX.SNOW.path);
-        MAP_MOVING_LAYER_TYPE.CLOUD_LIGHT.setEmitterPaths(SFX.SNOW.path);
-        MAP_MOVING_LAYER_TYPE.CLOUD.setEmitterPaths(SFX.SNOW_TIGHT2.path);
+        CLOUD_HEAVY.setEmitterPaths(SFX.SNOW_TIGHT2.path);
+        CLOUD_LARGE.setEmitterPaths(SFX.SNOW.path);
+        CLOUD_LIGHT.setEmitterPaths(SFX.SNOW.path);
+        CLOUD.setEmitterPaths(SFX.SNOW_TIGHT2.path);
 
 
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_GOLDEN.areaGroup = MAP_AREA_GROUP.PEAK;
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD.areaGroup = MAP_AREA_GROUP.PEAK;
+        LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;
+        LIGHT_SPREAD_GOLDEN.areaGroup = MAP_AREA_GROUP.PEAK;
+        LIGHT_SPREAD.areaGroup = MAP_AREA_GROUP.PEAK;
 //
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_SILVER.alphaTemplate =ALPHA_TEMPLATE.LIGHT;
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD.alphaTemplate =ALPHA_TEMPLATE.LIGHT;
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_GOLDEN.alphaTemplate =ALPHA_TEMPLATE.LIGHT;
+        LIGHT_SPREAD_SILVER.alphaTemplate =ALPHA_TEMPLATE.LIGHT;
+        LIGHT_SPREAD.alphaTemplate =ALPHA_TEMPLATE.LIGHT;
+        LIGHT_SPREAD_GOLDEN.alphaTemplate =ALPHA_TEMPLATE.LIGHT;
 
-         MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_SILVER.spawnAreas = new MAP_AREA[]{
+         LIGHT_SPREAD_SILVER.spawnAreas = new MAP_AREA[]{
          MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
          MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
         };
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD_GOLDEN.spawnAreas = new MAP_AREA[]{
-         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        LIGHT_SPREAD_GOLDEN.spawnAreas = new MAP_AREA[]{
+         MAP_AREA.BEYOND_EAST
         };
-        MAP_MOVING_LAYER_TYPE.LIGHT_SPREAD.spawnAreas = new MAP_AREA[]{
-         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        LIGHT_SPREAD.spawnAreas = new MAP_AREA[]{
+         MAP_AREA.BEYOND_EAST
         };
 //        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN.spawnAreas = new MAP_AREA[]{
 //         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
@@ -383,15 +393,15 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
          0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.NOON),
 
         CLOUD(MOVE_DIRECTION.WIND,ALPHA_TEMPLATE.CLOUD,
-         2, 30, 4f, 0.25f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.BOTTOM_LEFT),
+         2, 30, 4f, 0.0f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.BOTTOM_LEFT),
         CLOUD_HEAVY(MOVE_DIRECTION.WIND,ALPHA_TEMPLATE.CLOUD,
-         2, 40, 2f, 0.25f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
+         2, 40, 2f, 0.00f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
          MAP_AREA.NEUGARD_NORTH),
         CLOUD_LARGE(MOVE_DIRECTION.WIND,ALPHA_TEMPLATE.CLOUD,
-         2, 20, 1f, 0.25f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.WRAITH_MARSH, MAP_AREA.NEUGARD_SOUTH,
+         2, 20, 1f, 0.0f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.WRAITH_MARSH, MAP_AREA.NEUGARD_SOUTH,
          MAP_AREA.NEUGARD_NORTH),
         CLOUD_LIGHT(MOVE_DIRECTION.WIND,ALPHA_TEMPLATE.CLOUD,
-         2, 30, 3f, 0.25f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.BOTTOM_LEFT),
+         2, 30, 3f, 0.0f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.BOTTOM_LEFT),
 
         ;
 

@@ -1,12 +1,14 @@
 package main.game.module.adventure;
 
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.GameDate;
 import main.game.module.adventure.global.TimeMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
+import main.system.auxiliary.EnumMaster;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -27,6 +29,7 @@ public class MacroTimeMaster {
     private int lastPeriod;
     private DAY_TIME[] times = DAY_TIME.values();
     private DAY_TIME dayTime;
+    private WEATHER weather;
     private GameDate date;
     private boolean fastforward;
     private boolean playerCamping;
@@ -104,9 +107,14 @@ public class MacroTimeMaster {
 
     private void newDayTime(int newPeriod) {
         dayTime = times[newPeriod];
+        weather = new EnumMaster<WEATHER>().getRandomEnumConst(WEATHER.class);
         MacroGame.getGame().prepareSetTime(dayTime);
         getDate().setDayTime(dayTime);
         GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, dayTime.getLogEntry());
+    }
+
+    public WEATHER getWeather() {
+        return weather;
     }
 
     private int getPeriods() {

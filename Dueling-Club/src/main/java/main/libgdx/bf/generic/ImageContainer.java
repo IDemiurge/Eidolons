@@ -26,6 +26,9 @@ public class ImageContainer extends  SuperContainer {
         addActor(content);
         this.path = path;
     }
+    public void setImage(String path) {
+        setContents(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
+    }
 
     public ImageContainer() {
         super( );

@@ -311,7 +311,8 @@ public class CoreEngine {
     }
 
     public static boolean isIDE() {
-        return !exe&& !jar;
+//        return !exe&& !jar;
+        return XML_Reader.isMacro();
     }
     public static boolean isExe() {
         return exe;

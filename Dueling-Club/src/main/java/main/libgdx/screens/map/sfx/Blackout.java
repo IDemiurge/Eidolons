@@ -1,6 +1,7 @@
 package main.libgdx.screens.map.sfx;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import main.data.filesys.PathFinder;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
@@ -44,8 +45,14 @@ public class Blackout extends Group{
     public void act(float delta) {
         super.act(delta);
         if (image.getContent().getColor().a==0)
+        {
             setZIndex(0);
+            image.setTouchable(Touchable.disabled);
+        }
             else
-        setZIndex(Integer.MAX_VALUE);
+        {
+            setZIndex(Integer.MAX_VALUE);
+            image.setTouchable(Touchable.enabled);
+        }
     }
 }

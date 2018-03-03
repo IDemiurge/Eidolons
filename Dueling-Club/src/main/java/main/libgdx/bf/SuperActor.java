@@ -4,18 +4,18 @@ package main.libgdx.bf;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.core.Eidolons;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.bf.mouse.InputController;
+import main.libgdx.gui.panels.GroupX;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 
 /**
  * Created by JustMe on 8/17/2017.
  */
-public abstract class SuperActor extends Group implements Borderable {
+public abstract class SuperActor extends GroupX implements Borderable {
     protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.4f;
     protected static final float DEFAULT_ALPHA_MIN = 0.2f;
     protected static final float DEFAULT_ALPHA_MAX = 1f;

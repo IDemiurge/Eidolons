@@ -234,6 +234,8 @@ public abstract class InputController implements InputProcessor, GestureDetector
     }
 
     protected void zoom(int i) {
+        if (!checkZoom(i))
+            return ;
         if (!alt && !ctrl) {
             if (i == 1) {
 
@@ -251,6 +253,26 @@ public abstract class InputController implements InputProcessor, GestureDetector
         height = GdxMaster.getHeight() * camera.zoom;
         halfWidth = width/2;
         halfHeight = height/2;
+    }
+
+    private boolean checkZoom(int i) {
+        float newHeight = height+zoomStep*i*height;
+
+        float y = camera.position.y;
+        if (newHeight-height > y-halfHeight+getMargin())
+            return false;
+        if (newHeight > getHeight()-y+halfHeight-getMargin())
+            return false;
+
+        float newWidth = width+zoomStep*i*width;
+        float x = camera.position.x;
+        if (newWidth-width >x-halfWidth+getMargin())
+            return false;
+        if (newWidth > getWidth()-x+halfWidth-getMargin())
+            return false;
+
+
+        return true;
     }
 
     public boolean isWithinCamera(Actor actor) {

@@ -1,6 +1,6 @@
 package main.libgdx.screens.map.ui.time;
 
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,6 +14,7 @@ import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
+import main.libgdx.gui.panels.GroupX;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TextButtonX;
 import main.libgdx.gui.tooltips.DynamicTooltip;
@@ -22,6 +23,7 @@ import main.swing.PointX;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.HashMap;
@@ -44,7 +46,7 @@ import static main.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
  * <p>
  * dawn/noon/dusk/night
  */
-public class MapTimePanel extends Group {
+public class MapTimePanel extends GroupX {
 
     private static final float SIZE = 64;
     ImageContainer sun;
@@ -52,30 +54,39 @@ public class MapTimePanel extends Group {
     Map<MOON, MoonActor> moonMap = new HashMap<>();
     MoonActor[] displayedMoons = new MoonActor[3];
     Label timeLabel;
-    Image stoneCircle = new Image(TextureCache.getOrCreateR(
-     StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "stone circle.png")));
+    ImageContainer weave = new ImageContainer();
+    ImageContainer mainCircle = new ImageContainer();
     //    Image stoneCircleHighlight = new Image(TextureCache.getOrCreateR(StrPathBuilder.build(PathFinder.getMacroUiPath()
 //     , "component", "time panel", "stone circle hl.png")));
-    PointX sunPoint = new PointX(96, 128);
-    PointX[] points = {new PointX(47, 122), new PointX(128, 91), new PointX(208, 127)};
 
     boolean movingUp;
     boolean moving;
-    PointX timeLabelPoint = new PointX(138, 80);
-    PointX pauseBtnPoint = new PointX(118, 25);
-    PointX speedUpBtnPoint = new PointX(162, 59);
-    PointX speedDownBtnPoint = new PointX(98, 59);
+    PointX sunPoint = new PointX(103, 128);
+    PointX[] points = {new PointX(53, 122), new PointX(134, 91), new PointX(214, 127)};
+    PointX timeLabelPoint = new PointX(148, 80);
+    PointX timeLabelBgPoint = new PointX(143, 62);
+    PointX pauseBtnPoint = new PointX(134, 25);
+    PointX speedUpBtnPoint = new PointX(178, 59);
+    PointX speedDownBtnPoint = new PointX(110, 59);
+    PointX controlsPoint = new PointX(71, 23);
     TextButtonX pauseButton;
     MoonActor activeMoon;
     ImageContainer activeMoonCircle;
     private TextButtonX speedUpBtn;
     private TextButtonX speedDownBtn;
+    private Image labelBg;
 
     public MapTimePanel() {
         init();
     }
 
+    public String getPath() {
+        return StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel") + StringMaster.getPathSeparator();
+    }
+
     public void init() {
+        setSize(GdxMaster.adjustSize(355)
+         , GdxMaster.adjustSize(203));
 
         speedUpBtn =
          new TextButtonX(
@@ -93,13 +104,6 @@ public class MapTimePanel extends Group {
              MacroGame.getGame().getLoop().togglePaused();
              MacroGame.getGame().getLoop().getTimeMaster().resetSpeed();
          });
-        pauseButton.setPosition(GdxMaster.adjustPos(true, pauseBtnPoint.x),
-         GdxMaster.adjustPos(false, pauseBtnPoint.y));
-        speedUpBtn.setPosition(GdxMaster.adjustPos(true, speedUpBtnPoint.x),
-         GdxMaster.adjustPos(false, speedUpBtnPoint.y));
-        speedDownBtn.setPosition(GdxMaster.adjustPos(true, speedDownBtnPoint.x),
-         GdxMaster.adjustPos(false, speedDownBtnPoint.y));
-
 
         float moonSize = GdxMaster.adjustSize(SIZE);
         addListener(new DynamicTooltip(() -> getDateString()).getController());
@@ -113,32 +117,30 @@ public class MapTimePanel extends Group {
          , "component", "time panel", "sun.png"));
         sun.setAlphaTemplate(ALPHA_TEMPLATE.SUN);
         sun.setSize(sunSize, sunSize);
-        sun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
-         GdxMaster.adjustPos(false, sunPoint.y));
         sun.setVisible(false);
         undersun = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
          , "component", "time panel", "undersun.png"));
         undersun.setAlphaTemplate(ALPHA_TEMPLATE.SUN);
         undersun.setSize(sunSize, sunSize);
-        undersun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
-         GdxMaster.adjustPos(false, sunPoint.y));
+
         undersun.setVisible(false);
 
         timeLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.NYALA, 18));
 
-        addActor(stoneCircle);
-        stoneCircle.layout();
-        setSize(stoneCircle.getImageWidth(), stoneCircle.getImageHeight());
+        addActor(weave);
+        addActor(mainCircle);
         addActor(sun);
         addActor(undersun);
+        addActor(labelBg = new Image(TextureCache.getOrCreateR(getPath() + "label bg.png")));
 
-        addActor(timeLabel);
 
         addActor(pauseButton);
         addActor(speedUpBtn);
         addActor(speedDownBtn);
-        timeLabel.setPosition(GdxMaster.adjustPos(true, timeLabelPoint.x),
-         GdxMaster.adjustPos(false, timeLabelPoint.y));
+        addActor(timeLabel);
+
+        initPositions();
+
 
         GuiEventManager.bind(MapEvent.TIME_CHANGED, p -> {
             update((DAY_TIME) p.get());
@@ -157,17 +159,59 @@ public class MapTimePanel extends Group {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-        stoneCircle.setOrigin(stoneCircle.getImageWidth()/2, stoneCircle.getImageHeight()*2);
+    }
+
+    private void initPositions() {
+        PointX sunPoint = new PointX(103, 128);
+        PointX timeLabelPoint = new PointX(149, 80);
+        PointX timeLabelBgPoint = new PointX(140, 62);
+        PointX pauseBtnPoint = new PointX(128, 25);
+        PointX speedUpBtnPoint = new PointX(174, 59);
+        PointX speedDownBtnPoint = new PointX(104, 59);
+        PointX controlsPoint = new PointX(68, 23);
+
+        labelBg.setPosition(GdxMaster.adjustPos(true, timeLabelBgPoint.x), GdxMaster.adjustPos(false, timeLabelBgPoint.y));
+
+        pauseButton.setPosition(GdxMaster.adjustPos(true, pauseBtnPoint.x),
+         GdxMaster.adjustPos(false, pauseBtnPoint.y));
+        speedUpBtn.setPosition(GdxMaster.adjustPos(true, speedUpBtnPoint.x),
+         GdxMaster.adjustPos(false, speedUpBtnPoint.y));
+        speedDownBtn.setPosition(GdxMaster.adjustPos(true, speedDownBtnPoint.x),
+         GdxMaster.adjustPos(false, speedDownBtnPoint.y));
+        weave.setPosition(GdxMaster.adjustPos(true, controlsPoint.x), GdxMaster.adjustPos(false, controlsPoint.y));
+//        weave.setPosition(GdxMaster.adjustPos(true, controlsPoint.x), GdxMaster.adjustPos(false, controlsPoint.y));
+        timeLabel.setPosition(GdxMaster.adjustPos(true, timeLabelPoint.x),
+         GdxMaster.adjustPos(false, timeLabelPoint.y));
+        sun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
+         GdxMaster.adjustPos(false, sunPoint.y));
+        undersun.setPosition(GdxMaster.adjustPos(true, sunPoint.x),
+         GdxMaster.adjustPos(false, sunPoint.y));
     }
 
     private void resetZIndices() {
-        stoneCircle.setZIndex(0);
+        mainCircle.setZIndex(0);
         pauseButton.setZIndex(Integer.MAX_VALUE);
         speedUpBtn.setZIndex(Integer.MAX_VALUE);
         speedDownBtn.setZIndex(Integer.MAX_VALUE);
     }
 
+
     public void update(DAY_TIME time) {
+
+        if (time.isNight())
+            weave.setImage(getPath() + "weave.png");
+        else
+            weave.setImage(getPath() + "weave.png");
+
+        if (time.isNight())
+            mainCircle.setImage(getPath() + StrPathBuilder.build("circle",   "night.png"));
+        else
+            mainCircle.setImage(getPath() + StrPathBuilder.build("circle",   "day.png"));
+//        mainCircle.setImage(getPath() + StrPathBuilder.build("circle", time.toString() + ".png"));
+        setSize(GdxMaster.adjustSize(mainCircle.getWidth())
+         , GdxMaster.adjustSize(mainCircle.getHeight()));
+
+        mainCircle.setOrigin(mainCircle.getWidth() / 2, mainCircle.getHeight() * 2);
         undersun.setVisible(time.isUndersunVisible());
         sun.setVisible(time.isSunVisible());
         MOON[] moons = getDisplayedMoons();
@@ -196,30 +240,35 @@ public class MapTimePanel extends Group {
     }
 
     @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
+    @Override
     public void act(float delta) {
-        String text=TimeMaster.getDate().getHour()+"";
+        initPositions();
+        setDebug(false, true);
+        String text = TimeMaster.getDate().getHour() + "";
         int minutes = (int) MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter();
         if (minutes / 10 == 0) {
             text += ":0" + minutes;
         } else
-            text +=   ":" +minutes;
+            text += ":" + minutes;
         timeLabel.setText(text);
 
         delta = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed();
         super.act(delta);
         moveSun();
         resetZIndices();
-
-        float r = stoneCircle.getRotation();
-        float dx = 0.5f * delta;
-        if (r>180)
-            movingUp=true;
-        if (movingUp)
-            if (r<=0)
-                movingUp=false;
-
-        if (movingUp)
-            dx=-dx;
+//        float r = mainCircle.getRotation();
+//        float dx = 0.5f * delta;
+//        if (r > 180)
+//            movingUp = true;
+//        if (movingUp)
+//            if (r <= 0)
+//                movingUp = false;
+//
+//        if (movingUp)
+//            dx = -dx;
 //        stoneCircle.setRotation(r+dx);
     }
 

@@ -81,8 +81,8 @@ public class GridCellContainer extends GridCell {
             float scaleX = getObjScale();
             float scaleY = getObjScale();
 
-            actor.setPosition(offset * i,
-             offset * ((getUnitViewCountEffective() - 1) - i));
+            actor.setPosition(getViewX(offset ,i), getViewY(offset, i, getUnitViewCountEffective() ));
+//             offset * ((getUnitViewCountEffective() - 1) - i));
 
             actor.setScale(scaleX, scaleY);
             actor.setScaledHeight(scaleY);
@@ -103,15 +103,16 @@ public class GridCellContainer extends GridCell {
         perImageOffsetX = perImageOffsetX;// * getPosDiffFactorX();
         perImageOffsetY = perImageOffsetY;// * getPosDiffFactorY();
         actor.setX(getViewX(perImageOffsetX, i) );
-        actor.setY(getViewY(perImageOffsetY, (getUnitViewCountEffective() - 1) - i++));
+        actor.setY(getViewY(perImageOffsetY, i++,getUnitViewCountEffective())); //
+        // (getUnitViewCountEffective() - 1) - i++));
 //         perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
     }
 
-    public float getViewX(float perImageOffsetX, int i) {
+    public float getViewX(float perImageOffsetX, int i ) {
         return perImageOffsetX * i;
     }
-    public float getViewY(float perImageOffsetY, int i) {
-        return perImageOffsetY * i;
+    public float getViewY(float perImageOffsetY, int i, int n) {
+        return (n-1)*perImageOffsetY- perImageOffsetY * i;
     }
 
     private void recalcImagesPos() {

@@ -22,7 +22,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 //         = TextureCache.getOrCreateR(StrPathBuilder.build(
 //         "ui","components","2017","main menu","background.png" ));
 //          background = new Image(texture);
-        mainMenu = new MainMenu();
+        mainMenu = MainMenu.getInstance();
 //        stage.addActor(background);
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(

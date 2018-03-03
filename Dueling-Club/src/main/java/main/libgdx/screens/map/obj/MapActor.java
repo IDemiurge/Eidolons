@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.generic.SuperContainer;
-import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.texture.TextureCache;
+import main.system.auxiliary.StrPathBuilder;
 
 /**
  * Created by JustMe on 2/7/2018.
@@ -25,7 +25,7 @@ public class MapActor extends SuperActor {
     }
     public void init(){
         highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
-         SHADE_LIGHT.LIGHT_EMITTER.getTexturePath())), true);
+         StrPathBuilder.build("UI", "outlines", "shadows", "a new light.png"))), true);
         highlight.setTouchable(Touchable.disabled);
         highlight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
         highlight.setColor(getTeamColor());

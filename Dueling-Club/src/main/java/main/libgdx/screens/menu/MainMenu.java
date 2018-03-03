@@ -13,11 +13,20 @@ import java.util.List;
  */
 public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     MainMenuHandler handler;
+    private static MainMenu instance;
 
-    public MainMenu( ) {
+    private MainMenu( ) {
         super();
+        instance=this;
         this.handler = new MainMenuHandler();
     }
+
+    public static MainMenu getInstance() {
+        if (instance!=null ) return instance;
+        instance = new MainMenu();
+        return instance;
+    }
+
 
     @Override
     protected float getBottonPadding(int size) {
@@ -52,6 +61,10 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
             return handler.handle((MAIN_MENU_ITEM) sub);
         setVisible(true);
         return false;
+    }
+
+    public MainMenuHandler getHandler() {
+        return handler;
     }
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {

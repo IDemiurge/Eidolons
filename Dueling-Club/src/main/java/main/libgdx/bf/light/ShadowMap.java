@@ -120,7 +120,7 @@ public class ShadowMap {
     public enum SHADE_LIGHT {
         GAMMA_SHADOW(0.75f, StrPathBuilder.build("UI", "outlines", "shadows", "shadow neu.png")),
         GAMMA_LIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "light.png")),
-        LIGHT_EMITTER(0, StrPathBuilder.build("UI", "outlines", "shadows", "a new light.png")),
+        LIGHT_EMITTER(0, StrPathBuilder.build("UI", "outlines", "shadows", "light emitter.png")),
         CONCEALMENT(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "concealment.png")),
         BLACKOUT(0 , StrPathBuilder.build("UI", "outlines", "shadows", "blackout.png")),
         HIGLIGHT(0 , StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),

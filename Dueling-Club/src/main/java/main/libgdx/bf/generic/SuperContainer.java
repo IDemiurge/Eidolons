@@ -1,6 +1,7 @@
 package main.libgdx.bf.generic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import main.libgdx.bf.SuperActor;
 
 /**
@@ -33,6 +34,12 @@ public  class SuperContainer extends SuperActor {
     public SuperContainer(Actor content, boolean fluctuateAlpha) {
         this(content);
         this.fluctuateAlpha = fluctuateAlpha;
+    }
+
+    @Override
+    public void setTouchable(Touchable touchable) {
+        super.setTouchable(touchable);
+        getContent().setTouchable(touchable);
     }
 
     public Actor getContent() {
