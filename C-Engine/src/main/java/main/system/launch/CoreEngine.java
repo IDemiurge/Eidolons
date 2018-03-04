@@ -26,7 +26,7 @@ public class CoreEngine {
     private static CoreEngine engineObject;
 
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
-    public static final String VERSION = "0.43";
+    public static final String VERSION = "0.433";
     public static boolean swingOn = false;
     public static boolean animationTestMode;
     private static boolean TEST_MODE = true;
@@ -50,6 +50,7 @@ public class CoreEngine {
     private static boolean jar;
     private static boolean exe;
     private static boolean mapEditor;
+    private static boolean macro;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -311,8 +312,7 @@ public class CoreEngine {
     }
 
     public static boolean isIDE() {
-//        return !exe&& !jar;
-        return XML_Reader.isMacro();
+        return !exe&& !jar;
     }
     public static boolean isExe() {
         return exe;
@@ -332,5 +332,13 @@ public class CoreEngine {
 
     public static boolean isMapEditor() {
         return mapEditor;
+    }
+
+    public static void setMacro(boolean macro) {
+        CoreEngine.macro = macro;
+    }
+
+    public static boolean isMacro() {
+        return macro;
     }
 }

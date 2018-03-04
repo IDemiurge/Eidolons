@@ -42,6 +42,8 @@ public class GdxMaster {
     }
 
     public static float adjustPos(boolean x, float pos) {
+        if (true) //temp
+        return pos;
         if (x)
             return pos
              - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;

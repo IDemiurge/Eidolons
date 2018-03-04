@@ -16,9 +16,9 @@ import main.system.math.MathMaster;
  * Created by JustMe on 8/17/2017.
  */
 public abstract class SuperActor extends GroupX implements Borderable {
-    protected static final float DEFAULT_ALPHA_FLUCTUATION = 0.4f;
-    protected static final float DEFAULT_ALPHA_MIN = 0.2f;
-    protected static final float DEFAULT_ALPHA_MAX = 1f;
+    public static final float DEFAULT_ALPHA_FLUCTUATION = 0.4f;
+    public static final float DEFAULT_ALPHA_MIN = 0.2f;
+    public static final float DEFAULT_ALPHA_MAX = 1f;
     protected static boolean alphaFluctuationOn = true;
     private static boolean cullingOff;
     protected Image border = null;

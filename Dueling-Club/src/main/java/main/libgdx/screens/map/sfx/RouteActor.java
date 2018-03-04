@@ -30,11 +30,16 @@ public class RouteActor extends ImageContainer {
     }
 
     private static String getHighlightImgPath(Route sub) {
-        return StringMaster.cropLastPathSegment(sub.getRouteImage()) + StringMaster.getPathSeparator() +
-         HIGHLIGHT.trim()
-         + StringMaster.getPathSeparator() +
-         StringMaster.getLastPathSegment(
-          StringMaster.cropFormat(sub.getRouteImage())) + HIGHLIGHT + ".png";
+        try {
+            return StringMaster.cropLastPathSegment(sub.getRouteImage()) + StringMaster.getPathSeparator() +
+             HIGHLIGHT.trim()
+             + StringMaster.getPathSeparator() +
+             StringMaster.getLastPathSegment(
+              StringMaster.cropFormat(sub.getRouteImage())) + HIGHLIGHT + ".png";
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return "";
     }
 
     public Route getRoute() {

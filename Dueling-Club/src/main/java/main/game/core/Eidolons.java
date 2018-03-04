@@ -111,6 +111,9 @@ public class Eidolons {
     }
 
     public static Unit getMainHero() {
+        if (mainHero==null ){
+            mainHero= (Unit) game.getPlayer(true).getHeroObj();
+        }
         return mainHero;
     }
 

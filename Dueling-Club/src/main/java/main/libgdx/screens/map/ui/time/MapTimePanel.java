@@ -1,6 +1,7 @@
 package main.libgdx.screens.map.ui.time;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,7 +13,6 @@ import main.game.module.adventure.global.GameDate;
 import main.game.module.adventure.global.TimeMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
-import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.gui.panels.GroupX;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
@@ -49,8 +49,8 @@ import static main.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
 public class MapTimePanel extends GroupX {
 
     private static final float SIZE = 64;
-    ImageContainer sun;
-    ImageContainer undersun;
+    SunActor sun;
+    SunActor undersun;
     Map<MOON, MoonActor> moonMap = new HashMap<>();
     MoonActor[] displayedMoons = new MoonActor[3];
     Label timeLabel;
@@ -85,8 +85,8 @@ public class MapTimePanel extends GroupX {
     }
 
     public void init() {
-        setSize(GdxMaster.adjustSize(355)
-         , GdxMaster.adjustSize(203));
+        setSize((355)
+         , (203));
 
         speedUpBtn =
          new TextButtonX(
@@ -113,14 +113,13 @@ public class MapTimePanel extends GroupX {
             moonMap.put(moon, container);
         }
         float sunSize = moonSize * 2f;
-        sun = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "sun.png"));
-        sun.setAlphaTemplate(ALPHA_TEMPLATE.SUN);
+
+        sun = new SunActor(false);
         sun.setSize(sunSize, sunSize);
         sun.setVisible(false);
-        undersun = new ImageContainer(StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "undersun.png"));
-        undersun.setAlphaTemplate(ALPHA_TEMPLATE.SUN);
+
+        undersun = new SunActor(true);
+
         undersun.setSize(sunSize, sunSize);
 
         undersun.setVisible(false);
@@ -159,9 +158,16 @@ public class MapTimePanel extends GroupX {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
+//        adjustSizes();
     }
 
-    private void initPositions() {
+    private void adjustSizes() {
+        for (Actor sub : getChildren()) {
+            sub.setScale(GdxMaster.getFontSizeMod());
+        }
+
+    }
+        private void initPositions() {
         PointX sunPoint = new PointX(103, 128);
         PointX timeLabelPoint = new PointX(149, 80);
         PointX timeLabelBgPoint = new PointX(140, 62);
@@ -212,6 +218,7 @@ public class MapTimePanel extends GroupX {
          , GdxMaster.adjustSize(mainCircle.getHeight()));
 
         mainCircle.setOrigin(mainCircle.getWidth() / 2, mainCircle.getHeight() * 2);
+
         undersun.setVisible(time.isUndersunVisible());
         sun.setVisible(time.isSunVisible());
         MOON[] moons = getDisplayedMoons();

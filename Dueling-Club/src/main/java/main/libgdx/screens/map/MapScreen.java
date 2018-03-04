@@ -12,8 +12,6 @@ import main.data.xml.XML_Reader;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroTimeMaster;
-import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.map.Place;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.mouse.InputController;
@@ -21,13 +19,13 @@ import main.libgdx.bf.mouse.MapInputController;
 import main.libgdx.gui.menu.selection.SelectionPanel;
 import main.libgdx.screens.GameScreen;
 import main.libgdx.screens.map.editor.EditorMapView;
-import main.libgdx.screens.map.obj.*;
 import main.libgdx.shaders.DarkShader;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
 
-import static main.system.MapEvent.*;
+import static main.system.MapEvent.MAP_READY;
+import static main.system.MapEvent.UPDATE_MAP_BACKGROUND;
 
 /**
  * Created by JustMe on 2/3/2018.
@@ -60,7 +58,7 @@ public class MapScreen extends GameScreen {
     @Override
     protected void preLoad() {
         guiStage = createGuiStage();
-        objectStage = new Stage(viewPort, getBatch());
+        objectStage = new MapObjects(viewPort, getBatch());
         mapStage = new MapStage(viewPort, getBatch());
         super.preLoad();
         initGl();
@@ -108,26 +106,7 @@ public class MapScreen extends GameScreen {
     }
 
     protected void bindEvents() {
-        GuiEventManager.bind(CREATE_PARTY, param -> {
-            MacroParty party = (MacroParty) param.get();
-            if (party == null) {
-                return;
-            }
-            PartyActor partyActor = PartyActorFactory.getParty(party);
-            objectStage.addActor(partyActor);
-            if (party.isMine()) {
-                guiStage.setParty(party);
-            }
-        });
-        GuiEventManager.bind(CREATE_PLACE, param -> {
-            Place place = (Place) param.get();
-            PlaceActor placeActor = PlaceActorFactory.getPlace(place);
-            objectStage.addActor(placeActor);
-        });
-        GuiEventManager.bind(REMOVE_MAP_OBJ, param -> {
-            MapActor actor = (MapActor) param.get();
-            actor.remove();
-        });
+
     }
 
     @Override

@@ -78,7 +78,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isWaitForInput() {
-        if (CoreEngine.isIDE())
+        if (CoreEngine.isIDE() || CoreEngine.isMacro())
             return false;
         return true;
     }

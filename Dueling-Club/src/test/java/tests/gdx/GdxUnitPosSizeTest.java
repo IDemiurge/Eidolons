@@ -59,34 +59,34 @@ public class GdxUnitPosSizeTest extends GdxJUnit {
                 index++;
             }
         }
-        WaitMaster.waitForInput(WAIT_OPERATIONS.PRECOMBAT);
     }
 
     private void checkComponent(BaseView component, int n, int i) {
         int offset = container.getUnitViewOffset();
         int size = (int) container.getUnitViewSize();
 //        container.getUnitViewsVisible()
-        main.system.auxiliary.log.LogMaster.log(1, StringMaster.getOrdinal(i) + " view of " + n
+        String expected=StringMaster.getOrdinal(i) + " view of " + n
          + " must have "
          + container.getViewX(offset, i ) + " x; "
          + container.getViewY(offset, i, n) + " y; "
          + size + " width; "
-         + size + " height; "
+         + size + " height; ";
+        String actual=  component
+         + " has "
+         + component.getX() + " x; "
+         + component.getY() + " y; "
+         + component.getWidth()*component.getScaledHeight() + " width; "
+         + component.getHeight()*component.getScaledHeight() + " height; ";
+
+        main.system.auxiliary.log.LogMaster.log(1, expected
+        );
+        main.system.auxiliary.log.LogMaster.log(1,actual
         );
 
-        main.system.auxiliary.log.LogMaster.log(1,
-         component
-          + " has "
-          + component.getX() + " x; "
-          + component.getY() + " y; "
-          + component.getWidth()*component.getScaledHeight() + " width; "
-          + component.getHeight()*component.getScaledHeight() + " height; "
-        );
-
-        assertTrue(component.getHeight()*component.getScaledHeight() == size);
-        assertTrue(component.getWidth()*component.getScaledWidth() == size);
-        assertTrue(component.getX() == container.getViewX(offset, i));
-        assertTrue(component.getY() == container.getViewY(offset, i, n));
+        assertTrue(expected+ "\n"+ actual, component.getHeight()*component.getScaledHeight() == size);
+        assertTrue(expected+ "\n"+ actual,component.getWidth()*component.getScaledWidth() == size);
+        assertTrue(expected+ "\n"+ actual,component.getX() == container.getViewX(offset, i));
+        assertTrue(expected+ "\n"+ actual,component.getY() == container.getViewY(offset, i, n));
     }
 
     private BattleFieldObject getUnit() {

@@ -40,6 +40,9 @@ public class MapDatePanel extends TablePanel {
 
     private void init() {
         this.date = TimeMaster.getDate();
+        if (date == null) {
+            return;
+        }
         LabelStyle style = StyleHolder.getSizedLabelStyle(FONT.AVQ, 18);
         firstLabel = new Label(getFirstLabelText(), style);
         secondLabel = new Label(getSecondLabelText(), style);

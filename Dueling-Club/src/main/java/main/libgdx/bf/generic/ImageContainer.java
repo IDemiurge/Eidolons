@@ -2,40 +2,96 @@ package main.libgdx.bf.generic;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import main.entity.Entity;
 import main.libgdx.texture.TextureCache;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 2/10/2018.
  */
-public class ImageContainer extends  SuperContainer {
-    private   Sprite sprite;
-    private   String path;
+public class ImageContainer extends SuperContainer {
+    boolean flipX, flipY;
+    private Sprite sprite;
+    private String path;
 
     public ImageContainer(Image content) {
         super(content);
     }
+
     public ImageContainer(Entity entity) {
         this(new Image(TextureCache.getOrCreateR(entity.getImagePath())));
     }
 
     public ImageContainer(String path) {
-        super( );
-       content = new Image(sprite=new Sprite(TextureCache.getOrCreateR(path)));
+        super();
+        content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path)));
         addActor(content);
         this.path = path;
     }
-    public void setImage(String path) {
-        setContents(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
-    }
 
     public ImageContainer() {
-        super( );
+        super();
     }
 
+    public void setImage(String path) {
+        if (ImageManager.isImage(path))
+            setContents(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
+        else
+            return;
+    }
 
-    boolean flipX, flipY;
+    @Override
+    public Array<Action> getActions() {
+        return getContent().getActions();
+    }
+
+    @Override
+    public boolean hasActions() {
+        return getContent().hasActions();
+    }
+
+    @Override
+    public void moveBy(float x, float y) {
+        getContent().moveBy(x, y);
+    }
+
+    @Override
+    public void setBounds(float x, float y, float width, float height) {
+        getContent().setBounds(x, y, width, height);
+    }
+
+    @Override
+    public float getOriginX() {
+        return getContent().getOriginX();
+    }
+
+    @Override
+    public float getOriginY() {
+        return getContent().getOriginY();
+    }
+
+    @Override
+    public void scaleBy(float scale) {
+        getContent().scaleBy(scale);
+    }
+
+    @Override
+    public void scaleBy(float scaleX, float scaleY) {
+        getContent().scaleBy(scaleX, scaleY);
+    }
+
+    @Override
+    public void rotateBy(float amountInDegrees) {
+        getContent().rotateBy(amountInDegrees);
+    }
+
+    @Override
+    public String toString() {
+        return path + " container";
+    }
 
     @Override
     public Image getContent() {
@@ -49,19 +105,24 @@ public class ImageContainer extends  SuperContainer {
 
     public void setFlipX(boolean flipX) {
         this.flipX = flipX;
-        if (sprite!=null )
-        sprite.setFlip(flipX, flipY);
+        if (sprite != null)
+            sprite.setFlip(flipX, flipY);
     }
 
     public void setFlipY(boolean flipY) {
         this.flipY = flipY;
-        if (sprite!=null )
+        if (sprite != null)
             sprite.setFlip(flipX, flipY);
     }
 
     @Override
     public float getRotation() {
         return getContent().getRotation();
+    }
+
+    @Override
+    public void setRotation(float degrees) {
+        getContent().setRotation(degrees);
     }
 
     @Override
@@ -81,12 +142,27 @@ public class ImageContainer extends  SuperContainer {
     }
 
     @Override
-    public void setScale(float scaleX, float scaleY) {
-        getContent().setScale(scaleX, scaleY);
+    public void setScale(float scaleXY) {
+        getContent().setScale(scaleXY);
     }
 
     @Override
-    public void setRotation(float degrees) {
-        getContent().setRotation(degrees);
+    public void setOrigin(int alignment) {
+        getContent().setOrigin(alignment);
+    }
+
+    @Override
+    public void setScaleX(float scaleX) {
+        getContent().setScaleX(scaleX);
+    }
+
+    @Override
+    public void setScaleY(float scaleY) {
+        getContent().setScaleY(scaleY);
+    }
+
+    @Override
+    public void setScale(float scaleX, float scaleY) {
+        getContent().setScale(scaleX, scaleY);
     }
 }

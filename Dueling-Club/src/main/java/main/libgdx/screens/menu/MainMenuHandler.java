@@ -9,6 +9,7 @@ import main.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
 
 /**
@@ -21,13 +22,14 @@ public class MainMenuHandler {
             case CRAWL:
             case STANDOFF:
             case SKIRMISH:
+                CoreEngine.setMacro(false);
                 GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL,
                  DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
                   StringMaster.getWellFormattedString(item.toString())));
 
                 return null  ;
             case ADVENTURE:
-
+                CoreEngine.setMacro(true);
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
                  ScreenType.MAP, "Mistfall"));
 

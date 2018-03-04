@@ -32,7 +32,8 @@ public class MoonActor extends Group {
 
     public MoonActor(MOON moon) {
         this.moon = moon;
-        float fullSize = GdxMaster.adjustSize(FULL_SIZE);
+        float fullSize = //GdxMaster.adjustSize
+         (FULL_SIZE);
         setSize(fullSize,fullSize);
 
         main = new ImageContainer(getPath()+ moon.name() + ".png" );

@@ -96,7 +96,7 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
 
-        if (CoreEngine.isIDE()){
+        if (CoreEngine.isIDE()|| CoreEngine.isMacro()){
             tryDone();
         }
     }

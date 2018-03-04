@@ -26,6 +26,8 @@ import main.system.MapEvent;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
+import static main.system.MapEvent.CREATE_PARTY;
+
 /**
  * Created by JustMe on 2/9/2018.
  */
@@ -58,8 +60,8 @@ public class MapGuiStage extends GuiStage {
                     return 1;
                 }
             };
-            vignette.setWidth(GdxMaster.getWidth());
-            vignette.setHeight(GdxMaster.getHeight());
+            vignette.getContent(). setWidth(GdxMaster.getWidth());
+            vignette.getContent().setHeight(GdxMaster.getHeight());
             vignette.setAlphaStep(0.1f);
             vignette.setFluctuatingAlphaRandomness(0.3f);
             vignette.setFluctuatingFullAlphaDuration(1.5f);
@@ -105,7 +107,15 @@ public class MapGuiStage extends GuiStage {
             if (!CoreEngine.isMapEditor())
                 blackout.fadeIn(1.25f);
         });
-
+        GuiEventManager.bind(CREATE_PARTY, param -> {
+            MacroParty party = (MacroParty) param.get();
+            if (party == null) {
+                return;
+            }
+            if (party.isMine()) {
+              setParty(party);
+            }
+        });
     }
 
     @Override
@@ -133,7 +143,7 @@ public class MapGuiStage extends GuiStage {
         addActor(RollDecorator.decorate(datePanel, FACING_DIRECTION.WEST));
 
         timePanel = new MapTimePanel();
-        addActor(RollDecorator.decorate(timePanel, FACING_DIRECTION.NORTH));
+        addActor(timePanel); //RollDecorator.decorate(timePanel, FACING_DIRECTION.NORTH));
 
     }
 
@@ -141,8 +151,8 @@ public class MapGuiStage extends GuiStage {
     public void act(float delta) {
         super.act(delta);
         if (dirty) {
-            timePanel.getParent(). setPosition(GdxMaster.centerWidthScreen(timePanel.getParent()),
-             GdxMaster.topScreen(timePanel.getParent()) + 12);
+            timePanel. setPosition(GdxMaster.centerWidthScreen(timePanel ),
+             GdxMaster.topScreen(timePanel ) + 13*(1+GdxMaster.getFontSizeMod())/2);
             actionPanel.layout();
             actionPanel.getParent().setPosition(GdxMaster.centerWidthScreen(actionPanel.getParent())
              , 0);

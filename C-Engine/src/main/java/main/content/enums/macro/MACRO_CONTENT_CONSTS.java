@@ -20,10 +20,10 @@ public class MACRO_CONTENT_CONSTS {
         public enum DAY_TIME { //different names in summer?..
         MIDNIGHT(true,24, true, false, "It is midnight."),
         DAWN(true, 4, true, true, "The sun rises...")  ,
-        MORNING(false, 8, false, true, "It is morning"),
+        MORNING(false, 8, true, true, "It is morning"),
         NOON(false, 12, false, true, "It is noon."),
-        DUSK(false, 16, false, true, "The sun sets..."),
-        NIGHTFALL(true,20, false, false, "The night falls..."),
+        DUSK(false, 16, true, true, "The sun sets..."),
+        NIGHTFALL(true,20, true, false, "The night falls..."),
         ;
         public static DAY_TIME[] values=values();
         //8, 12, 16, 20, 24, 4
@@ -48,6 +48,7 @@ public class MACRO_CONTENT_CONSTS {
 
         public boolean isUndersunVisible() {
             return undersunVisible;
+
         }
 
 

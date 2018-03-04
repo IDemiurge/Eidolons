@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.map.MapScreen;
@@ -38,7 +39,6 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
     }
 
 
-
     public void init() {
         for (File subdir : FileManager.getFilesFromDirectory(getMainPath(), true)) {
             MAP_LAYER_TYPE type = new EnumMaster<MAP_LAYER_TYPE>().
@@ -50,8 +50,12 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
                      ) {
                         if (!FileManager.isImageFile(img.getName()))
                             continue;
-                        String path =
-                         StringMaster.removePreviousPathSegments(img.getPath(), PathFinder.getImagePath());
+                        String path = img.getPath();
+                        try {
+                            path = StringMaster.removePreviousPathSegments(img.getPath(), PathFinder.getImagePath());
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
+                        }
                         Image image = new Image(TextureCache.getOrCreateR(path));
                         ImageContainer container = new ImageContainer(image);
                         container.setFluctuateAlpha(true);
@@ -73,7 +77,7 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
                     }
 
         }
-        initialized=true;
+        initialized = true;
 
     }
 
@@ -82,9 +86,11 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
         //        MIST,
 //        CLOUDS,
 //        DARKNESS,
+        MAGIC(0.3f, 0.5f, 0.5f, 1f, 0.1f, 2.5f, NIGHTFALL, MIDNIGHT, DAWN),
+        COMMONS(0.1f, 0.3f, 0.1f, 2.5f),
         VOLCANO_FIRE(0.1f, 0.3f, 0.1f, 2.5f),
-        WISPS(0.15f, 0.9f, 0.5f, 0.5f, NIGHTFALL, MIDNIGHT, DAWN),
-        LIGHTS(0.15f, 0.9f, 0.5f, 0.5f, NIGHTFALL, MIDNIGHT, DAWN),
+        WISPS(0.15f, 2.9f, 0.5f, 0.5f, NIGHTFALL, MIDNIGHT, DAWN),
+        LIGHTS(0.15f, 0.9f, 0.5f, 1f, 0.15f, 2.5f, NIGHTFALL, MIDNIGHT, DAWN),
         SUNLIGHT(0.15f, 0.9f, 0.5f, 0.5f, MORNING, NOON),
 //        NIGHT_TIME,
 //        SMOKE,
@@ -104,15 +110,25 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
         MAP_LAYER_TYPE() {
         }
 
-        MAP_LAYER_TYPE(float alphaStep, float randomness, float pauseAtZero, float pauseAtFull
+        MAP_LAYER_TYPE(float alphaStep, float randomness,
+                       float alphaMin, float alphaMax,
+                       float pauseAtZero, float pauseAtFull
          , DAY_TIME... times) {
+            this.alphaMin = alphaMin;
+            this.alphaMax = alphaMax;
             this.times = times;
             if (times.length == 0)
-                times = DAY_TIME.values;
+                this.times = DAY_TIME.values;
             this.alphaStep = alphaStep;
             this.pauseAtZero = pauseAtZero;
             this.pauseAtFull = pauseAtFull;
             this.randomness = randomness;
+        }
+
+        MAP_LAYER_TYPE(float alphaStep, float randomness, float pauseAtZero, float pauseAtFull
+         , DAY_TIME... times) {
+            this(alphaStep, randomness, SuperActor.DEFAULT_ALPHA_MIN, SuperActor.DEFAULT_ALPHA_MAX,
+             pauseAtZero, pauseAtFull, times);
         }
 
         MAP_LAYER_TYPE(float alphaStep, float alphaMin, float alphaMax, float pauseAtZero, float randomness) {

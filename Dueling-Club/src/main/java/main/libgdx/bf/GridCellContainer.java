@@ -108,10 +108,10 @@ public class GridCellContainer extends GridCell {
 //         perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
     }
 
-    public float getViewX(float perImageOffsetX, int i ) {
+    public final float getViewX(float perImageOffsetX, int i ) {
         return perImageOffsetX * i;
     }
-    public float getViewY(float perImageOffsetY, int i, int n) {
+    public final float getViewY(float perImageOffsetY, int i, int n) {
         return (n-1)*perImageOffsetY- perImageOffsetY * i;
     }
 

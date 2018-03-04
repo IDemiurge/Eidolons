@@ -182,7 +182,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
-        if (CoreEngine.isIDE()) {
+        if (CoreEngine.isIDE()  ) {
             try {
                 render_();
             } catch (Exception e) {

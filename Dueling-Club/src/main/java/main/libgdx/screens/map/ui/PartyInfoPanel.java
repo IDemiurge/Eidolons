@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxColorMaster;
-import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.bf.generic.SuperContainer;
@@ -98,7 +97,8 @@ public class PartyInfoPanel extends TablePanel {
     }
 
     private int getMainWidth() {
-        return (int) GdxMaster.adjustSize(256);
+        return //(int) GdxMaster.adjustSize
+         (256);
     }
 
     @Override

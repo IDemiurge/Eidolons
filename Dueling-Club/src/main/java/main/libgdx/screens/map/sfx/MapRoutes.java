@@ -24,17 +24,21 @@ public class MapRoutes extends Group {
 
                 hoverOff(sub);
             }
-            if (r!=null )
-            hover(map.get(r) );
+            if (r != null)
+                hover(map.get(r));
         });
-            GuiEventManager.bind(MapEvent.ROUTE_ADDED, p -> {
-            Route sub = (Route) p.get();
-            RouteActor actor = new RouteActor(sub);
-            map.put(sub, actor);
-            addActor(actor);
-            actor.setFluctuateAlpha(true);
-            actor.setPosition(sub.getX(), sub.getY());
-            actor.setVisible(false);
+        GuiEventManager.bind(MapEvent.ROUTE_ADDED, p -> {
+            try {
+                Route sub = (Route) p.get();
+                RouteActor actor = new RouteActor(sub);
+                map.put(sub, actor);
+                addActor(actor);
+                actor.setFluctuateAlpha(true);
+                actor.setPosition(sub.getX(), sub.getY());
+                actor.setVisible(false);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         });
         GuiEventManager.bind(MapEvent.PLACE_HOVER, p -> {
             Place place = (Place) p.get();
@@ -55,14 +59,15 @@ public class MapRoutes extends Group {
         sub.setHighlighted(false);
         ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY(), 0.5f);
     }
+
     private void hover(RouteActor sub) {
         sub.setHighlighted(true);
-        ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY()+ GdxMaster.adjustSize(25), 0.5f);
+        ActorMaster.addMoveToAction(sub, sub.getRoute().getX(), sub.getRoute().getY() + GdxMaster.adjustSize(25), 0.5f);
     }
 
     public boolean isRouteHighlighted() {
         for (RouteActor sub : map.values()) {
-            if ( (sub).isHighlighted())
+            if ((sub).isHighlighted())
                 return true;
         }
         return false;

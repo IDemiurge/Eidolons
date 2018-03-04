@@ -1626,7 +1626,8 @@ public class StringMaster {
 
 
     public static String removePreviousPathSegments(String string, String path) {
-        String p = string.toLowerCase();
+            String p = string.toLowerCase();
+
         path = path.toLowerCase();
         String prefix = "";
         if (p.contains(path)) {
@@ -1668,6 +1669,7 @@ public class StringMaster {
 //        );
 
         return p.replace(prefix, "");
+
     }
 
     public static String addMissingPathSegments(String string, String path) {

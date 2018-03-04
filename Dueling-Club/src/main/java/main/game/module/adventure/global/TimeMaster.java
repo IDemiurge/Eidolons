@@ -1,5 +1,6 @@
 package main.game.module.adventure.global;
 
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.game.module.adventure.MacroGame;
 
@@ -62,6 +63,7 @@ public class TimeMaster {
                     .getIntParam(MACRO_PARAMS.MONTH));
             date.setDay(MacroGame.getGame().getCampaign()
                     .getIntParam(MACRO_PARAMS.DAY));
+            date.setDayTime(DAY_TIME.values[0]);
         }
         return date;
     }
