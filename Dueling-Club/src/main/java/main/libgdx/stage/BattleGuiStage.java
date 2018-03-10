@@ -25,6 +25,7 @@ public class BattleGuiStage extends GuiStage {
 
     private final InitiativePanel initiativePanel;
     private final ActionPanelController bottomPanel;
+
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
           new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
@@ -38,14 +39,14 @@ public class BattleGuiStage extends GuiStage {
         addActor(bottomPanel);
 
         addActor(new UnitInfoPanel(0, 0));
-init();
+        init();
         InventoryWithAction inventoryForm = new InventoryWithAction();
         inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
         this.addActor(inventoryForm);
     }
 
 
-    protected  void bindEvents() {
+    protected void bindEvents() {
         super.bindEvents();
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
             if (outcomePanel != null)
@@ -63,7 +64,6 @@ init();
         });
 
     }
-
 
 
     @Override

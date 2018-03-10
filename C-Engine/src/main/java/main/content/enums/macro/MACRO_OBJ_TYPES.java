@@ -32,8 +32,8 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     MISSION("missions", G_PROPS.GROUP, 11, MACRO_PROPS.MISSION_TYPE),
 
     DIALOGUE("dialogue", G_PROPS.GROUP,12 ),
-    TAVERN("tavern", G_PROPS.GROUP,13 ),
-    MAP_ACTIONS("map actions", G_PROPS.GROUP,14 );
+    TAVERN("tavern", G_PROPS.GROUP,13 ),;
+//    MAP_ACTIONS("map actions", G_PROPS.GROUP,14 );
     // MACRO_CHAR(OBJ_TYPES.CHARS, "MACRO_CHAR", 7),
     // MACRO_UNIT(OBJ_TYPES.UNITS, "MACRO_UNIT", 8),
 

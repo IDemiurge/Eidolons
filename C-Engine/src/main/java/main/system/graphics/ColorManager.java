@@ -248,7 +248,7 @@ public class ColorManager {
         CYAN(new Color(35, 215, 185)),
         GREEN(new Color(25, 175, 65)),
         DARK_GREEN(new Color(25, 85, 65)),
-        PURPLE(new Color(145, 85, 235)),
+        PURPLE(new Color(115, 85, 255)),
         RED(new Color(255, 25, 25)),
         CRIMSON(new Color(145, 25, 95)),
         YELLOW(new Color(245, 200, 85)),

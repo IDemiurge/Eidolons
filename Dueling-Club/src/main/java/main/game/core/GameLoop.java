@@ -10,9 +10,14 @@ import main.game.battlecraft.rules.combat.misc.ChargeRule;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
+import main.game.module.adventure.MacroGame;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.bf.SuperActor;
+import main.libgdx.screens.ScreenData;
+import main.libgdx.screens.ScreenType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -73,6 +78,7 @@ public class GameLoop {
     }
 
     protected void loopExit() {
+        LogMaster.log(1, "Game Loop exit " + this);
         if (AiTrainingRunner.running) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
         } else {
@@ -89,7 +95,9 @@ public class GameLoop {
 
         }
 
-        LogMaster.log(1, "Game Loop exit " + this);
+
+        main.system.auxiliary.log.LogMaster.log(1,this + " exited!" );
+        setExited(false);
     }
 
     public Thread startInNewThread() {
@@ -324,6 +332,7 @@ public class GameLoop {
 
     public void setExited(boolean exited) {
         this.exited = exited;
+        if (exited)
         try {
             game.getGameLoopThread().interrupt();
         } catch (Exception e) {

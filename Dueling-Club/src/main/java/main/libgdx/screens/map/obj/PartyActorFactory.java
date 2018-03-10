@@ -33,6 +33,7 @@ public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty> {
     public PartyActor get(MacroParty party) {
         PartyActorParameters parameters = new PartyActorParameters();
         Unit leader = party.getLeader();
+        parameters.party = party ;
         parameters.emblem = TextureCache.getOrCreateR(leader.getEmblemPath());
         parameters.position = new Vector2(
          party
@@ -55,6 +56,7 @@ public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty> {
     }
 
     public static class PartyActorParameters {
+        MacroParty party;
         public TextureRegion emblem;
         public TextureRegion border;
         public MAP_OBJ_INFO_LEVEL visibility;

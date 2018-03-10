@@ -316,7 +316,7 @@ public class MapTimePanel extends GroupX {
                 return new MOON[]{
                  HAVEN, TEMPEST, RIME,
                 };
-            case NOON:
+            case MIDDAY:
                 return new MOON[]{
                  FAE, HAVEN, TEMPEST,
                 };

@@ -7,6 +7,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.UnitAnalyzer;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.test.frontend.FAST_DC;
 
@@ -27,6 +28,8 @@ public class UnitTrainingMaster {
 
     public static void train(Unit unit) {
         if (FAST_DC.isRunning())
+            return ;
+        if (CoreEngine.isFastMode())
             return ;
 //        if (!FAST_DC.getLauncher().getFAST_MODE()) {
 //            if (CoreEngine.isGraphicTestMode()) {

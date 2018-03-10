@@ -96,8 +96,8 @@ public class GridUnitView extends UnitView {
             arrow = new Image(arrowTexture);
             addActor(arrow);
             arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
-main.system.auxiliary.log.LogMaster.log(1,
- arrow.getOriginX()+" getOriginX " + arrow.getOriginY()+" getOriginY " );
+//            main.system.auxiliary.log.LogMaster.log(0,
+//             arrow.getOriginX() + " getOriginX " + arrow.getOriginY() + " getOriginY ");
             arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
             this.arrowRotation = arrowRotation + 90;
         }
@@ -132,8 +132,7 @@ main.system.auxiliary.log.LogMaster.log(1,
 
     @Override
     public void setVisible(boolean visible) {
-        if (this.isVisible()!=visible)
-        {
+        if (this.isVisible() != visible) {
             super.setVisible(visible);
             if (getParent() instanceof GridCellContainer) {
                 ((GridCellContainer) getParent()).recalcUnitViewBounds();
@@ -193,11 +192,11 @@ main.system.auxiliary.log.LogMaster.log(1,
     }
 
     public boolean isHpBarVisible() {
-        if (!getHpBar().getDataSource().canHpBarBeVisible() )
+        if (!getHpBar().getDataSource().canHpBarBeVisible())
             return false;
-        if (!isCellBackground()&& getHpAlwaysVisible())
+        if (!isCellBackground() && getHpAlwaysVisible())
             return true;
-        if (!getHpBar().getDataSource().isHpBarVisible() )
+        if (!getHpBar().getDataSource().isHpBarVisible())
             return false;
 
 
@@ -307,43 +306,43 @@ main.system.auxiliary.log.LogMaster.log(1,
 
     public void resetHpBar(ResourceSourceImpl resourceSource) {
         super.resetHpBar(resourceSource);
-        if (initiativeQueueUnitView!=null )
-        initiativeQueueUnitView.resetHpBar(
-         resourceSource  );
+        if (initiativeQueueUnitView != null)
+            initiativeQueueUnitView.resetHpBar(
+             resourceSource);
     }
 
     @Override
     public void setHpBar(HpBar hpBar) {
         super.setHpBar(hpBar);
-        hpBar.setPosition(GdxMaster.centerWidth(hpBar),-hpBar.getHeight()/2);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
     }
 
     @Override
     public void setTeamColor(Color teamColor) {
         super.setTeamColor(teamColor);
-        if (initiativeQueueUnitView!=null )
+        if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setTeamColor(teamColor);
     }
 
     @Override
     public void setTeamColorBorder(boolean teamColorBorder) {
         super.setTeamColorBorder(teamColorBorder);
-        if (initiativeQueueUnitView!=null )
+        if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setTeamColorBorder(teamColorBorder);
     }
 
     public void createHpBar(ResourceSourceImpl resourceSource) {
-         setHpBar(new HpBar(resourceSource));
-         if (initiativeQueueUnitView!=null )
-        initiativeQueueUnitView.setHpBar(new HpBar(resourceSource));
+        setHpBar(new HpBar(resourceSource));
+        if (initiativeQueueUnitView != null)
+            initiativeQueueUnitView.setHpBar(new HpBar(resourceSource));
     }
 
     public void animateHpBarChange() {
         if (!getHpBar().isVisible())
-            return ;
+            return;
 
         getHpBar().animateChange();
-        if (initiativeQueueUnitView!=null )
-        initiativeQueueUnitView. getHpBar().animateChange();
+        if (initiativeQueueUnitView != null)
+            initiativeQueueUnitView.getHpBar().animateChange();
     }
 }

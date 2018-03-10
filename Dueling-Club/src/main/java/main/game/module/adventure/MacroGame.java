@@ -41,7 +41,7 @@ public class MacroGame extends Game {
     DequeImpl<TurnRule> turnRules;
     private main.game.module.adventure.global.Campaign campaign;
     private GameLoop loop;
-    private DAY_TIME time = DAY_TIME.NOON;
+    private DAY_TIME time = DAY_TIME.MIDDAY;
     private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
     private Thread gameLoopThread;

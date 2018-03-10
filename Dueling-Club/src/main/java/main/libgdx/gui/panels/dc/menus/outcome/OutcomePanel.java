@@ -22,9 +22,12 @@ import main.libgdx.gui.panels.dc.TabbedPanel;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -162,7 +165,11 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
                     } else if (exit_continue_next) {
 //                        if (DialogMaster.confirm("Must you really go?.."))
-                        Gdx.app.exit();
+                        if (CoreEngine.isMacro()) {
+                            GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
+                        } else {
+                            Gdx.app.exit();
+                        }
 //                    else DialogMaster.inform("Glad you're still with us! :)");
 
                     } else   {

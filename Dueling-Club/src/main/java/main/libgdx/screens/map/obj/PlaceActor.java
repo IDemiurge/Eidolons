@@ -1,17 +1,15 @@
 package main.libgdx.screens.map.obj;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.module.adventure.map.Place;
+import main.libgdx.GdxMaster;
+import main.libgdx.anims.ActorMaster;
 import main.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;
-import main.system.GuiEventManager;
-import main.system.MapEvent;
 
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class PlaceActor extends MapActor  {
+public class PlaceActor extends MapActor {
     private Place place;
 
 //    Image preview;
@@ -21,15 +19,41 @@ public class PlaceActor extends MapActor  {
         init(parameters);
     }
 
+    public void hover() {
+        ActorMaster.addScaleAction(this, getHoveredScale(), 0.5f);
+        setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
+    }
+
+    private float getHoveredScale() {
+        return  getHoveredSize() / originalTexture.getRegionHeight();
+    }
+
+    private float getDefaultScale() {
+        return  (getDefaultSize() / originalTexture.getRegionHeight());
+    }
+
+    private float getDefaultSize() {
+        return GdxMaster.adjustSize(64);
+    }
+
+    private float getHoveredSize() {
+        return GdxMaster.adjustSize(80);
+    }
+
+    public void minimize() {
+        ActorMaster.addScaleAction(this, getDefaultScale(), 0.5f);
+        setAlphaTemplate(ALPHA_TEMPLATE.TOP_LAYER);
+    }
+
     private void init(PlaceActorParameters parameters) {
 //        preview = new Image(parameters.preview);
         this.place = parameters.place;
-        setPosition(parameters.position.x - portrait.getImageWidth()/2,
-         parameters.position.y- portrait.getImageHeight()/2);
-//        icon.setPosition(GdxMaster.right(emblem), GdxMaster.top(emblem) );
+        border = new Image(parameters.border);
 
+        setPosition(parameters.position.x - portrait.getImageWidth() / 2,
+         parameters.position.y - portrait.getImageHeight() / 2);
+        minimize();
     }
-
 
 
 }

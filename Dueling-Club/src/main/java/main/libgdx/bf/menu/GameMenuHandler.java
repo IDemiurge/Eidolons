@@ -52,12 +52,26 @@ public class GameMenuHandler {
                 break;
 
 
+            case RUN:
+                GameMenu.menuOpen = false;
+                GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
+
+//                Eidolons.gameExited();
+                break;
             case RESUME:
                 break;
             case OPTIONS:
                 OptionsMaster.openMenu();
 
                 return false;
+            case INFO:
+                break;
+            case WEBSITE:
+                break;
+            case ABOUT:
+                break;
+            case LAUNCH_GAME:
+                break;
         }
         return null;
     }

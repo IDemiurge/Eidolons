@@ -95,6 +95,10 @@ public class DC_ActionManager implements ActionManager {
     public static void init() {
         stdActionTypes = new ArrayList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
+            if (! (DataManager.getType(StringMaster
+             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS) instanceof ActionType)){
+                continue;
+            }
             ActionType type = (ActionType) DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 

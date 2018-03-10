@@ -18,7 +18,7 @@ public class GuiEventManagerOld {
     private static final GuiEventType[] savedBindings = {
         SWITCH_SCREEN,
      SCREEN_LOADED,
-     LOAD_SCREEN,
+
     };
     private Map<EventType, EventCallback> eventMap = new HashMap<>();
     private List<Runnable> eventQueue = new ArrayList<>();

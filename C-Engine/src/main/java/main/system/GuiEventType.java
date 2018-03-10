@@ -27,7 +27,6 @@ public enum GuiEventType implements EventType{
     DIALOG_SHOW,
 
     SCREEN_LOADED,
-    LOAD_SCREEN, // pass BFDataCreatedEvent as param
     SWITCH_SCREEN, //pass ScreenData as param
 
     CREATE_RADIAL_MENU,
@@ -100,5 +99,5 @@ public enum GuiEventType implements EventType{
     SHOW_TEAM_COLOR_BORDER,
     HP_BAR_UPDATE,    HP_BAR_UPDATE_MANY,
     SHOW_SELECTION_PANEL,
-    SHOW_MANUAL_PANEL, SHOW_DIFFICULTY_SELECTION_PANEL,
+    SHOW_MANUAL_PANEL, SHOW_DIFFICULTY_SELECTION_PANEL, FADE_OUT, FADE_IN, FADE_OUT_AND_BACK, BATTLE_FINISHED,
 }

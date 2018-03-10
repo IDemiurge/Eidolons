@@ -409,8 +409,16 @@ public class RadialManager {
         if (el.getTargeting() instanceof SelectiveTargeting) {
             return configureSelectiveTargetedNode(el, target);
         }
-        RadialValueContainer valueContainer = new RadialValueContainer(
-         new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el), checkValid(el, target), el, target);
+        RadialValueContainer valueContainer =null ;
+        if (el instanceof DC_SpellObj) {
+            valueContainer = new SpellRadialContainer(
+             new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el),
+             checkValid(el, target), el, target);
+        } else {
+            valueContainer = new RadialValueContainer(
+             new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el),
+             checkValid(el, target), el, target);
+        }
         addSimpleTooltip(valueContainer, el.getName());
         return valueContainer;
     }

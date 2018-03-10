@@ -19,13 +19,17 @@ public class Blackout extends Group{
 
     }
 
-    public void fadeOut(float dur){
+    public void fadeOut(Float dur){
+        if (dur==null )
+            dur = 1.5f;
         image.getContent().getColor().a=0;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
         ActorMaster.addFadeInAction(image.getContent(), dur );
     }
-    public void fadeIn(float dur){
+    public void fadeIn(Float dur){
+        if (dur==null )
+            dur = 1.5f;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
         if (image.getContent().getColor().a!=1){

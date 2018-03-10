@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.game.module.adventure.MacroGame;
-import main.game.module.adventure.global.TimeMaster;
 import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.map.sfx.*;
@@ -101,10 +100,11 @@ public class MapStage extends Stage {
 if (CoreEngine.isMapEditor())
     return ;
         Color color = nextMap.getContent().getColor();
-        float percentage=0.25f* (TimeMaster.getDate().getHour()%4+
-         + MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter()/60);
-        if (percentage < lastNextMapAlphaPercentage) //no going back in time...
+        float percentage=
+         MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
+        if (percentage <= lastNextMapAlphaPercentage) //no going back in time...
             return ;
+        layers.forEach(layer-> layer.applyDynamicTint());
         lastNextMapAlphaPercentage=percentage;
         color.a= percentage;
 //        nextMap.getContent().setColor(color);

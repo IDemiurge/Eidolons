@@ -13,6 +13,7 @@ import main.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
+import main.game.module.adventure.MacroGame;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.GdxColorMaster;
@@ -31,6 +32,7 @@ import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.audio.DC_SoundMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -102,6 +104,26 @@ public class DungeonScreen extends GameScreen {
     }
 
 
+    private void bindEvents() {
+
+        GuiEventManager.bind(BATTLE_FINISHED, param -> {
+            DC_Game.game.getLoop().setExited(true); //cleanup on real exit
+            if (!ExplorationMaster.isExplorationOn()) {
+                DC_Game.game.getLoop().actionInput(null);
+            }
+
+            if (MacroGame.getGame() != null) {
+                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
+                 new ScreenData(ScreenType.MAP, ""));
+
+                MacroGame.getGame().getLoop().setPaused(false);
+                MacroGame.getGame().getLoop().signal();
+                main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
+            }
+        });
+
+    }
+
     @Override
     public void dispose() {
         super.dispose();
@@ -128,14 +150,17 @@ public class DungeonScreen extends GameScreen {
 
     @Override
     protected void afterLoad() {
+        try {
+            cam = (OrthographicCamera) viewPort.getCamera();
+            controller = new DungeonInputController(cam);
+            particleManager = new ParticleManager();
 
-        cam = (OrthographicCamera) viewPort.getCamera();
-        controller = new DungeonInputController(cam);
-        particleManager = new ParticleManager();
-
-        soundMaster = new DC_SoundMaster(this);
-        final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
-        gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
+            soundMaster = new DC_SoundMaster(this);
+            final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
+            gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager.getEmitterMap());
         try {
@@ -167,10 +192,6 @@ public class DungeonScreen extends GameScreen {
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
-    private void bindEvents() {
-
-
-    }
 
     public void updateGui() {
 //        gridPanel.updateGui();
@@ -314,6 +335,7 @@ public class DungeonScreen extends GameScreen {
 
         }
     }
+
     protected void checkShaderReset() {
         if (batch.getShader() == DarkShader.getShader())
             batch.setShader(bufferedShader);

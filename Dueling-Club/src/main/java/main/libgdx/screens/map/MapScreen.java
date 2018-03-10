@@ -41,6 +41,7 @@ public class MapScreen extends GameScreen {
     protected Stage objectStage;
     protected MapStage mapStage;
     private boolean loaded;
+    private boolean preloaded;
 
     protected MapScreen() {
 
@@ -57,6 +58,8 @@ public class MapScreen extends GameScreen {
 
     @Override
     protected void preLoad() {
+        if (preloaded)
+            return ;
         guiStage = createGuiStage();
         objectStage = new MapObjects(viewPort, getBatch());
         mapStage = new MapStage(viewPort, getBatch());
@@ -68,6 +71,7 @@ public class MapScreen extends GameScreen {
             //if
             XML_Reader.readTypes(true);
             MacroManager.newGame();
+            preloaded=true;
         }, " thread").start();
 
 //        GuiEventManager.trigger(SHOW_SELECTION_PANEL,

@@ -136,7 +136,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
             if (time == DAY_TIME.DUSK) {
                 flipX = true;
             }
-            if (time == DAY_TIME.NOON) {
+            if (time == DAY_TIME.MIDDAY) {
                 flipX = RandomWizard.random();
             }
             x = flipX ? -container.getWidth() / 3 -
@@ -173,31 +173,27 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         super.draw(batch, parentAlpha);
     }
 
-    @Override
-    protected void clearLayer() {
-        super.clearLayer();
-    }
 
     public enum LIGHT_LAYER {
         HEAVENLY_LIGHT_LARGE(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
         HEAVENLY_LIGHT_LARGE_GOLDEN(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
 
-        HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK, DAY_TIME.NOON),
+        HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
         HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MORNING),
 
-        LIGHT_SPREAD_SILVER(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.NOON),
+        LIGHT_SPREAD_SILVER(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
         LIGHT_SPREAD_GOLDEN(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.DUSK),
-        LIGHT_SPREAD(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.NOON),
+        LIGHT_SPREAD(5, ALPHA_TEMPLATE.LIGHT, DAY_TIME.MIDDAY),
 
         VERTICAL_MOONLIGHT(0.4f, -0.15f, 6, ALPHA_TEMPLATE.MOONLIGHT, true,
          DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT),
 
-        VERTICAL_LIGHT(1f, -0.25f, 5, ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.NOON, DAY_TIME.MORNING),
+        VERTICAL_LIGHT(1f, -0.25f, 5, ALPHA_TEMPLATE.LIGHT, true, DAY_TIME.MIDDAY, DAY_TIME.MORNING),
 //        VERTICAL_LIGHT_LARGE_GOLDEN(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK),
-//        VERTICAL_LIGHT_LARGE_GOLDEN_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK, DAY_TIME.NOON),
+//        VERTICAL_LIGHT_LARGE_GOLDEN_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.DUSK, DAY_TIME.MIDDAY),
 //        VERTICAL_LIGHT_LARGE_SILVER_SPECKLED(0.5f, 5, ALPHA_TEMPLATE.LIGHT,true, DAY_TIME.MORNING),
 
-//        MOON_LIGHT(5, ALPHA_TEMPLATE.SUN, DAY_TIME.NOON), //colorize per active moon?
+//        MOON_LIGHT(5, ALPHA_TEMPLATE.SUN, DAY_TIME.MIDDAY), //colorize per active moon?
         ;
 
         public float delay = 0.5f;

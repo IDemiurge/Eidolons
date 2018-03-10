@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.game.bf.Coordinates;
+import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.screens.map.obj.PartyActorFactory.PartyActorParameters;
 import main.libgdx.texture.TextureCache;
@@ -21,6 +23,7 @@ public class PartyActor extends MapActor {
     private Image modeIcon;
     private Image ironBorder;
     private MoveToAction orderAction;
+    private MacroParty party;
 
     public PartyActor(PartyActorParameters parameters) {
         super(parameters.mainTexture);
@@ -31,7 +34,7 @@ public class PartyActor extends MapActor {
     private void init(PartyActorParameters parameters) {
         setPosition(parameters.position.x, parameters.position.y);
         portrait.setPosition(offsetX, offsetY);
-
+        party = parameters.party;
         addActor(ironBorder = new Image(TextureCache.getOrCreateR(BORDER.MAP_PARTY_CIRCLE.getImagePath())));
         ironBorder.setScale(getPortraitScale());
         setSize(ironBorder.getWidth(), ironBorder.getHeight());
@@ -43,8 +46,8 @@ public class PartyActor extends MapActor {
     }
 
     public void hover() {
-if (getAllChildrenActions(MoveToAction.class).size>0)
-    return ;
+        if (getAllChildrenActions(MoveToAction.class).size > 0)
+            return;
         hovered = true;
         ActorMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
         //highlight underlay?
@@ -58,14 +61,14 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
         ActorMaster.addScaleAction(portrait, 1.0f, 1.0f, 0.5f);
 
         ActorMaster.addFadeInAction(ironBorder, 1.0f);
-        ActorMaster.addMoveToAction(ironBorder,0,0,0.75f);
+        ActorMaster.addMoveToAction(ironBorder, 0, 0, 0.75f);
 
         ActorMaster.addFadeInAction(highlight, 0.5f);
         ActorMaster.addScaleAction(highlight.getContent(), 1.0f, 1.0f, 0.5f);
         ActorMaster.addMoveToAction(emblem,
-         getWidth()-emblem.getWidth()
+         getWidth() - emblem.getWidth()
 //          *getEmblemScale()
-         , getHeight()-emblem.getHeight()
+         , getHeight() - emblem.getHeight()
 //          *getEmblemScale()
          , 0.5f);
 
@@ -82,18 +85,20 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
     private float getEmblemScaleDefault() {
         return 1f;
     }
+
     private float getPortraitScale() {
-        return 0.75f ;// TODO * GdxMaster.getFontSizeMod()  ;
+        return 0.75f;// TODO * GdxMaster.getFontSizeMod()  ;
     }
 
     public void move(Vector2 destination) {
-  moveTo(destination.x, destination.y);
+        moveTo(destination.x, destination.y);
     }
+
     public void moveTo(float x, float y) {
-        if (orderAction!=null ){
+        if (orderAction != null) {
             removeAction(orderAction);
         }
-        orderAction = new MoveToAction(){
+        orderAction = new MoveToAction() {
             @Override
             protected void update(float percent) {
                 super.update(percent);
@@ -102,7 +107,7 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
         };
         orderAction.setPosition(x, y);
         float distance = new Vector2(x, y).dst(new Vector2(getX(), getY()));
-        orderAction.setDuration(distance/getSpeed());
+        orderAction.setDuration(distance / getSpeed());
         addAction(orderAction);
         orderAction.setTarget(this);
     }
@@ -112,12 +117,12 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
     }
 
     public void minimize() {
-        if (getAllChildrenActions(MoveToAction.class).size>0)
-            return ;
+        if (getAllChildrenActions(MoveToAction.class).size > 0)
+            return;
         hovered = false;
         emblem.setTouchable(Touchable.enabled);
         ActorMaster.addFadeOutAction(ironBorder, 1.25f);
-        ActorMaster.addMoveToAction(ironBorder,-ironBorder.getWidth()/2,0,1.25f);
+        ActorMaster.addMoveToAction(ironBorder, -ironBorder.getWidth() / 2, 0, 1.25f);
 
         ActorMaster.addFadeOutAction(portrait, 0.5f);
         ActorMaster.addMoveToAction(emblem, 0f, 0f, 0.5f);
@@ -125,7 +130,7 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
         ActorMaster.addFadeOutAction(highlight, 0.5f);
         ActorMaster.addScaleAction(highlight.getContent(), 0f, 0f, 0.5f);
 
-        ActorMaster.addScaleAction(emblem,getEmblemScaleDefault() , 0.5f);
+        ActorMaster.addScaleAction(emblem, getEmblemScaleDefault(), 0.5f);
 
         ActorMaster.addScaleAction(portrait, 0
          , 0.5f);
@@ -136,6 +141,8 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
     @Override
     public void act(float delta) {
         super.act(delta);
+        party.setCoordinates(new Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
+//        party.getCoordinates().setX(); Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
 
     }
 
@@ -145,12 +152,14 @@ if (getAllChildrenActions(MoveToAction.class).size>0)
             return ironBorder.getWidth();
         return emblem.getWidth();
     }
+
     @Override
     public float getHeight() {
         if (hovered)
             return ironBorder.getWidth();
         return emblem.getHeight();
     }
+
     public Image getEmblem() {
         return emblem;
     }

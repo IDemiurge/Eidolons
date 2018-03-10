@@ -1,9 +1,7 @@
 package main.game.module.adventure.entity;
 
 import main.content.DC_TYPE;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.ConcurrentMap;
-import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
@@ -100,7 +98,7 @@ public class MacroActionManager {
         }
         MacroRef ref = new MacroRef(obj);
         // objType.initType(); aut0
-        ObjType objType = DataManager.getType(actionName, MACRO_OBJ_TYPES.MAP_ACTIONS);
+        ObjType objType =null ;//TODO  DataManager.getType(actionName, MACRO_OBJ_TYPES.MAP_ACTIONS);
         if (objType==null )
             objType=getBaseType();
         action = new MacroAction(objType, ref);

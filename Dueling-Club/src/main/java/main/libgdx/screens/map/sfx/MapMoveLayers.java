@@ -334,7 +334,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         LIGHT_SPREAD_GOLDEN.tinted =false;
         LIGHT_SPREAD_SILVER.tinted =false;
 //        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
-//         DAY_TIME.NOON, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
+//         DAY_TIME.MIDDAY, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
 //        };
         CLOUD_HEAVY.setEmitterPaths(SFX.SNOW_TIGHT2.path);
         CLOUD_LARGE.setEmitterPaths(SFX.SNOW.path);
@@ -388,9 +388,9 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         LIGHT_SPREAD_SILVER(MOVE_DIRECTION.SUN, 0, 10f, 0, 0, 0.2f, 0,
          0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.MORNING),
         LIGHT_SPREAD_GOLDEN(MOVE_DIRECTION.SUN, 0,  10f, 0, 0, 0.2f, 0,
-         0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.NOON, DAY_TIME.DUSK),
+         0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.MIDDAY, DAY_TIME.DUSK),
         LIGHT_SPREAD(MOVE_DIRECTION.SUN, 0,   10f, 0, 0, 0.2f, 0,
-         0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.NOON),
+         0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.MIDDAY),
 
         CLOUD(MOVE_DIRECTION.WIND,ALPHA_TEMPLATE.CLOUD,
          2, 30, 4f, 0.0f, 0.5f,  0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.BOTTOM_LEFT),

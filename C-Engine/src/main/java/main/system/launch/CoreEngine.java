@@ -51,6 +51,8 @@ public class CoreEngine {
     private static boolean exe;
     private static boolean mapEditor;
     private static boolean macro;
+    private static boolean jarlike;
+    private static boolean fastMode;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -312,7 +314,7 @@ public class CoreEngine {
     }
 
     public static boolean isIDE() {
-        return !exe&& !jar;
+        return !exe&& !jar&& !jarlike;
     }
     public static boolean isExe() {
         return exe;
@@ -340,5 +342,21 @@ public class CoreEngine {
 
     public static boolean isMacro() {
         return macro;
+    }
+
+    public static void setJarlike(boolean jarlike) {
+        CoreEngine.jarlike = jarlike;
+    }
+
+    public static boolean isJarlike() {
+        return jarlike;
+    }
+
+    public static void setFastMode(boolean fastMode) {
+        CoreEngine.fastMode = fastMode;
+    }
+
+    public static boolean isFastMode() {
+        return fastMode;
     }
 }

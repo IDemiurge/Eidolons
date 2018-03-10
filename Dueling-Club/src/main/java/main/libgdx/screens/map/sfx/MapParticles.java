@@ -33,7 +33,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
     protected void clearLayer() {
         displayed.forEach(emitterActor -> {
         emitterActor.remove();
-//            emitterActor.getEffect().dispose();
+//      TODO       emitterActor.getEffect().dispose();
     });
     }
 

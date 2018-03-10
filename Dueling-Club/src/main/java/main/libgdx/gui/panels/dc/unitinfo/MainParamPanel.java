@@ -2,7 +2,7 @@ package main.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import main.libgdx.gui.UiAnimator;
+import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.AttributesDataSource;
@@ -48,7 +48,7 @@ public class MainParamPanel extends TablePanel {
          getOrCreateR("UI/value icons/attributes/" + sub+
           ".png"),  StringMaster.getWellFormattedString( sub), "");
         container.overrideImageSize(
-         UiAnimator.getSmallIconSize(), UiAnimator.getSmallIconSize());
+         UiMaster.getSmallIconSize(), UiMaster.getSmallIconSize());
         containers.add(container);
         addElement(container);
     }

@@ -31,6 +31,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -122,7 +123,7 @@ public class AnimMaster3d {
 //            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
 //                return false;
 
-        return true;
+        return !CoreEngine.isFastMode();
     }
 
 

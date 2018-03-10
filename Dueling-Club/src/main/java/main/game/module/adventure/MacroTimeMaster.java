@@ -193,7 +193,10 @@ public class MacroTimeMaster {
         }
     }
 
-    public float getSpeed() {
+    public float getPercentageIntoNextDaytime() {
+        return 0.25f* (getDate().getHour()%4+getMinuteCounter()/60);
+    }
+        public float getSpeed() {
         return speed;
     }
 

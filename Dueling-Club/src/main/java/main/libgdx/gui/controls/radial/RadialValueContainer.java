@@ -10,6 +10,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.mouse.BattleClickListener;
+import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.texture.TextureCache;
@@ -33,15 +34,12 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public RadialValueContainer(TextureRegion texture, Runnable action) {
         super(texture, action);
-//        if (texture.getRegionHeight()>70)
-//            if (texture.getRegionWidth()>70){
-//                overrideImageSize(UiAnimator.getIconSize(), UiAnimator.getIconSize());
-//            }
-//        initUnderlay();
         setUnderlay(
          valid?
           RADIAL_UNDERLAYS.BLACK_BEVEL.getTextureRegion() :
           RADIAL_UNDERLAYS.BLACK_BEVEL_DISABLED.getTextureRegion());
+
+
         addListener(new BattleClickListener() {
 
             @Override
@@ -83,6 +81,10 @@ public class RadialValueContainer extends ActionValueContainer {
                 super.exit(event, x, y, pointer, toActor);
             }
         });
+    }
+
+    protected void initSize() {
+        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
     }
 
     public RadialValueContainer(TextureRegion texture, String value, Runnable action) {
@@ -196,7 +198,7 @@ public class RadialValueContainer extends ActionValueContainer {
                 infoLabel.setColor(valid ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
 
                 infoLabel.setPosition((64 - infoLabel.getWidth()) / 2,
-                 (imageContainer.getActor().getImageHeight() + infoLabel.getHeight()) / 2);
+                 (imageContainer.getActor().getContent(). getImageHeight() + infoLabel.getHeight()) / 2);
             }
 
             if (tooltip == null)

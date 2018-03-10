@@ -21,7 +21,7 @@ public class MACRO_CONTENT_CONSTS {
         MIDNIGHT(true,24, true, false, "It is midnight."),
         DAWN(true, 4, true, true, "The sun rises...")  ,
         MORNING(false, 8, true, true, "It is morning"),
-        NOON(false, 12, false, true, "It is noon."),
+        MIDDAY(false, 12, false, true, "It is noon."),
         DUSK(false, 16, true, true, "The sun sets..."),
         NIGHTFALL(true,20, true, false, "The night falls..."),
         ;

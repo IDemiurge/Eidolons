@@ -173,7 +173,7 @@ public class Eidolons {
             getApplication().getGraphics().setResizable(false);
             getMainViewport().setScreenSize(w, h);
         }
-
+        GdxMaster.resized();
     }
 
     public static Dimension getResolutionDimensions(RESOLUTION resolution, boolean fullscreen) {

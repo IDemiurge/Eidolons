@@ -161,7 +161,7 @@ public class Player {
             } else if (sound.contains(" ")) {
                 play(sound.replace(" ", "_"));
             } else {
-                LogMaster.log(1, "Sound not found: " + sound);
+                LogMaster.log(0, "Sound not found: " + sound);
             }
             return;
         }

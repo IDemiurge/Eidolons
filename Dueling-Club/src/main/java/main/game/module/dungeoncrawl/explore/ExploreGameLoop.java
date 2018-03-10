@@ -63,7 +63,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         while (true) {
 
             WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
-            if (Eidolons.getGame()==null  )
+            if (Eidolons.getGame() == null)
                 return;
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
@@ -80,6 +80,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected GameScreen getGdxScreen() {
         return DungeonScreen.getInstance();
     }
+
     @Override
     public Thread startInNewThread() {
         if (!CoreEngine.isGraphicsOff()) {
@@ -301,7 +302,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //            if (ExplorationMaster.checkExplorationSupported(game)) {
 //                WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, false);
 //        master.switchExplorationMode(false);
-
+        if (ExplorationMaster.isExplorationOn()) //TODO refactor!
+            super.loopExit();
 
     }
 

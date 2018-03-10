@@ -14,6 +14,7 @@ import main.libgdx.anims.AnimMaster;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/7/2017.
@@ -82,7 +83,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 //        shopManager.init();
 //        metaDataManager.init();
         game = Eidolons.game;
-        if (game == null)
+        if (game == null || CoreEngine.isMacro())
             game = createGame();
         else
             game.setMetaMaster(this);
@@ -184,15 +185,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void gameExited() {
 
-//        try {
-//            DungeonScreen.getInstance().dispose();
-//        } catch (Exception e) {
-//            main.system.ExceptionMaster.printStackTrace(e);
-//        }
-        //TODO !!!
-
-//        game.getMaster().clear();
-//        game.getStateManager().clear();
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {

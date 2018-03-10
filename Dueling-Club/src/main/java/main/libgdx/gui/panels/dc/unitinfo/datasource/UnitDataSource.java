@@ -8,7 +8,7 @@ import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_ArmorObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
-import main.libgdx.gui.UiAnimator;
+import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
@@ -247,7 +247,7 @@ public class UnitDataSource implements
          new VerticalValueContainer(
           getOrCreateR(valueIconPath),
           param);
-        container.overrideImageSize(UiAnimator.getSmallIconSize(), UiAnimator.getSmallIconSize());
+        container.overrideImageSize(UiMaster.getSmallIconSize(), UiMaster.getSmallIconSize());
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer(paramName , param)));
         container.addListener(tooltip.getController());

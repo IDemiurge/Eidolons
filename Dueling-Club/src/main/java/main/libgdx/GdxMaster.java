@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import main.data.filesys.PathFinder;
+import main.game.core.Eidolons;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.DungeonScreen;
 
@@ -25,6 +26,8 @@ public class GdxMaster {
     public static final float fontSizeAdjustCoef = 0.3f;
     private static final int DEFAULT_WIDTH = 1600;
     private static final int DEFAULT_HEIGHT = 900;
+    private static final int DEFAULT_WIDTH_FULLSCREEN = 1680;
+    private static final int DEFAULT_HEIGHT_FULLSCREEN = 1050;
     private static int width;
     private static int height;
     private static Float fontSizeMod;
@@ -43,7 +46,7 @@ public class GdxMaster {
 
     public static float adjustPos(boolean x, float pos) {
         if (true) //temp
-        return pos;
+            return pos;
         if (x)
             return pos
              - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
@@ -60,10 +63,12 @@ public class GdxMaster {
     public static float centerHeightScreen(Actor actor) {
         return GdxMaster.getHeight() / 2 - actor.getHeight() / 2;
     }
+
     public static float centerWidthScreen(Actor actor) {
         return GdxMaster.getWidth() / 2 - actor.getWidth() / 2;
     }
-        public static float centerWidth(Actor actor) {
+
+    public static float centerWidth(Actor actor) {
         if (actor.getParent() != null)
             if (actor.getParent().getWidth() != 0)
                 return (actor.getParent().getWidth() - actor.getWidth()) / 2;
@@ -132,8 +137,12 @@ public class GdxMaster {
     }
 
     public static float getFontSizeMod() {
-        if (fontSizeMod == null)
-            fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH / GdxMaster.DEFAULT_HEIGHT;
+        if (fontSizeMod == null) {
+            if (Eidolons.isFullscreen())
+                fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH_FULLSCREEN / GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
+            else
+                fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH / GdxMaster.DEFAULT_HEIGHT;
+        }
         if (fontSizeMod < 0) {
             fontSizeMod = Float.valueOf(1);
         }
@@ -168,5 +177,9 @@ public class GdxMaster {
 
     public static void centerAndAdjust(ImageContainer actor) {
         actor.setPosition(adjustPos(true, centerWidth(actor)), adjustPos(false, centerHeight(actor)));
+    }
+
+    public static void resized() {
+        fontSizeMod=null;
     }
 }

@@ -23,6 +23,7 @@ import main.libgdx.gui.tooltips.ToolTipManager;
 import main.libgdx.screens.map.sfx.Blackout;
 import main.libgdx.utils.TextInputPanel;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +52,6 @@ public class GuiStage extends Stage implements StageWithClosable {
 
     }
 
-    public void blackout(float dur) {
-        blackout.fadeOutAndBack(dur);
-    }
 
     protected void init() {
         gameMenu = createGameMenu();
@@ -128,8 +126,21 @@ public class GuiStage extends Stage implements StageWithClosable {
             showText((String) p.get());
         });
 
+        GuiEventManager.bind(GuiEventType.FADE_OUT, p -> {
+            blackout.fadeOut((Float) p.get());
+        });
+        GuiEventManager.bind(GuiEventType.FADE_IN, p -> {
+            blackout.fadeIn((Float) p.get());
+        });
+        GuiEventManager.bind(GuiEventType.FADE_OUT_AND_BACK, p -> {
+            blackout.fadeOutAndBack((Float) p.get());
+        });
     }
 
+    public void blackout(float dur) {
+
+        blackout.fadeOutAndBack(dur);
+    }
     protected void showText(String s) {
         if (s == null) {
             textPanel.close();

@@ -9,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 import main.libgdx.StyleHolder;
+import main.libgdx.bf.generic.ImageContainer;
 import org.apache.commons.lang3.StringUtils;
 
 public class ValueContainer extends TablePanel {
-    protected Cell<Image> imageContainer;
+    protected Cell<ImageContainer> imageContainer;
     protected Cell<Label> nameContainer;
     protected Cell<Label> valueContainer;
-    private LabelStyle style=StyleHolder.getDefaultLabelStyle();
+    private LabelStyle style = StyleHolder.getDefaultLabelStyle();
     private float imageScaleX;
     private float imageScaleY;
     private Label valueLabel;
@@ -40,7 +41,7 @@ public class ValueContainer extends TablePanel {
     }
 
     public ValueContainer(Image image) {
-        imageContainer = addElement(image).size(image.getImageWidth(), image.getImageHeight()).center();
+        imageContainer = addElement(new ImageContainer(image)).size(image.getImageWidth(), image.getImageHeight()).center();
     }
 
     public ValueContainer(TextureRegion texture, String value) {
@@ -92,10 +93,11 @@ public class ValueContainer extends TablePanel {
         imageContainer = addElement(null);
         setName(name);
         if (texture != null) {
-            imageContainer.setActor(new Image(texture))
+            imageContainer.setActor(new ImageContainer(new Image(texture)))
              .height(texture.getRegionHeight())
              .width(texture.getRegionWidth())
-             .center();
+             .center()
+            ;
         } else {
             imageContainer.fill(false).expand(0, 0);
         }
@@ -130,6 +132,11 @@ public class ValueContainer extends TablePanel {
          valueLabel).grow().center();
         setNameAlignment(Align.center);
         setValueAlignment(Align.center);
+
+        initSize();
+    }
+
+    protected void initSize() {
     }
 
     public void setBorder(TextureRegion region) {
@@ -239,17 +246,29 @@ public class ValueContainer extends TablePanel {
     }
 
     public void overrideImageSize(float w, float h) {
+        w = Math.max(0, w);
+        h = Math.max(0, h);
+//        imageContainer.maxSize(w, h);
         if (imageContainer.getActor() != null) {
-            w = Math.max(0, w);
-            h = Math.max(0, h);
-            if (isScaledOnHover()) {
-                imageScaleX = w / imageContainer.getActor().getWidth();
-                imageScaleY = h / imageContainer.getActor().getHeight();
-                if (isScaledOnHover())
-                    imageContainer.getActor().setScale(getImageScaleX(), getImageScaleY());
-                imageContainer.setActorX(w - imageContainer.getActor().getWidth());
-            } else
-                imageContainer.size(w, h);
+//            if (isScaledOnHover()) {
+//                imageScaleX = w / imageContainer.getActor().getWidth();
+//                imageScaleY = h / imageContainer.getActor().getHeight();
+//                imageContainer.getActor().setScale(getImageScaleX(),
+//                 getImageScaleY());
+//                imageContainer.setActorX(
+//                 imageContainer.getActor().getWidth() - w);
+//                imageContainer.setActorY(
+//                 imageContainer.getActor().getHeight() - h);
+//
+//                imageContainer.getActor().getContent(). setX(
+//                 imageContainer.getActor().getWidth() - w);
+//                imageContainer.getActor().getContent(). setY(
+//                 imageContainer.getActor().getHeight() - h);
+//                debugAll();
+////                table.add(button).width(Value.percentWidth(.75F, table));
+//            } else
+//                imageContainer.maxSize(w, h);
+            imageContainer.size(w, h);
         }
     }
 
@@ -273,11 +292,11 @@ public class ValueContainer extends TablePanel {
 
     public void setImageAlign(int imageAlign) {
         if (imageContainer.getActor() != null) {
-            imageContainer.getActor().setAlign(imageAlign);
+            imageContainer.getActor().getContent().setAlign(imageAlign);
         }
     }
 
-    public Cell<Image> getImageContainer() {
+    public Cell<ImageContainer> getImageContainer() {
         return imageContainer;
     }
 

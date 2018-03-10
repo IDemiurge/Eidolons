@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.bf.mouse.BattleClickListener;
-import main.libgdx.gui.UiAnimator;
+import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.controls.radial.RadialMenu;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.screens.DungeonScreen;
@@ -18,7 +18,7 @@ import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager.BORDER;
 
-import static main.libgdx.gui.UiAnimator.UI_ACTIONS.SCALE_ACTION_ICON;
+import static main.libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
 
 public class ActionValueContainer extends ValueContainer {
 
@@ -61,6 +61,10 @@ public class ActionValueContainer extends ValueContainer {
 
     }
 
+    protected void initSize() {
+        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
+        imageContainer.top().right();
+    }
     public static boolean isDarkened() {
         return darkened;
     }
@@ -95,7 +99,7 @@ public class ActionValueContainer extends ValueContainer {
                     return true;
                 if (isScaledOnHover())
                     ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() - scaleByOnHover, getImageScaleY() - scaleByOnHover,
-                     UiAnimator.getDuration(SCALE_ACTION_ICON));
+                     UiMaster.getDuration(SCALE_ACTION_ICON));
                 setLastPressed(ActionValueContainer.this);
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -106,7 +110,7 @@ public class ActionValueContainer extends ValueContainer {
                     return;
                 if (isScaledOnHover())
                     ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(), getImageScaleY(),
-                     UiAnimator.getDuration(SCALE_ACTION_ICON));
+                     UiMaster.getDuration(SCALE_ACTION_ICON));
                 super.touchUp(event, x, y, pointer, button);
             }
 
@@ -130,7 +134,7 @@ public class ActionValueContainer extends ValueContainer {
                 setZIndex(Integer.MAX_VALUE);
                 if (isScaledOnHover())
                     ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
-                     UiAnimator.getDuration(SCALE_ACTION_ICON));
+                     UiMaster.getDuration(SCALE_ACTION_ICON));
 
                 return super.mouseMoved(event, x, y);
             }
@@ -142,7 +146,7 @@ public class ActionValueContainer extends ValueContainer {
                     hover = true;
                     if (isScaledOnHover())
                         ActorMaster.addScaleAction(imageContainer.getActor(),
-                         getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover, UiAnimator.getDuration(SCALE_ACTION_ICON));
+                         getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover, UiMaster.getDuration(SCALE_ACTION_ICON));
                     if (getLastPressed() != ActionValueContainer.this)
                         setLastPressed(null);
                 }
@@ -156,7 +160,7 @@ public class ActionValueContainer extends ValueContainer {
                 if (isScaledOnHover())
                     ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
                      getImageScaleY(),
-                     UiAnimator.getDuration(SCALE_ACTION_ICON));
+                     UiMaster.getDuration(SCALE_ACTION_ICON));
                 if (getLastPressed() != ActionValueContainer.this)
                     setLastPressed(null);
             }

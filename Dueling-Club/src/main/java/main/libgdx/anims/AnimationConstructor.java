@@ -48,7 +48,6 @@ import java.util.*;
  * Created by JustMe on 1/11/2017.
  */
 public class AnimationConstructor {
-    private final boolean preconstructOn = CoreEngine.isJar() || CoreEngine.EXE_MODE; //TODO
     Map<DC_ActiveObj, CompositeAnim> map = new HashMap<>();
     private boolean autoconstruct = false;
     private VALUE[] anim_vals = {
@@ -101,11 +100,16 @@ public class AnimationConstructor {
     }
 
     public   void tryPreconstruct(Unit unit) {
-        if (preconstructOn)
+        if (isPreconstructOn())
                 if (isPreconstructOn(unit))
                     preconstructSpells(unit);
     }
-        public static void preconstructAllForAV() {
+
+    private static boolean isPreconstructOn() {
+        return CoreEngine.isJar() || CoreEngine.isFastMode(); //TODO;
+    }
+
+    public static void preconstructAllForAV() {
         for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
             DC_SpellObj active = new DC_SpellObj(type, Player.NEUTRAL, DC_Game.game, new Ref());
             AnimData data = null;
@@ -226,6 +230,7 @@ public class AnimationConstructor {
     }
 
     public void preconstructAll(Unit unit) {
+        if (isPreconstructAllOnGameInit())
         if (GdxMaster.isLwjglThread()) {
             unit.getActives().forEach(spell -> getOrCreate(spell));
             AnimMaster3d.preloadAtlases(unit);
@@ -703,7 +708,7 @@ public class AnimationConstructor {
         return false;//CoreEngine.isExe()  ;
     }
     public static boolean isPreconstructEnemiesOnCombatStart() {
-        return CoreEngine.isJar()|| CoreEngine.EXE_MODE;
+        return isPreconstructOn();
     }
 
     public enum ANIM_PART {

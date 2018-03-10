@@ -132,7 +132,7 @@ public abstract class ItemListPanel extends TablePanel {
 
     private boolean clicked(TextButton textButton, SelectableItemData sub) {
         currentItem = (sub);
-        updateRequired = true;
+        getParent().setUserObject(sub);
         infoPanel.setItem(sub);
         if (lastChecked != null)
             lastChecked.setChecked(false);

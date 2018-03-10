@@ -91,7 +91,7 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
         VOLCANO_FIRE(0.1f, 0.3f, 0.1f, 2.5f),
         WISPS(0.15f, 2.9f, 0.5f, 0.5f, NIGHTFALL, MIDNIGHT, DAWN),
         LIGHTS(0.15f, 0.9f, 0.5f, 1f, 0.15f, 2.5f, NIGHTFALL, MIDNIGHT, DAWN),
-        SUNLIGHT(0.15f, 0.9f, 0.5f, 0.5f, MORNING, NOON),
+        SUNLIGHT(0.15f, 0.9f, 0.5f, 0.5f, MORNING, MIDDAY),
 //        NIGHT_TIME,
 //        SMOKE,
 //FULL(0.1f, 0.5f, 0.5f, 0.5f),

@@ -103,7 +103,7 @@ public class SpellRadialManager {
             tooltip.setUserObject(new ActionCostSourceImpl(action) );
             valueContainer.addListener(tooltip.getController());
         } else {
-            valueContainer = new RadialValueContainer(
+            valueContainer = new SpellRadialContainer(
                     getOrCreateR(object.getTexturePath()),
                     null
             );

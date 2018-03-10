@@ -142,6 +142,11 @@ public class ItemInfoPanel extends TablePanel {
         pack();
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+    }
+
     protected String getTitle() {
         return item.name;
     }

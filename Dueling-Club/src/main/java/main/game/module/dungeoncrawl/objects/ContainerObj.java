@@ -18,9 +18,9 @@ public class ContainerObj extends DungeonObj {
     }
 
     private void initInventory() {
-        if ( ContainerMaster.isGenerateItemsForContainers())
-        getDM().initContents(this);
-        items= getInitializer().initContainedItems(PROPS.INVENTORY, new DequeImpl<>(), false);
+        if (ContainerMaster.isGenerateItemsForContainers())
+            getDM().initContents(this);
+        items = getInitializer().initContainedItems(PROPS.INVENTORY, new DequeImpl<>(), false);
         itemsInitialized = true;
 
 
@@ -30,11 +30,12 @@ public class ContainerObj extends DungeonObj {
     public ContainerMaster getDM() {
         return (ContainerMaster) super.getDM();
     }
+
     @Override
     public void resetObjects() {
         if (items == null) {
             if (getDM().isPregenerateItems()) {
-            initInventory();
+                initInventory();
             }
         }
         super.resetObjects();
@@ -46,9 +47,9 @@ public class ContainerObj extends DungeonObj {
     }
 
     public DequeImpl<DC_HeroItemObj> getItems() {
-        if (!itemsInitialized){
+        if (!itemsInitialized) {
             initInventory();
-            }
+        }
         return items;
     }
 

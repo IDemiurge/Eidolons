@@ -1,12 +1,13 @@
 package main.libgdx.gui;
 
+import main.libgdx.GdxMaster;
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 import main.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 12/4/2017.
  */
-public class UiAnimator {
+public class UiMaster {
 
     private static Float speedFactor;
 
@@ -29,13 +30,15 @@ public class UiAnimator {
         return v +v* (getSpeedFactor()-1)*action.sensitivity;
     }
 
-    public static float getSmallIconSize() {
-//        GraphicsManager
-        return 32;
+    public static int getSmallIconSize() {
+        return (int) ( 32 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10  ))/10);
     }
-
-    public static float getIconSize() {
-        return 64;
+    public static int getIconSize() {
+        return (int) ( 64 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10  ))/10);
+    }
+    // use  String.format("%.1f", x);?
+    public static int getSpellIconSize() {
+            return (int) ( 80 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10  ))/10);
     }
 
     public enum UI_ACTIONS {

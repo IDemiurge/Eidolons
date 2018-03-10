@@ -23,6 +23,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
 import java.util.*;
@@ -600,7 +601,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public static boolean isJewelryOn() {
-        return true;
+        return !CoreEngine.isFastMode();
     }
 
     public ObjType getOrCreateJewelry(ObjType baseType, JEWELRY_ITEM_TRAIT trait,

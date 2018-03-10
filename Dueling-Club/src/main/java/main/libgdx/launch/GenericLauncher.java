@@ -18,6 +18,7 @@ import main.libgdx.screens.*;
 import main.libgdx.screens.map.MapScreen;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
@@ -182,7 +183,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void render() {
-        if (CoreEngine.isIDE()  ) {
+        if (CoreEngine.isIDE()) {
             try {
                 render_();
             } catch (Exception e) {
@@ -206,16 +207,24 @@ public class GenericLauncher extends Game {
         newScreen.setData(meta);
         final Screen oldScreen = getScreen();
         setScreen(newScreen);
+        if (oldScreen instanceof MapScreen) {
+            // ?
+        } else {
+            if (oldScreen != null)
+                oldScreen.dispose();
+        }
 
-        if (oldScreen != null) {
-            oldScreen.dispose();
+        if ((newScreen instanceof MapScreen)) {
+            return;
         }
         triggerLoaded(meta);
     }
 
     protected void triggerLoaded(ScreenData meta) {
+        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         switch (meta.getType()) {
             case BATTLE:
+                if (!CoreEngine.isMacro())
                 if (firstInitDone)
                     return;
                 new Thread(new Runnable() {
@@ -241,6 +250,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void screenSwitcher(EventCallbackParam param) {
+        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
             switch (newMeta.getType()) {
@@ -251,9 +261,9 @@ public class GenericLauncher extends Game {
                     switchScreen(DungeonScreen::new, newMeta);
                     break;
                 case MAP:
-                    switchScreen(()->MapScreen.getInstance(), newMeta);
+                    switchScreen(() -> MapScreen.getInstance(), newMeta);
                     if (newMeta.getName() != null)
-                    MacroManager.setScenario(newMeta.getName());
+                        MacroManager.setScenario(newMeta.getName());
                     break;
                 case PRE_BATTLE:
                     break;

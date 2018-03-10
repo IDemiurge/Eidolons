@@ -74,7 +74,7 @@ public class MapGuiStage extends GuiStage {
         GuiEventManager.bind(MapEvent.DATE_CHANGED, p -> {
             update();
         });
-        GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
+            GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
 
             if (!CoreEngine.isMapEditor())
                 blackout.fadeOut(1.25f);

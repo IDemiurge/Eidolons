@@ -62,7 +62,7 @@ public class MultiValueContainer extends ValueContainer {
     public List<ValueContainer> separate() {
         List<ValueContainer> result = new ArrayList<>();
         if (imageContainer.getActor() != null) {
-            result.add(new ValueContainer(imageContainer.getActor()));
+            result.add(new ValueContainer(imageContainer.getActor().getContent()));
         } else {
             result.add(null);
         }

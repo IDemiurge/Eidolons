@@ -612,7 +612,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         return false;
     }
     public static boolean isGenerateItemsForContainers() {
-        return true;
+        return !CoreEngine.isFastMode();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

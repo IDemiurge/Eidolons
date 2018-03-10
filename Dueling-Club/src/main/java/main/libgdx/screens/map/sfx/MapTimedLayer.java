@@ -19,14 +19,14 @@ import java.util.Map;
 public abstract class MapTimedLayer<T extends Actor> extends Group {
     protected DAY_TIME time;
     protected Map<DAY_TIME, List<T>> map = new HashMap<>();
-        List<T> displayed = new ArrayList<>();
     protected boolean initialized;
+    List<T> displayed = new ArrayList<>();
 
     public MapTimedLayer() {
         for (DAY_TIME time : DAY_TIME.values())
             map.put(time, new ArrayList<>());
         map.put(null, new ArrayList<>());
-        setSize(MapScreen.defaultSize,MapScreen.defaultSize);
+        setSize(MapScreen.defaultSize, MapScreen.defaultSize);
     }
 
 
@@ -39,7 +39,14 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
     public void applyTint() {
         for (T sub : displayed) {
             if (isTinted(sub)) {
-              tint(sub.getColor());  
+                tint(sub.getColor());
+            }
+        }
+    }
+    public void applyDynamicTint() {
+        for (T sub : displayed) {
+            if (isTinted(sub)) {
+                tintDynamic(sub.getColor());
             }
         }
     }
@@ -48,34 +55,47 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
         return false;
     }
 
+    protected void tintDynamic(Color color) {
+        Color c = new Color(color);
+        tint(color, time);
+        float percentage =
+         MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
+        color.lerp(tint(c, time.getNext()), percentage);
+    }
+
     protected void tint(Color color) {
-        color.r= 1f;
-        color.g= 1f;
-        color.b= 1f;
+        tint(color, time);
+    }
+
+    protected Color tint(Color color, DAY_TIME time) {
+        color.r = 1f;
+        color.g = 1f;
+        color.b = 1f;
         switch (time) {
 
             case DAWN:
-                color.g= 0.94f;
+                color.g = 0.94f;
                 break;
             case MORNING:
-                color.r= 0.96f;
+                color.r = 0.96f;
                 break;
-            case NOON:
-                color.b= 0.94f;
+            case MIDDAY:
+                color.b = 0.94f;
                 break;
             case DUSK:
-                color.b= 0.86f;
+                color.b = 0.86f;
                 break;
             case NIGHTFALL:
-                color.r=0.84f;
-                color.g=0.87f;
+                color.r = 0.84f;
+                color.g = 0.87f;
                 break;
             case MIDNIGHT:
-                color.r=0.89f;
-                color.g=0.94f;
+                color.r = 0.89f;
+                color.g = 0.94f;
                 break;
         }
         tintWithWeather(color, MacroGame.getGame().getLoop().getTimeMaster().getWeather());
+        return new Color(color);
     }
 
     private void tintWithWeather(Color color, WEATHER weather) {
@@ -83,19 +103,19 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
             case CLEAR:
                 break;
             case OVERCAST:
-                color.r=color.r*0.89f;
-                color.g=color.g*0.90f;
-                color.b=color.b*0.94f;
+                color.r = color.r * 0.89f;
+                color.g = color.g * 0.90f;
+                color.b = color.b * 0.94f;
                 break;
             case STORM:
-                color.r=color.r*0.81f;
-                color.g=color.g*0.80f;
-                color.b=color.b*0.90f;
+                color.r = color.r * 0.81f;
+                color.g = color.g * 0.80f;
+                color.b = color.b * 0.90f;
                 break;
             case MISTY:
-                color.r=color.r*0.92f;
-                color.g=color.g*0.95f;
-                color.b=color.b*0.97f;
+                color.r = color.r * 0.92f;
+                color.g = color.g * 0.95f;
+                color.b = color.b * 0.97f;
                 break;
         }
     }
@@ -112,6 +132,7 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
         clearLayer();
         spawnLayer();
     }
+
     protected void spawnLayer() {
         displayed = map.get(time);
         for (T sub : displayed) {
@@ -122,9 +143,10 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
 
     protected void clearLayer() {
 
-        for (T sub : displayed) {
+        for (T sub : new ArrayList<>(displayed)) {
             sub.setVisible(false);
             sub.remove();
+            displayed.remove(sub);
         }
     }
 
