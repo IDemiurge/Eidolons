@@ -1,10 +1,13 @@
 package main.libgdx.screens.map.ui.tooltips;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
 import main.libgdx.GdxMaster;
@@ -13,11 +16,13 @@ import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.screens.map.MapScreen;
+import main.libgdx.screens.map.editor.EditorManager;
 import main.libgdx.screens.map.obj.PlaceActor;
 import main.libgdx.screens.map.sfx.LightLayer;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 import javax.swing.*;
@@ -58,18 +63,25 @@ public class PlaceTooltip extends ToolTip {
     }
 
     @Override
-    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+    protected void onTouchUp(InputEvent event, float x, float y) {
         SwingUtilities.invokeLater(() -> {
             main.system.auxiliary.log.LogMaster.log(1, "Waiting!!! ");
             WaitMaster.WAIT(500);
             if (!MapScreen.getInstance().getMapStage().getRoutes().isRouteHighlighted()) {
                 GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
-                super.onMouseExit(event, 0, 0, 0, toActor);
+                super.onMouseExit(event, 0, 0, 0, null );
                 main.system.auxiliary.log.LogMaster.log(1, "REMOVED!!! ");
             } else {
                 main.system.auxiliary.log.LogMaster.log(1, "Nothing!!! ");
             }
         });
+        super.onTouchUp(event, x, y);
+    }
+
+    @Override
+    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+       actor.minimize();
+
 //        new Thread(() -> {
 //            WaitMaster.WAIT(500);
 //            if (!MapScreen.getInstance().getMapStage().getRoutes().isRouteHighlighted())
@@ -81,9 +93,32 @@ public class PlaceTooltip extends ToolTip {
 
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+      actor.hover();
+//        super.onMouseEnter(event, x, y, pointer, fromActor);
+    }
+
+    @Override
+    protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+        if (CoreEngine.isMapEditor()) {
+            if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)){
+                EditorManager.remove(actor);
+            }
+        } else {
+            MacroGame.getGame().getLoop().tryEnter(place);
+        }
+
+    }
+
+    @Override
+    protected void onTouchDown(InputEvent event, float x, float y) {
+        if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
+            onDoubleTouchDown(event, x, y);
+            return;
+        }
         GuiEventManager.trigger(MapEvent.PLACE_HOVER, place);
         setUpdateRequired(true);
-        super.onMouseEnter(event, x, y, pointer, fromActor);
+        super.onMouseEnter(event, x, y, 1, null );
+        super.onTouchDown(event, x, y);
     }
 
     @Override
@@ -174,6 +209,8 @@ public class PlaceTooltip extends ToolTip {
 
     @Override
     protected boolean checkActorExitRemoves(Actor toActor) {
+        if (toActor==null )
+            return true;
         if (toActor instanceof LightLayer)
             return false;
         if ( MapScreen.getInstance().getGuiStage().getVignette().getContent() .equals(toActor ))

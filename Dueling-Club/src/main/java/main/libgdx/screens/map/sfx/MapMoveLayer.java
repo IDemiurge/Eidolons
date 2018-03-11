@@ -2,7 +2,7 @@ package main.libgdx.screens.map.sfx;
 
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_AREA;
-import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_MOVING_LAYER_TYPE;
+import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_MOVING_LAYER;
 import main.system.auxiliary.RandomWizard;
 
 /**
@@ -11,10 +11,10 @@ import main.system.auxiliary.RandomWizard;
 public class MapMoveLayer extends ImageContainer {
     private float originalX, originalY, maxDistance, speed, shakiness, directionModX, directionModY;
     private MAP_AREA spawnArea;
-    MAP_MOVING_LAYER_TYPE type;
+    MAP_MOVING_LAYER type;
     public float rotationMod= RandomWizard.random()? 1: -1;
 
-    public MapMoveLayer(String path, MAP_AREA spawnArea, MAP_MOVING_LAYER_TYPE type) {
+    public MapMoveLayer(String path, MAP_AREA spawnArea, MAP_MOVING_LAYER type) {
         super(path);
         this.spawnArea = spawnArea;
         this.type = type;
@@ -34,11 +34,11 @@ public class MapMoveLayer extends ImageContainer {
         return maxDistance;
     }
 
-    public MAP_MOVING_LAYER_TYPE getType() {
+    public MAP_MOVING_LAYER getType() {
         return type;
     }
 
-    public void setType(MAP_MOVING_LAYER_TYPE type) {
+    public void setType(MAP_MOVING_LAYER type) {
         this.type = type;
     }
 

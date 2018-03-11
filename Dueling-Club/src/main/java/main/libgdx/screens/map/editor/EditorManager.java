@@ -51,8 +51,16 @@ public class EditorManager {
          screenToStageCoordinates(new Vector2(screenX, screenY));
         int x = (int) v.x;
         int y = (int) v.y;
-        if (mode != null)
+        if (mode == null)
+            mode = MAP_EDITOR_MOUSE_MODE.ADD;
+
             switch (mode) {
+                case ADD:
+                    if (!addOrRemove) {
+                        EditorMapView.getInstance().getObjectStage().removeClosest(x, y);
+                        return;
+                    }
+                    break;
                 case POINT:
                     MacroManager.getPointMaster().clicked(x, y);
                     return;
@@ -115,6 +123,8 @@ public class EditorManager {
 
     public static <E extends MapActor> void remove(E actor) {
         MacroObj obj = actorObjMap.remove(actor);
+        if (obj==null )
+            return;
         MacroGame.getGame().getState().removeObject(obj.getId());
         GuiEventManager.trigger(MapEvent.REMOVE_MAP_OBJ, actor);
     }
@@ -136,12 +146,15 @@ public class EditorManager {
     }
 
     public static void undo() {
+        if (mode==null )
+            EditorMapView.getInstance().getObjectStage().removeLast();
         switch (mode) {
             case CLEAR:
                 break;
             case TRACE:
                 break;
             case ADD:
+                EditorMapView.getInstance().getObjectStage().removeLast();
                 break;
             case EMITTER:
                 EditorMapView.getInstance().getEditorParticles().removeLast();

@@ -38,6 +38,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
+import static main.libgdx.texture.TextureCache.getOrCreateRoundedRegion;
 import static main.system.GuiEventType.GAME_FINISHED;
 
 public class RadialManager {
@@ -49,7 +50,7 @@ public class RadialManager {
 //        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
 //        return !obj.canBeActivated(ref) ?
 //         getOrCreateGrayscaleR(obj.getImagePath()):
-        return getOrCreateR(obj.getImagePath());
+        return getOrCreateRoundedRegion(obj.getImagePath());
     }
 
     private static boolean isActionShown(ActiveObj el, DC_Obj target) {
@@ -412,7 +413,10 @@ public class RadialManager {
         RadialValueContainer valueContainer =null ;
         if (el instanceof DC_SpellObj) {
             valueContainer = new SpellRadialContainer(
-             new TextureRegion(getTextureForActive(el, target)), getRunnable(target, el),
+
+             new TextureRegion(getTextureForActive(el, target))
+
+             , getRunnable(target, el),
              checkValid(el, target), el, target);
         } else {
             valueContainer = new RadialValueContainer(

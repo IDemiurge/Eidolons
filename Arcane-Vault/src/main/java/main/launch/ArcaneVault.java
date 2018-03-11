@@ -30,6 +30,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
+import main.system.content.ContentGenerator;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -193,6 +194,10 @@ public class ArcaneVault {
          .log(3,
           "Welcome to Arcane Vault! \nBrace yourself to face the darkest mysteries of Edalar...");
         initialize();
+if (macroMode)
+{
+    ContentGenerator.generatePlaces();
+}
 
         if (artGen) {
             // ResourceMaster.createArtFolders(types);

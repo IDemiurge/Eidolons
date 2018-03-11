@@ -112,9 +112,11 @@ public abstract class GameState {
         Obj obj = objMap.get(id);
         LogMaster.log(LogMaster.CORE_DEBUG_1, "Obj removed: " + obj);
         objMap.remove(id);
+        removed(obj);
     }
 
-
+    protected void removed(Obj obj) {
+    }
 
 
     public Map<OBJ_TYPE, Map<Integer, Obj>> getObjMaps() {

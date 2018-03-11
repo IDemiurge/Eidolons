@@ -83,7 +83,46 @@ public class MACRO_CONTENT_CONSTS {
 
     }
 
-    public enum PLACE_TYPE {
+    public enum PLACE_EXPLORATION_LAYER {
+        KNOWN, OBSERVABLE, HIDDEN, MYTHIC
+    }
+    public enum BOSS_TYPE {
+
+    }
+        public enum PLACE_SUBTYPE {
+        CRYPT,
+            CAVE,
+            PLACE_OF_POWER,
+        RUINS,
+        TOWER,
+        WIZARD_TOWER,
+        DARK_TOWER,
+        GARRISON,
+        TOWN,
+            TEMPLE,
+            MANSION,
+        DEN,
+        SPIDER_DEN,
+        VILLAGE,
+        DUNGEON,
+        ELVEN_RUINS,
+        CEMETERY,
+        CAMP,
+
+            WRECK,
+            WINDMILL,
+            ARCANE_CIRCLE,
+            ANCIENT_CIRCLE,
+
+            LUMBERMILL,
+            CASTLE,
+            DWARVEN_HALL,
+
+            INN,
+            HOUSE,
+
+    }
+        public enum PLACE_TYPE {
         DUNGEON, LOCATION, BUILDING,
 
     }

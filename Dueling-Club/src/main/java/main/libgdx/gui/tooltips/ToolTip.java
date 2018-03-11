@@ -3,6 +3,7 @@ package main.libgdx.gui.tooltips;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.Entity;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.GuiEventManager;
@@ -23,7 +24,7 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     }
 //refactor - why not implement?
     public InputListener getController() {
-        return new InputListener() {
+        return new ClickListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 onMouseMoved(event, x, y);
@@ -32,6 +33,9 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (getTapCount()>1){
+                    onDoubleTouchDown(event, x, y);
+                } else
                 onTouchDown(event, x, y);
                 return true;
             }
@@ -59,6 +63,9 @@ public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onTouchDown(InputEvent event, float x, float y) {
+    }
+
+    protected void onDoubleTouchDown(InputEvent event, float x, float y) {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {

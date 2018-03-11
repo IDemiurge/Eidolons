@@ -21,23 +21,28 @@ public class PlaceActor extends MapActor {
 
     public void hover() {
         ActorMaster.addScaleAction(this, getHoveredScale(), 0.5f);
+        ActorMaster.addFadeInAction(border, 0.5f);
         setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
     }
 
     private float getHoveredScale() {
-        return  getHoveredSize() / originalTexture.getRegionHeight();
+        return getHoveredSize() / originalTexture.getRegionHeight();
     }
 
     private float getDefaultScale() {
-        return  (getDefaultSize() / originalTexture.getRegionHeight());
+        return (getDefaultSize() / originalTexture.getRegionHeight());
     }
 
     private float getDefaultSize() {
-        return GdxMaster.adjustSize(64);
+        return GdxMaster.adjustSize(96);
+    }
+
+    public Place getPlace() {
+        return place;
     }
 
     private float getHoveredSize() {
-        return GdxMaster.adjustSize(80);
+        return GdxMaster.adjustSize(128);
     }
 
     public void minimize() {
@@ -49,10 +54,17 @@ public class PlaceActor extends MapActor {
 //        preview = new Image(parameters.preview);
         this.place = parameters.place;
         border = new Image(parameters.border);
-
+        addActor(border);
+        if (isHighlightUnder()){
+            border.setZIndex(0);
+        }
         setPosition(parameters.position.x - portrait.getImageWidth() / 2,
          parameters.position.y - portrait.getImageHeight() / 2);
         minimize();
+    }
+
+    private boolean isHighlightUnder() {
+        return true;
     }
 
 

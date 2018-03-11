@@ -2,13 +2,19 @@ package main.game.module.adventure;
 
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
+import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.DirectionMaster;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.GameDate;
 import main.game.module.adventure.global.TimeMaster;
+import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
+import main.game.module.adventure.map.Place;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -34,6 +40,7 @@ public class MacroTimeMaster {
     private boolean fastforward;
     private boolean playerCamping;
     private float defaultSpeed;
+    private DIRECTION windDirection;
 
     public MacroTimeMaster() {
         defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
@@ -108,12 +115,25 @@ public class MacroTimeMaster {
     private void newDayTime(int newPeriod) {
         dayTime = times[newPeriod];
         weather = new EnumMaster<WEATHER>().getRandomEnumConst(WEATHER.class);
+        windDirection = DirectionMaster.getRandomDirection();
+        if (windDirection.isGrowY()==null  || windDirection.isGrowX()==null )
+            if (RandomWizard.random())
+                windDirection = DIRECTION.UP_RIGHT;
+
         MacroGame.getGame().prepareSetTime(dayTime);
         getDate().setDayTime(dayTime);
         GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, dayTime.getLogEntry());
     }
 
+    public DIRECTION getWindDirection() {
+        if (windDirection==null )
+            windDirection=DIRECTION.UP_RIGHT;
+        return windDirection;
+    }
+
     public WEATHER getWeather() {
+        if (weather==null )
+            weather=WEATHER.CLEAR;
         return weather;
     }
 
@@ -160,12 +180,22 @@ public class MacroTimeMaster {
     }
 
     private void processMapObjects() {
-        for (MacroParty party : MacroGame.getGame().getState().getParties()) {
-            if (party.getCurrentDestination() == null)
-                continue;
-//    TravelManager.travel(delta);
-            TravelMaster.travel(party, delta);
+
+        Coordinates c = MacroGame.getGame().getPlayerParty().getCoordinates();
+        for (Place place : MacroGame.getGame().getState().getPlaces()) {
+            MAP_OBJ_INFO_LEVEL infoLevel=MAP_OBJ_INFO_LEVEL.UNKNOWN;
+            if (place.getCoordinates().dst(c) < 500) {
+                infoLevel=MAP_OBJ_INFO_LEVEL.KNOWN;
+                place.setDetected(true);
+            }
+            place.setInfoLevel(infoLevel);
         }
+//            for (MacroParty party : MacroGame.getGame().getState().getParties()) {
+//            if (party.getCurrentDestination() == null)
+//                continue;
+//    TravelManager.travel(delta);
+//            TravelMaster.travel(party, delta);
+//        }
     }
 
 

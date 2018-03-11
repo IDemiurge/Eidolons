@@ -15,13 +15,23 @@ public enum MACRO_PROPS implements PROPERTY {
     ENCOUNTER_SUBGROUPS(null, true, "area"),
     AMBUSHING_GROUPS(true, null, true, "route", "place"),
     FACTION_RELATIONS(true, null, false, "town", "party"),
+
+    DUNGEON_TYPES(false, null, true, "place"),
+
+    PLACE_TYPE(false, null, false, "place"),
+    PLACE_SUBTYPE(false, null, false, "place"),
+
     DUNGEON_LEVELS(false, null, true, "place", "mission"),
+    DUNGEONS(null, true, "town", "place"), //explicit by in-game name for generation
 
     MAP_ICON(false, null, false, "town","place"),
-    BOSS_LEVEL_POOL(false, null, true, "place"),
-    ROOT_POOL(false, null, true, "place"),
-    SUBLEVEL_GROUP_POOL(false, null, true, "place"),
-    SUBLEVEL_POOL(false, null, true, "place"),
+
+    //advanced
+    BOSS_LEVEL_POOL(false, null, true, "placeX"),
+    ROOT_POOL(false, null, true, "placeX"),
+    SUBLEVEL_GROUP_POOL(false, null, true, "placeX"),
+    SUBLEVEL_POOL(false, null, true, "placeX"),
+
     PLACE(true, null, false, "party"),
     CURRENT_EXPLORATION(true, null, false, "party"),
     ROUTE(true, null, false, "party"),
@@ -43,7 +53,6 @@ public enum MACRO_PROPS implements PROPERTY {
     SHOP_ITEM_GROUPS("shop", null),
     SHOP_MODIFIER("shop", null),
     SHOPS(null, true, "town", "place"),
-    DUNGEONS(null, true, "town", "place"),
     TOWN_HALL(null, false, "town"),
     TAVERNS(null, false, "town"),
     LINKED_PLACES(null, false, "route", "town", "place"),

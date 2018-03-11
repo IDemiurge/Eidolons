@@ -19,9 +19,13 @@ public enum
 MACRO_OBJ_TYPES implements OBJ_TYPE {
     WORLD("world", G_PROPS.GROUP, 1),
     REGION("region", MACRO_PROPS.AREA, 2),
-    PLACE(("place"), MACRO_PROPS.REGION, 3, MACRO_PROPS.AREA),
+    PLACE(("place"), MACRO_PROPS.PLACE_TYPE, 3, MACRO_PROPS.PLACE_SUBTYPE),
     SHOP("shop", MACRO_PROPS.SHOP_LEVEL, 4, MACRO_PROPS.SHOP_TYPE),
-    TOWN("town", MACRO_PROPS.AREA, 5, MACRO_PROPS.REGION),
+    TOWN("town", MACRO_PROPS.AREA, 5, MACRO_PROPS.REGION){
+        public OBJ_TYPE getParent() {
+            return PLACE;
+        }
+    },
     ROUTE("route", MACRO_PROPS.AREA, 6, MACRO_PROPS.REGION),
     // DIALOGUE(("dialogue"), G_PROPS.GROUP, 8, MACRO_PROPS.ACTOR, true),
      FACTION("faction", G_PROPS.GROUP, 7),

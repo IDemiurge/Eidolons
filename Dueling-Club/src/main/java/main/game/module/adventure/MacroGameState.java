@@ -32,6 +32,28 @@ public class MacroGameState extends GameState {
     }
 
     @Override
+    public void removed(Obj obj) {
+        if (obj instanceof MacroParty) {
+            parties.remove(obj);
+        }
+
+        if (obj instanceof Place) {
+
+            if (obj instanceof Town) {
+                towns.remove(obj);
+            } else
+            if (obj instanceof Route) {
+                routes.remove(obj);
+            } else
+                places.remove(obj);
+
+        } else if (obj instanceof Region) {
+            regions.remove(obj);
+        }
+
+    }
+
+    @Override
     public void addObject(Obj obj) {
         if (obj instanceof MacroParty) {
             parties.add((MacroParty) obj);

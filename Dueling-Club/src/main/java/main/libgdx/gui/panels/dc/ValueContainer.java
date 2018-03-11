@@ -250,23 +250,23 @@ public class ValueContainer extends TablePanel {
         h = Math.max(0, h);
 //        imageContainer.maxSize(w, h);
         if (imageContainer.getActor() != null) {
-//            if (isScaledOnHover()) {
-//                imageScaleX = w / imageContainer.getActor().getWidth();
-//                imageScaleY = h / imageContainer.getActor().getHeight();
-//                imageContainer.getActor().setScale(getImageScaleX(),
-//                 getImageScaleY());
-//                imageContainer.setActorX(
-//                 imageContainer.getActor().getWidth() - w);
-//                imageContainer.setActorY(
-//                 imageContainer.getActor().getHeight() - h);
-//
-//                imageContainer.getActor().getContent(). setX(
-//                 imageContainer.getActor().getWidth() - w);
-//                imageContainer.getActor().getContent(). setY(
-//                 imageContainer.getActor().getHeight() - h);
-//                debugAll();
-////                table.add(button).width(Value.percentWidth(.75F, table));
-//            } else
+            if (isScaledOnHover()) {
+                imageScaleX = w / imageContainer.getActor().getWidth();
+                imageScaleY = h / imageContainer.getActor().getHeight();
+                imageContainer.getActor().setScale(getImageScaleX(),
+                 getImageScaleY());
+                imageContainer.setActorX(
+                 imageContainer.getActor().getWidth() - w);
+                imageContainer.setActorY(
+                 imageContainer.getActor().getHeight() - h);
+
+                imageContainer.getActor().getContent(). setX(
+                 imageContainer.getActor().getWidth() - w);
+                imageContainer.getActor().getContent(). setY(
+                 imageContainer.getActor().getHeight() - h);
+
+//                table.add(button).width(Value.percentWidth(.75F, table));
+            } else
 //                imageContainer.maxSize(w, h);
             imageContainer.size(w, h);
         }

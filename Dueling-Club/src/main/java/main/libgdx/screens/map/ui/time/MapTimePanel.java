@@ -42,7 +42,7 @@ import static main.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
  * Month
  * where to show date?
  * perhaps I will now display what later will become a tooltip?
- * date could be displayed in a corner, classic fashion
+ * date could be displayed in a rim, classic fashion
  * <p>
  * dawn/noon/dusk/night
  */

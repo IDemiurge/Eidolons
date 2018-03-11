@@ -82,6 +82,7 @@ public class WorldGenerator {
         for (String s : StringMaster.open(region
          .getProperty(MACRO_PROPS.PLACES))) {
             Place place = createPlace(ref, s);
+            if (place!=null )
             region.addPlace(place);
         }
         for (String s : StringMaster.open(region
@@ -225,6 +226,9 @@ public class WorldGenerator {
         s = formatPointVarString(s);
         String typeName = VariableManager.removeVarPart(s);
         ObjType t = DataManager.getType(typeName, MACRO_OBJ_TYPES.PLACE);
+        if (t==null ){
+            return null ;
+        }
         Place place = new Place(game, t, ref);
         if (VariableManager.getVarPart(s).contains("-")) {
             Coordinates c = new Coordinates(true, VariableManager.getVarPart(s));

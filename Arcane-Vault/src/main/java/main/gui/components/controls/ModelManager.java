@@ -21,6 +21,8 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.rules.rpg.PrincipleMaster;
 import main.game.core.game.Game;
+import main.game.module.adventure.MacroGame;
+import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.travel.EncounterMaster;
 import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
@@ -34,6 +36,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.content.BfObjPropGenerator;
 import main.system.content.ContentGenerator;
+import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
@@ -759,6 +762,9 @@ public class ModelManager {
     }
 
     public static void saveAll() {
+        if (CoreEngine.isMacro())
+            if (MacroGame.getGame()!=null )
+                MacroManager.saveTheWorld();
         ArcaneVault.setDirty(true);
         SoundMaster.playStandardSound(STD_SOUNDS.DONE);
         Weaver.inNewThread(new Runnable() {

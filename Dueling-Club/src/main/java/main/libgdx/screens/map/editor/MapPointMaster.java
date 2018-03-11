@@ -41,7 +41,8 @@ public class MapPointMaster  {
             actor.addListener(new ValueTooltip(pair.getKey()).getController());
             Coordinates c = pair.getValue();
             actor.setPosition(c.x-region.getRegionWidth()/2,c.y-region.getRegionHeight()/2);
-            MapScreen.getInstance().getObjectStage().  addActor(actor);
+            MapScreen.getInstance().getObjectStage().getPointsGroup().
+             addActor(actor);
         });
         }
         load();

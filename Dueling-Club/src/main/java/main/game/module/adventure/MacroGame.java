@@ -3,6 +3,7 @@ package main.game.module.adventure;
 import main.client.cc.logic.party.Party;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.entity.DC_IdManager;
@@ -10,6 +11,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.faction.FactionObj;
 import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
@@ -265,5 +267,12 @@ public class MacroGame extends Game {
 
     public void setGameLoopThread(Thread gameLoopThread) {
         this.gameLoopThread = gameLoopThread;
+    }
+
+    public WEATHER getWeather() {
+        return getLoop().getTimeMaster().getWeather();
+    }
+    public DIRECTION getWindDirection() {
+        return getLoop().getTimeMaster().getWindDirection();
     }
 }

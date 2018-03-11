@@ -7,6 +7,7 @@ import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.game.module.adventure.MacroGame;
 import main.libgdx.screens.map.MapScreen;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,6 +132,14 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
             init();
         clearLayer();
         spawnLayer();
+        if (CoreEngine.isMapEditor())
+            return;
+        if (isTinted())
+            applyTint();
+    }
+
+    protected boolean isTinted() {
+        return false;
     }
 
     protected void spawnLayer() {

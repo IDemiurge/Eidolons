@@ -10,34 +10,38 @@ import main.libgdx.bf.generic.ImageContainer;
 /**
  * Created by JustMe on 3/1/2018.
  */
-public class Blackout extends Group{
-    public static final String path = PathFinder.getMacroUiPath()+"blackout.jpg";
+public class Blackout extends Group {
+    public static final String path = PathFinder.getMacroUiPath() + "blackout.jpg";
     private final ImageContainer image;
 
-    public Blackout( ) {
+    public Blackout() {
         image = new ImageContainer(path);
 
     }
 
-    public void fadeOut(Float dur){
-        if (dur==null )
+    public void fadeOut(Float dur) {
+        if (dur == null)
             dur = 1.5f;
-        image.getContent().getColor().a=0;
+        image.getContent().getColor().a = 0;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
-        ActorMaster.addFadeInAction(image.getContent(), dur );
+        ActorMaster.addFadeInAction(image.getContent(), dur);
     }
-    public void fadeIn(Float dur){
-        if (dur==null )
+
+    public void fadeIn(Float dur) {
+        if (dur == null)
             dur = 1.5f;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
-        if (image.getContent().getColor().a!=1){
+        if (image.getContent().getColor().a != 1) {
             ActorMaster.addFadeInAndOutAction(image.getContent(), dur, false);
         } else
-        ActorMaster.addFadeOutAction(image.getContent(), dur );
+            ActorMaster.addFadeOutAction(image.getContent(), dur);
     }
-        public void fadeOutAndBack(float dur){
+
+    public void fadeOutAndBack(Float dur) {
+        if (dur == null)
+            dur = 3f;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         addActor(image);
         ActorMaster.addFadeInAndOutAction(image.getContent(), dur, false);
@@ -48,13 +52,10 @@ public class Blackout extends Group{
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (image.getContent().getColor().a==0)
-        {
+        if (image.getContent().getColor().a == 0) {
             setZIndex(0);
             image.setTouchable(Touchable.disabled);
-        }
-            else
-        {
+        } else {
             setZIndex(Integer.MAX_VALUE);
             image.setTouchable(Touchable.enabled);
         }

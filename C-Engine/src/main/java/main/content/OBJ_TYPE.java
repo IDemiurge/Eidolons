@@ -28,4 +28,8 @@ public interface OBJ_TYPE {
     PROPERTY getUpgradeRequirementProp();
 
     boolean isHeroTreeType();
+
+    default OBJ_TYPE getParent(){
+        return null ;
+    }
 }

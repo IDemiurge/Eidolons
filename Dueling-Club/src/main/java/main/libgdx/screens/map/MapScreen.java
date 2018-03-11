@@ -38,7 +38,7 @@ public class MapScreen extends GameScreen {
     public static final int defaultSize=2988;
     //    protected RealTimeGameLoop realTimeGameLoop;
     protected MapGuiStage guiStage;
-    protected Stage objectStage;
+    protected MapObjStage objectStage;
     protected MapStage mapStage;
     private boolean loaded;
     private boolean preloaded;
@@ -61,7 +61,7 @@ public class MapScreen extends GameScreen {
         if (preloaded)
             return ;
         guiStage = createGuiStage();
-        objectStage = new MapObjects(viewPort, getBatch());
+        objectStage = new MapObjStage(viewPort, getBatch());
         mapStage = new MapStage(viewPort, getBatch());
         super.preLoad();
         initGl();
@@ -218,7 +218,7 @@ public class MapScreen extends GameScreen {
         return guiStage.getGameMenu().isVisible();
     }
 
-    public Stage getObjectStage() {
+    public MapObjStage getObjectStage() {
         return objectStage;
     }
 

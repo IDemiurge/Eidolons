@@ -72,7 +72,7 @@ public class BuildHelper {
 //                return location.getMainExit().getCoordinates();
 //            case SECRET_ROOM:
 //            case TREASURE_ROOM:
-//                corner = true;
+//                rim = true;
 //        }
         int x = !plan.isFlippedX() ? params.getIntValue(BUILD_PARAMS.WALL_WIDTH) : location
                 .getCellsX()
@@ -615,7 +615,7 @@ public class BuildHelper {
     // break;
     // case CROSS:
     // case CULDESAC:
-    // // into corner/side; surround always by walls
+    // // into rim/side; surround always by walls
     // // 3 width - 1 corridor and 2 walls
     // // what's different from CORRIDOR ??? -> base coordinate?
     // // orientation?

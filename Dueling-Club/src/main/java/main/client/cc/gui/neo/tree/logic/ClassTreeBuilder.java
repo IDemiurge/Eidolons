@@ -248,7 +248,7 @@ public class ClassTreeBuilder extends HT_MapBuilder {
     // /*
     // * TODO
     // *
-    // * lower corner -> standard offset!
+    // * lower rim -> standard offset!
     // *
     // * right/left - defSize offset
     // *

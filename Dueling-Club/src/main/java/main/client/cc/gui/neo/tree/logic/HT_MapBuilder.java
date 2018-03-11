@@ -862,9 +862,9 @@ public class HT_MapBuilder {
     // Image img = ImageManager.getEmitterPath(link.getImageFileName());
     // point = new PointX(parentX + link.getXOffset()
     // + (link.isToRight() ? defSize : 0)
-    // // from the other corner...
+    // // from the other rim...
     // + link.getOffsetMultiplier() * HC_Tree.getXOffsetForLink(link)
-    // // additional offset - not always from corner!!!
+    // // additional offset - not always from rim!!!
     // , map.getPointForType(parent).y - img.getHeight(null)
     // + HC_Tree.getYOffsetForLink(link));
     //

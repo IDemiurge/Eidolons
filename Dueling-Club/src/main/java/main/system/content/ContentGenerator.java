@@ -18,7 +18,11 @@ import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.*;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.PLACE_SUBTYPE;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.PLACE_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.active.DC_ActionManager.WEAPON_ATTACKS;
@@ -28,14 +32,68 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ContentGenerator {
 
     static PARAMS[] params = {PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.ARMOR,};
+
+    public static void generatePlaces() {
+        for (PLACE_SUBTYPE sub : PLACE_SUBTYPE.values()) {
+            String name = StringMaster.getWellFormattedString(sub.name());
+            ObjType type = new ObjType(name, MACRO_OBJ_TYPES.PLACE);
+            type.setProperty(MACRO_PROPS.DUNGEON_TYPES, getDUNGEON_TYPES(sub));
+            type.setProperty(MACRO_PROPS.PLACE_TYPE, getPLACE_TYPE(sub));
+            type.setProperty(MACRO_PROPS.PLACE_SUBTYPE, name);
+            type.setProperty(MACRO_PROPS.MAP_ICON, "global\\map\\icons\\places\\" + name + ".png");
+            type.setProperty(G_PROPS.IMAGE, "global\\map\\icons\\places\\preview\\" + name + ".png");
+            DataManager.addType(type);
+//            type = new ObjType(name+ " alt" ,type);
+//            DataManager.addType(type);
+        }
+    }
+
+    private static String getPLACE_TYPE(PLACE_SUBTYPE sub) {
+        switch (sub) {
+            case CAMP:
+                return PLACE_TYPE.LOCATION.name();
+            case WIZARD_TOWER:
+            case DARK_TOWER:
+                return PLACE_TYPE.BUILDING.name();
+        }
+        return PLACE_TYPE.DUNGEON.name();
+    }
+
+    private static String getDUNGEON_TYPES(PLACE_SUBTYPE sub) {
+        switch (sub) {
+            //TODO dwarf
+            case ELVEN_RUINS:
+                return "elven";
+            case PLACE_OF_POWER:
+            case WIZARD_TOWER:
+            case DARK_TOWER:
+                return "arcane";
+            case GARRISON:
+            case TOWN:
+            case INN:
+            case HOUSE:
+            case CASTLE:
+            case TOWER:
+            case VILLAGE:
+                return "ravenguard";
+            case MANSION:
+                return "crypt";
+            case DEN:
+            case SPIDER_DEN:
+                return "cavern";
+            case CAMP:
+                return "surface";
+        }
+        return sub.name();
+    }
 
     public static void adjustParties() {
 
@@ -337,7 +395,7 @@ public class ContentGenerator {
 
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             RESIST_GRADE grade = (material == null) ? getGradeForUnitType(t, dmg_type) : material
-                    .getResistGrade(dmg_type);
+             .getResistGrade(dmg_type);
             PROPERTY prop = DC_ContentManager.getResistGradeForDmgType(dmg_type);
             if (prop == null) {
                 continue;
@@ -345,25 +403,25 @@ public class ContentGenerator {
 
             t.setProperty(prop, grade.toString());
             t.setParam(DC_ContentManager.getArmorParamForDmgType(dmg_type), Math.round(armor
-                    * grade.getPercent() / 100));
+             * grade.getPercent() / 100));
             if (material == null) {
                 grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
-                        .getProperty(DC_ContentManager.getResistGradeForDmgType(dmg_type)));
+                 .getProperty(DC_ContentManager.getResistGradeForDmgType(dmg_type)));
             } else {
                 grade = material.getSelfDamageGrade(dmg_type);
             }
             t.setProperty(DC_ContentManager.getSelfDamageGradeForDmgType(dmg_type), grade
-                    .toString());
+             .toString());
 
             prop = DC_ContentManager.getSelfDamageGradeForDmgType(dmg_type);
             if (prop == null) {
                 continue;
             }
             grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
-                    .getProperty(prop));
+             .getProperty(prop));
 
             t.setParam(DC_ContentManager.getArmorSelfDamageParamForDmgType(dmg_type), Math
-                    .round(grade.getPercent()));
+             .round(grade.getPercent()));
 
         }
 
@@ -373,94 +431,94 @@ public class ContentGenerator {
         switch (group) {
             case AXES:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop, WEAPON_ATTACKS.Hack,
-                        WEAPON_ATTACKS.Hook));
+                 WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop, WEAPON_ATTACKS.Hack,
+                 WEAPON_ATTACKS.Hook));
             case POLLAXES:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Spike_Stab, WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop,
-                        WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Hook));
+                 WEAPON_ATTACKS.Spike_Stab, WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop,
+                 WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Hook));
 
             case FLAILS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Heavy_Swing, WEAPON_ATTACKS.Chain_Thrust,
-                        WEAPON_ATTACKS.Head_Smash));
+                 WEAPON_ATTACKS.Heavy_Swing, WEAPON_ATTACKS.Chain_Thrust,
+                 WEAPON_ATTACKS.Head_Smash));
             case HAMMERS:
                 return StringMaster
-                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
-                                WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
+                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
+                  WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
             case MACES:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Heavy_Swing));
+                 WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Heavy_Swing));
             case CLUBS:
                 return StringMaster
-                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
-                                WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
+                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
+                  WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
 
             case GREAT_SWORDS:
             case LONG_SWORDS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Sword_Swing, WEAPON_ATTACKS.Slash,
-                        WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Hilt_Smash));
+                 WEAPON_ATTACKS.Sword_Swing, WEAPON_ATTACKS.Slash,
+                 WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Hilt_Smash));
             case SHORT_SWORDS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash,
-                        WEAPON_ATTACKS.Hilt_Smash, WEAPON_ATTACKS.Stab));
+                 WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash,
+                 WEAPON_ATTACKS.Hilt_Smash, WEAPON_ATTACKS.Stab));
             case DAGGERS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash, WEAPON_ATTACKS.Stab));
+                 WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash, WEAPON_ATTACKS.Stab));
 
             case SCYTHES:
                 return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook,
-                        WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Pole_Push,
-                        WEAPON_ATTACKS.Pole_Smash));
+                 WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Pole_Push,
+                 WEAPON_ATTACKS.Pole_Smash));
             case SPEARS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Spear_Poke, WEAPON_ATTACKS.Impale,
-                        WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Push));
+                 WEAPON_ATTACKS.Spear_Poke, WEAPON_ATTACKS.Impale,
+                 WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Push));
             case STAVES:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Thrust,
-                        WEAPON_ATTACKS.Pole_Push));
+                 WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Thrust,
+                 WEAPON_ATTACKS.Pole_Push));
             case SHIELDS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Shield_Push, WEAPON_ATTACKS.Shield_Bash));
+                 WEAPON_ATTACKS.Shield_Push, WEAPON_ATTACKS.Shield_Bash));
             case CLAWS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Rip));
+                 WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Rip));
             case FISTS:
                 return StringMaster.constructStringContainer(ListMaster
-                        .toList(WEAPON_ATTACKS.Punch, WEAPON_ATTACKS.Fist_Swing,
-                                WEAPON_ATTACKS.Elbow_Smash));
+                 .toList(WEAPON_ATTACKS.Punch, WEAPON_ATTACKS.Fist_Swing,
+                  WEAPON_ATTACKS.Elbow_Smash));
             case FEET:
                 return StringMaster
-                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
+                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
             case MAWS:
                 return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
-                        WEAPON_ATTACKS.Dig_Into, WEAPON_ATTACKS.Tear));
+                 WEAPON_ATTACKS.Dig_Into, WEAPON_ATTACKS.Tear));
             case FANGS:
                 return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
-                        WEAPON_ATTACKS.Dig_Into));
+                 WEAPON_ATTACKS.Dig_Into));
             case TAILS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Tail_Smash, WEAPON_ATTACKS.Tail_Sting));
+                 WEAPON_ATTACKS.Tail_Smash, WEAPON_ATTACKS.Tail_Sting));
             case HORNS:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Tear));
+                 WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Tear));
             case INSECTOID:
                 return StringMaster.constructStringContainer(ListMaster.toList(
-                        WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Stab));
+                 WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Stab));
             case HOOVES:
                 return StringMaster.constructStringContainer(ListMaster
-                        .toList(WEAPON_ATTACKS.Hoof_Slam));
+                 .toList(WEAPON_ATTACKS.Hoof_Slam));
             case BEAKS:
                 return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
-                        WEAPON_ATTACKS.Tear, WEAPON_ATTACKS.Dig_Into));
+                 WEAPON_ATTACKS.Tear, WEAPON_ATTACKS.Dig_Into));
             case EYES:
                 return StringMaster
-                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
+                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
             case FORCE:
                 return StringMaster
-                        .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
+                 .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
 
         }
         return null;
@@ -469,7 +527,7 @@ public class ContentGenerator {
     public static void generateWeaponParams(ObjType t) {
         // if (!t.checkProperty(PROPS.WEAPON_ATTACKS)) {
         WEAPON_GROUP group = new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(WEAPON_GROUP.class, t
-                .getProperty(G_PROPS.WEAPON_GROUP));
+         .getProperty(G_PROPS.WEAPON_GROUP));
         if (group != null) {
             String weaponActions = getDefaultWeaponActions(group);
             if (weaponActions != null) {
@@ -489,7 +547,7 @@ public class ContentGenerator {
         if (t.getIntParam(PARAMS.IMPACT_AREA) == 0) {
             if (group == null) {
                 WEAPON_TYPE ty = new EnumMaster<WEAPON_TYPE>().retrieveEnumConst(WEAPON_TYPE.class,
-                        t.getProperty(G_PROPS.WEAPON_TYPE));
+                 t.getProperty(G_PROPS.WEAPON_TYPE));
                 if (ty == ItemEnums.WEAPON_TYPE.NATURAL) {
                     Integer area = 20;
                     t.setParam(PARAMS.IMPACT_AREA, area);
@@ -500,7 +558,7 @@ public class ContentGenerator {
                 return;
             }
             WEAPON_SIZE size = new EnumMaster<WEAPON_SIZE>().retrieveEnumConst(WEAPON_SIZE.class, t
-                    .getProperty(G_PROPS.WEAPON_SIZE));
+             .getProperty(G_PROPS.WEAPON_SIZE));
             if (size == null) {
                 return;
             }
@@ -743,9 +801,9 @@ public class ContentGenerator {
             case BF_OBJ:
 
                 BF_OBJECT_TYPE type = new EnumMaster<BF_OBJECT_TYPE>().retrieveEnumConst(
-                        BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
+                 BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
                 BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
-                        BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
+                 BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
                 if (type != null) {
                     switch (type) {
                         // TODO
@@ -769,7 +827,7 @@ public class ContentGenerator {
 
             case UNITS:
                 List<CLASSIFICATIONS> c = new EnumMaster<CLASSIFICATIONS>().getEnumList(
-                        CLASSIFICATIONS.class, t.getProperty(G_PROPS.CLASSIFICATIONS));
+                 CLASSIFICATIONS.class, t.getProperty(G_PROPS.CLASSIFICATIONS));
 
                 if (c.contains(UnitEnums.CLASSIFICATIONS.GIANT)) {
                     height = 600;
@@ -787,11 +845,11 @@ public class ContentGenerator {
 
             case CHARS:
                 RACE race = new EnumMaster<RACE>().retrieveEnumConst(RACE.class, t
-                        .getProperty(G_PROPS.RACE));
+                 .getProperty(G_PROPS.RACE));
                 BACKGROUND bg = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, t
-                        .getProperty(G_PROPS.BACKGROUND));
+                 .getProperty(G_PROPS.BACKGROUND));
                 GENDER g = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, t
-                        .getProperty(G_PROPS.GENDER));
+                 .getProperty(G_PROPS.GENDER));
                 if (race != null) {
                     switch (race) {
                         case DEMON:

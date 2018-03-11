@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DungeonLevelMaster {
-    public static final String TEST_ENTRANCE_DATA = "Crystal Cave(Dark Tunnel=corner,center);";
+    public static final String TEST_ENTRANCE_DATA = "Crystal Cave(Dark Tunnel=rim,center);";
 
     public static final String EXIT_PREFIX = ", exit ";
     public static final String EXIT_SUFFIX = "!exit";

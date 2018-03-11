@@ -863,6 +863,7 @@ public class ContentManager {
     }
 
     public static boolean isValueForOBJ_TYPE(String type, VALUE p) {
+
         if (p.getEntityTypes() != null) {
             if (Arrays.asList(p.getEntityTypes()).contains((type))) {
                 return true;
@@ -877,8 +878,19 @@ public class ContentManager {
             }
             return instance.checkAllApplies(p, type);
         }
-
-        return p.getEntityType().equals(type);
+        if (p.getEntityType().equals(type))
+        return true;
+        OBJ_TYPE TYPE = getOBJ_TYPE(type);
+        if (TYPE==null )
+            return false;
+        TYPE = TYPE.getParent();
+        while (TYPE!=null ){
+            if (isValueForOBJ_TYPE(TYPE, p)) {
+                return  true;
+            }
+            TYPE = TYPE.getParent();
+        }
+        return false;
     }
 
     public static List<OBJ_TYPE> getOBJ_TYPEsForValue(VALUE value) {

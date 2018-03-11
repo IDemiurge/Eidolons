@@ -258,6 +258,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         editorMap.put(soundsetIdentifier, soundChooser);
         editorMap.put(G_PROPS.FULLSIZE_IMAGE.getName(), imageChooser);
         editorMap.put(imgIdentifier, imageChooser);
+        editorMap.put(MACRO_PROPS.MAP_ICON.getName(), new AV_ImgChooser("global\\map\\icons\\places\\"));
         editorMap.put(PROPS.MAP_BACKGROUND.getName(), new AV_ImgChooser(null));
         editorMap.put(emblemIdentifier, imageChooser);
         editorMap.put(actIdentifier, multiListEditor);

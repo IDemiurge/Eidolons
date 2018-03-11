@@ -168,7 +168,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected boolean isScaledOnHover() {
-        return true;
+        return false;
     }
 
     @Override

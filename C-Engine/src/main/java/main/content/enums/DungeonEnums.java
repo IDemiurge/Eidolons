@@ -129,7 +129,7 @@ public class DungeonEnums {
         MISTY_MOUNTAINS("big\\dungeons\\Misty Mountains.jpg"),
         CEMETARY("big\\dungeons\\cemetary.jpg"),
         DEAD_CITY("big\\dungeons\\dead city.jpg"),
-        MANSION("big\\dungeons\\mansion.jpg"),
+        MANSION("big\\dungeons\\MANSION.jpg"),
         RUINS("big\\dungeon\\ruins.jpg"),
         CASTLE("big\\dungeons\\castle.jpg"),
         DARK_CASTLE("big\\dungeons\\dark castle.jpg"),
