@@ -15,7 +15,11 @@ public class MapInputController extends InputController {
     protected float getWidth() {
         return MapScreen.defaultSize;
 //         MapScreen.getInstance().getMapStage().getMap().getWidth();
+    }
 
+    @Override
+    protected MapScreen getScreen() {
+        return  MapScreen.getInstance();
     }
 
     @Override

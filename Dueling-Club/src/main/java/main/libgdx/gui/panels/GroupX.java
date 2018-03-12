@@ -56,9 +56,9 @@ public class GroupX extends Group {
         return list;
     }
 
-    private void addActions(Array<Action> list, Group group, Class actionClass) {
+    private void addActions(Array<Action> list, Actor actor, Class actionClass) {
 
-        for (Action sub : group.getActions()) {
+        for (Action sub : actor.getActions()) {
             if (actionClass != null)
                 if (!ClassMaster.isInstanceOf(sub, actionClass)) {
                     continue;
@@ -66,12 +66,11 @@ public class GroupX extends Group {
             list.add(sub);
         }
 
+        if (actor instanceof Group) {
 
-        for (Actor sub : group.getChildren()) {
-            if (sub instanceof Group) {
-                addActions(list, (Group) sub, actionClass);
+            for (Actor sub :   ((Group) actor) .getChildren()) {
+                    addActions(list,   sub, actionClass);
             }
-
         }
     }
 }

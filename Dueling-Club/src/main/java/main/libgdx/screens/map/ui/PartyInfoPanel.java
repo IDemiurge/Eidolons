@@ -12,6 +12,8 @@ import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
+import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import main.libgdx.screens.map.MapScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
@@ -28,14 +30,13 @@ import main.system.graphics.FontMaster.FONT;
  */
 public class PartyInfoPanel extends TablePanel {
     MacroParty party;
-    private ImageContainer arrow;
 
     public PartyInfoPanel() {
 
     }
 
     public void init(MacroParty party) {
-//        debug();
+
         clearChildren();
         clearListeners();
         this.party = party;
@@ -47,55 +48,12 @@ public class PartyInfoPanel extends TablePanel {
             main.add(component).maxWidth(getMainWidth());
             main.row();
         }
-//        getColumnPrefWidth(1)
         setSize((getMainWidth())
-//          + STD_IMAGES.DIRECTION_POINTER.getWidth()
          , 128 * party.getMembers().size());
         add(main);//;
 
-//        arrow = new ImageContainer(STD_IMAGES.DIRECTION_POINTER.getPath());
-//        arrow.setRotation(270);
-//        arrow.setOrigin(arrow.getWidth() / 2, arrow.getHeight() / 2);
-//        arrow.addListener(new ClickListener() {
-//            @Override
-//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                if (getActions().size > 0)
-//                    return true;
-//                toggle();
-//                return super.touchDown(event, x, y, pointer, button);
-//            }
-//        });
-//        add(arrow).left(); //rotate on click
         setX(0);
     }
-
-//    private void open() {
-//        //wait for non-moving
-//        toggle(true);
-//    }
-//
-//    private void toggle() {
-//        toggle(!isOpen());
-//    }
-//
-//    private void toggle(boolean open) {
-//        int toX = open ? 0 : -getMainWidth();
-//
-//        ActorMaster.addMoveToAction(
-//         this, toX, getY(), getDuration());
-//
-//        ActorMaster.addRotateByAction(
-//         arrow.getContent(), 180);
-//    }
-
-    private boolean isOpen() {
-        return getX() >= 0;
-    }
-
-    private float getDuration() {
-        return 0.5f;
-    }
-
     private int getMainWidth() {
         return //(int) GdxMaster.adjustSize
          (256);
@@ -128,7 +86,12 @@ header for the party?
             portrait.addListener(new ClickListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, hero);
+                    if (button == 1) {
+                        GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+                         new UnitDataSource(hero));
+                    } else {
+                        MapScreen.getInstance().centerCamera();
+                    }
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });

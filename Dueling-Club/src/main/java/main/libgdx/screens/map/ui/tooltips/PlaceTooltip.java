@@ -69,7 +69,7 @@ public class PlaceTooltip extends ToolTip {
             WaitMaster.WAIT(500);
             if (!MapScreen.getInstance().getMapStage().getRoutes().isRouteHighlighted()) {
                 GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
-                super.onMouseExit(event, 0, 0, 0, null );
+                super.onMouseExit(event, 0, 0, 0, null);
                 main.system.auxiliary.log.LogMaster.log(1, "REMOVED!!! ");
             } else {
                 main.system.auxiliary.log.LogMaster.log(1, "Nothing!!! ");
@@ -80,7 +80,7 @@ public class PlaceTooltip extends ToolTip {
 
     @Override
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-       actor.minimize();
+        actor.minimize();
 
 //        new Thread(() -> {
 //            WaitMaster.WAIT(500);
@@ -93,14 +93,14 @@ public class PlaceTooltip extends ToolTip {
 
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-      actor.hover();
+        actor.hover();
 //        super.onMouseEnter(event, x, y, pointer, fromActor);
     }
 
     @Override
     protected void onDoubleTouchDown(InputEvent event, float x, float y) {
         if (CoreEngine.isMapEditor()) {
-            if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)){
+            if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
                 EditorManager.remove(actor);
             }
         } else {
@@ -117,7 +117,7 @@ public class PlaceTooltip extends ToolTip {
         }
         GuiEventManager.trigger(MapEvent.PLACE_HOVER, place);
         setUpdateRequired(true);
-        super.onMouseEnter(event, x, y, 1, null );
+        super.onMouseEnter(event, x, y, 1, null);
         super.onTouchDown(event, x, y);
     }
 
@@ -131,7 +131,11 @@ public class PlaceTooltip extends ToolTip {
         clearChildren();
 
         TextureRegion r = TextureCache.getOrCreateR(place.getImagePath());
-        add(new ValueContainer(r, place.getName()));
+        ValueContainer container = new ValueContainer(r, place.getName());
+        float size = GdxMaster.adjustSize(128);
+        if (size < r.getRegionHeight() && size < r.getRegionWidth())
+            container.overrideImageSize(size, size);
+        add(container);
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
 //        place.getTopDungeon()
 //QuestMaster.getQuest(place);
@@ -146,18 +150,17 @@ public class PlaceTooltip extends ToolTip {
         TablePanel<ValueContainer> routesInfo = new TablePanel<>();
         routesInfo.defaults().space(5);
         add(routesInfo);
-       routesInfo. addListener(new ClickListener() {
+        routesInfo.addListener(new ClickListener() {
 
 
                                    @Override
                                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                                        if (toActor == routesInfo)
                                            return;
-                                       if (toActor == null )
-                                       {
-                                           if (getWidth()>=x)
+                                       if (toActor == null) {
+                                           if (getWidth() >= x)
                                                return;
-                                           if (getWidth()>=y)
+                                           if (getWidth() >= y)
                                                return;
                                        }
 
@@ -209,11 +212,11 @@ public class PlaceTooltip extends ToolTip {
 
     @Override
     protected boolean checkActorExitRemoves(Actor toActor) {
-        if (toActor==null )
+        if (toActor == null)
             return true;
         if (toActor instanceof LightLayer)
             return false;
-        if ( MapScreen.getInstance().getGuiStage().getVignette().getContent() .equals(toActor ))
+        if (MapScreen.getInstance().getGuiStage().getVignette().getContent().equals(toActor))
             return false;
         if (MapScreen.getInstance().getGuiStage().getBlackout().equals(toActor.getParent())) {
             return false;

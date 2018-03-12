@@ -20,6 +20,7 @@ import main.system.MapEvent;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static main.system.MapEvent.*;
@@ -31,41 +32,10 @@ public class MapObjStage extends Stage {
     private MacroParty mainParty;
     private PartyActor mainPartyActor;
     private Group pointsGroup = new Group();
-    private List<PlaceActor> places=    new ArrayList<>() ;
-    private List<PartyActor> parties=    new ArrayList<>() ;
+    private List<PlaceActor> places = new ArrayList<>();
+    private List<PartyActor> parties = new ArrayList<>();
 
 
-    public Group getPointsGroup() {
-        return pointsGroup;
-    }
-
-    @Override
-    public void act() {
-        super.act();
-        if (CoreEngine.isMapEditor())
-            if (EditorManager.getMode() == MAP_EDITOR_MOUSE_MODE.POINT) {
-                pointsGroup.setVisible(true);
-            } else
-                pointsGroup.setVisible(false);
-
-        for (PlaceActor place : places) {
-            switch (place.getPlace().getInfoLevel()) {
-                case VISIBLE:
-                case KNOWN:
-                    if (place.getColor().a ==0) {
-                        ActorMaster.addFadeInAction(place, 0.84f);
-                    }
-                    break;
-                case CONCEALED:
-                case UNKNOWN:
-                case INVISIBLE:
-                    if (place.getColor().a > 0) {
-                        ActorMaster.addFadeOutAction(place, 0.84f);
-                    }
-                    break;
-            }
-        }
-    }
     public MapObjStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
         addListener(new ClickListener() {
@@ -78,6 +48,73 @@ public class MapObjStage extends Stage {
             }
         });
         bindEvents();
+    }
+
+    public Group getPointsGroup() {
+        return pointsGroup;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (CoreEngine.isMapEditor())
+            if (EditorManager.getMode() == MAP_EDITOR_MOUSE_MODE.POINT) {
+                pointsGroup.setVisible(true);
+            } else
+                pointsGroup.setVisible(false);
+
+        for (PlaceActor place : places) {
+            switch (place.getPlace().getInfoLevel()) {
+                case VISIBLE:
+                case KNOWN:
+                    if (place.getColor().a == 0) {
+                        ActorMaster.addFadeInAction(place, 0.84f);
+                    }
+                    break;
+                case CONCEALED:
+                case UNKNOWN:
+                case INVISIBLE:
+                    if (place.getColor().a > 0) {
+                        ActorMaster.addFadeOutAction(place, 0.84f);
+                    }
+                    break;
+            }
+        }
+        resetZIndices();
+    }
+
+    private void resetZIndices() {
+        //sort by x:y?
+
+        Actor hovered = null;
+        places.sort(getPlacesSorter());
+        for (PlaceActor sub : places) {
+            sub.setZIndex(Integer.MAX_VALUE);
+            if (sub.isHovered())
+                hovered = sub;
+        }
+        if (hovered != null)
+            hovered.setZIndex(Integer.MAX_VALUE);
+        hovered = mainPartyActor;
+        for (PartyActor sub : parties) {
+            sub.setZIndex(Integer.MAX_VALUE);
+            if (sub.isHovered())
+                hovered = sub;
+        }
+        hovered.setZIndex(Integer.MAX_VALUE);
+    }
+
+    private Comparator<? super PlaceActor> getPlacesSorter() {
+        return new Comparator<PlaceActor>() {
+            @Override
+            public int compare(PlaceActor o1, PlaceActor o2) {
+                if (o1.getY() <= o2.getY())
+                    return 1;
+                if (o1.getX() <= o2.getX())
+                    return 1;
+                return -1;
+            }
+        };
     }
 
     protected void bindEvents() {
@@ -140,6 +177,6 @@ public class MapObjStage extends Stage {
 
 
     public void removeLast() {
-        GuiEventManager.trigger(MapEvent.REMOVE_MAP_OBJ, getRoot().getChildren().peek() );
+        GuiEventManager.trigger(MapEvent.REMOVE_MAP_OBJ, getRoot().getChildren().peek());
     }
 }

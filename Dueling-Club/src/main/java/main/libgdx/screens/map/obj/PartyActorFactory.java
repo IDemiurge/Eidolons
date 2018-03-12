@@ -7,8 +7,6 @@ import main.entity.obj.unit.Unit;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import main.libgdx.GdxColorMaster;
-import main.libgdx.GdxMaster;
-import main.libgdx.anims.ActorMaster;
 import main.libgdx.screens.map.ui.tooltips.PartyTooltip;
 import main.libgdx.texture.TextureCache;
 
@@ -50,8 +48,6 @@ public class PartyActorFactory extends MapObjFactory<PartyActor, MacroParty> {
 
         PartyActor actor = new PartyActor(parameters);
         actor.addListener(new PartyTooltip(party, actor).getController());
-        if (party.isMine())
-            ActorMaster.addMoveToAction(actor, GdxMaster.getWidth(), GdxMaster.getHeight(), 50);
         return actor;
     }
 

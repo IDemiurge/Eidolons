@@ -90,7 +90,8 @@ public class MACRO_CONTENT_CONSTS {
 
     }
         public enum PLACE_SUBTYPE {
-        CRYPT,
+       GATES,
+            CRYPT,
             CAVE,
             PLACE_OF_POWER,
         RUINS,

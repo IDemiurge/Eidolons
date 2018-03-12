@@ -34,7 +34,6 @@ import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.audio.DC_SoundMaster;
-import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
@@ -50,16 +49,16 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DungeonScreen extends GameScreen {
-    private static float FRAMERATE_DELTA_CONTROL =
+    protected static float FRAMERATE_DELTA_CONTROL =
      new Float(1) / GenericLauncher.FRAMERATE * 3;
-    private static DungeonScreen instance;
-    private static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
+    protected static DungeonScreen instance;
+    protected static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
 
 
-    private ParticleManager particleManager;
-    private Stage gridStage;
-    private BattleGuiStage guiStage;
-    private GridPanel gridPanel;
+    protected ParticleManager particleManager;
+    protected Stage gridStage;
+    protected BattleGuiStage guiStage;
+    protected GridPanel gridPanel;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -104,7 +103,7 @@ public class DungeonScreen extends GameScreen {
     }
 
 
-    private void bindEvents() {
+    protected void bindEvents() {
 
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
             DC_Game.game.getLoop().setExited(true); //cleanup on real exit
@@ -197,28 +196,6 @@ public class DungeonScreen extends GameScreen {
 //        gridPanel.updateGui();
         guiStage.getBottomPanel().update();
         checkGraphicsUpdates();
-    }
-
-    private void cameraPan(Vector2 unitPosition) {
-        this.cameraDestination = unitPosition;
-        float dest = cam.position.dst(unitPosition.x, unitPosition.y, 0f) / getCameraDistanceFactor();
-        if (dest < getCameraMinCameraPanDist())
-            return;
-        velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dest));
-        if (CoreEngine.isGraphicTestMode()) {
-//            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dest);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
-        }
-    }
-
-    private float getCameraMinCameraPanDist() {
-        return 220; //TODO if too close to the edge also
-    }
-
-    private float getCameraDistanceFactor() {
-        return 3f;
     }
 
     @Override
@@ -353,42 +330,6 @@ public class DungeonScreen extends GameScreen {
 
     public boolean isBlocked() {
         return OptionsMaster.isMenuOpen() || GameMenu.menuOpen;
-    }
-
-    private void cameraShift() {
-        if (cameraDestination != null)
-            if (cam != null && velocity != null && !velocity.isZero()) {
-                try {
-                    float x = velocity.x > 0
-                     ? Math.min(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime())
-                     : Math.max(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime());
-                    float y = velocity.y > 0
-                     ? Math.min(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime())
-                     : Math.max(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime());
-                    cam.position.set(x, y, 0f);
-                    float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
-                    Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
-//                    if (CoreEngine.isGraphicTestMode()) {
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- pos x:" + x);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- pos y:" + y);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity:" + velocity);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocityNow:" + velocityNow);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity.hasOppositeDirection(velocityNow):" + velocity.hasOppositeDirection(velocityNow));
-//                    }
-                    if (velocity.hasOppositeDirection(velocityNow)) {
-                        cameraStop();
-                    }
-                } catch (Exception exp) {
-                    if (CoreEngine.isGraphicTestMode())
-                        Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
-                }
-                cam.update();
-            }
-    }
-
-    public void cameraStop() {
-        if (velocity != null)
-            velocity.setZero();
     }
 
     @Override

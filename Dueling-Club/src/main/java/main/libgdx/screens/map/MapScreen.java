@@ -5,10 +5,12 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import main.data.xml.XML_Reader;
+import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroTimeMaster;
@@ -54,6 +56,18 @@ public class MapScreen extends GameScreen {
             instance = new MapScreen();
         }
         return instance;
+    }
+
+    public void centerCamera() {
+        Coordinates coordinatesActiveObj =
+         objectStage.getMainParty().getCoordinates();
+        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x,coordinatesActiveObj.y);
+        cameraPan(unitPosition);
+    }
+
+    @Override
+    protected void cameraPan(Vector2 unitPosition) {
+        super.cameraPan(unitPosition);
     }
 
     @Override
@@ -163,7 +177,10 @@ public class MapScreen extends GameScreen {
 //        getBatch().setShader(VignetteShader.getShader());
         if (canShowScreen()) {
             if (!CoreEngine.isMapEditor())
+            {
                 MacroGame.getGame().getRealtimeLoop().act(delta);
+                cameraShift();
+            }
             delta =
              delta + 0.1f * delta * (getTimeMaster().getSpeed() - 1);
             mapStage.act(delta);

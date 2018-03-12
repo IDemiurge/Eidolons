@@ -214,7 +214,8 @@ public class GenericLauncher extends Game {
                 oldScreen.dispose();
         }
 
-        if ((newScreen instanceof MapScreen)) {
+        if (newScreen instanceof MapScreen) {
+            ((MapScreen) newScreen).centerCamera();
             return;
         }
         triggerLoaded(meta);
