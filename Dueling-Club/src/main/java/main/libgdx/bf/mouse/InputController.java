@@ -12,7 +12,7 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
 import main.libgdx.bf.menu.GameMenu;
-import main.libgdx.screens.map.MapScreen;
+import main.libgdx.screens.GameScreen;
 import main.system.math.MathMaster;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
@@ -184,7 +184,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
        getScreen() .cameraStop();
     }
 
-    protected abstract MapScreen getScreen();
+    protected abstract GameScreen getScreen();
 
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom;

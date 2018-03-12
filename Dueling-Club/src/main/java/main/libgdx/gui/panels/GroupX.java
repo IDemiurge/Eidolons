@@ -55,7 +55,11 @@ public class GroupX extends Group {
 
         return list;
     }
-
+    public Array<Action> getActionsOfClass(Class actionClass) {
+        Array<Action> list = new Array<>();
+        addActions(list, this, actionClass);
+        return list;
+    }
     private void addActions(Array<Action> list, Actor actor, Class actionClass) {
 
         for (Action sub : actor.getActions()) {

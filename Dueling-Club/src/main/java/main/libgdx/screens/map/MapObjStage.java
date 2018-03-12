@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
+import main.game.module.adventure.travel.MapWanderAi;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
@@ -29,6 +30,7 @@ import static main.system.MapEvent.*;
  * Created by JustMe on 3/11/2018.
  */
 public class MapObjStage extends Stage {
+    private final MapWanderAi wanderAi;
     private MacroParty mainParty;
     private PartyActor mainPartyActor;
     private Group pointsGroup = new Group();
@@ -48,15 +50,21 @@ public class MapObjStage extends Stage {
             }
         });
         bindEvents();
+        wanderAi = new MapWanderAi(this);
     }
 
     public Group getPointsGroup() {
         return pointsGroup;
     }
 
+    public MapWanderAi getWanderAi() {
+        return wanderAi;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        wanderAi.act(delta);
         if (CoreEngine.isMapEditor())
             if (EditorManager.getMode() == MAP_EDITOR_MOUSE_MODE.POINT) {
                 pointsGroup.setVisible(true);
@@ -125,12 +133,14 @@ public class MapObjStage extends Stage {
             }
             PartyActor partyActor = PartyActorFactory.getParty(party);
             addActor(partyActor);
-
             if (party.isMine()) {
                 setMainParty(party);
                 setMainPartyActor(partyActor);
+                MapScreen.getInstance().getGuiStage().setMainPartyMarker(
+                 PartyActorFactory.getParty(party));
             }
             parties.add(partyActor);
+            wanderAi.update();
         });
         GuiEventManager.bind(CREATE_PLACE, param -> {
             Place place = (Place) param.get();
@@ -141,7 +151,16 @@ public class MapObjStage extends Stage {
         GuiEventManager.bind(REMOVE_MAP_OBJ, param -> {
             MapActor actor = (MapActor) param.get();
             actor.remove();
+            wanderAi.update();
         });
+    }
+
+    public List<PlaceActor> getPlaces() {
+        return places;
+    }
+
+    public List<PartyActor> getParties() {
+        return parties;
     }
 
     public MacroParty getMainParty() {

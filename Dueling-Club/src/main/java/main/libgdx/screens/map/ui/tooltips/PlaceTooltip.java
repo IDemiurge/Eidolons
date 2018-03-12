@@ -18,7 +18,7 @@ import main.libgdx.gui.tooltips.ToolTip;
 import main.libgdx.screens.map.MapScreen;
 import main.libgdx.screens.map.editor.EditorManager;
 import main.libgdx.screens.map.obj.PlaceActor;
-import main.libgdx.screens.map.sfx.LightLayer;
+import main.libgdx.screens.map.layers.LightLayer;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
@@ -43,18 +43,6 @@ public class PlaceTooltip extends ToolTip {
             GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
             main.system.auxiliary.log.LogMaster.log(1, "ROUTES_PANEL_HOVER_OFF");
         });
-//        GuiEventManager.bind(MapEvent.PLACE_HOVER, r -> {
-//            if (r.get()==null ){
-//                main.system.auxiliary.log.LogMaster.log(1,"NULL PLACE_HOVERED!!! " );
-//                super.onMouseExit(null , 0, 0, 0, null );
-//            }
-//        });
-//            GuiEventManager.bind(MapEvent.ROUTE_HOVERED, r->{
-//            if (r.get()==null ){
-//                GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
-//                main.system.auxiliary.log.LogMaster.log(1,"NULL ROUTE_HOVERED!!! " );
-//            }
-//        });
     }
 
     @Override
@@ -81,14 +69,6 @@ public class PlaceTooltip extends ToolTip {
     @Override
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         actor.minimize();
-
-//        new Thread(() -> {
-//            WaitMaster.WAIT(500);
-//            if (!MapScreen.getInstance().getMapStage().getRoutes().isRouteHighlighted())
-//                //trigger something on route off
-//                GuiEventManager.trigger(MapEvent.PLACE_HOVER, null);
-////            super.onMouseExit(event, x, y, pointer, toActor);
-//        }, " thread").start();
     }
 
     @Override

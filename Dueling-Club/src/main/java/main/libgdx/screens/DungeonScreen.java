@@ -224,6 +224,11 @@ public class DungeonScreen extends GameScreen {
         GuiEventManager.trigger(UPDATE_LIGHT);
     }
 
+    @Override
+    protected float getCameraDistanceFactor() {
+        return 5f;
+    }
+
     public void renderMain(float delta) {
 
         guiStage.act(delta);

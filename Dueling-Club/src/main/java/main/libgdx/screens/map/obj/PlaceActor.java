@@ -1,5 +1,7 @@
 package main.libgdx.screens.map.obj;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.module.adventure.map.Place;
 import main.libgdx.GdxMaster;
@@ -17,6 +19,22 @@ public class PlaceActor extends MapActor {
     public PlaceActor(PlaceActorParameters parameters) {
         super(parameters.mainIcon);
         init(parameters);
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if (getColor().a==0)
+            return null;
+        return super.hit(x, y, touchable);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (getColor().a==0)
+            setTouchable(Touchable.disabled);
+        else
+            setTouchable(Touchable.enabled);
     }
 
     public void hover() {

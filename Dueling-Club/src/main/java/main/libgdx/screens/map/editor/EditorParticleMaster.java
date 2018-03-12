@@ -10,7 +10,7 @@ import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.libgdx.anims.particles.EmitterActor;
-import main.libgdx.screens.map.sfx.MapParticles;
+import main.libgdx.screens.map.layers.MapParticles;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.StrPathBuilder;

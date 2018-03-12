@@ -1,4 +1,4 @@
-package main.libgdx.screens.map.sfx;
+package main.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -6,11 +6,13 @@ import main.content.CONTENT_CONSTS2.MIST_SFX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
+import main.game.bf.Coordinates.DIRECTION;
+import main.game.module.adventure.MacroGame;
 import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.anims.particles.EmitterPools;
 import main.libgdx.screens.map.editor.EditorParticleMaster;
-import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_POINTS;
-import main.libgdx.screens.map.sfx.MapMoveLayers.MOVE_DIRECTION;
+import main.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
+import main.libgdx.screens.map.layers.MapMoveLayers.MOVE_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -106,8 +108,38 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
         EmitterActor actor = EmitterPools.getEmitterActor(path);// new EmitterActor(sfx.sfxPath);
         actor.setPosition(x, y);
         actor.setSpeed(getSpeed(path));
+        actor.setFlipX(isFlipX(path,   MacroGame.getGame().getWindDirection()  ));
+        actor.setFlipY(isFlipY(path,   MacroGame.getGame().getWindDirection()  ));
         MapMaster.addToListMap(map, time, actor);
         return actor;
+    }
+
+    private boolean isFlipY(String path, DIRECTION windDirection) {
+        Boolean downOrUp=null ;
+        if (StringMaster.contains(path, "snow ") ||
+         StringMaster.contains(path, "cloud")||
+         StringMaster.contains(path, "smoke")){
+            downOrUp=false;
+        }
+        if (StringMaster.contains(path, "snowfall") ||
+         StringMaster.contains(path, "leaves")||
+         StringMaster.contains(path, "smoke")){
+            downOrUp=true;
+        }
+        if (windDirection.isGrowY() != downOrUp)
+            return true;
+        return false;
+    }
+
+    private boolean isFlipX(String path, DIRECTION windDirection) {
+        if (StringMaster.contains(path, "mist") ||
+         StringMaster.contains(path, "cloud")||
+         StringMaster.contains(path, "smoke")
+         ) {
+            if (windDirection.isGrowX() != true)
+                return true;
+        }
+        return false;
     }
 
     private float getSpeed(String path) {

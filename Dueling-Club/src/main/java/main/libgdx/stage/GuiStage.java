@@ -20,7 +20,7 @@ import main.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import main.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.tooltips.ToolTipManager;
-import main.libgdx.screens.map.sfx.Blackout;
+import main.libgdx.screens.map.layers.Blackout;
 import main.libgdx.utils.TextInputPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

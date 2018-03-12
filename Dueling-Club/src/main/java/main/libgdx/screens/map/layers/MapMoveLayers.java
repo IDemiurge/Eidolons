@@ -1,4 +1,4 @@
-package main.libgdx.screens.map.sfx;
+package main.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static main.libgdx.screens.map.sfx.MapMoveLayers.MAP_MOVING_LAYER.*;
+import static main.libgdx.screens.map.layers.MapMoveLayers.MAP_MOVING_LAYER.*;
 
 /**
  * Created by JustMe on 2/19/2018.

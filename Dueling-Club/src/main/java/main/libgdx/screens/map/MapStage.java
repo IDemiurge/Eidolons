@@ -12,7 +12,7 @@ import main.data.filesys.PathFinder;
 import main.game.module.adventure.MacroGame;
 import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
-import main.libgdx.screens.map.sfx.*;
+import main.libgdx.screens.map.layers.*;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;

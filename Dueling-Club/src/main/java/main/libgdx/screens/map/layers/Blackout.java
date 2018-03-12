@@ -1,4 +1,4 @@
-package main.libgdx.screens.map.sfx;
+package main.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;

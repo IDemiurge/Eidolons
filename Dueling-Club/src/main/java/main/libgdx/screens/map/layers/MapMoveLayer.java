@@ -1,8 +1,8 @@
-package main.libgdx.screens.map.sfx;
+package main.libgdx.screens.map.layers;
 
 import main.libgdx.bf.generic.ImageContainer;
-import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_AREA;
-import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_MOVING_LAYER;
+import main.libgdx.screens.map.layers.MapMoveLayers.MAP_AREA;
+import main.libgdx.screens.map.layers.MapMoveLayers.MAP_MOVING_LAYER;
 import main.system.auxiliary.RandomWizard;
 
 /**

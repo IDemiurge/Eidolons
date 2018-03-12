@@ -8,7 +8,7 @@ import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.screens.map.MapScreen;
-import main.libgdx.screens.map.sfx.MapMoveLayers.MAP_POINTS;
+import main.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import main.libgdx.texture.TextureCache;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.GuiEventManager;

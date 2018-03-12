@@ -1,4 +1,4 @@
-package main.libgdx.screens.map.sfx;
+package main.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,7 +9,7 @@ import main.libgdx.anims.particles.EmitterActor;
 import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.screens.map.MapScreen;
-import main.libgdx.screens.map.sfx.LightLayer.LightContainer;
+import main.libgdx.screens.map.layers.LightLayer.LightContainer;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;

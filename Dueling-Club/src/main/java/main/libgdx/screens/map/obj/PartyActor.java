@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.travel.FreeTravelMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.screens.map.obj.PartyActorFactory.PartyActorParameters;
 import main.libgdx.texture.TextureCache;
@@ -25,12 +26,17 @@ public class PartyActor extends MapActor {
     private Image ironBorder;
     private MoveToAction orderAction;
     private MacroParty party;
+    boolean marker;
+
 
     public PartyActor(PartyActorParameters parameters) {
         super(parameters.mainTexture);
         init(parameters);
     }
 
+    public MacroParty getParty() {
+        return party;
+    }
 
     private void init(PartyActorParameters parameters) {
         setPosition(parameters.position.x, parameters.position.y);
@@ -143,9 +149,14 @@ public class PartyActor extends MapActor {
     }
 
 
+    public void setMarker(boolean marker) {
+        this.marker = marker;
+    }
     @Override
     public void act(float delta) {
+        FreeTravelMaster.getInstance(). check(this);
         super.act(delta);
+        if (!marker)
         party.setCoordinates(new Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
 //        party.getCoordinates().setX(); Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
 

@@ -1,13 +1,17 @@
 package main.libgdx.screens.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroParty;
@@ -16,15 +20,23 @@ import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.gui.RollDecorator;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.screens.map.sfx.LightLayer;
+import main.libgdx.screens.map.obj.PartyActor;
+import main.libgdx.screens.map.layers.LightLayer;
 import main.libgdx.screens.map.ui.*;
 import main.libgdx.screens.map.ui.time.MapTimePanel;
 import main.libgdx.stage.GuiStage;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Line2D.Float;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import static main.system.MapEvent.CREATE_PARTY;
 
@@ -34,6 +46,7 @@ import static main.system.MapEvent.CREATE_PARTY;
 public class MapGuiStage extends GuiStage {
     private final String vignettePath = "ui\\macro\\vignette.png";
     private final LightLayer lights;
+    PartyActor mainPartyMarker;
     private PartyInfoPanel partyInfoPanel;
     private MapActionPanel actionPanel;
     private boolean dirty;
@@ -60,7 +73,7 @@ public class MapGuiStage extends GuiStage {
                     return 1;
                 }
             };
-            vignette.getContent(). setWidth(GdxMaster.getWidth());
+            vignette.getContent().setWidth(GdxMaster.getWidth());
             vignette.getContent().setHeight(GdxMaster.getHeight());
             vignette.setAlphaStep(0.1f);
             vignette.setFluctuatingAlphaRandomness(0.3f);
@@ -74,7 +87,7 @@ public class MapGuiStage extends GuiStage {
         GuiEventManager.bind(MapEvent.DATE_CHANGED, p -> {
             update();
         });
-            GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
+        GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
 
             if (!CoreEngine.isMapEditor())
                 blackout.fadeOut(1.25f);
@@ -92,7 +105,7 @@ public class MapGuiStage extends GuiStage {
 
     public void resetZIndices() {
         if (CoreEngine.isMapEditor())
-            return ;
+            return;
         super.resetZIndices();
         lights.setZIndex(0);
         vignette.setZIndex(0);
@@ -113,7 +126,7 @@ public class MapGuiStage extends GuiStage {
                 return;
             }
             if (party.isMine()) {
-              setParty(party);
+                setParty(party);
             }
         });
     }
@@ -131,7 +144,7 @@ public class MapGuiStage extends GuiStage {
          RollDecorator.decorate(partyInfoPanel));
 
         actionPanel = new MapActionPanel();
-        addActor( RollDecorator.decorate(actionPanel, FACING_DIRECTION.SOUTH));
+        addActor(RollDecorator.decorate(actionPanel, FACING_DIRECTION.SOUTH));
         //background? roll out decorator
 
 //        resources = new MapResourcesPanel();
@@ -151,16 +164,62 @@ public class MapGuiStage extends GuiStage {
     public void act(float delta) {
         super.act(delta);
         if (dirty) {
-            timePanel. setPosition(GdxMaster.centerWidthScreen(timePanel ),
-             GdxMaster.topScreen(timePanel ) + 13*(1+GdxMaster.getFontSizeMod())/2);
+            timePanel.setPosition(GdxMaster.centerWidthScreen(timePanel),
+             GdxMaster.topScreen(timePanel) + 13 * (1 + GdxMaster.getFontSizeMod()) / 2);
             actionPanel.layout();
             actionPanel.getParent().setPosition(GdxMaster.centerWidthScreen(actionPanel.getParent())
              , 0);
-            partyInfoPanel.getParent(). setPosition(0,
+            partyInfoPanel.getParent().setPosition(0,
              GdxMaster.topScreen(partyInfoPanel.getParent()) - 70
             );
             dirty = false;
         }
+        Coordinates c = mainPartyMarker.getParty().getCoordinates();
+        Vector3 pos = MapScreen.getInstance().getCamera().position;
+
+        Line2D line = new Float(c.x, c.y,  pos.x,   pos.y );
+        Rectangle2D rect = new Rectangle(
+         (int) pos.x - GdxMaster.getWidth()/2,
+         (int) pos.y + GdxMaster.getHeight()/2,
+         (int) GdxMaster.getWidth() ,
+         (int)  GdxMaster.getHeight()
+        );
+        Point2D[] points = GeometryMaster.getIntersectionPoint(line, rect);
+        Point2D point = null ;
+        double dst = Double.MAX_VALUE;
+
+        for (Point2D sub : points) {
+            double dst1 = sub.distance(c.x, c.y+ GdxMaster.getHeight());
+            if (dst1<dst){
+                dst = dst1;
+                point = sub;
+            }
+        }
+
+          dst = dst-500;
+        if (dst > 100) {
+            float scale = (float) (10f/ Math.sqrt(Math.sqrt(dst)));
+            mainPartyMarker.setScale(scale);
+        }
+        mainPartyMarker.setPosition((float)point.getX(), (float)point.getY()- GdxMaster.getHeight());
+        mainPartyMarker.setZIndex(Integer.MAX_VALUE);
+
+        //set scale depending on how far we are
+    }
+
+    public void setMainPartyMarker(PartyActor mainPartyMarker) {
+        this.mainPartyMarker = mainPartyMarker;
+        mainPartyMarker.setMarker(true);
+        addActor(mainPartyMarker);
+        mainPartyMarker.clearListeners();
+        mainPartyMarker.hover();
+        mainPartyMarker.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                MapScreen.getInstance().centerCamera();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
     }
 
     protected boolean isVignetteOn() {

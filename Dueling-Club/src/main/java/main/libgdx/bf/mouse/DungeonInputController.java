@@ -18,7 +18,7 @@ public class DungeonInputController extends InputController {
     }
 
     @Override
-    protected MapScreen getScreen() {
+    protected DungeonScreen getScreen() {
         return DungeonScreen.getInstance();
     }
 
