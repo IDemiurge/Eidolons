@@ -5,14 +5,14 @@ import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 
 import java.util.List;
 
 /**
  * Created by JustMe on 9/20/2017.
  */
-public class ActionTooltip extends ToolTip {
+public class ActionTooltip extends Tooltip {
     private final DC_ActiveObj action;
 
     public ActionTooltip(DC_ActiveObj el) {

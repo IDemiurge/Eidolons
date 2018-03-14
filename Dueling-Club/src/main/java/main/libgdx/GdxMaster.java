@@ -34,12 +34,9 @@ public class GdxMaster {
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
-        while (true) {
-            actor = actor.getParent();
-            if (actor == null) {
-                break;
-            }
+        while (actor != null) {
             list.add(actor.getParent());
+            actor = actor.getParent();
         }
         return list;
     }

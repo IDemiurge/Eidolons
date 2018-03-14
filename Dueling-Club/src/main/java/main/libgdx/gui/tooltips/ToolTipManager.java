@@ -32,7 +32,7 @@ public class ToolTipManager extends TablePanel {
                 ActorMaster.addFadeOutAction(actorCell.getActor(), 0.25f);
 //                actorCell.setActor(null);
             } else {
-                init((ToolTip) object);
+                init((Tooltip) object);
             }
 
         });
@@ -132,19 +132,19 @@ public class ToolTipManager extends TablePanel {
     }
 
 
-    private void init(ToolTip toolTip) {
-        toolTip.setManager(this);
+    private void init(Tooltip tooltip) {
+        tooltip.setManager(this);
 
-        toolTip.invalidate();
-        actorCell.setActor(toolTip);
+        tooltip.invalidate();
+        actorCell.setActor(tooltip);
 
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
-        toolTip.getColor().a=0;
-        ActorMaster.addFadeInAction(toolTip, 0.25f);
-        if (toolTip.getEntity() != null)
-            entityHover(toolTip.getEntity());
+        tooltip.getColor().a=0;
+        ActorMaster.addFadeInAction(tooltip, 0.25f);
+        if (tooltip.getEntity() != null)
+            entityHover(tooltip.getEntity());
     }
 
     @Override
@@ -152,8 +152,8 @@ public class ToolTipManager extends TablePanel {
         super.act(delta);
 
         if (actorCell.getActor() != null) {
-            final ToolTip toolTip = (ToolTip) actorCell.getActor();
-            if (toolTip.getColor().a==0)
+            final Tooltip tooltip = (Tooltip) actorCell.getActor();
+            if (tooltip.getColor().a==0)
             {
                 actorCell.setActor(null);
                 return;
@@ -162,7 +162,7 @@ public class ToolTipManager extends TablePanel {
             v2 = getStage().screenToStageCoordinates(v2);
 
             actorCell.left().top();
-            float y = (v2.y - toolTip.getPrefHeight() - getPreferredPadding());
+            float y = (v2.y - tooltip.getPrefHeight() - getPreferredPadding());
             boolean bot = false;
             if (y < 0) {
                 actorCell.bottom();
@@ -171,7 +171,7 @@ public class ToolTipManager extends TablePanel {
                 bot = true;
             }
 
-            y = v2.y + toolTip.getPrefHeight() + getPreferredPadding();
+            y = v2.y + tooltip.getPrefHeight() + getPreferredPadding();
             if (y > GdxMaster.getHeight()) {
                 if (bot) {
                     actorCell.center();
@@ -179,12 +179,12 @@ public class ToolTipManager extends TablePanel {
                     actorCell.top();
                 actorCell.padTop((y - GdxMaster.getHeight()) / 2 - getPreferredPadding());
             }
-            float x = v2.x - toolTip.getPrefWidth() - getPreferredPadding();
+            float x = v2.x - tooltip.getPrefWidth() - getPreferredPadding();
             if (x < 0) {
                 actorCell.left();
                 actorCell.padLeft((-x) / 2 - getPreferredPadding());
             }
-            x = v2.x + toolTip.getPrefWidth() + getPreferredPadding();
+            x = v2.x + tooltip.getPrefWidth() + getPreferredPadding();
             if (x > GdxMaster.getWidth()) {
                 actorCell.right();
                 actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());

@@ -1,5 +1,6 @@
 package main.game.module.adventure.travel;
 
+import main.game.bf.Coordinates;
 import main.libgdx.screens.map.layers.AlphaMap;
 import main.libgdx.screens.map.layers.AlphaMap.ALPHA_MAP;
 import main.libgdx.screens.map.obj.PartyActor;
@@ -33,7 +34,19 @@ public class FreeTravelMaster {
         instance = this;
     }
 
-    public   void check(PartyActor actor){
+    public TravelAction travelTo(PartyActor actor, int x, int y, float speed){
+        float dur = actor.getParty().getCoordinates().dst(new Coordinates(true, x, y))
+         / speed ;
+        TravelAction action = new TravelAction(  this  );
+        action.setPosition(x, y);
+        action.setDuration(dur);
+        actor.addAction(action);
+        action.setTarget(actor);
+        return action;
+
+
+    }
+        public   void check(PartyActor actor){
 
         boolean stop = false;
 
@@ -42,5 +55,10 @@ public class FreeTravelMaster {
     }
         public void act( float delta){
 
+    }
+
+    public boolean check(ALPHA_MAP mapType, float x, float y) {
+//        map.get(mapType).isThere(x, y);
+        return false;
     }
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.DialogScenario;
+import main.libgdx.GdxMaster;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.stage.ChainedStage;
 import main.system.GuiEventManager;
@@ -56,7 +57,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
     }
 
     protected float getCameraMinCameraPanDist() {
-        return 350; //TODO if too close to the edge also
+        return GdxMaster.getWidth()/3; //TODO if too close to the edge also
     }
 
     protected float getCameraDistanceFactor() {

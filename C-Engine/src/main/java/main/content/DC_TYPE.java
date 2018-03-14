@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 //it's actually ENTITY_TYPE
+
 public enum DC_TYPE implements OBJ_TYPE {
     UNITS("units", G_PROPS.ASPECT, 0, G_PROPS.UNIT_GROUP),
     SPELLS("spells", G_PROPS.ASPECT, 1, G_PROPS.SPELL_GROUP),
@@ -58,14 +59,21 @@ public enum DC_TYPE implements OBJ_TYPE {
     SCENARIOS("scenarios", G_PROPS.GROUP, 21),
     MISSIONS("missions", G_PROPS.GROUP, 22),
     PLACES("places", G_PROPS.GROUP, 23),
-    DIALOGUE("dialogue", G_PROPS.GROUP,24 ) {
+    DIALOGUE("dialogue", G_PROPS.GROUP, 24) {
         public boolean isTreeEditType() {
             return true;
         }
     },
     ACTORS("actors", G_PROPS.GROUP, 25),
     SHOPS("shops", G_PROPS.GROUP, 26),
-//    TRAP("traps", G_PROPS.GROUP, 24),
+
+//    CHARACTER("character", G_PROPS.GROUP, 32),
+//    MERCHANT(DC_TYPE.CHARACTER, "merchant", G_PROPS.GROUP, 27),
+//    INNKEEPER(DC_TYPE.CHARACTER, "innkeeper", G_PROPS.GROUP, 28),
+//    LIBRARIAN(DC_TYPE.CHARACTER, "librarian", G_PROPS.GROUP, 29),
+//    MENTOR(DC_TYPE.CHARACTER, "mentor", G_PROPS.GROUP, 30),
+//    MERCENARY(DC_TYPE.CHARACTER, "mercenary", G_PROPS.GROUP, 31),
+    //    TRAP("traps", G_PROPS.GROUP, 24),
     META("meta", G_PROPS.GROUP, -1, true),
     ALL("all"),;
 
@@ -90,6 +98,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     }
 
     boolean battlecraft = true;
+    private DC_TYPE parent;
     private String name;
     private PROPERTY groupingKey;
     private PROPERTY subGroupingKey;
@@ -98,6 +107,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     private String image;
     private boolean hidden;
     private PARAMETER param;
+
     DC_TYPE(String name, PROPERTY groupingKey, int code, boolean hidden) {
         this(name, groupingKey, code);
         this.setHidden(hidden);
@@ -114,9 +124,14 @@ public enum DC_TYPE implements OBJ_TYPE {
     }
 
     DC_TYPE(String name, PROPERTY groupingKey, int code) {
+        this(null, name, groupingKey, code);
+    }
+
+    DC_TYPE(DC_TYPE parent, String name, PROPERTY groupingKey, int code) {
         this(name, groupingKey);
         this.code = code;
         this.setImage("UI\\" + name + ".jpg");
+        this.parent = parent;
     }
 
     DC_TYPE(String name, PROPERTY groupingKey) {
@@ -124,6 +139,7 @@ public enum DC_TYPE implements OBJ_TYPE {
         this.groupingKey = groupingKey;
 
     }
+
 
     private static DC_TYPE getFromName(String name) {
         DC_TYPE dcType = searchMap.get(name);
@@ -206,6 +222,11 @@ public enum DC_TYPE implements OBJ_TYPE {
     @Override
     public boolean isHeroTreeType() {
         return false;
+    }
+
+    @Override
+    public OBJ_TYPE getParent() {
+        return parent;
     }
 
     @Override

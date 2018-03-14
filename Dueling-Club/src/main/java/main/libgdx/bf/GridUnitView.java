@@ -10,7 +10,7 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.overlays.HpBar;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -36,10 +36,10 @@ public class GridUnitView extends UnitView {
     }
 
     @Override
-    public void setToolTip(ToolTip toolTip) {
-        super.setToolTip(toolTip);
+    public void setToolTip(Tooltip tooltip) {
+        super.setToolTip(tooltip);
         if (initiativeQueueUnitView != null) {
-            initiativeQueueUnitView.setToolTip(toolTip);
+            initiativeQueueUnitView.setToolTip(tooltip);
         }
     }
 

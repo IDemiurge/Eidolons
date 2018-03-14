@@ -310,12 +310,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     protected boolean roundLoop() {
         while (true) {
-            if (activeUnit == null) {
+            if (activeUnit != game.getPlayer(true).getHeroObj()) {
                 activeUnit = (Unit) game.getPlayer(true).getHeroObj();
                 game.getManager().setSelectedActiveObj(activeUnit);
+                GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
             }
 
-            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
             Boolean result = makeAction();
             if (exited)
                 return false;

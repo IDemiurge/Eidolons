@@ -158,7 +158,6 @@ public class ActorMaster {
         actor.addAction(action);
         action.setTarget(actor);
     }
-
     public static MoveToAction getMoveToAction(float x, float y, float v) {
         MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);

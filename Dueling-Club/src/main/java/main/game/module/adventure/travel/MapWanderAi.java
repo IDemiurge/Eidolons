@@ -7,19 +7,19 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by JustMe on 3/12/2018.
  */
 public class MapWanderAi {
 
-    private Map<PartyActor, Float> triggerMap = new HashMap<>();
-    private Map<PartyActor, Float> timerMap = new HashMap<>();
     List<PartyActor> list = new ArrayList<>();
     MapObjStage objStage;
+    private Map<PartyActor, Float> triggerMap = new ConcurrentHashMap<>();
+    private Map<PartyActor, Float> timerMap = new ConcurrentHashMap<>();
 
     public MapWanderAi(MapObjStage objStage) {
         this.objStage = objStage;
@@ -32,27 +32,29 @@ public class MapWanderAi {
         list.removeIf(p -> p.getParty().isMine());
 
     }
-        public void act(float delta) {
+
+    public void act(float delta) {
 //        triggerMap.put(party, orderAt);
         float distance = 120;
         float modX = RandomWizard.getRandomFloatBetween(-1, 1);
         float modY = RandomWizard.getRandomFloatBetween(-1, 1);
 
-//        MapMaster.addToFloatMap(triggerMap, party, delta);
-        for (PartyActor party : list) {
-            if (party.getActionsOfClass(MoveToAction.class).size < 1) {
-                float delay = getDelay(party);
-                RandomWizard.getRandomFloatBetween(delay, delay * 2);
-            }
-        }
 
-        for (PartyActor sub : triggerMap.keySet()) {
-            MapMaster.addToFloatMap(timerMap, sub, delta);
-            if (triggerMap.get(sub) == null ||
-             timerMap.get(sub) > triggerMap.get(sub)) {
-                sub.moveTo(sub.getX()+distance*modX,
-                 sub.getY()+distance*modY);
-                timerMap.remove(sub);
+        for (PartyActor party :     list ) {
+            MapMaster.addToFloatMap(timerMap, party, delta);
+            if (triggerMap.get(party) == null)
+                if (party.getActionsOfClass(MoveToAction.class).size < 1) {
+                    float delay = getDelay(party);
+                    triggerMap.put(party, RandomWizard.getRandomFloatBetween(delay, delay * 2));
+                }
+
+            if (triggerMap.get(party) == null ||
+             timerMap.get(party) > triggerMap.get(party)) {
+                party.moveTo(party.getX() + distance * modX,
+                 party.getY() + distance * modY, distance/(triggerMap.get(party)-
+                  RandomWizard.getRandomFloatBetween(getDelay(party)/3, getDelay(party)/2)));
+                timerMap.remove(party);
+                triggerMap.remove(party);
             }
         }
     }

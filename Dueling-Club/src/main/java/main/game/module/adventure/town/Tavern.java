@@ -19,8 +19,8 @@ import main.entity.type.ObjType;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
-import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.utils.HeroGenerator;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
@@ -51,8 +51,8 @@ public class Tavern extends TownPlace {
     public TOWN_PLACE_TYPE getTYPE() {
         if (TYPE == null) {
             TYPE = new EnumMaster<TOWN_PLACE_TYPE>().retrieveEnumConst(
-                    TOWN_PLACE_TYPE.class,
-                    getProperty(MACRO_PROPS.TOWN_PLACE_TYPE));
+             TOWN_PLACE_TYPE.class,
+             getProperty(MACRO_PROPS.TOWN_PLACE_TYPE));
         }
         return TYPE;
     }
@@ -60,8 +60,8 @@ public class Tavern extends TownPlace {
     public TAVERN_MODIFIER getModifier() {
         if (modifier == null) {
             modifier = new EnumMaster<TAVERN_MODIFIER>().retrieveEnumConst(
-                    TAVERN_MODIFIER.class,
-                    getProperty(MACRO_PROPS.TOWN_PLACE_MODIFIER));
+             TAVERN_MODIFIER.class,
+             getProperty(MACRO_PROPS.TOWN_PLACE_MODIFIER));
         }
         return modifier;
     }
@@ -78,7 +78,7 @@ public class Tavern extends TownPlace {
         }
         while (true) {
             int xp = total / number * RandomWizard.getRandomIntBetween(40, 60)
-                    / 50;
+             / 50;
             if (xp < TavernMaster.getMinimumHeroXp(this)) {
                 if (total < TavernMaster.getMinimumHeroXp(this)) {
                     break;
@@ -140,32 +140,32 @@ public class Tavern extends TownPlace {
 
     private boolean addHero(Unit hero) {
         modifyParameter(MACRO_PARAMS.C_HERO_POWER_POOL,
-                -hero.getIntParam(PARAMS.TOTAL_XP));
+         -hero.getIntParam(PARAMS.TOTAL_XP));
         heroes.add(hero);
         return getIntParam(MACRO_PARAMS.C_HERO_POWER_POOL) < TavernMaster
-                .getMinimumHeroXp(this);
+         .getMinimumHeroXp(this);
     }
 
     public void newTurn() {
         modifyParameter(
-                MACRO_PARAMS.C_FOOD_STORE,
-                // TavernMaster.getFoodPerTurn(this)
-                getIntParam(MACRO_PARAMS.FOOD_STORE)
-                        * TimeMaster.getHoursPerTurn() / 100);
+         MACRO_PARAMS.C_FOOD_STORE,
+         // TavernMaster.getFoodPerTurn(this)
+         getIntParam(MACRO_PARAMS.FOOD_STORE)
+          * TimeMaster.getHoursPerTurn() / 100);
         checkRemoveHeroes();
 
         modifyParameter(MACRO_PARAMS.C_HERO_POWER_POOL,
-                TavernMaster.getXpPerTurn(this));
+         TavernMaster.getXpPerTurn(this));
         LogMaster.log(LOG_CHANNEL.MACRO_DYNAMICS, getName() + " now has "
-                + getIntParam(MACRO_PARAMS.C_HERO_POWER_POOL) + " "
-                + MACRO_PARAMS.C_HERO_POWER_POOL.getName());
+         + getIntParam(MACRO_PARAMS.C_HERO_POWER_POOL) + " "
+         + MACRO_PARAMS.C_HERO_POWER_POOL.getName());
         checkAddNewHeroes();
     }
 
     private void checkAddNewHeroes() {
 
         if (getIntParam(MACRO_PARAMS.C_HERO_POWER_POOL) > TavernMaster
-                .getMinimumHeroXp(this)) {
+         .getMinimumHeroXp(this)) {
             // chance
             newHero(true, getIntParam(MACRO_PARAMS.C_HERO_POWER_POOL));
         }
@@ -181,12 +181,12 @@ public class Tavern extends TownPlace {
 
     private ObjType getRandomHeroBackground() {
         List<ObjType> list = DataManager.getTypesGroup(DC_TYPE.CHARS,
-                StringMaster.BACKGROUND);
+         StringMaster.BACKGROUND);
         String prop = new RandomWizard<BACKGROUND>().getObjectByWeight(
-                getHeroBackgrounds(), BACKGROUND.class).toString();
+         getHeroBackgrounds(), BACKGROUND.class).toString();
 
         FilterMaster.filter(list, G_PROPS.BACKGROUND.getName(), prop,
-                DC_TYPE.CHARS, true, false, false);
+         DC_TYPE.CHARS, true, false, false);
         return new RandomWizard<ObjType>().getRandomListItem(list);
     }
 
@@ -203,23 +203,23 @@ public class Tavern extends TownPlace {
         int minXp = xp / 3 * 2;
         int maxXp = xp * 3 / 2;
         List<ObjType> list = DataManager.toTypeList(DataManager
-                        .getTypesSubGroupNames(DC_TYPE.CHARS, StringMaster.PRESET),
-                DC_TYPE.CHARS);
+          .getTypesSubGroupNames(DC_TYPE.CHARS, StringMaster.PRESET),
+         DC_TYPE.CHARS);
         // DataManager.getTypesSubGroup(OBJ_TYPES.CHARS,
         // StringMaster.PRESET);
         // background allowed
         FilterMaster.filterByParam(list, PARAMS.TOTAL_XP, minXp,
-                DC_TYPE.CHARS, true);
+         DC_TYPE.CHARS, true);
         FilterMaster.filterByParam(list, PARAMS.TOTAL_XP, maxXp,
-                DC_TYPE.CHARS, false);
+         DC_TYPE.CHARS, false);
 
         Loop.startLoop(25);
         while (!Loop.loopEnded()) {
             ArrayList<ObjType> bufferList = new ArrayList<>(list);
             String prop = new RandomWizard<BACKGROUND>().getObjectByWeight(
-                    getHeroBackgrounds(), BACKGROUND.class).toString();
+             getHeroBackgrounds(), BACKGROUND.class).toString();
             FilterMaster.filter(bufferList, G_PROPS.BACKGROUND.getName(),
-                    prop, DC_TYPE.CHARS, true, false, false);
+             prop, DC_TYPE.CHARS, true, false, false);
             if (!bufferList.isEmpty()) {
                 list = bufferList;
                 break;
@@ -265,7 +265,7 @@ public class Tavern extends TownPlace {
 
     public void hired(boolean merc, MacroParty party, Unit hero) {
         party.getLeader().modifyParameter(PARAMS.GOLD,
-                -hero.getIntParam(MACRO_PARAMS.HIRE_COST));
+         -hero.getIntParam(MACRO_PARAMS.HIRE_COST));
         // TODO shared gold?
         heroes.remove(hero);
         PartyHelper.addMember(hero);
@@ -281,7 +281,7 @@ public class Tavern extends TownPlace {
             public void doneSelection() {
                 getSequence().getValue();
                 Unit hero = (Unit) getSequence().getResults()
-                        .get(0);
+                 .get(0);
                 hired(hero);
                 Launcher.resetView(VIEWS.HC);
             }
@@ -308,6 +308,14 @@ public class Tavern extends TownPlace {
 
     }
 
+    public enum HERO_GROUPS {
+        // per class, per faction, per race
+    }
+
+    public enum PRESET_HEROES {
+        // or should there be some group tag for ObjTypes?
+    }
+
     public enum TAVERN_MODIFIER {
         RAVEN_REALM,
         PIRATE,
@@ -320,15 +328,10 @@ public class Tavern extends TownPlace {
     }
 
     public enum TOWN_PLACE_TYPE {
-        INN, GUILD, SLAVE_MARKET, FACTION_QUARTER, TEMPLE, BROTHEL,
-    } // DETERMINES AVAILABLE BUTTONS... pray, whore, take up quest, buy slaves,
+        TAVERN,  LIBRARY, TEMPLE,        QUEST_GIVER,
+        FACTION_QUARTER,
 
-    public enum HERO_GROUPS {
-        // per class, per faction, per race
-    }
-
-    public enum PRESET_HEROES {
-        // or should there be some group tag for ObjTypes?
-    }
+        SMITHY,BROTHEL,GUILD,SLAVE_MARKET,
+        } // DETERMINES AVAILABLE BUTTONS... pray, whore, take up quest, buy slaves,
 
 }

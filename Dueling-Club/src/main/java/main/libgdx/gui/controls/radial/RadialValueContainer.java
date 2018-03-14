@@ -12,7 +12,7 @@ import main.libgdx.StyleHolder;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.ListMaster;
@@ -28,8 +28,8 @@ public class RadialValueContainer extends ActionValueContainer {
     Supplier<String> infoTextSupplier;
     protected List<RadialValueContainer> childNodes = new ArrayList<>();
     protected RadialValueContainer parent;
-    protected Supplier<ToolTip> tooltipSupplier;
-    protected ToolTip tooltip;
+    protected Supplier<Tooltip> tooltipSupplier;
+    protected Tooltip tooltip;
 
 
     public RadialValueContainer(TextureRegion texture, Runnable action) {
@@ -215,11 +215,11 @@ public class RadialValueContainer extends ActionValueContainer {
         }
     }
 
-    public Supplier<ToolTip> getTooltipSupplier() {
+    public Supplier<Tooltip> getTooltipSupplier() {
         return tooltipSupplier;
     }
 
-    public void setTooltipSupplier(Supplier<ToolTip> tooltipSupplier) {
+    public void setTooltipSupplier(Supplier<Tooltip> tooltipSupplier) {
         this.tooltipSupplier = tooltipSupplier;
     }
 

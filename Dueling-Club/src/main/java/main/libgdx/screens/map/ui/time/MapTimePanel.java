@@ -71,7 +71,6 @@ public class MapTimePanel extends GroupX {
     PointX controlsPoint = new PointX(71, 23);
     TextButtonX pauseButton;
     MoonActor activeMoon;
-    ImageContainer activeMoonCircle;
     private TextButtonX speedUpBtn;
     private TextButtonX speedDownBtn;
     private Image labelBg;
@@ -168,13 +167,6 @@ public class MapTimePanel extends GroupX {
 
     }
         private void initPositions() {
-        PointX sunPoint = new PointX(103, 128);
-        PointX timeLabelPoint = new PointX(149, 80);
-        PointX timeLabelBgPoint = new PointX(140, 62);
-        PointX pauseBtnPoint = new PointX(128, 25);
-        PointX speedUpBtnPoint = new PointX(174, 59);
-        PointX speedDownBtnPoint = new PointX(104, 59);
-        PointX controlsPoint = new PointX(68, 23);
 
         labelBg.setPosition(GdxMaster.adjustPos(true, timeLabelBgPoint.x), GdxMaster.adjustPos(false, timeLabelBgPoint.y));
 
@@ -252,7 +244,7 @@ public class MapTimePanel extends GroupX {
     }
     @Override
     public void act(float delta) {
-        initPositions();
+//        initPositions();
         setDebug(false, true);
         String text = TimeMaster.getDate().getHour() + "";
         int minutes = (int) MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter();
@@ -261,9 +253,16 @@ public class MapTimePanel extends GroupX {
         } else
             text += ":" + minutes;
         timeLabel.setText(text);
+        float deltaX = delta +
+         (delta / 5 * MacroGame.getGame().getLoop().getTimeMaster().getSpeed());
+        for (MoonActor moon : displayedMoons) {
+            moon.act(deltaX);
+        }
+        activeMoon.act(deltaX);
+        sun.act(deltaX);
+        deltaX = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed( );
+        undersun.act(deltaX);
 
-        delta = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed();
-        super.act(delta);
         moveSun();
         resetZIndices();
 //        float r = mainCircle.getRotation();

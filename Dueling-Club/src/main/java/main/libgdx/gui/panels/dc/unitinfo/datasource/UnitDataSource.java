@@ -14,9 +14,9 @@ import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTip;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager;
@@ -297,7 +297,7 @@ public class UnitDataSource implements
         if (armor != null) {
             container = new ValueContainer(getOrCreateR(armor.getImagePath()));
 
-            WeaponToolTip tooltip = new WeaponToolTip();
+            WeaponTooltip tooltip = new WeaponTooltip();
 
             tooltip.setUserObject(new WeaponToolTipDataSource() {
                 @Override
@@ -485,8 +485,8 @@ public class UnitDataSource implements
                 list.add(tooltipContainer);
             }
 
-            ToolTip toolTip = new WeaponToolTip();
-            toolTip.setUserObject(new WeaponToolTipDataSource() {
+            Tooltip tooltip = new WeaponTooltip();
+            tooltip.setUserObject(new WeaponToolTipDataSource() {
                 @Override
                 public List<ValueContainer> getMainParams() {
                     return list;
@@ -500,7 +500,7 @@ public class UnitDataSource implements
                      .collect(Collectors.toList());
                 }
             });
-            valueContainer.addListener(toolTip.getController());
+            valueContainer.addListener(tooltip.getController());
         }
         return valueContainer;
     }

@@ -8,7 +8,7 @@ import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
-public class ValueTooltip extends ToolTip {
+public class ValueTooltip extends Tooltip {
 
     public ValueTooltip(  String text) {
         this(null, text);

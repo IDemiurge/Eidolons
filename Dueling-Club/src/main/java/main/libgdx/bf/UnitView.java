@@ -13,7 +13,7 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.overlays.HpBar;
 import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.shaders.GrayscaleShader;
 import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.log.LogMaster;
@@ -44,7 +44,7 @@ public class UnitView extends BaseView {
     protected boolean flickering;
     protected boolean initialized;
     protected boolean stealth;
-    private ToolTip tooltip;
+    private Tooltip tooltip;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -96,12 +96,12 @@ public class UnitView extends BaseView {
         getHpBar().setLabelsDisplayed(hovered);
     }
 
-    public void setToolTip(ToolTip toolTip) {
-        addListener(toolTip.getController());
-        this.tooltip = toolTip;
+    public void setToolTip(Tooltip tooltip) {
+        addListener(tooltip.getController());
+        this.tooltip = tooltip;
     }
 
-    public ToolTip getTooltip() {
+    public Tooltip getTooltip() {
         return tooltip;
     }
 

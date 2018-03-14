@@ -15,7 +15,7 @@ import main.libgdx.StyleHolder;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.HorGroup;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.screens.map.obj.PartyActor;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 2/23/2018.
  */
-public class PartyTooltip extends ToolTip {
+public class PartyTooltip extends Tooltip {
     private final MacroParty party;
     private final PartyActor actor;
     private final ValueContainer leader;

@@ -11,7 +11,7 @@ import main.game.battlecraft.ai.tools.future.FutureBuilder;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.images.ImageManager;
 import main.system.text.TextWrapper;
@@ -157,9 +157,9 @@ public class AttackTooltipFactory {
         return obj -> {
             final ValueContainer container = new ValueContainer(getOrCreateR(obj.getType().getProperty(G_PROPS.IMAGE)));
 
-            ToolTip toolTip = new ValueTooltip();
-            toolTip.setUserObject(Arrays.asList(new ValueContainer(obj.getName(), "")));
-            container.addListener(toolTip.getController());
+            Tooltip tooltip = new ValueTooltip();
+            tooltip.setUserObject(Arrays.asList(new ValueContainer(obj.getName(), "")));
+            container.addListener(tooltip.getController());
 
             return container;
         };

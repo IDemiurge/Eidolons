@@ -229,6 +229,7 @@ public class DungeonScreen extends GameScreen {
         return 5f;
     }
 
+
     public void renderMain(float delta) {
 
         guiStage.act(delta);

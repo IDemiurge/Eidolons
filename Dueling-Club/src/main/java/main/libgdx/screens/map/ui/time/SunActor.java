@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Align;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.game.module.adventure.MacroGame;
-import main.game.module.adventure.global.TimeMaster;
 import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.gui.panels.GroupX;
@@ -24,6 +23,7 @@ public class SunActor extends GroupX {
     ImageContainer overlay;
     ImageContainer overlay2;
     private float lastNextMapAlphaPercentage;
+    private DAY_TIME time;
 
     public SunActor(boolean undersun) {
         this.undersun = undersun;
@@ -36,9 +36,10 @@ public class SunActor extends GroupX {
             setX(-90);
             setY(0);
             setScale(0.6f);
+            setRotation(270);
             debug();
         }
-updateOrigins();
+        updateOrigins();
         GuiEventManager.bind(MapEvent.TIME_CHANGED, p -> {
             update((DAY_TIME) p.get());
         });
@@ -50,11 +51,12 @@ updateOrigins();
         if (undersun) {
             setOriginY(getOriginY() - 40);
         }//offset
-        overlay. getContent().setOrigin(undersun ? Align.top : Align.center);
+        overlay.getContent().setOrigin(undersun ? Align.top : Align.center);
         setOrigin(undersun ? Align.top : Align.center);
     }
 
     private void update(DAY_TIME time) {
+        this.time = time;
         if (undersun) {
             if (!time.isUndersunVisible()) {
                 setVisible(false);
@@ -64,9 +66,9 @@ updateOrigins();
             if (!time.isSunVisible()) {
                 setVisible(false);
                 return;
-            } //preserve rotation
+            }
         }
-        float r = overlay2.getRotation();
+        float r = overlay2.getRotation();//preserve rotation
         overlay.setImage(getOverlayPath(time));
         boolean def = time.getNext().isNight() != undersun;
         if (!def) {
@@ -92,30 +94,79 @@ updateOrigins();
     public void act(float delta) {
         super.act(delta);
 
-
-        float dx = getRotationSpeedOverlay() * delta;
-        if (undersun) {
-            //rotate the whole thing!
-            float r = getRotation(); //control sync with time!
-            setRotation(r + dx);
-        } else {
-            float r = overlay.getContent().getRotation();
-            overlay.getContent().setRotation(r + dx);
-            overlay2.getContent().setRotation(r + dx);
-        }
-
         Color color = overlay2.getContent().getColor();
-        float percentage = 0.25f * (TimeMaster.getDate().getHour() % 4 +
-         +MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter() / 60);
-        if (percentage < lastNextMapAlphaPercentage) //no going back in time...
+        float percentage =
+         MacroGame.getGame().getLoop().getTimeMaster().getTimer()/240;
+//         0.25f * (TimeMaster.getDate().getHour() % 4) +
+//         +MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter() / 240;
+
+        if (percentage < lastNextMapAlphaPercentage ) //no going back in time...
+        {
+            percentage=lastNextMapAlphaPercentage;
+//            lastNextMapAlphaPercentage=0;
+        }
+//        if (percentage == lastNextMapAlphaPercentage) {
+//            percentage+=delta;
+//        }
+        if ( percentage>1) //no going back in time...
+        {
             return;
+        }
         lastNextMapAlphaPercentage = percentage;
         color.a = color.a * percentage;
+
+        float rotation = getRotation(percentage);
+        if (undersun) {
+            //rotate the whole thing!
+            setRotation(rotation);
+//            ActorMaster.addRotateByAction(this, );
+        } else {
+            overlay.getContent().
+             setRotation(rotation);
+            overlay2.getContent().
+             setRotation(rotation);
+        }
     }
 
+    private float getRotation(float percentageIntoNextDayTime) {
+        if (undersun)
+            switch (time) {
+                case MIDNIGHT:
+                    return getDefaultUndersunRotation()
+                     - Math.max(0, percentageIntoNextDayTime - 0.75f) * 90;
+                case NIGHTFALL:
+                    return getDefaultUndersunRotation();
+                case DAWN:
+                    return getDefaultUndersunRotation()
+                     -  (percentageIntoNextDayTime + 0.25f) * 90;
+                case DUSK:
+                    return getDefaultUndersunRotation()+140
+                     -  percentageIntoNextDayTime * 140;
+                case MORNING:
+                case MIDDAY:
+                    return 0;
+            }
+        return 360 * percentageIntoNextDayTime;
+    }
+
+    private float getDefaultUndersunRotation() {
+        return 310;
+    }
+
+    //360 degrees in 24*60 seconds
     private float getRotationSpeedOverlay() {
         if (undersun)
-            return 0.5f;
+            switch (time) {
+                case MIDNIGHT:
+                case NIGHTFALL:
+                    return 0.0f;
+                case DAWN:
+                case MIDDAY:
+                    return 0.5f;
+                case MORNING:
+                case DUSK:
+                    return 0.25f;
+            }
         return 1;
     }
 

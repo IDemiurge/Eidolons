@@ -11,9 +11,9 @@ import java.util.List;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
-public class WeaponToolTip extends ValueTooltip {
+public class WeaponTooltip extends ValueTooltip {
 
-    public WeaponToolTip() {
+    public WeaponTooltip() {
         setWidth(400);
     }
 

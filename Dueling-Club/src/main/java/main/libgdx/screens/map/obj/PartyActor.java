@@ -104,24 +104,21 @@ public class PartyActor extends MapActor {
     }
 
     public void moveTo(float x, float y) {
+        moveTo(x, y, getSpeed());
+    }
+    public void moveTo(float x, float y, float speed) {
         if (orderAction != null) {
             removeAction(orderAction);
         }
-        orderAction = new MoveToAction() {
-            @Override
-            protected void update(float percent) {
-                super.update(percent);
-                //can we update logic model x/y here?
-            }
-        };
-        orderAction.setPosition(x, y);
-        float distance = new Vector2(x, y).dst(new Vector2(getX(), getY()));
-        orderAction.setDuration(distance / getSpeed());
-        addAction(orderAction);
-        orderAction.setTarget(this);
+        orderAction = FreeTravelMaster.getInstance().travelTo(this,(int) x,(int) y, speed);
+//        orderAction.setPosition(x, y);
+//        float distance = new Vector2(x, y).dst(new Vector2(getX(), getY()));
+//        orderAction.setDuration(distance / speed);
+//        addAction(orderAction);
+//        orderAction.setTarget(this);
     }
 
-    private float getSpeed() {
+    public float getSpeed() {
         return 210;
     }
 
@@ -154,12 +151,18 @@ public class PartyActor extends MapActor {
     }
     @Override
     public void act(float delta) {
-        FreeTravelMaster.getInstance(). check(this);
+//        FreeTravelMaster.getInstance(). check(this);
         super.act(delta);
         if (!marker)
         party.setCoordinates(new Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
 //        party.getCoordinates().setX(); Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
 
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        party.setCoordinates(new Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
     }
 
     @Override
@@ -179,4 +182,5 @@ public class PartyActor extends MapActor {
     public Image getEmblem() {
         return emblem;
     }
+
 }

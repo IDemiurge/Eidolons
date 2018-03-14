@@ -20,8 +20,8 @@ import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.gui.RollDecorator;
 import main.libgdx.gui.panels.dc.TablePanel;
-import main.libgdx.screens.map.obj.PartyActor;
 import main.libgdx.screens.map.layers.LightLayer;
+import main.libgdx.screens.map.obj.PartyActor;
 import main.libgdx.screens.map.ui.*;
 import main.libgdx.screens.map.ui.time.MapTimePanel;
 import main.libgdx.stage.GuiStage;
@@ -176,6 +176,11 @@ public class MapGuiStage extends GuiStage {
         }
         Coordinates c = mainPartyMarker.getParty().getCoordinates();
         Vector3 pos = MapScreen.getInstance().getCamera().position;
+if (        MapScreen.getInstance().getController().isWithinCamera(c.x, c.y, 128, 128))
+{
+    mainPartyMarker.setVisible(false);
+    return;
+}
 
         Line2D line = new Float(c.x, c.y,  pos.x,   pos.y );
         Rectangle2D rect = new Rectangle(

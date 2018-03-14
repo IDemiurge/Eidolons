@@ -47,13 +47,46 @@ public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
     }
 
     public static class PlaceActorParameters {
-        public TextureRegion mainIcon;
-        public TextureRegion border;
-        public MAP_OBJ_INFO_LEVEL visibility;
-        public Vector2 position;
-        public Color color;
-        public String name;
-        TextureRegion preview;
-          Place place;
+        private TextureRegion mainIcon;
+        private TextureRegion border;
+        private MAP_OBJ_INFO_LEVEL visibility;
+        private Vector2 position;
+        private Color color;
+        private String name;
+        private TextureRegion preview;
+        private Place place;
+
+
+        public TextureRegion getMainIcon() {
+            return mainIcon;
+        }
+
+        public TextureRegion getBorder() {
+            return border;
+        }
+
+        public MAP_OBJ_INFO_LEVEL getVisibility() {
+            return visibility;
+        }
+
+        public Vector2 getPosition() {
+            return position;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public TextureRegion getPreview() {
+            return preview;
+        }
+
+        public Place getPlace() {
+            return place;
+        }
     }
 }

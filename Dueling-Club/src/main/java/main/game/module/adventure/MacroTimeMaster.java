@@ -15,6 +15,7 @@ import main.system.GuiEventType;
 import main.system.MapEvent;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.launch.CoreEngine;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 
@@ -41,6 +42,7 @@ public class MacroTimeMaster {
     private boolean playerCamping;
     private float defaultSpeed;
     private DIRECTION windDirection;
+    private float timer;
 
     public MacroTimeMaster() {
         defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
@@ -66,27 +68,26 @@ public class MacroTimeMaster {
 
     private void updateDate() {
         //default: second == minute
-        if (dayTime == null)
-        {
+        if (dayTime == null) {
             newDayTime(DEFAULT_DAY_TIME);
-            return ;
+            return;
         }
 
         if (minuteCounter < 60) {
             return;
         }
         float passed = minuteCounter / 60;
-        minuteCounter = minuteCounter%60;
+        minuteCounter = minuteCounter % 60;
         GameDate date = getDate();
         int hour = date.getHour();
-        hour+=passed;
+        hour += passed;
         boolean newDay = false;
         if (hour > 24) {
             newDay = true;
-            hour =hour-24;
+            hour = hour - 24;
         }
         if (newDay)
-           date.nextDay();
+            date.nextDay();
 
         date.setHour(hour);
         //check month changes too
@@ -94,7 +95,7 @@ public class MacroTimeMaster {
         if (newPeriod >= getPeriods())
             newPeriod = 0;
 
-        if ( newPeriod != lastPeriod) {
+        if (newPeriod != lastPeriod) {
             lastPeriod = newPeriod;
             newDayTime(newPeriod);
         }
@@ -106,7 +107,8 @@ public class MacroTimeMaster {
         hoursPassed(4);
 
     }
-        public void newMonth() {
+
+    public void newMonth() {
         date.nextMonth();
         MacroGame.getGame().prepareSetTime(DAY_TIME.DAWN);
 //        GuiEventManager.trigger(MapEvent.DATE_CHANGED, date);
@@ -114,9 +116,10 @@ public class MacroTimeMaster {
 
     private void newDayTime(int newPeriod) {
         dayTime = times[newPeriod];
+        timer = 0;
         weather = new EnumMaster<WEATHER>().getRandomEnumConst(WEATHER.class);
         windDirection = DirectionMaster.getRandomDirection();
-        if (windDirection.isGrowY()==null  || windDirection.isGrowX()==null )
+        if (windDirection.isGrowY() == null || windDirection.isGrowX() == null)
             if (RandomWizard.random())
                 windDirection = DIRECTION.UP_RIGHT;
 
@@ -126,14 +129,14 @@ public class MacroTimeMaster {
     }
 
     public DIRECTION getWindDirection() {
-        if (windDirection==null )
-            windDirection=DIRECTION.UP_RIGHT;
+        if (windDirection == null)
+            windDirection = DIRECTION.UP_RIGHT;
         return windDirection;
     }
 
     public WEATHER getWeather() {
-        if (weather==null )
-            weather=WEATHER.CLEAR;
+        if (weather == null)
+            weather = WEATHER.CLEAR;
         return weather;
     }
 
@@ -151,10 +154,11 @@ public class MacroTimeMaster {
             date = TimeMaster.getDate();
         return date;
     }
-//after combat or for camping
+
+    //after combat or for camping
     public void hoursPassed(int i) {
         fastforward = true;
-        for (int h = 0; h < i-1; h++) {
+        for (int h = 0; h < i - 1; h++) {
             time += 60;
             timedCheck();
         }
@@ -162,6 +166,7 @@ public class MacroTimeMaster {
         fastforward = false;
         timedCheck();
     }
+
     public void timedCheck() {
         delta = time - lastTimeChecked;
         if (delta == 0) return;
@@ -183,9 +188,9 @@ public class MacroTimeMaster {
 
         Coordinates c = MacroGame.getGame().getPlayerParty().getCoordinates();
         for (Place place : MacroGame.getGame().getState().getPlaces()) {
-            MAP_OBJ_INFO_LEVEL infoLevel=MAP_OBJ_INFO_LEVEL.UNKNOWN;
+            MAP_OBJ_INFO_LEVEL infoLevel = MAP_OBJ_INFO_LEVEL.UNKNOWN;
             if (place.getCoordinates().dst(c) < 500) {
-                infoLevel=MAP_OBJ_INFO_LEVEL.KNOWN;
+                infoLevel = MAP_OBJ_INFO_LEVEL.KNOWN;
                 place.setDetected(true);
             }
             place.setInfoLevel(infoLevel);
@@ -200,34 +205,45 @@ public class MacroTimeMaster {
 
 
     public void act(float delta) {
-        time += delta * speed;
+        delta = delta * speed;
+        time += delta;
+        timer += delta;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public float getTimer() {
+        return timer;
     }
 
-    public void setPlayerCamping(boolean playerCamping) {
-        this.playerCamping = playerCamping;
+    public float getTime() {
+        return time;
     }
 
     public boolean isPlayerCamping() {
         return playerCamping;
     }
 
+    public void setPlayerCamping(boolean playerCamping) {
+        this.playerCamping = playerCamping;
+    }
+
     public void resetSpeed() {
         if (MacroGame.getGame().getLoop().isPaused()) {
-            setSpeed(defaultSpeed/4);
+            setSpeed(defaultSpeed / 4);
         } else {
             setSpeed(defaultSpeed);
         }
     }
 
     public float getPercentageIntoNextDaytime() {
-        return 0.25f* (getDate().getHour()%4+getMinuteCounter()/60);
+        return 0.25f * (getDate().getHour() % 4 + getMinuteCounter() / 60);
     }
-        public float getSpeed() {
+
+    public float getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
     public float getMinuteCounter() {
@@ -235,17 +251,24 @@ public class MacroTimeMaster {
     }
 
     public void speedDown() {
-        if (speed>defaultSpeed)
-            speed=speed-defaultSpeed/2;
-        else speed -= speed/3;
-        if (speed<=0.1f)
-            speed=0.1f;
+        if (speed > defaultSpeed)
+            speed = speed - defaultSpeed / 2;
+        else speed -= speed / 3;
+        if (speed <= 0.1f)
+            speed = 0.1f;
     }
+
     public void speedUp() {
-        if (speed<defaultSpeed)
-        speed=speed+defaultSpeed/2;
-        else speed += speed/3;
-        if (speed>=10f)
-            speed=10f;
+        if (speed < defaultSpeed)
+            speed = speed + defaultSpeed / 2;
+        else speed += speed / 3;
+        if (speed >= getMaxSpeed())
+            speed = getMaxSpeed();
+    }
+
+    private float getMaxSpeed() {
+        if (CoreEngine.isFastMode())
+            return 100f;
+        return 10f;
     }
 }

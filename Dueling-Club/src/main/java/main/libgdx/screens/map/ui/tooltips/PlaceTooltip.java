@@ -14,7 +14,7 @@ import main.libgdx.GdxMaster;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.tooltips.ToolTip;
+import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.screens.map.MapScreen;
 import main.libgdx.screens.map.editor.EditorManager;
 import main.libgdx.screens.map.obj.PlaceActor;
@@ -30,7 +30,7 @@ import javax.swing.*;
 /**
  * Created by JustMe on 2/23/2018.
  */
-public class PlaceTooltip extends ToolTip {
+public class PlaceTooltip extends Tooltip {
     Place place;
     PlaceActor actor;
 

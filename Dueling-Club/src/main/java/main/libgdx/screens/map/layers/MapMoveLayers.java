@@ -269,7 +269,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
     private void remove(MapMoveLayer sub) {
         sub.remove();
         sub.setVisible(false);
-        durationMap.remove(sub);
+        displayed.remove(sub);
     }
 
     private void spawn(MapMoveLayer container, MAP_AREA_GROUP group) {

@@ -9,12 +9,12 @@ import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public abstract class ToolTip<T extends Actor> extends TablePanel<T> {
+public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     protected boolean showing;
     private ToolTipManager manager;
 
-    public ToolTip() {
+    public Tooltip() {
 
     }
 

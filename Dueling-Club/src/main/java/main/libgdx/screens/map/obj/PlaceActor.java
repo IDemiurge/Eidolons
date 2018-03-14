@@ -17,7 +17,7 @@ public class PlaceActor extends MapActor {
 //    Image preview;
 
     public PlaceActor(PlaceActorParameters parameters) {
-        super(parameters.mainIcon);
+        super(parameters.getMainIcon());
         init(parameters);
     }
 
@@ -70,14 +70,14 @@ public class PlaceActor extends MapActor {
 
     private void init(PlaceActorParameters parameters) {
 //        preview = new Image(parameters.preview);
-        this.place = parameters.place;
-        border = new Image(parameters.border);
+        this.place = parameters.getPlace();
+        border = new Image(parameters.getBorder());
         addActor(border);
         if (isHighlightUnder()){
             border.setZIndex(0);
         }
-        setPosition(parameters.position.x - portrait.getImageWidth() / 2,
-         parameters.position.y - portrait.getImageHeight() / 2);
+        setPosition(parameters.getPosition().x - portrait.getImageWidth() / 2,
+         parameters.getPosition().y - portrait.getImageHeight() / 2);
         minimize();
     }
 

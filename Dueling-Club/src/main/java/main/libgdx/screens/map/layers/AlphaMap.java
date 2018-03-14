@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 3/12/2018.
@@ -22,16 +23,16 @@ public class AlphaMap {
     }
 
     private String getPath(ALPHA_MAP sub) {
-        return PathFinder.getMapLayersPath()+sub.name()+".png";
+        return PathFinder.getMapLayersPath()+ StringMaster.getWellFormattedString( sub.name())+".png";
     }
 
     public enum ALPHA_MAP{
         ROADS,
         PATHS,
         WILDERNESS,
-        WATER,
+        INLAND_WATER,
         OCEAN,
-        OBSTACLES,
+        IMPASSABLE,
         ;
 
     }
