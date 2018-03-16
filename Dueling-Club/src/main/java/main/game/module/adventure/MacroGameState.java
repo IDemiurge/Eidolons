@@ -3,7 +3,7 @@ package main.game.module.adventure;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
-import main.game.battlecraft.logic.meta.faction.FactionObj;
+import main.game.module.adventure.faction.FactionObj;
 import main.game.core.state.GameState;
 import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;

@@ -1,10 +1,10 @@
 package main.client.cc.gui.neo.choice;
 
 import main.client.cc.CharacterCreator;
-import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.PROPS;
 import main.content.VALUE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
@@ -54,7 +54,7 @@ public class HeroChoiceSequence extends ChoiceSequence {
 
                     @Override
                     protected OBJ_TYPE getTYPE() {
-                        return DC_TYPE.FACTIONS;
+                        return MACRO_OBJ_TYPES.FACTIONS;
                     }
 
                     @Override

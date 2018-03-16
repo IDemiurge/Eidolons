@@ -287,6 +287,7 @@ NEXT_MISSION(null,false, "missions"),
     // cannot add
     // GROUP
     UNIT_TYPES(null, true, "encounters"), // POOL
+    FLAG_COLOR(null, true, "factions"),
     UNIT_POOL(null, true, "factions"),
     HERO_BACKGROUNDS(null, true, "factions"),
     FACTION_DUNGEONS(null, true, "factions"),

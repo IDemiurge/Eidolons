@@ -23,6 +23,7 @@ public class TravelAction extends MoveToAction {
     private ALPHA_MAP currentMapType;
     private float destinationX;
     private float destinationY;
+    private ALPHA_MAP lastMapType;
 
     public TravelAction(
      FreeTravelMaster master) {
@@ -56,24 +57,53 @@ public class TravelAction extends MoveToAction {
         Vector2 pos = new Vector2(getActor().getX(), getActor().getY());
         //try to find adjacent pos that is ok
 
-        float searchRange = 5;
-        if (search(searchRange, currentMapType, pos, true)) {
-            return;
-        }
+//find current alpha map?
+        //only use this per time?
 
-        for (ALPHA_MAP sub : disallowedMapTypes) {
-            if (search(searchRange, sub, pos, false)) {
-                complete = true;
-                return;
+        for (ALPHA_MAP sub : ALPHA_MAP.values()) {
+            if (search(10, sub, pos, true, false)) {
+                main.system.auxiliary.log.LogMaster.log(1, getActor().getParty() +
+                 " is on " + currentMapType);
+                break;
             }
+            if (sub == ALPHA_MAP.IMPASSABLE)
+                setCurrentMapType(null);
         }
-        for (ALPHA_MAP sub : preferredMapTypes) {
-            if (search(searchRange, sub, pos, true)) {
-                reinit();
-                return;
-            }
-        }
+        if (currentMapType != lastMapType) {
+            main.system.auxiliary.log.LogMaster.log(1, getActor().getParty() +
+             " NEW TERRAIN: " + currentMapType);
 
+            for (ALPHA_MAP sub : disallowedMapTypes) {
+                if (sub == currentMapType) {
+                    complete = true;
+                    main.system.auxiliary.log.LogMaster.log(1, getActor().getParty() +
+                     " STOPPED: " + currentMapType);
+                    return;
+                }
+                //once per 0.1sec
+//                if (search(searchRange, sub, pos, false, false)) {
+//                    complete = true;
+//                    main.system.auxiliary.log.LogMaster.log(1,getActor().getParty()+
+//                     " STOPPED: " +currentMapType);
+//                    return;
+//                }
+            }
+
+//             searchRange = 5;
+//            for (ALPHA_MAP sub : preferredMapTypes) {
+//                if (sub == null) {
+//                    super.update(percent);
+//                    return;
+//                }
+//                if (search(searchRange, sub, pos, true, false)) {
+//                    main.system.auxiliary.log.LogMaster.log(1,getActor().getParty()+
+//                     " REINIT: " +currentMapType);
+//                    reinit();
+//                    return;
+//                }
+//            }
+        }
+        super.update(percent);
 
 //               newPos = new Vector2(x, y);
 //               cache(newPos);
@@ -85,7 +115,13 @@ public class TravelAction extends MoveToAction {
 
     }
 
-    private boolean search(float searchRange, ALPHA_MAP mapType, Vector2 pos, boolean goTo) {
+    public void setCurrentMapType(ALPHA_MAP currentMapType) {
+        lastMapType = this.currentMapType;
+        this.currentMapType = currentMapType;
+    }
+
+    private boolean search(float searchRange, ALPHA_MAP mapType, Vector2 pos,
+                           boolean goTo, boolean check) {
         float x = pos.x;
         float y = pos.y;
         boolean upOnY = destinationY > y;
@@ -96,42 +132,48 @@ public class TravelAction extends MoveToAction {
         }
         for (int i = 1; i <= searchRange; i++) {
             for (int j = 1; j <= searchRange; j++) {
-                if (upOnY && rightOnX)
-                    if (check(mapType, x + i, y + j)) {
-                        if (goTo) {
-                            getActor().setPosition(x + i, y + j);
-                            this.currentMapType = mapType;
-                        }
-                        return true;
-                    }
-                if (!upOnY && rightOnX)
-                    if (check(mapType, x - i, y + j)) {
-                        if (goTo) {
-                            getActor().setPosition(x - i, y + j);
-                            this.currentMapType = mapType;
-                        }
-                        return true;
-                    }
-                if (upOnY && !rightOnX)
-                    if (check(mapType, x + i, y - j)) {
-                        if (goTo) {
-                            getActor().setPosition(x + i, y - j);
-                            this.currentMapType = mapType;
-                        }
-                        return true;
-                    }
-                if (!upOnY && !rightOnX)
-                    if (check(mapType, x - i, y - j)) {
-                        if (goTo) {
-                            getActor().setPosition(x - i, y - j);
-                            this.currentMapType = mapType;
-                        }
-                        return true;
-                    }
+                if (check(x, y, i, j, goTo, check, mapType, rightOnX, upOnY))
+                    return true;
 
             }
 
         }
+        return false;
+    }
+
+    private boolean check(float x, float y, int i, int j, boolean goTo, boolean check, ALPHA_MAP mapType, boolean rightOnX, boolean upOnY) {
+        if (upOnY && rightOnX)
+            if (check(mapType, x + i, y + j)) {
+                if (goTo || check) {
+                    getActor().setPosition(x + i, y + j);
+                    setCurrentMapType(mapType);
+                }
+                return true;
+            }
+        if (!upOnY && rightOnX)
+            if (check(mapType, x - i, y + j)) {
+                if (goTo || check) {
+                    getActor().setPosition(x - i, y + j);
+                    setCurrentMapType(mapType);
+                }
+                return true;
+            }
+        if (upOnY && !rightOnX)
+            if (check(mapType, x + i, y - j)) {
+                if (goTo || check) {
+                    getActor().setPosition(x + i, y - j);
+                    setCurrentMapType(mapType);
+                }
+                return true;
+            }
+        if (!upOnY && !rightOnX)
+            if (check(mapType, x - i, y - j)) {
+                if (goTo || check) {
+                    getActor().setPosition(x - i, y - j);
+                    setCurrentMapType(mapType);
+                }
+                return true;
+            }
         return false;
     }
 
@@ -158,6 +200,7 @@ public class TravelAction extends MoveToAction {
         if (master.check(mapType, x, y)) {
             return true;
         }
+
         return false;
     }
 

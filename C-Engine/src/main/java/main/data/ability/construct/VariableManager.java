@@ -45,10 +45,10 @@ public class VariableManager {
     public static AbilityType getVarType(String abilTypeName, boolean passive, Ref ref) {
         if (passive) {
             abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ABILITY_PARSING_CODE,
-                    TextParser.VARIABLE_PARSING_CODE);
+             TextParser.VARIABLE_PARSING_CODE);
         } else {
             abilTypeName = TextParser.parse(abilTypeName, ref, TextParser.ACTIVE_PARSING_CODE,
-                    TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
+             TextParser.VARIABLE_PARSING_CODE, TextParser.ABILITY_PARSING_CODE);
         }
         return getVarType(abilTypeName);
     }
@@ -116,13 +116,14 @@ public class VariableManager {
 
     }
 
-    public static String substitute(String text, Object...vars) {
+    public static String substitute(String text, Object... vars) {
         for (Object sub : vars) {
-            text =StringMaster.replaceFirst( text,VARIABLE, sub.toString());
+            text = StringMaster.replaceFirst(text, VARIABLE, sub.toString());
         }
         return text;
     }
-        public static List<String> getVarList(String vars) {
+
+    public static List<String> getVarList(String vars) {
         vars = getVarPart(vars);
         vars = StringMaster.cropParenthesises(vars);
         List<String> varList = new ArrayList<>();
@@ -136,9 +137,14 @@ public class VariableManager {
     public static String getVar(String typeName) {
         return StringMaster.cropParenthesises(getVarPart(typeName));
     }
+
     public static String getVar(String typeName, int i) {
-        return
-         StringMaster.cropParenthesises(getVarPart(typeName)).split(",")[i];
+        try {
+            return StringMaster.cropParenthesises(getVarPart(typeName)).split(",")[i];
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return null;
     }
 
     public static String getVarPart(String typeName) {
@@ -176,14 +182,14 @@ public class VariableManager {
             if (manualVars) {
                 input =
 
-                        JOptionPane.showInputDialog(type.getName()
-                                + " "
-                                + xml.substring(index + StringMaster.VAR_STRING.length() - 1, xml.indexOf(
-                                ">", index + StringMaster.VAR_STRING.length())) + " variable at #"
+                 JOptionPane.showInputDialog(type.getName()
+                  + " "
+                  + xml.substring(index + StringMaster.VAR_STRING.length() - 1, xml.indexOf(
+                  ">", index + StringMaster.VAR_STRING.length())) + " variable at #"
 
-                                +
+                  +
 
-                                i);
+                  i);
 
             }
             if (input == null) {
@@ -263,7 +269,7 @@ public class VariableManager {
                     return null;
                 }
                 value = value.replace(StringMaster.getContainerSeparator(), StringMaster
-                        .getVarSeparator());
+                 .getVarSeparator());
                 prevValue = value;
             }
 
@@ -309,7 +315,7 @@ public class VariableManager {
 
     private static String promptBoolInput(String var) {
         if (JOptionPane.showConfirmDialog(null, var + " - Y/N?", "input boolean",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             return Boolean.TRUE.toString();
         }
         return Boolean.FALSE.toString();
@@ -447,7 +453,7 @@ public class VariableManager {
                 Entity entity = obj.getRef().getInfoEntity();
                 if (entity == null) {
                     entity = obj.getRef().getEntity(KEYS.SKILL);
-                    if (entity == null||obj.getGame().isSimulation()) {
+                    if (entity == null || obj.getGame().isSimulation()) {
                         entity = obj.getRef().getEntity(KEYS.ACTIVE);
                         if (entity == null) {
                             entity = obj.getRef().getEntity(KEYS.INFO);
@@ -455,17 +461,17 @@ public class VariableManager {
                     }
                 }
                 PARAMETER param;
-                if (entity==null )
+                if (entity == null)
                     return 0;
                 if (entity.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
                     param = ContentManager.findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                 } else {
 
                     param = ContentManager
-                            .findMasteryScore(entity.getProperty(G_PROPS.SPELL_GROUP));
+                     .findMasteryScore(entity.getProperty(G_PROPS.SPELL_GROUP));
                     if (param == null) {
                         param = ContentManager
-                                .findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
+                         .findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                     }
                 }
                 return obj.getRef().getSourceObj().getIntParam(param);
@@ -504,7 +510,7 @@ public class VariableManager {
             public Object evaluate(Entity obj, String s) {
                 Ref ref = obj.getRef();
                 Ref REF = ref.getGame().getGraveyardManager().getTopDeadUnit(
-                        ref.getSourceObj().getCoordinates()).getRef();
+                 ref.getSourceObj().getCoordinates()).getRef();
                 return new Formula(s).getInt(REF);
             }
         },
@@ -512,7 +518,7 @@ public class VariableManager {
             public Object evaluate(Entity obj, String s) {
                 Ref ref = obj.getRef();
                 Ref REF = ref.getGame().getGraveyardManager().getTopDeadUnit(
-                        ref.getSourceObj().getCoordinates()).getRef();
+                 ref.getSourceObj().getCoordinates()).getRef();
                 return new Property("SOURCE", s).getStr(REF);
             }
         },;

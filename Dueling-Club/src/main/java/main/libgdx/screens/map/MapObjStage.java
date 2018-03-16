@@ -70,24 +70,24 @@ public class MapObjStage extends Stage {
                 pointsGroup.setVisible(true);
             } else
                 pointsGroup.setVisible(false);
-
-        for (PlaceActor place : places) {
-            switch (place.getPlace().getInfoLevel()) {
-                case VISIBLE:
-                case KNOWN:
-                    if (place.getColor().a == 0) {
-                        ActorMaster.addFadeInAction(place, 0.84f);
-                    }
-                    break;
-                case CONCEALED:
-                case UNKNOWN:
-                case INVISIBLE:
-                    if (place.getColor().a > 0) {
-                        ActorMaster.addFadeOutAction(place, 0.84f);
-                    }
-                    break;
+        if (!CoreEngine.isMapEditor())
+            for (PlaceActor place : places) {
+                switch (place.getPlace().getInfoLevel()) {
+                    case VISIBLE:
+                    case KNOWN:
+                        if (place.getColor().a == 0) {
+                            ActorMaster.addFadeInAction(place, 0.84f);
+                        }
+                        break;
+                    case CONCEALED:
+                    case UNKNOWN:
+                    case INVISIBLE:
+                        if (place.getColor().a > 0) {
+                            ActorMaster.addFadeOutAction(place, 0.84f);
+                        }
+                        break;
+                }
             }
-        }
         resetZIndices();
     }
 
@@ -109,7 +109,8 @@ public class MapObjStage extends Stage {
             if (sub.isHovered())
                 hovered = sub;
         }
-        hovered.setZIndex(Integer.MAX_VALUE);
+        if (hovered != null)
+            hovered.setZIndex(Integer.MAX_VALUE);
     }
 
     private Comparator<? super PlaceActor> getPlacesSorter() {

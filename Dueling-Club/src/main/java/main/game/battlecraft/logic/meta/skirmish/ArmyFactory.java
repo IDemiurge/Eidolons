@@ -1,7 +1,7 @@
 package main.game.battlecraft.logic.meta.skirmish;
 
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.meta.faction.FactionObj;
+import main.game.module.adventure.faction.FactionObj;
 
 /**
  * Created by JustMe on 3/26/2017.

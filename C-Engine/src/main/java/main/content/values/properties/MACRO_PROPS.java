@@ -7,6 +7,7 @@ import main.system.auxiliary.StringMaster;
 
 public enum MACRO_PROPS implements PROPERTY {
     FACTIONS(null, false, "town", "world"),
+    PLAYER_FACTION(null, false,  "world"),
     REGIONS("world", null),
     STARTING_LOCATION("campaign", "Starting Location"),
     CAMPAIGN_PARTY("campaign", "Campaign Party"),

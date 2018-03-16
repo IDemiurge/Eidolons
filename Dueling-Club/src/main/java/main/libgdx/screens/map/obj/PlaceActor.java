@@ -13,11 +13,14 @@ import main.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;
  */
 public class PlaceActor extends MapActor {
     private Place place;
+    private float scaleMod;
 
 //    Image preview;
 
     public PlaceActor(PlaceActorParameters parameters) {
         super(parameters.getMainIcon());
+        scaleMod=Math.max(portrait.getWidth() / portrait.getHeight(),
+         portrait.getHeight() / portrait.getWidth());
         init(parameters);
     }
 
@@ -44,15 +47,21 @@ public class PlaceActor extends MapActor {
     }
 
     private float getHoveredScale() {
-        return getHoveredSize() / originalTexture.getRegionHeight();
+        return getHoveredSize()
+         / originalTexture.getRegionHeight() ;
     }
 
     private float getDefaultScale() {
-        return (getDefaultSize() / originalTexture.getRegionHeight());
+        return
+         (getDefaultSize() / originalTexture.getRegionHeight()) ;
     }
 
     private float getDefaultSize() {
-        return GdxMaster.adjustSize(96);
+        return GdxMaster.adjustSize(80)*getScaleMod();
+    }
+
+    private float getScaleMod() {
+        return scaleMod;
     }
 
     public Place getPlace() {
@@ -60,7 +69,7 @@ public class PlaceActor extends MapActor {
     }
 
     private float getHoveredSize() {
-        return GdxMaster.adjustSize(128);
+        return GdxMaster.adjustSize(120)*getScaleMod();
     }
 
     public void minimize() {

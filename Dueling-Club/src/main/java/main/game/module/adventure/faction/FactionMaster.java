@@ -1,4 +1,4 @@
-package main.game.battlecraft.logic.meta.faction;
+package main.game.module.adventure.faction;
 
 import main.content.values.properties.MACRO_PROPS;
 import main.game.module.adventure.MacroRef;

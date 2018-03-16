@@ -1,7 +1,6 @@
 package main.libgdx.screens.map;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
-import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.entity.MacroParty;
 import main.libgdx.GdxMaster;
+import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.gui.RollDecorator;
@@ -28,15 +27,8 @@ import main.libgdx.stage.GuiStage;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
-
-import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.geom.Line2D.Float;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import static main.system.MapEvent.CREATE_PARTY;
 
@@ -75,9 +67,8 @@ public class MapGuiStage extends GuiStage {
             };
             vignette.getContent().setWidth(GdxMaster.getWidth());
             vignette.getContent().setHeight(GdxMaster.getHeight());
-            vignette.setAlphaStep(0.1f);
-            vignette.setFluctuatingAlphaRandomness(0.3f);
-            vignette.setFluctuatingFullAlphaDuration(1.5f);
+            vignette.setAlphaTemplate(ALPHA_TEMPLATE.VIGNETTE);
+
             addActor(vignette);
             vignette.setTouchable(Touchable.disabled);
         }
@@ -174,40 +165,40 @@ public class MapGuiStage extends GuiStage {
             );
             dirty = false;
         }
-        Coordinates c = mainPartyMarker.getParty().getCoordinates();
-        Vector3 pos = MapScreen.getInstance().getCamera().position;
-if (        MapScreen.getInstance().getController().isWithinCamera(c.x, c.y, 128, 128))
-{
-    mainPartyMarker.setVisible(false);
-    return;
-}
-
-        Line2D line = new Float(c.x, c.y,  pos.x,   pos.y );
-        Rectangle2D rect = new Rectangle(
-         (int) pos.x - GdxMaster.getWidth()/2,
-         (int) pos.y + GdxMaster.getHeight()/2,
-         (int) GdxMaster.getWidth() ,
-         (int)  GdxMaster.getHeight()
-        );
-        Point2D[] points = GeometryMaster.getIntersectionPoint(line, rect);
-        Point2D point = null ;
-        double dst = Double.MAX_VALUE;
-
-        for (Point2D sub : points) {
-            double dst1 = sub.distance(c.x, c.y+ GdxMaster.getHeight());
-            if (dst1<dst){
-                dst = dst1;
-                point = sub;
-            }
-        }
-
-          dst = dst-500;
-        if (dst > 100) {
-            float scale = (float) (10f/ Math.sqrt(Math.sqrt(dst)));
-            mainPartyMarker.setScale(scale);
-        }
-        mainPartyMarker.setPosition((float)point.getX(), (float)point.getY()- GdxMaster.getHeight());
-        mainPartyMarker.setZIndex(Integer.MAX_VALUE);
+//        Coordinates c = mainPartyMarker.getParty().getCoordinates();
+//        Vector3 pos = MapScreen.getInstance().getCamera().position;
+//if (        MapScreen.getInstance().getController().isWithinCamera(c.x, c.y, 128, 128))
+//{
+//    mainPartyMarker.setVisible(false);
+//    return;
+//}
+//
+//        Line2D line = new Float(c.x, c.y,  pos.x,   pos.y );
+//        Rectangle2D rect = new Rectangle(
+//         (int) pos.x - GdxMaster.getWidth()/2,
+//         (int) pos.y + GdxMaster.getHeight()/2,
+//         (int) GdxMaster.getWidth() ,
+//         (int)  GdxMaster.getHeight()
+//        );
+//        Point2D[] points = GeometryMaster.getIntersectionPoint(line, rect);
+//        Point2D point = null ;
+//        double dst = Double.MAX_VALUE;
+//
+//        for (Point2D sub : points) {
+//            double dst1 = sub.distance(c.x, c.y+ GdxMaster.getHeight());
+//            if (dst1<dst){
+//                dst = dst1;
+//                point = sub;
+//            }
+//        }
+//
+//          dst = dst-500;
+//        if (dst > 100) {
+//            float scale = (float) (10f/ Math.sqrt(Math.sqrt(dst)));
+//            mainPartyMarker.setScale(scale);
+//        }
+//        mainPartyMarker.setPosition((float)point.getX(), (float)point.getY()- GdxMaster.getHeight());
+//        mainPartyMarker.setZIndex(Integer.MAX_VALUE);
 
         //set scale depending on how far we are
     }

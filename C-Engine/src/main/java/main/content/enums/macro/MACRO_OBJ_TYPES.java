@@ -28,7 +28,7 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     },
     ROUTE("route", MACRO_PROPS.AREA, 6, MACRO_PROPS.REGION),
     // DIALOGUE(("dialogue"), G_PROPS.GROUP, 8, MACRO_PROPS.ACTOR, true),
-     FACTION("faction", G_PROPS.GROUP, 7),
+     FACTIONS("factions", G_PROPS.FACTION_GROUP, 7),
     CAMPAIGN("campaign", G_PROPS.GROUP, 8),
     AREA("area", MACRO_PROPS.REGION, 9),
     TOWN_PLACE("town place", MACRO_PROPS.REGION, 10),

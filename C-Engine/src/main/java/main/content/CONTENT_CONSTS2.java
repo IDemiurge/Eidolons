@@ -80,7 +80,12 @@ public String getPath(){
             SNOW_TIGHT2("snow\\snow tight2"),
             SNOWFALL_SMALL("snow\\snowfall small"),
             SNOWFALL("snow\\snowfall"),
-            SNOWFALL_THICK("snow\\snowfall thick");
+            SNOWFALL_THICK("snow\\snowfall thick"),
+            WISPS("woods\\wisps"),
+            LEAVES("woods\\leaves"),
+            STARS("woods\\stars"),
+
+            ;
         public String path;
 
         SFX(String path) {

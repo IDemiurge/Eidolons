@@ -215,7 +215,11 @@ public class GenericLauncher extends Game {
         }
 
         if (newScreen instanceof MapScreen) {
-            ((MapScreen) newScreen).centerCamera();
+            try {
+                ((MapScreen) newScreen).centerCamera();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             return;
         }
         triggerLoaded(meta);
@@ -226,8 +230,8 @@ public class GenericLauncher extends Game {
         switch (meta.getType()) {
             case BATTLE:
                 if (!CoreEngine.isMacro())
-                if (firstInitDone)
-                    return;
+                    if (firstInitDone)
+                        return;
                 new Thread(new Runnable() {
                     public void run() {
                         if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))

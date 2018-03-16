@@ -25,6 +25,8 @@ public class BattleGuiStage extends GuiStage {
 
     private final InitiativePanel initiativePanel;
     private final ActionPanelController bottomPanel;
+    private final GuiVisualEffects guiVisualEffects;
+
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
@@ -43,6 +45,8 @@ public class BattleGuiStage extends GuiStage {
         InventoryWithAction inventoryForm = new InventoryWithAction();
         inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
         this.addActor(inventoryForm);
+
+        addActor(guiVisualEffects = new GuiVisualEffects());
     }
 
 

@@ -86,7 +86,7 @@ public class MapScreen extends GameScreen {
             XML_Reader.readTypes(true);
             MacroManager.newGame();
             preloaded=true;
-        }, " thread").start();
+        }, "macro init thread").start();
 
 //        GuiEventManager.trigger(SHOW_SELECTION_PANEL,
 //         DataManager.getTypesGroup(DC_TYPE.SCENARIOS,

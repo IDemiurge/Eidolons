@@ -1,25 +1,33 @@
 package main.game.module.adventure.global;
 
+import main.client.cc.logic.party.Party;
 import main.content.DC_TYPE;
+import main.content.PROPS;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.Coordinates;
+import main.game.core.game.DC_Game;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.faction.Faction;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
 import main.game.module.adventure.town.Town;
 import main.game.module.adventure.travel.TravelMasterOld;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.data.PlayerData.ALLEGIENCE;
+import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +43,9 @@ public class WorldGenerator {
         game = ref.getGame();
         world = new World(ref.getGame(), wType, ref);
         ref.getGame().setWorld(world);
+        generateFactions();
         world.setRegions(generateRegions(ref));
+
 //        FactionMaster.generateFactions(ref);
         // parties
         return world;
@@ -82,8 +92,8 @@ public class WorldGenerator {
         for (String s : StringMaster.open(region
          .getProperty(MACRO_PROPS.PLACES))) {
             Place place = createPlace(ref, s);
-            if (place!=null )
-            region.addPlace(place);
+            if (place != null)
+                region.addPlace(place);
         }
         for (String s : StringMaster.open(region
          .getProperty(MACRO_PROPS.TOWNS))) {
@@ -102,16 +112,63 @@ public class WorldGenerator {
 		 */
     }
 
+    private static void generateFactions() {
+        for (String sub : StringMaster.openContainer(world.getProperty(MACRO_PROPS.FACTIONS))) {
+            boolean me = world.checkProperty(MACRO_PROPS.PLAYER_FACTION, sub);
+            ObjType type = DataManager.getType(sub, MACRO_OBJ_TYPES.FACTIONS);
+            FLAG_COLOR color =
+             new EnumMaster<FLAG_COLOR>().retrieveEnumConst
+              (FLAG_COLOR.class, type.getProperty(PROPS.FLAG_COLOR));
+            if (color == null)
+                color = FLAG_COLOR.BROWN;
+            DC_Player player = new DC_Player(sub, color,
+             type.getProperty(G_PROPS.EMBLEM), type.getProperty(G_PROPS.IMAGE),
+             me ? ALLEGIENCE.ALLY : ALLEGIENCE.ENEMY);
+
+            Faction faction = new Faction(type, player);
+            game.addFaction(faction);
+            if (me)
+                game.setPlayerFaction(faction);
+        }
+    }
+
+    private static ObjType getMacroPartyType(Party party) {
+        ObjType type = new ObjType(party.getType());
+        type.initType();
+        return type;
+    }
     private static MacroParty createParty(MacroRef ref, String s) {
-        String name = VariableManager.removeVarPart(s);
         Coordinates coordinates = new Coordinates(true,
          Integer.valueOf(VariableManager.getVar(s, 0)),
          Integer.valueOf(VariableManager.getVar(s, 1)));
-        //TODO allegiance!!!
+        String string = (VariableManager.getVar(s, 2));
+        Faction faction = null;
+        if (string == null) {
+            faction = game.getPlayerFaction();
+        } else if (string.equalsIgnoreCase("player")) {
+            Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
+            if (party == null) {
+                return null ;
+            }
+            MacroParty playerParty = new MacroParty(
+             getMacroPartyType(party), game, ref,
+             party);
+            game.setPlayerParty(playerParty);
+            playerParty.setFaction(game.getPlayerFaction());
+            playerParty.setCoordinates(coordinates);
+            return playerParty;
+        } else
+            faction = game.getFaction(string);
+
+        String name = VariableManager.removeVarPart(s);
+
         MacroParty party = new MacroParty(DataManager.getType(name, DC_TYPE.PARTY), ref.getGame(), ref);
-       party.setOriginalOwner(new DC_Player("" , null ,false));
-        party.setOwner(new DC_Player("" , null ,false));
         party.setCoordinates(coordinates);
+
+        party.setFaction(faction);
+        party.setOriginalOwner(faction.getOwner());
+        party.setOwner(faction.getOwner());
+
         return party;
     }
 
@@ -226,8 +283,8 @@ public class WorldGenerator {
         s = formatPointVarString(s);
         String typeName = VariableManager.removeVarPart(s);
         ObjType t = DataManager.getType(typeName, MACRO_OBJ_TYPES.PLACE);
-        if (t==null ){
-            return null ;
+        if (t == null) {
+            return null;
         }
         Place place = new Place(game, t, ref);
         if (VariableManager.getVarPart(s).contains("-")) {

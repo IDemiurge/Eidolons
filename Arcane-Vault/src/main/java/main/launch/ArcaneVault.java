@@ -212,7 +212,7 @@ if (macroMode)
         mainBuilder = new MainBuilder();
         mainBuilder.setKeyListener(new AV_KeyListener(getGame()));
         if (!isCustomLaunch()) {
-            if (XML_Reader.getTypeMaps().keySet().contains(DC_TYPE.FACTIONS.getName())) {
+            if (XML_Reader.getTypeMaps().keySet().contains(MACRO_OBJ_TYPES.FACTIONS.getName())) {
                 UnitGroupMaster.modifyFactions();
             }
         }

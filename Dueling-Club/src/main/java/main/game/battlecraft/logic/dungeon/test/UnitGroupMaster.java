@@ -13,6 +13,7 @@ import main.content.CONTENT_CONSTS2.FACTION;
 import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.PROPS;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -52,8 +53,8 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -156,7 +157,7 @@ public class UnitGroupMaster {
     public static void modifyFactions() {
         for (FACTION f : FACTION.values()) {
             DEITY deity = f.getDeity();
-            ObjType faction = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
+            ObjType faction = DataManager.getType(f.toString(),MACRO_OBJ_TYPES.FACTIONS);
             if (faction == null) {
                 continue;
             }
@@ -193,12 +194,12 @@ public class UnitGroupMaster {
         if (hero == null) {
             String faction = ListChooser.chooseEnum(FACTION.class);
             factionType = DataManager.getType(faction.toString().replace(";", ""),
-                    DC_TYPE.FACTIONS);
+                   MACRO_OBJ_TYPES.FACTIONS);
         } else {
             List<String> list = new ArrayList<>();
 
-            factionType = DataManager.getType(ListChooser.chooseType(list, DC_TYPE.FACTIONS),
-                    DC_TYPE.FACTIONS);
+            factionType = DataManager.getType(ListChooser.chooseType(list,MACRO_OBJ_TYPES.FACTIONS),
+                   MACRO_OBJ_TYPES.FACTIONS);
         }
         return createUnitGroup(hero, factionType, level);
     }
@@ -417,7 +418,7 @@ public class UnitGroupMaster {
         Map<ObjType, Integer> map = new XLinkedMap<>();
         addUnits(factionType, map, factionType);
         for (String f : StringMaster.open(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
-            ObjType allyFactionType = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
+            ObjType allyFactionType = DataManager.getType(f.toString(),MACRO_OBJ_TYPES.FACTIONS);
             addUnits(factionType, map, allyFactionType);
         }
         return map;
@@ -438,7 +439,7 @@ public class UnitGroupMaster {
             for (String f : StringMaster
                     .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
                 costMod += 5;
-                ObjType allyFactionType = DataManager.getType(f.toString(), DC_TYPE.FACTIONS);
+                ObjType allyFactionType = DataManager.getType(f.toString(),MACRO_OBJ_TYPES.FACTIONS);
                 if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
                     break;
                 }
@@ -500,11 +501,11 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(boolean me) {
         if (factionMode) {
-            List<ObjType> available = new ArrayList<>(DataManager.getTypes(DC_TYPE.FACTIONS));
+            List<ObjType> available = new ArrayList<>(DataManager.getTypes(MACRO_OBJ_TYPES.FACTIONS));
             // DC_HeroObj
             FilterMaster.filterByProp(available, G_PROPS.WORKSPACE_GROUP.getName(), ""
                     + MetaEnums.WORKSPACE_GROUP.COMPLETE);
-            ObjType faction = ListChooser.chooseType_(available, DC_TYPE.FACTIONS);
+            ObjType faction = ListChooser.chooseType_(available,MACRO_OBJ_TYPES.FACTIONS);
             if (factionLeaderRequired) {
                 hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
                 if (hero == null) {

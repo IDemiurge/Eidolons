@@ -47,7 +47,7 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
     public void applyDynamicTint() {
         for (T sub : displayed) {
             if (isTinted(sub)) {
-                tintDynamic(sub.getColor());
+                tintDynamic(sub.getColor(), sub);
             }
         }
     }
@@ -56,12 +56,17 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
         return false;
     }
 
-    protected void tintDynamic(Color color) {
+    protected void tintDynamic(Color color, T sub) {
         Color c = new Color(color);
         tint(color, time);
         float percentage =
          MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
         color.lerp(tint(c, time.getNext()), percentage);
+        applyAlpha(color, sub);
+    }
+
+    protected void applyAlpha(Color color, T sub) {
+
     }
 
     protected void tint(Color color) {
@@ -121,6 +126,9 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
         }
     }
 
+    protected WEATHER getWeather() {
+        return MacroGame.getGame().getWeather();
+    }
     @Override
     public Actor hit(float x, float y, boolean touchable) {
         return super.hit(x, y, touchable);

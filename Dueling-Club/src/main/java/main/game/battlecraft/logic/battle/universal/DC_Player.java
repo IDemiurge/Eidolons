@@ -10,6 +10,7 @@ import main.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.module.adventure.faction.Faction;
 import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
@@ -29,6 +30,7 @@ public class DC_Player extends Player {
     private PlayerAI playerAI;
     private String partyDataString;
     private UnitData unitData;
+    private Faction faction;
 
     public DC_Player(String name, Color color, boolean me) {
 //        int volume = sound.getVolume() * OptionsMaster.getSoundOptions().
@@ -118,5 +120,13 @@ public class DC_Player extends Player {
 
     public void setUnitData(UnitData unitData) {
         this.unitData = unitData;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
+    }
+
+    public Faction getFaction() {
+        return faction;
     }
 }

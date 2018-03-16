@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.travel.FreeTravelMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.screens.map.obj.PartyActorFactory.PartyActorParameters;
+import main.libgdx.screens.map.path.SteerableParty;
 import main.libgdx.texture.TextureCache;
 import main.system.images.ImageManager.BORDER;
 
@@ -21,12 +21,13 @@ public class PartyActor extends MapActor {
     public static final int offsetY = 14;
     public static final int emblemOffsetX = 109;
     public static final int emblemOffsetY = 113;
+    boolean marker;
+    SteerableParty steerableParty;
     private Image emblem;
     private Image modeIcon;
     private Image ironBorder;
     private MoveToAction orderAction;
     private MacroParty party;
-    boolean marker;
 
 
     public PartyActor(PartyActorParameters parameters) {
@@ -39,7 +40,6 @@ public class PartyActor extends MapActor {
     }
 
     private void init(PartyActorParameters parameters) {
-        setPosition(parameters.position.x, parameters.position.y);
         portrait.setPosition(offsetX, offsetY);
         party = parameters.party;
         addActor(ironBorder = new Image(TextureCache.getOrCreateR(BORDER.MAP_PARTY_CIRCLE.getImagePath())));
@@ -50,6 +50,7 @@ public class PartyActor extends MapActor {
 
         init();
         minimize();
+        setPosition(parameters.position.x, parameters.position.y);
     }
 
     public void hover() {
@@ -106,11 +107,19 @@ public class PartyActor extends MapActor {
     public void moveTo(float x, float y) {
         moveTo(x, y, getSpeed());
     }
+
     public void moveTo(float x, float y, float speed) {
-        if (orderAction != null) {
-            removeAction(orderAction);
+        if (steerableParty == null)
+            steerableParty = new SteerableParty(this);
+        try {
+            steerableParty.moveTo(x, y, speed);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
-        orderAction = FreeTravelMaster.getInstance().travelTo(this,(int) x,(int) y, speed);
+//        if (orderAction != null) {
+//            removeAction(orderAction);
+//        }
+//        orderAction = FreeTravelMaster.getInstance().travelTo(this,(int) x,(int) y, speed);
 //        orderAction.setPosition(x, y);
 //        float distance = new Vector2(x, y).dst(new Vector2(getX(), getY()));
 //        orderAction.setDuration(distance / speed);
@@ -119,7 +128,7 @@ public class PartyActor extends MapActor {
     }
 
     public float getSpeed() {
-        return 210;
+        return 2100;
     }
 
     public void minimize() {
@@ -149,20 +158,22 @@ public class PartyActor extends MapActor {
     public void setMarker(boolean marker) {
         this.marker = marker;
     }
+
     @Override
     public void act(float delta) {
 //        FreeTravelMaster.getInstance(). check(this);
         super.act(delta);
         if (!marker)
-        party.setCoordinates(new Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
+            party.setCoordinates(new Coordinates(getX() + getWidth() / 2, getY() + getHeight() / 2));
 //        party.getCoordinates().setX(); Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
-
+        if (steerableParty != null)
+            steerableParty.act(delta);
     }
 
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        party.setCoordinates(new Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
+        party.setCoordinates(new Coordinates(getX() + getWidth() / 2, getY() + getHeight() / 2));
     }
 
     @Override

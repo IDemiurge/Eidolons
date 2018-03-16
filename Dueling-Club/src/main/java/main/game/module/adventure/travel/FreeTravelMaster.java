@@ -21,6 +21,7 @@ public class FreeTravelMaster {
     public void init(){
         for (ALPHA_MAP sub : ALPHA_MAP.values()) {
             map.put(sub, new AlphaMap(sub));
+
         }
     }
 
@@ -32,6 +33,7 @@ public class FreeTravelMaster {
 
     private FreeTravelMaster() {
         instance = this;
+        init();
     }
 
     public TravelAction travelTo(PartyActor actor, int x, int y, float speed){
@@ -58,7 +60,6 @@ public class FreeTravelMaster {
     }
 
     public boolean check(ALPHA_MAP mapType, float x, float y) {
-//        map.get(mapType).isThere(x, y);
-        return false;
+      return   map.get(mapType).isThere((int) x, (int)y);
     }
 }

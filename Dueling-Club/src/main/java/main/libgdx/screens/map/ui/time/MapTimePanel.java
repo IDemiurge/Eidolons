@@ -63,7 +63,7 @@ public class MapTimePanel extends GroupX {
     boolean moving;
     PointX sunPoint = new PointX(103, 128);
     PointX[] points = {new PointX(53, 122), new PointX(134, 91), new PointX(214, 127)};
-    PointX timeLabelPoint = new PointX(148, 80);
+    PointX timeLabelPoint = new PointX(155, 80);
     PointX timeLabelBgPoint = new PointX(143, 62);
     PointX pauseBtnPoint = new PointX(134, 25);
     PointX speedUpBtnPoint = new PointX(178, 59);
@@ -246,16 +246,12 @@ public class MapTimePanel extends GroupX {
     public void act(float delta) {
 //        initPositions();
         setDebug(false, true);
-        String text = TimeMaster.getDate().getHour() + "";
-        int minutes = (int) MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter();
-        if (minutes / 10 == 0) {
-            text += ":0" + minutes;
-        } else
-            text += ":" + minutes;
-        timeLabel.setText(text);
         float deltaX = delta +
          (delta / 5 * MacroGame.getGame().getLoop().getTimeMaster().getSpeed());
+
         for (MoonActor moon : displayedMoons) {
+            if (moon==null )
+                return;
             moon.act(deltaX);
         }
         activeMoon.act(deltaX);
@@ -263,7 +259,13 @@ public class MapTimePanel extends GroupX {
         deltaX = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed( );
         undersun.act(deltaX);
 
-        moveSun();
+        String text = TimeMaster.getDate().getHour() + "";
+        int minutes = (int) MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter();
+        if (minutes / 10 == 0) {
+            text += ":0" + minutes;
+        } else
+            text += ":" + minutes;
+        timeLabel.setText(text);
         resetZIndices();
 //        float r = mainCircle.getRotation();
 //        float dx = 0.5f * delta;
@@ -278,11 +280,7 @@ public class MapTimePanel extends GroupX {
 //        stoneCircle.setRotation(r+dx);
     }
 
-    private void moveSun() {
-        // in time X, it must go from -H to H; maybe LEFT TO RIGHT INSTEAD??
 
-
-    }
 
 
     @Override

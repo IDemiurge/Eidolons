@@ -9,7 +9,8 @@ import main.data.DataManager;
 import main.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.meta.faction.FactionObj;
+import main.game.module.adventure.faction.Faction;
+import main.game.module.adventure.faction.FactionObj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.GameLoop;
@@ -26,6 +27,7 @@ import main.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import main.libgdx.screens.map.editor.MapPointMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.auxiliary.SearchMaster;
 import main.system.datatypes.DequeImpl;
 
 /*
@@ -47,6 +49,8 @@ public class MacroGame extends Game {
     private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
     private Thread gameLoopThread;
+    DequeImpl<Faction> factions= new DequeImpl<>();
+    private Faction playerFaction;
 
     // ...masters
 
@@ -92,33 +96,6 @@ public class MacroGame extends Game {
 //        ref.setID(MACRO_KEYS.REGION.toString(), region.getId());
 //        ref.setRegion(region);
 
-        if (MacroManager.isEditMode()) {
-//            String partyName = campaign.getProperty(MACRO_PROPS.CAMPAIGN_PARTY);
-//            if (partyName.isEmpty()) {
-//                partyName = Launcher.FAST_TEST_PARTY;
-//            }
-//            try {
-//                PartyHelper.loadParty(partyName);
-//            } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
-//            }
-        } else {
-            Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
-            if (party == null) {
-                return;
-            }
-
-            playerParty = new MacroParty(
-             getMacroPartyType(party), this, ref,
-             party);
-        }
-//        if (!MacroManager.isLoad()) {
-//            Place location = region.getPlace(campaign
-//                    .getProperty(MACRO_PROPS.STARTING_LOCATION));
-//            playerParty.setRegion(region);
-//            playerParty.setCurrentPlace(location);
-//        }
-
 
         pointMaster = new MapPointMaster();
         routeMaster = new RouteMaster();
@@ -126,11 +103,6 @@ public class MacroGame extends Game {
     }
 
 
-    private ObjType getMacroPartyType(Party party) {
-        ObjType type = new ObjType(party.getType());
-        type.initType();
-        return type;
-    }
 
     public void initObjTypes() {
         MacroManager.initTypes();
@@ -274,5 +246,21 @@ public class MacroGame extends Game {
     }
     public DIRECTION getWindDirection() {
         return getLoop().getTimeMaster().getWindDirection();
+    }
+
+    public void addFaction(Faction faction) {
+        factions.add(faction);
+    }
+
+    public Faction getFaction(String string) {
+        return new SearchMaster<Faction>().find(string, factions);
+    }
+
+    public Faction getPlayerFaction() {
+        return playerFaction;
+    }
+
+    public void setPlayerFaction(Faction playerFaction) {
+        this.playerFaction = playerFaction;
     }
 }

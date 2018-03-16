@@ -1,4 +1,4 @@
-package main.game.battlecraft.logic.meta.faction;
+package main.game.module.adventure.faction;
 
 import main.entity.Ref;
 import main.entity.type.ObjType;

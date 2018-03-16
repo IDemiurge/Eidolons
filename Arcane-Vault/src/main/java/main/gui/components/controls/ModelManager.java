@@ -11,6 +11,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.ItemEnums.ITEM_RARITY;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -99,12 +100,12 @@ public class ModelManager {
             newType.setProperty(PROPS.UNIT_POOL, u.getUnits());
             newType.setProperty(PROPS.UNIT_TYPES, u.getUnits());
             newType.setProperty(G_PROPS.NAME, u.toString());
-            newType.setProperty(G_PROPS.TYPE, DC_TYPE.FACTIONS.toString());
+            newType.setProperty(G_PROPS.TYPE,MACRO_OBJ_TYPES.FACTIONS.toString());
             newType.setImage(u.getImage());
             // newType.setProperty(PROPS.ALLY_FACTIONS, u.getAllyFactions());
             newType.setProperty(G_PROPS.FACTION_GROUP, u.getGroup());
             newType.setProperty(G_PROPS.GROUP, u.getGroup());
-            DataManager.addType(u.toString(), DC_TYPE.FACTIONS, newType);
+            DataManager.addType(u.toString(), MACRO_OBJ_TYPES.FACTIONS, newType);
 
         }
     }

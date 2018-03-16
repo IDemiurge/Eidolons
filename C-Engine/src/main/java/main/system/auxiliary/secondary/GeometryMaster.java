@@ -113,4 +113,8 @@ public class GeometryMaster {
         }
         return p;
     }
+
+    public static float hyp(int a, int b) {
+        return (float) Math.sqrt(a*a+ b*b);
+    }
 }

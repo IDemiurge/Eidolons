@@ -137,19 +137,27 @@ public class SortMaster<T> {
         return Comparator.comparingInt(o -> function.apply(o));
 
     }
+
     public static void sortByExpression
      (List<? extends Object> list, Function<Object, Integer> function) {
-        Collections.sort(list, getSorterByExpression(function));
+        sortByExpression(false, list, function);
+    }
+    public static void sortByExpression
+     (boolean ascending, List<? extends Object> list, Function<Object, Integer> function) {
+        Collections.sort(list, getSorterByExpression(ascending, function));
     }
 
     public static Comparator<? super Object> getSorterByExpression
      (Function<Object, Integer> function) {
-        return Comparator.comparingInt(o -> function.apply(  o)).reversed();
-
+        return getSorterByExpression(false, function);
     }
-    public   Comparator<? super T> getSorterByExpression_
-     (Function<T, Integer> function) {
-        return Comparator.comparingInt(o -> function.apply((T)o)).reversed();
+
+    public static Comparator<? super Object> getSorterByExpression
+     (boolean ascending, Function<Object, Integer> function) {
+        if (ascending)
+            return Comparator.comparingInt(o -> function.apply(o));
+        else
+            return Comparator.comparingInt(o -> function.apply(o)).reversed();
 
     }
 
@@ -164,12 +172,11 @@ public class SortMaster<T> {
         return (Comparator<PARAMETER>) (o1, o2) -> {
             if (entity.getIntParam(o1) == entity.getIntParam(o2))
                 return 0;
-            if (entity.getIntParam(o1) > entity.getIntParam(o2))
-            {
+            if (entity.getIntParam(o1) > entity.getIntParam(o2)) {
                 if (descending)
                     return 1;
                 return -1;
-            }else {
+            } else {
                 if (descending)
                     return -1;
                 return 1;
@@ -258,6 +265,12 @@ public class SortMaster<T> {
             return 1;
         }
         return -1;
+    }
+
+    public Comparator<? super T> getSorterByExpression_
+     (Function<T, Integer> function) {
+        return Comparator.comparingInt(o -> function.apply((T) o)).reversed();
+
     }
 
 }

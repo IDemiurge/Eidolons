@@ -273,8 +273,6 @@ public class StateCloner {
                 break;
             case DUNGEONS:
                 break;
-            case FACTIONS:
-                break;
             case ARCADES:
                 break;
         }

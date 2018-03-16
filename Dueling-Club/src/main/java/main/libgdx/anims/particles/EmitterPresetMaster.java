@@ -177,6 +177,12 @@ public class EmitterPresetMaster {
         if (StringMaster.isEmpty(imgPath)) {
             imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
         }
+        if (imgPath.contains(StringMaster.NEW_LINE)) {
+            imgPath = imgPath.split(StringMaster.NEW_LINE)[0];
+        }
+        if ( imgPath.contains("\n")) {
+            imgPath = imgPath.split("\n")[0];
+        }
         return imgPath;
 
     }

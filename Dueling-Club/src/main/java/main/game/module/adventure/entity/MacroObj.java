@@ -4,6 +4,7 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.game.module.adventure.faction.Faction;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroGame;
@@ -18,6 +19,7 @@ public class MacroObj extends Obj {
     protected int y;
     protected Region region;
     protected MacroCoordinates coordinates;
+    private Faction faction;
 
     public MacroObj(MacroGame game, ObjType type, Ref ref, Player owner) {
         super(type, owner, game, ref);
@@ -126,5 +128,13 @@ public class MacroObj extends Obj {
 
     public String getSaveData() {
         return null;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
+    }
+
+    public Faction getFaction() {
+        return faction;
     }
 }

@@ -98,7 +98,7 @@ public enum G_PROPS implements PROPERTY {
     ARMOR_ITEM(null, false, "units", "chars"),
 
     SKILL_GROUP("skills", "Skill Type"),
-    EMBLEM("EMBLEM", false, "chars", "deities"),
+    EMBLEM("EMBLEM", false, "chars", "deities", "factions"),
     STD_BOOLS(null, true, "all"),
     DYNAMIC_BOOLS(null, true, "all"),
 

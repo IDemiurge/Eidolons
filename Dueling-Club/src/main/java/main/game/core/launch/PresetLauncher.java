@@ -7,7 +7,7 @@ import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import main.game.battlecraft.logic.meta.faction.FactionMaster;
+import main.game.module.adventure.faction.FactionMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;

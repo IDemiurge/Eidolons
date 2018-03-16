@@ -1,5 +1,6 @@
 package main.libgdx.screens.map.layers;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -16,6 +17,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.secondary.GeometryMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
@@ -182,7 +184,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
     }
 
     private float getMaxDistance(MAP_AREA mapArea, MAP_MOVING_LAYER sub) {
-        return 2110;
+        return GeometryMaster.hyp(MapScreen.defaultSize, MapScreen.defaultSize);
     }
 
     @Override
@@ -342,6 +344,29 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         }
         //alpha to 0
     }
+@Override
+    protected void applyAlpha(Color color, MapMoveLayer sub) {
+    if (sub.type.type == MAP_MOVING_LAYER_TYPE.CLOUD) {
+        switch (getWeather()) {
+            case CLEAR:
+                break;
+            case OVERCAST:
+                break;
+            case STORM:
+                break;
+            case MISTY:
+                break;
+        }
+    }
+    }
+
+//    protected void tintDynamic(Color color, T sub) {
+//        Color c = new Color(color);
+//        tint(color, time);
+//        float percentage =
+//         MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
+//        color.lerp(tint(c, time.getNext()), percentage);
+//    }
 
     protected boolean isTinted() {
         return true;

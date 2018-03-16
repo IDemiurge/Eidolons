@@ -53,7 +53,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     DUNGEONS("dungeons", G_PROPS.ARCADE_REGION, 16),
     PARTY("party", G_PROPS.GROUP, 17),
     TERRAIN("terrain", G_PROPS.GROUP, 18, false),
-    FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),
+//    FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),
     ARCADES("arcades", G_PROPS.GROUP, 20),
 
     SCENARIOS("scenarios", G_PROPS.GROUP, 21),
@@ -87,7 +87,6 @@ public enum DC_TYPE implements OBJ_TYPE {
 //        TRAP.battlecraft = false;
         ENCOUNTERS.battlecraft = false;
         ARCADES.battlecraft = false;
-        FACTIONS.battlecraft = false;
 
         final DC_TYPE[] values = DC_TYPE.values();
         searchMap = new HashMap<>(values.length, 1f);

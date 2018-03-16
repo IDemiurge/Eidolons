@@ -39,11 +39,15 @@ public class MapWanderAi {
         float modX = RandomWizard.getRandomFloatBetween(-1, 1);
         float modY = RandomWizard.getRandomFloatBetween(-1, 1);
 
-
+if (!isOn())
+    return ;
         for (PartyActor party :     list ) {
+            if (party.getActionsOfClass(MoveToAction.class).size >0) {
+                continue;
+            }
             MapMaster.addToFloatMap(timerMap, party, delta);
             if (triggerMap.get(party) == null)
-                if (party.getActionsOfClass(MoveToAction.class).size < 1) {
+            {
                     float delay = getDelay(party);
                     triggerMap.put(party, RandomWizard.getRandomFloatBetween(delay, delay * 2));
                 }
@@ -57,6 +61,10 @@ public class MapWanderAi {
                 triggerMap.remove(party);
             }
         }
+    }
+
+    private boolean isOn() {
+        return false;
     }
 
     private float getDelay(PartyActor party) {
