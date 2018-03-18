@@ -1,9 +1,7 @@
-@ECHO OFF
-chcp 65001
-set resourcePath="target/resources"
-set xmlPath="target/XML"
-if exist %resourcePath% (rmdir %resourcePath%)
-ln -s /D %resourcePath% "%CD%/../resources/res"
+rm "target\resources"
 
-if exist %xmlPath% (rmdir %xmlPath%)
-ln -s %xmlPath% "%CD%/../C-Engine/src/main/resources/XML"
+ln -s  "target\resources" "$PWD\..\resources\res"
+
+rm "target\XML"
+
+ln -s "target\XML" "$PWD\..\C-Engine\src\main\resources\XML"

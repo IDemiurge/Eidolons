@@ -22,10 +22,12 @@ public class TablePanel<T extends Actor> extends Table {
     public Cell<T> addNormalSize(T el) {
         return add(el).size(el.getWidth(), el.getHeight());
     }
+
     public Cell<T> addNoGrow(T el) {
         return add(el);
     }
-        public Cell<T> addElement(T el) {
+
+    public Cell<T> addElement(T el) {
         return add(el).grow();
     }
 
@@ -97,6 +99,6 @@ public class TablePanel<T extends Actor> extends Table {
 
     public TablePanel<T> initDefaultBackground() {
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
-    return         this;
+        return this;
     }
 }
