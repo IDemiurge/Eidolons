@@ -34,6 +34,7 @@ public class BattleGuiStage extends GuiStage {
            GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
          batch == null ? new SpriteBatch() :
           batch);
+        addActor(guiVisualEffects = new GuiVisualEffects());
         initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, GdxMaster.getHeight() - initiativePanel.getHeight());
         addActor(initiativePanel);
@@ -46,7 +47,6 @@ public class BattleGuiStage extends GuiStage {
         inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
         this.addActor(inventoryForm);
 
-        addActor(guiVisualEffects = new GuiVisualEffects());
     }
 
 

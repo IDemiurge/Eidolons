@@ -53,8 +53,8 @@ public class TestMasterContent {
      + "Cheap Poison Coating;" + "Potent Weakening Poison;" + "Inferior Dark Steel Dagger;"
      + "Masterpiece Dark Steel Dagger;" + "Ancient Dark Steel Bolts;"
      + "Ancient Dark Steel Bolts;";
-    public static boolean addSpells;
-    public static boolean addAllSpells;
+    public static boolean addSpells = true;
+    public static boolean addAllSpells = true;
     public static boolean test_on = true;
     static boolean auto_test_list = false;
     static boolean full_test = false;

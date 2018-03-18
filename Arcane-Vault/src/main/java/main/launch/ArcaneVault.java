@@ -101,7 +101,7 @@ public class ArcaneVault {
     private static ContentManager contentManager;
     private static boolean artGen = false;
     private static boolean workspaceLaunch = false;
-    private static boolean imgPathUpdate = true;
+    private static boolean imgPathUpdate = false;
     private static boolean dialogueMode = true;
 
     static {

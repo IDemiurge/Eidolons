@@ -1,6 +1,5 @@
 package main.libgdx.screens.map.path;
 
-import com.badlogic.gdx.ai.btree.LeafTask;
 import com.badlogic.gdx.ai.btree.Task;
 import com.badlogic.gdx.ai.btree.branch.Sequence;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -43,38 +42,54 @@ public class PixmapPathBuilder {
 
 
     public static void writePathFile(Pixmap pixmap, String outputPath) {
-        int minDist = 4;
-        List<Vector2> pixelPoints = new ArrayList<>();
-        for (int i = 0; i < pixmap.getWidth(); i++) {
-            for (int j = 0; j < pixmap.getHeight(); j++) {
-                if (new Color(pixmap.getPixel(i, j)).a != 0) {
-                    pixelPoints.add(new Vector2(i, pixmap.getHeight() - j));
-                }
 
+        int sideSplit = 12;
+        int regionWidth = pixmap.getWidth() / sideSplit;
+        int regionHeight = pixmap.getHeight() / sideSplit;
+        List<List<Vector2>> regions = new ArrayList<>();
+        for (int i = 0; i < sideSplit; i++) {
+            for (int j = 0; j < sideSplit; j++) {
+                List<Vector2> pixelPoints = new ArrayList<>();
+                for (int x = regionWidth * i; x < regionWidth * (i + 1); x++) {
+                    for (int y = regionWidth * j; y < regionHeight * (j + 1); y++) {
+
+                        if (new Color(pixmap.getPixel(x, y)).a != 0) {
+                            pixelPoints.add(new Vector2(x, pixmap.getHeight() - y));
+                        }
+
+                    }
+                }
+                regions.add(pixelPoints);
             }
         }
-        madness:
-        while (true) {
+
+        int minDist = 4;
+        for (List<Vector2> pixelPoints : regions) {
             for (Vector2 sub : new ArrayList<>(pixelPoints)) {
+                if (!pixelPoints.contains(sub))
+                    continue;
                 for (Vector2 sub1 : new ArrayList<>(pixelPoints)) {
                     if (sub != sub1 &&
                      sub.dst(sub1) <= minDist) {
-                        pixelPoints.remove(sub);
-                        continue madness;
+                        pixelPoints.remove(sub1);
+//                        continue madness;
                     }
                 }
             }
-            break;
         }
+
         String output = "";
-        for (Vector2 sub : pixelPoints) {
-            output += (int) sub.x + "-" + (int) sub.y + ";";
+
+        for (List<Vector2> pixelPoints : regions) {
+            for (Vector2 sub : pixelPoints) {
+                output += (int) sub.x + "-" + (int) sub.y + ";";
+            }
         }
         main.system.auxiliary.log.LogMaster.log(1, " " + output);
         FileManager.write(output, outputPath);
     }
 
-    public static Sequence<SteeringBehavior> buildPathSequence(SteeringAgent agent, Vector2 orig,
+    public static Sequence<SteeringBehavior<Vector2>> buildPathSequence(SteeringAgent agent, Vector2 orig,
                                                                Vector2 dest, ALPHA_MAP map) {
 
 
@@ -90,37 +105,16 @@ public class PixmapPathBuilder {
             }
         }
 
-        return road ? getRoadSequence(agent, orig, dest) : buildMapPathSequence(agent, orig, dest, null );
+        return road ? getRoadSequence(agent, orig, dest) : buildMapPathSequence(agent, orig, dest, null);
     }
 
-    static Task<SteeringBehavior> getTask(SteeringAgent agent, SteeringBehavior<Vector2> behavior) {
-        return new LeafTask<SteeringBehavior>() {
-            boolean started;
-
-            @Override
-            protected Task<SteeringBehavior> copyTo(Task<SteeringBehavior> task) {
-                return null;
-            }
-
-            @Override
-            public Status execute() {
-                if (!started) {
-                    agent.setSteeringBehavior(getObject());
-                    started = true;
-                }
-                if (agent.getSteeringBehavior() != getObject())
-                    return Status.FAILED;
-                if (getObject().isEnabled())
-                    return Status.RUNNING;
-                else
-                    return Status.SUCCEEDED;
-            }
-        };
+    static Task<SteeringBehavior<Vector2>> getTask(SteeringAgent agent, SteeringBehavior<Vector2> behavior) {
+        return new MoveTask(agent, behavior);
     }
 
-    static Sequence<SteeringBehavior> buildMapPathSequence(SteeringAgent agent, Vector2 orig,
+    static Sequence<SteeringBehavior<Vector2>> buildMapPathSequence(SteeringAgent agent, Vector2 orig,
                                                            Vector2 dest, ALPHA_MAP map) {
-        Sequence<SteeringBehavior> sequence = new Sequence<>();
+        Sequence<SteeringBehavior<Vector2>> sequence = new Sequence<>();
         Path<Vector2, LinePathParam> path = buildPath(map, orig, dest, getImpassable());
         SteeringBehavior<Vector2> behavior = getFollowPath(path, agent);
         sequence.addChild(getTask(agent, behavior));
@@ -146,9 +140,9 @@ public class PixmapPathBuilder {
         return behavior;
     }
 
-    static Sequence<SteeringBehavior> getRoadSequence(SteeringAgent agent, Vector2 orig,
+    static Sequence<SteeringBehavior<Vector2>> getRoadSequence(SteeringAgent agent, Vector2 orig,
                                                       Vector2 dest) {
-        Sequence<SteeringBehavior> sequence = new Sequence<>();
+        Sequence<SteeringBehavior<Vector2>> sequence = new Sequence<>();
 
         Vector2 roadPoint = lastPoint;
         SteeringBehavior<Vector2> toRoad = getFollowPath(
@@ -168,7 +162,7 @@ public class PixmapPathBuilder {
     }
 
     private static Vector2 getClosestMapPoint(Vector2 roadPoint, List<Vector2> points,
-                                                Vector2 dest) {
+                                              Vector2 dest) {
         //sort?
 //        int i = points.indexOf(roadPoint) + 1;
 //        for (; i < points.size(); i++) {
@@ -186,7 +180,7 @@ public class PixmapPathBuilder {
             float dist = sub.dst(dest);
             if (dist < minDist) {
                 minDist = dist;
-                closest=sub;
+                closest = sub;
             }
         }
         return closest;
@@ -241,8 +235,8 @@ public class PixmapPathBuilder {
 //                }
 //            else if (checkSegmentCrosses(sub, last, impassable))
 //                list.remove(sub);
-                //ok so we remove point if it cannot be reached directly... isn't it better to
-                // try and bend around it?
+            //ok so we remove point if it cannot be reached directly... isn't it better to
+            // try and bend around it?
 //                else
 //                    last = sub;
 //            }
@@ -258,8 +252,12 @@ public class PixmapPathBuilder {
             last = sub;
             points.add(sub);
         }
-        LinePath<Vector2> path = new LinePath<>(points);
-        return path;
+        try {
+            return new LinePath<>(points);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return null;
     }
 
     private static boolean checkSegmentCrosses(Vector2 v, Vector2 v2,

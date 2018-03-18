@@ -2,9 +2,14 @@ package main.libgdx.screens.map.path;
 
 import com.badlogic.gdx.ai.btree.branch.Sequence;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.utils.Path;
+import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
+import com.badlogic.gdx.ai.steer.utils.paths.LinePath.LinePathParam;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import main.libgdx.screens.map.layers.AlphaMap.ALPHA_MAP;
 import main.libgdx.screens.map.obj.PartyActor;
+import main.system.auxiliary.RandomWizard;
 
 /**
  * Created by JustMe on 3/15/2018.
@@ -12,12 +17,12 @@ import main.libgdx.screens.map.obj.PartyActor;
 public class SteerableParty extends SteeringAgent {
 
     PartyActor actor;
-    private Sequence<SteeringBehavior> sequence;
+    private Sequence<SteeringBehavior<Vector2>> sequence;
 
     public SteerableParty(PartyActor actor) {
         this.actor = actor;
         position = new Vector2(actor.getX(), actor.getY());
-        independentFacing=true;
+        independentFacing = true;
     }
 
     public void act(float delta) {
@@ -30,26 +35,34 @@ public class SteerableParty extends SteeringAgent {
 
         setMaxLinearSpeed(speed);
         Vector2 destination = new Vector2(x, y);
+        if (isSequenceMoveOn()) {
 
-        if (sequence!=null ){
-            sequence.end();
+            if (sequence != null) {
+                sequence.end();
+            }
+            sequence = PixmapPathBuilder.
+             buildPathSequence(this, position, destination, ALPHA_MAP.ROADS);
+
+            sequence.run();
+        } else {
+
         }
-         sequence = PixmapPathBuilder.
-         buildPathSequence(this, position, destination, ALPHA_MAP.ROADS);
+        int n = 10;
+        Array waypoints = new Array();
+        position = new Vector2(actor.getX(), actor.getY());
+        for (int i = 1; i <= n; i++) {
+            Vector2 p = new Vector2(position).lerp(destination, 1f / n * (i));
+            p.add(RandomWizard.getRandomIntBetween(-4, 4),
+             RandomWizard.getRandomIntBetween(-4, 4));
+            waypoints.add(p);
+        }
+        Path<Vector2, LinePathParam> path = new LinePath(waypoints);
+        setSteeringBehavior(PixmapPathBuilder.getFollowPath(path, this));
 
-        sequence.run();
+    }
 
-//        int n=10;
-//        position = new Vector2(actor.getX(), actor.getY());
-//        for (int i = 1; i <= n; i++) {
-//            Vector2 p =new Vector2(  position).lerp( destination, 1f /n *(i) );
-//            p.add(RandomWizard.getRandomIntBetween(-4,4),
-//             RandomWizard.getRandomIntBetween(-4,4));
-//            waypoints.add( p);
-//        }
-//        Path<Vector2, LinePathParam> path = new LinePath(waypoints);
-//        setSteeringBehavior(getFollowPath(path));
-
+    private boolean isSequenceMoveOn() {
+        return false;
     }
 
 

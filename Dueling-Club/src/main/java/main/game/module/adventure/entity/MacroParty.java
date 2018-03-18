@@ -8,11 +8,13 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.MacroRef;
 import main.game.module.adventure.MacroRef.MACRO_KEYS;
+import main.game.module.adventure.faction.Faction;
 import main.game.module.adventure.map.Area;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
@@ -20,6 +22,7 @@ import main.game.module.adventure.town.Town;
 import main.game.module.adventure.travel.RestMasterOld;
 import main.game.module.adventure.travel.TravelMasterOld;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
 import javax.swing.*;
@@ -38,16 +41,32 @@ public class MacroParty extends MapObj {
     private float routeProgress;
 
     public MacroParty(ObjType macroPartyType, MacroGame macroGame,
-                      MacroRef ref  ) {
+                      MacroRef ref) {
         super(macroGame, macroPartyType, ref);
-
+        DC_Player player = (DC_Player) ref.getPlayer();
+        if (player != null)
+            setFaction(player.getFaction());
     }
+
     public MacroParty(ObjType macroPartyType, MacroGame macroGame,
-         MacroRef ref, Party party) {
+                      MacroRef ref, Party party) {
         super(macroGame, macroPartyType, ref);
         this.party = party;
         toBase();
         initObjects();
+    }
+
+    @Override
+    public String getNameAndCoordinate() {
+
+        return getName() + StringMaster.wrapInParenthesis(getX() + "," + getY()
+         + "," + ((isMine() ? "player" : getFaction().getName()
+        )));
+    }
+
+    @Override
+    public Faction getFaction() {
+        return super.getFaction();
     }
 
     public void initObjects() {
@@ -67,7 +86,7 @@ public class MacroParty extends MapObj {
 
     private void resetMacroStatus() {
         status = new EnumMaster<MACRO_STATUS>().retrieveEnumConst(
-                MACRO_STATUS.class, getProperty(MACRO_PROPS.MACRO_STATUS));
+         MACRO_STATUS.class, getProperty(MACRO_PROPS.MACRO_STATUS));
 
     }
 
@@ -89,12 +108,12 @@ public class MacroParty extends MapObj {
         resetGoldShares();
         for (Unit hero : getMembers()) {
             hero.setParam(MACRO_PARAMS.TRAVEL_SPEED,
-                    "" + TravelMasterOld.getTravelSpeedDynamic(hero)
-                    // , true //TODO
+             "" + TravelMasterOld.getTravelSpeedDynamic(hero)
+             // , true //TODO
             );
         }
         setParam(MACRO_PARAMS.TRAVEL_SPEED,
-                getMinParam(MACRO_PARAMS.TRAVEL_SPEED), true);
+         getMinParam(MACRO_PARAMS.TRAVEL_SPEED), true);
 
         // resetParamAsSum(MACRO_PARAMS.CONSUMPTION, false);
         // resetParamAsSum(PARAMS.CARRYING_CAPACITY, false);
@@ -118,7 +137,7 @@ public class MacroParty extends MapObj {
             m.setParam(MACRO_PARAMS.C_SHARED_GOLD_PERCENTAGE, share);
 
             share = MathMaster.applyMod(share,
-                    m.getIntParam(MACRO_PARAMS.GOLD_SHARE));
+             m.getIntParam(MACRO_PARAMS.GOLD_SHARE));
             amount -= share;
             m.setParam(MACRO_PARAMS.C_GOLD_SHARE, share);
         }
@@ -147,7 +166,7 @@ public class MacroParty extends MapObj {
                 continue;
             }
             gold += MathMaster.applyMod(m.getIntParam(PARAMS.GOLD),
-                    m.getIntParam(MACRO_PARAMS.C_SHARED_GOLD_PERCENTAGE));
+             m.getIntParam(MACRO_PARAMS.C_SHARED_GOLD_PERCENTAGE));
         }
         return gold;
     }
@@ -184,13 +203,13 @@ public class MacroParty extends MapObj {
         return getParty().getOwner();
     }
 
-    public Player getOriginalOwner() {
-        return getParty().getOriginalOwner();
-    }
-
     @Override
     public void setOwner(Player owner) {
         getParty().setOwner(owner);
+    }
+
+    public Player getOriginalOwner() {
+        return getParty().getOriginalOwner();
     }
 
     @Override
@@ -215,7 +234,6 @@ public class MacroParty extends MapObj {
 
         return getParty().getLeader();
     }
-
 
 
     public Route getCurrentRoute() {
@@ -359,6 +377,7 @@ public class MacroParty extends MapObj {
         return 300;
 //        return getMinParam(MACRO_PARAMS.TRAVEL_SPEED); //meters per minute
     }
+
     public Party getMicroParty() {
         return getParty();
     }
@@ -387,7 +406,7 @@ public class MacroParty extends MapObj {
     public MACRO_STATUS getStatus(Unit hero) {
         MACRO_STATUS heroStatus = new EnumMaster<MACRO_STATUS>().retrieveEnumConst(MACRO_STATUS.class,
          hero.getProperty(MACRO_PROPS.MACRO_STATUS));
-        if (heroStatus!=null )
+        if (heroStatus != null)
             return heroStatus;
         return MACRO_STATUS.IDLE;
     }
@@ -406,7 +425,7 @@ public class MacroParty extends MapObj {
     }
 
     public Party getParty() {
-        if (party==null ){
+        if (party == null) {
             party = new Party(getType());
         }
         return party;

@@ -76,7 +76,8 @@ public class SteeringAgent extends SteerableAdapter<Vector2> {
         steeringOutput =
          new SteeringAcceleration<>(new Vector2(0, 0));
         linearVelocity = new Vector2(0, 0);
-        angularVelocity = 0;
+        angularVelocity = 1;
+
         this.steeringBehavior = steeringBehavior;
     }
 

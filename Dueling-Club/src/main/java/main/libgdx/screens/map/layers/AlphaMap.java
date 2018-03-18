@@ -28,7 +28,7 @@ public class AlphaMap {
         switch (sub) {
             case ROADS:
             case PATHS:
-                return true;
+                return false;
         }
         return false;
     }

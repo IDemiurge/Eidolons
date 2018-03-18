@@ -108,6 +108,10 @@ public class EditorManager {
 
     private static <E extends MapActor> MacroObj create(ObjType type) {
         MacroRef ref = new MacroRef(MacroGame.game);
+
+        ref.setPlayer(MacroGame.game.getPlayerFaction().getOwner());
+        ref.setPlayer(MacroGame.game.getFactions().get(0).getOwner());
+
         if (type.getOBJ_TYPE_ENUM() == MACRO_OBJ_TYPES.PLACE)
             return new Place(MacroGame.game, type, ref);
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.PARTY)

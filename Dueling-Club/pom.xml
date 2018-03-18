@@ -67,7 +67,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>${basedir}/ln.cmd</executable>
+                                    <executable>${basedir}/linux ln.cmd</executable>
                                 </configuration>
                             </execution>
                             <execution>
@@ -77,7 +77,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>${basedir}/rm_symlinks.cmd</executable>
+                                    <executable>${basedir}/rm_symlinks_linux.cmd</executable>
                                 </configuration>
                             </execution>
                         </executions>

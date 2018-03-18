@@ -59,7 +59,7 @@ public class DC_ActionManager implements ActionManager {
     public static final String DUAL_ATTACK = StringMaster
      .getWellFormattedString(STD_SPEC_ACTIONS.DUAL_ATTACK.name());
     public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
-    public static final String ATTACK =  (STD_ACTIONS.Attack
+    public static final String ATTACK = (STD_ACTIONS.Attack
      .name());
     public static final String RELOAD = "Reload";
     public static final String THROW = "Throw";
@@ -80,10 +80,10 @@ public class DC_ActionManager implements ActionManager {
      .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
     private static final String DIVINATION = "Divination";
     private static final String PICK_UP = "Pick Up Items";
-    private static ArrayList<ActionType> stdActionTypes;
-    private static ArrayList<ActionType> hiddenActions;
-    private static ArrayList<ActionType> modeActionTypes;
-    private static ArrayList<ActionType> orderActionTypes;
+    private static ArrayList<ObjType> stdActionTypes;
+    private static ArrayList<ObjType> hiddenActions;
+    private static ArrayList<ObjType> modeActionTypes;
+    private static ArrayList<ObjType> orderActionTypes;
     private MicroGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
     private boolean offhandInit;
@@ -95,11 +95,11 @@ public class DC_ActionManager implements ActionManager {
     public static void init() {
         stdActionTypes = new ArrayList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
-            if (! (DataManager.getType(StringMaster
-             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS) instanceof ActionType)){
+            if (!(DataManager.getType(StringMaster
+             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS) instanceof ActionType)) {
                 continue;
             }
-            ActionType type = (ActionType) DataManager.getType(StringMaster
+            ObjType type = DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
             stdActionTypes.add(type);
@@ -107,7 +107,7 @@ public class DC_ActionManager implements ActionManager {
 
         modeActionTypes = new ArrayList<>();
         for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
-            ActionType type = (ActionType) DataManager.getType(StringMaster
+            ObjType type = DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
             modeActionTypes.add(type);
@@ -115,14 +115,14 @@ public class DC_ActionManager implements ActionManager {
 
         orderActionTypes = new ArrayList<>();
         for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
-            ActionType actionType = (ActionType) DataManager.getType(StringMaster
+            ObjType actionType = DataManager.getType(StringMaster
              .getWellFormattedString(type.toString()), DC_TYPE.ACTIONS);
             orderActionTypes.add(actionType);
         }
 
         hiddenActions = new ArrayList<>();
         for (HIDDEN_ACTIONS name : HIDDEN_ACTIONS.values()) {
-            ActionType type = (ActionType) DataManager.getType(StringMaster
+            ObjType type = DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
             hiddenActions.add(type);
@@ -210,7 +210,7 @@ public class DC_ActionManager implements ActionManager {
         return action;
     }
 
-    public boolean   activateAction(Obj target, Obj source, Active action) {
+    public boolean activateAction(Obj target, Obj source, Active action) {
         Ref ref = source.getRef().getCopy();
         ref.setTarget(target.getId());
         ref.setTriggered(true);
@@ -252,7 +252,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public Active getCounterAttackAction(Unit countered, Unit countering,
-                                          DC_ActiveObj active) {
+                                         DC_ActiveObj active) {
         DC_ActiveObj counterAttack = countering.getPreferredCounterAttack();
         if (counterAttack != null) {
             if (counterAttack.canBeActivatedAsCounter()) {
@@ -322,7 +322,11 @@ public class DC_ActionManager implements ActionManager {
 //            if (action != null)
 //                return (DC_ActiveObj) action;
 
-            action = newAction(typeName, entity);
+            try {
+                action = newAction(typeName, entity);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             actionsCache.get(entity).put(typeName, action);
         }
         return (DC_ActiveObj) action;
@@ -491,7 +495,7 @@ public class DC_ActionManager implements ActionManager {
         return subAction;
     }
 
-    public void resetActionsForGameMode(Unit  unit, boolean exploreMode) {
+    public void resetActionsForGameMode(Unit unit, boolean exploreMode) {
         List<ActiveObj> actions = unit.getActives();
         /*
         in explore:
@@ -504,6 +508,7 @@ public class DC_ActionManager implements ActionManager {
          */
 
     }
+
     public boolean isActionAvailable(ActiveObj activeObj, boolean exploreMode) {
         switch (activeObj.getName()) {
             case "Defend":
@@ -514,6 +519,7 @@ public class DC_ActionManager implements ActionManager {
         }
         return true;
     }
+
     @Override
     public void resetActions(Entity entity) {
         if (!(entity instanceof Unit)) {
@@ -713,8 +719,8 @@ public class DC_ActionManager implements ActionManager {
 //  TODO condition?      if (unit.isHero())
 
         if (RuleMaster.checkFeature(FEATURE.GUARD_MODE))
-        actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
-         STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
+            actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
+             STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 
         // for (Entity e : LockMaster.getObjectsToUnlock(unit)) {
         // actives.add(getUnlockAction(unit, e));
@@ -823,10 +829,9 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private void addOffhandActions(DequeImpl<DC_UnitAction> actives, Unit unit) {
-        if (!offhandInit)
-        {
+        if (!offhandInit) {
             ActionGenerator.generateOffhandActions();
-            offhandInit=true;
+            offhandInit = true;
         }
         if (actives != null)
             for (ActiveObj attack : actives) {
@@ -882,8 +887,8 @@ public class DC_ActionManager implements ActionManager {
             DequeImpl<DC_UnitAction> list = unit.getActionMap().get(type);
 
             if (!hiddenActions.contains(action.getType())) {
-                    list.add(action);
-                }
+                list.add(action);
+            }
 
         }
     }
@@ -936,10 +941,10 @@ public class DC_ActionManager implements ActionManager {
 
     }
 
-    private List<DC_UnitAction> getActionTypes(List<ActionType> actionTypes,
+    private List<DC_UnitAction> getActionTypes(List<? extends ObjType> actionTypes,
                                                Unit unit) {
         List<DC_UnitAction> list = new ArrayList<>();
-        for (ActionType type : actionTypes) {
+        for (ObjType type : actionTypes) {
             if (type == null)
                 continue;
             // Ref ref = Ref.getCopy(unit.getRef());

@@ -1,5 +1,7 @@
 package main.libgdx.anims.particles;
 
+import main.libgdx.anims.particles.Emitter.EMITTER_VALS_SCALED;
+
 /**
  * Created by JustMe on 3/16/2018.
  *
@@ -16,7 +18,12 @@ public class EmitterMaster {
         CENTER, SWIRL, FADE, FLOW,
         MISSILE, WHIRL,
     }
-    public void applyMod(ParticleEffect effect  ) {
+    public void applyMod(String filter, String path, EMITTER_VALS_SCALED val, float mod) {
+
+    }
+        public void applyMod(ParticleEffect effect  ) {
+
+//        EmitterPresetMaster.getInstance().getModifiedEmitter()
 
     }
     public void createSfxAtlas(  ) {

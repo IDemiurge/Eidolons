@@ -763,9 +763,10 @@ public class ModelManager {
     }
 
     public static void saveAll() {
-        if (CoreEngine.isMacro())
-            if (MacroGame.getGame()!=null )
-                MacroManager.saveTheWorld();
+        if (!auto)
+            if (CoreEngine.isMacro())
+                if (MacroGame.getGame()!=null )
+                    MacroManager.saveTheWorld();
         ArcaneVault.setDirty(true);
         SoundMaster.playStandardSound(STD_SOUNDS.DONE);
         Weaver.inNewThread(new Runnable() {
