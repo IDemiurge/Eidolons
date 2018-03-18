@@ -25,7 +25,6 @@ public class MainLauncher extends GenericLauncher {
             for (String command : commands) {
                 MAIN_MENU_ITEM item =
                  new EnumMaster<MAIN_MENU_ITEM>().retrieveEnumConst(MAIN_MENU_ITEM.class, command);
-
                 if (item != null)
                     MainMenu.getInstance().getHandler().handle(item);
             }
