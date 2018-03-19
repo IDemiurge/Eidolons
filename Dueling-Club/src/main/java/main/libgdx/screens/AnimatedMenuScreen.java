@@ -18,18 +18,12 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     MainMenu mainMenu;
 
     public AnimatedMenuScreen() {
-//        TextureRegion texture
-//         = TextureCache.getOrCreateR(StrPathBuilder.build(
-//         "ui","components","2017","main menu","background.png" ));
-//          background = new Image(texture);
         mainMenu = MainMenu.getInstance();
-//        stage.addActor(background);
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(
          GdxMaster.centerWidth(mainMenu)
-//         GdxMaster.getWidth()-mainMenu.getWidth()
-         , GdxMaster.centerHeight(mainMenu) );
-    bindEvents();
+         , GdxMaster.centerHeight(mainMenu));
+        bindEvents();
     }
 
     protected void bindEvents() {
@@ -39,19 +33,21 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     protected boolean isWaitForInput() {
         return false;
     }
+
     @Override
     protected void afterLoad() {
 //music
         getOverlayStage().setActive(true);
     }
+
     @Override
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
-        return new ScenarioSelectionPanel(()-> (List<? extends Entity>) p.get()){
+        return new ScenarioSelectionPanel(() -> (List<? extends Entity>) p.get()) {
             @Override
             public void closed(Object selection) {
                 if (selection == null) {
                     if (mainMenu != null)
-                      mainMenu.setVisible(true);
+                        mainMenu.setVisible(true);
                 }
                 super.closed(selection);
             }
@@ -70,7 +66,6 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         getOverlayStage().setActive(false);
     }
 
-    
 
     @Override
     protected void renderLoader(float delta) {

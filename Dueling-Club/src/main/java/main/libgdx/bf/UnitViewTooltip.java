@@ -35,7 +35,8 @@ public class UnitViewTooltip extends ValueTooltip {
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         super.onMouseExit(event, x, y, pointer, toActor);
-        if (view. isHoverResponsive()|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
-        GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
+        if (view. isHoverResponsive()|| view instanceof OverlayView) // quick fix to ignore passive UnitViews
+        //TODO check if toActor is not just a child of the UnitView, like arrow or emblem!
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
     }
 }

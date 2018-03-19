@@ -29,8 +29,9 @@ public class ToolTipManager extends TablePanel {
 
             Object object = event.get();
             if (object == null) {
-                ActorMaster.addFadeOutAction(actorCell.getActor(), 0.25f);
-//                actorCell.setActor(null);
+              if (actorCell.getActor()!=null )
+                    ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
+//                actorCell.setActor(null); immediate removal
             } else {
                 init((Tooltip) object);
             }
@@ -141,8 +142,8 @@ public class ToolTipManager extends TablePanel {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
-        tooltip.getColor().a=0;
-        ActorMaster.addFadeInAction(tooltip, 0.25f);
+        tooltip.getColor().a = 0;
+        ActorMaster.addFadeInAction(tooltip, 0.5f);
         if (tooltip.getEntity() != null)
             entityHover(tooltip.getEntity());
     }
@@ -153,8 +154,7 @@ public class ToolTipManager extends TablePanel {
 
         if (actorCell.getActor() != null) {
             final Tooltip tooltip = (Tooltip) actorCell.getActor();
-            if (tooltip.getColor().a==0)
-            {
+            if (tooltip.getColor().a == 0) {
                 actorCell.setActor(null);
                 return;
             }

@@ -14,6 +14,7 @@ public class HeadquarterScreen extends ScreenWithVideoLoader {
     protected void preLoad() {
         super.preLoad();
         headQuarterStage = new HeadQuarterStage();
+//        libraryPanel  = new LibraryPanel();
     }
 
     @Override

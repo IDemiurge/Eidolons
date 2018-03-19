@@ -80,7 +80,7 @@ public class GuiStage extends Stage implements StageWithClosable {
 
         radial = new RadialMenu();
         addActor(radial);
-        addActor(tooltips=new ToolTipManager(this));
+        addActor(tooltips = new ToolTipManager(this));
 
         textPanel = new OverlayTextPanel();
         addActor(textPanel);
@@ -141,6 +141,7 @@ public class GuiStage extends Stage implements StageWithClosable {
 
         blackout.fadeOutAndBack(dur);
     }
+
     protected void showText(String s) {
         if (s == null) {
             textPanel.close();
@@ -235,10 +236,10 @@ public class GuiStage extends Stage implements StageWithClosable {
     }
 
     public void resetZIndices() {
-        if (tooltips!=null )
-        tooltips.setZIndex(Integer.MAX_VALUE);
-        if (blackout!=null )
-        blackout.setZIndex(Integer.MAX_VALUE);
+        if (tooltips != null)
+            tooltips.setZIndex(Integer.MAX_VALUE);
+        if (blackout != null)
+            blackout.setZIndex(Integer.MAX_VALUE);
     }
 
     public Blackout getBlackout() {

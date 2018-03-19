@@ -14,8 +14,7 @@ import java.util.List;
 /**
  * Created by JustMe on 6/1/2017.
  */
-public class HeroScreenDataSourceImpl implements HeroScreenDataSource
-{
+public class HeroScreenDataSourceImpl implements HeroScreenDataSource {
     Unit hero;
 
     public HeroScreenDataSourceImpl(Unit hero) {
@@ -44,6 +43,11 @@ public class HeroScreenDataSourceImpl implements HeroScreenDataSource
 
     @Override
     public List<ValueContainer> getAvailableSkills() {
+        List<ValueContainer> list = new ArrayList<>();
+       hero.getSkills().forEach(skill->{
+//           list.add(new ValueContainer(StyleHolder.getSizedColoredLabelStyle(FONT.DARK, 18,
+//            GdxColorMaster.getColor(FLAG_COLOR.DARK_GREEN))), );
+       });
         return null;
     }
 

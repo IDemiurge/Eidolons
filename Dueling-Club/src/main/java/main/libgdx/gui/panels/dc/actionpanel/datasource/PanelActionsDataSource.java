@@ -80,7 +80,7 @@ public class PanelActionsDataSource implements
         return null;
     }
 
-    
+
     @Override
     public List<ActionValueContainer> getQuickSlotActions() {
         final DequeImpl<DC_QuickItemObj> items = unit.getQuickItems();
