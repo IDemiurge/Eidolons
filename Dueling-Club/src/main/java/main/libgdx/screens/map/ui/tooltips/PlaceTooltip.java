@@ -151,6 +151,7 @@ public class PlaceTooltip extends Tooltip {
                                }
 
         );
+        
         int i = 0;
         for (Route sub : place.getRoutes()) {
             //reverse pic pos
