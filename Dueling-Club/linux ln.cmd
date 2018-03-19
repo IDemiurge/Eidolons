@@ -1,7 +1,7 @@
-rm "target\resources"
+rm "target/resources"
 
-ln -s  "target\resources" "$PWD\..\resources\res"
+ln -s "$(dirname "$PWD")/resources/res" "target/resources"
 
-rm "target\XML"
+rm "target/XML"
 
-ln -s "target\XML" "$PWD\..\C-Engine\src\main\resources\XML"
+ln -s "$(dirname "$PWD")/C-Engine/src/main/resources/XML" "target/XML"
