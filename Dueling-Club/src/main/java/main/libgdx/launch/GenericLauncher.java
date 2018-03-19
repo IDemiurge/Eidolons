@@ -95,7 +95,7 @@ public class GenericLauncher extends Game {
         conf = new LwjglApplicationConfiguration();
         conf.title = getTitle();
 //        if (Gdx.graphics.isGL30Available())
-        conf.useGL30 = true;
+//        conf.useGL30 = true;
         conf.resizable = false;
 
         conf.fullscreen = false;

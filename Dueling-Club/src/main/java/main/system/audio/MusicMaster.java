@@ -238,9 +238,11 @@ public class MusicMaster {
     }
 
     private boolean isMusic(String sub) {
-        if (StringMaster.getFormat(sub).contains("ini"))
-            return false;
-        return true;
+        String format = StringMaster.getFormat(sub).toLowerCase();
+        // white list is a better idea probably
+        // Drive on macos spam 'icon' files all over the place
+        if (format.equals("mp3")) return true;
+        return false;
     }
 
     private String getMusicFolder() {
