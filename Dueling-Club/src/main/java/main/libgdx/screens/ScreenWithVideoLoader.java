@@ -176,6 +176,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected void renderVideo(float delta) {
+        if (!video.isAvailable()) return;
         if (video.getPlayer() == null)
             playVideo();
         else if (!video.getPlayer().isPlaying())
