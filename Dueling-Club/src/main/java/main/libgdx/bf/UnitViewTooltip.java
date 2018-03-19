@@ -17,26 +17,29 @@ public class UnitViewTooltip extends ValueTooltip {
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         updateRequired = true;
-        if (view.isHoverResponsive()|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
-        GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
+        if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
         super.onMouseEnter(event, x, y, pointer, fromActor);
 
     }
+
     protected void onMouseMoved(InputEvent event, float x, float y) {
         if (showing) {
             return;
         }
         super.onMouseMoved(event, x, y);
-        if (view.isHoverResponsive()|| view instanceof OverlayView) //TODO quick fix to ignore bf obj
-        GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
+        if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj
+            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
 
     }
 
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         super.onMouseExit(event, x, y, pointer, toActor);
-        if (view. isHoverResponsive()|| view instanceof OverlayView) // quick fix to ignore passive UnitViews
-        //TODO check if toActor is not just a child of the UnitView, like arrow or emblem!
+        if (toActor == view)
+            return;
+        if (view.isHoverResponsive() || view instanceof OverlayView) // quick fix to ignore passive UnitViews
+            //TODO check if toActor is not just a child of the UnitView, like arrow or emblem!
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
     }
 }

@@ -117,9 +117,6 @@ public class PlaceTooltip extends Tooltip {
             container.overrideImageSize(size, size);
         add(container);
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
-//        place.getTopDungeon()
-//QuestMaster.getQuest(place);
-
 //        if (!displayRoutes)
 //            return ;
         if (place.getRoutes().isEmpty()) {
