@@ -49,6 +49,7 @@ public class PlaceTooltip extends Tooltip {
     protected void onMouseMoved(InputEvent event, float x, float y) {
 //        super.onMouseMoved(event, x, y);
     }
+    
 
     @Override
     protected void onTouchUp(InputEvent event, float x, float y) {
