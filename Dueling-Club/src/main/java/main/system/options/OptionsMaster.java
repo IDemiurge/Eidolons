@@ -1,6 +1,25 @@
 package main.system.options;
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.*;
+import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
+import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
+import io.vertx.core.impl.ContextTask;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -13,6 +32,7 @@ import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.launch.GenericLauncher;
 import main.libgdx.screens.DungeonScreen;
+import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.audio.MusicMaster;
@@ -36,7 +56,11 @@ import org.w3c.dom.Node;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
+import java.util.function.Function;
 
 public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
@@ -316,10 +340,226 @@ public class OptionsMaster {
     }
 
     public static void main(String[] args) {
-        FontMaster.init();
-        GuiManager.init();
-        init();
-        tryOpenMenu();
+        if (true) {
+            new LwjglApplication(new ApplicationAdapter() {
+                Stage stage;
+                Table root;
+                VisWindow optionsWindow;
+                ObjectMap<OPTION, Actor> optionActors = new ObjectMap<>();
+
+                @Override public void create () {
+                    VisUI.load();
+                    stage = new Stage(new ScreenViewport(), new SpriteBatch());
+                    root = new Table();
+                    root.setFillParent(true);
+                    stage.addActor(root);
+                    Gdx.input.setInputProcessor(stage);
+
+                    init();
+                    VisTextButton show = new VisTextButton("Options");
+                    root.add(show);
+                    show.addListener(new ChangeListener() {
+                        @Override public void changed (ChangeEvent event, Actor actor) {
+                            toggleOptions();
+                        }
+                    });
+                }
+
+                private void toggleOptions () {
+                    if (optionsWindow == null) {
+                        optionsWindow = new VisWindow("Options");
+                        TabbedPane optionsPane = new TabbedPane();
+                        // tabs
+                        optionsWindow.add(optionsPane.getTable()).expandX().fillX().row();
+                        // tab content
+                        final Table content = new Table();
+                        optionsWindow.add(content).expand().fill().row();
+
+                        optionsPane.addListener(new TabbedPaneAdapter() {
+                            @Override public void switchedTab (Tab tab) {
+                                content.clear();
+                                content.add(tab.getContentTable()).expand().top().left();
+                            }
+                        });
+
+                        for (OPTIONS_GROUP group: optionsMap.keySet()) {
+                            final String groupName = StringMaster.getWellFormattedString(group.toString());
+                            Options options = optionsMap.get(group);
+                            final Map values = options.getValues();
+
+                            optionsPane.add(new Tab(false, false) {
+                                @Override public String getTabTitle () {
+                                    return groupName;
+                                }
+
+                                Table tabContent;
+
+                                @Override public Table getContentTable () {
+                                    if (tabContent == null) {
+                                        tabContent = new Table();
+                                        tabContent.defaults().pad(4);
+
+                                        for (Object v : values.keySet()) {
+                                            OPTION option = options.getKey(v.toString());
+                                            if (option == null)
+                                                continue;
+                                            VisLabel label = new VisLabel(option.getName());
+                                            tabContent.add(label).left();
+//                                            Gdx.app.log("WTF", option + toString());
+                                            String optionType = options.getValueClass(option).getSimpleName();
+                                            switch (optionType) {
+                                            case "String": { // aka combo box
+                                                Object[] optionValues = option.getOptions();
+                                                String[] strings = ListMaster.toStringList(optionValues).toArray(new String[optionValues.length]);
+                                                String selected = options.getValue(option.toString());
+
+                                                final VisSelectBox<String> selectBox = new VisSelectBox<>();
+                                                tabContent.add(selectBox);
+                                                selectBox.setItems(strings);
+                                                selectBox.setSelected(selected);
+                                                selectBox.addListener(new ChangeListener() {
+                                                    @Override public void changed (ChangeEvent event, Actor actor) {
+                                                        Gdx.app.log("Options", option + " -> " + selectBox.getSelected());
+                                                    }
+                                                });
+                                                optionActors.put(option, selectBox);
+                                            }
+                                            break;
+                                            case "Integer": { // aka slider
+                                                int min = option.getMin();
+                                                int max = option.getMax();
+                                                int current = options.getIntValue(option.toString());
+                                                VisSlider slider = new VisSlider(min, max, 1, false);
+                                                tabContent.add(slider);
+                                                slider.setValue(current);
+                                                slider.addListener(new ChangeListener() {
+                                                    @Override public void changed (ChangeEvent event, Actor actor) {
+                                                        int value = (int)slider.getValue();
+                                                        Gdx.app.log("Options", option + " -> " + value);
+                                                    }
+                                                });
+                                                optionActors.put(option, slider);
+                                            }
+                                            break;
+                                            case "Boolean": { // aka checkbox
+                                                boolean checked = options.getBooleanValue((Enum)option);
+                                                VisCheckBox checkBox = new VisCheckBox("", checked);
+                                                tabContent.add(checkBox);
+                                                checkBox.addListener(new ChangeListener() {
+                                                    @Override public void changed (ChangeEvent event, Actor actor) {
+                                                        Gdx.app.log("WTF", option + " -> " + checkBox.isChecked());
+                                                    }
+                                                });
+                                                optionActors.put(option, checkBox);
+                                            }
+                                            break;
+                                            default: {
+                                                Gdx.app.log("Options", "unknown option type:" + optionType);
+                                            }
+                                            }
+                                            tabContent.row();
+                                        }
+                                    }
+                                    return tabContent;
+                                }
+                            });
+                        }
+
+                        optionsPane.switchTab(0);
+
+                        Table bottomMenu = new Table();
+                        bottomMenu.defaults().pad(4);
+                        optionsWindow.add(bottomMenu).expandX().left();
+                        {
+                            VisTextButton button = new VisTextButton("Ok");
+                            addClickListener(button, this::ok);
+                            bottomMenu.add(button);
+                        }
+                        {
+                            VisTextButton button = new VisTextButton("Save");
+                            addClickListener(button, this::save);
+                            bottomMenu.add(button);
+                        }
+                        {
+                            VisTextButton button = new VisTextButton("Apply");
+                            addClickListener(button, this::apply);
+                            bottomMenu.add(button);
+                        }
+                        {
+                            VisTextButton button = new VisTextButton("Cancel");
+                            addClickListener(button, this::cancel);
+                            bottomMenu.add(button);
+                        }
+                        {
+                            VisTextButton button = new VisTextButton("Defaults");
+                            addClickListener(button, this::defaults);
+                            bottomMenu.add(button);
+                        }
+
+                        optionsWindow.setSize(800, 600);
+                    } if (optionsWindow.getParent() == null) {
+                        stage.addActor(optionsWindow);
+                        optionsWindow.fadeIn();
+                        optionsWindow.centerWindow();
+                    } else {
+                        optionsWindow.fadeOut();
+                    }
+                }
+
+                private void addClickListener (VisTextButton button, Runnable run) {
+                    button.addListener(new ClickListener() {
+                        @Override public void clicked (InputEvent event, float x, float y) {
+                            run.run();
+                        }
+                    });
+                }
+
+                private void ok () {
+                    Gdx.app.log("Options", "ok");
+                    optionsWindow.fadeOut();
+                }
+
+                private void save () {
+                    Gdx.app.log("Options", "save");
+                }
+
+                private void apply () {
+                    Gdx.app.log("Options", "apply");
+                }
+
+                private void cancel () {
+                    Gdx.app.log("Options", "cancel");
+                    optionsWindow.fadeOut();
+                }
+
+                private void defaults () {
+                    Gdx.app.log("Options", "defaults");
+                }
+
+                @Override public void render () {
+                    Gdx.gl.glClearColor(.5f, .5f, .5f, 1);
+                    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+                    stage.act();
+                    stage.draw();
+                }
+
+                @Override public void resize (int width, int height) {
+                    super.resize(width, height);
+                    stage.getViewport().update(width, height);
+                }
+
+                @Override public void dispose () {
+                    VisUI.dispose();
+                    stage.dispose();
+                    stage.getBatch().dispose();
+                }
+            }, "TestOptions", 900, 700);
+        } else {
+            FontMaster.init();
+            GuiManager.init();
+            init();
+            tryOpenMenu();
+        }
     }
 
     public static void tryOpenMenu() {
