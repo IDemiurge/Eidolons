@@ -24,7 +24,7 @@ public class VideoMaster {
     private CameraInputController inputController;
     private Music audio;
     private boolean videoAvailable = true;
-    private boolean available;
+    private boolean available=true;
 
     public VideoPlayer getPlayer() {
         return player;
