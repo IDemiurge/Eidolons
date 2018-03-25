@@ -26,7 +26,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
 //        MOVE_ANIM(true),
 //        MELEE_ANIMS(true),
 
-        HIT_ANIM_DISPLACEMENT(true);
+        HIT_ANIM_DISPLACEMENT(false);
 
         Boolean exclusive;
         Object[] options;

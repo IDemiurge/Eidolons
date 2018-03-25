@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.Entity;
+import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -12,7 +13,12 @@ import main.system.GuiEventType;
 public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     protected boolean showing;
-    private ToolTipManager manager;
+    protected  ToolTipManager manager;
+    protected Actor actor;
+
+    public Tooltip(Actor actor) {
+        this.actor = actor;
+    }
 
     public Tooltip() {
 
@@ -22,7 +28,8 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     public boolean isTouchable() {
         return false;
     }
-//refactor - why not implement?
+
+    //refactor - why not implement?
     public InputListener getController() {
         return new ClickListener() {
             @Override
@@ -33,10 +40,10 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (getTapCount()>1){
+                if (getTapCount() > 1) {
                     onDoubleTouchDown(event, x, y);
                 } else
-                onTouchDown(event, x, y);
+                    onTouchDown(event, x, y);
                 return true;
             }
 
@@ -84,23 +91,22 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         if (event != null) {
-            Actor actor = event.getRelatedActor();
             if (!checkActorExitRemoves(toActor))
-                return ;
-            if (toActor == this) {
-                addListener(new InputListener() {
-                    @Override
-                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                        if (toActor != actor)
-                            onMouseExit(event, x, y, pointer, toActor);
-                        super.exit(event, x, y, pointer, toActor);
-                    }
-                });
                 return;
-            }
+//            if (toActor == this) {
+//                addListener(new InputListener() {
+//                    @Override
+//                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+//                        if (toActor != actor)
+//                            onMouseExit(event, x, y, pointer, toActor);
+//                        super.exit(event, x, y, pointer, toActor);
+//                    }
+//                });
+//                return;
+//            }
         }
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
-        showing = false;
+
+        exited();
 
         if (getEntity() != null)
             if (manager != null) {
@@ -108,8 +114,18 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
             }
     }
 
-    protected boolean checkActorExitRemoves(Actor toActor) {
+    protected void exited() {
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
+        showing = false;
+    }
 
+    protected boolean checkActorExitRemoves(Actor toActor) {
+        if (actor==null )
+            return true;
+        if (toActor==actor)
+            return false;
+        if (GdxMaster.getAncestors(toActor).contains(actor))
+            return false;
         return true;
     }
 

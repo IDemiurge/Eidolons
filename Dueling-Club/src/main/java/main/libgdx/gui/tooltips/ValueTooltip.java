@@ -1,6 +1,7 @@
 package main.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.ValueContainer;
@@ -19,6 +20,10 @@ public class ValueTooltip extends Tooltip {
     }
     public ValueTooltip() {
         super();
+    }
+
+    public ValueTooltip(Actor actor) {
+        super(actor);
     }
 
     @Override

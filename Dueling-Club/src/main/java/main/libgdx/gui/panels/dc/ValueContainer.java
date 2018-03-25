@@ -256,14 +256,14 @@ public class ValueContainer extends TablePanel {
                 imageContainer.getActor().setScale(getImageScaleX(),
                  getImageScaleY());
                 imageContainer.setActorX(
-                 imageContainer.getActor().getWidth() - w);
+                 imageContainer.getActor().getWidth()*imageScaleX - w);
                 imageContainer.setActorY(
-                 imageContainer.getActor().getHeight() - h);
+                 imageContainer.getActor().getHeight());//*imageScaleY - h);
 
-                imageContainer.getActor().getContent(). setX(
-                 imageContainer.getActor().getWidth() - w);
-                imageContainer.getActor().getContent(). setY(
-                 imageContainer.getActor().getHeight() - h);
+//                imageContainer.getActor().getContent(). setX(
+//                 imageContainer.getActor().getWidth() - w);
+//                imageContainer.getActor().getContent(). setY(
+//                 imageContainer.getActor().getHeight() - h);
 
 //                table.add(button).width(Value.percentWidth(.75F, table));
             } else

@@ -50,15 +50,15 @@ import static main.system.GuiEventType.HP_BAR_UPDATE;
  * Created by JustMe on 1/16/2017.
  */
 public class HitAnim extends ActionAnim {
+    private static String spritesPath;
     private SPRITE_TYPE spriteType;
-    private   HIT hitType;
+    private HIT hitType;
     private String text;
     private String imagePath;
     private Color c;
     private FloatingText floatingText;
     private float originalActorX;
     private float originalActorY;
-    private static String spritesPath;
 //    AttackAnim atkAnim;
 //    private DC_WeaponObj weapon;
 
@@ -76,36 +76,6 @@ public class HitAnim extends ActionAnim {
         this(active, params, blood, c, text,
          ImageManager.getDamageTypeImagePath(
           active.getDamageType() == null ? "Physical" : active.getDamageType().getName(), true));
-    }
-
-    @Override
-    protected void resetSprites() {
-        sprites.clear();
-        spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
-        hitType = getHitType(getActive(), spriteType);
-        String spritePath = StrPathBuilder.build(getHitSpritesPath(), spriteType.name(), hitType.spritePath)
-         + ".txt";
-//         + ".png";
-//        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
-        //scale?
-        SmartTextureAtlas atlas =
-         SmartTextureAtlas. getAtlas(PathFinder.getImagePath()+spritePath);
-        if (atlas==null )
-            return ;
-        Array<AtlasRegion> regions = atlas.getRegions();
-        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
-       getDuration()/regions.size, 1);
-if (  getRef().getTargetObj() instanceof Unit)
-        sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
-        sprites.add(sprite );
-    }
-
-    public static String getHitSpritesPath() {
-      if (spritesPath==null )
-          spritesPath =  StrPathBuilder.build("main",
-         "sprites",
-         "hit");
-        return spritesPath;
     }
 
     public HitAnim(DC_ActiveObj active, AnimData params, boolean blood, Color c,
@@ -134,6 +104,35 @@ if (  getRef().getTargetObj() instanceof Unit)
         part = ANIM_PART.IMPACT;
     }
 
+    public static String getHitSpritesPath() {
+        if (spritesPath == null)
+            spritesPath = StrPathBuilder.build("main",
+             "sprites",
+             "hit");
+        return spritesPath;
+    }
+
+    @Override
+    protected void resetSprites() {
+        sprites.clear();
+        spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
+        hitType = getHitType(getActive(), spriteType);
+        String spritePath = StrPathBuilder.build(getHitSpritesPath(), spriteType.name(), hitType.spritePath)
+         + ".txt";
+//         + ".png";
+//        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);
+        //scale?
+        SmartTextureAtlas atlas =
+         SmartTextureAtlas.getAtlas(PathFinder.getImagePath() + spritePath);
+        if (atlas == null)
+            return;
+        Array<AtlasRegion> regions = atlas.getRegions();
+        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(regions,
+         getDuration() / regions.size, 1);
+        if (getRef().getTargetObj() instanceof Unit)
+            sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
+        sprites.add(sprite);
+    }
 
     @Override
     public Coordinates getOriginCoordinates() {
@@ -214,7 +213,7 @@ if (  getRef().getTargetObj() instanceof Unit)
     }
 
     private void resetColor() {
-        Color color =null ;
+        Color color = null;
         if (getRef().getTargetObj() instanceof Unit) {
             color = getColorForSprite((Unit) getRef().getTargetObj());
         }
@@ -242,8 +241,8 @@ if (  getRef().getTargetObj() instanceof Unit)
 
         floatingText = FloatingTextMaster.getInstance().getFloatingText(
          active, TEXT_CASES.HIT, text == null ?
-          getActive().getDamageDealt()==null ?
-        "0"
+          getActive().getDamageDealt() == null ?
+           "0"
            : getActive().getDamageDealt().getAmount()
           : text);
         floatingText.setImageSupplier(() -> imagePath);
@@ -294,13 +293,15 @@ if (  getRef().getTargetObj() instanceof Unit)
         }
         return null;
     }
+
     private SPRITE_TYPE getSpriteType(BattleFieldObject targetObj) {
-        Obj block =getActive(). getRef().getObj(KEYS.BLOCK);   if (block!=null ){
+        Obj block = getActive().getRef().getObj(KEYS.BLOCK);
+        if (block != null) {
             ITEM_MATERIAL_GROUP group = new EnumMaster<ITEM_MATERIAL_GROUP>().retrieveEnumConst(ITEM_MATERIAL_GROUP.class,
              block.getProperty(G_PROPS.ITEM_MATERIAL_GROUP));
-            if (group==ITEM_MATERIAL_GROUP.METAL || group==ITEM_MATERIAL_GROUP.CRYSTAL)
+            if (group == ITEM_MATERIAL_GROUP.METAL || group == ITEM_MATERIAL_GROUP.CRYSTAL)
                 return SPRITE_TYPE.SPARKS;
-            if (group==ITEM_MATERIAL_GROUP.STONE)
+            if (group == ITEM_MATERIAL_GROUP.STONE)
                 return SPRITE_TYPE.STONE;
         }
         OBJECT_ARMOR_TYPE type =
@@ -366,20 +367,21 @@ if (  getRef().getTargetObj() instanceof Unit)
 //        active.get
         return HIT.SHOWER;
     }
-//TO ATLASES!
+
+    //TO ATLASES!
     public enum HIT {
         SLICE("slice"),
         SPLASH("blood splatter 3 3"),
         SMASH("smash 3 3"),
-    SQUIRT("squirt"),
-    SHOWER("shower"),
+        SQUIRT("squirt"),
+        SHOWER("shower"),
 //        TORRENT("smear 3 3")
         ;
 
         String spritePath;
 
         HIT(String fileNameNoFormat) {
-            spritePath =   fileNameNoFormat ;
+            spritePath = fileNameNoFormat;
         }
     }
 

@@ -17,6 +17,9 @@ public class DC_Engine extends  CoreEngine{
     static{
         jarInit();
     }
+
+    private static boolean atbMode=true;
+
     public static void fullInit() {
         Chronos.mark("DC INIT");
         systemInit();
@@ -61,5 +64,13 @@ public class DC_Engine extends  CoreEngine{
         DC_ActionManager.init();
         DrawHelper.init();
         Chronos.logTimeElapsedForMark("GAME INIT");
+    }
+
+    public static boolean isAtbMode() {
+        return atbMode;
+    }
+
+    public static void setAtbMode(boolean atbMode) {
+        DC_Engine.atbMode = atbMode;
     }
 }

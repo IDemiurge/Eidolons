@@ -14,6 +14,9 @@ public class NinePatchFactory {
         return new NinePatch(getOrCreateR("UI/components/background_3px_border.png"), 3, 3, 3, 3);
     }
 
+    public static NinePatch getMainMenuFrame() {
+        return new NinePatch(getOrCreateR("UI/components/MainMenu ninepatch.png"), 120, 120, 146,128);
+    }
     public static NinePatch getInfoPanel() {
         return new NinePatch(getOrCreateR("UI/components/panel ninepatch.png"), 50, 50, 50, 50);
     }

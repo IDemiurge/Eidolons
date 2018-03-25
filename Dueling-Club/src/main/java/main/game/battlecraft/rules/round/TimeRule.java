@@ -8,6 +8,7 @@ import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -68,6 +69,9 @@ public class TimeRule {
     }
 
     public void newRound() {
+        if (DC_Engine.isAtbMode()){
+            return;
+        }
         active = false;
         threshold = null;
         int totalTime = 0;
@@ -158,6 +162,9 @@ public class TimeRule {
     }
 
     public boolean actionComplete(DC_ActiveObj action, int time_cost) {
+        if (DC_Engine.isAtbMode()){
+            return false;
+        }
         if (!active) {
             if (checkTime(action, time_cost)) {
                 active = true;

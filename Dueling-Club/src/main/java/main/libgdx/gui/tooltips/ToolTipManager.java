@@ -11,6 +11,7 @@ import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster3d;
 import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridUnitView;
+import main.libgdx.bf.UnitViewTooltip;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.stage.GuiStage;
@@ -29,9 +30,13 @@ public class ToolTipManager extends TablePanel {
 
             Object object = event.get();
             if (object == null) {
+                if (isRemoveImmediately(actorCell.getActor())) {
+                    actorCell.setActor(null);
+//                    immediate removal
+                } else {
               if (actorCell.getActor()!=null )
                     ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
-//                actorCell.setActor(null); immediate removal
+                }
             } else {
                 init((Tooltip) object);
             }
@@ -95,6 +100,15 @@ public class ToolTipManager extends TablePanel {
 
         });
         actorCell = addElement(null);
+    }
+
+    private boolean isRemoveImmediately(Actor actor) {
+
+        if (actor instanceof UnitViewTooltip)
+            return true;
+
+        return false;
+
     }
 
     public void entityHover(Entity entity) {

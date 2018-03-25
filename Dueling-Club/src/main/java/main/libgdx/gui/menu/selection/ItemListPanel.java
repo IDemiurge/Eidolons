@@ -4,14 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.entity.Entity;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
+import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.logpanel.ScrollPanel;
-import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -38,7 +39,8 @@ public abstract class ItemListPanel extends TablePanel {
     public ItemListPanel() {
         super();
         //scroll?
-        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getMainMenuFrame()));
+//        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
         setHeight(MathMaster.minMax(GdxMaster.getHeight(), 800, 1200));
 //        scrollPanel = new ScrollPanel();
 //        scrollPanel.setSize();

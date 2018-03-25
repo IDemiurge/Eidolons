@@ -11,6 +11,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.battlecraft.rules.DC_RuleImpl;
@@ -72,6 +73,9 @@ public class DC_StateManager extends StateManager {
                 resetLock.lock();
                 if (!resetting) {
                     resetAll();
+                    if (DC_Engine.isAtbMode()) {
+                        getGame().getTurnManager().getAtbController().processAtbRelevantEvent();
+                    }
                     resetting = false;
                 }
             } finally {

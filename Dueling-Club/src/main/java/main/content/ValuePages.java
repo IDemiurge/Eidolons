@@ -113,7 +113,6 @@ public class ValuePages {
     public static final PARAMETER[] UNIT_DYNAMIC_PARAMETERS_CORE  = {
      N_OF_ACTIONS,
      N_OF_COUNTERS,
-     INITIATIVE,
      ENDURANCE,
      TOUGHNESS,
      STAMINA,

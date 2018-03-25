@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.data.XLinkedMap;
+import main.game.battlecraft.DC_Engine;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -383,7 +384,11 @@ public class InitiativePanel extends Group {
         if (isRealTime()) {
             time = Eidolons.game.getDungeonMaster().getExplorationMaster().getTimeMaster().getDisplayedTime();
         } else {
-            time = String.valueOf(Eidolons.game.getRules().getTimeRule().getTimeRemaining());
+            time =
+             DC_Engine.isAtbMode() ?
+              Eidolons.game.getTurnManager().getAtbController().getTimeString()
+              :
+              String.valueOf(Eidolons.game.getRules().getTimeRule().getTimeRemaining());
         }
         timeLabel.setText(time);
     }

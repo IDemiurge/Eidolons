@@ -336,7 +336,10 @@ public class RandomWizard<E> {
         return list.get(getRandomListIndex(list));
     }
 
-    public static float getRandomFloatBetween(float alphaMin, float alphaMax) {
+    public static float getRandomFloatBetween() {
+        return getRandomFloatBetween(0, 1f);
+    }
+        public static float getRandomFloatBetween(float alphaMin, float alphaMax) {
         return new Float(getRandomIntBetween((int) (alphaMin * 100),
          (int) (alphaMax * 100))) / 100 ;
     }

@@ -2,7 +2,9 @@ package main.game.core;
 
 import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.rules.mechanics.WaitRule;
+import main.game.core.AtbController.AtbUnit;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.turn.TurnManager;
 import main.system.GuiEventManager;
@@ -29,6 +31,8 @@ import static main.system.GuiEventType.UPDATE_UNIT_ACT_STATE;
 
 public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     private static boolean visionInitialized;
+    boolean atbMode = DC_Engine.isAtbMode();
+    AtbController atbController;
     private DequeImpl<Unit> unitQueue;
     private DequeImpl<Unit> displayedUnitQueue;
     private DC_Game game;
@@ -40,7 +44,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     public DC_TurnManager(DC_Game game) {
         this.game = game;
         // init();
-
+        atbController = new AtbController(this);
     }
 
     public static boolean isVisionInitialized() {
@@ -92,15 +96,12 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     public Boolean nextAction() {
         //TODO retain active unit
         resetQueue();
-
         if (getUnitQueue().isEmpty()) {
             resetDisplayedQueue();
             return null;
         }
 
-        boolean result;
-
-        result = chooseUnit();
+        boolean result = chooseUnit();
 //TODO if (OptionsMaster.getEngineOptions().getBooleanValue(ENGINE_OPTION.RESET_COSTS))
 //        game.getActionManager().resetCostsInNewThread();
 
@@ -116,18 +117,12 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
     public void resetInitiative(boolean first) {
+        if (atbMode)
+            return;
         for (Unit unit : getUnits()) {
             if (unit.getAI().isOutsideCombat())
                 continue;
             resetInitiative(unit, first);
-//            int before = unit.getIntParam(PARAMS.C_INITIATIVE);
-//            int after = unit.getIntParam(PARAMS.C_INITIATIVE);
-//            if (before == after) return;
-//            int diff = before - after;
-//            if (diff != 0) {
-//                GuiEventManager.trigger(INITIATIVE_CHANGED,
-//                 new EventCallbackParam(new ImmutablePair<>(unit, after)));
-//            }
         }
     }
 
@@ -153,7 +148,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
     private void resetQueue() {
-
         unitQueue.clear();
         try {
             WaitRule.checkMap();
@@ -162,28 +156,30 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         }
 
         for (Unit unit : getUnits()) {
-//                if (game.getMainHero() != null) {
-//                    if (game.getMainHero().getZ() != unit.getZ()) {
-//                        continue;
-//                    }
-//                }
-
-
             final boolean actNow = unit.getAI().isOutsideCombat() ? false : unit.canActNow();
             if (actNow) {
                 if (getGame().isDummyMode() && getGame().isDummyPlus() && !unit.isMine()) {
                     //?
                 } else {
                     unitQueue.add(unit);
+                    if (atbMode)
+                        atbController.addUnit(unit);
                 }
+            } else {
+                if (atbMode) atbController.removeUnit(unit);
             }
             if (!unit.getAI().isOutsideCombat())
                 GuiEventManager.trigger(UPDATE_UNIT_ACT_STATE, new ImmutablePair<>(unit, actNow));
         }
-
+        if (atbMode) {
+            atbController.processAtbRelevantEvent();
+        }
         ArrayList<Unit> list = new ArrayList<>(getUnitQueue());
-        Collections.sort(list, this);
+        Collections.sort(list,
+         atbMode ? atbController :
+          this);
         setUnitQueue(new DequeImpl<>(list));
+
     }
 
     public DC_Game getGame() {
@@ -199,15 +195,34 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
     private boolean chooseUnit() {
-        setActiveUnit(unitQueue.peek());
-        for (Unit sub : unitQueue) {
-            if (sub != getActiveUnit())
-                if (sub.getIntParam(PARAMS.C_INITIATIVE) == getActiveUnit().getIntParam(PARAMS.C_INITIATIVE)) {
-                    getActiveUnit().modifyParameter(PARAMS.C_INITIATIVE, 1, null, true);
-
+        if (atbMode) {
+            AtbUnit unit = atbController.step();
+            while (unit == null) {
+                //TODO integrate properly!
+                unit = atbController.step();
+            }
+            if (unit != null) {
+                setActiveUnit(unit.getUnit());
+                if (!game.getManager().activeSelect(getActiveUnit())) {
+                    return false;
                 }
-            break;
+                return true;
+            } else {
+//                setActiveUnit(atbController);
+                return false;
+            }
         }
+
+
+        setActiveUnit(unitQueue.peek());
+//        for (Unit sub : unitQueue) { TODO tried to avoid same-initiative on display...
+//            if (sub != getActiveUnit())
+//                if (sub.getIntParam(PARAMS.C_INITIATIVE) == getActiveUnit().getIntParam(PARAMS.C_INITIATIVE)) {
+//                    getActiveUnit().modifyParameter(PARAMS.C_INITIATIVE, 1, null, true);
+//
+//                }
+//            break;
+//        }
         try {
             if (!game.getManager().activeSelect(getActiveUnit())) {
                 return false;
@@ -233,12 +248,16 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     }
 
     public void newRound() {
-        resetInitiative(true);
+        if (atbMode) {
+            atbController.newRound();
+
+        } else {
+            resetInitiative(true);
+        }
 //        resetQueue();
         game.getRules().getTimeRule().newRound();
         for (Unit sub : getGame().getUnits()) {
-            if (getGame().getState().getRound()>0)
-//            if (!sub.isMine())
+            if (getGame().getState().getRound() > 0)
                 if (sub.getAI().getEngagementDuration() > 0)
                     sub.getAI().setEngagementDuration(sub.getAI().getEngagementDuration() - 1);
 
@@ -248,17 +267,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.FIGHT);
             }
         }
-//        if (isStarted()) {
-//            if (!playerHasActiveUnits()) {
-//                LogMaster.log(1,
-//                        "************** GAME PAUSED WHILE NO UNITS UNDER PLAYER CONTROL **************");
-//            }
-//
-//            while (!playerHasActiveUnits()) {
-//                WaitMaster.WAIT(1000);
-//                resetQueue();
-//            }
-//        }
     }
 
 
@@ -282,17 +290,6 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
     public int compare(Unit u1, Unit u2) {
         int a1 = u1.getIntParam(PARAMS.C_INITIATIVE);
         int a2 = u2.getIntParam(PARAMS.C_INITIATIVE);
-
-
-        // TODO re-random if match?
-        // if (a1 == a2) {
-        // while (a1 == a2) {
-        //
-        // resetInitiative(u1);
-        // a1 = u1.getIntParam(DC_PARAMS.C_INITIATIVE);
-        // }
-        //
-        // }
         if (a1 > a2) {
             return -1;
         }
@@ -317,4 +314,7 @@ public class DC_TurnManager implements TurnManager, Comparator<Unit> {
         this.displayedUnitQueue = displayedUnitQueue;
     }
 
+    public AtbController getAtbController() {
+        return atbController;
+    }
 }

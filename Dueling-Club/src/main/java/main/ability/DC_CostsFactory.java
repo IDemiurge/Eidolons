@@ -7,6 +7,7 @@ import main.elements.costs.*;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.game.battlecraft.DC_Engine;
 import main.system.DC_ConditionMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
@@ -23,9 +24,13 @@ public class DC_CostsFactory {
 
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
         List<Cost> costs = new ArrayList<>();
-        Cost cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
+        Cost cost = null ;
+
+        if (!DC_Engine.isAtbMode()) {
+        cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
         if (cost != null) {
             costs.add(cost);
+        }
         }
 
         cost = getCost(spell, PARAMS.ENERGY_COST, PARAMS.C_ENERGY);

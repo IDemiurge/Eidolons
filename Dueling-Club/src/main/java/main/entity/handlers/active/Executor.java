@@ -12,6 +12,7 @@ import main.entity.obj.Active;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.rules.RuleMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_GROUP;
 import main.game.battlecraft.rules.action.StackingRule;
@@ -33,9 +34,9 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,27 +58,23 @@ import java.util.List;
  * events
  */
 public class Executor extends ActiveHandler {
+    private static final int ATB_MOD = 20;
     protected boolean result;
     private boolean interrupted;
     private Activator activator;
     private Targeter targeter;
     private List<DC_ActiveObj> pendingAttacksOpportunity;
-
-
     private boolean visualsRefreshed;
     private boolean failedLast;
     private boolean instantMode;
     private boolean counterMode;
     private boolean attackOfOpportunityMode;
-
-
     private boolean continuous;
     private Boolean cancelled;
     private boolean triggered;
     private boolean resistanceChecked;
     private int timeCost;
     private Context context;
-
 
     public Executor(DC_ActiveObj active, ActiveMaster entityMaster) {
         super(active, entityMaster);
@@ -147,7 +144,7 @@ public class Executor extends ActiveHandler {
             return interrupted();
         }
         Obj target = getAction().getTargetObj();
-        AnimContext animContext= new AnimContext(getAction());
+        AnimContext animContext = new AnimContext(getAction());
         animContext.setTarget(target);
 
         boolean gameLog = getAction().getLogger().isActivationLogged();
@@ -201,8 +198,8 @@ public class Executor extends ActiveHandler {
     protected void log(String string, boolean gameLog) {
         super.log(string, gameLog);
         if (!gameLog)
-        if (!ExplorationMaster.isExplorationOn())
-            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
+            if (!ExplorationMaster.isExplorationOn())
+                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
     }
 
     private void syncActionRefWithSource() {
@@ -229,7 +226,6 @@ public class Executor extends ActiveHandler {
         actionComplete();
         return false;
     }
-
 
     private void cancelled() {
         timeCost = 0;
@@ -278,7 +274,6 @@ public class Executor extends ActiveHandler {
         }
     }
 
-
     private void initActivation() {
         fireEvent(STANDARD_EVENT_TYPE.ACTION_ACTIVATED, true);
         getAction().getOwnerObj().getRef().setID(KEYS.ACTIVE, getId());
@@ -290,7 +285,6 @@ public class Executor extends ActiveHandler {
         getMaster().getInitializer().initCosts(true);// for animation phase
 
     }
-
 
     protected void resolve() {
         log(getAction() + " resolves", false);
@@ -348,7 +342,6 @@ public class Executor extends ActiveHandler {
         setCancelled(null);
     }
 
-
     private void addStdPassives() {
         if (!StringMaster.isEmpty(getAction().getProperty(G_PROPS.STANDARD_PASSIVES))) {
             getAction().getOwnerObj().addProperty(G_PROPS.STANDARD_PASSIVES, getAction().getProperty(G_PROPS.STANDARD_PASSIVES));
@@ -368,6 +361,8 @@ public class Executor extends ActiveHandler {
             getGame().getDungeonMaster().getExplorationMaster().getCleaner().cleanUpAfterAction(
              getEntity(), getOwnerObj());
         } else {
+            if (DC_Engine.isAtbMode())
+                reduceAtbReadiness();
             addCooldown();
         }
 
@@ -376,6 +371,21 @@ public class Executor extends ActiveHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+    }
+
+    private void reduceAtbReadiness() {
+
+        double initiativeCost = -getAction().getParamDouble(PARAMS.AP_COST) * ATB_MOD;
+        getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
+         initiativeCost + "", 0, false);
+
+        getGame().getTurnManager().getAtbController().processAtbRelevantEvent();
+
+        log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
+         -initiativeCost +
+         "%, now at " +getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
+         "%", true);
+
     }
 
     protected void addCooldown() {
@@ -421,12 +431,12 @@ public class Executor extends ActiveHandler {
 
         if (result) {
             if (getAction().getTargetObj() instanceof Unit)
-            if (getAction().getChecker().isPotentiallyHostile())
-                if (getAction().getTargetObj().getOwner() !=
-             getAction().getOwner()) {
-                    AggroMaster.unitAttacked(getAction(), getAction().getTargetObj());
+                if (getAction().getChecker().isPotentiallyHostile())
+                    if (getAction().getTargetObj().getOwner() !=
+                     getAction().getOwner()) {
+                        AggroMaster.unitAttacked(getAction(), getAction().getTargetObj());
 
-                }
+                    }
         }
 //        getAnimator().waitForAnimation();
 
