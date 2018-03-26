@@ -36,6 +36,7 @@ public class SpectrumEffect extends DC_Effect {
     int defaultSidePenalty = 1;
     // String reductionForDistance = "(x)/distance+sqrt(x)";
     String reductionForDistance = "-(x)/10*(2+distance*1.5)"; // *sqrt(distance)
+    protected Integer range;
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
         if (effects != null)
@@ -70,7 +71,8 @@ public class SpectrumEffect extends DC_Effect {
     }
 
     public boolean applyThis() {
-        Integer range = new Formula(rangeFormula).getInt(ref);
+        if (range==null )
+            range = new Formula(rangeFormula).getInt(ref);
         Integer backwardRange = 0;
         Integer sidePenalty = 0;
         if (vision) {

@@ -74,7 +74,7 @@ public class DC_StateManager extends StateManager {
                 if (!resetting) {
                     resetAll();
                     if (DC_Engine.isAtbMode()) {
-                        getGame().getTurnManager().getAtbController().processAtbRelevantEvent();
+//                        getGame().getTurnManager().getAtbController().processAtbRelevantEvent();
                     }
                     resetting = false;
                 }
@@ -407,6 +407,8 @@ public class DC_StateManager extends StateManager {
     }
 
     private void newTurnTick() {
+        if (DC_Engine.isAtbMode())
+            return;
         if (getState().getRound() > 0)
             for (Attachment attachment : state.getAttachments()) {
                 attachment.tick();

@@ -197,7 +197,7 @@ public class HpBar extends SuperActor {
     }
 
     private boolean isAnimated() {
-        return true;
+        return false;
     }
 
     public void initChangeActions(FloatAction floatAction, Float previousPerc, float perc) {
@@ -228,12 +228,12 @@ public class HpBar extends SuperActor {
             label.setVisible(false);
         }
         if (isAnimated()&& getActions().size> 0){
-            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " WAS " +displayedEndurancePerc);
+//            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " WAS " +displayedEndurancePerc);
             displayedEndurancePerc = MathMaster.minMax(enduranceAction.getValue(),
              Math.min(previousEndurancePerc, endurancePerc), Math.max(previousEndurancePerc, endurancePerc));
             displayedToughnessPerc = MathMaster.minMax(toughnessAction.getValue(),
              Math.min(previousToughnessPerc, toughnessPerc), Math.max(previousToughnessPerc, toughnessPerc));
-            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
+//            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
         } else
             if (!dirty)
             return;

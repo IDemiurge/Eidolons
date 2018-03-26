@@ -24,13 +24,13 @@ public class DC_CostsFactory {
 
     public static Costs getCostsForSpell(DC_ActiveObj spell, boolean isSpell) {
         List<Cost> costs = new ArrayList<>();
-        Cost cost = null ;
+        Cost cost = null;
 
         if (!DC_Engine.isAtbMode()) {
-        cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
-        if (cost != null) {
-            costs.add(cost);
-        }
+            cost = getCost(spell, PARAMS.AP_COST, PARAMS.C_N_OF_ACTIONS);
+            if (cost != null) {
+                costs.add(cost);
+            }
         }
 
         cost = getCost(spell, PARAMS.ENERGY_COST, PARAMS.C_ENERGY);
@@ -72,22 +72,21 @@ public class DC_CostsFactory {
         // return new Costs(costs);
 
         String s = ""
-                + Math.max(spell.getIntParam(PARAMS.FOC_REQ),
-                spell.getIntParam(PARAMS.FOC_COST));
+         + Math.max(spell.getIntParam(PARAMS.FOC_REQ),
+         spell.getIntParam(PARAMS.FOC_COST));
         CostRequirements requirements = new CostRequirements(new Payment(
-                PARAMS.C_FOCUS, new Formula(s)));
+         PARAMS.C_FOCUS, new Formula(s)));
 
+        if (!DC_Engine.isAtbMode())
         requirements.add(new Requirement(
-
-                new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
-                        PARAMS.C_COOLDOWN)),
-
-                InfoMaster.COOLDOWN_REASON));
+            new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
+             PARAMS.C_COOLDOWN)),
+             InfoMaster.COOLDOWN_REASON));
 
         addSpecialRequirements(requirements, spell);
 
         return (isSpell) ? new DC_SpellCosts(requirements, costs)
-                : new DC_ActionCosts(requirements, costs);
+         : new DC_ActionCosts(requirements, costs);
     }
 
     private static void addSpecialRequirements(CostRequirements requirements,
@@ -97,9 +96,9 @@ public class DC_CostsFactory {
         }
 
         for (String subString : StringMaster.open(spell
-                .getSpecialRequirements())) {
+         .getSpecialRequirements())) {
             Requirement req = DC_ConditionMaster
-                    .getSpecialReq(subString, spell);
+             .getSpecialReq(subString, spell);
             if (req != null) {
                 requirements.add(req);
             }
@@ -114,12 +113,12 @@ public class DC_CostsFactory {
         Formula formula;
 
         boolean var;
-            int amount = StringMaster.getInteger( paramValue);
-            if (amount == 0) {
-                return null;
-            }
-            formula = new Formula(amount + "");
-            var = false;
+        int amount = StringMaster.getInteger(paramValue);
+        if (amount == 0) {
+            return null;
+        }
+        formula = new Formula(amount + "");
+        var = false;
 
         Cost cost = new CostImpl(new Payment(pay_param, formula), cost_param);
         cost.setVariable(var);

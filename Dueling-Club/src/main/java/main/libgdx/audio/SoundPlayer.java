@@ -50,10 +50,10 @@ public class SoundPlayer extends Player {
 //                    sound.setDelay( - delta);
                 if (dungeonScreen != null)
                     if (soundFx.getOrigin() != null) {
-                        float x = dungeonScreen .getController().getXCamPos();
-                        float y = dungeonScreen.getController().getYCamPos();
+                        float x = dungeonScreen .controller.getXCamPos();
+                        float y = dungeonScreen.controller.getYCamPos();
                         float distance = soundFx.getOrigin().dst(x, y);
-                        distance *= dungeonScreen.getController().getZoom();
+                        distance *= dungeonScreen.controller.getZoom();
                         float volume =
                          Math.max(10, getVolume() / Math.max(1, (distance) / 200 ))/100;
                         soundFx.setVolume(volume);

@@ -18,8 +18,8 @@ public class GeometryMaster {
 
     public static Point getFarthestPointInRectangleForImage(int w, int h, int width, int height,
                                                             DIRECTION direction) {
-        Boolean xSide = direction.isGrowX();
-        Boolean ySide = direction.isGrowY();
+        Boolean xSide = direction.growX;
+        Boolean ySide = direction.growY;
         int x = (w - width) / 2;
         int y = (h - height) / 2;
         if (xSide != null) {

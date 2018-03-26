@@ -9,12 +9,13 @@ import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.handlers.EntityChecker;
+import main.entity.handlers.EntityMaster;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
 import main.entity.obj.unit.Unit;
-import main.entity.handlers.EntityChecker;
-import main.entity.handlers.EntityMaster;
+import main.game.battlecraft.DC_Engine;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 
@@ -109,7 +110,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         }
         if (getGame().getTestMaster().isImmortal() != null) {
             return
-                    getGame().getTestMaster().isImmortal();
+             getGame().getTestMaster().isImmortal();
         }
         return getGame().isDummyPlus();
     }
@@ -299,14 +300,10 @@ public class UnitChecker extends EntityChecker<Unit> {
             return false;
         }
 
-        // if (checkStatus(STATUS.DISCOMBOBULATED))
-        // return false;
-
-        // if (checkStatus(STATUS.LATE))
-        // return false;
-        if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
-            return false;
-        }
+        if (!DC_Engine.isAtbMode())
+            if (getIntParam(PARAMS.C_N_OF_ACTIONS) <= 0) {
+                return false;
+            }
         return !isImmobilized();
 
     }
@@ -402,7 +399,7 @@ public class UnitChecker extends EntityChecker<Unit> {
 
     public boolean hasDoubleStrike() {
         return
-                checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
+         checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_STRIKE);
     }
 
     public boolean checkImmunity(IMMUNITIES type) {

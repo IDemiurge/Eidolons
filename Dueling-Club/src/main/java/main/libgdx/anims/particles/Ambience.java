@@ -36,8 +36,8 @@ public class Ambience extends EmitterActor {
             return ;
         }
         if (isCullingOn())
-        if ( DungeonScreen.getInstance().getController()!=null )
-            if (!DungeonScreen.getInstance().getController().
+        if ( DungeonScreen.getInstance().controller!=null )
+            if (!DungeonScreen.getInstance().controller.
              isWithinCamera(getX(), getY(), getWidth()*2, getHeight()*2)) {
                 return;
             }
@@ -80,8 +80,8 @@ public class Ambience extends EmitterActor {
         if (!ParticleManager.isAmbienceOn())
             return ;
         if (isCullingOn())
-        if ( DungeonScreen.getInstance().getController()!=null )
-            if (!DungeonScreen.getInstance().getController().
+        if ( DungeonScreen.getInstance().controller!=null )
+            if (!DungeonScreen.getInstance().controller.
              isWithinCamera(getX(), getY(), getWidth() , getHeight() )) {
                 return;
             }

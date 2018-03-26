@@ -298,8 +298,8 @@ public class ForceRule {
         // if (distance == 0)
         // distance = RandomWizard.chance(force * 100 / weight) ? 1 : 0; // TODO
 
-        int x_displacement = BooleanMaster.isTrue(d.isGrowX()) ? distance : -distance;
-        int y_displacement = BooleanMaster.isTrue(d.isGrowY()) ? distance : -distance;
+        int x_displacement = BooleanMaster.isTrue(d.growX) ? distance : -distance;
+        int y_displacement = BooleanMaster.isTrue(d.growY) ? distance : -distance;
         if (!d.isDiagonal()) {
             if (d.isVertical()) {
                 x_displacement = 0;

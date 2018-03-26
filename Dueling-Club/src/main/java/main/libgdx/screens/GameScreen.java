@@ -24,11 +24,11 @@ import static main.system.GuiEventType.DIALOG_SHOW;
 /**
  * Created by JustMe on 2/3/2018.
  */
-public abstract class GameScreen extends ScreenWithVideoLoader{
+public abstract class GameScreen extends ScreenWithVideoLoader {
 
+    public InputController controller;
     protected ChainedStage dialogsStage = null;
     protected OrthographicCamera cam;
-    protected InputController controller;
     protected Vector2 velocity;
     protected DC_SoundMaster soundMaster;
     protected Vector2 cameraDestination;
@@ -57,7 +57,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
     }
 
     protected float getCameraMinCameraPanDist() {
-        return GdxMaster.getWidth()/3; //TODO if too close to the edge also
+        return GdxMaster.getWidth() / 3; //TODO if too close to the edge also
     }
 
     protected float getCameraDistanceFactor() {
@@ -67,32 +67,21 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
     protected void cameraShift() {
         if (cameraDestination != null)
             if (cam != null && velocity != null && !velocity.isZero()) {
-                try {
-                    float x = velocity.x > 0
-                     ? Math.min(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime())
-                     : Math.max(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime());
-                    float y = velocity.y > 0
-                     ? Math.min(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime())
-                     : Math.max(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime());
-                    cam.position.set(x, y, 0f);
-                    float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
-                    Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
-//                    if (CoreEngine.isGraphicTestMode()) {
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- pos x:" + x);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- pos y:" + y);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity:" + velocity);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocityNow:" + velocityNow);
-//                        Gdx.app.log("DungeonScreen::cameraShift()", "-- velocity.hasOppositeDirection(velocityNow):" + velocity.hasOppositeDirection(velocityNow));
-//                    }
+                float x = velocity.x > 0
+                 ? Math.min(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime())
+                 : Math.max(cameraDestination.x, cam.position.x + velocity.x * Gdx.graphics.getDeltaTime());
+                float y = velocity.y > 0
+                 ? Math.min(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime())
+                 : Math.max(cameraDestination.y, cam.position.y + velocity.y * Gdx.graphics.getDeltaTime());
+                cam.position.set(x, y, 0f);
+                float dest = cam.position.dst(cameraDestination.x, cameraDestination.y, 0f) / getCameraDistanceFactor();
+                Vector2 velocityNow = new Vector2(cameraDestination.x - cam.position.x, cameraDestination.y - cam.position.y).nor().scl(Math.min(cam.position.dst(cameraDestination.x, cameraDestination.y, 0f), dest));
 
-                    if ( velocityNow.isZero()|| velocity.hasOppositeDirection(velocityNow)) {
-                        cameraStop();
-                    }
-                } catch (Exception exp) {
-                    if (CoreEngine.isGraphicTestMode())
-                        Gdx.app.log("DungeonScreen::cameraShift()", "-- exp:" + exp);
+                if (velocityNow.isZero() || velocity.hasOppositeDirection(velocityNow)) {
+                    cameraStop();
                 }
                 cam.update();
+                controller.cameraChanged();
             }
     }
 
@@ -118,6 +107,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader{
             gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         }
     }
+
     protected void initDialogue() {
 
         GuiEventManager.bind(DIALOG_SHOW, obj -> {

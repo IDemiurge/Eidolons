@@ -5,13 +5,14 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Coordinates {
 
+    static Coordinates[][] coordinates;
     private static int h;
     private static int w;
     private static boolean flipX;
@@ -24,12 +25,10 @@ public class Coordinates {
     public int x;
     public int y;
     protected int z = 0;
-    private boolean invalid = false;
-
-   static Coordinates[][] coordinates;
     Coordinates[] adjacent;
     Coordinates[] adjacenctNoDiags;
     Coordinates[] adjacenctDiagsOnly;
+    private boolean invalid = false;
 
     public Coordinates() {
         this.x = 0;
@@ -332,7 +331,7 @@ public class Coordinates {
     }
 
     public Coordinates[] getAdjacent() {
-        if (adjacent==null ){
+        if (adjacent == null) {
             adjacent = getAdjacentCoordinates().toArray(new Coordinates[
              getAdjacentCoordinates().size()]);
         }
@@ -340,7 +339,7 @@ public class Coordinates {
     }
 
     public Coordinates[] getAdjacenctNoDiags() {
-        if (adjacenctNoDiags==null ){
+        if (adjacenctNoDiags == null) {
             adjacenctNoDiags = getAdjacentCoordinates(false).toArray(new Coordinates[
              getAdjacentCoordinates(false).size()]);
         }
@@ -348,9 +347,9 @@ public class Coordinates {
     }
 
     public Coordinates[] getAdjacenctDiagsOnly() {
-        if (adjacenctDiagsOnly==null ){
-            adjacenctDiagsOnly = getAdjacentCoordinates(null ).toArray(new Coordinates[
-             getAdjacentCoordinates(null ).size()]);
+        if (adjacenctDiagsOnly == null) {
+            adjacenctDiagsOnly = getAdjacentCoordinates(null).toArray(new Coordinates[
+             getAdjacentCoordinates(null).size()]);
         }
         return adjacenctDiagsOnly;
     }
@@ -464,77 +463,29 @@ public class Coordinates {
     }
 
     public enum DIRECTION {
-        UP(false, 90, true) {
-            public Boolean isGrowY() {
-                return false;
-            }
-        },
-        DOWN(false, 270, true) {
-            public Boolean isGrowY() {
-                return true;
-            }
-        },
-        LEFT(false, 180) {
-            public Boolean isGrowX() {
-                return false;
-            }
-        },
-        RIGHT(false, 360) {
-            public Boolean isGrowX() {
-                return true;
-            }
-        },
+        UP(false, 90, true, null, false),
+        DOWN(false, 270, true, null, true),
+        LEFT(false, 180, false, false, null),
+        RIGHT(false, 360, false, true, null),
+        UP_LEFT(true, 135, true, false, false),
+        UP_RIGHT(true, 45, true, true, false),
+        DOWN_RIGHT(true, 225, true, true, true),
+        DOWN_LEFT(true, 315, true, false, true),;
 
-        UP_LEFT(true, 135, true) {
-            public Boolean isGrowX() {
-                return false;
-            }
-
-            public Boolean isGrowY() {
-                return false;
-            }
-        },
-        UP_RIGHT(true, 45, true) {
-            public Boolean isGrowX() {
-                return true;
-            }
-
-            public Boolean isGrowY() {
-                return false;
-            }
-        },
-        DOWN_RIGHT(true, 225, true) {
-            public Boolean isGrowX() {
-                return true;
-            }
-
-            public Boolean isGrowY() {
-                return true;
-            }
-        },
-        DOWN_LEFT(true, 315, true) {
-            public Boolean isGrowX() {
-                return false;
-            }
-
-            public Boolean isGrowY() {
-                return true;
-            }
-        },;
+        public static final DIRECTION[] values = values();
+        public Boolean growX;
+        public Boolean growY;
         private boolean vertical;
-
         private boolean diagonal;
         private int degrees;
 
-        public static final  DIRECTION[] values = values();
-        DIRECTION(boolean diagonal, int degrees, boolean vertical) {
-            setDiagonal(diagonal);
-            this.setDegrees(degrees);
+        DIRECTION(boolean diagonal, int degrees, boolean vertical,
+                  Boolean growX, Boolean growY) {
             this.vertical = vertical;
-        }
-
-        DIRECTION(boolean diagonal, int degrees) {
-            this(diagonal, degrees, false);
+            this.growX = growX;
+            this.growY = growY;
+            this.diagonal = diagonal;
+            this.degrees = degrees;
         }
 
         public DIRECTION getXDirection() {
@@ -573,12 +524,12 @@ public class Coordinates {
             this.degrees = degrees;
         }
 
-        public Boolean isGrowX() {
-            return null;
+        public Boolean isGrowX  (){
+            return growX;
         }
 
-        public Boolean isGrowY() {
-            return null;
+        public Boolean isGrowY (){
+            return growY;
         }
 
         public boolean isVertical() {
@@ -610,10 +561,11 @@ public class Coordinates {
         SOUTH(DIRECTION.DOWN, true, false),
         NONE(null, false, false);
 
+        public static final FACING_DIRECTION[] values = values();
         private DIRECTION direction;
         private boolean vertical;
         private boolean closerToZero;
-        public static final FACING_DIRECTION[] values = values();
+
         FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
             this.setDirection(direction);
             this.vertical = (vertical);

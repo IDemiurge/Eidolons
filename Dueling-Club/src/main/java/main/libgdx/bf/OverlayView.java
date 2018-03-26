@@ -34,6 +34,11 @@ public class OverlayView extends BaseView {
     }
 
     @Override
+    public boolean isCachedPosition() {
+        return true;
+    }
+
+    @Override
     public Actor hit(float x, float y, boolean touchable) {
 
         return super.hit(x, y, touchable) != null ? this : null;

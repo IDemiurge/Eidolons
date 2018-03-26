@@ -2,6 +2,7 @@ package main.game.core.master;
 
 import main.ability.effects.Effect;
 import main.ability.effects.attachment.AddBuffEffect;
+import main.content.DC_TYPE;
 import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
@@ -25,6 +26,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static main.system.GuiEventType.UPDATE_BUFFS;
@@ -55,6 +57,18 @@ public class BuffMaster extends Master {
         }
         addBuffEffect.apply(Ref.getSelfTargetingRefCopy(target));
 
+    }
+
+    public void atbTimeElapsed(Float time) {
+        for (Obj sub : getBuffs()) {
+            ((BuffObj) sub).timeElapsed(time);
+
+        }
+
+    }
+
+    private Collection<Obj> getBuffs() {
+        return state.getObjMaps().get(DC_TYPE.BUFFS).values();
     }
 
     public static boolean checkBuffDispelable(BuffObj buff) {

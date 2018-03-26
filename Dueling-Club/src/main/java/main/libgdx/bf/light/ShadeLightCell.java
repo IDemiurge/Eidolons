@@ -80,6 +80,10 @@ public class ShadeLightCell extends SuperContainer {
         ShadeLightCell.alphaFluctuation = alphaFluctuation;
     }
 
+    public boolean isCachedPosition() {
+        return true;
+    }
+
     private boolean isColored() {
         switch (type) {
             case GAMMA_LIGHT:
@@ -210,7 +214,7 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public void act(float delta) {
         if (!SuperActor.isCullingOff())
-            if (!DungeonScreen.getInstance().getController().
+            if (!DungeonScreen.getInstance().controller.
              isWithinCamera(
               this
 //              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
@@ -269,7 +273,7 @@ public class ShadeLightCell extends SuperContainer {
                                 continue;
                             }
 
-                            setScale(d.isGrowX() == null ? 1 : 0.8f, d.isGrowY() == null ? 1 : 0.8f);
+                            setScale(d.growX == null ? 1 : 0.8f, d.growY == null ? 1 : 0.8f);
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
                              (int) getWidth(),
                              (int) getHeight());

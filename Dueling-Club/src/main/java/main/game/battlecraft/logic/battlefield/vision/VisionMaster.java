@@ -122,21 +122,21 @@ public class VisionMaster implements GenericVisionManager {
             else invisibleList.add(sub);
         }
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-        main.system.auxiliary.log.LogMaster.log(1,">>>>>> invisibleList  = " +invisibleList);
-        main.system.auxiliary.log.LogMaster.log(1,">>>>>> visibleList  = " +visibleList);
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
 
         if (LOG_CHANNEL.VISIBILITY_DEBUG.isOn()) {
-        String string="";
-        for (BattleFieldObject sub : visibleList) {
-            string +=sub+": \n";
-            string +="getVisibilityLevelForPlayer= "+ sub.getVisibilityLevelForPlayer()+"\n";
-            string +="getVisibilityLevel= "+ sub.getVisibilityLevel()+"\n";
-            string +="getPlayerVisionStatus= "+ sub.getPlayerVisionStatus(true)+"\n";
-            string +="getGamma= "+ sub.getGamma()+"\n";
-        }
+            String string = "";
+            for (BattleFieldObject sub : visibleList) {
+                string += sub + ": \n";
+                string += "getVisibilityLevelForPlayer= " + sub.getVisibilityLevelForPlayer() + "\n";
+                string += "getVisibilityLevel= " + sub.getVisibilityLevel() + "\n";
+                string += "getPlayerVisionStatus= " + sub.getPlayerVisionStatus(true) + "\n";
+                string += "getGamma= " + sub.getGamma() + "\n";
+            }
 
-        LogMaster.log(1, "***********" +
-         "" + string);
+            LogMaster.log(1, "***********" +
+             "" + string);
 
         }
 
@@ -153,22 +153,22 @@ public class VisionMaster implements GenericVisionManager {
 
         if (sub.isMine())
             return true;
-        if (sub.getVisibilityLevel()==VISIBILITY_LEVEL.UNSEEN)
+        if (sub.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
             return false;
         if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.UNKNOWN)
-            if (sub.getOutlineTypeForPlayer()==null ||
-             sub.getOutlineTypeForPlayer()==OUTLINE_TYPE.THICK_DARKNESS
+            if (sub.getOutlineTypeForPlayer() == null ||
+             sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.THICK_DARKNESS
              || !firstResetDone)
-            return false;
-        else if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
+                return false;
+            else if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
 //            if (ExplorationMaster.isExplorationOn())
 
-            return false;
-        } else if (!sub.isWall())
-            if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
                 return false;
-            else if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
-                return false;
+            } else //if (!sub.isWall())
+                if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+                    return false;
+                else if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
+                    return false;
 
         return true;
     }
@@ -211,8 +211,6 @@ public class VisionMaster implements GenericVisionManager {
             UNIT_TO_UNIT_VISION status = getSightMaster().getUnitVisionStatusPrivate(unit, activeUnit);
 
 
-
-
             unit.setUnitVisionStatus(status);
         }
     }
@@ -228,7 +226,7 @@ public class VisionMaster implements GenericVisionManager {
 
     private void setRelativePlayerVisibility(DC_Player player, Collection<? extends Obj> units) {
 
-        boolean invisible=false;
+        boolean invisible = false;
         for (Obj obj : units) {
             DC_Obj target = (DC_Obj) obj;
             if (target instanceof Entrance) {
@@ -255,7 +253,7 @@ public class VisionMaster implements GenericVisionManager {
             }
             boolean result = false; // detected or not
             if (target instanceof Unit) {
-                 if (checkInvisible(target)) {
+                if (checkInvisible(target)) {
                     if (target.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.INVISIBLE) {
                         player.getLastSeenCache().put(target, target.getCoordinates());
                     }
@@ -265,7 +263,7 @@ public class VisionMaster implements GenericVisionManager {
 //                         ((Unit) target).setUsingStealth(true);
 //                     } else
 //                         ((Unit) target).setUsingStealth(false);
-                     continue;
+                    continue;
                 }
             }
 
@@ -295,7 +293,7 @@ public class VisionMaster implements GenericVisionManager {
                     } else {
                         target.setDetected(true);
 //                        if (player.isMe()) {
-                            target.setDetectedByPlayer(true);
+                        target.setDetectedByPlayer(true);
 //                        }
                         if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
                             target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
@@ -326,7 +324,7 @@ public class VisionMaster implements GenericVisionManager {
 
 
         }
-        if (invisible){
+        if (invisible) {
 
         }
 //                if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {

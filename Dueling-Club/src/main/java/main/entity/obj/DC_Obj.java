@@ -317,6 +317,12 @@ public abstract class DC_Obj extends MicroObj {
 
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
          this + " setVisibilityLevel " + visibilityLevel  );
+        if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_SIGHT ||
+         activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
+            if (visibilityLevel==VISIBILITY_LEVEL.UNSEEN)
+            main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
+             this + " gotcha " + visibilityLevel  );
+        }
         this.visibilityLevel = visibilityLevel;
     }
 

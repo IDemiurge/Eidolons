@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
@@ -145,7 +144,7 @@ public class MapScreen extends GameScreen {
             if (dialogsStage != null) {
                 current.addProcessor(dialogsStage);
             }
-            current.addProcessor(new GestureDetector(controller));
+            current.addProcessor(controller);//new GestureDetector(controller));
         } else {
             current = super.getInputController();
         }

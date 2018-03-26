@@ -383,11 +383,11 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         DIRECTION d = MacroGame.getGame().getLoop().getTimeMaster().getWindDirection();
         switch (direction) {
             case WIND:
-                if (d.isGrowX() == null)
+                if (d.growX == null)
                     return 0.2f;
-                if (d.isGrowY() != null)
-                    return d.isGrowX() ? 0.7f : -0.7f;
-                return d.isGrowX() ? 1 : -1;
+                if (d.growY != null)
+                    return d.growX ? 0.7f : -0.7f;
+                return d.growX ? 1 : -1;
             case TIDE:
                 return 1;
             case SUN:
@@ -400,11 +400,11 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         DIRECTION d = MacroGame.getGame().getLoop().getTimeMaster().getWindDirection();
         switch (direction) {
             case WIND:
-                if (d.isGrowY() == null)
+                if (d.growY == null)
                     return 0.2f;
-                if (d.isGrowX() != null)
-                    return d.isGrowY() ? 0.5f : -0.5f;
-                return d.isGrowY() ? 0.7f : -0.7f;
+                if (d.growX != null)
+                    return d.growY ? 0.5f : -0.5f;
+                return d.growY ? 0.7f : -0.7f;
             case TIDE:
                 return -0.2f;
             case SUN:

@@ -263,11 +263,11 @@ public class MiniGrid implements Refreshable {
         int yOffset = (cellHeight - height) / 2;
         DIRECTION d = obj.getDirection();
         if (d != null) {
-            if (d.isGrowX() != null) {
-                xOffset = (d.isGrowX()) ? getCellWidth() - width : 0;
+            if (d.growX != null) {
+                xOffset = (d.growX) ? getCellWidth() - width : 0;
             }
-            if (d.isGrowY() != null) {
-                yOffset = (d.isGrowY()) ? cellHeight - overlayingObjHeight : 0;
+            if (d.growY != null) {
+                yOffset = (d.growY) ? cellHeight - overlayingObjHeight : 0;
             }
 
         }

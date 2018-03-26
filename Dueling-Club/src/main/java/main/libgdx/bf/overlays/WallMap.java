@@ -207,11 +207,11 @@ public class WallMap extends SuperActor {
                         mesh = true;
                     } else {
                         if (y != null) {
-                            if (y == side.isGrowY()) {
+                            if (y == side.growY) {
                                 vertical = true;
                                 break;
                             } else {
-                                if (x == side.isGrowX()) {
+                                if (x == side.growX) {
                                     break;
                                 }
                                 mesh = true;
@@ -219,8 +219,8 @@ public class WallMap extends SuperActor {
                                 //TODO
                             }
                         }
-                        y = side.isGrowY();
-                        x = side.isGrowX();
+                        y = side.growY;
+                        x = side.growX;
                     }
                 }
 
@@ -321,7 +321,7 @@ public class WallMap extends SuperActor {
         v.set(v.x, v.y - 128);
         float offsetX = v.x;
         float offsetY = v.y;
-        if (!DungeonScreen.getInstance().getController().
+        if (!DungeonScreen.getInstance().controller.
          isWithinCamera(getX() + offsetX, getY() + offsetY, 128, 128)) {
             return true;
         }

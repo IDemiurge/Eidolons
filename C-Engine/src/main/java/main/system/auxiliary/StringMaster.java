@@ -722,11 +722,7 @@ public class StringMaster {
         if (value == null)
             return 0;
         if (!isInteger(value)) {
-            try {
                 return new Formula(value).getInt(ref == null ? new Ref() : ref);
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
         }
         if (value.contains(".")) {
             value = value.split(Pattern.quote("."))[0];
@@ -751,7 +747,6 @@ public class StringMaster {
             }
             return result;
         } else {
-            try {
                 String result = "";
                 for (char c : value.toCharArray()) {
                     if (c == ('.')) {
@@ -765,16 +760,6 @@ public class StringMaster {
                 if (!result.isEmpty()) {
                     return Integer.valueOf(result);
                 }
-
-                // value = value.trim();
-                // return Integer.valueOf(value);
-            } catch (Exception e) {
-                // int index = value.indexOf('.');
-                // if (index != -1)
-                // if (StringMaster.isInteger(value))
-                // return Integer.valueOf(value.substring(0, index));
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
         }
 
         return 0;
@@ -1519,21 +1504,27 @@ public class StringMaster {
     }
 
     public static Double getDouble(String doubleParam) {
+        if (isEmpty(doubleParam)) {
+            return 0.0;
+        }
         doubleParam = doubleParam.replace("(", "").replace(")", "");
         try {
             return Double.valueOf(doubleParam);
         } catch (Exception e) {
-            // main.system.ExceptionMaster.printStackTrace(e);
+             main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0;
     }
 
     public static Float getFloat(String floatParam) {
+        if (isEmpty(floatParam)) {
+            return 0f;
+        }
         floatParam = floatParam.replace("(", "").replace(")", "");
         try {
             return Float.valueOf(floatParam);
         } catch (Exception e) {
-            // main.system.ExceptionMaster.printStackTrace(e);
+             main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0f;
     }

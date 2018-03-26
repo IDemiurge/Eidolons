@@ -119,7 +119,7 @@ public class MacroTimeMaster {
         timer = 0;
         weather = new EnumMaster<WEATHER>().getRandomEnumConst(WEATHER.class);
         windDirection = DirectionMaster.getRandomDirection();
-        if (windDirection.isGrowY() == null || windDirection.isGrowX() == null)
+        if (windDirection.growY == null || windDirection.growX == null)
             if (RandomWizard.random())
                 windDirection = DIRECTION.UP_RIGHT;
 

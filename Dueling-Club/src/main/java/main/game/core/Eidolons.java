@@ -235,7 +235,7 @@ public class Eidolons {
     }
 
     public static GameScreen getScreen() {
-        return (GameScreen) getLauncher().getScreen();
+        return launcher.gameScreen;
     }
 
     public static MacroGame getMacroGame() {

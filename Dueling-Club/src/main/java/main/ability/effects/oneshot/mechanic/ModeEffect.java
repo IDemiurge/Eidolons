@@ -7,6 +7,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.ability.effects.continuous.SetCustomModeEffect;
 import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.ability.effects.oneshot.spell.DivinationEffect;
+import main.ability.effects.periodic.PeriodicEffect;
 import main.content.ContentManager;
 import main.content.PARAMS;
 import main.content.mode.MODE;
@@ -20,9 +21,11 @@ import main.data.ability.construct.VariableManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.RefCondition;
 import main.elements.conditions.StringComparison;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.battlecraft.rules.mechanics.InterruptRule;
 import main.game.battlecraft.rules.perk.AlertRule;
@@ -93,7 +96,7 @@ isModeDisablesActions
 alert - ?
 divination?
          */
- Unit unit = (Unit) getRef().getSourceObj();
+        Unit unit = (Unit) getRef().getSourceObj();
         unit.getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().
          unitActivatesMode(unit);
         unit.getGame().getStateManager().reset(unit);
@@ -102,8 +105,8 @@ divination?
 
     @Override
     public boolean applyThis() {
-        if (ExplorationMaster.isExplorationOn()){
-              applyExplorationVersion();
+        if (ExplorationMaster.isExplorationOn()) {
+            applyExplorationVersion();
         }
         if (reinit) {
             initBuffEffect();
@@ -114,12 +117,17 @@ divination?
         if (mode.isDispelOnHit()) {
             addDispelOnHitTrigger();
         }
-        if (ExplorationMaster.isExplorationOn()){
+        if (ExplorationMaster.isExplorationOn()) {
             //dispel on action? in
 
-        } else
-        if (mode.isEndTurnEffect()) {
-            addEndTurnEffect();
+        } else {
+            if (DC_Engine.isAtbMode()) {
+                addPeriodicEffect();
+                addInitiativeEffect();
+            } else if (mode.isEndTurnEffect()) {
+                addEndTurnEffect();
+            }
+
         }
         if (mode.getDefenseMod() != 0) {
             addDefModEffect();
@@ -134,7 +142,9 @@ divination?
             if (mode.isContinuous()) {
                 addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);
             } else {
-                addBuffEffect.setDuration(1);
+                addBuffEffect.setDuration(
+                 (!ExplorationMaster.isExplorationOn()&& DC_Engine.isAtbMode()) ? mode.getDuration()
+                  : 1);
             }
 
         }
@@ -144,6 +154,33 @@ divination?
         }
         boolean result = addBuffEffect.apply(ref);
         return result;
+    }
+
+    private void addInitiativeEffect() {
+        addBuffEffect.addEffect(
+         new ModifyValueEffect(PARAMS.N_OF_ACTIONS, MOD.SET, "0"));
+    }
+
+    private void addPeriodicEffect() {
+        String periodicValues = mode.getPeriodicValues();
+        if (periodicValues == null)
+            return;
+        for (String substring : StringMaster.openContainer(periodicValues)) {
+            String amount = VariableManager.getVar(substring, 0);
+            String maxAmount = VariableManager.getVar(substring, 1);
+            String periodicValue = VariableManager.removeVarPart(substring);
+
+            String period = mode.getPeriod();
+            Formula max = new Formula(maxAmount);
+            Formula formula = new Formula(amount);
+            Effect effect = new ModifyValueEffect(periodicValue, MOD.MODIFY_BY_CONST,
+             formula, max);
+            Effect fx=new PeriodicEffect(period, effect);
+            fx.setRef(Ref.getSelfTargetingRefCopy(ref.getSourceObj()));
+            addBuffEffect.addEffect(fx);
+
+
+        }
     }
 
     public synchronized AddBuffEffect getAddBuffEffect() {
@@ -168,10 +205,10 @@ divination?
         Map<PROPERTY, String> map = new RandomWizard<PROPERTY>().constructStringWeightMap(mode
          .getPropsAdded(), PROPERTY.class);
         for (PROPERTY property : map.keySet()) {
-                if (property != null) {
-                    addBuffEffect.addEffect(new ModifyPropertyEffect(property,
-                     MOD_PROP_TYPE.ADD,   map.get(property)));
-        }
+            if (property != null) {
+                addBuffEffect.addEffect(new ModifyPropertyEffect(property,
+                 MOD_PROP_TYPE.ADD, map.get(property)));
+            }
         }
     }
 

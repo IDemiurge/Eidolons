@@ -375,19 +375,19 @@ public class DrawMaster {
 
             int x = MigMaster.getCenteredPosition(getObjCompWidth(), size);
             if (d != null) {
-                if (d.isGrowX() == null) {
+                if (d.growX == null) {
                     x = MigMaster.getCenteredPosition(getObjCompWidth(), size);
                 } else {
-                    x = (d.isGrowX()) ? getObjCompWidth() - size : 0;
+                    x = (d.growX) ? getObjCompWidth() - size : 0;
                 }
             }
 
             int y = MigMaster.getCenteredPosition(getObjCompHeight(), size);
             if (d != null) {
-                if (d.isGrowY() == null) {
+                if (d.growY == null) {
                     y = MigMaster.getCenteredPosition(getObjCompHeight(), size);
                 } else {
-                    y = (d.isGrowY()) ? getObjCompHeight() - size : 0;
+                    y = (d.growY) ? getObjCompHeight() - size : 0;
                 }
             }
 
@@ -917,18 +917,18 @@ public class DrawMaster {
                     mesh = true;
                 } else {
                     if (y != null) {
-                        if (y == side.isGrowY()) {
+                        if (y == side.growY) {
                             vertical = true;
                             break;
                         } else {
-                            if (x == side.isGrowX()) {
+                            if (x == side.growX) {
                                 break;
                             }
                             return;
                         }
                     }
-                    y = side.isGrowY();
-                    x = side.isGrowX();
+                    y = side.growY;
+                    x = side.growX;
                 }
             }
             // return;

@@ -10,7 +10,7 @@ import main.entity.Ref;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
-import main.game.core.DC_TurnManager;
+import main.game.core.GenericTurnManager;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -49,7 +49,7 @@ public class OutlineMaster {
         Unit activeUnit = ExplorationMaster.isExplorationOn()
         ? master.getSeeingUnit() :
          DC_Game.game.getTurnManager().getActiveUnit(true);
-        DC_TurnManager.setVisionInitialized(true);
+        GenericTurnManager.setVisionInitialized(true);
         if (activeUnit == null) {
             return null;
         }

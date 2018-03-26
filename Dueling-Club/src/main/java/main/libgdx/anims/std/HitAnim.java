@@ -166,10 +166,10 @@ public class HitAnim extends ActionAnim {
 
         int dx = d.isVertical() ? 5 : 30;
         int dy = !d.isVertical() ? 5 : 30;
-        if (BooleanMaster.isFalse(d.isGrowX())) {
+        if (BooleanMaster.isFalse(d.growX)) {
             dx = -dx;
         }
-        if (BooleanMaster.isTrue(d.isGrowY())) {
+        if (BooleanMaster.isTrue(d.growY)) {
             dy = -dy;
         }
 

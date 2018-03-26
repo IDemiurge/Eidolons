@@ -70,8 +70,8 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
     }
 
     @Override
-    public int tick() {
-        return 0;
+    public Double tick() {
+        return 0.0;
     }
 
     @Override

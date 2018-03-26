@@ -143,7 +143,7 @@ public class WorldGenerator {
          Integer.valueOf(VariableManager.getVar(s, 1)));
         String string = (VariableManager.getVar(s, 2));
         Faction faction = null;
-        if (string == null) {
+        if (StringMaster.isEmpty(string)) {
             faction = game.getPlayerFaction();
         } else if (string.equalsIgnoreCase("player")) {
             Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();

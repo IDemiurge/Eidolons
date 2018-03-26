@@ -16,9 +16,10 @@ public class MicroObj extends Obj {
     protected int x;
     protected int y;
     protected Coordinates coordinates;
-    protected Boolean overlaying;
     private Coordinates lastKnownCoordinates;
     private int z;
+    private Boolean overlayingInitialized; //for performance
+    protected boolean overlaying;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -109,9 +110,10 @@ public class MicroObj extends Obj {
     }
 
     public boolean isOverlaying() {
-        if (overlaying == null) {
+        if (overlayingInitialized == null) {
             overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
              || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
+            overlayingInitialized= true;
         }
         return overlaying;
     }

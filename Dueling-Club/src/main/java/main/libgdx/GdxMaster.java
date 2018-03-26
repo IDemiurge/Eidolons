@@ -179,4 +179,8 @@ public class GdxMaster {
     public static void resized() {
         fontSizeMod=null;
     }
+
+    public static boolean isHpBarAttached() {
+        return true;
+    }
 }

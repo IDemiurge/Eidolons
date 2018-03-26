@@ -4,6 +4,7 @@ import main.content.PARAMS;
 import main.entity.obj.unit.Unit;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
@@ -15,24 +16,20 @@ import static main.system.GuiEventType.INITIATIVE_CHANGED;
 /**
  * Created by JustMe on 3/24/2018.
  */
-public class AtbController implements   Comparator<Unit> {
-    private static final float TIME_IN_ROUND = 100;
-    DC_TurnManager manager;
+public class AtbController implements Comparator<Unit> {
+    public static final int ATB_MOD = 20;
+    private static final float TIME_IN_ROUND = 10;
+    AtbTurnManager manager;
     private Stack<AtbUnit> unitsInAtb;
     private float time = 0f;
 
-    public AtbController(DC_TurnManager manager) {
+    public AtbController(AtbTurnManager manager) {
         this.manager = manager;
         unitsInAtb = new Stack<>();
         for (Unit sub : manager.getUnits()) {
             addUnit(new AtbUnitImpl(sub));
         }
     }
-
-    public   int compare (Unit first, Unit second) {
-        return compareForSort(getAtbUnit(first), getAtbUnit(second));
-    }
-
 
     public static int compareForSort(AtbUnit first, AtbUnit second) {
         if (first.getTimeTillTurn() == second.getTimeTillTurn())
@@ -41,6 +38,10 @@ public class AtbController implements   Comparator<Unit> {
             return -1;
         else
             return 1;
+    }
+
+    public int compare(Unit first, Unit second) {
+        return compareForSort(getAtbUnit(first), getAtbUnit(second));
     }
 
     public void newRound() {
@@ -52,12 +53,15 @@ public class AtbController implements   Comparator<Unit> {
 
     public AtbUnit step() {
         float timeElapsed = this.unitsInAtb.get(0).getTimeTillTurn();
-        if (timeElapsed>0)
+        if (timeElapsed > TIME_IN_ROUND / 10) {
+            timeElapsed = TIME_IN_ROUND / 10; //gradual time loop! For modes etc
+        }
+        if (timeElapsed > 0)
 //            return null;
-        this.processTimeElapsed(timeElapsed + 0.0001f);
+            this.processTimeElapsed(timeElapsed + 0.0001f);
         this.updateTimeTillTurn();
         this.updateTurnOrder();
-        if (this.unitsInAtb.get(0).getAtbReadiness() >= 1) {
+        if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_IN_ROUND) {
             return this.unitsInAtb.get(0);
         } else {
             return null; //this.step();
@@ -76,10 +80,11 @@ public class AtbController implements   Comparator<Unit> {
         for (AtbUnit unit : this.unitsInAtb) {
             unit.setAtbReadiness(unit.getAtbReadiness() + time * unit.getInitiative());
         }
+        manager.getGame().getManager().atbTimeElapsed(time);
     }
 
     private String getTimeString(float v) {
-        return String.format(java.util.Locale.US, "%.1f", v /10) + " seconds";
+        return String.format(java.util.Locale.US, "%.1f", v) + " seconds";
     }
 
     public void updateTurnOrder() {
@@ -112,11 +117,12 @@ public class AtbController implements   Comparator<Unit> {
 
     public void addUnit(AtbUnit unit) {
         if (unit.getInitiative() > 0) {
-            unit.setAtbReadiness( unit.getInitialInitiative());
+            unit.setAtbReadiness(unit.getInitialInitiative());
             this.unitsInAtb.push(unit);
         }
     }
-    private   AtbUnit getAtbUnit(Unit unit) {
+
+    private AtbUnit getAtbUnit(Unit unit) {
         for (AtbUnit sub : unitsInAtb) {
             if (sub.getUnit() == unit)
                 return sub;
@@ -144,9 +150,10 @@ public class AtbController implements   Comparator<Unit> {
     }
 
     public String getTimeString() {
-        return getTimeString(TIME_IN_ROUND- getTime());
+        return getTimeString(TIME_IN_ROUND - getTime());
     }
-        public float getTime() {
+
+    public float getTime() {
         return time;
     }
 
@@ -182,17 +189,17 @@ public class AtbController implements   Comparator<Unit> {
 
         @Override
         public float getInitialInitiative() {
-            return RandomWizard.getRandomFloatBetween() *25;
+            return RandomWizard.getRandomFloatBetween() * TIME_IN_ROUND * 0.25f;
         }
 
         @Override
         public float getAtbReadiness() {
-            return new Float(unit.getParam(PARAMS.C_INITIATIVE)) ;
+            return StringMaster.getFloat(unit.getParam(PARAMS.C_INITIATIVE));
         }
 
         @Override
         public void setAtbReadiness(float i) {
-            int value = Math.round(i );
+            double value = (i);
 
             manager.getGame().getLogManager().log(
              getUnit().getName() + " has " +
@@ -201,16 +208,18 @@ public class AtbController implements   Comparator<Unit> {
               " readiness");
             if (unit.getIntParam(PARAMS.C_INITIATIVE) == value)
                 return;
-            unit.setParam(PARAMS.C_INITIATIVE, value);
+            unit.setParam(PARAMS.C_INITIATIVE, value + "");
             GuiEventManager.trigger(
              INITIATIVE_CHANGED,
-             new ImmutablePair<>(getUnit(), value)
+             new ImmutablePair<>(getUnit(), new ImmutablePair<>((int) Math.round(value * 10), getTimeTillTurn()))
             );
         }
 
         @Override
         public float getInitiative() {
-            return new Float(unit.getParamDouble(PARAMS.N_OF_ACTIONS));
+            if (unit.canActNow())
+                return new Float(unit.getParamDouble(PARAMS.N_OF_ACTIONS));
+            return 0;
         }
 
         @Override
@@ -221,11 +230,12 @@ public class AtbController implements   Comparator<Unit> {
         @Override
         public void setTimeTillTurn(float i) {
             if (timeTillTurn != i) {
-            timeTillTurn = i;
-            GuiEventManager.trigger(
-             INITIATIVE_CHANGED,
-             new ImmutablePair<>(getUnit(),(int) getAtbReadiness())
-            );
+                timeTillTurn = i;
+                GuiEventManager.trigger(
+                 INITIATIVE_CHANGED,
+                 new ImmutablePair<>(getUnit(), new ImmutablePair<>(Math.round(getAtbReadiness() * 10)
+                  , getTimeTillTurn()))
+                );
             }
         }
     }

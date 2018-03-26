@@ -670,4 +670,29 @@ else
         return Eidolons.getMainHero();
     }
 
+    public void atbTimeElapsed(Float time) {
+
+        buffMaster.atbTimeElapsed(time);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

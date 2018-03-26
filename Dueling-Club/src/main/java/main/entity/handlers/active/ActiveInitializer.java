@@ -12,9 +12,10 @@ import main.elements.costs.Costs;
 import main.elements.costs.Payment;
 import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.unit.Unit;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
+import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -186,6 +187,8 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
     }
 
     public void addDynamicValues() {
+        if (DC_Engine.isAtbMode())
+            return;
         Integer cooldown = getIntParam(PARAMS.COOLDOWN);
         if (cooldown < 0) {
             getEntity().setParam(PARAMS.C_COOLDOWN, cooldown);

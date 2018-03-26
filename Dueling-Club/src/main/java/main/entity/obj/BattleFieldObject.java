@@ -18,12 +18,14 @@ import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.core.AtbController;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.DC_MathManager;
 
@@ -169,12 +171,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
         return true;
     }
 
-    public boolean isObstructing(Obj obj, DC_Obj target) {
+    public boolean isObstructing(Obj watcher, DC_Obj target) {
 
         if (target == null) {
             return false;
         }
-        if (obj == null) {
+        if (watcher == null) {
             return false;
         }
 //        if (isBfObj()) {
@@ -190,44 +192,35 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
-        // boolean targetTall = false;
-        // boolean targetShort = false;
-        // if (target instanceof DC_HeroObj) {
-        // targetTall = (((DC_HeroObj) target).isTall());
-        // targetShort = (((DC_HeroObj) target).isShort());
-        // }
 
-        if (obj instanceof BattleFieldObject) {
+//        double distance = PositionMaster.getExactDistance(this, target);
+//        Integer girth = getIntParam(PARAMS.GIRTH);
+//        if (girth/100 < distance  ){
+//            return false;
+//        }
+        //1000 space per cell
+
+        if (watcher instanceof BattleFieldObject) {
             int height = getIntParam(PARAMS.HEIGHT);
-            if (height > 200) {
-                height = getIntParam(PARAMS.HEIGHT);
-            }
-            int source_height = obj.getIntParam(PARAMS.HEIGHT);
+            int source_height = watcher.getIntParam(PARAMS.HEIGHT);
             int target_height = target.getIntParam(PARAMS.HEIGHT);
-
-            BattleFieldObject source = (BattleFieldObject) obj;
+//            if (height-source_height  > target_height-height)
+//            {
+//                return true;
+//            }
             if (target_height > height) {
                 return false;
             }
-//            if (source.isAgile() && !isHuge()) {
+//TODO        lvl80!     if (source.isAgile() && !isHuge()) {
 //                return false;
 //            }
+
             if (source_height < height)
             // if (!source.isFlying()) //add height TODO
             {
                 return true;
             }
 
-            // if (isShort())
-            // if (!(source.isShort() && !targetShort))
-            // return false;
-            //
-            // if (source.isAgile() && !isHuge())
-            // return false;
-            //
-            // if (!isTall())
-            // if (source.isFlying() || source.isTall() || targetTall)
-            // return false;
         }
 
         return false;
@@ -267,6 +260,16 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
         setParam(PARAMS.C_STAMINA, getIntParam(PARAMS.STAMINA), true);
 
 
+    }
+
+    @Override
+    protected void putParameter(PARAMETER param, String value) {
+        super.putParameter(param, value);
+        if (param == PARAMS.C_N_OF_ACTIONS) {
+            Integer prev = getIntParam(param);
+            int diff = StringMaster.getInteger(value) - prev;
+            modifyParameter(PARAMS.C_INITIATIVE, AtbController.ATB_MOD * diff);
+        }
     }
 
     public void resetPercentages() {

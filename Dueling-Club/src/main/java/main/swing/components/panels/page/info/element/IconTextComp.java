@@ -57,20 +57,20 @@ public class IconTextComp extends G_Panel {
         String relativeY = "@centered_y";
         int x = 0;
         int y = 0;
-        if (BooleanMaster.isTrue(textDirection.isGrowX())) {
+        if (BooleanMaster.isTrue(textDirection.growX)) {
             relativeX = "icon.x2";
             x = textOffset;
         }
-        if (BooleanMaster.isFalse(textDirection.isGrowX())) {
+        if (BooleanMaster.isFalse(textDirection.growX)) {
             relativeX = "";
             x = -textOffset;
         }
-        if (BooleanMaster.isTrue(textDirection.isGrowY())) {
+        if (BooleanMaster.isTrue(textDirection.growY)) {
 
             relativeY = "icon.y2";
             y = textOffset;
         }
-        if (BooleanMaster.isFalse(textDirection.isGrowY())) {
+        if (BooleanMaster.isFalse(textDirection.growY)) {
 
             relativeY = "";
             y = -textOffset;

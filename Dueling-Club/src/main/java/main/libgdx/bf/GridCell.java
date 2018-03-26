@@ -103,7 +103,7 @@ public class GridCell extends Group implements Borderable {
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-            if (!DungeonScreen.getInstance().getController().isWithinCamera
+            if (!DungeonScreen.getInstance().controller.isWithinCamera
 //             (getX(), getY(), getWidth(), getHeight()))
  (this)) {
                 return;
@@ -125,7 +125,7 @@ public class GridCell extends Group implements Borderable {
             if (gridY == 0)
                 gridX=0;
         if (!SuperActor.isCullingOff())
-            if (!DungeonScreen.getInstance().getController().isWithinCamera(
+            if (!DungeonScreen.getInstance().controller.isWithinCamera(
 //             getX(), getY(),
 //             2*getWidth(), 2*getHeight())
              (this))

@@ -246,7 +246,7 @@ public class AttackAnimation extends ActionAnimation {
         Image image = ImageManager.getDamageTypeImage(GenericEnums.DAMAGE_TYPE.PHYSICAL.getName());
         Point p = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image, direction.flip());
         int y = p.y; // - rawDamage.size()*20
-        if (BooleanMaster.isTrue((direction.isGrowY()))) {
+        if (BooleanMaster.isTrue((direction.growY))) {
             y -= 30;
         }
         int x = p.x;

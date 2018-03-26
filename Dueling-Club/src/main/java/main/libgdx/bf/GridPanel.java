@@ -16,6 +16,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
@@ -25,6 +26,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.module.dungeoncrawl.dungeon.Entrance;
+import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster;
@@ -110,7 +112,7 @@ public class GridPanel extends Group {
     }
 
     public static boolean isHpBarsOnTop() {
-        return true;
+        return !GdxMaster.isHpBarAttached();
     }
 
     public void updateOutlines() {
@@ -473,6 +475,8 @@ public class GridPanel extends Group {
     private void setVisible(BattleFieldObject sub, boolean b) {
         if (!unitMap.containsKey(sub))
             return;
+        if (getUnitMap().get(sub).getParent() == null)
+            addActor(getUnitMap().get(sub));
         unitMap.get(sub).setVisible(b);
     }
 
@@ -521,7 +525,7 @@ public class GridPanel extends Group {
 
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(), unitMap.get(ref.getSourceObj())))
+                if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), unitMap.get(ref.getSourceObj())))
                     removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
@@ -606,7 +610,7 @@ public class GridPanel extends Group {
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         for (BattleFieldObject object : units) {
             Coordinates c = object.getCoordinates();
-            if (c==null )
+            if (c == null)
                 continue;
             if (!map.containsKey(c)) {
                 map.put(c, new ArrayList<>());
@@ -664,7 +668,21 @@ public class GridPanel extends Group {
                 }
             }
         });
-
+        if (DC_Engine.isAtbMode()) {
+            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+                Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
+                GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
+                if (uv == null) {
+                    addUnitView(p.getLeft());
+                    uv = (GridUnitView) unitMap.get(p.getLeft());
+                }
+                if (uv != null) {
+                    uv.setTimeTillTurn(p.getRight().getRight());
+                    uv.updateInitiative(p.getRight().getLeft());
+                }
+            });
+        }
+        else
         GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
             Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
             GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
@@ -733,6 +751,9 @@ public class GridPanel extends Group {
         BaseView uv = unitMap.get(heroObj);
         if (!(uv.getParent() instanceof GridCellContainer))
             return false;
+        if (!uv.isVisible())
+            return false;
+
         GridCellContainer gridCellContainer = (GridCellContainer) uv.getParent();
         float x = uv.getX() + gridCellContainer.getX();
         float y = uv.getY() + gridCellContainer.getY();

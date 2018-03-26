@@ -338,7 +338,7 @@ public class FloatingTextMaster {
         ATTACK_INSTANT,
 
         ROLL,
-
+        PARAM_GAIN,
         COSTS(true, (e) -> {
             DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
             List<Cost> costs = a.getCosts().getCosts();

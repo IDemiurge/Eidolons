@@ -200,15 +200,15 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                     diagonalJoints.put(c, list);
                     if (list.size() == 1) {
                         DIRECTION d = list.get(0);
-                        if (s.isGrowX())
-                            if (!d.isGrowX())
+                        if (s.growX)
+                            if (!d.growX)
                                 continue;
-                            else if (d.isGrowX())
+                            else if (d.growX)
                                 continue;
-                        if (s.isGrowY())
-                            if (!d.isGrowY())
+                        if (s.growY)
+                            if (!d.growY)
                                 continue;
-                            else if (d.isGrowY())
+                            else if (d.growY)
                                 continue;
                     }
                     list.add(s);

@@ -126,7 +126,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
          StringMaster.contains(path, "smoke")){
             downOrUp=true;
         }
-        if (windDirection.isGrowY() != downOrUp)
+        if (windDirection.growY != downOrUp)
             return true;
         return false;
     }
@@ -136,7 +136,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
          StringMaster.contains(path, "cloud")||
          StringMaster.contains(path, "smoke")
          ) {
-            if (windDirection.isGrowX() != true)
+            if (windDirection.growX != true)
                 return true;
         }
         return false;

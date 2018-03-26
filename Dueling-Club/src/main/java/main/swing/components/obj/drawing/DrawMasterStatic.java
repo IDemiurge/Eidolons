@@ -114,11 +114,11 @@ public class DrawMasterStatic {
         int xOffset = cellWidth / 2 - (lines_images ? 0 : w / 2);
         int yOffset = cellHeight / 2 - (lines_images ? 0 : h / 2);
 
-        if (d.isGrowX() != null) {
-            xOffset = (d.isGrowX()) ? cellWidth - w : 0;
+        if (d.growX != null) {
+            xOffset = (d.growX) ? cellWidth - w : 0;
         }
-        if (d.isGrowY() != null) {
-            yOffset = (d.isGrowY()) ? cellHeight - h : 0;
+        if (d.growY != null) {
+            yOffset = (d.growY) ? cellHeight - h : 0;
         }
 
         return new Point(p.x + xOffset, p.y + yOffset);

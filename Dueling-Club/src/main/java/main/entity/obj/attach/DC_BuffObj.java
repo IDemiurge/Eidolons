@@ -16,7 +16,7 @@ import main.game.logic.battle.player.Player;
 public class DC_BuffObj extends BuffObj {
 
     public DC_BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
-                      int duration, Condition retainCondition) {
+                      double duration, Condition retainCondition) {
         super(type, owner, game, ref, effect, duration, retainCondition);
 
     }
@@ -27,7 +27,7 @@ public class DC_BuffObj extends BuffObj {
     public DC_BuffObj(DC_BuffObj buff) {
         this(buff.type, buff.owner,
          buff.getGame(), buff.ref, buff.effect,
-         buff.duration, buff.getRetainConditions());
+           buff.duration, buff.getRetainConditions());
 
     }
 

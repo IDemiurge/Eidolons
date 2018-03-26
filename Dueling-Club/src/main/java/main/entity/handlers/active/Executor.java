@@ -22,6 +22,8 @@ import main.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.game.battlecraft.rules.mechanics.ConcealmentRule;
 import main.game.battlecraft.rules.perk.EvasionRule;
 import main.game.core.ActionInput;
+import main.game.core.AtbController;
+import main.game.core.AtbTurnManager;
 import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -58,7 +60,6 @@ import java.util.List;
  * events
  */
 public class Executor extends ActiveHandler {
-    private static final int ATB_MOD = 20;
     protected boolean result;
     private boolean interrupted;
     private Activator activator;
@@ -375,11 +376,10 @@ public class Executor extends ActiveHandler {
 
     private void reduceAtbReadiness() {
 
-        double initiativeCost = -getAction().getParamDouble(PARAMS.AP_COST) * ATB_MOD;
+        double initiativeCost = -getAction().getParamDouble(PARAMS.AP_COST) * AtbController.ATB_MOD;
         getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
          initiativeCost + "", 0, false);
-
-        getGame().getTurnManager().getAtbController().processAtbRelevantEvent();
+        ((AtbTurnManager) getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
 
         log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
          -initiativeCost +

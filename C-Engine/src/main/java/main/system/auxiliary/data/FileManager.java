@@ -521,7 +521,10 @@ public class FileManager {
     }
 
     public static String getRandomFileName(String path) {
-        return getRandomFile(path).getName();
+        File file = getRandomFile(path);
+        if (file==null )
+            return null;
+        return file.getName();
     }
 
 }

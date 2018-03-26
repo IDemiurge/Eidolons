@@ -17,8 +17,8 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +26,12 @@ public class ClearShotCondition extends MicroCondition {
 
     public static final float SIGHT_RANGE_FACTOR = 2.5f;
     static Map<BattleFieldObject, Map<Obj, Boolean>> cache = new HashMap<>();
+    private static boolean unitTestBreakMode;
     boolean showVisuals;
     private boolean vision;
     private String str1;
     private String str2;
     private int log_priority = 1;
-    private static boolean unitTestBreakMode;
 
     public ClearShotCondition() {
         this(KEYS.SOURCE.toString(), KEYS.MATCH.toString());
@@ -54,48 +54,17 @@ public class ClearShotCondition extends MicroCondition {
     public static double getMaxCheckDistance(Unit activeUnit, DC_Obj unit) {
         return getMaxCheckDistance(activeUnit, unit.getCoordinates());
     }
-        public static double getMaxCheckDistance(Unit activeUnit, Coordinates coordinates) {
+
+    public static double getMaxCheckDistance(Unit activeUnit, Coordinates coordinates) {
         return SIGHT_RANGE_FACTOR * activeUnit.getSightRangeTowards(coordinates);
     }
 
-    private boolean isBlocking(DC_Obj source, DC_Obj target,
-                               int x_, int y_) {
-        boolean result = isBlocking(source, target, x_, y_, target.getGame().getMaster()
-         .getStructuresArray());
-        if (result)
-            return true;
-        result = isBlocking(source, target, x_, y_, target.getGame().getMaster().getUnitsArray());
-        if (result)
-            return true;
-        return checkWallObstruction(source, target, new Coordinates(x_, y_));
+    public static boolean isUnitTestBreakMode() {
+        return unitTestBreakMode;
     }
 
-    private boolean isBlocking(DC_Obj source, DC_Obj target,
-                               int x_, int y_,
-                               BattleFieldObject[] objects) {
-
-        boolean obstructing = false;
-
-        for (BattleFieldObject obj : objects) {
-            if (obj.getX() != x_)
-                continue;
-            if (obj.getY() != y_)
-                continue;
-            if (
-                //!isVision() ||
-             !obj.isTransparent()) {
-                obstructing = obj.isObstructing(source, target);
-            }
-            if (obstructing) {
-//                log(obstructing + " by " + obj);
-                break;
-            }
-        }
-        if (obstructing) {
-            return true;
-        }
-
-        return false;
+    public static void setUnitTestBreakMode(boolean unitTestBreakMode) {
+        ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
     }
 
 	/*
@@ -137,13 +106,34 @@ public class ClearShotCondition extends MicroCondition {
 	 * 
 	 */
 
+    private boolean isBlocking(DC_Obj source, DC_Obj target,
+                               int x_, int y_) {
+        boolean obstructing = false;
+        for (BattleFieldObject obj :
+         target.getGame().getMaster().getObjects(x_, y_)) {
+            if (
+                //!isVision() ||
+             !obj.isTransparent()) {
+                obstructing = obj.isObstructing(source, target);
+            }
+            if (obstructing) {
+                break;
+            }
+        }
+        if (obstructing) {
+            return true;
+        }
+        return checkWallObstruction(source, target, new Coordinates(x_, y_));
+    }
+
+
     @Override
     public boolean check(Ref ref) {
         // consider flying/non-obstructing!
         Obj obj = game.getObjectById(ref.getId(str2));
-if (!(obj instanceof DC_Obj)){
-    return false;
-}
+        if (!(obj instanceof DC_Obj)) {
+            return false;
+        }
         DC_Obj target = (DC_Obj) game.getObjectById(ref.getId(str2));
         if (target == null) {
             return false;
@@ -168,7 +158,7 @@ if (!(obj instanceof DC_Obj)){
                 DIRECTION d1 = DirectionMaster.getRelativeDirection(target, source);
                 if (d != null) {
                     if (d1 != d) {
-                        if (Math.abs( d.getDegrees()   - d1.getDegrees())   > 90)
+                        if (Math.abs(d.getDegrees() - d1.getDegrees()) > 90)
                             return false;
                     }
 
@@ -313,10 +303,10 @@ if (!(obj instanceof DC_Obj)){
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
              .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
              coordinates, c);
-            if (BooleanMaster.areOpposite(relativeDirection.isGrowX(), direction.isGrowX())) {
+            if (BooleanMaster.areOpposite(relativeDirection.growX, direction.growX)) {
                 continue;
             }
-            if (BooleanMaster.areOpposite(relativeDirection.isGrowY(), direction.isGrowY())) {
+            if (BooleanMaster.areOpposite(relativeDirection.growY, direction.growY)) {
                 continue;
             }
             double distance = PositionMaster.getDistanceToLine(new XLine(source.getCoordinates(),
@@ -351,19 +341,19 @@ if (!(obj instanceof DC_Obj)){
 
             } else {
                 // by direction
-                // if (BooleanMaster.areOpposite(d1.isGrowX(),
-                // direction.isGrowX()))
-                // if (!BooleanMaster.areOpposite(d2.isGrowY(),
-                // direction.isGrowY())) {
+                // if (BooleanMaster.areOpposite(d1.growX,
+                // direction.growX))
+                // if (!BooleanMaster.areOpposite(d2.growY,
+                // direction.growY)) {
                 // left = true;
                 // if (target.isInfoSelected())
                 // main.system.auxiliary.LogMaster.log(1, d1 + " 1vs " +
                 // direction);
                 // }
-                // if (BooleanMaster.areOpposite(d2.isGrowY(),
-                // direction.isGrowY()))
-                // if (!BooleanMaster.areOpposite(d1.isGrowX(),
-                // direction.isGrowX())) {
+                // if (BooleanMaster.areOpposite(d2.growY,
+                // direction.growY))
+                // if (!BooleanMaster.areOpposite(d1.growX,
+                // direction.growX)) {
                 // left = true;
                 // if (target.isInfoSelected())
                 // main.system.auxiliary.LogMaster.log(1, d2 + " 2vs " +
@@ -386,18 +376,18 @@ if (!(obj instanceof DC_Obj)){
                 }
 
                 if (left) {
-                    if (BooleanMaster.areOpposite(d.isGrowX(), direction.isGrowX())) {
+                    if (BooleanMaster.areOpposite(d.growX, direction.growX)) {
                         continue;
                     }
-                    if (!BooleanMaster.areOpposite(d.isGrowY(), direction.isGrowY())) {
+                    if (!BooleanMaster.areOpposite(d.growY, direction.growY)) {
                         continue;
                     }
                 }
                 if (!left) {
-                    if (BooleanMaster.areOpposite(d.isGrowY(), direction.isGrowY())) {
+                    if (BooleanMaster.areOpposite(d.growY, direction.growY)) {
                         continue; // TODO does X/Y interchange?
                     }
-                    if (!BooleanMaster.areOpposite(d.isGrowX(), direction.isGrowX())) {
+                    if (!BooleanMaster.areOpposite(d.growX, direction.growX)) {
                         continue; // TODO does X/Y interchange?
                     }
                 }
@@ -412,7 +402,7 @@ if (!(obj instanceof DC_Obj)){
                          / Math.abs(source.getX() - c.y));
                     }
 
-                } // if (d.isGrowX() == !left)
+                } // if (d.growX == !left)
                 // continue;
                 target.setBlockingWallDirection(d);
                 target.setBlockingWallCoordinate(c);
@@ -511,45 +501,4 @@ if (!(obj instanceof DC_Obj)){
         this.vision = vision;
     }
 
-    public static boolean isUnitTestBreakMode() {
-        return unitTestBreakMode;
-    }
-
-    public static void setUnitTestBreakMode(boolean unitTestBreakMode) {
-        ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
-    }
-    // if there are 2 cells adjacent with diagonal
-    // walls, we're blocked
-
-    // TODO just preCheck that it goes the right way!
-    // depending on whether the C lies above or below the
-    // diagonal!
-
-    // for (Coordinates c2 : c.getAdjacentCoordinates(null)) {
-    // // TODO same as getting just 1 coordinate?
-    // if (!c2.isAdjacent(coordinates))
-    // continue;
-    // if
-    // (!source.getGame().getBattleFieldManager().hasDiagonalWall(c2))
-    // continue;
-    //
-    // // if
-    // //
-    // (BooleanMaster.areOpposite(DirectionMaster.getRelativeDirection(
-    // // c, c2).isGrowX(), direction.isGrowX()))
-    // // if (BooleanMaster.areOpposite(DirectionMaster
-    // // .getRelativeDirection(c, c2).isGrowY(),
-    // // direction
-    // // .isGrowY()))
-    // // continue;
-    //
-    // target.setBlockingCoordinate(coordinates);
-    // return true;
-    //
-    // }
-    // run another loop here? preCheck all again now with
-    // adjacent
-    // condition
-    // }
-    // firstCoordinate = c;
 }

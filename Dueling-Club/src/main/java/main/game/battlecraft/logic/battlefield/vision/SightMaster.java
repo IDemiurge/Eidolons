@@ -139,12 +139,6 @@ public class SightMaster {
         // return;
         Collection<Coordinates> removeList = new ArrayList<>();
         for (Coordinates c : list) {
-//            List<BattleFieldObject> objs = source.getGame().getMaster().
-//             getObjectsOnCoordinate(c, false);
-//            if (objs.isEmpty()) continue;
-//            Obj obj  =objs.get(0); if (objs.size()>1) obj= (Obj) FuncMaster.getGreatestEntity(objs, unit -> unit.getIntParam(PARAMS.HEIGHT));
-////            = source.getGame().getObjectByCoordinate(c); //getBattleField().getGrid().getObjOrCell(c);
-//            if (obj != null) {
             Ref ref = new Ref(source);
             try {
                 ref.setMatch(source.getGame().getCellByCoordinate(c).getId());

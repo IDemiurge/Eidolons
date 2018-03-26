@@ -40,33 +40,23 @@ public class Formula {
         buffer = formula;
         VarMap vm = new VarMap(false /* case sensitive */);
 
-        try {
             buffer = new DynamicValueParser().parseDynamicValues(buffer, ref);
-        } catch (Exception e) {
-            return 0;
-        }
         buffer = MathMaster.formatFormula(buffer);
 
         Expression expression;
-        try {
             expression = ExpressionTree.parse(buffer);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            return 0;
-        }
 
         double result = 0;
-        try {
             result = expression.eval(vm, getFunctionMap());
-        } catch (Exception e) {
-            if (!FormulaMaster.getFailedFormulas().contains(toString())) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                FormulaMaster.getFailedFormulas().add(toString());
-            }
-        }
+//        } catch (Exception e) {
+//            if (!FormulaMaster.getFailedFormulas().contains(toString())) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//                FormulaMaster.getFailedFormulas().add(toString());
+//            }
+//        }
 
-        LogMaster.log(0, "Formula after parsing: " + formula);
-        LogMaster.log(0, "Result: " + result);
+//        LogMaster.log(0, "Formula after parsing: " + formula);
+//        LogMaster.log(0, "Result: " + result);
         return result;
     }
 

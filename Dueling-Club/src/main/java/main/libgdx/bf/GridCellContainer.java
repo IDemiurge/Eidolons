@@ -164,7 +164,7 @@ public class GridCellContainer extends GridCell {
             return true;
 
         if (!DungeonScreen.getInstance().
-         getController().isWithinCamera(
+         controller.isWithinCamera(
          this
         )) {
             return true;

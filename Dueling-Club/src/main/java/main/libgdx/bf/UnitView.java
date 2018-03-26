@@ -45,6 +45,7 @@ public class UnitView extends BaseView {
     protected boolean initialized;
     protected boolean stealth;
     private Tooltip tooltip;
+    private float timeTillTurn=10;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -196,6 +197,10 @@ public class UnitView extends BaseView {
 
         super.act(delta);
         updateVisible();
+        if (GdxMaster.isHpBarAttached()){
+            addActor(hpBar);
+//            hpBar.setPosition(1,1);
+        }
         if (mainHeroLabel != null) {
             if (!isActive()) {
 //                new MapMaster<>()
@@ -328,5 +333,14 @@ public class UnitView extends BaseView {
         super.setBorder(texture);
         if (getHpBar() == null)
             getHpBar().setZIndex(Integer.MAX_VALUE);
+    }
+
+
+    public Float getTimeTillTurn() {
+        return timeTillTurn;
+    }
+
+    public void setTimeTillTurn(Float timeTillTurn) {
+        this.timeTillTurn = timeTillTurn;
     }
 }

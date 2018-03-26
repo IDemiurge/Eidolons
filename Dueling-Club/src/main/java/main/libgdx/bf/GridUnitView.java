@@ -323,7 +323,10 @@ public class GridUnitView extends UnitView {
         if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setTeamColor(teamColor);
     }
-
+    @Override
+    public boolean isCachedPosition() {
+        return isCellBackground();
+    }
     @Override
     public void setTeamColorBorder(boolean teamColorBorder) {
         super.setTeamColorBorder(teamColorBorder);

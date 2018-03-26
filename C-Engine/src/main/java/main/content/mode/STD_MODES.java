@@ -2,6 +2,7 @@ package main.content.mode;
 
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
+import main.system.math.FormulaMaster;
 import main.system.math.Formulas;
 
 public enum STD_MODES implements MODE {
@@ -62,6 +63,38 @@ public enum STD_MODES implements MODE {
         SEARCH.setBuffName("Search Mode");
         // DEFENDING.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
         // ALERT.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
+
+        MEDITATION.period="1";
+        CONCENTRATION.period="1";
+        RESTING.period="1";
+        DIVINATION.period="1";
+        CHANNELING.period="1";
+        
+        MEDITATION.periodicValues=MEDITATION.getParameter()+"(" +
+         Formulas.MEDITATION_PERIODIC_GAIN +
+         "," +
+         FormulaMaster.getMaxParamFormula(MEDITATION.getParameter() +
+         ")" );
+        CONCENTRATION.periodicValues=CONCENTRATION.getParameter()+"(" +
+         Formulas.CONCENTRATION_PERIODIC_GAIN +
+         "," +
+         FormulaMaster.getMaxParamFormula(CONCENTRATION.getParameter() +
+          ")" );
+        RESTING.periodicValues=RESTING.getParameter()+"(" +
+         Formulas.RESTING_PERIODIC_GAIN +
+         "," +
+         FormulaMaster.getMaxParamFormula(RESTING.getParameter() +
+          ")" );
+//     TODO    DIVINATION.periodicValues=MEDITATION.getParameter()+"(" +
+//         Formulas.MEDITATION_PERIODIC_GAIN +
+//         "," +
+//         FormulaMaster.getMaxParamFormula(MEDITATION.getParameter() +
+//          ")" );
+//        CHANNELING.periodicValues=MEDITATION.getParameter()+"(" +
+//         Formulas.MEDITATION_PERIODIC_GAIN +
+//         "," +
+//         FormulaMaster.getMaxParamFormula(MEDITATION.getParameter() +
+//          ")" );
     }
 
     String parameter;
@@ -79,6 +112,8 @@ public enum STD_MODES implements MODE {
     private String parameterBoni;
     private String propsAdded;
     private String buffName;
+    private String periodicValues;
+    private String period;
 
     STD_MODES(boolean dispelOnHit, boolean disableCounter, boolean disableActions,
               boolean endTurnEffect) {
@@ -121,7 +156,19 @@ public enum STD_MODES implements MODE {
         }
         return StringMaster.getWellFormattedString(name());
     }
+    @Override
+    public String getPeriod() {
+        return period;
+    }
 
+    @Override
+    public Integer getDuration() {
+        return Formulas.DEFAULT_MODE_DURATION;
+    }
+    @Override
+    public String getPeriodicValues() {
+        return periodicValues;
+    }
     @Override
     public void setBuffName(String buffName) {
         this.buffName = buffName;

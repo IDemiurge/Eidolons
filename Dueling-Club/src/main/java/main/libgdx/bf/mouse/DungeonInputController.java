@@ -3,7 +3,6 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import main.libgdx.bf.GridConst;
 import main.libgdx.screens.DungeonScreen;
-import main.libgdx.screens.map.MapScreen;
 
 /**
  * Created by JustMe on 2/7/2018.
@@ -27,6 +26,10 @@ public class DungeonInputController extends InputController {
          * GridConst.CELL_H;
     }
 
+    @Override
+    protected float getMargin() {
+        return 600;
+    }
 
     @Override
     protected float getWidth() {

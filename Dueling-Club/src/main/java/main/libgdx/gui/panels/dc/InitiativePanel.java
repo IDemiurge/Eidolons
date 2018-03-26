@@ -297,6 +297,7 @@ public class InitiativePanel extends Group {
             queueGroup.addActor(container);
         }
 
+        container.queuePriority = 1f/unitView.getTimeTillTurn ();
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.getMobilityState();
         sort();
@@ -386,7 +387,7 @@ public class InitiativePanel extends Group {
         } else {
             time =
              DC_Engine.isAtbMode() ?
-              Eidolons.game.getTurnManager().getAtbController().getTimeString()
+              Eidolons.game.getTurnManager().getTimeString()
               :
               String.valueOf(Eidolons.game.getRules().getTimeRule().getTimeRemaining());
         }
@@ -499,6 +500,7 @@ public class InitiativePanel extends Group {
 
     private class ImageContainer extends Container<Actor> {
         public int initiative;
+        public float queuePriority;
         public int id;
         public boolean mobilityState;
 

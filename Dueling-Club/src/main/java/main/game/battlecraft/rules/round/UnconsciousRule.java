@@ -14,6 +14,7 @@ import main.entity.active.DC_ActiveObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
@@ -83,7 +84,10 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     private static Effect getWakeUpEffect(Unit unit) {
         Effects e = new Effects();
         e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-" + AP_PENALTY));
-        e.add(new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
+        e.add(new ModifyValueEffect(
+         DC_Engine.isAtbMode()?
+          PARAMS.C_INITIATIVE:
+         PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
          + INITIATIVE_PENALTY));
         e.add(new RemoveBuffEffect("Unconscious"));
         e.setRef(Ref.getSelfTargetingRefCopy(unit));

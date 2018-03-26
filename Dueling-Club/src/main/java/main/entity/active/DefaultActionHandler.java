@@ -147,7 +147,7 @@ if (sequence.isEmpty())
 
                 boolean right =
                  !source.getFacing().isVertical() ?
-                  d.isGrowY() : d.isGrowX();
+                  d.growY : d.growX;
                 if (!source.getFacing().isVertical()) {
                     if (source.getFacing().isCloserToZero())
                         right = !right;

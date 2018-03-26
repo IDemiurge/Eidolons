@@ -43,6 +43,8 @@ public class GenericLauncher extends Game {
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
     private boolean firstInitDone;
+    public GameScreen gameScreen;
+
 
     @Override
     public void create() {
@@ -171,7 +173,7 @@ public class GenericLauncher extends Game {
     @Override
     public void resize(int width, int height) {
 //        viewport.update(width, height);
-        if (screen != null) screen.resize(width, height);
+        if (gameScreen != null) gameScreen.resize(width, height);
 //        if (VignetteShader.isUsed()) {
 //            ShaderProgram program = VignetteShader.getShader();
 //      try{
@@ -198,6 +200,13 @@ public class GenericLauncher extends Game {
         super.render();
         Assets.get().getManager().update();
 
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
+        if (screen instanceof  GameScreen)
+            this.gameScreen = (GameScreen) screen;
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {

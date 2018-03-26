@@ -2,6 +2,7 @@ package main.libgdx.bf;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import main.libgdx.GdxMaster;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -44,5 +45,14 @@ public class UnitViewTooltip extends ValueTooltip {
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
         super.onMouseExit(event, x, y, pointer, toActor);
+    }
+
+    @Override
+    protected boolean checkActorExitRemoves(Actor toActor) {
+        if (view instanceof GridUnitView) {
+            if (GdxMaster.getAncestors(toActor).contains(((GridUnitView) view).getInitiativeQueueUnitView()))
+                return false;
+        }
+        return super.checkActorExitRemoves(toActor);
     }
 }

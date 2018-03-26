@@ -38,6 +38,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     private float fluctuatingAlphaPauseDuration;
     private float fluctuatingFullAlphaDuration;
     private float fluctuatingAlphaRandomness, fluctuatingAlphaMin, fluctuatingAlphaMax;
+    private Boolean withinCamera;
 
     public SuperActor() {
     }
@@ -118,16 +119,33 @@ public abstract class SuperActor extends GroupX implements Borderable {
 //            return true; TODO why was this here?.. not to draw?
         if (isCullingOff())
             return false;
-        if (!getController().
-         isWithinCamera(
-          this)) {
+        if (!isWithinCamera()) {
             return true;
         }
         return false;
     }
+    public boolean isWithinCamera(){
+        if (withinCamera!=null )
+            return withinCamera;
+        if (isCachedPosition())
+        {
+            withinCamera= getController().isWithinCamera(this);
+            getController().addCachedPositionActor(this);
+            return withinCamera;
+        }
+        return getController().isWithinCamera(this);
+    }
+
+    public void cameraMoved() {
+        this.withinCamera = null ;
+    }
+
+    public boolean isCachedPosition() {
+        return false;
+    }
 
     public InputController getController() {
-        return Eidolons.getScreen().getController();
+        return Eidolons.getScreen().controller;
     }
 
     @Override

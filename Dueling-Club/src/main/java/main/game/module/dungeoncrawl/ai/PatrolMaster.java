@@ -214,15 +214,15 @@ public class PatrolMaster {
                 offsetX = (int) Math.round(Math.sqrt(distance));
                 offsetY = (int) Math.round(Math.sqrt(distance));
             }
-            if (d.isGrowX() == null) {
+            if (d.growX == null) {
                 offsetX = 0;
-            } else if (!d.isGrowX()) {
+            } else if (!d.growX) {
                 offsetX = -offsetX;
             }
 
-            if (d.isGrowY() == null) {
+            if (d.growY == null) {
                 offsetY = 0;
-            } else if (!d.isGrowY()) {
+            } else if (!d.growY) {
                 offsetY = -offsetY;
             }
 

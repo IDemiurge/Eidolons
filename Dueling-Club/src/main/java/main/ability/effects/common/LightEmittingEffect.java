@@ -19,6 +19,7 @@ public class LightEmittingEffect extends SpectrumEffect {
         this.formula = new Formula(formula);
         this.circular = circular;
         rangeFormula = "5";
+        range  =  5 ;
         vision=false;
         this.effects=new Effects(createEffect());
         reductionForDistance+= REDUCTION_FOR_DISTANCE_MODIFIER;

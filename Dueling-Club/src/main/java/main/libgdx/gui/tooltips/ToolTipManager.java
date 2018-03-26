@@ -156,8 +156,15 @@ public class ToolTipManager extends TablePanel {
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
-        tooltip.getColor().a = 0;
-        ActorMaster.addFadeInAction(tooltip, 0.5f);
+
+        if (isRemoveImmediately(tooltip))
+        {
+
+        }
+        else {
+            tooltip.getColor().a = 0;
+            ActorMaster.addFadeInAction(tooltip, 0.5f);
+        }
         if (tooltip.getEntity() != null)
             entityHover(tooltip.getEntity());
     }

@@ -44,8 +44,8 @@ import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.GraveyardManager;
-import main.game.core.DC_TurnManager;
 import main.game.core.GameLoop;
+import main.game.core.GenericTurnManager;
 import main.game.core.launch.LaunchDataKeeper;
 import main.game.core.launch.PresetLauncher;
 import main.game.core.master.combat.CombatMaster;
@@ -594,7 +594,7 @@ public class DC_Game extends MicroGame {
     }
 
     @Override
-    public DC_TurnManager getTurnManager() {
+    public GenericTurnManager getTurnManager() {
         return combatMaster.getTurnManager();
     }
 

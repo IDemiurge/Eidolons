@@ -3,14 +3,13 @@ package main.libgdx.bf.mouse;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import main.game.bf.Coordinates;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.bf.GridConst;
+import main.libgdx.bf.SuperActor;
 import main.libgdx.bf.menu.GameMenu;
 import main.libgdx.screens.GameScreen;
 import main.system.math.MathMaster;
@@ -18,7 +17,9 @@ import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.badlogic.gdx.Input.Keys.ALT_LEFT;
@@ -27,7 +28,7 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
 /**
  * Created by PC on 25.10.2016.
  */
-public abstract class InputController implements InputProcessor, GestureDetector.GestureListener {
+public abstract class InputController implements InputProcessor  {
     protected static final float MARGIN = 300;
     protected OrthographicCamera camera;
     protected boolean isLeftClick = false;
@@ -44,6 +45,8 @@ public abstract class InputController implements InputProcessor, GestureDetector
     protected int mouseButtonPresed;
     protected float xTouchPos;
     protected float yTouchPos;
+    private Set<SuperActor> cachedPosActors=    new HashSet<>() ;
+
 
     public InputController(OrthographicCamera camera) {
         this.camera = camera;
@@ -193,6 +196,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
              halfHeight-getMargin(),
              getHeight() - halfHeight+getMargin());
             yTouchPos=screenY;
+        cameraChanged();
     }
 
     protected void tryPullCameraX(int screenX) {
@@ -202,6 +206,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
          halfWidth-getMargin(),
          getWidth() - halfWidth+getMargin());
             xTouchPos=screenX;
+            cameraChanged();
     }
 
 
@@ -220,7 +225,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         float x = coordinates.x * GridConst.CELL_W * camera.zoom;
         float y = coordinates.x * GridConst.CELL_W * camera.zoom;
         camera.position.set(x, y, 0);
-
+        cameraChanged();
     }
 
     @Override
@@ -257,22 +262,31 @@ public abstract class InputController implements InputProcessor, GestureDetector
         height = GdxMaster.getHeight() * camera.zoom;
         halfWidth = width/2;
         halfHeight = height/2;
+
+        cameraChanged();
+    }
+
+    public void cameraChanged() {
+        for (SuperActor sub : cachedPosActors) {
+            sub.cameraMoved();
+        }
+//        cachedPosActors.clear(); not needed?
     }
 
     private boolean checkZoom(int i) {
         float newHeight = height+zoomStep*i*height;
 
         float y = camera.position.y;
-        if (newHeight-height > y-halfHeight+getMargin())
+        if (newHeight > y+halfHeight+getMargin())
             return false;
-        if (newHeight > getHeight()-y+halfHeight-getMargin())
+        if (newHeight > getHeight()-y+halfHeight+getMargin())
             return false;
 
         float newWidth = width+zoomStep*i*width;
         float x = camera.position.x;
-        if (newWidth-width >x-halfWidth+getMargin())
+        if (newWidth >x+halfWidth+getMargin())
             return false;
-        if (newWidth > getWidth()-x+halfWidth-getMargin())
+        if (newWidth > getWidth()-x+halfWidth+getMargin())
             return false;
 
 
@@ -306,49 +320,7 @@ public abstract class InputController implements InputProcessor, GestureDetector
         return camera.position.y;
     }
 
-    @Override
-    public boolean touchDown(float v, float v1, int i, int i1) {
-        return false;
+    public void addCachedPositionActor(SuperActor superActor) {
+        cachedPosActors.add(superActor);
     }
-
-    @Override
-    public boolean tap(float v, float v1, int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean longPress(float v, float v1) {
-        return false;
-    }
-
-    @Override
-    public boolean fling(float v, float v1, int i) {
-        return false;
-    }
-
-    @Override
-    public boolean pan(float v, float v1, float v2, float v3) {
-        return false;
-    }
-
-    @Override
-    public boolean panStop(float v, float v1, int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public boolean zoom(float v, float v1) {
-        return false;
-    }
-
-    @Override
-    public boolean pinch(Vector2 vector2, Vector2 vector21, Vector2 vector22, Vector2 vector23) {
-        return false;
-    }
-
-    @Override
-    public void pinchStop() {
-
-    }
-
 }

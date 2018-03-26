@@ -86,6 +86,21 @@ public class ModeImpl implements MODE {
     }
 
     @Override
+    public Integer getDuration() {
+        return template.getDuration();
+    }
+
+    @Override
+    public String getPeriod() {
+        return template.getPeriod();
+    }
+
+    @Override
+    public String getPeriodicValues() {
+        return template.getPeriodicValues();
+    }
+
+    @Override
     public String getParameterMods() {
         return parameterMods;
     }

@@ -43,8 +43,8 @@ if (!ListMaster.isNotEmpty(coordinates))
 
     public static List<Coordinates> getSortedByProximityToEdge(DIRECTION d,
                                                                List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
-        final Boolean x_more = d.isGrowX();
-        final Boolean y_more = d.isGrowY();
+        final Boolean x_more = d.growX;
+        final Boolean y_more = d.growY;
         final int x1 = getMinX(coordinates);
         final int x2 = getMaxX(coordinates);
         final int y1 = getMinY(coordinates);
