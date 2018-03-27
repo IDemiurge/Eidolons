@@ -270,5 +270,10 @@ public class TextureCache {
             }
         return t;
     }
+
+    public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
+        return new TextureRegion(GdxImageTransformer.size(path, iconSize, true));
+    }
+
 }
 

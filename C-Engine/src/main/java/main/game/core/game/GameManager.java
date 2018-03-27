@@ -150,6 +150,8 @@ public abstract class GameManager implements GenericGameManager {
             buff.kill();
             return;
         }
+
+        main.system.auxiliary.log.LogMaster.log(1,buff + " is removed" );
         getState().removeObject(buff.getId());
         buff.getBasis().getBuffs().remove(buff);
         attachmentRemoved(buff, buff.getBasis());

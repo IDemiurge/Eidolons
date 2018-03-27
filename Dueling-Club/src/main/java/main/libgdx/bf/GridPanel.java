@@ -117,10 +117,18 @@ public class GridPanel extends Group {
 
                         TextureRegion texture = null;
                         if (outline != null) {
-                            texture = TextureCache.getOrCreateR(
-                             Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj));
+                            String path = Eidolons.game.getVisionMaster().getVisibilityMaster().getImagePath(outline, obj);
+                            if (obj instanceof Unit) {
+                                main.system.auxiliary.log.LogMaster.log(1, obj + " has OUTLINE: " + path);
+                            }
+                            texture = TextureCache.getOrCreateR(path);
                             uv.setOutline(texture);
                         } else {
+                            if (obj instanceof Unit) {
+                                if (!obj.isOutsideCombat()){
+                                    main.system.auxiliary.log.LogMaster.log(1, obj + " has NO OUTLINE: " );
+                                }
+                            }
                             uv.setOutline(null);
                         }
                     }
@@ -310,7 +318,8 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (!VisionManager.isVisionHacked())
-                if (OutlineMaster.isOutlinesOn()) {
+                if (OutlineMaster.isAutoOutlinesOff())
+                    if (OutlineMaster.isOutlinesOn()) {
                     updateOutlines();
                 }
 
@@ -390,7 +399,6 @@ public class GridPanel extends Group {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
                 GuiEventManager.trigger(UPDATE_LIGHT);
-
             }
             if (HelpMaster.isDefaultTextOn())
                 if (!welcomeInfoShown) {

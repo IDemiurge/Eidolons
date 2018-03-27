@@ -2,20 +2,20 @@ package main.libgdx.gui.controls.radial;
 
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;
-import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
+import main.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static main.libgdx.gui.controls.radial.RadialManager.addSimpleTooltip;
-import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 /**
  * Created by JustMe on 12/29/2016.
@@ -83,28 +83,14 @@ public class SpellRadialManager {
         RadialValueContainer valueContainer;
         if (object instanceof EntityNode) {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
-            Ref ref = action.getOwnerObj().getRef().getTargetingRef(target);
             valueContainer =
              RadialManager.configureActionNode(target, action);
-//             new RadialValueContainer(
-//                    !action.canBeActivated(ref) ?
-//                            getOrCreateGrayscaleR(action.getImagePath())
-//                            : getOrCreateR(action.getImagePath()),
-//                    RadialManager.getRunnable(target,action)
-////                    () -> {
-////                        if (checkForceTargeting(source, target, action)) {
-////                            action.activate();
-////                        } else {
-////                            action.activateOn(target);
-////                        }
-////                    }
-//            );
             ActionCostTooltip tooltip = new ActionCostTooltip(action);
             tooltip.setUserObject(new ActionCostSourceImpl(action) );
             valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new SpellRadialContainer(
-                    getOrCreateR(object.getTexturePath()),
+             TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), object.getTexturePath()),
                     null
             );
 

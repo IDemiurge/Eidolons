@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.data.filesys.PathFinder;
 import main.libgdx.texture.TextureCache;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
@@ -35,7 +36,32 @@ public class GdxImageTransformer extends LwjglApplication {
         new GdxImageTransformer();
     }
 
-    public static TextureRegion round(String path, boolean write) {
+    public static Texture size(String path, int size, boolean write) {
+        Texture texture = TextureCache.getOrCreate(path);
+        if (texture.getWidth() == size) {
+            if (texture.getHeight() == size) {
+                return texture;
+            }
+        }
+        path = StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
+        FileHandle handle = new FileHandle(
+         PathFinder.getImagePath() +
+          path);
+        if (handle.exists())
+            return TextureCache.getOrCreate(path);
+        texture.getTextureData().prepare();
+        Pixmap pixmap = texture.getTextureData().consumePixmap();
+        Pixmap pixmap2 = new Pixmap(size, size, pixmap.getFormat());
+        pixmap2.drawPixmap(pixmap,
+         0, 0, pixmap.getWidth(), pixmap.getHeight(),
+         0, 0, pixmap2.getWidth(), pixmap2.getHeight()
+        );
+        if (write) {
+            PixmapIO.writePNG(handle, pixmap2);
+        }
+        return new Texture(pixmap2);
+    }
+        public static TextureRegion round(String path, boolean write) {
         if (GdxMaster.isLwjglThread()) {
             Pixmap rounded = roundTexture(TextureCache.getOrCreateR(path));
             path = TextureCache.getRoundedPath(path);

@@ -13,6 +13,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.bf.Coordinates;
@@ -249,6 +250,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
         setParam(PARAMS.C_ENDURANCE, getIntParam(PARAMS.ENDURANCE), true);
         setParam(PARAMS.C_TOUGHNESS, getIntParam(PARAMS.TOUGHNESS), true);
+        if (!DC_Engine.isAtbMode())
         setParam(PARAMS.C_N_OF_ACTIONS, getIntParam(PARAMS.N_OF_ACTIONS), true);
         setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS), true);
         setParam(PARAMS.C_ENERGY, "0", true);
@@ -275,7 +277,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             int diff = StringMaster.getInteger(value) - prev;
             modifyParameter(PARAMS.C_INITIATIVE, diff);
         } else if (param == PARAMS.INITIATIVE_BONUS) {
-
+            super.putParameter(param, value);
+        } else if (param == PARAMS.C_INITIATIVE) {
+            if (StringMaster.getInteger(value)>105){
+                return ;
+            }
+            super.putParameter(param, value);
         } else
             super.putParameter(param, value);
     }

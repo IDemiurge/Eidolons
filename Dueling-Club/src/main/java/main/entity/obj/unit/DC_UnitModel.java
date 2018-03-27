@@ -30,6 +30,7 @@ import main.entity.handlers.bf.unit.UnitResetter;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BattleFieldObject;
 import main.entity.type.ObjType;
+import main.game.battlecraft.DC_Engine;
 import main.game.battlecraft.ai.UnitAI;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
@@ -187,10 +188,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         // setMode(STD_MODES.NORMAL); just don't.
         if (game.getState().getRound() > 0)
             getResetter().regenerateToughness();
-        // resetPercentages(); => toBase()
-        getResetter().resetActions();
-
-        getResetter().resetAttacksAndMovement();
+        if (!DC_Engine.isAtbMode())
+            getResetter().resetActions();
 
         regen();
 

@@ -350,17 +350,14 @@ public class FloatingTextMaster {
         FloatingText text = getFloatingText(active,
          TEXT_CASES.PARAM_MOD,
          new ImmutablePair<>(pair.getKey(), pair.getValue().getAmount()));
-        Obj target = active.getRef().getTargetObj();
-        if (target != null) {
-            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(target);
+        Obj obj = active.getRef().getTargetObj();
+        if (obj == null)
+            obj = active.getRef().getSourceObj();
+        if (obj != null) {
+            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(obj);
             if (view != null) {
                 Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
-                text.setPosition(
-                 v.x,
-                 v.y
-                );
-
-//                view.localToParentCoordinates()
+                text.setPosition(v.x, v.y);
             }
         }
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);

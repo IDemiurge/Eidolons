@@ -61,7 +61,10 @@ public class BuffMaster extends Master {
 
     public void atbTimeElapsed(Float time) {
         for (Obj sub : getBuffs()) {
-            ((BuffObj) sub).timeElapsed(time);
+            BuffObj buff = ((BuffObj) sub);
+            if (buff.isDead())
+                continue;
+            buff.timeElapsed(time);
 
         }
 

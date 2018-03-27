@@ -182,4 +182,7 @@ public class OutlineMaster {
     }
 
 
+    public static boolean isAutoOutlinesOff() {
+        return false;
+    }
 }

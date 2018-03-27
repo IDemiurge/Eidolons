@@ -21,6 +21,7 @@ import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
@@ -37,6 +38,7 @@ public class UnitView extends BaseView {
     protected Image emblemBorder;
     protected Image modeImage;
     protected TextureRegion outline;
+    protected Supplier<TextureRegion> outlineSupplier;
     protected boolean greyedOut;
     protected boolean mainHero;
     protected boolean emblemBorderOn;
@@ -45,7 +47,7 @@ public class UnitView extends BaseView {
     protected boolean initialized;
     protected boolean stealth;
     private Tooltip tooltip;
-    private float timeTillTurn=10;
+    private float timeTillTurn = 10;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -69,7 +71,7 @@ public class UnitView extends BaseView {
 
     @Override
     public String toString() {
-     return     getClass().getSimpleName() + " for " +name;
+        return getClass().getSimpleName() + " for " + name;
     }
 
     public HpBar getHpBar() {
@@ -141,6 +143,13 @@ public class UnitView extends BaseView {
     }
 
     protected void updateVisible() {
+        if (outline != null || isHovered()) {
+            initiativeLabel.setVisible(false);
+            clockImage.setVisible(false);
+        } else {
+            initiativeLabel.setVisible(true);
+            clockImage.setVisible(true);
+        }
     }
 
     protected void updateModeImage(String pathToImage) {
@@ -189,7 +198,7 @@ public class UnitView extends BaseView {
         return StyleHolder.getSizedColoredLabelStyle(
          0.3f,
          StyleHolder.ALT_FONT, 16,
-        getTeamColor());
+         getTeamColor());
     }
 
     @Override
@@ -197,7 +206,7 @@ public class UnitView extends BaseView {
 
         super.act(delta);
         updateVisible();
-        if (GdxMaster.isHpBarAttached()){
+        if (GdxMaster.isHpBarAttached()) {
             addActor(hpBar);
 //            hpBar.setPosition(1,1);
         }
@@ -242,8 +251,9 @@ public class UnitView extends BaseView {
                 ActorMaster.addFadeInOrOutIfNoActions(this, 5);
             else if (getColor().a == 0)
                 getColor().a = 1;
+        if (outlineSupplier != null)
+            outline = outlineSupplier.get();
         if (outline != null) {
-//            batch.draw(outline, getX(), getY());
             getPortrait().setDrawable(new TextureRegionDrawable(outline));
         } else {
             if (originalTextureAlt != null) {
@@ -263,6 +273,10 @@ public class UnitView extends BaseView {
 //            getHpBar().drawAt(batch, 0, 0);
             return;
         }
+    }
+
+    public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
+        this.outlineSupplier = outlineSupplier;
     }
 
     public void setFlickering(boolean flickering) {

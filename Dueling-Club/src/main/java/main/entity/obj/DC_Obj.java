@@ -22,9 +22,9 @@ import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.entity.obj.unit.Unit;
 import main.entity.handlers.DC_ObjMaster;
 import main.entity.handlers.EntityMaster;
+import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -63,8 +63,8 @@ public abstract class DC_Obj extends MicroObj {
     protected OUTLINE_TYPE outlineType;
     protected Integer gamma;
     protected OUTLINE_TYPE outlineTypeForPlayer;
-    protected VISIBILITY_LEVEL visibilityLevelForPlayer=VISIBILITY_LEVEL.UNSEEN;
-    protected UNIT_TO_PLAYER_VISION playerVisionStatus=UNIT_TO_PLAYER_VISION.UNKNOWN;
+    protected VISIBILITY_LEVEL visibilityLevelForPlayer = VISIBILITY_LEVEL.UNSEEN;
+    protected UNIT_TO_PLAYER_VISION playerVisionStatus = UNIT_TO_PLAYER_VISION.UNKNOWN;
     protected DIRECTION blockingWallDirection;
     protected boolean blockingDiagonalSide;
     protected Coordinates blockingWallCoordinate;
@@ -316,12 +316,22 @@ public abstract class DC_Obj extends MicroObj {
         }
 
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-         this + " setVisibilityLevel " + visibilityLevel  );
-        if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_SIGHT ||
-         activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
-            if (visibilityLevel==VISIBILITY_LEVEL.UNSEEN)
-            main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-             this + " gotcha " + visibilityLevel  );
+         this + " setVisibilityLevel " + visibilityLevel);
+        if (this instanceof Unit) {
+            if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_SIGHT ||
+             activeUnitVisionStatus == UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
+                if (visibilityLevel == VISIBILITY_LEVEL.UNSEEN || visibilityLevel == VISIBILITY_LEVEL.BLOCKED)
+                    main.system.auxiliary.log.LogMaster.log(1,
+                     this + " gotcha " + visibilityLevel);
+            } else {
+                if (activeUnitVisionStatus == UNIT_TO_UNIT_VISION.BEYOND_SIGHT)
+                    if (visibilityLevel == VISIBILITY_LEVEL.CLEAR_SIGHT
+                     ) {
+                        main.system.auxiliary.log.LogMaster.log(1,
+                         this + " gotcha " + visibilityLevel);
+                    }
+
+            }
         }
         this.visibilityLevel = visibilityLevel;
     }
@@ -341,7 +351,7 @@ public abstract class DC_Obj extends MicroObj {
     public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
         if (visibilityLevelForPlayer == null) {
             if (game.isDebugMode())
-             return VISIBILITY_LEVEL.CLEAR_SIGHT;
+                return VISIBILITY_LEVEL.CLEAR_SIGHT;
             return VISIBILITY_LEVEL.UNSEEN;
         }
         if (isDisplayEnemyVisibility()) {
@@ -413,8 +423,12 @@ public abstract class DC_Obj extends MicroObj {
                 setOutlineTypeForPlayer(outlineType);
             }
         }
+        if (outlineType != null)
+            if (isMine()) {
+                return;
+            }
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-         this + "   setOutlineType " + outlineType  );
+         this + "   setOutlineType " + outlineType);
         this.outlineType = outlineType;
     }
 
@@ -431,14 +445,14 @@ public abstract class DC_Obj extends MicroObj {
         if (outlineTypeForPlayer == null) {
             if (getGame().getManager().getActiveObj() != null) {
                 if (!getGame().getManager().getActiveObj().isMine()) {
-                  main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "outlineTypeForPlayer set to "
+                    main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "outlineTypeForPlayer set to "
                      + outlineTypeForPlayer);
                 }
             }
         }
 
         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG,
-         this + "   setOutlineTypeForPlayer " + outlineTypeForPlayer  );
+         this + "   setOutlineTypeForPlayer " + outlineTypeForPlayer);
         // main.system.auxiliary.getGame().getLogManager().appendSpecialLog(SPECIAL_LOG.VISIBILITY, "outlineTypeForPlayer set to "
         // + outlineTypeForPlayer);
     }
@@ -463,7 +477,7 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public void setUnitVisionStatus(UNIT_TO_UNIT_VISION unitVisionStatus) {
-  main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "setUnitVisionStatus " + getNameAndCoordinate()   +
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.VISIBILITY_DEBUG, "setUnitVisionStatus " + getNameAndCoordinate() +
          " from " +
          this.activeUnitVisionStatus +
          " to "
@@ -511,7 +525,7 @@ public abstract class DC_Obj extends MicroObj {
 //         this.activeVisionStatus +
 //         " to "
 //         + playerVisionStatus.toString());
-                this.activeVisionStatus = playerVisionStatus;
+        this.activeVisionStatus = playerVisionStatus;
         if (playerVisionStatus != null) {
             setProperty(PROPS.DETECTION_STATUS, playerVisionStatus.toString());
         }
@@ -550,7 +564,8 @@ public abstract class DC_Obj extends MicroObj {
     public boolean isDetectedByPlayer() {
         if (VisionManager.isVisionHacked()) {
             return true;
-        } if (isMine()) return true;
+        }
+        if (isMine()) return true;
         return detectedByPlayer;
     }
 
@@ -616,7 +631,6 @@ public abstract class DC_Obj extends MicroObj {
     public void setAnimation(PhaseAnimation animation) {
         this.animation = animation;
     }
-
 
 
     public void outsideCombatReset() {

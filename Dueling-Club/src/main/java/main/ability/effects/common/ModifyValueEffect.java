@@ -308,7 +308,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             amount = formula.getDouble(ref);
         }
 
-        synchronized (ref) { // ain't that stupid...
+
             if (ref.getObj(KEYS.ACTIVE) != null) {
                 if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVERT_ON_ENEMY)) {
                     if (!obj.getOwner().equals(ref.getSourceObj().getOwner())) {
@@ -316,7 +316,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                     }
                 }
             }
-        }
+
         int intAmount = (int) Math.round(amount);
         if (getResistanceMod() != null) {
             amount = MathMaster.applyModDouble(amount, getResistanceMod());
@@ -373,7 +373,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 break;
             }
         }
-        if (!ref.isQuiet())
+        if (!ref.isQuiet() && ref.getActive()!=null)
             if (mod_type == MOD.MODIFY_BY_CONST || mod_type == MOD.MODIFY_BY_PERCENT) {
                 if (!isContinuousWrapped())
                     GuiEventManager.trigger(GuiEventType.VALUE_MOD,

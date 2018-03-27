@@ -11,6 +11,7 @@ import main.entity.active.DC_UnitAction;
 import main.entity.item.DC_QuickItemObj;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
+import main.libgdx.gui.UiMaster;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
@@ -40,11 +41,12 @@ public class PanelActionsDataSource implements
         unitDataSource = new UnitDataSource(unit);
     }
 
-    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el) {
+    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el, boolean spell) {
         boolean valid = el.canBeManuallyActivated();
         final ActionValueContainer container = new ActionValueContainer(
          valid,
-         getOrCreateR(getImage(el)),
+           TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), getImage(el))
+         ,
          el::invokeClicked
         );
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
@@ -53,6 +55,7 @@ public class PanelActionsDataSource implements
         tooltip.addTo(container);
         return container;
     }
+
 
     private static String getImage(DC_ActiveObj el) {
         String image = el.getImagePath();
@@ -131,20 +134,21 @@ public class PanelActionsDataSource implements
             return new ArrayList<>();
         }
         return unit.getActionMap().get(type).stream()
-         .map(getActiveObjValueContainerFunction())
+         .map(getActiveObjValueContainerFunction(false))
          .collect(Collectors.toList());
     }
 
     @Override
     public List<ActionValueContainer> getSpells() {
         return unit.getSpells().stream()
-         .map(getActiveObjValueContainerFunction())
+         .map(getActiveObjValueContainerFunction(true))
          .collect(Collectors.toList());
     }
 
-    private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction() {
+    private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction(
+     boolean spell) {
         return el -> {
-            return getActionValueContainer(el);
+            return getActionValueContainer(el, spell);
         };
     }
 

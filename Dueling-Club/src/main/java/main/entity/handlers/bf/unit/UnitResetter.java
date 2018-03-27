@@ -355,14 +355,7 @@ public class UnitResetter extends EntityResetter<Unit> {
 
     }
 
-    public void resetAttacksAndMovement() {
-        if (getChecker().checkStatus(UnitEnums.STATUS.IMMOBILE)) {
-            setParam(PARAMS.C_N_OF_ACTIONS, 0);
-            return;
-        }
-        setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS));
 
-    }
 
     public void resetIntegrity() {
         IntegrityRule.resetIntegrity(getEntity());

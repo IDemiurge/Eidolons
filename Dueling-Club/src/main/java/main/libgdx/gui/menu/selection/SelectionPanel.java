@@ -9,6 +9,7 @@ import main.libgdx.gui.panels.dc.ButtonStyled;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.TextButtonX;
+import main.libgdx.launch.MainLauncher;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -95,6 +96,7 @@ public abstract class SelectionPanel extends TablePanel {
         listener = new SelectionInputListener(this);
 
         if (CoreEngine.isFastMode() || CoreEngine.isMacro()){
+        listPanel.updateAct(0);
             tryDone();
         }
     }
@@ -140,6 +142,9 @@ public abstract class SelectionPanel extends TablePanel {
 
     public void tryDone() {
         if (listPanel.getCurrentItem() == null) {
+            if (!MainLauncher.presetNumbers.isEmpty()) {
+                listPanel.select(MainLauncher.presetNumbers.pop());
+            } else
             if (isRandom()) {
                 listPanel.selectRandomItem();
                 WaitMaster.WAIT(400);

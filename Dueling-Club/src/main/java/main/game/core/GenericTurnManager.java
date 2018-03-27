@@ -101,9 +101,9 @@ public class GenericTurnManager implements TurnManager  {
         }
 
         for (Unit unit : unitQueue) {
-            if (game.getVisionMaster().checkDetectedEnemy(unit)) {
+//            if (game.getVisionMaster().checkDetectedEnemy(unit))
                 displayedUnitQueue.add(unit);
-            }  
+
         }
 
 

@@ -101,10 +101,13 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     public void previous() {
-        select(-1);
+        selectWithOffset(-1);
     }
 
-    public void select(int offset) {
+    public void select(int i) {
+        clicked(i);
+    }
+        public void selectWithOffset(int offset) {
         int index = getItems().indexOf(currentItem);
         index += offset;
         if (index >= buttons.size())
@@ -125,7 +128,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     public void next() {
-        select(1);
+        selectWithOffset(1);
     }
 
     private void clicked(int index) {

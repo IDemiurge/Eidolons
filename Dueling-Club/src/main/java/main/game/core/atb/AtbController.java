@@ -50,6 +50,7 @@ public class AtbController implements Comparator<Unit> {
 
     public void newRound() {
         time = 0;
+        processAtbRelevantEvent();
         /*
         readiness is not lost!
          */
@@ -57,8 +58,8 @@ public class AtbController implements Comparator<Unit> {
 
     public AtbUnit step() {
         float timeElapsed = this.unitsInAtb.get(0).getTimeTillTurn();
-        if (timeElapsed > TIME_IN_ROUND / 10) {
-            timeElapsed = TIME_IN_ROUND / 10; //gradual time loop! For modes etc
+        if (timeElapsed > getDefaultTimePeriod() || checkAllInactive()) {
+            timeElapsed = getDefaultTimePeriod(); //gradual time loop! For modes etc
         }
         if (timeElapsed <= 0){
             if (checkAllInactive())
@@ -121,7 +122,9 @@ public class AtbController implements Comparator<Unit> {
 
     public void updateTimeTillTurn() {
         for (AtbUnit unit : this.unitsInAtb) {
-//            if(unit.getInitiative() && unit.getAtbReadiness())
+            if (unit.getInitiative()<=0){
+                unit.setTimeTillTurn(Float.MAX_VALUE);
+            } else
             {
                 unit.setTimeTillTurn((TIME_IN_ROUND - unit.getAtbReadiness()) / unit.getInitiative());
 

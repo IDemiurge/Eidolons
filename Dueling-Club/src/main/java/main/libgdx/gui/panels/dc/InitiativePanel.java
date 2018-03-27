@@ -64,13 +64,19 @@ public class InitiativePanel extends Group {
         resetZIndices();
     }
 
+    public static boolean isLeftToRight() {
+        return true;
+    }
+
     private void registerCallback() {
         if (DC_Engine.isAtbMode()) {
             GuiEventManager.bind(GuiEventType.ATB_POS_PREVIEW, obj -> {
-                previewAtbPos((int)obj.get());
+                if (obj.get() == null)
+                    removePreviewAtbPos();
+                previewAtbPos((int) obj.get());
             });
         }
-            GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
+        GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
             if (!isRealTime()) {
                 UnitView p = (UnitView) obj.get();
                 addOrUpdate(p);
@@ -119,7 +125,6 @@ public class InitiativePanel extends Group {
 //            }
         });
     }
-
 
     private void init() {
 
@@ -189,9 +194,9 @@ public class InitiativePanel extends Group {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        DC_Game.game.getDungeonMaster().
-                         getExplorationMaster().
-                         getTimeMaster().playerWaits( );
+                DC_Game.game.getDungeonMaster().
+                 getExplorationMaster().
+                 getTimeMaster().playerWaits();
                 return super.touchDown(event, x, y, pointer, button);
             }
         };
@@ -257,10 +262,6 @@ public class InitiativePanel extends Group {
         checkPositionsRequired = false;
     }
 
-    public static boolean isLeftToRight() {
-        return true;
-    }
-
     private void cleanUp() {
         Map<Integer, UnitView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
@@ -279,19 +280,21 @@ public class InitiativePanel extends Group {
                 continue;
             if (!views.containsKey(sub.id)) {
                 QueueView view = getIfExists(sub.id);
-                if (view==null )
+                if (view == null)
                     continue;
-                if (view.getActor()==null )
+                if (view.getActor() == null)
                     continue;
-                if (((UnitView) view.getActor()).getOutline() != null) {
-                    view.setActor(new Image(((UnitView) view.getActor()).getOutline()));
-                    //is active?
-                } else
-                    removeView((sub.id));
+                removeView((sub.id));
             }
         }
 
 
+    }
+
+    private void removePreviewAtbPos() {
+        if (previewActor != null) {
+            previewActor.setVisible(false);
+        }
     }
 
     private void previewAtbPos(int i) {
@@ -305,15 +308,15 @@ public class InitiativePanel extends Group {
         previewActor.setVisible(true);
         previewActor.setScale(1);
         previewActor.clearActions();
-        previewActor.setY(-40);
-        previewActor.setX(i * (imageSize - offset)- offset );
+        previewActor.setY(-30);
+        previewActor.setX(container.getX() + i * (imageSize + offset) - offset);
 //        ActorMaster.addScaleAction(previewActor, 0, 0, 5);
     }
 
     private String getPreviewPath() {
-        return   StrPathBuilder.build(PathFinder.getComponentsPath()
-         ,"2018","atb pos preview.png"
-        )+ StringMaster.getPathSeparator();
+        return StrPathBuilder.build(PathFinder.getComponentsPath()
+         , "2018", "atb pos preview.png"
+        ) + StringMaster.getPathSeparator();
     }
 
     private void addOrUpdate(UnitView unitView) {
@@ -329,7 +332,7 @@ public class InitiativePanel extends Group {
             queueGroup.addActor(container);
         }
 
-        container.queuePriority = 1f/unitView.getTimeTillTurn ();
+        container.queuePriority = 1f / unitView.getTimeTillTurn();
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.getMobilityState();
         sort();
@@ -538,8 +541,8 @@ public class InitiativePanel extends Group {
 
         public QueueView(UnitView actor) {
             super(actor);
-            if (actor==null ){
-                return ;
+            if (actor == null) {
+                return;
             }
 //            Image shadow = new Image(TextureCache.getOrCreateR(
 //             StrPathBuilder.build("UI",

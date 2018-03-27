@@ -15,6 +15,8 @@ import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.images.ImageManager.STD_IMAGES;
 
+import java.util.function.Supplier;
+
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 public class GridUnitView extends UnitView {
@@ -199,6 +201,16 @@ public class GridUnitView extends UnitView {
         return getHpBar().getDataSource().isHpBarVisible();
     }
 
+    @Override
+    public void setOutline(TextureRegion outline) {
+        super.setOutline(outline);
+        initiativeQueueUnitView.setOutline(outline);
+    }
+
+    public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
+        this.outlineSupplier = outlineSupplier;
+        initiativeQueueUnitView.setOutlineSupplier(outlineSupplier);
+    }
     protected void updateVisible() {
         if (isIgnored())
             return;

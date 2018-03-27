@@ -17,6 +17,7 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.future.FutureBuilder;
+import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.action.ActionRule;
 import main.game.bf.Coordinates;
@@ -189,6 +190,7 @@ public class DC_GameManager extends GameManager {
     public void reset() {
         if (!game.isStarted()) {
             updateGraphics();
+            resetWallMap();
             return;
         }
         getGameMaster().clearCaches();
@@ -199,13 +201,14 @@ public class DC_GameManager extends GameManager {
         resetWallMap();
 
 //TODO shouldn't be necessary!
-        getGame().getRules().getIlluminationRule().resetIllumination( );
-        getGame().getRules().getIlluminationRule().initLightEmission( );
+        getGame().getRules().getIlluminationRule().resetIllumination();
+        getGame().getRules().getIlluminationRule().initLightEmission();
 
 //        DrawMasterStatic.getObjImageCache().clear();
-        for (Unit u : getGame().getUnits()) {
-            u.setOutlineType(null);
-        }
+        if (!OutlineMaster.isAutoOutlinesOff())
+            for (Unit u : getGame().getUnits()) {
+                u.setOutlineType(null);
+            }
         for (Obj u : getGame().getCells()) {
             ((DC_Obj) u).setOutlineType(null);
         }
@@ -418,10 +421,11 @@ public class DC_GameManager extends GameManager {
 
 
     public void unitDies(Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
-         unitDies(null , _killed, _killer, leaveCorpse, quietly);
+        unitDies(null, _killed, _killer, leaveCorpse, quietly);
     }
-    public void unitDies(DC_ActiveObj activeObj,Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
-        deathMaster.unitDies(  activeObj,_killed, _killer, leaveCorpse, quietly);
+
+    public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
+        deathMaster.unitDies(activeObj, _killed, _killer, leaveCorpse, quietly);
     }
 
     @Override
@@ -518,7 +522,6 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public boolean endRound() {
-        getGame().getRules().getTimeRule().reset();
 
         getGame().getLogManager().newLogEntryNode(ENTRY_TYPE.ROUND_ENDS, state.getRound());
         state.setRound(state.getRound() + 1); // TODO why not on start?
@@ -539,7 +542,8 @@ public class DC_GameManager extends GameManager {
         }
         return unit;
     }
-        public Unit getActiveObj() {
+
+    public Unit getActiveObj() {
         if (game.isStarted()) {
             if (selectedActiveObj == null) {
                 selectedActiveObj = getGame().getLoop().getActiveUnit();
@@ -578,7 +582,7 @@ public class DC_GameManager extends GameManager {
     public void applyActionRules(DC_ActiveObj action) {
         if (action != null) {
             for (ActionRule a : getGame().getRules().getActionRules()) {
-          if (a.isAppliedOnExploreAction(action))      try {
+                if (a.isAppliedOnExploreAction(action)) try {
                     a.actionComplete(action);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -593,17 +597,17 @@ public class DC_GameManager extends GameManager {
         if (getGame().getDebugMaster() != null) {
             event.getRef().setDebug(getGame().getDebugMaster().isDebugFunctionRunning());
         }
-        if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null ))
-            if (AnimMaster.isPreconstructEventAnims())    if (AnimMaster.isOn()) {
-            if (!Showcase.isRunning())
-                AnimMaster.getInstance().getConstructor().preconstruct(event);
-            else
-                try {
+        if (!AnimMaster.isAnimationOffFor(event.getRef().getSourceObj(), null))
+            if (AnimMaster.isPreconstructEventAnims()) if (AnimMaster.isOn()) {
+                if (!Showcase.isRunning())
                     AnimMaster.getInstance().getConstructor().preconstruct(event);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-        }
+                else
+                    try {
+                        AnimMaster.getInstance().getConstructor().preconstruct(event);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+            }
         return super.handleEvent(event);
     }
 
@@ -613,12 +617,11 @@ public class DC_GameManager extends GameManager {
             GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         else {
             if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
-if (event.getType()!=STANDARD_EVENT_TYPE.COSTS_HAVE_BEEN_PAID)
-                GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
-else
-    GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
-            }
-            else if (EventAnimCreator.isEventAnimated(event))
+                if (event.getType() != STANDARD_EVENT_TYPE.COSTS_HAVE_BEEN_PAID)
+                    GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+                else
+                    GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+            } else if (EventAnimCreator.isEventAnimated(event))
                 GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         }
     }
@@ -664,7 +667,8 @@ else
         return objCreator;
     }
 
-    public Unit getMainHero() { if (Eidolons.getMainHero()==null ) return (Unit) selectedActiveObj;
+    public Unit getMainHero() {
+        if (Eidolons.getMainHero() == null) return (Unit) selectedActiveObj;
 //         getGame().getMetaMaster().getPartyManager().getParty().getLeader();
 //        return (Unit) getGame().getPlayer(true).getHeroObj();
         return Eidolons.getMainHero();
@@ -676,23 +680,6 @@ else
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

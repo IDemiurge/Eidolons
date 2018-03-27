@@ -4,17 +4,21 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.entity.active.DefaultActionHandler;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import main.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import main.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import main.game.bf.Coordinates;
+import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.test.frontend.IntroTestLauncher;
@@ -30,9 +34,26 @@ public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
-        view.createHpBar( (new ResourceSourceImpl(bfObj)));
-        if (bfObj instanceof Unit){
-            view.getInitiativeQueueUnitView(). getHpBar().setTeamColor(options.getTeamColor());
+        view.setOutlineSupplier(() -> {
+            OUTLINE_TYPE type = null;
+            if (bfObj instanceof Unit) {
+                if (!VisionManager.checkVisible(bfObj)) {
+                    type = OUTLINE_TYPE.DARK_OUTLINE;
+                }
+            }
+            if (type == null)
+                type = bfObj.getOutlineType();
+
+            if (type == null)
+                return null;
+            String path = Eidolons.game.getVisionMaster().getVisibilityMaster()
+             .getImagePath(type, bfObj);
+            return TextureCache.getOrCreateR(path);
+        });
+
+        view.createHpBar((new ResourceSourceImpl(bfObj)));
+        if (bfObj instanceof Unit) {
+            view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());
         }
         view.getHpBar().setTeamColor(options.getTeamColor());
 
@@ -76,14 +97,14 @@ public class UnitViewFactory {
                     event.stop();
                 } else {
                     if (event.getButton() == Buttons.LEFT)
-                        if (isAlt()|| isShift()|| isControl())
+                        if (isAlt() || isShift() || isControl())
                             try {
-                                DefaultActionHandler.leftClickUnit(isShift(), isControl(),  bfObj);
+                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
                             }
 
-                    GuiEventManager.trigger( RADIAL_MENU_CLOSE );
+                    GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
             }
         };

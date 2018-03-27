@@ -38,15 +38,12 @@ public class ActionValueContainer extends ValueContainer {
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
-        super(texture);
-        bindAction(action);
+        this(texture, action);
         this.valid = valid;
     }
 
     public ActionValueContainer(TextureRegion texture, Runnable action) {
-        super(texture);
-        bindAction(action);
-
+        this(texture, null ,action);
     }
 
     public ActionValueContainer(TextureRegion texture, String value, Runnable action) {
@@ -55,11 +52,6 @@ public class ActionValueContainer extends ValueContainer {
 
     }
 
-    public ActionValueContainer(String name, String value, Runnable action) {
-        super(name, value);
-        bindAction(action);
-
-    }
 
     protected void initSize() {
         overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
@@ -168,7 +160,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected boolean isScaledOnHover() {
-        return false;
+        return true;
     }
 
     @Override

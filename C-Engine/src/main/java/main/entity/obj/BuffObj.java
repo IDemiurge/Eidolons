@@ -282,6 +282,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     public boolean checkDuration() {
         if (duration <= 0) {
+       if (!permanent)
+           main.system.auxiliary.log.LogMaster.log(1,this + " duration elapsed " +duration);
             kill();
             return false;
         }

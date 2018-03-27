@@ -278,14 +278,14 @@ public class VisionMaster implements GenericVisionManager {
                 if (visibilityLevel == VISIBILITY_LEVEL.CONCEALED) {
                     if (target instanceof BattleFieldObject) {
                         if (!((BattleFieldObject) target).isWall()
-                         || !target.isDetectedByPlayer()) {
+                         || !target.isDetectedByPlayer()) { //MAKE NON-WALLS UNKNOWN AGAIN
                             status = (UNIT_TO_PLAYER_VISION.UNKNOWN);
                         }
                     } else
                         status = (UNIT_TO_PLAYER_VISION.CONCEALED);
                 } else {
                     target.setDetected(true);
-//                        if (player.isMe()) {
+//                        if (player.isMe()) { why not?
                     target.setDetectedByPlayer(true);
 //                        }
                     if (visibilityLevel == VISIBILITY_LEVEL.CLEAR_SIGHT) {

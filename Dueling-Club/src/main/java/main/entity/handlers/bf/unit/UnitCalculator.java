@@ -3,11 +3,11 @@ package main.entity.handlers.bf.unit;
 import main.content.*;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
+import main.entity.handlers.EntityCalculator;
+import main.entity.handlers.EntityMaster;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
-import main.entity.handlers.EntityCalculator;
-import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.game.core.game.DC_Game;
@@ -84,10 +84,12 @@ public class UnitCalculator extends EntityCalculator<Unit> {
     public Integer calculateAndSetDamage(boolean offhand) {
         return calculateDamage(offhand, true);
     }
+
     @Deprecated
     public Integer calculateDamage(boolean offhand) {
         return calculateDamage(offhand, false);
     }
+
     @Deprecated
     public Integer calculateDamage(boolean offhand, boolean set) {
         int dmg = DamageCalculator.getUnitAttackDamage(getEntity(), offhand);
@@ -120,11 +122,11 @@ public class UnitCalculator extends EntityCalculator<Unit> {
             setParam(maxDamage, dmg + dieSize);
         }
 
-        if (isDiceAccountedElsewhere()){ //TODO review this
+        if (isDiceAccountedElsewhere()) { //TODO review this
             Integer min = getIntParam(minDamage);
             setParameter(damage, min);
-            setParameter(maxDamage,min);
-            return min ;
+            setParameter(maxDamage, min);
+            return min;
         }
 
         return MathMaster.getAverage(dmg, dmg + dieSize);
@@ -170,17 +172,17 @@ public class UnitCalculator extends EntityCalculator<Unit> {
     }
 
     public int calculateInitiative(boolean current) {
-        PARAMETER param=PARAMS.N_OF_ACTIONS;
+        PARAMETER param = PARAMS.N_OF_ACTIONS;
         if (current) {
             param = ContentManager.getCurrentParam(param);
         }
         int initiative =
-     getIntParam(param)
-      * getIntParam(PARAMS.INITIATIVE_MODIFIER);
+         getIntParam(param)
+          * getIntParam(PARAMS.INITIATIVE_MODIFIER);
         initiative += getIntParam(PARAMS.C_INITIATIVE_BONUS);
 
         if (game.isDummyMode()) {
-            if (!getChecker(). isBfObj()) {
+            if (!getChecker().isBfObj()) {
                 if (!getChecker().isNeutral()) {
                     if (!getEntity().getOwner().isMe()) {
                         initiative = Math.min(10, getGame().getRules().getTimeRule()

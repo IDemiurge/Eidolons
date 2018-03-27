@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
+import main.game.battlecraft.DC_Engine;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster3d;
@@ -17,6 +18,7 @@ import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.stage.GuiStage;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import static main.system.GuiEventType.*;
 
@@ -35,8 +37,8 @@ public class ToolTipManager extends TablePanel {
                     actorCell.setActor(null);
 //                    immediate removal
                 } else {
-              if (actorCell.getActor()!=null )
-                    ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
+                    if (actorCell.getActor() != null)
+                        ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
                 }
             } else {
                 init((Tooltip) object);
@@ -110,7 +112,7 @@ public class ToolTipManager extends TablePanel {
     }
 
     public void entityHover(Entity entity) {
-        if (entity instanceof DC_ActiveObj){
+        if (entity instanceof DC_ActiveObj) {
             GuiEventManager.trigger(ACTION_HOVERED, entity);
         }
         if (entity instanceof DC_UnitAction) {
@@ -127,6 +129,10 @@ public class ToolTipManager extends TablePanel {
     }
 
     public void entityHoverOff(Entity entity) {
+        if (DC_Engine.isAtbMode())
+            if (entity instanceof DC_ActiveObj) {
+                GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
+            }
         if (entity instanceof DC_UnitAction) {
             AnimMaster3d.hoverOff((DC_UnitAction) entity);
         }
@@ -158,11 +164,9 @@ public class ToolTipManager extends TablePanel {
         v2 = getStage().screenToStageCoordinates(v2);
         setPosition(v2.x + 10, v2.y);
 
-        if (isRemoveImmediately(tooltip))
-        {
+        if (isRemoveImmediately(tooltip)) {
 
-        }
-        else {
+        } else {
             tooltip.getColor().a = 0;
             ActorMaster.addFadeInAction(tooltip, 0.5f);
         }

@@ -42,11 +42,16 @@ public class AtbUnitImpl implements AtbUnit {
     public void setAtbReadiness(float i) {
         double value = (i);
 
-        atbController.getManager().getGame().getLogManager().log(
-         getUnit().getName() + " has " +
-          value +
-          "%" +
-          " readiness");
+        if (i > 1.01f * AtbController.TIME_IN_ROUND) {
+            main.system.auxiliary.log.LogMaster.log(1, " Bad ATB status:" +
+             getUnit().getName() + " has " +
+             value +"%" +" readiness");
+            value = AtbController.TIME_IN_ROUND;
+        } else {
+            atbController.getManager().getGame().getLogManager().log(
+             getUnit().getName() + " has " +
+              (value*100/AtbController.TIME_IN_ROUND) +"%" +" readiness");
+        }
         if (unit.getIntParam(PARAMS.C_INITIATIVE) == value)
             return;
         unit.setParam(PARAMS.C_INITIATIVE, value + "");
@@ -72,6 +77,19 @@ public class AtbUnitImpl implements AtbUnit {
     public void setTimeTillTurn(float i) {
         if (timeTillTurn != i) {
             timeTillTurn = i;
+
+            if (i > AtbController.TIME_IN_ROUND || i<0) {
+                main.system.auxiliary.log.LogMaster.log(1, " Bad setTimeTillTurn:" +
+                 getUnit().getName() + " to " + i);
+            } else {
+                main.system.auxiliary.log.LogMaster.log(1,
+                 getUnit().getName() + " setTimeTillTurn to " +
+                  i +" sec ");
+            }
+
+
+
+
             GuiEventManager.trigger(
              INITIATIVE_CHANGED,
              new ImmutablePair<>(getUnit(), new ImmutablePair<>(Math.round(getAtbReadiness() * 10)

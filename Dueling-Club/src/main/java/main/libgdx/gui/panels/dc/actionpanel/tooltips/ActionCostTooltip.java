@@ -42,7 +42,11 @@ public class ActionCostTooltip extends ActionTooltip {
         if (!isAnimated()) {
 
             row();
-            addElement(getDescription());
+            try {
+                addElement(getDescription());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             return;
         }
         Action action = getDescriptionAction();

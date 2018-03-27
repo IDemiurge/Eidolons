@@ -132,7 +132,7 @@ public class VisibilityMaster {
     }
 
     public void resetVisibilityLevels() {
-        for (Unit unit :    master.getGame().getUnits()) {
+        for (Unit unit : master.getGame().getUnits()) {
             resetOutlineAndVisibilityLevel(unit);
         }
 
@@ -167,16 +167,22 @@ public class VisibilityMaster {
 //        }
         OUTLINE_TYPE outline = master.getOutlineMaster().
          getOutlineType(target, source);
+       if (source.isMine())
+           if (source.isMainHero())
+            if (target == source) {
+                target.setOutlineType(null);
+            } else {
+                target.setOutlineType(outline);
+            }
+
         if (outline == OUTLINE_TYPE.THICK_DARKNESS) {
             if (checkUnseen(source, target)) {
                 return VISIBILITY_LEVEL.UNSEEN;
             }
         }
-        if (source.isMainHero())
-            target.setOutlineType(outline);
         //check stealth-invisible?
         VISIBILITY_LEVEL visibilityLevel = getVisibility(outline);
-        if (!target.isOutsideCombat()){
+        if (!target.isOutsideCombat() && target instanceof Unit) {
             return visibilityLevel;
         }
         return visibilityLevel;

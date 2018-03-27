@@ -1,15 +1,19 @@
 package main.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.Entity;
 import main.libgdx.GdxMaster;
+import main.libgdx.gui.panels.dc.InitiativePanel;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.stage.StageX;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+
+import java.util.List;
 
 public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
@@ -95,10 +99,24 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
             if (this.actor.getStage() != getManager().getStage()) {
                 Actor actor = ((StageX) getManager().getStage()).getMouseOverActor();
                 if (actor != null) {
+                    if (checkUiActorBlocks(actor))
                     return true;
                 }
             }
         return false;
+    }
+
+
+    private boolean checkUiActorBlocks(Actor actor) {
+        List<Group> list = GdxMaster.getAncestors(actor);
+        if (actor instanceof Group) {
+            list.add((Group) actor);
+        }
+        for (Group sub : list) {
+            if (sub instanceof InitiativePanel)
+                return false;
+        }
+        return true;
     }
 
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
