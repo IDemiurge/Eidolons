@@ -10,6 +10,7 @@ import main.game.core.Eidolons;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.particles.ParticleManager;
+import main.libgdx.bf.GridCell;
 import main.libgdx.bf.mouse.InputController;
 import main.libgdx.launch.GenericLauncher;
 import main.libgdx.screens.DungeonScreen;
@@ -217,6 +218,8 @@ public class OptionsMaster {
             case RESOLUTION:
                 Eidolons.setResolution(value);
                 break;
+            case SPRITE_CACHE_ON:
+                GridCell.setSpriteCacheOn(bool);
             case ZOOM_STEP:
                 InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
                 break;

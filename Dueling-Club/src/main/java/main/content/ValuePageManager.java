@@ -31,20 +31,20 @@ import java.util.*;
 //TERRAIN 
 public class ValuePageManager {
     public static final VALUE[][][] altPageArray = {ValuePages.ALT_UNIT_PAGES,
-            ValuePages.ALT_SPELL_PAGES, ValuePages.ALT_CHAR_PAGES, null
+     ValuePages.ALT_SPELL_PAGES, ValuePages.ALT_CHAR_PAGES, null
 
-            , ValuePages.ALT_BF_OBJ_PAGES, null, ValuePages.ACTION_PAGES_DC,
-            HC_ValuePages.ARMOR_PAGES, HC_ValuePages.WEAPONS_PAGES, ValuePages.SKILL_PAGES,
-            ValuePages.ALT_QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES, new VALUE[0][0],
-            ValuePages.CLASS_PAGES
+     , ValuePages.ALT_BF_OBJ_PAGES, null, ValuePages.ACTION_PAGES_DC,
+     HC_ValuePages.ARMOR_PAGES, HC_ValuePages.WEAPONS_PAGES, ValuePages.SKILL_PAGES,
+     ValuePages.ALT_QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES, new VALUE[0][0],
+     ValuePages.CLASS_PAGES
 
     };
     public static final VALUE[][][] pageArray = {ValuePages.UNIT_PAGES, ValuePages.SPELL_PAGES,
-            ValuePages.CHAR_PAGES, null
+     ValuePages.CHAR_PAGES, null
 
-            , null, null, ValuePages.ACTION_PAGES, ValuePages.ARMOR_PAGES, ValuePages.WEAPON_PAGES,
-            ValuePages.SKILL_PAGES, ValuePages.QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES,
-            new VALUE[0][0], ValuePages.CLASS_PAGES
+     , null, null, ValuePages.ACTION_PAGES, ValuePages.ARMOR_PAGES, ValuePages.WEAPON_PAGES,
+     ValuePages.SKILL_PAGES, ValuePages.QUICK_ITEM_PAGES, ValuePages.JEWELRY_PAGES,
+     new VALUE[0][0], ValuePages.CLASS_PAGES
 
     };
 
@@ -89,7 +89,7 @@ public class ValuePageManager {
 
             List<List<VALUE>> pageList = new ArrayMaster<VALUE>().get2dList(pages);
             Map<String, List<VALUE>> map = new MapMaster<String, List<VALUE>>().constructMap(
-                    pageNames, pageList);
+             pageNames, pageList);
             if (!alt) {
                 map.put(DC_HEADER, Arrays.asList(ValuePages.GENERIC_DC_HEADER));
                 map.put(AV_HEADER, Arrays.asList(ValuePages.GENERIC_AV_HEADER));
@@ -120,7 +120,7 @@ public class ValuePageManager {
             if (Launcher.getMainManager().getSequence() == null) {
                 pages = HC_ValuePages.CHAR_PAGES;
             } else if (Launcher.getView() == VIEWS.CHOICE
-                    && Launcher.getMainManager().getSequence().isActive())
+             && Launcher.getMainManager().getSequence().isActive())
             // Launcher.getMainManager().getSequenceMaster()
             {
                 pages = HC_ValuePages.BACKGROUND_CHAR_PAGES;
@@ -238,7 +238,7 @@ public class ValuePageManager {
         if (page == null) {
             page = new ArrayList<>();
             for (VALUE p : (!prop) ? ContentManager.getParamsForType(TYPE.getName(), !av)
-                    : ContentManager.getPropsForType(TYPE.getName(), !av)) {
+             : ContentManager.getPropsForType(TYPE.getName(), !av)) {
                 if (!ContentManager.isValueForOBJ_TYPE(TYPE, p)) {
                     continue;
                 }
@@ -334,7 +334,7 @@ public class ValuePageManager {
 
     public static List<VALUE> getValuePage(int index, OBJ_TYPE TYPE) {
         return new ArrayList<>(Arrays
-                .asList((VALUE[]) pageMaps.get(TYPE).keySet().toArray()[index]));
+         .asList((VALUE[]) pageMaps.get(TYPE).keySet().toArray()[index]));
     }
 
     private static String getAvPageName(OBJ_TYPE TYPE) {

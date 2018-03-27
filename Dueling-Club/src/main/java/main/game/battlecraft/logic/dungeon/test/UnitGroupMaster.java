@@ -116,10 +116,7 @@ public class UnitGroupMaster {
             readyGroups += sub.getName() + ";";
         }
         // TODO preCheck units inside!
-        if (StringMaster.contains(readyGroups, name)) {
-            return true;
-        }
-        return false;
+        return StringMaster.contains(readyGroups, name);
     }
 
     private static String getReadyGroupsPath() {

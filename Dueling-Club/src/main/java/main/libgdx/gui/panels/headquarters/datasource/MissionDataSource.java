@@ -6,10 +6,10 @@ import main.libgdx.gui.panels.dc.ValueContainer;
  * Created by JustMe on 6/2/2017.
  */
 public interface MissionDataSource {
-    public ValueContainer getPosition();
-    public ValueContainer getName();
-    public ValueContainer getTooltip();
-    public ValueContainer getMapIcon();
-    public ValueContainer getTooltipIcon();
+    ValueContainer getPosition();
+    ValueContainer getName();
+    ValueContainer getTooltip();
+    ValueContainer getMapIcon();
+    ValueContainer getTooltipIcon();
 
 }

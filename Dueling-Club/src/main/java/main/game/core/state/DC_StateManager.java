@@ -133,9 +133,7 @@ public class DC_StateManager extends StateManager {
                 return true;
             if ( (obj).isWall())
                 return true;
-            if ( (obj).isOverlaying())
-                return true;
-            return false;
+            return (obj).isOverlaying();
         });
         GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, list);
     }
@@ -218,10 +216,7 @@ public class DC_StateManager extends StateManager {
     public boolean checkObjIgnoresToBase(Obj obj) {
         if (obj.isDead())
             return true;
-        if (obj.isOutsideCombat()) {
-            return true;
-        }
-        return false;
+        return obj.isOutsideCombat();
     }
 
     protected void resetCurrentValues() {

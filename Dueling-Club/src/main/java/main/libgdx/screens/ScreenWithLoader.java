@@ -78,9 +78,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isWaitForInput() {
-        if (CoreEngine.isIDE() || CoreEngine.isMacro())
-            return false;
-        return true;
+        return !(CoreEngine.isIDE() || CoreEngine.isMacro());
     }
 
     protected InputMultiplexer getWaitForInputController(EventCallbackParam param) {

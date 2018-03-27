@@ -9,9 +9,9 @@ public interface Controller {
 
     default void keyDown(int keyCode){
 
-    };
+    }
 
-    public enum CONTROLLER {
+    enum CONTROLLER {
         ACTION, ANIM, EMITTER,
         DEBUG,
         RULES,

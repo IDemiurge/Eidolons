@@ -27,7 +27,7 @@ public class CustomValueManager {
 
     public static String getVarEnumCustomValueName(Class<?> ENUM_CLASS) {
         return ENUM_CLASS.getSimpleName() + "_" + VARIABLES + "_"
-                + CUSTOM_VALUE;
+         + CUSTOM_VALUE;
     }
 
     public static String getVariablefromCV(String key, int i) {
@@ -54,7 +54,7 @@ public class CustomValueManager {
             String prop = getVariablefromCV(key, 0);
             String propValue = getVariablefromCV(key, 1);
             PARAMETER param = ContentManager
-                    .getPARAM(getVariablefromCV(key, 2));
+             .getPARAM(getVariablefromCV(key, 2));
             Integer value = unit.getCounter(key);
             //List<DC_ActiveObj> activeList = unit.getActiveList(prop, propValue);
             //for (DC_ActiveObj active : activeList)

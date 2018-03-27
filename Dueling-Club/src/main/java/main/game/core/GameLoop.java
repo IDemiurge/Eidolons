@@ -156,9 +156,7 @@ public class GameLoop {
             if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                 return false;
             }
-        if (!game.getManager().endRound())
-            return false;
-        return true;
+        return game.getManager().endRound();
     }
 
 

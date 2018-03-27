@@ -7,6 +7,7 @@ import main.data.dialogue.SpeechInterface;
 import main.data.dialogue.Speeches;
 import main.elements.conditions.Condition;
 import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
+import main.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
@@ -85,7 +86,7 @@ public class Speech implements SpeechInterface {
             actorName = data.getValue(SPEECH_VALUE.ACTOR);
         if (!StringMaster.isEmpty(actorName))
         try {
-            actor = master.getDialogueActorMaster().getActor(actorName);
+            actor = DialogueActorMaster.getActor(actorName);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

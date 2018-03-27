@@ -121,7 +121,7 @@ public class ScoutingRule extends RoundRule {
         VISUAL_CONTACT(30), SPOTTED_APPROACH(20), TRACKS(10), SIGNS(5),;
         private int difficulty;
 
-        private SCOUT_INFO_LEVEL(int difficulty) {
+        SCOUT_INFO_LEVEL(int difficulty) {
             this.difficulty = difficulty;
         }
 

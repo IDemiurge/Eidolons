@@ -4,5 +4,5 @@ import main.entity.type.ObjType;
 import main.system.images.ImageManager.BORDER;
 
 public interface BorderChecker {
-    public BORDER getBorder(ObjType value);
+    BORDER getBorder(ObjType value);
 }

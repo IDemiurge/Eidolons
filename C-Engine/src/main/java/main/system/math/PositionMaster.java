@@ -62,9 +62,7 @@ public class PositionMaster {
     public static boolean inLine(int x1, int x2, int y1, int y2 ) {
         if (x1==x2)
             return true;
-        if (y1==y2)
-            return true;
-        return false;
+        return y1 == y2;
     }
     public static boolean inLine(Coordinates coordinates1, Coordinates coordinates2) {
         return inLine(coordinates1.x, coordinates2.x, coordinates1.y, coordinates2.y);

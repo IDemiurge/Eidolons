@@ -8,7 +8,7 @@ import main.test.Preset.PRESET_DATA;
 public class Preset extends DataUnit<PRESET_DATA> {
 
     static PRESET_DATA[] displayed_values = {PRESET_DATA.PLAYER_PARTY, PRESET_DATA.ENEMY_PARTY,
-            PRESET_DATA.DUNGEONS,};
+     PRESET_DATA.DUNGEONS,};
     String path;
     private String name;
 

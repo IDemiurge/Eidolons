@@ -308,7 +308,7 @@ public class LE_MapMaster {
         }
 
         try {
-            LevelEditor.getObjMaster().removeObjects(coordinates);
+            LE_ObjMaster.removeObjects(coordinates);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
@@ -356,7 +356,7 @@ public class LE_MapMaster {
     public void removeBlock(MapBlock block) {
         // fill
         LevelEditor.getMainPanel().getPlanPanel().getTreePanel().blockRemoved(block);
-        LevelEditor.getObjMaster().removeObjects(block.getCoordinates());
+        LE_ObjMaster.removeObjects(block.getCoordinates());
 
         LE_ObjMaster.fill(block.getCoordinates(), DataManager.getType(block.getZone()
                 .getFillerType(), DC_TYPE.BF_OBJ));

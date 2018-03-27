@@ -32,10 +32,7 @@ public class PlaceComp extends MapObjComp implements MouseListener {
     protected boolean isSymbolRepresentation() {
         // if (getObj().isAvailable())
         // return false;
-        if (isInfoSelected()) {
-            return false;
-        }
-        return true;
+        return !isInfoSelected();
     }
 
     protected String getSymbolImagePath() {

@@ -25,7 +25,6 @@ public class DungeonXmlCleaner {
             content = cleanDungeon(content);
             FileManager.write(content, file.getPath());
         });
-        ;
 
     }
 
@@ -69,10 +68,7 @@ public class DungeonXmlCleaner {
     }
 
     private static boolean checkWall(String substring) {
-        if (substring.contains("Wall")) {
-            return true;
-        }
+        return substring.contains("Wall");
 
-        return false;
     }
 }

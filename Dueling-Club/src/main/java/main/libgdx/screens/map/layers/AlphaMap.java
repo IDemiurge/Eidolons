@@ -44,9 +44,7 @@ public class AlphaMap {
 
     public boolean isThere(int x, int y) {
         Color c = new Color(map.getPixel(x, MapScreen.defaultSize- y));
-        if (c.a == 0)
-            return false;
-        return true;
+        return !(c.a == 0);
     }
 
     public enum ALPHA_MAP {

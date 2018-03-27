@@ -621,7 +621,7 @@ public class DC_ActionManager implements ActionManager {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
             }
-            DC_UnitAction action = (DC_UnitAction) getOrCreateAction(typeName, obj);
+            DC_UnitAction action = getOrCreateAction(typeName, obj);
 
             // action.setActionTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
             // TODO so it's inside normal attack then?

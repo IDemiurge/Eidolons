@@ -80,7 +80,7 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
 //                );
 //            case "Long":
                 JSlider s = new JSlider(option.getMin(), option.getMax(),
-                 (Integer) options.getIntValue(option.toString()));
+                 options.getIntValue(option.toString()));
                 map.put(option, s);
                 return new G_Panel(
                  new JLabel(option.getName()), s

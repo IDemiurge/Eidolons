@@ -99,9 +99,7 @@ public class Analyzer extends AiHandler {
     }
 
     private static Boolean isTargetingUnconscious(UnitAI ai) {
-        if (ai.checkMod(AI_MODIFIERS.CRUEL))
-            return true;
-        return false;
+        return ai.checkMod(AI_MODIFIERS.CRUEL);
     }
 
     public static List<Unit> getUnits(UnitAI ai, Boolean ally,

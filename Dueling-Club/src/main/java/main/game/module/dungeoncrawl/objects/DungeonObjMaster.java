@@ -69,9 +69,7 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
          unit.getRef(), unit.getOwner(), unit.getGame()) {
             @Override
             public boolean activatedOn(Ref ref) {
-                if (!actionActivated(sub, unit, obj))
-                    return false;
-                return true;
+                return actionActivated(sub, unit, obj);
             }
         });
 

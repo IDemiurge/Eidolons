@@ -77,10 +77,7 @@ public class Place extends MapObj {
         if (visibilityStatus == PLACE_VISIBILITY_STATUS.HIDDEN) {
             return false;
         }
-        if (visibilityStatus == PLACE_VISIBILITY_STATUS.UNKNOWN) {
-            return false;
-        }
-        return true;
+        return visibilityStatus != PLACE_VISIBILITY_STATUS.UNKNOWN;
     }
 
     public DequeImpl<Route> getRoutes() {
@@ -144,7 +141,7 @@ public class Place extends MapObj {
     }
 
     public enum PLACE_VISIBILITY_STATUS {
-        UNKNOWN, DISCOVERED, HIDDEN, AVAILABLE, CURRENT_LOCATION;
+        UNKNOWN, DISCOVERED, HIDDEN, AVAILABLE, CURRENT_LOCATION
     }
 
 }

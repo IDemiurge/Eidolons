@@ -49,7 +49,6 @@ public abstract class ControlPanel extends G_Panel implements ButtonHandler {
             protected void playClickSound() {
             }
 
-            ;
         };
         button.activateMouseListener();
         return button;

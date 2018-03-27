@@ -74,10 +74,7 @@ public class ChoicePanel<T> extends DialogPanel implements MouseListener {
     }
 
     protected boolean isSelected(T t) {
-        if (lastSelected == t) {
-            return true;
-        }
-        return false;
+        return lastSelected == t;
     }
 
     private void addItemComp(T t, int n) {

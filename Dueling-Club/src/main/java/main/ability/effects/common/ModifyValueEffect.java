@@ -18,11 +18,14 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +56,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         this.formula = new Formula(formula);
         this.mod_type = code;
 
-        mapThisToConstrParams(param,   code,  formula);
+        mapThisToConstrParams(param, code, formula);
     }
 
     public ModifyValueEffect(PARAMETER param, MOD code, String formula, PARAMETER max) {
@@ -325,10 +328,10 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             case SET_TO_PERCENTAGE:
             case MODIFY_BY_PERCENT: {
                 double mod =
-                        // = obj.getParams(param, ref.isBase()) + "*(" + amount
+                 // = obj.getParams(param, ref.isBase()) + "*(" + amount
                  // + "/100)";
                  MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(
-                  mod_type==MOD.SET_TO_PERCENTAGE? ContentManager.getBaseParameterFromCurrent(param)
+                  mod_type == MOD.SET_TO_PERCENTAGE ? ContentManager.getBaseParameterFromCurrent(param)
                    : param, base), amount);
                 ref.setAmount(mod + "");
 
@@ -341,17 +344,11 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                     amount_modified = (int) mod;
                 }
                 if (mod_type == MOD.SET_TO_PERCENTAGE) {
-                    final_amount =  mod;
-                    amount_modified= (int) (final_amount- obj.getIntParam(param));
+                    final_amount = mod;
+                    amount_modified = (int) (final_amount - obj.getIntParam(param));
                 } else {
                     final_amount = obj.getParamDouble(param) + mod;
                 }
-                // new Formula(obj.getParams(param) + "+" + mod)
-                // .getInt();
-
-//                LogMaster.log(LOG_CHANNELS.EFFECT_DEBUG, getLayer() + " layer - " + obj.getName()
-//                 + "'s " + param.getName() + " is modified by " + amount + "% ("
-//                 + obj.getParams(param) + " + " + mod + " = " + final_amount + ")");
                 break;
             }
             case MODIFY_BY_CONST: {
@@ -376,6 +373,13 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 break;
             }
         }
+        if (!ref.isQuiet())
+            if (mod_type == MOD.MODIFY_BY_CONST || mod_type == MOD.MODIFY_BY_PERCENT) {
+                if (!isContinuousWrapped())
+                    GuiEventManager.trigger(GuiEventType.VALUE_MOD,
+                     new ImmutablePair<>(param, ref));
+            }
+
         if (amount > 0) {
             if (final_amount > min_max_amount) {
                 final_amount = min_max_amount;

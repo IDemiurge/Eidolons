@@ -60,10 +60,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
         if (input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.MOVE) {
             return true;
         }
-        if (input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.TURN) {
-            return true;
-        }
-        return false;
+        return input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.TURN;
     }
 
     public boolean isFirstResetDone() {

@@ -3,6 +3,7 @@ package main.entity.handlers.active;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
@@ -74,6 +75,9 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
 
     protected void addCostMods() {
         if (getEntity().getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
+            return;
+        }
+        if (getEntity().checkContainerProp(G_PROPS.ACTION_TAGS, ACTION_TAGS.FIXED_COST.toString())) {
             return;
         }
 

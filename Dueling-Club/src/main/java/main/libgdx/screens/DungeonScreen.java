@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import main.entity.obj.BattleFieldObject;
@@ -29,6 +30,7 @@ import main.libgdx.launch.GenericLauncher;
 import main.libgdx.shaders.DarkShader;
 import main.libgdx.stage.BattleGuiStage;
 import main.libgdx.stage.ChainedStage;
+import main.libgdx.texture.TextureCache;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -88,10 +90,8 @@ public class DungeonScreen extends GameScreen {
 
         GuiEventManager.bind(UPDATE_DUNGEON_BACKGROUND, param -> {
             final String path = (String) param.get();
-            backTexture = getOrCreateR(path);
-            if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-                TextureManager.initBackgroundCache(backTexture);
-            }
+            setBackground(path);
+
 
         });
 
@@ -133,10 +133,10 @@ public class DungeonScreen extends GameScreen {
             String path = null;
             try {
                 path = DC_Game.game.getDungeonMaster().getDungeonWrapper().getMapBackground();
-                backTexture = getOrCreateR(path);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+            setBackground(path);
         }
 //        TODO Unit obj = DC_Game.game.getManager().getActiveObj();
 //        if (obj.isMine()) {
@@ -144,6 +144,16 @@ public class DungeonScreen extends GameScreen {
 //
 //            }
 //        }
+    }
+
+    private void setBackground(String path) {
+        TextureRegion texture = getOrCreateR(path);
+        if (texture.getTexture() != TextureCache.getEmptyTexture())
+            backTexture = texture;
+
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+            TextureManager.initBackgroundCache(backTexture);
+        }
     }
 
     @Override

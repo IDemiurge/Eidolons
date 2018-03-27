@@ -210,8 +210,6 @@ public class StatsControlComponent extends G_Panel {
 
     }
 
-    ;
-
     protected boolean checkParam(int cost, boolean gold) {
         return bufferType.getIntParam((gold) ? PARAMS.GOLD : PARAMS.XP) >= cost;
     }

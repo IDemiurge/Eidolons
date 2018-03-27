@@ -76,10 +76,8 @@ public class ResourceSourceImpl implements ResourceSource {
         public boolean isHpBarVisible() {
         if (!isFull((PARAMS.TOUGHNESS)))
             return true;
-        if (!isFull((PARAMS.ENDURANCE)))
-            return true;
-        return false;
-    }
+            return !isFull((PARAMS.ENDURANCE));
+        }
 
     public String getName() {
         return  obj.getName();

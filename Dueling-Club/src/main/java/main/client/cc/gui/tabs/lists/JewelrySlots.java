@@ -80,8 +80,6 @@ public class JewelrySlots extends SecondaryItemList {
                 return false;
             }
 
-            ;
-
             @Override
             protected boolean isComponentAfterControls() {
                 return false;

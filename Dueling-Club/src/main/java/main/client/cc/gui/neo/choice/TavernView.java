@@ -110,7 +110,7 @@ public class TavernView extends HeroChoiceView<Unit> {
         this.setIndex(i);
         Unit e = data.get(getSelectedIndex());
         if (e instanceof Entity && infoPanel != null) {
-            infoPanel.setEntity((Entity) e);
+            infoPanel.setEntity(e);
             infoPanel.refresh();
         }
         if (!isOkBlocked()) {

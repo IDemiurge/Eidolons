@@ -26,7 +26,6 @@ import main.elements.conditions.Conditions;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.entity.Ref;
-import main.entity.active.DC_ActionManager;
 import main.entity.active.DC_SpellObj;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_QuickItemObj;
@@ -65,6 +64,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
@@ -72,7 +72,6 @@ import main.system.math.MathMaster;
 import main.system.options.OptionsMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.test.TestMasterContent;
-import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.test.PresetMaster;
@@ -697,7 +696,7 @@ public class DebugMaster {
                      type), new Formula("1")).apply(ref);
                     if (func == DEBUG_FUNCTIONS.ADD_ACTIVE) {
                         infoObj.getActives().add(game.getActionManager().getAction(type, infoObj));
-                        ((DC_ActionManager) game.getActionManager()).constructActionMaps(infoObj);
+                        game.getActionManager().constructActionMaps(infoObj);
                     }
 
                     // game.getManager().reset();

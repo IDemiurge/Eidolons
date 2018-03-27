@@ -78,9 +78,9 @@ public class DC_CostsFactory {
          PARAMS.C_FOCUS, new Formula(s)));
 
         if (!DC_Engine.isAtbMode())
-        requirements.add(new Requirement(
-            new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
-             PARAMS.C_COOLDOWN)),
+            requirements.add(new Requirement(
+             new NumericCondition("1", StringMaster.getValueRef(KEYS.ACTIVE,
+              PARAMS.C_COOLDOWN)),
              InfoMaster.COOLDOWN_REASON));
 
         addSpecialRequirements(requirements, spell);

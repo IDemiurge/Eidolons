@@ -86,10 +86,8 @@ public abstract class SelectionPanel extends TablePanel {
     protected boolean isDoneDisabled() {
         if (listPanel.getCurrentItem() == null)
             return true;
-        if (listPanel.isBlocked())
-            return true;
+        return listPanel.isBlocked();
 
-        return false;
     }
 
     public void init() {

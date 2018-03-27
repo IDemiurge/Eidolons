@@ -44,10 +44,7 @@ public class ExtraAttacksRule {
         if (action.getOwnerObj().isDead()) {
             return true;
         }
-        if (action.getOwnerObj().isDisabled()) {
-            return true;
-        }
-        return false;
+        return action.getOwnerObj().isDisabled();
     }
 
     public static List<DC_ActiveObj> getCounterAttacks(DC_ActiveObj triggeringAction,

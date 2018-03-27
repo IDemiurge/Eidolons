@@ -25,7 +25,7 @@ public interface InventoryClickHandler {
 
     boolean isCancelEnabled();
 
-    public enum CELL_TYPE {
+    enum CELL_TYPE {
         WEAPON_MAIN("UI/components/2017/dialog/inv/empty slots/empty weapon main.png"),
         WEAPON_OFFHAND("UI/components/2017/dialog/inv/empty slots/empty weapon off.png"),
         ARMOR("UI/components/2017/dialog/inv/empty slots/empty armor.png"),

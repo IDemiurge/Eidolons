@@ -44,15 +44,6 @@ public class TrueLight {
         rayHandler.updateAndRender();
     }
 
-
-
-
-
-
-
-
-
-
     public void bindEvents() {
         GuiEventManager.bind(GuiEventType.ADD_LIGHT, p -> {
             Vector2 v = (Vector2) p.get();

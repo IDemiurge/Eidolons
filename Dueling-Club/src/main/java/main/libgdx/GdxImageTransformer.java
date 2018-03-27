@@ -16,11 +16,11 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GdxImageTransformer extends LwjglApplication    {
+public class GdxImageTransformer extends LwjglApplication {
 
-    private static final String PATH ="gen\\round\\" ;
+    private static final String PATH = "gen\\round\\";
 
-    public GdxImageTransformer( ) {
+    public GdxImageTransformer() {
         super(new ApplicationAdapter() {
             @Override
             public void create() {
@@ -38,34 +38,37 @@ public class GdxImageTransformer extends LwjglApplication    {
     public static TextureRegion round(String path, boolean write) {
         if (GdxMaster.isLwjglThread()) {
             Pixmap rounded = roundTexture(TextureCache.getOrCreateR(path));
-            path= TextureCache.getRoundedPath(path);
-            FileHandle    handle=new FileHandle(
-             PathFinder.getImagePath() +path);
+            path = TextureCache.getRoundedPath(path);
+            FileHandle handle = new FileHandle(
+             PathFinder.getImagePath() + path);
             if (write) {
                 PixmapIO.writePNG(handle, rounded);
             }
         } else {
-            return null ;
+            return null;
         }
         return TextureCache.getOrCreateR(path);
     }
+
     public static void roundTextures(String directory) {
         CoreEngine.systemInit();
         for (String filePath : FileManager.getFileNames(FileManager.
          getFilesFromDirectory(PathFinder.getImagePath() + directory, false))) {
 //            FileHandle handle=new FileHandle(filePath);
-           round(directory+filePath, true);
+            round(directory + filePath, true);
 
         }
     }
-        public static Pixmap roundTexture(TextureRegion textureRegion) {
+
+    public static Pixmap roundTexture(TextureRegion textureRegion) {
         Texture texture = textureRegion.getTexture();
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
         }
         return roundPixmap(texture.getTextureData().consumePixmap());
     }
-        public static Pixmap roundPixmap(Pixmap pixmap) {
+
+    public static Pixmap roundPixmap(Pixmap pixmap) {
         int width = pixmap.getWidth();
         int height = pixmap.getHeight();
         Pixmap round = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), Pixmap.Format.RGBA8888);

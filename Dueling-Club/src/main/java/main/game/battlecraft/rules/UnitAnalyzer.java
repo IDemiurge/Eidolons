@@ -30,10 +30,7 @@ public class UnitAnalyzer {
         if (unit.getMainWeapon() == null) {
             return true;
         }
-        if (unit.getMainWeapon().isTwoHanded()) {
-            return false;
-        }
-        return true;
+        return !unit.getMainWeapon().isTwoHanded();
 
         // if (checkDualNaturalWeapons(unit))
         // return true;
@@ -49,20 +46,14 @@ public class UnitAnalyzer {
         if (u.checkProperty(G_PROPS.STANDARD_PASSIVES, "Flying")) {
             return true;
         }
-        if (u.checkProperty(G_PROPS.CLASSIFICATIONS, "Flying")) {
-            return true;
-        }
-        return false;
+        return u.checkProperty(G_PROPS.CLASSIFICATIONS, "Flying");
     }
 
     public static boolean isDoor(Entity u) {
         if (u.checkProperty(G_PROPS.BF_OBJECT_TYPE, "Door")) {
             return true;
         }
-        if (u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Door")) {
-            return true;
-        }
-        return false;
+        return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Door");
     }
 
     public static boolean isWall(Entity u) {
@@ -72,10 +63,7 @@ public class UnitAnalyzer {
         if (u.checkProperty(G_PROPS.BF_OBJECT_TAGS, "Wall")) {
             return true;
         }
-        if (u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Wall")) {
-            return true;
-        }
-        return false;
+        return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Wall");
     }
 
     public static boolean checkDualWielding(Unit unit) {
@@ -119,19 +107,13 @@ public class UnitAnalyzer {
         if (ai_type == AiEnums.AI_TYPE.CASTER) {
             return false;
         }
-        if (ai_type == AiEnums.AI_TYPE.ARCHER) {
-            return false;
-        }
-        return true;
+        return ai_type != AI_TYPE.ARCHER;
     }
 
     public static boolean isOffensePreferred(Entity unit) {
         AI_TYPE ai_type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
                 .getProperty(PROPS.AI_TYPE));
-        if (ai_type == AiEnums.AI_TYPE.TANK) {
-            return false;
-        }
-        return true;
+        return ai_type != AI_TYPE.TANK;
     }
 
 }

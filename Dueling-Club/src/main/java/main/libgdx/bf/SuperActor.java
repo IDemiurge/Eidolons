@@ -119,10 +119,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
 //            return true; TODO why was this here?.. not to draw?
         if (isCullingOff())
             return false;
-        if (!isWithinCamera()) {
-            return true;
-        }
-        return false;
+        return !isWithinCamera();
     }
     public boolean isWithinCamera(){
         if (withinCamera!=null )
@@ -167,10 +164,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         if (getScaleX() != 1) {
             return false;
         }
-        if (getScaleY() != 1) {
-            return false;
-        }
-        return true;
+        return !(getScaleY() != 1);
     }
 
     protected void alphaFluctuation(float delta) {
@@ -374,7 +368,9 @@ public abstract class SuperActor extends GroupX implements Borderable {
         CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
-        VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f);
+        VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
+        ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
+        ;
         float alphaStep;
         float fluctuatingAlphaPauseDuration;
         float fluctuatingFullAlphaDuration;

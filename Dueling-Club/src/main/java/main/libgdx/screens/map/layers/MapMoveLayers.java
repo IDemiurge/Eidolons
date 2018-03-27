@@ -277,7 +277,6 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
     private void spawn(MapMoveLayer container, MAP_AREA_GROUP group) {
         int i = 0;
         List<Coordinates> list = new ArrayList<>();
-        ;
         while (true) {
             i++;
             Coordinates c = MacroGame.getGame().getPointMaster().getCoordinates(group.name().toLowerCase() + i);

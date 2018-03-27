@@ -33,10 +33,7 @@ public class FleeCondition extends MicroCondition {
             return false;
         }
 
-        if (obj.getCoordinates().getAdjacentCoordinate(
-                obj.getFacing().getDirection()) != null) {
-            return false;
-        }
-        return true;
+        return obj.getCoordinates().getAdjacentCoordinate(
+         obj.getFacing().getDirection()) == null;
     }
 }

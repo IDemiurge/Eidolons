@@ -87,7 +87,7 @@ public class EffectFinder {
 
     public static List<Effect> getEffectsFromAbilityType(String abilName, Ref ref) {
 
-        AbilityType type = (AbilityType) VariableManager.getVarType(abilName, false, ref);
+        AbilityType type = VariableManager.getVarType(abilName, false, ref);
         return getEffectsFromAbilityType(type);
     }
 

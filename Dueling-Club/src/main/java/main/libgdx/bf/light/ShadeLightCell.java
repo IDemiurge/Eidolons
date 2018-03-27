@@ -143,9 +143,7 @@ public class ShadeLightCell extends SuperContainer {
     public boolean isAlphaFluctuationOn() {
         if (!alphaFluctuationOn)
             return false;
-        if (!alphaFluctuation)
-            return false;
-        return true;
+        return alphaFluctuation;
     }
 
     @Override
@@ -187,7 +185,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected void alphaFluctuation(float delta) {
-        super.alphaFluctuation((Image) getContent(), delta);
+        super.alphaFluctuation(getContent(), delta);
     }
 
     @Override
@@ -277,14 +275,14 @@ public class ShadeLightCell extends SuperContainer {
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
                              (int) getWidth(),
                              (int) getHeight());
-                            offsetX -= dim.height;
-                            offsetY -= dim.width;
+                            offsetX += dim.width;
+                            offsetY += dim.height;
                             //so if 2+ overlays, will be centered between them...
                         }
             }
 
         }
 
-        setPosition(originalX + offsetX / 3, originalY + offsetY / 3);
+        setPosition(originalX + offsetX , originalY + offsetY );
     }
 }

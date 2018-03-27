@@ -14,13 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.data.XLinkedMap;
+import main.data.filesys.PathFinder;
 import main.game.battlecraft.DC_Engine;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
+import main.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import main.libgdx.bf.UnitView;
+import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.gui.tooltips.ValueTooltip;
@@ -29,6 +32,7 @@ import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.Arrays;
@@ -42,7 +46,7 @@ public class InitiativePanel extends Group {
     private final int visualSize = 10;
     private final int offset = -12;
     Label timeLabel;
-    private ImageContainer[] queue;
+    private QueueView[] queue;
     private WidgetGroup queueGroup;
     private ValueContainer panelImage;
     private Container<WidgetGroup> container;
@@ -52,6 +56,7 @@ public class InitiativePanel extends Group {
     private boolean checkPositionsRequired;
     private float maxMoveAnimDuration = 0;
     private float timePassedSincePosCheck = Integer.MAX_VALUE;
+    private ImageContainer previewActor;
 
     public InitiativePanel() {
         init();
@@ -60,8 +65,12 @@ public class InitiativePanel extends Group {
     }
 
     private void registerCallback() {
-
-        GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
+        if (DC_Engine.isAtbMode()) {
+            GuiEventManager.bind(GuiEventType.ATB_POS_PREVIEW, obj -> {
+                previewAtbPos((int)obj.get());
+            });
+        }
+            GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
             if (!isRealTime()) {
                 UnitView p = (UnitView) obj.get();
                 addOrUpdate(p);
@@ -88,7 +97,7 @@ public class InitiativePanel extends Group {
                 if (!(obj.get() instanceof UnitView))
                     return;
                 UnitView p = (UnitView) obj.get();
-                ImageContainer view = getIfExists(p.getCurId());
+                QueueView view = getIfExists(p.getCurId());
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
@@ -111,9 +120,10 @@ public class InitiativePanel extends Group {
         });
     }
 
+
     private void init() {
 
-        queue = new ImageContainer[maxSize];
+        queue = new QueueView[maxSize];
         queueGroup = new WidgetGroup();
         queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container = new Container<>(queueGroup);
@@ -195,7 +205,7 @@ public class InitiativePanel extends Group {
 
     private void resetZIndices() {
         panelImage.setZIndex(0);
-        for (ImageContainer view : queue) {
+        for (QueueView view : queue) {
             if (view != null) {
                 view.setZIndex(Integer.MAX_VALUE);
             }
@@ -226,7 +236,7 @@ public class InitiativePanel extends Group {
     private void checkPositions() {
         int n = 0;
         for (int i = queue.length - 1; i >= 0; i--) {
-            ImageContainer sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
+            QueueView sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
             if (sub == null)
                 continue;
 //            if (sub.getActions().size != 0)
@@ -264,11 +274,11 @@ public class InitiativePanel extends Group {
 
         proper cleanup is not done on death(), right?
          */
-        for (ImageContainer sub : queue) {
+        for (QueueView sub : queue) {
             if (sub == null)
                 continue;
             if (!views.containsKey(sub.id)) {
-                ImageContainer view = getIfExists(sub.id);
+                QueueView view = getIfExists(sub.id);
                 if (view==null )
                     continue;
                 if (view.getActor()==null )
@@ -284,11 +294,33 @@ public class InitiativePanel extends Group {
 
     }
 
+    private void previewAtbPos(int i) {
+        if (i > maxSize) {
+            //TODO
+        }
+        if (previewActor == null) {
+            addActor(previewActor = new ImageContainer(getPreviewPath()));
+            previewActor.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
+        }
+        previewActor.setVisible(true);
+        previewActor.setScale(1);
+        previewActor.clearActions();
+        previewActor.setY(-40);
+        previewActor.setX(i * (imageSize - offset)- offset );
+//        ActorMaster.addScaleAction(previewActor, 0, 0, 5);
+    }
+
+    private String getPreviewPath() {
+        return   StrPathBuilder.build(PathFinder.getComponentsPath()
+         ,"2018","atb pos preview.png"
+        )+ StringMaster.getPathSeparator();
+    }
+
     private void addOrUpdate(UnitView unitView) {
         updateTime();
-        ImageContainer container = getIfExists(unitView.getCurId());
+        QueueView container = getIfExists(unitView.getCurId());
         if (container == null) {
-            container = new ImageContainer(unitView);
+            container = new QueueView(unitView);
             container.id = unitView.getCurId();
             container.size(imageSize, imageSize);
             container.left().bottom();
@@ -328,7 +360,7 @@ public class InitiativePanel extends Group {
     }
 
     private void extendQueue() {
-        ImageContainer[] newc = new ImageContainer[queue.length + 3];
+        QueueView[] newc = new QueueView[queue.length + 3];
         System.arraycopy(queue, 0, newc, 3, queue.length);
         queue = newc;
     }
@@ -402,10 +434,10 @@ public class InitiativePanel extends Group {
     private void sort() {
         for (int i = 0; i < queue.length - 1; i++) {
             final int ip1 = i + 1;
-            ImageContainer cur = queue[i];
+            QueueView cur = queue[i];
 
             if (cur != null) {
-                ImageContainer next = queue[ip1];
+                QueueView next = queue[ip1];
                 if (next == null) {
                     queue[i] = null;
                     queue[ip1] = cur;
@@ -420,7 +452,7 @@ public class InitiativePanel extends Group {
                             if (queue[y].initiative >= queue[y - 1].initiative) {
                                 break;
                             }
-                            ImageContainer buff = queue[y - 1];
+                            QueueView buff = queue[y - 1];
                             queue[y - 1] = queue[y];
                             queue[y] = buff;
                         }
@@ -430,7 +462,7 @@ public class InitiativePanel extends Group {
         }
 
         for (int i = 0; i < queue.length; i++) {
-            ImageContainer cur = queue[i];
+            QueueView cur = queue[i];
             if (cur != null && !cur.mobilityState) {
                 for (int y = i; y > 0; y--) {
                     if (queue[y - 1] == null) {
@@ -439,7 +471,7 @@ public class InitiativePanel extends Group {
                     if (!queue[y - 1].mobilityState) {
                         break;
                     }
-                    ImageContainer buff = queue[y - 1];
+                    QueueView buff = queue[y - 1];
                     queue[y - 1] = queue[y];
                     queue[y] = buff;
                 }
@@ -466,7 +498,7 @@ public class InitiativePanel extends Group {
         maxMoveAnimDuration = 0;
         timePassedSincePosCheck = 0;
         for (int i = from; i <= to; i++) {
-            ImageContainer container = queue[i];
+            QueueView container = queue[i];
             float pixPos = relToPixPos(rpos);
             if (container != null) {
                 if (container.getX() != pixPos) {
@@ -488,7 +520,7 @@ public class InitiativePanel extends Group {
         return pos * imageSize + pos * offset;
     }
 
-    private ImageContainer getIfExists(int id) {
+    private QueueView getIfExists(int id) {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
                 return queue[i];
@@ -498,13 +530,13 @@ public class InitiativePanel extends Group {
     }
 
 
-    private class ImageContainer extends Container<Actor> {
+    private class QueueView extends Container<Actor> {
         public int initiative;
         public float queuePriority;
         public int id;
         public boolean mobilityState;
 
-        public ImageContainer(UnitView actor) {
+        public QueueView(UnitView actor) {
             super(actor);
             if (actor==null ){
                 return ;

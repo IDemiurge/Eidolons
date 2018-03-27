@@ -43,17 +43,17 @@ public class DC_Formulas {
     public static final int BUY_MASTERY_XP_COST = 25;
     public static final Integer MASTERY_POINTS_FOR_CIRCLE = 5;
     public static final Formula DIVINATION_POOL_FORMULA = new Formula("4+"
-            + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /2+(2+"
-            + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /3)*"
-            + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.C_N_OF_ACTIONS)
+     + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /2+(2+"
+     + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /3)*"
+     + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.C_N_OF_ACTIONS)
 
     ).getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_POOL_MOD));
     public static final String UNIT_LEVEL_POWER_BONUS = "({AMOUNT}+1)*5+({AMOUNT})*({AMOUNT})";
     public static final Formula SUMMONED_UNIT_XP = new Formula(
-            "min(45*{Mastery}*{active_spell_difficulty}/5,15*({Mastery}+{Spellpower})*{active_spell_difficulty}/10)");
+     "min(45*{Mastery}*{active_spell_difficulty}/5,15*({Mastery}+{Spellpower})*{active_spell_difficulty}/10)");
     public static final Integer XP_COST_PER_SPELL_DIFFICULTY = 5;
     public static final String XP_COST_PER_SKILL_DIFFICULTY = "" + "10*({AMOUNT}*{AMOUNT}/4)+"
-            + "{AMOUNT}*5";
+     + "{AMOUNT}*5";
     public static final int DEFAULT_CRITICAL_FACTOR = 75;
     public static final int DEFAULT_PARRY_DURABILITY_DAMAGE_MOD = 50;
     public static final float KNOWLEDGE_ANY_SPELL_FACTOR = 2.0f;
@@ -95,7 +95,7 @@ public class DC_Formulas {
     private static final float ESS_WIS_SQUARE_BARRIER = 400;
     private static final float INT_MEM_MODIFIER_SQUARE_BARRIER = 40;
     private static final String INT_MEM_MODIFIER = "{amount}*2+ max(0, {amount}*{amount}/10-"
-            + INT_MEM_MODIFIER_SQUARE_BARRIER + ")";
+     + INT_MEM_MODIFIER_SQUARE_BARRIER + ")";
     private static final int CHA_DIV_MODIFIER = 3;
     private static final float DEF_MASTERY_MODIFIER = 1;
     private static final Integer FOCUS_CONST_FOR_CONCENTRATION = 10;
@@ -117,24 +117,24 @@ public class DC_Formulas {
     private static final String ATTACK_FROM_MASTERY_FORMULA = "{AMOUNT}+{AMOUNT}*{AMOUNT}/50";
     private static final String DAMAGE_FROM_TWOHANDED_MASTERY_FORMULA = "{AMOUNT}/2+{AMOUNT}*{AMOUNT}/70";
     private static final String TOUGHNESS_FROM_STRENGTH_FORMULA = "{AMOUNT}*"
-            + TOUGHNESS_STR_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
-            + TOUGHNESS_STR_SQUARE_BARRIER + "))*" + TOUGHNESS_STR_SQUARE_MODIFIER;
+     + TOUGHNESS_STR_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
+     + TOUGHNESS_STR_SQUARE_BARRIER + "))*" + TOUGHNESS_STR_SQUARE_MODIFIER;
     private static final String ENDURANCE_FROM_VITALITY_FORMULA = "{AMOUNT}*"
-            + ENDURANCE_VIT_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
-            + ENDURANCE_VIT_SQUARE_BARRIER + "))*" + ENDURANCE_VIT_SQUARE_MODIFIER;
+     + ENDURANCE_VIT_MODIFIER + "+max(0, ({AMOUNT}*{AMOUNT} -"
+     + ENDURANCE_VIT_SQUARE_BARRIER + "))*" + ENDURANCE_VIT_SQUARE_MODIFIER;
     private static final String ESS_WIS_FORMULA = "{AMOUNT}*" + ESS_WIS_MODIFIER
-            + "+max(0, ({AMOUNT}*{AMOUNT} -" + ESS_WIS_SQUARE_BARRIER + "))*"
-            + ESS_WIS_SQUARE_MODIFIER;
+     + "+max(0, ({AMOUNT}*{AMOUNT} -" + ESS_WIS_SQUARE_BARRIER + "))*"
+     + ESS_WIS_SQUARE_MODIFIER;
     private static final int ATTR_POINTS_PER_LEVEL_INCREASE = 1;
     private static final int MSTR_POINTS_PER_LEVEL_INCREASE = 2;
     private static final Integer ATTR_POINTS_PER_LEVEL_DEFAULT = 5;
     private static final Integer SELLING_PRICE_REDUCTION = 50;
     private static final int MAX_UNIT_LEVEL = 100;
     public static Formula DIVINATION_MAX_SD_FORMULA = new Formula("2+"
-            + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /5+" // WISDOM?
-            + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /2")
-            .getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE,
-                    PARAMS.DIVINATION_MAX_SD_MOD));
+     + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_CAP) + " /5+" // WISDOM?
+     + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.DIVINATION_MASTERY) + " /2")
+     .getAppendedByModifier(StringMaster.getValueRef(KEYS.SOURCE,
+      PARAMS.DIVINATION_MAX_SD_MOD));
 
     public static int getToughnessFromStrength(int amount) {
         return Math.round(amount * TOUGHNESS_STR_MODIFIER);

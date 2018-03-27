@@ -316,8 +316,6 @@ public class HC_PointComp extends G_Panel implements MouseListener {
 
     }
 
-    ;
-
     @Override
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub

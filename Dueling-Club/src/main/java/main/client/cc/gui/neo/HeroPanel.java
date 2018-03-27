@@ -127,7 +127,6 @@ public class HeroPanel extends G_Panel {
                 return IntegrityRule.getDescription(hero);
             }
 
-            ;
         };
         add(integrityText, "@id integrityText, pos center_x integrityBar.y2");
         // xp label

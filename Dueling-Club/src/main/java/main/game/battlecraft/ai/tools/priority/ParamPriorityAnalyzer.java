@@ -124,17 +124,9 @@ public class ParamPriorityAnalyzer extends AiHandler{
                         // TODO ownership!
                         Unit heroObj = (Unit) target;
                         if (!heroObj.checkPassive(UnitEnums.STANDARD_PASSIVES.DARKVISION)) {
-                            if (target.getOwner().isMe()) {
-                                return false;
-                            } else {
-                                return true; // if sneak/tank/brute...
-                            }
+                            return !target.getOwner().isMe();
                         } else {
-                            if (target.getOwner().isMe()) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                            return target.getOwner().isMe();
                         }
                     }
                     return true;
@@ -178,8 +170,6 @@ public class ParamPriorityAnalyzer extends AiHandler{
 //                            .getIntParam(PARAMS.OFF_HAND_ATTACK))
 //                            * target.getIntParam(PARAMS.OFF_HAND_DAMAGE) / 100)
 
-                            ;
-                
 
             }
         }

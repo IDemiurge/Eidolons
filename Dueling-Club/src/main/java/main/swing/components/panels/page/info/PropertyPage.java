@@ -94,10 +94,7 @@ public class PropertyPage extends ValueInfoPage {
         if (p == PROPS.FAVORED_SPELL_GROUPS) {
             return true;
         }
-        if (p == G_PROPS.CLASSIFICATIONS) {
-            return true;
-        }
-        return false;
+        return p == G_PROPS.CLASSIFICATIONS;
     }
 
     private boolean isWrappedText(PROPERTY p) {

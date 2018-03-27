@@ -33,7 +33,7 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GuiStage extends Stage implements StageWithClosable {
+public class GuiStage extends StageX implements StageWithClosable {
 
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;

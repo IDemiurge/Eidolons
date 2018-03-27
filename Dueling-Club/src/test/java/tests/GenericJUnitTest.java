@@ -10,7 +10,7 @@ import org.junit.Before;
  */
 public class GenericJUnitTest {
     @Before
-    public  void  init(){
+    public void init() {
         LogMaster.setOff(true); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(true);
         AI_Manager.setOff(true);

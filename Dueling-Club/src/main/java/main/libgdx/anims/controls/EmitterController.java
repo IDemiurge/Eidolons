@@ -187,7 +187,7 @@ public class EmitterController implements Controller {
                 ListChooser.chooseEnum(EMITTER_VALUE_GROUP.class);
 //        val=new EnumMaster<EMITTER_VALUE_GROUP>().retrieveEnumConst(EMITTER_VALUE_GROUP.class, choice);
 
-        boolean setOrOffset = random ? true : DialogMaster.confirm("Set or Offset?");
+        boolean setOrOffset = random || DialogMaster.confirm("Set or Offset?");
         String value = random ? getRandomValue(choice) : DialogMaster.inputText("");
         if (setOrOffset) {
             last.getEffect().set(choice, value);

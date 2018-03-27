@@ -7,9 +7,9 @@ import main.libgdx.gui.panels.dc.ValueContainer;
  */
 public interface PartyMemberDataSource {
 
-    public ValueContainer getName();
-    public ValueContainer getLevel();
-    public ValueContainer getBackground();
-    public ValueContainer getFirstClass();
-    public ValueContainer getSecondClass();
+    ValueContainer getName();
+    ValueContainer getLevel();
+    ValueContainer getBackground();
+    ValueContainer getFirstClass();
+    ValueContainer getSecondClass();
 }

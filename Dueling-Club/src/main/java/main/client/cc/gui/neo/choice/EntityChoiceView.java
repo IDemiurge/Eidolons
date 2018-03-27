@@ -55,7 +55,7 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
             CharacterCreator.getHeroManager().saveHero(hero);
         }
         if (getPROP() != null) {
-            hero.setProperty(getPROP(), ((Entity) data.get(getSelectedIndex())).getName(), true);
+            hero.setProperty(getPROP(), data.get(getSelectedIndex()).getName(), true);
         }
     }
 

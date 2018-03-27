@@ -112,9 +112,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
     private boolean isRemoveBase(CONTAINER_CONTENTS c, ObjType type) {
         if (c == CONTAINER_CONTENTS.FOOD)
             return false;
-        if (type.getSubGroupingKey().equalsIgnoreCase("Food"))
-            return false;
-        return true;
+        return !type.getSubGroupingKey().equalsIgnoreCase("Food");
     }
 
 

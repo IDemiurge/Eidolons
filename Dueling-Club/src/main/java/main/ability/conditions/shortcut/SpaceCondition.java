@@ -12,7 +12,7 @@ public class SpaceCondition extends MicroCondition {
         boolean result = false;
         try {
             result = DC_Game.game.getRules().getStackingRule().canBeMovedOnto(
-                    (Unit) ref.getSourceObj(), ref.getMatchObj().getCoordinates());
+             ref.getSourceObj(), ref.getMatchObj().getCoordinates());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

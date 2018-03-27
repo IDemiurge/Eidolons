@@ -192,10 +192,7 @@ public class InstantAttackRule {
     }
 
     public static Boolean canMakeInstantAttackAgainst(DC_ActiveObj action) {
-        if (action.isMove()) {
-            return true; // dexterous preCheck ?
-        }
-        return false;
+        return action.isMove();
     }
 
     public static boolean canUnitMakeInstantAttack(Unit unit) {

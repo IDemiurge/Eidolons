@@ -403,7 +403,7 @@ public class DC_ObjInitializer {
                 if (unit.getType().getName().equals(typeName)) {
 
                     if (!DC_Game.game.getRules().getStackingRule().canBeMovedOnto(
-                     (Unit) unit, c)) {
+                     unit, c)) {
                         // TODO tactics?
                         c = Positioner.adjustCoordinate(c, FacingMaster.getRandomFacing()); // direction
                         // preference?

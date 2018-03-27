@@ -37,7 +37,7 @@ public class GdxColorMaster {
     public static final Color YELLOW = getColor(165, 185, 55, 1f);
     public static final Color DARK_ORANGE = getColor(195, 105, 25, 1f);
     public static final Color ORANGE = getColor(225, 135, 55, 1f);
-    public static final Color WHITE = new Color(1,1,1, 1f);
+    public static final Color WHITE = new Color(1, 1, 1, 1f);
     public static final Color GOLDEN_WHITE = getColor(252, 238, 210, 1f);
     public static final Color BRONZE = getColor(175, 115, 25, 1f);
     public static final Color IRON = getColor(125, 100, 55, 1f);
@@ -66,7 +66,8 @@ public class GdxColorMaster {
     public static Color getColor(java.awt.Color c) {
         return new Color(c.getRed(), c.getGreen(), c.getBlue(), 1);
     }
-        public static Color getColor(int r, int b, int g, float a) {
+
+    public static Color getColor(int r, int b, int g, float a) {
         return new Color(r / 100, b / 100, g / 100, a);
     }
 
@@ -104,6 +105,7 @@ public class GdxColorMaster {
         }
         return Color.RED;
     }
+
     public static Color getParamColor(PARAMETER param) {
         if (param instanceof PARAMS) {
             switch (((PARAMS) param)) {
@@ -129,8 +131,8 @@ public class GdxColorMaster {
     }
 
     public static Color getColor(FLAG_COLOR flagColor) {
-        if (flagColor==null )
-        return Color.BROWN;
+        if (flagColor == null)
+            return Color.BROWN;
         switch (flagColor) {
             case BLUE:
                 return Color.BLUE;
@@ -163,18 +165,21 @@ public class GdxColorMaster {
     }
 
     public static Color darker(Color color, float perc) {
-        perc = 1-perc;
-        return  new Color(color.r*perc,color.g*perc,color.b*perc,1);
+        perc = 1 - perc;
+        return new Color(color.r * perc, color.g * perc, color.b * perc, 1);
     }
+
     public static Color lighter(Color color, float perc) {
-        perc = 1+perc;
-        return  new Color(color.r*perc,color.g*perc,color.b*perc,1);
+        perc = 1 + perc;
+        return new Color(color.r * perc, color.g * perc, color.b * perc, 1);
     }
-        public static Color darker(Color color) {
-        return  new Color(color.r*0.7f,color.g*0.7f,color.b*0.7f,1);
+
+    public static Color darker(Color color) {
+        return new Color(color.r * 0.7f, color.g * 0.7f, color.b * 0.7f, 1);
     }
+
     public static Color lighter(Color color) {
-        return  new Color(color.r*1.2f,color.g*1.2f,color.b*1.2f,1);
+        return new Color(color.r * 1.2f, color.g * 1.2f, color.b * 1.2f, 1);
     }
 
     public static Color getColorForTheme(COLOR_THEME color) {

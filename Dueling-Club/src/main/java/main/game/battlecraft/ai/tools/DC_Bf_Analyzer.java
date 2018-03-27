@@ -81,11 +81,8 @@ public class DC_Bf_Analyzer extends BfAnalyzer {
             return false;
         }
         // loop thru enemy units?
-        if (checkAdjacentAttacks(unit)) {
-            return true;
-        }
+        return checkAdjacentAttacks(unit);
 
-        return false;
     }
 
     // should return top priority target

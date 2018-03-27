@@ -118,8 +118,6 @@ public class UnlockDialog extends G_Dialog {
         return true;
     }
 
-    ;
-
     public class UnlockButton extends CustomButton {
         static final int X = 45;
         static final int Y = 30;

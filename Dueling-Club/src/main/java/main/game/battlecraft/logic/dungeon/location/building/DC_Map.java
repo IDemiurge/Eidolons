@@ -294,6 +294,6 @@ public class DC_Map {
     }
 
     public enum BF_OBJ_OWNER {
-        MY, ENEMY, RANDOM, NEUTRAL;
+        MY, ENEMY, RANDOM, NEUTRAL
     }
 }

@@ -150,11 +150,7 @@ if (!ListMaster.isNotEmpty(coordinates))
         if (c.y < y1) {
             return false;
         }
-        if (c.y > y2) {
-            return false;
-        }
-
-        return true;
+        return c.y <= y2;
     }
 
     public static String getCoordinatesStringData(

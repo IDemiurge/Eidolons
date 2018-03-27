@@ -15,11 +15,11 @@ public class DC_GuiManager {
         // DC_ObjComponent.setObjSize(new Dimension(GuiManager.getObjSize(),
         // GuiManager.getObjSize()));
         setBigObjSize(new Dimension(GuiManager.getCellHeight(),
-                GuiManager.getCellHeight()));
+         GuiManager.getCellHeight()));
         cellSize = new Dimension(GuiManager.getCellWidth(),
-                GuiManager.getCellHeight());
+         GuiManager.getCellHeight());
         objSize = new Dimension(GuiManager.getObjSize(),
-                GuiManager.getObjSize());
+         GuiManager.getObjSize());
     }
 
     public static Dimension getObjSize() {

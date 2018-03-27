@@ -15,7 +15,7 @@ public interface FileLogger {
 
     void writeLog(SPECIAL_LOG log);
 
-    public enum SPECIAL_LOG {
+    enum SPECIAL_LOG {
         AI(LOG_CHANNEL.AI_DEBUG, LOG_CHANNEL.AI_DEBUG2),
         VISIBILITY,
         COMBAT(LOG_CHANNEL.GAME_INFO),

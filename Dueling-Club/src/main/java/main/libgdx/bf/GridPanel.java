@@ -31,7 +31,6 @@ import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster;
 import main.libgdx.anims.AnimationConstructor;
-import main.libgdx.anims.particles.lighting.LightingManager;
 import main.libgdx.anims.std.DeathAnim;
 import main.libgdx.anims.std.MoveAnimation;
 import main.libgdx.anims.text.FloatingTextMaster;
@@ -73,26 +72,18 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GridPanel extends Group {
-    private static final String backgroundPath = "UI/custom/grid/GRID_BG_WIDE.png";
-    private static final String emptyCellPath = "UI/cells/Empty Cell v3.png";
-    private static final String emptyCellPathFloor = "UI/cells/Floor.png";
-    private static final String hiddenCellPath = "UI/cells/Hidden Cell v2.png";
-    private static final String highlightCellPath = "UI/cells/Highlight Green Cell v3.png";
-    private static final String unknownCellPath = "UI/cells/Unknown Cell v2.png";
-    private static final String cellBorderPath = "UI\\CELL for 96.png";
+    private static final String emptyCellPath = StrPathBuilder.build(
+     "UI", "cells", "Empty Cell v3.png");
+    private static final String emptyCellPathFloor = StrPathBuilder.build(
+     "UI", "cells", "Floor.png");
     private static final String gridCornerElementPath = StrPathBuilder.build(
      "UI", "bf", "gridCorner.png");
 
     protected TextureRegion emptyImage;
-    protected TextureRegion hiddenImage;
-    protected TextureRegion highlightImage;
-    protected TextureRegion unknownImage;
-    protected TextureRegion cellBorderTexture;
     protected GridCellContainer[][] cells;
     private Map<BattleFieldObject, BaseView> unitMap;
     private int cols;
     private int rows;
-    private LightingManager lightingManager;
     private AnimMaster animMaster;
     private ShadowMap shadowMap;
     private Label fpsLabel;
@@ -131,7 +122,6 @@ public class GridPanel extends Group {
                             uv.setOutline(texture);
                         } else {
                             uv.setOutline(null);
-//                    uv.setAltPortrait();
                         }
                     }
         });
@@ -205,10 +195,6 @@ public class GridPanel extends Group {
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
         this.unitMap = new HashMap<>();
         emptyImage = TextureCache.getOrCreateR(getCellImagePath());
-        hiddenImage = TextureCache.getOrCreateR(hiddenCellPath);
-        highlightImage = TextureCache.getOrCreateR(highlightCellPath);
-        unknownImage = TextureCache.getOrCreateR(unknownCellPath);
-        cellBorderTexture = TextureCache.getOrCreateR(cellBorderPath);
         cornerRegion = TextureCache.getOrCreateR(gridCornerElementPath);
         cells = new GridCellContainer[cols][rows];
 
@@ -494,7 +480,7 @@ public class GridPanel extends Group {
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
              || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
                 BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
-//                if (hero.isMainHero()) TODO this insane feature...
+//                if (hero.isMainHero()) TODO this is an experiment (insane) feature...
 //                    if (hero.isMine()) {
 //                        turnField(event.getType());
 //                    }
@@ -517,12 +503,6 @@ public class GridPanel extends Group {
                 if (!DeathAnim.isOn() || ref.isDebug()) {
                     GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
                 }
-//                else //TODO make it work instead of onFinishEvents!
-//                AnimMaster.getInstance(). onDone(event,portrait ->
-//                GuiEventManager.trigger(DESTROY_UNIT_MODEL,
-//                 new EventCallbackParam(r.getTargetObj())
-//                )                ,  new EventCallbackParam(r.getTargetObj()));
-
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
                 if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), unitMap.get(ref.getSourceObj())))
@@ -533,19 +513,8 @@ public class GridPanel extends Group {
                  unitMap.get(ref.getSourceObj())))
                     moveUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
-            }
-//            if (event.getType() == STANDARD_EVENT_TYPE.UNIT_SUMMONED) {
-//                GuiEventManager.trigger(UNIT_CREATED, new EventCallbackParam(ref.getObj(KEYS.SUMMONED)));
-//                caught = true; now in ObjCreator
-//            }
-
-            else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
+            } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
                 caught = true;
-                /*switch (event.getType().getArg()) {
-                    case "Spellpower":
-                        int a = 10;
-                        break;
-                }*/
             } else if (event.getType().name().startsWith("PROP_")) {
                 caught = true;
             } else if (event.getType().name().startsWith("ABILITY_")) {
@@ -562,15 +531,6 @@ public class GridPanel extends Group {
 //                                if (view.getHpBar( ).getDataSource().canHpBarBeVisible())
                                 view.resetHpBar(new ResourceSourceImpl((BattleFieldObject) event.getRef().getSourceObj()));
                 }
-//                case "Illumination":
-//                        if (lightingManager != null) {
-//                            Obj o = event.getRef().getTargetObj();
-//                            if (o instanceof Unit) {
-//                                lightingManager.updateObject((BattleFieldObject) event.getRef().getTargetObj());
-//                            }
-//                        }
-//                        caught = true;
-//                        break;
                 caught = true;
             }
 
@@ -589,6 +549,7 @@ public class GridPanel extends Group {
         }
     }
 
+    //Maybe as a disorienting effect from a spell?..
     private void turnField(int i) {
         ActorMaster.addRotateByAction(this, getRotation(), getRotation() + i);
 //        for (int x = 0; x < cols; x++) {
@@ -600,8 +561,6 @@ public class GridPanel extends Group {
         unitMap.values().forEach(view -> {
             ActorMaster.addRotateByAction(view, view.getRotation(), view.getRotation() - i);
         });
-//        cells
-
     }
 
     private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
@@ -681,20 +640,23 @@ public class GridPanel extends Group {
                     uv.updateInitiative(p.getRight().getLeft());
                 }
             });
-        }
-        else
-        GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
-            Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
-            GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
-            if (uv == null) {
-                addUnitView(p.getLeft());
-                uv = (GridUnitView) unitMap.get(p.getLeft());
-            }
-            if (uv != null)
-                uv.updateInitiative(p.getRight());
-        });
+        } else
+            GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
+                Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
+                GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
+                if (uv == null) {
+                    addUnitView(p.getLeft());
+                    uv = (GridUnitView) unitMap.get(p.getLeft());
+                }
+                if (uv != null)
+                    uv.updateInitiative(p.getRight());
+            });
         GuiEventManager.bind(UNIT_CREATED, p -> {
             addUnitView((BattleFieldObject) p.get());
+        });
+        GuiEventManager.bind(VALUE_MOD, p -> {
+            FloatingTextMaster.getInstance().
+             createAndShowParamModText(p.get());
         });
 
 
@@ -705,9 +667,7 @@ public class GridPanel extends Group {
     private boolean isVisibleByDefault(BattleFieldObject battleFieldObjectbj) {
         if (battleFieldObjectbj.isMine())
             return true;
-        if (battleFieldObjectbj instanceof Entrance)
-            return true;
-        return false;
+        return battleFieldObjectbj instanceof Entrance;
     }
 
     private void moveUnitView(BattleFieldObject heroObj) {
@@ -725,10 +685,6 @@ public class GridPanel extends Group {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-        if (lightingManager != null) {
-            lightingManager.updatePos(heroObj);
-            lightingManager.updateAll();
-        }
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
@@ -786,9 +742,6 @@ public class GridPanel extends Group {
     public void draw(Batch batch, float parentAlpha) {
 
         super.draw(batch, parentAlpha);
-        if (lightingManager != null) {
-            lightingManager.updateLight();
-        }
 
         if (isHpBarsOnTop())
             for (BattleFieldObject obj : unitMap.keySet()) {
@@ -836,17 +789,6 @@ public class GridPanel extends Group {
 
                     }
             }
-//        int w = GdxMaster.getWidth();
-//        int h = GdxMaster.getHeight();
-        // draw all caches (could be optimized to cull caches outside the camera)
-//TODO TODO
-//        for (SpriteCache cache : this.cacheMap) {
-//            // setup camera to zoom in and out
-//            cache.getProjectionMatrix().setToOrtho2D(64*32*8 - w*zoom*0.5f,-h*zoom*0.5f,w*zoom,h*zoom);
-//            cache.begin();
-//            cache.draw(0); // the cacheId is 0, we know that ahead for this sample
-//            cache.end();
-//        }
     }
 
     @Override
@@ -855,9 +797,6 @@ public class GridPanel extends Group {
             resetVisible();
         }
         super.act(delta);
-//        if (checkResetZRequired()) {
-
-//        }
         if (updateRequired) {
             resetZIndices();
             update();
@@ -866,12 +805,6 @@ public class GridPanel extends Group {
 
     private void update() {
         shadowMap.update();
-//        for (int x = 0; x < cols; x++) {
-//            for (int y = 0; y < rows; y++) {
-//                GridCellContainer cell = cells[x][y];
-//                cell.recalcUnitViewBounds();
-//            }
-//        }
         updateRequired = false;
 
     }
@@ -891,61 +824,20 @@ public class GridPanel extends Group {
 ////                            ((UnitView) view).getmsetmFlickering(true);
 //                            }
 //                        }
-//
 //                    }
 //                }
 //                units.put(((GridUnitView) view), stealth);
 //            }
 //            for (GridUnitView v : units.keySet())
 //                ((UnitView) view).setFlickering(units.get(v));
-
-//TODO if (sub.isVisible())
             if (view.getActions().size == 0) {
                 if (sub.isDead()) {
                     view.setVisible(false);
                     view.remove();
                 }
-//                if (!AI_Manager.isRunning())
-//                    if (!sub.isOverlaying()) {
-//                        GridCellContainer cellContainer =
-//                         cells[sub.getCoordinates().x][rows - sub.getCoordinates().y - 1];
-//                        {
-//                            if (view.getParent() != cellContainer) {
-//                                view.remove();
-//                                cellContainer.addActor(view);
-//                            } }
-//                    }
             }
         }
         resetVisibleRequired = false;
-//sub instanceof Unit && !((Unit)sub).getAI().isOutsideCombat()
-//            if (!sub.isMine()) {
-//                if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.UNKNOWN)
-//                    view.setVisible(false);
-//                else if (sub.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.INVISIBLE)
-//                    view.setVisible(false);
-//                else if (!sub.isWall()) {
-//                    if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
-//                        view.setVisible(false);
-//                    else {
-//                        if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
-//                            view.setVisible(false);
-//                        else if (view instanceof UnitView) {
-//                            if (((UnitView) view).getOutline() != null)
-//                                if (((UnitView) view).getOutline().getTexture().getTextureData().toString().contains("locked")) {
-//                                    view.setVisible(false);
-//                                }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        resetVisibleRequired = false;
-    }
-
-    private boolean checkResetZRequired() {
-        if (hoverObj == null) return true;
-        return !hoverObj.isHovered();
     }
 
     public GridUnitView getHoverObj() {
@@ -958,17 +850,19 @@ public class GridPanel extends Group {
             for (int y = 0; y < rows; y++) {
                 GridCellContainer cell = cells[x][y];
                 List<GridUnitView> views = cell.getUnitViewsVisible();
-//                if (views.size()>1)
+                if (views.isEmpty()) {
+                    cell.setZIndex(0);
+                } else {
+                    cell.setZIndex(y);
 
                 for (GridUnitView sub : views) {
                     if (sub.isHovered()) {
                         hoverObj = sub;
                         cell.setZIndex(Integer.MAX_VALUE);
                         cell.setTopUnitView(sub);
-                        break;
+
                     }
-//                    else
-//                        cell.setZIndex(100+x*rows+y);
+                }
                 }
             }
         }

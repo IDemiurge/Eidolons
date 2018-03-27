@@ -87,7 +87,7 @@ public class AiEnums {
         }
     }
 
-    public static enum CUSTOM_HERO_GROUP {
+    public enum CUSTOM_HERO_GROUP {
         PLAYTEST, ERSIDRIS, EDALAR, TEST,
 
     }
@@ -142,10 +142,7 @@ public class AiEnums {
         }
 
         public boolean isFilterByCanActivate() {
-            if (isBehavior()) {
-                return false;
-            }
-            return true;
+            return !isBehavior();
         } // FOLLOW AT SAFE DISTANCE
 
         public boolean isBehavior() {

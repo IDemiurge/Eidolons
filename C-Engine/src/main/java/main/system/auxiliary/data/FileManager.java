@@ -184,10 +184,7 @@ public class FileManager {
         if (!file.exists()) {
             return false;
         }
-        if (!file.isFile()) {
-            return false;
-        }
-        return true;
+        return file.isFile();
     }
 
     public static boolean isDirectory(String file) {
@@ -493,9 +490,7 @@ public class FileManager {
         files.removeIf(file -> {
             if (!StringMaster.getFormat(file.getName()).equalsIgnoreCase(format))
                 return true;
-            if (!StringMaster.contains(file.getName(), name))
-                return true;
-            return false;
+            return !StringMaster.contains(file.getName(), name);
         });
         return files;
     }

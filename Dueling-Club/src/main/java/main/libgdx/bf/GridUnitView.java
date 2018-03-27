@@ -196,11 +196,7 @@ public class GridUnitView extends UnitView {
             return false;
         if (!isCellBackground() && getHpAlwaysVisible())
             return true;
-        if (!getHpBar().getDataSource().isHpBarVisible())
-            return false;
-
-
-        return true;
+        return getHpBar().getDataSource().isHpBarVisible();
     }
 
     protected void updateVisible() {

@@ -303,10 +303,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.MAGICAL.toString())) {
             return false;
         }
-        if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.SHIELD.toString())) {
-            return false;
-        }
-        return true;
+        return !checkProperty(G_PROPS.WEAPON_TYPE, WEAPON_TYPE.SHIELD.toString());
     }
 
     @Override
@@ -350,10 +347,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         if (isAmmo()) {
             return false;
         }
-        if (isMagical()) {
-            return false;
-        }
-        return true;
+        return !isMagical();
     }
 
     public WEAPON_TYPE getWeaponType() {

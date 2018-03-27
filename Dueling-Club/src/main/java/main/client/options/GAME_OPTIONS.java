@@ -34,8 +34,6 @@ public enum GAME_OPTIONS implements GAME_OPTION {
 
     }
 
-    ;
-
     @Override
     public String getDefaultValue() {
         return defaultValue;

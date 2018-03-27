@@ -215,9 +215,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
         }
         waitForPause();
-        if (exited)
-            return true;
-        return false; //check unit!
+        return exited;
     }
 
     protected boolean checkActionInputValid(ActionInput playerAction) {

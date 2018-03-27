@@ -11,7 +11,6 @@ import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.obj.unit.Unit;
 import main.system.DC_Formulas;
-import main.system.SortMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +124,7 @@ public class DC_Masteries {
         Ref ref = new Ref(hero.getGame(), hero.getId());
         ref.setTarget(hero.getId());
         ref.setBase(true);
+        ref.setQuiet(true);
         new ModifyValueEffect(p, modval, i + "").apply(ref);
     }
 

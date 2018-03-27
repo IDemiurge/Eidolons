@@ -340,7 +340,7 @@ public class DC_ContentManager extends ContentManager {
             return Collections.EMPTY_LIST;
         }
         List<String> valueNames = ContentManager.getValueNamesMap().get(objType);
-         if (valueNames != null)
+        if (valueNames != null)
             return valueNames;
         valueNames = ContentManager.getFullValueList(objType);
 
@@ -480,8 +480,9 @@ public class DC_ContentManager extends ContentManager {
          ContentManager.getValueList()
         );
     }
-        public static void addDefaultValues(Entity entity, boolean dynamic,
-                                            Collection<VALUE> vals) {
+
+    public static void addDefaultValues(Entity entity, boolean dynamic,
+                                        Collection<VALUE> vals) {
         for (VALUE VAL : vals) {
             if (!ContentManager.isValueForOBJ_TYPE(entity.getOBJ_TYPE_ENUM(), VAL)) {
                 continue;
@@ -995,8 +996,9 @@ public class DC_ContentManager extends ContentManager {
         EnumMaster.setALT_CONSTS_CLASS(DC_CONSTS.class);
         // initTypeDynamicValues(); TODO !
     }
+
     public static OBJ_TYPE getTypeForProperty(PROPS prop) {
-        switch (prop){
+        switch (prop) {
             case QUICK_ITEMS:
                 return C_OBJ_TYPE.QUICK_ITEMS;
             case JEWELRY:

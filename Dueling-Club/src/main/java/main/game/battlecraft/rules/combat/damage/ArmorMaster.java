@@ -64,10 +64,7 @@ public class ArmorMaster {
     }
 
     public static boolean isArmorUnequipAllowed(Unit hero) {
-        if (hero.getGame().isSimulation()) {
-            return true;
-        }
-        return false;
+        return hero.getGame().isSimulation();
     }
 
     public int getArmorBlockDamage(Damage damage) {

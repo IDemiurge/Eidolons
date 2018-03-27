@@ -130,7 +130,7 @@ public class Loader {
     }
     private static void initTriggers(List<Node> triggerNodes) {
         for (Node sub : triggerNodes) {
-            Trigger t = (Trigger) ConstructionManager.construct(sub);;
+            Trigger t = (Trigger) ConstructionManager.construct(sub);
             getGame() . getState().addTrigger(t);
         }
     }

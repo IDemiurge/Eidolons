@@ -77,7 +77,7 @@ public class GameControlPanel extends G_Panel {
         OPTIONS(VISUALS.OPTIONS_BUTTON);
         private VISUALS V;
 
-        private GAME_CONTROL(VISUALS v) {
+        GAME_CONTROL(VISUALS v) {
             this.V = (v);
         }
 

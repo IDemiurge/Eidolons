@@ -149,7 +149,7 @@ public class ArenaArcadeMaster {
         Dungeon_Hall(""),;
         String battleData;
 
-        private STANDARD_ARCADE_LEVEL(String battleData) {
+        STANDARD_ARCADE_LEVEL(String battleData) {
             this.battleData = battleData;
         }
     }

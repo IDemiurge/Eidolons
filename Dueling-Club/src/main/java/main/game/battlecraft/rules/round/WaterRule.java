@@ -55,20 +55,14 @@ public class WaterRule extends RoundRule implements ActionRule {
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return true;
         }
-        if (unit.isFlying()) {
-            return true;
-        }
-        return false;
+        return unit.isFlying();
     }
 
     public static boolean canSwim(Unit unit) {
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
-        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL)) {
-            return false;
-        }
-        return true;
+        return !unit.checkClassification(UnitEnums.CLASSIFICATIONS.MECHANICAL);
     }
 
     public static int getWaterMoveApMod(Unit unit) {

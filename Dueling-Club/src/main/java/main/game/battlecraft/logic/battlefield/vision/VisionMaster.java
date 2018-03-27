@@ -173,14 +173,6 @@ public class VisionMaster implements GenericVisionManager {
         return true;
     }
 
-    private void setVisibilityLevel(Set<Obj> controlledUnits) {
-        for (Obj obj : controlledUnits) {
-            DC_Obj target = (DC_Obj) obj;
-            target.setVisibilityLevel(getVisibilityMaster().getUnitVisibilityLevel(
-             getActiveUnit(), target));
-        }
-    }
-
     private void setAlliedVisibility(Set<Obj> controlledUnits) {
         for (Obj obj : controlledUnits) {
             DC_Obj unit = (DC_Obj) obj;
@@ -226,129 +218,105 @@ public class VisionMaster implements GenericVisionManager {
 
     private void setRelativePlayerVisibility(DC_Player player, Collection<? extends Obj> units) {
 
-        boolean invisible = false;
         for (Obj obj : units) {
             DC_Obj target = (DC_Obj) obj;
             if (target instanceof Entrance) {
                 target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
                 continue;
             }
-            if (target instanceof Unit) {
-                if (ExplorationMaster.isExplorationOn() || ((Unit) target).getAI().isOutsideCombat()) {
-                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
-                }
-            }
-//            else
-//                target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
-            if (target instanceof Structure) {
-                if (!((Structure) target).isWall() || !target.isDetectedByPlayer()) {
-                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
-                }
-            }
-            if (DebugMaster.isOmnivisionOn()) {
-                if (player.isMe()) {
-                    target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
-                    continue;
-                }
-            }
-            boolean result = false; // detected or not
-            if (target instanceof Unit) {
-                if (checkInvisible(target)) {
-                    if (target.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.INVISIBLE) {
-                        player.getLastSeenCache().put(target, target.getCoordinates());
-                    }
-                    target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.INVISIBLE);
-                    invisible = true;
-//                     if (!Analyzer.getVisibleEnemies(((Unit) target).getAI()).isEmpty()) {
-//                         ((Unit) target).setUsingStealth(true);
-//                     } else
-//                         ((Unit) target).setUsingStealth(false);
-                    continue;
-                }
-            }
+            UNIT_TO_PLAYER_VISION status = getPlayerVisionStatusForObject(player, target);
+            target.setPlayerVisionStatus(status);
 
-            for (Obj obj1 : player.getControlledUnits()) {
-                if (obj1 != getActiveUnit()) {
-                    continue; //TODO ideally, should check for all allies?
-                }
-                VISIBILITY_LEVEL status = target.getVisibilityLevel();
-//                if (!ExplorationMaster.isExplorationOn())
-//                    if (status==VISIBILITY_LEVEL.CONCEALED){
-//                        result = false;
-//                    }
-                if (
-                 status != VISIBILITY_LEVEL.BLOCKED
-                  && status != VISIBILITY_LEVEL.UNSEEN
+//            TODO last seen displayed as 50% alpha pic
 
-                 ) {
-
-                    if (status == VISIBILITY_LEVEL.CONCEALED) {
-                        if (target instanceof BattleFieldObject) {
-                            if (!((BattleFieldObject) target).isWall()
-                             || !target.isDetectedByPlayer()) {
-                                target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.UNKNOWN);
-                            }
-                        } else
-                            target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.CONCEALED);
-                    } else {
-                        target.setDetected(true);
-//                        if (player.isMe()) {
-                        target.setDetectedByPlayer(true);
-//                        }
-                        if (status == VISIBILITY_LEVEL.CLEAR_SIGHT) {
-                            target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.DETECTED);
-                        } else {
-                            target.setPlayerVisionStatus(UNIT_TO_PLAYER_VISION.KNOWN);
-                        }
-                    }
-                    result = true;
-                    break; // TODO set VL to *max* => Identification Level
-                }
-
+            if (status == UNIT_TO_PLAYER_VISION.INVISIBLE) {
+                //TODO ally-stealth visuals!
             }
-            if (result) {
-                player.getLastSeenCache().put(target, target.getCoordinates());
+        }
+    }
+
+    private UNIT_TO_PLAYER_VISION getPlayerVisionStatusForObject(DC_Player player, DC_Obj target) {
+        UNIT_TO_PLAYER_VISION status = target.getActivePlayerVisionStatus();
+
+        if (target instanceof Unit) {
+            if (ExplorationMaster.isExplorationOn() || ((Unit) target).getAI().isOutsideCombat()) {
+                status = (UNIT_TO_PLAYER_VISION.UNKNOWN);
             } else {
-                if (target.isDetectedByPlayer()) {
-                    if (obj instanceof DC_Cell) {
-                        target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
-                    } else if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
-                        BattleFieldObject unit = (BattleFieldObject) obj;
-                        if (unit.isWall() || unit.isLandscape()) {
-                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
-                        }
-                    }
+                status = target.getActivePlayerVisionStatus();
+            }
+        }
+        if (target instanceof Structure) {
+            if (!((Structure) target).isWall() || !target.isDetectedByPlayer()) {
+                status = (UNIT_TO_PLAYER_VISION.UNKNOWN);
+            }
+        }
+        if (DebugMaster.isOmnivisionOn()) {
+            if (player.isMe()) {
+                return VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
 
+            }
+        }
+        boolean result = false; // detected or not
+        if (target instanceof Unit) {
+            if (checkInvisible(target)) {
+                if (target.getActivePlayerVisionStatus() != UNIT_TO_PLAYER_VISION.INVISIBLE) {
+                    player.getLastSeenCache().put(target, target.getCoordinates());
                 }
+                return (UNIT_TO_PLAYER_VISION.INVISIBLE);
+            }
+        }
+
+        for (Obj obj1 : player.getControlledUnits()) {
+            if (obj1 != getActiveUnit()) {
+                continue; //TODO should check for all allies? will it be slow?
+            }
+            VISIBILITY_LEVEL visibilityLevel = target.getVisibilityLevel();
+
+            if (visibilityLevel != VISIBILITY_LEVEL.BLOCKED
+             && visibilityLevel != VISIBILITY_LEVEL.UNSEEN) {
+
+                if (visibilityLevel == VISIBILITY_LEVEL.CONCEALED) {
+                    if (target instanceof BattleFieldObject) {
+                        if (!((BattleFieldObject) target).isWall()
+                         || !target.isDetectedByPlayer()) {
+                            status = (UNIT_TO_PLAYER_VISION.UNKNOWN);
+                        }
+                    } else
+                        status = (UNIT_TO_PLAYER_VISION.CONCEALED);
+                } else {
+                    target.setDetected(true);
+//                        if (player.isMe()) {
+                    target.setDetectedByPlayer(true);
+//                        }
+                    if (visibilityLevel == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                        status = (UNIT_TO_PLAYER_VISION.DETECTED);
+                    } else {
+                        status = (UNIT_TO_PLAYER_VISION.KNOWN);
+                    }
+                }
+                result = true;
+                break; // TODO set VL to *max* => Identification Level
             }
 
-
         }
-        if (invisible) {
+        if (result) {
+            player.getLastSeenCache().put(target, target.getCoordinates());
+        } else {
+            if (target.isDetectedByPlayer()) {
+                if (target instanceof DC_Cell) {
+                    status = (VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
+                } else if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
+                    BattleFieldObject unit = (BattleFieldObject) target;
+                    if (unit.isWall() || unit.isLandscape()) {
+                        status = (VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
+                    }
+                }
 
+            }
         }
-//                if (target.getVisibilityLevel() != VISIBILITY_LEVEL.BLOCKED) {
-//                    if (player.isMe()) {
-//                        if (obj instanceof DC_Cell) {
-//                            target.setDetectedByPlayer(true);
-//                        }
-//                    else {
-//                        BattleFieldObject unit = (BattleFieldObject) obj;
-//                        if (unit.isWall() || unit.isLandscape()) {
-//                            target.setDetectedByPlayer(true);
-//
-//                        }
-//                    }
-//                    } else
-        //TODO  ???
-//                        if (target.isDetected()
-//                         ) {
-//                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN);
-//                        } else {
-//                            target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
-//                        }
 
 
+        return status;
     }
 
 
@@ -475,9 +443,6 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public Unit getActiveUnit() {
-//        if (activeUnit == null)
-//            return getGame().getManager().getActiveObj();
-//        return activeUnit;
         return ExplorationMaster.isExplorationOn()
          ? getSeeingUnit() :
          game.getTurnManager().getActiveUnit(true);

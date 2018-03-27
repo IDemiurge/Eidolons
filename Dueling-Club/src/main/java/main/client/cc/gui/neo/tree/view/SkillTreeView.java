@@ -123,7 +123,6 @@ public class SkillTreeView extends HT_View {
                                 return image;
                             }
 
-                            ;
                         };
                     }
                 };

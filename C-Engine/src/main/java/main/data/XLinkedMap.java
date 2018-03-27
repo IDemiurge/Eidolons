@@ -2,8 +2,8 @@ package main.data;
 
 import main.system.auxiliary.StringMaster;
 
-import java.util.LinkedHashMap;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
@@ -34,52 +34,50 @@ public class XLinkedMap<E, T> extends LinkedHashMap<E, T> {
         return string;
     }
 
-    // sort method
-
     public T getByIndex(int index) {
         return get(new ArrayList<>(keySet()).get(index));
     }
 
-    @Override
-    public T get(Object key) {
+    @Deprecated
+    public T smartGet(Object key) {
         if (key == null) {
             return null;
         }
         T t = super.get(key);
         if (findClosest)
-        if (t == null) {
-            for (E e : keySet()) {
-                if (e != null) {
-                    if (e.toString().equalsIgnoreCase(key.toString())) {
-                        return super.get(e);
+            if (t == null) {
+                for (E e : keySet()) {
+                    if (e != null) {
+                        if (e.toString().equalsIgnoreCase(key.toString())) {
+                            return super.get(e);
+                        }
                     }
-                }
 
-            }
-            if (key instanceof String) {
-                String string = (String) key;
-                if (t == null) {
-                    t = super.get(string.toUpperCase());
                 }
-                if (t == null) {
-                    t = super.get(string.toLowerCase());
-                }
-                if (t == null) {
-                    String wellFormattedString = StringMaster.getWellFormattedString(string);
-                    t = super.get(wellFormattedString);
-
-                    // s.replace(" ", "")
-
+                if (key instanceof String) {
+                    String string = (String) key;
                     if (t == null) {
-                        if (wellFormattedString.endsWith("s")) {
-                            t = super.get(wellFormattedString.substring(0, string.length() - 1));
-                        } else if (t == null) {
-                            t = super.get(wellFormattedString + "s");
+                        t = super.get(string.toUpperCase());
+                    }
+                    if (t == null) {
+                        t = super.get(string.toLowerCase());
+                    }
+                    if (t == null) {
+                        String wellFormattedString = StringMaster.getWellFormattedString(string);
+                        t = super.get(wellFormattedString);
+
+                        // s.replace(" ", "")
+
+                        if (t == null) {
+                            if (wellFormattedString.endsWith("s")) {
+                                t = super.get(wellFormattedString.substring(0, string.length() - 1));
+                            } else if (t == null) {
+                                t = super.get(wellFormattedString + "s");
+                            }
                         }
                     }
                 }
             }
-        }
         return t;
     }
 

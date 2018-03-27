@@ -122,7 +122,7 @@ public class AnimMaster extends Group {
     }
 
     public void setOff(boolean off) {
-        this.off = off;
+        AnimMaster.off = off;
     }
 
     public Boolean getParallelDrawing() {

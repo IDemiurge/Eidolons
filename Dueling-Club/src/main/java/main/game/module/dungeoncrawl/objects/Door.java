@@ -36,19 +36,13 @@ public class Door extends DungeonObj {
 
     @Override
     public boolean isWall() {
-        if (getState() == DOOR_STATE.OPEN)
-            return false;
-
-            return true;
+        return getState() != DOOR_STATE.OPEN;
     }
 
     @Override
     public boolean isObstructing() {
         if (getState() == DOOR_STATE.OPEN)
             return false;
-        if ( checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
-            return false;
-        }
-        return true;
+        return !checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING);
     }
 }

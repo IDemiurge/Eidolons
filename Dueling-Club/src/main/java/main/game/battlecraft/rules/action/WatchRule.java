@@ -64,20 +64,13 @@ public class WatchRule implements ActionRule {
             // some may have side-vision enough?
             return false;
         }
-        if (PositionMaster.getDistance(watched.getCoordinates(), watcher.getCoordinates()) > watcher
-                .getIntParam(PARAMS.SIGHT_RANGE)) {
-            return false;
-        }
-
-        return true;
+        return PositionMaster.getDistance(watched.getCoordinates(), watcher.getCoordinates()) <= watcher
+         .getIntParam(PARAMS.SIGHT_RANGE);
     }
 
     public static boolean checkActionWatched(DC_ActiveObj action, Unit watcher) {
         // AoO and Defense
-        if (FacingMaster.getSingleFacing(watcher, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-            return true;
-        }
-        return false;
+        return FacingMaster.getSingleFacing(watcher, action.getOwnerObj()) == UnitEnums.FACING_SINGLE.IN_FRONT;
     }
 
     private static boolean checkValidWatchTarget(DC_Obj watched) {
@@ -89,10 +82,7 @@ public class WatchRule implements ActionRule {
         if (watched.isDead()) {
             return false;
         }
-        if (watched.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED) {
-            return false;
-        }
-        return true;
+        return watched.getVisibilityLevel() != VISIBILITY_LEVEL.CONCEALED;
         // if (target.getOwner() != unit.getOwner())
         // if (!target.checkInSightForUnit(unit))
         // return true;

@@ -55,8 +55,6 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return "Year " + year + " of the " + era;
     }
 
-    ;
-
     public String getShortString() {
         return
          // ((day_or_night) ? MORNING : EVENING) +

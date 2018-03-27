@@ -50,8 +50,7 @@ public class PanelActionsDataSource implements
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
         tooltip.setUserObject(new ActionCostSourceImpl(el));
 
-
-        container.addListener(tooltip.getController());
+        tooltip.addTo(container);
         return container;
     }
 

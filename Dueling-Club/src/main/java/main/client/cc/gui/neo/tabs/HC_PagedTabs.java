@@ -38,8 +38,6 @@ public class HC_PagedTabs extends G_PagePanel<HC_Tab> {
         return tabPanel.getPageSize();
     }
 
-    ;
-
     @Override
     protected void resetData() {
         pageData = getPageData();

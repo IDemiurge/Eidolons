@@ -93,7 +93,7 @@ public class ActivesConstructor {
         List<ActiveObj> list = new ArrayList<>(entity.getActives());
         for (Active active : list) {
             for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
-                for (Effect effect : ((Ability) abil).getEffects().getEffects()) {
+                for (Effect effect : abil.getEffects().getEffects()) {
                     if (effect instanceof EffectImpl) {
                         EffectImpl effect2 = (EffectImpl) effect;
                         effect2.setAnimationActive(entity);
@@ -121,7 +121,7 @@ public class ActivesConstructor {
 
         for (Active active : list) {
             for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
-                for (Effect effect : ((Ability) abil).getEffects().getEffects()) {
+                for (Effect effect : abil.getEffects().getEffects()) {
                     // effects.add(((Ability) abil).getEffectsStage()); does it
                     // change
                     // anything?
@@ -147,20 +147,20 @@ public class ActivesConstructor {
             wrappedEffect = wrapEffects(mode, effects, entity);
         } else {
             EFFECTS_WRAP WRAP = new EnumMaster<EFFECTS_WRAP>().retrieveEnumConst(
-                    EFFECTS_WRAP.class, wrap);
+             EFFECTS_WRAP.class, wrap);
             wrappedEffect = wrapEffects(WRAP, effects, entity);
         }
         Targeting targeting = getTargeting(mode, entity);
         if (targeting == null) {
             try {
-                targeting = ((Ability) entity.getActives().get(0).getActives().get(0))
-                        .getTargeting();
+                targeting = entity.getActives().get(0).getActives().get(0)
+                 .getTargeting();
             } catch (Exception e) {
                 // targeting = getDefaultSingleTargeting(entity);TODO necessary?
             }
         }
         if (targeting != null)
-        entity.setTargeting(targeting);
+            entity.setTargeting(targeting);
         Abilities abilities = new Abilities();
         abilities.add(new ActiveAbility(null, wrappedEffect));
         entity.setAbilities(abilities);
@@ -182,7 +182,7 @@ public class ActivesConstructor {
 
     public static Targeting getDefaultSingleTargeting(DC_ActiveObj entity) {
         Conditions conditions = (DC_ConditionMaster
-                .getSelectiveTargetingTemplateConditions(DEFAULT_TARGETING_TEMPLATE));
+         .getSelectiveTargetingTemplateConditions(DEFAULT_TARGETING_TEMPLATE));
         Targeting targeting = new SelectiveTargeting(conditions, new Formula("1"));
         return targeting;
     }
@@ -202,7 +202,7 @@ public class ActivesConstructor {
                 break;
             case BOLT_UNITS:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.SHOT,
-                        ConditionMaster.getBFObjTypesCondition());
+                 ConditionMaster.getBFObjTypesCondition());
                 break;
 
             case SELF:
@@ -278,14 +278,14 @@ public class ActivesConstructor {
                 break;
             case ENEMY_ARMOR:
                 targeting = new TemplateSelectiveTargeting(
-                        SELECTIVE_TARGETING_TEMPLATES.ENEMY_ARMOR);
+                 SELECTIVE_TARGETING_TEMPLATES.ENEMY_ARMOR);
                 break;
             case ENEMY_ITEM:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.ENEMY_ITEM);
                 break;
             case ENEMY_WEAPON:
                 targeting = new TemplateSelectiveTargeting(
-                        SELECTIVE_TARGETING_TEMPLATES.ENEMY_WEAPON);
+                 SELECTIVE_TARGETING_TEMPLATES.ENEMY_WEAPON);
                 break;
             case MY_ARMOR:
                 targeting = new TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES.MY_ARMOR);
@@ -324,11 +324,11 @@ public class ActivesConstructor {
             // SPELL_TAGS.TELEPORT
             if (!obj.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.FLYING.toString())) {
                 if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, AbilityEnums.TARGETING_MODIFIERS.CLEAR_SHOT
-                        .toString())) {
+                 .toString())) {
                     property += AbilityEnums.TARGETING_MODIFIERS.CLEAR_SHOT.toString();
                 }
                 if (!obj.checkProperty(PROPS.TARGETING_MODIFIERS, AbilityEnums.TARGETING_MODIFIERS.SPACE
-                        .toString())) {
+                 .toString())) {
                     property += AbilityEnums.TARGETING_MODIFIERS.SPACE.toString();
                 }
             }
@@ -341,7 +341,7 @@ public class ActivesConstructor {
         for (String mod : StringMaster.open(property)) {
             Condition targetingModConditions;
             TARGETING_MODIFIERS MOD = new EnumMaster<TARGETING_MODIFIERS>().retrieveEnumConst(
-                    TARGETING_MODIFIERS.class, mod);
+             TARGETING_MODIFIERS.class, mod);
             if (MOD == null) {
                 targetingModConditions = ConditionMaster.toConditions(mod);
             } else {
@@ -364,7 +364,7 @@ public class ActivesConstructor {
                         ((GraveCondition) tst.getConditions().get(0)).getConditions().add(c);
                     } catch (Exception e) {
                         main.system.auxiliary.log.LogMaster.log(1,
-                         tst.getConditions().get(0)+ " in "+obj );
+                         tst.getConditions().get(0) + " in " + obj);
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
@@ -455,11 +455,11 @@ public class ActivesConstructor {
         switch (mode) {
             case SPRAY:
                 effects = new WaveEffect(effects, radius, range, allyOrEnemyOnly, true, false,
-                        entity.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ);
+                 entity.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ);
                 break;
             case WAVE:
                 effects = new WaveEffect(effects, radius, range, allyOrEnemyOnly, true, true,
-                        entity.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ); // expanding
+                 entity.checkBool(GenericEnums.STD_BOOLS.APPLY_THRU) ? C_OBJ_TYPE.BF : C_OBJ_TYPE.BF_OBJ); // expanding
                 // -
                 // targeting
                 // modifier?
@@ -525,8 +525,8 @@ public class ActivesConstructor {
         }
         Targeting targeting;
         try {
-            targeting = ((AbilityType) ((AbilityObj) actives.get(0)).getType()).getAbilities()
-                    .getTargeting();
+            targeting = ((AbilityObj) actives.get(0)).getType().getAbilities()
+             .getTargeting();
         } catch (Exception e) {
             targeting = getDefaultSingleTargeting(obj);
         }
@@ -542,7 +542,7 @@ public class ActivesConstructor {
             if (abilType == null) {
                 LogMaster
 
-                        .log(1, "getEffectsFromAbilityType: no such ability - " + abilName);
+                 .log(1, "getEffectsFromAbilityType: no such ability - " + abilName);
                 return null;
             }
         }

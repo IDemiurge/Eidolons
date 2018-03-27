@@ -675,7 +675,7 @@ public class IntegrityRule {
     }
 
     public interface VALUE_LEVEL {
-        public int getBarrier();
+        int getBarrier();
     }
 
 }

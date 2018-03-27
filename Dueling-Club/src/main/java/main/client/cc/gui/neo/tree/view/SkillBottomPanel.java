@@ -35,7 +35,6 @@ public class SkillBottomPanel extends HT_BottomPanel {
                         + DC_MathManager.getFreeMasteryPoints(hero, (PARAMETER) arg);
             }
 
-            ;
         };
         masteryScore = new TextCompDC(VISUALS.SPACE_SMALL) {
             protected String getText() {
@@ -43,7 +42,6 @@ public class SkillBottomPanel extends HT_BottomPanel {
                         + hero.getIntParam(ContentManager.getMasteryScore((PARAMETER) arg));
             }
 
-            ;
         };
 
         masteryPoints = new PoolComp(hero, PARAMS.MASTERY_POINTS, "Mastery Points", false);

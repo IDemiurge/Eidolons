@@ -812,10 +812,7 @@ public abstract class DataModel {
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
         }
-        if (GuiEventManager.isParamEventAlwaysFired(param)) {
-            return true;
-        }
-        return false;
+        return GuiEventManager.isParamEventAlwaysFired(param);
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {

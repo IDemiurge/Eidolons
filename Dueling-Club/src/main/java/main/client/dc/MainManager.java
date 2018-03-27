@@ -508,7 +508,7 @@ public class MainManager implements SequenceManager {
 
         private MAIN_MENU_ITEMS[] items;
 
-        private MAIN_MENU_ITEMS(MAIN_MENU_ITEMS... items) {
+        MAIN_MENU_ITEMS(MAIN_MENU_ITEMS... items) {
             this.setItems(items);
         }
 

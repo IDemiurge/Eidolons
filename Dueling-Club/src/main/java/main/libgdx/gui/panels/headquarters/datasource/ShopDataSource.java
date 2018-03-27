@@ -11,10 +11,10 @@ import java.util.List;
  */
 public interface ShopDataSource {
 
-    public ShopTabbedPanel getTabs();
-    public List<ShopValueContainerList> getGroupLists(String tabName);
-    public List<ValueContainer> getTextures(String groupList);
-    public ValueContainer getName();
-    public ValueContainer getGold();
-    public ValueContainer getIcon();
+    ShopTabbedPanel getTabs();
+    List<ShopValueContainerList> getGroupLists(String tabName);
+    List<ValueContainer> getTextures(String groupList);
+    ValueContainer getName();
+    ValueContainer getGold();
+    ValueContainer getIcon();
 }

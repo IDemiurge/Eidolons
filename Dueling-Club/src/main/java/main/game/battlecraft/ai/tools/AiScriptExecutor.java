@@ -73,7 +73,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             immediate = true;
             arg = options;
         }
-        String[] additionalArgs = null;;
+        String[] additionalArgs = null;
         if (args.length>i) {
             additionalArgs=   new String[args.length-i];
             for (int j = 0; j < args.length; j++) {

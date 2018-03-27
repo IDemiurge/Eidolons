@@ -95,10 +95,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
     private boolean checkRequest(LOOT_PREFERENCE preference, Unit hero, ObjType item) {
 //        if (isRequestsDisabled())
 //            return false;
-        if (preference == LOOT_PREFERENCE.MUST_HAVE) {
-            return true;
-        }
-        return false;
+        return preference == LOOT_PREFERENCE.MUST_HAVE;
     }
 
     private int evaluateLootShare(Unit hero) {

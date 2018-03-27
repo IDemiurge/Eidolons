@@ -368,7 +368,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
                     return PathFinder.getEnginePathPlusNewResourceProject() + RES_FOLDER_KEYS[index];
                 }
 
-                ;
             });
             i++;
         }
@@ -382,7 +381,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
                     return PathFinder.getEnginePathPlusNewResourceProject() + RES_FILE_KEYS[index];
                 }
 
-                ;
             });
             i++;
         }
@@ -396,7 +394,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
                     return PathFinder.getEnginePathPlusNewResourceProject() + MULTI_RES_FILE_KEYS[index];
                 }
 
-                ;
             });
             i++;
         }
@@ -408,7 +405,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
                     return PathFinder.getEnginePathPlusNewResourceProject() + SPRITE_PATH;
                 }
 
-                ;
             });
         }
         for (VALUE val : SFX_IDS) {
@@ -418,7 +414,6 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
                     return PathFinder.getEnginePathPlusNewResourceProject() + SFX_PATH;
                 }
 
-                ;
             });
         }
 

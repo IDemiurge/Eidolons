@@ -21,12 +21,8 @@ import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureManager;
 import main.system.GuiEventManager;
-import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import main.system.options.OptionsMaster;
 
-import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
-import static main.system.GuiEventType.CREATE_RADIAL_MENU;
-import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
+import static main.system.GuiEventType.*;
 
 public class GridCell extends Group implements Borderable {
     protected Image backImage;
@@ -37,6 +33,7 @@ public class GridCell extends Group implements Borderable {
     private TextureRegion borderTexture;
 
     private Label cordsText;
+    private static boolean spriteCacheOn;
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -45,12 +42,12 @@ public class GridCell extends Group implements Borderable {
         setTransform(false);
     }
 
+    public static void setSpriteCacheOn(boolean spriteCacheOn) {
+        GridCell.spriteCacheOn = spriteCacheOn;
+    }
+
     public GridCell init() {
-
         backImage = new Image(backTexture);
-//        bad idea
-//        backImage.setRotation(new Float(90)* RandomWizard.getRandomInt(3));
-
         backImage.setFillParent(true);
         addActor(backImage);
         setSize(GridConst.CELL_W, GridConst.CELL_H);
@@ -78,19 +75,19 @@ public class GridCell extends Group implements Borderable {
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
                     if (isEmpty())
-                    if (isAlt() || isShift() || isControl()
-                        //|| ExplorationMaster.isExplorationOn()
-                     )
-                        try {
-                            if (DefaultActionHandler.
-                             leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
-                                return;
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
+                        if (isAlt() || isShift() || isControl()
+                            //|| ExplorationMaster.isExplorationOn()
+                         )
+                            try {
+                                if (DefaultActionHandler.
+                                 leftClickCell(isShift(), isControl(), getGridX(), getGridY()))
+                                    return;
+                            } catch (Exception e) {
+                                main.system.ExceptionMaster.printStackTrace(e);
+                            }
                     GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
 
-                    GuiEventManager.trigger( RADIAL_MENU_CLOSE );
+                    GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
             }
         });
@@ -98,23 +95,21 @@ public class GridCell extends Group implements Borderable {
         return this;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return true;
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-            if (!DungeonScreen.getInstance().controller.isWithinCamera
-//             (getX(), getY(), getWidth(), getHeight()))
- (this)) {
-                return;
-            }
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-//            if (getGridY()==0 && getGridX()==0)
+        if (!DungeonScreen.getInstance().controller.isWithinCamera
+         (this)) {
+            return;
+        }
+        if (spriteCacheOn ) {
             TextureManager.drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
              getGridX(), getGridY()
             ));
         }
-//         else
         super.draw(batch, parentAlpha);
 
     }
@@ -123,12 +118,9 @@ public class GridCell extends Group implements Borderable {
     public void act(float delta) {
         if (gridX == 0)
             if (gridY == 0)
-                gridX=0;
+                gridX = 0;
         if (!SuperActor.isCullingOff())
-            if (!DungeonScreen.getInstance().controller.isWithinCamera(
-//             getX(), getY(),
-//             2*getWidth(), 2*getHeight())
-             (this))
+            if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
              ) {
                 return;
             }
@@ -142,21 +134,22 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="
                   + DC_Game.game.getVisionMaster().getGammaMaster().
                   getGammaForCell(getGridX(), getGridY())
-                 + "\n illumination="
-                 + cell.getIntParam(PARAMS.ILLUMINATION)
-//                  + "\n" + cell.getVisibilityLevel()
-//                   +cell.getOutlineType()==null ? "" : ("\n" + cell.getOutlineType())
-//                  + cell.getActivePlayerVisionStatus()==null ? "" :("\n" +
-//                  cell.getActivePlayerVisionStatus())
+                  + "\n illumination="
+                  + cell.getIntParam(PARAMS.ILLUMINATION)
+                 /*             Additional Debug Info
 
-
-//                 +"\n gamma="
-//                 + DC_Game.game.getVisionMaster().getGammaMaster().
-//                 getGammaForCell(getGridX(), getGridY())+"\n Illumination="
-//                 + DC_Game.game.getVisionMaster().getIlluminationMaster().
-//                 getIllumination(getGridX(), getGridY()))+"\n gamma="
-//                 + DC_Game.game.getVisionMaster().getGammaMaster().
-//                 getGammaForCell(getGridX(), getGridY())
+                  + "\n" + cell.getVisibilityLevel()
+                   +cell.getOutlineType()==null ? "" : ("\n" + cell.getOutlineType())
+                  + cell.getActivePlayerVisionStatus()==null ? "" :("\n" +
+                  cell.getActivePlayerVisionStatus())
+                 +"\n gamma="
+                 + DC_Game.game.getVisionMaster().getGammaMaster().
+                 getGammaForCell(getGridX(), getGridY())+"\n Illumination="
+                 + DC_Game.game.getVisionMaster().getIlluminationMaster().
+                 getIllumination(getGridX(), getGridY()))+"\n gamma="
+                 + DC_Game.game.getVisionMaster().getGammaMaster().
+                 getGammaForCell(getGridX(), getGridY())
+                 */
                 );
                 cordsText.setPosition(0, getHeight() / 2 - cordsText.getHeight() / 2);
 

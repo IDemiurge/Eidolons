@@ -76,10 +76,7 @@ public class LibraryManager {
         if (hero.checkProperty(PROPS.DIVINED_SPELLS, type.getName())) {
             return true;
         }
-        if (hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName())) {
-            return true;
-        }
-        return false;
+        return hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName());
     }
 
     public static DC_SpellObj getSpellFromHero(Unit hero, String name) {

@@ -3,6 +3,7 @@ package main.io;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 import main.ArcaneTower;
+import main.gui.GatewayWindow;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.system.graphics.GuiManager;
@@ -53,7 +54,7 @@ public class AT_Keys implements HotkeyListener {
                 }
                 break;
             case 2:
-                window = ArcaneTower.getGateWindow().getWindow();
+                window = GatewayWindow.getWindow();
                 GuiManager.toggleVisible(window);
                 GuiManager.toggleFocus(window);
                 break;

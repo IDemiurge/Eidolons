@@ -197,11 +197,8 @@ public class TravelAction extends MoveToAction {
     }
 
     private boolean check(ALPHA_MAP mapType, float x, float y) {
-        if (master.check(mapType, x, y)) {
-            return true;
-        }
+        return master.check(mapType, x, y);
 
-        return false;
     }
 
 }

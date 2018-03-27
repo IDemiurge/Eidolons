@@ -182,7 +182,7 @@ public class AttackOfOpportunityRule {
             if (distance > getAoOMaxDistance(unit, active)) {
                 return null;
             }
-            if (FacingMaster.getSingleFacing(unit, (Unit) active.getOwnerObj()) == UnitEnums.FACING_SINGLE.BEHIND) {
+            if (FacingMaster.getSingleFacing(unit, active.getOwnerObj()) == UnitEnums.FACING_SINGLE.BEHIND) {
                 return null; // vigilance?
             }
             if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
@@ -288,19 +288,13 @@ public class AttackOfOpportunityRule {
                 UnitEnums.STANDARD_PASSIVES.DEXTEROUS.getName())) {
             return false;
         }
-        if (active.checkProperty(PROPS.STANDARD_ACTION_PASSIVES, ActionEnums.STANDARD_ACTION_PASSIVES.DEXTEROUS
-                .toString())) {
-            return false;
-        }
-        return true;
+        return !active.checkProperty(PROPS.STANDARD_ACTION_PASSIVES, ActionEnums.STANDARD_ACTION_PASSIVES.DEXTEROUS
+         .toString());
 
     }
 
     private static boolean checkSpell(DC_ActiveObj active) {
-        if (active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.INSTANT.toString())) {
-            return false;
-        }
-        return true;
+        return !active.checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.INSTANT.toString());
     }
 
     private static boolean checkSpecial(DC_ActiveObj active) {
@@ -310,7 +304,7 @@ public class AttackOfOpportunityRule {
 
     private static boolean checkSource(DC_ActiveObj active) {
         try {
-            Unit source = (Unit) active.getOwnerObj();
+            Unit source = active.getOwnerObj();
             // if (!source.canAct()) a good idea, but there is a bug in it I
             // guess
             if (source.isImmobilized()) {

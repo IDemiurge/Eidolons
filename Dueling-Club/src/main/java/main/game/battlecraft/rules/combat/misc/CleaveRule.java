@@ -131,10 +131,7 @@ public class CleaveRule {
         if (result) {
             result = !currentTarget.isDead();
         }
-        if (result) {
-            return false;
-        }
-        return true;
+        return !result;
 
     }
 

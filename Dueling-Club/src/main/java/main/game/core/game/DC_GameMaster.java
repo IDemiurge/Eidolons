@@ -206,7 +206,7 @@ public class DC_GameMaster extends GameMaster {
         if (list.isEmpty()) {
             return null;
         }
-        return (Unit) list.iterator().next();
+        return list.iterator().next();
 //         getGame().getBattleField().getObj(coordinates);
     }
 

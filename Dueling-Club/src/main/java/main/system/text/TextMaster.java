@@ -304,10 +304,7 @@ public class TextMaster {
         if (StringMaster.getStringBeforeNumeralsAndSymbols(name).equalsIgnoreCase("descr")) {
             return true;
         }
-        if (StringMaster.getStringBeforeNumeralsAndSymbols(name).equalsIgnoreCase("description")) {
-            return true;
-        }
-        return false;
+        return StringMaster.getStringBeforeNumeralsAndSymbols(name).equalsIgnoreCase("description");
     }
 
     private static boolean checkSpecialFileName(String name) {
@@ -330,10 +327,7 @@ public class TextMaster {
         if (beforeNumeralsAndSymbols.contains("meta")) {
             return false;
         }
-        if (beforeNumeralsAndSymbols.contains("re")) {
-            return false;
-        }
-        return true;
+        return !beforeNumeralsAndSymbols.contains("re");
     }
 
     public static void mergeOdtFiles(String path, String prefix, String newName, boolean recursive) {

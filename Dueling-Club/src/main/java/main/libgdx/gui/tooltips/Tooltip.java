@@ -7,13 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import main.entity.Entity;
 import main.libgdx.GdxMaster;
 import main.libgdx.gui.panels.dc.TablePanel;
+import main.libgdx.stage.StageX;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     protected boolean showing;
-    protected  ToolTipManager manager;
+    protected ToolTipManager manager;
     protected Actor actor;
 
     public Tooltip(Actor actor) {
@@ -76,6 +77,12 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {
+        if (checkGuiStageBlocking())
+        {
+            onMouseExit(event, x, y, -1, null);
+            return;
+        }
+
         if (showing) {
             return;
         }
@@ -83,13 +90,29 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         showing = true;
     }
 
+    private boolean checkGuiStageBlocking() {
+        if (this.actor != null && getManager() != null)
+            if (this.actor.getStage() != getManager().getStage()) {
+                Actor actor = ((StageX) getManager().getStage()).getMouseOverActor();
+                if (actor != null) {
+                    return true;
+                }
+            }
+        return false;
+    }
+
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 //        updateRequired = true;
+        if (checkGuiStageBlocking()) {
+            return;
+        }
         showing = true;
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
     }
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+//        if (checkGuiStageBlocking())
+//            return;
         if (event != null) {
             if (!checkActorExitRemoves(toActor))
                 return;
@@ -120,13 +143,11 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     }
 
     protected boolean checkActorExitRemoves(Actor toActor) {
-        if (actor==null )
+        if (actor == null)
             return true;
-        if (toActor==actor)
+        if (toActor == actor)
             return false;
-        if (GdxMaster.getAncestors(toActor).contains(actor))
-            return false;
-        return true;
+        return !GdxMaster.getAncestors(toActor).contains(actor);
     }
 
     public Entity getEntity() {
@@ -139,6 +160,11 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     public void setManager(ToolTipManager manager) {
         this.manager = manager;
+    }
+
+    public void addTo(Actor container) {
+        actor=container;
+        container.addListener(getController());
     }
 //
 //    @Override

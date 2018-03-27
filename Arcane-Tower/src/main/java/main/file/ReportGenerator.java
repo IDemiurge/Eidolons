@@ -110,6 +110,6 @@ public class ReportGenerator {
     }
 
     public enum REPORT_TYPE {
-        SESSION, DAILY, WEEKLY, MILESTONE;
+        SESSION, DAILY, WEEKLY, MILESTONE
     }
 }

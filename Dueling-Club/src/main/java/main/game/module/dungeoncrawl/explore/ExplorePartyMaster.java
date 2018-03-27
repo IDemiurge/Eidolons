@@ -158,9 +158,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
     protected boolean checkAttached(Unit unit) {
         if (unit.getCoordinates().equals(mainHero.getCoordinates()))
             return true;
-        if (unit.getCoordinates().isAdjacent(mainHero.getCoordinates()))
-            return true;
-        return false;
+        return unit.getCoordinates().isAdjacent(mainHero.getCoordinates());
     }
 
 
@@ -178,10 +176,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
         if (!move.canBeActivated()) {
             return false;
         }
-        if (!move.canBeTargeted()) {
-            return false;
-        }
-        return true;
+        return move.canBeTargeted();
     }
 
     protected boolean isFollowOn(Unit sub) {

@@ -58,8 +58,6 @@ public class ActionListItem extends ListItem<Entity> {
         return new ImageIcon(buffered);
     }
 
-    ;
-
     private void paintDecorations(Graphics g) {
         if (action != null) {
             String mode = action.getOwnerObj().getActionMode(action);

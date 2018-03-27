@@ -26,13 +26,13 @@ public class EngineEmulator {
             ScreenData screenData = new ScreenData(((ScreenData) obj.get()), IntroSceneFactory::getDemoIntro);
             GuiEventManager.trigger(SWITCH_SCREEN, screenData);
             executorService.schedule(() ->
-                            GuiEventManager.trigger(SCREEN_LOADED, screenData)
-                    , 5000, TimeUnit.MILLISECONDS);
+              GuiEventManager.trigger(SCREEN_LOADED, screenData)
+             , 5000, TimeUnit.MILLISECONDS);
         });
 
         MainMenuScreenData data = isFirstRun ?
-                new MainMenuScreenData("", IntroSceneFactory::getIntroStage)
-                : new MainMenuScreenData("");
+         new MainMenuScreenData("", IntroSceneFactory::getIntroStage)
+         : new MainMenuScreenData("");
 
         scheduleLoad(data);
 

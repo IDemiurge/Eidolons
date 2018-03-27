@@ -79,8 +79,6 @@ public class DungeonChoiceView extends EntityChoiceView {
         return;
     }
 
-    ;
-
     @Override
     protected void applyChoice() {
         hero.getGame().getDungeonMaster().getInitializer().

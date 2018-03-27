@@ -18,22 +18,25 @@ public class FastDcTest {
     protected DC_Game game;
 
 
-    protected  String getDungeonPath() {
+    protected String getDungeonPath() {
         return null;
     }
-    protected  String getHeroParty() {
+
+    protected String getHeroParty() {
         return null;
     }
-    protected  String getEnemyParty() {
+
+    protected String getEnemyParty() {
         return null;
     }
+
     @Before
     public void init() {
         LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(isGraphicsOff());
 
         FAST_DC.main(new String[]{
-         FAST_DC.PRESET_OPTION_ARG+ StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
+         FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
          getHeroParty(),
          getEnemyParty(),
          getDungeonPath()

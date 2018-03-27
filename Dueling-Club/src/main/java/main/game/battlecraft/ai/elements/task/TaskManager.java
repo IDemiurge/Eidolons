@@ -111,7 +111,7 @@ public class TaskManager extends AiHandler {
         if (ai.getCurrentOrder() != null)
             if (ai.getCurrentOrder().getArg() != null)
                 return new ArrayList<>(
-                 Arrays.asList(new Task[]{new Task(ai, goal, ai.getCurrentOrder().getArg())}));
+                 Arrays.asList(new Task(ai, goal, ai.getCurrentOrder().getArg())));
 
         List<Integer> ids = new ArrayList<>();
         List<? extends DC_Obj> targets = new ArrayList<>();

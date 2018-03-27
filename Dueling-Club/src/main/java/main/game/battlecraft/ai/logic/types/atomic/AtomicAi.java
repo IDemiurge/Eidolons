@@ -479,10 +479,7 @@ public class AtomicAi extends AiHandler {
         minDistance += average / p;
 
 
-        if (minDistance > maxDistance) {
-            return true;
-        }
-        return false;
+        return minDistance > maxDistance;
     }
 
 

@@ -63,8 +63,7 @@ public class Dungeon extends LightweightEntity {
 
     public String toXml() {
         String xml = XML_Converter.wrap("Name", getType().getName());
-        ;
-//        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
+        //        xml += XML_Converter.wrap(PARAMS.BF_WIDTH.getName(), getCellsX() + "");
 //        xml += XML_Converter.wrap(PARAMS.BF_HEIGHT.getName(), getCellsY() + "");
         xml +=
          TypeBuilder.getAlteredValuesXml(this, getType());
@@ -246,8 +245,7 @@ public class Dungeon extends LightweightEntity {
     }
 
     private boolean isDaytime() {
-        if (isNight()) return false;
-        return true;
+        return !isNight();
 //        return getGame().getState().getRound()/roundsPerCycle%2==0;
     }
 

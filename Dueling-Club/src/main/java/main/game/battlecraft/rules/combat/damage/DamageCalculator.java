@@ -152,10 +152,7 @@ public class DamageCalculator {
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
         }
-        if (0 >= unit.getIntParam(PARAMS.C_TOUGHNESS)) {
-            return true;
-        }
-        return false;
+        return 0 >= unit.getIntParam(PARAMS.C_TOUGHNESS);
     }
 
     public static boolean isUnblockable(Ref ref) {
@@ -210,10 +207,7 @@ public class DamageCalculator {
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
         }
-        if (damage >= targetObj.getIntParam(PARAMS.C_ENDURANCE)) {
-            return true;
-        }
-        return false;
+        return damage >= targetObj.getIntParam(PARAMS.C_ENDURANCE);
     }
 
     public static List<Damage> getBonusDamageList(Ref ref, DAMAGE_CASE CASE) {

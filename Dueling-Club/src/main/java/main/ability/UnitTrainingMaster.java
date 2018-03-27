@@ -18,7 +18,7 @@ public class UnitTrainingMaster {
     private static final int DEFAULT_CASTER_XP_MOD = 60;
     private static boolean random;
     private static boolean shopOn = true;
-    private static boolean spellsOn=true;
+    private static boolean spellsOn = true;
     private static boolean skillsOn;
 
     static {
@@ -28,9 +28,9 @@ public class UnitTrainingMaster {
 
     public static void train(Unit unit) {
         if (FAST_DC.isRunning())
-            return ;
+            return;
         if (CoreEngine.isFastMode())
-            return ;
+            return;
 //        if (!FAST_DC.getLauncher().getFAST_MODE()) {
 //            if (CoreEngine.isGraphicTestMode()) {
 //                return;

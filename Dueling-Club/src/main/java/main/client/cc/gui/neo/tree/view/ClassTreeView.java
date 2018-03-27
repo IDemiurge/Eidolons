@@ -66,7 +66,6 @@ public class ClassTreeView extends HT_View {
                         return !super.isBackgroundVisuals();
                     }
 
-                    ;
                 };
                 int index = 0;
                 tab = new HC_Tab(classGroup.getName(), comp, index) {
@@ -90,7 +89,6 @@ public class ClassTreeView extends HT_View {
                                 return image;
                             }
 
-                            ;
                         };
                     }
                 };

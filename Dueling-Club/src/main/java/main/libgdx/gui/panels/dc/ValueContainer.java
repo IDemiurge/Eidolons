@@ -188,7 +188,7 @@ public class ValueContainer extends TablePanel {
                 text.replace("Chance", "");
                 if (valueContainer.getActor() != null) {
                     if (valueContainer.getActor() instanceof Label) {
-                        final Label actor = (Label) valueContainer.getActor();
+                        final Label actor = valueContainer.getActor();
                         actor.getText().append("%");
                     }
                 }
@@ -200,7 +200,7 @@ public class ValueContainer extends TablePanel {
         if (!(valueContainer.getActor() instanceof Label)) {
             valueContainer.setActor(new Label(val, StyleHolder.getDefaultLabelStyle()));
         } else {
-            ((Label) valueContainer.getActor()).setText(val);
+            valueContainer.getActor().setText(val);
         }
     }
 

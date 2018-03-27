@@ -8,11 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 10/30/2017.
- *
+ * <p>
  * move unit around only on inside/outside and keep checking that the cells remain undetected
  * on outside/inside. Then at the end, check that all walls are Known...
  * Advanced: engagement test!
- *
  */
 public class JUnitDetectionTest extends JUnitClearshotTest {
     @Override

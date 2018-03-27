@@ -104,7 +104,7 @@ public class ActorMaster {
 //            Actions.sequence(in, out, remove);
             RemoveActorAction r = new RemoveActorAction();
             r.setTarget(actor);
-            sequence = Actions.sequence(in, out,r);
+            sequence = Actions.sequence(in, out, r);
         } else {
             sequence = Actions.sequence(in, out);
         }
@@ -158,6 +158,7 @@ public class ActorMaster {
         actor.addAction(action);
         action.setTarget(actor);
     }
+
     public static MoveToAction getMoveToAction(float x, float y, float v) {
         MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);
@@ -167,6 +168,15 @@ public class ActorMaster {
 
     public static void addScaleAction(Actor actor, float scale, float v) {
         addScaleAction(actor, scale, scale, v);
+    }
+
+    public static void addScaleActionCentered(Actor actor, float scaleX,
+                                              float scaleY, float v) {
+        addScaleAction(actor, scaleX, scaleY, v);
+        actor.getScaleX();
+        float x =actor.getX() -(scaleX-actor.getScaleX())*actor.getWidth()/2;
+        float y =actor.getY() -(scaleY-actor.getScaleY())*actor.getHeight()/2;
+        addMoveToAction(actor, x, y, v);
     }
         public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
         ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);// new ScaleToAction();

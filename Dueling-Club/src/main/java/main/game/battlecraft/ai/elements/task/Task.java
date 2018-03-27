@@ -21,7 +21,6 @@ public class Task {
         WAIT,
         RESTORATION, //"Restoration"
         ;
-        ;
 
     }
     // a more concrete directive than Goal; from which Actions can be derived

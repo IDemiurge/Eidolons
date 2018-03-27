@@ -125,7 +125,6 @@ public abstract class ChoiceView<E> extends G_Panel {
                 return FontMaster.getFont(FONT.AVQ, getInfoFontSize(), Font.PLAIN);
             }
 
-            ;
         }, getInfoHeaderPosition());
 
     }

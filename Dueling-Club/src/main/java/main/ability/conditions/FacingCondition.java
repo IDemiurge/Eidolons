@@ -81,9 +81,9 @@ public class FacingCondition extends ConditionImpl {
                                 .getDegrees();
                         boolean left = degrees > degrees2;
                         if (left) {
-                            return left_right ? true : false;
+                            return left_right;
                         }
-                        return !left_right ? true : false;
+                        return !left_right;
                     }
                 }
             }

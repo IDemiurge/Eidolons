@@ -144,11 +144,7 @@ public class HeroCreator {
         }
 
         // if stranger?
-        if (!doChoice(PRINCIPLES.class, G_PROPS.PRINCIPLES)) {
-            return false;
-        }
-
-        return true;
+        return doChoice(PRINCIPLES.class, G_PROPS.PRINCIPLES);
 
     }
 

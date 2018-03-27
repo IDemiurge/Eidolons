@@ -252,7 +252,7 @@ if (sequence.isEmpty())
         ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
         ClearShotCondition.clearCache();
         source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
-        DC_Obj target = (DC_Obj) source.getGame().getCellByCoordinate(c);
+        DC_Obj target = source.getGame().getCellByCoordinate(c);
         target.getGame().getVisionMaster().getGammaMaster().clearCache();
         target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);

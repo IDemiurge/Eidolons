@@ -29,18 +29,18 @@ public class GameOptions extends DataUnit<GAME_OPTIONS> {
     }
 
     public enum MAP_TYPE {
-        STANDARD;
+        STANDARD
 
     }
 
     public interface GAME_OPTION {
-        public String getToolTip();
+        String getToolTip();
 
         String getDefaultValue();
 
-        public String getName();
+        String getName();
 
-        public Object[] getOptions();
+        Object[] getOptions();
     }
 
 }

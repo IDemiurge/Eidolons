@@ -137,11 +137,8 @@ public class RuleMaster implements Controller {
         return true;
     }
         public static boolean isRuleTestOn(RULE rule) {
-        if (BooleanMaster.isTrue(mapTest.get(rule))) {
-            return true;
+            return BooleanMaster.isTrue(mapTest.get(rule));
         }
-        return false;
-    }
 
     public static boolean isRuleOn(RULE rule) {
         if (ExplorationMaster.isExplorationOn()) {

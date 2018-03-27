@@ -84,7 +84,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private boolean wait(float timeInSeconds, boolean rest) {
-        if (!master.isExplorationOn())
+        if (!ExplorationMaster.isExplorationOn())
             return false;
         if (!new RestCondition().preCheck(new Ref())) {
             return false;

@@ -11,7 +11,7 @@ public class Speeches implements SpeechInterface{
     List<SpeechInterface> list;
 
     public Speeches(SpeechInterface... array) {
-        this.list = new ArrayList<>(Arrays.asList(array));;
+        this.list = new ArrayList<>(Arrays.asList(array));
     }
 
     public List<SpeechInterface> getList() {

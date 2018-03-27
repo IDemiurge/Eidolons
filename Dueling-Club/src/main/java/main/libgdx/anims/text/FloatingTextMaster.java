@@ -5,11 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.ability.effects.common.ModifyStatusEffect;
 import main.ability.effects.oneshot.mechanic.ModeEffect;
+import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
 import main.entity.Entity;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.BattleFieldObject;
+import main.entity.obj.Obj;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.combat.damage.Damage;
 import main.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -20,7 +23,9 @@ import main.libgdx.StyleHolder;
 import main.libgdx.anims.Anim;
 import main.libgdx.anims.AnimationConstructor.ANIM_PART;
 import main.libgdx.anims.CompositeAnim;
+import main.libgdx.bf.BaseView;
 import main.libgdx.bf.GridMaster;
+import main.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.Producer;
@@ -29,6 +34,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.config.ConfigKeys;
 import main.system.config.ConfigMaster;
 import main.system.images.ImageManager;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -67,12 +74,26 @@ public class FloatingTextMaster {
                 return GdxColorMaster.getParamColor(cost.getPayment().getParamToPay());
             case BATTLE_COMMENT:
                 return GdxColorMaster.GOLDEN_WHITE;
+            case PARAM_MOD:
+                Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
+                return (pair.getValue() > 0)
+                 ? GdxColorMaster.GOLDEN_WHITE
+                 : GdxColorMaster.RED;
+
         }
         return Color.RED;
     }
 
     private String getImage(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case PARAM_MOD: {
+                Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
+                String path = ImageManager.getValueIconPath(pair.getKey());
+                if (ImageManager.isImage(path)) {
+                    return path;
+                }
+                return null;
+            }
             case BONUS_DAMAGE:
                 return ImageManager.getDamageTypeImagePath(
                  String.valueOf(((Damage) arg).getDmgType().getName()), true);
@@ -95,6 +116,12 @@ public class FloatingTextMaster {
 
     private String getText(Entity active, TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case PARAM_MOD: {
+                Pair<PARAMETER, Integer> pair = (Pair<PARAMETER, Integer>) arg;
+                if (pair.getValue() > 0)
+                    return "+" + pair.getValue();
+                return pair.getValue() + "";
+            }
             case CANNOT_ACTIVATE:
                 DC_ActiveObj activeObj = (DC_ActiveObj) active;
                 return activeObj.getCosts().getReasonsString();
@@ -307,12 +334,33 @@ public class FloatingTextMaster {
         if (entity instanceof BattleFieldObject) {
             Vector2 v = GridMaster.getCenteredPos(((BattleFieldObject) entity).getCoordinates());
             text.setPosition(v);
-        }
- else {
+        } else {
             if (entity instanceof DC_ActiveObj) {
                 Vector2 v = GridMaster.getCenteredPos(
-                 ((DC_ActiveObj) entity).getOwnerObj( ).getCoordinates());
+                 ((DC_ActiveObj) entity).getOwnerObj().getCoordinates());
                 text.setPosition(v);
+            }
+        }
+        GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
+    }
+
+    public void createAndShowParamModText(Object o) {
+        Pair<PARAMETER, Ref> pair = (Pair<PARAMETER, Ref>) o;
+        Entity active = pair.getValue().getObj(KEYS.ACTIVE);
+        FloatingText text = getFloatingText(active,
+         TEXT_CASES.PARAM_MOD,
+         new ImmutablePair<>(pair.getKey(), pair.getValue().getAmount()));
+        Obj target = active.getRef().getTargetObj();
+        if (target != null) {
+            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(target);
+            if (view != null) {
+                Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
+                text.setPosition(
+                 v.x,
+                 v.y
+                );
+
+//                view.localToParentCoordinates()
             }
         }
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
@@ -338,7 +386,7 @@ public class FloatingTextMaster {
         ATTACK_INSTANT,
 
         ROLL,
-        PARAM_GAIN,
+        PARAM_MOD,
         COSTS(true, (e) -> {
             DC_ActiveObj a = (DC_ActiveObj) e.getRef().getActive();
             List<Cost> costs = a.getCosts().getCosts();
@@ -365,17 +413,17 @@ public class FloatingTextMaster {
 
         BATTLE_COMMENT,
 
-        HIT{
+        HIT {
             @Override
             public Object[] getArgs(Event e) {
-                  return new Object[]{
+                return new Object[]{
                  e.getRef().getAmount()
                 };
             }
         }, DURABILITY_LOSS;
         public boolean atOrigin;
-        private Producer<Event, Object[]> argProducer;
         String name = StringMaster.getWellFormattedString(name());
+        private Producer<Event, Object[]> argProducer;
 
         TEXT_CASES() {
 

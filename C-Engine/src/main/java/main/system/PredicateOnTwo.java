@@ -6,5 +6,5 @@ package main.system;
     @FunctionalInterface
     public interface PredicateOnTwo<T, E> {
 
-        public boolean is(T t, E e);
+        boolean is(T t, E e);
 }

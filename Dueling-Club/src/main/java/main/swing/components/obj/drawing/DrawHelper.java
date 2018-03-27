@@ -120,10 +120,7 @@ public class DrawHelper {
             if (!Eidolons.game.getVisionMaster().checkDetectedEnemy((DC_Obj) obj)) {
                 return false;
             }
-            if (unit.isBfObj()) {
-                return false;
-            }
-            return true;
+            return !unit.isBfObj();
             // !unit.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" +
             // BF_OBJECT_TAGS.ASSYMETRICAL)
         }

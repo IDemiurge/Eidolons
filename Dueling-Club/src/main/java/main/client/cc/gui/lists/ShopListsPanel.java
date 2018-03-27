@@ -71,12 +71,9 @@ public class ShopListsPanel extends VendorListsPanel {
         if (t.getSubGroupingKey().equalsIgnoreCase(group)) {
             return true;
         }
-        if (t.getProperty(shop.getShopType().getFilterProp()).equalsIgnoreCase(
-                group)) {
-            return true;
-        }
+        return t.getProperty(shop.getShopType().getFilterProp()).equalsIgnoreCase(
+         group);
 
-        return false;
     }
 
     protected void addTab(String title) {

@@ -450,7 +450,7 @@ public class LE_PlanPanel extends G_Panel {
                 treePanel.refresh();
                 break;
             case MIRROR:
-                LevelEditor.getObjMaster().mirror();
+                LE_ObjMaster.mirror();
                 break;
             // case REMOVE:
             // if (alt)

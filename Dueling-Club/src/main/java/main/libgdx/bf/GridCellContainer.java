@@ -81,7 +81,7 @@ public class GridCellContainer extends GridCell {
             float scaleX = getObjScale();
             float scaleY = getObjScale();
 
-            actor.setPosition(getViewX(offset ,i), getViewY(offset, i, getUnitViewCountEffective() ));
+            actor.setPosition(getViewX(offset, i), getViewY(offset, i, getUnitViewCountEffective()));
 //             offset * ((getUnitViewCountEffective() - 1) - i));
 
             actor.setScale(scaleX, scaleY);
@@ -102,17 +102,18 @@ public class GridCellContainer extends GridCell {
      , float perImageOffsetY, int i) {
         perImageOffsetX = perImageOffsetX;// * getPosDiffFactorX();
         perImageOffsetY = perImageOffsetY;// * getPosDiffFactorY();
-        actor.setX(getViewX(perImageOffsetX, i) );
-        actor.setY(getViewY(perImageOffsetY, i++,getUnitViewCountEffective())); //
+        actor.setX(getViewX(perImageOffsetX, i));
+        actor.setY(getViewY(perImageOffsetY, i++, getUnitViewCountEffective())); //
         // (getUnitViewCountEffective() - 1) - i++));
 //         perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
     }
 
-    public final float getViewX(float perImageOffsetX, int i ) {
+    public final float getViewX(float perImageOffsetX, int i) {
         return perImageOffsetX * i;
     }
+
     public final float getViewY(float perImageOffsetY, int i, int n) {
-        return (n-1)*perImageOffsetY- perImageOffsetY * i;
+        return (n - 1) * perImageOffsetY - perImageOffsetY * i;
     }
 
     private void recalcImagesPos() {
@@ -163,13 +164,10 @@ public class GridCellContainer extends GridCell {
         if (!Eidolons.game.isStarted())
             return true;
 
-        if (!DungeonScreen.getInstance().
+        return !DungeonScreen.getInstance().
          controller.isWithinCamera(
          this
-        )) {
-            return true;
-        }
-        return false;
+        );
     }
 
     @Override
@@ -179,35 +177,34 @@ public class GridCellContainer extends GridCell {
         super.act(delta);
         List<GridUnitView> views = getUnitViewsVisible();
         int n = 0;
-        float maxX = GridConst.CELL_W - getUnitViewSize() / 2;
-        float maxY = GridConst.CELL_H - getUnitViewSize() / 2;
+        GridUnitView hovered = null;
         for (GridUnitView actor : views) {
             if (!actor.isVisible())
                 continue;
             if (actor.isCellBackground())
                 actor.setZIndex(1); //over cell at least
             else if (actor.isHovered())
-                actor.setZIndex(Integer.MAX_VALUE);
-            else if (actor.isActive())
-                actor.setZIndex(Integer.MAX_VALUE);
-
-//            if (actor.getX() > maxX)
-//                actor.setX(maxX);
-//            if (actor.getY() >  maxX)
-//                actor.setY(maxY);
+                hovered = actor;
+            else if (actor.isActive()) {
+                if (hovered == null) hovered = actor;
+            } else if (!actor.isHpBarVisible()) {
+                actor.setZIndex(n / 2 + 1);
+            } else
+                actor.setZIndex(n + 3);
             n++;
         }
+        if (hovered != null)
+            hovered.setZIndex(Integer.MAX_VALUE);
         graveyard.setZIndex(Integer.MAX_VALUE);
-        if (dirty){
+        if (dirty) {
             recalcUnitViewBounds();
         }
         if (n != unitViewCount) {
 //            main.system.auxiliary.log.LogMaster.log(1, this + "*** unitviews reset to " + n);
-           dirty =true;
+            dirty = true;
 //            recalcImagesPos();
         }
-        if (dirty)
-        {
+        if (dirty) {
             unitViewCount = n;
             recalcUnitViewBounds();
         }

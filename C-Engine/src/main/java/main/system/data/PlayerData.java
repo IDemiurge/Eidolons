@@ -32,9 +32,7 @@ public class PlayerData extends DataUnit<PLAYER_VALUE> {
         }
 
         public boolean isAi() {
-            if (isMe())
-                return false;
-            return true;
+            return !isMe();
         }
 
         public boolean isMe() {

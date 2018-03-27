@@ -154,7 +154,6 @@ public class MacroActionManager {
                     + toString() + ".png";
         }
 
-        ;
     }
 
     public enum MACRO_MODES {
@@ -231,8 +230,6 @@ public class MacroActionManager {
         public Boolean isTownPermitted() {
             return townPermitted;
         }
-
-        ;
 
     }
 

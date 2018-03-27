@@ -26,7 +26,7 @@ public enum PARAMS implements PARAMETER {
     FREE_MASTERIES(null, "", false, DC_MathManager.DEFAULT_FREE_MASTERY_COUNT, "chars"),
     GLORY("party"),
     MAX_HEROES(null, "", false, 0, "party", "arcades"),
-    ORDER_CHANCE_MOD(null, "", false,  100, "chars", "units"),
+    ORDER_CHANCE_MOD(null, "", false, 100, "chars", "units"),
     ORGANIZATION(null, "", true, 100, "chars", "units", "party"),
     BATTLE_SPIRIT(null, "", true, 100, "chars", "units", "party"),
     PRINCIPLE_CLASHES(null, "", true, 0, "chars", "units", "party"),
@@ -105,20 +105,20 @@ public enum PARAMS implements PARAMETER {
     C_TOUGHNESS(null, "", true, 0, "units", "chars", "bf obj"),
     ENDURANCE(null, "", false, 0, "units", "chars", "bf obj"),
     C_ENDURANCE(null, "", true, 0, "units", "chars", "bf obj"),
-    MORALE(null, "MORALE", false, 30, "chars",  "units"),
+    MORALE(null, "MORALE", false, 30, "chars", "units"),
     C_MORALE(null, "", true, 30, "units", "chars"),
     STAMINA(null, "STAMINA", false, 5, "chars", "units"),
     C_STAMINA(null, "STAMINA", true, 5, "chars", "units"),
-    FOCUS(null, "FOCUS", false, 100, "chars",  "units"),
-    C_FOCUS(null, "FOCUS", true, 0, "chars",  "units"),
-    ESSENCE(null, "ESSENCE", false, 0, "chars",  "units"),
-    C_ESSENCE(null, "ESSENCE", true, 0, "chars",  "units"),
+    FOCUS(null, "FOCUS", false, 100, "chars", "units"),
+    C_FOCUS(null, "FOCUS", true, 0, "chars", "units"),
+    ESSENCE(null, "ESSENCE", false, 0, "chars", "units"),
+    C_ESSENCE(null, "ESSENCE", true, 0, "chars", "units"),
     N_OF_COUNTERS("Counter pts", "", false, 0, "units", "chars", "skills"),
     N_OF_ACTIONS("Action pts", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "bf obj", "skills"),
     C_N_OF_ACTIONS(null, "", true, 0, "units", "chars", "bf obj"),
     C_N_OF_COUNTERS("Number of Attacks", "", true, 2, "units", "chars"),
 
-    STRENGTH(null, Descriptions.Strength, false, 0, "chars", "units", "jewelry",  "classes"),
+    STRENGTH(null, Descriptions.Strength, false, 0, "chars", "units", "jewelry", "classes"),
     VITALITY(null, Descriptions.Vitality, false, 0, "chars", "units", "jewelry", "skills", "classes"),
     AGILITY(null, Descriptions.Agility, false, 0, "chars", "units", "jewelry", "skills", "classes"),
     DEXTERITY(null, Descriptions.Dexterity, false, 0, "chars", "units", "jewelry", "skills", "classes"),
@@ -176,7 +176,7 @@ public enum PARAMS implements PARAMETER {
     OFF_HAND_MAX_DAMAGE("Offh. Max Dmg", "", false, 0, "units", "chars"),
     // ARMOR("Armor", "", false, 0, "units", "chars", "bf obj",
     // "armor"), see last, quick fixer -> ok I don't remember why I did it...
-    ARMOR("Armor", "", false, 0, "units", "chars",  "bf obj", "armor"),
+    ARMOR("Armor", "", false, 0, "units", "chars", "bf obj", "armor"),
     ARMOR_LAYERS("Layers", "", false, 1, "armor"),
     COVER_PERCENTAGE("Cover perc.", "", false, 50, "armor", "weapons"),
     HARDNESS("Hardness", "", false, 0, "weapons", "armor"),
@@ -220,15 +220,15 @@ public enum PARAMS implements PARAMETER {
     FORTITUDE(null, "", false, 5, "units", "chars"),
 
     ENDURANCE_REGEN("End. Regen.", "", false, 0, "units", "chars", "bf obj"), // Color.GREEN.brighter()),
-    SPELL_ARMOR(null, "", false, 0, "units", "armor", "chars",  "bf obj"),
-    RESISTANCE(null, "", false, 0, "units", "chars",  "bf obj"),
-    DEFENSE("Defense", "", false, 0, "units", "chars",  "bf obj"),
-    ATTACK("Attack", "", false, 0, "units", "chars",  "bf obj"),
+    SPELL_ARMOR(null, "", false, 0, "units", "armor", "chars", "bf obj"),
+    RESISTANCE(null, "", false, 0, "units", "chars", "bf obj"),
+    DEFENSE("Defense", "", false, 0, "units", "chars", "bf obj"),
+    ATTACK("Attack", "", false, 0, "units", "chars", "bf obj"),
     OFF_HAND_ATTACK("Offh. ATK", "", false, 0, "units", "chars"),
     DEFENSE_PENETRATION("Def. Pntr", "", false, 0, "chars"),
     RESISTANCE_PENETRATION("Res. Pntr", "", false, 0, "actions", "units", "chars"),
-    ARMOR_PENETRATION("Armor Pntr", "", false, 0, "actions", "units", "chars",  "weapons"),
-    ARMOR_MOD(true, "Armor Pntr %", "", false, 100, "actions", "units", "chars",  "weapons"),
+    ARMOR_PENETRATION("Armor Pntr", "", false, 0, "actions", "units", "chars", "weapons"),
+    ARMOR_MOD(true, "Armor Pntr %", "", false, 100, "actions", "units", "chars", "weapons"),
     HEIGHT(null, "", false, 0, "chars", "units", "bf obj"),
     WEIGHT(null, "", false, 0, "armor", "weapons", "chars", "units", "bf obj", "items"),
     TOTAL_WEIGHT("Total weight", "", true, 0, "chars", "units"),
@@ -241,8 +241,8 @@ public enum PARAMS implements PARAMETER {
 
     ENCHANTMENT_CAPACITY(null, "MAGIC_AFFINITY", false, 0, "weapons", "jewelry", "armor"),
 
-    INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars",  "bf obj"),
-    INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars",  "bf obj"),
+    INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars", "bf obj"),
+    INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "bf obj"),
     C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "bf obj"),
     C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "bf obj"),
     C_INITIATIVE("C Initiative", "", true, 0, "units", "chars", "bf obj"),
@@ -252,8 +252,8 @@ public enum PARAMS implements PARAMETER {
     DETECTION(null, "DETECTION", false, 10, "bf obj", "units", "chars", "armor"),
     STEALTH(null, "STEALTH", false, 0, "bf obj", "units", "chars", "armor"),
     CONCEALMENT(null, null, false, 0, "terrain", "bf obj", "units", "chars", "armor"),
-    ILLUMINATION(null, null, false, 0, "terrain", "bf obj", "units", "chars", "armor",  "classes"),
-    LIGHT_EMISSION(null, null, false, 0, "terrain", "bf obj", "units", "chars", "armor",  "classes"),
+    ILLUMINATION(null, null, false, 0, "terrain", "bf obj", "units", "chars", "armor", "classes"),
+    LIGHT_EMISSION(null, null, false, 0, "terrain", "bf obj", "units", "chars", "armor", "classes"),
 
     GLOBAL_CONCEALMENT(null, null, false, 0, "dungeons"),
     GLOBAL_ILLUMINATION(null, null, false, 0, "dungeons"),
@@ -263,9 +263,9 @@ public enum PARAMS implements PARAMETER {
     NOISE(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "armor"),
     REVEALMENT(null, null, false, 0, "action", "spell", "bf obj", "units", "chars", "armor"),
 
-    SIGHT_RANGE(null, "Sight Range", false, 0, "bf obj", "units", "chars",  "armor"),
+    SIGHT_RANGE(null, "Sight Range", false, 0, "bf obj", "units", "chars", "armor"),
     BEHIND_SIGHT_BONUS("Behind Sight", "BEHIND_SIGHT_BONUS", false, 0, "bf obj", "units", "chars"),
-    SIDE_SIGHT_PENALTY("Sidesight pen.", "SIDE_SIGHT_PENALTY", false, 0, "bf obj", "units", "chars",  "armor"),
+    SIDE_SIGHT_PENALTY("Sidesight pen.", "SIDE_SIGHT_PENALTY", false, 0, "bf obj", "units", "chars", "armor"),
     // buff
     SIGHT_RANGE_EXPANSION(null, "", false, 200, "units", "chars"),
     SIGHT_RANGE_EXPANSION_SIDES(null, "", false, 150, "units", "chars"),
@@ -282,7 +282,7 @@ public enum PARAMS implements PARAMETER {
     GOLD_COST(null, "Cost in Gold", false, 50, C_OBJ_TYPE.ITEMS),
     GOLD(null, " Gold", true, 0, "chars", "shop"),
     GOLD_TOTAL(null, " Gold", false, 0, "chars", "mission", "shop", "bf obj"),
-    GOLD_MOD(true, null, "Gold mod", false, 100, "chars", "units",  "shop"),
+    GOLD_MOD(true, null, "Gold mod", false, 100, "chars", "units", "shop"),
     GOLD_PER_LEVEL(null, "Gold per level", false, 100, "chars", "units"),
     GOLD_COST_REDUCTION(null, "Gold cost REDUCTION", false, 0, "chars", "units"),
     // ++ separately for buy/sell and per main types
@@ -323,12 +323,12 @@ public enum PARAMS implements PARAMETER {
     // C_N_OF_ATTACKS("Number of Attacks", "", true, 2, "units", "chars"),
     // C_N_OF_MOVES("Number of Attacks", "", true, 2, "units", "chars"),
 
-    REST_BONUS(null, "", false, 0, "units", "chars",  "classes"),
-    MEDITATION_BONUS(null, "", false, 0, "units", "chars",  "classes"),
-    CONCENTRATION_BONUS("", "", false, 0, "units", "chars",  "classes"),
-    REST_MOD(true, null, "", false, 0, "units", "chars",  "classes"),
-    MEDITATION_MOD(true, null, "", false, 0, "units", "chars",  "classes"),
-    CONCENTRATION_MOD(true, "", "", false, 0, "units", "chars",  "classes"),
+    REST_BONUS(null, "", false, 0, "units", "chars", "classes"),
+    MEDITATION_BONUS(null, "", false, 0, "units", "chars", "classes"),
+    CONCENTRATION_BONUS("", "", false, 0, "units", "chars", "classes"),
+    REST_MOD(true, null, "", false, 0, "units", "chars", "classes"),
+    MEDITATION_MOD(true, null, "", false, 0, "units", "chars", "classes"),
+    CONCENTRATION_MOD(true, "", "", false, 0, "units", "chars", "classes"),
     // ALERT_BONUS("", "", false, 0, "units", "chars"),
     // DEFEND_BONUS("", "", false, 0, "units", "chars"),
     // REST_BONUS("", "", false, 0, "units", "chars"),
@@ -467,7 +467,7 @@ public enum PARAMS implements PARAMETER {
     SPELL_DIFFICULTY("spells", "Difficulty", "Difficulty", false, 10),
     ENERGY_COST("Energy Cost", " Cost in Energy", false, 0,
 
-            "actions"),
+     "actions"),
     AP_COST("Act.Pt. Cost", " Cost in AP", false, 1, "spells", "actions", "items"),
     ESS_COST("ESS Cost", " Cost in Essence", false, 0, "spells", "actions", "items"),
     FOC_COST("FOC Cost", " Cost in Focus", false, 0, "spells", "actions", "items"),
@@ -483,7 +483,7 @@ public enum PARAMS implements PARAMETER {
 
     FOC_REQ(
 
-            "Focus Req.", " Focus Requirement", false, 0, "spells", "actions", "items"),
+     "Focus Req.", " Focus Requirement", false, 0, "spells", "actions", "items"),
     COOLDOWN_MOD(true, "Cooldown modifier", " Cooldown modifier", false, 0, "skills", "chars", "units"),
     // TODO into custom values with _MOVES, _SPELLS, _{SPELL_GROUP} or even
     // _{ACTION_NAME}
@@ -598,10 +598,10 @@ public enum PARAMS implements PARAMETER {
     // UNIT
     IMPACT_AREA(null, "", false, 0, "weapons", "spells", "actions"),
     RANGE("Range ", "Maximum distance", false, 1,
-            // "units",
-            "spells",
-            // "chars",
-            "actions", "weapons", "items"),
+     // "units",
+     "spells",
+     // "chars",
+     "actions", "weapons", "items"),
     AUTO_ATTACK_RANGE(null, "", false, 0, "actions"),
 
     CADENCE_FOCUS_BOOST(null, "", false, 0, "actions", "chars", "units"),
@@ -656,7 +656,7 @@ public enum PARAMS implements PARAMETER {
     ACCURACY(null, "", false, 0, "actions", "weapons", "skills", "units", "chars"),
     TOUGHNESS_RECOVERY(null, "", false, 25, "bf obj", "skills", "chars", "units"),
     VIGILANCE_MOD(true, null, "", false, 0, "skills", "units", "chars"),
-    TOUGHNESS_DEATH_BARRIER_MOD(null, "", false, 100, "bf obj","chars", "units"),
+    TOUGHNESS_DEATH_BARRIER_MOD(null, "", false, 100, "bf obj", "chars", "units"),
     ARMOR_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "weapons", "skills", "units", "chars"),
     SHIELD_BLOCK_DEFENSE_MOD(true, null, "", false, 0, "weapons", "skills", "units", "chars"),
     BLOCK_CHANCE(null, "", false, 0, "weapons", "skills", "units", "chars"),
@@ -963,7 +963,7 @@ public enum PARAMS implements PARAMETER {
     PARAMS(String shortName, String descr, boolean dynamic, int defaultValue, C_OBJ_TYPE type,
            OBJ_TYPE... types) {
         this(type.getTypes()[0].getName(), shortName, descr, dynamic, defaultValue,
-                Integer.MAX_VALUE);
+         Integer.MAX_VALUE);
         String[] ENTITY_TYPES = new String[type.getTypes().length + types.length];
         int i = 0;
         for (OBJ_TYPE t : type.getTypes()) {

@@ -47,11 +47,8 @@ public class CadenceRule {
             return true;
         }
 
-        if (action.getIntParam(PARAMS.CADENCE_BONUS) > 0) {
-            return true;
-        }
+        return action.getIntParam(PARAMS.CADENCE_BONUS) > 0;
 
-        return false;
     }
 
     private static boolean checkFocusBonusApplies(Unit unit, DC_UnitAction action,

@@ -3,8 +3,8 @@ package main.client.dc;
 
 public interface SequenceManager {
 
-    public void doneSelection();
+    void doneSelection();
 
-    public void cancelSelection();
+    void cancelSelection();
 
 }

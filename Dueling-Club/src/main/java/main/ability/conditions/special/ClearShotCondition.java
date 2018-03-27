@@ -170,7 +170,7 @@ public class ClearShotCondition extends MicroCondition {
         Map<Obj, Boolean> map = cache.get(source);
         if (map == null) {
             map = new HashMap<>();
-            cache.put((BattleFieldObject) source, map);
+            cache.put(source, map);
         }
         Boolean result = map.get(target);
         if (result == null)

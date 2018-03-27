@@ -316,6 +316,15 @@ public class PathFinder {
         return StrPathBuilder.build(getMacroPath(), "map", "layers")+ StringMaster.getPathSeparator();
     }
 
+    public static String getComponentsPath() {
+        return   StrPathBuilder.build(getUiPath(),
+         "components")+ StringMaster.getPathSeparator();
+
+    }
+    public static String getUiPath() {
+        return  "ui"+ StringMaster.getPathSeparator();
+
+    }
     public static String getMacroUiPath() {
         return   StrPathBuilder.build(
          "ui","macro")+ StringMaster.getPathSeparator();

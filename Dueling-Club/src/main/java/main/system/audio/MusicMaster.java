@@ -241,8 +241,7 @@ public class MusicMaster {
         String format = StringMaster.getFormat(sub).toLowerCase();
         // white list is a better idea probably
         // Drive on macos spam 'icon' files all over the place
-        if (format.equals("mp3")) return true;
-        return false;
+        return format.equals("mp3");
     }
 
     private String getMusicFolder() {

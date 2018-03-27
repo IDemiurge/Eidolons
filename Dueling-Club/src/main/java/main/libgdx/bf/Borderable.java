@@ -8,11 +8,11 @@ public interface Borderable {
 
     void setBorder(TextureRegion texture);
 
-    public boolean isTeamColorBorder();
+    boolean isTeamColorBorder();
 
-    public void setTeamColorBorder(boolean teamColorBorder);
+    void setTeamColorBorder(boolean teamColorBorder);
 
-    public void setTeamColor(Color teamColor);
+    void setTeamColor(Color teamColor);
 
-    public Color getTeamColor();
+    Color getTeamColor();
 }

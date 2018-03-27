@@ -33,10 +33,7 @@ public class CounterAttackRule {
             return false;
         }
         // if (!attacked.checkPassive(STANDARD_PASSIVES.VIGILANCE))
-        if (active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION)) {
-            return false;
-        }
-        return true;
+        return !active.getOwnerObj().checkPassive(UnitEnums.STANDARD_PASSIVES.NO_RETALIATION);
     }
 
     public ActiveObj tryCounter(Attack attack) {

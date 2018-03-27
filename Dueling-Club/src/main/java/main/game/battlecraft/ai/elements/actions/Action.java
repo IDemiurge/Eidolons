@@ -136,10 +136,7 @@ public class Action {
         if (isDummy()) {
             return true;
         }
-        if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE) {
-            return true;
-        }
-        return false;
+        return active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MODE;
     }
 
     public DC_Obj getTarget() {

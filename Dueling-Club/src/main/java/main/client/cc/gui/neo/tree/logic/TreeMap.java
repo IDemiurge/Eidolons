@@ -329,8 +329,6 @@ public class TreeMap {
             return selected ? getSelectedImage() : getImage();
         }
 
-        ;
-
         public String getImageFileName() {
             return "UI\\components\\ht\\" + "LINK_" + name() + ".png";
         }
@@ -352,8 +350,6 @@ public class TreeMap {
         public boolean isToLeft() {
             return name().contains("LEFT");
         }
-
-        ;
 
         public boolean isToRight() {
             return name().contains("RIGHT");

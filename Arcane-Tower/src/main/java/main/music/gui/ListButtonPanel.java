@@ -114,7 +114,7 @@ public class ListButtonPanel extends G_Panel {
 
         String sizeGroup = "SizeGroup" + (letter);
         String pos = wrap ? "wrap," : "" + "sg " + sizeGroup;
-        String name = panel.formatListName(funcPart);
+        String name = MusicListPanel.formatListName(funcPart);
         if (panel.isLetterShown()) {
             if (!letterAdded) {
                 // letterAdded = true;

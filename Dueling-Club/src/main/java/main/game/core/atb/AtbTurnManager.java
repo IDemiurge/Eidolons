@@ -1,7 +1,8 @@
-package main.game.core;
+package main.game.core.atb;
 
 import main.entity.obj.unit.Unit;
-import main.game.core.AtbController.AtbUnit;
+import main.game.core.atb.AtbController.AtbUnit;
+import main.game.core.GenericTurnManager;
 import main.game.core.game.DC_Game;
 
 import java.util.List;
@@ -50,10 +51,7 @@ public class AtbTurnManager extends GenericTurnManager {
         }
         if (unit != null) {
             setActiveUnit(unit.getUnit());
-            if (!game.getManager().activeSelect(getActiveUnit())) {
-                return false;
-            }
-            return true;
+            return game.getManager().activeSelect(getActiveUnit());
         } else {
             return false;
         }

@@ -100,17 +100,17 @@ public class GridMaster {
         } else {
             int size = width;
             int x = MigMaster.getCenteredPosition(w, size);
-            if (direction != null) {
+
                 if (direction.growX != null)
                     x = (direction.growX) ? w - size : 0;
-            }
+
 
             int y = MigMaster.getCenteredPosition(h, size);
-            if (direction != null) {
+
                 if (direction.growY != null)
                     y = (!direction.growY) ? h - size : 0;
 
-            }
+
             calcXOffset += x;
             calcYOffset += y;
         }

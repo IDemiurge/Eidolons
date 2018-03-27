@@ -150,8 +150,6 @@ public class DialogPanel extends G_Panel {
         return ColorManager.BACKGROUND;
     }
 
-    ;
-
     protected boolean isDrawBackground() {
         return false;
     }

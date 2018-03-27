@@ -183,10 +183,7 @@ public class AnimationConstructor {
     }
 
     private boolean isPreconstructOn(Unit unit) {
-        if (unit.getSpells().size() > 3)
-            return false;
-
-        return true;
+        return unit.getSpells().size() <= 3;
     }
 
     public CompositeAnim getOrCreate(ActiveObj active) {
@@ -497,10 +494,7 @@ public class AnimationConstructor {
             return true;
         }
         if (e instanceof ModifyValueEffect) {
-            if (e.isContinuousWrapped()) {
-                return false;
-            }
-            return true;
+            return !e.isContinuousWrapped();
         }
 
         return false;
@@ -666,10 +660,7 @@ public class AnimationConstructor {
         if (anim.getLightEmission() > 0) {
             return true;
         }
-        if (anim instanceof HitAnim) {
-            return true;
-        }
-        return false;
+        return anim instanceof HitAnim;
     }
 
     public boolean isFindClosestResource(ANIM_PART part, ANIM_VALUES val,

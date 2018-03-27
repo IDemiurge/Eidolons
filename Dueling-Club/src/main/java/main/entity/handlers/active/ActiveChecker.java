@@ -222,8 +222,6 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             return false;
         if (getActionGroup()== ACTION_TYPE_GROUPS.MODE)
             return false;
-        if (getActionGroup()== ACTION_TYPE_GROUPS.TURN)
-            return false;
-        return true;
+        return getActionGroup() != ACTION_TYPE_GROUPS.TURN;
     }
 }

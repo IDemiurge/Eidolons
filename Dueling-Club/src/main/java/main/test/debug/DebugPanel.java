@@ -32,7 +32,7 @@ public class DebugPanel {
     }
 
     public static int getPanelWidth() {
-        return (int) GuiManager.getSquareCellSize() * 4;
+        return GuiManager.getSquareCellSize() * 4;
     }
 
     public static int getPanelHeight() {

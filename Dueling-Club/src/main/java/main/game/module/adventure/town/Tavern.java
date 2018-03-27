@@ -118,11 +118,7 @@ public class Tavern extends TownPlace {
             return false;
         }
 
-        if (!addHero(hero)) {
-            return false;
-        }
-
-        return true;
+        return addHero(hero);
     }
 
     private Unit generateHeroFromBackground(ObjType type, int xp) {
@@ -285,8 +281,6 @@ public class Tavern extends TownPlace {
                 hired(hero);
                 Launcher.resetView(VIEWS.HC);
             }
-
-            ;
 
             @Override
             public void cancelSelection() {

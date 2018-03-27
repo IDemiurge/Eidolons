@@ -141,7 +141,6 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
             protected void playClickSound() {
             }
 
-            ;
         };
         button.activateMouseListener();
         return button;

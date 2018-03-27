@@ -74,7 +74,7 @@ public class ContentMaster {
         if (isAboveBasic(version)) {
 
             List<String> blockedList = getBlockedTypeGroupsBasic((DC_TYPE) type
-                    .getOBJ_TYPE_ENUM());
+             .getOBJ_TYPE_ENUM());
 
             for (String blocked : blockedList) {
                 if (StringMaster.compareByChar(type.getGroupingKey(), blocked)) {

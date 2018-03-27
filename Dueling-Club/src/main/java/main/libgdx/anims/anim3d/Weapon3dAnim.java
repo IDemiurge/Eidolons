@@ -105,7 +105,7 @@ sprite.setScale(getSpriteScale());
         if (getProjection() == PROJECTION.HOR) {
             flipHor =getActive().getOwnerObj().getFacing()== FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
         } else {
-            flipHor = getProjection()==PROJECTION.TO ? !offhand : offhand;
+            flipHor = (getProjection() == PROJECTION.TO) != offhand;
         }
         return flipHor;
     }

@@ -23,21 +23,21 @@ import main.test.debug.DebugMaster;
 public class OutlineMaster {
 
 
+    private static boolean outlinesOn = true;
     protected VisionMaster master;
-    private static boolean outlinesOn=true;
 
     public OutlineMaster(VisionMaster visionMaster) {
         master = visionMaster;
-    }
-
-    public static void setOutlinesOn(boolean outlinesOn) {
-        OutlineMaster.outlinesOn = outlinesOn;
     }
 
     public static boolean isOutlinesOn() {
 //        if (outlinesOn==null )
 //            outlinesOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
         return outlinesOn;
+    }
+
+    public static void setOutlinesOn(boolean outlinesOn) {
+        OutlineMaster.outlinesOn = outlinesOn;
     }
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit) {
@@ -47,7 +47,7 @@ public class OutlineMaster {
             }
         }
         Unit activeUnit = ExplorationMaster.isExplorationOn()
-        ? master.getSeeingUnit() :
+         ? master.getSeeingUnit() :
          DC_Game.game.getTurnManager().getActiveUnit(true);
         GenericTurnManager.setVisionInitialized(true);
         if (activeUnit == null) {
@@ -56,14 +56,13 @@ public class OutlineMaster {
         if (unit == activeUnit) {
             return null;
         }
-        return getOutlineType(unit, activeUnit  );
+        return getOutlineType(unit, activeUnit);
     }
-
 
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
         if (DebugMaster.isOmnivisionOn()) {
-          if (activeUnit.isMine())  return null;
+            if (activeUnit.isMine()) return null;
         }
         if (unit.getGame().isSimulation()) {
             return null;
@@ -85,8 +84,8 @@ public class OutlineMaster {
         Ref ref = new Ref(activeUnit);
         ref.setMatch(unit.getId());
         // [quick fix] must be the distance on which nothing is visible anyway...
-        if (PositionMaster.getExactDistance(         unit.getCoordinates(), activeUnit.getCoordinates())<
-       ClearShotCondition.getMaxCheckDistance(activeUnit, unit)        ) {
+        if (PositionMaster.getExactDistance(unit.getCoordinates(), activeUnit.getCoordinates()) <
+         ClearShotCondition.getMaxCheckDistance(activeUnit, unit)) {
             //it is assumed that if a unit is farther away than that, it cannot have anything but Concealed status for activeUnit
             if (!new ClearShotCondition().preCheck(ref)) {
                 // vision type preCheck - x.ray or so TODO
@@ -104,19 +103,19 @@ public class OutlineMaster {
 
         if (gamma == Integer.MIN_VALUE) {
             return OUTLINE_TYPE.VAGUE_LIGHT;
-        } else if (gamma >= master.getGammaMaster().getGammaForBlindingLight()) {
+        } else if (gamma >= GammaMaster.getGammaForBlindingLight()) {
             if (!activeUnit.checkPassive(UnitEnums.STANDARD_PASSIVES.EYES_OF_LIGHT)) {
                 return OUTLINE_TYPE.BLINDING_LIGHT;
             }
         }
         // TODO LIGHT_EMISSION !
-        if (gamma <= master.getGammaMaster().getGammaForThickDarkness()) {
+        if (gamma <= GammaMaster.getGammaForThickDarkness()) {
             return OUTLINE_TYPE.THICK_DARKNESS;
         }
-        if (gamma < master.getGammaMaster().getGammaForDarkOutline()  ) {
+        if (gamma < GammaMaster.getGammaForDarkOutline()) {
             return OUTLINE_TYPE.DARK_OUTLINE;
         }
-        return null ;
+        return null;
     }
 
     protected OUTLINE_IMAGE getImageVague(Unit unit) {

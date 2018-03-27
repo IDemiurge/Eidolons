@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import main.entity.Entity;
+import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
@@ -104,14 +105,14 @@ public class ToolTipManager extends TablePanel {
 
     private boolean isRemoveImmediately(Actor actor) {
 
-        if (actor instanceof UnitViewTooltip)
-            return true;
-
-        return false;
+        return actor instanceof UnitViewTooltip;
 
     }
 
     public void entityHover(Entity entity) {
+        if (entity instanceof DC_ActiveObj){
+            GuiEventManager.trigger(ACTION_HOVERED, entity);
+        }
         if (entity instanceof DC_UnitAction) {
             if (((DC_UnitAction) entity).isAttackAny())
                 AnimMaster3d.initHover((DC_UnitAction) entity);

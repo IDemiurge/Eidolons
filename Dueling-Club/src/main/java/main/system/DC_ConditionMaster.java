@@ -1,6 +1,9 @@
 package main.system;
 
-import main.ability.conditions.*;
+import main.ability.conditions.FacingCondition;
+import main.ability.conditions.MoveCondition;
+import main.ability.conditions.StatusCheckCondition;
+import main.ability.conditions.VisibilityCondition;
 import main.ability.conditions.req.CellCondition;
 import main.ability.conditions.req.CostCondition;
 import main.ability.conditions.req.ItemCondition;
@@ -53,7 +56,7 @@ public class DC_ConditionMaster extends ConditionMaster {
 
     private static Condition findTargetingModifierCondition(String string) {
         TARGETING_MODIFIERS TARGETING_MODIFIERS = new EnumMaster<TARGETING_MODIFIERS>()
-                .retrieveEnumConst(TARGETING_MODIFIERS.class, string);
+         .retrieveEnumConst(TARGETING_MODIFIERS.class, string);
         if (TARGETING_MODIFIERS != null) {
             return getTargetingModConditions(TARGETING_MODIFIERS);
         }
@@ -87,14 +90,14 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return ConditionMaster.getLivingMatchCondition();
             case NO_EVIL:
                 return new NotCondition(new OrConditions(new ClassificationCondition(
-                        UnitEnums.CLASSIFICATIONS.UNDEAD),
-                        new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
-                        G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY)));
+                 UnitEnums.CLASSIFICATIONS.UNDEAD),
+                 new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
+                 G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY)));
             case ONLY_EVIL:
                 return new OrConditions(
-                        new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD),
-                        new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
-                        G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY));
+                 new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD),
+                 new ClassificationCondition(UnitEnums.CLASSIFICATIONS.DEMON), new PropCondition(
+                 G_PROPS.PRINCIPLES, HeroEnums.PRINCIPLES.TREACHERY));
 
             case ONLY_UNDEAD:
                 return new ClassificationCondition(UnitEnums.CLASSIFICATIONS.UNDEAD);
@@ -106,14 +109,14 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return new NotCondition(new OwnershipCondition(KEYS.MATCH, KEYS.SOURCE));
             case NO_ENEMIES:
                 return new NotCondition(new OwnershipCondition(true, KEYS.MATCH + "", KEYS.SOURCE
-                        + ""));
+                 + ""));
             case NO_WALLS:
                 return new NotCondition(
-                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL + ""));
+                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL + ""));
 
             case NO_WATER:
                 return new NotCondition(
-                        new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WATER + ""));
+                 new PropCondition(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WATER + ""));
 
             case NO_NEUTRALS:
                 return new NotCondition(new OwnershipCondition(KEYS.MATCH + "", true));
@@ -130,7 +133,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     public static Requirement getSpecialReq(String subString, Entity entity) {
 
         SPECIAL_REQUIREMENTS CONST = new EnumMaster<SPECIAL_REQUIREMENTS>().retrieveEnumConst(
-                SPECIAL_REQUIREMENTS.class, VariableManager.removeVarPart(subString));
+         SPECIAL_REQUIREMENTS.class, VariableManager.removeVarPart(subString));
 
         if (CONST == null) {
             return null;
@@ -144,7 +147,7 @@ public class DC_ConditionMaster extends ConditionMaster {
             case PARAM:
             case COUNTER:
                 condition = new NumericCondition("{SOURCE" + variables[0] + "}", variables[1]
-                        .toString());
+                 .toString());
                 break;
             case CUSTOM:
                 condition = ConditionMaster.toConditions(variables[0].toString());
@@ -156,11 +159,11 @@ public class DC_ConditionMaster extends ConditionMaster {
                 break;
             case ITEM:
                 condition = getItemCondition(variables[0].toString(), variables[1].toString(),
-                        variables[2].toString(), KEYS.SOURCE.toString());
+                 variables[2].toString(), KEYS.SOURCE.toString());
                 break;
             case NOT_ITEM:
                 condition = new NotCondition(getItemCondition(variables[0].toString(), variables[1]
-                        .toString(), variables[2].toString(), KEYS.SOURCE.toString()));
+                 .toString(), variables[2].toString(), KEYS.SOURCE.toString()));
                 break;
             case REST:
                 condition = new RestCondition();
@@ -198,7 +201,7 @@ public class DC_ConditionMaster extends ConditionMaster {
 
     public static Condition getFreeCellCondition(String obj_ref, String direction) {
         UNIT_DIRECTION CONST = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
-                UNIT_DIRECTION.class, direction);
+         UNIT_DIRECTION.class, direction);
         if (CONST == null) {
             return null;
         }
@@ -206,7 +209,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     }
 
     public static Conditions getSelectiveTargetingTemplateConditions(
-            SELECTIVE_TARGETING_TEMPLATES template) {
+     SELECTIVE_TARGETING_TEMPLATES template) {
         Conditions c = new Conditions();
 
         if ((template.isDependentOnZ())) {
@@ -220,10 +223,10 @@ public class DC_ConditionMaster extends ConditionMaster {
             }
             case ANY_WEAPON: {
                 c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
-                        .toString())));
+                 .toString())));
                 c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.WEAPONS), new Conditions(
-                        new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
-                        new ObjTypeComparison(DC_TYPE.ITEMS))));
+                 new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
+                 new ObjTypeComparison(DC_TYPE.ITEMS))));
                 break;
             }
             case ANY_ITEM: {
@@ -242,9 +245,9 @@ public class DC_ConditionMaster extends ConditionMaster {
             }
             case ENEMY_WEAPON: {
                 c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
-                        .toString())));
+                 .toString())));
                 c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.ITEMS),
-                        new ObjTypeComparison(DC_TYPE.WEAPONS)));
+                 new ObjTypeComparison(DC_TYPE.WEAPONS)));
                 c.add(ConditionMaster.getEnemyCondition());
                 break;
             }
@@ -266,10 +269,10 @@ public class DC_ConditionMaster extends ConditionMaster {
             }
             case MY_WEAPON: {
                 c.add(new NotCondition(new PropCondition(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.NATURAL
-                        .toString())));
+                 .toString())));
                 c.add(new OrConditions(new ObjTypeComparison(DC_TYPE.WEAPONS), new Conditions(
-                        new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
-                        new ObjTypeComparison(DC_TYPE.ITEMS))));
+                 new PropCondition(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM),
+                 new ObjTypeComparison(DC_TYPE.ITEMS))));
                 // c.add(new RefCondition(KEYS.MATCH_SOURCE, KEYS.SOURCE));
                 // c.add(new RefCondition(KEYS.WEAPON, KEYS.MATCH));
                 break;
@@ -294,7 +297,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
                 c.add(getRangeCondition());
                 c.add(new OrConditions(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.DARKVISION),
-                        new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED))));
+                 new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED))));
                 c.add(getClearShotCondition(KEYS.MATCH.name())); //
                 // c.add(new NotCondition(new VisibilityCondition(
                 // UNIT_TO_PLAYER_VISION.UNKNOWN))); // ??? TODO PERHAPS MAKE
@@ -339,15 +342,15 @@ public class DC_ConditionMaster extends ConditionMaster {
 
                 c.add(new OrConditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT),
 
-                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
-                                new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
-                                        G_PROPS.STANDARD_PASSIVES), UnitEnums.STANDARD_PASSIVES.HIND_REACH + "",
-                                        false)),
+                 new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT, UnitEnums.FACING_SINGLE.BEHIND),
+                  new StringComparison(StringMaster.getValueRef(KEYS.SOURCE,
+                   G_PROPS.STANDARD_PASSIVES), UnitEnums.STANDARD_PASSIVES.HIND_REACH + "",
+                   false)),
 
-                        new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT,
-                                UnitEnums.FACING_SINGLE.TO_THE_SIDE), new StringComparison(StringMaster.getValueRef(
-                                KEYS.SOURCE, G_PROPS.STANDARD_PASSIVES),
-                                UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
+                 new Conditions(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT,
+                  UnitEnums.FACING_SINGLE.TO_THE_SIDE), new StringComparison(StringMaster.getValueRef(
+                  KEYS.SOURCE, G_PROPS.STANDARD_PASSIVES),
+                  UnitEnums.STANDARD_PASSIVES.BROAD_REACH + "", false))
 
                 ));
                 c.add(ConditionMaster.getAttackConditions());
@@ -365,7 +368,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(new NotCondition(new OwnershipCondition(KEYS.SOURCE, KEYS.MATCH)));
                 c.add(ConditionMaster.getTYPECondition(DC_TYPE.BF_OBJ));
                 c.add(ConditionMaster.getDistanceFilterCondition(Ref.KEYS.SOURCE.name(),
-                        "{ACTIVE_RANGE}"));
+                 "{ACTIVE_RANGE}"));
 
                 break;
             }
@@ -442,11 +445,11 @@ public class DC_ConditionMaster extends ConditionMaster {
 
             case ACTIONS:
                 return new Conditions(ConditionMaster.getTYPECondition(DC_TYPE.ACTIONS),
-                        new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
+                 new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
 
             case SPELLS:
                 return new Conditions(ConditionMaster.getTYPECondition(DC_TYPE.SPELLS),
-                        new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
+                 new RefCondition(KEYS.SOURCE, KEYS.MATCH_SOURCE));
 
             case WAVE:
 
@@ -458,7 +461,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                 return (ConditionMaster.getUnit_CharTypeCondition());
             case ALL_ALLIES:
                 return ConditionMaster.getAllyCondition().join(
-                        (ConditionMaster.getUnit_CharTypeCondition()));
+                 (ConditionMaster.getUnit_CharTypeCondition()));
             case ALL_ENEMIES:
                 return (ConditionMaster.getEnemyCondition());
             case ENEMY_HERO:
@@ -475,7 +478,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     public static boolean checkLiving(Unit hero) {
 
         return checkCondition(ConditionMaster.getLivingCondition(KEYS.SOURCE.toString()), hero
-                .getRef());
+         .getRef());
     }
 
     public static boolean checkCondition(Condition condition, Ref ref) {

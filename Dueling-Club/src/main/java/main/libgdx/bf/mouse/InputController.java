@@ -85,9 +85,7 @@ public abstract class InputController implements InputProcessor  {
     }
 
     protected boolean isBlocked() {
-        if (OptionsMaster.isMenuOpen()|| GameMenu.menuOpen)
-            return true;
-        return false;
+        return OptionsMaster.isMenuOpen() || GameMenu.menuOpen;
     }
 
     @Override
@@ -286,11 +284,7 @@ public abstract class InputController implements InputProcessor  {
         float x = camera.position.x;
         if (newWidth >x+halfWidth+getMargin())
             return false;
-        if (newWidth > getWidth()-x+halfWidth+getMargin())
-            return false;
-
-
-        return true;
+        return !(newWidth > getWidth() - x + halfWidth + getMargin());
     }
 
     public boolean isWithinCamera(Actor actor) {
@@ -302,10 +296,7 @@ public abstract class InputController implements InputProcessor  {
         if (xPos > halfWidth)
             return false;
         float yPos = Math.abs(camera.position.y - y) - height;
-        if (yPos > halfHeight)
-            return false;
-
-        return true;
+        return !(yPos > halfHeight);
     }
 
     public float getZoom() {

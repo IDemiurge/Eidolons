@@ -10,7 +10,7 @@ import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import main.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.game.bf.GraveyardManager;
 import main.game.bf.MovementManager;
-import main.game.core.AtbTurnManager;
+import main.game.core.atb.AtbTurnManager;
 import main.game.core.GenericTurnManager;
 import main.game.core.PtsTurnManager;
 import main.game.core.game.DC_Game;

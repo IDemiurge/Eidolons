@@ -132,10 +132,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
               container.getContent().getScaleY() * container.getHeight() - 100);
             flipX = RandomWizard.random();
         } else {
-            flipX = false;
-            if (time == DAY_TIME.DUSK) {
-                flipX = true;
-            }
+            flipX = time == DAY_TIME.DUSK;
             if (time == DAY_TIME.MIDDAY) {
                 flipX = RandomWizard.random();
             }

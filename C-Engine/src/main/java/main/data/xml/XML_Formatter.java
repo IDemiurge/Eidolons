@@ -93,10 +93,7 @@ public class XML_Formatter {
     private static boolean isValueWrappedInCDATA(VALUE value) {
         if (value instanceof PARAMETER)
             return false;
-        if (value == G_PROPS.ABILITIES)
-            return false;
-
-        return true;
+        return value != G_PROPS.ABILITIES;
     }
 
     private static String checkWrapInCDATA(String result) {

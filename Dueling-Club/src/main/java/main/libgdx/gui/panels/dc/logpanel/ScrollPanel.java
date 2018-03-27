@@ -42,7 +42,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         table.add(obj).fill();
         table.row();
         table.pack();
-        offsetY = 10000;
+        offsetY = 200;
     }
 
     @Override

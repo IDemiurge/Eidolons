@@ -110,7 +110,6 @@ public class TemplateManager implements ActionListener {
             return;
         }
         String newPath = getFilePath(item) + "\\" + item.getName();
-        ;
         XML_Writer.write(xml, newPath, name + ".xml");
 
     }

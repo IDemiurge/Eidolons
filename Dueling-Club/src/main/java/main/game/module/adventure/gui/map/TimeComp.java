@@ -39,8 +39,6 @@ public class TimeComp extends G_Panel {
                 super.refresh();
             }
 
-            ;
-
             @Override
             protected boolean isAutoWrapText() {
                 return false;

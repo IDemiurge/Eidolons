@@ -55,10 +55,7 @@ public class MapBlock {
     public boolean equals(Object obj) {
         if (obj instanceof MapBlock) {
             MapBlock mapBlock = (MapBlock) obj;
-            if (!mapBlock.getCoordinates().equals(getCoordinates())) {
-                return false;
-            }
-            return true;
+            return mapBlock.getCoordinates().equals(getCoordinates());
         }
         return false;
     }

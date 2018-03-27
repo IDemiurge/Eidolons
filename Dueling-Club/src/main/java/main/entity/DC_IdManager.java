@@ -17,7 +17,7 @@ public class DC_IdManager implements IdManager {
 
     }
 
-    public DC_IdManager( MicroGame game) {
+    public DC_IdManager(MicroGame game) {
         super();
         this.game = game;
         this.setHost(game.isHost());
@@ -38,7 +38,6 @@ public class DC_IdManager implements IdManager {
         // typeID++;
         // return typeID;
     }
-
 
 
     public boolean isHost() {

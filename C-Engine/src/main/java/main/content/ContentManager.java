@@ -91,9 +91,7 @@ public class ContentManager {
     private static Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
     private static Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
     private Map<String, VALUE> commons;
-    ;
     private Map<String, Map<String, VALUE>> maps;
-    ;
 
     public ContentManager() {
         instance = this;

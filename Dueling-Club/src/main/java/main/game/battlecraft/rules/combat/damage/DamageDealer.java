@@ -66,9 +66,7 @@ public class DamageDealer {
     private static boolean checkDamageImmune(Damage damage) {
         if (damage.getTarget() instanceof Entrance)
             return true;
-        if (damage.getTarget().isWall())
-            return true;
-        return false;
+        return damage.getTarget().isWall();
     }
 
     public static int dealDamage(Damage damage, BattleFieldObject target) {
@@ -377,12 +375,8 @@ public class DamageDealer {
 
         boolean dead = DamageCalculator.isDead(attacked);
 
-        boolean annihilated = attacked instanceof Unit?
-         attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked)
-         : false;
-        boolean unconscious = attacked instanceof Unit?
-         attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate( (Unit) attacked, (DC_ActiveObj) ref.getActive())
-         : false;
+        boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
+        boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
 
         if (dead) {
             // will start new entry... a good preCheck
@@ -423,10 +417,7 @@ public class DamageDealer {
 
     protected static boolean isAttack(Ref ref) {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
-        if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
-            return true;
-        }
-        return false;
+        return active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
     }
 
     public static boolean isLogOn() {

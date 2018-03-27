@@ -39,5 +39,4 @@ public class DamageTypeCondition extends MicroCondition {
         return event_damage_type == dmg_type;
     }
 
-    ;
 }

@@ -22,8 +22,8 @@ import main.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.game.battlecraft.rules.mechanics.ConcealmentRule;
 import main.game.battlecraft.rules.perk.EvasionRule;
 import main.game.core.ActionInput;
-import main.game.core.AtbController;
-import main.game.core.AtbTurnManager;
+import main.game.core.atb.AtbController;
+import main.game.core.atb.AtbTurnManager;
 import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -103,9 +103,7 @@ public class Executor extends ActiveHandler {
             targeter.setForcePresetTarget(false);
         this.context = context;
         activate();
-        if (BooleanMaster.isTrue(isCancelled()))
-            return false;
-        return true;
+        return !BooleanMaster.isTrue(isCancelled());
     }
 
     public void activateOn(Ref ref) {
@@ -569,10 +567,7 @@ public class Executor extends ActiveHandler {
         if (isCounterMode()) {
             return true;
         }
-        if (isInstantMode()) {
-            return true;
-        }
-        return false;
+        return isInstantMode();
     }
 
     public boolean isInterrupted() {

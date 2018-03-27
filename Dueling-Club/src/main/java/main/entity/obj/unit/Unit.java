@@ -496,10 +496,7 @@ if (ExplorationMaster.isExplorationOn())
     }
 
     public boolean isInventoryFull() {
-        if (getInventory().size() >= InventorySlotsPanel.COLUMNS * InventorySlotsPanel.ROWS) {
-            return true;
-        }
-        return false;
+        return getInventory().size() >= InventorySlotsPanel.COLUMNS * InventorySlotsPanel.ROWS;
     }
         public boolean isQuickSlotsFull() {
         if (game.isSimulation()) {
@@ -1186,7 +1183,7 @@ if (ExplorationMaster.isExplorationOn())
 
     @Override
     public UnitCalculator getCalculator() {
-        return (UnitCalculator) super.getCalculator();
+        return super.getCalculator();
     }
 
     public int calculateRemainingMemory() {
@@ -1223,7 +1220,7 @@ if (ExplorationMaster.isExplorationOn())
 
     @Override
     public UnitInitializer getInitializer() {
-        return (UnitInitializer) super.getInitializer();
+        return super.getInitializer();
     }
 
     public void initSpells(boolean reset) {

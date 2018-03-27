@@ -18,7 +18,7 @@ import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.core.AtbController;
+import main.game.core.atb.AtbController;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
@@ -34,7 +34,7 @@ import java.util.Arrays;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class BattleFieldObject extends DC_Obj implements BfObj  {
+public class BattleFieldObject extends DC_Obj implements BfObj {
 
     protected FACING_DIRECTION facing;
     private DIRECTION direction;
@@ -61,26 +61,25 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     @Override
     public String getToolTip() {
-        if (OutlineMaster.isOutlinesOn()){
-             if (getOutlineTypeForPlayer()!=null )
-                 return getOutlineTypeForPlayer().getName();
+        if (OutlineMaster.isOutlinesOn()) {
+            if (getOutlineTypeForPlayer() != null)
+                return getOutlineTypeForPlayer().getName();
 //         if (!isDetected())
-             if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)){
-                 return "Unknown";
-             }
+            if (!getGame().getVisionMaster().getDetectionMaster().checkKnownForPlayer(this)) {
+                return "Unknown";
+            }
         }
-        String prefix ="";
+        String prefix = "";
 
-        if (isMine()){
+        if (isMine()) {
             if (isMainHero())
                 prefix = "(You) ";
             else
-                prefix="Ally ";
-        }
-        else if (!getOwner().isNeutral())
-            prefix ="Enemy ";
+                prefix = "Ally ";
+        } else if (!getOwner().isNeutral())
+            prefix = "Enemy ";
 
-        return prefix+ getDisplayedName();
+        return prefix + getDisplayedName();
     }
 
     @Override
@@ -151,8 +150,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
     }
 
     public boolean isEnemyTo(DC_Player player) {
-        return  getOwner().isHostileTo(player);
+        return getOwner().isHostileTo(player);
     }
+
     public boolean isAlliedTo(DC_Player player) {
         return !getOwner().isHostileTo(player);
 //if (getOwner().equals(player))
@@ -163,12 +163,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     @Override
     public boolean isObstructing() {
-        if ( checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
+        if (checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
             return false;
         }
-        if (isOverlaying())
-            return false;
-        return true;
+        return !isOverlaying();
     }
 
     public boolean isObstructing(Obj watcher, DC_Obj target) {
@@ -181,11 +179,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
         }
 //        if (isBfObj()) {
 //            if (isWall()) {
-                // if (WindowRule.checkWindowOpening(this, obj, target))
-                // return false;
+        // if (WindowRule.checkWindowOpening(this, obj, target))
+        // return false;
 //            }
 //        }
-        if ( !isObstructing()) {
+        if (!isObstructing()) {
             return false;
         }
 
@@ -264,12 +262,22 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
-        super.putParameter(param, value);
         if (param == PARAMS.C_N_OF_ACTIONS) {
             Integer prev = getIntParam(param);
             int diff = StringMaster.getInteger(value) - prev;
             modifyParameter(PARAMS.C_INITIATIVE, AtbController.ATB_MOD * diff);
-        }
+        } else if (param == PARAMS.INITIATIVE_MODIFIER) {
+            Integer prev = getIntParam(param);
+            int diff = StringMaster.getInteger(value) - prev;
+            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
+        } else if (param == PARAMS.C_INITIATIVE_BONUS) {
+            Integer prev = getIntParam(param);
+            int diff = StringMaster.getInteger(value) - prev;
+            modifyParameter(PARAMS.C_INITIATIVE, diff);
+        } else if (param == PARAMS.INITIATIVE_BONUS) {
+
+        } else
+            super.putParameter(param, value);
     }
 
     public void resetPercentages() {
@@ -312,7 +320,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
     public void regen() {
 
         Arrays.stream(DC_ContentManager.REGEN_PARAMS).forEach(parameter -> {
-           regen(parameter);
+            regen(parameter);
         });
 
     }
@@ -361,7 +369,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj  {
 
     @Override
     public void setDirty(boolean dirty) {
-        if (!dirty){
+        if (!dirty) {
             setBufferedCoordinates(getCoordinates());
         }
         super.setDirty(dirty);

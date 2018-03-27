@@ -8,9 +8,9 @@ public interface EntityValueComponent {
 
     Component getComponent();
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public void setEntity(Entity entity);
+    void setEntity(Entity entity);
 
     void refresh();
 }

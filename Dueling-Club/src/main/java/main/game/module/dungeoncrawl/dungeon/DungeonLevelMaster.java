@@ -38,10 +38,7 @@ public class DungeonLevelMaster {
         if (FAST_DC.isRunning()) {
             return true;
         }
-        if (CoreEngine.isLevelEditor()) {
-            return true;
-        }
-        return false;
+        return CoreEngine.isLevelEditor();
     }
 
     public static void generateEntranceData(Dungeon dungeon) {
@@ -69,10 +66,7 @@ public class DungeonLevelMaster {
         pos:
         while (true) {
             if (isMiddle(plan, coordinates, true)) {
-                middle_center_null = true;
-                if (isCenter(plan, coordinates, true)) {
-                    middle_center_null = false;
-                }
+                middle_center_null = !isCenter(plan, coordinates, true);
 
                 if (isCenter(plan, coordinates, false)) {
                     middle_center_null = false;
@@ -93,10 +87,7 @@ public class DungeonLevelMaster {
             }
 
             if (isMiddle(plan, coordinates, false)) {
-                middle_center_null = true;
-                if (isCenter(plan, coordinates, false)) {
-                    middle_center_null = false;
-                }
+                middle_center_null = !isCenter(plan, coordinates, false);
                 if (isCenter(plan, coordinates, true)) {
                     middle_center_null = true;
                     break pos; // CENTER
@@ -396,7 +387,7 @@ public class DungeonLevelMaster {
     }
 
     public enum ENTRANCE_POINT_TEMPLATE {
-        ZONE_SIDE, ZONE_RANDOM, CENTER, MIDDLE, SIDE, CORNER, CENTER_OFFSET;
+        ZONE_SIDE, ZONE_RANDOM, CENTER, MIDDLE, SIDE, CORNER, CENTER_OFFSET
     }
     // if (isCenter(plan, coordinates, true)) {
     // middle_center_null = false;

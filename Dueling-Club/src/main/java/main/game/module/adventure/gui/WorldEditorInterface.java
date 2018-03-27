@@ -5,10 +5,10 @@ import main.game.module.adventure.gui.map.MapComp;
 
 public interface WorldEditorInterface {
 
-    public void setInfoObj(Obj obj);
+    void setInfoObj(Obj obj);
 
-    public void refresh();
+    void refresh();
 
-    public MapComp getMapComp();
+    MapComp getMapComp();
 
 }

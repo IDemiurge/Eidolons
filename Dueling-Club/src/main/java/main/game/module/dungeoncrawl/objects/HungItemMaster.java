@@ -138,10 +138,8 @@ potions
                 if (PositionMaster.getExactDistance(unit.getCoordinates(),
                  hungItem.getCoordinates())>1)
                     return false;
-                if (hungItem.getVisibilityLevel()== VISIBILITY_LEVEL.CONCEALED
-                 ||hungItem.getVisibilityLevel()== VISIBILITY_LEVEL.BLOCKED)
-                    return false;
-                return true;
+                return !(hungItem.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED
+                 || hungItem.getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED);
             case USE:
                 return false;
         }

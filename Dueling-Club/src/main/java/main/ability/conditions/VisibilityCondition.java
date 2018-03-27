@@ -66,10 +66,7 @@ public class VisibilityCondition extends ConditionImpl {
                 visionStatus =match.getGame().getVisionMaster().getSightMaster().
                  getUnitVisibilityStatus(match, (Unit) ref.getSourceObj());
             }
-            if (visionStatus.isSufficient(u_vision)) {
-                return true;
-            }
-            return false;
+            return visionStatus.isSufficient(u_vision);
         }
 
         if (p_vision != null) {

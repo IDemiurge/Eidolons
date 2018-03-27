@@ -75,7 +75,6 @@ public class EditViewPanel implements TableModelListener {
                 return true;
             }
 
-            ;
         });
         names.add(NAME);
         names.add(VALUE);
@@ -348,9 +347,9 @@ public class EditViewPanel implements TableModelListener {
 
             String typeName = type.getName();
 
-            String newValue = (String) ((JTable) getTable()).getValueAt(e.getFirstRow(), e
+            String newValue = (String) getTable().getValueAt(e.getFirstRow(), e
                     .getColumn());
-            String valName = (String) ((JTable) getTable()).getValueAt(e.getFirstRow(), e
+            String valName = (String) getTable().getValueAt(e.getFirstRow(), e
                     .getColumn() - 1);
             if (!modified(type, valName, newValue)) {
                 return;

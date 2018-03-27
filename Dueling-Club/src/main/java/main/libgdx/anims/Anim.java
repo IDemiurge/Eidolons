@@ -387,10 +387,7 @@ public class Anim extends Group implements Animation {
 //        setDuration(getOrigin().dst(getDestination())/new Vector2(getSpeedX(), getSpeedY()).len());
 
     protected boolean isSpeedSupported() {
-        if (part == ANIM_PART.MAIN) {
-            return true;
-        }
-        return false;
+        return part == ANIM_PART.MAIN;
     }
 
     public String getTexturePath() {

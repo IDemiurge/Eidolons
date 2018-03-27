@@ -148,7 +148,7 @@ public class ObjectiveMaster {
         SURVIVE_TIME
         // time-based
         ,
-        ITEM_ESCAPE;
+        ITEM_ESCAPE
     }
 
     public enum OBJECTIVE_VALUES {

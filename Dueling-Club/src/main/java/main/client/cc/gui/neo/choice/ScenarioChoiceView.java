@@ -67,8 +67,6 @@ public class ScenarioChoiceView extends EntityChoiceView {
         return;
     }
 
-    ;
-
     @Override
     protected PROPERTY getPROP() {
         return null;

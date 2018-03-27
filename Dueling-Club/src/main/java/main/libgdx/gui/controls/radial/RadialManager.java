@@ -100,10 +100,7 @@ public class RadialManager {
             return false;
         }
 
-        if (!action.canBeTargeted(target.getId(), false)) {
-            return false;
-        }
-        return true;
+        return action.canBeTargeted(target.getId(), false);
     }
 
     public static void addCostTooltip(DC_ActiveObj el, ValueContainer valueContainer) {
@@ -350,10 +347,7 @@ public class RadialManager {
                 return false;
             }
         }
-        if (item.isAmmo()) {
-            return false;
-        }
-        return true;
+        return !item.isAmmo();
     }
 
     private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
@@ -533,7 +527,7 @@ public class RadialManager {
 //        Runnable runnable=        runnableCaches.get(target).get(activeObj);
 
         if (activeObj instanceof DC_ActiveObj) {
-            DC_ActiveObj active = (DC_ActiveObj) activeObj;
+            DC_ActiveObj active = activeObj;
             if (active.getTargeting() instanceof SelectiveTargeting) {
                 return () -> {
                     if (active.isMove()) {

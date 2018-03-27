@@ -59,7 +59,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
     }
 
     public void init() {
-        this.cell = (DC_Obj) hero.getGame().getCellByCoordinate(hero.getCoordinates());
+        this.cell = hero.getGame().getCellByCoordinate(hero.getCoordinates());
         super.init();
         refresh();
     }

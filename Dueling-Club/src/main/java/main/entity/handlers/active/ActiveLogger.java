@@ -105,14 +105,11 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
                 return false;
             }
 
-            if (getGame().isDebugMode() ||
+            return getGame().isDebugMode() ||
              (getEntity().getOwnerObj().isMine() &&
               getEntity().getOwnerObj().getPlayerVisionStatus(false) != UNIT_TO_PLAYER_VISION.KNOWN
               && getEntity().getOwnerObj().getPlayerVisionStatus(false) != UNIT_TO_PLAYER_VISION.DETECTED
-             )) {
-                return true;
-            }
-            return false;
+             );
         }
         if (!getEntity().getOwnerObj().isMine())
             if (!getGame().isDebugMode() &&
@@ -130,10 +127,7 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
             return false;
         if (entity.getActionGroup() == ACTION_TYPE_GROUPS.TURN)
             return false;
-        if (entity.getActionGroup() == ACTION_TYPE_GROUPS.MOVE)
-            return false;
-
-        return true;
+        return entity.getActionGroup() != ACTION_TYPE_GROUPS.MOVE;
 
     }
 

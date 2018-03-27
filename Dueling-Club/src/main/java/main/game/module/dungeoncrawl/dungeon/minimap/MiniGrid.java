@@ -149,7 +149,7 @@ public class MiniGrid implements Refreshable {
                 return;
             }
         }
-        DC_Cell cell = (DC_Cell) dungeon.getGame().getCellByCoordinate(obj.getCoordinates());
+        DC_Cell cell = dungeon.getGame().getCellByCoordinate(obj.getCoordinates());
         if (cell == null) {
             return;
         }

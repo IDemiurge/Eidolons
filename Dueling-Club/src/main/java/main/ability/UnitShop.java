@@ -32,9 +32,9 @@ import main.system.datatypes.WeightMap;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UnitShop {
@@ -119,8 +119,8 @@ public class UnitShop {
             generateWeaponRepertoire(shopper, true);
         }
         if (!StringMaster.isEmpty(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE)))
-        buyNew(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.OFF_HAND,
-         DC_TYPE.WEAPONS);
+            buyNew(unit.getProperty(PROPS.OFF_HAND_REPERTOIRE), unit, ItemEnums.ITEM_SLOT.OFF_HAND,
+             DC_TYPE.WEAPONS);
     }
 
     private static void generateWeaponRepertoire(Unit hero, boolean offhand) {
@@ -264,7 +264,7 @@ public class UnitShop {
     }
 
     public static MATERIAL chooseMaterialType(int costLimit, Unit unit, ObjType baseType, boolean canExceed) {
-        if (baseType  == null  )
+        if (baseType == null)
             return null;
         if (baseType.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY)
             return null;

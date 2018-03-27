@@ -6,9 +6,9 @@ import main.entity.obj.unit.Unit;
 
 public interface ActionRule {
 
-    public void actionComplete(ActiveObj activeObj);
+    void actionComplete(ActiveObj activeObj);
 
-    public boolean unitBecomesActive(Unit unit);
+    boolean unitBecomesActive(Unit unit);
 
     default boolean isAppliedOnExploreAction(DC_ActiveObj action){
         return false;

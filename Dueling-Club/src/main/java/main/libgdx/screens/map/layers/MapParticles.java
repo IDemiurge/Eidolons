@@ -126,9 +126,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
          StringMaster.contains(path, "smoke")){
             downOrUp=true;
         }
-        if (windDirection.growY != downOrUp)
-            return true;
-        return false;
+        return windDirection.growY != downOrUp;
     }
 
     private boolean isFlipX(String path, DIRECTION windDirection) {

@@ -56,39 +56,35 @@ public class JUnitClearshotTest extends FastDcTest {
         boolean blocked = hero_inside != inside;
         LogMaster.setOff(false);
         if (blocked)
-            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline)
-            {
+            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline) {
                 boolean result = game.getVisionMaster().getSightMaster().
                  getClearShotCondition().check(getHero(), sub);
                 if (!result) {
-                    main.system.auxiliary.log.LogMaster.log(1,"Failed ClearShotCondition:" +
-                     " "+sub +
+                    main.system.auxiliary.log.LogMaster.log(1, "Failed ClearShotCondition:" +
+                     " " + sub +
                      "; hero_inside= " +
                      hero_inside +
-                     "; inside="+ inside );
+                     "; inside=" + inside);
 
                     assertTrue(false);
                 }
-            }
-        else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline)
-            {
-                main.system.auxiliary.log.LogMaster.log(1,"Failed BLOCKED_OUTLINE:" +
-                 " "+sub +
+            } else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline) {
+                main.system.auxiliary.log.LogMaster.log(1, "Failed BLOCKED_OUTLINE:" +
+                 " " + sub +
                  "; hero_inside= " +
                  hero_inside +
-                 "; inside="+ inside );
+                 "; inside=" + inside);
                 assertTrue(false);
             }
 
         if (sub instanceof BattleFieldObject)
             if (!sub.isMine())
-                if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN)
-                {
-                    main.system.auxiliary.log.LogMaster.log(1,"Failed UNSEEN:" +
-                     " "+sub +
+                if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN) {
+                    main.system.auxiliary.log.LogMaster.log(1, "Failed UNSEEN:" +
+                     " " + sub +
                      "; hero_inside= " +
                      hero_inside +
-                     "; inside="+ inside );
+                     "; inside=" + inside);
                     assertTrue(false);
                 }
     }
@@ -194,9 +190,7 @@ public class JUnitClearshotTest extends FastDcTest {
     }
 
     protected boolean checkCoordinate(Coordinates c) {
-        if (game.getObjectByCoordinate(c) != null)
-            return false;
-        return true;
+        return game.getObjectByCoordinate(c) == null;
     }
 
     @Test

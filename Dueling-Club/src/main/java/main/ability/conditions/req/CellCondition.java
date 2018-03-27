@@ -34,7 +34,7 @@ public class CellCondition extends OccupiedCondition {
 
     @Override
     public boolean check(Ref ref) {
-        return (free) ? !super.check(ref) : super.check(ref);
+        return (free) != super.check(ref);
     }
 
     @Override

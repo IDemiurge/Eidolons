@@ -98,7 +98,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
             // return "Something huge";
             // if (isSmall())
             // return "Something small";
-            return "Something " + getGame().getVisionMaster().getHintMaster().getHintsString((Unit) this);
+            return "Something " + getGame().getVisionMaster().getHintMaster().getHintsString(this);
         }
         return getName();
     }

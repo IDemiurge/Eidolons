@@ -24,9 +24,9 @@ import main.test.Preset.PRESET_OPTION;
 import main.test.Preset.PRESET_TYPE;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 import java.util.List;
 
 import static main.test.Preset.PRESET_DATA.*;
@@ -36,8 +36,8 @@ public class PresetMaster {
     private static final String AUTO = "auto";
     static List<Preset> presets;
     static PRESET_DATA[] edit_values = {OPTIONS, PLAYER_PARTY,
-            ENEMY_PARTY, DUNGEONS, FIRST_DUNGEON,
-            PRESET_TYPE};
+     ENEMY_PARTY, DUNGEONS, FIRST_DUNGEON,
+     PRESET_TYPE};
     static String[] options = {"Autosave", "Save", "Save As", "New", "Edit", "Load",};
     private static Preset preset;
 
@@ -48,7 +48,7 @@ public class PresetMaster {
             return;
         }
         int option = DialogMaster.optionChoice("What to do?",// ,
-                options);
+         options);
         if (option == -1) {
             return;
         }
@@ -82,8 +82,8 @@ public class PresetMaster {
 
     private static void editPreset() {
         PRESET_DATA item = new EnumMaster<PRESET_DATA>()
-                .retrieveEnumConst(PRESET_DATA.class, ListChooser.chooseEnum(SELECTION_MODE.SINGLE,
-                        ListMaster.toStringList(edit_values)));
+         .retrieveEnumConst(PRESET_DATA.class, ListChooser.chooseEnum(SELECTION_MODE.SINGLE,
+          ListMaster.toStringList(edit_values)));
         if (item != null) {
             editPresetItem(item, getPreset());
         }
@@ -121,12 +121,12 @@ public class PresetMaster {
 
     private static String generatePath() {
         return generatePath(preset.getValue(PLAYER_PARTY), preset
-                .getValue(ENEMY_PARTY), preset.getValue(FIRST_DUNGEON));
+         .getValue(ENEMY_PARTY), preset.getValue(FIRST_DUNGEON));
     }
 
     private static String generateName() {
         return generateName(preset.getValue(PLAYER_PARTY), preset
-                .getValue(ENEMY_PARTY), preset.getValue(FIRST_DUNGEON));
+         .getValue(ENEMY_PARTY), preset.getValue(FIRST_DUNGEON));
     }
 
     private static boolean editPresetItem(PRESET_DATA item, Preset preset) {
@@ -179,7 +179,7 @@ public class PresetMaster {
 
         // swapped players
         String name = generateName(newPreset.getEnemies(), newPreset.getAllies(), newPreset
-                .getLevelPath());
+         .getLevelPath());
         newPreset.setName(name);
         return newPreset;
     }
@@ -214,7 +214,7 @@ public class PresetMaster {
         // }
         String enemyName = StringMaster.getFirstItem(enemies);
         return partyName + " vs " + enemyName + " on "
-                + getRawDungeonName(levelFilePath);
+         + getRawDungeonName(levelFilePath);
     }
 
     private static String getRawDungeonName(String levelFilePath) {
@@ -226,6 +226,7 @@ public class PresetMaster {
         name = StringMaster.cropVersion(name);
         return name;
     }
+
     public static boolean choosePreset() {
         int i = DialogMaster.optionChoice("Choose a preset to launch", getPresets().toArray());
         if (i == -1) {
@@ -268,7 +269,7 @@ public class PresetMaster {
                     result = forceOption;
                 } else {
                     result = DialogMaster.askAndWait("File exists, what to do?", "Overwrite",
-                            "Version", "New");
+                     "Version", "New");
                 }
                 if (result == null) {
                     // TODO path???
@@ -289,7 +290,7 @@ public class PresetMaster {
 
     private static String getAutoPresetPath() {
         return getPresetFolderPath() + AUTO + "\\" + TimeMaster.getMonthString() + "\\"
-                + TimeMaster.getDayString() + "\\";
+         + TimeMaster.getDayString() + "\\";
     }
 
     private static String getFormat() {
@@ -305,7 +306,7 @@ public class PresetMaster {
         String dungeons = "";
         boolean partyType = false;
         ObjType encounterType = DataManager.getType(preset.getValue(PRESET_DATA.ENEMY_PARTY),
-                DC_TYPE.ENCOUNTERS);
+         DC_TYPE.ENCOUNTERS);
         // String enemyUnits = preset.getValue(PRESET_DATA.ENEMY_PARTY);
         if (encounterType != null) {
             ENEMY_PARTY = encounterType.getName();
@@ -359,8 +360,8 @@ public class PresetMaster {
         String autoFolderPath = getPresetFolderPath() + AUTO + "\\";
         File root = FileManager.getFile(autoFolderPath);
         List<File> list =
-                // new ArrayList<File>(Arrays.asList(root.listFiles()));
-                getPresetFiles(root, true);
+         // new ArrayList<File>(Arrays.asList(root.listFiles()));
+         getPresetFiles(root, true);
 
         Collections.sort(list, new Comparator<File>() {
             @Override

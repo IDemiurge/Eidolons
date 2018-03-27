@@ -118,11 +118,8 @@ public class DC_KeyManager
         if (checkValueHelper(e)) {
             return true;
         }
-        if (checkDebugMaster(e)) {
-            return true;
-        }
+        return checkDebugMaster(e);
 
-        return false;
     }
 
     private boolean checkValueHelper(KeyEvent e) {

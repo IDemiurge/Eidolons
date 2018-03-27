@@ -38,7 +38,6 @@ public abstract class MapObjComp implements MouseListener {
 
             }
 
-            ;
         };
         initComp();
     }

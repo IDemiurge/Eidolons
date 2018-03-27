@@ -58,16 +58,9 @@ public class ParamAnalyzer extends AiHandler {
         }
         if (buffLevel == rule
                 .getMinLevel()) {
-            if (low_critical) {
-                return true;
-            } else {
-                return false;
-            }
+            return low_critical;
         }
-        if (low_critical) {
-            return false;
-        }
-        return true;
+        return !low_critical;
     }
 
     public static boolean isFatigued(Unit unit) {
@@ -76,11 +69,8 @@ public class ParamAnalyzer extends AiHandler {
         if (buffLevel < 0) {
             return false;
         }
-        if (buffLevel == unit.getGame().getRules().getStaminaRule()
-                .getMaxLevel()) {
-            return false;
-        }
-        return true;
+        return buffLevel != unit.getGame().getRules().getStaminaRule()
+         .getMaxLevel();
     }
 
     public static boolean isHazed(Unit unit) {
@@ -89,10 +79,7 @@ public class ParamAnalyzer extends AiHandler {
         if (buffLevel < 0) {
             return false;
         }
-        if (buffLevel == unit.getGame().getRules().getFocusBuffRule().getMaxLevel()) {
-            return false;
-        }
-        return true;
+        return buffLevel != unit.getGame().getRules().getFocusBuffRule().getMaxLevel();
     }
 
     public static boolean checkStatus(boolean low_critical, Unit unit, PARAMETER p) {
@@ -143,9 +130,7 @@ public class ParamAnalyzer extends AiHandler {
     }
 
     public static boolean isEssenceIgnore(Unit unit) {
-        if (unit.getAI().getType().isCaster())
-            return false;
-        return true;
+        return !unit.getAI().getType().isCaster();
     }
 
     public static boolean isMoraleIgnore(Unit unit) {

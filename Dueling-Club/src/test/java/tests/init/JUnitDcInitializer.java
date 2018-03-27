@@ -15,18 +15,18 @@ public class JUnitDcInitializer {
     public DC_Game game;
 
 
-
-    public void  launchFastDc( ) {
+    public void launchFastDc() {
         FAST_DC.main(new String[]{
          LAUNCH.JUnit.name()
         });
         game = Eidolons.game;
     }
-    public JUnitDcInitializer( ) {
+
+    public JUnitDcInitializer() {
         //        PathFinder.setJUnitMode(true); to find all test/resources
         LogMaster.setOff(true); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(true);
-       launchFastDc();
+        launchFastDc();
 //        DC_Engine.systemInit();
 //        DC_Engine.gameInit(false);
 //        JUnitResources.init();

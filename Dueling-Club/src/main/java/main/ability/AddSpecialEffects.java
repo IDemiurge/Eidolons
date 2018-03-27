@@ -31,7 +31,7 @@ public class AddSpecialEffects extends MicroEffect {
     public boolean applyThis() {
         if (case_type == null) {
             case_type = new EnumMaster<SPECIAL_EFFECTS_CASE>().retrieveEnumConst(
-                    SPECIAL_EFFECTS_CASE.class, caseName);
+             SPECIAL_EFFECTS_CASE.class, caseName);
         }
         if (effects == null) {
             effects = new AbilityEffect(abilName).getEffects();

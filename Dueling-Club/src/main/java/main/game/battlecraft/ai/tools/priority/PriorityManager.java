@@ -135,11 +135,11 @@ public interface PriorityManager {
     int getModePriority(Unit unit, STD_MODES mode);
 
 
-    public enum AI_EFFECT_PRIORITIZING {
+    enum AI_EFFECT_PRIORITIZING {
         ATTACK, DAMAGE, BUFF, PARAM_MOD, COUNTER_MOD, SUMMON, MODE, BEHAVIOR_MODE,
     }
 
-    public enum PRIORITY_FUNCS {
+    enum PRIORITY_FUNCS {
         DURATION, DANGER, CAPACITY, DANGER_TO_ALLY,
     }
 }

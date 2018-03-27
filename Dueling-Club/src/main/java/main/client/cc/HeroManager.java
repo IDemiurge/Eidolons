@@ -118,10 +118,7 @@ public class HeroManager {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             return true;
         }
-        if (isQuickSlotWeapon(type)) {
-            return true;
-        }
-        return false;
+        return isQuickSlotWeapon(type);
     }
 
     public static boolean isQuickSlotWeapon(Entity type) {
@@ -136,10 +133,7 @@ public class HeroManager {
     }
 
     public static boolean isQuickSlotOnly (Entity type) {
-        if (   type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
-                return true;
-            }
-        return false;
+        return type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "");
     }
     public void removeHero(Unit hero) {
         typeStacks.remove(hero);

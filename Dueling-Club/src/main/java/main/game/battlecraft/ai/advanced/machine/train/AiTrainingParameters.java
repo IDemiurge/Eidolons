@@ -125,7 +125,7 @@ public class AiTrainingParameters {
         PARTY_DATA,
         CRITERIA,
         ROUND_LIMIT,
-        RULE_SCOPE;
+        RULE_SCOPE
     }
 
     public enum TRAINING_CRITERIA_MODS {

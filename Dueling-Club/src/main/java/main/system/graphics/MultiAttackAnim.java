@@ -17,7 +17,7 @@ public class MultiAttackAnim extends MultiAnim {
         for (Obj obj : ref.getGroup().getObjects()) {
             AttackAnimation anim = new AttackAnimation(attack);
             animations.add(anim);
-            anim.setTarget((Unit) obj);
+            anim.setTarget(obj);
         }
     }
 

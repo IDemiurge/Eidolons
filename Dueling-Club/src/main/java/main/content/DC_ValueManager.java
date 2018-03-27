@@ -18,7 +18,7 @@ public class DC_ValueManager implements ValueManager {
 
     public static VALUE_GROUP getValueGroup(String string) {
         VALUE_GROUP template = new EnumMaster<VALUE_GROUP>().retrieveEnumConst(VALUE_GROUP.class,
-                StringMaster.cropValueGroup(string));
+         StringMaster.cropValueGroup(string));
         return (template);
     }
 
@@ -31,10 +31,7 @@ public class DC_ValueManager implements ValueManager {
     }
 
     public static boolean isCentimalModParam(PARAMS p) {
-        if (StringMaster.getInteger(p.getDefaultValue()) == 100) {
-            return true;
-        }
-        return false;
+        return StringMaster.getInteger(p.getDefaultValue()) == 100;
     }
 
     public static int getMod(Integer mod, PARAMS p) {
@@ -82,18 +79,15 @@ public class DC_ValueManager implements ValueManager {
 
     @Override
     public boolean isRolledRoundind(PARAMETER valueToPay) {
-        if (valueToPay == C_N_OF_ACTIONS) {
-            return true;
-        }
-        return false;
+        return valueToPay == C_N_OF_ACTIONS;
     }
 
     public enum VALUE_GROUP {
         MAGIC(ValuePages.MASTERIES_MAGIC_SCHOOLS),
 
         OFFENSE_MAGIC(CELESTIAL_MASTERY, AFFLICTION_MASTERY,
-                FIRE_MASTERY,
-                SORCERY_MASTERY, DESTRUCTION_MASTERY),
+         FIRE_MASTERY,
+         SORCERY_MASTERY, DESTRUCTION_MASTERY),
         SUPPORT_MAGIC(WATER_MASTERY, BENEDICTION_MASTERY, WITCHERY_MASTERY, PSYCHIC_MASTERY, WARP_MASTERY, ENCHANTMENT_MASTERY, SYLVAN_MASTERY),
         SUMMON_MAGIC(EARTH_MASTERY, CONJURATION_MASTERY, DEMONOLOGY_MASTERY, SAVAGE_MASTERY, NECROMANCY_MASTERY),
         COMBAT_MAGIC(AIR_MASTERY, SHADOW_MASTERY, BLOOD_MAGIC_MASTERY, REDEMPTION_MASTERY),
@@ -104,7 +98,7 @@ public class DC_ValueManager implements ValueManager {
         DEATH(NECROMANCY_MASTERY, BLOOD_MAGIC_MASTERY, AFFLICTION_MASTERY),
         LIGHT(REDEMPTION_MASTERY, CELESTIAL_MASTERY, BENEDICTION_MASTERY),
         LIFE(SAVAGE_MASTERY,
-                 EARTH_MASTERY, ELEMENTAL_MASTERY, SYLVAN_MASTERY),
+         EARTH_MASTERY, ELEMENTAL_MASTERY, SYLVAN_MASTERY),
         ELEMENTAL_MAGIC(FIRE_MASTERY, AIR_MASTERY, WATER_MASTERY, EARTH_MASTERY),
         PRIMAL(FIRE_MASTERY, AIR_MASTERY, WATER_MASTERY, EARTH_MASTERY),
 
@@ -116,7 +110,7 @@ public class DC_ValueManager implements ValueManager {
 
         HIGH_ARTS(CONJURATION_MASTERY, CELESTIAL_MASTERY, ENCHANTMENT_MASTERY, ELEMENTAL_MASTERY,
 
-                NECROMANCY_MASTERY),
+         NECROMANCY_MASTERY),
 
         MAGIC_SKILLS(WIZARDRY_MASTERY, SPELLCRAFT_MASTERY),
 
@@ -166,8 +160,8 @@ public class DC_ValueManager implements ValueManager {
         XP_MOD(XP_LEVEL_MOD, XP_GAIN_MOD),
 
         MAGIC_SCORE(true, PSYCHIC_MASTERY, ENCHANTMENT_MASTERY, NECROMANCY_MASTERY, REDEMPTION_MASTERY, SAVAGE_MASTERY, WARP_MASTERY, DESTRUCTION_MASTERY, CELESTIAL_MASTERY,
-                FIRE_MASTERY, AIR_MASTERY, WATER_MASTERY, EARTH_MASTERY,
-                ELEMENTAL_MASTERY, SHADOW_MASTERY, WITCHERY_MASTERY, CONJURATION_MASTERY, SORCERY_MASTERY),
+         FIRE_MASTERY, AIR_MASTERY, WATER_MASTERY, EARTH_MASTERY,
+         ELEMENTAL_MASTERY, SHADOW_MASTERY, WITCHERY_MASTERY, CONJURATION_MASTERY, SORCERY_MASTERY),
         ARCANE_SCORE(true, CONJURATION_MASTERY, SORCERY_MASTERY, ENCHANTMENT_MASTERY),
         DARK_SCORE(true, PSYCHIC_MASTERY, SHADOW_MASTERY, WITCHERY_MASTERY),
         CHAOS_SCORE(true, WARP_MASTERY, DESTRUCTION_MASTERY, DEMONOLOGY_MASTERY),

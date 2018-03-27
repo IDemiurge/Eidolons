@@ -122,20 +122,14 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
         if (y < getBaseY()) {
             return false;
         }
-        if (y > getBaseY() + rowCount) {
-            return false;
-        }
-        return true;
+        return y <= getBaseY() + rowCount;
     }
 
     private boolean checkValidX(int x) {
         if (x < getBaseX()) {
             return false;
         }
-        if (x > getBaseX() + columnsCount) {
-            return false;
-        }
-        return true;
+        return x <= getBaseX() + columnsCount;
     }
 
     public int getPageSize() {

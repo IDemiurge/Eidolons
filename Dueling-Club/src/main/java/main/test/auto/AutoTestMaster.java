@@ -84,11 +84,11 @@ public class AutoTestMaster {
     }
 
     public static void testType(ObjType selectedType) {
-        TYPE = (DC_TYPE) selectedType.getOBJ_TYPE_ENUM();
+        TYPE = selectedType.getOBJ_TYPE_ENUM();
         if (instance == null) {
             main(new String[]{selectedType.getName()});
         } else {
-            instance.runAutoTest(new AutoTest(selectedType, "", instance.getFactory().getType(
+            instance.runAutoTest(new AutoTest(selectedType, "", AutoTestFactory.getType(
                     selectedType), instance));
         }
 

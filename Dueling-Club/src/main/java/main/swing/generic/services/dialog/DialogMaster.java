@@ -123,7 +123,7 @@ public class DialogMaster {
 
     }
 
-    public static enum CONTROLS_SCHEME {
+    public enum CONTROLS_SCHEME {
 
     }
 

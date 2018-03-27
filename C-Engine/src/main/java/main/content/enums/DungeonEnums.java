@@ -97,7 +97,7 @@ public class DungeonEnums {
 
     }
 
-    public static enum DUNGEON_SUBFOLDER {
+    public enum DUNGEON_SUBFOLDER {
         // ARCADE,
         BATTLE,
         DEMO,

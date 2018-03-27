@@ -23,11 +23,7 @@ public class OrderCondition extends MicroCondition {
         if (!targetUnit.canAct()) {
             return false;
         }
-        if (targetUnit.getBehaviorMode() != null) {
-            return false;
-        }
-
-        return true;
+        return targetUnit.getBehaviorMode() == null;
     }
 
 }

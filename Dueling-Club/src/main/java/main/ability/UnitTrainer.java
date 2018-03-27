@@ -64,7 +64,7 @@ public class UnitTrainer {
 
     private static void generateSkillPlan(Unit trainee) {
         /*
-		 * weights per mastery level and skill difficulty TODO
+         * weights per mastery level and skill difficulty TODO
 		 */
         String plan = getPlan(trainee).replace(StringMaster.BASE_CHAR, "");
         if (!plan.isEmpty()) {
@@ -78,7 +78,7 @@ public class UnitTrainer {
                 continue;
             }
             List<ObjType> types = DataManager.toTypeList(DataManager.getTypesSubGroupNames(
-                    DC_TYPE.SKILLS, mastery.getName()), DC_TYPE.SKILLS);
+             DC_TYPE.SKILLS, mastery.getName()), DC_TYPE.SKILLS);
             for (ObjType t : types) {
                 if (plan.contains(t.getName())) {
                     continue;
@@ -88,7 +88,7 @@ public class UnitTrainer {
                 }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SKILL_DIFFICULTY));
                 plan += t.getName() + StringMaster.wrapInParenthesis("" + weight)
-                        + StringMaster.CONTAINER_SEPARATOR;
+                 + StringMaster.CONTAINER_SEPARATOR;
             }
         }
 
@@ -98,8 +98,8 @@ public class UnitTrainer {
     private static void learn(ObjType newSkill, Unit trainee) {
         if (getHeroManager().addItem(trainee, newSkill, DC_TYPE.SKILLS, PROPS.SKILLS)) {
             LogMaster.log(1,
-                    "SKILL TRAINING: " + trainee.getName() + " learns " + newSkill.getName()
-                            + ", remaining xp: " + trainee.getIntParam(PARAMS.XP));
+             "SKILL TRAINING: " + trainee.getName() + " learns " + newSkill.getName()
+              + ", remaining xp: " + trainee.getIntParam(PARAMS.XP));
         }
         // getHeroManager().update(unit); ??
     }
@@ -118,10 +118,10 @@ public class UnitTrainer {
         }
         WeightMap<ObjType> pool = new WeightMap<>();
         Map<ObjType, Integer> map = new RandomWizard<ObjType>().constructWeightMap(getPlan(trainee),
-                ObjType.class, DC_TYPE.SKILLS);
+         ObjType.class, DC_TYPE.SKILLS);
 
         for (ObjType type : map.keySet()) {
-if(type==null ) continue;
+            if (type == null) continue;
             if (trainee.checkProperty(PROPS.SKILLS, type.getName())) {
                 continue; // TODO ++ exceptions
             }

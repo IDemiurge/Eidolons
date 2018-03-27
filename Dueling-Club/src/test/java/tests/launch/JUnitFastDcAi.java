@@ -36,7 +36,7 @@ public class JUnitFastDcAi {
                 assertTrue(endurance
                  <= presumed);
             });
-            main.system.auxiliary.log.LogMaster.log(1,"\n\n\nJUnit done\n\n\n" );
+            main.system.auxiliary.log.LogMaster.log(1, "\n\n\nJUnit done\n\n\n");
 // speed up!
             CoreEngine.setSelectivelyReadTypes("");
         }

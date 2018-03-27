@@ -176,15 +176,15 @@ public class VisibilityMaster {
             target.setOutlineType(outline);
         //check stealth-invisible?
         VISIBILITY_LEVEL visibilityLevel = getVisibility(outline);
+        if (!target.isOutsideCombat()){
+            return visibilityLevel;
+        }
         return visibilityLevel;
     }
 
     private boolean checkUnseen(Unit source, DC_Obj target) {
-        if (PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates()) >
-         ClearShotCondition.getMaxCheckDistance(source, target)) {
-            return true;
-        }
-        return false;
+        return PositionMaster.getExactDistance(source.getCoordinates(), target.getCoordinates()) >
+         ClearShotCondition.getMaxCheckDistance(source, target);
     }
 
 

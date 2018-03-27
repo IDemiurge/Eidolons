@@ -65,7 +65,7 @@ public class DescriptionMaster {
             case PSYCHIC_MASTERY:
                 if (rank == SkillEnums.MASTERY_RANK.NONE) {
                     return "You have difficulty reading the thoughts of your  drunkard friends shouting at you and have a presence so"
-                            + " fearsome that people choose not to notice you";
+                     + " fearsome that people choose not to notice you";
                 }
                 if (rank == SkillEnums.MASTERY_RANK.GRAND_MASTER) {
                     return "No mind is too strong for you to break, no spirit too fierce to subdue, no thought too quick to intercept. ";
@@ -73,7 +73,7 @@ public class DescriptionMaster {
 
         }// You are of Character.is
         return "You have a rank of " + StringMaster.getWellFormattedString(rank.name()) + " in "
-                + param.getName();
+         + param.getName();
 
     }
 
@@ -101,31 +101,31 @@ public class DescriptionMaster {
 
             case SORCERY_MASTERY:
                 return "Breaking the Laws of Aetherium, "
-                        + "tapping into its Weave directly, traveling it corporeally, "
-                        + "making light of distance, weight and time itself "
-                        + "employing sonic, magnetic and electric forces ";
+                 + "tapping into its Weave directly, traveling it corporeally, "
+                 + "making light of distance, weight and time itself "
+                 + "employing sonic, magnetic and electric forces ";
             case CONJURATION_MASTERY:
                 return "Called by some academics the School of Creation, Conjuration is the magic that gives solid ground to any mage, allowing them to conjure objects and items out of thin air";
 
             case DEMONOLOGY_MASTERY:
                 return "Dealing with demons " + ""
-                        + "Chaos Cultists use children to communicate with their gods ";
+                 + "Chaos Cultists use children to communicate with their gods ";
 
             case REDEMPTION_MASTERY:
                 return "All creatures of darkness fear this art, for it turns their own weapons against them, reveals the falseness and weakness of their hearts. Many warriors of the Light receive training in such magic, for while it is unceremonial and blunt, some might say, it is undoubtedly most effective. Its spells can deal heavy Holy damage, dispel negative effects, dismantle enchantments and are particularly effective against Evil - the undead, the demons and the creatures of the dark and all who bear Treachery or Ambition in their hearts.";
 
             case PSYCHIC_MASTERY:
                 return "Despite being less potent than pure Warp Magic, the Art of Psionics "
-                        + "is however more penetrating, subtle and precise, affording spells that rob foes of their senses and sanity, "
-                        + "methodically breaking their mind and will to do with it as you please."
-                        + "\n A psionicists repertoire includes, hallucinations that can mesmerize, haunt and unsettle, hypnosis that puts their foes into slumber or under their command,  phantasms that awaken the deepest fears and primal terror in their victims...  ";
+                 + "is however more penetrating, subtle and precise, affording spells that rob foes of their senses and sanity, "
+                 + "methodically breaking their mind and will to do with it as you please."
+                 + "\n A psionicists repertoire includes, hallucinations that can mesmerize, haunt and unsettle, hypnosis that puts their foes into slumber or under their command,  phantasms that awaken the deepest fears and primal terror in their victims...  ";
             case ENCHANTMENT_MASTERY:
                 return "Intricate and mysterious, Enchantment is considered the most intellectually challenging of all magical arts. "
-                        + "The complexity allow to create powerful illusions as well, "
-                        + "Some magi being able to put forth more than just a facade, but a veritable simulacrum of reality for their amusement or the ultimate bewilderment of their foes,"
-                        + " as they start adding their own inventions to the simulation"
-                        + "Telepathy and mind control "
-                        + "Matrices that require acute understanding of Aetherium Laws and a fair bit of brainpower to process the ever-changing influx of information,";
+                 + "The complexity allow to create powerful illusions as well, "
+                 + "Some magi being able to put forth more than just a facade, but a veritable simulacrum of reality for their amusement or the ultimate bewilderment of their foes,"
+                 + " as they start adding their own inventions to the simulation"
+                 + "Telepathy and mind control "
+                 + "Matrices that require acute understanding of Aetherium Laws and a fair bit of brainpower to process the ever-changing influx of information,";
             case WARP_MASTERY:
                 return "Mercurial and devious ";
             case NECROMANCY_MASTERY:

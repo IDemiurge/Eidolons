@@ -23,7 +23,7 @@ public class ActionCostTooltip extends ActionTooltip {
         super(el);
         name = addElement(null);
         row();
-         addElement(new CostTableTooltip());
+        addElement(new CostTableTooltip());
 
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
     }
@@ -43,14 +43,16 @@ public class ActionCostTooltip extends ActionTooltip {
 
             row();
             addElement(getDescription());
-            return ;
+            return;
         }
         Action action = getDescriptionAction();
         addAction(action);
     }
-public boolean isAnimated(){
+
+    public boolean isAnimated() {
         return false;
-}
+    }
+
     private Action getDescriptionAction() {
         DelayAction addAfter = new DelayAction();
         Action add = new Action() {
@@ -72,6 +74,6 @@ public boolean isAnimated(){
     }
 
     public ValueContainer getDescription() {
-   return ((ActionCostSource) getUserObject()).getDescription();
+        return ((ActionCostSource) getUserObject()).getDescription();
     }
 }

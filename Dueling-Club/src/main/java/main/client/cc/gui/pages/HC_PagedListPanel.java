@@ -315,7 +315,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
         SKILL(LIST_TEMPLATES.HORIZONTAL_2_5_NARROW),;
         private LIST_TEMPLATES template;
 
-        private HC_LISTS(LIST_TEMPLATES template) {
+        HC_LISTS(LIST_TEMPLATES template) {
             this.setTemplate(template);
         }
 

@@ -362,10 +362,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         if (getAbilityGroup() == ABILITY_GROUP.TEMPLATE_PASSIVE) {
             return false;
         }
-        if (getAbilityGroup() == ABILITY_GROUP.VALUE_MOD) {
-            return false;
-        }
-        return true;
+        return getAbilityGroup() != ABILITY_GROUP.VALUE_MOD;
 
     }
 

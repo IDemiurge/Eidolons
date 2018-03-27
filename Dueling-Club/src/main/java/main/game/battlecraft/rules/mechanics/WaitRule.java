@@ -81,10 +81,7 @@ public class WaitRule {
                 return true;
             }
         }
-        if (!target.canActNow()) {
-            return true;
-        }
-        return false;
+        return !target.canActNow();
     }
 
     public static Map<Integer, Integer> getAlertMap() {

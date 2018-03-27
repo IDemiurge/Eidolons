@@ -33,13 +33,13 @@ public class ActionGenerator {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.ACTIONS, "" + action_type)) {
             if (StringMaster.contains(type.getProperty(G_PROPS.ACTION_TAGS),
              ActionEnums.ACTION_TAGS.MAIN_HAND
-                    + "" )) {
+              + "")) {
                 ActionType offHandType = new ActionType(type);
                 offHandType.addProperty(G_PROPS.ACTION_TAGS, StringMaster
-                        .getWellFormattedString(ActionEnums.ACTION_TAGS.OFF_HAND + ""));
+                 .getWellFormattedString(ActionEnums.ACTION_TAGS.OFF_HAND + ""));
                 offHandType.removeProperty(G_PROPS.ACTION_TAGS,
 
-                        StringMaster.getWellFormattedString(ActionEnums.ACTION_TAGS.MAIN_HAND + ""));
+                 StringMaster.getWellFormattedString(ActionEnums.ACTION_TAGS.MAIN_HAND + ""));
                 //
                 offHandType.setName(getOffhandActionName(type.getName()));
                 offHandType.addProperty(G_PROPS.ACTION_TAGS, getOffhandActionName(type.getName()));

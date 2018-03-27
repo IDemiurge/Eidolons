@@ -129,11 +129,7 @@ public class AreaManager {
         if (coordinates.x > max_x && coordinates.y > max_y) {
             return false;
         }
-        if (coordinates.x < min_x && coordinates.y < min_y) {
-            return false;
-        }
-
-        return true;
+        return !(coordinates.x < min_x && coordinates.y < min_y);
     }
 
     public static void assignWanderingGroup(MacroGroup group) {

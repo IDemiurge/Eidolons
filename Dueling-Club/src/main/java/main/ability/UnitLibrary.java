@@ -47,7 +47,7 @@ public class UnitLibrary {
         boolean result = true;
         while (result) {
             result = learnSpells(LEARN_CASE.NEW) || learnSpells(LEARN_CASE.MEMORIZE)
-                    || learnSpells(LEARN_CASE.EN_VERBATIM);
+             || learnSpells(LEARN_CASE.EN_VERBATIM);
         }
 
         // learnSpells(LEARN_CASE.NEW); // randomized how? same as skills - if
@@ -85,7 +85,7 @@ public class UnitLibrary {
                 }
                 int weight = Math.max(1, score - t.getIntParam(PARAMS.SPELL_DIFFICULTY));
                 plan += t.getName() + StringMaster.wrapInParenthesis("" + weight)
-                        + StringMaster.CONTAINER_SEPARATOR;
+                 + StringMaster.CONTAINER_SEPARATOR;
             }
         }
         unit.setProperty(PROPS.SPELL_PLAN, plan, true);
@@ -130,7 +130,7 @@ public class UnitLibrary {
         spellPool = new XLinkedMap<>();
         for (String substring : StringMaster.open(unit.getProperty(getSourceProp(lc)))) {
             ObjType type = DataManager.getType(VariableManager.removeVarPart(substring),
-                    DC_TYPE.SPELLS);
+             DC_TYPE.SPELLS);
             if (checkCanLearnSpell(type, lc)) {
                 Integer weight = StringMaster.getWeight(substring);
                 if (weight <= 0) {
@@ -181,7 +181,7 @@ public class UnitLibrary {
             }
             if (reason.contains(PARAMS.XP.getName())) {
                 if (unit.checkParam(PARAMS.XP, type.getIntParam(PARAMS.XP_COST) + "*100/"
-                        + xpPercentageToSpend)) // TODO discount
+                 + xpPercentageToSpend)) // TODO discount
                 {
                     return true;
                 }
@@ -195,7 +195,7 @@ public class UnitLibrary {
             return RequirementsManager.VERBATIM_MODE;
         }
         return (lc == LEARN_CASE.MEMORIZE) ? RequirementsManager.ALT_MODE
-                : RequirementsManager.NORMAL_MODE;
+         : RequirementsManager.NORMAL_MODE;
     }
 
     private static void learnSpellUpgradesForUnit() {
@@ -212,14 +212,14 @@ public class UnitLibrary {
             result = getHeroManager().addMemorizedSpell(unit, spellType);
         } else {
             result = getHeroManager().addItem(unit, spellType, DC_TYPE.SPELLS, getTargetProp(lc),
-                    false, false);
+             false, false);
         }
         if (!result) {
             return false;
         }
         LogMaster.log(1, "SPELL TRAINING: " + unit.getName() + " learns "
-                + spellType.getName() + " (" + lc.toString() + "), remaining xp: "
-                + unit.getIntParam(PARAMS.XP));
+         + spellType.getName() + " (" + lc.toString() + "), remaining xp: "
+         + unit.getIntParam(PARAMS.XP));
 
 //        getHeroManager().update(unit);
         return true;

@@ -265,7 +265,7 @@ public class Attack {
 
     public BattleFieldObject getAttackedUnit() {
         if (attacked instanceof Unit)
-        return (Unit) attacked;
+        return attacked;
         return null;
     }
     public BattleFieldObject getAttacked() {
