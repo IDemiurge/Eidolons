@@ -99,13 +99,11 @@ public class DC_StateManager extends StateManager {
 
 
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
-            if (getGame().getDungeonMaster().getExplorationMaster().getResetter().isFirstResetDone())
-            {
-                getGame().getBfObjects().forEach(obj-> obj.setBufferedCoordinates(obj.getCoordinates()));
+            if (getGame().getDungeonMaster().getExplorationMaster().getResetter().isFirstResetDone()) {
+                getGame().getBfObjects().forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
                 triggerOnResetGuiEvents();
                 return;
-            }
-            else getGame().getDungeonMaster().getExplorationMaster().getResetter().setFirstResetDone(true);
+            } else getGame().getDungeonMaster().getExplorationMaster().getResetter().setFirstResetDone(true);
 
         }
         super.resetAllSynchronized();
@@ -125,13 +123,12 @@ public class DC_StateManager extends StateManager {
     }
 
 
-
     private void triggerOnResetGuiEvents() {
         List<BattleFieldObject> list = new ArrayList<>(getGame().getBfObjects());
-        list.removeIf(obj->{
+        list.removeIf(obj -> {
             if (!VisionManager.checkVisible(obj))
                 return true;
-            if ( (obj).isWall())
+            if ((obj).isWall())
                 return true;
             return (obj).isOverlaying();
         });
@@ -379,8 +376,8 @@ public class DC_StateManager extends StateManager {
 
             resetAllSynchronized();
             game.setStarted(true);
-            getGame().getRules().getIlluminationRule().resetIllumination( );
-            getGame().getRules().getIlluminationRule().  initLightEmission( );
+            getGame().getRules().getIlluminationRule().resetIllumination();
+            getGame().getRules().getIlluminationRule().initLightEmission();
 
             game.getTurnManager().newRound();
 //            getGameManager().refreshAll();

@@ -67,7 +67,7 @@ public class PrincipleItemList extends G_ListPanel<Entity> implements ListSelect
     @Override
     public void valueChanged(ListSelectionEvent e) {
         CharacterCreator.getPanel().getPrincipleViewComp().getDescriptionPanel().setType(
-                getList().getSelectedValue().getType());
+         getList().getSelectedValue().getType());
 
     }
 

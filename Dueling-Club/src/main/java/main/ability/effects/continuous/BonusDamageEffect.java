@@ -12,44 +12,46 @@ import main.system.math.Formula;
 
 /**
  * Created by JustMe on 3/18/2017.
-
- Can be applied to a unit, weapon or action/spell
-
- will cause creation of @MultiDamage
-
+ * <p>
+ * Can be applied to a unit, weapon or action/spell
+ * <p>
+ * will cause creation of @MultiDamage
  */
-public class BonusDamageEffect extends DC_Effect{
+public class BonusDamageEffect extends DC_Effect {
+    Condition conditions;
     private DAMAGE_TYPE type;
     private Formula formula;
     private Formula radiusFormula;
     private boolean percentage;
     private DAMAGE_CASE CASE;
     private Damage damage;
-    Condition conditions;
     private boolean fromRaw;
 
     public BonusDamageEffect(String type,
                              String formula) {
         this(new EnumMaster<DAMAGE_TYPE>().retrieveEnumConst(DAMAGE_TYPE.class, type), new Formula(formula));
     }
+
     public BonusDamageEffect(DAMAGE_TYPE type,
-         Formula formula) {
-        this(type, formula, null,false, false, DAMAGE_CASE.ATTACK);
+                             Formula formula) {
+        this(type, formula, null, false, false, DAMAGE_CASE.ATTACK);
     }
+
     public BonusDamageEffect(DAMAGE_TYPE type,
                              Formula formula,
                              Boolean percentage,
                              Boolean fromRaw,
                              DAMAGE_CASE CASE) {
 
-        this(type, formula, null, percentage, fromRaw, CASE );
+        this(type, formula, null, percentage, fromRaw, CASE);
     }
+
     public BonusDamageEffect(DAMAGE_TYPE type,
-         Formula formula,
-         Formula radiusFormula,
+                             Formula formula,
+                             Formula radiusFormula,
                              Boolean percentage,
                              Boolean fromRaw,
-        DAMAGE_CASE CASE) {
+                             DAMAGE_CASE CASE) {
         this.type = type;
         this.formula = formula;
         this.radiusFormula = radiusFormula;
@@ -61,13 +63,13 @@ public class BonusDamageEffect extends DC_Effect{
     @Override
     public boolean applyThis() {
         DC_Obj target = (DC_Obj) ref.getTargetObj();
-        target.addBonusDamage (CASE, getDamage());
+        target.addBonusDamage(CASE, getDamage());
         return false;
     }
 
 
     public Damage getDamage() {
-       damage= DamageFactory.getDamageForBonusEffect(this);
+        damage = DamageFactory.getDamageForBonusEffect(this);
         return damage;
     }
 

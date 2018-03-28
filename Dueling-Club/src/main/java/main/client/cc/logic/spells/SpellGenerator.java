@@ -36,7 +36,7 @@ public class SpellGenerator {
     public static void generateSpellUpgrades() {
         for (ObjType t : DataManager.getTypes(DC_TYPE.SPELLS)) {
             List<String> groups = StringMaster.openContainer(t
-                    .getProperty(G_PROPS.SPELL_UPGRADE_GROUPS));
+             .getProperty(G_PROPS.SPELL_UPGRADE_GROUPS));
             // ++ spell_upgrade_modification_exceptions
             if (groups.isEmpty()) {
                 continue;
@@ -51,7 +51,7 @@ public class SpellGenerator {
                 } catch (Exception e) {
                     // main.system.ExceptionMaster.printStackTrace(e);
                     LogMaster.log(0, t.getName()
-                            + " - failed to generate spell upgrade: " + ug.toString());
+                     + " - failed to generate spell upgrade: " + ug.toString());
                 }
             }
         }
@@ -80,7 +80,7 @@ public class SpellGenerator {
 
     public static String generateImagePath(Entity type, SPELL_UPGRADE ug) {
         String imgPath = StringMaster.cropFormat(type.getImagePath()) + ug.getImgSuffix()
-                + StringMaster.getFormat(type.getImagePath());
+         + StringMaster.getFormat(type.getImagePath());
         if (!ImageManager.isImage(imgPath)) {
             return type.getImagePath();
         }

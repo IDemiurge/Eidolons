@@ -37,7 +37,7 @@ public class HeroHeader extends G_Panel {
     @Transient
     public Dimension getPreferredSize() {
         return new Dimension(VISUALS.DEITY.getWidth() + 2 * GuiManager.getSmallObjSize(),
-                ClassLine.MAX_CLASSES * GuiManager.getSmallObjSize() + Y_OFFSET);
+         ClassLine.MAX_CLASSES * GuiManager.getSmallObjSize() + Y_OFFSET);
     }
 
     @Override

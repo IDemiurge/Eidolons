@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class HeroListPanel extends G_ListPanel<ObjType> implements ListSelectionListener,
-        MouseListener {
+ MouseListener {
 
     public static final int DEFAULT_LIST_SLOT_COUNT = CharacterCreator.STD_COLUMN_NUMBER;
     private static final BORDER DEFAULT_BORDER = null;

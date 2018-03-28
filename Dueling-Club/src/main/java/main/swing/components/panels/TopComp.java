@@ -53,7 +53,7 @@ public class TopComp extends WrappedTextComp {
             String name = "";
             try {
                 name = StringMaster.getWellFormattedString(game.getDungeonMaster().getDungeonWrapper()
-                        .getName());
+                 .getName());
             } catch (Exception e) {
 
             }

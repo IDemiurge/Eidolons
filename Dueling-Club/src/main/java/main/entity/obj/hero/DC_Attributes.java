@@ -28,42 +28,42 @@ public class DC_Attributes {
         switch (attr) {
             case STRENGTH:
                 hero.modifyParameter(PARAMS.TOUGHNESS,
-                        DC_Formulas.getToughnessFromStrength(amount), "Strength");
+                 DC_Formulas.getToughnessFromStrength(amount), "Strength");
                 // damage modifier
                 // reduces heavy item penalties
                 //
 
                 hero.modifyParameter(PARAMS.CARRYING_CAPACITY, DC_Formulas
-                        .getCarryingCapacityFromStrength(amount), "Strength");
+                 .getCarryingCapacityFromStrength(amount), "Strength");
 
                 break;
             case VITALITY:
                 hero.modifyParameter(PARAMS.FORTITUDE,
-                        DC_Formulas.getFortitudeFromVitality(amount), modifierKey);
+                 DC_Formulas.getFortitudeFromVitality(amount), modifierKey);
                 hero.modifyParameter(PARAMS.TOUGHNESS,
-                        DC_Formulas.getToughnessFromVitality(amount), modifierKey);
+                 DC_Formulas.getToughnessFromVitality(amount), modifierKey);
 
                 hero.modifyParameter(PARAMS.ENDURANCE,
-                        DC_Formulas.getEnduranceFromVitality(amount), modifierKey);
+                 DC_Formulas.getEnduranceFromVitality(amount), modifierKey);
                 hero.modifyParameter(PARAMS.STAMINA, DC_Formulas.getStaminaFromVitality(amount),
-                        modifierKey);
+                 modifierKey);
 
                 hero.modifyParameter(PARAMS.REST_BONUS, DC_Formulas
-                        .getRestBonusFromVitality(amount), modifierKey);
+                 .getRestBonusFromVitality(amount), modifierKey);
 
                 if (DC_ConditionMaster.checkLiving(hero)) {
                     hero.modifyParameter(PARAMS.ENDURANCE_REGEN, DC_Formulas
-                            .getEnduranceRegenFromVitality(amount), modifierKey);
+                     .getEnduranceRegenFromVitality(amount), modifierKey);
                 }
                 break;
             case AGILITY:
                 hero.modifyParameter(PARAMS.NOISE, -amount / 2, modifierKey);
                 hero.modifyParameter(PARAMS.N_OF_COUNTERS, DC_Formulas.getCountersFromAgi(amount),
-                        modifierKey); // with
+                 modifierKey); // with
                 // strength?
                 // TODO
                 hero.modifyParameter(PARAMS.ATTACK, DC_Formulas.getAttackFromAgi(amount),
-                        modifierKey);
+                 modifierKey);
                 // hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
                 // .getInitModFromAgi(amount * 2 / 3),
                 // StringMaster.getWellFormattedString(attr.toString())); //in
@@ -84,12 +84,12 @@ public class DC_Attributes {
                 Integer agi = hero.getIntParam(PARAMS.AGILITY);
 
                 hero.modifyParameter(PARAMS.INITIATIVE_MODIFIER, DC_Formulas
-                                .getInitModFromAgi(MathMaster.round(new Float((amount + 2 * agi) / 3))),
-                        modifierKey);
+                  .getInitModFromAgi(MathMaster.round(new Float((amount + 2 * agi) / 3))),
+                 modifierKey);
 
                 Float apBoost = new Float(amount + new Float(agi / 2));
                 hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas.getActsFromDex(MathMaster
-                        .round(apBoost)), modifierKey);
+                 .round(apBoost)), modifierKey);
                 // NEW
 
                 // hero.modifyParameter(PARAMS.N_OF_ACTIONS, DC_Formulas
@@ -106,13 +106,13 @@ public class DC_Attributes {
 
             case WILLPOWER:
                 hero.modifyParameter(PARAMS.RESISTANCE, DC_Formulas.getResistanceFromWill(amount),
-                        modifierKey);
+                 modifierKey);
                 hero.modifyParameter(PARAMS.SPIRIT, DC_Formulas.getSpiritFromWill(amount),
-                        modifierKey);
+                 modifierKey);
                 hero.modifyParameter(PARAMS.STARTING_FOCUS, DC_Formulas
-                        .getStartingFocusFromWill(amount), modifierKey);
+                 .getStartingFocusFromWill(amount), modifierKey);
                 hero.modifyParameter(PARAMS.INTERRUPT_DAMAGE, DC_Formulas
-                        .getStartingFocusFromWill(amount), modifierKey);
+                 .getStartingFocusFromWill(amount), modifierKey);
 
                 hero.modifyParameter(PARAMS.FOCUS_RESTORATION, amount, modifierKey);
                 hero.modifyParameter(PARAMS.FOCUS_RETAINMENT, amount, modifierKey);
@@ -125,7 +125,7 @@ public class DC_Attributes {
 
             case INTELLIGENCE:
                 hero.modifyParameter(PARAMS.MEMORIZATION_CAP, DC_Formulas.getMemoryFromInt(amount),
-                        modifierKey);
+                 modifierKey);
                 hero.modifyParameter(PARAMS.XP_GAIN_MOD, amount, modifierKey);
                 hero.modifyParameter(PARAMS.XP_LEVEL_MOD, amount, modifierKey);
                 hero.modifyParameter(PARAMS.DURATION_MOD, amount, modifierKey);
@@ -142,7 +142,7 @@ public class DC_Attributes {
                 break;
             case WISDOM:
                 hero.modifyParameter(PARAMS.ESSENCE, DC_Formulas.getEssenceFromWisdom(amount),
-                        modifierKey);
+                 modifierKey);
                 hero.modifyParameter(PARAMS.DETECTION, amount / 2, modifierKey);
                 hero.modifyParameter(PARAMS.PERCEPTION, amount / 2, modifierKey);
                 hero.modifyParameter(PARAMS.MEDITATION_BONUS, (amount), modifierKey);
@@ -150,7 +150,7 @@ public class DC_Attributes {
             case CHARISMA:
                 hero.modifyParameter(PARAMS.DIVINATION_CAP, (amount), modifierKey);
                 hero.modifyParameter(ContentManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
-                        (amount), modifierKey);
+                 (amount), modifierKey);
 
                 hero.modifyParameter(PARAMS.GOLD_COST_REDUCTION, 2 * (amount), modifierKey);
 

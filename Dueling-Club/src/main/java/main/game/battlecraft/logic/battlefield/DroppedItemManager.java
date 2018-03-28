@@ -12,8 +12,8 @@ import main.system.ObjUtilities;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class DroppedItemManager {
@@ -59,17 +59,17 @@ public class DroppedItemManager {
 
     public void remove(DC_HeroItemObj item, Unit heroObj) {
         game.getCellByCoordinate(heroObj.getCoordinates()).removeProperty(PROPS.DROPPED_ITEMS,
-                "" + item.getId());
+         "" + item.getId());
     }
 
     public void remove(Unit heroObj, Entity item) {
         game.getCellByCoordinate(heroObj.getCoordinates()).removeProperty(PROPS.DROPPED_ITEMS,
-                "" + item.getId());
+         "" + item.getId());
     }
 
     public void drop(DC_HeroItemObj item, Unit heroObj) {
         game.getCellByCoordinate(heroObj.getCoordinates()).addProperty(PROPS.DROPPED_ITEMS,
-                "" + item.getId());
+         "" + item.getId());
     }
 
     public boolean pickUp(Obj cell, DC_HeroItemObj item) {
@@ -80,7 +80,7 @@ public class DroppedItemManager {
     public boolean pickUp(Unit hero, Entity type) {
         Obj cell = game.getCellByCoordinate(hero.getCoordinates());
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type,
-                getDroppedItems(cell));
+         getDroppedItems(cell));
         if (item == null) {
             return false;
         }
@@ -91,7 +91,7 @@ public class DroppedItemManager {
     public DC_HeroItemObj findDroppedItem(String typeName, Coordinates coordinates) {
         Obj cell = game.getCellByCoordinate(coordinates);
         Obj item = new ListMaster<Obj>()
-                .findType(typeName, new ArrayList<>(getDroppedItems(cell)));
+         .findType(typeName, new ArrayList<>(getDroppedItems(cell)));
         return (DC_HeroItemObj) item;
     }
 

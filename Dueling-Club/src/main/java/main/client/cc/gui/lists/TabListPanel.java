@@ -20,7 +20,7 @@ public class TabListPanel extends HeroListPanel {
     public TabListPanel(String title, boolean responsive, boolean v,
                         int rowCount, Unit hero, List<ObjType> data) {
         this(title, hero, responsive, v, rowCount,
-                GuiManager.getSmallObjSize(), data);
+         GuiManager.getSmallObjSize(), data);
     }
 
     // public ListItem<ObjType> getDefaulListComp(ObjType value, boolean

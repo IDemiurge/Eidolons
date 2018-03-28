@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class PrestartMenu extends GameMenu {
 
-    @Override
-    protected List<MenuItem<GAME_MENU_ITEM>> getDefaultItems() {
-        return super.getDefaultItems();
-    }
-
     public PrestartMenu() {
         super();
         setVisible(true);
+    }
+
+    @Override
+    protected List<MenuItem<GAME_MENU_ITEM>> getDefaultItems() {
+        return super.getDefaultItems();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class PrestartMenu extends GameMenu {
 
     @Override
     protected GameMenuHandler initHandler() {
-        return new GameMenuHandler(){
+        return new GameMenuHandler() {
             @Override
             public Boolean clicked(GAME_MENU_ITEM sub) {
                 switch (sub) {

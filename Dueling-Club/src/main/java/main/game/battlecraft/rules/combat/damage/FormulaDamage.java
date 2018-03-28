@@ -5,7 +5,7 @@ import main.system.math.Formula;
 /**
  * Created by JustMe on 3/18/2017.
  */
-public class FormulaDamage extends  Damage {
+public class FormulaDamage extends Damage {
     private Formula formula;
     private boolean percentage;
     private boolean fromRaw;
@@ -14,14 +14,22 @@ public class FormulaDamage extends  Damage {
         return formula;
     }
 
+    public void setFormula(Formula formula) {
+        this.formula = formula;
+    }
+
     public boolean isPercentage() {
         return percentage;
+    }
+
+    public void setPercentage(boolean percentage) {
+        this.percentage = percentage;
     }
 
     @Override
     public Integer getAmount() {
         setAmount(formula.getInt(getRef()));
-        return amount ;
+        return amount;
 
     }
 
@@ -31,13 +39,5 @@ public class FormulaDamage extends  Damage {
 
     public void setFromRaw(boolean fromRaw) {
         this.fromRaw = fromRaw;
-    }
-
-    public void setFormula(Formula formula) {
-        this.formula = formula;
-    }
-
-    public void setPercentage(boolean percentage) {
-        this.percentage = percentage;
     }
 }

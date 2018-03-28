@@ -18,15 +18,18 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
-import main.system.content.ContentGenerator;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
+import main.system.content.ContentGenerator;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ItemGenerator implements GenericItemGenerator {
 
@@ -660,7 +663,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public void init() {
 //        if (!basicMode)
-            ContentGenerator.initMaterials();
+        ContentGenerator.initMaterials();
         if (!isGenerationOn()) {
             return;
         }

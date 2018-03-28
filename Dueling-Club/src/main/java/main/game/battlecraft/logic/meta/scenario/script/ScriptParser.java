@@ -86,8 +86,8 @@ public class ScriptParser {
         return vars;
     }
 
-    public static <T>ScriptTrigger parseScript(String script, DC_Game game,
-                                            ScriptExecutor<T> executor, Class<T> funcClass
+    public static <T> ScriptTrigger parseScript(String script, DC_Game game,
+                                                ScriptExecutor<T> executor, Class<T> funcClass
 
     ) {
         script = ScriptMaster.getScriptByName(script); //TODO
@@ -101,15 +101,14 @@ public class ScriptParser {
         if (condition != null) {
             condition.setXml(XML_Converter.wrap("ScriptedCondition",
              XML_Converter.wrap("STANDARD_EVENT_TYPE", event_type.toString())
-              +XML_Converter.wrap("STRING",VariableManager.getVars(processedPart))
-             ));
+              + XML_Converter.wrap("STRING", VariableManager.getVars(processedPart))
+            ));
+        } else {
+            String conditionPart = StringMaster.getFirstItem(script,
+             ScriptSyntax.PART_SEPARATOR);
+            condition = parseConditions(conditionPart);
+            condition.setXml(conditionPart);
         }
-            else {
-                String conditionPart = StringMaster.getFirstItem(script,
-                 ScriptSyntax.PART_SEPARATOR);
-                condition = parseConditions(conditionPart);
-                condition.setXml(conditionPart);
-            }
 
         boolean isRemove = true;
 //        if (contains("cyclic"))remove = false;
@@ -121,7 +120,7 @@ public class ScriptParser {
         //TODO this won't work in generic way!!!!
          T func =
          new EnumMaster<T>().retrieveEnumConst
-         (funcClass , funcPart);
+          (funcClass, funcPart);
         if (func != null) {
             //TODO for multiple scripts, need another SEPARATOR!
             String separator = executor.getSeparator(func);

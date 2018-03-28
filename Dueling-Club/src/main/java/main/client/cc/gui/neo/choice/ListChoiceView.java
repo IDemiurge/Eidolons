@@ -21,7 +21,7 @@ public class ListChoiceView extends ChoiceView<String> implements ListCellRender
     @Override
     protected PagedSelectionPanel<String> createSelectionComponent() {
         PagedSelectionPanel<String> panel = new PagedSelectionPanel<String>(this, getPageSize(),
-                getItemSize(), getColumnsCount()) {
+         getItemSize(), getColumnsCount()) {
 
             public int getPanelHeight() {
                 return V.getHeight() * pageSize / wrap;

@@ -7,7 +7,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.elements.actions.Action;
 
-public class ForcedActionEffect extends MicroEffect  implements OneshotEffect {
+public class ForcedActionEffect extends MicroEffect implements OneshotEffect {
 
     private String actionName;
     private KEYS key;
@@ -32,7 +32,7 @@ public class ForcedActionEffect extends MicroEffect  implements OneshotEffect {
 
         Action action = new Action(unit.getAction(actionName), REF);
         unit.getGame().getAiManager().getAI(unit).getForcedActions()
-                .add(action);
+         .add(action);
         return true;
     }
 }

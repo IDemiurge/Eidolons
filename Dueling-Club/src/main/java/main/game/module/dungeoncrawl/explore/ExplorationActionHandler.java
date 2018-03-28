@@ -7,8 +7,8 @@ import main.elements.costs.Costs;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
     private static List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
      PARAMS.AP_COST,
     });
-    private static String STA_MODIFIER="0.33";
+    private static String STA_MODIFIER = "0.33";
 
     public ExplorationActionHandler(ExplorationMaster master) {
         super(master);
@@ -32,24 +32,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
 
         return false;
     }
-    public void playerActionActivated(DC_ActiveObj activeObj) {
 
-//        int time = getTimeForAction(activeObj);
-//        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
-//        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
-    }
-    public   boolean isActivationDisabledByExploration(DC_ActiveObj action) {
-switch (action.getName()){
-    case "Defend":
-        return true;
-}
-        return false;
-    }
-
-    public List<DC_ActiveObj> getExplorationActions(Unit unit) {
-        List<DC_ActiveObj> list = new ArrayList<>();
-        return list;
-    }
     private static void adjustCosts(Costs costs) {
         costs.getCosts().removeIf(cost ->
          ignoredCosts.contains(cost.getCostParam())
@@ -61,11 +44,31 @@ switch (action.getName()){
 //        }
 
         Cost sub = costs.getCost(PARAMS.STA_COST);
-        if (sub!=null )
-        sub.getPayment().getAmountFormula().append("*"+STA_MODIFIER);
-            sub = costs.getCost(PARAMS.FOC_COST);
-        if (sub!=null )
-        sub.getPayment().getAmountFormula().append("*"+STA_MODIFIER);
+        if (sub != null)
+            sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
+        sub = costs.getCost(PARAMS.FOC_COST);
+        if (sub != null)
+            sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
+    }
+
+    public void playerActionActivated(DC_ActiveObj activeObj) {
+
+//        int time = getTimeForAction(activeObj);
+//        DequeImpl<UnitAI> aiList = master.getAiMaster().getActiveUnitAIs();
+//        aiList.forEach(ai -> ai.setExplorationTimePassed(ai.getExplorationTimePassed() - time));
+    }
+
+    public boolean isActivationDisabledByExploration(DC_ActiveObj action) {
+        switch (action.getName()) {
+            case "Defend":
+                return true;
+        }
+        return false;
+    }
+
+    public List<DC_ActiveObj> getExplorationActions(Unit unit) {
+        List<DC_ActiveObj> list = new ArrayList<>();
+        return list;
     }
 
     public void payCosts(DC_ActiveObj entity) {

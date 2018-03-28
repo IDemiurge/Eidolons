@@ -11,13 +11,14 @@ public class AiExecutor {
         // TODO Auto-generated constructor stub
     }
 
-    public boolean execute (Action action) {
+    public boolean execute(Action action) {
         return execute(action, false);
     }
-        public boolean execute(Action action, boolean free) {
+
+    public boolean execute(Action action, boolean free) {
         boolean result = false;
         Ref ref = action.getRef();
-        if (free){
+        if (free) {
             action.getActive().setFree(true);
         }
         try {
@@ -25,7 +26,7 @@ public class AiExecutor {
             if (!action.getActive().isChanneling()) {
                 if (ref.getTargetObj() == null) {
                     if (!(action.getActive().getTargeting()
-                            instanceof SelectiveTargeting)) {
+                     instanceof SelectiveTargeting)) {
                         result = true;
                         action.getActive().getHandler().activateOnGameLoopThread();
 
@@ -41,7 +42,7 @@ public class AiExecutor {
             return result;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        }finally {
+        } finally {
             action.getActive().setFree(false);
         }
 

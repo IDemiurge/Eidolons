@@ -47,11 +47,11 @@ public class GlobalKeys implements HotkeyListener {
             JIntellitype.getInstance().addHotKeyListener(this);
             if (launcher) {
                 JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_ALT,
-                        KeyEvent.VK_ESCAPE);
+                 KeyEvent.VK_ESCAPE);
                 JIntellitype.getInstance().registerHotKey(2, JIntellitype.MOD_CONTROL,
-                        KeyEvent.VK_ENTER);
+                 KeyEvent.VK_ENTER);
                 JIntellitype.getInstance().registerHotKey(3, JIntellitype.MOD_ALT,
-                        KeyEvent.VK_SPACE);
+                 KeyEvent.VK_SPACE);
             }
 
             if (dc) {

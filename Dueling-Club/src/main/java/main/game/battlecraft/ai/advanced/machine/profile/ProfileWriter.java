@@ -13,32 +13,33 @@ import main.system.auxiliary.StringMaster;
  */
 public class ProfileWriter {
 
-    public static String root="duel-club\\ai-data\\training\\profiles";
-    public static String dataRoot="duel-club\\ai-data\\training\\init-data";
-    public static String separator=",";
-    public static String DEFAULT_CRITERIA="default criteria.txt";
-    public static String DEFAULT_PARAMETERS="default parameters.txt";
+    public static String root = "duel-club\\ai-data\\training\\profiles";
+    public static String dataRoot = "duel-club\\ai-data\\training\\init-data";
+    public static String separator = ",";
+    public static String DEFAULT_CRITERIA = "default criteria.txt";
+    public static String DEFAULT_PARAMETERS = "default parameters.txt";
 
     public static String getRoot() {
-        return PathFinder.getXML_PATH()+ root;
+        return PathFinder.getXML_PATH() + root;
     }
 
     public static void generateDefaultDataFiles() {
-        StringBuilder builder=new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 //        for (AI_TRAIN_PARAM param: AI_TRAIN_PARAM.values()){
 //            param.g
 //        }
-        for (CRITERIA_TYPE_NUMERIC numeric: CRITERIA_TYPE_NUMERIC.values()){
-            builder.append(numeric.getDefaultValue() + separator );
+        for (CRITERIA_TYPE_NUMERIC numeric : CRITERIA_TYPE_NUMERIC.values()) {
+            builder.append(numeric.getDefaultValue() + separator);
         }
 //        builder.append(numeric.getDefaultValue() + AiTrainingRunner.getDataInstanceSeparator());
 //        for (CRITERIA_TYPE_BOOLEAN typeBoolean: CRITERIA_TYPE_BOOLEAN.values()){
 //            builder.append(typeBoolean.getDefaultValue() + AiTrainingRunner.getSegmentSeparator());
 //        }
-        String path = StringMaster.buildPath(PathFinder.getXML_PATH() ,dataRoot   , DEFAULT_CRITERIA);
+        String path = StringMaster.buildPath(PathFinder.getXML_PATH(), dataRoot, DEFAULT_CRITERIA);
         XML_Writer.write(builder.toString(), path);
     }
-        public static void save(PriorityProfile profile) {
+
+    public static void save(PriorityProfile profile) {
         AiTrainingResult result = profile.getResult();
 
         Unit unit = result.getUnitStats().getUnit();
@@ -46,9 +47,9 @@ public class ProfileWriter {
         String preset = result.getParameters().getDungeonData();
         String name = result.getParameters().getTraineeType() + ".profile";
 
-        StringBuilder builder=new StringBuilder();
-        profile.getConstants().stream().forEach(f->{
-            builder.append(f+separator);
+        StringBuilder builder = new StringBuilder();
+        profile.getConstants().stream().forEach(f -> {
+            builder.append(f + separator);
         });
         String path = StringMaster.buildPath(root, type, preset, name);
         XML_Writer.write(builder.toString(), path);

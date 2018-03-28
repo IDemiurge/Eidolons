@@ -35,10 +35,10 @@ import main.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
-import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.Collection;
 import java.util.List;

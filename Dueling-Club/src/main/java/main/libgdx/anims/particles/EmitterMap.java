@@ -51,8 +51,8 @@ public class EmitterMap extends Group {
         });
         if (Eidolons.game instanceof DC_Game) {
             COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
-        if (colorTheme != null)
-            color = GdxColorMaster.getColorForTheme(colorTheme);
+            if (colorTheme != null)
+                color = GdxColorMaster.getColorForTheme(colorTheme);
         }
     }
 

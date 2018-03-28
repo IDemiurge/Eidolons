@@ -21,14 +21,14 @@ import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClassTreeView extends HT_View {
 
     public static CLASS_GROUP[] FOCUS_WORKSPACE = {HeroEnums.CLASS_GROUP.FIGHTER, HeroEnums.CLASS_GROUP.KNIGHT,
-            HeroEnums.CLASS_GROUP.RANGER, HeroEnums.CLASS_GROUP.ROGUE, HeroEnums.CLASS_GROUP.TRICKSTER};
+     HeroEnums.CLASS_GROUP.RANGER, HeroEnums.CLASS_GROUP.ROGUE, HeroEnums.CLASS_GROUP.TRICKSTER};
 
     public ClassTreeView(Object arg, Unit hero) {
         super(arg, hero);
@@ -72,20 +72,20 @@ public class ClassTreeView extends HT_View {
                     @Override
                     public Component generateTabComp(HC_TabPanel panel) {
                         return new GraphicComponent(ImageManager.getNewBufferedImage(
-                                isSelected() ? getSelectedTabCompWidth() : getTabCompWidth(),
-                                getTabCompHeight())) {
+                         isSelected() ? getSelectedTabCompWidth() : getTabCompWidth(),
+                         getTabCompHeight())) {
                             public Image getImg() {
                                 boolean locked = !hasClass(classGroup);
                                 try {
                                     image = HC_Master.generateClassIcon(classGroup, isSelected(),
-                                            locked, hero);
+                                     locked, hero);
                                 } catch (Exception e) {
                                     main.system.ExceptionMaster.printStackTrace(e);
                                     image = ImageManager.getNewBufferedImage(getTabCompWidth(),
-                                            getTabCompWidth());
+                                     getTabCompWidth());
                                 }
                                 setCompSize(new Dimension(image.getWidth(null), image
-                                        .getHeight(null)));
+                                 .getHeight(null)));
                                 return image;
                             }
 

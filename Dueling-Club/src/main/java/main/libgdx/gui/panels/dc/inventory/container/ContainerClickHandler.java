@@ -35,16 +35,14 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 //            dirty = true;
 //            result = true;
 //        }
-        if (cellContents==null )
-        {
+        if (cellContents == null) {
             GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
-             null );
+             null);
             return false;
         }
-        if (unit.isInventoryFull())
-        {
+        if (unit.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!",unit);
+             "Inventory is full!", unit);
             return false;
         }
         DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
@@ -63,18 +61,17 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     }
 
     public void takeAllClicked() {
-    for (DC_HeroItemObj item:         new ArrayList<>(container.getItems()) ){
-        if (unit.isInventoryFull())
-        {
-            FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!",unit);
-            return;
+        for (DC_HeroItemObj item : new ArrayList<>(container.getItems())) {
+            if (unit.isInventoryFull()) {
+                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
+                 "Inventory is full!", unit);
+                return;
+            }
+            container.getItems().remove(item);
+            unit.addItemToInventory(item);
         }
-        container.getItems().remove(item);
-        unit.addItemToInventory(item);
-    }
-    GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
-         null );
+        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
+         null);
     }
 
     @Override

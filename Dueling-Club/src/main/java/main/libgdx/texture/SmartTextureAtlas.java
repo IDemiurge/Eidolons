@@ -23,8 +23,22 @@ public class SmartTextureAtlas extends TextureAtlas {
         super(data);
     }
 
+    public static SmartTextureAtlas getAtlas(String path) {
+        SmartTextureAtlas atlas =
+         cache.get(path.toLowerCase());
+        if (atlas != null)
+            return atlas;
+        atlas = new SmartTextureAtlas(path);
+        cache.put(path.toLowerCase(), atlas);
+        return atlas;
+    }
+
+    public static void clearCache() {
+        cache.clear();
+    }
+
     @Override
-        public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
+    public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
 
         return super.addRegion(name.toLowerCase(), textureRegion);
     }
@@ -40,20 +54,7 @@ public class SmartTextureAtlas extends TextureAtlas {
     }
 
     @Override
-        public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
+    public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
         return super.addRegion(name.toLowerCase(), texture, x, y, width, height);
-    }
-
-    public static SmartTextureAtlas getAtlas(String path) {
-        SmartTextureAtlas atlas =
-         cache.get(path.toLowerCase());
-        if (atlas!=null )
-            return atlas;
-        atlas=new SmartTextureAtlas(path);
-        cache.put(path.toLowerCase(), atlas);
-        return atlas;
-    }
-    public static  void clearCache(){
-        cache.clear();
     }
 }

@@ -25,6 +25,16 @@ public class PriorityProfileManager extends AiHandler {
 
     }
 
+    public static List<PriorityProfile> initProfiles(int i) {
+        PriorityProfileManager manager = new PriorityProfileManager(null);
+        PriorityProfile original = manager.createNewProfile(null);
+        List<PriorityProfile> list = new ArrayList<>();
+        while (i > 0) {
+            i--;
+            list.add((PriorityProfile) original.mutate());
+        }
+        return list;
+    }
 
     public PriorityProfile getPriorityProfile(UnitAI ai) {
         PriorityProfile profile = profilesMap.get(ai.getUnit().getType());
@@ -46,7 +56,6 @@ public class PriorityProfileManager extends AiHandler {
         }
         return defaultProfile;
     }
-
 
     public PriorityProfile createNewProfile(float[] array) {
         Map<AiConstant, Float> map = new XLinkedMap<>();
@@ -87,27 +96,15 @@ public class PriorityProfileManager extends AiHandler {
         return getPriorityProfile(getUnit().getAI());
     }
 
-
     public AI_PROFILE_GROUP getGroup() {
         return group;
     }
 
-    public Map<UnitAI, PriorityProfile> getProfilesMap() {
-        return profilesMap;
-    }
-
-    public static List<PriorityProfile> initProfiles(int i) {
-        PriorityProfileManager manager = new PriorityProfileManager(null);
-        PriorityProfile original =manager. createNewProfile(null);
-        List<PriorityProfile> list = new ArrayList<>();
-        while (i > 0) {
-            i--;
-            list.add((PriorityProfile) original.mutate());
-        }
-        return list;
-    }
-
     public void setGroup(AI_PROFILE_GROUP group) {
         this.group = group;
+    }
+
+    public Map<UnitAI, PriorityProfile> getProfilesMap() {
+        return profilesMap;
     }
 }

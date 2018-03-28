@@ -45,9 +45,9 @@ public class ScrollTextPanel extends GroupX {
             bg = new Image(TextureCache.getOrCreateR(getBgPath()));
 
             if (defaultWidth == 0)
-                defaultWidth = bg.getImageWidth()  ;
+                defaultWidth = bg.getImageWidth();
             if (defaultHeight == 0)
-                defaultHeight = bg.getHeight()  ;
+                defaultHeight = bg.getHeight();
             bg.setFillParent(true);
             addActor(bg);
         }
@@ -121,7 +121,7 @@ public class ScrollTextPanel extends GroupX {
 
             @Override
             protected float getAdjustCoef() {
-               return  GdxMaster.fontSizeAdjustCoef;
+                return GdxMaster.fontSizeAdjustCoef;
             }
         };
     }

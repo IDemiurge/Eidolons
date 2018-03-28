@@ -108,14 +108,14 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
         if (prop) {
             if (propMap == null) {
                 propMap = new RandomWizard<PROPERTY>().constructStringWeightMap(modString,
-                        PROPERTY.class);
+                 PROPERTY.class);
             } else {
                 LogMaster.log(1, "prop map " + propMap.toString());
             }
         } else if (map == null) // TODO support PROPERTY?
         {
             map = new RandomWizard<PARAMETER>()
-                    .constructStringWeightMap(modString, PARAMETER.class);
+             .constructStringWeightMap(modString, PARAMETER.class);
         } else {
             LogMaster.log(0, "map " + map.toString());
         }
@@ -231,7 +231,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                     list = getIdList(hero);
                 } catch (Exception e) {
                     LogMaster.log(1,
-                            "Group obj effect failed to getOrCreate targets: " + this);
+                     "Group obj effect failed to getOrCreate targets: " + this);
                     return new ArrayList<>();
                 }
 
@@ -321,7 +321,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
         }
 
         return new Conditions(new ObjTypeComparison(type), new RefCondition(KEYS.MATCH_SOURCE,
-                KEYS.SOURCE));
+         KEYS.SOURCE));
     }
 
     protected DC_TYPE getTYPE() {

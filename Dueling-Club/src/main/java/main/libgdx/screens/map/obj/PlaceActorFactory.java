@@ -30,7 +30,7 @@ public class PlaceActorFactory extends MapObjFactory<PlaceActor, Place> {
         PlaceActorParameters parameters = new PlaceActorParameters();
         parameters.mainIcon = TextureCache.getOrCreateR(place.getIconPath());
         parameters.border = TextureCache.getOrCreateR(StringMaster.getAppendedImageFile(place.getIconPath(), " hl"));
-        parameters.place = place ;
+        parameters.place = place;
         parameters.name = place.getName();
         parameters.position = new Vector2(
          place.getX(),

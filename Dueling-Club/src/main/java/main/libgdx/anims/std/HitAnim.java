@@ -255,7 +255,7 @@ public class HitAnim extends ActionAnim {
         if (getActive().getDamageDealt() != null)
             FloatingTextMaster.getInstance().initFloatTextForDamage(getActive().getDamageDealt(), this);
         add();
-        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
+//        main.system.auxiliary.log.LogMaster.log(1, "HIT ANIM STARTED WITH REF: " + getRef());
     }
 
     @Override

@@ -33,9 +33,9 @@ import main.system.text.TextParser;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddBuffEffect extends MultiEffect  implements OneshotEffect, ResistibleEffect,
+public class AddBuffEffect extends MultiEffect implements OneshotEffect, ResistibleEffect,
  ReducedEffect,
-        ContainerEffect {
+ ContainerEffect {
 
     public static final String dummyBuffType = BuffObj.DUMMY_BUFF_TYPE;
     public static final String EMPTY_BUFF_NAME = "@";
@@ -146,7 +146,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
 
         buffType.setTransient(isTransient());
         buff = (BuffObj) game.createBuff(buffType, active, ref.getSourceObj().getOwner(), ref,
-                effect, duration, getRetainConditions());
+         effect, duration, getRetainConditions());
         if (getAnimation() != null) {
             getAnimation().addPhaseArgs(PHASE_TYPE.BUFF, buff);
         }
@@ -177,14 +177,14 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
 
         this.buffType = (BuffType) DataManager.getType(getBuffTypeName(), DC_TYPE.BUFFS);
         if (buffType == null) {
-            if (getBuffTypeName()==null ){
+            if (getBuffTypeName() == null) {
                 return new BuffType();
             }
             boolean invisible = getBuffTypeName().contains(StringMaster.INVISIBLE_BUFF_CODE);
             if (TextParser.checkHasRefs(getBuffTypeName())) {
                 ref.setID(KEYS.INFO, ref.getId(KEYS.ABILITY));
                 String parsedName = TextParser.parse(getBuffTypeName(), ref,
-                        TextParser.BUFF_PARSING_CODE);
+                 TextParser.BUFF_PARSING_CODE);
                 setBuffTypeName(parsedName);
             }
             buffType = new BuffType(DataManager.getType(dummyBuffType, DC_TYPE.BUFFS));
@@ -224,7 +224,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
         String prop = ref.getActive().getProperty(PROPS.RETAIN_CONDITIONS, false);
         for (String s : StringMaster.open(prop)) {
             RETAIN_CONDITIONS template = new EnumMaster<RETAIN_CONDITIONS>().retrieveEnumConst(
-                    RETAIN_CONDITIONS.class, s);
+             RETAIN_CONDITIONS.class, s);
             Condition condition;
             if (template != null) {
                 condition = DC_ConditionMaster.getRetainConditionsFromTemplate(template, ref);
@@ -265,7 +265,7 @@ public class AddBuffEffect extends MultiEffect  implements OneshotEffect, Resist
                 duration = MathMaster.applyMod(duration, getResistanceMod());
             }
             duration = MathMaster.addFactor(duration, ref.getSourceObj().getIntParam(
-                    PARAMS.DURATION_MOD));
+             PARAMS.DURATION_MOD));
             duration += ref.getSourceObj().getIntParam(PARAMS.DURATION_BONUS);
         }
         return duration;

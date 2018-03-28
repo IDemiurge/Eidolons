@@ -32,26 +32,26 @@ import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
     public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
-            EncounterEnums.ENCOUNTER_TYPE.ELITE,
-            // ENCOUNTER_TYPE.REGULAR,
+     EncounterEnums.ENCOUNTER_TYPE.ELITE,
+     // ENCOUNTER_TYPE.REGULAR,
     };
     // let's switch on DIFFICULTY - neophyte could have r/r/e/b, avatar -
     // r/e/r/e/b + e/r/e/b
     // beating a dungeons on high difficulty should be something you do with a
     // Victorous party for fun...
     public static final ENCOUNTER_TYPE[] default_encounter_sequence_2 = {
-            // ENCOUNTER_TYPE.ELITE,
-            EncounterEnums.ENCOUNTER_TYPE.BOSS};
+     // ENCOUNTER_TYPE.ELITE,
+     EncounterEnums.ENCOUNTER_TYPE.BOSS};
 
     public static final ENCOUNTER_TYPE[] boss_encounter_sequence_1 = {EncounterEnums.ENCOUNTER_TYPE.REGULAR,
-            EncounterEnums.ENCOUNTER_TYPE.ELITE, EncounterEnums.ENCOUNTER_TYPE.REGULAR, EncounterEnums.ENCOUNTER_TYPE.ELITE, EncounterEnums.ENCOUNTER_TYPE.BOSS};
+     EncounterEnums.ENCOUNTER_TYPE.ELITE, EncounterEnums.ENCOUNTER_TYPE.REGULAR, EncounterEnums.ENCOUNTER_TYPE.ELITE, EncounterEnums.ENCOUNTER_TYPE.BOSS};
     public static final ENCOUNTER_TYPE[] boss_encounter_sequence_2 = {EncounterEnums.ENCOUNTER_TYPE.BOSS};
 
     // public static final ENCOUNTER_TYPE[] default_encounter_sequence_1 = {
@@ -61,9 +61,9 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
     // public static final ENCOUNTER_TYPE[] default_encounter_sequence_2 = {
     // ENCOUNTER_TYPE.REGULAR, ENCOUNTER_TYPE.ELITE, ENCOUNTER_TYPE.BOSS };
     public static final ENCOUNTER_TYPE[][] default_sequences = {default_encounter_sequence_1,
-            default_encounter_sequence_2};
+     default_encounter_sequence_2};
     public static final ENCOUNTER_TYPE[][] boss_sequences = {boss_encounter_sequence_1,
-            boss_encounter_sequence_1};
+     boss_encounter_sequence_1};
 
     private static final Integer REGULARS_ROUNDS_TO_FIGHT = 4;
     private static final Integer REGULARS_ROUNDS_TO_FIGHT_MAX = 5;
@@ -148,8 +148,8 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
         if (!getDungeon().getProperty(PROPS.ENCOUNTER_SETS).isEmpty()) {
             return getEncountersFromSets(dungeonType, alt);
         } else
-        waves = DataManager.toTypeList(dungeonType.getProperty(alt ? PROPS.ALT_ENCOUNTERS
-         : PROPS.ENCOUNTERS), DC_TYPE.ENCOUNTERS);
+            waves = DataManager.toTypeList(dungeonType.getProperty(alt ? PROPS.ALT_ENCOUNTERS
+             : PROPS.ENCOUNTERS), DC_TYPE.ENCOUNTERS);
         // TODO need a better preCheck...
         if (waves.size() < 3) {
             waves = DataManager.toTypeList(dungeonType
@@ -160,9 +160,9 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
     }
 
     private List<ObjType> getEncountersFromSets(Entity dungeonType, boolean alt) {
- List<String> list = StringMaster.openContainer(dungeonType.getProperty(  PROPS.ENCOUNTER_SETS ));
+        List<String> list = StringMaster.openContainer(dungeonType.getProperty(PROPS.ENCOUNTER_SETS));
         String set = list.get(alt ? 0 : RandomWizard.getRandomListIndex(list));
-      return   FilterMaster.getFilteredTypeList(DC_TYPE.ENCOUNTERS, PROPS.ENCOUNTER_SETS, set );
+        return FilterMaster.getFilteredTypeList(DC_TYPE.ENCOUNTERS, PROPS.ENCOUNTER_SETS, set);
     }
 
     public Map<Wave, Integer> constructWaveSequence(ENCOUNTER_TYPE[] encounter_sequence) {
@@ -190,7 +190,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
         for (ENCOUNTER_TYPE type : encounter_sequence) {
             if (waveBuffer.isEmpty()) {
                 waveBuffer = DataManager.getTypesGroup(DC_TYPE.ENCOUNTERS, StringMaster
-                        .getWellFormattedString(type.toString()));
+                 .getWellFormattedString(type.toString()));
             }
             waves = new ArrayList<>(waveBuffer);
 
@@ -207,7 +207,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
             ObjType waveType = getWaveType(waves, type);
 
             waveType = new ObjType(waveType);
-            FACING_DIRECTION side = null ;
+            FACING_DIRECTION side = null;
 //             getMaster().getDungeonMaster().getPositioner().nextSide();
             waveType.setProperty(PROPS.SPAWNING_SIDE, side.getName());
 
@@ -243,7 +243,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
         int maxDistance = 0;
         Map<Coordinates, Point> map = new HashMap<>();
         for (String substring : StringMaster.open(getDungeon().getProperty(
-                PROPS.ENCOUNTER_SPAWN_POINTS))) {
+         PROPS.ENCOUNTER_SPAWN_POINTS))) {
             Coordinates coordinates = new Coordinates(substring);
             if (usedSpawnCoordinates.contains(coordinates)) {
                 continue;
@@ -305,12 +305,12 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
 
     private StringComparison getEncounterTypeCondition(ENCOUNTER_TYPE type) {
         return new StringComparison(type.toString(), StringMaster.getValueRef(KEYS.MATCH,
-                G_PROPS.ENCOUNTER_TYPE), true);
+         G_PROPS.ENCOUNTER_TYPE), true);
     }
 
     private StringComparison getPlayableCondition() {
         return new StringComparison(StringMaster.PLAYABLE, StringMaster.getValueRef(KEYS.MATCH,
-                G_PROPS.GROUP), true);
+         G_PROPS.GROUP), true);
     }
 
     private Dungeon getDungeon() {
@@ -324,8 +324,8 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
 
     private int getRoundNumber() {
         return game.getState().getRound()
-                + StringMaster.getInteger(getOptionManager().getOptions()
-                .getValue(ARENA_GAME_OPTIONS.TURNS_TO_PREPARE));
+         + StringMaster.getInteger(getOptionManager().getOptions()
+         .getValue(ARENA_GAME_OPTIONS.TURNS_TO_PREPARE));
     }
 
     private Map<Wave, Integer> constructEncounterGroup() {
@@ -355,7 +355,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
     public Integer getRoundsToFight(ObjType waveType) {
 
         return getRoundsToFight(waveType, new EnumMaster<ENCOUNTER_TYPE>().retrieveEnumConst(
-                ENCOUNTER_TYPE.class, waveType.getProperty(G_PROPS.ENCOUNTER_TYPE)));
+         ENCOUNTER_TYPE.class, waveType.getProperty(G_PROPS.ENCOUNTER_TYPE)));
     }
 
     public Integer getRoundsToFight(ObjType waveType, ENCOUNTER_TYPE type) {
@@ -367,15 +367,15 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
         switch (type) {
             case REGULAR:
                 amount = RandomWizard.getRandomIntBetween(REGULARS_ROUNDS_TO_FIGHT,
-                        REGULARS_ROUNDS_TO_FIGHT_MAX);
+                 REGULARS_ROUNDS_TO_FIGHT_MAX);
                 break;
             case ELITE:
                 amount = RandomWizard.getRandomIntBetween(ELITE_ROUNDS_TO_FIGHT,
-                        ELITE_ROUNDS_TO_FIGHT_MAX);
+                 ELITE_ROUNDS_TO_FIGHT_MAX);
                 break;
             case BOSS:
                 amount = RandomWizard.getRandomIntBetween(BOSS_ROUNDS_TO_FIGHT,
-                        BOSS_ROUNDS_TO_FIGHT_MAX);
+                 BOSS_ROUNDS_TO_FIGHT_MAX);
                 break;
 
         }
@@ -391,7 +391,7 @@ public class ArenaBattleConstructor extends BattleConstructor<ArenaBattle> {
         }
         return MathMaster.applyMod(amount, getOptionManager().
          getOptions().getDifficulty()
-                .getRoundsToFightMod());
+         .getRoundsToFightMod());
 
     } // more on higher levels? battle.getLevel()
 

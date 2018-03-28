@@ -13,11 +13,11 @@ import main.system.auxiliary.secondary.InfoMaster;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
-        ListCellRenderer<PRINCIPLES> {
+ ListCellRenderer<PRINCIPLES> {
     private static final int X_OFFSET = -200;
     boolean secondPrinciple;
     private HC_CustomInfoPanel customIp;
@@ -81,7 +81,7 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
     @Override
     protected PagedSelectionPanel<PRINCIPLES> createSelectionComponent() {
         PagedSelectionPanel<PRINCIPLES> selectionComp = new PagedSelectionPanel<PRINCIPLES>(this,
-                getPageSize(), getItemSize(), getColumnsCount()) {
+         getPageSize(), getItemSize(), getColumnsCount()) {
 
             public int getPanelHeight() {
                 return VISUALS.ENUM_CHOICE_COMP.getHeight() * pageSize / wrap;
@@ -125,7 +125,7 @@ public class PrincipleChoiceView extends ChoiceView<PRINCIPLES> implements
             amount = hero.getIntParam(PARAMS.IDENTITY_POINTS);
         }
         hero.modifyParameter(DC_ContentManager.getIdentityParamForPrinciple(getSelectedItem()),
-                amount);
+         amount);
         hero.modifyParameter(PARAMS.IDENTITY_POINTS, -amount);
     }
 

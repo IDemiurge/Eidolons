@@ -46,8 +46,8 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public static ObjType getEMPTY_CELL_TYPE() {
-        if (EMPTY_CELL_TYPE==null )
-            EMPTY_CELL_TYPE= DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
+        if (EMPTY_CELL_TYPE == null)
+            EMPTY_CELL_TYPE = DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
              "terrain");
         return EMPTY_CELL_TYPE;
     }
@@ -127,15 +127,15 @@ public class DC_Cell extends DC_Obj implements Cell {
         String text = "";
         if (getIntParam(PARAMS.LIGHT_EMISSION) != 0) {
             text += StringMaster.getWellFormattedString("LIGHT_EMISSION - ")
-                    + getParam(PARAMS.LIGHT_EMISSION);
+             + getParam(PARAMS.LIGHT_EMISSION);
         }
         if (getIntParam(PARAMS.ILLUMINATION) != 0) {
             text += StringMaster.getWellFormattedString(", ILLUMINATION - ")
-                    + getParam(PARAMS.ILLUMINATION);
+             + getParam(PARAMS.ILLUMINATION);
         }
         if (getIntParam(PARAMS.CONCEALMENT) != 0) {
             text += StringMaster.getWellFormattedString(", CONCEALMENT - ")
-                    + getParam(PARAMS.CONCEALMENT);
+             + getParam(PARAMS.CONCEALMENT);
         }
 
         if (DebugMaster.isMapDebugOn()) {
@@ -153,7 +153,7 @@ public class DC_Cell extends DC_Obj implements Cell {
 
         if (getGame().getGraveyardManager().checkForCorpses(this)) {
             return getGame().getGraveyardManager().getRipString(this)
-                    + StringMaster.wrapInParenthesis(text);
+             + StringMaster.wrapInParenthesis(text);
 
         }
         return super.getToolTip() + StringMaster.wrapInParenthesis(text);
@@ -186,8 +186,8 @@ public class DC_Cell extends DC_Obj implements Cell {
         //
         // }
         return
-                // visibilityPrefix + " " +
-                name;
+         // visibilityPrefix + " " +
+         name;
     }
 
     //

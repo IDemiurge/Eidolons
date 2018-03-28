@@ -67,7 +67,7 @@ public class PriorityListItem extends G_Panel {
 
     private void initLabel() {
         this.img = ImageManager.getSizedVersion(unit.getIcon().getImage(), new Dimension(GuiManager
-                .getSmallObjSize(), GuiManager.getSmallObjSize()));
+         .getSmallObjSize(), GuiManager.getSmallObjSize()));
         lbl = new JLabel(new ImageIcon(img));
         add(lbl, "pos 0 0 ");
     }
@@ -92,12 +92,12 @@ public class PriorityListItem extends G_Panel {
         } else if (unit.isTargetHighlighted()) {
 
             lbl.setIcon(new ImageIcon(ImageManager.applyBorder(img,
-                    unit.isMine() ? BORDER.HIGHLIGHTED_BLUE : BORDER.HIGHLIGHTED_RED)));
+             unit.isMine() ? BORDER.HIGHLIGHTED_BLUE : BORDER.HIGHLIGHTED_RED)));
 
         } else if (unit.isActiveSelected()) {
             lbl.setIcon(new ImageIcon(ImageManager.applyBorder(img,
-                    unit.isMine() ? BORDER.HIGHLIGHTED_GREEN
-                            : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_64)));
+             unit.isMine() ? BORDER.HIGHLIGHTED_GREEN
+              : BORDER.NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_64)));
 
         }
 
@@ -106,8 +106,8 @@ public class PriorityListItem extends G_Panel {
     private void initClock() {
         String value = "" + unit.getGame().getRules().getTimeRule().getTimeRemaining();
         int perc = MathMaster.getFractionValueCentimal(unit.getGame().getRules()
-                .getTimeRule().getBaseTime(), unit.getGame().getRules().getTimeRule()
-                .getTimeRemaining());
+         .getTimeRule().getBaseTime(), unit.getGame().getRules().getTimeRule()
+         .getTimeRemaining());
         Color color = ColorManager.GOLDEN_WHITE;
         // SmartTextManager.getValueCase(perc).getColor();
 
@@ -115,7 +115,7 @@ public class PriorityListItem extends G_Panel {
         text.setFont(getTimeFont());
 
         int x = MigMaster.getCenteredTextPosition(value, getTimeFont(), GuiManager
-                .getSmallObjSize());
+         .getSmallObjSize());
         int y = MigMaster.getCenteredTextPositionY(getTimeFont(), GuiManager.getSmallObjSize()) + 5;
         p1 = new Point(x, y);
         addSpecialOverlayingString(p1, text);
@@ -188,7 +188,7 @@ public class PriorityListItem extends G_Panel {
             g.setColor(text.getColor());
             g.setFont(text.getFont());
             ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g.drawString(text.getText(), c.x, c.y);
 
         }

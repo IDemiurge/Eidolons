@@ -22,21 +22,7 @@ public class ActionCostSourceImpl implements ActionCostSource {
     public ActionCostSourceImpl(DC_ActiveObj action) {
         this.action = action;
     }
-        @Override
-        public ValueContainer getDescription() {
-        return new ValueContainer(
-         TextWrapper.wrapWithNewLine(action.getDescription(), 60) , "");
-    }
 
-        @Override
-        public ValueContainer getName() {
-        return new ValueContainer(action.getName(), "");
-    }
-
-        @Override
-        public List<ValueContainer> getCostsList() {
-        return  getActionCostList(action);
-    }
     public static List<ValueContainer> getActionCostList(DC_ActiveObj el) {
         List<ValueContainer> costsList = new ArrayList<>();
         for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
@@ -54,6 +40,22 @@ public class ActionCostSourceImpl implements ActionCostSource {
             costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "> %.1f", reqRes)));
         }
         return costsList;
+    }
+
+    @Override
+    public ValueContainer getDescription() {
+        return new ValueContainer(
+         TextWrapper.wrapWithNewLine(action.getDescription(), 60), "");
+    }
+
+    @Override
+    public ValueContainer getName() {
+        return new ValueContainer(action.getName(), "");
+    }
+
+    @Override
+    public List<ValueContainer> getCostsList() {
+        return getActionCostList(action);
     }
 
 }

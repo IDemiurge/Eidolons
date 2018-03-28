@@ -2,8 +2,8 @@ package main.game.battlecraft.logic.meta.scenario;
 
 import main.content.PROPS;
 import main.game.battlecraft.logic.meta.universal.MetaDataManager;
-import main.system.auxiliary.StringMaster;
 import main.libgdx.launch.ScenarioLauncher;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 5/14/2017.
@@ -16,11 +16,11 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
     }
 
     public String getDataPath() {
-        return getMaster().  getBattleMaster().getMissionResourceFolderPath() ;
+        return getMaster().getBattleMaster().getMissionResourceFolderPath();
     }
 
     @Override
-    public  ScenarioMetaMaster  getMaster() {
+    public ScenarioMetaMaster getMaster() {
         return (ScenarioMetaMaster) super.getMaster();
     }
 
@@ -34,10 +34,10 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
 
     public void initMissionName() {
         String missionName =
-          getMissionName();
+         getMissionName();
 
         if (StringMaster.isEmpty(missionName)) {
-            int missionIndex =  (ScenarioLauncher.missionIndex);
+            int missionIndex = (ScenarioLauncher.missionIndex);
 
             getMetaGame().setMissionIndex(missionIndex);
 

@@ -28,13 +28,13 @@ public class ResistPanel extends TablePanel {
         map = new HashMap<>();
 
         List<Pair<TextureRegion, DAMAGE_TYPE>> pairs =
-                Arrays.stream(RESISTANCES)
-                        .map(parameter -> {
-                            DAMAGE_TYPE damageType = getFromParams((PARAMS) parameter);
-                            TextureRegion textureRegion = getOrCreateR(getDamageTypeImagePath(
-                             damageType.getName(), true));
-                            return new ImmutablePair<>(textureRegion, damageType);
-                        }).collect(Collectors.toList());
+         Arrays.stream(RESISTANCES)
+          .map(parameter -> {
+              DAMAGE_TYPE damageType = getFromParams((PARAMS) parameter);
+              TextureRegion textureRegion = getOrCreateR(getDamageTypeImagePath(
+               damageType.getName(), true));
+              return new ImmutablePair<>(textureRegion, damageType);
+          }).collect(Collectors.toList());
 
         Iterator<Pair<TextureRegion, DAMAGE_TYPE>> iter = pairs.iterator();
 
@@ -161,7 +161,7 @@ public class ResistPanel extends TablePanel {
                 final ValueContainer container = map.get(damageType);
                 ValueTooltip valueTooltip = new ValueTooltip();
                 valueTooltip.setUserObject((Supplier) () ->
-                        Arrays.asList(new ValueContainer(param.getName(), "")));
+                 Arrays.asList(new ValueContainer(param.getName(), "")));
                 container.addListener(valueTooltip.getController());
                 container.updateValue(pair.getRight() + "%");
             }

@@ -52,7 +52,7 @@ public class EngagedRule implements ActionRule {
         // TODO add status (buff?) and
 
         heroObj.modifyParameter(PARAMS.DEFENSE_MOD, -(DEFENSE_MOD - DEFENSE_MOD
-                * heroObj.getIntParam(PARAMS.ENGAGEMENT_DEFENSE_REDUCTION_MOD) / 100));
+         * heroObj.getIntParam(PARAMS.ENGAGEMENT_DEFENSE_REDUCTION_MOD) / 100));
         heroObj.addStatus(UnitEnums.STATUS.ENGAGED.toString());
         // bonus against ET!
 
@@ -96,7 +96,7 @@ public class EngagedRule implements ActionRule {
             return AI_Manager.chooseEnemyToEngage(obj, units);
         }
         return (Unit) DialogMaster.objChoice("Choose an enemy to engage...", units
-                .toArray(new Obj[units.size()]));
+         .toArray(new Obj[units.size()]));
 
     }
 
@@ -126,8 +126,8 @@ public class EngagedRule implements ActionRule {
 
         Unit unit = action.getOwnerObj();
         boolean prompt = !unit.isAiControlled()
-                && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MODE
-                && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
+         && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.MODE
+         && action.getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
         if (prompt) {
             if (action.getRef().getTargetObj() == null || action.getRef().getTargetObj() == unit) {
                 // self-targeting or misc instants shouldn't bother
@@ -162,13 +162,13 @@ public class EngagedRule implements ActionRule {
         String disengageString = "";
         if (disengager.getEngagementTarget() != null) {
             disengageString = "disengage you from " + disengager.getEngagementTarget().getName()
-                    + " and ";
+             + " and ";
         } else if (units.isEmpty()) {
             return true;
         }
 
         String string = "Activating " + action.getName() + " will " + disengageString
-                + "prompt an Attack of Opportunity from " + units + "... ";
+         + "prompt an Attack of Opportunity from " + units + "... ";
         String TRUE = "Proceed";
         String FALSE = "Cancel";
         String NULL = "Disengage";
@@ -201,7 +201,7 @@ public class EngagedRule implements ActionRule {
             boolean disengage = false;
             if (engagementTarget != null) {
                 if (!engagementTarget.isDead() || engagementTarget.isUnconscious()
-                        || engagementTarget.isImmobilized()) {
+                 || engagementTarget.isImmobilized()) {
                     disengage = true;
                 }
                 if (!disengage) {

@@ -83,7 +83,7 @@ public class HC_Master {
     public static List<ObjType> getRequiredSkills(ObjType selectedType, boolean or) {
         List<ObjType> list = new ArrayList<>();
         for (String s : StringMaster.open(selectedType
-                .getProperty(PROPS.SKILL_REQUIREMENTS))) {
+         .getProperty(PROPS.SKILL_REQUIREMENTS))) {
             if (s.contains(StringMaster.OR)) {
                 if (!or) {
                     continue;
@@ -111,7 +111,7 @@ public class HC_Master {
             locked = false;
         }
         Image classIcon = ImageManager.getImage("ui\\components\\ht\\class icons\\"
-                + classGroup.getName() + ".jpg");
+         + classGroup.getName() + ".jpg");
         if (!ImageManager.isValidImage(classIcon)) {
             classIcon = ImageManager.getNewBufferedImage(54, 36);
         }
@@ -123,7 +123,7 @@ public class HC_Master {
         }
         Image tabImage = ImageManager.getImage(tabImagePath + ".png");
         Image image = ImageManager.getNewBufferedImage(tabImage.getWidth(null), tabImage
-                .getHeight(null));
+         .getHeight(null));
 
         image.getGraphics().drawImage(classIcon, 2, 6, null);
         image.getGraphics().drawImage(tabImage, 0, 0, null);
@@ -137,10 +137,10 @@ public class HC_Master {
             hero = CharacterCreator.getHero();
         }
         for (DC_FeatObj c : new ListMaster<DC_FeatObj>().invertList(new ArrayList<>(hero
-                .getClasses()))) {
+         .getClasses()))) {
 
             if (StringMaster
-                    .compareByChar(c.getProperty(G_PROPS.CLASS_GROUP), classGroup.getName())) {
+             .compareByChar(c.getProperty(G_PROPS.CLASS_GROUP), classGroup.getName())) {
                 return c.getIcon().getImage();
             }
 
@@ -179,7 +179,7 @@ public class HC_Master {
         // BORDER.BACKGROUND_HIGHLIGHT_32);
         {
             img = ImageManager.applyImage(img, BORDER.BACKGROUND_HIGHLIGHT_32.getImage(), 1, 1,
-                    false);
+             false);
         }
         // Image valueIcon = ImageManager.getValueIcon(param);
         // if (valueIcon.getHeight(null)<40){
@@ -187,7 +187,7 @@ public class HC_Master {
         // }
 
         Image valueIcon = skill ? ImageManager.getValueIcon((VALUE) arg) : getClassIcon(
-                (CLASS_GROUP) arg, null);
+         (CLASS_GROUP) arg, null);
         img = ImageManager.applyImage(img, valueIcon, 1, 1, false);
         if (locked)
         // additional darkening?
@@ -283,7 +283,7 @@ public class HC_Master {
         // if (CharacterCreator.getPanel().getMvp().getCurrentView() !=
         // HERO_VIEWS.LIBRARY) { }
         skill_class_spell = !(CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASS_TREE
-                || CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASSES);
+         || CharacterCreator.getPanel().getMvp().getCurrentView() == HERO_VIEWS.CLASSES);
         return skill_class_spell;
     }
 
@@ -333,7 +333,7 @@ public class HC_Master {
 
             // G_Panel comp = new G_Panel();
             setAvTreeWindow(GuiManager.inNewWindow(getAvTreeView(), "Tree", new Dimension(
-                    VISUALS.TREE_VIEW.getWidth() + 15, VISUALS.TREE_VIEW.getHeight() + 50)));
+             VISUALS.TREE_VIEW.getWidth() + 15, VISUALS.TREE_VIEW.getHeight() + 50)));
 
             getAvTreeWindow().setVisible(false);
             getAvTreeWindow().setUndecorated(true); // 'displayable'??
@@ -352,7 +352,7 @@ public class HC_Master {
             treeArg = ContentManager.getPARAM(selectedType.getProperty(G_PROPS.MASTERY));
         } else {
             treeArg = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class,
-                    selectedType.getProperty(G_PROPS.CLASS_GROUP));
+             selectedType.getProperty(G_PROPS.CLASS_GROUP));
         }
     }
 

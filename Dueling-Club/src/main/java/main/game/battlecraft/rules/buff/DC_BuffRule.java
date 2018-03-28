@@ -176,8 +176,8 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     public Integer getBuffLevel(Unit unit) {
-        if (!levelCache.containsKey(unit)){
-          return   initBuffLevel(unit);
+        if (!levelCache.containsKey(unit)) {
+            return initBuffLevel(unit);
         }
         return levelCache.get(unit);
     }
@@ -208,9 +208,9 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         // TODO only animate after Buff Level changes!!!
         super.apply(ref);
         if (CoreEngine.isPhaseAnimsOn())
-        if (animationQueued) {
-            playAnimation(ref);
-        }
+            if (animationQueued) {
+                playAnimation(ref);
+            }
         Effect[] array = effectCache.get(ref.getTargetObj());
         if (array == null) {
             array = new Effect[getMaxLevel() + 1];
@@ -258,8 +258,8 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             }
         }
         Conditions conditions = null
-                // new Conditions(getConditions(level))
-                ;
+         // new Conditions(getConditions(level))
+         ;
         Effect effect = getEffect();
         effect.setForceStaticParse(false);
         effect.setForcedLayer(Effect.BUFF_RULE);
@@ -296,7 +296,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
 
     protected Condition getCondition(Integer level) {
         return new NumericCondition(true, getFormula(level), StringMaster.getValueRef(OBJ_REF,
-                getValue()));
+         getValue()));
     }
 
     protected boolean isConditionGreater(Integer level) {
@@ -320,7 +320,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         // conditions = new Conditions(getConditions(getMinLevel()));
 
         conditions = new Conditions(ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
-                .getLivingMatchCondition());
+         .getLivingMatchCondition());
 
     }
 

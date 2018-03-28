@@ -87,7 +87,7 @@ public class DC_BattleField extends SwingBattleField {
     public Set<Coordinates> getCoordinatesSet() {
         if (coordinatesSet == null) {
             coordinatesSet =
-            getGrid().getGame().getCells().stream().map(c -> c.getCoordinates()).collect(Collectors.toSet());
+             getGrid().getGame().getCells().stream().map(c -> c.getCoordinates()).collect(Collectors.toSet());
         }
         return coordinatesSet;
     }

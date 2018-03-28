@@ -38,7 +38,7 @@ public class DungeonChoiceView extends EntityChoiceView {
     @Override
     protected void initData() {
         data = DataManager.toTypeList(party.getProperty(G_PROPS.DUNGEONS_PENDING),
-                DC_TYPE.DUNGEONS);
+         DC_TYPE.DUNGEONS);
         // data = DataManager.getTypesGroup(OBJ_TYPES.DUNGEONS,
         // party.getValue(getFilterValue()));
 
@@ -58,7 +58,7 @@ public class DungeonChoiceView extends EntityChoiceView {
     public void itemSelected(ObjType i) {
         super.itemSelected(i);
         setVisuals(new CompVisuals(GuiManager.DEF_DIMENSION, getSelectedItem().getProperty(
-                PROPS.MAP_BACKGROUND)));
+         PROPS.MAP_BACKGROUND)));
         init();
         refresh();
         // background
@@ -82,7 +82,7 @@ public class DungeonChoiceView extends EntityChoiceView {
     @Override
     protected void applyChoice() {
         hero.getGame().getDungeonMaster().getInitializer().
-                initDungeon(getSelectedItem().getName());
+         initDungeon(getSelectedItem().getName());
         party.setProperty(getPROP(), getSelectedItem().getName());
     }
 

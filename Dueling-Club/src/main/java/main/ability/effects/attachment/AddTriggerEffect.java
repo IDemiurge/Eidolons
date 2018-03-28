@@ -62,16 +62,16 @@ public class AddTriggerEffect extends MultiEffect implements
 
             if (!Launcher.DEV_MODE)
                 if (!AiTrainingRunner.running)
-            if (conditions!=null )
-                if (conditions.toXml()==null )
-                    if (!StringMaster.isEmpty(toXml()))
-            try {
-                Node xml = XML_Converter.findNode(toXml(), "Conditions");
-                if (xml != null)
-                    conditions.setXml(XML_Converter.getStringFromXML(xml));
-            } catch (Exception e) {
+                    if (conditions != null)
+                        if (conditions.toXml() == null)
+                            if (!StringMaster.isEmpty(toXml()))
+                                try {
+                                    Node xml = XML_Converter.findNode(toXml(), "Conditions");
+                                    if (xml != null)
+                                        conditions.setXml(XML_Converter.getStringFromXML(xml));
+                                } catch (Exception e) {
 //                main.system.ExceptionMaster.printStackTrace(e);
-            }
+                                }
         }
         trigger.setRetainCondition(retainCondition);
         ref.getGame().getManager().addTrigger(trigger);

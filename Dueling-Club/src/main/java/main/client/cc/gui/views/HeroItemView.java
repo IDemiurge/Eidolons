@@ -76,7 +76,7 @@ public abstract class HeroItemView extends HeroView implements BorderChecker, Ru
     @SuppressWarnings("serial")
     protected VendorListsPanel generatePanel() {
         return new VendorListsPanel(hero, getTYPE(), getPROP(), isResponsive(), isShowAll(),
-                getItemManager(), getTypeFilter()) {
+         getItemManager(), getTypeFilter()) {
             public Filter<ObjType> getSpecialFilter() {
                 return getTypeFilter();
             }

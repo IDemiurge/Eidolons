@@ -33,7 +33,7 @@ public class MacroControlPanel extends G_Panel implements ButtonHandler {
         for (MACRO_CONTROLS command : MACRO_CONTROLS.values()) {
             String pos = "growx 100";
             add(getButton(StringMaster.getWellFormattedString(command
-                    .toString())), pos);
+             .toString())), pos);
             i++;
             if (i == 2) {
                 i++;
@@ -66,7 +66,7 @@ public class MacroControlPanel extends G_Panel implements ButtonHandler {
         processing = true;
         try {
             MACRO_CONTROLS cmd = new EnumMaster<MACRO_CONTROLS>()
-                    .retrieveEnumConst(MACRO_CONTROLS.class, command);
+             .retrieveEnumConst(MACRO_CONTROLS.class, command);
             if (cmd == null) {
                 if (command.equals(TOWN)) {
                     Launcher.resetView(VIEWS.HC);// town mode?

@@ -22,9 +22,9 @@ import main.game.battlecraft.rules.combat.mechanics.ForceRule;
 import main.game.battlecraft.rules.mechanics.ConcealmentRule;
 import main.game.battlecraft.rules.perk.EvasionRule;
 import main.game.core.ActionInput;
+import main.game.core.Eidolons;
 import main.game.core.atb.AtbController;
 import main.game.core.atb.AtbTurnManager;
-import main.game.core.Eidolons;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -381,7 +381,7 @@ public class Executor extends ActiveHandler {
 
         log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
          -initiativeCost +
-         "%, now at " +getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
+         "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +
          "%", true);
 
     }

@@ -71,8 +71,7 @@ public class BfGridComp {
         this.holder = holder;
         zoom = 100;
         initCellsAndMap();
-        if (CoreEngine.isLevelEditor())
-        {
+        if (CoreEngine.isLevelEditor()) {
 
             initPanel();
         }
@@ -346,7 +345,7 @@ public class BfGridComp {
         if (isLevelEditor()) {
             getUnderlayMap().clear();
             getOverlayMap().clear();
-            game.getBattleFieldManager().resetWallMap( );
+            game.getBattleFieldManager().resetWallMap();
         }
 
         if (!panel.requestFocusInWindow()) {

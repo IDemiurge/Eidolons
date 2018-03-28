@@ -7,7 +7,7 @@ public interface Controller {
 
     boolean charTyped(char c);
 
-    default void keyDown(int keyCode){
+    default void keyDown(int keyCode) {
 
     }
 

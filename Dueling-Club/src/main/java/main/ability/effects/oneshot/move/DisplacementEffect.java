@@ -28,23 +28,23 @@ public class DisplacementEffect extends SelfMoveEffect {
         Unit obj = (Unit) ref.getTargetObj();
         origin = obj.getCoordinates();
         Coordinates coordinate = obj.getCoordinates().getAdjacentCoordinate(
-                obj.getFacing().getDirection());
+         obj.getFacing().getDirection());
         Boolean result = tryMove(obj, coordinate);
         if (result != null) {
             return result;
         }
         boolean clockwise = RandomWizard.random();
         coordinate = obj.getCoordinates().getAdjacentCoordinate(
-                DirectionMaster.rotate45(obj.getFacing().getDirection(),
-                        clockwise));
+         DirectionMaster.rotate45(obj.getFacing().getDirection(),
+          clockwise));
         result = tryMove(obj, coordinate);
         if (result != null) {
             return result;
         }
         clockwise = !clockwise;
         coordinate = obj.getCoordinates().getAdjacentCoordinate(
-                DirectionMaster.rotate45(obj.getFacing().getDirection(),
-                        clockwise));
+         DirectionMaster.rotate45(obj.getFacing().getDirection(),
+          clockwise));
         result = tryMove(obj, coordinate);
         if (result == null) {
             return false;
@@ -57,7 +57,7 @@ public class DisplacementEffect extends SelfMoveEffect {
         if (game.getBattleFieldManager().isCellVisiblyFree(coordinate)) {
             try {
                 result = game.getMovementManager().move(obj, coordinate, free,
-                        MOVE_MODIFIER.DISPLACEMENT, ref);
+                 MOVE_MODIFIER.DISPLACEMENT, ref);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 result = null;

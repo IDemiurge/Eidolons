@@ -32,9 +32,9 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
         }
 
         load(Gdx.files.internal(
-                StringMaster.addMissingPathSegments(
-                        path, PathFinder.getParticlePresetPath())),
-                Gdx.files.internal(imagePath));
+         StringMaster.addMissingPathSegments(
+          path, PathFinder.getParticlePresetPath())),
+         Gdx.files.internal(imagePath));
 
     }
 
@@ -44,7 +44,7 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
 
     public void offset(String value, String offset) {
         offset(Float.valueOf(offset),
-                new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
+         new EnumMaster<EMITTER_VALS_SCALED>().retrieveEnumConst(EMITTER_VALS_SCALED.class, value));
     }
 
     public void offset(float offset, EMITTER_VALS_SCALED value) {
@@ -74,7 +74,7 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
             return true;
         }
         return
-                EmitterPresetMaster.getInstance().getImagePath(effectFile.path()).contains("sprites");
+         EmitterPresetMaster.getInstance().getImagePath(effectFile.path()).contains("sprites");
     }
 
     public void loadEmitters(FileHandle effectFile) {
@@ -87,7 +87,7 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
                 ParticleEmitter emitter = (checkSprite(effectFile)) ? new SpriteEmitter(reader
                 ) : new Emitter(reader);
 
-                 getEmitters().add(emitter);
+                getEmitters().add(emitter);
                 if (reader.readLine() == null) {
                     break;
                 }

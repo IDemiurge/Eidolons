@@ -113,12 +113,12 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return era;
     }
 
-    public void setEra(String era) {
-        this.era = era;
-    }
-
     public void setEra(int era) {
         this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
+    }
+
+    public void setEra(String era) {
+        this.era = era;
     }
 
     public int getYear() {

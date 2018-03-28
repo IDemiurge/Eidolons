@@ -61,7 +61,8 @@ public class GdxImageTransformer extends LwjglApplication {
         }
         return new Texture(pixmap2);
     }
-        public static TextureRegion round(String path, boolean write) {
+
+    public static TextureRegion round(String path, boolean write) {
         if (GdxMaster.isLwjglThread()) {
             Pixmap rounded = roundTexture(TextureCache.getOrCreateR(path));
             path = TextureCache.getRoundedPath(path);

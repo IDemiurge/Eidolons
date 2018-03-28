@@ -86,11 +86,10 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     protected void applyDurability() {
         resetPercentages();
         Integer durability = getIntParam(PARAMS.DURABILITY_PERCENTAGE);
-        if (durability<=0){
+        if (durability <= 0) {
             broken();
-        }
-        else
-        multiplyParamByPercent(getDurabilityParam(), durability, false);
+        } else
+            multiplyParamByPercent(getDurabilityParam(), durability, false);
     }
 
     @Override
@@ -124,9 +123,9 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.DURABILITY_LOST, getRef()));
         if (getIntParam(PARAMS.C_DURABILITY) <= 0) {
             broken();
-            } else {
+        } else {
             game.getLogManager().log(StringMaster.MESSAGE_PREFIX_INFO + getName() + " loses " + amount + " durability, "
-                    + getIntParam(PARAMS.C_DURABILITY) + " left");
+             + getIntParam(PARAMS.C_DURABILITY) + " left");
         }
         return amount;
     }
@@ -152,8 +151,8 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     }
 
     public void broken() {
-        if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_BROKEN, getRef()))){
-            return ;
+        if (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_BROKEN, getRef()))) {
+            return;
         }
         setProperty(G_PROPS.STATUS, UnitEnums.STATUS.BROKEN.toString());
         getHero().unequip(this, false);

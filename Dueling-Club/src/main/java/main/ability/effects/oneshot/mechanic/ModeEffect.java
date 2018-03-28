@@ -143,7 +143,7 @@ divination?
                 addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);
             } else {
                 addBuffEffect.setDuration(
-                 (!ExplorationMaster.isExplorationOn()&& DC_Engine.isAtbMode()) ? mode.getDuration()
+                 (!ExplorationMaster.isExplorationOn() && DC_Engine.isAtbMode()) ? mode.getDuration()
                   : 1);
             }
 
@@ -175,7 +175,7 @@ divination?
             Formula formula = new Formula(amount);
             Effect effect = new ModifyValueEffect(periodicValue, MOD.MODIFY_BY_CONST,
              formula, max);
-            Effect fx=new PeriodicEffect(period, effect);
+            Effect fx = new PeriodicEffect(period, effect);
             fx.setRef(Ref.getSelfTargetingRefCopy(ref.getSourceObj()));
             addBuffEffect.addEffect(fx);
 

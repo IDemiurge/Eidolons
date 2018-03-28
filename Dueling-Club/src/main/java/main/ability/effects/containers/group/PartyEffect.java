@@ -15,14 +15,14 @@ import java.util.List;
 public class PartyEffect extends GroupObjModifyEffect {
 
     @AE_ConstrArgs(argNames = {" valueName", " amount", "filter conditions",
-            "add buff?", "prop?"})
+     "add buff?", "prop?"})
     public PartyEffect(String valueName, String value, Condition c,
                        Boolean buff, Boolean prop) {
         super(null, "", "", valueName, value, buff, prop, c);
     }
 
     @AE_ConstrArgs(argNames = {"filter prop", "filter value", " valueName",
-            " amount", "add buff?", "prop?"})
+     " amount", "add buff?", "prop?"})
     public PartyEffect(String filterValueName, String filterValue,
                        String valueName, String value, Boolean buff, Boolean prop) {
         super(null, filterValueName, filterValue, valueName, value, buff, prop);
@@ -36,7 +36,7 @@ public class PartyEffect extends GroupObjModifyEffect {
     @Override
     protected List<Obj> getObjectsToModify() {
         Party party = (Party) ref.getSourceObj().getRef()
-                .getObj(KEYS.PARTY);
+         .getObj(KEYS.PARTY);
         List<Unit> list = party.getMembers();
 
         initFilterConditions();

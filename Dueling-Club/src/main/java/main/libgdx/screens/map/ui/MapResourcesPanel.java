@@ -40,7 +40,7 @@ public class MapResourcesPanel extends TablePanel {
     MAP_RESOURCE[] resourceGroupTwo = {
      MAP_RESOURCE.GOLD, MAP_RESOURCE.SOULGEMS
     };
-    private List<MapResourcePanel> elements=    new ArrayList<>() ;
+    private List<MapResourcePanel> elements = new ArrayList<>();
 
 
     public MapResourcesPanel() {
@@ -101,11 +101,12 @@ public class MapResourcesPanel extends TablePanel {
     @Override
     public void updateAct(float delta) {
         if (party == null) {
-            if (MacroGame.game == null) return;   party = MacroGame.game.getPlayerParty();
+            if (MacroGame.game == null) return;
+            party = MacroGame.game.getPlayerParty();
         }
         super.updateAct(delta);
         for (TablePanel sub : elements) {
-                sub.setUpdateRequired(true);
+            sub.setUpdateRequired(true);
         }
     }
 
@@ -128,11 +129,11 @@ public class MapResourcesPanel extends TablePanel {
         public void updateAct(float delta) {
             super.updateAct(delta);
             clearChildren();
-            String val = RandomWizard.getRandomInt(100)+"";// party.getParam(getParam(resource));
+            String val = RandomWizard.getRandomInt(100) + "";// party.getParam(getParam(resource));
             TextureRegion tex = TextureCache.getOrCreateR(getImgPath(resource));
             ValueContainer container = new ValueContainer(tex, val);
             container.defaults().space(20).width(40);
-             container.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 18));
+            container.setStyle(StyleHolder.getSizedLabelStyle(FONT.MAIN, 18));
             addActor(container);
         }
     }

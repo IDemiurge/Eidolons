@@ -64,13 +64,13 @@ public class MapBlock {
         List<Coordinates> list = new ListMaster<Coordinates>().getList(coordinates);
         connectedBlocks.put(lastBlock, list);
         LogMaster.log(1, this + " linked to " + lastBlock.toString() + " on "
-                + list);
+         + list);
     }
 
     public String toString() {
         String string = getShortName();
         return string + "; Zone # " + zone.getI() + "; "
-                + CoordinatesMaster.getBoundsFromCoordinates(coordinates);
+         + CoordinatesMaster.getBoundsFromCoordinates(coordinates);
     }
 
     public String getXml() {
@@ -132,7 +132,7 @@ public class MapBlock {
 
     public DequeImpl<Obj> getObjectsByCoordinates() {
         DequeImpl<Obj> objects = new DequeImpl<>(DC_Game.game.getUnitsForCoordinates(coordinates
-                .toArray(new Coordinates[coordinates.size()])));
+         .toArray(new Coordinates[coordinates.size()])));
 
         return objects;
     }

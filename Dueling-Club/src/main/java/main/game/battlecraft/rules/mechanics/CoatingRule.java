@@ -28,10 +28,10 @@ public class CoatingRule {
 	 */
 
     public static final COUNTER[] COATING_COUNTERS = {
-            COUNTER.Poison, COUNTER.Disease,
-            COUNTER.Blight, COUNTER.Corrosion,
-            COUNTER.Blaze, COUNTER.Freeze,
-            COUNTER.Moist,};
+     COUNTER.Poison, COUNTER.Disease,
+     COUNTER.Blight, COUNTER.Corrosion,
+     COUNTER.Blaze, COUNTER.Freeze,
+     COUNTER.Moist,};
     public static final Integer RANGED_MOD = 2;
     public static final Integer THROWING_MOD = 5;
 
@@ -80,9 +80,9 @@ public class CoatingRule {
             if (action.getRef().getObj(KEYS.RANGED) != null) {
                 if (!action.isThrow()) {
                     if (action.getRef().getObj(KEYS.RANGED).getRef()
-                            .getObj(KEYS.AMMO) != null) {
+                     .getObj(KEYS.AMMO) != null) {
                         weapon = (DC_Obj) action.getRef().getObj(KEYS.RANGED)
-                                .getRef().getObj(KEYS.AMMO);
+                         .getRef().getObj(KEYS.AMMO);
                     }
                 }
             }
@@ -124,7 +124,7 @@ public class CoatingRule {
         }
         Integer max = getMaxNumberOfCountersPerAttack(item, c);
         max = MathMaster.addFactor(max, source.getIntParam(DC_ContentManager
-                .getCoatingMaxPerHitModParam(c)));
+         .getCoatingMaxPerHitModParam(c)));
         if (throwing) {
             max *= THROWING_MOD;
         } else if (action.isRanged()) {

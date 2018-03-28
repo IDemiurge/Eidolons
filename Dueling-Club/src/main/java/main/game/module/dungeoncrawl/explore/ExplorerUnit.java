@@ -6,7 +6,11 @@ import main.entity.type.ObjType;
 /**
  * Created by JustMe on 8/2/2017.
  */
-public class ExplorerUnit extends LightweightEntity{
+public class ExplorerUnit extends LightweightEntity {
+    public ExplorerUnit(ObjType type) {
+        super(type);
+    }
+
     /*
     stealth/detection
 
@@ -18,24 +22,18 @@ public class ExplorerUnit extends LightweightEntity{
 
 
      */
-    public void initPortrait(){
+    public void initPortrait() {
 
     }
 
-    public void resetParameters (){
+    public void resetParameters() {
 //setAverage();
 //setInfinite();
 //
 //setMinimal();
     }
 
-    public void resetActions(){
+    public void resetActions() {
 
-    }
-
-
-
-    public ExplorerUnit(ObjType type) {
-        super(type);
     }
 }

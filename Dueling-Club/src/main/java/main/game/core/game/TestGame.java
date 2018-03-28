@@ -11,8 +11,9 @@ public class TestGame extends DC_Game {
 
     public TestGame(TutorialMetaMaster testMetaMaster) {
         super(true);
-        metaMaster=testMetaMaster;
+        metaMaster = testMetaMaster;
     }
+
     @Override
     public DummyCombatMaster getCombatMaster() {
         return (DummyCombatMaster) super.getCombatMaster();

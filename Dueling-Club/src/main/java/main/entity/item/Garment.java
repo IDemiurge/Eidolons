@@ -27,7 +27,7 @@ public class Garment extends DC_HeroSlotItem {
                    PARAMETER[] params) {
         super(type, owner, game, ref, params);
         garment_type =
-                new EnumMaster<GARMENT_TYPE>().retrieveEnumConst(GARMENT_TYPE.class, getProperty(G_PROPS.GARMENT_TYPE));
+         new EnumMaster<GARMENT_TYPE>().retrieveEnumConst(GARMENT_TYPE.class, getProperty(G_PROPS.GARMENT_TYPE));
     }
 
     @Override
@@ -37,9 +37,9 @@ public class Garment extends DC_HeroSlotItem {
         switch (garment_type) {
             case BOOTS:
                 modifyParameter(PARAMS.MOVE_AP_PENALTY, penalty_reduction, 0,
-                        true);
+                 true);
                 modifyParameter(PARAMS.MOVE_STA_PENALTY, penalty_reduction, 0,
-                        true);
+                 true);
         }
 
     }

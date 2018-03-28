@@ -137,6 +137,7 @@ public class WorldGenerator {
         type.initType();
         return type;
     }
+
     private static MacroParty createParty(MacroRef ref, String s) {
         Coordinates coordinates = new Coordinates(true,
          Integer.valueOf(VariableManager.getVar(s, 0)),
@@ -148,7 +149,7 @@ public class WorldGenerator {
         } else if (string.equalsIgnoreCase("player")) {
             Party party = DC_Game.game.getMetaMaster().getPartyManager().getParty();
             if (party == null) {
-                return null ;
+                return null;
             }
             MacroParty playerParty = new MacroParty(
              getMacroPartyType(party), game, ref,

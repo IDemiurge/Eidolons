@@ -36,9 +36,9 @@ public class PruneMaster extends AiHandler {
         super(master);
     }
 
-    public   List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
+    public List<Coordinates> pruneTargetCells(Action targetAction, List<Coordinates> list) {
         TreeMap<Integer, Coordinates> map = new TreeMap<>(SortMaster
-                .getNaturalIntegerComparator(false));
+         .getNaturalIntegerComparator(false));
 
         Coordinates coordinates = targetAction.getSource().getCoordinates();
         for (Coordinates c : list) {
@@ -50,7 +50,7 @@ public class PruneMaster extends AiHandler {
                 distance += 2;
             }
             FACING_SINGLE facing = FacingMaster.getSingleFacing(targetAction.getSource()
-                    .getFacing(), c, coordinates);
+             .getFacing(), c, coordinates);
             switch (facing) {
                 case BEHIND:
                     distance += 12;
@@ -131,8 +131,8 @@ public class PruneMaster extends AiHandler {
         }
         Boolean enemy = GoalManager.isGoalVsEnemies(goal);
         int minDistance =
-                //TODO for ALLIES?
-                getAnalyzer().getClosestEnemyDistance(ai.getUnit());
+         //TODO for ALLIES?
+         getAnalyzer().getClosestEnemyDistance(ai.getUnit());
         List<DC_Obj> pruneList = new ArrayList<>();
         // TODO sort() first? to be sure to cut off the tail...
         int maxPower = ParamAnalyzer.getMaxParam(PARAMS.POWER, new ArrayList<>(targets));
@@ -153,8 +153,8 @@ public class PruneMaster extends AiHandler {
 //                            minDistance = distance;
 //                        } else {
                         result = (getDistancePruneFactor(limit, t, ai, action))
-                                < distance
-                                - minDistance;
+                         < distance
+                         - minDistance;
 //                        }
                         if (result) {
                             break;
@@ -179,7 +179,7 @@ public class PruneMaster extends AiHandler {
                     }
                     if (byPower) {
                         result = t.getIntParam(PARAMS.POWER) * 100 / maxPower < getPowerFactor(
-                                limit, ai, action);
+                         limit, ai, action);
                         if (result) {
                             break;
                         }

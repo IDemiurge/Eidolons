@@ -15,7 +15,7 @@ public class FearsomeEffect extends ModifyValueEffect implements OneshotEffect {
 
     public FearsomeEffect(String amount) {
         super(PARAMS.C_MORALE, MOD.MODIFY_BY_CONST, (template.replace(
-                "amount", amount)));
+         "amount", amount)));
 
     }
 

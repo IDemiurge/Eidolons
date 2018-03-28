@@ -179,6 +179,7 @@ public abstract class AiHandler {
     public Unit getUnit() {
         return getMaster().getUnit();
     }
+
     public UnitAI getUnitAI() {
         return getMaster().getUnitAI();
     }

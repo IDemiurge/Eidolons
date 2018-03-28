@@ -27,35 +27,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private boolean generated;
     private Coordinates target;
     private boolean test;
-    private float speed=1;
-
-    @Override
-    public String toString() {
-        if (path!=null )
-            return "emitter: " + path;
-        if (sfx!=null )
-            return "emitter: " + sfx.path;
-        return super.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof EmitterActor) {
-            EmitterActor e = ((EmitterActor) obj);
-            if ( e.getPath().equals(getPath())|| e.getEffect().equals(getEffect())) {
-                if (getX()==e.getX())
-                    if (getY()==e.getY())
-                        return true;
-            }
-
-        }
-        return super.equals(obj);
-    }
-
-    @Override
-    public boolean isIgnored() {
-        return super.isIgnored();
-    }
+    private float speed = 1;
 
     public EmitterActor(SFX fx) {
         this(fx.path);
@@ -73,6 +45,33 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         effect = EmitterPools.getEffect(path);
     }
 
+    @Override
+    public String toString() {
+        if (path != null)
+            return "emitter: " + path;
+        if (sfx != null)
+            return "emitter: " + sfx.path;
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof EmitterActor) {
+            EmitterActor e = ((EmitterActor) obj);
+            if (e.getPath().equals(getPath()) || e.getEffect().equals(getEffect())) {
+                if (getX() == e.getX())
+                    if (getY() == e.getY())
+                        return true;
+            }
+
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public boolean isIgnored() {
+        return super.isIgnored();
+    }
 
     public void act(float delta) {
         super.act(delta);
@@ -173,11 +172,11 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         return path;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
     public float getSpeed() {
         return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }

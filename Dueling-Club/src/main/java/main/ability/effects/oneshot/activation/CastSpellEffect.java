@@ -12,7 +12,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.List;
 
-public class CastSpellEffect extends MicroEffect  implements OneshotEffect {
+public class CastSpellEffect extends MicroEffect implements OneshotEffect {
     private DC_ActiveObj active;
     private KEYS key;
     private boolean forceTargeting;
@@ -36,25 +36,25 @@ public class CastSpellEffect extends MicroEffect  implements OneshotEffect {
             }
         }
         List<String> reasons = ReasonMaster.getReasonsCannotActivate(active,
-                ref);
+         ref);
         if (!ListMaster.contains(reasons, "cooldown", false)) {
             if (!active.canBeActivated(ref, true)) {
                 game.getLogManager().log(
-                        active.getOwnerObj().getName()
-                                + "'s channeling has failed ("
-                                + active.getName() + ")");
+                 active.getOwnerObj().getName()
+                  + "'s channeling has failed ("
+                  + active.getName() + ")");
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.FAIL);
                 return false;
             }
         }
 
         if (isForceTargeting()) {
-             ref.setTarget(null);
+            ref.setTarget(null);
             if (!active.selectTarget(ref)) {
                 game.getLogManager().log(
-                        active.getOwnerObj().getName()
-                                + "'s channeling has been cancelled ("
-                                + active.getName() + ")");
+                 active.getOwnerObj().getName()
+                  + "'s channeling has been cancelled ("
+                  + active.getName() + ")");
                 DC_SoundMaster.playStandardSound(STD_SOUNDS.SPELL_CANCELLED);
                 return false;
             }

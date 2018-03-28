@@ -32,23 +32,23 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
         List<SPELL_UPGRADE> upgrades = SpellUpgradeMaster.getAvailableUpgradesFromSpell(entity);
         if (upgrades.isEmpty()) {
             upgrades = new ListMaster<SPELL_UPGRADE>().getList(SpellEnums.SPELL_UPGRADE.APHOTIC,
-                    SpellEnums.SPELL_UPGRADE.DRAINING, SpellEnums.SPELL_UPGRADE.VAMPIRIC, SpellEnums.SPELL_UPGRADE.PUTRID,
-                    SpellEnums.SPELL_UPGRADE.TWILIGHT, SpellEnums.SPELL_UPGRADE.GHOSTLY, SpellEnums.SPELL_UPGRADE.VINDICATION,
+             SpellEnums.SPELL_UPGRADE.DRAINING, SpellEnums.SPELL_UPGRADE.VAMPIRIC, SpellEnums.SPELL_UPGRADE.PUTRID,
+             SpellEnums.SPELL_UPGRADE.TWILIGHT, SpellEnums.SPELL_UPGRADE.GHOSTLY, SpellEnums.SPELL_UPGRADE.VINDICATION,
 
-                    // SPELL_UPGRADES.PSIONIC, SPELL_UPGRADES.ACIDIC,
-                    // SPELL_UPGRADES.PUTRID,
-                    // SPELL_UPGRADES.GHOSTLY, SPELL_UPGRADES.ASTRAL,
-                    // SPELL_UPGRADES.VINDICATION,
-                    // SPELL_UPGRADES.PALE,
-                    SpellEnums.SPELL_UPGRADE.BLIGHT
+             // SPELL_UPGRADES.PSIONIC, SPELL_UPGRADES.ACIDIC,
+             // SPELL_UPGRADES.PUTRID,
+             // SPELL_UPGRADES.GHOSTLY, SPELL_UPGRADES.ASTRAL,
+             // SPELL_UPGRADES.VINDICATION,
+             // SPELL_UPGRADES.PALE,
+             SpellEnums.SPELL_UPGRADE.BLIGHT
 
             );
         }
         textComp = new WrappedTextComp(null, true);
         textComp.setDefaultSize(new Dimension(getVisuals().getWidth() - 40, getVisuals()
-                .getHeight()
-                - 40 - GuiManager.getSmallObjSize() * 2
-                // (1 + upgrades.size() / wrap)
+         .getHeight()
+         - 40 - GuiManager.getSmallObjSize() * 2
+         // (1 + upgrades.size() / wrap)
         ));
         add(textComp, "id textComp, pos 20 20" + "" + "" + "");
         int n = 0;
@@ -89,8 +89,8 @@ public class SpellUpgradePage extends InfoPage implements MouseListener {
             string = selected.getName();
         }
         textComp.setText(selected.getName() + ": "
-                // entity.getType().getName() + " Upgrades: \n"
-                + string
+         // entity.getType().getName() + " Upgrades: \n"
+         + string
 
         );
         textComp.refresh();

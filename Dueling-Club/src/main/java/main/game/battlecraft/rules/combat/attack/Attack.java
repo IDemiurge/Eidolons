@@ -87,16 +87,17 @@ public class Attack {
 
     public static Object getAnimationKey(DC_ActiveObj action) {
         return "Attack anim for "
-                + action.getAnimator().getAnimationKey();
+         + action.getAnimator().getAnimationKey();
     }
 
     @Override
     public String toString() {
         return "Attack by " + attacker.getNameAndCoordinate() + " on "
-                + attacked.getNameAndCoordinate();
+         + attacked.getNameAndCoordinate();
     }
+
     public String toLogString() {
-        return getAction().getName()+" by " + attacker.getNameIfKnown() + " on "
+        return getAction().getName() + " by " + attacker.getNameIfKnown() + " on "
          + attacked.getNameIfKnown();
     }
 
@@ -265,9 +266,10 @@ public class Attack {
 
     public BattleFieldObject getAttackedUnit() {
         if (attacked instanceof Unit)
-        return attacked;
+            return attacked;
         return null;
     }
+
     public BattleFieldObject getAttacked() {
         return attacked;
     }
@@ -319,12 +321,12 @@ public class Attack {
 
     public DC_WeaponObj getShield() {
         if (attacked instanceof Unit) {
-            DC_WeaponObj weapon =  ((Unit) attacked).getWeapon(true);
-        if (weapon != null) {
-            if (weapon.isShield()) {
-                return weapon;
+            DC_WeaponObj weapon = ((Unit) attacked).getWeapon(true);
+            if (weapon != null) {
+                if (weapon.isShield()) {
+                    return weapon;
+                }
             }
-        }
         }
         return null;
     }

@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by JustMe on 9/23/2017.
  */
 public class DoorOverlayView extends SuperActor {
-//add to UnitView?
+    //add to UnitView?
     List<DIRECTION> fragmentDirections;
     Map<DIRECTION, Image> fragmentImageMap; //direction to open
     boolean rotateOnOpen;

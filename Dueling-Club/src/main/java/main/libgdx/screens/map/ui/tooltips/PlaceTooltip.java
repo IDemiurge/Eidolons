@@ -17,8 +17,8 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.screens.map.MapScreen;
 import main.libgdx.screens.map.editor.EditorManager;
-import main.libgdx.screens.map.obj.PlaceActor;
 import main.libgdx.screens.map.layers.LightLayer;
+import main.libgdx.screens.map.obj.PlaceActor;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
@@ -49,7 +49,7 @@ public class PlaceTooltip extends Tooltip {
     protected void onMouseMoved(InputEvent event, float x, float y) {
 //        super.onMouseMoved(event, x, y);
     }
-    
+
 
     @Override
     protected void onTouchUp(InputEvent event, float x, float y) {

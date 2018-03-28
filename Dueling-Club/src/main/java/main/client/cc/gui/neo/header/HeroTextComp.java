@@ -61,7 +61,7 @@ public class HeroTextComp extends WrappedTextComp implements MouseListener {
     @Override
     public Dimension initSizeFromText(String text) {
         return new Dimension(VISUALS.PORTRAIT_BORDER.getWidth(), super.getDefaultY()
-                * VALUES.length);
+         * VALUES.length);
     }
 
     @Override

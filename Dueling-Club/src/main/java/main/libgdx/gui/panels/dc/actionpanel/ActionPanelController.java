@@ -73,7 +73,7 @@ public class ActionPanelController extends Group {
                 ActionValueContainer.setDarkened(false);
                 if (getY() < 0) {
                     if (isMovedDownOnEnemyTurn())
-                    ActorMaster.addMoveToAction(this, getX(), 0, 1);
+                        ActorMaster.addMoveToAction(this, getX(), 0, 1);
                     //  ActorMaster.addFadeInOrOut(leftOrbPanel, 1);
                     //    ActorMaster.addFadeInOrOut(rigthOrbPanel, 1);
                 }
@@ -86,7 +86,7 @@ public class ActionPanelController extends Group {
             } else {
 //                setY(-IMAGE_SIZE);
                 if (isMovedDownOnEnemyTurn())
-                ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
+                    ActorMaster.addMoveToAction(this, getX(), -IMAGE_SIZE, 1);
 
                 ActionValueContainer.setDarkened(true);
                 // ActorMaster.addFadeInOrOut(leftOrbPanel, 1);

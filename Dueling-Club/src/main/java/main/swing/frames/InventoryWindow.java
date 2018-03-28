@@ -18,7 +18,7 @@ public class InventoryWindow extends OperationWindow {
     protected HeroItemTab getComponent() {
         if (tabComp == null) {
             tabComp = new ItemsTab(heroModel,
-                    inventoryManager.getInvListManager());
+             inventoryManager.getInvListManager());
         }
         return tabComp;
     }

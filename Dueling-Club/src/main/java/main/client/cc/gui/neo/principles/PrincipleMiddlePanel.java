@@ -32,7 +32,7 @@ public class PrincipleMiddlePanel extends G_Panel {
     public void init() {
         add(new GraphicComponent(STD_IMAGES.GUARDIAN), "@pos 0 max_bottom");
         add(new GraphicComponent(ImageTransformer.flipHorizontally(ImageManager
-                .getBufferedImage(STD_IMAGES.GUARDIAN.getImage()))), "@pos max_right max_bottom");
+         .getBufferedImage(STD_IMAGES.GUARDIAN.getImage()))), "@pos max_right max_bottom");
         integrityBar = new SpecialValueBar(false, PARAMS.INTEGRITY);
         integrityBar.setObj(hero);
         rpgDescription = new TextCompDC(null, "", 18, FONT.AVQ);
@@ -54,7 +54,7 @@ public class PrincipleMiddlePanel extends G_Panel {
         rpgDescription.setText(IntegrityRule.getDescription(hero));
         rpgDescription.setPanelSize(new Dimension(250, 32));
         int offset = FontMaster.getStringWidth(rpgDescription.getFont(), rpgDescription
-                .getTextString()) / 2;
+         .getTextString()) / 2;
         remove(rpgDescription);
         add(rpgDescription, "@id rpg, pos center_x-" + offset + " bar.y2");
         // TODO the real issue is that Panel Size is not dynamically adjusted to
@@ -64,7 +64,7 @@ public class PrincipleMiddlePanel extends G_Panel {
         bonusTextComp.setTextLines(IntegrityRule.getIntegrityBonusInfo(hero));
 
         offset = FontMaster.getStringWidth(bonusTextComp.getFont(), StringMaster
-                .getLongestString(bonusTextComp.getTextLines())) / 2;
+         .getLongestString(bonusTextComp.getTextLines())) / 2;
         remove(bonusTextComp);
         add(bonusTextComp, "@id text, pos center_x rpg.y2"); // -" + offset + "
         bonusTextComp.repaint();

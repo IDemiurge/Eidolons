@@ -25,9 +25,9 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -99,7 +99,7 @@ public class SightMaster {
         addSides(list, orig, direction, range - side_penalty, false);
         DIRECTION backDirection = DirectionMaster.flip(direction);
         Coordinates backCoordinate = orig.getAdjacentCoordinate(backDirection);
-        if (back_bonus > 0 ) {
+        if (back_bonus > 0) {
             if (backCoordinate != null) {
                 addLine(backCoordinate, back_bonus, list, backDirection, true);
                 // if (back_bonus > side_penalty)

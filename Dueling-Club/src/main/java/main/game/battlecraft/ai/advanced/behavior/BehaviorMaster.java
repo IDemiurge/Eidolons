@@ -32,6 +32,7 @@ public class BehaviorMaster extends AiHandler {
 	 * make it like a SM-Wandering more or less... 
 	 */
 
+    Map<AI_BEHAVIOR_MODE, AiBehavior> behaviorMap = new HashMap<>();
     private boolean recursion;
 
     public BehaviorMaster(AiMaster master) {
@@ -76,15 +77,13 @@ public class BehaviorMaster extends AiHandler {
         return AiEnums.GOAL_TYPE.MOVE;
     }
 
-    Map<AI_BEHAVIOR_MODE, AiBehavior> behaviorMap = new HashMap<>();
-
     public AiBehavior getBehavior(UnitAI ai) {
         AI_BEHAVIOR_MODE type = AI_BEHAVIOR_MODE.WANDER;
 
-        if (getAnalyzer().getClosestEnemyDistance(ai.getUnit())>5){
+        if (getAnalyzer().getClosestEnemyDistance(ai.getUnit()) > 5) {
             type = AI_BEHAVIOR_MODE.GUARD;
         }
-return getBehavior(ai, type);
+        return getBehavior(ai, type);
 
     }
 
@@ -93,28 +92,28 @@ return getBehavior(ai, type);
         if (behavior != null) {
             return behavior;
         }
-            switch (type) {
+        switch (type) {
 
-                case WANDER:
-                    behavior= new WanderAi();
-                    break;
-                case AMBUSH:
-                    break;
-                case AGGRO:
-                    break;
-                case STALK:
-                    break;
-                case PATROL:
-                    break;
-                case GUARD:
-                    behavior= new GuardAi();
-                    break;
-            }
+            case WANDER:
+                behavior = new WanderAi();
+                break;
+            case AMBUSH:
+                break;
+            case AGGRO:
+                break;
+            case STALK:
+                break;
+            case PATROL:
+                break;
+            case GUARD:
+                behavior = new GuardAi();
+                break;
+        }
         behaviorMap.put(type, behavior);
         // for (AI_BEHAVIOR_MODE b : ai.getBehaviors()) {
         // // priority? situation? preCheck each...
         // }
-        return behavior ; // preCheck unit is viable?
+        return behavior; // preCheck unit is viable?
     }
 
 
@@ -149,7 +148,7 @@ return getBehavior(ai, type);
                     // maybe go meet leader if blocked... or something like it
                     if (change) {
                         group.getWanderStepCoordinateStack().push(
-                                group.getLeader().getCoordinates());
+                         group.getLeader().getCoordinates());
                         WanderAi.changeGroupMoveDirection(group, type);
                     }
                 }
@@ -167,14 +166,14 @@ return getBehavior(ai, type);
                     // if (!unit.getAction(action).canBeActivated()) {
                     // }
                     ActionPath path =
-                            getPathBuilder().init(
-                                    new ListMaster<DC_ActiveObj>()
-                                            .getList(unit.getAction(action)),
-                                    new Action(unit.getAction(action),
-                                            new Ref(unit))
-                            ).getPathByPriority(
-                                    new ListMaster<Coordinates>()
-                                            .getList(targetCoordinates));
+                     getPathBuilder().init(
+                      new ListMaster<DC_ActiveObj>()
+                       .getList(unit.getAction(action)),
+                      new Action(unit.getAction(action),
+                       new Ref(unit))
+                     ).getPathByPriority(
+                      new ListMaster<Coordinates>()
+                       .getList(targetCoordinates));
                     if (path == null) {
 
                         ai.setPathBlocked(true); // TODO preCheck if path

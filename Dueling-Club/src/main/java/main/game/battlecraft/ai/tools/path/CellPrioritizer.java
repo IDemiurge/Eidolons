@@ -53,10 +53,10 @@ public class CellPrioritizer extends AiHandler {
 		 */
 
         return ai
-                .getUnit()
-                .getGame()
-                .getCellsForCoordinates(
-                        ai.getUnit().getCoordinates().getAdjacentCoordinates());
+         .getUnit()
+         .getGame()
+         .getCellsForCoordinates(
+          ai.getUnit().getCoordinates().getAdjacentCoordinates());
     }
 
     /*
@@ -69,15 +69,15 @@ public class CellPrioritizer extends AiHandler {
 		 */
 
 		/*
-		 * I could exclude paths for zone spells, let the range be the limit for
+         * I could exclude paths for zone spells, let the range be the limit for
 		 * now
 		 */
         int priority = 0;
         List<ActionPath> paths = pathMap.get(cell.getCoordinates());
         if (paths == null) {
             paths = getPathBuilder().init(moves, targetAction)
-                    .build(new ListMaster<Coordinates>().getList(cell
-                            .getCoordinates()));
+             .build(new ListMaster<Coordinates>().getList(cell
+              .getCoordinates()));
             pathMap.put(cell.getCoordinates(), paths);
         }
         if (!ListMaster.isNotEmpty(paths)) {
@@ -104,28 +104,28 @@ public class CellPrioritizer extends AiHandler {
                         }
                         Unit enemy = (Unit) targetObj;
                         cell_priority = DC_PriorityManager
-                                .getUnitPriority(targetObj);
+                         .getUnitPriority(targetObj);
                         cell_priority -= DC_PriorityManager.getMeleeThreat(enemy); // "now"?
                         // should all AI-units *be afraid*? :) Maybe memory map
                         // will do nicely here?
                         // if ()
                         Action action = new Action(unit.getAction("attack"),
-                                enemy);
+                         enemy);
                         // if (melee )
 
                         // PriorityManager.getDamagePriority(action, targetObj,
                         // false);
                         priority += DC_PriorityManager
-                                .getAttackPriority(new ActionSequence(action));
+                         .getAttackPriority(new ActionSequence(action));
                         DC_UnitAction offhand_attack = unit
-                                .getAction("offhand attack");
+                         .getAction("offhand attack");
                         // TODO find the best attack action versus target and
                         // use its priority?
                         if (offhand_attack != null) {
                             action = new Action(offhand_attack, enemy);
                             priority += DC_PriorityManager
-                                    .getAttackPriority(new ActionSequence(
-                                            action));
+                             .getAttackPriority(new ActionSequence(
+                              action));
                         }
                         // do we calculate move costs before or after?
 
@@ -155,7 +155,7 @@ public class CellPrioritizer extends AiHandler {
         DC_Cell priority_cell = null;
         for (Unit enemy : Analyzer.getVisibleEnemies(ai)) {
             for (Coordinates c : enemy.getCoordinates()
-                    .getAdjacentCoordinates()) {
+             .getAdjacentCoordinates()) {
                 if (!cells.contains(c)) {
                     DC_Cell cell = enemy.getGame().getCellByCoordinate(c);
                     int priority = getMeleePriorityForCell(ai.getUnit(), cell);
@@ -180,7 +180,7 @@ public class CellPrioritizer extends AiHandler {
     }
 
     private Comparator<? super Obj> getPrioritySorter(
-            final Unit unit) {
+     final Unit unit) {
         return new Comparator<Obj>() {
 
             public int compare(Obj o1, Obj o2) {

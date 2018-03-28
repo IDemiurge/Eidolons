@@ -51,7 +51,7 @@ public class GridMaster {
 //        InputController controller = DungeonScreen.getInstance().getController();
         float x = sourceCoordinates.getX() * GridConst.CELL_W;
         float y = (gridPanel.getRows()
-         - (gdxY? sourceCoordinates.getY()+1 : sourceCoordinates.getY())) * GridConst.CELL_H;
+         - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * GridConst.CELL_H;
 
         if (camera) {
 //            x -= controller.getXCamPos();
@@ -89,9 +89,9 @@ public class GridMaster {
         return getVectorForCoordinate(coordinates, false, false);
     }
 
-    public static Dimension getOffsetsForOverlaying(DIRECTION direction, int width, int height ) {
-        int w = width*2;
-        int h = height*2;
+    public static Dimension getOffsetsForOverlaying(DIRECTION direction, int width, int height) {
+        int w = width * 2;
+        int h = height * 2;
         int calcXOffset = 0;
         int calcYOffset = 0;
         if (direction == null) {
@@ -101,14 +101,14 @@ public class GridMaster {
             int size = width;
             int x = MigMaster.getCenteredPosition(w, size);
 
-                if (direction.growX != null)
-                    x = (direction.growX) ? w - size : 0;
+            if (direction.growX != null)
+                x = (direction.growX) ? w - size : 0;
 
 
             int y = MigMaster.getCenteredPosition(h, size);
 
-                if (direction.growY != null)
-                    y = (!direction.growY) ? h - size : 0;
+            if (direction.growY != null)
+                y = (!direction.growY) ? h - size : 0;
 
 
             calcXOffset += x;

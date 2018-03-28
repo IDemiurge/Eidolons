@@ -14,5 +14,5 @@ public class ScriptSyntax {
     public static final String PART_SEPARATOR = ">";
     public static final String COMMENT_OPEN = "***";
     public static final String COMMENT_CLOSE = "###";
-    public static final String SPAWN_POINT ="point" ;
+    public static final String SPAWN_POINT = "point";
 }

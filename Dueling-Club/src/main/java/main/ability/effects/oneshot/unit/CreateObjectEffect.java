@@ -13,7 +13,7 @@ import main.system.auxiliary.StringMaster;
 public class CreateObjectEffect extends SummonEffect {
 
     public static final String STANDARD_PARAM_MODS = "Toughness(1);Endurance(2);"
-            + "Armor(0.1);Magic Resistances(0.15);Physical Resistances(0.15);";
+     + "Armor(0.1);Magic Resistances(0.15);Physical Resistances(0.15);";
     public static final String DEFAULT_BUFF_NAME = "Creation Mastery";
     private String param_mods;
     private String buff_name;
@@ -41,13 +41,13 @@ public class CreateObjectEffect extends SummonEffect {
             String varPart = VariableManager.getVarPart(s);
             String valueName = s.replace(varPart, "");
             String formula = StringMaster.cropParenthesises(varPart)
-                    + " *({Summoner_Spellpower}+{Summoner_Mastery}) ";// MAX?
+             + " *({Summoner_Spellpower}+{Summoner_Mastery}) ";// MAX?
 
             param_effects.add(new ModifyValueEffect(valueName,
-                    MOD.MODIFY_BY_CONST, formula));
+             MOD.MODIFY_BY_CONST, formula));
         }
         BuffMaster.applyBuff(getBuffName(), param_effects, unit,
-                ContentManager.INFINITE_VALUE); // retain only
+         ContentManager.INFINITE_VALUE); // retain only
         // while
         // summoner
         // alive?

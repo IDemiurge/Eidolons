@@ -33,15 +33,17 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         return null;
     }
 
-    public   boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
+    public boolean tryUnlock(Entity lockedObj, Unit lockPicker) {
         return tryUnlock(lockedObj, lockPicker, null);
 
     }
+
     @Override
     public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return null;
     }
-    public   boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
+
+    public boolean tryUnlock(Entity lockedObj, Unit lockPicker, Formula formula) {
         boolean result = TrapMaster.checkTrapOnLock(lockedObj);
         if (!result) {
             return false;
@@ -60,7 +62,7 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         return result;
     }
 
-    public   List<Obj> getObjectsToUnlock(Unit unit) {
+    public List<Obj> getObjectsToUnlock(Unit unit) {
         List<Obj> list = new ArrayList<>();
         if (unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false) != null) {
             list.add(unit.getGame().getObjectByCoordinate(unit.getCoordinates(), false));
@@ -74,13 +76,13 @@ public class LockMaster extends DungeonObjMaster<LOCK_ACTIONS> {
         return list;
     }
 
-    public   void unlock(Entity lockedObj) {
+    public void unlock(Entity lockedObj) {
         lockedObj.removeStatus(UnitEnums.STATUS.LOCKED + "");
         lockedObj.addStatus(UnitEnums.STATUS.UNLOCKED + "");
 
     }
 
-    public   void open(BattleFieldObject obj) {
+    public void open(BattleFieldObject obj) {
         obj.removeStatus(UnitEnums.STATUS.LOCKED + "");
         obj.addStatus(UnitEnums.STATUS.UNLOCKED + "");
     }

@@ -32,11 +32,11 @@ public class DamageReflectionEffect extends TriggerEffect {
 
         if (restoreEndurance) {
             effects.add(new ModifyValueEffect(PARAMS.C_ENDURANCE, code,
-                    formula.toString(), PARAMS.ENDURANCE));
+             formula.toString(), PARAMS.ENDURANCE));
         }
         if (restoreToughness) {
             effects.add(new ModifyValueEffect(PARAMS.C_TOUGHNESS, code,
-                    formula.toString()));
+             formula.toString()));
         }
 
     }

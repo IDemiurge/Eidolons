@@ -42,8 +42,8 @@ public class PhaseAnim extends Group {
     @Override
     public String toString() {
         return
-                getX() + " " + getY() + " - " +
-                        anim.toString();
+         getX() + " " + getY() + " - " +
+          anim.toString();
     }
 
     public void update() {

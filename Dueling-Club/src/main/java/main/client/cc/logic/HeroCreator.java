@@ -51,19 +51,19 @@ public class HeroCreator {
     }
 
     public static Unit createHeroObj(ObjType type) {
-        Unit hero = new Unit(type, 0, 0, getDefaultPlayer(),  Eidolons.getGame(),
-                new Ref( Eidolons.getGame()));
+        Unit hero = new Unit(type, 0, 0, getDefaultPlayer(), Eidolons.getGame(),
+         new Ref(Eidolons.getGame()));
         newId(type);
-         Eidolons.getGame().getState().addObject(hero);
+        Eidolons.getGame().getState().addObject(hero);
 //        hero.toBase();
 //        hero.afterEffects();
         return hero;
     }
 
     private static DC_Player getDefaultPlayer() {
-        if (DC_Player.NEUTRAL==null )
+        if (DC_Player.NEUTRAL == null)
             DC_Player.NEUTRAL = new DC_Player("Simulation", Color.red, true);
-        return DC_Player.NEUTRAL ;
+        return DC_Player.NEUTRAL;
     }
 
     private static void newId(ObjType type) {

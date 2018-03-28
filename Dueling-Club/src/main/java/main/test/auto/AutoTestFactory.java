@@ -22,8 +22,8 @@ import main.system.auxiliary.data.FileManager;
 import main.system.entity.FilterMaster;
 import main.test.auto.AutoTest.TEST_ARGS;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AutoTestFactory {
@@ -45,7 +45,7 @@ public class AutoTestFactory {
 
     private ObjType getWeaponTypeForGroup(String group) {
         return DataManager.getType(new EnumMaster<WEAPON_GROUP>().retrieveEnumConst(
-                WEAPON_GROUP.class, group).getDefaultType(), DC_TYPE.WEAPONS);
+         WEAPON_GROUP.class, group).getDefaultType(), DC_TYPE.WEAPONS);
     }
 
     public Entity initEntity(ObjType type) {
@@ -67,9 +67,9 @@ public class AutoTestFactory {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         testTypes = (List<ObjType>) FilterMaster.filterByProp(testTypes, G_PROPS.WORKSPACE_GROUP
-                .getName(), MetaEnums.WORKSPACE_GROUP.TEST.name());
+         .getName(), MetaEnums.WORKSPACE_GROUP.TEST.name());
         testTypes = (List<ObjType>) SortMaster.sortByValue(testTypes, getSortValue(getTYPE()),
-                false);
+         false);
         testTypes = (List<ObjType>) SortMaster.sortByValue(testTypes, PARAMS.AUTO_TEST_ID, true);
         return DataManager.toStringList(testTypes).toArray(new String[testTypes.size()]);
     }
@@ -112,7 +112,7 @@ public class AutoTestFactory {
         initArgList(list, type);
         String args = new StringMaster().constructContainer(list);
         AUTO_TEST_TYPE t = new EnumMaster<AUTO_TEST_TYPE>().retrieveEnumConst(AUTO_TEST_TYPE.class,
-                type.getProperty(PROPS.AUTO_TEST_TYPE));
+         type.getProperty(PROPS.AUTO_TEST_TYPE));
         if (t == null) {
             t = getType(type);
         }
@@ -130,10 +130,10 @@ public class AutoTestFactory {
 
             searchLoop:
             for (String part : StringMaster.open(testType
-                    .getProperty(G_PROPS.PASSIVES))) {
+             .getProperty(G_PROPS.PASSIVES))) {
                 if (part.contains("ActionMod(")) {
                     for (String s : StringMaster.open(StringMaster.getSubString(false,
-                            part, "ActionMod(", ",", null), StringMaster.AND_SEPARATOR)) {
+                     part, "ActionMod(", ",", null), StringMaster.AND_SEPARATOR)) {
                         actionNames += s + ";";
                     }
                     // find weapon that has all actions involved?

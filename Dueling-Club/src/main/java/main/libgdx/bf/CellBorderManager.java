@@ -61,7 +61,7 @@ public class CellBorderManager extends Group {
 //        });
         GuiEventManager.bind(SHOW_TEAM_COLOR_BORDER, obj -> {
             showBorder(teamcolorTexture, (Borderable) obj.get());
-         });
+        });
 
         GuiEventManager.bind(SHOW_BLUE_BORDERS, obj -> {
             Map<Borderable, Runnable> map = (Map<Borderable, Runnable>) obj.get();

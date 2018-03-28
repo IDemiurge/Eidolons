@@ -27,11 +27,10 @@ public class QuickSlotPanel extends BaseSlotPanel {
         TablePanel page = new TablePanel();
         for (int i = 0; i < getPageSize(); i++) {
             ActionValueContainer valueContainer = null;
-            if (sources.size() >  i )
-            {
+            if (sources.size() > i) {
                 valueContainer = sources.get(i);
-                if (page ==null )
-                    emptyImagePath= ("UI/empty_pack.jpg");
+                if (page == null)
+                    emptyImagePath = ("UI/empty_pack.jpg");
             }
             addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
         }

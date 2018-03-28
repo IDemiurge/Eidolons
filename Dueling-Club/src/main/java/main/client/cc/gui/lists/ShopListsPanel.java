@@ -116,7 +116,7 @@ public class ShopListsPanel extends VendorListsPanel {
             return list;
         }
         return StringMaster.openContainer(shop
-                .getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS));
+         .getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS));
     }
 
     public Town getTown() {

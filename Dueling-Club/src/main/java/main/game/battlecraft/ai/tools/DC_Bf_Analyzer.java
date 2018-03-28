@@ -45,9 +45,9 @@ public class DC_Bf_Analyzer extends BfAnalyzer {
         for (Obj enemyObj : getEnemy().getControlledUnits()) { // getPrioritizedEnemyList!
             DC_UnitModel enemyUnit = (DC_UnitModel) enemyObj;
             for (Obj cell : getAi().getGame().getMovementManager()
-                    .getAdjacentObjs(enemyUnit, true)) {
+             .getAdjacentObjs(enemyUnit, true)) {
                 Path path = getAi().getGame().getMovementManager()
-                        .getPath(obj, cell);
+                 .getPath(obj, cell);
                 if (path != null) {
                     if (checkAttackAfterMove(obj, path)) {
 
@@ -64,7 +64,7 @@ public class DC_Bf_Analyzer extends BfAnalyzer {
         int cost = movementManager.getIntegerCost(path.getCost());
         if (obj.getIntParam(PARAMS.C_N_OF_ACTIONS) >= cost + 1
             // game.getActionManager().getAttackCost(obj)
-                ) {
+         ) {
         }
         return false;
     }
@@ -124,8 +124,8 @@ public class DC_Bf_Analyzer extends BfAnalyzer {
         }
 
         LogMaster.log(LogMaster.AI_DEBUG, enemy_unit
-                + " has been picked as closest target for "
-                + ai.getLogic().getUnit());
+         + " has been picked as closest target for "
+         + ai.getLogic().getUnit());
         return enemy_unit;
     }
 

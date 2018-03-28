@@ -21,9 +21,9 @@ import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.text.FloatingTextMaster;
 import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
-import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +31,11 @@ import java.util.List;
 public class AI_Manager extends AiMaster {
     private static boolean running;
     private static boolean off;
+    private static List<DC_ActiveObj> brokenActions = new ArrayList<>();
     private GroupAI allyGroup;
     private GroupAI enemyGroup;
     private PLAYER_AI_TYPE type = AiEnums.PLAYER_AI_TYPE.BRUTE;
     private List<GroupAI> groups;
-    private static List<DC_ActiveObj> brokenActions=    new ArrayList<>() ;
 
     public AI_Manager(DC_Game game) {
         super(game);
@@ -142,7 +142,7 @@ public class AI_Manager extends AiMaster {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
                 running = false;
-                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI,getUnit()+
+                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
                  " opts for Forced Action: " + action);
             }
         } else {
@@ -150,9 +150,9 @@ public class AI_Manager extends AiMaster {
                 getMessageBuilder().append("Task: " + action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
                     if (game.isDebugMode() || Launcher.DEV_MODE)
-                    FloatingTextMaster.getInstance().
-                     createFloatingText(TEXT_CASES.BATTLE_COMMENT,
-                      getMessageBuilder().toString(), getUnit());
+                        FloatingTextMaster.getInstance().
+                         createFloatingText(TEXT_CASES.BATTLE_COMMENT,
+                          getMessageBuilder().toString(), getUnit());
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -214,30 +214,31 @@ public class AI_Manager extends AiMaster {
     public void setGroups(List<GroupAI> groups) {
         this.groups = groups;
     }
+
     private void updateGroups() {
         double join_distance = 1;
         double leave_distance = 5;
-        for (GroupAI group :     new ArrayList<>(groups))
-            for (Unit unit: group.getMembers()) {
+        for (GroupAI group : new ArrayList<>(groups))
+            for (Unit unit : group.getMembers()) {
                 double distance = PositionMaster.getExactDistance(
                  group.getLeader().getCoordinates(),
                  unit.getCoordinates());
                 if (distance > leave_distance) {
                     group.remove(unit);
-                    unit.getAI(). setGroupAI(new GroupAI(unit));
+                    unit.getAI().setGroupAI(new GroupAI(unit));
                     groups.add(unit.getAI().getGroup());
                     //wait until clear that they're unassigned?
                 }
-        }
+            }
 // join
         for (GroupAI group : groups)
-            for (Unit unit: group.getMembers()) {
+            for (Unit unit : group.getMembers()) {
                 double distance = PositionMaster.getExactDistance(
                  group.getLeader().getCoordinates(),
                  unit.getCoordinates());
                 if (distance > leave_distance) {
                     group.remove(unit);
-                    unit.getAI(). setGroupAI(new GroupAI(unit));
+                    unit.getAI().setGroupAI(new GroupAI(unit));
                 }
             }
     }
@@ -249,17 +250,17 @@ public class AI_Manager extends AiMaster {
 //            if (!groups.isEmpty()) {
 //            }
 //        }
-        if (groups==null  )
-        groups = new ArrayList<>();
+        if (groups == null)
+            groups = new ArrayList<>();
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             for (Unit unit : player.getControlledUnits_()) {
-                GroupAI group =unit.getAI().getGroup();
-                if (group == null  )
-                    group =new GroupAI(unit);
+                GroupAI group = unit.getAI().getGroup();
+                if (group == null)
+                    group = new GroupAI(unit);
                 for (Unit unit1 : player.getControlledUnits_()) {
-                    if (unit1.getAI().getGroup() != null )
+                    if (unit1.getAI().getGroup() != null)
                         continue;
                     if (unit1.equals(unit))
                         continue;
@@ -267,13 +268,13 @@ public class AI_Manager extends AiMaster {
                     if (PositionMaster.getExactDistance(unit1.getCoordinates(),
                      unit.getCoordinates()) >= max_distance)
                         continue;
-                    if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check( unit,unit1))
+                    if (!game.getVisionMaster().getSightMaster().getClearShotCondition().check(unit, unit1))
                         continue;
                     group.add(unit1);
 
                 }
                 if (!groups.contains(group))
-                 groups.add(group);
+                    groups.add(group);
             }
 
 

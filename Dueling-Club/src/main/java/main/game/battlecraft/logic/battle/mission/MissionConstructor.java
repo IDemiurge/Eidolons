@@ -35,7 +35,7 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
             type.setProperty(PROPS.MISSION_FILE_PATH, name);
 
         }
-        String levelPath =type.getProperty(PROPS.MISSION_FILE_PATH);
+        String levelPath = type.getProperty(PROPS.MISSION_FILE_PATH);
         getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
          levelPath);
         Mission mission = new Mission(type, getMaster().getMetaMaster().getMetaGame().getScenario());

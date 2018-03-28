@@ -2,9 +2,9 @@ package main.game.module.adventure.global;
 
 import main.entity.Ref;
 import main.game.core.game.Game;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Route;
-import main.game.module.adventure.entity.MacroParty;
 import main.system.text.LogManager;
 
 public class Journal extends LogManager {
@@ -41,8 +41,8 @@ public class Journal extends LogManager {
         }
         // "Your party" ?
         String string = party.getDisplayedName() + " has traveled " + distance
-                + " leagues " + direction + " along the "
-                + route.getDisplayedName();
+         + " leagues " + direction + " along the "
+         + route.getDisplayedName();
         getInstance().log(string);
 
     }

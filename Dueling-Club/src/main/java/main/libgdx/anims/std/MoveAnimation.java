@@ -22,8 +22,8 @@ import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static main.system.GuiEventType.UNIT_MOVED;
@@ -52,6 +52,9 @@ public class MoveAnimation extends ActionAnim {
         return on;
     }
 
+    public static void setOn(boolean on) {
+        MoveAnimation.on = on;
+    }
 
     protected MoveByActionLimited getAction() {
 //        new Pool.Poolable()
@@ -61,13 +64,13 @@ public class MoveAnimation extends ActionAnim {
             action.reset();
         }
         setDuration(1);
-        float x = getDestination().x-getOrigin().x;
-        if (x>160){
-            x= GridConst.CELL_W;
+        float x = getDestination().x - getOrigin().x;
+        if (x > 160) {
+            x = GridConst.CELL_W;
         }
-        float y =getDestination().y-getOrigin().y;
-        if (y>160){
-            y= GridConst.CELL_H;
+        float y = getDestination().y - getOrigin().y;
+        if (y > 160) {
+            y = GridConst.CELL_H;
         }
         action.setAmount(x
          ,
@@ -77,7 +80,6 @@ public class MoveAnimation extends ActionAnim {
 
         return action;
     }
-
 
     public void initPosition() {
         origin = GridMaster
@@ -91,6 +93,7 @@ public class MoveAnimation extends ActionAnim {
 
         defaultPosition = getDefaultPosition();
     }
+
     @Override
     public List<SpriteAnimation> getSprites() {
         return new ArrayList<>();
@@ -100,7 +103,6 @@ public class MoveAnimation extends ActionAnim {
     public List<EmitterActor> getEmitterList() {
         return new ArrayList<>();
     }
-
 
     public void playSound() {
         DC_SoundMaster.playMoveSound(getActive().getOwnerObj());
@@ -120,7 +122,7 @@ public class MoveAnimation extends ActionAnim {
         BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
          .get(unit);
         if (!DungeonScreen.getInstance().getGridPanel().detachUnitView(unit)) {
-            return ;
+            return;
         }
 
 //        DungeonScreen.getInstance().getGridStage().addActor(actor);
@@ -132,7 +134,6 @@ public class MoveAnimation extends ActionAnim {
 
 
     }
-
 
     @Override
     public boolean draw(Batch batch) {
@@ -150,6 +151,13 @@ public class MoveAnimation extends ActionAnim {
         return e.getOrigin();
 
     }
+//getSpeed()
+    //getTrajectory()
+
+//    @Override
+//    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
+//        return Arrays.asList(new ImmutablePair<>(UNIT_STARTS_MOVING, new EventCallbackParam(unit)));
+//    }
 
     @Override
     public Coordinates getDestinationCoordinates() {
@@ -169,17 +177,7 @@ public class MoveAnimation extends ActionAnim {
 //              FacingMaster.getFacing(ref.getSourceObj()), ref.getSourceObj(), ref);
 //            return super.getDestinationCoordinates();
     }
-//getSpeed()
-    //getTrajectory()
 
-//    @Override
-//    public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnStart() {
-//        return Arrays.asList(new ImmutablePair<>(UNIT_STARTS_MOVING, new EventCallbackParam(unit)));
-//    }
-
-    public static void setOn(boolean on) {
-        MoveAnimation.on = on;
-    }
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
         return Arrays.asList(new ImmutablePair<>(UNIT_MOVED, new EventCallbackParam(unit)));

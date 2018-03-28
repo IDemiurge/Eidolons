@@ -28,8 +28,8 @@ public abstract class DamageCounterRule extends DC_CounterRule {
 
     public abstract boolean isEnduranceOnly();
 
-    public    boolean isUnblockable() {
-   return true;
+    public boolean isUnblockable() {
+        return true;
     }
 
 
@@ -42,7 +42,7 @@ public abstract class DamageCounterRule extends DC_CounterRule {
         return new DealDamageEffect(getDamageType().toString(),
 
          new Formula(getCounterRef() + " * ("
-         + getDamagePerCounterFormula() + ")"),
+          + getDamagePerCounterFormula() + ")"),
 
          GenericEnums.DAMAGE_MODIFIER.PERIODIC, DAMAGE_MODIFIER.QUIET,
          (isEnduranceOnly() ? DAMAGE_MODIFIER.ENDURANCE_ONLY : null),

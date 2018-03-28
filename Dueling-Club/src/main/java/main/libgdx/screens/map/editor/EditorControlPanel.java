@@ -30,7 +30,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
     public void init() {
 //
         setSize(GdxMaster.getWidth() / 3 * 2, 64);
-        TextButtonStyle style = StyleHolder.getTextButtonStyle(  FONT.AVQ,
+        TextButtonStyle style = StyleHolder.getTextButtonStyle(FONT.AVQ,
          GdxColorMaster.GOLDEN_WHITE, 18);
         for (MAP_EDITOR_FUNCTION sub : MAP_EDITOR_FUNCTION.values()) {
             TextButton button = new TextButton(sub.name(), style);
@@ -69,19 +69,19 @@ public class EditorControlPanel extends HorizontalFlowGroup {
             case SAVE:
                 MacroManager.saveTheWorld();
                 EditorMapView.getInstance().getEditorParticles().saveAll();
-              MacroManager.getPointMaster()
-                .save();
+                MacroManager.getPointMaster()
+                 .save();
 //                MacroManager.saveCustomTypes();
                 //data into World/Campaign type?
                 break;
             case ALL_TIMES:
-                MacroGame.getGame().prepareSetTime(null );
+                MacroGame.getGame().prepareSetTime(null);
                 break;
             case NEXT_TIME:
                 int i = EnumMaster.getEnumConstIndex(DAY_TIME.class, MacroGame.getGame().getTime());
-               i++;
-               if (DAY_TIME.values().length<=i)
-                    i=0;
+                i++;
+                if (DAY_TIME.values().length <= i)
+                    i = 0;
                 DAY_TIME time = DAY_TIME.values()[i];
                 MacroGame.getGame().prepareSetTime(time);
                 break;
@@ -137,7 +137,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
     public enum MAP_EDITOR_MOUSE_MODE {
         CLEAR,
         TRACE,
-        ADD, EMITTER,POINT,
+        ADD, EMITTER, POINT,
 
     }
 }

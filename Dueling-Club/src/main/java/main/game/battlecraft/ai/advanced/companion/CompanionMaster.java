@@ -54,7 +54,7 @@ public class CompanionMaster {
 //        int average = total / AI_TYPE.values().length;
 //        if (average > maxWeight/2)
 //            type = AI_TYPE.NORMAL;
-        main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type chosen: " + type);
+//        main.system.auxiliary.log.LogMaster.log(1, hero.getName() + "'s Ai Type chosen: " + type);
         return type;
     }
 

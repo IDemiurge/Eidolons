@@ -151,12 +151,12 @@ public class AttackAnimation extends ActionAnimation {
                     break;
                 case REDUCTION_ARMOR:
                     DC_SoundMaster.playAttackImpactSound(attack.getWeapon(), source,
-                            (Unit) getTarget(), attack.getDamage(), (int) phase.getArgs()[1]);
+                     (Unit) getTarget(), attack.getDamage(), (int) phase.getArgs()[1]);
                     break;
                 case REDUCTION_SHIELD:
                     DC_SoundMaster.playBlockedSound(source, getTarget(), attack
-                            .getShield(), attack.getWeapon(), (int) phase.getArgs()[1], (int) phase
-                            .getArgs()[3]);
+                     .getShield(), attack.getWeapon(), (int) phase.getArgs()[1], (int) phase
+                     .getArgs()[3]);
                     break;
             }
         }
@@ -172,7 +172,7 @@ public class AttackAnimation extends ActionAnimation {
             // could be a 64x64 or 50 circle!
             image = ImageManager.applyGlowFrame(image, BORDER.CIRCLE_GLOW_50.getImage());
             Point point = GeometryMaster
-                    .getFarthestPointInRectangleForImage(w, h, image, direction);
+             .getFarthestPointInRectangleForImage(w, h, image, direction);
             drawOnTarget(image, point.x, point.y);
         }
         if (attack.isCritical()) {
@@ -215,7 +215,7 @@ public class AttackAnimation extends ActionAnimation {
             // image = ImageManager.applyGlowFrame(image,
             // BORDER.CIRCLE_GLOW_64.getEmitterPath());
             point = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image, direction
-                    .flip());
+             .flip());
             drawOnSource(image, point.x, point.y);
             // image = STD_IMAGES.DIRECTION_POINTER.getEmitterPath(); TODO
             // image = ImageTransformer.rotate(image, direction.getDegrees());
@@ -260,7 +260,7 @@ public class AttackAnimation extends ActionAnimation {
 
                 drawOnTarget(image, x, y);
                 addMouseItem(false, x, y, 32, 32, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE,
-                        PHASE_TYPE.DAMAGE_FORMULA));
+                 PHASE_TYPE.DAMAGE_FORMULA));
                 y = y + (image.getHeight(null));
 
                 if (direction.isVertical()) {
@@ -314,7 +314,7 @@ public class AttackAnimation extends ActionAnimation {
                 getSubPhaseTypeForKey(id);
             }
             addMouseItem(false, x, y, width, height, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE,
-                    getSubPhaseTypeForKey(id)));
+             getSubPhaseTypeForKey(id)));
 
             // addToolTip(s+modsMap.getOrCreate(s));
 
@@ -414,7 +414,7 @@ public class AttackAnimation extends ActionAnimation {
         // mouse
         // item!
         addMouseItem(false, (w - 32) / 2, y, 32, 32, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE,
-                PHASE_TYPE.DODGE_FORMULA));
+         PHASE_TYPE.DODGE_FORMULA));
         y += 32;
         // image = ImageManager.applyImage(image,
         // ImageManager.getValueIcon(PARAMS.DEFENSE), (image
@@ -482,14 +482,14 @@ public class AttackAnimation extends ActionAnimation {
         Image image2 = ImageManager.getValueIcon(PARAMS.DEFENSE);
         // Atk/Def/Crit atk/def formula, difference/chance, final %/mod
         Point point1 = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image1,
-                DIRECTION.UP_LEFT);
+         DIRECTION.UP_LEFT);
         Point point2 = GeometryMaster.getFarthestPointInRectangleForImage(w, h, image2,
-                DIRECTION.UP_RIGHT);
+         DIRECTION.UP_RIGHT);
         String formula = StringMaster.wrapInBraces(attackValue + "") + "  vs  "
-                + StringMaster.wrapInBraces(defense + "");
+         + StringMaster.wrapInBraces(defense + "");
         String prefix = bonus > 0 ? "+" : "";
         String result = prefix + bonus + " damage "
-                + StringMaster.wrapInParenthesis(diff + "*" + mod + "%*" + amount);
+         + StringMaster.wrapInParenthesis(diff + "*" + mod + "%*" + amount);
         drawOnTarget(image1, point1.x, point1.y);
         drawOnTarget(image2, point2.x, point2.y);
         int y = point1.y + image1.getHeight(null) + 8;

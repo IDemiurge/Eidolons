@@ -37,7 +37,7 @@ public class MemorizedList extends SecondaryItemList {
     @Override
     protected String getPoolText() {
         return hero.calculateMemorizationPool() + "/"
-                + hero.getParam(getPoolParam());
+         + hero.getParam(getPoolParam());
     }
 
     @Override

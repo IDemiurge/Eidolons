@@ -73,16 +73,16 @@ public class OptionDialog extends G_Dialog {
 
             public Dimension getPanelSize() {
                 return new Dimension(OptionDialog.this.getVisuals().getWidth() - 42,
-                        OptionDialog.this.getVisuals().getHeight() - VISUALS.BUTTON.getHeight()
-                                - 32);
+                 OptionDialog.this.getVisuals().getHeight() - VISUALS.BUTTON.getHeight()
+                  - 32);
             }
         };
         comp.setPanelSize(new Dimension(getVisuals().getWidth() - 42, getVisuals().getHeight()
-                - VISUALS.BUTTON.getHeight() - 32));
+         - VISUALS.BUTTON.getHeight() - 32));
         comp.setText(title);
         comp.refresh();
         panel.add(comp, "@pos center_x 75"
-                // + "button1.y2"
+         // + "button1.y2"
         );
         return panel;
     }
@@ -96,8 +96,8 @@ public class OptionDialog extends G_Dialog {
             n++;
         }
         String constraints =
-                // "grow" +
-                ((wrap) ? ", wrap" : ""); // , id button" + n
+         // "grow" +
+         ((wrap) ? ", wrap" : ""); // , id button" + n
 
         // int i=n;
         // // if (n == 0)
@@ -117,7 +117,7 @@ public class OptionDialog extends G_Dialog {
 
     protected void handleClick(Object result) {
         WaitMaster.receiveInput(WAIT_OPERATIONS.OPTION_DIALOG, isIntegerCode() ? Arrays.asList(
-                options).indexOf(result) : result);
+         options).indexOf(result) : result);
         close();
     }
 

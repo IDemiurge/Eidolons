@@ -53,8 +53,8 @@ public class AttackTooltipFactory {
 //        TODO display all bonus damage!
 //          Attack attack = EffectFinder.getAttackFromAction(el);
 //        DamageFactory.getDamageFromAttack();
-        String info=min_damage+"-" +max_damage+ dmgType.getName() + " damage";
-        String tooltip="";
+        String info = min_damage + "-" + max_damage + dmgType.getName() + " damage";
+        String tooltip = "";
 //        if ()
 //            DamageCalculator.isUnconscious()
 //        "(will drop)";
@@ -62,6 +62,7 @@ public class AttackTooltipFactory {
         ValueContainer container = new ValueContainer(info, tooltip);
         return container;
     }
+
     public static AttackTooltip createAttackTooltip(DC_UnitAction el,
                                                     boolean precalc, boolean costs,
                                                     boolean additionalInfo, boolean combatMode, DC_Obj target) {
@@ -80,9 +81,10 @@ public class AttackTooltipFactory {
         List/*<List<MultiValueContainer>>*/ textsList = new ArrayList<>();
         for (PARAMS[] params : ACTION_TOOLTIP_PARAMS_TEXT) {
             textsList.add(Arrays.stream(params).map(p -> {
-                   String textForTableValue = ActionTooltipMaster.
-                  getTextForTableValue(p, el);textForTableValue =
-                TextWrapper.wrapWithNewLine(textForTableValue, 50);
+                 String textForTableValue = ActionTooltipMaster.
+                  getTextForTableValue(p, el);
+                 textForTableValue =
+                  TextWrapper.wrapWithNewLine(textForTableValue, 50);
                  if (StringUtils.isEmpty(textForTableValue)) {
                      return null;
                  } else {
@@ -164,8 +166,6 @@ public class AttackTooltipFactory {
             return container;
         };
     }
-
-
 
 
 }

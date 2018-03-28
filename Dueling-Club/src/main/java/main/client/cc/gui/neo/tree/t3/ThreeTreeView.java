@@ -49,16 +49,16 @@ public class ThreeTreeView extends G_Panel {
         treeSize = getTreeSize();
         if (skill_class_spell != null) {
             leftTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero)
-                    : new T3SkillTreePanel(true, null, hero);
+             : new T3SkillTreePanel(true, null, hero);
         }
         if (skill_class_spell != null) {
             centerTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero) // TODO
-                    // T3HeroTreePanel
-                    : new T3SkillTreePanel(null, null, hero);
+             // T3HeroTreePanel
+             : new T3SkillTreePanel(null, null, hero);
         }
         if (skill_class_spell != null) {
             rightTree = (!skill_class_spell) ? new T3ClassTreePanel(true, null, hero)
-                    : new T3SkillTreePanel(false, null, hero);
+             : new T3SkillTreePanel(false, null, hero);
         }
 
         leftTree.refresh();
@@ -83,14 +83,14 @@ public class ThreeTreeView extends G_Panel {
 
     protected Dimension getTreeSize() {
         return new Dimension(VISUALS.TREE_VIEW.getSize().width,
-                VISUALS.TREE_VIEW.getSize().height + 42);
+         VISUALS.TREE_VIEW.getSize().height + 42);
     }
 
     protected void initInfoPanels() {
         infoPanel = new T3InfoPanel(false);
         infoPanel2 = new T3InfoPanel(true);
         Dimension infoSize = new Dimension((GuiManager.getScreenWidthInt() - VISUALS.TREE_VIEW
-                .getSize().width) / 2, VISUALS.INFO_PANEL.getSize().height);
+         .getSize().width) / 2, VISUALS.INFO_PANEL.getSize().height);
         infoPanel.setPanelSize(infoSize);
         infoPanel2.setPanelSize(infoSize);
         infoPanel.init();
@@ -124,7 +124,7 @@ public class ThreeTreeView extends G_Panel {
 
     protected String getCenterTreePos() {
         return "id centerTree, pos " + MigMaster.getCenteredWidth((int) treeSize.getWidth()) + " "
-                + "up.y2";
+         + "up.y2";
     }
 
     @Override

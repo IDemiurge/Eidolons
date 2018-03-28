@@ -13,15 +13,15 @@ public class TravelMaster {
         int distance = route.getLength();
         //bend factor
         int speed = getTravelSpeed(party, route);
-        float progress= party.getRouteProgress();
-        float newProgress = speed*delta/distance;
+        float progress = party.getRouteProgress();
+        float newProgress = speed * delta / distance;
         party.setRouteProgress(progress + newProgress);
-        int x1= party.getCurrentLocation().getX();
-        int x2= party.getCurrentDestination().getX();
-        int y1= party.getCurrentLocation().getY();
-        int y2= party.getCurrentDestination().getY();
-        int xBase = (int) (x1+ (x2-x1)*progress);
-        int yBase = (int) (y1+ (y2-y1)*progress);
+        int x1 = party.getCurrentLocation().getX();
+        int x2 = party.getCurrentDestination().getX();
+        int y1 = party.getCurrentLocation().getY();
+        int y2 = party.getCurrentDestination().getY();
+        int xBase = (int) (x1 + (x2 - x1) * progress);
+        int yBase = (int) (y1 + (y2 - y1) * progress);
 //            float xOffset= route.getOffsetX(progress);
 //            float yOffset;
         party.setX(xBase);

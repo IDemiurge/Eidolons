@@ -32,14 +32,14 @@ public class SkillBottomPanel extends HT_BottomPanel {
         freePoints = new TextCompDC(VISUALS.SPACE_SMALL) {
             protected String getText() {
                 return "Skill Points: "
-                        + DC_MathManager.getFreeMasteryPoints(hero, (PARAMETER) arg);
+                 + DC_MathManager.getFreeMasteryPoints(hero, (PARAMETER) arg);
             }
 
         };
         masteryScore = new TextCompDC(VISUALS.SPACE_SMALL) {
             protected String getText() {
                 return "Final Score: "
-                        + hero.getIntParam(ContentManager.getMasteryScore((PARAMETER) arg));
+                 + hero.getIntParam(ContentManager.getMasteryScore((PARAMETER) arg));
             }
 
         };
@@ -47,7 +47,7 @@ public class SkillBottomPanel extends HT_BottomPanel {
         masteryPoints = new PoolComp(hero, PARAMS.MASTERY_POINTS, "Mastery Points", false);
 
         masteryComp = new HC_PointComp(true, hero, bufferType, (PARAMETER) arg,
-                PARAMS.MASTERY_POINTS) {
+         PARAMS.MASTERY_POINTS) {
             public void mouseClicked(MouseEvent e) {
                 if (e.getSource() == upArrow) {
 

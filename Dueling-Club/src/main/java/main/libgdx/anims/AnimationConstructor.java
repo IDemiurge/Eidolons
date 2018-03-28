@@ -99,12 +99,6 @@ public class AnimationConstructor {
 
     }
 
-    public   void tryPreconstruct(Unit unit) {
-        if (isPreconstructOn())
-                if (isPreconstructOn(unit))
-                    preconstructSpells(unit);
-    }
-
     private static boolean isPreconstructOn() {
         return CoreEngine.isJar() || CoreEngine.isFastMode(); //TODO;
     }
@@ -182,6 +176,20 @@ public class AnimationConstructor {
 //        return findResourceForSpell(spell, partPath, size, props, pathRoot, true);
     }
 
+    public static boolean isPreconstructAllOnGameInit() {
+        return false;//CoreEngine.isExe()  ;
+    }
+
+    public static boolean isPreconstructEnemiesOnCombatStart() {
+        return isPreconstructOn();
+    }
+
+    public void tryPreconstruct(Unit unit) {
+        if (isPreconstructOn())
+            if (isPreconstructOn(unit))
+                preconstructSpells(unit);
+    }
+
     private boolean isPreconstructOn(Unit unit) {
         return unit.getSpells().size() <= 3;
     }
@@ -228,14 +236,14 @@ public class AnimationConstructor {
 
     public void preconstructAll(Unit unit) {
         if (isPreconstructAllOnGameInit())
-        if (GdxMaster.isLwjglThread()) {
-            unit.getActives().forEach(spell -> getOrCreate(spell));
-            AnimMaster3d.preloadAtlases(unit);
-        } else
-            Gdx.app.postRunnable((() -> {
+            if (GdxMaster.isLwjglThread()) {
                 unit.getActives().forEach(spell -> getOrCreate(spell));
                 AnimMaster3d.preloadAtlases(unit);
-            }));
+            } else
+                Gdx.app.postRunnable((() -> {
+                    unit.getActives().forEach(spell -> getOrCreate(spell));
+                    AnimMaster3d.preloadAtlases(unit);
+                }));
     }
 
     public void preconstruct(DC_ActiveObj active) {
@@ -310,10 +318,9 @@ public class AnimationConstructor {
         if (active instanceof DC_QuickItemAction) {
             if (((DC_QuickItemAction) active).getItem().isAmmo()) {
                 return new Reload3dAnim(active);
-            } else
-            {
+            } else {
                 if (((DC_QuickItemAction) active).getItem().isPotion())
-                return new Potion3dAnim(active);
+                    return new Potion3dAnim(active);
                 return new QuickItemAnim(((DC_QuickItemAction) active).getItem());
             }
 
@@ -609,7 +616,6 @@ public class AnimationConstructor {
         return false;
     }
 
-
     private String getPath(ANIM_VALUES s) {
         String path = null;
         switch (s) {
@@ -624,7 +630,6 @@ public class AnimationConstructor {
             System.out.println(s + " path= " + path);
         return path;
     }
-
 
     public boolean isReconstruct() {
         if (CoreEngine.isJar())
@@ -693,13 +698,6 @@ public class AnimationConstructor {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         });
-    }
-
-    public static boolean isPreconstructAllOnGameInit() {
-        return false;//CoreEngine.isExe()  ;
-    }
-    public static boolean isPreconstructEnemiesOnCombatStart() {
-        return isPreconstructOn();
     }
 
     public enum ANIM_PART {

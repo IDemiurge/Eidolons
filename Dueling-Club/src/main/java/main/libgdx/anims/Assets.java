@@ -15,21 +15,21 @@ import main.system.auxiliary.secondary.ReflectionMaster;
  * Created by JustMe on 12/1/2017.
  */
 public class Assets {
-   static Assets assets;
+    static Assets assets;
     AssetManager manager;
 
-    private  Assets() {
+    private Assets() {
         manager = new AssetManager();
-        manager.setLoader( TextureAtlas.class, new TextureAtlasLoader(
+        manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(
          new FileHandleResolver() {
              @Override
              public FileHandle resolve(String fileName) {
                  return new FileHandle(fileName);
              }
          }
-        ){
+        ) {
             @Override
-            public TextureAtlas load (AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
+            public TextureAtlas load(AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {
 //               super.load()
 //                return atlas;
                 TextureAtlasData data = new ReflectionMaster<TextureAtlasData>()
@@ -40,8 +40,8 @@ public class Assets {
                 }
                 TextureAtlas atlas = new SmartTextureAtlas(data);
                 new ReflectionMaster<TextureAtlasData>()
-                 .setValue("data", null , this);
-                main.system.auxiliary.log.LogMaster.log(1,fileName +" loaded...");
+                 .setValue("data", null, this);
+                main.system.auxiliary.log.LogMaster.log(1, fileName + " loaded...");
                 return atlas;
             }
         });
@@ -52,17 +52,18 @@ public class Assets {
 //        manager.load();
         return null;
     }
-        public static Assets get() {
-        if (assets==null )
+
+    public static Assets get() {
+        if (assets == null)
             assets = new Assets();
         return assets;
     }
 
-    public AssetManager getManager() {
-        return manager;
-    }
-
     public static boolean isOn() {
         return true;
+    }
+
+    public AssetManager getManager() {
+        return manager;
     }
 }

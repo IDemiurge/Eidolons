@@ -87,8 +87,8 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
     }
 
     private Boolean makeRequest(LOOT_PREFERENCE preference, Unit hero, ObjType item) {
-     //guiEvent
-       Boolean result = null ;// WaitMaster.waitForInput();
+        //guiEvent
+        Boolean result = null;// WaitMaster.waitForInput();
         return result;
     }
 
@@ -102,7 +102,7 @@ public class LootMaster<E extends MetaGame> extends MetaGameHandler<E> {
 //        int share = lootValue / getPartyManager().getParty().getMembers().size();
 //        int mod = 100 + hero.getIntParam(PARAMS.LOOT_SHARE_BONUS);
 //        return share * mod / 100;
-        return  100;
+        return 100;
     }
 
     private LOOT_PREFERENCE getPreference(Unit hero, ObjType item) {

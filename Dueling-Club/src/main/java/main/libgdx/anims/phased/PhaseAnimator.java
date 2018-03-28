@@ -41,7 +41,7 @@ public class PhaseAnimator extends Group {
 
         stage.addActor(this);
         setBounds(0, 0, (float) GdxMaster.getWidth(), (float)
-                GdxMaster.getHeight());
+         GdxMaster.getHeight());
         setVisible(true);
         instance = this;
         init();
@@ -70,7 +70,8 @@ public class PhaseAnimator extends Group {
 //        return getActionAnimation(ref, obj);
         return null;
     }
-@Deprecated
+
+    @Deprecated
     public static void handleDamageAnimAndLog(Ref ref, Unit attacked, boolean magical, DAMAGE_TYPE dmg_type) {
 //        LogEntryNode entry = attacked.getGame().getLogManager().newLogEntryNode(true,
 //                ENTRY_TYPE.DAMAGE);
@@ -122,7 +123,7 @@ public class PhaseAnimator extends Group {
         }
         removeAnims();
         setBounds(0, 0, (float) GdxMaster.getWidth(), (float)
-                GdxMaster.getHeight());
+         GdxMaster.getHeight());
 
         DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
             if (a.getPhaseAnim() == null) {
@@ -136,7 +137,7 @@ public class PhaseAnimator extends Group {
             anim.update();
             addActor(anim);
             Vector2 p = GridMaster
-                    .getCenteredPos(anim.getAnim().getSourceCoordinates());
+             .getCenteredPos(anim.getAnim().getSourceCoordinates());
             float x = p.x;
             float y = p.y;
 //            y = GridMaster.getCellHeight() *
@@ -149,7 +150,7 @@ public class PhaseAnimator extends Group {
             anim.setX(x);
             anim.setY(y);
             LogMaster.shout("Added anim : "
-                    + anim + "at " + x + " - " + y);
+             + anim + "at " + x + " - " + y);
 //    anim.getAnim().getMouseMap()
         });
 //            sprite = new TextureRegion(j2dTex);
@@ -159,7 +160,7 @@ public class PhaseAnimator extends Group {
     private void removeAnims() {
         getAnims().forEach(anim -> {
             if (!DC_Game.game.getAnimationManager().
-                    getAnimations().contains(anim.getAnim())) {
+             getAnimations().contains(anim.getAnim())) {
                 try {
                     getAnims().remove(anim);
                     LogMaster.shout("Removed anim : " + anim);

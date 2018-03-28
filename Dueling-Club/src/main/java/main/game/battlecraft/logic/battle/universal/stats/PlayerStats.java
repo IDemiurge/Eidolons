@@ -12,11 +12,11 @@ import java.util.Map;
  */
 public class PlayerStats {
     DC_Player player;
-    Map<Unit, Integer> deathsMap= new HashMap<>();
-    Map<STAT, Integer> statsMap= new HashMap<>();
+    Map<Unit, Integer> deathsMap = new HashMap<>();
+    Map<STAT, Integer> statsMap = new HashMap<>();
 
     public PlayerStats(DC_Player player) {
-        this.player=player;
+        this.player = player;
     }
 
     public DC_Player getPlayer() {

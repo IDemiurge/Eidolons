@@ -32,26 +32,26 @@ public class AiTrainingCriteria {
             for (String sub : numericData.split(",")) {
                 STANDARD_TRAINING_CRITERIA stdMods = new EnumMaster<STANDARD_TRAINING_CRITERIA>().retrieveEnumConst(STANDARD_TRAINING_CRITERIA.class, sub);
                 Map<CRITERIA_TYPE_NUMERIC, Integer> finalModMap = modMap;
-                Arrays.stream(stdMods.mods).forEach(mod->{
-                    for (CRITERIA_TYPE_NUMERIC c: mod.getMod().consts){
+                Arrays.stream(stdMods.mods).forEach(mod -> {
+                    for (CRITERIA_TYPE_NUMERIC c : mod.getMod().consts) {
                         MapMaster.addToIntegerMap(finalModMap, c, (int) mod.getFactor());
                     }
                 });
             }
         }
 
-        int i=0;
+        int i = 0;
         for (String sub : numericData.split(",")) {
-            CRITERIA_TYPE_NUMERIC criteria =CRITERIA_TYPE_NUMERIC.values()[i]; //CRITERIA_TYPE_NUMERIC.valueOf(sub.split("=")[0]);
+            CRITERIA_TYPE_NUMERIC criteria = CRITERIA_TYPE_NUMERIC.values()[i]; //CRITERIA_TYPE_NUMERIC.valueOf(sub.split("=")[0]);
             i++;
             Float n = Float.valueOf(
              sub
 //             sub.split("=")[1]
             );
             if (modMap != null) {
-            Integer mod = modMap.get(criteria);
-            if (mod!=null )
-                n = n*mod/100;
+                Integer mod = modMap.get(criteria);
+                if (mod != null)
+                    n = n * mod / 100;
             }
 
             Pair<CRITERIA_TYPE_NUMERIC, Float> pair = new ImmutablePair(criteria, n);
@@ -63,7 +63,7 @@ public class AiTrainingCriteria {
 
     }
 
-        public static STAT getStatForCriteria(CRITERIA_TYPE_NUMERIC key) {
+    public static STAT getStatForCriteria(CRITERIA_TYPE_NUMERIC key) {
         switch (key) {
 
             case ALLIES_DAMAGE_TAKEN:
@@ -71,7 +71,7 @@ public class AiTrainingCriteria {
             case ALLIES_DIED_POWER:
             case ALLY_HEROES_DIED:
             case ALLY_ENEMIES_KILLED_POWER:
-                return  PLAYER_STATS.valueOf(key.name());
+                return PLAYER_STATS.valueOf(key.name());
 
 
         }
@@ -91,32 +91,31 @@ public class AiTrainingCriteria {
         DAMAGE_DEALT_ALLIES(-0.04f),
         DAMAGE_DEALT_ENEMIES(0.05f),
 
-//        ENEMIES_KILLED(1f),
+        //        ENEMIES_KILLED(1f),
         ENEMIES_KILLED_POWER(1f),
         DAMAGE_TAKEN(-0.005f),
         FALLEN_UNCONSCIOUS(-5f),
         DIED(-25f),
 
-//        ALLIES_DIED(),
+        //        ALLIES_DIED(),
         ALLY_HEROES_DIED(-25f),
         ALLIES_DIED_POWER(-0.6f),
         ALLIES_DAMAGE_TAKEN(-0.02f),
 
         ALLIES_DAMAGE_DEALT(0.02f),
-//        ALLY_ENEMIES_KILLED,
-        ALLY_ENEMIES_KILLED_POWER(0.7f),
-;
+        //        ALLY_ENEMIES_KILLED,
+        ALLY_ENEMIES_KILLED_POWER(0.7f),;
         float defaultValue;
-
-        public float getDefaultValue() {
-            return defaultValue;
-        }
 
         CRITERIA_TYPE_NUMERIC() {
         }
 
         CRITERIA_TYPE_NUMERIC(float defaultValue) {
             this.defaultValue = defaultValue;
+        }
+
+        public float getDefaultValue() {
+            return defaultValue;
         }
     }
 

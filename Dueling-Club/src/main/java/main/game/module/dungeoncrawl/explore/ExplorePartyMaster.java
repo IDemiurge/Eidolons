@@ -15,8 +15,8 @@ import main.game.core.ActionInput;
 import main.game.logic.action.context.Context;
 import main.system.datatypes.DequeImpl;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public class ExplorePartyMaster extends ExplorationHandler {
         companions = initCompanions();
         mainHero = initMainHero();
         if (mainHero == null) {
-            return ;
+            return;
         }
         lastPosition = mainHero.getCoordinates();
         for (Unit unit : companions) {

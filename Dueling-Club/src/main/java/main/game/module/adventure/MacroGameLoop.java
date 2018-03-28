@@ -134,10 +134,10 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
             return;
         Place entered = checkBattleStarts();
         if (isAutoEnterCombat())
-        if (entered != null) {
-            combatStarts(entered);
-            return;
-        }
+            if (entered != null) {
+                combatStarts(entered);
+                return;
+            }
         timeMaster.act(delta);
     }
 
@@ -151,7 +151,8 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
             combatStarts(sub);
         }
     }
-        public void combatStarts(Place entered) {
+
+    public void combatStarts(Place entered) {
         setPaused(true);// OR do it on logic thread
         new Thread(() -> {
             startBattle(entered);

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ProfileMutator {
 
-    private static PROFILE_MUTATION mutationType=PROFILE_MUTATION.DEFAULT;
+    private static PROFILE_MUTATION mutationType = PROFILE_MUTATION.DEFAULT;
 
     private static void mutate(PriorityProfile profile, PROFILE_MUTATION mutation) {
         final float mutationModifierMax = 1.1f;

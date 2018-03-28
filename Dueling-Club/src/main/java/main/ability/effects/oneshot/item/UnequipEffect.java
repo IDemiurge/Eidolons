@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.entity.obj.unit.Unit;
 
-public class UnequipEffect extends MicroEffect  implements OneshotEffect {
+public class UnequipEffect extends MicroEffect implements OneshotEffect {
 
     ITEM_SLOT slot;
     boolean drop;

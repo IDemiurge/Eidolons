@@ -281,7 +281,7 @@ public class FacingMaster {
         HashMap<FACING_DIRECTION, Double> map = new LinkedHashMap<>();
 
         for (FACING_DIRECTION facing : FACING_DIRECTION.values()) {
-            Double i =0.0;
+            Double i = 0.0;
             for (Coordinates c : coordinates) {
                 if (FacingMaster.getSingleFacing(facing, unit.getCoordinates(), c) != FACING_SINGLE.IN_FRONT) {
                     continue;

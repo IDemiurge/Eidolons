@@ -56,7 +56,7 @@ public class DualAttackMaster {
     private static boolean checkRangeCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
         if (main.isRanged())
             return false;
-        return main.getIntParam(PARAMS.RANGE)==offhand.getIntParam(PARAMS.RANGE);
+        return main.getIntParam(PARAMS.RANGE) == offhand.getIntParam(PARAMS.RANGE);
     }
 
     private static DC_UnitAction createDual(DC_UnitAction main, DC_UnitAction offhand) {
@@ -67,7 +67,7 @@ public class DualAttackMaster {
 
         Ability setCooldown = new ActiveAbility(new AutoTargeting(new PropCondition(G_PROPS.ACTION_TAGS, "Dual", false)),
          new ModifyValueEffect(PARAMS.C_COOLDOWN,
-         MOD.SET, getCooldown(main.getOwnerObj())));
+          MOD.SET, getCooldown(main.getOwnerObj())));
         Abilities abilities = new Abilities();
         abilities.add(activateAttacks);
         abilities.add(setCooldown);
@@ -76,7 +76,7 @@ public class DualAttackMaster {
          DataManager.getType("Dual Attack", DC_TYPE.ACTIONS));
         for (Cost cost : costs.getCosts()) {
             PARAMETER p = cost.getCostParam();
-            if (p== null )
+            if (p == null)
                 continue;
             newType.setParam(p, cost.getPayment().getAmountFormula().toString());
         }
@@ -98,16 +98,16 @@ public class DualAttackMaster {
 
         Costs costsMain = main.getCosts();
 //        if (costsMain == null)
-            costsMain = DC_CostsFactory.getCostsForAction(main);
+        costsMain = DC_CostsFactory.getCostsForAction(main);
 
         Costs costsOffhand = offhand.getCosts();
 //        if (costsOffhand == null)
-            costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
+        costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
         for (Cost cost : costsMain.getCosts()) {
             PARAMETER p = cost.getPayment().getParamToPay();
             Cost cost2 = costsOffhand.getCost(p);
             Integer value1 = cost.getPayment().getAmountFormula().getInt();
-            Integer value2 =(cost2==null )? 0: cost2.getPayment().getAmountFormula().getInt();
+            Integer value2 = (cost2 == null) ? 0 : cost2.getPayment().getAmountFormula().getInt();
             Boolean mode = getMinMaxOrAverage((PARAMS) p);
             Integer value =
              MathMaster.getTotalOrMinMax(mode, value1, value2);
@@ -121,14 +121,14 @@ public class DualAttackMaster {
 
     private static boolean checkCostsCanMerge(DC_UnitAction main, DC_UnitAction offhand) {
         Costs costsMain = main.getCosts();
-            costsMain = DC_CostsFactory.getCostsForAction(main);
+        costsMain = DC_CostsFactory.getCostsForAction(main);
         Costs costsOffhand = offhand.getCosts();
-            costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
+        costsOffhand = DC_CostsFactory.getCostsForAction(offhand);
         for (Cost cost : costsMain.getCosts()) {
             PARAMETER p = cost.getPayment().getParamToPay();
             Cost cost2 = costsOffhand.getCost(p);
             Integer value1 = cost.getPayment().getAmountFormula().getInt();
-            Integer value2 =(cost2==null )? 0: cost2.getPayment().getAmountFormula().getInt();
+            Integer value2 = (cost2 == null) ? 0 : cost2.getPayment().getAmountFormula().getInt();
             Boolean mode = getMinMaxOrAverage((PARAMS) p);
             if (!checkCost(value1, value2, mode))
                 return false;

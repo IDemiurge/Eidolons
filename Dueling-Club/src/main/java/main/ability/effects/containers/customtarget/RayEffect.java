@@ -28,16 +28,16 @@ public class RayEffect extends SpecialTargetingEffect {
         Conditions conditions = new Conditions();
         if (distance != null) {
             conditions.add(ConditionMaster.getDistanceFilterCondition(
-                    KEYS.SOURCE.toString(), distance));
+             KEYS.SOURCE.toString(), distance));
         }
 
         if (PositionMaster.inLine(ref.getTargetObj().getCoordinates(), ref
-                .getSourceObj().getCoordinates())) {
+         .getSourceObj().getCoordinates())) {
             conditions.add(ConditionMaster.getLineCondition(ref.getSourceObj(),
-                    ref.getTargetObj(), false));
+             ref.getTargetObj(), false));
         } else {
             conditions.add(ConditionMaster.getDiagonalLineCondition(
-                    ref.getSourceObj(), ref.getTargetObj(), false));
+             ref.getSourceObj(), ref.getTargetObj(), false));
 
         }
         // conditions.add(ConditionMaster.getUnitTypeCondition());

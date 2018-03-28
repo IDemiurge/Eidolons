@@ -55,7 +55,7 @@ public class PrincipleView extends G_Panel {
         add(itemPanel, "id itemPanel, pos middlePanel.x2 0");
         add(infoPanel, "id infoPanel, pos panel.x2 middlePanel.y2");
         panelSize = new Dimension(GuiManager.getScreenWidthInt()
-                - HeroPanel.HERO_PANEL_FRAME.getWidth(), MainPanel.MAIN_PANEL_HEIGHT);
+         - HeroPanel.HERO_PANEL_FRAME.getWidth(), MainPanel.MAIN_PANEL_HEIGHT);
     }
 
     public void principleSelected(PRINCIPLES principle) {

@@ -88,7 +88,7 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
             if (Game.game.isSimulation()) {
                 if (entity instanceof ObjType) {
                     entity = HeroCreator
-                            .getObjForType(CharacterCreator.getHero(), (ObjType) entity);
+                     .getObjForType(CharacterCreator.getHero(), (ObjType) entity);
                 }
             }
             ref.setSource(CharacterCreator.getHero().getId());
@@ -107,8 +107,8 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
         }
 
         panelSize = new Dimension(ValueInfoPage.INNER_WIDTH, FontMaster
-                .getFontHeight(getDefaultFont())
-                * size + 7);
+         .getFontHeight(getDefaultFont())
+         * size + 7);
         return panelSize;
     }
 
@@ -140,22 +140,22 @@ public class ContainerTextElement extends WrappedTextComp implements EntityValue
                 // EnumMaster<PRINCIPLES>().retrieveEnumConst(
                 // PRINCIPLES.class, pr);
                 Integer identification = getEntity().getIntParam(
-                        DC_ContentManager.getIdentityParamForPrinciple(principle));
+                 DC_ContentManager.getIdentityParamForPrinciple(principle));
                 if (identification == 0) {
                     continue;
                 }
                 String values = getEntity().getIntParam(
-                        DC_ContentManager.getAlignmentForPrinciple(principle))
-                        + "/" + identification;
+                 DC_ContentManager.getAlignmentForPrinciple(principle))
+                 + "/" + identification;
                 formattedValue += principle.toString() + StringMaster.wrapInParenthesis(values)
-                        + StringMaster.getFormattedContainerSeparator();
+                 + StringMaster.getFormattedContainerSeparator();
             }
             propertyValue = StringMaster.cropLast(formattedValue, 2);
         } else if (property == PROPS.REQUIREMENTS) {
             propertyValue = TextParser.formatRequirements(propertyValue);
             if (entity.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
                 propertyValue += StringMaster.NEW_LINE
-                        + TextGenerator.generatePerkParamBonuses(entity);
+                 + TextGenerator.generatePerkParamBonuses(entity);
             }
         }
 

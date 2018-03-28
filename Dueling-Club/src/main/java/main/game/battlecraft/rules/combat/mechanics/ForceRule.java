@@ -108,7 +108,7 @@ public class ForceRule {
 
     public static void applyForceEffects(int force, DC_ActiveObj action) {
         if (!(action.getRef().getTargetObj() instanceof Unit))
-            return ;
+            return;
         Unit target = (Unit) action.getRef().getTargetObj();
         BattleFieldObject source = (BattleFieldObject) action.getRef().getSourceObj();
         Boolean result = null;
@@ -163,7 +163,7 @@ public class ForceRule {
         if (!isForceEnabled(action)) {
             return;
         }
-        if (!( action.getRef().getTargetObj() instanceof BattleFieldObject)) {
+        if (!(action.getRef().getTargetObj() instanceof BattleFieldObject)) {
             return;
         }
         BattleFieldObject source = action.getOwnerObj();
@@ -186,7 +186,7 @@ public class ForceRule {
 
     private static boolean isForceEnabled(DC_ActiveObj action) {
 
-        if (action.isAttackAny()){
+        if (action.isAttackAny()) {
             return true;
         }
 
@@ -206,7 +206,7 @@ public class ForceRule {
                     }
                 }
             }
-            }
+        }
 
         return false;
     }
@@ -342,7 +342,7 @@ public class ForceRule {
 
     private static int getPushDistance(int force, BattleFieldObject target) {
         int distance = Math.round(force * PUSH_DISTANCE_COEFFICIENT /
-                (1 + target.getIntParam(PARAMS.TOTAL_WEIGHT)));
+         (1 + target.getIntParam(PARAMS.TOTAL_WEIGHT)));
         LogMaster.log(1, "getPushDistance = " + force + "/10/"
          + target.getIntParam(PARAMS.TOTAL_WEIGHT) + " = " + distance);
         return distance;

@@ -27,7 +27,7 @@ import java.awt.event.*;
 import java.util.Collection;
 
 public class BfMouseListener implements Runnable, MouseListener, MouseMotionListener,
-        MouseWheelListener {
+ MouseWheelListener {
     protected int delay = 1100;
     private BfGridComp gridComp;
     private boolean dragging;
@@ -76,11 +76,11 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                 Point onScreen = MouseInfo.getPointerInfo().getLocation();
                 Point point = new Point(onScreen.x - xOffset, onScreen.y - yOffset);
                 if (point.x < 0 || point.x > GuiManager.getBfGridWidth() || point.y < 0
-                        || point.y > GuiManager.getBfGridHeight()) {
+                 || point.y > GuiManager.getBfGridHeight()) {
                     try {
                         ToolTipManager.sharedInstance().mouseClicked(
-                                new MouseEvent(component, MouseEvent.MOUSE_MOVED, System
-                                        .currentTimeMillis(), 0, onScreen.x, onScreen.y, 0, false));
+                         new MouseEvent(component, MouseEvent.MOUSE_MOVED, System
+                          .currentTimeMillis(), 0, onScreen.x, onScreen.y, 0, false));
                     } catch (Exception e) {
 
                     }
@@ -99,7 +99,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                     prevComp = cellComp;
                 }
                 MouseEvent event = new MouseEvent(component, MouseEvent.MOUSE_MOVED, System
-                        .currentTimeMillis(), 0, onScreen.x, onScreen.y, 0, false);
+                 .currentTimeMillis(), 0, onScreen.x, onScreen.y, 0, false);
 
                 ToolTipManager.sharedInstance().mouseMoved(event);
             } catch (Exception e) {
@@ -145,7 +145,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     public boolean checkAnimationClick(MouseEvent e) {
         point = e.getPoint();
         DequeImpl<PhaseAnimation> animations = new DequeImpl<>(gridComp.getGame().getAnimationManager()
-                .getAnimations());
+         .getAnimations());
         animations.addAll(gridComp.getGame().getAnimationManager().getTempAnims());
         if (SwingUtilities.isRightMouseButton(e)) {
 
@@ -254,7 +254,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
 
         cellComp = gridComp.getCompByPoint(e.getPoint());
         Point relativePoint = new Point(point.x % gridComp.getCellWidth(), point.y
-                % gridComp.getCellHeight());
+         % gridComp.getCellHeight());
         objClicked = null;
 
         for (Rectangle rect : cellComp.getMouseMap().keySet()) {
@@ -266,8 +266,8 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                         case STACK:
                             // if (CoreEngine.isLevelEditor())
                             objClicked = DialogMaster
-                                    .objChoice("Which object?", cellComp.getObjects().toArray(
-                                            new DC_Obj[cellComp.getObjects().size()]));
+                             .objChoice("Which object?", cellComp.getObjects().toArray(
+                              new DC_Obj[cellComp.getObjects().size()]));
                             break;
                         case AP:
                             break;
@@ -275,8 +275,8 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                             break;
                         case ITEMS:
                             Collection<? extends Obj> droppedItems = cellComp.getGame()
-                                    .getDroppedItemManager().getDroppedItems(
-                                            cellComp.getTerrainObj());
+                             .getDroppedItemManager().getDroppedItems(
+                              cellComp.getTerrainObj());
 
                             break;
                         case LOCKS:
@@ -292,7 +292,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
                             int index = cellComp.getObjects().indexOf(objClicked);
                             int index2 = cellComp.getObjects().indexOf(object);
                             LogMaster.log(1, objClicked + "'s " + index
-                                    + " vs " + object + "'s " + index2);
+                             + " vs " + object + "'s " + index2);
                             if (index > index2)
                             // TODO so we need to keep this always sorted...
                             {
@@ -379,7 +379,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
     private void invokeAltClick(boolean right) {
 
         gridComp.getGame().getDebugMaster()
-                .executeDebugFunctionNewThread(getFunction(false, right));
+         .executeDebugFunctionNewThread(getFunction(false, right));
     }
 
     // right click?
@@ -418,7 +418,7 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         dragging = false;
         releasePoint = e.getPoint();
         LogMaster.log(0, "released from " + pressPoint.x + "," + pressPoint.y
-                + " to " + releasePoint.x + "," + releasePoint.y);
+         + " to " + releasePoint.x + "," + releasePoint.y);
 
         int diff_x = pressPoint.x - releasePoint.x;
         int diff_y = pressPoint.y - releasePoint.y;
@@ -464,7 +464,6 @@ public class BfMouseListener implements Runnable, MouseListener, MouseMotionList
         }
 
     }
-
 
 
 }

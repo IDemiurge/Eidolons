@@ -53,13 +53,13 @@ public class TrapMaster {
 
     public static Set<Trap> getTraps(Unit unit) {
         return trapMap.get(new ZCoordinates(unit.getCoordinates().x, unit.getCoordinates().y, unit
-                .getZ()));
+         .getZ()));
     }
 
     public static List<Trap> getTrapsToDisarm(Unit unit) {
         List<Trap> list = new ArrayList<>();
         Set<Trap> set = trapMap.get(new ZCoordinates(unit.getCoordinates().x,
-                unit.getCoordinates().y, unit.getZ()));
+         unit.getCoordinates().y, unit.getZ()));
         if (set == null) {
             return list;
         }

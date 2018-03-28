@@ -12,12 +12,11 @@ import main.game.core.game.DC_Game;
  */
 public class SuffocationRule extends DamageCounterRule {
     private static final Integer DISCOMBOBULATED_THRESHOLD = 25;
-    private static final String PERCENT_LOST_PER_ROUND ="0.5" ;
+    private static final String PERCENT_LOST_PER_ROUND = "0.5";
 
     public SuffocationRule(DC_Game game) {
         super(game);
     }
-
 
 
     @Override
@@ -27,7 +26,7 @@ public class SuffocationRule extends DamageCounterRule {
 
     @Override
     public String getDamagePerCounterFormula() {
-        return "{TARGET_ENDURANCE}/100*"+PERCENT_LOST_PER_ROUND;
+        return "{TARGET_ENDURANCE}/100*" + PERCENT_LOST_PER_ROUND;
     }
 
     @Override
@@ -39,6 +38,7 @@ public class SuffocationRule extends DamageCounterRule {
     public COUNTER getCounter() {
         return COUNTER.Suffocation;
     }
+
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 3;
@@ -56,8 +56,8 @@ public class SuffocationRule extends DamageCounterRule {
 
     @Override
     public STATUS getStatus() {
-        if (getNumberOfCounters(unit)>DISCOMBOBULATED_THRESHOLD)
-        return STATUS.DISCOMBOBULATED;
+        if (getNumberOfCounters(unit) > DISCOMBOBULATED_THRESHOLD)
+            return STATUS.DISCOMBOBULATED;
         return null;
     }
 }

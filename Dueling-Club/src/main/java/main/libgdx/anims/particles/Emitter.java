@@ -30,8 +30,8 @@ public class Emitter extends ParticleEmitter {
 
     public void toggle(String fieldName) {
         boolean value =
-                new ReflectionMaster<Boolean>().getFieldValue(fieldName,
-                        this, ParticleEmitter.class);
+         new ReflectionMaster<Boolean>().getFieldValue(fieldName,
+          this, ParticleEmitter.class);
         new ReflectionMaster().setValue(fieldName, !value, this, ParticleEmitter.class);
     }
 
@@ -54,7 +54,7 @@ public class Emitter extends ParticleEmitter {
     private Object getValue(String s) {
 
         return new ReflectionMaster<>().
-                getFieldValue(s, this, ParticleEmitter.class);
+         getFieldValue(s, this, ParticleEmitter.class);
 
     }
 
@@ -91,21 +91,21 @@ public class Emitter extends ParticleEmitter {
                 Vector2 v = new Vector2(Gdx.input.getX(), (GdxMaster.getHeight() - Gdx.input.getY()));
                 Vector2 pos = DungeonScreen.getInstance().getGridStage().screenToStageCoordinates(v);
                 float xDiff = pos.x
-                        - DungeonScreen.getInstance().controller.getXCamPos()
-                        - (getX() + p.getX());
+                 - DungeonScreen.getInstance().controller.getXCamPos()
+                 - (getX() + p.getX());
                 float yDiff = pos.y //fuck that shit
-                        - (getY() + p.getY())
-                        - DungeonScreen.getInstance().controller.getYCamPos();
+                 - (getY() + p.getY())
+                 - DungeonScreen.getInstance().controller.getYCamPos();
                 Float distance = (float) (Math.sqrt(xDiff * xDiff + yDiff * yDiff));
                 if (particleLogOn) {
                     LogMaster.log(1,
-                            " Mouse x: " + pos.x
-                                    + " Mouse y: " + pos.y //fuck that shit
-                                    + " Particle x: " + (getY() + p.getX())
-                                    + " Particle y: " + (getY() + p.getY())
-                                    + " cam x: " + (DungeonScreen.getInstance().controller.getXCamPos())
-                                    + " cam y: " + (DungeonScreen.getInstance().controller.getYCamPos())
-                                    + " distance: " + (distance)
+                     " Mouse x: " + pos.x
+                      + " Mouse y: " + pos.y //fuck that shit
+                      + " Particle x: " + (getY() + p.getX())
+                      + " Particle y: " + (getY() + p.getY())
+                      + " cam x: " + (DungeonScreen.getInstance().controller.getXCamPos())
+                      + " cam y: " + (DungeonScreen.getInstance().controller.getYCamPos())
+                      + " distance: " + (distance)
                     );
                 }
                 if (distance > 500) {
@@ -122,13 +122,18 @@ public class Emitter extends ParticleEmitter {
     public Particle[] getParticles() {
         try {
             return (Particle[]) new ReflectionMaster<>().getFieldValue("particles",
-                    this, ParticleEmitter.class);
+             this, ParticleEmitter.class);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return new Particle[0];
     }
 
+
+    public enum EMITTER_VALS_RANGED {
+        DELAY,
+        DURATION,
+    }
 
     //    @Override
 //    public float getPercentComplete () {
@@ -143,10 +148,5 @@ public class Emitter extends ParticleEmitter {
         ROTATION,
         VELOCITY,
         WIND, GRAVITY, TRANSPARENCY,
-    }
-
-    public enum EMITTER_VALS_RANGED {
-        DELAY,
-        DURATION,
     }
 }

@@ -77,19 +77,19 @@ public class StatsControlComponent extends G_Panel {
 
         add(xpPool, "id xpPool, pos attrXpCostPool.x2 mstrPanel.y2");
         add(new GraphicComponent(STD_COMP_IMAGES.XP), "id xp, pos attrXpCostPool.x2+"
-                + (xpPool.getVisuals().getWidth() - STD_COMP_IMAGES.XP.getWidth()) / 2
-                + " mstrPanel.y2+" + STD_COMP_IMAGES.XP.getHeight());
+         + (xpPool.getVisuals().getWidth() - STD_COMP_IMAGES.XP.getWidth()) / 2
+         + " mstrPanel.y2+" + STD_COMP_IMAGES.XP.getHeight());
         add(mstrXpCostPool, "id mstrXpCostPool, pos xpPool.x2 mstrPanel.y2");
 
         add(buyMstrXP, "id buyMstrXP, pos mstrXpCostPool.x2 mstrPanel.y2");
 
         add(attrPool, "id attrPool, pos 0 " + Y_POINTS);
         add(mstrPool, "id mstrPool, pos "
-                + (attrPanel.getVisuals().getWidth() - mstrPool.getVisuals().getWidth()) + " "
-                + Y_POINTS);
+         + (attrPanel.getVisuals().getWidth() - mstrPool.getVisuals().getWidth()) + " "
+         + Y_POINTS);
         add(okButton, "id okButton, pos "
-                + MigMaster.getCenteredPosition(attrPanel.getVisuals().getWidth(), okButton
-                .getVisuals().getWidth() * 2) + " " + (Y_POINTS - 15));
+         + MigMaster.getCenteredPosition(attrPanel.getVisuals().getWidth(), okButton
+         .getVisuals().getWidth() * 2) + " " + (Y_POINTS - 15));
         add(cancelButton, "id cancelButton, pos okButton.x2 " + (Y_POINTS - 15));
 
         add(buyAttrGold, "id buyAttrGold, pos 0 " + Y_GOLD);
@@ -98,8 +98,8 @@ public class StatsControlComponent extends G_Panel {
 
         add(goldPool, "id goldPool, pos attrGoldCostPool.x2 " + Y_GOLD);
         add(new GraphicComponent(STD_COMP_IMAGES.GOLD), "id gold, pos attrGoldCostPool.x2+"
-                + (goldPool.getVisuals().getWidth() - STD_COMP_IMAGES.GOLD.getWidth()) / 2 + " "
-                + (Y_GOLD - STD_COMP_IMAGES.GOLD.getHeight()));
+         + (goldPool.getVisuals().getWidth() - STD_COMP_IMAGES.GOLD.getWidth()) / 2 + " "
+         + (Y_GOLD - STD_COMP_IMAGES.GOLD.getHeight()));
         add(mstrGoldCostPool, "id mstrGoldCostPool, pos goldPool.x2 " + Y_GOLD);
         add(buyMstrGold, "id buyMstrGold, pos mstrGoldCostPool.x2 " + Y_GOLD);
 
@@ -218,8 +218,8 @@ public class StatsControlComponent extends G_Panel {
         PARAMS cost_param = (gold) ? PARAMS.GOLD : PARAMS.XP;
         PARAMS param = (attr) ? PARAMS.ATTR_POINTS : PARAMS.MASTERY_POINTS;
         PARAMS buyParam = (attr) ? (gold) ? PARAMS.ATTR_BOUGHT_WITH_GOLD
-                : PARAMS.ATTR_BOUGHT_WITH_XP : (gold) ? PARAMS.MASTERY_BOUGHT_WITH_GOLD
-                : PARAMS.MASTERY_BOUGHT_WITH_XP;
+         : PARAMS.ATTR_BOUGHT_WITH_XP : (gold) ? PARAMS.MASTERY_BOUGHT_WITH_GOLD
+         : PARAMS.MASTERY_BOUGHT_WITH_XP;
 
         int amount = DC_MathManager.getBuyCost(attr, gold, bufferType);
         bufferType.modifyParameter(cost_param, -amount);

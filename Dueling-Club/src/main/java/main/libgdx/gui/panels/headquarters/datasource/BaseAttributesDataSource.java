@@ -4,23 +4,23 @@ package main.libgdx.gui.panels.headquarters.datasource;
  * Created by JustMe on 6/1/2017.
  */
 public interface BaseAttributesDataSource {
-        String getBaseStrength();
+    String getBaseStrength();
 
-        String getBaseVitality();
+    String getBaseVitality();
 
-        String getBaseAgility();
+    String getBaseAgility();
 
-        String getBaseDexterity();
+    String getBaseDexterity();
 
-        String getBaseWillpower();
+    String getBaseWillpower();
 
-        String getBaseSpellpower();
+    String getBaseSpellpower();
 
-        String getBaseIntelligence();
+    String getBaseIntelligence();
 
-        String getBaseKnowledge();
+    String getBaseKnowledge();
 
-        String getBaseWisdom();
+    String getBaseWisdom();
 
-        String getBaseCharisma();
+    String getBaseCharisma();
 }

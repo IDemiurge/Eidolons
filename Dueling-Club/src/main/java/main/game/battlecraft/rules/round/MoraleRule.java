@@ -19,7 +19,7 @@ public class MoraleRule extends RoundRule {
     @Override
     public void apply(Unit unit) {
         int diff = unit.getIntParam(PARAMS.C_MORALE)
-                - unit.getIntParam(PARAMS.MORALE);
+         - unit.getIntParam(PARAMS.MORALE);
         if (diff == 0) {
             return;
         }
@@ -27,12 +27,12 @@ public class MoraleRule extends RoundRule {
         int mod;
         if (restore) {
             mod = 25
-                    // DC_Formulas.FOCUS_RESTORE_PERC
-                    + unit.getIntParam(PARAMS.MORALE_RESTORATION);
+             // DC_Formulas.FOCUS_RESTORE_PERC
+             + unit.getIntParam(PARAMS.MORALE_RESTORATION);
         } else {
             mod = 25
-                    // DC_Formulas.FOCUS_REDUCE_PERC
-                    - unit.getIntParam(PARAMS.MORALE_RETAINMENT);
+             // DC_Formulas.FOCUS_REDUCE_PERC
+             - unit.getIntParam(PARAMS.MORALE_RETAINMENT);
         }
         mod = Math.min(100, mod);
         int amount = Math.abs(diff);
@@ -43,7 +43,7 @@ public class MoraleRule extends RoundRule {
         }
         if (restore) {
             unit.modifyParameter(PARAMS.C_MORALE, amount, unit
-                    .getIntParam(PARAMS.MORALE));
+             .getIntParam(PARAMS.MORALE));
         } else {
             unit.modifyParameter(PARAMS.C_MORALE, -amount);
         }

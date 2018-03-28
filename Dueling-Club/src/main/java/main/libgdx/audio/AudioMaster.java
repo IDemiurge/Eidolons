@@ -57,12 +57,12 @@ public class AudioMaster {
     }
 
     private void foundSoundInDir(FileHandle dir) {
-        if(dir.isDirectory()) {
+        if (dir.isDirectory()) {
             for (FileHandle fileHandle : dir.list()) {
-                if(fileHandle.isDirectory()) {
+                if (fileHandle.isDirectory()) {
                     foundSoundInDir(fileHandle);
                 } else {
-                    if(!fileHandle.name().contains("desktop.ini")) {
+                    if (!fileHandle.name().contains("desktop.ini")) {
                         try {
                             files.put(fileHandle.path(), fileHandle);
 //                        String ext = fileHandle.extension();
@@ -87,7 +87,7 @@ public class AudioMaster {
     }
 
     public long playSound(int index) {
-        if(index < sounds.size) {
+        if (index < sounds.size) {
             String soundPath = sounds.keys().toArray().get(index);
             Gdx.app.log("AudioMaster::playSound()", "-- Play sound:" + soundPath);
             return sounds.get(soundPath).play();

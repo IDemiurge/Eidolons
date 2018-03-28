@@ -15,28 +15,28 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class MainParamPanel extends TablePanel {
 
-     List<ValueContainer> containers = new LinkedList<>();
+    List<ValueContainer> containers = new LinkedList<>();
 
     String[] attributes = new String[]{
-     "strength","vitality",
-     "agility","dexterity",
-     "spellpower","willpower",
-     "intelligence","knowledge",
-     "charisma","wisdom"
+     "strength", "vitality",
+     "agility", "dexterity",
+     "spellpower", "willpower",
+     "intelligence", "knowledge",
+     "charisma", "wisdom"
     };
+
     public MainParamPanel() {
         TextureRegion textureRegion = getOrCreateR("/UI/components/infopanel/main_param_panel.png");
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 
         pad(20, 10, 20, 10);
-        int i =0;
+        int i = 0;
         for (String sub : attributes) {
             addAttributeContainer(sub);
             i++;
-            if (i>1)
-            {
-                i=0;
+            if (i > 1) {
+                i = 0;
                 row();
             }
         }
@@ -45,8 +45,8 @@ public class MainParamPanel extends TablePanel {
 
     private void addAttributeContainer(String sub) {
         ValueContainer container = new ValueContainer(
-         getOrCreateR("UI/value icons/attributes/" + sub+
-          ".png"),  StringMaster.getWellFormattedString( sub), "");
+         getOrCreateR("UI/value icons/attributes/" + sub +
+          ".png"), StringMaster.getWellFormattedString(sub), "");
         container.overrideImageSize(
          UiMaster.getSmallIconSize(), UiMaster.getSmallIconSize());
         containers.add(container);
@@ -56,7 +56,7 @@ public class MainParamPanel extends TablePanel {
     @Override
     public void updateAct(float delta) {
         AttributesDataSource source = (AttributesDataSource) getUserObject();
-containers.forEach(c->c.updateValue(source.getAttribute(c.getName())));
+        containers.forEach(c -> c.updateValue(source.getAttribute(c.getName())));
 
     }
 }

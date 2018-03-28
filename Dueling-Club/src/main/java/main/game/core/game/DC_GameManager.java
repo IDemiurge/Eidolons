@@ -12,6 +12,7 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
+import main.entity.active.DC_UnitAction;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
 import main.entity.type.BuffType;
@@ -483,14 +484,12 @@ public class DC_GameManager extends GameManager {
 
     }
 
-    public void activateMyAction(int index, ACTION_TYPE group) {
-        try {
+    public void previewMyAction(int index, ACTION_TYPE group) {
+        DC_UnitAction action = getActiveObj().getActionMap().get(group).get(index);
+        GuiEventManager.trigger(GuiEventType.ACTION_HOVERED, action);
+    }
+        public void activateMyAction(int index, ACTION_TYPE group) {
             getActiveObj().getActionMap().get(group).get(index).invokeClicked();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            return;
-        }
-
     }
 
 

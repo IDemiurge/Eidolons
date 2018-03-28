@@ -23,7 +23,7 @@ public class T3UpperPanel extends G_Panel {
     // private static final String CANCEL = "cancel";
     public final static String[] AV_CONTROLS = {
 
-            TOGGLE_VIEW, SAVE, ADD, REMOVE,
+     TOGGLE_VIEW, SAVE, ADD, REMOVE,
 
     };
     private static T3UpperPanel lastInstance;

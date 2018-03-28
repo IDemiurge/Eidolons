@@ -46,7 +46,7 @@ public abstract class DC_RuleImpl implements Rule {
     public void apply(Ref ref) {
         initEffects();
         LogMaster.log(LOG_CHANNEL.RULES_DEBUG, toString() + " applies! "
-                + ref);
+         + ref);
         effects.setReconstruct(true);
         // effects.setForcedLayer(Effect.BUFF_RULE);
         effects.apply(ref);
@@ -78,7 +78,7 @@ public abstract class DC_RuleImpl implements Rule {
         Ref ref = Ref.getCopy(event.getRef());
         ref.setEvent(event);
         LogMaster.log(LOG_CHANNEL.RULES_DEBUG, toString() + " checked on "
-                + ref.getSourceObj());
+         + ref.getSourceObj());
         return conditions.preCheck(ref);
     }
 
@@ -94,16 +94,16 @@ public abstract class DC_RuleImpl implements Rule {
         if (getRuleEnum() == null) {
             return on;
         }
-       return  RuleMaster.isRuleOn(getRuleEnum());
+        return RuleMaster.isRuleOn(getRuleEnum());
 
-    }
-
-    protected RULE getRuleEnum() {
-        return null;
     }
 
     public void setOn(boolean on) {
         this.on = on;
+    }
+
+    protected RULE getRuleEnum() {
+        return null;
     }
 
     public DC_Game getGame() {

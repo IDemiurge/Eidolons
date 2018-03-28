@@ -10,18 +10,11 @@ public class MissionConstructor {
 //    Constraint[] constraints;
 //    REGION region;
 
-    public void generate(){
+    public void generate() {
 //        LOCATION_TYPE[] locationTypes = getLocationTypes();
 //        MISSION_BRANCH branch = getBranch();
 //         MAIN_QUEST_TYPE[] questTypes = getQuestTypes();
 //        MISSION_TYPE[] missionTypes = getMissionTypes();
-
-
-
-
-
-
-
 
 
     }

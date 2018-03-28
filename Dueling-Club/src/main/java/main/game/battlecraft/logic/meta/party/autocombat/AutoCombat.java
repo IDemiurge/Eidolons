@@ -12,5 +12,4 @@ public class AutoCombat {
     Entity altEnemyParty;
 
 
-
 }

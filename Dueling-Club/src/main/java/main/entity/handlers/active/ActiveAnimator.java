@@ -2,9 +2,9 @@ package main.entity.handlers.active;
 
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
-import main.entity.obj.Obj;
 import main.entity.handlers.EntityAnimator;
 import main.entity.handlers.EntityMaster;
+import main.entity.obj.Obj;
 import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.Coordinates;
 import main.system.graphics.ANIM;
@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
     private static final String[] ANIMATION_EXCEPTIONS = {"Turn Clockwise", "Move",
-            "Turn Anticlockwise",};
+     "Turn Anticlockwise",};
     PhaseAnimation anim;
     Ref animRef;
     Set<Coordinates> zoneAnimCoordinates;
@@ -34,10 +34,10 @@ public class ActiveAnimator extends EntityAnimator<DC_ActiveObj> {
         super(entity, entityMaster);
     }
 
-    public void initAnimData(){
+    public void initAnimData() {
         //after activation, before actionComplete!
         animRef = getRef().getCopy();
-        zoneAnimCoordinates = CoordinatesMaster. getZoneCoordinates(getEntity());
+        zoneAnimCoordinates = CoordinatesMaster.getZoneCoordinates(getEntity());
     }
 
     public void waitForAnimation() {

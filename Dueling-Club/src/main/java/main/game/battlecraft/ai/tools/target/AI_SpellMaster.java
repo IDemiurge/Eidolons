@@ -45,7 +45,7 @@ public class AI_SpellMaster {
         spell.setSpellLogic(spellLogic);
         if (spellLogic == null) {
             LogMaster.log(1, "*** No spell logic for "
-                    + spell.getName());
+             + spell.getName());
             return AiEnums.GOAL_TYPE.OTHER;
         }
         switch (spellLogic) {
@@ -102,7 +102,7 @@ public class AI_SpellMaster {
                 return AiEnums.AI_LOGIC.OTHER;
             }
             if (itemActiveObj.getItem().getProperty(G_PROPS.ITEM_GROUP)
-                    .equalsIgnoreCase(ItemEnums.ITEM_GROUP.COATING.toString())) {
+             .equalsIgnoreCase(ItemEnums.ITEM_GROUP.COATING.toString())) {
                 return AiEnums.AI_LOGIC.COATING;
             }
             /*
@@ -119,7 +119,7 @@ public class AI_SpellMaster {
                 logic = getLogicByTargeting(spell);
             } catch (Exception e) {
                 LogMaster.log(1, spell.getName()
-                        + " logic from targeting failed!");
+                 + " logic from targeting failed!");
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
@@ -133,7 +133,7 @@ public class AI_SpellMaster {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, spell.getName()
-                        + " no Z Logic");
+                 + " no Z Logic");
             }
             if (logic != null) {
                 return logic;
@@ -147,7 +147,7 @@ public class AI_SpellMaster {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, spell.getName()
-                        + " no Buff Logic");
+                 + " no Buff Logic");
             }
             if (logic != null) {
                 return logic;
@@ -157,7 +157,7 @@ public class AI_SpellMaster {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 LogMaster.log(1, spell.getName()
-                        + " no Mod Logic");
+                 + " no Mod Logic");
             }
             if (logic != null) {
                 return logic;
@@ -196,10 +196,10 @@ public class AI_SpellMaster {
     private static AI_LOGIC getModValueLogic(DC_ActiveObj spell) {
         Abilities actives = spell.getAbilities();
         List<Effect> effects = EffectFinder.getEffectsOfClass(actives,
-                ModifyValueEffect.class);
+         ModifyValueEffect.class);
         if (effects.isEmpty()) {
             effects = EffectFinder.getEffectsOfClass(actives,
-                    ModifyCounterEffect.class);
+             ModifyCounterEffect.class);
         }
         if (!effects.isEmpty()) {
             Effect effect = effects.get(0);
@@ -226,8 +226,8 @@ public class AI_SpellMaster {
         Abilities actives = spell.getAbilities();
         if (EffectFinder.check(actives, AddBuffEffect.class)) {
             if (((AddBuffEffect) EffectFinder.getEffectsOfClass(actives,
-                    AddBuffEffect.class).get(0)).getEffect().getFormula()
-                    .getInt(spell.getOwnerObj().getRef()) > 0) {
+             AddBuffEffect.class).get(0)).getEffect().getFormula()
+             .getInt(spell.getOwnerObj().getRef()) > 0) {
                 return AiEnums.AI_LOGIC.BUFF_POSITIVE;
             } else {
                 return AiEnums.AI_LOGIC.BUFF_NEGATIVE;
@@ -238,12 +238,12 @@ public class AI_SpellMaster {
 
     private static AI_LOGIC getZoneLogic(DC_ActiveObj spell) {
         List<Effect> zoneEffects = EffectFinder.getEffectsOfClass(spell,
-                SpecialTargetingEffect.class);
+         SpecialTargetingEffect.class);
         if (!zoneEffects.isEmpty()) {
             for (Effect effect : zoneEffects) {
                 SpecialTargetingEffect zoneEffect = (SpecialTargetingEffect) effect;
                 if (EffectFinder.check(zoneEffect.getEffect(),
-                        DealDamageEffect.class)) {
+                 DealDamageEffect.class)) {
                     if (zoneEffect instanceof WaveEffect) {
                         return AiEnums.AI_LOGIC.AUTO_DAMAGE;
                     }
@@ -263,7 +263,7 @@ public class AI_SpellMaster {
                     return AiEnums.AI_LOGIC.DAMAGE_ZONE;
                 }
                 if (EffectFinder.check(zoneEffect.getEffect(),
-                        ModifyValueEffect.class)) {
+                 ModifyValueEffect.class)) {
                     if (isModifyValueEffectPositive(spell, zoneEffect)) {
                         return AiEnums.AI_LOGIC.RESTORE_ZONE;
                     } else {
@@ -276,10 +276,10 @@ public class AI_SpellMaster {
                 // .getOrCreate(0);
 
                 if (EffectFinder.check(zoneEffect.getEffect(),
-                        ModifyCounterEffect.class)) {
+                 ModifyCounterEffect.class)) {
                     Effect e = EffectFinder.getEffectsOfClass(
-                            zoneEffect.getEffect(), ModifyCounterEffect.class)
-                            .get(0);
+                     zoneEffect.getEffect(), ModifyCounterEffect.class)
+                     .get(0);
                     ModifyCounterEffect counterEffect = (ModifyCounterEffect) e;
                     if (isCounterEffectPositive(spell, counterEffect)) {
                         return AiEnums.AI_LOGIC.RESTORE_ZONE;
@@ -304,7 +304,7 @@ public class AI_SpellMaster {
     private static boolean isCounterEffectPositive(DC_ActiveObj spell,
                                                    ModifyCounterEffect counterEffect) {
         boolean positive = CounterMaster.isCounterPositive(counterEffect
-                .getCounterName());
+         .getCounterName());
 
         if (counterEffect.getFormula().getInt(spell.getOwnerObj().getRef()) < 0) {
             positive = !positive;
@@ -360,26 +360,26 @@ public class AI_SpellMaster {
 
                     if (EffectFinder.check(actives, AddBuffEffect.class)) {
                         if (((AddBuffEffect) EffectFinder.getEffectsOfClass(
-                                actives, AddBuffEffect.class).get(0))
-                                .getEffect().getFormula()
-                                .getInt(spell.getOwnerObj().getRef()) > 0) {
+                         actives, AddBuffEffect.class).get(0))
+                         .getEffect().getFormula()
+                         .getInt(spell.getOwnerObj().getRef()) > 0) {
                             return AiEnums.AI_LOGIC.BUFF_POSITIVE;
                         } else {
                             return AiEnums.AI_LOGIC.BUFF_NEGATIVE;
                         }
                     }
                     List<Effect> effects = EffectFinder.getEffectsOfClass(
-                            actives, ModifyValueEffect.class);
+                     actives, ModifyValueEffect.class);
                     if (effects.isEmpty()) {
                         effects = EffectFinder.getEffectsOfClass(actives,
-                                ModifyCounterEffect.class);
+                         ModifyCounterEffect.class);
                     }
                     Effect effect = effects.get(0);
 
                     if (effect instanceof ModifyCounterEffect) {
                         ModifyCounterEffect counterEffect = (ModifyCounterEffect) effect;
                         boolean positive = isCounterEffectPositive(spell,
-                                counterEffect);
+                         counterEffect);
 
                         if (positive) {
                             return AiEnums.AI_LOGIC.RESTORE;
@@ -414,7 +414,7 @@ public class AI_SpellMaster {
     public static ObjType getSummonedUnit(DC_ActiveObj active, Ref ref) {
         ObjType type;
         List<Effect> list = EffectFinder.getEffectsOfClass(
-                active.getAbilities(), GatewayEffect.class);
+         active.getAbilities(), GatewayEffect.class);
         if (!list.isEmpty()) {
             GatewayEffect effect = (GatewayEffect) list.get(0);
             return DataManager.getType(effect.getUnitType(), C_OBJ_TYPE.BF_OBJ);
@@ -423,7 +423,7 @@ public class AI_SpellMaster {
         SummonEffect effect = null;
         try {
             effect = (SummonEffect) EffectFinder.getEffectsOfClass(
-                    active.getAbilities(), SummonEffect.class).get(0);
+             active.getAbilities(), SummonEffect.class).get(0);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -432,7 +432,7 @@ public class AI_SpellMaster {
             RaiseEffect raiseEffect = (RaiseEffect) effect;
             effect.setRef(ref);
             return DataManager.getType(raiseEffect.getUnitType(),
-                    C_OBJ_TYPE.BF_OBJ);
+             C_OBJ_TYPE.BF_OBJ);
         }
 
         if (effect != null) {
@@ -443,14 +443,14 @@ public class AI_SpellMaster {
         if (effect instanceof RaiseEffect) {
             RaiseEffect raiseEffect = (RaiseEffect) effect;
             return DataManager.getType(raiseEffect.getUnitType(),
-                    C_OBJ_TYPE.BF_OBJ);
+             C_OBJ_TYPE.BF_OBJ);
 
         }
 
         if (effect instanceof RaiseEffect) {
             RaiseEffect raiseEffect = (RaiseEffect) effect;
             return DataManager.getType(raiseEffect.getUnitType(),
-                    C_OBJ_TYPE.BF_OBJ);
+             C_OBJ_TYPE.BF_OBJ);
 
         }
         return null;

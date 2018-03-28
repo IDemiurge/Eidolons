@@ -4,9 +4,9 @@ import main.client.cc.logic.party.Party;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.module.adventure.faction.Faction;
 import main.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
+import main.game.module.adventure.faction.Faction;
 
 import java.util.List;
 

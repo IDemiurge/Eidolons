@@ -19,13 +19,13 @@ public class DebugUtilities {
     public static final int QUASI_INFINITE_VALUE = 90000;
 
     static PARAMETER[] GOD_MODE_INFINITE_PARAMETERS = {PARAMS.ENDURANCE,
-            PARAMS.TOUGHNESS, PARAMS.N_OF_ACTIONS, PARAMS.ESSENCE,
-            PARAMS.STAMINA, PARAMS.FOCUS, PARAMS.SPIRIT, PARAMS.SIGHT_RANGE,};
+     PARAMS.TOUGHNESS, PARAMS.N_OF_ACTIONS, PARAMS.ESSENCE,
+     PARAMS.STAMINA, PARAMS.FOCUS, PARAMS.SPIRIT, PARAMS.SIGHT_RANGE,};
     // ++ x-ray vision
     static int[] GOD_MODE_INFINITE_VALS = {QUASI_INFINITE_VALUE / 10,
-            QUASI_INFINITE_VALUE / 20, 99, QUASI_INFINITE_VALUE / 50,
-            QUASI_INFINITE_VALUE / 100, QUASI_INFINITE_VALUE / 100,
-            QUASI_INFINITE_VALUE / 1000, QUASI_INFINITE_VALUE / 10000};
+     QUASI_INFINITE_VALUE / 20, 99, QUASI_INFINITE_VALUE / 50,
+     QUASI_INFINITE_VALUE / 100, QUASI_INFINITE_VALUE / 100,
+     QUASI_INFINITE_VALUE / 1000, QUASI_INFINITE_VALUE / 10000};
 
     private static Map<Obj, ObjType> normalTypeMap;
 
@@ -71,7 +71,7 @@ public class DebugUtilities {
 
     private static void setGodActions(Entity entity) {
         String actions = StringMaster.constructContainer(DataManager
-                .getTypeNames(DC_TYPE.ACTIONS));
+         .getTypeNames(DC_TYPE.ACTIONS));
         entity.setProperty(G_PROPS.ACTIVES, actions);
 
     }

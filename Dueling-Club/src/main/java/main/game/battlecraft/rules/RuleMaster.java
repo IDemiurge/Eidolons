@@ -104,7 +104,7 @@ public class RuleMaster implements Controller {
                 return RULE_SCOPE.FULL;
             case FORCE:
             case TRAMPLE:
-            return RULE_SCOPE.ADVANCED;
+                return RULE_SCOPE.ADVANCED;
 
         }
         return RULE_SCOPE.BASIC;
@@ -136,9 +136,10 @@ public class RuleMaster implements Controller {
         }
         return true;
     }
-        public static boolean isRuleTestOn(RULE rule) {
-            return BooleanMaster.isTrue(mapTest.get(rule));
-        }
+
+    public static boolean isRuleTestOn(RULE rule) {
+        return BooleanMaster.isTrue(mapTest.get(rule));
+    }
 
     public static boolean isRuleOn(RULE rule) {
         if (ExplorationMaster.isExplorationOn()) {
@@ -348,7 +349,7 @@ public class RuleMaster implements Controller {
     }
 
     public enum COUNTER_RULES {
-BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
+        BLEEDING, BLAZE, FREEZE, POISON, DISEASE,
     }
 
     public enum FEATURE {

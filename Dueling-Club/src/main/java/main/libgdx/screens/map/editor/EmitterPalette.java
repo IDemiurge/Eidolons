@@ -58,9 +58,9 @@ public class EmitterPalette extends TabbedPanel {
 
     public void init() {
         clear();
-        setSize(GdxMaster.getWidth() -300, 256);
+        setSize(GdxMaster.getWidth() - 300, 256);
 //        int columns = (int) (getWidth() / 64);
-        defaults().padLeft(200). top().right(). width(GdxMaster.getWidth() - 300);
+        defaults().padLeft(200).top().right().width(GdxMaster.getWidth() - 300);
         Map<String, List<File>> presets = new LinkedHashMap<>();
         List<File> subfolders = FileManager.getFilesFromDirectory(
          PathFinder.getSfxPath(), true);
@@ -73,16 +73,16 @@ public class EmitterPalette extends TabbedPanel {
         });
         LabelStyle style = StyleHolder.getSizedLabelStyle(FONT.MAIN, 15);
         for (String sub : presets.keySet()) {
-            HorizontalFlowGroup table = new HorizontalFlowGroup (0);
-            table.setWidth(getWidth()-100);
+            HorizontalFlowGroup table = new HorizontalFlowGroup(0);
+            table.setWidth(getWidth() - 100);
             boolean bg = presets.get(sub).size() < 55;
             for (File preset : presets.get(sub)) {
                 ValueContainer label = //textButton?
                  new ValueContainer(new Label(preset.getName(), style));
-                NinePatch patch=NinePatchFactory.getTooltip();
-                patch.scale(0.7f,0.7f);
+                NinePatch patch = NinePatchFactory.getTooltip();
+                patch.scale(0.7f, 0.7f);
                 if (bg)
-                    label.setBackground(new NinePatchDrawable( patch));
+                    label.setBackground(new NinePatchDrawable(patch));
                 label.addListener(new ClickListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

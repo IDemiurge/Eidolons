@@ -12,7 +12,7 @@ public interface Borderable {
 
     void setTeamColorBorder(boolean teamColorBorder);
 
-    void setTeamColor(Color teamColor);
-
     Color getTeamColor();
+
+    void setTeamColor(Color teamColor);
 }

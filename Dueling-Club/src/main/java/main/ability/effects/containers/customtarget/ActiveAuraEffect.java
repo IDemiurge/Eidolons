@@ -28,22 +28,22 @@ public class ActiveAuraEffect extends DC_Effect {
     @Override
     public boolean applyThis() {
         AutoTargeting targeting = new AutoTargeting(new Conditions(
-                new ObjTypeComparison(C_OBJ_TYPE.BF_OBJ),
-                new DistanceCondition("" + radius.getInt(ref))));
+         new ObjTypeComparison(C_OBJ_TYPE.BF_OBJ),
+         new DistanceCondition("" + radius.getInt(ref))));
         targeting.getConditions().add(
-                ConditionMaster.getAliveCondition(KEYS.MATCH));
+         ConditionMaster.getAliveCondition(KEYS.MATCH));
         if (onlyEnemiesOrAllies != null) {
             if (onlyEnemiesOrAllies) {
                 targeting.getConditions().add(
-                        ConditionMaster.getEnemyCondition());
+                 ConditionMaster.getEnemyCondition());
             } else {
                 targeting.getConditions().add(
-                        ConditionMaster.getAllyCondition());
+                 ConditionMaster.getAllyCondition());
             }
 
         }
         targeting.getConditions().add(
-                new NotCondition(new RefCondition(KEYS.MATCH, KEYS.SOURCE)));
+         new NotCondition(new RefCondition(KEYS.MATCH, KEYS.SOURCE)));
         Ability ability = new ActiveAbility(targeting, effects);
 
         new AddTriggerEffect(event_type, conditions, ability).apply(ref);

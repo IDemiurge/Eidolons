@@ -40,7 +40,7 @@ public class Texture2D extends Texture {
         //you could probably cache this instead of requesting it every time
         Graphics2D g2d = (Graphics2D) bufferImg.getGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+         RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setBackground(BACKGROUND);
         g2d.clearRect(0, 0, bufferImg.getWidth(), bufferImg.getHeight());
         g2d.setColor(java.awt.Color.white);
@@ -53,13 +53,13 @@ public class Texture2D extends Texture {
         int height = bufferImg.getHeight();
         //you could probably cache this rather than requesting it every upload
         int[] pixels = ((DataBufferInt) bufferImg.getRaster().getDataBuffer())
-                .getData();
+         .getData();
         this.bind();
         buffer.rewind();
         buffer.put(pixels);
         buffer.flip();
         Gdx.gl.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height,
-                GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
+         GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
     }
 
 }

@@ -23,7 +23,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
-public class BindingDamageEffect extends MicroEffect  implements OneshotEffect {
+public class BindingDamageEffect extends MicroEffect implements OneshotEffect {
     Boolean shareOrRedirect;
     Boolean spellDmgOnly;
     Boolean physicalDmgOnly;
@@ -60,7 +60,7 @@ public class BindingDamageEffect extends MicroEffect  implements OneshotEffect {
             }
         } else {
             effects.add(new AlteringEffect(false, formula.getNegative()
-                    .toString()));
+             .toString()));
             event_type = Event.STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_DAMAGE;
             if (spellDmgOnly != null) {
                 if (spellDmgOnly) {
@@ -75,10 +75,10 @@ public class BindingDamageEffect extends MicroEffect  implements OneshotEffect {
         }
 
         Targeting targeting_other_units = new AutoTargeting(new Conditions(
-                new GroupCondition(Ref.KEYS.MATCH.name(), group),
-                new RefCondition(KEYS.EVENT_TARGET, KEYS.MATCH, true)));// negative
+         new GroupCondition(Ref.KEYS.MATCH.name(), group),
+         new RefCondition(KEYS.EVENT_TARGET, KEYS.MATCH, true)));// negative
         effects.add(new CustomTargetEffect(targeting_other_units,
-                new DealDamageEffect(getDamageFormula(), GenericEnums.DAMAGE_TYPE.PURE)));
+         new DealDamageEffect(getDamageFormula(), GenericEnums.DAMAGE_TYPE.PURE)));
 
 		/*
          * ensure there is no deadlock
@@ -91,7 +91,7 @@ public class BindingDamageEffect extends MicroEffect  implements OneshotEffect {
         Ref REF = Ref.getCopy(ref); // has the group...
         // REF.setTarget(null); // ???
         new AddTriggerEffect(event_type, conditions, OBJ_REF, effects)
-                .apply(REF);
+         .apply(REF);
 
         return true;
     }
@@ -99,6 +99,6 @@ public class BindingDamageEffect extends MicroEffect  implements OneshotEffect {
     private Formula getDamageFormula() {
         // TODO Auto-generated method stub
         return new Formula("{EVENT_AMOUNT}* "
-                + StringMaster.wrapInParenthesis(formula.toString()));
+         + StringMaster.wrapInParenthesis(formula.toString()));
     }
 }

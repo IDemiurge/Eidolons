@@ -27,8 +27,8 @@ import java.awt.event.MouseListener;
 public class HC_PointComp extends G_Panel implements MouseListener {
 
     public static final VISUALS VALUE_BOX = VISUALS.BUTTON_NEW
-            // VISUALS.VALUE_BOX
-            ;
+     // VISUALS.VALUE_BOX
+     ;
     protected static final int DEFAULT_FONT_SIZE = 18;
     protected static final int ARROW_OFFSET_X = -6;
     protected static final int ARROW_OFFSET_Y = 7;
@@ -75,11 +75,11 @@ public class HC_PointComp extends G_Panel implements MouseListener {
         if (editable) {
             model = createModel(hero, buffer, param, pool);
             upArrow = new GraphicComponent(ImageManager.getArrowImagePath(true, true,
-                    getArrowVersion()));
+             getArrowVersion()));
 
             upArrow.addMouseListener(this);
             downArrow = new GraphicComponent(ImageManager.getArrowImagePath(true, false,
-                    getArrowVersion()));
+             getArrowVersion()));
             downArrow.addMouseListener(this);
         }
 
@@ -128,7 +128,7 @@ public class HC_PointComp extends G_Panel implements MouseListener {
     protected void updateIcon() {
         if (ContentManager.isBase(param)) {
             icon.setImg(HC_Master.generateValueIcon(ContentManager.getFinalAttrFromBase(param),
-                    isLocked()));
+             isLocked()));
         } else {
             icon.setImg(HC_Master.generateValueIcon(param, isLocked()));
         }
@@ -147,17 +147,17 @@ public class HC_PointComp extends G_Panel implements MouseListener {
                 lock.addMouseListener(this);
             }
             add(lock, "id lock, pos c.x2+"
-                    + StringMaster.wrapInParenthesis("" + (getArrowOffsetX() - arrowWidth)) + " "
-                    + getArrowOffsetY() * 3 / 2);
+             + StringMaster.wrapInParenthesis("" + (getArrowOffsetX() - arrowWidth)) + " "
+             + getArrowOffsetY() * 3 / 2);
             setComponentZOrder(lock, getComponentCount() - 1);
         } else if (editable) {
             add(upArrow, "id ua, pos c.x2+"
-                    + StringMaster.wrapInParenthesis("" + (getArrowOffsetX() - arrowWidth)) + " "
-                    + getArrowOffsetY());
+             + StringMaster.wrapInParenthesis("" + (getArrowOffsetX() - arrowWidth)) + " "
+             + getArrowOffsetY());
             setComponentZOrder(upArrow, getComponentCount() - 1);
             add(downArrow, "id da, pos c.x2+"
-                    + StringMaster.wrapInParenthesis("" + (getArrowOffsetX() - arrowWidth))
-                    + " ua.y2");
+             + StringMaster.wrapInParenthesis("" + (getArrowOffsetX() - arrowWidth))
+             + " ua.y2");
             setComponentZOrder(downArrow, getComponentCount() - 1);
         }
         add(textComp, "id c, pos 0 0");
@@ -277,10 +277,10 @@ public class HC_PointComp extends G_Panel implements MouseListener {
     protected void infoClick() {
         if (param.isAttribute()) {
             CharacterCreator.getHeroPanel(hero).getMiddlePanel().getScc().getAttrPanel().setValue(
-                    param);
+             param);
         } else {
             CharacterCreator.getHeroPanel(hero).getMiddlePanel().getScc().getMstrPanel().setValue(
-                    param);
+             param);
         }
 
         CharacterCreator.getHeroPanel(hero).getMvp().getCurrentViewComp().refresh();

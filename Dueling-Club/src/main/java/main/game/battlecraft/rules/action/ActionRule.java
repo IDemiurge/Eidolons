@@ -10,7 +10,7 @@ public interface ActionRule {
 
     boolean unitBecomesActive(Unit unit);
 
-    default boolean isAppliedOnExploreAction(DC_ActiveObj action){
+    default boolean isAppliedOnExploreAction(DC_ActiveObj action) {
         return false;
     }
 }

@@ -35,14 +35,14 @@ public class AutoTest {
         this.testType = testType;
         for (String a : StringMaster.open(args)) {
             TEST_ARGS argType = new EnumMaster<TEST_ARGS>().retrieveEnumConst(TEST_ARGS.class, a
-                    .split(StringMaster.PAIR_SEPARATOR)[0]);
+             .split(StringMaster.PAIR_SEPARATOR)[0]);
             a = a.substring(a.indexOf(StringMaster.PAIR_SEPARATOR) + 1);
             argMap.put(argType, a);
         }
 
         Map<AUTO_TEST_ASSERTION, String> map = new RandomWizard<AUTO_TEST_ASSERTION>()
-                .constructStringWeightMap(testType.getProperty(PROPS.AUTO_TEST_ASSERTIONS),
-                        AUTO_TEST_ASSERTION.class);
+         .constructStringWeightMap(testType.getProperty(PROPS.AUTO_TEST_ASSERTIONS),
+          AUTO_TEST_ASSERTION.class);
         for (AUTO_TEST_ASSERTION t : map.keySet()) {
             new Assertion(t, map.get(type));
         }
@@ -79,7 +79,7 @@ public class AutoTest {
 
     public void generateConstraints() {
         for (String s : StringMaster.open(getEntity().getProperty(
-                PROPS.AUTO_TEST_CONSTRAINTS))) {
+         PROPS.AUTO_TEST_CONSTRAINTS))) {
 //			constraints.add(new Constraint(s, getEntity()));
         }
     }
@@ -159,10 +159,6 @@ public class AutoTest {
         this.entity = entity;
     }
 
-    public enum TEST_SCOPE {
-        RULE, CONTENT, AI, MATH, SYSTEM
-    }
-
     public enum TEST_ARGS {
         ACTION_NAMES,
         TEST_SKILLS,
@@ -184,6 +180,10 @@ public class AutoTest {
         public String getDefVal() {
             return defVal;
         }
+    }
+
+    public enum TEST_SCOPE {
+        RULE, CONTENT, AI, MATH, SYSTEM
     }
 
 }

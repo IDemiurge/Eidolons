@@ -18,7 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DeityChoiceView extends EntityChoiceView implements
-        ListCellRenderer<ObjType> {
+ ListCellRenderer<ObjType> {
 
     private static final String FAITHLESS = "Faithless";
 
@@ -68,7 +68,7 @@ public class DeityChoiceView extends EntityChoiceView implements
         }
         if (e.getName().equals(FAITHLESS)) {
             if (!StringMaster.compare(hero.getProperty(G_PROPS.DEITY),
-                    FAITHLESS, false)) {
+             FAITHLESS, false)) {
                 return false;
             }
         }
@@ -89,10 +89,10 @@ public class DeityChoiceView extends EntityChoiceView implements
 
     @Override
     public Component getListCellRendererComponent(
-            JList<? extends ObjType> list, ObjType value, int index,
-            boolean isSelected, boolean cellHasFocus) {
+     JList<? extends ObjType> list, ObjType value, int index,
+     boolean isSelected, boolean cellHasFocus) {
         ListItem<ObjType> item = new ListItem<>(value, isSelected,
-                cellHasFocus, getItemSize());
+         cellHasFocus, getItemSize());
         if (checkBlocked(value)) {
             item.setBorder(BORDER.HIDDEN);
             item.refresh();

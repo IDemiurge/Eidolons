@@ -75,6 +75,7 @@ public class ToolTipManager extends TablePanel {
             }
 //           DungeonScreen.getInstance().getGridPanel().getbo
             object.setHovered(true);
+            DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
         });
         GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
             BaseView object = (BaseView) event.get();
@@ -100,6 +101,7 @@ public class ToolTipManager extends TablePanel {
             }
 
             object.setHovered(false);
+            DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
 
         });
         actorCell = addElement(null);

@@ -6,9 +6,8 @@ import java.util.List;
 
 /**
  * Created by JustMe on 5/8/2017.
- *
+ * <p>
  * create shops for each mission!
- *
  */
 public class ShopManager<E extends MetaGame> extends MetaGameHandler<E> {
     protected List<ShopInterface> shops;
@@ -18,10 +17,11 @@ public class ShopManager<E extends MetaGame> extends MetaGameHandler<E> {
     }
 
 
-    public void init(){
+    public void init() {
 
     }
-    public List<ShopInterface> getShops(){
+
+    public List<ShopInterface> getShops() {
         return shops;
     }
 }

@@ -21,7 +21,7 @@ public class HC_StatsTab extends HeroPanelTab {
     public void activate() {
         view.reset();
         for (HC_PointView view : ((MasterySlidePanel) mvp.getView(linkedView))
-                .getViews()) {
+         .getViews()) {
             view.reset();
         }
     }

@@ -55,19 +55,20 @@ public class AiPriorityConstantMaster extends AiHandler {
         return new float[0];
     }
 
-    public void initMap (){
+    public void initMap() {
         aiConstMap = new HashMap<>();
         for (AiConst sub : AiConst.values()) {
             aiConstMap.put(sub.name(), sub);
         }
     }
 
-    public void generate (){
-for (PARAMS sub: PARAMS.values()){
+    public void generate() {
+        for (PARAMS sub : PARAMS.values()) {
 
-}
+        }
 
     }
+
     public interface AiConstant {
 
     }

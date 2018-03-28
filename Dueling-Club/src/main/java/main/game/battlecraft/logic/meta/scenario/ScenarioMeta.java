@@ -50,15 +50,14 @@ public class ScenarioMeta extends MetaGame {
     }
 
     public boolean isFinalLevel() {
-        return getMissionIndex()+1 >= StringMaster.openContainer(getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).size();
+        return getMissionIndex() + 1 >= StringMaster.openContainer(getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).size();
     }
 
     public boolean isPartyRespawn() {
 //        if (getMission().checkProperty(PROPS.MISSION_BRIEFING_DATA))
         if (getMissionIndex() == 0)
             return true;
-        if (isRestarted())
-        {
+        if (isRestarted()) {
             setRestarted(false);
             return true;
         }

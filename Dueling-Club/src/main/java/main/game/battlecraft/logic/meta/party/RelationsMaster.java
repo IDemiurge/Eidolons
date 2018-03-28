@@ -8,22 +8,21 @@ import java.util.List;
 /**
  * Created by JustMe on 5/30/2017.
  * Maybe use Trust/Esteem/Affection/…?
- How is status determined then?
-How will it change during campaign?
-
- fighting together
- speeches
- scripted events
- temporal ?
-
+ * How is status determined then?
+ * How will it change during campaign?
+ * <p>
+ * fighting together
+ * speeches
+ * scripted events
+ * temporal ?
  */
 public class RelationsMaster {
 
-    public void impact(RELATIONS_IMPACT_TYPE type, Unit source, Unit target){
+    public void impact(RELATIONS_IMPACT_TYPE type, Unit source, Unit target) {
 //        effect = new RelationsEffect(type);
 
-       List<PERSONALITY> personalityList= getPersonalityTraits(target);
-        PERSONALITY personality= null ;
+        List<PERSONALITY> personalityList = getPersonalityTraits(target);
+        PERSONALITY personality = null;
 //random for dominant personality
         SITUATION situation = null;
         boolean favorable = isFavorable(situation, type, personality);
@@ -34,24 +33,22 @@ public class RelationsMaster {
         return null;
     }
 
-    boolean isFavorable(SITUATION situation, RELATIONS_IMPACT_TYPE type, PERSONALITY personality){
+    boolean isFavorable(SITUATION situation, RELATIONS_IMPACT_TYPE type, PERSONALITY personality) {
 //       reverse = situation.isReverseEffect();
 //       increase
-        switch (type){
-           case SLIGHT:
+        switch (type) {
+            case SLIGHT:
 
-       }
+        }
         return false;
     }
-    public enum SITUATION{
 
-    }
-//    public enum PERSONALITY_PERKS{
+    //    public enum PERSONALITY_PERKS{
 //HAUGHTY,
 //        ARROGANT,
 //        JOVIAL,
 //    }
-        public enum RELATIONS_IMPACT_TYPE{
+    public enum RELATIONS_IMPACT_TYPE {
         SLIGHT,
         INSULT,
         ANNOYANCE,
@@ -65,11 +62,16 @@ public class RelationsMaster {
         CONFLICT,
         COMBAT_HELP
     }
-        public enum RELATIONS_STATUS{
+
+    public enum RELATIONS_STATUS {
         BONDED, //refuse to separate
         FRIENDLY,
         NORMAL,
         STRAINED,
         IRRECONCILABLE, //refuse to fight together
+    }
+
+    public enum SITUATION {
+
     }
 }

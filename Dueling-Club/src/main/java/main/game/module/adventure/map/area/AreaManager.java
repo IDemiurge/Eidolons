@@ -12,10 +12,10 @@ import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.global.TimeMaster;
 import main.game.module.adventure.gui.MacroGuiManager;
 import main.game.module.adventure.map.Area;
+import main.game.module.adventure.map.MacroCoordinates;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.travel.EncounterMaster;
-import main.game.module.adventure.map.MacroCoordinates;
 import main.game.module.adventure.travel.MacroGroup;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -34,9 +34,9 @@ public class AreaManager {
         for (Region region : MacroManager.getRegions()) {
             for (Area area : region.getAreas()) {
                 area.modifyParameter(
-                        MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
-                        TimeMaster.getHoursPerTurn()
-                                * area.getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR));
+                 MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
+                 TimeMaster.getHoursPerTurn()
+                  * area.getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR));
                 checkAddGroups(area);
                 for (MacroGroup group : area.getGroups()) {
                     if (group.isAmbushing()) {
@@ -83,7 +83,7 @@ public class AreaManager {
                 }
             }
             Area defaultArea = region.getArea(region
-                    .getProperty(MACRO_PROPS.AREA));
+             .getProperty(MACRO_PROPS.AREA));
             p.setArea(defaultArea);
 
         }
@@ -154,7 +154,7 @@ public class AreaManager {
         Loop.startLoop(MAX_GROUPS_IN_AREA);
         while (!Loop.loopEnded()) {
             if (area.checkParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
-                    totalPower)) {
+             totalPower)) {
                 break;
             }
             addRandomGroup(area);
@@ -171,8 +171,8 @@ public class AreaManager {
         addGroup(area, group);
         Boolean min_max_normal = null;
         area.modifyParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
-                EncounterMaster.getPower(group.getEncounterType(),
-                        min_max_normal));
+         EncounterMaster.getPower(group.getEncounterType(),
+          min_max_normal));
     }
 
     private static void addGroup(Area area, MacroGroup group) {
@@ -182,7 +182,7 @@ public class AreaManager {
         // special wave type generation - separate map-prop
         // perhaps one could use actual square metrics?
         area.modifyParameter(MACRO_PARAMS.AREA_CREEP_POWER_TOTAL, group
-                .getEncounterType().getIntParam(PARAMS.POWER_BASE));
+         .getEncounterType().getIntParam(PARAMS.POWER_BASE));
 
     }
 
@@ -192,8 +192,8 @@ public class AreaManager {
         Loop.startLoop(10000);
         while (!Loop.loopEnded()) {
             MacroCoordinates c = new MacroCoordinates(
-                    RandomWizard.getRandomInt((int) x),
-                    RandomWizard.getRandomInt((int) y));
+             RandomWizard.getRandomInt((int) x),
+             RandomWizard.getRandomInt((int) y));
             if (checkWithinAreaBoundaries(area, c)) {
                 return c;
             }
@@ -214,13 +214,13 @@ public class AreaManager {
         Loop.startLoop(10);
         while (!Loop.loopEnded()) {
             ENCOUNTER_SUBGROUP group = new RandomWizard<ENCOUNTER_SUBGROUP>()
-                    .getObjectByWeight(
-                            area.getProperty(MACRO_PROPS.ENCOUNTER_SUBGROUPS),
-                            ENCOUNTER_SUBGROUP.class);// TODO
+             .getObjectByWeight(
+              area.getProperty(MACRO_PROPS.ENCOUNTER_SUBGROUPS),
+              ENCOUNTER_SUBGROUP.class);// TODO
             List<ObjType> pool;
             if (group != null) {
                 pool = DataManager.getTypesSubGroup(DC_TYPE.ENCOUNTERS,
-                        group.toString());
+                 group.toString());
             } else
             // TODO
             {
@@ -228,18 +228,18 @@ public class AreaManager {
             }
 
             FilterMaster.filterByParam(pool, PARAMS.POWER_MINIMUM,
-                    EncounterMaster.getMaxCreepWavePower(),
-                    DC_TYPE.ENCOUNTERS, false);
+             EncounterMaster.getMaxCreepWavePower(),
+             DC_TYPE.ENCOUNTERS, false);
             FilterMaster.filterByParam(pool, PARAMS.POWER_MAXIMUM,
-                    EncounterMaster.getMinCreepWavePower(),
-                    DC_TYPE.ENCOUNTERS, true);
+             EncounterMaster.getMinCreepWavePower(),
+             DC_TYPE.ENCOUNTERS, true);
             // more filter! By TYPE? TODO
             if (pool.isEmpty()) {
                 continue;
             }
             // higher probability for non-bosses?
             String waveName = new RandomWizard<ObjType>().getRandomListItem(
-                    pool).getName();
+             pool).getName();
             MacroGroup macroGroup = new MacroGroup(waveName, area);
             return macroGroup;
         }

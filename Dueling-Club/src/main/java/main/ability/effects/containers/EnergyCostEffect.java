@@ -34,13 +34,13 @@ public class EnergyCostEffect extends MicroEffect {
 
     private Condition getEnergyCondition() {
         return new NumericCondition(StringMaster.getValueRef(key,
-                PARAMS.C_ENERGY), "" + cost);
+         PARAMS.C_ENERGY), "" + cost);
     }
 
     private Effect getReduceEnergyEffect() {
         return new CustomTargetEffect(new FixedTargeting(key),
-                new ModifyValueEffect(PARAMS.C_ENERGY,
-                        MOD.MODIFY_BY_CONST, "-" + cost));
+         new ModifyValueEffect(PARAMS.C_ENERGY,
+          MOD.MODIFY_BY_CONST, "-" + cost));
 
     }
 

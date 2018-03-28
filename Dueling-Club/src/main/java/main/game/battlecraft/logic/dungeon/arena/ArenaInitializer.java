@@ -13,9 +13,8 @@ public class ArenaInitializer extends DungeonInitializer<ArenaDungeon> {
     }
 
 
-
     @Override
     public ArenaDungeon createDungeon(ObjType type) {
-        return new ArenaDungeon(new Dungeon(type),master);
+        return new ArenaDungeon(new Dungeon(type), master);
     }
 }

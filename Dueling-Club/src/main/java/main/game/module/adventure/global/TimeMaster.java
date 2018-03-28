@@ -41,7 +41,7 @@ public class TimeMaster {
 
         if (campaign.getIntParam(MACRO_PARAMS.HOURS_INTO_TURN) > getHoursPerTurn()) {
             campaign.modifyParameter(MACRO_PARAMS.HOURS_INTO_TURN,
-                    -getHoursPerTurn());
+             -getHoursPerTurn());
             return false;
         }
         Integer hour = campaign.getIntParam(MACRO_PARAMS.HOURS_INTO_TURN);
@@ -56,13 +56,13 @@ public class TimeMaster {
             date = new GameDate();
             date.setHour(1);
             date.setEra(MacroGame.getGame().getCampaign()
-                    .getIntParam(MACRO_PARAMS.ERA));
+             .getIntParam(MACRO_PARAMS.ERA));
             date.setYear(MacroGame.getGame().getCampaign()
-                    .getIntParam(MACRO_PARAMS.YEAR));
+             .getIntParam(MACRO_PARAMS.YEAR));
             date.setMonthNumber(MacroGame.getGame().getCampaign()
-                    .getIntParam(MACRO_PARAMS.MONTH));
+             .getIntParam(MACRO_PARAMS.MONTH));
             date.setDay(MacroGame.getGame().getCampaign()
-                    .getIntParam(MACRO_PARAMS.DAY));
+             .getIntParam(MACRO_PARAMS.DAY));
             date.setDayTime(DAY_TIME.values[0]);
         }
         return date;
@@ -70,6 +70,6 @@ public class TimeMaster {
 
     public static int hoursLeft() {
         return getHoursPerTurn()
-                - campaign.getIntParam(MACRO_PARAMS.HOURS_INTO_TURN);
+         - campaign.getIntParam(MACRO_PARAMS.HOURS_INTO_TURN);
     }
 }

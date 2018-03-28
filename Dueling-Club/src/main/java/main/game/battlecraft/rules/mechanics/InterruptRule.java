@@ -19,22 +19,22 @@ public class InterruptRule {
 
     public static Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_PERCENT,
-                AP_FORMULA), new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_PERCENT,
-                FOC_FORMULA));
+         AP_FORMULA), new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_PERCENT,
+         FOC_FORMULA));
     }
 
     public static Condition getConditions() {
         return new Conditions(
-                new RefCondition(KEYS.EVENT_TARGET, KEYS.SOURCE, false),
-                new NumericCondition("{EVENT_AMOUNT}",
-                        "{SOURCE_TOUGHNESS}*{SOURCE_INTERRUPT_DAMAGE}/100*{ACTIVE_INTERRUPT_DAMAGE}/100"));
+         new RefCondition(KEYS.EVENT_TARGET, KEYS.SOURCE, false),
+         new NumericCondition("{EVENT_AMOUNT}",
+          "{SOURCE_TOUGHNESS}*{SOURCE_INTERRUPT_DAMAGE}/100*{ACTIVE_INTERRUPT_DAMAGE}/100"));
 
     }
 
     public static Condition getConditionsAlert() {
         return new Conditions(new RefCondition(KEYS.EVENT_TARGET, KEYS.TARGET, false),
-                new NotCondition(new OwnershipCondition(KEYS.TARGET, KEYS.SOURCE)),
-                new NumericCondition("{EVENT_AMOUNT}", "1"));
+         new NotCondition(new OwnershipCondition(KEYS.TARGET, KEYS.SOURCE)),
+         new NumericCondition("{EVENT_AMOUNT}", "1"));
 
     }
 

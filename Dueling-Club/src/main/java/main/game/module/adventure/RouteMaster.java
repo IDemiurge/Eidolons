@@ -25,6 +25,16 @@ public class RouteMaster {
         init();
     }
 
+    public static int getDistance(Place location, Place sub) {
+//dijstra!
+        for (Route route : location.getRoutes()) {
+            if (sub.getRoutes().contains(route)) {
+                return route.getLength();
+            }
+        }
+        return Integer.MAX_VALUE; //by pixels?
+    }
+
     public void init() {
         List<File> routes = FileManager.getFilesFromDirectory(
          StrPathBuilder.build(PathFinder.getRouteImagePath(), "map"), false, false);
@@ -61,15 +71,5 @@ public class RouteMaster {
         for (Route sub : MacroGame.getGame().getRoutes()) {
             GuiEventManager.trigger(MapEvent.ROUTE_ADDED, sub);
         }
-    }
-
-    public static int getDistance(Place location, Place sub) {
-//dijstra!
-        for (Route route : location.getRoutes()) {
-            if (sub.getRoutes().contains(route)) {
-                return route.getLength();
-            }
-        }
-        return Integer.MAX_VALUE; //by pixels?
     }
 }

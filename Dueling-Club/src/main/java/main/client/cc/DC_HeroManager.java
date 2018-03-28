@@ -29,7 +29,7 @@ public class DC_HeroManager extends HeroManager {
             item = (DC_HeroItemObj) type;
         } else {
             item = (DC_HeroItemObj) ObjUtilities
-                    .findObjByType(type, hero.getInventory());
+             .findObjByType(type, hero.getInventory());
         }
         int result = super.addJewelryItem(hero, type);
         if (result == 0) {
@@ -125,6 +125,7 @@ public class DC_HeroManager extends HeroManager {
         update(hero);
         return 1;
     }
+
     @Override
     public int addQuickItem(Unit hero, Entity type) {
         if (hero.isQuickSlotsFull()) {
@@ -153,10 +154,10 @@ public class DC_HeroManager extends HeroManager {
             result++;
         }
         DC_HeroItemObj slotItem = null;
-        DC_QuickItemObj quick = null ;
+        DC_QuickItemObj quick = null;
         if (type instanceof DC_QuickItemObj) {
-              quick = ((DC_QuickItemObj) type);
-            slotItem =quick.getWrappedWeapon();
+            quick = ((DC_QuickItemObj) type);
+            slotItem = quick.getWrappedWeapon();
         }
         if (type instanceof DC_HeroItemObj) {
             slotItem = (DC_HeroItemObj) type;

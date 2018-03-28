@@ -8,7 +8,7 @@ import main.game.module.adventure.entity.MacroObj;
 public class Faction extends MacroObj {
 
     public Faction(ObjType type, DC_Player player) {
-        super(type,   new MacroRef());
+        super(type, new MacroRef());
         setOwner(player);
         setOriginalOwner(player);
         player.setFaction(this);

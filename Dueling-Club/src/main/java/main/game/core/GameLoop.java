@@ -91,7 +91,7 @@ public class GameLoop {
         }
 
 
-        main.system.auxiliary.log.LogMaster.log(1,this + " exited!" );
+        main.system.auxiliary.log.LogMaster.log(1, this + " exited!");
         setExited(false);
     }
 
@@ -128,10 +128,9 @@ public class GameLoop {
             if (activeUnit == null) {
                 break;
             }
-            if (!started)
-            {
+            if (!started) {
                 VisionManager.refresh();
-                started=true;
+                started = true;
             }
 
             result = makeAction();
@@ -172,7 +171,7 @@ public class GameLoop {
             return true;
         Boolean result = null;
         ActionInput action = null;
-        boolean channeling=false;
+        boolean channeling = false;
         if (!actionQueue.isEmpty()) {
             action = (actionQueue.removeLast());
         } else if (activeUnit.getHandler().getChannelingSpellData() != null) {
@@ -326,11 +325,11 @@ public class GameLoop {
     public void setExited(boolean exited) {
         this.exited = exited;
         if (exited)
-        try {
-            game.getGameLoopThread().interrupt();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                game.getGameLoopThread().interrupt();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
     }
 
     public void togglePaused() {

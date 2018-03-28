@@ -49,8 +49,8 @@ public class ScenarioInfoPanel extends ItemInfoPanel {
     @Override
     protected void initHeader(TablePanel<Actor> header) {
 
-        header. addNormalSize(preview).left().padLeft(20).padTop(45) ;
-        header.addElement(title). left() ;
+        header.addNormalSize(preview).left().padLeft(20).padTop(45);
+        header.addElement(title).left();
 
         header.row();
         TablePanel<Actor> infoTable = new TablePanel<>();

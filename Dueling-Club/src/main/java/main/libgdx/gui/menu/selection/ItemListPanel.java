@@ -4,15 +4,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import main.entity.Entity;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
-import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.libgdx.gui.panels.dc.TablePanel;
 import main.libgdx.gui.panels.dc.logpanel.ScrollPanel;
+import main.libgdx.texture.TextureCache;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -39,8 +38,8 @@ public abstract class ItemListPanel extends TablePanel {
     public ItemListPanel() {
         super();
         //scroll?
-        setBackground(new NinePatchDrawable(NinePatchFactory.getMainMenuFrame()));
-//        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
+//     TODO    setBackground(new NinePatchDrawable(NinePatchFactory.getMainMenuFrame()));
+        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
         setHeight(MathMaster.minMax(GdxMaster.getHeight(), 800, 1200));
 //        scrollPanel = new ScrollPanel();
 //        scrollPanel.setSize();
@@ -107,7 +106,8 @@ public abstract class ItemListPanel extends TablePanel {
     public void select(int i) {
         clicked(i);
     }
-        public void selectWithOffset(int offset) {
+
+    public void selectWithOffset(int offset) {
         int index = getItems().indexOf(currentItem);
         index += offset;
         if (index >= buttons.size())
@@ -122,9 +122,9 @@ public abstract class ItemListPanel extends TablePanel {
         available.removeIf(btn -> isBlocked(btn));
         SelectableItemData item = new RandomWizard<SelectableItemData>().
          getRandomListItem(available);
-        currentItem= item;
+        currentItem = item;
         if (ListMaster.isNotEmpty(buttons))
-        clicked(items.indexOf(item));
+            clicked(items.indexOf(item));
     }
 
     public void next() {
@@ -222,8 +222,8 @@ public abstract class ItemListPanel extends TablePanel {
         String borderDisabled;
         Entity entity;
 
-        public SelectableItemData( String name,
-                                   String description,String previewImagePath,String imagePath) {
+        public SelectableItemData(String name,
+                                  String description, String previewImagePath, String imagePath) {
             this.previewImagePath = previewImagePath;
             this.description = description;
             this.name = name;

@@ -18,7 +18,7 @@ public class ToolTipPanel extends G_Panel {
     public ToolTipPanel() {
         text = new ToolTipTextComp();
         text.setDefaultSize(new Dimension(getVisuals(false).getWidth() - 30, getVisuals(false)
-                .getHeight() - 30));
+         .getHeight() - 30));
         setPanelSize(getVisuals(BooleanMaster.isTrue(isPrompted())).getSize());
     }
 

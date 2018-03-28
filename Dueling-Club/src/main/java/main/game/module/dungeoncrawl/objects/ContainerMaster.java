@@ -66,6 +66,18 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         super(dungeonMaster);
     }
 
+    public static boolean isPregenerateItems() {
+        return CoreEngine.isIDE();
+    }
+
+    public static boolean isGenerateItemsForUnits() {
+        return false;
+    }
+
+    public static boolean isGenerateItemsForContainers() {
+        return !CoreEngine.isFastMode();
+    }
+
     public ObjType getItem(CONTAINER_CONTENTS c, int maxCost) {
 
         int random = RandomWizard.getRandomInt(100);
@@ -114,7 +126,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
             return false;
         return !type.getSubGroupingKey().equalsIgnoreCase("Food");
     }
-
 
     private List<ObjType> getItemPool(CONTAINER_CONTENTS c, ITEM_RARITY rarity, ObjType type) {
         Map<CONTAINER_CONTENTS, Map<ITEM_RARITY, List<ObjType>>> map = itemPoolsMaps.get(type); //getItemPoolsMap(type);
@@ -179,7 +190,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                     break;
                 if (type.isGenerated())
                     continue;
-                if (isRemoveBase(contents, type) && TYPE!=DC_TYPE.JEWELRY)
+                if (isRemoveBase(contents, type) && TYPE != DC_TYPE.JEWELRY)
                     if (!type.checkProperty(PROPS.ITEM_RARITY, rarity.name()))
                         continue;
                 if (group != null)
@@ -204,7 +215,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
               DataManager.getTypesSubGroup(TYPE, sub));
             //TODO set rarity to common by default
             FilterMaster.filterByPropJ8(group, PROPS.ITEM_RARITY.getName(), rarity.name());
-            filter(contents, group, rarity , TYPE );
+            filter(contents, group, rarity, TYPE);
             if (group.isEmpty())
                 continue;
 //            group = generateTypes(c, rarity, group);
@@ -243,7 +254,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         ItemGenerator generator = ItemGenerator.getDefaultGenerator();
         JEWELRY_ITEM_TRAIT[] traits = getJewelryTraits(rarity);
         MAGICAL_ITEM_LEVEL[] levels = getJewelryLevels(rarity);
-        for (ObjType sub :     new ArrayList<>(group) )
+        for (ObjType sub : new ArrayList<>(group))
             for (MAGICAL_ITEM_LEVEL level : levels)
                 for (JEWELRY_ITEM_TRAIT trait : traits)
                     group.add(generator.getOrCreateJewelry(sub, trait, level));
@@ -327,16 +338,15 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         return group;
     }
 
-
     private DC_TYPE getRandomTYPE(CONTAINER_CONTENTS c) {
         OBJ_TYPE TYPE = getTYPE(c);
         if (TYPE instanceof C_OBJ_TYPE) {
             while (true) {
-            TYPE = new RandomWizard<DC_TYPE>().getRandomListItem(
-             Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
-                if (TYPE==DC_TYPE.JEWELRY)
-           if (!ItemGenerator.isJewelryOn())
-                continue;
+                TYPE = new RandomWizard<DC_TYPE>().getRandomListItem(
+                 Arrays.asList(((C_OBJ_TYPE) TYPE).getTypes()));
+                if (TYPE == DC_TYPE.JEWELRY)
+                    if (!ItemGenerator.isJewelryOn())
+                        continue;
                 break;
             }
         }
@@ -370,7 +380,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         }
         return true;
     }
-
 
     private String getItemGroup(CONTAINER_CONTENTS c, boolean sub, DC_TYPE TYPE) {
         if (isGroupsOrSubgroups(c, TYPE) == sub)
@@ -509,7 +518,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (contents.isEmpty()) {
             main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
         } else
-        main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
+            main.system.auxiliary.log.LogMaster.log(1, ">> " + obj + " has contents: " + contents + itemValueList);
 
         obj.setProperty(PROPS.INVENTORY, contents);
 
@@ -600,17 +609,6 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                 return commonMaterials;
         }
         return ItemGenerator.BASIC_MATERIALS_WOOD;
-    }
-
-    public static boolean isPregenerateItems() {
-        return CoreEngine.isIDE();
-    }
-
-    public static boolean isGenerateItemsForUnits() {
-        return false;
-    }
-    public static boolean isGenerateItemsForContainers() {
-        return !CoreEngine.isFastMode();
     }
 
     public enum CONTAINER_ACTION implements DUNGEON_OBJ_ACTION {

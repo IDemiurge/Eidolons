@@ -8,7 +8,7 @@ import main.system.auxiliary.StringMaster;
 public class RangeCondition extends DistanceCondition {
 
     public RangeCondition() {
-super (StringMaster.getValueRef(KEYS.ACTIVE, PARAMS.RANGE));
+        super(StringMaster.getValueRef(KEYS.ACTIVE, PARAMS.RANGE));
     }
 
     // public RangeCondition(String obj1, String obj2){

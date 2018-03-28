@@ -16,33 +16,17 @@ import main.system.auxiliary.StringMaster;
  */
 public class PlaceholderGenerator {
 
-    public enum PLACEHOLDER_POWER{
-        REGULAR,
-        REGULAR_MASS,
-        ELITE,
-        ELITE_MASS,
-        BOSS,
-    }
-        public enum PLACEHOLDER_AI_TYPE {
-        RANGED,
-        MAGE,
-            SNEAK,
-            TANK,
-            BRUTE,
-
-    }
-
-    public static void generate(){
+    public static void generate() {
         /*
         unit subgroups
          */
         for (UNIT_GROUP group : UnitEnums.UNIT_GROUP.values()) {
-            for (String sub :  StringMaster.openContainer(group.getSubgroups(), ",")) {
-                for (PLACEHOLDER_AI_TYPE aiType :  PLACEHOLDER_AI_TYPE.values()) {
+            for (String sub : StringMaster.openContainer(group.getSubgroups(), ",")) {
+                for (PLACEHOLDER_AI_TYPE aiType : PLACEHOLDER_AI_TYPE.values()) {
                     ObjType type = generate(group, sub, aiType.name());
-                    type.setProperty( PROPS.AI_TYPE, aiType.name());
+                    type.setProperty(PROPS.AI_TYPE, aiType.name());
                 }
-                for (PLACEHOLDER_POWER power :  PLACEHOLDER_POWER.values()) {
+                for (PLACEHOLDER_POWER power : PLACEHOLDER_POWER.values()) {
                     generate(group, sub, power.name());
                 }
             }
@@ -54,10 +38,28 @@ public class PlaceholderGenerator {
         // base type?
         String name = ObjCreator.PLACEHOLDER + " " + group.toString()
          + " " + sub + "_" + suffix;
-        ObjType type= new ObjType(name, DC_TYPE.UNITS);
+        ObjType type = new ObjType(name, DC_TYPE.UNITS);
         type.setProperty(G_PROPS.GROUP, sub);
         type.setProperty(G_PROPS.ASPECT, ASPECT.NEUTRAL.toString());
         type.setProperty(G_PROPS.UNIT_GROUP, group.toString());
         DataManager.addType(type);
-    return type;}
+        return type;
+    }
+
+    public enum PLACEHOLDER_AI_TYPE {
+        RANGED,
+        MAGE,
+        SNEAK,
+        TANK,
+        BRUTE,
+
+    }
+
+    public enum PLACEHOLDER_POWER {
+        REGULAR,
+        REGULAR_MASS,
+        ELITE,
+        ELITE_MASS,
+        BOSS,
+    }
 }

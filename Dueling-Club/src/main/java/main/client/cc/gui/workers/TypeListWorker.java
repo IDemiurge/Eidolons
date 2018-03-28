@@ -32,7 +32,7 @@ public class TypeListWorker extends SwingWorker<List<ObjType>, String> {
         }
 
         List<String> types = DataManager
-                .getTypesSubGroupNames(panel.getTYPE(), listName);
+         .getTypesSubGroupNames(panel.getTYPE(), listName);
         if (types == null) {
             return null;
         }
@@ -40,7 +40,7 @@ public class TypeListWorker extends SwingWorker<List<ObjType>, String> {
             return null;
         }
         List<ObjType> data = DataManager.toTypeList(types, panel
-                .getTYPE());
+         .getTYPE());
 
         if (panel.getFilter() != null) {
             data = panel.getFilter().filter(data);

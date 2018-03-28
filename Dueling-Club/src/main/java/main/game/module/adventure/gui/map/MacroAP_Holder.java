@@ -20,9 +20,9 @@ public class MacroAP_Holder extends G_Panel {
     @Override
     public Dimension getPanelSize() {
         return new Dimension(MacroGuiManager.getMapWidth(),
-                (int) (GuiManager.getScreenHeight()
-                        - MacroGuiManager.getMapHeight() - VISUALS.BUTTON
-                        .getHeight()));
+         (int) (GuiManager.getScreenHeight()
+          - MacroGuiManager.getMapHeight() - VISUALS.BUTTON
+          .getHeight()));
     }
 
     @Override
@@ -50,11 +50,11 @@ public class MacroAP_Holder extends G_Panel {
             if (group == MACRO_ACTION_GROUPS.MODE) {
                 y = "" + GuiManager.getSmallObjSize();
                 x = ((MacroGuiManager.getMapWidth() - comp.getPanelWidth() - GAP) / 2)
-                        + "";
+                 + "";
             } else {
                 if (group == MACRO_ACTION_GROUPS.PARTY) {
                     x = ((MacroGuiManager.getMapWidth() - comp.getPanelWidth()) - GAP)
-                            + "";
+                     + "";
                 } else {
                     x = GAP + "";
                 }

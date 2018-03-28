@@ -32,7 +32,7 @@ public class GatewayEffect extends SummonEffect {
         this.filter = filter;
         this.random = random;
         this.setCondition(new StringComparison(StringMaster.getValueRef(KEYS.MATCH, prop), filter,
-                true));
+         true));
 
     }
 
@@ -69,10 +69,10 @@ public class GatewayEffect extends SummonEffect {
         typeList = null;
         if (prop == null) {
             typeList = DataManager.toTypeList(((Unit) obj).getDeity().getUnitPool(),
-                    DC_TYPE.UNITS);
+             DC_TYPE.UNITS);
         } else {
             typeList = new Filter<ObjType>(ref, getCondition()).filter(DataManager
-                    .getTypes(C_OBJ_TYPE.UNITS_CHARS));
+             .getTypes(C_OBJ_TYPE.UNITS_CHARS));
         }
 
         if (typeList.isEmpty()) {
@@ -95,7 +95,7 @@ public class GatewayEffect extends SummonEffect {
             }
 
             unitType = ListChooser.chooseType(DataManager.toStringList(typeList),
-                    C_OBJ_TYPE.BF_OBJ);
+             C_OBJ_TYPE.BF_OBJ);
             if (!getGame().isOffline()) {
                 if (obj.isMine()) {
 //                    getGame().getConnection().send(code, unitType);

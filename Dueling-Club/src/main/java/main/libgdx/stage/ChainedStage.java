@@ -24,13 +24,16 @@ public class ChainedStage extends Stage {
     private List<DialogScenario> newList = null;
     private Runnable onDoneCallback;
     private DialogueHandler dialogueHandler;
+    private Matrix4 idt = new Matrix4();
+    private Matrix4 shear = new Matrix4();
+    private OrthographicCamera cam;
 
     public ChainedStage(ScreenViewport viewport, Batch batch, List<DialogScenario> list) {
-        super(viewport==null ?
-         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
-         GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
-         batch == null ?  new SpriteBatch() :
-         batch);
+        super(viewport == null ?
+          new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+           GdxMaster.getHeight(), new OrthographicCamera()) : viewport,
+         batch == null ? new SpriteBatch() :
+          batch);
         current = new Container<>();
         iterator = list.iterator();
         if (iterator.hasNext()) {
@@ -39,6 +42,13 @@ public class ChainedStage extends Stage {
         setKeyboardFocus(current.getActor());
         addActor(current);
         setDebugAll(false);
+    }
+
+    public static Matrix4 toShear(Matrix4 m, float shx, float shy) {
+        m.idt();
+        m.val[Matrix4.M01] = shx;
+        m.val[Matrix4.M10] = shy;
+        return m;
     }
 
     public void play(List<DialogScenario> list) {
@@ -56,7 +66,7 @@ public class ChainedStage extends Stage {
         if (current.getActor() != null && current.getActor().isDone()) {
             if (iterator.hasNext()) {
                 if (dialogueHandler != null) {
-                dialogueHandler.lineSpoken(current.getActor());
+                    dialogueHandler.lineSpoken(current.getActor());
                 }
                 current.setActor(iterator.next());
                 setKeyboardFocus(current.getActor());
@@ -69,7 +79,7 @@ public class ChainedStage extends Stage {
                 if (onDoneCallback != null) {
                     onDoneCallback.run();
                 }
-                if (dialogueHandler!=null ){
+                if (dialogueHandler != null) {
                     dialogueHandler.dialogueDone();
                 }
             }
@@ -97,18 +107,8 @@ public class ChainedStage extends Stage {
         root.draw(batch, 1);
         batch.end();
     }
-    private Matrix4 idt = new Matrix4();
-    private Matrix4 shear = new Matrix4();
-    private OrthographicCamera cam;
 
-    public static Matrix4 toShear(Matrix4 m, float shx, float shy) {
-        m.idt();
-        m.val[Matrix4.M01] = shx;
-        m.val[Matrix4.M10] = shy;
-        return m;
-    }
-
-//    @Override
+    //    @Override
 //    public void render () {
 //        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 //

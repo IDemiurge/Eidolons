@@ -9,9 +9,9 @@ import main.system.GuiEventType;
 import main.system.audio.MusicMaster;
 import main.system.audio.MusicMaster.MUSIC_MOMENT;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
-import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -30,23 +30,13 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
 
     public void restart() {
 
-        getGame().getMetaMaster().next(null  );
+        getGame().getMetaMaster().next(null);
     }
-
-    public enum OUTCOME{
-        SURRENDER,
-        DEFEAT,
-    VICTORY,
-    RETREAT,
-    ENEMY_RETREAT,
-    TIMED_VICTORY,
-    TIME_DEFEAT,
-}
 
     public void end() {
         // battle.setOutcome(outcome);
         game.stop();
-        GuiEventManager.trigger(GuiEventType. GAME_FINISHED, getGame());
+        GuiEventManager.trigger(GuiEventType.GAME_FINISHED, getGame());
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, outcome);
     }
 
@@ -67,8 +57,8 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
         // dishonorable ones :)
         outcome = false;
         // MusicMaster.playMoment(MUSIC_MOMENT.DEFEAT);
-        String message =  "Defeat!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+        String message = "Defeat!";
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
 
         if (end) {
             end();
@@ -78,8 +68,8 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     public void victory() {
         outcome = true;
         MusicMaster.playMoment(MUSIC_MOMENT.VICTORY);
-        String message =  "Victory!";
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+        String message = "Victory!";
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
         end();
         // final prize dialogue
         // stats screen - keep a log on everything party does!
@@ -129,7 +119,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     protected boolean checkDefeat() {
         if (!OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
             if (!game.isDebugMode())
-       return  (game.getPlayer(true).getHeroObj().isDead());
+                return (game.getPlayer(true).getHeroObj().isDead());
 
         return checkNoPlayerUnitsLeft();
     }
@@ -139,7 +129,6 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
             return false;
         return checkNoEnemiesLeft();
     }
-
 
     public boolean checkNoEnemiesLeft() {
         return checkPlayerHasNoUnits(game.getPlayer(false));
@@ -153,7 +142,7 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
 
     private boolean checkPlayerHasNoUnits(Player player) {
         for (Obj d : player.getControlledUnits()) {
-            if (d instanceof Unit){
+            if (d instanceof Unit) {
 //                ((Unit) d).isAiControlled()
 
             }
@@ -166,6 +155,16 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
             // panicked? preCheck ownership change?
         }
         return true;
+    }
+
+    public enum OUTCOME {
+        SURRENDER,
+        DEFEAT,
+        VICTORY,
+        RETREAT,
+        ENEMY_RETREAT,
+        TIMED_VICTORY,
+        TIME_DEFEAT,
     }
 
 

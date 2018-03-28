@@ -76,16 +76,16 @@ public class LootMaster {
         Boolean choice;
         if (wanted) {
             choice = DialogMaster.askAndWait(h.getName()
-                            + ": I am going to claim " + item.getName(), true, "Sure",
-                    "Better not", "Absolutely not");
+              + ": I am going to claim " + item.getName(), true, "Sure",
+             "Better not", "Absolutely not");
             if (choice == null) {
                 // reduce loyalty
                 return;
             }
         } else {
             choice = DialogMaster.askAndWait(h.getName() + ": What about " + ""
-                            + item.getName() + ", shall I claim it?", true,
-                    "Certainly", "Better not", "If you wish");
+              + item.getName() + ", shall I claim it?", true,
+             "Certainly", "Better not", "If you wish");
             if (choice == null) {
                 // random? preCheck wanted by others
             }
@@ -159,7 +159,7 @@ public class LootMaster {
 
     private static void awardLoot(ObjType type, Unit h) {
         DC_HeroItemObj item = ItemFactory.createItemObj(type,
-                h.getOriginalOwner(), h.getGame(), h.getRef(), false);
+         h.getOriginalOwner(), h.getGame(), h.getRef(), false);
         h.addItemToInventory(item);
         // SAVE: containers into props for type
     }
@@ -184,7 +184,7 @@ public class LootMaster {
         List<ObjType> list = DataManager.getTypes(getTYPE(group));
         for (Object val : filterValues) {
             PROPERTY prop = ContentManager.findPROP(val.getClass()
-                    .getSimpleName());
+             .getSimpleName());
             FilterMaster.filterByProp(list, prop.getName(), val.toString());
         }
 

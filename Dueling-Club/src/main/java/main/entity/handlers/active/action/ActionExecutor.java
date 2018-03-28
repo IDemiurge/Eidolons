@@ -49,10 +49,8 @@ public class ActionExecutor extends Executor {
 //                return true;
 //        }
 
-        if (effect.getMode().isContinuous())
-        {
-            if (checkActionDeactivatesContinuousMode())
-            {
+        if (effect.getMode().isContinuous()) {
+            if (checkActionDeactivatesContinuousMode()) {
                 getAction().getOwnerObj().removeBuff(effect.getMode().getBuffName());
                 //deactivation overrides
                 return true;
@@ -65,17 +63,13 @@ public class ActionExecutor extends Executor {
                 //GUARD is semi-compatible
                 return false;
             }
-        }
-
-
-        else {
+        } else {
             //mode activation proceeds
             removeModeBuffs();
             return false;
         }
         return false;
     }
-
 
 
     public boolean checkActionDeactivatesContinuousMode() {

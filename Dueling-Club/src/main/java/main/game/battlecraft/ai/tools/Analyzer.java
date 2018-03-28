@@ -35,8 +35,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -180,10 +180,10 @@ public class Analyzer extends AiHandler {
         if (target.getRangedWeapon() != null) {
             return true;
         }
-        if (canCast(target)  ) {
+        if (canCast(target)) {
             return true;
         }
-        return hasAnySpecialActions(target) ;
+        return hasAnySpecialActions(target);
 
     }
 

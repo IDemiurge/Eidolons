@@ -44,7 +44,7 @@ public class HotKey {
     @Override
     public String toString() {
         return id + " = " + CHAR
-                + ((hotKey != null) ? hotKey.name() : " special ");
+         + ((hotKey != null) ? hotKey.name() : " special ");
     }
 
     public HOTKEYS getHOTKEY() {

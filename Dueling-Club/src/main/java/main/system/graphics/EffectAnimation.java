@@ -56,7 +56,7 @@ public class EffectAnimation extends ActionAnimation {
         // counter.isNegative(); // img
         {
             drawTextOnTarget(StringMaster.getBonusString(modValue), font, CENTERED_X, CENTERED_Y,
-                    ColorManager.getStandardColor(negative));
+             ColorManager.getStandardColor(negative));
         }
 
         StringMaster.getBonusString(modValue);
@@ -148,7 +148,7 @@ public class EffectAnimation extends ActionAnimation {
                     c = getColorForModifier(buff.isNegative() ? -1 : 1);
                 }
                 y += drawTextOnTarget(buff.getName(), MigMaster.getCenteredTextPosition(buff
-                        .getName(), font, w), y, c);
+                 .getName(), font, w), y, c);
             }
             if (arg instanceof Map) {
                 // drawParamMap(phase);
@@ -185,7 +185,7 @@ public class EffectAnimation extends ActionAnimation {
                 negative = true;
             }
             String string = p.getName() + prefix
-                    + StringMaster.getWellFormattedString(map.get(p).get(1).toString());
+             + StringMaster.getWellFormattedString(map.get(p).get(1).toString());
             int x = 5;// MigMaster.getCenteredTextPosition(string, font, w);
             y += drawTextColored(onSource, negative, string, font, x, y);
         }

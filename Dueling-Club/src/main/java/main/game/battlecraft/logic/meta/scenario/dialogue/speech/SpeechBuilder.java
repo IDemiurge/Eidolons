@@ -35,7 +35,7 @@ public class SpeechBuilder {
         String text = data.getValue(SPEECH_VALUE.MESSAGE);
         speech.setUnformattedText(text);
 
-        text= processText(text, speech);
+        text = processText(text, speech);
 
         speech.setFormattedText(text);
         return speech;
@@ -62,7 +62,7 @@ public class SpeechBuilder {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
-       return  DialogueSyntax.getRawText(text);
+        return DialogueSyntax.getRawText(text);
     }
 
     public Map<Integer, SpeechData> getIdToDataMap() {

@@ -118,7 +118,7 @@ public class FloatingText extends Group {
                 if (!StringMaster.isEmpty(imageSupplier.get())) {
                     if (!ImageManager.isImage(imageSupplier.get())
                      ||
-                     ImageManager.getImage(imageSupplier.get()).getWidth(null )>=64 )
+                     ImageManager.getImage(imageSupplier.get()).getWidth(null) >= 64)
                         image = new Image
                          (TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath()));
 

@@ -14,15 +14,6 @@ public class Task {
     private boolean blocked;
     private boolean forced;
 
-    public enum TASK_DESCRIPTION{
-        AMMO,
-        ATTACK,
-        APPROACH,
-        WAIT,
-        RESTORATION, //"Restoration"
-        ;
-
-    }
     // a more concrete directive than Goal; from which Actions can be derived
     public Task(UnitAI ai, GOAL_TYPE type, Object arg) {
         this.ai = ai;
@@ -37,7 +28,7 @@ public class Task {
     }
 
     public String toShortString() {
-        return  StringMaster.getWellFormattedString(type.toString()) + " on "
+        return StringMaster.getWellFormattedString(type.toString()) + " on "
          +
          (arg instanceof Integer ?
           getUnit().getGame().getObjectById((Integer) arg).getNameIfKnown() :
@@ -65,7 +56,7 @@ public class Task {
     }
 
     public Obj getObjArg() {
-        return   getUnit().getGame().getObjectById(
+        return getUnit().getGame().getObjectById(
          (Integer) getArg());
     }
 
@@ -97,6 +88,16 @@ public class Task {
 
     public void setForced(boolean forced) {
         this.forced = forced;
+    }
+
+    public enum TASK_DESCRIPTION {
+        AMMO,
+        ATTACK,
+        APPROACH,
+        WAIT,
+        RESTORATION, //"Restoration"
+        ;
+
     }
 
 }

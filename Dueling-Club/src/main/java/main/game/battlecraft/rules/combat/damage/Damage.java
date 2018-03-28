@@ -41,15 +41,9 @@ public class Damage {
 //        this.ref = ref;
 //    }
 
-    public void setRef(Ref ref) {
-        this.ref = ref;
-        target = (BattleFieldObject) ref.getTargetObj();
-        source = (Unit) ref.getSourceObj();
-    }
-
     @Deprecated
     public boolean canCritOrBlock() {
-return true;// TODO
+        return true;// TODO
     }
 
     public boolean isSpell() {
@@ -74,38 +68,11 @@ return true;// TODO
 
     public void setModifiers(DAMAGE_MODIFIER[] modifiers) {
         this.modifiers = modifiers;
-        if (ref!= null) {
-        ref.setValue(KEYS.DAMAGE_MODS, StringMaster
-         .constructStringContainer(Arrays.asList(modifiers)));
+        if (ref != null) {
+            ref.setValue(KEYS.DAMAGE_MODS, StringMaster
+             .constructStringContainer(Arrays.asList(modifiers)));
         }
     }
-
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public void setTarget(BattleFieldObject target) {
-        this.target = target;
-    }
-
-    public void setSource(Unit source) {
-        this.source = source;
-    }
-
-    public void setOffhand(boolean offhand) {
-        this.offhand = offhand;
-    }
-
-    public void setDmgType(DAMAGE_TYPE dmg_type) {
-        this.dmg_type = dmg_type;
-    }
-
-    public void setAction(DC_ActiveObj action) {
-        this.action = action;
-    }
-
-
 
     public boolean isAverage() {
         return DamageCalculator.isArmorAveraged(getRef());
@@ -115,28 +82,58 @@ return true;// TODO
         return amount;
     }
 
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
     public BattleFieldObject getTarget() {
         return target;
+    }
+
+    public void setTarget(BattleFieldObject target) {
+        this.target = target;
     }
 
     public Unit getSource() {
         return source;
     }
 
+    public void setSource(Unit source) {
+        this.source = source;
+    }
+
     public boolean isOffhand() {
         return offhand;
+    }
+
+    public void setOffhand(boolean offhand) {
+        this.offhand = offhand;
     }
 
     public DAMAGE_TYPE getDmgType() {
         return dmg_type;
     }
 
+    public void setDmgType(DAMAGE_TYPE dmg_type) {
+        this.dmg_type = dmg_type;
+    }
+
     public DC_ActiveObj getAction() {
         return action;
     }
 
+    public void setAction(DC_ActiveObj action) {
+        this.action = action;
+    }
+
     public Ref getRef() {
         return ref;
+    }
+
+    public void setRef(Ref ref) {
+        this.ref = ref;
+        target = (BattleFieldObject) ref.getTargetObj();
+        source = (Unit) ref.getSourceObj();
     }
 
 

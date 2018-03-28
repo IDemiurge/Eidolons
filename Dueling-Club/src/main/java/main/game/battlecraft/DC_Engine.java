@@ -10,15 +10,15 @@ import main.system.entity.ConditionMaster;
 import main.system.launch.CoreEngine;
 import main.system.options.OptionsMaster;
 
-public class DC_Engine extends  CoreEngine{
+public class DC_Engine extends CoreEngine {
+    private static boolean atbMode = true;
+
     /*
     supposed to give access to Audio, Data, utilities, ...
      */
-    static{
+    static {
         jarInit();
     }
-
-    private static boolean atbMode=true;
 
     public static void fullInit() {
         Chronos.mark("DC INIT");
@@ -32,6 +32,7 @@ public class DC_Engine extends  CoreEngine{
         systemInit();
         dataInit();
     }
+
     public static void jarInit() {
         CoreEngine.setEngineObject(new DC_Engine());
     }
@@ -40,17 +41,17 @@ public class DC_Engine extends  CoreEngine{
         gameInit();
     }
 
-        public static void systemInit() {
-             CoreEngine.systemInit();
+    public static void systemInit() {
+        CoreEngine.systemInit();
         OptionsMaster.init();
         DC_GuiManager.init();
 //        TextMaster.init(locale);
     }
 
-    public static void dataInit(  ) {
+    public static void dataInit() {
         Chronos.mark("DATA INIT");
         new DC_ContentManager().init();
-        CoreEngine.dataInit(  false);
+        CoreEngine.dataInit(false);
         //read save game?
         DC_ContentManager.initTypeDynamicValues();
         Chronos.logTimeElapsedForMark("DATA INIT");

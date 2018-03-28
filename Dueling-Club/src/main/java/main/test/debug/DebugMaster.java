@@ -849,11 +849,11 @@ public class DebugMaster {
                     break;
                 case GUI_EVENT:
                     EmitterController.getInstance();
-                    String string= ListChooser.chooseEnum(GuiEventType.class);
+                    String string = ListChooser.chooseEnum(GuiEventType.class);
                     GuiEventManager.trigger(
-                      new EnumMaster<GuiEventType>().
-                       retrieveEnumConst(GuiEventType.class,
-                        string ), null);
+                     new EnumMaster<GuiEventType>().
+                      retrieveEnumConst(GuiEventType.class,
+                       string), null);
                     break;
                 case SFX_PLAY_LAST:
                     EmitterController.getInstance();
@@ -883,7 +883,7 @@ public class DebugMaster {
             debugFunctionRunning = false;
         }
         if (isResetRequired(func))
-        reset();
+            reset();
 
         if (transmitted) {
 //            String transmittedData = lastType + StringMaster.NET_DATA_SEPARATOR + infoObj
@@ -896,7 +896,7 @@ public class DebugMaster {
     }
 
     private boolean isResetRequired(DEBUG_FUNCTIONS func) {
-        switch (func){
+        switch (func) {
             case PAUSE:
                 return false;
         }
@@ -1317,7 +1317,7 @@ public class DebugMaster {
         if (debugMode) {
 //            main.system.auxiliary.log.LogMaster.log(1," " +
 //             game.getLogManager().getCombatActionLogBuilder().toString());
-          SpecialLogger.getInstance().logCombatLog();
+            SpecialLogger.getInstance().logCombatLog();
         }
         VisionManager.setVisionHacked(debugMode);
     }
@@ -1328,7 +1328,7 @@ public class DebugMaster {
 
     public enum DEBUG_FUNCTIONS {
         // GAME
-SAVE,
+        SAVE,
         LOAD,
         //
         SET_GLOBAL_ILLUMINATION,

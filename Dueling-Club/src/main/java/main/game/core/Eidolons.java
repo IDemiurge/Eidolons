@@ -60,8 +60,7 @@ public class Eidolons {
         mainGame = new EidolonsGame();
         mainGame.setMetaMaster(master);
         mainGame.init();
-        if (mainGame.isAborted())
-        {
+        if (mainGame.isAborted()) {
             master.gameExited();
             toMainMenu();
             return false;
@@ -74,7 +73,7 @@ public class Eidolons {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
          new ScreenData(ScreenType.MAIN_MENU, "Back to the Void..."));
 
-        ScenarioLauncher.missionIndex=0;
+        ScenarioLauncher.missionIndex = 0;
     }
 
     public static EidolonsGame getMainGame() {
@@ -111,8 +110,8 @@ public class Eidolons {
     }
 
     public static Unit getMainHero() {
-        if (mainHero==null ){
-            mainHero= (Unit) game.getPlayer(true).getHeroObj();
+        if (mainHero == null) {
+            mainHero = (Unit) game.getPlayer(true).getHeroObj();
         }
         return mainHero;
     }
@@ -139,14 +138,14 @@ public class Eidolons {
             Gdx.graphics.setWindowedMode(width,
              LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getApplicationListener().resize(width, height);
-          if (getMainViewport()!=null )
-            getMainViewport().setScreenSize(width, height);
+            if (getMainViewport() != null)
+                getMainViewport().setScreenSize(width, height);
 
         } else {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
             setResolution(OptionsMaster.getGraphicsOptions().getValue(GRAPHIC_OPTION.RESOLUTION));
             getApplication().getGraphics().setUndecorated(false);
-            }
+        }
         Eidolons.getApplication().getGraphics().setResizable(false);
     }
 
@@ -201,29 +200,29 @@ public class Eidolons {
 
     public static void gameExited() {
 //        DC_Game toFinilize = game;
-         PartyManager.setSelectedHero(null);
+        PartyManager.setSelectedHero(null);
         game.getMetaMaster().gameExited();
         game = null;
-        mainHero=null;
+        mainHero = null;
         DC_Game.game = null;
         Game.game = null;
 //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
-    }
-
-    public static void setLauncher(GenericLauncher launcher) {
-        Eidolons.launcher = launcher;
     }
 
     public static GenericLauncher getLauncher() {
         return launcher;
     }
 
-    public static void setParty(Party party) {
-        Eidolons.party = party;
+    public static void setLauncher(GenericLauncher launcher) {
+        Eidolons.launcher = launcher;
     }
 
     public static Party getParty() {
         return party;
+    }
+
+    public static void setParty(Party party) {
+        Eidolons.party = party;
     }
 
     public static boolean isBattleRunning() {

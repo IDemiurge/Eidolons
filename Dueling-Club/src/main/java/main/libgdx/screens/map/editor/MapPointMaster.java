@@ -27,23 +27,23 @@ import java.util.Map;
 /**
  * Created by JustMe on 2/22/2018.
  */
-public class MapPointMaster  {
+public class MapPointMaster {
 
     Map<String, Coordinates> map;
     private String last;
 
     public MapPointMaster() {
         if (CoreEngine.isMapEditor()) {
-        GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
-            Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
-            TextureRegion region= TextureCache.getOrCreateR(STD_IMAGES.MAP_PLACE.getPath());
-            Actor actor= new Image(region);
-            actor.addListener(new ValueTooltip(pair.getKey()).getController());
-            Coordinates c = pair.getValue();
-            actor.setPosition(c.x-region.getRegionWidth()/2,c.y-region.getRegionHeight()/2);
-            MapScreen.getInstance().getObjectStage().getPointsGroup().
-             addActor(actor);
-        });
+            GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
+                Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
+                TextureRegion region = TextureCache.getOrCreateR(STD_IMAGES.MAP_PLACE.getPath());
+                Actor actor = new Image(region);
+                actor.addListener(new ValueTooltip(pair.getKey()).getController());
+                Coordinates c = pair.getValue();
+                actor.setPosition(c.x - region.getRegionWidth() / 2, c.y - region.getRegionHeight() / 2);
+                MapScreen.getInstance().getObjectStage().getPointsGroup().
+                 addActor(actor);
+            });
         }
         load();
     }
@@ -71,7 +71,7 @@ public class MapPointMaster  {
              new Coordinates(true, VariableManager.getVar(substring)));
         }
         for (MAP_POINTS sub : MAP_POINTS.values()) {
-            map.put( StringMaster.getWellFormattedString(sub.name()),
+            map.put(StringMaster.getWellFormattedString(sub.name()),
              new Coordinates(true, sub.x, sub.y));
         }
     }
@@ -89,7 +89,7 @@ public class MapPointMaster  {
 
         new Thread(new Runnable() {
             public void run() {
-                String name =  DialogMaster.inputText("Enter location's name", last);
+                String name = DialogMaster.inputText("Enter location's name", last);
                 if (name != null) last = name;
                 else return;
                 map.put(name, new Coordinates(true, x, y));

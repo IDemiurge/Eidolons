@@ -22,7 +22,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     GameMenuHandler handler;
 
     public GameMenu() {
-       super();
+        super();
         setVisible(false);
     }
 
@@ -33,7 +33,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected GameMenuHandler initHandler() {
-       return  new GameMenuHandler();
+        return new GameMenuHandler();
     }
 
     @Override
@@ -65,8 +65,8 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     public GameMenuHandler getHandler() {
-        if (handler==null )
-            handler= initHandler();
+        if (handler == null)
+            handler = initHandler();
         return handler;
     }
 
@@ -83,15 +83,16 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 
     @Override
     protected List<MenuItem<GAME_MENU_ITEM>> getFullItemList() {
-        return  new ArrayList<>(Arrays.asList(GAME_MENU_ITEM.values()));
+        return new ArrayList<>(Arrays.asList(GAME_MENU_ITEM.values()));
     }
+
     protected boolean isHidden(GAME_MENU_ITEM item) {
         return item.hidden;
     }
 
     @Override
     protected float getBottonPadding(int size) {
-        return 200 ;
+        return 200;
     }
 
     @Override
@@ -115,7 +116,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         QUICK_HELP,
         HERO_INFO,
         MANUAL,
-//        SEND_FEEDBACK,
+        //        SEND_FEEDBACK,
 //        SEND_LOG,
 //        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
 //        FEEDBACK(QUICK_RATE, SEND_FEEDBACK, SEND_LOG),
@@ -126,9 +127,8 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         RESUME,
         INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),
-        ABOUT(true), LAUNCH_GAME(true ),
-        EXIT,
-        ;
+        ABOUT(true), LAUNCH_GAME(true),
+        EXIT,;
         boolean hidden;
         private GAME_MENU_ITEM[] items;
 
@@ -136,7 +136,8 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
             this(items);
             this.hidden = hidden;
         }
-            GAME_MENU_ITEM(GAME_MENU_ITEM... items) {
+
+        GAME_MENU_ITEM(GAME_MENU_ITEM... items) {
             this.items = items;
             for (GAME_MENU_ITEM sub : items) {
                 sub.hidden = true;

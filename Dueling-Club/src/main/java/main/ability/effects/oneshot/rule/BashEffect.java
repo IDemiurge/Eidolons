@@ -6,7 +6,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.content.PARAMS;
 import main.system.math.Formula;
 
-public class BashEffect extends DC_Effect  implements OneshotEffect {
+public class BashEffect extends DC_Effect implements OneshotEffect {
 
     private Formula formulaIni;
     private Formula formulaFocus;
@@ -24,7 +24,7 @@ public class BashEffect extends DC_Effect  implements OneshotEffect {
         if (mod != 0) {
             amount = -amount * mod / 100;
             new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "" + amount)
-                    .apply(ref);
+             .apply(ref);
         }
 
         amount = formulaFocus.getInt(ref) * mod / 100;

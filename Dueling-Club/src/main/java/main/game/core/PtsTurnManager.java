@@ -1,4 +1,3 @@
-
 package main.game.core;
 
 import main.content.PARAMS;
@@ -19,7 +18,7 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
  * rebuilds Queue and makes the top unit Active.
  */
 
-public class PtsTurnManager extends GenericTurnManager implements   Comparator<Unit> {
+public class PtsTurnManager extends GenericTurnManager implements Comparator<Unit> {
 
     public PtsTurnManager(DC_Game game) {
         super(game);
@@ -63,7 +62,7 @@ public class PtsTurnManager extends GenericTurnManager implements   Comparator<U
 
     @Override
     public String getTimeString() {
-        return getTimeModifier()+"";
+        return getTimeModifier() + "";
     }
 
     public void newRound() {

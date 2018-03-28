@@ -36,15 +36,15 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by JustMe on 3/15/2017.
  */
 public class StateCloner {
-    DC_Game game  ;
+    DC_Game game;
 
     public StateCloner(DC_Game game) {
         this.game = game;
@@ -65,7 +65,7 @@ public class StateCloner {
         try {
             Chronos.mark("clone");
             clone = new DC_GameState(game);
-            clone.setManager(new DC_StateManager(clone,true));
+            clone.setManager(new DC_StateManager(clone, true));
 //        FlattenedState
             cloneMaps(state, clone);
             constructObjMap(clone); //TODO why need TYPE-split maps?
@@ -162,7 +162,7 @@ public class StateCloner {
             //TODO
         }
         if (e instanceof ContinuousEffect) {
-            e=((ContinuousEffect) e).getEffect();
+            e = ((ContinuousEffect) e).getEffect();
             if (e.getConstruct() == null) {
                 return ContinuousEffect.transformEffectToContinuous(e);
             }
@@ -231,7 +231,7 @@ public class StateCloner {
                     return new Structure(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_WeaponObj:
                     return new DC_WeaponObj(
-                            e.getType(), e.getOwner(), game, e.getRef().getCopy());
+                     e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_ArmorObj:
                     return new DC_ArmorObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_QuickItemObj:
@@ -246,14 +246,14 @@ public class StateCloner {
                     return new DC_FeatObj(e.getType(), e.getOwner(), game, e.getRef().getCopy());
                 case DC_BuffObj:
                     return new DC_BuffObj(
-                            (DC_BuffObj) e);
+                     (DC_BuffObj) e);
                 case DC_Cell:
 //                Cell cell = (Cell) e;
                     return new DC_Cell(
-                            e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
-                            ,
+                     e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
+                     ,
 //                 cell.
-                            game.getDungeon());
+                     game.getDungeon());
 
                 case Wave:
                     return new Wave(e.getType(), game, e.getRef().getCopy(), (DC_Player) e.getOwner());

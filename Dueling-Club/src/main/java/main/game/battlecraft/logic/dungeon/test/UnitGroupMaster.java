@@ -154,7 +154,7 @@ public class UnitGroupMaster {
     public static void modifyFactions() {
         for (FACTION f : FACTION.values()) {
             DEITY deity = f.getDeity();
-            ObjType faction = DataManager.getType(f.toString(),MACRO_OBJ_TYPES.FACTIONS);
+            ObjType faction = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
             if (faction == null) {
                 continue;
             }
@@ -184,19 +184,19 @@ public class UnitGroupMaster {
 
     public static String createUnitGroup() {
         int level = hero == null ? DialogMaster.inputInt("Power Level? (1-6)", getPowerLevel())
-                : (hero.getLevel()) / 2;
+         : (hero.getLevel()) / 2;
 
         ObjType factionType;
         //
         if (hero == null) {
             String faction = ListChooser.chooseEnum(FACTION.class);
             factionType = DataManager.getType(faction.toString().replace(";", ""),
-                   MACRO_OBJ_TYPES.FACTIONS);
+             MACRO_OBJ_TYPES.FACTIONS);
         } else {
             List<String> list = new ArrayList<>();
 
-            factionType = DataManager.getType(ListChooser.chooseType(list,MACRO_OBJ_TYPES.FACTIONS),
-                   MACRO_OBJ_TYPES.FACTIONS);
+            factionType = DataManager.getType(ListChooser.chooseType(list, MACRO_OBJ_TYPES.FACTIONS),
+             MACRO_OBJ_TYPES.FACTIONS);
         }
         return createUnitGroup(hero, factionType, level);
     }
@@ -219,20 +219,20 @@ public class UnitGroupMaster {
             {
                 if (i < min) {
                     if (!DialogMaster.confirm("You must select at least " + (min - i)
-                            + " more units, proceed or abort?")) {
+                     + " more units, proceed or abort?")) {
                         return null;
                     }
                     continue;
                 }
                 if (i >= max) {
                     if (DialogMaster.confirm("You have selected maximum number of units "
-                            + (max - i) + " do you wish to proceed? Power points remaining: "
-                            + getRemainingPower())) {
+                     + (max - i) + " do you wish to proceed? Power points remaining: "
+                     + getRemainingPower())) {
                         break;
                     }
                     ObjType last = getUnitList().get(getUnitList().size() - 1);
                     if (!DialogMaster.confirm("Do you wish to remove last - " + last.getName()
-                            + "?")) {
+                     + "?")) {
                         break;
                     }
                     getUnitList().remove(last);
@@ -246,7 +246,7 @@ public class UnitGroupMaster {
             getUnitList().add(unit);
         }
         String name = DialogMaster.inputText("Enter a name for this group", getNewName(factionType
-                .getName(), level));
+         .getName(), level));
         List<ObjAtCoordinate> units = mapPositions(getUnitList(), hero);
         if (CoreEngine.isArcaneVault()) {
             name = "std " + name;
@@ -256,7 +256,7 @@ public class UnitGroupMaster {
 
     private static String getNewName(String string, int level) {
         return FileManager.getUniqueFileVersion(string + " "
-                + StringMaster.wrapInBraces("" + level), getGroupFilePath(string));
+         + StringMaster.wrapInBraces("" + level), getGroupFilePath(string));
     }
 
     private static List<ObjAtCoordinate> mapPositions(List<ObjType> list, Entity hero) {
@@ -357,28 +357,28 @@ public class UnitGroupMaster {
         Map<String, String> map = new HashMap<>();
         for (ObjType type : pool.keySet()) {
             map.put(type.getName(), "Cost: " + pool.get(type) + "; Power: "
-                    + type.getIntParam(PARAMS.POWER));
+             + type.getIntParam(PARAMS.POWER));
         }
         ListChooser.setDecorator(new Decorator() {
             @Override
             public void addComponents(G_Panel panel) {
                 G_ListPanel<ObjType> list =
-                        // new CustomList<>(getUnitList());
-                        new G_ListPanel<ObjType>(getUnitList()) {
-                            @Override
-                            public void setInts() {
-                                wrap = 1;
-                                minItems = max;
-                                rowsVisible = 1;
-                                layoutOrientation = JList.HORIZONTAL_WRAP;
+                 // new CustomList<>(getUnitList());
+                 new G_ListPanel<ObjType>(getUnitList()) {
+                     @Override
+                     public void setInts() {
+                         wrap = 1;
+                         minItems = max;
+                         rowsVisible = 1;
+                         layoutOrientation = JList.HORIZONTAL_WRAP;
 
-                            }
+                     }
 
-                            @Override
-                            public boolean isVertical() {
-                                return false;
-                            }
-                        };
+                     @Override
+                     public boolean isVertical() {
+                         return false;
+                     }
+                 };
                 list.setPanelSize(new Dimension(300, 120));
                 panel.add(list, "pos tp.x decor_info.y2");
                 WrappedTextComp textComp = new WrappedTextComp(null) {
@@ -415,7 +415,7 @@ public class UnitGroupMaster {
         Map<ObjType, Integer> map = new XLinkedMap<>();
         addUnits(factionType, map, factionType);
         for (String f : StringMaster.open(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
-            ObjType allyFactionType = DataManager.getType(f.toString(),MACRO_OBJ_TYPES.FACTIONS);
+            ObjType allyFactionType = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
             addUnits(factionType, map, allyFactionType);
         }
         return map;
@@ -434,9 +434,9 @@ public class UnitGroupMaster {
         if (!factionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
             costMod += 10;
             for (String f : StringMaster
-                    .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
+             .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
                 costMod += 5;
-                ObjType allyFactionType = DataManager.getType(f.toString(),MACRO_OBJ_TYPES.FACTIONS);
+                ObjType allyFactionType = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
                 if (allyFactionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
                     break;
                 }
@@ -489,7 +489,7 @@ public class UnitGroupMaster {
 
     public static String chooseGroup(Entity faction, int level) {
         File groupFile = ListChooser.chooseFile(getFactionPath(faction), StringMaster
-                .wrapInBraces("" + level), SELECTION_MODE.SINGLE);
+         .wrapInBraces("" + level), SELECTION_MODE.SINGLE);
         if (groupFile != null) {
             return groupFile.getPath();
         }
@@ -501,8 +501,8 @@ public class UnitGroupMaster {
             List<ObjType> available = new ArrayList<>(DataManager.getTypes(MACRO_OBJ_TYPES.FACTIONS));
             // DC_HeroObj
             FilterMaster.filterByProp(available, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                    + MetaEnums.WORKSPACE_GROUP.COMPLETE);
-            ObjType faction = ListChooser.chooseType_(available,MACRO_OBJ_TYPES.FACTIONS);
+             + MetaEnums.WORKSPACE_GROUP.COMPLETE);
+            ObjType faction = ListChooser.chooseType_(available, MACRO_OBJ_TYPES.FACTIONS);
             if (factionLeaderRequired) {
                 hero = UnitGroupMaster.createGroupLeader(me, faction, powerLevel);
                 if (hero == null) {
@@ -524,10 +524,10 @@ public class UnitGroupMaster {
         List<ObjType> list = DataManager.getTypesSubGroup(DC_TYPE.CHARS, StringMaster.PRESET);
         String backgrounds = faction.getProperty(PROPS.HERO_BACKGROUNDS);
         FilterMaster.filterOut(list, new NotCondition(new StringComparison(backgrounds,
-                StringMaster.getValueRef(KEYS.MATCH, G_PROPS.BACKGROUND), false)));
+         StringMaster.getValueRef(KEYS.MATCH, G_PROPS.BACKGROUND), false)));
         FilterMaster.filterOut(list, new NotCondition(new NumericCondition("2", "abs("
-                + StringMaster.getValueRef(KEYS.MATCH, PARAMS.LEVEL) + "-" + unitGroupLevel + ")",
-                false)));
+         + StringMaster.getValueRef(KEYS.MATCH, PARAMS.LEVEL) + "-" + unitGroupLevel + ")",
+         false)));
         String name = ListChooser.chooseType(DataManager.toStringList(list), DC_TYPE.CHARS);
 
         if (name == null) {

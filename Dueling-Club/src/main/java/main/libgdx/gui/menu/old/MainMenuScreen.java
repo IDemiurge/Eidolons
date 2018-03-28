@@ -25,15 +25,15 @@ public class MainMenuScreen extends ScreenWithVideoLoader {
     @Override
     protected void afterLoad() {
         menuStage.setLoadGameCallback(s ->
-                EngineEventManager.trigger(EngineEventType.LOAD_GAME, s)
+         EngineEventManager.trigger(EngineEventType.LOAD_GAME, s)
         );
     }
 
     @Override
     protected InputMultiplexer getInputController() {
         return canShowScreen() ?
-                new InputMultiplexer(menuStage) :
-                super.getInputController();
+         new InputMultiplexer(menuStage) :
+         super.getInputController();
     }
 
     @Override

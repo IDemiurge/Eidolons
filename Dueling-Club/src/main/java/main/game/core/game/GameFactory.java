@@ -19,7 +19,7 @@ public class GameFactory {
     public static DC_Game createGame(GAME_SUBCLASS subclass) {
         switch (subclass) {
             case SCENARIO:
-                return new DC_Game(){
+                return new DC_Game() {
                     @Override
                     protected DungeonMaster createDungeonMaster() {
                         return new LocationMaster(this);

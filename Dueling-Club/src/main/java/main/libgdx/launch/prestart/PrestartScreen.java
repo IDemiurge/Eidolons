@@ -10,20 +10,20 @@ import main.libgdx.GdxMaster;
  */
 public class PrestartScreen extends ScreenAdapter {
     PrestartMenu menu;
-    Stage stage ;
+    Stage stage;
     private boolean initialized;
 
     public PrestartScreen() {
-        }
+    }
+
     private void init() {
         stage = new Stage();
         menu = new PrestartMenu();
         stage.addActor(menu);
-        menu.setPosition(GdxMaster.centerWidth(menu), GdxMaster.centerHeight(menu) );
+        menu.setPosition(GdxMaster.centerWidth(menu), GdxMaster.centerHeight(menu));
         Gdx.input.setInputProcessor(stage);
         initialized = true;
     }
-
 
 
     @Override
@@ -36,9 +36,8 @@ public class PrestartScreen extends ScreenAdapter {
         if (!initialized)
             init();
         stage.act(delta);
-        stage.draw(  );
+        stage.draw();
     }
-
 
 
     @Override

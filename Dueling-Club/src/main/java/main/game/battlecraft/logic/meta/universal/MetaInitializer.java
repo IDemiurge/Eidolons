@@ -9,7 +9,5 @@ public abstract class MetaInitializer<E extends MetaGame> extends MetaGameHandle
     }
 
 
-
-
     public abstract E initMetaGame(String data);
 }

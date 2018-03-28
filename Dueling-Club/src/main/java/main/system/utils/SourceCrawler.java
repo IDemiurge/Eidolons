@@ -12,32 +12,32 @@ import java.util.List;
  */
 public class SourceCrawler {
 
-    public static void main(String[] args) {
-        new SourceCrawler();
-    }
     public SourceCrawler() {
         List<File> files = FileManager.getFilesFromDirectory(getDirPath(), false, true);
-    files.forEach(file->{
-        if (file.getName().contains(".java"))
-        {
-        String text=modifyFile(StringMaster.cropFormat(file.getName()),         FileManager.readFile(file));
-        if (text!=null )
-            FileManager.write(text, file.getAbsolutePath());
-        }
-    });
+        files.forEach(file -> {
+            if (file.getName().contains(".java")) {
+                String text = modifyFile(StringMaster.cropFormat(file.getName()), FileManager.readFile(file));
+                if (text != null)
+                    FileManager.write(text, file.getAbsolutePath());
+            }
+        });
 //    dir = new File(getDirPath());
     }
 
+    public static void main(String[] args) {
+        new SourceCrawler();
+    }
+
     private String getDirPath() {
-        return PathFinder.getXML_PATH()+"testing presets\\src crawl\\";
+        return PathFinder.getXML_PATH() + "testing presets\\src crawl\\";
     }
 
     public String modifyFile(String className, String text) {
 
         String separator = className + "(";
         List<String> replacedParts = StringMaster.openContainer(text, separator);
-        if (replacedParts.size()<2) return null ;
-        replacedParts = replacedParts.subList(1, replacedParts.size() );
+        if (replacedParts.size() < 2) return null;
+        replacedParts = replacedParts.subList(1, replacedParts.size());
 
 
         for (String sub : replacedParts) {

@@ -98,7 +98,6 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
         // DAMAGE
 
 
-
         return true;
 
     }
@@ -160,7 +159,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
     }
 
     private Damage getDamageObject(int amount) {
-     return   DamageFactory.getDamageFromEffect(this, amount);
+        return DamageFactory.getDamageFromEffect(this, amount);
     }
 
 

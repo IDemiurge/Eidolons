@@ -32,11 +32,11 @@ public class MasterySlidePanel extends HeroView {
         super(hero);
         initLists();
         views = new HC_PointView[]{
-                // new HC_PointView(allList, hero, true),
-                new HC_PointView(combatList, hero),
-                new HC_PointView(magicList, hero),
-                new HC_PointView(miscList, hero),
-                new HC_PointView(unlockedList, hero)
+         // new HC_PointView(allList, hero, true),
+         new HC_PointView(combatList, hero),
+         new HC_PointView(magicList, hero),
+         new HC_PointView(miscList, hero),
+         new HC_PointView(unlockedList, hero)
 
         };
         tabs = new HC_TabPanel();
@@ -85,7 +85,7 @@ public class MasterySlidePanel extends HeroView {
     protected void resetUnlocked() {
         unlockedList = DC_MathManager.getUnlockedMasteries(hero);
         tabs.getTabs().get(UNLOCKED_INDEX)
-                .setComp(new HC_PointView(unlockedList, hero));
+         .setComp(new HC_PointView(unlockedList, hero));
 
     }
 
@@ -101,7 +101,7 @@ public class MasterySlidePanel extends HeroView {
 
         try {
             getCurrentView().setBuffer(CharacterCreator.getHeroPanel()
-                    .getMiddlePanel().getScc().getBufferType());
+             .getMiddlePanel().getScc().getBufferType());
         } catch (Exception e) {
 
         }

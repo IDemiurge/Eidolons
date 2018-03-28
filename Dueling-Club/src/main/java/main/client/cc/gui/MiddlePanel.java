@@ -54,9 +54,9 @@ public class MiddlePanel extends G_Panel {
 
     public void resetBuffer() {
         ((HC_StatsTab) CharacterCreator.getHeroPanel(hero).getTab(HERO_TABS.STATS)).getView()
-                .setBuffer(scc.getBufferType());
+         .setBuffer(scc.getBufferType());
         ((MasterySlidePanel) mvp.getView(HERO_VIEWS.STATS)).getCurrentView().setBuffer(
-                scc.getBufferType());
+         scc.getBufferType());
 
         // if (initialized) {
         CharacterCreator.getHeroPanel(hero).getCurrentTab().refresh();

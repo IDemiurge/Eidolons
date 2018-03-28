@@ -70,22 +70,22 @@ public class TimeLimitMaster {
 
     public static boolean checkTimeLimit(METRIC metric, String string) {
         boolean result = Chronos.getTimeElapsedForMark(string) < TimeLimitMaster
-                .getTimeLimitMetric(metric);
+         .getTimeLimitMetric(metric);
         if (!result) {
             LogMaster.log(1, "***** Time elapsed for " + metric + " [" + string + "] - "
-                    + Chronos.getTimeElapsedForMark(string) + ", limit ("
-                    + TimeLimitMaster.getTimeLimitMetric(metric) + ")");
+             + Chronos.getTimeElapsedForMark(string) + ", limit ("
+             + TimeLimitMaster.getTimeLimitMetric(metric) + ")");
         }
         return result;
     }
 
     public static boolean checkTimeLimitForPathStep(String string) {
         boolean result = Chronos.getTimeElapsedForMark(string) < TimeLimitMaster
-                .getTimeLimitForPathStep();
+         .getTimeLimitForPathStep();
         if (!result) {
             LogMaster.log(1, "Time elapsed for Path Building Step" + string + " - "
-                    + Chronos.getTimeElapsedForMark(string) + ", limit ("
-                    + TimeLimitMaster.getTimeLimitForPathStep() + ")");
+             + Chronos.getTimeElapsedForMark(string) + ", limit ("
+             + TimeLimitMaster.getTimeLimitForPathStep() + ")");
         }
         return result;
     }
@@ -103,15 +103,15 @@ public class TimeLimitMaster {
     }
 
     public static long getTimeLimitForAi(UnitAI ai) {
-        if (ExplorationMaster.isExplorationOn()){
+        if (ExplorationMaster.isExplorationOn()) {
             return Math.max(AI_TIME_LIMIT_MIN_EXPLORE, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER_EXPLORE);
         }
         return Math.max(AI_TIME_LIMIT_MIN, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER);
     }
 
     public static void markTimeForAI(UnitAI ai) {
-      Chronos.mark(
-       "ai limit for "+ ai.getUnit().getName());
+        Chronos.mark(
+         "ai limit for " + ai.getUnit().getName());
     }
 
     public enum METRIC {

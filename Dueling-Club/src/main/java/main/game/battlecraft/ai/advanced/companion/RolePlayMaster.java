@@ -19,13 +19,8 @@ public class RolePlayMaster {
         return true;
     }
 
-    public enum ROLE_PLAY_MODEL {
-        VILLAIN, SCOUNDREL, DAREDEVIL, PARAGON, PROFESSIONAL, BERSERKER, MARAUDER,
-
-    }
-
-    public enum ROLE_PLAY_FACTORS {
-        GREED, CAUTION, AGGRESSION, LOYALTY, VINDICTIVENESS, SMARTNESS,
+    public enum ROLE_PLAY_AFFINITIES {
+        GREEDY, CARELESS,
     }
 
     public enum ROLE_PLAY_CASES {
@@ -33,8 +28,13 @@ public class RolePlayMaster {
 
     }
 
-    public enum ROLE_PLAY_AFFINITIES {
-        GREEDY, CARELESS,
+    public enum ROLE_PLAY_FACTORS {
+        GREED, CAUTION, AGGRESSION, LOYALTY, VINDICTIVENESS, SMARTNESS,
+    }
+
+    public enum ROLE_PLAY_MODEL {
+        VILLAIN, SCOUNDREL, DAREDEVIL, PARAGON, PROFESSIONAL, BERSERKER, MARAUDER,
+
     }
 
 }

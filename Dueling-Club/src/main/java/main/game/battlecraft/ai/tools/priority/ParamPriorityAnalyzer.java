@@ -18,7 +18,7 @@ import main.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.game.battlecraft.rules.UnitAnalyzer;
 import main.system.math.MathMaster;
 
-public class ParamPriorityAnalyzer extends AiHandler{
+public class ParamPriorityAnalyzer extends AiHandler {
 
 
     public ParamPriorityAnalyzer(AiMaster master) {
@@ -63,13 +63,14 @@ public class ParamPriorityAnalyzer extends AiHandler{
         return 100;
 
     }
-        public static boolean isParamIgnored(PARAMETER param, DC_Obj target) {
+
+    public static boolean isParamIgnored(PARAMETER param, DC_Obj target) {
         if (param instanceof PARAMS) {
             switch ((PARAMS) param) {
                 case C_STAMINA:
                     if (target instanceof Unit) {
                         if (ParamAnalyzer.isStaminaIgnore((Unit) target)) {
-                            return true   ;
+                            return true;
                         }
                     }
                     return false;
@@ -159,7 +160,7 @@ public class ParamPriorityAnalyzer extends AiHandler{
 //                    {
 //                        return 2;
 //                    }
-                 
+
 
 //                case ATTACK_MOD:
 //                    return new Float(Math.sqrt(target
@@ -177,19 +178,19 @@ public class ParamPriorityAnalyzer extends AiHandler{
         return false;
 
     }
- 
+
 
     public static int getUnitLifeFactor(Unit unit) {
         int e = unit.getIntParam(PARAMS.ENDURANCE_PERCENTAGE)
-                / MathMaster.MULTIPLIER;
+         / MathMaster.MULTIPLIER;
         int t = unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE)
-                / MathMaster.MULTIPLIER;
+         / MathMaster.MULTIPLIER;
         // undying
         return Math.min(e, t);
 
     }
 
-//TODO generate combinatorical AiConsts per GOAL_SITUATION !
+    //TODO generate combinatorical AiConsts per GOAL_SITUATION !
     public static int getSituationFactor(GOAL_TYPE type, SITUATION situation) {
         if (situation == null) {
             return 0;
@@ -263,13 +264,13 @@ public class ParamPriorityAnalyzer extends AiHandler{
         DC_Obj target = action.getTarget();
         Integer resistance = target.getIntParam(PARAMS.RESISTANCE);
         resistance -= action.getSource().getIntParam(
-                PARAMS.RESISTANCE_PENETRATION);
+         PARAMS.RESISTANCE_PENETRATION);
         Integer mod = active.getIntParam(PARAMS.RESISTANCE_MODIFIER);
         if (mod > 0) {
             resistance = resistance * mod / 100;
         }
         return Math.min(0, -resistance);
     }
- 
+
 
 }

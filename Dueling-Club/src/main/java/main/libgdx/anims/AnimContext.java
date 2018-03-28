@@ -12,10 +12,10 @@ import main.game.logic.event.Event;
  * Created by JustMe on 11/9/2017.
  */
 public class AnimContext extends Context {
-    private  Coordinates sourceCoordinate;
-    private  Coordinates targetCoordinate;
-    private  Effect effect;
-    private  Event event;
+    private Coordinates sourceCoordinate;
+    private Coordinates targetCoordinate;
+    private Effect effect;
+    private Event event;
     private boolean attachToNext;
 
     public AnimContext(Obj source, Obj target, Event event) {
@@ -37,7 +37,7 @@ public class AnimContext extends Context {
         if (source != null)
             this.sourceCoordinate = source.getCoordinates();
         if (target != null)
-        this.targetCoordinate = target.getCoordinates();
+            this.targetCoordinate = target.getCoordinates();
 
     }
 

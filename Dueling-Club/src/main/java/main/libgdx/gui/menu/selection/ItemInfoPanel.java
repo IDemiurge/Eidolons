@@ -41,9 +41,9 @@ public class ItemInfoPanel extends TablePanel {
 //         .maxWidth(700).maxHeight(700)
         ;
         row();
-    if (description!=null )
-        addElement(description).left().padLeft(30);
-        if (fullsizePortrait!=null ) {
+        if (description != null)
+            addElement(description).left().padLeft(30);
+        if (fullsizePortrait != null) {
             addNormalSize(fullsizePortrait).right().padBottom(75).padRight(35);
             fullsizePortrait.setZIndex(0);
         }
@@ -67,7 +67,8 @@ public class ItemInfoPanel extends TablePanel {
             setSize(GdxMaster.adjustSize(1020), 900);
         }
     }
-        protected void initBg() {
+
+    protected void initBg() {
         if (isNinepatch())
             setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
         else
@@ -123,7 +124,7 @@ public class ItemInfoPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        if (getUserObject()==null )
+        if (getUserObject() == null)
             return;
         super.updateAct(delta);
         description.setText(item.description);

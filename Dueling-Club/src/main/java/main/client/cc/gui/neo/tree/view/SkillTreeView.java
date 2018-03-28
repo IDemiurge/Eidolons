@@ -19,34 +19,34 @@ import main.system.launch.CoreEngine;
 import main.system.math.DC_MathManager;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SkillTreeView extends HT_View {
 
     public static final MASTERY[] COMBAT = new MASTERY[]{SkillEnums.MASTERY.DEFENSE_MASTERY,
-            SkillEnums.MASTERY.DISCIPLINE_MASTERY, SkillEnums.MASTERY.ARMORER_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY,
-            SkillEnums.MASTERY.DETECTION_MASTERY, SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY,
-            SkillEnums.MASTERY.BLADE_MASTERY, SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY,
-            SkillEnums.MASTERY.POLEARM_MASTERY, SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY,
-            SkillEnums.MASTERY.DUAL_WIELDING_MASTERY, SkillEnums.MASTERY.SHIELD_MASTERY, SkillEnums.MASTERY.UNARMED_MASTERY,};
+     SkillEnums.MASTERY.DISCIPLINE_MASTERY, SkillEnums.MASTERY.ARMORER_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY,
+     SkillEnums.MASTERY.DETECTION_MASTERY, SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY,
+     SkillEnums.MASTERY.BLADE_MASTERY, SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY,
+     SkillEnums.MASTERY.POLEARM_MASTERY, SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY,
+     SkillEnums.MASTERY.DUAL_WIELDING_MASTERY, SkillEnums.MASTERY.SHIELD_MASTERY, SkillEnums.MASTERY.UNARMED_MASTERY,};
     public static final MASTERY[] WEAPONS = new MASTERY[]{SkillEnums.MASTERY.BLADE_MASTERY,
-            SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY, SkillEnums.MASTERY.POLEARM_MASTERY,
-            SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY,
-            SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,};
+     SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY, SkillEnums.MASTERY.POLEARM_MASTERY,
+     SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY,
+     SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,};
     public static final MASTERY[] FOCUS_WORKSPACE = COMBAT;
     private static final MASTERY[] AERIDAN = new MASTERY[]{
 
-            SkillEnums.MASTERY.SHADOW_MASTERY, SkillEnums.MASTERY.WITCHERY_MASTERY, SkillEnums.MASTERY.PSYCHIC_MASTERY,
-            SkillEnums.MASTERY.SPELLCRAFT_MASTERY, SkillEnums.MASTERY.WIZARDRY_MASTERY, SkillEnums.MASTERY.ENCHANTMENT_MASTERY,
-            SkillEnums.MASTERY.SORCERY_MASTERY, SkillEnums.MASTERY.CONJURATION_MASTERY, SkillEnums.MASTERY.MEDITATION_MASTERY,
-            SkillEnums.MASTERY.WARP_MASTERY, SkillEnums.MASTERY.BLADE_MASTERY, SkillEnums.MASTERY.DEFENSE_MASTERY,
-            SkillEnums.MASTERY.MOBILITY_MASTERY,};
+     SkillEnums.MASTERY.SHADOW_MASTERY, SkillEnums.MASTERY.WITCHERY_MASTERY, SkillEnums.MASTERY.PSYCHIC_MASTERY,
+     SkillEnums.MASTERY.SPELLCRAFT_MASTERY, SkillEnums.MASTERY.WIZARDRY_MASTERY, SkillEnums.MASTERY.ENCHANTMENT_MASTERY,
+     SkillEnums.MASTERY.SORCERY_MASTERY, SkillEnums.MASTERY.CONJURATION_MASTERY, SkillEnums.MASTERY.MEDITATION_MASTERY,
+     SkillEnums.MASTERY.WARP_MASTERY, SkillEnums.MASTERY.BLADE_MASTERY, SkillEnums.MASTERY.DEFENSE_MASTERY,
+     SkillEnums.MASTERY.MOBILITY_MASTERY,};
     private static final MASTERY[] JIMMY = new MASTERY[]{SkillEnums.MASTERY.BLADE_MASTERY,
-            SkillEnums.MASTERY.DEFENSE_MASTERY, SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,
-            SkillEnums.MASTERY.ITEM_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY, SkillEnums.MASTERY.DETECTION_MASTERY,
-            SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY, SkillEnums.MASTERY.ENCHANTMENT_MASTERY,};
+     SkillEnums.MASTERY.DEFENSE_MASTERY, SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,
+     SkillEnums.MASTERY.ITEM_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY, SkillEnums.MASTERY.DETECTION_MASTERY,
+     SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY, SkillEnums.MASTERY.ENCHANTMENT_MASTERY,};
     private static MASTERY[][] STD_WORKSPACES = {AERIDAN, JIMMY};
     // new ArrayMaster<MASTERY>().join(WEAPONS, COMBAT );
     private static MASTERY[][] STD_AV_WORKSPACES = {COMBAT, WEAPONS};
@@ -109,16 +109,16 @@ public class SkillTreeView extends HT_View {
                     @Override
                     public Component generateTabComp(HC_TabPanel panel) {
                         return new GraphicComponent(ImageManager.getNewBufferedImage(
-                                getTabCompWidth(), getTabCompWidth())) {
+                         getTabCompWidth(), getTabCompWidth())) {
                             public Image getImg() {
                                 boolean locked = !DC_MathManager.isMasteryUnlocked(hero, mastery);
                                 try {
                                     image = HC_Master.generateValueIcon(mastery, isSelected(),
-                                            locked, true);
+                                     locked, true);
                                 } catch (Exception e) {
                                     main.system.ExceptionMaster.printStackTrace(e);
                                     image = ImageManager.getNewBufferedImage(getTabCompWidth(),
-                                            getTabCompWidth());
+                                     getTabCompWidth());
                                 }
                                 return image;
                             }

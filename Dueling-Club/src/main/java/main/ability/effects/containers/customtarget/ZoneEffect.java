@@ -24,7 +24,7 @@ public class ZoneEffect extends SpecialTargetingEffect
     // private AutoTargeting targeting;
 
     @AE_ConstrArgs(argNames = {"effects", "radius", "allyOrEnemyOnly", "notSelf",
-            "reductionFormula"})
+     "reductionFormula"})
     public ZoneEffect(Effect effects, Formula radius, Boolean allyOrEnemyOnly, Boolean notSelf,
                       String reductionFormula) {
         this.effects = effects;
@@ -36,6 +36,7 @@ public class ZoneEffect extends SpecialTargetingEffect
         }
         effects.setReconstruct(true);
     }
+
     @AE_ConstrArgs(argNames = {"effects", "radius", "allyOrEnemyOnly", "notSelf"})
     public ZoneEffect(Effect effects, Formula radius, Boolean allyOrEnemyOnly, Boolean notSelf) {
         this(effects, radius, allyOrEnemyOnly, notSelf, null);
@@ -53,7 +54,7 @@ public class ZoneEffect extends SpecialTargetingEffect
 //        }
         NumericCondition condition = ConditionMaster.getDistanceFilterCondition(KEYS.TARGET.name(), spell_radius);
         conditions
-                .add(condition);
+         .add(condition);
         if (spell_radius == 0)   //just on same cell
             condition.setStrict(false);
         conditions.add(ConditionMaster.getNotDeadCondition()); // TODO really???
@@ -65,7 +66,7 @@ public class ZoneEffect extends SpecialTargetingEffect
         // modifiers?
         {
             conditions.add(allyOrEnemyOnly ? ConditionMaster.getAllyCondition() : ConditionMaster
-                    .getEnemyCondition());
+             .getEnemyCondition());
         }
 
         // legacy?

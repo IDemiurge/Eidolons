@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  * Created by JustMe on 8/11/2017.
  */
 public class GrayscaleShader {
-    public static final  String vertexShader = "attribute vec4 a_position;\n" +
+    public static final String vertexShader = "attribute vec4 a_position;\n" +
      "attribute vec4 a_color;\n" +
      "attribute vec2 a_texCoord0;\n" +
      "\n" +

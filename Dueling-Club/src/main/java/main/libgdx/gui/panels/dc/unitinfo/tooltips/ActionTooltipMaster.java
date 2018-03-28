@@ -154,7 +154,7 @@ public class ActionTooltipMaster {
                     //TODO getAttack
                     return
                      String.valueOf(MathMaster.applyMod(action.getOwnerObj().getIntParam(p),
-                     action.getIntParam(PARAMS.ATTACK_MOD)));
+                      action.getIntParam(PARAMS.ATTACK_MOD)));
                 case BASE_DAMAGE:
                     return "Base";
                 case DAMAGE:

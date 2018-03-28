@@ -8,7 +8,7 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
-public class DuplicateSpellEffect extends MicroEffect  implements TriggeredEffect {
+public class DuplicateSpellEffect extends MicroEffect implements TriggeredEffect {
     public static EVENT_TYPE EVENT_TYPE = STANDARD_EVENT_TYPE.SPELL_RESOLVED;
     private boolean chooseTarget = false;
     private boolean group = false;
@@ -55,6 +55,6 @@ public class DuplicateSpellEffect extends MicroEffect  implements TriggeredEffec
         // spelltype = ref.getObj(KEYS.SPELL).getName();
         // REF = ref.getObj(KEYS.SPELL).getRef();
         return new CastNewSpellEffect(spelltype, true, chooseTarget, target_key)
-                .apply(REF);
+         .apply(REF);
     }
 }

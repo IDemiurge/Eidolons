@@ -8,7 +8,7 @@ import main.content.enums.entity.UnitEnums;
 import main.entity.obj.unit.Unit;
 import main.system.math.Formula;
 
-public class ResurrectEffect extends DC_Effect  implements OneshotEffect {
+public class ResurrectEffect extends DC_Effect implements OneshotEffect {
     /*
      * re-equip items
      */

@@ -87,12 +87,12 @@ public class ValueBox extends G_Panel {
             if (!entity.getGame().isSimulation()) {
                 try {
                     invert = (entity.getOwner() != entity.getGame().getManager().getActiveObj()
-                            .getOwner());
+                     .getOwner());
                 } catch (Exception e) {
                 }
             }
             c = (invert) ? SmartTextManager.getValueCase(value, (Obj) entity).getColor()
-                    : SmartTextManager.getValueCase(value, (Obj) entity).getAltColor();
+             : SmartTextManager.getValueCase(value, (Obj) entity).getAltColor();
             if (invert) {
                 c = ColorManager.getInvertedColor(c);
             }

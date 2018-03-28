@@ -98,16 +98,16 @@ public class RestMasterOld {
 
     public static void applyMacroMode(Unit hero) {
         MACRO_MODES mode = new EnumMaster<MACRO_MODES>().retrieveEnumConst(
-                MACRO_MODES.class, hero.getProperty(MACRO_PROPS.MACRO_MODE));
+         MACRO_MODES.class, hero.getProperty(MACRO_PROPS.MACRO_MODE));
         String paramString = mode.getParamString();
         Map<PARAMETER, String> map = new RandomWizard<PARAMETER>()
-                .constructStringWeightMap(paramString, PARAMETER.class);
+         .constructStringWeightMap(paramString, PARAMETER.class);
         for (PARAMETER p : map.keySet()) {
             Ref ref = hero.getRef().getCopy();
             setModeTargets(mode, ref); // TODO MAX
             String string = formatModeFormula(map.get(p));
             new ModifyValueEffect(p, MOD.MODIFY_BY_CONST, string)
-                    .apply(ref);
+             .apply(ref);
             // hero.modifyParameter(portrait, amount);
         }
         // applyCustomEffect
@@ -155,11 +155,11 @@ public class RestMasterOld {
     // upon activation
     public static void applyMacroModeContinuous(Unit hero) {
         MACRO_MODES mode = new EnumMaster<MACRO_MODES>().retrieveEnumConst(
-                MACRO_MODES.class, hero.getProperty(MACRO_PROPS.MACRO_MODE));
+         MACRO_MODES.class, hero.getProperty(MACRO_PROPS.MACRO_MODE));
         String paramString = mode.getContinuousParamString();
 
         Map<PARAMETER, Integer> map = new RandomWizard<PARAMETER>()
-                .constructWeightMap(paramString, PARAMETER.class);
+         .constructWeightMap(paramString, PARAMETER.class);
 
         for (PARAMETER param : map.keySet()) {
             hero.modifyParameter(param, map.get(param));

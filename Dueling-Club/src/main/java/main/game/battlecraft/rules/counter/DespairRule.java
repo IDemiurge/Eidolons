@@ -36,8 +36,8 @@ public class DespairRule extends DC_CounterRule {
     @Override
     protected Effect getSpecialRoundEffects() {
         Effects effects = new Effects(new ModifyValueEffect(PARAMS.C_MORALE,
-                MOD.MODIFY_BY_CONST, getCounterRef() + "*"
-                + MORALE_PER_COUNTER));
+         MOD.MODIFY_BY_CONST, getCounterRef() + "*"
+         + MORALE_PER_COUNTER));
 
         return effects;
     }
@@ -51,11 +51,12 @@ public class DespairRule extends DC_CounterRule {
     public COUNTER getCounter() {
         return COUNTER.Despair;
     }
+
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.SPIRIT,
-                MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-                + SPIRIT_PER_COUNTER));
+         MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+         + SPIRIT_PER_COUNTER));
     }
 
     @Override

@@ -23,7 +23,8 @@ public class MapActor extends SuperActor {
         addActor(portrait = new Image(portraitTexture));
         originalTexture = portraitTexture;
     }
-    public void init(){
+
+    public void init() {
         highlight = new SuperContainer(new Image(TextureCache.getOrCreateR(
          StrPathBuilder.build("UI", "outlines", "shadows", "a new light.png"))), true);
         highlight.setTouchable(Touchable.disabled);
@@ -32,7 +33,7 @@ public class MapActor extends SuperActor {
 //        highlight.setPosition(highlight.getWidth()/2, highlight.getHeight()/2);
         addActor(highlight);
 //        highlight.setSize(getWidth()*1.2f,getWidth()*1.2f);
-}
+    }
 
 
     @Override

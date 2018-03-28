@@ -309,13 +309,13 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         }
 
 
-            if (ref.getObj(KEYS.ACTIVE) != null) {
-                if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVERT_ON_ENEMY)) {
-                    if (!obj.getOwner().equals(ref.getSourceObj().getOwner())) {
-                        amount = -amount;
-                    }
+        if (ref.getObj(KEYS.ACTIVE) != null) {
+            if (ref.getObj(KEYS.ACTIVE).checkBool(GenericEnums.STD_BOOLS.INVERT_ON_ENEMY)) {
+                if (!obj.getOwner().equals(ref.getSourceObj().getOwner())) {
+                    amount = -amount;
                 }
             }
+        }
 
         int intAmount = (int) Math.round(amount);
         if (getResistanceMod() != null) {
@@ -373,7 +373,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                 break;
             }
         }
-        if (!ref.isQuiet() && ref.getActive()!=null)
+        if (!ref.isQuiet() && ref.getActive() != null)
             if (mod_type == MOD.MODIFY_BY_CONST || mod_type == MOD.MODIFY_BY_PERCENT) {
                 if (!isContinuousWrapped())
                     GuiEventManager.trigger(GuiEventType.VALUE_MOD,

@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Array;
-import main.system.images.ImageManager;
 import main.libgdx.launch.Showcase;
+import main.system.images.ImageManager;
 
 import java.util.HashMap;
 import java.util.Map;

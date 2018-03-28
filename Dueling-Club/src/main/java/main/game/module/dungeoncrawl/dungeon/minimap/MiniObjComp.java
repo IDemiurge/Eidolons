@@ -58,7 +58,7 @@ public class MiniObjComp implements Refreshable {
 
     public void initSize(Dimension mapSize) {
         width = isOverlaying() ? map.getGrid().getOverlayingObjWidth() : map.getGrid()
-                .getCellWidth();
+         .getCellWidth();
         height = width;
         // (int) (mapSize.getWidth() / dungeon.getCellsX());
         // height = (int) (mapSize.getHeight() / dungeon.getCellsY());
@@ -129,11 +129,11 @@ public class MiniObjComp implements Refreshable {
         if (vision != VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT) {
             if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
                 image = !terrain ? ImageManager
-                        .applyBorder(image, ImageManager.BORDER_BEYOND_SIGHT) : (ImageManager
-                        .getHiddenCellIcon()).getImage();
+                 .applyBorder(image, ImageManager.BORDER_BEYOND_SIGHT) : (ImageManager
+                 .getHiddenCellIcon()).getImage();
             } else {
                 image = !terrain ? ImageManager.applyBorder(image, ImageManager.BORDER_UNKNOWN)
-                        : (ImageManager.getUnknownCellIcon()).getImage();
+                 : (ImageManager.getUnknownCellIcon()).getImage();
             }
         } else {
             // if (visibility == VISIBILITY_LEVEL.THICK_DARKNESS) {
@@ -151,7 +151,7 @@ public class MiniObjComp implements Refreshable {
     private void applyHighlights() {
         if (hl != null) {
             Map<HIGHLIGHT, BufferedImage> highlightedImageCache = highlightedImageCacheMap
-                    .get(image);
+             .get(image);
             if (highlightedImageCache == null) {
                 highlightedImageCache = new HashMap<>();
                 highlightedImageCacheMap.put(image, highlightedImageCache);
@@ -161,7 +161,7 @@ public class MiniObjComp implements Refreshable {
                 buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                 buffer.getGraphics().drawImage(image, 0, 0, width, height, null);
                 Image sizedVersion = ImageManager.getSizedIcon(hl.getBorder().getImagePath(),
-                        size).getImage();
+                 size).getImage();
                 buffer.getGraphics().drawImage(sizedVersion, 0, 0, null);
                 highlightedImageCache.put(hl, buffer);
             }
@@ -172,7 +172,7 @@ public class MiniObjComp implements Refreshable {
             // green?
         } else if (obj.isInfoSelected()) {
             image = ImageManager.applyImageNew(image, ImageManager.BORDER_INFO_SELECTION_HIGHLIGHT
-                    .getImage());
+             .getImage());
         }
         // image = ImageManager.applyBorder(image,
         // ImageManager.BORDER_INFO_SELECTION_HIGHLIGHT);
@@ -284,7 +284,7 @@ public class MiniObjComp implements Refreshable {
             if (point.y < getHeight() / 3) {
                 // CYCLE THRU OBJs
                 Obj choice = DialogMaster.objChoice("Which object?", getObjects().toArray(
-                        new Obj[getObjects().size()]));
+                 new Obj[getObjects().size()]));
                 if (choice != null) {
                     obj = (DC_Obj) choice;
                     obj.getGame().getManager().objClicked(obj);
@@ -318,7 +318,7 @@ public class MiniObjComp implements Refreshable {
         if (getComp().getMouseListeners() != null) {
             if (getComp().getMouseListeners().length > 0) {
                 LogMaster.log(1, getComp().getMouseListeners() + " on "
-                        + getComp().toString());
+                 + getComp().toString());
             }
         }
     }
@@ -355,12 +355,12 @@ public class MiniObjComp implements Refreshable {
         return dungeon;
     }
 
-    public enum VISIBILITY_RENDER {
-        TRANSPARENCY, DARKEN, IMAGE_UNKNOWN, IMAGE_OUTLINE,
-    }
-
     public enum IDENTIFICATION_STATUS {
 
+    }
+
+    public enum VISIBILITY_RENDER {
+        TRANSPARENCY, DARKEN, IMAGE_UNKNOWN, IMAGE_OUTLINE,
     }
 
 }

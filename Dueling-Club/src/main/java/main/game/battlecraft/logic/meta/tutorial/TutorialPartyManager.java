@@ -16,6 +16,7 @@ public class TutorialPartyManager extends PartyManager<TutorialMeta> {
     public TutorialPartyManager(TutorialMetaMaster tutorialMetaMaster) {
         super(tutorialMetaMaster);
     }
+
     @Override
     public Party initPlayerParty() {
         ObjType type = DataManager.getType(TUTORIAL_PARTY, DC_TYPE.PARTY);

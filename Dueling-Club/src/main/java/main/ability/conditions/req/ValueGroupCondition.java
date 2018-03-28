@@ -20,7 +20,7 @@ public class ValueGroupCondition extends NumericCondition {
     @Override
     public String toString() {
         return total ? "Total " : "Any " + template.toString() + " greater than "
-                + getComparingValue();
+         + getComparingValue();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ValueGroupCondition extends NumericCondition {
 
     private boolean check(PARAMETER p, Ref ref) {
         return ConditionMaster.getParamCondition(p.getName(), getComparingValue().toString())
-                .preCheck(ref);
+         .preCheck(ref);
     }
 
 }

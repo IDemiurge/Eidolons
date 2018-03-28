@@ -44,7 +44,7 @@ public class TextureManager {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 getSpriteCache().beginCache();
-                getSpriteCache().add(TextureCache.createTexture(emptyCellPath,false),
+                getSpriteCache().add(TextureCache.createTexture(emptyCellPath, false),
                  x * GridConst.CELL_W,
                  y * GridConst.CELL_H);
                 cacheId++;
@@ -52,7 +52,7 @@ public class TextureManager {
 
             }
         }
-        cellSpriteCacheId=cacheId;
+        cellSpriteCacheId = cacheId;
     }
 
     public static void drawFromSpriteCache(int id) {
@@ -60,8 +60,9 @@ public class TextureManager {
         getSpriteCache().draw(id);
         getSpriteCache().end();
     }
+
     public static void initBackgroundCache(TextureRegion backTexture) {
-        backgroundId=cacheId;
+        backgroundId = cacheId;
         getSpriteCache().beginCache();
         getSpriteCache().add(backTexture, 0, 0);
         cacheId++;

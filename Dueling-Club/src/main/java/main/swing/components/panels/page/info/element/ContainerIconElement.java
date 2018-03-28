@@ -17,14 +17,14 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
 
 import java.awt.*;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ContainerIconElement extends G_PagePanel<SmallItem> implements EntityValueComponent {
     private static final int VERSION = 4;
     private static final String DISPLAYED_PASSIVES = StringMaster
-            .getWellFormattedString(AbilityEnums.ABILITY_GROUP.STD_PASSIVE.toString());
+     .getWellFormattedString(AbilityEnums.ABILITY_GROUP.STD_PASSIVE.toString());
     private static final int PAGE_SIZE_SMALL = 6;
     private int iconSize;
     private Entity entity;
@@ -54,8 +54,8 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
         List<SmallItem> emptyList = new ArrayList<>();
         ListMaster.fillWithNullElements(emptyList, pageSize);
         IconListPanel<SmallItem> iconListPanel = new IconListPanel<>(
-                // ListMaster.getEmptyList(pageSize)
-                emptyList, iconSize, pageSize);
+         // ListMaster.getEmptyList(pageSize)
+         emptyList, iconSize, pageSize);
         iconListPanel.getList().setCellRenderer(iconListPanel);
         return iconListPanel;
     }
@@ -63,7 +63,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
     @Override
     protected G_Component createPageComponent(List<SmallItem> list) {
         IconListPanel<SmallItem> iconListPanel = new IconListPanel<>(list, iconSize,
-                pageSize);
+         pageSize);
         iconListPanel.getList().setCellRenderer(iconListPanel);
         return iconListPanel;
     }
@@ -106,24 +106,24 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
             Collection<SmallItem> fullList = new ArrayList<>();
 
             for (String subString : StringMaster.open(entity
-                    .getProperty(G_PROPS.CLASSIFICATIONS))) {
+             .getProperty(G_PROPS.CLASSIFICATIONS))) {
                 CLASSIFICATIONS classif = new EnumMaster<CLASSIFICATIONS>().retrieveEnumConst(
-                        CLASSIFICATIONS.class, subString);
+                 CLASSIFICATIONS.class, subString);
                 if (classif != null) {
                     if (classif.isDisplayed()) {
                         fullList.add(new SmallItem(classif, classif.getImagePath(), classif
-                                .getName(), classif.getToolTip()));
+                         .getName(), classif.getToolTip()));
                     }
                 }
             }
 
             for (String subString : StringMaster.open(entity
-                    .getProperty(G_PROPS.STANDARD_PASSIVES))) {
+             .getProperty(G_PROPS.STANDARD_PASSIVES))) {
                 STANDARD_PASSIVES std_pas = new EnumMaster<STANDARD_PASSIVES>().retrieveEnumConst(
-                        STANDARD_PASSIVES.class, subString);
+                 STANDARD_PASSIVES.class, subString);
                 if (std_pas != null) {
                     fullList.add(new SmallItem(std_pas, std_pas.getImagePath(), std_pas.getName(),
-                            std_pas.getToolTip()));
+                     std_pas.getToolTip()));
                 }
             }
 
@@ -132,7 +132,7 @@ public class ContainerIconElement extends G_PagePanel<SmallItem> implements Enti
                     continue;
                 }
                 if (passive.getProperty(G_PROPS.ABILITY_GROUP, true).equalsIgnoreCase(
-                        DISPLAYED_PASSIVES)) {
+                 DISPLAYED_PASSIVES)) {
                     fullList.add(new SmallItem(passive));
                 }
             }

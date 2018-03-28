@@ -6,6 +6,7 @@ import main.client.cc.gui.neo.choice.*;
 import main.client.cc.logic.party.Party;
 import main.client.dc.Launcher.VIEWS;
 import main.content.*;
+import main.content.enums.GenericEnums.DIFFICULTY;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -15,7 +16,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.content.enums.GenericEnums.DIFFICULTY;
 import main.game.battlecraft.logic.meta.arcade.ArenaArcadeMaster;
 import main.game.battlecraft.logic.meta.universal.PartyHelper;
 import main.game.core.game.DC_Game.GAME_MODES;
@@ -75,7 +75,7 @@ public class HC_SequenceMaster implements SequenceManager {
     public void chooseNewMember(Party party) {
 
         Unit leader = party.getLeader();
-        Conditions filterConditions = new Conditions(){
+        Conditions filterConditions = new Conditions() {
             @Override
             public boolean check(Ref ref) {
                 return super.check(leader.getRef());
@@ -103,20 +103,20 @@ public class HC_SequenceMaster implements SequenceManager {
         // filterConditions.add(orConditions);
 
         NotCondition noDuplicatesCondition = new NotCondition(new StringContainersComparison(true,
-                StringMaster.getValueRef(KEYS.PARTY, PROPS.MEMBERS), StringMaster.getValueRef(
-                KEYS.MATCH, G_PROPS.NAME), false));
+         StringMaster.getValueRef(KEYS.PARTY, PROPS.MEMBERS), StringMaster.getValueRef(
+         KEYS.MATCH, G_PROPS.NAME), false));
         filterConditions.add(noDuplicatesCondition);
 
         if (CharacterCreator.isArcadeMode()) {
             NumericCondition lvlCondition = new NumericCondition(false, StringMaster.getValueRef(
-                    KEYS.PARTY, PARAMS.LEVEL)
-                    + "+1", StringMaster.getValueRef(KEYS.MATCH, PARAMS.HERO_LEVEL));
+             KEYS.PARTY, PARAMS.LEVEL)
+             + "+1", StringMaster.getValueRef(KEYS.MATCH, PARAMS.HERO_LEVEL));
             filterConditions.add(lvlCondition);
         }
 //        filterConditions.setRef();
         launchEntitySelection(DC_TYPE.CHARS, MainManager.getPresetGroup(),
          filterConditions,
-                leader, InfoMaster.CHOOSE_MEMBER);
+         leader, InfoMaster.CHOOSE_MEMBER);
 
         selection = SELECTION_TYPES.NEW_MEMBER_SELECTION;
     }
@@ -151,7 +151,7 @@ public class HC_SequenceMaster implements SequenceManager {
                                       Condition filteringCondition, Unit entity, final String info,
                                       final Comparator<? super ObjType> sorter) {
         final Conditions filteringConditions = new Conditions(filteringCondition
-                // , getWorkspaceFilterCondition()
+         // , getWorkspaceFilterCondition()
         );
         setSequence(new ChoiceSequence());
         getSequence().addView(new EntityChoiceView(getSequence(), entity) {
@@ -198,7 +198,7 @@ public class HC_SequenceMaster implements SequenceManager {
                                       String info) {
         sequence = new ChoiceSequence();
         sequence.addView(new PresetEntityChoiceView(sequence, hero, info, list
-                .toArray(new Entity[list.size()])));
+         .toArray(new Entity[list.size()])));
         getSequence().setManager(this);
         sequence.start();
     }
@@ -238,7 +238,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
     public boolean mainHeroChoiceSequence(Unit hero) {
         final ChoiceSequence cs = new ChoiceSequence();
-       final  List<Entity> list = ListMaster.getEntityList(PartyHelper.getParty().getMembers());
+        final List<Entity> list = ListMaster.getEntityList(PartyHelper.getParty().getMembers());
         PresetEntityChoiceView view = new PresetEntityChoiceView(cs, hero, InfoMaster.MIDDLE_HERO, list) {
 
             protected int getColumnsCount() {
@@ -281,7 +281,7 @@ public class HC_SequenceMaster implements SequenceManager {
 
         if (PartyHelper.getParty().checkTactics()
             // || ArenaArcadeMaster.isTestMode()
-                ) {
+         ) {
             positionChoiceView = new PositionChoiceView(cs, hero);
         } else if (list.size() > 1) {
             positionChoiceView = new PresetEntityChoiceView(cs, hero, InfoMaster.MIDDLE_HERO, list) {

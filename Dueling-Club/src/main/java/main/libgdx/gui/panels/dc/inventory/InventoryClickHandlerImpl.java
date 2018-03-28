@@ -161,10 +161,12 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 //        InventoryTransactionManager.updateType(unit); ???
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, true);
     }
+
     @Override
     public void cancel() {
         unit.applyType(buffer);
     }
+
     @Override
     public void cancelClicked() {
         if (!isCancelEnabled()) {

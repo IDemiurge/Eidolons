@@ -21,7 +21,6 @@ import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
-import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -125,8 +124,8 @@ public class GridPanel extends Group {
                             uv.setOutline(texture);
                         } else {
                             if (obj instanceof Unit) {
-                                if (!obj.isOutsideCombat()){
-                                    main.system.auxiliary.log.LogMaster.log(1, obj + " has NO OUTLINE: " );
+                                if (!obj.isOutsideCombat()) {
+                                    main.system.auxiliary.log.LogMaster.log(1, obj + " has NO OUTLINE: ");
                                 }
                             }
                             uv.setOutline(null);
@@ -320,8 +319,8 @@ public class GridPanel extends Group {
             if (!VisionManager.isVisionHacked())
                 if (OutlineMaster.isAutoOutlinesOff())
                     if (OutlineMaster.isOutlinesOn()) {
-                    updateOutlines();
-                }
+                        updateOutlines();
+                    }
 
             firstUpdateDone = true;
             resetVisibleRequired = true;
@@ -396,7 +395,7 @@ public class GridPanel extends Group {
                 GuiEventManager.trigger(BOTTOM_PANEL_UPDATE, null);
             }
             if (!firstUpdateDone) {
-                DC_Game.game.getVisionMaster().triggerGuiEvents();
+//                DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
                 GuiEventManager.trigger(UPDATE_LIGHT);
             }
@@ -472,6 +471,10 @@ public class GridPanel extends Group {
         if (getUnitMap().get(sub).getParent() == null)
             addActor(getUnitMap().get(sub));
         unitMap.get(sub).setVisible(b);
+    }
+
+    public void setUpdateRequired(boolean updateRequired) {
+        this.updateRequired = updateRequired;
     }
 
     private EventCallback onIngameEvent() {
@@ -692,7 +695,7 @@ public class GridPanel extends Group {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
+        setUpdateRequired(true);
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
@@ -852,6 +855,10 @@ public class GridPanel extends Group {
         return hoverObj;
     }
 
+    public void setHoverObj(GridUnitView hoverObj) {
+        this.hoverObj = hoverObj;
+    }
+
     public void resetZIndices() {
         loop:
         for (int x = 0; x < cols; x++) {
@@ -863,14 +870,14 @@ public class GridPanel extends Group {
                 } else {
                     cell.setZIndex(y);
 
-                for (GridUnitView sub : views) {
-                    if (sub.isHovered()) {
-                        hoverObj = sub;
-                        cell.setZIndex(Integer.MAX_VALUE);
-                        cell.setTopUnitView(sub);
+                    for (GridUnitView sub : views) {
+                        if (sub.isHovered()) {
+                            setHoverObj(sub);
+                            cell.setZIndex(Integer.MAX_VALUE);
+                            cell.setTopUnitView(sub);
 
+                        }
                     }
-                }
                 }
             }
         }

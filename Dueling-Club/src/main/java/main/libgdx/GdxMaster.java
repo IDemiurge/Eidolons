@@ -161,13 +161,13 @@ public class GdxMaster {
 
     public static void setInputProcessor(InputProcessor inputController) {
         if (inputController instanceof InputMultiplexer) {
-            main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor InputMultiplexer: " + inputController);
+            main.system.auxiliary.log.LogMaster.log(0, ">>>>> setInputProcessor InputMultiplexer: " + inputController);
 
             for (InputProcessor sub : ((InputMultiplexer) inputController).getProcessors()) {
-                main.system.auxiliary.log.LogMaster.log(1, "Processor: " + sub);
+                main.system.auxiliary.log.LogMaster.log(0, "Processor: " + sub);
             }
         } else
-            main.system.auxiliary.log.LogMaster.log(1, ">>>>> setInputProcessor: " + inputController);
+            main.system.auxiliary.log.LogMaster.log(0, ">>>>> setInputProcessor: " + inputController);
 
         Gdx.input.setInputProcessor(inputController);
     }

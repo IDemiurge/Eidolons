@@ -88,7 +88,7 @@ public class DC_EffectManager implements EffectManager {
             return false;
         }
         return targetObj.getOwner() != effect.getRef().getSourceObj()
-                .getOwner();
+         .getOwner();
     }
 
     private boolean checkEffectType(Effect effect) {

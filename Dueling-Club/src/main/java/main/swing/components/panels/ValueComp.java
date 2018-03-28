@@ -76,7 +76,7 @@ public abstract class ValueComp extends G_Panel {
 
         if (fillerImage == null) {
             fillerImage = ImageManager.getBufferedImage(ImageManager.getImage(getCompPath()
-                    + param.getName() + ".png"));
+             + param.getName() + ".png"));
         }
 
         length = fillerImage.getHeight() * percentage / MathMaster.PERCENTAGE;
@@ -89,7 +89,7 @@ public abstract class ValueComp extends G_Panel {
         // paintLiquid(g);
 
         BufferedImage liquidImage = ImageManager.getNewBufferedImage(visuals.getWidth(), visuals
-                .getHeight());
+         .getHeight());
         paintLiquid(liquidImage.getGraphics());
         // if ()
         g.drawImage(liquidImage, 0, 0, null);
@@ -110,7 +110,7 @@ public abstract class ValueComp extends G_Panel {
         g.setColor(ColorManager.GOLDEN_WHITE);
 
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         String string = c_val + "/" + max_val; // N\A
         int y = getDefaultTextY();
 
@@ -126,7 +126,7 @@ public abstract class ValueComp extends G_Panel {
         int x = getX(g, string);
         g.drawString(string, x,
 
-                y
+         y
 
         );
     }
@@ -156,7 +156,7 @@ public abstract class ValueComp extends G_Panel {
 
     protected BufferedImage getLiquidPaintImage() {
         BufferedImage drawImg = ImageManager.getNewBufferedImage(fillerImage.getWidth(),
-                fillerImage.getHeight());
+         fillerImage.getHeight());
 
         drawImg.getGraphics().drawImage(fillerImage, 0, 0, null);
         return drawImg;

@@ -96,7 +96,7 @@ public class HC_Tree {
             @Override
             public void paint(Graphics g) {
                 ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                 if (backgroundImage != null) {
                     g.drawImage(backgroundImage, 0, 0, null);
                 }
@@ -137,7 +137,7 @@ public class HC_Tree {
         }
         g.setColor(getTipBackgroundColor());
         g.fillRect(textBgPoint2.x - 6, textBgPoint1.y - 4, textBgPoint1.x - textBgPoint2.x + 6,
-                textBgPoint2.y - textBgPoint1.y + 12);
+         textBgPoint2.y - textBgPoint1.y + 12);
 
     }
 
@@ -269,7 +269,7 @@ public class HC_Tree {
                 String text = type.getName();
                 List<String> list = TextWrapper.wrap(text, wrapLength);
                 int width = FontMaster.getStringLengthForWidth(defaultFont, Math.min(wrapLength,
-                        text.length()));
+                 text.length()));
 
                 int offsetX = (width - map.getNodeSize()) / 2;
                 int x = Math.max(p.x - offsetX, 0);
@@ -281,7 +281,7 @@ public class HC_Tree {
                 int height = list.size() * fontHeight + 5;
 
                 List<ObjType> overlapping = map.getTypesWithinRange(type, 0, 0, x, y, Math.max(20,
-                        (width - map.getNodeSize())), fontHeight * 3 / 2);
+                 (width - map.getNodeSize())), fontHeight * 3 / 2);
 
                 if (y < 5) {
                     y = 5;
@@ -303,7 +303,7 @@ public class HC_Tree {
                             break;
                         }
                         overlapping = map.getTypesWithinRange(type, 0, 0, x, y, Math.max(20,
-                                (width - map.getNodeSize())), fontHeight * 3 / 2);
+                         (width - map.getNodeSize())), fontHeight * 3 / 2);
                         LogMaster.log(1, type + " has " + overlapping);
                     }
                     while (overlapping.size() > 0) {
@@ -313,7 +313,7 @@ public class HC_Tree {
                             break;
                         }
                         overlapping = map.getTypesWithinRange(type, 0, 0, x, y, Math.max(20,
-                                (width - map.getNodeSize())), fontHeight * 3 / 2);
+                         (width - map.getNodeSize())), fontHeight * 3 / 2);
                         LogMaster.log(1, type + " has " + overlapping);
 
                     }
@@ -349,7 +349,7 @@ public class HC_Tree {
     private Color getTextColor() {
         if (isSkill()) {
             SKILL_GROUP masteryGroup = new EnumMaster<SKILL_GROUP>().retrieveEnumConst(
-                    SKILL_GROUP.class, ContentManager.getMasteryGroup((PARAMETER) arg));
+             SKILL_GROUP.class, ContentManager.getMasteryGroup((PARAMETER) arg));
             if (masteryGroup == null) {
                 return ColorManager.GOLDEN_WHITE;
             }
@@ -488,7 +488,7 @@ public class HC_Tree {
             }
 
             STD_IMAGES rankComp = n.isAcquired() ? STD_IMAGES.RANK_COMP
-                    : STD_IMAGES.RANK_COMP_DARKENED;
+             : STD_IMAGES.RANK_COMP_DARKENED;
             int w = rankComp.getWidth();
             int h = rankComp.getHeight();
             Image compImage = ImageManager.getNewBufferedImage(w, h);
@@ -506,7 +506,7 @@ public class HC_Tree {
             int x = MigMaster.getCenteredTextPosition(str, font, w);
             int y = MigMaster.getCenteredTextPositionY(font, h) + 5;
             ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             graphics.drawString(str, x, y);
             x = (map.getPointForType(n.getType()).x + 40 - w / 2);
             y = map.getPointForType(n.getType()).y - h;
@@ -520,8 +520,8 @@ public class HC_Tree {
                 int y1 = y + h / 2 - plusImage.getHeight(null) / 3 * 2 + 2;
                 overlayMap2.put(new Point(x1, y1), plusImage);
                 getRankBoostMouseMap().put(
-                        new Rectangle(x1, y1, plusImage.getWidth(null), plusImage.getWidth(null)),
-                        n); // dynamic
+                 new Rectangle(x1, y1, plusImage.getWidth(null), plusImage.getWidth(null)),
+                 n); // dynamic
 
             }
             x -= STD_IMAGES.CROSS.getWidth() / 2;
@@ -586,7 +586,7 @@ public class HC_Tree {
                     mode = RequirementsManager.RANK_MODE;
                 }
                 Requirements reqs = reqTextType.getGame().getRequirementsManager().getRequirements(
-                        (rank ? hero.getFeat(isSkill(), reqTextType) : reqTextType), mode);
+                 (rank ? hero.getFeat(isSkill(), reqTextType) : reqTextType), mode);
 
                 Point point;
                 Color color = ColorManager.CRIMSON;
@@ -604,8 +604,8 @@ public class HC_Tree {
                 for (String text : list) {
                     if (text.equals(InfoMaster.NOT_ENOUGH_MASTERY)) {
                         text = InfoMaster.NOT_ENOUGH_MASTERY_SLOTS
-                                + ((SkillPointCondition) reqs.getReqMap().get(text))
-                                .getPointsRequired();
+                         + ((SkillPointCondition) reqs.getReqMap().get(text))
+                         .getPointsRequired();
                     }
                     text = TextParser.parse(text, new Ref(getHero()));
                     text = text.replace(StringMaster.MASTERY + " ", "");
@@ -615,11 +615,11 @@ public class HC_Tree {
                         if (text.contains(": ")) {
                             String varPart = text.split(": ")[1];
                             if (varPart.startsWith("(")
-                                    || StringMaster.isInteger("" + varPart.charAt(0))) {
+                             || StringMaster.isInteger("" + varPart.charAt(0))) {
                                 String parsedVarPart = "";
                                 try {
                                     parsedVarPart = ""
-                                            + new Formula(varPart).getInt(new Ref(getHero()));
+                                     + new Formula(varPart).getInt(new Ref(getHero()));
                                 } catch (Exception e) {
                                     main.system.ExceptionMaster.printStackTrace(e);
                                 }
@@ -683,14 +683,14 @@ public class HC_Tree {
                     // TODO if above... vice versa
                     if (textBgPoint1 == null) {
                         textBgPoint1 = new Point(x + stringWidth, y
-                                - FontMaster.getFontHeight(font));
+                         - FontMaster.getFontHeight(font));
                     }
                 }
                 textBgPoint2 = new Point(x, y);
                 if (above) {
                     Point buffer = textBgPoint1;
                     textBgPoint1 = new Point(textBgPoint2.x, textBgPoint2.y
-                            - FontMaster.getFontHeight(font));
+                     - FontMaster.getFontHeight(font));
                     textBgPoint2 = new Point(buffer.x, buffer.y + FontMaster.getFontHeight(font));
                 }
 
@@ -943,6 +943,10 @@ public class HC_Tree {
 
     }
 
+    public enum LIGHTING_VERSION {
+        HIGHLIGHTED, DARKENED, AVAILABLE, NORMAL
+    }
+
     public enum LINK_TYPE {
         REQUIRED(ColorManager.ORANGE),
         UNLOCKS(ColorManager.ESSENCE),
@@ -958,10 +962,6 @@ public class HC_Tree {
         public Color getColor() {
             return c;
         }
-    }
-
-    public enum LIGHTING_VERSION {
-        HIGHLIGHTED, DARKENED, AVAILABLE, NORMAL
     }
 
     public enum TREE_VIEW_MODE {

@@ -21,18 +21,17 @@ public class OrderFactory {
     public static Order getOrder(boolean partyTargeting, ActiveObj active, ORDER_PRIORITY_MODS strictPriority) {
         String arg = null;
         Order order = new Order(arg);
-if (strictPriority!=null )
-{
-    order.setStrictPriority(strictPriority);
-    return order;
-}
+        if (strictPriority != null) {
+            order.setStrictPriority(strictPriority);
+            return order;
+        }
 
         Map<GOAL_TYPE, Integer> modMap = new HashMap<>();
 
         Arrays.stream(AiEnums.ORDER_PRIORITY_MODS.values()).forEach(mod ->
-                Arrays.stream(mod.getGoalTypes()).forEach(type ->
-                        MapMaster.addToIntegerMap(modMap, type,
-                                active.getIntParam(getParam(mod), false))));
+         Arrays.stream(mod.getGoalTypes()).forEach(type ->
+          MapMaster.addToIntegerMap(modMap, type,
+           active.getIntParam(getParam(mod), false))));
 
         order.setPriorityModsMap(modMap);
         return order;

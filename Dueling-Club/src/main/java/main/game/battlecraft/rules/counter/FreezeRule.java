@@ -36,7 +36,7 @@ public class FreezeRule extends DC_CounterRule {
      + PARAMS.POISON_RESISTANCE.getName() + "|"
      + PARAMS.PIERCING_RESISTANCE.getName();
     private static final String RESISTANCES_REDUCED = PARAMS.SONIC_RESISTANCE.getName() + "|"
-     + PARAMS.SLASHING_RESISTANCE.getName()+"|"
+     + PARAMS.SLASHING_RESISTANCE.getName() + "|"
      + PARAMS.BLUDGEONING_RESISTANCE.getName();
 
     public FreezeRule(DC_Game game) {
@@ -51,21 +51,21 @@ public class FreezeRule extends DC_CounterRule {
     @Override
     protected Effect getEffect() {
         Effects effects = new Effects(new ModifyValueEffect(
-                PARAMS.ENDURANCE_REGEN, MOD.MODIFY_BY_PERCENT,
-                getCounterRef() + "*" + ENDURANCE_REGEN_PER_COUNTER),
+         PARAMS.ENDURANCE_REGEN, MOD.MODIFY_BY_PERCENT,
+         getCounterRef() + "*" + ENDURANCE_REGEN_PER_COUNTER),
 
-                new ModifyValueEffect(PARAMS.INITIATIVE_MODIFIER,
-                        MOD.MODIFY_BY_CONST, getCounterRef() + "*"
-                        + INITIATIVE_PER_COUNTER));
+         new ModifyValueEffect(PARAMS.INITIATIVE_MODIFIER,
+          MOD.MODIFY_BY_CONST, getCounterRef() + "*"
+          + INITIATIVE_PER_COUNTER));
         // if (checkIsFrozen(unit)) {
         effects.add(new ConditionalEffect(new StatusCheckCondition(
-                UnitEnums.STATUS.FROZEN),
-new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
- MOD.MODIFY_BY_CONST, getCounterRef() + "*"
- + RESISTANCE_REDUCED_PER_COUNTER),
-                new ModifyValueEffect(RESISTANCES_BOOSTED,
-                        MOD.MODIFY_BY_CONST, getCounterRef() + "*"
-                        + BONUS_RESISTANCE_PER_COUNTER))));
+         UnitEnums.STATUS.FROZEN),
+         new Effects(new ModifyValueEffect(RESISTANCES_REDUCED,
+          MOD.MODIFY_BY_CONST, getCounterRef() + "*"
+          + RESISTANCE_REDUCED_PER_COUNTER),
+          new ModifyValueEffect(RESISTANCES_BOOSTED,
+           MOD.MODIFY_BY_CONST, getCounterRef() + "*"
+           + BONUS_RESISTANCE_PER_COUNTER))));
         // trigger effect - if dealt 33% toughness as Bludgeoning damage,
         // SHATTER! TODO
         // Also inflict 25% max endurance damage upon each FROZEN application!
@@ -74,8 +74,6 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
 
         return effects;
     }
-
-
 
 
     @Override
@@ -88,6 +86,7 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
         super.initEffects();
 
     }
+
     @Override
     public COUNTER getCounter() {
         return COUNTER.Freeze;
@@ -100,8 +99,8 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
 
     private boolean checkIsFrozen(Unit unit) {
         return unit.getIntParam(PARAMS.INITIATIVE_MODIFIER) <= StringMaster
-                .getInteger(INITIATIVE_PER_COUNTER)
-                * -getNumberOfCounters(unit);
+         .getInteger(INITIATIVE_PER_COUNTER)
+         * -getNumberOfCounters(unit);
     }
 
     @Override
@@ -110,8 +109,8 @@ new Effects( new ModifyValueEffect(RESISTANCES_REDUCED,
             return FROZEN_PER_TURN_REDUCTION;
         }
         return COUNTERS_PER_TURN
-                - Math.min(getNumberOfCounters(unit),
-                (unit.getCounter(COUNTER.Moist.getName())));
+         - Math.min(getNumberOfCounters(unit),
+         (unit.getCounter(COUNTER.Moist.getName())));
     }
 
 }

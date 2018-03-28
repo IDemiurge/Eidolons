@@ -28,7 +28,6 @@ import java.util.List;
  */
 public class ChannelingRule {
 
-    static boolean testMode;
     private static final String PATH = "effects\\channeling\\";
     private static final PARAMS[] costParamsResolve = {
      PARAMS.AP_COST,
@@ -40,6 +39,7 @@ public class ChannelingRule {
      PARAMS.STA_COST,
      PARAMS.FOC_COST,
     };
+    static boolean testMode;
 
     public static Costs getChannelingActivateCosts(DC_SpellObj action) {
         return getChannelingCosts(action, true);
@@ -51,7 +51,7 @@ public class ChannelingRule {
 
     public static Costs getChannelingCosts(DC_SpellObj action, boolean activateOrResolve) {
         List<Cost> list = new ArrayList<>();
-        for (PARAMS costParam :activateOrResolve? costParamsActivate : costParamsResolve) {
+        for (PARAMS costParam : activateOrResolve ? costParamsActivate : costParamsResolve) {
             PARAMS payParam = DC_ContentManager.getPayParameterForCost(costParam);
             Cost cost = DC_CostsFactory.getCost(action, costParam, payParam);
 //            int mod = 100;
@@ -69,13 +69,16 @@ public class ChannelingRule {
             costs.removeRequirement(InfoMaster.COOLDOWN_REASON);
         return costs;
     }
+
     public static void channelingInterrupted(Unit sourceObj) {
         sourceObj.getHandler().clearChannelingData();
     }
+
     public static void channelingResolves(Unit activeUnit) {
         activeUnit.getHandler().clearChannelingData();
-        activeUnit.removeBuff( STD_MODES.CHANNELING.getBuffName());
+        activeUnit.removeBuff(STD_MODES.CHANNELING.getBuffName());
     }
+
     public static boolean activateChanneing(DC_SpellObj spell) {
 
         // ActiveAbility spell_ability = ActivesConstructor
@@ -156,8 +159,6 @@ public class ChannelingRule {
     public static boolean isPreTargetingNeeded(DC_SpellObj spell) {
         return true;
     }
-
-
 
 
 // Targeting targeting = new FixedTargeting(KEYS.TARGET);

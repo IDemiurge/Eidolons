@@ -45,7 +45,7 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
 
     private void initConditions() {
         conditions = new Conditions(new RefCondition(KEYS.EVENT_SOURCE,
-                KEYS.SOURCE, false));
+         KEYS.SOURCE, false));
         if (!(physical && magical)) {
             conditions.add(new DamageTypeCondition(physical));
         }
@@ -64,7 +64,7 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
 
         if (restoreEndurance) {
             ModifyValueEffect effect = new ModifyValueEffect(
-                    PARAMS.C_ENDURANCE, code, formula.toString());
+             PARAMS.C_ENDURANCE, code, formula.toString());
             if (!restoreEnduranceAboveBase) {
                 effect.setMaxParam(PARAMS.ENDURANCE);
             }
@@ -72,7 +72,7 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
         }
         if (restoreToughness) {
             ModifyValueEffect effect = new ModifyValueEffect(
-                    PARAMS.C_TOUGHNESS, code, formula.toString());
+             PARAMS.C_TOUGHNESS, code, formula.toString());
             if (!restoreToughnessAboveBase) {
                 effect.setMaxParam(PARAMS.TOUGHNESS);
             }
@@ -82,10 +82,10 @@ public class VampirismEffect extends MicroEffect implements AttachmentEffect {
         if (fromEnduranceDamage) {
             ActiveAbility ability = new ActiveAbility(targeting, effects);
             new AddTriggerEffect(
-                    STANDARD_EVENT_TYPE.UNIT_IS_DEALT_ENDURANCE_DAMAGE, // TODO
-                    // actual
-                    // damage?
-                    conditions, ability).apply(ref);
+             STANDARD_EVENT_TYPE.UNIT_IS_DEALT_ENDURANCE_DAMAGE, // TODO
+             // actual
+             // damage?
+             conditions, ability).apply(ref);
         }
         if (fromToughnessDamage) {
 

@@ -21,7 +21,8 @@ public class DungeonData extends DataUnit<DUNGEON_VALUE> {
     public Boolean getFormat() {
         return FORMAT;
     }
-    public enum DUNGEON_VALUE{
+
+    public enum DUNGEON_VALUE {
         TYPE_NAME,
         PATH,
         RANDOM,

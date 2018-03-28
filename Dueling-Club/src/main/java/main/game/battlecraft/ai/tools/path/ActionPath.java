@@ -5,8 +5,8 @@ import main.game.battlecraft.ai.elements.actions.Action;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ActionPath {

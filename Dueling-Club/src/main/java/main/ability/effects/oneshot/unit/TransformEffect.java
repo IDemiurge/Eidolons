@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 
-public class TransformEffect extends MicroEffect  implements OneshotEffect {
+public class TransformEffect extends MicroEffect implements OneshotEffect {
 
     private String newType;
 

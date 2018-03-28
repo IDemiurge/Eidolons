@@ -46,7 +46,7 @@ public class TemplateCondition extends MicroCondition {
         }
         if (selectiveTemplate != null) {
             conditions.add(DC_ConditionMaster
-                    .getSelectiveTargetingTemplateConditions(selectiveTemplate));
+             .getSelectiveTargetingTemplateConditions(selectiveTemplate));
         }
         if (autoTemplate != null) {
             conditions.add(DC_ConditionMaster.getAutoTargetingTemplateConditions(autoTemplate));

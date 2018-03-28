@@ -20,6 +20,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.audio.DC_SoundMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
@@ -27,7 +28,6 @@ import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.text.LogEntryNode;
-import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -46,12 +46,12 @@ public class DeathMaster extends Master {
 
     public void unitAnnihilated(Obj _killed, Obj _killer) {
 
-        String message =null ;
+        String message = null;
         if (_killed == _killer) {
-            message= _killed + " annihilates ";// + _killed.getInfoString();
-        }else
-            message= _killed + " annihilated by " + _killer  ;
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+            message = _killed + " annihilates ";// + _killed.getInfoString();
+        } else
+            message = _killed + " annihilated by " + _killer;
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
         getGame().getGraveyardManager().removeCorpse(_killed);
         _killed.setAnnihilated(true);
         getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_ANNIHILATED,
@@ -63,13 +63,13 @@ public class DeathMaster extends Master {
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         if (_killed.isDead())
             return;
-        String message =null ;
+        String message = null;
         if (_killed == _killer) {
-            message= _killed + " dies ";// + _killed.getInfoString();
-        }else
-            message= _killed + " killed by " + _killer + " with " + activeObj;
+            message = _killed + " dies ";// + _killed.getInfoString();
+        } else
+            message = _killed + " killed by " + _killer + " with " + activeObj;
 
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
         _killed.setDead(true);
         BattleFieldObject killed = (BattleFieldObject) _killed;
         BattleFieldObject killer = (BattleFieldObject) _killer;
@@ -117,8 +117,8 @@ public class DeathMaster extends Master {
             Ref REF = Ref.getCopy(killer.getRef());
             REF.setTarget(killed.getId());
             REF.setSource(killer.getId());
-            if (activeObj!=null )
-            REF.setObj( KEYS.ACTIVE, activeObj);
+            if (activeObj != null)
+                REF.setObj(KEYS.ACTIVE, activeObj);
             if (killed instanceof Unit) {
                 getGame().getRules().getMoraleKillingRule().unitDied((Unit) killed,
                  killer.getRef().getAnimationActive());

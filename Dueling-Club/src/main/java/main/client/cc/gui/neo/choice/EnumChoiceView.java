@@ -8,11 +8,11 @@ import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
-        ListCellRenderer<T> {
+ ListCellRenderer<T> {
 
     private static final int X_OFFSET = -200;
     private boolean blocked = false;
@@ -74,13 +74,13 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
     @Override
     public String getInfo() {
         return "Choose "
-                + StringMaster.getWellFormattedString(CLASS.getSimpleName());
+         + StringMaster.getWellFormattedString(CLASS.getSimpleName());
     }
 
     @Override
     protected PagedSelectionPanel<T> createSelectionComponent() {
         PagedSelectionPanel<T> selectionComp = new PagedSelectionPanel<T>(this,
-                getPageSize(), getItemSize(), getColumnsCount()) {
+         getPageSize(), getItemSize(), getColumnsCount()) {
 
             public int getPanelHeight() {
                 return VISUALS.ENUM_CHOICE_COMP.getHeight() * pageSize / wrap;
@@ -99,7 +99,7 @@ public class EnumChoiceView<T extends Enum<?>> extends ChoiceView<T> implements
                                                   T value, int index, boolean isSelected, boolean cellHasFocus) {
         boolean blocked = checkBlocked(value);
         VISUALS V = (isSelected) ? VISUALS.ENUM_CHOICE_COMP_SELECTED
-                : VISUALS.ENUM_CHOICE_COMP;
+         : VISUALS.ENUM_CHOICE_COMP;
         return new ListTextItem<>(V, value, isSelected, blocked);
     }
 }

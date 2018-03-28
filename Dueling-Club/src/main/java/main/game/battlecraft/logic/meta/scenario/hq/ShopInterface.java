@@ -11,10 +11,15 @@ import java.util.List;
  */
 public interface ShopInterface {
     List<String> getTabs();
+
     List<String> getItemSubgroups(String tabName);
+
     List<String> getItems(String groupList);
+
     String getName();
+
     String getGold();
+
     String getImagePath();
 
     SHOP_TYPE getShopType();

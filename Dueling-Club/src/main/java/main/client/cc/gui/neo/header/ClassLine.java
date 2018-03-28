@@ -48,7 +48,7 @@ public class ClassLine extends G_Panel {
 
             if (!StringMaster.isEmpty(hero.getProperty(PROPS.SECOND_CLASS))) {
                 String property = (prime) ? hero.getProperty(PROPS.FIRST_CLASS) : hero
-                        .getProperty(PROPS.SECOND_CLASS);
+                 .getProperty(PROPS.SECOND_CLASS);
                 if (hero.getProperty(PROPS.FIRST_CLASS).contains(ClassView.MULTICLASS)) {
 
                     boolean multi = hero.checkProperty(PROPS.MULTICLASSES, type.getName());
@@ -69,12 +69,12 @@ public class ClassLine extends G_Panel {
                 }
             }
             String pos = (vertical) ? "pos 0 " + (MAX_CLASSES - y - 1)
-                    * GuiManager.getSmallObjSize() : "pos " + x * GuiManager.getSmallObjSize()
-                    + " 0";
+             * GuiManager.getSmallObjSize() : "pos " + x * GuiManager.getSmallObjSize()
+             + " 0";
 
             final DC_FeatObj classObj = hero.getFeat(false, type);
             ListItem<ObjType> item = new ListItem<ObjType>(type, false, false, GuiManager
-                    .getSmallObjSize()) {
+             .getSmallObjSize()) {
                 public BORDER getSpecialBorder() {
                     return classObj.getRankBorder();
                 }
@@ -103,13 +103,13 @@ public class ClassLine extends G_Panel {
         ObjType multiclassType = DataManager.getType(typeName);
 
         for (String className : StringMaster.open(multiclassType
-                .getProperty(PROPS.BASE_CLASSES_ONE))) {
+         .getProperty(PROPS.BASE_CLASSES_ONE))) {
             if (type.getName().equalsIgnoreCase(className)) {
                 return true;
             }
         }
         for (String className : StringMaster.open(multiclassType
-                .getProperty(PROPS.BASE_CLASSES_TWO))) {
+         .getProperty(PROPS.BASE_CLASSES_TWO))) {
             if (type.getName().equalsIgnoreCase(className)) {
                 return true;
             }
@@ -120,13 +120,13 @@ public class ClassLine extends G_Panel {
     @Override
     public int getHeight() {
         return (vertical) ? GuiManager.getSmallObjSize() * MAX_CLASSES : GuiManager
-                .getSmallObjSize();
+         .getSmallObjSize();
     }
 
     @Override
     public int getWidth() {
         return (!vertical) ? GuiManager.getSmallObjSize() * MAX_CLASSES : GuiManager
-                .getSmallObjSize();
+         .getSmallObjSize();
 
     }
 }

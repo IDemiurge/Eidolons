@@ -6,10 +6,10 @@ import main.libgdx.EngineEmulator;
 import main.libgdx.screens.ScreenData;
 import main.libgdx.screens.ScreenType;
 import main.system.EventCallbackParam;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.system.options.OptionsMaster;
-import main.system.auxiliary.log.SpecialLogger;
 import org.dizitart.no2.Nitrite;
 
 public class DemoLauncher extends GenericLauncher {
@@ -50,7 +50,7 @@ public class DemoLauncher extends GenericLauncher {
         conf.vSyncEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VSYNC);
         initResolution(conf);
         initIcon(conf);
-        
+
         return conf;
     }
 
@@ -58,6 +58,7 @@ public class DemoLauncher extends GenericLauncher {
     protected void triggerLoaded(ScreenData meta) {
 
     }
+
     @Override
     protected void screenInit() {
         ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
@@ -65,6 +66,7 @@ public class DemoLauncher extends GenericLauncher {
 
 
     }
+
     @Override
     public void dispose() {
         try {

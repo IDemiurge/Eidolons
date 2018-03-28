@@ -33,11 +33,11 @@ public class LightMap {
     private static float SECOND = 1000000000;
     private static float ambient = 0.05f;
     private static float ambientAlpha = 0.05f;
-    private Color ambientColor;
     private static int testA;
     private static int testB;
     private static PointLight mouseLight;
     Box2DDebugRenderer debugRenderer;
+    private Color ambientColor;
     private Map<MicroObj, Body> bodyMap;
     private float cellWidth;
     private float cellHeight;
@@ -94,6 +94,13 @@ public class LightMap {
         return ambient;
     }
 
+    public static void setAmbient(float c) {
+        rayHandler.setAmbientLight(c);
+
+        rayHandler.update();
+        ambient = c;
+    }
+
     //
     private void init(DequeImpl<BattleFieldObject> units, World world,
                       RayHandler rayHandler, float cellWidth, float cellHeight, int rows, int cols) {
@@ -119,7 +126,7 @@ public class LightMap {
         LightMap.rayHandler = rayHandler;
         LightMap.rayHandler.setBlur(true);
         LightMap.rayHandler.setBlurNum(15);
-          ambientColor = new Color(0.2f, 0.1f, 0.3f, ambientAlpha);
+        ambientColor = new Color(0.2f, 0.1f, 0.3f, ambientAlpha);
         LightMap.rayHandler.setAmbientLight(ambientColor);
         LightMap.rayHandler.setAmbientLight(LightingManager.ambient_light);
         RayHandler.setGammaCorrection(true);
@@ -131,16 +138,6 @@ public class LightMap {
         updateMap();
 //        bindEvents();
     }
-
-
-
-    public static void setAmbient(float c) {
-        rayHandler.setAmbientLight(c);
-
-        rayHandler.update();
-        ambient = c;
-    }
-
 
     //    public void updateMap(Map<DC_HeroObj, BaseView> units) {
     public void updateMap() {

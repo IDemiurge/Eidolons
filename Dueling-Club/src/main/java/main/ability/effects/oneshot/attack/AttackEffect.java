@@ -17,7 +17,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
-public class AttackEffect extends MicroEffect  implements OneshotEffect {
+public class AttackEffect extends MicroEffect implements OneshotEffect {
     // effects on-death; effects on-hit; conditional effects;
     // specials: X damage modifier,
     /**    */
@@ -86,8 +86,8 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
             if (!activeObj.isThrow()) {
                 if (!activeObj.isRanged()) {
                     LogMaster.log(1, "*** MELEE ATTACK BY "
-                            + activeObj.getOwnerObj().getNameAndCoordinate() + " on "
-                            + ref.getTargetObj().getNameAndCoordinate());
+                     + activeObj.getOwnerObj().getNameAndCoordinate() + " on "
+                     + ref.getTargetObj().getNameAndCoordinate());
                     if (PositionMaster.getDistance(activeObj.getOwnerObj(), ref.getTargetObj()) > 1) {
                         LogMaster.log(1, "*** RANGE BUG ");
                         // AI_Manager.logFullInfo();
@@ -97,7 +97,7 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
         }
         if (!offhand) {
             if (StringMaster.compare(ref.getObj(KEYS.ACTIVE).getProperty(G_PROPS.ACTION_TAGS),
-                    ActionEnums.ACTION_TAGS.OFF_HAND + "")) {
+             ActionEnums.ACTION_TAGS.OFF_HAND + "")) {
                 offhand = true;
             }
 
@@ -109,7 +109,7 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
             Integer id = null;
             try {
                 id = (!offhand) ? attacker.getMainWeapon().getId() : attacker.getSecondWeapon()
-                        .getId();
+                 .getId();
             } catch (Exception ignored) {
             }
             if (id != null) {
@@ -119,7 +119,6 @@ public class AttackEffect extends MicroEffect  implements OneshotEffect {
 
         getAttack().setDoubleStrike(attacker.hasDoubleStrike());
         try {
-
 
 
             return ((DC_Game) getGame()).getAttackMaster()

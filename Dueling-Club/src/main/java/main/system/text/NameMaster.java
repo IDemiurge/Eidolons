@@ -17,7 +17,6 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NameMaster {
@@ -64,49 +63,49 @@ public class NameMaster {
     public static final String NO_NAME = "No name";
     public static final String VERSION = " v";
     public static final String ravenNames = "Draco Dorian Jack Pike Quentin Rick Dilrin Denrix Melrix Lidvis Emrin Lervin Carpel Malkin Severard Rinfer Garsiv Virxis Fidvin Mirvin Delvar "
-            + "Delven Idlem Vuron Pirkust Esvin Kuigin Nirgus Islog Sarnas Genlyn Avaldur Vatiar Ectis Osmer Pealet Lotard Nertum Kesrin";
+     + "Delven Idlem Vuron Pirkust Esvin Kuigin Nirgus Islog Sarnas Genlyn Avaldur Vatiar Ectis Osmer Pealet Lotard Nertum Kesrin";
     public static final String ravenNamesFemale = "Jenisse Sheilin Imlia Lilian Mesbeth Viola Biantha Gioress Sabina Enesse Norette Vosane Fiona";
     public static final String ravenNamesSecond = "Dilrin Norux Denrix Melrix Girsis Lidvis Emrin Lervin Carpel Malkin Rinfer Garsiv Virxis Fidvin Mirvin Kaurim Delnur Delvar Delnesse"
-            + " Kurifar Nirligus Exerion Lethmer Raegsul Erming Loerg Gidlau Volmevin Molfran Korbulo";
+     + " Kurifar Nirligus Exerion Lethmer Raegsul Erming Loerg Gidlau Volmevin Molfran Korbulo";
     public static final String wolfNames = "Dortan Gauren Girmut Azulf Sivlid Vardel Dersen Alvid Galvir Gimnur Thonril Tholmir Lirmog Gleifnir Wedrhod Gwynreth Rhaglef Cestil Genlun Golrar "
-            + "Gargi Vartu Valsteg Higstam Conrik "
-            + "Fogmed Tilbruk Brukthel Ogsit Huntok Arfost Hadden Utmer Isfior Ginwad Tair Sefiad Skalg";
+     + "Gargi Vartu Valsteg Higstam Conrik "
+     + "Fogmed Tilbruk Brukthel Ogsit Huntok Arfost Hadden Utmer Isfior Ginwad Tair Sefiad Skalg";
     public static final String wolfNamesFemale = "Irsida Emrida Ithglen Fidra Lagatha Aituli Gelnifer Igrith Gwynedil Imdaleg Storbia Rhagla";
     public static final String wolfNamesSecond = "Valherim Dirhelor Sivlid Visrith Pauren Edlen Igles Moltav Delgrav Dersen Gimnur Mirthud Thonril Tholmir Glerson Dimroth Dortan Gauren Girmut Dirhold Therving Kinrikkl Hamhelik Segervid Tilsinod Vilkannet";
     public static final String eagleNames = "Erithec Benihath Elmareth Delfenor Martis Augled Raurim Mauglir Ulraim Geldior Imgisar Inrif Farnil Iffdor Imliad Anbinath Irsenon Kolneru Elsier "
-            + "Nethlur Orodrim Irddel Celthin Aemris Urfediv Irlath Laruon Kineil Iseard";
+     + "Nethlur Orodrim Irddel Celthin Aemris Urfediv Irlath Laruon Kineil Iseard";
     public static final String eagleNamesFemale = "Elsira Asmin Ervina Tulani Aruna Eriana Silda Olvira Nithlara Istra Eilida Niumi Elbira Elnifer Ulrina Silvia ";
     public static final String eagleNamesSecond = "Erithec Benihath Elmareth Delfenor Raurim Caerphis Chimrefel Mauglir Lefredol Ulraim Geldior Imgisar Anurphis Menloris Medlorim Eraglen Erniath Athrem";
     public static final String kingNames = "John Adam Alnoir Erles Gwahir Bendaf Galdion Gorthiod Rolwain Limrod Sidlur Aupheir Nathlim Demeril Genthel Aldain Brestir Irgvil "
-            + "Giflas Ester Menres Eumol Rolwim Adelwyn Rimlod Arnelion Lorwim Wolrim"
-            + " Cenhed Adeilar Denuid Gwynros ";
+     + "Giflas Ester Menres Eumol Rolwim Adelwyn Rimlod Arnelion Lorwim Wolrim"
+     + " Cenhed Adeilar Denuid Gwynros ";
     public static final String kingNamesFemale = "Menfa Juthira "
-            + "Elari Thinea Eonri Blauri Athna Lydia" + "Aithlin Mirona Nimore Seina Feluna Feina "
-            + "Ansila Thide Haitha Lia Amaltha Theola";
+     + "Elari Thinea Eonri Blauri Athna Lydia" + "Aithlin Mirona Nimore Seina Feluna Feina "
+     + "Ansila Thide Haitha Lia Amaltha Theola";
     public static final String kingNamesSecond = "Bendaf Gorthiod Rolwain Limrod Irsilod Kalroin Ultath Kinter Elsen Drolem Galniod Irtheniod Adlarim Ginlung Arthenon Vaktiar Pirstag Aedainur Emrianor Naellid Esteniad Althair Murwaith Giothrim Maelsiur Firdlain Estariath Lundaine Merphim Barthair Aensulat Phermithas Leinleith Mardalu Gidseol Soamdath Diplard Evengil Fobbled Kaergraf Delnian Nelaigo";
     public static final String griffNames = "Jowaine Jurgon Severon Rutheos Raomir Raemir Sinarc Jemid Juraine Onsard Godric Theon Crigol Dagros Simdal "
-            + "Gaeglin Gedaeth Belved Nevid Gasglid Ibrin Ordeb Baleg Hadrod "
-            + "Haddel Kurdeag Deirid Daereir Thainith Thaemil Tilead Aldvan Cearat Daecar Adimach Angfuil "
-            + "Sestian Rodviol Feilod Gaerad";
+     + "Gaeglin Gedaeth Belved Nevid Gasglid Ibrin Ordeb Baleg Hadrod "
+     + "Haddel Kurdeag Deirid Daereir Thainith Thaemil Tilead Aldvan Cearat Daecar Adimach Angfuil "
+     + "Sestian Rodviol Feilod Gaerad";
     public static final String griffNamesFemale = "Jenfis Remira Sinara Jemira Arfida Sornila Sanura Amrin Olmra Eola";
     public static final String griffNamesSecond = "Edexis Bailen Imsidor Galdion Feincer Rebfil Atephari Jowaine Godleon Rutheos Raomir Ramrid Raemird Sinarc Gotua Arverno Nolvio Rhufeon Juraine ";
     public static final String ulduinNames = "Limrog Olavus Grinresar Smidlar Burtug Fargrad "
-            + "Grildur Ormund Stryvolur Riddrog "
-            + "Trondurin Tormethil Scadmur Miseud Otsiom Relgon Uthlediad Algorn "
-            + "Strolar Urtfran Adeladur Anselud";
+     + "Grildur Ormund Stryvolur Riddrog "
+     + "Trondurin Tormethil Scadmur Miseud Otsiom Relgon Uthlediad Algorn "
+     + "Strolar Urtfran Adeladur Anselud";
     public static final String ulduinNamesFemale = "Misanna Relga Uthlena Selda Somlesta Valdelen ";
     public static final String ulduinNamesSecond = "";
     public static final String elvenNames = "Avelar Haevril Sethelon Eniloth Goriad Nirolim Valrith Entelion Raelur Egvilas Eithas Anelur Adrathas Ginleth Diular Ulsair Doluith Daenar Faoir Inriuth Sauir Faoim Maedlon Naoin Nilthuin Nimlod Gondulim Deriath Vendradir Belvenon Surmagil "
-            + "EithNaglur MaerhValar Quedlin Sianor Delgalad Orthaelion Teregroth "
-            + "Dulvin BaelarAnuir Olvah Mithlur Gilthar Maedroth Elidor Galdir Echfaelion Dorlumin "
-            + "Daurim LirthDelion Bellah Salfeon Ingean Milvor Enudeg Daenlehir Atelaeth";
+     + "EithNaglur MaerhValar Quedlin Sianor Delgalad Orthaelion Teregroth "
+     + "Dulvin BaelarAnuir Olvah Mithlur Gilthar Maedroth Elidor Galdir Echfaelion Dorlumin "
+     + "Daurim LirthDelion Bellah Salfeon Ingean Milvor Enudeg Daenlehir Atelaeth";
     public static final String elvenNamesFemale = "Belia Nelia Anfina Insila Mivlia Iola Aylin Siora Quelthia Quesia Lumina Dirna Tairi Luwien Adulai Ilureth ";
     public static final String elvenNamesSecond = "Ilarfis Arveliad Haevril Sedvelon Caelnorith Eniloth AtalunRee Tulanir Goriad Nimrovil Valrith Uthuniel BlithSaeg Faoi";
     public static final String dwarvenNames = "Drogon Rhughad Ligrod Gefnod Nogvir Naugrith Thodrim Balrim Droln Drofnod Noru Bosnir Dusmar Golgar Uxi Dunbor Mugrol "
-            + "Talsen Donkel Ingins Desger Tugindir "
-            + "Ustuk Hambrud Sageli Eprug Norkol Ungron Ysgrithur Ynvigr Gachtarg Drolif Tagair "
-            + "Skeltar Braeham Mangif Maersenif Kenthad Deilar Lerthaein Ulmith Utvald Ogvart Aproret Jargsil "
-            + "Utanar Ulkmar Baglarod Haglir Tilfram Birenor Tharagur";
+     + "Talsen Donkel Ingins Desger Tugindir "
+     + "Ustuk Hambrud Sageli Eprug Norkol Ungron Ysgrithur Ynvigr Gachtarg Drolif Tagair "
+     + "Skeltar Braeham Mangif Maersenif Kenthad Deilar Lerthaein Ulmith Utvald Ogvart Aproret Jargsil "
+     + "Utanar Ulkmar Baglarod Haglir Tilfram Birenor Tharagur";
     public static final String dwarvenNamesFemale = "";
     public static final String dwarvenNamesSecond = "Tirledag Semerog Rhughad Brifich Faurhir Ligrod Gefnod Nogvir Naugrith Thodrim Gausod Grenchest Bansiad Forgneth Acurag Olpust Lurraldi Baketar Batasur Viragost Vuthlin Trovarin Kogel";
     public static final String easterlingNames = "";
@@ -131,13 +130,13 @@ public class NameMaster {
     public static final String NAMES_WOLF_MALE = "Vulthren;Horstwynn;";
     public static final String SECOND_NAMES_WOLF_MALE = "Vezmorg;Arverus;Horgron;Dergven;Helvindr;Molandir;Dolgmor";
     public static final String NAMES_RAVEN_MALE = "Azmar;Dalreth;Argmann;Ordvil;Movander;DOrlain;"
-            + "Morkain;Irvynn;Godric;Ismar;Heldmar";
+     + "Morkain;Irvynn;Godric;Ismar;Heldmar";
     public static final String SECOND_NAMES_RAVEN_MALE = "Coulon;Calvenir;Carthenn;Woodlard;Oltouron;Pfadeau;Harkis;Chermagne;Lerkou;Verdogne;Taulaise";
     public static final String NAMES_EAGLE_MALE = "Ixis;Ezuviel;Thydrod;Quorix;Vezmut;Ezdred;Dalvion;Arodris;Xalvir;Astera;Lumina;Kalthed;Vengor;Mavilor;AedAgor;Tarlos;Kerebor;Ponfinor;Tolmaril;Sixis;DorthArex;Zandimar;Ulviden;Aerthoniel;Arcturus;";
     public static final String NAMES_DWARF_MALE = "Mugradon;Duvagor;Odrin;Udrim;Padgor;Twergmar;Gramadan;";
     public static final String SECOND_NAMES_DWARF_MALE =
 
-            "Uffly;Kuelgh;Oldrich;Boulegon;Barmegad;Kilverin;Sigremon;Throrrus";
+     "Uffly;Kuelgh;Oldrich;Boulegon;Barmegad;Kilverin;Sigremon;Throrrus";
     static String ravenNameGroups = "Raven Pirate Wolf Eagle King Common Easterling";
     static String wolfNameGroups = "wolf Ulduin Raven King Common Eagle";
     static String eagleNameGroups = "Eagle King Ulduin Raven Wolf Griff Common";
@@ -388,7 +387,7 @@ public class NameMaster {
         List<String> list = new ArrayList<>();
         for (String nameGroup : nameGroups) {
             list.addAll(StringMaster.openContainer(getNamesForGroup(nameGroup, EntityCheckMaster
-                    .getGender(hero) == HeroEnums.GENDER.FEMALE), " "));
+             .getGender(hero) == HeroEnums.GENDER.FEMALE), " "));
         }
         String name = new ListChooser(SELECTION_MODE.MULTIPLE, list, false).choose();
         if (name != null) {
@@ -403,29 +402,30 @@ public class NameMaster {
 
     private static BACKGROUND getBg(Entity hero) {
         return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, hero
-                .getProperty(G_PROPS.BACKGROUND));
+         .getProperty(G_PROPS.BACKGROUND));
     }
 
     public static String appendVersionToName(String name) {
-        return appendVersionToName(name, null );
+        return appendVersionToName(name, null);
     }
-        public static String appendVersionToName(String name, Integer i) {
+
+    public static String appendVersionToName(String name, Integer i) {
         if (name.contains(VERSION)) {
             if (StringMaster.isInteger("" + name.charAt(name.length() - 1))) {
                 name = name.substring(0, name.lastIndexOf(" "));
             }
         }
         Loop.startLoop(1000);
-            if (i == null) {
-                i = 2;
-        while (!Loop.loopEnded()) {
-            String newName = name + VERSION + i;
-            if (!DataManager.isTypeName(newName)) {
-                break;
+        if (i == null) {
+            i = 2;
+            while (!Loop.loopEnded()) {
+                String newName = name + VERSION + i;
+                if (!DataManager.isTypeName(newName)) {
+                    break;
+                }
+                i++;
             }
-            i++;
         }
-            }
         return name + VERSION + i;
     }
 

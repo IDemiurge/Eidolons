@@ -11,8 +11,8 @@ public class SummoningSicknessRule {
         // unit.getParams(PARAMS.C_INITIATIVE, i);
         // unit.getGame().getRules().getTimeRule().getTimePercentageRemaining();
         unit.modifyParameter(PARAMS.C_INITIATIVE_BONUS, -(unit.getGame()
-                .getRules().getTimeRule().getBaseTime() - unit.getGame()
-                .getRules().getTimeRule().getTimeRemaining()));
+         .getRules().getTimeRule().getBaseTime() - unit.getGame()
+         .getRules().getTimeRule().getTimeRemaining()));
 
     }
 

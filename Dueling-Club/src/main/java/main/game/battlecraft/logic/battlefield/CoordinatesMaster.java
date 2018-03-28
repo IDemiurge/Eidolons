@@ -36,8 +36,8 @@ public class CoordinatesMaster {
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
         coordinates = getSortedByProximityToEdge(d, coordinates, prefLessMoreMiddle);
-if (!ListMaster.isNotEmpty(coordinates))
-    return null ;
+        if (!ListMaster.isNotEmpty(coordinates))
+            return null;
         return coordinates.get(0);
     }
 
@@ -154,7 +154,7 @@ if (!ListMaster.isNotEmpty(coordinates))
     }
 
     public static String getCoordinatesStringData(
-            Collection<Coordinates> coordinates) {
+     Collection<Coordinates> coordinates) {
         int x1 = getMinX(coordinates);
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
@@ -201,7 +201,7 @@ if (!ListMaster.isNotEmpty(coordinates))
         int[] array = new int[4];
         int i = 0;
         for (String s : string.split(";")) {
-            array[i++] = StringMaster.getInteger(s.split("-")[0].trim(). substring(1));
+            array[i++] = StringMaster.getInteger(s.split("-")[0].trim().substring(1));
             array[i++] = StringMaster.getInteger(s.split("-")[1]);
         }
         return array;
@@ -300,8 +300,8 @@ if (!ListMaster.isNotEmpty(coordinates))
     }
 
     public static List<Coordinates> getAdjacentToBothGroups(
-            Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
-            Collection<Coordinates> coordinates2) {
+     Collection<Coordinates> coordinatesPool, Collection<Coordinates> coordinates,
+     Collection<Coordinates> coordinates2) {
         List<Coordinates> list = new ArrayList<>();
         Set<Coordinates> adjacent1 = new HashSet<>();
         for (Coordinates c : coordinatesPool) {
@@ -352,7 +352,7 @@ if (!ListMaster.isNotEmpty(coordinates))
         FACING_DIRECTION y_dir = null;
         int min_x_diff = Integer.MAX_VALUE;
         int min_y_diff = Integer.MAX_VALUE;
-        for (FACING_DIRECTION d : FACING_DIRECTION.values ) {
+        for (FACING_DIRECTION d : FACING_DIRECTION.values) {
             int x_diff = Integer.MAX_VALUE;
             int y_diff = Integer.MAX_VALUE;
             switch (d) {
@@ -488,13 +488,9 @@ if (!ListMaster.isNotEmpty(coordinates))
 
     public static List<Coordinates> getCoordinatesBetween(Coordinates c, Coordinates c2) {
         List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(
-                Math.min(c.x, c2.x) - 1, Math.max(c.x, c2.x), Math.min(c.y, c2.y) - 1, Math.max(
-                        c.y, c2.y));
+         Math.min(c.x, c2.x) - 1, Math.max(c.x, c2.x), Math.min(c.y, c2.y) - 1, Math.max(
+          c.y, c2.y));
         return coordinates;
-    }
-
-    public boolean isOnEdge(Coordinates c, int border) {
-        return false;
     }
 
     public static Set<Coordinates> getZoneCoordinates(DC_ActiveObj entity) {
@@ -513,12 +509,16 @@ if (!ListMaster.isNotEmpty(coordinates))
         while (loop.continues()) {
             Coordinates c = coordinates.getAdjacentCoordinate(
              new RandomWizard<DIRECTION>().getRandomEnumConst(DIRECTION.class));
-            if (c==null )
-                return c; 
+            if (c == null)
+                return c;
         }
         return coordinates;
     }
-    
+
+    public boolean isOnEdge(Coordinates c, int border) {
+        return false;
+    }
+
 
     // public boolean isOnEdgeX(Coordinates coordinates, int border) {
     // return coordinates.getX() - getOffsetX() == 0

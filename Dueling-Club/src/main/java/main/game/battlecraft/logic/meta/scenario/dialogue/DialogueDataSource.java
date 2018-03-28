@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
  */
 public class DialogueDataSource {
 
-    private   List<String> displayedOptions;
-    private   Speech speech;
+    private List<String> displayedOptions;
+    private Speech speech;
 
     public DialogueDataSource(Speech speech, List<String> displayedOptions) {
         this.speech = speech;
@@ -35,7 +35,7 @@ public class DialogueDataSource {
 
     public List<String> getActorImages() {
         return speech.getActors().stream().map(
-         actor-> actor.getProperty(G_PROPS.IMAGE)).collect(Collectors.toList());
+         actor -> actor.getProperty(G_PROPS.IMAGE)).collect(Collectors.toList());
     }
 
 }

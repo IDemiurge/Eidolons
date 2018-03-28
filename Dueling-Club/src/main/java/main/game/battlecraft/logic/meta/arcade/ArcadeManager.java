@@ -131,7 +131,7 @@ public class ArcadeManager {
         List<String> fullPool = DataManager.getTypeNames(DC_TYPE.DUNGEONS);
 
         FilterMaster.filterByProp(fullPool, G_PROPS.GROUP.getName(), StringMaster.ARCADE,
-                DC_TYPE.DUNGEONS);
+         DC_TYPE.DUNGEONS);
 
         party.setProperty(G_PROPS.DUNGEONS_PENDING, StringMaster.constructContainer(fullPool), true);
     }
@@ -141,7 +141,7 @@ public class ArcadeManager {
         this.party = party;
         region = null;
         if (!party.checkProperty(G_PROPS.ARCADE_REGION)
-                || !party.checkProperty(G_PROPS.DUNGEONS_PENDING) || checkRegionComplete(party)) {
+         || !party.checkProperty(G_PROPS.DUNGEONS_PENDING) || checkRegionComplete(party)) {
             nextRegion();
         }
         PartyHelper.savePartyAs(true);
@@ -153,8 +153,8 @@ public class ArcadeManager {
 
     private boolean checkRegionComplete(Party party) {
         return StringMaster.compareContainersIdentical(party
-                .getProperty(G_PROPS.DUNGEONS_COMPLETED), party
-                .getProperty(G_PROPS.DUNGEONS_PENDING), true, ";");
+         .getProperty(G_PROPS.DUNGEONS_COMPLETED), party
+         .getProperty(G_PROPS.DUNGEONS_PENDING), true, ";");
     }
 
     public void loadArcade() {
@@ -176,7 +176,7 @@ public class ArcadeManager {
 
     public void continueArcade() {
         region = new EnumMaster<ARCADE_REGION>().retrieveEnumConst(ARCADE_REGION.class, party
-                .getProperty(G_PROPS.ARCADE_REGION));
+         .getProperty(G_PROPS.ARCADE_REGION));
 
         // preCheck load? yes - perhaps the party.xml should write something on
         // battle begin and end, so that we know if there was a "disconnect"
@@ -191,7 +191,7 @@ public class ArcadeManager {
         } else {
             region = region.getNext();
             region = new EnumMaster<ARCADE_REGION>().retrieveEnumConst(ARCADE_REGION.class, party
-                    .getProperty(G_PROPS.ARCADE_REGION));
+             .getProperty(G_PROPS.ARCADE_REGION));
             if (region == null) {
                 victory();
             }
@@ -200,11 +200,11 @@ public class ArcadeManager {
         String pool = "";
         // region.getDungeonPool();
         List<String> fullPool = DataManager.getTypesGroupNames(DC_TYPE.DUNGEONS, region
-                .toString());
+         .toString());
 
         FilterMaster.filterByProp(fullPool, G_PROPS.GROUP.getName(), StringMaster.ARCADE);
         FilterMaster.filterByProp(fullPool, G_PROPS.DUNGEON_TYPE.getName(), DungeonEnums.DUNGEON_TYPE.BOSS + "",
-                true);
+         true);
 
         // StringMaster.openContainer(region
         // .getDungeonPool())
@@ -215,9 +215,9 @@ public class ArcadeManager {
         }
 
         List<String> bossPool = DataManager.getTypesGroupNames(DC_TYPE.DUNGEONS, region
-                .toString());
+         .toString());
         FilterMaster.filterByProp(bossPool, G_PROPS.DUNGEON_TYPE.getName(), DungeonEnums.DUNGEON_TYPE.BOSS
-                .toString());
+         .toString());
         pool += StringMaster.constructContainer(bossPool);
         party.setProperty(G_PROPS.DUNGEONS_PENDING, pool, true);
 
@@ -228,9 +228,9 @@ public class ArcadeManager {
 
         int place = HallOfFame.getPlace(party);
         DialogMaster.inform("Congratulations, " + StringMaster.getPossessive(party.getName())
-                + " BattleCraft Arcade is complete!" + " The Glory you earned amounts to "
-                + " which puts you onto " + place + StringMaster.getOrdinalEnding(place)
-                + " place among the heroes of Edalar " + HallOfFame.getComment(place));
+         + " BattleCraft Arcade is complete!" + " The Glory you earned amounts to "
+         + " which puts you onto " + place + StringMaster.getOrdinalEnding(place)
+         + " place among the heroes of Edalar " + HallOfFame.getComment(place));
 
         Launcher.getMainManager().exitToMainMenu();
         // new VictoryDialogue(party).update(); TODO
@@ -273,7 +273,7 @@ public class ArcadeManager {
         // award loot
 
         PartyHelper.getParty().setProperty(PROPS.ARCADE_STATUS, "" + ARCADE_STATUS.IN_PROGRESS,
-                true);
+         true);
         dungeon = game.getDungeonMaster().getDungeonWrapper().getDungeon();
         if (game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
 //            game.getArenaArcadeMaster().levelWon();
@@ -289,9 +289,9 @@ public class ArcadeManager {
         }
         if (dungeon != null) {
             if (dungeon.getProperty(G_PROPS.DUNGEON_TYPE).equalsIgnoreCase(
-                    DungeonEnums.DUNGEON_TYPE.BOSS.toString())) {
+             DungeonEnums.DUNGEON_TYPE.BOSS.toString())) {
                 if (DialogMaster
-                        .confirm("Are you ready to lay down your sword and feast in Valhalla?")) {
+                 .confirm("Are you ready to lay down your sword and feast in Valhalla?")) {
                     victory();
                 }
             }
@@ -323,7 +323,7 @@ public class ArcadeManager {
                 break;
             case BLIGHTSTONE_DESERT:
                 qualities = new QUALITY_LEVEL[]{ItemEnums.QUALITY_LEVEL.ANCIENT, ItemEnums.QUALITY_LEVEL.OLD,
-                        ItemEnums.QUALITY_LEVEL.MASTERPIECE,};
+                 ItemEnums.QUALITY_LEVEL.MASTERPIECE,};
                 materials = new MATERIAL[]{ItemEnums.MATERIAL.ADAMANTIUM};
                 break;
 
@@ -332,11 +332,11 @@ public class ArcadeManager {
         OrConditions qC = new OrConditions();
         for (MATERIAL m : materials) {
             mC.add(new StringComparison(StringMaster.getValueRef(KEYS.MATCH, G_PROPS.MATERIAL), m
-                    .getName(), true));
+             .getName(), true));
         }
         for (QUALITY_LEVEL q : qualities) {
             mC.add(new StringComparison(
-                    StringMaster.getValueRef(KEYS.MATCH, G_PROPS.QUALITY_LEVEL), q.getName(), true));
+             StringMaster.getValueRef(KEYS.MATCH, G_PROPS.QUALITY_LEVEL), q.getName(), true));
         }
         c.add(mC);
         c.add(qC);

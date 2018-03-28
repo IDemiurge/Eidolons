@@ -28,7 +28,7 @@ public class IntroTestLauncher extends DemoLauncher {
     }
 
     @Override
-    protected void engineInit()   {
+    protected void engineInit() {
         ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...", factory);
         screenSwitcher(new EventCallbackParam(data));
     }

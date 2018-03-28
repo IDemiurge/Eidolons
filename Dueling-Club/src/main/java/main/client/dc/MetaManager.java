@@ -24,7 +24,7 @@ public class MetaManager {
         } else {
             String text = FileManager.readFile(file);
             setData(TypeBuilder.buildType(XML_Converter.getDoc(text)
-                    .getFirstChild(), new ObjType(ENTITY_NAME)));
+             .getFirstChild(), new ObjType(ENTITY_NAME)));
             text = FileManager.readFile(file);
         }
     }

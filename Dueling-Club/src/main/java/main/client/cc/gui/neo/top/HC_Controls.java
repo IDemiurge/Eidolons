@@ -61,18 +61,18 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     // perhaps better to set some condition on each buttoN? LVL ON DEBUG
     // how will HC screen be used in Macro?
     private static final String[] macro_controls = {SAVE, EXPORT_HERO, BACK, MAP, TAVERNS,
-            TOWNHALL, TOWNSQUARE};
+     TOWNHALL, TOWNSQUARE};
     private static final String[] prearcade_controls = {SAVE, EXPORT_HERO, EXPORT_PARTY, NEW_HERO,
-            ADD, REMOVE, BACK, LEVEL_UP, FIGHT_3,};
+     ADD, REMOVE, BACK, LEVEL_UP, FIGHT_3,};
 
     private static final String[] arcade_controls = {SAVE, NEW_BRANCH, EXPORT_PARTY, EXPORT_HERO,
-            BACK, FIGHT_ARCADE,};
+     BACK, FIGHT_ARCADE,};
 
     private static final String[] skirmish_controls = {NEW_HERO, EXPORT_PARTY, EXPORT_HERO,
-            LEVEL_UP, ADD, REMOVE, BACK, FIGHT,};
+     LEVEL_UP, ADD, REMOVE, BACK, FIGHT,};
 
     private static final String[] free_controls = {SAVE, EXPORT_HERO, LEVEL_UP, ADD_ANY, CLOSE,
-            BACK,}; // ++delete!
+     BACK,}; // ++delete!
     // party
     // mode?
     private static final String ID = "btn";
@@ -102,7 +102,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
         } else if (CharacterCreator.isArcadeMode()) {
             mode = PartyHelper.getParty().getArcadeStatus() != ARCADE_STATUS.PRESTART
 
-                    ? HC_MODE.ARCADE : HC_MODE.PRE_ARCADE;
+             ? HC_MODE.ARCADE : HC_MODE.PRE_ARCADE;
         } else {
             mode = CharacterCreator.isPartyMode() ? HC_MODE.SKIRMISH : HC_MODE.FREE;
         }
@@ -178,7 +178,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
 
                     if (PartyHelper.checkPartySize() || Launcher.DEV_MODE) {
                         Launcher.getMainManager().getSequenceMaster().chooseNewMember(
-                                PartyHelper.getParty());
+                         PartyHelper.getParty());
                     } else {
                         DialogMaster.error("Maximum party size reached!");
                     }
@@ -208,7 +208,7 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
                     new Thread(new Runnable() {
                         public void run() {
                             CharacterCreator.saveAs(
-                                    CharacterCreator.getSelectedHeroType(), !alt);
+                             CharacterCreator.getSelectedHeroType(), !alt);
                             // CharacterCreator.savePreset(hero.getType());
                             DC_SoundMaster.playStandardSound(STD_SOUNDS.OK);
                         }
@@ -289,8 +289,8 @@ public class HC_Controls extends G_Panel implements SequenceManager, ButtonHandl
     public void fight() {
 
 //        if (Launcher.getMainManager().getSequenceMaster().mainHeroChoiceSequence(hero)) {
-            DemoManager.battleEntered();
-            Launcher.launchDC();
+        DemoManager.battleEntered();
+        Launcher.launchDC();
 //        }
 
 //        if (hero.getGame().getGameType() == GAME_TYPE.ARCADE){

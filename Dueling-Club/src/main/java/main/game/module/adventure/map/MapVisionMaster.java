@@ -18,11 +18,10 @@ public class MapVisionMaster {
             int distance = RouteMaster.getDistance(location, sub);
             int scoutRange = party.getExploreCapacity();
             MAP_OBJ_INFO_LEVEL info_level = MAP_OBJ_INFO_LEVEL.INVISIBLE;
-            if (distance <= scoutRange)
-            {
-                if (sub.isHidden()){
+            if (distance <= scoutRange) {
+                if (sub.isHidden()) {
                     //check
-                }  else
+                } else
                     info_level = MAP_OBJ_INFO_LEVEL.VISIBLE;
                 sub.setDetected(true);
             } else {
@@ -37,9 +36,7 @@ public class MapVisionMaster {
             }
 
 //sight range? route length?
-                //check concealed!
-
-
+            //check concealed!
 
 
             sub.setInfoLevel(info_level);

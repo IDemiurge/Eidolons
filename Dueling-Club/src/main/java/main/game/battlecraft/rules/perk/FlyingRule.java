@@ -12,7 +12,6 @@ public class FlyingRule {
     private static final int MOVE_AP_COST_REDUCTION = -35;
 
 
-
     public static int getAttackBonus(int attack, Boolean flying_mod) {
 
         if (BooleanMaster.isTrue(flying_mod)) {

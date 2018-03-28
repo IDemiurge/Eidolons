@@ -4,9 +4,9 @@ import main.ability.effects.Effect;
 import main.content.PARAMS;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
-import main.entity.obj.BuffObj;
 import main.entity.handlers.DC_ObjMaster;
 import main.entity.handlers.EntityMaster;
+import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
@@ -24,10 +24,11 @@ public class DC_BuffObj extends BuffObj {
     public DC_BuffObj(ObjType type, Player owner, MicroGame game, Ref ref) {
         this(type, owner, game, ref, null, 0, null);
     }
+
     public DC_BuffObj(DC_BuffObj buff) {
         this(buff.type, buff.owner,
          buff.getGame(), buff.ref, buff.effect,
-           buff.duration, buff.getRetainConditions());
+         buff.duration, buff.getRetainConditions());
 
     }
 
@@ -62,7 +63,6 @@ public class DC_BuffObj extends BuffObj {
 
         super.invokeClicked();
     }
-
 
 
     @Override

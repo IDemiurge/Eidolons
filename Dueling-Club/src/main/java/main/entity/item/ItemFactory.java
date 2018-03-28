@@ -22,7 +22,7 @@ public class ItemFactory {
                 return new DC_ArmorObj(type, originalOwner, game, ref);
             case ITEMS:
                 DC_QuickItemObj dc_QuickItemObj = new DC_QuickItemObj(type, originalOwner, game,
-                        ref);
+                 ref);
                 return dc_QuickItemObj;
             case WEAPONS:
                 if (!quick) {

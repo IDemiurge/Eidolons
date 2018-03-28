@@ -11,7 +11,7 @@ import main.system.graphics.FontMaster.FONT;
 /**
  * Created by JustMe on 11/14/2017.
  */
-public class TextBuilder   {
+public class TextBuilder {
     protected Message Message;
 
     protected StringBuilder sb;
@@ -26,7 +26,7 @@ public class TextBuilder   {
 
     public Message build(float w) {
         Label l = new Label(sb.toString(), getDefaultLabelStyle()
-         );
+        );
         l.setWrap(true);
         l.setAlignment(Align.left);
         Message = newMessage();
@@ -43,13 +43,13 @@ public class TextBuilder   {
         return Message;
     }
 
-    protected  Message newMessage() {
+    protected Message newMessage() {
         return new Message();
     }
 
     protected LabelStyle getDefaultLabelStyle() {
         return
-         StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(), 
+         StyleHolder.getSizedColoredLabelStyle(getAdjustCoef(), getFontStyle(), getFontSize(),
           getColor());
     }
 
@@ -64,6 +64,7 @@ public class TextBuilder   {
     protected int getFontSize() {
         return 20;
     }
+
     protected FONT getFontStyle() {
         return FONT.RU;
     }

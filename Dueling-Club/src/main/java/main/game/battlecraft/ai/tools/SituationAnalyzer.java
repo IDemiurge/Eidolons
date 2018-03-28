@@ -30,7 +30,7 @@ public class SituationAnalyzer extends AiHandler {
     }
 
     public int getRangedDangerFactor(Unit unit) {
-        int factor=0;
+        int factor = 0;
         for (Entity e : Analyzer.getVisibleEnemies(unit.getAI())) {
             Unit enemy = (Unit) e;
             int rangedThreat = getThreatAnalyzer().getRangedThreat(unit,
@@ -51,18 +51,18 @@ public class SituationAnalyzer extends AiHandler {
     }
 
     public int getMeleeDangerFactor(Unit unit, boolean adjacentOnly, boolean now) {
-        List<? extends Entity> units = ( adjacentOnly) ? Analyzer.getMeleeEnemies(unit)
+        List<? extends Entity> units = (adjacentOnly) ? Analyzer.getMeleeEnemies(unit)
          : Analyzer.getVisibleEnemies(unit.getAI());
         int factor = 0;
         for (Entity e : units) {
             Unit enemy = (Unit) e;
-            int meleeThreat =getThreatAnalyzer(). getMeleeThreat(enemy, now);
+            int meleeThreat = getThreatAnalyzer().getMeleeThreat(enemy, now);
             factor += meleeThreat;
             LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Melee threat " + meleeThreat + " from " + enemy.getName());
         }
 
         int mod = getConstInt(AiConst.DANGER_MELEE_BASE)
-         - ParamPriorityAnalyzer.getUnitLifeFactor(unit) ;
+         - ParamPriorityAnalyzer.getUnitLifeFactor(unit);
         LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Melee threat mod " + mod + " for " + unit.getName());
 
         if (mod != 0) {
@@ -74,14 +74,12 @@ public class SituationAnalyzer extends AiHandler {
     }
 
 
-
-
     public int getCastingPriority(Unit unit) {
         UnitAI unit_ai = unit.getAI();
-        if (!Analyzer.hasSpells(unit)){
+        if (!Analyzer.hasSpells(unit)) {
 //            if (!Analyzer.hasAnySpecialActions(unit))
-                return 0;
-            }
+            return 0;
+        }
         // per spell? TODO
 
         if (unit_ai.getType() == AiEnums.AI_TYPE.BRUTE) {
@@ -104,18 +102,18 @@ public class SituationAnalyzer extends AiHandler {
             DC_ActiveObj action = (DC_ActiveObj) a;
             if (action.isAttackAny())
                 if (!action.isAttackGeneric())
-                for (DC_Obj enemy : getAnalyzer().getEnemies(ai.getUnit(), false, false,
-                 action.isMelee())) {
-                    if (action.canBeActivated())
-                        if (action.canBeTargeted(enemy.getId()))
-                            return true;
-                }
+                    for (DC_Obj enemy : getAnalyzer().getEnemies(ai.getUnit(), false, false,
+                     action.isMelee())) {
+                        if (action.canBeActivated())
+                            if (action.canBeTargeted(enemy.getId()))
+                                return true;
+                    }
         }
         return false;
     }
 
     public int getDangerFactor(Unit unit) {
-        return getMeleeDangerFactor(unit)+getRangedDangerFactor(unit);
+        return getMeleeDangerFactor(unit) + getRangedDangerFactor(unit);
     }
 
     public int getTimeModifier() {

@@ -12,6 +12,16 @@ import java.util.List;
 public class ManualArticles extends ItemListPanel {
 
 
+    @Override
+    public List<SelectableItemData> toDataList(List<? extends Entity> objTypes) {
+        return super.toDataList(objTypes);
+    }
+
+    @Override
+    public List<SelectableItemData> getItems() {
+        return super.getItems();
+    }
+
     public enum MANUAL_ARTICLE {
         Introduction,
         This_release,
@@ -24,10 +34,10 @@ public class ManualArticles extends ItemListPanel {
         Units,
         Controls,;
 
-        public String name=StringMaster.getWellFormattedString(name());
+        public String name = StringMaster.getWellFormattedString(name());
 
         public String getArticleFileName() {
-            return name+".txt";
+            return name + ".txt";
         }
 
         public String getPreview() {
@@ -35,19 +45,9 @@ public class ManualArticles extends ItemListPanel {
         }
 
         public String getFullImage() {
-            return null ;
+            return null;
 //            return StrPathBuilder.build("big","manual",name, ".png");
         }
-    }
-
-    @Override
-    public List<SelectableItemData> toDataList(List<? extends Entity> objTypes) {
-        return super.toDataList(objTypes);
-    }
-
-    @Override
-    public List<SelectableItemData> getItems() {
-        return super.getItems();
     }
 
 

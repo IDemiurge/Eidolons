@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class MapActionPanel extends BaseSlotPanel {
 
-    public MapActionPanel( ) {
+    public MapActionPanel() {
         super(64);
     }
 
@@ -35,11 +35,11 @@ public class MapActionPanel extends BaseSlotPanel {
         //cache
         List<MacroAction> actions = MacroActionManager.getMacroActions(
          MACRO_ACTION_GROUPS.PARTY, source);
-     List<ActionValueContainer> list = new ArrayList<>();
+        List<ActionValueContainer> list = new ArrayList<>();
         for (MacroAction sub : actions) {
-            boolean valid=true;
-            TextureRegion texture= TextureCache.getOrCreateR(sub.getImagePath());
-            list.add(new ActionValueContainer(valid, texture, ()->{
+            boolean valid = true;
+            TextureRegion texture = TextureCache.getOrCreateR(sub.getImagePath());
+            list.add(new ActionValueContainer(valid, texture, () -> {
                 sub.invokeClicked();
             }));
         }

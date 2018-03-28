@@ -11,11 +11,11 @@ import java.util.List;
 
 public class HeroBarPanel extends BarPanel {
     public static final PARAMETER[] params = {MACRO_PARAMS.HEALTH,
-            MACRO_PARAMS.VIGOR, MACRO_PARAMS.COMBAT_READINESS,
-            MACRO_PARAMS.ONENESS, MACRO_PARAMS.MOTIVATION,};
+     MACRO_PARAMS.VIGOR, MACRO_PARAMS.COMBAT_READINESS,
+     MACRO_PARAMS.ONENESS, MACRO_PARAMS.MOTIVATION,};
     public static final Color[] colors = {ColorManager.ORANGE,
-            ColorManager.YELLOW, ColorManager.CYAN, ColorManager.BLUE,
-            ColorManager.PURPLE
+     ColorManager.YELLOW, ColorManager.CYAN, ColorManager.BLUE,
+     ColorManager.PURPLE
 
     };
     G_Panel panel;

@@ -166,7 +166,7 @@ public class WatchRule implements ActionRule {
     }
 
     private static boolean isTestMode() {
-   return false;
+        return false;
     }
 
     private static WatchBuffEffect getWatchBuffEffect(Unit watcher, List<DC_Obj> list) {
@@ -179,47 +179,47 @@ public class WatchRule implements ActionRule {
 
     public static String getDefenseModVsOthers(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
-                + MathMaster.applyModIfNotZero(DEFENSE_MOD_OTHERS, watcher
-                .getIntParam(PARAMS.WATCH_DEFENSE_OTHERS_MOD)));
+         + MathMaster.applyModIfNotZero(DEFENSE_MOD_OTHERS, watcher
+         .getIntParam(PARAMS.WATCH_DEFENSE_OTHERS_MOD)));
         if (list.size() > 1) {
-            mod = mod + "+"+ mod  + "*" + DEFENSE_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
+            mod = mod + "+" + mod + "*" + DEFENSE_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
         }
         return mod;
     }
 
     public static String getApPenaltyMod(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
-                + MathMaster.applyModIfNotZero(AP_PENALTY, watcher
-                .getIntParam(PARAMS.WATCH_AP_PENALTY_MOD)));
+         + MathMaster.applyModIfNotZero(AP_PENALTY, watcher
+         .getIntParam(PARAMS.WATCH_AP_PENALTY_MOD)));
         if (list.size() > 1) {
-            mod = mod + "+"+ mod  + "*" + AP_PENALTY_PER_ADDITIONAL + "/100*" + (list.size() - 1);
+            mod = mod + "+" + mod + "*" + AP_PENALTY_PER_ADDITIONAL + "/100*" + (list.size() - 1);
         }
         return mod;
     }
 
     public static String getDefenseModVsWatched(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
-                + MathMaster.applyModIfNotZero(DEFENSE_MOD, watcher
-                .getIntParam(PARAMS.WATCH_DEFENSE_MOD)));
+         + MathMaster.applyModIfNotZero(DEFENSE_MOD, watcher
+         .getIntParam(PARAMS.WATCH_DEFENSE_MOD)));
         // TODO from WATCHED
         return mod;
     }
 
     public static String getAttackModVsWatched(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
-                + MathMaster.applyModIfNotZero(ATTACK_MOD, watcher
-                .getIntParam(PARAMS.WATCH_ATTACK_MOD)));
+         + MathMaster.applyModIfNotZero(ATTACK_MOD, watcher
+         .getIntParam(PARAMS.WATCH_ATTACK_MOD)));
         // TODO reduce?
         return mod;
     }
 
     public static String getAttackModVsOthers(Unit watcher, List<DC_Obj> list) {
         String mod = StringMaster.wrapInParenthesis(""
-                + MathMaster.applyModIfNotZero(ATTACK_MOD_OTHERS, watcher
-                .getIntParam(PARAMS.WATCH_ATTACK_OTHERS_MOD)));
+         + MathMaster.applyModIfNotZero(ATTACK_MOD_OTHERS, watcher
+         .getIntParam(PARAMS.WATCH_ATTACK_OTHERS_MOD)));
 
         if (list.size() > 1) {
-            mod = mod + "+"+ mod  + "*" + ATTACK_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
+            mod = mod + "+" + mod + "*" + ATTACK_MOD_OTHERS_PER_ADDITIONAL + "/100*" + (list.size() - 1);
         }
         return mod;
     }
@@ -265,13 +265,13 @@ public class WatchRule implements ActionRule {
                 Ref ref = watcher.getRef().getCopy();
                 try {
                     SpectrumEffect spectrumEffect = new SpectrumEffect(new OwnershipCondition(true,
-                            "match", "source"), new WatchActionEffect(true));
+                     "match", "source"), new WatchActionEffect(true));
                     spectrumEffect.setRangeFormula(StringMaster.getValueRef(KEYS.SOURCE,
-                            PARAMS.SIGHT_RANGE));
+                     PARAMS.SIGHT_RANGE));
                     spectrumEffect.setApplyThrough(false);// for now...
                     spectrumEffect.apply(ref);
                     watcher.getBuff(STD_MODES.ALERT.getBuffName(), false).setOnDispelEffects(
-                            new RemoveBuffEffect("Watching ", false));
+                     new RemoveBuffEffect("Watching ", false));
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }

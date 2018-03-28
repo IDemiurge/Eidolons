@@ -574,13 +574,15 @@ public class Launcher {
         }
 
 //        setView(VIEWS.DC);
-        try{
+        try {
             createGame();
 
-        }catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
-    public static void createGame( )
-    {
+
+    public static void createGame() {
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
 //        BattleSceneLauncher battleSceneLauncher = new BattleSceneLauncher();
 //        LwjglCanvas canvas = new LwjglCanvas(
@@ -590,6 +592,7 @@ public class Launcher {
 ////        Gdx.app.postRunnable(
 //         () -> frame.add(canvas.getCanvas()));
     }
+
     public static boolean isInMenu() {
         return getView() == VIEWS.MENU;
     }

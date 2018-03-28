@@ -59,7 +59,7 @@ public class PathChoiceMaster {
     }
 
 
-    List<Choice> getChoices(ActionPath path, Coordinates c_coordinate,Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
+    List<Choice> getChoices(ActionPath path, Coordinates c_coordinate, Coordinates targetCoordinate, FACING_DIRECTION c_facing) {
         Chronos.mark("Finding choices for " + path);
         pathBuilder.adjustUnit();
 
@@ -82,7 +82,7 @@ public class PathChoiceMaster {
                 if (!a.canBeActivated()) {
                     if (firstStep) {
                         if (!ReasonMaster.checkReasonCannotActivate(a, PARAMS.C_N_OF_ACTIONS
-                                .getName())) {
+                         .getName())) {
                             continue; // exception for AP TODO
                         }
                     }
@@ -107,7 +107,7 @@ public class PathChoiceMaster {
                             Coordinates coordinates = ((SelfMoveEffect) e).getCoordinates();
                             if (coordinates != null) {
                                 objects = new ArrayList<>(Arrays.asList(unit
-                                        .getGame().getCellByCoordinate(coordinates)));
+                                 .getGame().getCellByCoordinate(coordinates)));
                             }
                         } catch (Exception ex) {
                             main.system.ExceptionMaster.printStackTrace(ex);
@@ -125,12 +125,12 @@ public class PathChoiceMaster {
                             Coordinates coordinates = ((DC_Cell) obj).getCoordinates();
                             // if (a.getName().equals("Clumsy Leap"))
                             if (PositionMaster.getDistance(coordinates, c_coordinate) > Math.max(1,
-                                    a.getIntParam(PARAMS.RANGE))) {
+                             a.getIntParam(PARAMS.RANGE))) {
                                 continue;
                             }
 
                             if (PositionMaster.getDistance(coordinates, targetCoordinate) > PositionMaster
-                                    .getDistance(c_coordinate, targetCoordinate)) {
+                             .getDistance(c_coordinate, targetCoordinate)) {
                                 continue; // TODO will this not eliminate good
                             }
                             // choices?
@@ -138,7 +138,7 @@ public class PathChoiceMaster {
                             Ref ref = unit.getRef().getCopy();
                             ref.setTarget(((DC_Cell) obj).getId());
                             Choice choice = new Choice(coordinates, c_coordinate,
-                                    new Action(a, ref));
+                             new Action(a, ref));
                             choicesForAction.add(choice);
                         }
                     }
@@ -169,7 +169,7 @@ public class PathChoiceMaster {
 
     private Choice constructStdMoveChoice(Coordinates targetCoordinate, Coordinates c_coordinate, FACING_DIRECTION c_facing) {
         FACING_SINGLE facing = FacingMaster.getSingleFacing(c_facing, c_coordinate,
-                targetCoordinate);
+         targetCoordinate);
         Action moveAction = getMoveAction();
         if (facing == UnitEnums.FACING_SINGLE.IN_FRONT) {
             if (firstStep) {
@@ -181,11 +181,11 @@ public class PathChoiceMaster {
         }
         pathBuilder.adjustUnit();
         Collection<Action> actions = pathBuilder.getTurnSequenceConstructor().getTurnSequence(
-                UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
+         UnitEnums.FACING_SINGLE.IN_FRONT, unit, targetCoordinate);
         actions.add(moveAction);
         // resetUnit();// TODO is that right?
         Choice choice = new Choice(targetCoordinate, c_coordinate, actions
-                .toArray(new Action[actions.size()]));
+         .toArray(new Action[actions.size()]));
 
         return choice;
     }
@@ -257,7 +257,7 @@ public class PathChoiceMaster {
             {
                 filteredList.add(choice);
             } else if (PositionMaster.getDistance(coordinates, c) <= bestDistance_2
-                    || c.isAdjacent(targetAction.getTarget().getCoordinates())) {
+             || c.isAdjacent(targetAction.getTarget().getCoordinates())) {
                 if (PositionMaster.getDistance(c_coordinate, c) <= bestDistance_1) {
                     filteredList.add(choice);
                 }
@@ -277,7 +277,7 @@ public class PathChoiceMaster {
         unit.setCoordinates(c); // change facing
         // preCheck range
         if (PositionMaster.getDistance(targetAction.getTarget().getCoordinates(), c) > targetAction
-                .getActive().getIntParam(PARAMS.RANGE)) {
+         .getActive().getIntParam(PARAMS.RANGE)) {
             nonSneakCells.add(c);
             return false;
         }
@@ -297,7 +297,7 @@ public class PathChoiceMaster {
     private List<Coordinates> getDefaultCoordinateTargets(ActionPath path, Coordinates c_coordinate) {
 
         List<Coordinates> list = new ArrayList<>();
-        for (DIRECTION d : DIRECTION.values ) {
+        for (DIRECTION d : DIRECTION.values) {
             if (d.isDiagonal()) {
                 continue;
             }

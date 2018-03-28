@@ -12,7 +12,7 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
-public class ChangeFacingEffect extends MicroEffect  implements OneshotEffect {
+public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
 
     private Boolean clockwise;
 
@@ -44,7 +44,7 @@ public class ChangeFacingEffect extends MicroEffect  implements OneshotEffect {
                     return false;
                 }
                 if (FacingMaster.getSingleFacing(f, obj,
-                        (BfObj) active.getRef().getTargetObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
+                 (BfObj) active.getRef().getTargetObj()) == UnitEnums.FACING_SINGLE.IN_FRONT) {
                     newDirection = f;
                     break;
                 }

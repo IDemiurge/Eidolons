@@ -25,11 +25,6 @@ public class EditorInputController extends MapInputController {
         super(camera);
     }
 
-    @Override
-    protected float getMargin() {
-        return 500;
-    }
-
     public static <E extends MapActor> EventListener getListener(E actor) {
         return new ClickListener() {
             @Override
@@ -56,22 +51,26 @@ public class EditorInputController extends MapInputController {
                             break;
                         case ADD:
                             break;
-  }
+                    }
                 return super.touchDown(event, x, y, pointer, button);
             }
         };
     }
 
+    @Override
+    protected float getMargin() {
+        return 500;
+    }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if (button == 1) {
-            if (Gdx.input.isKeyJustPressed(Keys.ALT_LEFT)||
+            if (Gdx.input.isKeyJustPressed(Keys.ALT_LEFT) ||
              Gdx.input.isKeyPressed(Keys.ALT_LEFT))
                 EditorManager.remove(screenX, screenY);
             else
-            EditorManager.add(screenX, screenY);
+                EditorManager.add(screenX, screenY);
 
         }
 

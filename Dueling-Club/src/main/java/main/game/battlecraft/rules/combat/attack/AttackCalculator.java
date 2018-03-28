@@ -171,7 +171,6 @@ public class AttackCalculator {
     }
 
 
-
     private Integer getAttackDefenseDamageBonus(Attack attack, Integer amount, Unit attacker,
                                                 BattleFieldObject attacked, DC_ActiveObj action, boolean offhand) {
         int attackValue = DefenseVsAttackRule.getAttackValue(offhand, attacker, attacked, action);
@@ -302,7 +301,7 @@ public class AttackCalculator {
         if (modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK) != null) {
             totalMod += modMap.get(MOD_IDENTIFIER.EXTRA_ATTACK);
         }
-        bonus =bonusMap.get(MOD_IDENTIFIER.AMMO);
+        bonus = bonusMap.get(MOD_IDENTIFIER.AMMO);
         if (bonus != null)
             totalBonus += bonus;
 
@@ -326,8 +325,8 @@ public class AttackCalculator {
         // bonus += (amount - bonus) * modMap.getOrCreate(id) / 100;
         // bonusMap.put(id, bonus);
         // }
-for (Integer sub: posMap.values())
-        totalMod += sub;
+        for (Integer sub : posMap.values())
+            totalMod += sub;
 
         amount += totalBonus;
         amount += amount * totalMod / 100;

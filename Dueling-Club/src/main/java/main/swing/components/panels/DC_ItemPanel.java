@@ -17,8 +17,8 @@ import main.system.images.ImageManager.BORDER;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BORDER_CHECKER {
     private int width;

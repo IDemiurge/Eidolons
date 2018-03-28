@@ -29,9 +29,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected ChainedStage introStage;
     protected Batch batch;
     protected Label waitingLabel;
+    protected EventCallbackParam param;
+    protected float timeWaited;
     private boolean waitingForInput;
-    protected  EventCallbackParam param;
-    protected  float timeWaited;
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...", StyleHolder.getDefaultLabelStyle());
@@ -134,6 +134,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             }
 
     }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -154,6 +155,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
 
     }
+
     protected void waited(float delta) {
         timeWaited += delta;
         batch.begin();
@@ -183,6 +185,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public boolean isWaitingForInput() {
         return waitingForInput;
+    }
+
+    public void setWaitingForInput(boolean waitingForInput) {
+        main.system.auxiliary.log.LogMaster.log(1, "waitingForInput from " +
+         this.waitingForInput +
+         " to " + waitingForInput);
+        this.waitingForInput = waitingForInput;
+
     }
 
     public float getTimeWaited() {
@@ -228,13 +238,5 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public boolean isLoadingDone() {
         return hideLoader;
-    }
-
-    public void setWaitingForInput(boolean waitingForInput) {
-        main.system.auxiliary.log.LogMaster.log(1,"waitingForInput from " +
-         this.waitingForInput +
-         " to " +waitingForInput); 
-        this.waitingForInput = waitingForInput;
-
     }
 }

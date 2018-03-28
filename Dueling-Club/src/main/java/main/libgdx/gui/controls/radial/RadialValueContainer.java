@@ -23,19 +23,19 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RadialValueContainer extends ActionValueContainer {
-    Runnable lazyChildInitializer;
-    Label infoLabel;
-    Supplier<String> infoTextSupplier;
     protected List<RadialValueContainer> childNodes = new ArrayList<>();
     protected RadialValueContainer parent;
     protected Supplier<Tooltip> tooltipSupplier;
     protected Tooltip tooltip;
+    Runnable lazyChildInitializer;
+    Label infoLabel;
+    Supplier<String> infoTextSupplier;
 
 
     public RadialValueContainer(TextureRegion texture, Runnable action) {
         super(texture, action);
         setUnderlay(
-         valid?
+         valid ?
           RADIAL_UNDERLAYS.BLACK_BEVEL.getTextureRegion() :
           RADIAL_UNDERLAYS.BLACK_BEVEL_DISABLED.getTextureRegion());
 
@@ -45,7 +45,7 @@ public class RadialValueContainer extends ActionValueContainer {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!valid)
-                    return ;
+                    return;
                 setUnderlay(RADIAL_UNDERLAYS.BLACK_BEVEL_DISABLED.getTextureRegion());
                 super.clicked(event, x, y);
             }
@@ -83,10 +83,6 @@ public class RadialValueContainer extends ActionValueContainer {
         });
     }
 
-    protected void initSize() {
-        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
-    }
-
     public RadialValueContainer(TextureRegion texture, String value, Runnable action) {
         super(texture, value, action);
     }
@@ -102,18 +98,22 @@ public class RadialValueContainer extends ActionValueContainer {
 
     }
 
+    protected void initSize() {
+        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
+    }
+
     public void setUnderlay(TextureRegion underlay) {
         if (!checkUnderlayRequired())
-            return ;
-        if (underlay==null )
-            return ;
+            return;
+        if (underlay == null)
+            return;
         setUnderlayOffsetX((imageContainer.getActorX() +
-         (imageContainer.getActorWidth() - underlay.getRegionWidth()))/3*2+3);
+         (imageContainer.getActorWidth() - underlay.getRegionWidth())) / 3 * 2 + 3);
         setUnderlayOffsetY((imageContainer.getActorY() +
-         (imageContainer.getActorHeight() - underlay.getRegionHeight()))/3*2 -2);
-        if (getRadial() !=null )
-        if (getRadial().getActions().size>0)
-            return ;
+         (imageContainer.getActorHeight() - underlay.getRegionHeight())) / 3 * 2 - 2);
+        if (getRadial() != null)
+            if (getRadial().getActions().size > 0)
+                return;
 
 //        main.system.auxiliary.log.LogMaster.log(1," underlay set " + underlay.getTexture().getTextureData());
         this.underlay = underlay;
@@ -125,11 +125,12 @@ public class RadialValueContainer extends ActionValueContainer {
             clickAction = action::run;
         }
     }
+
     protected boolean checkUnderlayRequired() {
 //        if (imageContainer.getActor().getImageWidth()==64)
 //            if (imageContainer.getActor().getImageHeight()==64)
 //                return true;
-        if (getParent()==null )
+        if (getParent() == null)
             return false;
 //        if (getParent().getParent()==null )
 //            return false;
@@ -143,13 +144,13 @@ public class RadialValueContainer extends ActionValueContainer {
 
     @Override
     protected void drawLightUnderlay(Batch batch) {
-        return ;
+        return;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if (underlayOffsetX==0|| underlayOffsetY==0)
+        if (underlayOffsetX == 0 || underlayOffsetY == 0)
             setUnderlay(underlay);
     }
 
@@ -180,7 +181,7 @@ public class RadialValueContainer extends ActionValueContainer {
     @Override
     public void setVisible(boolean visible) {
         setUnderlay(
-         valid?
+         valid ?
           RADIAL_UNDERLAYS.BLACK_BEVEL.getTextureRegion() :
           RADIAL_UNDERLAYS.BLACK_BEVEL_DISABLED.getTextureRegion());
         setUnderlayOffsetX(0);
@@ -198,7 +199,7 @@ public class RadialValueContainer extends ActionValueContainer {
                 infoLabel.setColor(valid ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
 
                 infoLabel.setPosition((64 - infoLabel.getWidth()) / 2,
-                 (imageContainer.getActor().getContent(). getImageHeight() + infoLabel.getHeight()) / 2);
+                 (imageContainer.getActor().getContent().getImageHeight() + infoLabel.getHeight()) / 2);
             }
 
             if (tooltip == null)
@@ -239,8 +240,7 @@ public class RadialValueContainer extends ActionValueContainer {
         BLACK_BEVEL_GLOW(StrPathBuilder.build(
          "ui", "components", "2017", "radial", "underlay bevel glow.png")),
         BLACK_BEVEL_DISABLED(StrPathBuilder.build(
-         "ui", "components", "2017", "radial", "underlay bevel disabled.png")),
-         ;
+         "ui", "components", "2017", "radial", "underlay bevel disabled.png")),;
         String texturePath;
         TextureRegion textureRegion;
 

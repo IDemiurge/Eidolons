@@ -48,8 +48,8 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
     public void setInts() {
         // height= height*3/2;
         sizeInfo = "w " + DebugPanel.getPanelWidth() / 2
-                // "2*" + GuiManager.getCellSize()
-                + "!, h " + DebugPanel.getPanelHeight()
+         // "2*" + GuiManager.getCellSize()
+         + "!, h " + DebugPanel.getPanelHeight()
         // +"("
         // + DC_PriorityListPanel.PLP_MIN_ITEMS + "/2-1)*"
         // + GuiManager.getSmallObjSize() + "!"
@@ -65,35 +65,35 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
 
         if (infoObj == null) {
             this.displayedValues = DC_ContentManager
-                    .getInfoPanelValueList(obj_type);
+             .getInfoPanelValueList(obj_type);
             return super.initData();
         }
         if (infoObj.getGame().isSimulation()) {
             this.displayedValues = ContentManager.getFullValueList(
-                    infoObj.getOBJ_TYPE(), true);
+             infoObj.getOBJ_TYPE(), true);
         } else if (VisionManager.checkDetected(getInfoObj()) || isNonUnit()
-                || isEditable()) {
+         || isEditable()) {
             try {
                 displayedValues = null;
                 List<VALUE> values = ValuePageManager.getValuesForDC(DC_TYPE
-                        .getType(obj_type));
+                 .getType(obj_type));
                 displayedValues = StringMaster.convertToStringList(values);
             } catch (Exception e) {
                 // main.system.ExceptionMaster.printStackTrace(e);
             }
             if (displayedValues == null) {
                 this.displayedValues = DC_ContentManager
-                        .getInfoPanelValueList(obj_type);
+                 .getInfoPanelValueList(obj_type);
             }
         } else {
             if (!((DC_Game) infoObj.getGame()).getVisionMaster()
-                    .getDetectionMaster().checkKnown(getInfoObj())) {
+             .getDetectionMaster().checkKnown(getInfoObj())) {
                 this.displayedValues = DC_ContentManager
-                        .getLimitedInfoPanelValueList(obj_type);
+                 .getLimitedInfoPanelValueList(obj_type);
             } else {
                 infoObj = (getInfoObj().getType());
                 this.displayedValues = DC_ContentManager
-                        .getInfoPanelValueList(obj_type);
+                 .getInfoPanelValueList(obj_type);
             }
         }
 
@@ -128,16 +128,16 @@ public class DC_InfoPanel extends G_InfoPanel implements TableModelListener {
 
         if (infoObj != null) {
             this.table.getTable().setDefaultRenderer(String.class,
-                    new DC_InfoPanelRenderer(infoObj));
+             new DC_InfoPanelRenderer(infoObj));
         }
     }
 
     @Override
     public void tableChanged(TableModelEvent e) {
         final String newValue = (String) table.getTable().getValueAt(
-                e.getFirstRow(), e.getColumn());
+         e.getFirstRow(), e.getColumn());
         final String valName = (String) table.getTable().getValueAt(
-                e.getFirstRow(), e.getColumn() - 1);
+         e.getFirstRow(), e.getColumn() - 1);
         new Thread(new Runnable() {
 
             @Override

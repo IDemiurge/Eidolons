@@ -17,6 +17,7 @@ public class DetectionMaster {
     public boolean checkKnown(DC_Obj obj) {
         return obj.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.DETECTED;
     }
+
     public boolean checkKnownForPlayer(DC_Obj obj) {
         return obj.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.DETECTED;
     }

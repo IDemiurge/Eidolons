@@ -26,16 +26,16 @@ public class SpellRadialManager {
     public static List<RadialValueContainer> getSpellNodes(Unit source,
                                                            DC_Obj target) {
         List<DC_SpellObj> spells = source.getSpells().stream()
-                .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
-                .collect(Collectors.toList());
+         .filter(spell -> (spell.getGame().isDebugMode() || (spell.canBeActivated() && spell.canBeTargeted(target.getId()))))
+         .collect(Collectors.toList());
         if (spells.size() <= MAX_SPELLS_DISPLAYED) {
             return spells.stream()
-                    .map(el -> {
-                        final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
-                        addSimpleTooltip(valueContainer, el.getName());
-                        return valueContainer;
-                    })
-                    .collect(Collectors.toList());
+             .map(el -> {
+                 final RadialValueContainer valueContainer = createNodeBranch(new EntityNode(el), source, target);
+                 addSimpleTooltip(valueContainer, el.getName());
+                 return valueContainer;
+             })
+             .collect(Collectors.toList());
 
         }
 
@@ -56,7 +56,7 @@ public class SpellRadialManager {
             for (SPELL_ASPECT g : SPELL_ASPECT.values()) {
                 if (!aspects.contains(g)) {
                     if (new ArrayList<>(Arrays.asList(g.groups))
-                            .contains(spell.getSpellGroup())) {
+                     .contains(spell.getSpellGroup())) {
                         aspects.add(g);
                     }
                 }
@@ -64,12 +64,12 @@ public class SpellRadialManager {
         }
 
         return spell_groups.size() > 8 ?
-                aspects.stream()
-                        .map(el -> createNodeBranch(new RadialSpellAspect(el), source, target))
-                        .collect(Collectors.toList()) :
-                spell_groups.stream()
-                        .map(el -> createNodeBranch(new RadialSpellGroup(el), source, target))
-                        .collect(Collectors.toList());
+         aspects.stream()
+          .map(el -> createNodeBranch(new RadialSpellAspect(el), source, target))
+          .collect(Collectors.toList()) :
+         spell_groups.stream()
+          .map(el -> createNodeBranch(new RadialSpellGroup(el), source, target))
+          .collect(Collectors.toList());
     }
 
     private static boolean checkForceTargeting(Unit source,
@@ -86,17 +86,17 @@ public class SpellRadialManager {
             valueContainer =
              RadialManager.configureActionNode(target, action);
             ActionCostTooltip tooltip = new ActionCostTooltip(action);
-            tooltip.setUserObject(new ActionCostSourceImpl(action) );
+            tooltip.setUserObject(new ActionCostSourceImpl(action));
             valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new SpellRadialContainer(
              TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), object.getTexturePath()),
-                    null
+             null
             );
 
             valueContainer.setChildNodes(object.getItems(source).stream()
-                    .map(el -> createNodeBranch(el, source, target))
-                    .collect(Collectors.toList()));
+             .map(el -> createNodeBranch(el, source, target))
+             .collect(Collectors.toList()));
 
             String tooltip = StringMaster.getWellFormattedString(object.getContents().toString());
             addSimpleTooltip(valueContainer, tooltip);

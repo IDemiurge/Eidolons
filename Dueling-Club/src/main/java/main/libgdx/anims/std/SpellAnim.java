@@ -32,23 +32,17 @@ public class SpellAnim extends ActionAnim {
         return template;
     }
 
-    public enum ZONE_ANIM_MODS {
-        SWIRL,
-        RETRACT,
-
-    }
-
     public enum SPELL_ANIMS {
         RAY(activeObj -> 1),
         BLAST(active -> (active.getIntParam(G_PARAMS.RADIUS) == 0) ? 1 :
-                active.getRef().getTargetObj().getCoordinates().
-                        getAdjacentCoordinates().size()),
+         active.getRef().getTargetObj().getCoordinates().
+          getAdjacentCoordinates().size()),
         SPRAY(300, 0, active -> {
             List<Coordinates> list = active.getOwnerObj().getCoordinates().
-                    getAdjacentCoordinates();
+             getAdjacentCoordinates();
             list.removeIf(coordinates ->
-                    FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
-                            active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
+             FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
+              active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
             return list.size();
         }
         ) {
@@ -99,5 +93,11 @@ public class SpellAnim extends ActionAnim {
         public void setRemoveBaseEmitters(boolean removeBaseEmitters) {
             this.removeBaseEmitters = removeBaseEmitters;
         }
+    }
+
+    public enum ZONE_ANIM_MODS {
+        SWIRL,
+        RETRACT,
+
     }
 }

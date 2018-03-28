@@ -3,17 +3,19 @@ package main.system.options;
 import main.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import main.test.frontend.RESOLUTION;
 
-public class GraphicsOptions extends Options<GRAPHIC_OPTION,GRAPHIC_OPTION>{
-static {
+public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
+    static {
         //set default values
 
 
-     //caching
+        //caching
 
-}
-static {
-    GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1680x1050);
-}
+    }
+
+    static {
+        GRAPHIC_OPTION.RESOLUTION.setDefaultValue(RESOLUTION._1680x1050);
+    }
+
     @Override
     protected Class getOptionClass() {
         return GRAPHIC_OPTION.class;
@@ -21,7 +23,7 @@ static {
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
 
-    FULLSCREEN(false),
+        FULLSCREEN(false),
 //        GAMMA(),
 
         AMBIENCE(false),
@@ -31,17 +33,13 @@ static {
 
         AUTO_CAMERA(true),
         FRAMERATE(60, 20, 80),
-        RESOLUTION(main.test.frontend.RESOLUTION.values()), 
+        RESOLUTION(main.test.frontend.RESOLUTION.values()),
         ZOOM_STEP(5, 1, 20), SPRITE_CACHE_ON(false), VSYNC(true);
         private Boolean exclusive;
         private Integer min;
         private Integer max;
         private Object[] options;
         private Object defaultValue;
-
-        public void setDefaultValue(Object defaultValue) {
-            this.defaultValue = defaultValue;
-        }
 
         GRAPHIC_OPTION(Boolean exclusive) {
             this.exclusive = exclusive;
@@ -52,7 +50,7 @@ static {
             this.options = options;
         }
 
-        GRAPHIC_OPTION(Integer defaultValue,Integer min, Integer max ) {
+        GRAPHIC_OPTION(Integer defaultValue, Integer min, Integer max) {
             this.defaultValue = defaultValue;
             this.min = min;
             this.max = max;
@@ -79,6 +77,10 @@ static {
         @Override
         public Object getDefaultValue() {
             return defaultValue;
+        }
+
+        public void setDefaultValue(Object defaultValue) {
+            this.defaultValue = defaultValue;
         }
 
         @Override

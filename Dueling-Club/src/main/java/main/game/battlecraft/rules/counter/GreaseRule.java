@@ -13,9 +13,9 @@ import main.game.core.game.DC_Game;
 /**
  * Created by JustMe on 4/20/2017.
  */
-public class GreaseRule extends  DC_CounterRule {
-    private static final String RESISTANCES ="Fire" ;
-    private static final String RESISTANCES_BONUS ="Acid|Lightning|Cold" ;
+public class GreaseRule extends DC_CounterRule {
+    private static final String RESISTANCES = "Fire";
+    private static final String RESISTANCES_BONUS = "Acid|Lightning|Cold";
     private static final String PENALTY_PARAMS = PARAMS.MOVE_AP_PENALTY.getName();
     private static final String RESIST_PER_COUNTER = "-3";
     private static final String RESIST_BONUS_PER_COUNTER = "1";
@@ -30,6 +30,7 @@ public class GreaseRule extends  DC_CounterRule {
     public COUNTER getCounter() {
         return COUNTER.Grease;
     }
+
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 1; // %-BASED?

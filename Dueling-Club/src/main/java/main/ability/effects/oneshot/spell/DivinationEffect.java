@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.client.cc.logic.spells.DivinationMaster;
 import main.entity.obj.unit.Unit;
 
-public class DivinationEffect extends MicroEffect  implements OneshotEffect {
+public class DivinationEffect extends MicroEffect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {

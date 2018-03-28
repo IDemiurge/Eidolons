@@ -16,6 +16,7 @@ public class TemplateSelectiveTargeting extends SelectiveTargeting {
         this.template = template;
 
     }
+
     public TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template, Condition c) {
         super(c, new Formula("1"));
         this.template = template;
@@ -57,7 +58,7 @@ public class TemplateSelectiveTargeting extends SelectiveTargeting {
 
     public void initTargeting() {
         Conditions conditions = DC_ConditionMaster
-                .getSelectiveTargetingTemplateConditions(template);
+         .getSelectiveTargetingTemplateConditions(template);
         Condition c = filter.getConditions(); // TODO ?
         if (c != null) {
             conditions.add(c);

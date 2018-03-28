@@ -17,9 +17,9 @@ public class BfObjPropGenerator {
     public static void generateBfObjProps(ObjType t) {
 
         BF_OBJECT_TYPE type = new EnumMaster<BF_OBJECT_TYPE>().retrieveEnumConst(
-                BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
+         BF_OBJECT_TYPE.class, t.getProperty(G_PROPS.BF_OBJECT_TYPE));
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
-                BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
+         BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (type == null) {
             switch (t.getProperty(G_PROPS.BF_OBJECT_TYPE).toUpperCase()) {
                 case "WALL":
@@ -123,7 +123,7 @@ public class BfObjPropGenerator {
         }
         if (group != null) {
             t.setProperty(G_PROPS.BF_OBJECT_GROUP, StringMaster
-                    .getWellFormattedString(group.name()));
+             .getWellFormattedString(group.name()));
         }
 
         if (type != null) {
@@ -135,19 +135,19 @@ public class BfObjPropGenerator {
     public static void generateBfObjStatProps(ObjType t) {
         // TODO theme from group!
         BF_OBJECT_SIZE size = new EnumMaster<BF_OBJECT_SIZE>().retrieveEnumConst(
-                BF_OBJECT_SIZE.class, t.getProperty(PROPS.BF_OBJECT_SIZE));
+         BF_OBJECT_SIZE.class, t.getProperty(PROPS.BF_OBJECT_SIZE));
         BF_OBJ_MATERIAL material = new EnumMaster<BF_OBJ_MATERIAL>().retrieveEnumConst(
-                BF_OBJ_MATERIAL.class, t.getProperty(PROPS.BF_OBJ_MATERIAL));
+         BF_OBJ_MATERIAL.class, t.getProperty(PROPS.BF_OBJ_MATERIAL));
         OBJECT_ARMOR_TYPE armorType = new EnumMaster<OBJECT_ARMOR_TYPE>().retrieveEnumConst(
-                OBJECT_ARMOR_TYPE.class, t.getProperty(PROPS.OBJECT_ARMOR_TYPE));
+         OBJECT_ARMOR_TYPE.class, t.getProperty(PROPS.OBJECT_ARMOR_TYPE));
         DIMENSION dimension = new EnumMaster<DIMENSION>().retrieveEnumConst(DIMENSION.class, t
-                .getProperty(PROPS.DIMENSION));
+         .getProperty(PROPS.DIMENSION));
 
         List<BF_OBJ_QUALITY> qualities = new EnumMaster<BF_OBJ_QUALITY>().getEnumList(
-                BF_OBJ_QUALITY.class, t.getProperty(PROPS.BF_OBJ_QUALITY));
+         BF_OBJ_QUALITY.class, t.getProperty(PROPS.BF_OBJ_QUALITY));
 
         BF_OBJECT_GROUP group = new EnumMaster<BF_OBJECT_GROUP>().retrieveEnumConst(
-                BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
+         BF_OBJECT_GROUP.class, t.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (group == null) {
             switch (group) {
                 case COLUMNS:
@@ -357,14 +357,14 @@ public class BfObjPropGenerator {
         }
         if (material != null) {
             t.setProperty(PROPS.BF_OBJ_MATERIAL, StringMaster.getWellFormattedString(material
-                    .name()));
+             .name()));
         }
         if (dimension != null) {
             t.setProperty(PROPS.DIMENSION, StringMaster.getWellFormattedString(dimension.name()));
         }
         if (armorType != null) {
             t.setProperty(PROPS.OBJECT_ARMOR_TYPE, StringMaster.getWellFormattedString(armorType
-                    .name()));
+             .name()));
         }
 
     }

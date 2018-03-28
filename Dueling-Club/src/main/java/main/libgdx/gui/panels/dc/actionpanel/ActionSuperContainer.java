@@ -6,7 +6,7 @@ import main.libgdx.bf.generic.SuperContainer;
 /**
  * Created by JustMe on 8/17/2017.
  */
-public class ActionSuperContainer extends SuperContainer  {
+public class ActionSuperContainer extends SuperContainer {
     public ActionSuperContainer(Actor content) {
         super(content);
         /*

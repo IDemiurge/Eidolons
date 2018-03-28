@@ -42,12 +42,11 @@ public class ScenarioPrecombatMaster {
     private static Location location;
 
 
-
     public static void newScenario() {
         final ScenarioChoiceView scv = new ScenarioChoiceView();
         final ChoiceSequence choiceSequence = new ChoiceSequence(scv);
         final ScenarioModeChoiceView smcv = new ScenarioModeChoiceView(choiceSequence,
-                SCENARIO_MODES.class);
+         SCENARIO_MODES.class);
         choiceSequence.addView(smcv); // TODO only if there are choices!
         choiceSequence.start();
         choiceSequence.setManager(new SequenceManager() {
@@ -109,14 +108,14 @@ public class ScenarioPrecombatMaster {
 
     public static void afterLaunch() {
         ObjectiveMaster.initObjectives(scenario.getProperty(MACRO_PROPS.OBJECTIVE_TYPES), scenario
-                .getProperty(MACRO_PROPS.OBJECTIVE_DATA), location);
+         .getProperty(MACRO_PROPS.OBJECTIVE_DATA), location);
         // scenario.getIntParam(PARAMS.DIFFICULTY_MOD);
     }
 
     public static Condition getSelectHeroConditions() {
         // generic - level!
         Conditions conditions = new Conditions(ConditionMaster.toConditions(scenario
-                .getProperty(MACRO_PROPS.HERO_SELECTION_FILTER_CONDITIONS)));
+         .getProperty(MACRO_PROPS.HERO_SELECTION_FILTER_CONDITIONS)));
 
         String level = scenario.getParam(PARAMS.LEVEL);
         if (!level.isEmpty()) {
@@ -149,7 +148,7 @@ public class ScenarioPrecombatMaster {
     }
 
     public static List<Unit> getHeroesForHire() {
-        return     new ArrayList<>() ;
+        return new ArrayList<>();
     }
 
     @Deprecated
@@ -171,11 +170,6 @@ public class ScenarioPrecombatMaster {
 
     }
 
-    public enum STATS {
-        LOOT, SECRETS, OBJECTIVES, KILLS, COMPANIONS, TIME, TRAPS, STEALTH,
-
-    }
-
     public enum MODS {
         SHORT,
 
@@ -185,12 +179,17 @@ public class ScenarioPrecombatMaster {
         STORY_MODE, RPG_MODE, FREE_MODE,
     }
 
+    public enum STATS {
+        LOOT, SECRETS, OBJECTIVES, KILLS, COMPANIONS, TIME, TRAPS, STEALTH,
+
+    }
+
     public class ScenarioRequirements {
         public boolean isChosen(HERO_ELEMENT element) {
             if (StringMaster.contains(scenario.getProperty(MACRO_PROPS.HERO_CREATION_CHOICE_DATA),
-                    element.toString())) {
+             element.toString())) {
                 if (!StringMaster.contains(scenario
-                        .getProperty(MACRO_PROPS.HERO_CREATION_CHOICE_DATA), StringMaster.OR)) {
+                 .getProperty(MACRO_PROPS.HERO_CREATION_CHOICE_DATA), StringMaster.OR)) {
                     return false;
                 }
             }

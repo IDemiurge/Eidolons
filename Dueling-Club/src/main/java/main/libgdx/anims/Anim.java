@@ -31,8 +31,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -45,7 +45,7 @@ public class Anim extends Group implements Animation {
     protected Vector2 destination;
     protected Vector2 defaultPosition;
     protected List<EmitterActor> emitterList;
-    protected List<EmitterActor> emitterCache= new ArrayList<>(); //TODO not the best practice!
+    protected List<EmitterActor> emitterCache = new ArrayList<>(); //TODO not the best practice!
     protected List<SpriteAnimation> sprites;
     protected int lightEmission; // its own lightmap?
     protected Color color;
@@ -63,8 +63,7 @@ public class Anim extends Group implements Animation {
     protected Float speedX;
     protected Float speedY;
     protected int loops;
-    protected float pixelsPerSecond ;
-
+    protected float pixelsPerSecond;
 
 
     protected int cycles;
@@ -80,7 +79,7 @@ public class Anim extends Group implements Animation {
     EventCallback onDone;
     EventCallbackParam callbackParam;
     private boolean emittersWaitingDone;
-    private List<FloatingText> floatingText= new ArrayList<>();
+    private List<FloatingText> floatingText = new ArrayList<>();
     private AnimMaster master;
     private CompositeAnim composite;
     private boolean done;
@@ -153,6 +152,7 @@ public class Anim extends Group implements Animation {
 
 
     }
+
     public boolean tryDraw(Batch batch) {
         return draw(batch);
     }
@@ -175,7 +175,7 @@ public class Anim extends Group implements Animation {
             cycles = (int) (time / lifecycleDuration);
             lifecycle = time % lifecycleDuration / lifecycleDuration;
         }
-        if (duration >= 0 ||  isContinuous()) //|| finished //  lifecycle duration for continuous?
+        if (duration >= 0 || isContinuous()) //|| finished //  lifecycle duration for continuous?
         {
             if (checkFinished()) {
                 if (AnimMaster.isSmoothStop(this)) {
@@ -219,13 +219,13 @@ public class Anim extends Group implements Animation {
         emitterList.forEach(e -> {
             e.draw(batch, 1f);
             main.system.auxiliary.log.LogMaster.log(1,
-             e.getName()+
-             " drawn at x " +e. getX() + " y " + e.getY());
-            e.getEffect().getEmitters().forEach(em->{
+             e.getName() +
+              " drawn at x " + e.getX() + " y " + e.getY());
+            e.getEffect().getEmitters().forEach(em -> {
 
                 main.system.auxiliary.log.LogMaster.log(1,
-                 em.getName()+
-                  " emitter at at x " +em.getX() + " y " + em.getY()
+                 em.getName() +
+                  " emitter at at x " + em.getX() + " y " + em.getY()
 
                 );
             });
@@ -293,7 +293,7 @@ public class Anim extends Group implements Animation {
         alpha = 1f;
         initDuration();
         initSpeed();
-        floatingText .clear();
+        floatingText.clear();
         resetEmitters();
     }
 
@@ -366,7 +366,7 @@ public class Anim extends Group implements Animation {
             return;
         }
 
-          float  pixelsPerSecond = getPixelsPerSecond();
+        float pixelsPerSecond = getPixelsPerSecond();
         if (pixelsPerSecond == 0) {
             return;
         }
@@ -378,7 +378,7 @@ public class Anim extends Group implements Animation {
         if (distance == 0) {
             return;
         }
-       this.duration=((float) distance / pixelsPerSecond);
+        this.duration = ((float) distance / pixelsPerSecond);
 
         speedX = x / duration;
         speedY = y / duration;
@@ -708,27 +708,29 @@ public class Anim extends Group implements Animation {
     }
 
     public void setDuration(float duration) {
-        float mod = 1/ ( AnimMaster.getInstance().getAnimationSpeedFactor());
+        float mod = 1 / (AnimMaster.getInstance().getAnimationSpeedFactor());
         if (mod > 0)
             this.duration = duration * mod;
         else {
             this.duration = duration;
         }
     }
+
     public float getPixelsPerSecond() {
         if (data.getIntValue(ANIM_VALUES.MISSILE_SPEED) != 0) {
             pixelsPerSecond = data.getIntValue(ANIM_VALUES.MISSILE_SPEED);
         } else
-            pixelsPerSecond= getDefaultSpeed();
-        float mod =new Float(AnimMaster.getInstance().getAnimationSpeedFactor())  ;
+            pixelsPerSecond = getDefaultSpeed();
+        float mod = new Float(AnimMaster.getInstance().getAnimationSpeedFactor());
         if (mod > 0)
-            return  pixelsPerSecond * mod;
+            return pixelsPerSecond * mod;
         return pixelsPerSecond;
     }
 
     protected float getDefaultSpeed() {
         return 700;
     }
+
     public AnimData getData() {
         return data;
     }
@@ -753,13 +755,13 @@ public class Anim extends Group implements Animation {
 
     public void setRef(Ref ref) {
         this.ref = Ref.getCopy(ref);
-        main.system.auxiliary.log.LogMaster.log(1,this + " started with ref: " +ref);
-        if (ref.getTargetObj()==null ){
-            main.system.auxiliary.log.LogMaster.log(1,this + " HAS NULL TARGET!");
-            if (ref.getActive()!=null ){
+//        main.system.auxiliary.log.LogMaster.log(1, this + " started with ref: " + ref);
+        if (ref.getTargetObj() == null) {
+            main.system.auxiliary.log.LogMaster.log(1, this + " HAS NULL TARGET!");
+            if (ref.getActive() != null) {
                 ref.setTarget(ref.getActive().getRef().getTarget());
-                if (ref.getTargetObj()!=null ){
-                    main.system.auxiliary.log.LogMaster.log(1,ref.getActive() + " HAD TARGET! " +
+                if (ref.getTargetObj() != null) {
+                    main.system.auxiliary.log.LogMaster.log(1, ref.getActive() + " HAD TARGET! " +
                      ref.getTargetObj());
                 }
             }
@@ -779,13 +781,14 @@ public class Anim extends Group implements Animation {
         this.onDone = callback;
         callbackParam = param;
     }
+
     public void playSound() {
     }
+
     @Override
     public boolean isRunning() {
         return running;
     }
-
 
 
     public boolean isEmittersWaitingDone() {
@@ -804,9 +807,9 @@ public class Anim extends Group implements Animation {
 
     public void addFloatingText(FloatingText floatingText) {
         getFloatingText().add(floatingText);
-if (floatingText.getDelay()==0){
-    floatingText.setDelay(getFloatingText().size()-1);
-}
+        if (floatingText.getDelay() == 0) {
+            floatingText.setDelay(getFloatingText().size() - 1);
+        }
 
     }
 
@@ -833,12 +836,12 @@ if (floatingText.getDelay()==0){
         this.composite = composite;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
     public boolean isDone() {
         return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public Vector2 getOffsetOrigin() {
@@ -862,9 +865,9 @@ if (floatingText.getDelay()==0){
     }
 
     public void setOffsetX(float offsetX) {
-        main.system.auxiliary.log.LogMaster.log(1,this+ " setOffsetX " +
-         " from " +this.offsetX+
-         " to "+ offsetX );
+//        main.system.auxiliary.log.LogMaster.log(1, this + " setOffsetX " +
+//         " from " + this.offsetX +
+//         " to " + offsetX);
         this.offsetX = offsetX;
     }
 
@@ -876,11 +879,11 @@ if (floatingText.getDelay()==0){
         this.offsetY = offsetY;
     }
 
-    public void setParentAnim(CompositeAnim parentAnim) {
-        this.parentAnim = parentAnim;
-    }
-
     public CompositeAnim getParentAnim() {
         return parentAnim;
+    }
+
+    public void setParentAnim(CompositeAnim parentAnim) {
+        this.parentAnim = parentAnim;
     }
 }

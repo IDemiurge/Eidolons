@@ -47,12 +47,12 @@ public class DungeonLevelMaster {
 
     private static boolean isCenter(DungeonPlan plan, Coordinates coordinates, boolean xOrY) {
         return Math.min(coordinates.getXorY(xOrY), plan.getDimension(xOrY)
-                - coordinates.getXorY(xOrY)) > plan.getCellsY() / 4;
+         - coordinates.getXorY(xOrY)) > plan.getCellsY() / 4;
     }
 
     private static boolean isMiddle(DungeonPlan plan, Coordinates coordinates, boolean xOrY) {
         return Math.min(coordinates.getXorY(xOrY), plan.getDimension(xOrY)
-                - coordinates.getXorY(xOrY)) > plan.getCellsY() / 6;
+         - coordinates.getXorY(xOrY)) > plan.getCellsY() / 6;
     }
 
     public static ENTRANCE_LAYOUT getLayout(DungeonPlan plan, Coordinates coordinates) {
@@ -73,13 +73,13 @@ public class DungeonLevelMaster {
                     break pos; // CENTER
                 } else {
                     DIRECTION edge = CoordinatesMaster.getClosestEdge(coordinates,
-                            plan.getCellsX(), plan.getCellsY());
+                     plan.getCellsX(), plan.getCellsY());
                     if (edge.isVertical()) {
                         south_north_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
-                                .getCellsX(), plan.getCellsY()) == DIRECTION.DOWN);
+                         .getCellsX(), plan.getCellsY()) == DIRECTION.DOWN);
                     } else {
                         east_west_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
-                                .getCellsX(), plan.getCellsY()) == DIRECTION.RIGHT);
+                         .getCellsX(), plan.getCellsY()) == DIRECTION.RIGHT);
                     }
                     break pos; // CENTER_SIDE
                 }
@@ -93,13 +93,13 @@ public class DungeonLevelMaster {
                     break pos; // CENTER
                 } else {
                     DIRECTION edge = CoordinatesMaster.getClosestEdge(coordinates,
-                            plan.getCellsX(), plan.getCellsY());
+                     plan.getCellsX(), plan.getCellsY());
                     if (edge.isVertical()) {
                         south_north_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
-                                .getCellsX(), plan.getCellsY()) == DIRECTION.DOWN);
+                         .getCellsX(), plan.getCellsY()) == DIRECTION.DOWN);
                     } else {
                         east_west_null = (CoordinatesMaster.getClosestEdge(coordinates, plan
-                                .getCellsX(), plan.getCellsY()) == DIRECTION.RIGHT);
+                         .getCellsX(), plan.getCellsY()) == DIRECTION.RIGHT);
                         break pos; // CENTER_SIDE
                     }
                 }
@@ -122,13 +122,13 @@ public class DungeonLevelMaster {
             if (middle_center_null) {
                 if (south_north_null != null) {
                     return south_north_null ? ENTRANCE_LAYOUT.MIDDLE_SOUTH
-                            : ENTRANCE_LAYOUT.MIDDLE_NORTH;
+                     : ENTRANCE_LAYOUT.MIDDLE_NORTH;
                 }
                 return east_west_null ? ENTRANCE_LAYOUT.MIDDLE_EAST : ENTRANCE_LAYOUT.MIDDLE_WEST;
             } else {
                 if (south_north_null != null) {
                     return south_north_null ? ENTRANCE_LAYOUT.CENTER_SOUTH
-                            : ENTRANCE_LAYOUT.CENTER_NORTH;
+                     : ENTRANCE_LAYOUT.CENTER_NORTH;
                 }
                 if (east_west_null == null) {
                     return ENTRANCE_LAYOUT.CENTER;
@@ -350,13 +350,13 @@ public class DungeonLevelMaster {
         String entranceString = null;
         try {
             entranceString = fileName.substring(
-                    fileName.indexOf(DungeonLevelMaster.ENTRANCE_PREFIX),
-                    fileName.indexOf(DungeonLevelMaster.ENTRANCE_SUFFIX)).split("-")[1];
+             fileName.indexOf(DungeonLevelMaster.ENTRANCE_PREFIX),
+             fileName.indexOf(DungeonLevelMaster.ENTRANCE_SUFFIX)).split("-")[1];
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         ENTRANCE_LAYOUT entranceLayout = new EnumMaster<ENTRANCE_LAYOUT>().retrieveEnumConst(
-                ENTRANCE_LAYOUT.class, entranceString);
+         ENTRANCE_LAYOUT.class, entranceString);
         return entranceLayout;
     }
 
@@ -364,12 +364,12 @@ public class DungeonLevelMaster {
         String exitString = null;
         try {
             exitString = fileName.substring(fileName.indexOf(DungeonLevelMaster.EXIT_PREFIX),
-                    fileName.indexOf(DungeonLevelMaster.EXIT_SUFFIX)).split("-")[1];
+             fileName.indexOf(DungeonLevelMaster.EXIT_SUFFIX)).split("-")[1];
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         ENTRANCE_LAYOUT exitLayout = new EnumMaster<ENTRANCE_LAYOUT>().retrieveEnumConst(
-                ENTRANCE_LAYOUT.class, exitString);
+         ENTRANCE_LAYOUT.class, exitString);
         return exitLayout;
     }
 

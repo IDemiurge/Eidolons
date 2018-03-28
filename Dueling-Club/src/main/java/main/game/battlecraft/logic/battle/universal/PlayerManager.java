@@ -12,15 +12,15 @@ import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.data.PlayerData.PLAYER_VALUE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     public final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
      FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
-    public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED,FLAG_COLOR.ORANGE,FLAG_COLOR.CRIMSON,};
+    public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED, FLAG_COLOR.ORANGE, FLAG_COLOR.CRIMSON,};
     public final FLAG_COLOR[] allyColors = {FLAG_COLOR.BLUE,
      FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
     public List<FLAG_COLOR> unusedPlayerColorsList;
@@ -58,9 +58,9 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
             players.add(player);
             if (player.isEnemy())
                 player.setAi(true);
-initUnitData(player, i);
+            initUnitData(player, i);
 
-            FLAG_COLOR color=getRandomColorFlag(player.isEnemy());
+            FLAG_COLOR color = getRandomColorFlag(player.isEnemy());
             player.setFlagColor(color);
 
             i++;

@@ -33,7 +33,7 @@ public class Activator extends ActiveHandler {
 
     public String getStatusString() {
         return (BooleanMaster.isTrue(canActivate)) ? "Activate " : "" +
-                getAction().getCosts().getReasonsString() + " to activate ";
+         getAction().getCosts().getReasonsString() + " to activate ";
     }
 
     public boolean canBeActivated(Ref ref, boolean first) {
@@ -87,7 +87,7 @@ public class Activator extends ActiveHandler {
         if (game.isDebugMode())
             return true;
         Boolean checkSubActionMode =
-                checkSubActionModeActivation();
+         checkSubActionModeActivation();
         if (checkSubActionMode != null) {
             return checkSubActionMode;
         }
@@ -97,11 +97,11 @@ public class Activator extends ActiveHandler {
 
     public void cannotActivate() {
         LogMaster.log(1, "Cannot Activate " +
-                getEntity().getName() +
-                ": " + getEntity().getCosts().getReasonsString());
+         getEntity().getName() +
+         ": " + getEntity().getCosts().getReasonsString());
         if (!getEntity().getOwnerObj().isMine())
             if (getEntity().getOwnerObj().isAiControlled())
-                 return ;
+                return;
         FloatingText f = FloatingTextMaster.getInstance().getFloatingText(getEntity(),
          TEXT_CASES.REQUIREMENT,
          getEntity().getCosts().getReasonsString());
@@ -149,7 +149,7 @@ public class Activator extends ActiveHandler {
 
     public boolean canBeActivatedAsAttackOfOpportunity(boolean pending, Unit target) {
         boolean watch = getOwnerObj().getMode().equals(STD_MODES.ALERT)
-                || WatchRule.checkWatched(getOwnerObj(), target);
+         || WatchRule.checkWatched(getOwnerObj(), target);
 
         if (!watch) {
             if (pending) {
@@ -185,7 +185,8 @@ public class Activator extends ActiveHandler {
         try {
             if (canBeActivated(getRef(), true)) {
                 getHandler().activateOn(triggeringAction.getOwnerObj());
-          return true;  }
+                return true;
+            }
 
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

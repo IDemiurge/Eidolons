@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class DragOffsetMouseListener implements MouseListener, AWTEventListener,
-        MouseMotionListener {
+ MouseMotionListener {
 
     private static final int factor = 100;
     private Point pressPoint;

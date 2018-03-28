@@ -15,7 +15,7 @@ public class SpellRadialContainer extends RadialValueContainer {
 
     public SpellRadialContainer(TextureRegion textureRegion, Runnable runnable, boolean valid, DC_ActiveObj activeObj, DC_Obj target) {
         super(textureRegion, runnable, valid, activeObj, target);
-         }
+    }
 
     @Override
     protected boolean isScaledOnHover() {

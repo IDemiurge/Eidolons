@@ -33,7 +33,7 @@ import main.system.math.MathMaster;
 import main.system.math.Property;
 import main.system.sound.SoundMaster.SOUNDS;
 
-public class SummonEffect extends MicroEffect  implements OneshotEffect {
+public class SummonEffect extends MicroEffect implements OneshotEffect {
 
     protected String typeName;
     protected Effect effects;
@@ -162,7 +162,7 @@ public class SummonEffect extends MicroEffect  implements OneshotEffect {
             LogMaster.log(1, "Awarding xp to " + type.getName() + ": " + xp);
             type = new UnitLevelManager().awardXP(type, xp, false);
             LogMaster.log(1, "Unit level: "
-                    + type.getParam(PARAMS.UNIT_LEVEL));
+             + type.getParam(PARAMS.UNIT_LEVEL));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

@@ -38,18 +38,18 @@ public class DamageCalculator {
 
     protected static int calculateToughnessDamage(BattleFieldObject attacked, Unit attacker,
                                                   int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
-        return calculateDamage(false, attacked, attacker, base_damage,   ref, blocked,
+        return calculateDamage(false, attacked, attacker, base_damage, ref, blocked,
          damage_type);
     }
 
     protected static int calculateEnduranceDamage(BattleFieldObject attacked, Unit attacker,
-                                                  int base_damage,   Ref ref, int blocked, DAMAGE_TYPE damage_type) {
-        return calculateDamage(true, attacked, attacker, base_damage,  ref, blocked,
+                                                  int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+        return calculateDamage(true, attacked, attacker, base_damage, ref, blocked,
          damage_type);
     }
 
     public static int calculateDamage(boolean endurance, BattleFieldObject attacked, Unit attacker,
-                                       int base_damage,   Ref ref, int blocked, DAMAGE_TYPE damage_type) {
+                                      int base_damage, Ref ref, int blocked, DAMAGE_TYPE damage_type) {
 
         if (!endurance) {
             if (isEnduranceOnly(ref)) {
@@ -111,8 +111,8 @@ public class DamageCalculator {
         blocked += attacked.getGame()
          .getArmorSimulator().getArmorBlockDamage(amount, (Unit) attacked, attacker, attack.getAction());
 
-        amount=calculateDamage(true, attacked, attacker, amount,
-          null , blocked, attack.getDamageType());
+        amount = calculateDamage(true, attacked, attacker, amount,
+         null, blocked, attack.getDamageType());
 
         if (attack.getAction().isAttackGeneric()) {
             return amount;
@@ -147,7 +147,7 @@ public class DamageCalculator {
 
     public static boolean isDead(BattleFieldObject unit) {
         if (unit instanceof Unit) {
-            return UnconsciousRule.checkUnitDies((Unit) unit, null , !unit.isDead());
+            return UnconsciousRule.checkUnitDies((Unit) unit, null, !unit.isDead());
         }
         if (0 >= unit.getIntParam(PARAMS.C_ENDURANCE)) {
             return true;
@@ -191,19 +191,19 @@ public class DamageCalculator {
     }
 
     public static boolean isDamageBeyondThreshold(int damage, Obj targetObj, boolean unconscious) {
-        if (targetObj.isDead()){
+        if (targetObj.isDead()) {
             return false;
         } //annihilation!
-        if (targetObj instanceof Unit){
+        if (targetObj instanceof Unit) {
             return
              unconscious ?
-              UnconsciousRule.checkFallsUnconscious((Unit) targetObj ,
+              UnconsciousRule.checkFallsUnconscious((Unit) targetObj,
                targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage)
               : UnconsciousRule.checkUnitDies(
               targetObj.getIntParam(PARAMS.C_TOUGHNESS) - damage,
               targetObj.getIntParam(PARAMS.C_ENDURANCE) - damage, (Unit) targetObj,
               null, false);
-    }
+        }
         if (damage >= targetObj.getIntParam(PARAMS.C_TOUGHNESS)) {
             return true;
         }

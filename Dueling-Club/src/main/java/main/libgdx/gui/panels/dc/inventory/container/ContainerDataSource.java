@@ -11,8 +11,8 @@ import main.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
 
     public ContainerDataSource(DC_Obj obj, Unit unit) {
         this.obj = obj;
-        handler =new ContainerClickHandler((ContainerObj) obj, unit);// obj.getGame().getInventoryManager().getClickHandler();
+        handler = new ContainerClickHandler((ContainerObj) obj, unit);// obj.getGame().getInventoryManager().getClickHandler();
         factory = new InventoryValueContainerFactory(handler);
     }
 
@@ -38,7 +38,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
     public List<InventoryValueContainer> getInventorySlots() {
         Collection<? extends Entity> list = null;
         if (obj instanceof ContainerObj) {
-            list =    new ArrayList<>( ((ContainerObj) obj).getItems());
+            list = new ArrayList<>(((ContainerObj) obj).getItems());
         } else {
             list = obj.getGame().getDroppedItemManager().getDroppedItems(obj);
         }

@@ -108,7 +108,7 @@ public class StatsTab extends HeroPanelTab implements ChangeListener {
     @Override
     public void initView() {
         viewsArray = new HERO_VIEWS[]{
-                HERO_VIEWS.STATS};
+         HERO_VIEWS.STATS};
         linkedView = viewsArray[0];
 
     }

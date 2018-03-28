@@ -48,15 +48,15 @@ public class CounterAttackRule {
         }
 
         ActiveObj counter = null;
-        if (attack.getAttackedUnit()!=null )
-        if (!attack.isCounter() &&
-         (RuleMaster.isRuleTestOn(RULE.COUNTER_ATTACK) ||
-          (attack.isCanCounter() &&
+        if (attack.getAttackedUnit() != null)
+            if (!attack.isCounter() &&
+             (RuleMaster.isRuleTestOn(RULE.COUNTER_ATTACK) ||
+              (attack.isCanCounter() &&
 //           attack.getAttackedUnit().
-            canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
-         ) {
-            counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit());
-        }
+               canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))
+             ) {
+                counter = counter(attack.getAction(), (Unit) attack.getAttackedUnit());
+            }
 
         return counter;
 

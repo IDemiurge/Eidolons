@@ -9,7 +9,7 @@ import main.system.auxiliary.secondary.ReflectionMaster;
 /**
  * Created by JustMe on 3/26/2018.
  */
-public class StageX extends Stage{
+public class StageX extends Stage {
 
     public StageX() {
     }
@@ -23,6 +23,6 @@ public class StageX extends Stage{
     }
 
     public Actor getMouseOverActor() {
-        return  new ReflectionMaster<Actor>().getFieldValue("mouseOverActor", this, Stage.class);
+        return new ReflectionMaster<Actor>().getFieldValue("mouseOverActor", this, Stage.class);
     }
 }

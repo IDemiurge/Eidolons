@@ -96,19 +96,19 @@ public class SunActor extends GroupX {
 
         Color color = overlay2.getContent().getColor();
         float percentage =
-         MacroGame.getGame().getLoop().getTimeMaster().getTimer()/240;
+         MacroGame.getGame().getLoop().getTimeMaster().getTimer() / 240;
 //         0.25f * (TimeMaster.getDate().getHour() % 4) +
 //         +MacroGame.getGame().getLoop().getTimeMaster().getMinuteCounter() / 240;
 
-        if (percentage < lastNextMapAlphaPercentage ) //no going back in time...
+        if (percentage < lastNextMapAlphaPercentage) //no going back in time...
         {
-            percentage=lastNextMapAlphaPercentage;
+            percentage = lastNextMapAlphaPercentage;
 //            lastNextMapAlphaPercentage=0;
         }
 //        if (percentage == lastNextMapAlphaPercentage) {
 //            percentage+=delta;
 //        }
-        if ( percentage>1) //no going back in time...
+        if (percentage > 1) //no going back in time...
         {
             return;
         }
@@ -138,10 +138,10 @@ public class SunActor extends GroupX {
                     return getDefaultUndersunRotation();
                 case DAWN:
                     return getDefaultUndersunRotation()
-                     -  (percentageIntoNextDayTime + 0.25f) * 90;
+                     - (percentageIntoNextDayTime + 0.25f) * 90;
                 case DUSK:
-                    return getDefaultUndersunRotation()+140
-                     -  percentageIntoNextDayTime * 140;
+                    return getDefaultUndersunRotation() + 140
+                     - percentageIntoNextDayTime * 140;
                 case MORNING:
                 case MIDDAY:
                     return 0;

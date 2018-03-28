@@ -215,8 +215,8 @@ public class Targeter extends ActiveHandler {
             if (targeting instanceof TemplateSelectiveTargeting)
                 ((TemplateSelectiveTargeting) targeting).initTargeting();
 
-            getEntity().getRef().getSourceObj().getRef().setInfoEntity(getEntity());
-            result = conditions.preCheck(REF);
+        getEntity().getRef().getSourceObj().getRef().setInfoEntity(getEntity());
+        result = conditions.preCheck(REF);
         map2.put(id, result);
         return result;
 

@@ -11,8 +11,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.*;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,12 +70,12 @@ public class ImageTransformer {
         BufferedImage image = map2.get(alpha);
         if (image == null) {
             image = new BufferedImage(image1.getWidth(null), image1.getHeight(null),
-                    BufferedImage.TYPE_INT_RGB);
+             BufferedImage.TYPE_INT_RGB);
             map2.put(alpha, image);
         }
         Graphics2D finalGraphics = (Graphics2D) image.getGraphics();
         BufferedImage buffer = new BufferedImage(image1.getWidth(null), image1.getHeight(null),
-                BufferedImage.TYPE_INT_RGB);
+         BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) buffer.getGraphics();
         if (finalTransparency == 100) {
             g = finalGraphics;
@@ -104,7 +104,7 @@ public class ImageTransformer {
 
     public static BufferedImage getTransparentImage(BufferedImage source, double alpha) {
         BufferedImage target = new BufferedImage(source.getWidth(), source.getHeight(),
-                java.awt.Transparency.TRANSLUCENT);
+         java.awt.Transparency.TRANSLUCENT);
         Graphics2D g = target.createGraphics();
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
         g.drawImage(source, null, 0, 0);
@@ -115,7 +115,7 @@ public class ImageTransformer {
     public static Image toRgb(Image image) {
         // Create an RGB buffered image
         BufferedImage bimage = new BufferedImage(image.getWidth(null), image.getHeight(null),
-                BufferedImage.TYPE_INT_RGB);
+         BufferedImage.TYPE_INT_RGB);
         // Copy non-RGB image to the RGB buffered image
         Graphics2D g = bimage.createGraphics();
         g.drawImage(image, 0, 0, null);

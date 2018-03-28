@@ -6,12 +6,12 @@ import main.game.core.game.TestGame;
 
 /**
  * Created by JustMe on 6/2/2017.
-
- >> Highlight scripts
- >> Block actions
- >> Respawn
- >> Pre-determined outcomes – no misses, no crits,
- >> Overlay dialogues
+ * <p>
+ * >> Highlight scripts
+ * >> Block actions
+ * >> Respawn
+ * >> Pre-determined outcomes – no misses, no crits,
+ * >> Overlay dialogues
  */
 public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
     public TutorialMetaMaster(String data) {

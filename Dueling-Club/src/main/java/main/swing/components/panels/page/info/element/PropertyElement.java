@@ -50,7 +50,7 @@ public class PropertyElement extends ValueTextComp {
         if (isShowName()) {
             if (value != null) {
                 return value.getShortName() + ": "
-                        + StringMaster.getFormattedContainerString(propertyValue);
+                 + StringMaster.getFormattedContainerString(propertyValue);
             }
         }
         return StringMaster.getFormattedContainerString(propertyValue);

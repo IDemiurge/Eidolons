@@ -12,8 +12,10 @@ public abstract class AiBehavior {
     protected boolean isEnabled(UnitAI ai) {
         return true;
     }
+
     protected AiMaster getMaster(UnitAI ai) {
         return ai.getUnit().getGame().getAiManager();
     }
-     public abstract ActionSequence getOrders(UnitAI ai);
+
+    public abstract ActionSequence getOrders(UnitAI ai);
 }

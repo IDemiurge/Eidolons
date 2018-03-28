@@ -34,7 +34,7 @@ public class TextMaster {
     private static Map<OBJ_TYPE, List<String>> extractedTypesMap = new XLinkedMap<>();
     private static PROPERTY[] extract_props = {G_PROPS.DESCRIPTION, G_PROPS.LORE, G_PROPS.TOOLTIP,};
     private static OBJ_TYPE[] extractedTypes = {DC_TYPE.CHARS, DC_TYPE.UNITS,
-            DC_TYPE.CLASSES, DC_TYPE.SKILLS, DC_TYPE.SPELLS, DC_TYPE.DEITIES,};
+     DC_TYPE.CLASSES, DC_TYPE.SKILLS, DC_TYPE.SPELLS, DC_TYPE.DEITIES,};
     private static String[] extractedTypeGroups = {"Background"};
 
     public static void generateMissingDescrTemplate() {
@@ -96,7 +96,7 @@ public class TextMaster {
         String text = "";
         for (ObjType sub : list) {
             text += descrHeaderSeparator + sub.getName() + descrHeaderSeparator
-                    + StringMaster.NEW_LINE;
+             + StringMaster.NEW_LINE;
             if (incomplete) {
                 text += sub.getProperty(G_PROPS.DESCRIPTION) + StringMaster.NEW_LINE;
             }
@@ -109,12 +109,12 @@ public class TextMaster {
             suffix += " with logic";
         }
         String filepath = PathFinder.getTextPath() + prefix + "" + suffix + " up to " + circle
-                + " circle.txt";
+         + " circle.txt";
         FileManager.write(text, filepath);
     }
 
     private static void extractTypeText() {
-        DC_Engine.fullInit( );
+        DC_Engine.fullInit();
         int i = 0;
         for (OBJ_TYPE k : extractedTypes) {
             List<String> value = null;
@@ -203,11 +203,11 @@ public class TextMaster {
     public static void writeAllToFolder() {
         for (ATTRIBUTE p : ATTRIBUTE.values()) {
             FileManager.write(p.getParameter().getDescription(), getParamsPath() + "attributes\\"
-                    + p.toString() + ".txt");
+             + p.toString() + ".txt");
         }
         for (PRINCIPLES p : HeroEnums.PRINCIPLES.values()) {
             FileManager.write(p.getDescription(), getPropsPath() + "principles\\" + p.toString()
-                    + ".txt");
+             + ".txt");
         }
     }
 
@@ -242,12 +242,12 @@ public class TextMaster {
     private static void merge() {
         String mergeContents = "";
         for (File f : FileManager.getFilesFromDirectory("X:\\Dropbox\\"
-                + "FocusWriting\\2016-Lore\\", true)) {
+         + "FocusWriting\\2016-Lore\\", true)) {
             mergeContents += getOdtDescriptionFilesContents(f.getPath());
         }
 
         FileManager.write(mergeContents, "X:\\Dropbox\\FocusWriting\\2016-Lore\\" + "descr merge "
-                + TimeMaster.getFormattedTimeAlt(false) + ".txt");
+         + TimeMaster.getFormattedTimeAlt(false) + ".txt");
     }
 
     public static void processDescriptionFile(File file) {
@@ -272,7 +272,7 @@ public class TextMaster {
 
             if (checkSpecialFileName(f.getName())) {
                 contents += getNameSeparator() + f.getName() + " " + getNameSeparator() + "\n"
-                        + FileManager.readFile(f);
+                 + FileManager.readFile(f);
             }
 
         }
@@ -284,7 +284,7 @@ public class TextMaster {
         for (File f : FileManager.getFilesFromDirectory(path, false)) {
             if (checkDescrFileName(f.getName())) {
                 contents += getDescriptionFileSeparator() + f.getName() + " "
-                        + getDescriptionFileSeparator() + "\n" + FileManager.readFile(f);
+                 + getDescriptionFileSeparator() + "\n" + FileManager.readFile(f);
             }
 
         }
@@ -337,7 +337,7 @@ public class TextMaster {
         String contents = getOdtAllFileContents(path, prefix);
         mergeContents += contents;
         FileManager.write(mergeContents, path + newName + " merge " + TimeMaster.getFormattedDate()
-                + ".txt");
+         + ".txt");
 
     }
 
@@ -352,7 +352,7 @@ public class TextMaster {
             if (StringMaster.isEmpty(prefix) || f.getName().startsWith(prefix)) {
                 if (lengthLimit == null || f.getName().length() < lengthLimit) {
                     contents += getNameSeparator() + f.getName() + " " + getNameSeparator() + "\n"
-                            + FileManager.readFile(f);
+                     + FileManager.readFile(f);
                 }
             }
 
@@ -411,11 +411,11 @@ public class TextMaster {
     }
 
     public static String readResource(String... parts) {
-         List<String> list =
-        new ListMaster<String>().getList(parts);
-        list.add(0,  locale);
-        list.add(0,  PathFinder.getTextPath());
-        return FileManager.readFile(StrPathBuilder.build(list ));
+        List<String> list =
+         new ListMaster<String>().getList(parts);
+        list.add(0, locale);
+        list.add(0, PathFinder.getTextPath());
+        return FileManager.readFile(StrPathBuilder.build(list));
 
     }
 }

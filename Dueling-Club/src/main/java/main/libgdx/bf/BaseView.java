@@ -12,7 +12,7 @@ import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends SuperActor {
     protected final TextureRegion originalTexture;
-    protected   TextureRegion originalTextureAlt;
+    protected TextureRegion originalTextureAlt;
     protected Image portrait;
     private Image altPortrait;
 
@@ -63,6 +63,7 @@ public class BaseView extends SuperActor {
     public void setOriginalTextureAlt(TextureRegion originalTextureAlt) {
         this.originalTextureAlt = originalTextureAlt;
     }
+
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
@@ -73,17 +74,17 @@ public class BaseView extends SuperActor {
     @Override
     public void setVisible(boolean visible) {
         if (!isVisible())
-            if (visible){
+            if (visible) {
                 super.setVisible(visible);
             }
         super.setVisible(visible);
     }
 
-    public void setAltPortrait(Image altPortrait) {
-        this.altPortrait = altPortrait;
-    }
-
     public Image getAltPortrait() {
         return altPortrait;
+    }
+
+    public void setAltPortrait(Image altPortrait) {
+        this.altPortrait = altPortrait;
     }
 }

@@ -7,6 +7,7 @@ import main.game.battlecraft.logic.battle.universal.Battle;
  */
 public class MissionBattle extends Battle {
     Mission mission;
+
     public MissionBattle(MissionBattleMaster missionBattleMaster) {
         super();
     }

@@ -5,15 +5,14 @@ import main.game.core.game.DC_Game;
 import main.libgdx.anims.particles.ParticleManager;
 
 public class AnimationEffectStage extends Group {
-    private   ParticleManager particleManager;
+    private ParticleManager particleManager;
 
-    public AnimationEffectStage(){
-        particleManager = new ParticleManager( );
+    public AnimationEffectStage() {
+        particleManager = new ParticleManager();
         addActor(particleManager.getEmitterMap());
         particleManager.getEmitterMap().setX(300);
 //        new PhaseAnimator(null );
     }
-
 
 
     @Override

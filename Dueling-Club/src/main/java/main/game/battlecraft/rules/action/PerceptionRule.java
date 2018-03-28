@@ -11,8 +11,8 @@ import main.game.module.adventure.rules.TurnRule;
 import main.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.system.math.PositionMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class PerceptionRule extends TurnRule implements ActionRule {
@@ -26,7 +26,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         Unit unit = (Unit) activeObj.getOwnerObj();
         PERCEPTION_STATUS status;
         int actionNoise = activeObj.getIntParam(PARAMS.NOISE, false)
-                + activeObj.getOwnerObj().getIntParam(PARAMS.NOISE, false);
+         + activeObj.getOwnerObj().getIntParam(PARAMS.NOISE, false);
         for (Unit source : getUnits(activeObj)) {
 //			status = getPerceptionStatus(source, activeObj, actionNoise);
             // map of statuses would be nice...
@@ -46,31 +46,31 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         switch (status) {
             case KNOWN_TO_BE_SOMEWHERE:
                 source.getUnitAI().getGroup()
-                        .setEngagementLevel(ENGAGEMENT_LEVEL.ALARMED);
+                 .setEngagementLevel(ENGAGEMENT_LEVEL.ALARMED);
                 break;
             case KNOWN_TO_BE_THERE:
                 source.getUnitAI().getGroup()
-                        .setEngagementLevel(ENGAGEMENT_LEVEL.AGGRO);
+                 .setEngagementLevel(ENGAGEMENT_LEVEL.AGGRO);
                 source.getUnitAI().getGroup()
-                        .addEnemyKnownCoordinates(target.getCoordinates());
+                 .addEnemyKnownCoordinates(target.getCoordinates());
                 break;
             case SUSPECTED_TO_BE_SOMEWHERE:
                 source.getUnitAI().getGroup()
-                        .setEngagementLevel(ENGAGEMENT_LEVEL.SUSPECTING);
+                 .setEngagementLevel(ENGAGEMENT_LEVEL.SUSPECTING);
                 break;
             case SUSPECTED_TO_BE_THERE:
                 source.getUnitAI().getGroup()
-                        .setEngagementLevel(ENGAGEMENT_LEVEL.ALARMED);
+                 .setEngagementLevel(ENGAGEMENT_LEVEL.ALARMED);
                 source.getUnitAI()
-                        .getGroup()
-                        .addEnemyKnownCoordinates(
-                                target.getCoordinates()
-                                        .getAdjacentCoordinates()
-                                        .toArray(
-                                                new Coordinates[target
-                                                        .getCoordinates()
-                                                        .getAdjacentCoordinates()
-                                                        .size()]));
+                 .getGroup()
+                 .addEnemyKnownCoordinates(
+                  target.getCoordinates()
+                   .getAdjacentCoordinates()
+                   .toArray(
+                    new Coordinates[target
+                     .getCoordinates()
+                     .getAdjacentCoordinates()
+                     .size()]));
                 break;
         }
     }
@@ -155,7 +155,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
     private int getNoiseBarrier(Obj unit) {
         int totalNoise = 0;
         for (Unit u : Analyzer.getUnits((Unit) unit, null, false,
-                false, false)) {
+         false, false)) {
             int distance = PositionMaster.getDistance(u, unit);
             if (distance == 0) {
                 distance = 1;
@@ -169,8 +169,8 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         // TODO max distance?
         List<Unit> list = new ArrayList<>();
         for (Obj unit : DC_Game.game
-                .getPlayer(activeObj.getOwnerObj().isMine())
-                .getControlledUnits()) {
+         .getPlayer(activeObj.getOwnerObj().isMine())
+         .getControlledUnits()) {
             list.add((Unit) unit);
         }
         return list;
@@ -190,15 +190,6 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         return false;
     }
 
-    public enum PERCEPTION_STATUS_PLAYER {
-        UNKNOWN,
-        KNOWN_TO_BE_THERE,
-        SUSPECTED_TO_BE_THERE,
-        KNOWN_TO_BE_SOMEWHERE,
-        SUSPECTED_TO_BE_SOMEWHERE
-
-    }
-
     public enum PERCEPTION_STATUS {
         UNKNOWN,
         SUSPECTED_TO_BE_SOMEWHERE,
@@ -207,6 +198,15 @@ public class PerceptionRule extends TurnRule implements ActionRule {
         KNOWN_TO_BE_THERE;
 
         int perceptionBarrier;
+    }
+
+    public enum PERCEPTION_STATUS_PLAYER {
+        UNKNOWN,
+        KNOWN_TO_BE_THERE,
+        SUSPECTED_TO_BE_THERE,
+        KNOWN_TO_BE_SOMEWHERE,
+        SUSPECTED_TO_BE_SOMEWHERE
+
     }
 
 }

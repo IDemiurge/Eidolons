@@ -146,7 +146,7 @@ public class MainManager implements SequenceManager {
                 break;
             case CONTINUE_DEMO:
             case CONTINUE_LAST:
-                if ( game.getGameType() == GAME_TYPE.SCENARIO) {
+                if (game.getGameType() == GAME_TYPE.SCENARIO) {
                     // TODO
                 } else {
                     List<Unit> party = PartyHelper.loadParty(PartyHelper
@@ -492,7 +492,7 @@ public class MainManager implements SequenceManager {
         EXIT,
         BACK,
         NEW_HERO,
-        HERO_CREATOR(NEW_HERO ),
+        HERO_CREATOR(NEW_HERO),
         NEW_ADVENTURE(NEW_LEADER, SELECT_LEADER),
         LOAD_ADVENTURE,
         ADVENTURE(NEW_ADVENTURE, LOAD_ADVENTURE, CONTINUE_LAST),
@@ -504,7 +504,7 @@ public class MainManager implements SequenceManager {
         NEW_PRESET,
         CREATE_PRESET(NEW_PRESET, NEW_HERO, SELECT_LEADER, COPY_PRESET),
         FACTION(CREATE_PRESET, SELECT_LEADER),
-        EDITOR(NEW_HERO, FACTION), NEW_DEMO(), CONTINUE_DEMO(),  ;
+        EDITOR(NEW_HERO, FACTION), NEW_DEMO(), CONTINUE_DEMO(),;
 
         private MAIN_MENU_ITEMS[] items;
 

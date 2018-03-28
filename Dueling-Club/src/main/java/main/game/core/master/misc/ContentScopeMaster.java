@@ -7,15 +7,15 @@ import main.entity.Entity;
  */
 public class ContentScopeMaster {
 
-    public enum CONTENT_SCOPE{
-
-    }
-
-
-        public static boolean isInScope(CONTENT_SCOPE scope, Entity entity) {
+    public static boolean isInScope(CONTENT_SCOPE scope, Entity entity) {
 
 
         return false;
+    }
+
+
+    public enum CONTENT_SCOPE {
+
     }
 
 }

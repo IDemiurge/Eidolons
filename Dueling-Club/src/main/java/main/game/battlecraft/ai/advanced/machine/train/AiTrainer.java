@@ -10,11 +10,11 @@ import main.game.core.game.DC_Game;
 import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.GameLauncher;
 import main.game.core.state.Loader;
+import main.libgdx.launch.ScenarioLauncher;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import main.libgdx.launch.ScenarioLauncher;
 
 /**
  * Created by JustMe on 7/31/2017.
@@ -52,13 +52,13 @@ public class AiTrainer {
         this.parameters = parameters;
         this.criteria = criteria;
         this.profile = profile;
-         trainee = parameters.getTraineeType();
+        trainee = parameters.getTraineeType();
 
         initTrainingParameters(parameters);
         int i = 0;
         while (i < MAX_ATTEMPTS) {
             try {
-            return runAiScenario(parameters.getDungeonData());
+                return runAiScenario(parameters.getDungeonData());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 i++;
@@ -75,36 +75,35 @@ public class AiTrainer {
     }
 
     private AiTrainingResult runAiScenario(String presetPath) {
-        if (!AiTrainingRunner.evolutionTestMode)
-        {
+        if (!AiTrainingRunner.evolutionTestMode) {
 
-        RandomWizard.setAveraged(parameters.deterministic);
-        if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.PRESET) {
-            new GameLauncher(GAME_SUBCLASS.TEST).launchPreset(presetPath);
-        } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.SAVE) {
-            Loader.setPendingLoadPath(presetPath);
-            DC_Game game = new GameLauncher(GAME_SUBCLASS.TEST).initDC_Game();
-            game.start(true);
-        } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.DUNGEON_LEVEL) {
+            RandomWizard.setAveraged(parameters.deterministic);
+            if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.PRESET) {
+                new GameLauncher(GAME_SUBCLASS.TEST).launchPreset(presetPath);
+            } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.SAVE) {
+                Loader.setPendingLoadPath(presetPath);
+                DC_Game game = new GameLauncher(GAME_SUBCLASS.TEST).initDC_Game();
+                game.start(true);
+            } else if (parameters.getEnvironmentType() == TRAINING_ENVIRONMENT.DUNGEON_LEVEL) {
 
-            GameLauncher a = new GameLauncher(GAME_SUBCLASS.SCENARIO);
-            if (StringMaster.isEmpty(parameters.getPartyData())) {
-                parameters.setPartyData(getDefaultPartyData());
+                GameLauncher a = new GameLauncher(GAME_SUBCLASS.SCENARIO);
+                if (StringMaster.isEmpty(parameters.getPartyData())) {
+                    parameters.setPartyData(getDefaultPartyData());
+                }
+                a.PLAYER_PARTY = parameters.getPartyData();
+
+                if (StringMaster.isEmpty(parameters.getDungeonData())) {
+                    parameters.setDungeonData(getDefaultDungeonData());
+                }
+                a.setDungeon(parameters.getDungeonData());
+                DC_Game game = a.initGame();
+                game.start(true);
             }
-            a.PLAYER_PARTY = parameters.getPartyData();
-
-            if (StringMaster.isEmpty(parameters.getDungeonData())) {
-                parameters.setDungeonData(getDefaultDungeonData());
-            }
-            a.setDungeon(parameters.getDungeonData());
-            DC_Game game = a.initGame();
-            game.start(true);
-        }
         }
         DC_Game.game.getAiManager().getPriorityProfileManager().setPriorityProfile
          (trainee, profile);
         boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
-        if (!result){
+        if (!result) {
             throw new RuntimeException();
         }
         return evaluateResult(profile, parameters, criteria);

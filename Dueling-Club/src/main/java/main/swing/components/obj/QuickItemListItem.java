@@ -7,7 +7,7 @@ import main.system.images.ImageManager.BORDER;
 
 public class QuickItemListItem extends ListItem<DC_QuickItemObj> {
     public static final String EMPTY_ITEM = ImageManager
-            .getDefaultEmptyListIcon();
+     .getDefaultEmptyListIcon();
 
     public QuickItemListItem(DC_QuickItemObj item, boolean isSelected,
                              boolean cellHasFocus) {

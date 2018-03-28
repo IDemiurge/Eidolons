@@ -9,7 +9,7 @@ import main.game.module.dungeoncrawl.objects.DungeonObj;
 public class LockEffect extends DC_Effect {
 
     String identifier;
-    private boolean key=true;
+    private boolean key = true;
 
     public LockEffect(String identifier) {
         this.identifier = identifier;
@@ -19,15 +19,15 @@ public class LockEffect extends DC_Effect {
     public boolean applyThis() {
         DungeonObj obj = (DungeonObj) ref.getTargetObj();
         //check traps!
-        if (identifier!=null ){
+        if (identifier != null) {
             if (!obj.getName().equalsIgnoreCase(identifier))
                 return false;
         }
-        if (!key){
+        if (!key) {
             //try
         }
 
-        obj.getDM().open(obj,ref );
+        obj.getDM().open(obj, ref);
 
         return true;
     }

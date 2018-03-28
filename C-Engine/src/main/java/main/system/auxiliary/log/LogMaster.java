@@ -108,7 +108,7 @@ public class LogMaster {
     public static boolean CONDITION_DEBUG_ON = false;
     public static boolean MATH_DEBUG_ON = false;
     public static boolean TRAVEL_DEBUG_ON = false;
-    public static boolean VISIBILITY_DEBUG_ON = false;
+    public static boolean VISIBILITY_DEBUG_ON = true;
     public static boolean WAITING_DEBUG_ON = false;
     public static boolean ATTACKING_DEBUG_ON = false;
     public static boolean VALUE_DEBUG_ON = false;

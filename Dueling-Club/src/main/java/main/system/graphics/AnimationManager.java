@@ -206,7 +206,7 @@ public class AnimationManager {
     }
 
     public boolean isOffsetForOverlap() {
-         return false;
+        return false;
 //        return OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.OFFSET_FOR_OVERLAP);
     }
 
@@ -309,7 +309,7 @@ public class AnimationManager {
 
     private void adjustOffset(Coordinates c_offset) {
         game.getBattleField().getGrid()
-                .setOffsetCoordinate(new Coordinates(c_offset.x, c_offset.y));
+         .setOffsetCoordinate(new Coordinates(c_offset.x, c_offset.y));
 
     }
 
@@ -381,7 +381,8 @@ public class AnimationManager {
         }
         list.add(ref);
     }
-@Deprecated
+
+    @Deprecated
     public void animateValuesModified(Obj target) {
         List<Ref> list = modifiedValues.get(target);
         if (list == null) {
@@ -420,7 +421,6 @@ public class AnimationManager {
 //        addTextOverlay(text, ref, damageDelay, c, pt); // TODO increase for
 //        // bigger dmg?
 //    }
-
 
 
     private void addTextOverlayCenter(String amount, Ref ref, int delay, Color c) {
@@ -473,38 +473,38 @@ public class AnimationManager {
 
     private void animate(final int delay, final CellComp comp) {
         new Thread
-                // SwingUtilities.invokeLater
-                (new Runnable() {
+         // SwingUtilities.invokeLater
+         (new Runnable() {
 
-                    @Override
-                    public void run() {
-                        map.put(comp.getTopObjOrCell(), comp);
+             @Override
+             public void run() {
+                 map.put(comp.getTopObjOrCell(), comp);
 
-                        getGrid().refresh();
-                        // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                        // comp + " animated");
-                        WaitMaster.WAIT(delay);
-                        // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
-                        // comp + " de-animated");
-                        comp.removeAnimation();
-                        comp.refresh();
-                        //
-                        // Chronos.mark(comp.getTopObjOrCell().getName() +
-                        // " animation, delay = " + delay);
-                        getGrid().refresh();
-                        // Chronos.logTimeElapsedForMark(comp.getTopObjOrCell().getName()
-                        // + " animation, delay = " + delay);
+                 getGrid().refresh();
+                 // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                 // comp + " animated");
+                 WaitMaster.WAIT(delay);
+                 // main.system.auxiliary.LogMaster.log(LogMaster.ANIM_DEBUG,
+                 // comp + " de-animated");
+                 comp.removeAnimation();
+                 comp.refresh();
+                 //
+                 // Chronos.mark(comp.getTopObjOrCell().getName() +
+                 // " animation, delay = " + delay);
+                 getGrid().refresh();
+                 // Chronos.logTimeElapsedForMark(comp.getTopObjOrCell().getName()
+                 // + " animation, delay = " + delay);
 
-                        map.remove(comp.getTopObjOrCell());
-                        if (map.isEmpty()) {
-                            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                        } else {
-                            WaitMaster.WAIT(delay);
-                            WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
-                        }
+                 map.remove(comp.getTopObjOrCell());
+                 if (map.isEmpty()) {
+                     WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
+                 } else {
+                     WaitMaster.WAIT(delay);
+                     WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_FINISHED, true);
+                 }
 
-                    }
-                }, comp.getTopObjOrCell().getName() + " animation").start();
+             }
+         }, comp.getTopObjOrCell().getName() + " animation").start();
 
     }
 
@@ -625,6 +625,10 @@ public class AnimationManager {
 
     }
 
+    public enum ANIM_TYPE {
+        ACTION, ATTACK, NO_TARGET, DAMAGE, BUFF, ITEM, MOVE, SPELL_SINGLE, EFFECT,
+    }
+
     public enum MOUSE_ITEM implements MouseItem {
         CONTROL_BACK, CONTROL_FORWARD, TOOLTIP, SUB_PHASE, THUMBNAIL;
 
@@ -656,10 +660,6 @@ public class AnimationManager {
         public void setRectangle(Rectangle rectangle) {
 
         }
-    }
-
-    public enum ANIM_TYPE {
-        ACTION, ATTACK, NO_TARGET, DAMAGE, BUFF, ITEM, MOVE, SPELL_SINGLE, EFFECT,
     }
 
     public interface MouseItem {

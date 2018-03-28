@@ -18,8 +18,8 @@ import java.util.List;
 public class HeroSlidePanel extends G_PagePanel<Object> {
 
     private static final VALUE[] HERO_HEADER_VALUE_LIST = {
-            MACRO_PARAMS.TRAVEL_SPEED, MACRO_PARAMS.CONSUMPTION,
-            PARAMS.DETECTION, PARAMS.STEALTH,};
+     MACRO_PARAMS.TRAVEL_SPEED, MACRO_PARAMS.CONSUMPTION,
+     PARAMS.DETECTION, PARAMS.STEALTH,};
     Unit hero;
 
     public HeroSlidePanel(Unit hero2) {
@@ -51,15 +51,15 @@ public class HeroSlidePanel extends G_PagePanel<Object> {
         forwardButton = getButton(true);
         addControl(backButton, false, 0, 0);
         addControl(forwardButton, true,
-                getPanelWidth() - backButton.getImageWidth(), 0);
+         getPanelWidth() - backButton.getImageWidth(), 0);
         // TODO string in between
         String text = hero.getName()
-                + "'s "
-                + StringMaster.getWellFormattedString(getCurrentSlideView()
-                .toString());
+         + "'s "
+         + StringMaster.getWellFormattedString(getCurrentSlideView()
+         .toString());
         // if (text.length()>30) text = "";
         add(new TextCompDC(null, text, 17), "pos " + CONTROLS_POS + ".x2-20 "
-                + "0");
+         + "0");
     }
 
     protected String getPagePos() {
@@ -79,10 +79,10 @@ public class HeroSlidePanel extends G_PagePanel<Object> {
                 return new HeroObjList<>(hero.getClasses(), hero);
             case INVENTORY:
                 return new HeroObjList<>(hero.getInventory(),
-                        hero);
+                 hero);
             case QUICK_ITEMS:
                 return new HeroObjList<>(hero.getQuickItems(),
-                        hero);
+                 hero);
             case SPELLBOOK:
                 return new HeroObjList<>(hero.getSpells(), hero);
             case ACTIONS:
@@ -91,7 +91,7 @@ public class HeroSlidePanel extends G_PagePanel<Object> {
             case PARAMETERS:
                 // = new ValueIconPanel(hero)
                 Header header = new Header(
-                        Arrays.asList(HERO_HEADER_VALUE_LIST), hero);
+                 Arrays.asList(HERO_HEADER_VALUE_LIST), hero);
                 header.refresh();
                 return header;
             case STATUS:
@@ -116,7 +116,7 @@ public class HeroSlidePanel extends G_PagePanel<Object> {
     @Override
     protected List<List<Object>> getPageData() {
         return new ListMaster().splitList(1,
-                Arrays.asList(HERO_SLIDE_VIEWS.values()));
+         Arrays.asList(HERO_SLIDE_VIEWS.values()));
     }
 
     public enum HERO_SLIDE_VIEWS {

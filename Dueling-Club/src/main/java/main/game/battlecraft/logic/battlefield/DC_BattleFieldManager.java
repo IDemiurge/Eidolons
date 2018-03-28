@@ -18,8 +18,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
     private Map<Coordinates, List<DIRECTION>> diagonalJoints;
     private Map<Coordinates, List<DIRECTION>> visibleWallMap;
     private Map<Coordinates, List<DIRECTION>> visibleDiagonalJoints;
-    private boolean wallResetRequired=true;
+    private boolean wallResetRequired = true;
     private Map<Coordinates, DOOR_STATE> doorMap = new HashMap<>();
 
 
@@ -77,31 +77,35 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     public void resetWallMap() {
 
-        if (wallResetRequired)
-        {
+        main.system.auxiliary.log.LogMaster.log(1,"START resetWallMap" +wallMap.size());
+//        if (wallResetRequired) {
+            main.system.auxiliary.log.LogMaster.log(1,"invoked resetWalls!" );
             resetWalls();
-        }
+//        }
         resetVisibleWallMap();
+        main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_DOOR_MAP!"+doorMap.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_DOOR_MAP, this.doorMap);
+        main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_WALL_MAP!"+visibleWallMap.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_WALL_MAP, this.visibleWallMap);
+        main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_DIAGONAL_WALL_MAP!"+visibleDiagonalJoints.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, this.visibleDiagonalJoints);
         wallResetRequired = true;
+        main.system.auxiliary.log.LogMaster.log(1,"END resetWallMap" +wallMap.size());
     }
 
 
-
     private void resetVisibleWallMap() {
-        visibleWallMap= new MapMaster().cloneHashMap(wallMap);
-        visibleWallMap.keySet().removeIf((sub)->{
+        visibleWallMap = new MapMaster().cloneHashMap(wallMap);
+        visibleWallMap.keySet().removeIf((sub) -> {
             DC_Obj obj = (DC_Obj) game.getObjectByCoordinate(sub);
-            if (obj==null ){
+            if (obj == null) {
                 return false;
             } //TODO detected, actually
 //            return !VisionManager.checkVisible(obj, false);
-            return !VisionManager.getMaster().getDetectionMaster(). checkKnownForPlayer(obj );
+            return !VisionManager.getMaster().getDetectionMaster().checkKnownForPlayer(obj);
         });
-        visibleDiagonalJoints= new MapMaster().cloneHashMap(diagonalJoints);
-        visibleDiagonalJoints.keySet().removeIf((sub)-> !visibleWallMap.containsKey(sub));
+        visibleDiagonalJoints = new MapMaster().cloneHashMap(diagonalJoints);
+        visibleDiagonalJoints.keySet().removeIf((sub) -> !visibleWallMap.containsKey(sub));
 //        for (Coordinates sub: wallMap.keySet()){
 //           DC_Obj obj = (DC_Obj) game.getObjectByCoordinate(sub);
 //            if (VisionManager.checkVisible(obj, false)){
@@ -120,7 +124,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
                     wallObjects.put(obj.getCoordinates(), bfObj);
                 }
                 if (bfObj instanceof Door) {
-                     doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
+                    doorMap.put(obj.getCoordinates(), ((Door) bfObj).getState());
 
                 }
             }

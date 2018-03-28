@@ -5,7 +5,7 @@ import main.game.battlecraft.logic.meta.scenario.ScenarioPrecombatMaster.SCENARI
 import javax.swing.*;
 
 public class ScenarioModeChoiceView extends EnumChoiceView<SCENARIO_MODES> implements
-        ListCellRenderer<SCENARIO_MODES> {
+ ListCellRenderer<SCENARIO_MODES> {
     public ScenarioModeChoiceView(ChoiceSequence sequence, Class<SCENARIO_MODES> CLASS) {
         super(sequence, null, CLASS);
     }

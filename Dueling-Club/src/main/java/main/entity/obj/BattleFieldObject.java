@@ -24,6 +24,7 @@ import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.game.module.dungeoncrawl.objects.Door;
 import main.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -191,7 +192,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
-
+        if (this instanceof Door) {
+            return true;
+        }
 //        double distance = PositionMaster.getExactDistance(this, target);
 //        Integer girth = getIntParam(PARAMS.GIRTH);
 //        if (girth/100 < distance  ){
@@ -251,7 +254,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         setParam(PARAMS.C_ENDURANCE, getIntParam(PARAMS.ENDURANCE), true);
         setParam(PARAMS.C_TOUGHNESS, getIntParam(PARAMS.TOUGHNESS), true);
         if (!DC_Engine.isAtbMode())
-        setParam(PARAMS.C_N_OF_ACTIONS, getIntParam(PARAMS.N_OF_ACTIONS), true);
+            setParam(PARAMS.C_N_OF_ACTIONS, getIntParam(PARAMS.N_OF_ACTIONS), true);
         setParam(PARAMS.C_N_OF_COUNTERS, getIntParam(PARAMS.N_OF_COUNTERS), true);
         setParam(PARAMS.C_ENERGY, "0", true);
 
@@ -279,8 +282,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         } else if (param == PARAMS.INITIATIVE_BONUS) {
             super.putParameter(param, value);
         } else if (param == PARAMS.C_INITIATIVE) {
-            if (StringMaster.getInteger(value)>105){
-                return ;
+            if (StringMaster.getInteger(value) > 105) {
+                return;
             }
             super.putParameter(param, value);
         } else

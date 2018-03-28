@@ -63,7 +63,7 @@ public class DC_MovementManager implements MovementManager {
     public static Coordinates getMovementDestinationCoordinate(DC_ActiveObj active) {
         try {
             MoveEffect effect = (MoveEffect) EffectFinder.getEffectsOfClass(active.getAbilities(),
-                    MoveEffect.class).get(0);
+             MoveEffect.class).get(0);
             effect.setRef(active.getRef());
             if (effect instanceof SelfMoveEffect) {
                 SelfMoveEffect selfMoveEffect = (SelfMoveEffect) effect;
@@ -78,20 +78,20 @@ public class DC_MovementManager implements MovementManager {
 
     public static Action getFirstAction(Unit unit, Coordinates coordinates) {
         FACING_SINGLE relative = FacingMaster.getSingleFacing(unit.getFacing(),
-                unit.getCoordinates(), coordinates);
+         unit.getCoordinates(), coordinates);
         if (relative == FACING_SINGLE.IN_FRONT) {
             if (new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
                 return AiActionFactory.newAction("Move", unit.getAI());
         }
         boolean left = (unit.getFacing().isVertical()) ?
-                PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
-                : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
+         PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
+         : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
         if (unit.getFacing().isMirrored()) {
             left = !left;
         }
 
         if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
-            return null ;
+            return null;
         return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
 //        List<ActionPath> paths = instance.buildPath(unit, coordinates);
 //            if (!ListMaster.isNotEmpty(paths)) {
@@ -113,7 +113,7 @@ public class DC_MovementManager implements MovementManager {
         DequeImpl<DC_UnitAction> actions = unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_MOVE);
         if (actions != null) {
             moveActions = new ArrayList<>(Arrays.asList(actions.toArray(new DC_ActiveObj[actions
-                    .size()])));
+             .size()])));
         }
         if (moveActions.isEmpty()) {
             moveActions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE));
@@ -161,15 +161,17 @@ public class DC_MovementManager implements MovementManager {
     }
 
     public List<ActionPath> getAutoPath(Obj activeUnit) {
-       return   pathCache.get(activeUnit);
+        return pathCache.get(activeUnit);
     }
+
     public void cancelAutomove(Obj activeUnit) {
         pathCache.remove(activeUnit);
     }
+
     public List<ActionPath> buildPath(Unit unit, Coordinates coordinates) {
         List<DC_ActiveObj> moves = getMoves(unit);
         PathBuilder builder = PathBuilder.getInstance().init
-                (moves, new Action(unit.getAction("Move")));
+         (moves, new Action(unit.getAction("Move")));
         List<ActionPath> paths = builder.build(new ListMaster<Coordinates>().getList(coordinates));
         if (paths.isEmpty()) {
             return null;
@@ -200,7 +202,7 @@ public class DC_MovementManager implements MovementManager {
             pathCache.put(unit, paths);
         }
         if (paths == null) {
-            return ;
+            return;
         }
         Action action = null;
         for (ActionPath path : paths) {
@@ -221,7 +223,7 @@ public class DC_MovementManager implements MovementManager {
         // ActionAnimation anim = new ActionAnimation(action);
         // anim.start();
 
-        Context context =new Context( unit.getRef());
+        Context context = new Context(unit.getRef());
         if (action.getActive().isMove()) {
             context.setTarget(game.getCellByCoordinate(coordinates).getId());
         }
@@ -351,16 +353,16 @@ public class DC_MovementManager implements MovementManager {
         // obj.modifyParameter(PARAMS.C_N_OF_MOVES, -_cost, 0);
         // obj.modifyParameter(PARAMS.C_N_OF_ACTIONS, -_cost, 0);
 
-        Coordinates c =cell.getCoordinates() ;
+        Coordinates c = cell.getCoordinates();
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
-            Unit moveObj =   (Unit) getGrid().getObj(cell.getCoordinates());
+            Unit moveObj = (Unit) getGrid().getObj(cell.getCoordinates());
             if (moveObj != null) {
                 if (ref.getActive() instanceof DC_ActiveObj) {
                     DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
                     if (moveObj instanceof Unit) {
                         Unit heroObj = moveObj;
-                      c= CollisionRule.collision(ref, activeObj, moveObj, heroObj,
-                                false, activeObj.getIntParam(PARAMS.FORCE));
+                        c = CollisionRule.collision(ref, activeObj, moveObj, heroObj,
+                         false, activeObj.getIntParam(PARAMS.FORCE));
                         if (c == null) {// TODO UPDATE!
                             return true; // displaced by Collision rule?
                         }
@@ -381,7 +383,7 @@ public class DC_MovementManager implements MovementManager {
             }
         }
 
-            if (!game.getRules().getEngagedRule().unitMoved(obj, c.x, c.y)) {
+        if (!game.getRules().getEngagedRule().unitMoved(obj, c.x, c.y)) {
             return false;
         }
         obj.setCoordinates(c);
@@ -457,7 +459,7 @@ public class DC_MovementManager implements MovementManager {
     public List<Obj> getAdjacentEnemies(Obj unit) {
 
         return new Filter<Obj>(unit.getRef(), ConditionMaster.getEnemyCondition())
-                .filter(getAdjacentObjs(unit, false));
+         .filter(getAdjacentObjs(unit, false));
 
     }
 
@@ -492,13 +494,13 @@ public class DC_MovementManager implements MovementManager {
 
         if (template.getVarClasses() != null) {
             String vars = ref.getObj(KEYS.ACTIVE).getCustomProperty(
-                    CustomValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
+             CustomValueManager.getVarEnumCustomValueName(MOVE_TEMPLATES.class));
             List<String> varList = VariableManager.getVarList(vars);
 
             range = varList.get(0);
             if (varList.size() > 1) {
                 direction = new EnumMaster<UNIT_DIRECTION>().retrieveEnumConst(
-                        UNIT_DIRECTION.class, varList.get(1));
+                 UNIT_DIRECTION.class, varList.get(1));
             }
 
             if (varList.size() > 2) {
@@ -517,7 +519,7 @@ public class DC_MovementManager implements MovementManager {
         } else {
             if (range.equals("1")) {
                 return obj.getCoordinates().getAdjacentCoordinate(
-                        DirectionMaster.getDirectionByFacing(facing, direction));
+                 DirectionMaster.getDirectionByFacing(facing, direction));
             }
             // preCheck int >= formla
 

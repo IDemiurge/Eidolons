@@ -52,7 +52,7 @@ public class VisibilityCondition extends ConditionImpl {
                 if (game.getManager().getActiveObj().isMine() !=
                  ref.getSourceObj().isMine()) {
                     if (ref.getSourceObj().isMine()) {
-                        playerVision= match.getPlayerVisionStatus(false);
+                        playerVision = match.getPlayerVisionStatus(false);
                     } else {
                         //TODO for enemy unit on player's unit...
                     }
@@ -62,8 +62,8 @@ public class VisibilityCondition extends ConditionImpl {
                 }
             }
             UNIT_TO_UNIT_VISION visionStatus = match.getUnitVisionStatus();
-            if (!ref.getSourceObj().isActiveSelected()){
-                visionStatus =match.getGame().getVisionMaster().getSightMaster().
+            if (!ref.getSourceObj().isActiveSelected()) {
+                visionStatus = match.getGame().getVisionMaster().getSightMaster().
                  getUnitVisibilityStatus(match, (Unit) ref.getSourceObj());
             }
             return visionStatus.isSufficient(u_vision);
@@ -77,7 +77,7 @@ public class VisibilityCondition extends ConditionImpl {
             // if (((DC_Game) game).getManager().isAI_Turn()) { what's the idea?
             Unit activeObj = (Unit) ref.getObj(source);
             result = ((DC_Game) game).getVisionMaster().getUnitVisibilityStatus(match, activeObj)
-                    .isSufficient(u_vision);
+             .isSufficient(u_vision);
             // }
         }
 

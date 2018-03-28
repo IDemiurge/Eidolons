@@ -37,8 +37,8 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         options = new BattleOptions();
         options.setValue(ARENA_GAME_OPTIONS.DIFFICULTY, defaultDifficulty.name());
 
-        if (CoreEngine.isIDE()){
-            difficulty= defaultDifficulty;
+        if (CoreEngine.isIDE()) {
+            difficulty = defaultDifficulty;
         }
     }
 
@@ -133,7 +133,7 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public boolean chooseDifficulty() {
-        if (difficulty!=null ){
+        if (difficulty != null) {
             return true;
         }
         GuiEventManager.trigger(
@@ -141,7 +141,7 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         try {
             difficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,
              WaitMaster.
-              waitForInput( DifficultySelectionPanel. WAIT_OPERATION ).toString());
+              waitForInput(DifficultySelectionPanel.WAIT_OPERATION).toString());
             main.system.auxiliary.log.LogMaster.log(1, "+++++++++selected difficulty = " + difficulty);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

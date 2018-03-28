@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  */
 public class AvailableMissionsDataSource {
     Scenario scenario;
-ScenarioMetaMaster master;
+    ScenarioMetaMaster master;
+
     public AvailableMissionsDataSource(Scenario scenario) {
         this.scenario = scenario;
     }
@@ -23,7 +24,7 @@ ScenarioMetaMaster master;
     }
 
     public List<MissionDataSource> getData() {
-        List<Mission> availableMissions =   scenario.getAvailableMissions();
+        List<Mission> availableMissions = scenario.getAvailableMissions();
         return availableMissions.stream().map(mission -> new MissionDataSourceImpl(mission)).collect(Collectors.toList());
     }
 }

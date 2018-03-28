@@ -20,7 +20,7 @@ import main.system.threading.WaitMaster;
 
 import java.awt.*;
 
-public abstract class OperationWindow extends G_Dialog implements OperationDialog{
+public abstract class OperationWindow extends G_Dialog implements OperationDialog {
     protected static final String OK = "Done";
     protected static final String CANCEL = "Cancel";
     protected static final String INV = "Inventory";
@@ -45,7 +45,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
 
     public void appendOperationData(OPERATIONS operation, String string) {
         operationsData = getOperationsData() + operation.toString() + StringMaster.PAIR_SEPARATOR
-                + string + StringMaster.SEPARATOR;
+         + string + StringMaster.SEPARATOR;
 
     }
 
@@ -63,6 +63,7 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
         super.init();
         refresh();
     }
+
     @Override
     public void refresh() {
         getComponent().setHero(heroModel);
@@ -127,13 +128,13 @@ public abstract class OperationWindow extends G_Dialog implements OperationDialo
         };
 
         panel.add(getComponent(), "id tab, pos " + GuiManager.PANEL_FRAME_WIDTH + " "
-                + GuiManager.PANEL_FRAME_HEIGHT);
+         + GuiManager.PANEL_FRAME_HEIGHT);
         panel.add(okButton, "@id ok, pos max_right-" + GuiManager.PANEL_FRAME_WIDTH + " max_top-"
-                + GuiManager.PANEL_FRAME_HEIGHT);
+         + GuiManager.PANEL_FRAME_HEIGHT);
         panel.add(cancelButton, "@id cancel, pos max_right-" + GuiManager.PANEL_FRAME_WIDTH
-                + " ok.y2");
+         + " ok.y2");
         panel.add(operationsPool, "@id op, pos max_right-" + GuiManager.PANEL_FRAME_WIDTH
-                + " cancel.y2");
+         + " cancel.y2");
         panel.setBackground(ColorManager.BACKGROUND);
         return panel;
     }

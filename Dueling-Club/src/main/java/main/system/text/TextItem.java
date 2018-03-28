@@ -5,8 +5,8 @@ import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TextItem {
@@ -90,12 +90,12 @@ public class TextItem {
         int height = 0;
         for (Object line : lines) {
             int w = (line instanceof ImageLine) ? ((ImageLine) line).getWidth() : FontMaster
-                    .getStringWidth(font, line.toString());
+             .getStringWidth(font, line.toString());
             if (w > width) {
                 width = w;
             }
             int h = (line instanceof ImageLine) ? ((ImageLine) line).getHeight() : FontMaster
-                    .getFontHeight(font);
+             .getFontHeight(font);
             height += h;
         }
         if (point == null) {

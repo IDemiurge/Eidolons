@@ -46,11 +46,11 @@ public class WatchBuffEffect extends AddBuffEffect {
 
         if (!watcher.getMode().equals(STD_MODES.ALERT)) {
             e.add(new ModifyValueEffect(PARAMS.DEFENSE_MOD, MOD.MODIFY_BY_CONST, WatchRule
-                    .getDefenseModVsOthers(watcher, list)));
+             .getDefenseModVsOthers(watcher, list)));
             e.add(new ModifyValueEffect(PARAMS.ATTACK_MOD, MOD.MODIFY_BY_CONST, WatchRule
-                    .getAttackModVsOthers(watcher, list)));
+             .getAttackModVsOthers(watcher, list)));
             e.add(new ModifyValueEffect(PARAMS.AP_PENALTY, MOD.MODIFY_BY_CONST, WatchRule
-                    .getApPenaltyMod(watcher, list)));
+             .getApPenaltyMod(watcher, list)));
 
         } else {
 

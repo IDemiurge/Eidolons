@@ -54,12 +54,12 @@ public abstract class ShapeEffect extends SpecialTargetingEffect {
         int base_width = radius.getInt(ref);
         int distance = this.distance.getInt(ref);
         coordinates = DC_PositionMaster.getShapedCoordinates(baseCoordinate,
-                getFacing(), base_width, distance, getShape());
+         getFacing(), base_width, distance, getShape());
 
-        DequeImpl< Obj> objects =    new DequeImpl<>() ;
+        DequeImpl<Obj> objects = new DequeImpl<>();
         objects.addAllCast(
-        getGame().getMaster()
-         .getUnitsForCoordinates(coordinates));
+         getGame().getMaster()
+          .getUnitsForCoordinates(coordinates));
 
         Filter.filter(objects, targetType);
         if (allyOrEnemyOnly != null) {

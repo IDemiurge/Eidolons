@@ -35,7 +35,7 @@ public class BleedingDamageRule extends DamageCounterRule {
     @Override
     public String getDamagePerCounterFormula() {
         return "" + StringMaster.getValueRef(KEYS.TARGET, PARAMS.ENDURANCE) + "*"
-                + PERC_PER_COUNTER + "/100";
+         + PERC_PER_COUNTER + "/100";
     }
 
     @Override

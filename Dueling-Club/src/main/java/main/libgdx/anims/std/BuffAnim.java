@@ -31,7 +31,7 @@ public class BuffAnim extends ActionAnim {
         super(buff.getActive(), getBuffAnimData(buff));
         this.buff = buff;
         mods = new ANIM_MOD[]{
-                CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
+         CONTINUOUS_ANIM_MODS.PENDULUM_ALPHA
         };
         part = ANIM_PART.AFTEREFFECT;
         textureSupplier = () -> TextureCache.getOrCreate(buff.getImagePath());
@@ -52,7 +52,7 @@ public class BuffAnim extends ActionAnim {
         ablaze, frozen, bleeding, wounded, charmed,
          */
         STD_BUFF_NAMES name =
-                new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
+         new EnumMaster<STD_BUFF_NAMES>().retrieveEnumConst(STD_BUFF_NAMES.class, buff.getName());
         if (name == null) {
             return data;
         }
@@ -150,10 +150,10 @@ public class BuffAnim extends ActionAnim {
     @Override
     protected void initDuration() {
         if (isPlayOnNewRound()) {
-            setDuration(2) ;
+            setDuration(2);
         }
         if (isPlayOnHover()) {
-            setDuration(3) ;
+            setDuration(3);
         }
         if (isPlayContinuous()) {
             duration = -1;

@@ -25,15 +25,14 @@ import main.system.GuiEventManager;
 import static main.system.GuiEventType.*;
 
 public class GridCell extends Group implements Borderable {
+    private static boolean spriteCacheOn;
     protected Image backImage;
     protected TextureRegion backTexture;
     protected Image border = null;
     private int gridX;
     private int gridY;
     private TextureRegion borderTexture;
-
     private Label cordsText;
-    private static boolean spriteCacheOn;
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -105,7 +104,7 @@ public class GridCell extends Group implements Borderable {
          (this)) {
             return;
         }
-        if (spriteCacheOn ) {
+        if (spriteCacheOn) {
             TextureManager.drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
              getGridX(), getGridY()
             ));

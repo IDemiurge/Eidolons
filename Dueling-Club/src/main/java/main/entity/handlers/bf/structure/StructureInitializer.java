@@ -4,9 +4,9 @@ import main.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.BfObjEnums;
 import main.content.values.properties.G_PROPS;
-import main.entity.obj.Structure;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.bf.BfObjInitializer;
+import main.entity.obj.Structure;
 
 /**
  * Created by JustMe on 3/25/2017.

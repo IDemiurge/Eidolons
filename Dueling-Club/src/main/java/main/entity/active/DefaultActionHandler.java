@@ -60,8 +60,8 @@ public class DefaultActionHandler {
         List<Action> sequence =
          source.getGame().getAiManager().getTurnSequenceConstructor().
           getTurnSequence(FACING_SINGLE.IN_FRONT, source, coordinates);
-if (sequence.isEmpty())
-    return null;
+        if (sequence.isEmpty())
+            return null;
         return sequence.get(0).getActive();
     }
 
@@ -205,8 +205,8 @@ if (sequence.isEmpty())
 // if (offhand)
         DC_ActiveObj action = pickAutomatically(
          source.getAttack().getSubActions(), target);
-        if (action==null )
-            if (source.getOffhandAttack()!=null )
+        if (action == null)
+            if (source.getOffhandAttack() != null)
                 action = pickAutomatically(source.getOffhandAttack().getSubActions(), target);
         return action;
     }

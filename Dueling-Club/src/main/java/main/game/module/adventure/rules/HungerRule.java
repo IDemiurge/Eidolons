@@ -4,7 +4,6 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroManager;
 import main.game.module.adventure.entity.MacroParty;
-import main.game.module.adventure.rules.TurnRule;
 
 public class HungerRule extends TurnRule {
     private static final float HEALTH_REDUCTION_FACTOR = 0.1f;
@@ -19,7 +18,7 @@ public class HungerRule extends TurnRule {
 
     private void consumeProvisions(MacroParty p) {
         p.modifyParameter(MACRO_PARAMS.C_PROVISIONS,
-                -p.getIntParam(MACRO_PARAMS.CONSUMPTION));
+         -p.getIntParam(MACRO_PARAMS.CONSUMPTION));
         if (p.getIntParam(MACRO_PARAMS.C_PROVISIONS) < 0) {
             int hungerAmount = p.getIntParam(MACRO_PARAMS.C_PROVISIONS);
             // choose who gets the last provisions or to split equally
@@ -55,7 +54,7 @@ public class HungerRule extends TurnRule {
         // continuous vs oneshot ... each turn
 
         hero.modifyParameter(MACRO_PARAMS.HEALTH,
-                -(Math.round(hunger * HEALTH_REDUCTION_FACTOR)));
+         -(Math.round(hunger * HEALTH_REDUCTION_FACTOR)));
 
         // 'buff rule' - hungry, starved
         // HEALTH

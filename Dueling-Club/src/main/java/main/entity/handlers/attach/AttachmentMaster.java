@@ -1,7 +1,7 @@
 package main.entity.handlers.attach;
 
-import main.entity.obj.attach.DC_HeroAttachedObj;
 import main.entity.handlers.*;
+import main.entity.obj.attach.DC_HeroAttachedObj;
 
 /**
  * Created by JustMe on 2/26/2017.

@@ -60,13 +60,13 @@ public class SelfMoveEffect extends MoveEffect {
         if (template != null) {
             // ++ variables
             destination = game.getMovementManager().getTemplateMoveCoordinate(template, obj.getFacing(), obj,
-                    ref);
+             ref);
         } else if (direction != null) {
             if (origin == null) {
                 origin = obj.getCoordinates();
             }
             destination = origin.getAdjacentCoordinate(DirectionMaster.getDirectionByFacing(obj.getFacing(),
-                    direction));
+             direction));
         } else {
             if (formula == null) {
                 try {

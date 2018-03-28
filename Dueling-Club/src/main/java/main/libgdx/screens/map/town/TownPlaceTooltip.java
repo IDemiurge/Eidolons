@@ -8,7 +8,7 @@ import main.libgdx.gui.tooltips.Tooltip;
  * Created by JustMe on 3/14/2018.
  */
 public class TownPlaceTooltip extends Tooltip {
-TownPlace place;
+    TownPlace place;
 
     public TownPlaceTooltip(TownPlace place) {
         this.place = place;
@@ -22,7 +22,7 @@ TownPlace place;
     }
 
     private void triggerEnterEvent() {
-        switch(place.getTownPlaceType()){
+        switch (place.getTownPlaceType()) {
 
             case GUILD:
                 break;

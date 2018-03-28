@@ -75,8 +75,8 @@ public class BuildHelper {
 //                rim = true;
 //        }
         int x = !plan.isFlippedX() ? params.getIntValue(BUILD_PARAMS.WALL_WIDTH) : location
-                .getCellsX()
-                - params.getIntValue(BUILD_PARAMS.WALL_WIDTH);
+         .getCellsX()
+         - params.getIntValue(BUILD_PARAMS.WALL_WIDTH);
 
         int y = (location.getCellsY() - height) / 2;
         if (corner) {
@@ -108,7 +108,7 @@ public class BuildHelper {
             } else {
                 int random = RandomWizard.getRandomIntBetween(room.getMinX(), room.getMaxX());
                 width = MathMaster.getMinMax(RandomWizard.getRandomIntBetween(width, random), room
-                        .getMinX(), room.getMaxX());
+                 .getMinX(), room.getMaxX());
             }
         }
         if (room.getMaxY() != 0) {
@@ -119,7 +119,7 @@ public class BuildHelper {
             } else {
                 int random = RandomWizard.getRandomIntBetween(room.getMinY(), room.getMaxY());
                 height = MathMaster.getMinMax(RandomWizard.getRandomIntBetween(height, random),
-                        room.getMinY(), room.getMaxY());
+                 room.getMinY(), room.getMaxY());
 
             }
         }
@@ -347,10 +347,10 @@ public class BuildHelper {
     private List<Coordinates> getCoordinates(Coordinates baseCoordinate, int width, int height,
                                              boolean flipX, boolean flipY) {
         FACING_DIRECTION lengthDirection = (flipY) ? FACING_DIRECTION.NORTH
-                : FACING_DIRECTION.SOUTH;
+         : FACING_DIRECTION.SOUTH;
         FACING_DIRECTION widthDirection = (flipX) ? FACING_DIRECTION.WEST : FACING_DIRECTION.EAST;
         return DC_PositionMaster.getRectangle(true, lengthDirection, widthDirection,
-                baseCoordinate, height, width);
+         baseCoordinate, height, width);
 
     }
 
@@ -379,7 +379,7 @@ public class BuildHelper {
             length++;
         }
         LogMaster.log(1, "Max " + (horizontal ? "Length" : "Height")
-                + " for " + zone + " from " + baseCoordinate + " = " + length);
+         + " for " + zone + " from " + baseCoordinate + " = " + length);
         return length;
     }
 
@@ -411,7 +411,7 @@ public class BuildHelper {
     public Coordinates getRandomWallCoordinate(FACING_DIRECTION direction, MapBlock block) {
         if (RandomWizard.chance(params.getIntValue(BUILD_PARAMS.CORRIDOR_OFFSET_CHANCE))) {
             List<Coordinates> edgeCoordinatesFromSquare = CoordinatesMaster
-                    .getEdgeCoordinatesFromSquare(direction, block.getCoordinates());
+             .getEdgeCoordinatesFromSquare(direction, block.getCoordinates());
             return new RandomWizard<Coordinates>().getRandomListItem(edgeCoordinatesFromSquare);
         }
         Boolean prefLessMoreMiddle = null;
@@ -419,7 +419,7 @@ public class BuildHelper {
             prefLessMoreMiddle = BooleanMaster.random();
         }
         Coordinates coord = CoordinatesMaster.getFarmostCoordinateInDirection(direction.getDirection(),
-                block.getCoordinates(), prefLessMoreMiddle);
+         block.getCoordinates(), prefLessMoreMiddle);
 
         if (block.getRoomType() != ROOM_TYPE.THRONE_ROOM) {
             // random offset?
@@ -488,7 +488,7 @@ public class BuildHelper {
 
         public BuildParameters(String data) {
             this(new RandomWizard<BUILD_PARAMS>()
-                    .constructStringWeightMap(data, BUILD_PARAMS.class));
+             .constructStringWeightMap(data, BUILD_PARAMS.class));
         }
 
         public BuildParameters(Map<BUILD_PARAMS, String> map) {

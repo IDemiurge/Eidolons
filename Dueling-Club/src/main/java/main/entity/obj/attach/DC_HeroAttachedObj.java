@@ -22,7 +22,7 @@ import main.system.auxiliary.data.ListMaster;
 
 public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
     private static final String[] STD_PASSIVES_EXCEPTIONS = {UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE
-            .getName(),};
+     .getName(),};
 
     protected Unit hero;
 
@@ -44,7 +44,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     @Override
     public DC_Player getOwner() {
-        if (getOwnerObj()==null )
+        if (getOwnerObj() == null)
             return DC_Player.NEUTRAL;
         return getOwnerObj().getOwner();
     }
@@ -73,7 +73,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     @Override
     public boolean isOutsideCombat() {
-        if (getHero()==null )
+        if (getHero() == null)
             return true;
         return getHero().isOutsideCombat();
     }

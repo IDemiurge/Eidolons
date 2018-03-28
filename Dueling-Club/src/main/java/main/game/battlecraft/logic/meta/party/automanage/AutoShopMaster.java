@@ -7,7 +7,7 @@ import main.entity.obj.unit.Unit;
  */
 public class AutoShopMaster {
 
-    public void buyItems(Unit hero){
+    public void buyItems(Unit hero) {
 
     }
 

@@ -61,9 +61,9 @@ import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
-import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,10 +105,10 @@ public class Unit extends DC_UnitModel {
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
-        if (isHero()){
+        if (isHero()) {
 //            main.system.auxiliary.log.LogMaster.log(1,this + " hero created " +getId());
-            String message = this + " hero created " +getId();
-            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
+            String message = this + " hero created " + getId();
+            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
 
         }
 
@@ -299,12 +299,11 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void afterEffects() {
-if (ExplorationMaster.isExplorationOn())
-{
-        if (!isDirty()) {
-        return ;
-    }
-}
+        if (ExplorationMaster.isExplorationOn()) {
+            if (!isDirty()) {
+                return;
+            }
+        }
         getResetter().afterEffectsApplied();
 
     }
@@ -498,7 +497,8 @@ if (ExplorationMaster.isExplorationOn())
     public boolean isInventoryFull() {
         return getInventory().size() >= InventorySlotsPanel.COLUMNS * InventorySlotsPanel.ROWS;
     }
-        public boolean isQuickSlotsFull() {
+
+    public boolean isQuickSlotsFull() {
         if (game.isSimulation()) {
             return getIntParam(PARAMS.QUICK_SLOTS) <= StringMaster.openContainer(
              getProperty(PROPS.QUICK_ITEMS)).size();
@@ -511,7 +511,7 @@ if (ExplorationMaster.isExplorationOn())
 
     public int getRemainingQuickSlots() {
         if (quickItems == null) {
-         return getIntParam(PARAMS.QUICK_SLOTS);
+            return getIntParam(PARAMS.QUICK_SLOTS);
         }
         return getIntParam(PARAMS.QUICK_SLOTS) - quickItems.size();
     }
@@ -532,10 +532,12 @@ if (ExplorationMaster.isExplorationOn())
     public DC_HeroItemObj getItemFromInventory(String name) {
         return new SearchMaster<DC_HeroItemObj>().find(name, getInventory());
     }
+
     public DC_QuickItemObj getQuickItem(String name) {
         return new SearchMaster<DC_QuickItemObj>().find(name, getQuickItems());
     }
-        public Entity getItem(String name) {
+
+    public Entity getItem(String name) {
         // for (String generic: getInventory())
         List<Entity> list = new ArrayList<>();
         list.add(getWeapon(true));

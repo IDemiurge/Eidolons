@@ -162,7 +162,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        return null ;
+        return null;
     }
 
     @Override

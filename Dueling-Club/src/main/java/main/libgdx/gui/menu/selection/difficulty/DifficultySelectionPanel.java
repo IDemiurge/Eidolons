@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
  */
 public class DifficultySelectionPanel extends SelectionPanel {
 
-    public static final main.system.threading.WaitMaster.WAIT_OPERATIONS WAIT_OPERATION = WAIT_OPERATIONS.CUSTOM_SELECT ;
+    public static final main.system.threading.WaitMaster.WAIT_OPERATIONS WAIT_OPERATION = WAIT_OPERATIONS.CUSTOM_SELECT;
 
     @Override
-    public   WAIT_OPERATIONS getWaitOperation() {
+    public WAIT_OPERATIONS getWaitOperation() {
         return WAIT_OPERATION;
     }
 
@@ -38,8 +38,8 @@ public class DifficultySelectionPanel extends SelectionPanel {
 
     private DIFFICULTY getDefaultDifficulty() {
 //        DIFFICULTY.NOVICE
-         return new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,
-        OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+        return new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,
+         OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
     }
 
     @Override
@@ -55,14 +55,14 @@ public class DifficultySelectionPanel extends SelectionPanel {
     private SelectableItemData getItemFromDiff(DIFFICULTY dif) {
 //        TextParser.parse()
         String text = TextMaster.readResource
-         ("info", "difficulty", dif.name()+".txt");
+         ("info", "difficulty", dif.name() + ".txt");
         text = VariableManager.substitute(text,
          dif.getPowerPercentage(),
          dif.getRoundsToFightMod(),
          dif.getHealthPercentageEnemy(),
          dif.getHealthPercentageAlly(),
          dif.getHealthPercentageMainHero()
-         );
+        );
 
         return new SelectableItemData(dif.name(),
          text, null, null);

@@ -13,8 +13,8 @@ import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.math.roll.RollMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**

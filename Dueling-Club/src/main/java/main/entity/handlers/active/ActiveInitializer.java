@@ -110,31 +110,30 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
 
 
     public void applyDynamicCostMods(Costs costs) {
-        Unit ownerObj =getEntity(). getOwnerObj();
+        Unit ownerObj = getEntity().getOwnerObj();
         Integer sta = 0;
         Integer ap = 0;
         if (getHandler().isCounterMode()) {
-            ap =  ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY);
-            sta =  ownerObj
+            ap = ownerObj.getIntParam(PARAMS.COUNTER_CP_PENALTY);
+            sta = ownerObj
              .getIntParam(PARAMS.COUNTER_STAMINA_PENALTY);
         }
         if (getHandler().isInstantMode()) {
-            ap =  ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY);
-            sta =  ownerObj
+            ap = ownerObj.getIntParam(PARAMS.INSTANT_CP_PENALTY);
+            sta = ownerObj
              .getIntParam(PARAMS.INSTANT_STAMINA_PENALTY);
         }
         if (getHandler().isAttackOfOpportunityMode()) {
-            ap =  ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY);
-            sta =  ownerObj
+            ap = ownerObj.getIntParam(PARAMS.AOO_CP_PENALTY);
+            sta = ownerObj
              .getIntParam(PARAMS.AOO_STAMINA_PENALTY);
         }
-        if (ap!=0)
-        costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
-        if (sta!=0)
-        costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().applyModifier(sta);
+        if (ap != 0)
+            costs.getCost(PARAMS.AP_COST).getPayment().getAmountFormula().applyModifier(ap);
+        if (sta != 0)
+            costs.getCost(PARAMS.STA_COST).getPayment().getAmountFormula().applyModifier(sta);
 
     }
-
 
 
     public ACTION_TYPE_GROUPS initActionTypeGroup() {

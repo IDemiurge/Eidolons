@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class MacroActionPanel extends G_ListPanel<MacroAction> implements
-        ListCellRenderer<MacroAction> {
+ ListCellRenderer<MacroAction> {
 
     private boolean rdy = false;
     private int panelWidth;
@@ -70,10 +70,10 @@ public class MacroActionPanel extends G_ListPanel<MacroAction> implements
     }
 
     public Component getListCellRendererComponent(
-            JList<? extends MacroAction> list, MacroAction value, int index,
-            boolean isSelected, boolean cellHasFocus) {
+     JList<? extends MacroAction> list, MacroAction value, int index,
+     boolean isSelected, boolean cellHasFocus) {
         ActionListItem item = new ActionListItem(value, isSelected,
-                cellHasFocus);
+         cellHasFocus);
         if (value == null) {
             item.setEmptyIcon(ImageManager.getAltEmptyListIcon());
             item.refresh();
@@ -118,7 +118,7 @@ public class MacroActionPanel extends G_ListPanel<MacroAction> implements
             return;
         }
         sizeInfo = "w " + panelWidth * GuiManager.getSmallObjSize() + ", h "
-                + GuiManager.getSmallObjSize();
+         + GuiManager.getSmallObjSize();
         hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER;
         vpolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER;
         rowsVisible = 1;

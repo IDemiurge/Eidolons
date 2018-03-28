@@ -20,7 +20,7 @@ public class DC_MapGenerator extends Manager {
 
     public static Point getCorner(boolean left, boolean top) {
         return new Point((left) ? 0 : GuiManager.getBF_CompDisplayedCellsX(),
-                (top) ? 0 : GuiManager.getBF_CompDisplayedCellsY());
+         (top) ? 0 : GuiManager.getBF_CompDisplayedCellsY());
     }
 
     public static ObjType getGatewayObjType(BF_OBJ_OWNER TYPE) {
@@ -34,7 +34,7 @@ public class DC_MapGenerator extends Manager {
         }
         if (TYPE == BF_OBJ_OWNER.RANDOM) {
             type = DataManager.getType(GenericEnums.ASPECT.getAspectByCode(new Random()
-                    .nextInt(GenericEnums.ASPECT.values().length)).getGateway());
+             .nextInt(GenericEnums.ASPECT.values().length)).getGateway());
         }
 
         return type;
@@ -51,7 +51,7 @@ public class DC_MapGenerator extends Manager {
         }
         if (TYPE == BF_OBJ_OWNER.RANDOM) {
             type = DataManager.getType(GenericEnums.ASPECT.getAspectByCode(new Random()
-                    .nextInt(GenericEnums.ASPECT.values().length)).getCrystalName());
+             .nextInt(GenericEnums.ASPECT.values().length)).getCrystalName());
         }
 
         return type;

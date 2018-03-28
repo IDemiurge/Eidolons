@@ -40,6 +40,10 @@ public class OutlineMaster {
         OutlineMaster.outlinesOn = outlinesOn;
     }
 
+    public static boolean isAutoOutlinesOff() {
+        return false;
+    }
+
     public OUTLINE_TYPE getOutlineType(DC_Obj unit) {
         if (unit.getGame().isDebugMode()) {
             if (unit.isMine()) {
@@ -58,7 +62,6 @@ public class OutlineMaster {
         }
         return getOutlineType(unit, activeUnit);
     }
-
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
         if (DebugMaster.isOmnivisionOn()) {
@@ -93,11 +96,12 @@ public class OutlineMaster {
                     unit.setGamma(0);
                 return OUTLINE_TYPE.BLOCKED_OUTLINE;
             } else
+                //TODO [visibility FIX]
                 unit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
         } else {
             if (activeUnit.isMine()) //TODO fix this
                 unit.setGamma(0);
-            return OUTLINE_TYPE.THICK_DARKNESS;
+            return OUTLINE_TYPE.OUT_OF_RANGE;
         }
         int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);
 
@@ -179,10 +183,5 @@ public class OutlineMaster {
         }
 
         return OUTLINE_IMAGE.UNKNOWN;
-    }
-
-
-    public static boolean isAutoOutlinesOff() {
-        return false;
     }
 }

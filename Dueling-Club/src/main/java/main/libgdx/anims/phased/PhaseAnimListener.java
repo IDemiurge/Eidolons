@@ -68,7 +68,7 @@ public class PhaseAnimListener extends InputListener {
         Vector2 v = GridMaster.
          getCenteredPos(anim.getSourceCoordinates());
         return new Rectangle(
-                (int) v.x, (int) v.y, anim.getW(), anim.getH()).contains(x, y);
+         (int) v.x, (int) v.y, anim.getW(), anim.getH()).contains(x, y);
 
     }
 

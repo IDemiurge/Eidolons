@@ -21,43 +21,36 @@ import java.util.List;
 
 public class ParamAnalyzer extends AiHandler {
     public final String COST_PENALTY_FORMULA =
-            // "100/lg({AMOUNT})";
-            // "10+180/(2+sqrt({AMOUNT}*10))";
-            // "100-(sqrt({AMOUNT}*10)-{AMOUNT}/15)+ ({AMOUNT}*{AMOUNT}/1000)";
-            // //min
-            // max!
-            "100-sqrt({AMOUNT}*5)-{AMOUNT}/20 ";
+     // "100/lg({AMOUNT})";
+     // "10+180/(2+sqrt({AMOUNT}*10))";
+     // "100-(sqrt({AMOUNT}*10)-{AMOUNT}/15)+ ({AMOUNT}*{AMOUNT}/1000)";
+     // //min
+     // max!
+     "100-sqrt({AMOUNT}*5)-{AMOUNT}/20 ";
     public final String ACTION_FORMULA = "1000/(({AMOUNT}+1)*5)";
     // "100/ {AMOUNT}*{AMOUNT}  x^2-bX = 100 " ;
     // "sqrt({AMOUNT}*10) -100/(100-{AMOUNT})"; TODO perhaps I should have a
     // separate formula for each cost param!
 
 
-
-    private String getCOST_PENALTY_FORMULA() {
-        return "100-sqrt({AMOUNT}*" +
-         getConstInt(AiConst.COST_SQUARE) +
-         ")-{AMOUNT}/" +
-         getConstInt(AiConst.COST_DIVIDER)  ;
-    }
     public ParamAnalyzer(AiMaster master) {
         super(master);
     }
 
     public static boolean checkStatus(boolean low_critical, Unit unit, DC_BuffRule rule) {
         Integer buffLevel = rule.getBuffLevel(unit);
-        if (buffLevel==null ){
+        if (buffLevel == null) {
             return false;
         }
         if (buffLevel < 0) {
             return false;
         }
         if (buffLevel == rule
-                .getMaxLevel()) {
+         .getMaxLevel()) {
             return false;
         }
         if (buffLevel == rule
-                .getMinLevel()) {
+         .getMinLevel()) {
             return low_critical;
         }
         return !low_critical;
@@ -65,7 +58,7 @@ public class ParamAnalyzer extends AiHandler {
 
     public static boolean isFatigued(Unit unit) {
         int buffLevel = unit.getGame().getRules().getStaminaRule()
-                .getBuffLevel(unit);
+         .getBuffLevel(unit);
         if (buffLevel < 0) {
             return false;
         }
@@ -75,7 +68,7 @@ public class ParamAnalyzer extends AiHandler {
 
     public static boolean isHazed(Unit unit) {
         int buffLevel = unit.getGame().getRules().getFocusBuffRule()
-                .getBuffLevel(unit);
+         .getBuffLevel(unit);
         if (buffLevel < 0) {
             return false;
         }
@@ -98,10 +91,10 @@ public class ParamAnalyzer extends AiHandler {
         if (p == PARAMS.C_ESSENCE) {
             if (low_critical) {
                 return MathMaster.getCentimalPercent(
-                        unit.getIntParam(ContentManager.getPercentageParam(p))) < 30;
+                 unit.getIntParam(ContentManager.getPercentageParam(p))) < 30;
             } else {
                 return MathMaster.getCentimalPercent(
-                        unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
+                 unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
             }
 
         }
@@ -188,6 +181,13 @@ public class ParamAnalyzer extends AiHandler {
 
     }
 
+    private String getCOST_PENALTY_FORMULA() {
+        return "100-sqrt({AMOUNT}*" +
+         getConstInt(AiConst.COST_SQUARE) +
+         ")-{AMOUNT}/" +
+         getConstInt(AiConst.COST_DIVIDER);
+    }
+
     public int getCostPriorityFactor(Costs cost, Unit unit) {
         // if (!cost.canBePaid(unit.getRef()))
         // return -100;
@@ -200,7 +200,7 @@ public class ParamAnalyzer extends AiHandler {
                 continue;
             }
             int perc = DC_MathManager.getCentimalPercentage(c.getPayment().getAmountFormula()
-                    .getInt(unit.getRef()), unit.getIntParam(p));
+             .getInt(unit.getRef()), unit.getIntParam(p));
             if (perc > 100) {
                 // not enough
                 if (p != PARAMS.C_N_OF_ACTIONS) {
@@ -225,6 +225,7 @@ public class ParamAnalyzer extends AiHandler {
     public int getActionNumberFactor(int size) {
         return MathMaster.calculateFormula(ACTION_FORMULA, size);
     }
+
     public int getParamPriority(PARAMETER p, Unit unit) {
         // int percentage = DC_MathManager.getParamPercentage(unit, portrait);
         // if (percentage == 0) {

@@ -357,4 +357,9 @@ public class UnitView extends BaseView {
     public void setTimeTillTurn(Float timeTillTurn) {
         this.timeTillTurn = timeTillTurn;
     }
+
+    public void setInitiativeLabelText(String initiativeLabelText) {
+        initiativeLabel.setText(initiativeLabelText);
+
+    }
 }

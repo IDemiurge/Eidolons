@@ -36,7 +36,7 @@ public class HeroLevelManager {
         copyLevelValues(hero, type);
 
         hero.modifyParameter(PARAMS.MASTERY_POINTS, DC_Formulas.getMasteryFromIntelligence(hero
-                .getIntParam(PARAMS.KNOWLEDGE)));
+         .getIntParam(PARAMS.KNOWLEDGE)));
 
         modifyValues(hero, auto);
         if (!dc_hc_macro) {
@@ -95,12 +95,12 @@ public class HeroLevelManager {
         int p = hero.getIntParam(PARAMS.ATTR_POINTS_PER_LEVEL);
         hero.modifyParameter(PARAMS.ATTR_POINTS, p);
         hero.getType().modifyParameter((PARAMS.ATTR_POINTS_PER_LEVEL),
-                DC_Formulas.ATTR_POINTS_PER_LEVEL_BONUS);
+         DC_Formulas.ATTR_POINTS_PER_LEVEL_BONUS);
 
         p = hero.getIntParam(PARAMS.MASTERY_POINTS_PER_LEVEL);
         hero.modifyParameter(PARAMS.MASTERY_POINTS, p);
         hero.getType().modifyParameter((PARAMS.MASTERY_POINTS_PER_LEVEL),
-                DC_Formulas.MASTERY_POINTS_PER_LEVEL_BONUS);
+         DC_Formulas.MASTERY_POINTS_PER_LEVEL_BONUS);
 
     }
 

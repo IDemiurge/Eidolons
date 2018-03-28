@@ -35,6 +35,7 @@ public class EditorManager {
             main.system.ExceptionMaster.printStackTrace(e);
         }
     }
+
     public static void add(int screenX, int screenY) {
         try {
             modify(true, screenX, screenY);
@@ -42,7 +43,8 @@ public class EditorManager {
             main.system.ExceptionMaster.printStackTrace(e);
         }
     }
-        public static void modify(boolean addOrRemove, int screenX, int screenY) {
+
+    public static void modify(boolean addOrRemove, int screenX, int screenY) {
         MAP_EDITOR_MOUSE_MODE mode = EditorManager.getMode();
        /*
        add listener to each actor
@@ -54,27 +56,27 @@ public class EditorManager {
         if (mode == null)
             mode = MAP_EDITOR_MOUSE_MODE.ADD;
 
-            switch (mode) {
-                case ADD:
-                    if (!addOrRemove) {
-                        EditorMapView.getInstance().getObjectStage().removeClosest(x, y);
-                        return;
-                    }
-                    break;
-                case POINT:
-                    MacroManager.getPointMaster().clicked(x, y);
+        switch (mode) {
+            case ADD:
+                if (!addOrRemove) {
+                    EditorMapView.getInstance().getObjectStage().removeClosest(x, y);
                     return;
-                case EMITTER:
-                    if (addOrRemove) {
-                        EditorMapView.getInstance().getEditorParticles().clicked(x, y);
+                }
+                break;
+            case POINT:
+                MacroManager.getPointMaster().clicked(x, y);
+                return;
+            case EMITTER:
+                if (addOrRemove) {
+                    EditorMapView.getInstance().getEditorParticles().clicked(x, y);
 
-                    } else {
-                        EditorMapView.getInstance().getEditorParticles().removeClosest(x, y);
-                    }
+                } else {
+                    EditorMapView.getInstance().getEditorParticles().removeClosest(x, y);
+                }
 
 
-                    return;
-            }
+                return;
+        }
 
         ObjType type = EditorMapView.getInstance().getGuiStage().getPalette().getSelectedType();
         if (type == null)
@@ -127,7 +129,7 @@ public class EditorManager {
 
     public static <E extends MapActor> void remove(E actor) {
         MacroObj obj = actorObjMap.remove(actor);
-        if (obj==null )
+        if (obj == null)
             return;
         MacroGame.getGame().getState().removeObject(obj.getId());
         GuiEventManager.trigger(MapEvent.REMOVE_MAP_OBJ, actor);
@@ -150,7 +152,7 @@ public class EditorManager {
     }
 
     public static void undo() {
-        if (mode==null )
+        if (mode == null)
             EditorMapView.getInstance().getObjectStage().removeLast();
         switch (mode) {
             case CLEAR:

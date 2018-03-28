@@ -86,7 +86,7 @@ public class ChoicePanel<T> extends DialogPanel implements MouseListener {
 
         compMap.put(comp, new Point(x, y));
         mouseMap.put(new Rectangle(getLocation().x + x, getLocation().y + y, getObjWidth(),
-                getObjHeight()), t);
+         getObjHeight()), t);
     }
 
     protected int getY(int n) {

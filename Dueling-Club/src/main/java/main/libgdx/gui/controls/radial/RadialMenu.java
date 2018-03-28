@@ -26,11 +26,9 @@ import main.system.audio.SoundController.SOUND_EVENT;
 import java.util.Arrays;
 import java.util.List;
 
-import static main.system.GuiEventType.CREATE_RADIAL_MENU;
-import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
-import static main.system.GuiEventType.UPDATE_GUI;
+import static main.system.GuiEventType.*;
 
-public class RadialMenu extends Group  implements Closable {
+public class RadialMenu extends Group implements Closable {
     private RadialValueContainer currentNode;
 
     private RadialValueContainer closeButton;
@@ -60,7 +58,7 @@ public class RadialMenu extends Group  implements Closable {
         GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
             close();
         });
-            GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
+        GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
             DC_Obj dc_obj = (DC_Obj) obj.get();
             if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
                 init(DebugRadialManager.getDebugNodes(dc_obj));
@@ -71,7 +69,7 @@ public class RadialMenu extends Group  implements Closable {
     }
 
     public void close() {
-        if (currentNode==null )
+        if (currentNode == null)
             return;
         if (isAnimated()) {
             currentNode.getChildNodes().forEach(child -> {
@@ -87,7 +85,7 @@ public class RadialMenu extends Group  implements Closable {
     @Override
     public void act(float delta) {
         //TODO fix
-        if ( getColor().a==0.0f )
+        if (getColor().a == 0.0f)
             setVisible(false);
         else {
             setVisible(true);
@@ -100,11 +98,11 @@ public class RadialMenu extends Group  implements Closable {
         currentNode = closeButton;
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
-        setPosition(v2.x+getOffsetX(), v2.y);
+        setPosition(v2.x + getOffsetX(), v2.y);
 //        closeButton.
 //         setX(closeButton.getX()+getOffsetX() );
 
-         closeButton.setChildNodes(nodes);
+        closeButton.setChildNodes(nodes);
 
         setParents(closeButton, null);
         if (closeButton.getChildren().size < 1) {

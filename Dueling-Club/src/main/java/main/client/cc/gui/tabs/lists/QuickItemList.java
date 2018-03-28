@@ -46,7 +46,7 @@ public class QuickItemList extends SecondaryItemList {
     protected String getPoolText() {
 
         return (hero.getIntParam(PARAMS.QUICK_SLOTS) - hero.getIntParam(getPoolParam())) + "/"
-                + hero.getParam(PARAMS.QUICK_SLOTS);
+         + hero.getParam(PARAMS.QUICK_SLOTS);
     }
 
     @Override

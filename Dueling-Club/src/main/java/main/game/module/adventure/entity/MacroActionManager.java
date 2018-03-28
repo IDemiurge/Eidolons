@@ -30,12 +30,12 @@ public class MacroActionManager {
     public static String getMacroPartyActionImagePathPrefix() {
 
         return
-         StrPathBuilder.build(PathFinder.getMacroPath() , "actions", "party")+StringMaster.getPathSeparator();
+         StrPathBuilder.build(PathFinder.getMacroPath(), "actions", "party") + StringMaster.getPathSeparator();
     }
 
     public static String getMacroModeImagePathPrefix() {
         return
-         StrPathBuilder.build(PathFinder.getMacroPath() , "actions", "Mode");
+         StrPathBuilder.build(PathFinder.getMacroPath(), "actions", "Mode");
     }
 
     public static List<MacroAction> getMacroActions(MACRO_ACTION_GROUPS group,
@@ -98,9 +98,9 @@ public class MacroActionManager {
         }
         MacroRef ref = new MacroRef(obj);
         // objType.initType(); aut0
-        ObjType objType =null ;//TODO  DataManager.getType(actionName, MACRO_OBJ_TYPES.MAP_ACTIONS);
-        if (objType==null )
-            objType=getBaseType();
+        ObjType objType = null;//TODO  DataManager.getType(actionName, MACRO_OBJ_TYPES.MAP_ACTIONS);
+        if (objType == null)
+            objType = getBaseType();
         action = new MacroAction(objType, ref);
         actionMap.put(actionName, action);
         return action;
@@ -126,7 +126,7 @@ public class MacroActionManager {
         }
         for (MACRO_PARTY_ACTIONS m : MACRO_PARTY_ACTIONS.values()) {
             MacroAction action = new MacroAction(getBaseType(), new MacroRef(),
-                    m);
+             m);
             actionMap.put((m.toString()), action);
         }
         // can this work for real setting with many parties active?
@@ -138,22 +138,6 @@ public class MacroActionManager {
 
     public static void setActionsBlocked(boolean b) {
         actionsBlocked = b;
-    }
-
-    public enum MACRO_PARTY_ACTIONS {
-         CAMP, WAIT,HIDE, EXPLORE,
-
-        AMBUSH, TRAVEL;
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(name());
-        }
-
-        public String getImagePath() {
-            return MacroActionManager.getMacroPartyActionImagePathPrefix()
-                    + toString() + ".png";
-        }
-
     }
 
     public enum MACRO_MODES {
@@ -200,7 +184,7 @@ public class MacroActionManager {
                 imagePath = (toString());
             }
             this.imagePath = MacroActionManager.getMacroModeImagePathPrefix()
-                    + imagePath;
+             + imagePath;
         }
 
         public String getContinuousParamString() {
@@ -229,6 +213,22 @@ public class MacroActionManager {
 
         public Boolean isTownPermitted() {
             return townPermitted;
+        }
+
+    }
+
+    public enum MACRO_PARTY_ACTIONS {
+        CAMP, WAIT, HIDE, EXPLORE,
+
+        AMBUSH, TRAVEL;
+
+        public String toString() {
+            return StringMaster.getWellFormattedString(name());
+        }
+
+        public String getImagePath() {
+            return MacroActionManager.getMacroPartyActionImagePathPrefix()
+             + toString() + ".png";
         }
 
     }

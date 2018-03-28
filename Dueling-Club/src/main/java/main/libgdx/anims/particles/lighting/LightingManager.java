@@ -15,7 +15,7 @@ public class LightingManager {
     public static float mouse_light_distance = 450;
     public static float mouse_light_distance_to_turn_off = 10;
     public static boolean mouse_light = true;
-    private static boolean lightOn=false;
+    private static boolean lightOn = false;
     private static boolean testMode;
     private LightMap lightMap;
 

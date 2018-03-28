@@ -8,7 +8,7 @@ import main.entity.item.DC_WeaponObj;
 /**
  * Created by JustMe on 3/23/2017.
  */
-public class AmmoEffect extends DC_Effect{
+public class AmmoEffect extends DC_Effect {
     private boolean add;
 
     public AmmoEffect(Boolean add) {
@@ -18,7 +18,7 @@ public class AmmoEffect extends DC_Effect{
     @Override
     public boolean applyThis() {
         DC_WeaponObj rangedWeapon = (DC_WeaponObj) ref.getObj(KEYS.RANGED);
-        if (add){
+        if (add) {
             DC_QuickItemObj ammo = (DC_QuickItemObj) ref.getActive().getRef().getObj(KEYS.AMMO);
 
             rangedWeapon.setAmmo(ammo);

@@ -31,9 +31,9 @@ public class BlazeRule extends DamageCounterRule {
 
     protected Effect getSpecialRoundEffects() {
         Effects effects = new Effects(new CustomTargetEffect(
-                new FixedTargeting(KEYS.ARMOR), new ModifyValueEffect(
-                PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
-                getCounterRef() + "*" + DURABILITY_PER_COUNTER)));
+         new FixedTargeting(KEYS.ARMOR), new ModifyValueEffect(
+         PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
+         getCounterRef() + "*" + DURABILITY_PER_COUNTER)));
 
         return effects;
 
@@ -59,6 +59,7 @@ public class BlazeRule extends DamageCounterRule {
     public COUNTER getCounter() {
         return COUNTER.Blaze;
     }
+
     @Override
     public boolean isEnduranceOnly() {
 //        if (getNumberOfCounters(unit) <= THRESHOLD) {
@@ -66,7 +67,6 @@ public class BlazeRule extends DamageCounterRule {
 //        }
         return false;
     }
-
 
 
     @Override

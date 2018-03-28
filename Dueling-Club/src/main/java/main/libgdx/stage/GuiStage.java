@@ -3,7 +3,6 @@ package main.libgdx.stage;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.core.game.DC_Game;
@@ -169,6 +168,8 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     @Override
     public boolean keyTyped(char character) {
+        if ((int)character==0)
+            return false;
         String str = String.valueOf(character).toUpperCase();
         if (Character.isAlphabetic(character)) {
             if (character == lastTyped) {

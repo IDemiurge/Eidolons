@@ -12,8 +12,8 @@ import main.libgdx.stage.BattleGuiStage;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
-import main.system.options.OptionsMaster;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.options.OptionsMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import java.util.ArrayList;
@@ -50,20 +50,20 @@ public class GlobalController implements Controller {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
         GridCellContainer cell = (GridCellContainer) hovered.getParent();
 
-         List<GridUnitView> list = new ArrayList<>(cell.getUnitViewsVisible());
+        List<GridUnitView> list = new ArrayList<>(cell.getUnitViewsVisible());
         if (list.size() == 1)
             return; // or do something else
         SortMaster.sortByExpression(list, view -> view.hashCode());
         int index = list.indexOf(hovered);
         index++;
-        if (list.size() <= index  )
+        if (list.size() <= index)
             index = 0;
 
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
-        GridUnitView newFocus =list.get(index);
+        GridUnitView newFocus = list.get(index);
         cell.popupUnitView(newFocus);
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip()  );
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip());
 
 
     }
@@ -109,7 +109,7 @@ public class GlobalController implements Controller {
                 OptionsMaster.openMenu();
                 break;
             }
-                case 'S': {
+            case 'S': {
 //                if (!Gdx.input.isKeyPressed(Keys.ALT_LEFT))
 //                    break;
                 SpecialLogger.getInstance().writeLogs();

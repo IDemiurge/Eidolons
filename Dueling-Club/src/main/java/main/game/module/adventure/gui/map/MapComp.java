@@ -6,18 +6,14 @@ import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import main.game.bf.Coordinates;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroManager;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.gui.MacroGuiManager;
 import main.game.module.adventure.gui.map.obj.MapObjComp;
 import main.game.module.adventure.gui.map.obj.PartyComp;
 import main.game.module.adventure.gui.map.obj.PlaceComp;
 import main.game.module.adventure.gui.map.obj.RouteComp;
-import main.game.module.adventure.map.Area;
-import main.game.module.adventure.map.Place;
-import main.game.module.adventure.map.Region;
-import main.game.module.adventure.map.Route;
+import main.game.module.adventure.map.*;
 import main.game.module.adventure.map.area.AreaManager;
-import main.game.module.adventure.map.MacroCoordinates;
-import main.game.module.adventure.entity.MacroParty;
 import main.swing.generic.components.CompVisuals;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
@@ -168,18 +164,18 @@ public class MapComp implements MouseListener {
 
     private void addSpecialIcons() {
         Place dest = MacroGame.getGame().getPlayerParty()
-                .getCurrentDestination();
+         .getCurrentDestination();
         if (dest != null) {
             Coordinates c = new Coordinates(true, dest.getCoordinates().x
-                    + DEST_OFFSET_X, dest.getCoordinates().y + DEST_OFFSET_Y);
+             + DEST_OFFSET_X, dest.getCoordinates().y + DEST_OFFSET_Y);
             add(new GraphicComponent(STD_IMAGES.FLAG), c);
         }
         Place lastLocation = MacroGame.getGame().getPlayerParty()
-                .getLastLocation();
+         .getLastLocation();
         if (lastLocation != null) {
             Coordinates c = new Coordinates(true,
-                    lastLocation.getCoordinates().x + LAST_OFFSET_X,
-                    lastLocation.getCoordinates().y + LAST_OFFSET_Y);
+             lastLocation.getCoordinates().x + LAST_OFFSET_X,
+             lastLocation.getCoordinates().y + LAST_OFFSET_Y);
             add(new GraphicComponent(STD_IMAGES.FOOT), c);
         }
         // last battle to be displayed?
@@ -253,7 +249,7 @@ public class MapComp implements MouseListener {
         if (party.getCurrentRoute() != null) {
             Route route = party.getCurrentRoute();
             int displacement = party
-                    .getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
+             .getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
             Coordinates c1 = route.getOrigin().getCoordinates();
             Coordinates c2 = route.getDestination().getCoordinates();
             if (route.isBackwards(party)) {
@@ -263,10 +259,10 @@ public class MapComp implements MouseListener {
                 c1 = c;
             }
             c = CoordinatesMaster.getCoordinateBetween(c1, c2, displacement,
-                    RandomWizard.getRandomIntBetween(
-                            MacroGuiManager.PARTY_MAP_DISPLACEMENT_X / 2,
-                            MathMaster.applyMod(route.getLength(),
-                                    route.getBendFactor())));
+             RandomWizard.getRandomIntBetween(
+              MacroGuiManager.PARTY_MAP_DISPLACEMENT_X / 2,
+              MathMaster.applyMod(route.getLength(),
+               route.getBendFactor())));
             party.setCoordinates(c);
             return c;
         }
@@ -278,8 +274,8 @@ public class MapComp implements MouseListener {
         }
         // 'attached' objects?
         return new Coordinates(true, c.x
-                + MacroGuiManager.PARTY_MAP_DISPLACEMENT_X, c.y
-                + MacroGuiManager.PARTY_MAP_DISPLACEMENT_Y);
+         + MacroGuiManager.PARTY_MAP_DISPLACEMENT_X, c.y
+         + MacroGuiManager.PARTY_MAP_DISPLACEMENT_Y);
 
     }
 
@@ -353,8 +349,8 @@ public class MapComp implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         MacroCoordinates c = new MacroCoordinates(e.getPoint().x
-                - MacroGuiManager.getMapOffsetX(), e.getPoint().y
-                - MacroGuiManager.getMapOffsetY());
+         - MacroGuiManager.getMapOffsetX(), e.getPoint().y
+         - MacroGuiManager.getMapOffsetY());
         Area area = AreaManager.getAreaForCoordinate(c);
         if (area != null) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);

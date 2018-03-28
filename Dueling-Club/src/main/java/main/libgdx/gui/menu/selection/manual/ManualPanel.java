@@ -23,13 +23,13 @@ import java.util.List;
 public class ManualPanel extends SelectionPanel {
     @Override
     protected ItemInfoPanel createInfoPanel() {
-        return new ManualDetails(null );
+        return new ManualDetails(null);
     }
 
     @Override
     protected List<SelectableItemData> createListData() {
- List<SelectableItemData> list = new ArrayList<>();
-        String path=
+        List<SelectableItemData> list = new ArrayList<>();
+        String path =
          StrPathBuilder.build(
           PathFinder.getTextPath(),
           TextMaster.getLocale(),
@@ -40,7 +40,7 @@ public class ManualPanel extends SelectionPanel {
             String name = sub.split(StringMaster.NEW_LINE)[1];
             MANUAL_ARTICLE article =
              new EnumMaster<MANUAL_ARTICLE>().retrieveEnumConst(MANUAL_ARTICLE.class, name);
-            if (article==null ){
+            if (article == null) {
                 continue;
             }
             text = sub.replaceFirst(name, "");

@@ -63,7 +63,7 @@ public class Loader {
 
     private static String pendingLoadPath;
 
-    static DC_Game getGame(){
+    static DC_Game getGame() {
         return DC_Game.game;
     }
 
@@ -79,6 +79,7 @@ public class Loader {
         game.start(true);
         return game;
     }
+
     public static void loadGame(String saveData) {
 //reinit the game - clean etc
         // master info
@@ -88,7 +89,7 @@ public class Loader {
          XML_Converter.findNode(saveData, Saver.TRIGGERS_NODE));
         initTriggers(triggerNodes);
 
-        List<Node> effectNodes =XML_Converter.getNodeList(
+        List<Node> effectNodes = XML_Converter.getNodeList(
          XML_Converter.findNode(saveData, Saver.EFECTS_NODE));
         initEffects(effectNodes);
 
@@ -101,7 +102,7 @@ public class Loader {
 
     private static void initDungeon(Node dungeonNode) {
         String xml = XML_Converter.toString(dungeonNode);
-        String name=XML_Converter.findNode(
+        String name = XML_Converter.findNode(
          xml, "Name")
          .getTextContent();
         String path = XML_Converter.findNode(
@@ -110,8 +111,8 @@ public class Loader {
         DataUnitFactory factory = new DataUnitFactory(DungeonData.FORMAT);
         factory.setValueNames(DUNGEON_VALUE.TYPE_NAME, DUNGEON_VALUE.PATH);
         factory.setValues(name, path);
-        DungeonData data=new DungeonData(factory.constructDataString());
-       getGame().getDataKeeper().setDungeonData(data);
+        DungeonData data = new DungeonData(factory.constructDataString());
+        getGame().getDataKeeper().setDungeonData(data);
 //        ObjType type = DataManager.getType(XML_Converter.findNode(
 //        xml, "Name")
 //         .getTextContent(), DC_TYPE.DUNGEONS);
@@ -125,13 +126,14 @@ public class Loader {
         for (Node sub : effectNodes) {
             ContinuousEffect e = new ContinuousEffect((Effect)
              ConstructionManager.construct(sub));
-            getGame() . getState().addEffect(e);
+            getGame().getState().addEffect(e);
         }
     }
+
     private static void initTriggers(List<Node> triggerNodes) {
         for (Node sub : triggerNodes) {
             Trigger t = (Trigger) ConstructionManager.construct(sub);
-            getGame() . getState().addTrigger(t);
+            getGame().getState().addTrigger(t);
         }
     }
 
@@ -227,7 +229,7 @@ public class Loader {
 
             case TERRAIN:
                 return new DC_Cell(type, x, y, game, ref
-                 ,game.getDungeon());
+                 , game.getDungeon());
 
             case ENCOUNTERS:
                 return new Wave(type, game, ref, owner);
@@ -241,10 +243,10 @@ public class Loader {
     private static Map<PARAMETER, String> getParamsFromNode(String sub) {
         Node node = XML_Converter.findNode(sub, TypeBuilder.PROPS_NODE);
         Map<PARAMETER, String> map = new XLinkedMap<>();
-        XML_Converter.getNodeList(node).forEach(subNode->{
+        XML_Converter.getNodeList(node).forEach(subNode -> {
             PARAMETER parameter = ContentManager.getPARAM(subNode.getNodeName());
             String value = subNode.getTextContent();
-            map.put (parameter, value);
+            map.put(parameter, value);
         });
         return map;
     }
@@ -252,10 +254,10 @@ public class Loader {
     private static Map<PROPERTY, String> getPropsFromNode(String sub) {
         Node node = XML_Converter.findNode(sub, TypeBuilder.PROPS_NODE);
         Map<PROPERTY, String> map = new XLinkedMap<>();
-        XML_Converter.getNodeList(node).forEach(subNode->{
+        XML_Converter.getNodeList(node).forEach(subNode -> {
             PROPERTY prop = ContentManager.getPROP(subNode.getNodeName());
             String value = subNode.getTextContent();
-            map.put (prop, value);
+            map.put(prop, value);
         });
         return map;
     }
@@ -275,7 +277,7 @@ public class Loader {
 
     public static DC_Game loadPendingSave() {
         String path = pendingLoadPath;
-        pendingLoadPath=null ;
-        return loadNewGame(path  );
+        pendingLoadPath = null;
+        return loadNewGame(path);
     }
 }

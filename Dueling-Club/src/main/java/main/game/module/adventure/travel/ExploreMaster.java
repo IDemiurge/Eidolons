@@ -31,7 +31,7 @@ public class ExploreMaster {
                 Boolean west_or_east = RandomWizard.random();
                 // getOrCreate available directions
                 ExploreMaster.exploreLocation(party, north_or_south,
-                        west_or_east);
+                 west_or_east);
             }
 
         }
@@ -41,7 +41,7 @@ public class ExploreMaster {
                                        Boolean north_or_south, Boolean west_or_east) {
         Place place = party.getCurrentLocation();
         List<Place> potentialFinds = getPotentialFindsForLocationExplore(place,
-                north_or_south, west_or_east, party);
+         north_or_south, west_or_east, party);
         // special places - treasure coves, hidden dungeons, secret shops
 //        if (checkGotLost(party, route)) {
 //            return;
@@ -72,7 +72,7 @@ public class ExploreMaster {
 
             PositionMaster.isAboveOr(dest, place);
             if (PositionMaster.checkDirection(dest, place, north_or_south,
-                    west_or_east)) {
+             west_or_east)) {
                 if (checkCapacity(place, dest, party))
                 // checkDIstance() instead - EXPLORE_SPEED
                 {
@@ -108,7 +108,7 @@ public class ExploreMaster {
         }
 
         List<Place> potentialFinds = getPotentialFindsForRouteExplore(route,
-                maxProgress);
+         maxProgress);
         Place destination = null;
         for (Place p : potentialFinds) {
             if (!checkDiscovered(party, p, route)) {
@@ -116,7 +116,7 @@ public class ExploreMaster {
             }
             // backward?
             progress = maxProgress
-                    - p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
+             - p.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
             if (discovered(p)) {
                 destination = p;
                 break; // ++ choose to go there
@@ -144,7 +144,7 @@ public class ExploreMaster {
 
         route.getBendFactor();
         MacroObj area = route.getRef().getRegion()
-                .getArea(party.getProperty(MACRO_PROPS.AREA)); // getCurrentArea()
+         .getArea(party.getProperty(MACRO_PROPS.AREA)); // getCurrentArea()
 //        area.getIntParam(MACRO_PARAMS.PATHFINDING_MOD);
 
         // roll?

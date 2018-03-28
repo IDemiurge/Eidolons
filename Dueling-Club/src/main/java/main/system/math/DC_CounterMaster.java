@@ -13,22 +13,22 @@ public class DC_CounterMaster {
             Unit heroObj = (Unit) target;
             String realName = CounterMaster.findCounter(counterName);
             switch (new EnumMaster<COUNTER>().retrieveEnumConst(
-                    COUNTER.class, realName)) {
+             COUNTER.class, realName)) {
                 case Blaze:
                     if (!target.getGame().getRules().getBlazeRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
                 case Bleeding:
                     if (!target.getGame().getRules().getBleedingRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
                 case Blight:
                     if (!target.getGame().getRules().getBlightRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
@@ -38,19 +38,19 @@ public class DC_CounterMaster {
                     break;
                 case Disease:
                     if (!target.getGame().getRules().getDiseaseRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
                 case Ensnared:
                     if (!target.getGame().getRules().getEnsnareRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
                 case Freeze:
                     if (!target.getGame().getRules().getFreezeRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;
@@ -64,7 +64,7 @@ public class DC_CounterMaster {
                     break;
                 case Poison:
                     if (!target.getGame().getRules().getPoisonRule()
-                            .checkApplies(heroObj)) {
+                     .checkApplies(heroObj)) {
                         return 0;
                     }
                     break;

@@ -10,7 +10,7 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 
-public class CastNewSpellEffect extends MicroEffect  implements OneshotEffect {
+public class CastNewSpellEffect extends MicroEffect implements OneshotEffect {
 
     private String spelltype;
     private Boolean free;
@@ -31,7 +31,7 @@ public class CastNewSpellEffect extends MicroEffect  implements OneshotEffect {
     }
 
     @AE_ConstrArgs(argNames = {"spelltype", "free", "chooseTarget",
-            "target_key"})
+     "target_key"})
     public CastNewSpellEffect(String spelltype, Boolean free,
                               Boolean chooseTarget, String target_key) {
         this.spelltype = spelltype;

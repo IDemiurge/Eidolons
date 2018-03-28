@@ -538,13 +538,14 @@ public class UnitAI {
         this.attached = attached;
     }
 
-    public void setEngagementDuration(int engagementDuration) { main.system.auxiliary.log.LogMaster.log(1,this.engagementDuration+" to engagement of "+engagementDuration );
-        this.engagementDuration = engagementDuration;
-
-    }
-
     public int getEngagementDuration() {
         return engagementDuration;
+    }
+
+    public void setEngagementDuration(int engagementDuration) {
+        main.system.auxiliary.log.LogMaster.log(1, this.engagementDuration + " to engagement of " + engagementDuration);
+        this.engagementDuration = engagementDuration;
+
     }
 
 

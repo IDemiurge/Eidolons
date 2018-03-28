@@ -85,9 +85,9 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         Effects e = new Effects();
         e.add(new ModifyValueEffect(PARAMS.C_N_OF_ACTIONS, MOD.MODIFY_BY_CONST, "-" + AP_PENALTY));
         e.add(new ModifyValueEffect(
-         DC_Engine.isAtbMode()?
-          PARAMS.C_INITIATIVE:
-         PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
+         DC_Engine.isAtbMode() ?
+          PARAMS.C_INITIATIVE :
+          PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
          + INITIATIVE_PENALTY));
         e.add(new RemoveBuffEffect("Unconscious"));
         e.setRef(Ref.getSelfTargetingRefCopy(unit));
@@ -107,7 +107,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     public static void fallUnconscious(Unit unit) {
-        if (unit.getAI().isOutsideCombat()){
+        if (unit.getAI().isOutsideCombat()) {
             unit.getAI().isOutsideCombat();
         }
         unit.getGame().
@@ -141,7 +141,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                                         Integer barrier,
                                         boolean unconscious //false if checking Annihilation
     ) {
-        if (unit.isDead() == unconscious){
+        if (unit.isDead() == unconscious) {
             return false;
         }
         if (0 >= endurance) {
@@ -171,16 +171,17 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
         return toughness < -max_toughness * barrier / 100;
 
     }
-    public static boolean checkFallsUnconscious(Unit unit  ) {
-        return checkFallsUnconscious( unit , unit.getIntParam(PARAMS.C_TOUGHNESS));
+
+    public static boolean checkFallsUnconscious(Unit unit) {
+        return checkFallsUnconscious(unit, unit.getIntParam(PARAMS.C_TOUGHNESS));
     }
 
     public static boolean checkFallsUnconscious(Unit unit, int toughness) {
-        if ( unit.isUnconscious())
+        if (unit.isUnconscious())
             return false;
         if (!canFallUnconscious(unit))
             return false;
-        return toughness <=0;
+        return toughness <= 0;
     }
 
     private static boolean canBeAnnihilated(Unit unit) {
@@ -206,19 +207,18 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 
     //returns true if unit Recovers
     public boolean checkStatusUpdate(Unit unit) {
-        return checkStatusUpdate(unit, null );
+        return checkStatusUpdate(unit, null);
     }
-        public boolean checkStatusUpdate(Unit unit, DC_ActiveObj activeObj) {
-        if (unit.isDead())  {
+
+    public boolean checkStatusUpdate(Unit unit, DC_ActiveObj activeObj) {
+        if (unit.isDead()) {
             if (unit.isAnnihilated())
                 if (checkUnitAnnihilated(unit)) {
-                unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
+                    unit.getGame().getManager().getDeathMaster().unitAnnihilated(unit, unit);
 
-            }
+                }
             return false;
-        }
-        else
-        if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
+        } else if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
             unit.getGame().getManager().unitDies(activeObj, unit, unit, true, false);
             return false;
         }

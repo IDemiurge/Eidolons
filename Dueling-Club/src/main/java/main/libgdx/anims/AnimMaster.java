@@ -397,10 +397,9 @@ public class AnimMaster extends Group {
             return;
         }
         CompositeAnim firstAnim = leadQueue.peekFirst();
-        if (firstAnim==null )
+        if (firstAnim == null)
             leadQueue.add(anim);
-        else
-        if (firstAnim.isWaitingForNext()) {
+        else if (firstAnim.isWaitingForNext()) {
             firstAnim.setWaitingForNext(false);
             leadQueue.addFirst(anim);
         } else
@@ -476,10 +475,10 @@ public class AnimMaster extends Group {
 
         //TODO Stack: counter atk will animated first - last in first out :(
         CompositeAnim firstAnim = leadQueue.peekFirst();
-        if (firstAnim!=null )
-            if ( firstAnim.isWaitingForNext()) {
-            return null;
-        }
+        if (firstAnim != null)
+            if (firstAnim.isWaitingForNext()) {
+                return null;
+            }
         leadAnimation = leadQueue.removeFirst();
 
         main.system.auxiliary.log.LogMaster.log(1, "next animation: " + leadAnimation +

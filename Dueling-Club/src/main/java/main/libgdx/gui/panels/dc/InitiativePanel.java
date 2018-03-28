@@ -36,6 +36,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static main.libgdx.texture.TextureCache.getOrCreateR;
@@ -69,13 +70,7 @@ public class InitiativePanel extends Group {
     }
 
     private void registerCallback() {
-        if (DC_Engine.isAtbMode()) {
-            GuiEventManager.bind(GuiEventType.ATB_POS_PREVIEW, obj -> {
-                if (obj.get() == null)
-                    removePreviewAtbPos();
-                previewAtbPos((int) obj.get());
-            });
-        }
+
         GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
             if (!isRealTime()) {
                 UnitView p = (UnitView) obj.get();
@@ -124,6 +119,34 @@ public class InitiativePanel extends Group {
 //                checkPositionsRequired=true;
 //            }
         });
+        if (DC_Engine.isAtbMode()) {
+
+            GuiEventManager.bind(GuiEventType.PREVIEW_ATB_READINESS, obj -> {
+                List<Integer> list = (List<Integer>) obj.get();
+                previewAtbReadiness(list);
+            });
+            GuiEventManager.bind(GuiEventType.ATB_POS_PREVIEW, obj -> {
+                if (obj.get() == null) {
+                    removePreviewAtbPos();
+                    previewAtbReadiness(null);
+                } else {
+                    previewAtbPos((int) obj.get());
+                }
+
+            });
+        }
+    }
+
+    private void previewAtbReadiness(List<Integer> list) {
+        int i = 0;
+        for (int j = queue.length - 1; j > 0; j--) {
+            QueueView sub = queue[j];
+            if (sub == null)
+                break;
+            UnitView actor = (UnitView) sub.getActor();
+            String text = (list == null ? sub.initiative : list.get(i++)) + "";
+            actor.setInitiativeLabelText(text);
+        }
     }
 
     private void init() {
@@ -306,11 +329,13 @@ public class InitiativePanel extends Group {
             previewActor.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
         }
         previewActor.setVisible(true);
-        previewActor.setScale(1);
+        previewActor.setScale(1.25f);
         previewActor.clearActions();
         previewActor.setY(-30);
-        previewActor.setX(container.getX() + i * (imageSize + offset) - offset);
-//        ActorMaster.addScaleAction(previewActor, 0, 0, 5);
+        previewActor.setX(container.getX() + (i+1) * (imageSize + offset) -  offset/2);
+        ActorMaster.addScaleActionCentered(previewActor, 0, 1, 8);
+//        ActorMaster.addMoveToAction(previewActor, previewActor.getX()+previewActor.getWidth()/2,
+//         previewActor.getY(), 5);
     }
 
     private String getPreviewPath() {
@@ -535,7 +560,9 @@ public class InitiativePanel extends Group {
 
     private class QueueView extends Container<Actor> {
         public int initiative;
+        public int precalcInitiative;
         public float queuePriority;
+        public float precalcQueuePriority;
         public int id;
         public boolean mobilityState;
 

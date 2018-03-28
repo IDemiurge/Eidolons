@@ -68,7 +68,7 @@ public class Wave extends DC_Obj {
     public void initUnitMap() {
         ArenaBattleMaster master = (ArenaBattleMaster) getGame().getBattleMaster();
         master.getWaveAssembler().assembleWave(this, !adjustmentDisabled,
-                presetCoordinate);
+         presetCoordinate);
         // unitMap = new HashMap<ObjType, Coordinates>();
         // for (String typeName : StringMaster
         // .openContainer(getProperty(PROPS.UNIT_TYPES))) {
@@ -135,7 +135,7 @@ public class Wave extends DC_Obj {
     public ENCOUNTER_TYPE getWaveType() {
         if (waveType == null) {
             waveType = new EnumMaster<ENCOUNTER_TYPE>().retrieveEnumConst(ENCOUNTER_TYPE.class,
-                    getProperty(G_PROPS.ENCOUNTER_TYPE));
+             getProperty(G_PROPS.ENCOUNTER_TYPE));
         }
         return waveType;
     }
@@ -178,12 +178,12 @@ public class Wave extends DC_Obj {
 
     public FACING_DIRECTION getSide() {
         return new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
-                getProperty(PROPS.SPAWNING_SIDE));
+         getProperty(PROPS.SPAWNING_SIDE));
     }
 
     public ENCOUNTER_TYPE getEncounterType() {
         return new EnumMaster<ENCOUNTER_TYPE>().retrieveEnumConst(ENCOUNTER_TYPE.class,
-                getProperty(G_PROPS.ENCOUNTER_TYPE));
+         getProperty(G_PROPS.ENCOUNTER_TYPE));
     }
 
     public void addUnit(Unit unit) {

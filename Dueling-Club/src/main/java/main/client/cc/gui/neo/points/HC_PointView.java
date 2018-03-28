@@ -70,8 +70,8 @@ public class HC_PointView extends HeroView {
 
     private void addComps() {
         paramBonusInfoComp = new WrappedTextComp(null
-                // VISUALS.OPTION_PANEL_3
-                , false) {
+         // VISUALS.OPTION_PANEL_3
+         , false) {
             @Override
             public Dimension getPanelSize() {
                 return new Dimension(400, 140);
@@ -95,7 +95,7 @@ public class HC_PointView extends HeroView {
         for (PARAMETER p : params) {
             boolean editable = isEditable(p);
             HC_PointComp comp = new HC_PointComp(editable, hero, buffer, p,
-                    (attributes) ? PARAMS.ATTR_POINTS : PARAMS.MASTERY_POINTS);
+             (attributes) ? PARAMS.ATTR_POINTS : PARAMS.MASTERY_POINTS);
             addComponent(comp, p);
         }
     }

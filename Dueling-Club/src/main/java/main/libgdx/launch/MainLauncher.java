@@ -15,7 +15,8 @@ import java.util.Stack;
  * Created by JustMe on 11/30/2017.
  */
 public class MainLauncher extends GenericLauncher {
-   public static final Stack<Integer> presetNumbers = new Stack<>();
+    public static final Stack<Integer> presetNumbers = new Stack<>();
+
     public static void main(String[] args) {
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
@@ -33,7 +34,7 @@ public class MainLauncher extends GenericLauncher {
                     MainMenu.getInstance().getHandler().handle(item);
                 else {
                     if (StringMaster.isInteger(command)) {
-                        presetNumbers.add(0,StringMaster.getInteger(command));
+                        presetNumbers.add(0, StringMaster.getInteger(command));
                     }
                 }
             }

@@ -23,8 +23,8 @@ import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.math.PositionMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -132,7 +132,7 @@ public class InstantAttackRule {
         int n = getInterruptChance(type, attack, action.getOwnerObj());
         if (RandomWizard.chance(n)) {
             String entry = action + " has been stopped by an Instant Attack " + "(Chance: "
-                    + StringMaster.wrapInParenthesis(n + "%");
+             + StringMaster.wrapInParenthesis(n + "%");
             action.getGame().getLogManager().log(LOG.GAME_INFO, entry, ENTRY_TYPE.MOVE);
             return true;
         }
@@ -202,7 +202,7 @@ public class InstantAttackRule {
     // 3 seconds to choose then automatic! :)
     public static DC_ActiveObj chooseInstantAttack(DC_ActiveObj action, Unit unit) {
         int distance = (PositionMaster.getDistance(DC_MovementManager
-                .getMovementDestinationCoordinate(action), unit.getCoordinates()));
+         .getMovementDestinationCoordinate(action), unit.getCoordinates()));
         // TODO moving away from same-cell ?
 
         // how to preCheck if jump trajectory intersects with IA range? for (c c :
@@ -238,7 +238,7 @@ public class InstantAttackRule {
     public static List<DC_ActiveObj> getInstantAttacks(Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();
         List<DC_UnitAction> attacks = new ArrayList<>(unit.getActionMap().get(
-                ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
+         ActionEnums.ACTION_TYPE.STANDARD_ATTACK));
 
         if (unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK) != null) {
             attacks.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.SPECIAL_ATTACK));

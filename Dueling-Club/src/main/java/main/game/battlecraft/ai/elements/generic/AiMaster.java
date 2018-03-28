@@ -117,10 +117,6 @@ public class AiMaster {
         this.priorityModifier.initialize();
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
     public PriorityProfile getProfile() {
         return getPriorityProfileManager().getProfile();
     }
@@ -154,7 +150,7 @@ public class AiMaster {
     }
 
     public StringBuffer getMessageBuilder() {
-        if (messageBuilder==null )
+        if (messageBuilder == null)
             messageBuilder = new StringBuffer();
         return messageBuilder;
     }
@@ -163,66 +159,53 @@ public class AiMaster {
         return taskManager;
     }
 
-
     public GoalManager getGoalManager() {
         return goalManager;
     }
-
 
     public ActionManager getActionManager() {
         return actionManager;
     }
 
-
     public PriorityManager getPriorityManager() {
         return priorityManager;
     }
-
 
     public PruneMaster getPruneMaster() {
         return pruneMaster;
     }
 
-
     public PathBuilder getPathBuilder() {
         return pathBuilder;
     }
-
 
     public TargetingMaster getTargetingMaster() {
         return targetingMaster;
     }
 
-
     public Analyzer getAnalyzer() {
         return analyzer;
     }
-
 
     public ParamAnalyzer getParamAnalyzer() {
         return paramAnalyzer;
     }
 
-
     public ActionSequenceConstructor getActionSequenceConstructor() {
         return actionSequenceConstructor;
     }
-
 
     public AiExecutor getExecutor() {
         return executor;
     }
 
-
     public CellPrioritizer getCellPrioritizer() {
         return cellPrioritizer;
     }
 
-
     public PathSequenceConstructor getPathSequenceConstructor() {
         return pathSequenceConstructor;
     }
-
 
     public TurnSequenceConstructor getTurnSequenceConstructor() {
         return turnSequenceConstructor;
@@ -239,9 +222,11 @@ public class AiMaster {
     public float getParamPriority(PARAMETER p) {
         return getPriorityConstantMaster().getParamPriority(p);
     }
+
     public float getConstValue(AiConst p) {
         return getPriorityConstantMaster().getConstValue(p);
     }
+
     public int getConstInt(AiConst p) {
         return getPriorityConstantMaster().getConstInt(p);
     }
@@ -254,7 +239,6 @@ public class AiMaster {
         return scriptExecutor;
     }
 
-
     public DC_Game getGame() {
         return game;
     }
@@ -262,6 +246,11 @@ public class AiMaster {
     public Unit getUnit() {
         return unit;
     }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
     public UnitAI getUnitAI() {
         return unit.getAI();
     }

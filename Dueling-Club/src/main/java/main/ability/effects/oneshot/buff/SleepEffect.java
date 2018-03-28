@@ -15,7 +15,7 @@ import main.elements.conditions.RefCondition;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
-public class SleepEffect extends DC_Effect  implements OneshotEffect {
+public class SleepEffect extends DC_Effect implements OneshotEffect {
 
     private String buffName;
 
@@ -30,16 +30,16 @@ public class SleepEffect extends DC_Effect  implements OneshotEffect {
 
         // add roll on hit - dmg vs max toughness
         RollEffect rollEffect = new RollEffect(GenericEnums.ROLL_TYPES.MIND_AFFECTING,
-                new RemoveBuffEffect(getBuffName()));
+         new RemoveBuffEffect(getBuffName()));
 
         Conditions conditions = new Conditions(new RefCondition(
-                KEYS.EVENT_TARGET, KEYS.TARGET)
+         KEYS.EVENT_TARGET, KEYS.TARGET)
 
         );
         return new AddBuffEffect(getBuffName(), new Effects(
-                new AddStatusEffect(UnitEnums.STATUS.ASLEEP), new AddTriggerEffect(
-                STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE,
-                conditions, KEYS.EVENT_TARGET, rollEffect))).apply(ref);
+         new AddStatusEffect(UnitEnums.STATUS.ASLEEP), new AddTriggerEffect(
+         STANDARD_EVENT_TYPE.UNIT_IS_DEALT_TOUGHNESS_DAMAGE,
+         conditions, KEYS.EVENT_TARGET, rollEffect))).apply(ref);
         // roll ref needs to be tested!
     }
 

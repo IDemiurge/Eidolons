@@ -25,11 +25,11 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
+import main.entity.handlers.EntityMaster;
+import main.entity.handlers.active.*;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.*;
 import main.entity.obj.unit.Unit;
-import main.entity.handlers.EntityMaster;
-import main.entity.handlers.active.*;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.battlecraft.rules.combat.damage.Damage;
@@ -411,8 +411,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public synchronized Unit getOwnerObj() {
-        if (ownerObj==null )
-            return null ;
+        if (ownerObj == null)
+            return null;
         return ownerObj;
     }
 
@@ -708,7 +708,8 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     public boolean canBeTargeted(Integer id) {
         return getTargeter().canBeTargeted(id);
     }
-        public boolean canBeTargeted(Integer id, boolean caching) {
+
+    public boolean canBeTargeted(Integer id, boolean caching) {
         return getTargeter().canBeTargeted(id, caching);
     }
 
@@ -884,10 +885,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
-        if (param == PARAMS.AP_COST){
+        if (param == PARAMS.AP_COST) {
             int v = StringMaster.getInteger(value);
-            if (v > type.getIntParam(param)*2) {
-                return ;
+            if (v > type.getIntParam(param) * 2) {
+                return;
             }
         }
         super.putParameter(param, value);
@@ -898,7 +899,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public boolean isTargetingCached() {
-        if ( targetingCachingOff)
+        if (targetingCachingOff)
             return false;
         return CoreEngine.isTargetingResultCachingOn();
     }

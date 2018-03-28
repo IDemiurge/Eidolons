@@ -16,25 +16,25 @@ import java.util.List;
  * rebuilds Queue and makes the top unit Active.
  */
 
-public class GenericTurnManager implements TurnManager  {
+public class GenericTurnManager implements TurnManager {
+    private static boolean visionInitialized;
     protected DequeImpl<Unit> unitQueue;
     protected DequeImpl<Unit> displayedUnitQueue;
     protected DC_Game game;
     protected Unit activeUnit;
     protected DequeImpl<Unit> unitGroup;
     protected boolean retainActiveUnit;
-    private static boolean visionInitialized;
 
     public GenericTurnManager(DC_Game game) {
         this.game = game;
     }
 
-    public static void setVisionInitialized(boolean visionInitialized) {
-        GenericTurnManager.visionInitialized = visionInitialized;
-    }
-
     public static boolean isVisionInitialized() {
         return visionInitialized;
+    }
+
+    public static void setVisionInitialized(boolean visionInitialized) {
+        GenericTurnManager.visionInitialized = visionInitialized;
     }
 
     public void init() {
@@ -42,10 +42,10 @@ public class GenericTurnManager implements TurnManager  {
         setDisplayedUnitQueue(new DequeImpl<>());
         setActiveUnit(unitQueue.peek());
     }
- 
+
 
     public Unit getActiveUnit(boolean vision) {
-        if (!vision  ) {
+        if (!vision) {
             return activeUnit;
         }
 
@@ -88,7 +88,7 @@ public class GenericTurnManager implements TurnManager  {
     }
 
     public void resetInitiative(boolean first) {
-        
+
     }
 
     protected void resetDisplayedQueue() {
@@ -102,7 +102,7 @@ public class GenericTurnManager implements TurnManager  {
 
         for (Unit unit : unitQueue) {
 //            if (game.getVisionMaster().checkDetectedEnemy(unit))
-                displayedUnitQueue.add(unit);
+            displayedUnitQueue.add(unit);
 
         }
 
@@ -142,7 +142,7 @@ public class GenericTurnManager implements TurnManager  {
     }
 
     public void newRound() {
-        
+
         game.getRules().getTimeRule().newRound();
         for (Unit sub : getGame().getUnits()) {
             if (getGame().getState().getRound() > 0)
@@ -174,6 +174,7 @@ public class GenericTurnManager implements TurnManager  {
     public void setActiveUnit(Unit activeUnit) {
         this.activeUnit = activeUnit;
     }
+
     @Override
     public DequeImpl<Unit> getUnitQueue() {
         return unitQueue;

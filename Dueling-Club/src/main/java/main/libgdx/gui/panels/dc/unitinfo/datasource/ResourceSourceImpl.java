@@ -12,7 +12,7 @@ public class ResourceSourceImpl implements ResourceSource {
     BfObj obj;
 
     public ResourceSourceImpl(BattleFieldObject obj) {
-        this.obj =  new UnitDataModelSnapshot(obj);
+        this.obj = new UnitDataModelSnapshot(obj);
     }
 
     @Override
@@ -59,8 +59,6 @@ public class ResourceSourceImpl implements ResourceSource {
     }
 
 
-
-
     public boolean isDetectedByPlayer() {
         return obj.isPlayerDetected();
     }
@@ -73,17 +71,19 @@ public class ResourceSourceImpl implements ResourceSource {
                 return false;
         return true;
     }
-        public boolean isHpBarVisible() {
+
+    public boolean isHpBarVisible() {
         if (!isFull((PARAMS.TOUGHNESS)))
             return true;
-            return !isFull((PARAMS.ENDURANCE));
-        }
+        return !isFull((PARAMS.ENDURANCE));
+    }
 
     public String getName() {
-        return  obj.getName();
+        return obj.getName();
     }
+
     @Override
     public String toString() {
-        return obj.getName()+" data source";
+        return obj.getName() + " data source";
     }
 }

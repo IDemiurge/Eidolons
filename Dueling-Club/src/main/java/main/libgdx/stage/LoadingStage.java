@@ -16,10 +16,10 @@ import main.libgdx.StyleHolder;
 import main.libgdx.anims.particles.Ambience;
 import main.libgdx.anims.particles.ParticleManager;
 import main.libgdx.bf.generic.SuperContainer;
+import main.libgdx.launch.ScenarioLauncher;
 import main.libgdx.screens.ScreenData;
 import main.system.graphics.FontMaster.FONT;
 import main.system.text.TipMaster;
-import main.libgdx.launch.ScenarioLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +39,6 @@ public class LoadingStage extends Stage {
     private Label missionName;
     private Label tip;
     private float counter = 0;
-
-    @Override
-    public Actor hit(float stageX, float stageY, boolean touchable) {
-        return super.hit(stageX, stageY, touchable);
-    }
 
     public LoadingStage(ScreenData data) {
         this.data = data;
@@ -67,7 +62,7 @@ public class LoadingStage extends Stage {
             logoImage = new SuperContainer(new Image(logoTexture));
             logoImage.setPosition(0, GdxMaster.getHeight() - loadingImage.getHeight());
             if (fogOn)
-                addActor(ParticleManager.addFogOn(new Vector2(logoImage.getX() , logoImage.getY() ), fogList));
+                addActor(ParticleManager.addFogOn(new Vector2(logoImage.getX(), logoImage.getY()), fogList));
             addActor(logoImage);
         } else {
             final TextureRegion fullscreenTexture =
@@ -87,10 +82,10 @@ public class LoadingStage extends Stage {
             addActor(missionName);
             if (fogOn) {
                 addActor(ParticleManager.addFogOn(
-                 new Vector2(missionName.getX()+300, missionName.getY()-300)
+                 new Vector2(missionName.getX() + 300, missionName.getY() - 300)
                  , fogList));
                 addActor(ParticleManager.addFogOn(
-                 new Vector2(missionName.getX(), missionName.getY()-300)
+                 new Vector2(missionName.getX(), missionName.getY() - 300)
                  , fogList));
                 addActor(ParticleManager.addFogOn(new Vector2(missionName.getX(), missionName.getY()), fogList));
             }
@@ -105,6 +100,11 @@ public class LoadingStage extends Stage {
             //loadingTexture.getTexture();
             addActor(loadingImage);
         }
+    }
+
+    @Override
+    public Actor hit(float stageX, float stageY, boolean touchable) {
+        return super.hit(stageX, stageY, touchable);
     }
 
     @Override

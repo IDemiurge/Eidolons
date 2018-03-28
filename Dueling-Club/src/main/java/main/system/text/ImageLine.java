@@ -27,7 +27,7 @@ public class ImageLine {
 
     public int getWidth() {
         return offsetX + getImage().getWidth(null)
-                + FontMaster.getStringWidth(getFont(), getText());
+         + FontMaster.getStringWidth(getFont(), getText());
     }
 
     public Font getFont() {

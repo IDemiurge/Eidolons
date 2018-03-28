@@ -14,17 +14,18 @@ public class ANIM_MODS {
 
     }
 
+    public enum COLOR_ANIMS implements ANIM_MOD {
+        DARKEN, COLORIZE,
+    }
+
     public enum CONTINUOUS_ANIM_MODS implements ANIM_MOD {
         PENDULUM_ALPHA,
         PENDULUM_OFFSET_X,
 
     }
 
-    //    public enum  ANIM_MOD {
-//        FADE,QUAKE,DARKEN, COLORIZE,
-//    }
-    public enum TEXT_ANIMS implements ANIM_MOD {
-        FADE,
+    public enum GLOBAL_ANIMS implements ANIM_MOD {
+        QUAKE,
     }
 
     public enum ICON_ANIMS implements ANIM_MOD {
@@ -35,19 +36,18 @@ public class ANIM_MODS {
         SHAKE, FADE_IN,
     }
 
-    public enum COLOR_ANIMS implements ANIM_MOD {
-        DARKEN, COLORIZE,
-    }
-
-    public enum GLOBAL_ANIMS implements ANIM_MOD {
-        QUAKE,
-    }
-
     public enum SPELL_ANIMS implements ANIM_MOD {
         MISSILE,
         SNAKE,
         IMPACT,
 
+    }
+
+    //    public enum  ANIM_MOD {
+//        FADE,QUAKE,DARKEN, COLORIZE,
+//    }
+    public enum TEXT_ANIMS implements ANIM_MOD {
+        FADE,
     }
 
 

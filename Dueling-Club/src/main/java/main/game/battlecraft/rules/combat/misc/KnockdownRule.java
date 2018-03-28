@@ -33,7 +33,7 @@ public class KnockdownRule {
         if (!unit.isBfObj()) {
             if (unit.checkStatus(UnitEnums.STATUS.PRONE)) {
                 new ModifyValueEffect(PARAMS.DEFENSE_MOD, MOD.MODIFY_BY_PERCENT, DEFENSE_FORMULA)
-                        .apply(Ref.getSelfTargetingRefCopy(unit));
+                 .apply(Ref.getSelfTargetingRefCopy(unit));
             }
         }
     }

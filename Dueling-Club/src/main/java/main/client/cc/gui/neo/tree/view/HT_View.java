@@ -50,8 +50,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -136,7 +136,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             @Override
             public Component generateEmptyTabComp() {
                 return new GraphicComponent(ImageManager.getNewBufferedImage(getTabCompWidth(),
-                        getTabCompHeight()));
+                 getTabCompHeight()));
             }
 
             @Override
@@ -154,7 +154,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             public ComponentVisuals getTAB() { // empty
                 if (TAB == null) {
                     TAB = new CompVisuals(ImageManager.getNewBufferedImage(getTabCompWidth(),
-                            getTabCompHeight()));
+                     getTabCompHeight()));
                 }
                 return TAB;
             }
@@ -380,7 +380,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             // NON-AV
         } else if (e.isAltDown() || e.getClickCount() > 1) {
             boolean result = CharacterCreator.getHeroManager().addItem(hero, type, getTYPE(),
-                    getPROP());
+             getPROP());
             if (result) {
                 added(type);
 
@@ -434,8 +434,8 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
             CharacterCreator.typeSelected(type);
         } else {
             WaitMaster.receiveInput(
-                    type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS ? WAIT_OPERATIONS.SELECTION
-                            : WAIT_OPERATIONS.CUSTOM_SELECT, type.getName(), false);
+             type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS ? WAIT_OPERATIONS.SELECTION
+              : WAIT_OPERATIONS.CUSTOM_SELECT, type.getName(), false);
         }
         DC_SoundMaster.playStandardSound(STD_SOUNDS.SLOT);
         // if (node.getParentType() != null)
@@ -492,7 +492,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     public void adjustOffset(Boolean node_link, Boolean x_y, HT_Node node) {
         ObjType type = node.getType();
         PARAMS param = node_link ? x_y ? PARAMS.TREE_NODE_OFFSET_X : PARAMS.TREE_NODE_OFFSET_Y
-                : x_y ? PARAMS.TREE_LINK_OFFSET_X : PARAMS.TREE_LINK_OFFSET_Y;
+         : x_y ? PARAMS.TREE_LINK_OFFSET_X : PARAMS.TREE_LINK_OFFSET_Y;
         Integer offset = type.getIntParam(param);
         offset = DialogMaster.inputInt(offset);
         if (offset == null) {
@@ -512,7 +512,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
 
         if (variant == null || vertical_horizontal_manual == null) {
             variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(LINK_VARIANT.class,
-                    new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
+             new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
         } else {
             variant = HT_MapBuilder.getShiftedLinkVariant(variant, vertical_horizontal_manual);
         }
@@ -534,7 +534,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         String property = type.getProperty(PROPS.ALT_BASE_LINKS);
         // String baseType = selectAltBase(type);
         int index = DialogMaster.optionChoice(StringMaster.openContainer(property).toArray(),
-                "select");
+         "select");
         if (index == -1) {
             return;
         }
@@ -572,8 +572,8 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
         types.remove(type);
 
         String name = new ListChooser(SELECTION_MODE.SINGLE,
-                DataManager.toStringList(types), isSkill() ? DC_TYPE.SKILLS
-                : DC_TYPE.CLASSES).choose();
+         DataManager.toStringList(types), isSkill() ? DC_TYPE.SKILLS
+         : DC_TYPE.CLASSES).choose();
         return name;
     }
 
@@ -584,7 +584,7 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
     private String selectAltLink(String name, String prevData) {
         LINK_VARIANT variant;
         variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(LINK_VARIANT.class,
-                new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
+         new ListChooser(SELECTION_MODE.SINGLE, LINK_VARIANT.class).choose());
         if (variant == null) {
             if (prevData != null) {
 
@@ -663,9 +663,9 @@ public abstract class HT_View extends HeroView implements TabChangeListener, Mou
 
                 if (!CoreEngine.isArcaneVault()) {
                     XML_Writer.writeXML_ForType(objType, isSkill() ? DC_TYPE.SKILLS
-                            : DC_TYPE.CLASSES);
+                     : DC_TYPE.CLASSES);
                     XML_Writer.writeXML_ForType(objType2, isSkill() ? DC_TYPE.SKILLS
-                            : DC_TYPE.CLASSES);
+                     : DC_TYPE.CLASSES);
                 }
                 break;
             default:

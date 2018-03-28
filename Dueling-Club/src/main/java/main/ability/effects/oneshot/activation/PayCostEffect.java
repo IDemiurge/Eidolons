@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.entity.active.DC_UnitAction;
 import main.entity.obj.unit.Unit;
 
-public class PayCostEffect extends DC_Effect  implements OneshotEffect {
+public class PayCostEffect extends DC_Effect implements OneshotEffect {
     boolean force;
     private String actionName;
 

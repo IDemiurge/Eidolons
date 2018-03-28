@@ -19,7 +19,7 @@ public class MapMenu extends GameMenu {
 
     @Override
     protected GameLoop getLoop() {
-        return  (MacroGame.getGame().getLoop());
+        return (MacroGame.getGame().getLoop());
     }
 
     @Override

@@ -29,9 +29,9 @@ public class TimeComp extends G_Panel {
 
             public void refresh() {
                 String line1 = "The "
-                        + StringMaster.getOrdinalEnding(date.getDay())
-                        + (date.getMonth() != null ? " of " + date.getMonth()
-                        : "");
+                 + StringMaster.getOrdinalEnding(date.getDay())
+                 + (date.getMonth() != null ? " of " + date.getMonth()
+                 : "");
                 line1 = date.getShortString();
                 String line2 = date.getYear() + " of " + date.getEra();
                 line2 = date.getStringExtension();

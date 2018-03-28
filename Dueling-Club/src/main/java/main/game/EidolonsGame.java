@@ -13,12 +13,12 @@ public class EidolonsGame {
     private ScenarioMetaMaster metaMaster;
     private boolean aborted;
 
-    public void setMetaMaster(ScenarioMetaMaster metaMaster) {
-        this.metaMaster = metaMaster;
-    }
-
     public ScenarioMetaMaster getMetaMaster() {
         return metaMaster;
+    }
+
+    public void setMetaMaster(ScenarioMetaMaster metaMaster) {
+        this.metaMaster = metaMaster;
     }
 
     public void init() {

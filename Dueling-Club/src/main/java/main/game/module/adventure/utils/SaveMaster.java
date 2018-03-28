@@ -35,7 +35,7 @@ public class SaveMaster {
         for (Node node : XML_Converter.getNodeList(XML_Converter.getDoc(content))) {
             OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(node.getNodeName());
             XML_Reader.createCustomTypeList(XML_Converter.getStringFromXML(node), TYPE, MacroGame
-                    .getGame(), true, true);
+             .getGame(), true, true);
         }
 
 

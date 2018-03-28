@@ -20,14 +20,15 @@ public class HeroCharacter {
 
 
     }
-    public enum RPG_PARAMS {
-
-    }
 
     public enum RPG_BEHAVIOR_PARAMS {
         GREED,
         COURAGE,
         AGGRESSION,
+
+    }
+
+    public enum RPG_PARAMS {
 
     }
 }

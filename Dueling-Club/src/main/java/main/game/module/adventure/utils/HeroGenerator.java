@@ -42,9 +42,9 @@ public class HeroGenerator {
         List<BACKGROUND_CHANGE_TEMPLATES> applied = new ArrayList<>();
         while (true) {
             int i = RandomWizard.getRandomInt(BACKGROUND_CHANGE_TEMPLATES
-                    .values().length);
+             .values().length);
             BACKGROUND_CHANGE_TEMPLATES t = BACKGROUND_CHANGE_TEMPLATES
-                    .values()[i];
+             .values()[i];
             if (applied.contains(t)) {
                 continue;
             }
@@ -108,12 +108,12 @@ public class HeroGenerator {
                 Loop.startLoop(125);
                 while (!Loop.loopEnded()) {
                     String newPortrait = new RandomWizard<String>()
-                            .getRandomListItem(ImageManager
-                                    .getPortraitsForBackground(hero
-                                            .getBackground().toString()));
+                     .getRandomListItem(ImageManager
+                      .getPortraitsForBackground(hero
+                       .getBackground().toString()));
                     if (ImageManager.isImage(newPortrait)) {
                         if (!ImageManager.getImage(newPortrait).equals(
-                                hero.getIcon().getImage())) {
+                         hero.getIcon().getImage())) {
                             if (StringMaster.isFemalePortrait(newPortrait)) {
                                 if (hero.getGender() != HeroEnums.GENDER.FEMALE) {
                                     continue;
@@ -146,7 +146,7 @@ public class HeroGenerator {
                 break;
             }
             int i = RandomWizard
-                    .getRandomInt(PRESET_CHANGE_TEMPLATES.values().length);
+             .getRandomInt(PRESET_CHANGE_TEMPLATES.values().length);
             PRESET_CHANGE_TEMPLATES t = PRESET_CHANGE_TEMPLATES.values()[i];
             if (applied.contains(t)) {
                 continue;

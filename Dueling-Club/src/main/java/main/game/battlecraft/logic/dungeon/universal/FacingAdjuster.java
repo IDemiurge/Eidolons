@@ -40,15 +40,16 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
 
 
     public void adjustFacing(Unit unit) {
-        unit.setFacing(unit.isMine()? getPartyMemberFacing(unit )
-        :getFacingForEnemy(unit.getCoordinates() ));
+        unit.setFacing(unit.isMine() ? getPartyMemberFacing(unit)
+         : getFacingForEnemy(unit.getCoordinates()));
     }
-        public void adjustFacing(List<Unit> unitsList) {
-            unitsList.forEach(unit -> adjustFacing(unit));
+
+    public void adjustFacing(List<Unit> unitsList) {
+        unitsList.forEach(unit -> adjustFacing(unit));
     }
 
     public FACING_DIRECTION getFacingOptimal(Coordinates c, boolean mine) {
-        Collection<Obj> units = getGame().getPlayer(!mine ).getControlledUnits();
+        Collection<Obj> units = getGame().getPlayer(!mine).getControlledUnits();
         return FacingMaster.getOptimalFacingTowardsUnits(c, units);
 
 
@@ -70,12 +71,12 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     public FACING_DIRECTION getPartyMemberFacing(Unit unit) {
-        if (getGame().getGameMode()== GAME_MODES.DUNGEON_CRAWL){
+        if (getGame().getGameMode() == GAME_MODES.DUNGEON_CRAWL) {
             return FacingMaster.getOptimalFacingTowardsEmptySpaces(unit);
         }
         Coordinates c = unit.getCoordinates();
         if (isAutoOptimalFacing())
-        return getFacingOptimal(c, true);
+            return getFacingOptimal(c, true);
         if (facingMap.containsKey(c)) {
             return facingMap.get(c);
         }

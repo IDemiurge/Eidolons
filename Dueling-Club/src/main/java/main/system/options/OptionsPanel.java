@@ -33,7 +33,7 @@ public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionLi
                     continue;
                 Component comp = null;
                 try {
-                     comp =     getOptionComp(options, option);
+                    comp = getOptionComp(options, option);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }

@@ -67,8 +67,8 @@ public class PropertyPage extends ValueInfoPage {
         if (isIconContainer(p)) {
             ContainerIconElement containerIconElement = new ContainerIconElement(p);
             X = STD_COMP_IMAGES.ARROW_3_RIGHT.getImg().getWidth(null) / 2
-                    + (VISUALS.INFO_PANEL.getImage().getWidth(null) - ValueInfoPage.INNER_WIDTH)
-                    / 2;
+             + (VISUALS.INFO_PANEL.getImage().getWidth(null) - ValueInfoPage.INNER_WIDTH)
+             / 2;
             containerIconElement.setEntity(entity);
             return containerIconElement;
         }
@@ -121,7 +121,7 @@ public class PropertyPage extends ValueInfoPage {
 
     protected int getDefaultX() {
         return (VISUALS.INFO_PANEL.getImage().getWidth(null) - PropertyElement.HEADER_COMPONENT
-                .getImage().getWidth(null)) / 2;
+         .getImage().getWidth(null)) / 2;
     }
 
     protected int getColumnWidth() {

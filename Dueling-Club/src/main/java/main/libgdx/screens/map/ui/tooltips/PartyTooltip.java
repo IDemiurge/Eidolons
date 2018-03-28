@@ -161,7 +161,7 @@ public class PartyTooltip extends Tooltip {
             if (toActor.getParent() == actor)
                 return;
         if (toActor == actor)
-            return ;
+            return;
         actor.minimize();
     }
 

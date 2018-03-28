@@ -12,7 +12,7 @@ public class InventorySlotsPanel extends TablePanel {
 
     public static final int ROWS = 3;
     public static final int COLUMNS = 7;
-    public static final int SIZE = ROWS*COLUMNS;
+    public static final int SIZE = ROWS * COLUMNS;
 
     public InventorySlotsPanel() {
 
@@ -20,8 +20,8 @@ public class InventorySlotsPanel extends TablePanel {
 
     @Override
     public void afterUpdateAct(float delta) {
-        if (getUserObject()==null )
-            return ;
+        if (getUserObject() == null)
+            return;
         clear();
         super.afterUpdateAct(delta);
         final List<InventoryValueContainer> inventorySlots =
@@ -32,7 +32,7 @@ public class InventorySlotsPanel extends TablePanel {
                 valueContainer = new ValueContainer(getOrCreateR("UI/empty_pack.jpg"));
             }
             add(valueContainer).expand(0, 0);
-            if ((i+1) % COLUMNS == 0) {
+            if ((i + 1) % COLUMNS == 0) {
                 row();
             }
         }

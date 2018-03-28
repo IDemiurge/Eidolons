@@ -32,7 +32,7 @@ public class Roll {
         if (drawRange > 0) {
             int val1 = Math.max(1, RollMaster.getRolledValue());
             int val2 = Math.max(1, RollMaster.getRolledValue2());
-            if (100 - Math.min( val1/ val2,             val2/ val1)
+            if (100 - Math.min(val1 / val2, val2 / val1)
              * 100 <= drawRange) {
                 return null;
             }

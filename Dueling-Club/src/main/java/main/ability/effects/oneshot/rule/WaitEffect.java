@@ -23,7 +23,7 @@ import main.game.battlecraft.rules.mechanics.WaitRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
-public class WaitEffect extends MicroEffect implements OneshotEffect{
+public class WaitEffect extends MicroEffect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {
@@ -36,14 +36,14 @@ public class WaitEffect extends MicroEffect implements OneshotEffect{
         REF.setTarget(ref.getSource());
 
         boolean result = new AddBuffEffect(getRetainConditions(), getBuffName(), getEffects(REF))
-                .apply(REF);
+         .apply(REF);
         if (!result) {
             return false;
         }
 
         try {
             WaitRule.addWaitingUnit((Unit) ref.getSourceObj(), (Unit) ref
-                    .getTargetObj());
+             .getTargetObj());
         } catch (Exception e) {
             return false;
         }
@@ -57,7 +57,7 @@ public class WaitEffect extends MicroEffect implements OneshotEffect{
 
     protected Effect getEffects(Ref ref) {
         return new Effects(new SetCustomModeEffect(STD_MODES.WAITING), new AddTriggerEffect(
-                STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, getConditions(), getAbility(ref)));
+         STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, getConditions(), getAbility(ref)));
     }
 
     protected Condition getConditions() {

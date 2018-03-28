@@ -26,7 +26,7 @@ public class MacroInfoPanel extends G_Panel {
                 }
                 if (getObj().getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
                     return HC_ValuePages.getPageLists(getObj()
-                            .getOBJ_TYPE_ENUM());
+                     .getOBJ_TYPE_ENUM());
                 }
                 return null;
 //				return MacroValuePages.getPageLists((MACRO_OBJ_TYPES) getObj()

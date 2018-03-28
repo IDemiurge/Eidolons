@@ -166,16 +166,15 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initInventory() {
         if (ContainerMaster.isGenerateItemsForUnits())
             if (ContainerMaster.isPregenerateItems()) {
-       ContainerMaster master=
-        (ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
-       master.initContents(getEntity());
-        }
+                ContainerMaster master =
+                 (ContainerMaster) getGame().getDungeonMaster().getDungeonObjMaster(DUNGEON_OBJ_TYPE.CONTAINER);
+                master.initContents(getEntity());
+            }
 
         getEntity().setInventory(
          new DequeImpl<>(initContainedItems(PROPS.INVENTORY,
           getEntity().getInventory(), false)));
     }
-
 
 
     public void initItems() {
@@ -193,15 +192,15 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             LogMaster.log(1, "failed to initInventory");
         }
         if (ItemGenerator.isJewelryOn())
-        try {
-            initJewelry();
-        } catch (ExpressionParseException e) {
-            LogMaster.log(1, "failed to parse for initQuickItems "
-             + e.getMessage());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            LogMaster.log(1, "failed to initJewelry");
-        }
+            try {
+                initJewelry();
+            } catch (ExpressionParseException e) {
+                LogMaster.log(1, "failed to parse for initQuickItems "
+                 + e.getMessage());
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                LogMaster.log(1, "failed to initJewelry");
+            }
         try {
             initQuickItems();
         } catch (ExpressionParseException e) {
@@ -387,7 +386,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
 
     }
-
 
 
     public void initIntegrityAlignments() {

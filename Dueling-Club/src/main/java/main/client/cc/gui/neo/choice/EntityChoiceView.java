@@ -85,9 +85,9 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
             }
             if (getFilterOption() != null) {
                 WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(
-                        WORKSPACE_GROUP.class, getFilterOption());
+                 WORKSPACE_GROUP.class, getFilterOption());
                 data = new Filter<ObjType>(ref, ConditionMaster.getWorkspaceCondition(true, ws))
-                        .filter(data);
+                 .filter(data);
             }
             if (getFilterConditions() != null) {
                 data = new Filter<ObjType>(ref, getFilterConditions()).filter(data);
@@ -128,7 +128,7 @@ public abstract class EntityChoiceView extends ChoiceView<ObjType> {
     protected void sortData() {
         if (getSorterOption() != null) {
             SORT_TEMPLATE t = new EnumMaster<SORT_TEMPLATE>().retrieveEnumConst(
-                    SORT_TEMPLATE.class, getSorterOption());
+             SORT_TEMPLATE.class, getSorterOption());
             Collections.sort(data, SortMaster.getEntitySorter(t, getTYPE()));
 
         }

@@ -89,7 +89,7 @@ public class AutoTestMaster {
             main(new String[]{selectedType.getName()});
         } else {
             instance.runAutoTest(new AutoTest(selectedType, "", AutoTestFactory.getType(
-                    selectedType), instance));
+             selectedType), instance));
         }
 
     }
@@ -104,7 +104,7 @@ public class AutoTestMaster {
             contents += line + "\n";
         }
         FileManager.write(contents, PathFinder.getLogPath() + "\\tests\\" + TYPE
-                + TimeMaster.getFormattedTime(false, true) + ".txt");
+         + TimeMaster.getFormattedTime(false, true) + ".txt");
     }
 
     public static AutoTestMaster getInstance() {
@@ -174,12 +174,12 @@ public class AutoTestMaster {
         String arg = test.getArg(TEST_ARGS.SOURCE);
 
         source = DC_Game.game.createUnit(DataManager.getType(arg, DC_TYPE.CHARS), x, y, game
-                .getPlayer(true), new Ref(game));
+         .getPlayer(true), new Ref(game));
 
         y--;
         arg = test.getArg(TEST_ARGS.TARGET);
         target = DC_Game.game.createUnit(DataManager.getType(arg, DC_TYPE.CHARS), x, y, game
-                .getPlayer(true), new Ref(game));
+         .getPlayer(true), new Ref(game));
 
         arg = test.getArg(TEST_ARGS.WEAPON);
         ObjType weaponType = DataManager.getType(arg, DC_TYPE.WEAPONS);

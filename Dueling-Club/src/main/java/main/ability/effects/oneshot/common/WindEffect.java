@@ -5,7 +5,7 @@ import main.ability.effects.oneshot.attack.force.ForceEffect;
 /**
  * Created by JustMe on 4/30/2017.
  */
-public class WindEffect extends ForceEffect{
+public class WindEffect extends ForceEffect {
 
     public WindEffect(String forceFormula) {
         super(forceFormula, false);

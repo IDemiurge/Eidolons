@@ -45,7 +45,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             String name = args[i];
             if (DataManager.isTypeName(name))
                 i++;
-            else name = null ;
+            else name = null;
 
             AI_ARG arg =
              new EnumMaster<AI_ARG>().retrieveEnumConst(AI_ARG.class, args[i]);
@@ -74,8 +74,8 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             arg = options;
         }
         String[] additionalArgs = null;
-        if (args.length>i) {
-            additionalArgs=   new String[args.length-i];
+        if (args.length > i) {
+            additionalArgs = new String[args.length - i];
             for (int j = 0; j < args.length; j++) {
                 additionalArgs[j] = args[i + j];
             }
@@ -96,20 +96,20 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 //via a path!
                 ActionPath path = getPathSequenceConstructor().getOptimalPathSequence(unit.getAI(),
                  new Coordinates(arg.toString()));
-                sequence = new ActionSequence(path.getActions(),task,unit.getAI());
+                sequence = new ActionSequence(path.getActions(), task, unit.getAI());
                 break;
             case TURN_TO:
                 //cell id
                 sequence = new ActionSequence(
                  getTurnSequenceConstructor().
                   getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                  new Coordinates(arg.toString())), task, unit.getAI());
+                   new Coordinates(arg.toString())), task, unit.getAI());
                 break;
             case ACTION:
                 Action action = AiActionFactory.newAction(arg.toString(), ai);
                 sequence = //new ActionSequence();
-                getActionSequenceConstructor().constructSingleActionSequence(action,
-                 new Task(ai, goal, args[0]));
+                 getActionSequenceConstructor().constructSingleActionSequence(action,
+                  new Task(ai, goal, args[0]));
                 break;
             case ATTACK:
 
@@ -122,7 +122,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 Order a = //OrderFactory.getOrder();
                  new Order(arg.toString());
                 unit.getAI().setCurrentOrder(a);
-                return ;
+                return;
         }
         if (immediate) {
             unit.getAI().setStandingOrders(sequence);

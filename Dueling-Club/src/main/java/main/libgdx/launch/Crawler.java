@@ -49,38 +49,38 @@ public class Crawler {
         GuiManager.init();
         int index = DialogMaster.optionChoice(launch_options,
          "Choose the type of Eidolons game you want to launch...");
-        List<String> parts =null ;
-        if (index==0) {
+        List<String> parts = null;
+        if (index == 0) {
             String data = FileManager.readFile(launchDataPath);
-              parts = StringMaster.openContainer(data);
+            parts = StringMaster.openContainer(data);
             index = 1;
         }
-if (index ==2){
+        if (index == 2) {
 //    random  = true;
 //    parts = Collections.nCopies(2, "");
-} else if (index == 3){
-    FAST_DC.main(new String[]{
-     "" +
-     (Arrays.asList(
-       PresetLauncher.LAUNCH_OPTIONS)).
-       indexOf(StringMaster.getWellFormattedString(LAUNCH.EXPLORATION.toString()))
-    });
+        } else if (index == 3) {
+            FAST_DC.main(new String[]{
+             "" +
+              (Arrays.asList(
+               PresetLauncher.LAUNCH_OPTIONS)).
+               indexOf(StringMaster.getWellFormattedString(LAUNCH.EXPLORATION.toString()))
+            });
 
-    return ;
-}else if (index == 4){
-    FAST_DC.main(new String[]{
-     "" +
-      (Arrays.asList(
-       PresetLauncher.LAUNCH_OPTIONS)).
-       indexOf(StringMaster.getWellFormattedString(LAUNCH.EXPLORATION_TEST.toString()))
-    });
-    return ;
-}
+            return;
+        } else if (index == 4) {
+            FAST_DC.main(new String[]{
+             "" +
+              (Arrays.asList(
+               PresetLauncher.LAUNCH_OPTIONS)).
+               indexOf(StringMaster.getWellFormattedString(LAUNCH.EXPLORATION_TEST.toString()))
+            });
+            return;
+        }
         DemoLauncher.main(null);
         DC_Engine.mainMenuInit();
-        String dungeon =parts==null ? "crawl"+new FileChooser(PathFinder.getDungeonLevelFolder() + "crawl").launch("", "")
+        String dungeon = parts == null ? "crawl" + new FileChooser(PathFinder.getDungeonLevelFolder() + "crawl").launch("", "")
          : parts.get(0);
-        launchData+= dungeon;
+        launchData += dungeon;
         dungeon = StringMaster.removePreviousPathSegments(dungeon, PathFinder.getDungeonLevelFolder());
         ScreenData data = new ScreenData(ScreenType.BATTLE,
          dungeon
@@ -88,9 +88,9 @@ if (index ==2){
         GameLauncher launcher = new GameLauncher(GAME_SUBCLASS.TEST);
         Ref ref = new Ref();
         Condition conditions = new Conditions();
-        launcher.PLAYER_PARTY =parts==null ?  ListChooser.chooseType(DC_TYPE.CHARS, ref, conditions)
+        launcher.PLAYER_PARTY = parts == null ? ListChooser.chooseType(DC_TYPE.CHARS, ref, conditions)
          : parts.get(1);
-        launchData+= StringMaster.SEPARATOR+launcher.PLAYER_PARTY;
+        launchData += StringMaster.SEPARATOR + launcher.PLAYER_PARTY;
         launcher.setDungeon(dungeon);
         launcher.PARTY_CODE = CODE.PRESET;
         launcher.ENEMY_CODE = CODE.NONE;

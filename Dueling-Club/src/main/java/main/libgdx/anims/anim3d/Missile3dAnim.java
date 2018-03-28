@@ -25,7 +25,7 @@ public class Missile3dAnim extends Weapon3dAnim {
     protected WEAPON_ANIM_CASE getCase() {
         if (getActive().isFailedLast())
             return WEAPON_ANIM_CASE.MISSILE_MISS;
-        return WEAPON_ANIM_CASE.MISSILE ;
+        return WEAPON_ANIM_CASE.MISSILE;
     }
 
     @Override

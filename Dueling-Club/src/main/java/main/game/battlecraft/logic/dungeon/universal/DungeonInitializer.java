@@ -23,20 +23,21 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
     public static boolean RANDOM = false;
     protected String presetDungeonType;
     private String dungeonPath;
+
     public DungeonInitializer(DungeonMaster<E> master) {
         super(master);
     }
 
 
     public static DungeonData generateDungeonData(String dataString) {
-        String formatted="";
+        String formatted = "";
         DungeonData.
-            DUNGEON_VALUE value;
+         DUNGEON_VALUE value;
         if (dataString.contains(".xml")) {
-                value = DUNGEON_VALUE.PATH;
-            } else
-                value = DUNGEON_VALUE.TYPE_NAME;
-            formatted = value + "=" + dataString+",";
+            value = DUNGEON_VALUE.PATH;
+        } else
+            value = DUNGEON_VALUE.TYPE_NAME;
+        formatted = value + "=" + dataString + ",";
 
 
         return new DungeonData(formatted);
@@ -45,7 +46,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
     @Deprecated
     public E initDungeon(String path) {
         setDungeonPath(path);
-        return (E) getBuilder().buildDungeon(path );
+        return (E) getBuilder().buildDungeon(path);
     }
 
     public E initDungeon() {
@@ -54,15 +55,15 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
         if (getDungeonPath() != null) {
             return (E) getBuilder().buildDungeon(getDungeonPath()
-             );
+            );
         }
 
         ObjType type = null;
-        if (getPresetDungeonType()!=null ) {
+        if (getPresetDungeonType() != null) {
             type = DataManager.getType(getPresetDungeonType(), DC_TYPE.DUNGEONS);
             return createDungeon(type);
         } else {
-            if (RANDOM ) {
+            if (RANDOM) {
                 type =
                  pickRandomDungeon();
                 return createDungeon(type);
@@ -76,6 +77,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
         throw new RuntimeException();
     }
+
     public abstract E createDungeon(ObjType type);
 
 
@@ -86,7 +88,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
         if (list.isEmpty()) {
             list = DataManager.getTypes(DC_TYPE.DUNGEONS);
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
-                    MetaEnums.WORKSPACE_GROUP.FOCUS + "");
+             MetaEnums.WORKSPACE_GROUP.FOCUS + "");
         }
         type = list.get(RandomWizard.getRandomListIndex(list));
         return type;
@@ -108,8 +110,8 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
 
     protected String getRandomDungeonPath() {
         return FileManager.getRandomFile(
-                FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
-                        + getDungeonLevelSubfolder(), false)).getPath();
+         FileManager.getFilesFromDirectory(PathFinder.getDungeonLevelFolder()
+          + getDungeonLevelSubfolder(), false)).getPath();
     }
 
     //TODO different for each Type?
@@ -129,6 +131,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
     public String getPresetDungeonType() {
         return presetDungeonType;
     }
+
     public void setPresetDungeonType(String presetDungeonType) {
         this.presetDungeonType = presetDungeonType;
     }

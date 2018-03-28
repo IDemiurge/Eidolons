@@ -26,7 +26,7 @@ public class RestMaster {
             MacroGame.getGame().getLoop().getTimeMaster().setPlayerCamping(true);
             float speed = 60f;
             MacroGame.getGame().getLoop().getTimeMaster().setSpeed(speed);
-            party.getMembers().forEach(member->{
+            party.getMembers().forEach(member -> {
                 member.setProperty(MACRO_PROPS.MACRO_STATUS, MACRO_STATUS.CAMPING.toString());
             });
 //            MacroGame.getGame().fireEvent(

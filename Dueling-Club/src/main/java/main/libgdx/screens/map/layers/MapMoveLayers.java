@@ -106,7 +106,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         if (mapArea != null) {
             mapArea = flipMapAreaOnWind(mapArea);
         }
-        
+
         //area , number
         MapMoveLayer container = new MapMoveLayer(sub.getTexturePath(), mapArea, sub) {
             @Override
@@ -162,24 +162,24 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     private MAP_AREA flipMapAreaOnWind(MAP_AREA mapArea) {
         if (mapArea.rim)
-        switch (MacroGame.getGame().getWindDirection()) {
-            case UP:
-                return MAP_AREA.SOUTH;
-            case DOWN:
-               return MAP_AREA.NEUGARD_NORTH;
-            case LEFT:
-               return MAP_AREA.EAST;
-            case RIGHT:
-               return MAP_AREA.WEST;
-            case UP_LEFT:
-               return MAP_AREA.SOUTH_EAST;
-            case UP_RIGHT:
-               return MAP_AREA.SOUTH_WEST;
-            case DOWN_RIGHT:
-               return MAP_AREA.NORTH_WEST;
-            case DOWN_LEFT:
-               return MAP_AREA.NORTH_EAST;
-        }
+            switch (MacroGame.getGame().getWindDirection()) {
+                case UP:
+                    return MAP_AREA.SOUTH;
+                case DOWN:
+                    return MAP_AREA.NEUGARD_NORTH;
+                case LEFT:
+                    return MAP_AREA.EAST;
+                case RIGHT:
+                    return MAP_AREA.WEST;
+                case UP_LEFT:
+                    return MAP_AREA.SOUTH_EAST;
+                case UP_RIGHT:
+                    return MAP_AREA.SOUTH_WEST;
+                case DOWN_RIGHT:
+                    return MAP_AREA.NORTH_WEST;
+                case DOWN_LEFT:
+                    return MAP_AREA.NORTH_EAST;
+            }
         return mapArea;
     }
 
@@ -240,24 +240,24 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         super.act(delta);
     }
 
-    private float applyLayerDelayMods(MAP_MOVING_LAYER sub, 
+    private float applyLayerDelayMods(MAP_MOVING_LAYER sub,
                                       DAY_TIME day_time, float willSpawnOn) {
-        if (sub.type == null )
+        if (sub.type == null)
             return willSpawnOn;
-        if (sub.type == MAP_MOVING_LAYER_TYPE.CLOUD )
-        switch (MacroGame.getGame().getWeather()) {
-            case CLEAR:
-                return willSpawnOn/0.5f;
-            case OVERCAST:
-                return willSpawnOn/1.25f;
-            case STORM:
-                return willSpawnOn/1.5f;
-            case MISTY:
-                return willSpawnOn/0.65f;
-        }
+        if (sub.type == MAP_MOVING_LAYER_TYPE.CLOUD)
+            switch (MacroGame.getGame().getWeather()) {
+                case CLEAR:
+                    return willSpawnOn / 0.5f;
+                case OVERCAST:
+                    return willSpawnOn / 1.25f;
+                case STORM:
+                    return willSpawnOn / 1.5f;
+                case MISTY:
+                    return willSpawnOn / 0.65f;
+            }
         else {
             switch (day_time) {
-               //light isn't really done here anymore!  
+                //light isn't really done here anymore!
             }
         }
         return willSpawnOn;
@@ -343,20 +343,21 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         }
         //alpha to 0
     }
-@Override
+
+    @Override
     protected void applyAlpha(Color color, MapMoveLayer sub) {
-    if (sub.type.type == MAP_MOVING_LAYER_TYPE.CLOUD) {
-        switch (getWeather()) {
-            case CLEAR:
-                break;
-            case OVERCAST:
-                break;
-            case STORM:
-                break;
-            case MISTY:
-                break;
+        if (sub.type.type == MAP_MOVING_LAYER_TYPE.CLOUD) {
+            switch (getWeather()) {
+                case CLEAR:
+                    break;
+                case OVERCAST:
+                    break;
+                case STORM:
+                    break;
+                case MISTY:
+                    break;
+            }
         }
-    }
     }
 
 //    protected void tintDynamic(Color color, T sub) {
@@ -435,19 +436,17 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         SOUTH_EAST(0, MapScreen.defaultSize, 300, 300, true),
         NORTH_EAST(MapScreen.defaultSize, MapScreen.defaultSize, 300, 300, true),
         NORTH_WEST(MapScreen.defaultSize, 0, 300, 300, true),
-        
-         WEST(0, MapScreen.defaultSize/2, 300, 300, true),
-        SOUTH (MapScreen.defaultSize/2, MapScreen.defaultSize, 300, 300, true),
-         EAST(MapScreen.defaultSize, MapScreen.defaultSize/2, 300, 300, true),
-        NORTH (MapScreen.defaultSize, MapScreen.defaultSize/2, 300, 300, true),
 
-        ;
+        WEST(0, MapScreen.defaultSize / 2, 300, 300, true),
+        SOUTH(MapScreen.defaultSize / 2, MapScreen.defaultSize, 300, 300, true),
+        EAST(MapScreen.defaultSize, MapScreen.defaultSize / 2, 300, 300, true),
+        NORTH(MapScreen.defaultSize, MapScreen.defaultSize / 2, 300, 300, true),;
 
+        public boolean rim;
         int x, y, w, h;
         String centerPoint;
-        public boolean rim;
 
-        MAP_AREA(int x, int y, int w, int h,   boolean rim) {
+        MAP_AREA(int x, int y, int w, int h, boolean rim) {
             this.x = x;
             this.y = y;
             this.w = w;
@@ -475,11 +474,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     }
 
-    public enum MAP_MOVING_LAYER_TYPE {
-        CLOUD,
-        LIGHT,
-    }
-        public enum MAP_MOVING_LAYER {
+    public enum MAP_MOVING_LAYER {
         //        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.WRAITH_MARSH, MAP_AREA.NEUGARD_SOUTH,
 //         MAP_AREA.NEUGARD_NORTH),
 //        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 30, 1.3f, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
@@ -507,7 +502,8 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
          MAP_AREA.NEUGARD_NORTH),
         CLOUD_LIGHT(MOVE_DIRECTION.WIND, ALPHA_TEMPLATE.CLOUD,
          5, 30, 3f, 0.0f, 0.5f, 0.5f, true, false, MAP_AREA.WHOLE, MAP_AREA.SOUTH_WEST),;
-        static{
+
+        static {
             CLOUD.type = MAP_MOVING_LAYER_TYPE.CLOUD;
             CLOUD_HEAVY.type = MAP_MOVING_LAYER_TYPE.CLOUD;
             CLOUD_LARGE.type = MAP_MOVING_LAYER_TYPE.CLOUD;
@@ -517,15 +513,16 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
             LIGHT_SPREAD_GOLDEN.type = MAP_MOVING_LAYER_TYPE.LIGHT;
             LIGHT_SPREAD.type = MAP_MOVING_LAYER_TYPE.LIGHT;
         }
-        MAP_MOVING_LAYER_TYPE type;
+
         public boolean tinted = true;
         public float alphaStep = 0.5f;
         public float fullAlphaDuration;
-//        String[] emitterChance;
+        //        String[] emitterChance;
 //        String[] emitterPaths;
         public float pauseDuration;
         public float alphaRandomness;
         public Float maxDuration;
+        MAP_MOVING_LAYER_TYPE type;
         String[] emitterPaths;
         ALPHA_TEMPLATE alphaTemplate;
         DAY_TIME[] times = DAY_TIME.values;
@@ -539,6 +536,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         float sizeRange;
         MAP_AREA_GROUP areaGroup;
         boolean flipX, flipY;
+
         MAP_MOVING_LAYER(MOVE_DIRECTION direction, ALPHA_TEMPLATE alphaTemplate,
                          float delay,
                          int speed,
@@ -558,6 +556,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
             this.flipX = flipX;
             this.flipY = flipY;
         }
+
         MAP_MOVING_LAYER(MOVE_DIRECTION direction, int speed, float delay, MAP_AREA... areas) {
             this(direction, speed,
              delay, 0, 0, 0, areas);
@@ -607,6 +606,11 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         }
 
 //AlphaFluctuation fluctuation;
+    }
+
+    public enum MAP_MOVING_LAYER_TYPE {
+        CLOUD,
+        LIGHT,
     }
 
     public enum MAP_POINTS {

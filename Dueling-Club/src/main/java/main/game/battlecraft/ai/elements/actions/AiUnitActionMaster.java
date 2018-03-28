@@ -18,7 +18,6 @@ import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ public class AiUnitActionMaster {
                     }
                 }
                 ActionSequence rangedSequence = new ActionSequence(actions, sequence.getTask(),
-                        sequence.getAi());
+                 sequence.getAi());
                 list.add(rangedSequence);
             }
         }
@@ -74,11 +73,11 @@ public class AiUnitActionMaster {
 
                 actions.remove(AiActionFactory.getUnitAction(unit, DC_ActionManager.OFFHAND_ATTACK));
                 DC_UnitAction
-                        action = unit.getAction(
-                        "Throw", false);
+                 action = unit.getAction(
+                 "Throw", false);
                 actions.remove(action);
                 action = unit.getAction(
-                        "Throw", false);
+                 "Throw", false);
                 actions.remove(action);
                 break;
 
@@ -111,7 +110,7 @@ public class AiUnitActionMaster {
                 }
                 break;
             case WAIT:
-                actions.add(AiActionFactory.getUnitAction(unit,  "Wait"));
+                actions.add(AiActionFactory.getUnitAction(unit, "Wait"));
                 break;
             case PREPARE:
                 actions.addAll(unit.getActionMap().get(ActionEnums.ACTION_TYPE.MODE));

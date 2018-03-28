@@ -8,8 +8,8 @@ import main.game.battlecraft.ai.advanced.machine.train.AiTrainingResult;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 

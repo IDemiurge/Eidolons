@@ -195,9 +195,9 @@ public class HeroItemSlots extends G_Panel implements MouseListener {
 //            }
 
             CharacterCreator.getHeroManager().removeSlotItem(
-                    hero,
-                    new MapMaster<ITEM_SLOT, ListItem<Entity>>().getKeyForValue(itemMap,
-                            clickedItem));
+             hero,
+             new MapMaster<ITEM_SLOT, ListItem<Entity>>().getKeyForValue(itemMap,
+              clickedItem));
             itemMap.remove(clickedItem);
             clickedItem.refresh();
 //            if (itemListManager instanceof DC_InventoryManager) {

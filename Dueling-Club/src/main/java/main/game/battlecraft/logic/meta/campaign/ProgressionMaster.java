@@ -8,7 +8,24 @@ import main.entity.obj.unit.Unit;
 public class ProgressionMaster {
     //auto-levelups, limitations, taking advice
 
-    public enum FREE_HERO{
+    public void determineProgression(Unit hero) {
+        //pre-made branches?
+
+        if (checkAdvice(hero)) {
+            if (takeAdviceForProgression(hero)) return;
+        }
+
+    }
+
+    private boolean takeAdviceForProgression(Unit hero) {
+        return false;
+    }
+
+    private boolean checkAdvice(Unit hero) {
+        return false;
+    }
+
+    public enum FREE_HERO {
         ZAK,
         SVEN,
         TURGOND,
@@ -20,21 +37,5 @@ public class ProgressionMaster {
         HARLEN,
         JAIENNE,
 
-    }
-    public void determineProgression(Unit hero){
-        //pre-made branches?
-
-        if (checkAdvice(hero)){
-            if (takeAdviceForProgression(hero)) return ;
-        }
-
-    }
-
-    private boolean takeAdviceForProgression(Unit hero) {
-        return false;
-    }
-
-    private boolean checkAdvice(Unit hero) {
-        return false;
     }
 }

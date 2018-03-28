@@ -966,6 +966,18 @@ public class DC_ContentManager extends ContentManager {
         return costParam;
     }
 
+    public static OBJ_TYPE getTypeForProperty(PROPS prop) {
+        switch (prop) {
+            case QUICK_ITEMS:
+                return C_OBJ_TYPE.QUICK_ITEMS;
+            case JEWELRY:
+                return DC_TYPE.JEWELRY;
+            case INVENTORY:
+                return C_OBJ_TYPE.ITEMS;
+        }
+        return C_OBJ_TYPE.ITEMS;
+    }
+
     public void init() {
         NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.GENERIC_DC_HEADER));
         NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.CHARS_HEADER));
@@ -995,18 +1007,6 @@ public class DC_ContentManager extends ContentManager {
 
         EnumMaster.setALT_CONSTS_CLASS(DC_CONSTS.class);
         // initTypeDynamicValues(); TODO !
-    }
-
-    public static OBJ_TYPE getTypeForProperty(PROPS prop) {
-        switch (prop) {
-            case QUICK_ITEMS:
-                return C_OBJ_TYPE.QUICK_ITEMS;
-            case JEWELRY:
-                return DC_TYPE.JEWELRY;
-            case INVENTORY:
-                return C_OBJ_TYPE.ITEMS;
-        }
-        return C_OBJ_TYPE.ITEMS;
     }
 
     public enum ATTRIBUTE {

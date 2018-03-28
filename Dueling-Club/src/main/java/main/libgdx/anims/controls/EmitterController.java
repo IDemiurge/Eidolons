@@ -83,22 +83,22 @@ public class EmitterController implements Controller {
 
     public void create() {
         String presetPath =
-                new FileChooser(PathFinder.getSfxPath()).launch("", "");
+         new FileChooser(PathFinder.getSfxPath()).launch("", "");
         if (presetPath == null) {
             return;
         }
         ImageChooser ic = new ImageChooser();
         ic.setDefaultFileLocation(PathFinder.getSfxPath() + "images//");
         String imagePath = ic
-                .launch("", "");
+         .launch("", "");
         add(presetPath, imagePath);
     }
 
     public void addRandom() {
         String presetPath =
-                FileManager.getRandomFilePath(PathFinder.getSfxPath()
-                        + randomSfxPath
-                );
+         FileManager.getRandomFilePath(PathFinder.getSfxPath()
+          + randomSfxPath
+         );
         add(presetPath, null);
 
 //        add(presetPath,imagePath,destination);
@@ -118,16 +118,16 @@ public class EmitterController implements Controller {
         EmitterActor actor = null;
         try {
             actor =
-                    new EmitterActor(presetPath, true) {
-                        @Override
-                        public void draw(Batch batch, float parentAlpha) {
-                            act(Gdx.graphics.getDeltaTime());
+             new EmitterActor(presetPath, true) {
+                 @Override
+                 public void draw(Batch batch, float parentAlpha) {
+                     act(Gdx.graphics.getDeltaTime());
 //                    Vector2 v = GridMaster.getMouseCoordinates();
 //                     setPosition(v.x, v.y);
-                            super.draw(batch, parentAlpha);
-                        }
+                     super.draw(batch, parentAlpha);
+                 }
 
-                    };
+             };
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return;
@@ -183,8 +183,8 @@ public class EmitterController implements Controller {
 
     public void modify(boolean random) {
         String choice = random ? new EnumMaster<EMITTER_VALUE_GROUP>().
-                getRandomEnumConst(EMITTER_VALUE_GROUP.class).toString() :
-                ListChooser.chooseEnum(EMITTER_VALUE_GROUP.class);
+         getRandomEnumConst(EMITTER_VALUE_GROUP.class).toString() :
+         ListChooser.chooseEnum(EMITTER_VALUE_GROUP.class);
 //        val=new EnumMaster<EMITTER_VALUE_GROUP>().retrieveEnumConst(EMITTER_VALUE_GROUP.class, choice);
 
         boolean setOrOffset = random || DialogMaster.confirm("Set or Offset?");
@@ -211,16 +211,16 @@ public class EmitterController implements Controller {
         String val = getValue(preset);
         String modVals = (val == null) ? "" : group + EmitterPresetMaster.value_separator + val;
         EmitterActor newActor =
-                EmitterPresetMaster.getInstance().
-                        getModifiedEmitter(last.path, true,
-                                modVals);
+         EmitterPresetMaster.getInstance().
+          getModifiedEmitter(last.path, true,
+           modVals);
         if (val == null) {
             newActor.getEffect().toggle(group.getFieldName());
         }
         add(newActor, new Vector2(last.getX() +
 //         newActor.getEffect().getBoundingBox().getWidth()
-                100
-                , last.getY()));
+         100
+         , last.getY()));
 
     }
 
@@ -228,16 +228,16 @@ public class EmitterController implements Controller {
         switch (preset) {
             case IMAGE_SAME_FOLDER:
                 return FileManager.getRandomFile(
-                        StringMaster.cropLastPathSegment(
-                                EmitterPresetMaster.getInstance().findImagePath(last.path))).getPath();
+                 StringMaster.cropLastPathSegment(
+                  EmitterPresetMaster.getInstance().findImagePath(last.path))).getPath();
             case IMAGE_SPRITE:
                 return
-                        PathFinder.getSpritesPath() +
-                                new ImageChooser(PathFinder.getSpritesPath()).launch("", "");
+                 PathFinder.getSpritesPath() +
+                  new ImageChooser(PathFinder.getSpritesPath()).launch("", "");
 
             case IMAGE:
                 return PathFinder.getSfxPath() + "images\\" +
-                        new ImageChooser(PathFinder.getSfxPath() + "images\\").launch("", "");
+                 new ImageChooser(PathFinder.getSfxPath() + "images\\").launch("", "");
         }
         return null;
     }
@@ -307,7 +307,7 @@ public class EmitterController implements Controller {
 
     public void setForActive() {
         String presetPath =
-                new FileChooser(PathFinder.getSfxPath()).launch("", "");
+         new FileChooser(PathFinder.getSfxPath()).launch("", "");
 //        ImageChooser ic = new ImageChooser();
 //        ic.setDefaultFileLocation(PathFinder.getSfxPath()+"images//");
 //        String imagePath = ic.

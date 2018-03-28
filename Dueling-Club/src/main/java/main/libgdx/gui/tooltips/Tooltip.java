@@ -81,8 +81,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {
-        if (checkGuiStageBlocking())
-        {
+        if (checkGuiStageBlocking()) {
             onMouseExit(event, x, y, -1, null);
             return;
         }
@@ -100,7 +99,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
                 Actor actor = ((StageX) getManager().getStage()).getMouseOverActor();
                 if (actor != null) {
                     if (checkUiActorBlocks(actor))
-                    return true;
+                        return true;
                 }
             }
         return false;
@@ -181,7 +180,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     }
 
     public void addTo(Actor container) {
-        actor=container;
+        actor = container;
         container.addListener(getController());
     }
 //

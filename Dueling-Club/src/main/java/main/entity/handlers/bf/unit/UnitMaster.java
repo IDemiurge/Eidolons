@@ -1,10 +1,10 @@
 package main.entity.handlers.bf.unit;
 
-import main.entity.obj.unit.Unit;
 import main.entity.handlers.EntityAnimator;
 import main.entity.handlers.EntityHandler;
 import main.entity.handlers.EntityLogger;
 import main.entity.handlers.EntityMaster;
+import main.entity.obj.unit.Unit;
 
 /**
  * Created by JustMe on 2/26/2017.

@@ -8,11 +8,11 @@ import main.content.enums.entity.SpellEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_SpellObj;
+import main.entity.handlers.active.ActiveMaster;
+import main.entity.handlers.active.Executor;
 import main.entity.obj.BattleFieldObject;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.DC_UnitModel;
-import main.entity.handlers.active.ActiveMaster;
-import main.entity.handlers.active.Executor;
 import main.game.battlecraft.rules.magic.ChannelingRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -93,7 +93,7 @@ public class SpellExecutor extends Executor {
 //                communicate(ref);
 //            }
         }
-      getSpell().getChannelingActivateCosts().pay(getRef());
+        getSpell().getChannelingActivateCosts().pay(getRef());
         actionComplete();
         return result;
     }

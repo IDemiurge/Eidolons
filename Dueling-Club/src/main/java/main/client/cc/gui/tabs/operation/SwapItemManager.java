@@ -20,13 +20,13 @@ public class SwapItemManager extends DC_InventoryManager {
     }
 
     @Override
-    public void removeType(Entity type,   PROPERTY p) {
+    public void removeType(Entity type, PROPERTY p) {
         if (!hasOperations()) {
             return;
         }
 
         DC_HeroItemObj item = (DC_HeroItemObj) ObjUtilities.findObjByType(type, getHero()
-                .getInventory());
+         .getInventory());
         getHero().removeFromInventory(item);
         // getHero().setInventory(null);
         getHero().getGame().getDroppedItemManager().drop(item, getHero());
@@ -37,12 +37,12 @@ public class SwapItemManager extends DC_InventoryManager {
     }
 
     @Override
-    public boolean addType(ObjType type,   boolean alt) {
+    public boolean addType(ObjType type, boolean alt) {
         if (!hasOperations()) {
             return false;
         }
         boolean result = CharacterCreator.getHeroManager().addItem(getHero(), type,
-                C_OBJ_TYPE.ITEMS, PROPS.INVENTORY);
+         C_OBJ_TYPE.ITEMS, PROPS.INVENTORY);
 
         CharacterCreator.getHeroManager().update(getHero());
         operationDone(OPERATIONS.PICK_UP, type.getName());

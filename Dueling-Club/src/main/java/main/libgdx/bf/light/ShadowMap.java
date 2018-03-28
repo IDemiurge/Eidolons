@@ -18,7 +18,7 @@ import java.util.Map;
 public class ShadowMap {
 
     public static final SHADE_LIGHT[] SHADE_LIGHT_VALUES = SHADE_LIGHT.values();
-    private static boolean on=true;
+    private static boolean on = true;
     private GridPanel grid;
     private Map<SHADE_LIGHT, ShadeLightCell[][]> cells = new LinkedHashMap<>();
 
@@ -44,12 +44,12 @@ public class ShadowMap {
                     ShadeLightCell cell = new ShadeLightCell(type, x, y);
                     getCells(type)[x][y] = cell;
                     grid.addActor(cell);
-                    float offsetX= (GridConst.CELL_W-cell.getWidth())/2;
-                    float offsetY=  (GridConst.CELL_H-cell.getHeight())/2;
+                    float offsetX = (GridConst.CELL_W - cell.getWidth()) / 2;
+                    float offsetY = (GridConst.CELL_H - cell.getHeight()) / 2;
 
                     cell.setPosition(
-                     grid.getCells()[x][grid.getRows() - 1 - y].getX()+offsetX,
-                     grid.getCells()[x][grid.getRows() - 1 - y].getY()+offsetY);
+                     grid.getCells()[x][grid.getRows() - 1 - y].getX() + offsetX,
+                     grid.getCells()[x][grid.getRows() - 1 - y].getY() + offsetY);
 
                     cell.setColor(1, 1, 1, type.defaultAlpha);
                     cell.addListener(new EventListener() {
@@ -69,7 +69,7 @@ public class ShadowMap {
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.UPDATE_LIGHT, p -> {
             update();
-            main.system.auxiliary.log.LogMaster.log(1,"MANUAL SHADOW MAP UPDATE " );
+            main.system.auxiliary.log.LogMaster.log(1, "MANUAL SHADOW MAP UPDATE ");
         });
 
     }
@@ -90,8 +90,8 @@ public class ShadowMap {
                         getCells(type)[x][y].setBaseAlpha(alpha);
                         getCells(type)[x][y].setColor(1, 1, 1, alpha);
                     }
-                if (type==SHADE_LIGHT.LIGHT_EMITTER)
-                    getCells(type)[x][y].adjustPosition(x, y);
+                    if (type == SHADE_LIGHT.LIGHT_EMITTER)
+                        getCells(type)[x][y].adjustPosition(x, y);
                 }
             }
 
@@ -110,8 +110,9 @@ public class ShadowMap {
         ShadeLightCell[][] array = getCells().get(sub);
         for (int x = 0; x < array.length; x++) {
             for (int y = 0; y < array[x].length; y++) {
-                ShadeLightCell cell = array[x][y]; if (cell.getColor().a!=0)
-                cell.setZIndex(Integer.MAX_VALUE);
+                ShadeLightCell cell = array[x][y];
+                if (cell.getColor().a != 0)
+                    cell.setZIndex(Integer.MAX_VALUE);
             }
         }
 
@@ -122,13 +123,8 @@ public class ShadowMap {
         GAMMA_LIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "light.png")),
         LIGHT_EMITTER(0, StrPathBuilder.build("UI", "outlines", "shadows", "light emitter.png")),
         CONCEALMENT(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "concealment.png")),
-        BLACKOUT(0 , StrPathBuilder.build("UI", "outlines", "shadows", "blackout.png")),
-        HIGLIGHT(0 , StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),
-
-
-
-
-        ;
+        BLACKOUT(0, StrPathBuilder.build("UI", "outlines", "shadows", "blackout.png")),
+        HIGLIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),;
         public float defaultAlpha;
         private String texturePath;
 

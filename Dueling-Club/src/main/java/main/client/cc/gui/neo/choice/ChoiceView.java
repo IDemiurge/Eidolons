@@ -101,7 +101,7 @@ public abstract class ChoiceView<E> extends G_Panel {
         VISUALS bg = getBackgroundVisuals();
         if (bg != null) {
             String POS = "id pages, pos " + getPagePosX() + "-" + getSelectionBgOffsetX() + " "
-                    + getPagePosY() + "-" + getSelectionBgOffsetY();
+             + getPagePosY() + "-" + getSelectionBgOffsetY();
             add(new G_Panel(bg), POS);
         }
 
@@ -171,18 +171,18 @@ public abstract class ChoiceView<E> extends G_Panel {
 
     protected String getPagePosY() {
         return ""
-                + MigMaster.getCenteredPosition((int) getPanelSize().getHeight(), pages
-                .getPanelHeight());
+         + MigMaster.getCenteredPosition((int) getPanelSize().getHeight(), pages
+         .getPanelHeight());
     }
 
     protected int getPagePosX() {
         return MigMaster
-                .getCenteredPosition((int) getPanelSize().getWidth(), pages.getPanelWidth());
+         .getCenteredPosition((int) getPanelSize().getWidth(), pages.getPanelWidth());
     }
 
     protected PagedSelectionPanel<E> createSelectionComponent() {
         return new PagedSelectionPanel<>(this, getPageSize(), getItemSize(), getColumnsCount(),
-                isVertical());
+         isVertical());
     }
 
     protected boolean isVertical() {
@@ -265,7 +265,7 @@ public abstract class ChoiceView<E> extends G_Panel {
     protected String getOkButtonPos() {
         if (infoPanel == null) {
             return "@id ok, pos pages.x2+width "
-                    + MigMaster.getCenteredHeight(okButton.getVisuals().getHeight());
+             + MigMaster.getCenteredHeight(okButton.getVisuals().getHeight());
         }
         return OK_BUTTON_POS;
     }
@@ -273,7 +273,7 @@ public abstract class ChoiceView<E> extends G_Panel {
     protected String getBackButtonPos() {
         if (infoPanel == null) {
             return "@id back, pos pages.x-width "
-                    + MigMaster.getCenteredHeight(backButton.getVisuals().getHeight());
+             + MigMaster.getCenteredHeight(backButton.getVisuals().getHeight());
         }
         return BACK_BUTTON_POS;
     }

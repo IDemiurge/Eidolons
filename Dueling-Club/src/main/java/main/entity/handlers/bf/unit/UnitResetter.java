@@ -356,7 +356,6 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
 
-
     public void resetIntegrity() {
         IntegrityRule.resetIntegrity(getEntity());
 

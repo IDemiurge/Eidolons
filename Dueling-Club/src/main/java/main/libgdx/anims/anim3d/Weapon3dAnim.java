@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class Weapon3dAnim extends ActionAnim {
     protected SpriteAnimation sprite;
-   protected Map<PROJECTION, SpriteAnimation> projectionsMap=new HashMap<>();
+    protected Map<PROJECTION, SpriteAnimation> projectionsMap = new HashMap<>();
 
     //additional actions
     //effects/emitters
@@ -49,15 +49,14 @@ public class Weapon3dAnim extends ActionAnim {
 
     @Override
     protected Action getAction() {
-        setColor(new Color(1,1,1,1));
-        AlphaAction alphaAction= (AlphaAction) ActorMaster.getAction(AlphaAction.class);
+        setColor(new Color(1, 1, 1, 1));
+        AlphaAction alphaAction = (AlphaAction) ActorMaster.getAction(AlphaAction.class);
         alphaAction.setDuration(getDuration() / 2);
         alphaAction.setAlpha(0);
         DelayAction delayed = new DelayAction(getDuration() / 2);
         delayed.setAction(alphaAction);
         return delayed;
     }
-
 
 
     @Override
@@ -72,14 +71,14 @@ public class Weapon3dAnim extends ActionAnim {
 //        if (sprite != null)
 //        sprite.dispose(); //or cache per projection!
         sprite = get3dSprite();
-        if (sprite==null )
-            return ;
-sprite.setScale(getSpriteScale());
+        if (sprite == null)
+            return;
+        sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
         getSprites().clear();
         getSprites().add(sprite);
-        if (sprite.getRegions().size==0)
-            return ;
+        if (sprite.getRegions().size == 0)
+            return;
 //        int w = new FuncMaster<AtlasRegion>().getGreatest_(  (Arrays.asList(sprite.getRegions().toArray())),
 //         r -> r.getRegionWidth()).getRegionWidth();
 //        int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
@@ -88,13 +87,13 @@ sprite.setScale(getSpriteScale());
     }
 
     protected float getSpriteScale() {
-         if (getActive().getActiveWeapon().isNatural()){
-             float code = getActive().getActiveWeapon().getMaterial().getCode();
-             if (code==-1 )
-                 code = 3.5f;
-             code+=4;
-             return  code/10;
-         }
+        if (getActive().getActiveWeapon().isNatural()) {
+            float code = getActive().getActiveWeapon().getMaterial().getCode();
+            if (code == -1)
+                code = 3.5f;
+            code += 4;
+            return code / 10;
+        }
 
         return 1f;
     }
@@ -103,7 +102,7 @@ sprite.setScale(getSpriteScale());
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
         if (getProjection() == PROJECTION.HOR) {
-            flipHor =getActive().getOwnerObj().getFacing()== FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
+            flipHor = getActive().getOwnerObj().getFacing() == FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
         } else {
             flipHor = (getProjection() == PROJECTION.TO) != offhand;
         }
@@ -111,28 +110,28 @@ sprite.setScale(getSpriteScale());
     }
 
     protected SpriteAnimation get3dSprite() {
-        PROJECTION   projection= getProjection();
+        PROJECTION projection = getProjection();
 
-        sprite = projectionsMap.get(projection );
-        if (sprite  != null) {
+        sprite = projectionsMap.get(projection);
+        if (sprite != null) {
             return sprite;
         }
-        sprite =  AnimMaster3d.getSpriteForAction(getDuration(),
-        getActive(),  ref.getTargetObj(),  getCase(),  projection );
+        sprite = AnimMaster3d.getSpriteForAction(getDuration(),
+         getActive(), ref.getTargetObj(), getCase(), projection);
         projectionsMap.put(projection, sprite);
         return sprite;
     }
 
     @Override
     public Vector2 getOffsetOrigin() {
-    switch(getProjection()){
-        case FROM:
-            return new Vector2(0, 32);
-        case TO:
-            return new Vector2(0, -32);
-        case HOR:
-            return new Vector2(32, 0);
-    }
+        switch (getProjection()) {
+            case FROM:
+                return new Vector2(0, 32);
+            case TO:
+                return new Vector2(0, -32);
+            case HOR:
+                return new Vector2(32, 0);
+        }
         return super.getOffsetOrigin();
     }
 
@@ -140,7 +139,7 @@ sprite.setScale(getSpriteScale());
 //        return WEAPON_ANIM_CASE. BLOCKED;
 
         if (getActive().isFailedLast())
-                return WEAPON_ANIM_CASE.MISS;
+            return WEAPON_ANIM_CASE.MISS;
 //        return WEAPON_ANIM_CASE.PARRY; counter?
 
 
@@ -154,14 +153,14 @@ sprite.setScale(getSpriteScale());
     }
 
     protected PROJECTION getProjection() {
-        if (getRef().getTargetObj()==null )
-            return  getProjectionByFacing(getActive().getOwnerObj().getFacing())  ;
+        if (getRef().getTargetObj() == null)
+            return getProjectionByFacing(getActive().getOwnerObj().getFacing());
         Boolean b =
-         PositionMaster.isAboveOr(getRef().getSourceObj(),   ref.getTargetObj());
-        if (getActive().getOwnerObj().getCoordinates().equals(  ref.getTargetObj().getCoordinates()))
+         PositionMaster.isAboveOr(getRef().getSourceObj(), ref.getTargetObj());
+        if (getActive().getOwnerObj().getCoordinates().equals(ref.getTargetObj().getCoordinates()))
             b = getActive().getOwnerObj().isMine();
-        PROJECTION   projection= PROJECTION.HOR;
-        if (b!=null )
+        PROJECTION projection = PROJECTION.HOR;
+        if (b != null)
             projection = b ? PROJECTION.FROM : PROJECTION.TO;
         return projection;
     }

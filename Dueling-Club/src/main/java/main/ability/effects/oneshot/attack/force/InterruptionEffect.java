@@ -12,7 +12,7 @@ public class InterruptionEffect extends DC_Effect {
 
 
     public InterruptionEffect(String force) {
-        this.formula =new Formula(force);
+        this.formula = new Formula(force);
     }
 
     public InterruptionEffect() {

@@ -9,9 +9,9 @@ import main.entity.active.DC_ActiveObj;
  */
 public class ModMaster {
     public static Integer getFinalModForAction(DC_ActiveObj action,
-                                              PARAMETER mod) {
-    return     MathMaster.applyModIfNotZero( action. getIntParam(mod),
-         MathMaster.applyModIfNotZero(action. getActiveWeapon().getIntParam(mod),
+                                               PARAMETER mod) {
+        return MathMaster.applyModIfNotZero(action.getIntParam(mod),
+         MathMaster.applyModIfNotZero(action.getActiveWeapon().getIntParam(mod),
           action.getOwnerObj().getIntParam(mod)));
     }
 

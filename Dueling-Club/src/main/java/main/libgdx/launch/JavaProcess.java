@@ -8,7 +8,8 @@ import java.io.IOException;
  */
 public final class JavaProcess {
 
-    private JavaProcess() {}
+    private JavaProcess() {
+    }
 
     public static int exec(Class klass) throws IOException,
      InterruptedException {

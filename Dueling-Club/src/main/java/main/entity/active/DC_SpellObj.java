@@ -32,6 +32,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     private SPELL_POOL spellPool;
     private SPELL_GROUP spellGroup;
     private ObjType rawType;
+
     public DC_SpellObj(ObjType type, Player owner, DC_Game game, Ref ref) {
         super(type, owner, game, ref);
 
@@ -80,7 +81,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     public SPELL_TYPE getSpellType() {
         if (spellType == null) {
             spellType = new EnumMaster<SPELL_TYPE>().retrieveEnumConst(SPELL_TYPE.class,
-                    getProperty(G_PROPS.SPELL_TYPE));
+             getProperty(G_PROPS.SPELL_TYPE));
         }
         if (spellType == null) {
             spellType = DEFAULT_SPELL_TYPE;
@@ -91,7 +92,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     public SPELL_POOL getSpellPool() {
         if (spellPool == null) {
             spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
-                    getProperty(G_PROPS.SPELL_POOL));
+             getProperty(G_PROPS.SPELL_POOL));
         }
         return spellPool;
 
@@ -100,7 +101,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     public SPELL_GROUP getSpellGroup() {
         if (spellGroup == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(SPELL_GROUP.class,
-                    getProperty(G_PROPS.SPELL_GROUP));
+             getProperty(G_PROPS.SPELL_GROUP));
         }
         if (spellGroup == null)
             return SPELL_GROUP.VOID;
@@ -196,6 +197,7 @@ public class DC_SpellObj extends DC_ActiveObj {
     public void setChannelingResolveCosts(Costs channelingResolveCosts) {
         this.channelingResolveCosts = channelingResolveCosts;
     }
+
     @Override
     public void setRef(Ref ref) {
         ref.setID(Ref.KEYS.SPELL, id);

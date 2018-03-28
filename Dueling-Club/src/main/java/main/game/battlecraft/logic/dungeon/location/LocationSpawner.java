@@ -55,7 +55,7 @@ public class LocationSpawner extends Spawner<Location> {
         if (player.isMe() && PresetMaster.getPreset() == null && getGame().getMetaMaster() != null) {
             Party party = getGame().getMetaMaster().getPartyManager()
              .getParty();
-            if (party==null ){
+            if (party == null) {
                 return new LinkedList<>();
             }
             List<String> list = ListMaster.toNameList(
@@ -76,7 +76,7 @@ public class LocationSpawner extends Spawner<Location> {
                 member.setOriginalOwner(player);
                 member.setOwner(player);
                 member.setFacing(
-                 getFacingAdjuster().getPartyMemberFacing(member ));
+                 getFacingAdjuster().getPartyMemberFacing(member));
 
                 applyStartBonuses(member);
                 //what else should be done to *spawn*?

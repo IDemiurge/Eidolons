@@ -24,6 +24,7 @@ import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.PresetLauncher.LAUNCH;
 import main.game.core.state.Loader;
 import main.game.module.adventure.travel.EncounterMaster;
+import main.libgdx.launch.Showcase;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.services.dialog.DialogMaster;
@@ -39,7 +40,6 @@ import main.test.Preset;
 import main.test.PresetMaster;
 import main.test.debug.DebugMaster;
 import main.test.frontend.FAST_DC;
-import main.libgdx.launch.Showcase;
 
 import java.util.List;
 
@@ -225,7 +225,7 @@ public class TestLauncher //extends MetaGameMaster
         LAUNCH launch = PresetLauncher.getLaunch();
         if (launch == null) {
             TestMasterContent.test_on = false;
-            return ;
+            return;
         }
 //            if (PresetLauncher.getLaunch().preset != null) {
 //                Preset portrait = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
@@ -286,7 +286,7 @@ public class TestLauncher //extends MetaGameMaster
                 PLAYER_PARTY = randomizeParty();
                 break;
             case CODE.NONE:
-                PLAYER_PARTY ="";
+                PLAYER_PARTY = "";
         }
 
         switch (ENEMY_CODE) {
@@ -297,12 +297,12 @@ public class TestLauncher //extends MetaGameMaster
             case CODE.RANDOM:
                 ENEMY_PARTY = randomizeEnemies();
                 break;
-             case CODE.NONE:
-                 ENEMY_PARTY ="";
-             break;
+            case CODE.NONE:
+                ENEMY_PARTY = "";
+                break;
         }
-        Showcase.launchData+=PLAYER_PARTY+";";
-        Showcase.launchData+=ENEMY_PARTY+";";
+        Showcase.launchData += PLAYER_PARTY + ";";
+        Showcase.launchData += ENEMY_PARTY + ";";
     }
 
     public String randomizeParty() {
@@ -366,7 +366,7 @@ public class TestLauncher //extends MetaGameMaster
     protected String chooseParty() {
         ObjType party = ListChooser.chooseType_(
          DataManager
-          .getTypes(DC_TYPE.PARTY )
+          .getTypes(DC_TYPE.PARTY)
 //         DataManager
 //          .getTypesGroup(DC_TYPE.PARTY, "Preset")
          , DC_TYPE.PARTY);
@@ -470,7 +470,7 @@ public class TestLauncher //extends MetaGameMaster
     }
 
     protected String getRandomizedParty(int heroesCount, int unitCount, Integer maxLevel,
-                                      Integer minLevel) {
+                                        Integer minLevel) {
         ObjType mainHero = null;
         Loop.startLoop(100);
         while (Loop.loopContinues()) {
@@ -514,7 +514,7 @@ public class TestLauncher //extends MetaGameMaster
     }
 
     protected boolean addRandomUnit(OBJ_TYPE TYPE, String property, boolean subgroup, String party,
-                                  Integer maxLevel, Integer minLevel) {
+                                    Integer maxLevel, Integer minLevel) {
 
         ObjType objType = RandomWizard.getRandomType(TYPE, property, subgroup);
         if (objType.checkProperty(G_PROPS.GROUP, "Background")) {

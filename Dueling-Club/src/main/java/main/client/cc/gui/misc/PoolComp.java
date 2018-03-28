@@ -15,7 +15,7 @@ public class PoolComp extends TextCompDC {
 
     public PoolComp(Entity entity, PARAMETER param, String tooltip, Boolean c_visuals) {
         super(c_visuals == null ? VISUALS.POOL_MECH
-                : (BooleanMaster.isTrue(c_visuals)) ? VISUALS.POOL_C : VISUALS.POOL);
+         : (BooleanMaster.isTrue(c_visuals)) ? VISUALS.POOL_C : VISUALS.POOL);
         setToolTipText(tooltip);
         this.setEntity(entity);
         this.param = param;

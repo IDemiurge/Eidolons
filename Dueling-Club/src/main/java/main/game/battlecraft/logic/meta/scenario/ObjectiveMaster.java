@@ -55,7 +55,7 @@ public class ObjectiveMaster {
         for (String s : StringMaster.open(types)) {
             // main objective - victory?
             OBJECTIVE_TYPE type = new EnumMaster<OBJECTIVE_TYPE>().retrieveEnumConst(
-                    OBJECTIVE_TYPE.class, s);
+             OBJECTIVE_TYPE.class, s);
             // String data = scenario.getProperty(MACRO_PROPS.OBJECTIVE_DATA);
             ObjectiveMaster.initObjectiveTrigger(type, data, location);
 
@@ -113,6 +113,11 @@ public class ObjectiveMaster {
         DC_Game.game.getState().addTrigger(trigger);
     }
 
+    // should accept parameters!
+    public enum ACTION_TEMPLATE {
+        SUBOBJECTIVE_EFFECT, OBJECTIVE_EFFECT, INIT_DIALOG,
+    }
+
     /*
      * to be used also for constructing standalone missions
      *
@@ -121,20 +126,6 @@ public class ObjectiveMaster {
      */
     public enum EVENT_TEMPLATE {
         ENTER, KILL, TIME, PICK_UP,
-    }
-
-    // should accept parameters!
-    public enum ACTION_TEMPLATE {
-        SUBOBJECTIVE_EFFECT, OBJECTIVE_EFFECT, INIT_DIALOG,
-    }
-
-    public enum SCRIPT_CONDITION_TEMPLATE {
-        OBJ_REF, NUMERIC, STRING,
-    }
-
-    public enum SUB_OBJECTIVE_TYPE {
-        COLLECT_ITEMS, SLAY_UNITS, RESCUE_UNITS,
-
     }
 
     public enum OBJECTIVE_TYPE {
@@ -153,6 +144,15 @@ public class ObjectiveMaster {
 
     public enum OBJECTIVE_VALUES {
         GLOBAL_AGGRO_ON_ENTER_BLOCK,
+    }
+
+    public enum SCRIPT_CONDITION_TEMPLATE {
+        OBJ_REF, NUMERIC, STRING,
+    }
+
+    public enum SUB_OBJECTIVE_TYPE {
+        COLLECT_ITEMS, SLAY_UNITS, RESCUE_UNITS,
+
     }
 
 }

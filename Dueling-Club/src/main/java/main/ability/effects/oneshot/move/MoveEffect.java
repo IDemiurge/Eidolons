@@ -75,16 +75,16 @@ public class MoveEffect extends DC_Effect implements OneshotEffect {
         origin = obj.getCoordinates();
         if (direction != null) {
             destination = obj.getCoordinates().getAdjacentCoordinate(
-                    DirectionMaster.getDirectionByFacing(obj.getFacing(),
-                            direction));
+             DirectionMaster.getDirectionByFacing(obj.getFacing(),
+              direction));
             game.getMovementManager().move(obj, destination, free,
-                    MOVE_MODIFIER.DISPLACEMENT, ref);
+             MOVE_MODIFIER.DISPLACEMENT, ref);
             return true;
         }
         destination = getCoordinates();
 
         game.getMovementManager().move(obj, destination, free,
-                MOVE_MODIFIER.DISPLACEMENT, ref);
+         MOVE_MODIFIER.DISPLACEMENT, ref);
 
         //
         // FacingManager.
@@ -104,7 +104,7 @@ public class MoveEffect extends DC_Effect implements OneshotEffect {
             Integer y = y_displacement.getInt(ref);
             // TODO direction?!
             c = new Coordinates(ref.getObj(obj_to_move).getCoordinates().getX() + x, ref.getObj(obj_to_move)
-                    .getCoordinates().getY() + y);
+             .getCoordinates().getY() + y);
         }
         return c;
     }

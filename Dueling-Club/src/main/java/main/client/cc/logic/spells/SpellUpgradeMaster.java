@@ -107,10 +107,10 @@ public class SpellUpgradeMaster {
     public static List<SPELL_UPGRADE> getUpgradesFromSpell(Entity spell, boolean active) {
         List<SPELL_UPGRADE> list = new ArrayList<>();
         for (String s : StringMaster.open(spell
-                .getProperty(((active ? PROPS.SPELL_UPGRADES : PROPS.SPELL_UPGRADE_GROUPS))))) {
+         .getProperty(((active ? PROPS.SPELL_UPGRADES : PROPS.SPELL_UPGRADE_GROUPS))))) {
 
             SPELL_UPGRADE su = new EnumMaster<SPELL_UPGRADE>().retrieveEnumConst(
-                    SPELL_UPGRADE.class, s);
+             SPELL_UPGRADE.class, s);
             if (su != null) {
                 list.add(su);
             }
@@ -134,7 +134,7 @@ public class SpellUpgradeMaster {
             return true;
         }
         if (spell.getIntParam(PARAMS.MAX_SPELL_UPGRADES) < StringMaster.openContainer(
-                spell.getProperty(PROPS.SPELL_UPGRADES)).size()) {
+         spell.getProperty(PROPS.SPELL_UPGRADES)).size()) {
             return false;
         }
 
@@ -169,7 +169,7 @@ public class SpellUpgradeMaster {
             for (String string : list) {
                 if (string.contains(spell.getName() + "(")) {
                     spell.setProperty(PROPS.SPELL_UPGRADES, VariableManager.getVarPart(string)
-                            .replace(",", ";"));
+                     .replace(",", ";"));
                     continue loop;
                 }
             }
@@ -204,11 +204,11 @@ public class SpellUpgradeMaster {
             if (!remove) {
                 if (first_last) {
                     spell.appendProperty(G_PROPS.DESCRIPTION, "Upgrades: "
-                            + StringMaster.getWellFormattedString(ug.toString()));
+                     + StringMaster.getWellFormattedString(ug.toString()));
                 }
             } else if (!first_last) {
                 spell.removeFromProperty(G_PROPS.DESCRIPTION, "Upgrades: "
-                        + StringMaster.getWellFormattedString(ug.toString()));
+                 + StringMaster.getWellFormattedString(ug.toString()));
             }
         }
         // upgrades = spell.getProperty(PROPS.SPELL_UPGRADES);
@@ -285,8 +285,8 @@ public class SpellUpgradeMaster {
         type.setModifierKey(ug.getName());
         type.modifyParamByPercent(PARAMS.SPELL_DIFFICULTY, ug.getSpellDifficultyMod());
         type.setParam(PARAMS.XP_COST, // ++ XP COST MODIFIER PER GROUP
-                type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-                        * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
+         type.getIntParam(PARAMS.SPELL_DIFFICULTY)
+          * DC_Formulas.XP_COST_PER_SPELL_DIFFICULTY);
 
         for (PARAMETER costParam : ValuePages.COSTS) {
             type.setModifierKey(ug.getName());
@@ -298,7 +298,7 @@ public class SpellUpgradeMaster {
         // switch per spell logic?
         // type.appendProperty(G_PROPS.DESCRIPTION, ug.getDescription());
         type.appendProperty(G_PROPS.DESCRIPTION, " "
-                + StringMaster.getWellFormattedString(ug.toString()));
+         + StringMaster.getWellFormattedString(ug.toString()));
         type.setName(SpellGenerator.generateName(type));
 
         LogMaster.log(1, type.getModifierMaps() + " ");

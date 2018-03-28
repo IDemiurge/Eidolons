@@ -30,14 +30,14 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 /**
  * Created by JustMe on 11/16/2017.
  */
-public class ContainerPanel extends  TablePanel implements Closable{
+public class ContainerPanel extends TablePanel implements Closable {
 
-    private  Cell<Actor> takeAllButton;
+    Image portrait;
+    private Cell<Actor> takeAllButton;
     private InventorySlotsPanel inventorySlotsPanel;
     private InventorySlotsPanel containerSlotsPanel;
-    Image portrait;
 
-    public ContainerPanel( ) {
+    public ContainerPanel() {
         initListeners();
 
     }
@@ -56,7 +56,7 @@ public class ContainerPanel extends  TablePanel implements Closable{
         inventorySlotsPanel = new InventorySlotsPanel();
         containerSlotsPanel = new InventorySlotsPanel();
 
-        portrait=new Image();
+        portrait = new Image();
         portrait.setSize(GridConst.CELL_W, GridConst.CELL_H);
         addElement(portrait).top().height(GridConst.CELL_H).width(GridConst.CELL_W);
         row();
@@ -78,7 +78,7 @@ public class ContainerPanel extends  TablePanel implements Closable{
         addElement(lower).pad(0, 30, 20, 20);
 
 
-        takeAllButton    = lower.addElement(new TextButton("Take All",
+        takeAllButton = lower.addElement(new TextButton("Take All",
          StyleHolder.getDefaultTextButtonStyle()))
          .fill(false).expand(0, 0).right()
          .pad(20, 10, 20, 10).size(50, 50);
@@ -89,23 +89,24 @@ public class ContainerPanel extends  TablePanel implements Closable{
                 close();
             } else {
                 open();
-                inventorySlotsPanel. setUserObject(param.getKey());
-                containerSlotsPanel. setUserObject(param.getValue());
-                if (containerSlotsPanel.getListeners().size>0)
+                inventorySlotsPanel.setUserObject(param.getKey());
+                containerSlotsPanel.setUserObject(param.getValue());
+                if (containerSlotsPanel.getListeners().size > 0)
                     inventorySlotsPanel.addListener(containerSlotsPanel.getListeners().first());
 
                 TextButton button = (TextButton) takeAllButton.getActor();
                 button.getListeners().clear();
-                final ContainerDataSource source =   param.getValue();
-                button.addListener(new ClickListener(){
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        source.getHandler().takeAllClicked();
-                    }  }
+                final ContainerDataSource source = param.getValue();
+                button.addListener(new ClickListener() {
+                                       @Override
+                                       public void clicked(InputEvent event, float x, float y) {
+                                           source.getHandler().takeAllClicked();
+                                       }
+                                   }
                 );
                 portrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
                  StringMaster.getAppendedImageFile(
-                  source.getHandler().getContainer().getImagePath(), ContainerMaster.OPEN )));
+                  source.getHandler().getContainer().getImagePath(), ContainerMaster.OPEN)));
 
             }
         });
@@ -129,6 +130,7 @@ public class ContainerPanel extends  TablePanel implements Closable{
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         setVisible(false);
     }
+
     public void open() {
         if (getStage() instanceof StageWithClosable) {
             ((StageWithClosable) getStage()).closeDisplayed();
@@ -142,7 +144,6 @@ public class ContainerPanel extends  TablePanel implements Closable{
     public void updateAct(float delta) {
         clear();
         super.updateAct(delta);
-
 
 
     }

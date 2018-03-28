@@ -54,6 +54,7 @@ public class PartyInfoPanel extends TablePanel {
 
         setX(0);
     }
+
     private int getMainWidth() {
         return //(int) GdxMaster.adjustSize
          (256);
@@ -71,7 +72,7 @@ header for the party?
     @Override
     public void act(float delta) {
         super.act(delta);
-        GuiEventManager.bind(MapEvent.MAP_GUI_UPDATE, p->{
+        GuiEventManager.bind(MapEvent.MAP_GUI_UPDATE, p -> {
             setUpdateRequired(true);
         });
     }
@@ -121,9 +122,9 @@ header for the party?
             tablePanel2.add(status);//.maxWidth(getMainWidth()-128);
 
 
-            TablePanel container = new TablePanel() ;
+            TablePanel container = new TablePanel();
             container.add(tablePanel).left().maxWidth(getMainWidth() - 128);
-            container. row();
+            container.row();
             container.add(tablePanel2).left().maxWidth(getMainWidth() - 128);
 
             add(container).left().maxWidth(getMainWidth() - 128);

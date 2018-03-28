@@ -20,8 +20,8 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class ClassView extends HeroItemView {
 
     public static boolean isMulticlass(Entity type) {
         return type.getProperty(G_PROPS.CLASS_GROUP).equalsIgnoreCase(
-                HeroEnums.CLASS_GROUP.MULTICLASS.toString());
+         HeroEnums.CLASS_GROUP.MULTICLASS.toString());
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ClassView extends HeroItemView {
     @Override
     protected Filter<ObjType> getSpecialTypeFilter() {
         return new Filter<>(hero.getRef(), new NotCondition(new StringComparison("{Match_}"
-                + G_PROPS.CLASS_GROUP.getName(), MULTICLASS, true)));
+         + G_PROPS.CLASS_GROUP.getName(), MULTICLASS, true)));
     }
 
     protected boolean isSpecial(String name) {
@@ -97,24 +97,24 @@ public class ClassView extends HeroItemView {
             return list;
         }
         String types = StringMaster.joinStringList(DataManager.getTypeNamesGroup(getTYPE(), group),
-                ";");
+         ";");
 
         Filter<ObjType> filter = new Filter<>(hero.getRef(), new Conditions(new StringComparison(
-                "{Match_}" + G_PROPS.CLASS_GROUP, MULTICLASS, true), new OrConditions(
-                new Conditions(
-                        // new EmptyStringCondition("{Match_}"
-                        // + PROPS.BASE_CLASSES_ONE),
-                        // new EmptyStringCondition("{Match_}"
-                        // + PROPS.BASE_CLASSES_TWO)
-                        // ,
-                        // new StringComparison("{Match_}" + G_PROPS.CLASS_TYPE,
-                        // group, true)
-                        // ,
-                        new StringComparison(group, "{Match_}" + G_PROPS.BASE_TYPE, false)),
+         "{Match_}" + G_PROPS.CLASS_GROUP, MULTICLASS, true), new OrConditions(
+         new Conditions(
+          // new EmptyStringCondition("{Match_}"
+          // + PROPS.BASE_CLASSES_ONE),
+          // new EmptyStringCondition("{Match_}"
+          // + PROPS.BASE_CLASSES_TWO)
+          // ,
+          // new StringComparison("{Match_}" + G_PROPS.CLASS_TYPE,
+          // group, true)
+          // ,
+          new StringComparison(group, "{Match_}" + G_PROPS.BASE_TYPE, false)),
 
-                new StringComparison("{Match_}" + PROPS.BASE_CLASSES_ONE, types, false),
-                new StringComparison("{Match_}" + PROPS.BASE_CLASSES_TWO, types, false))),
-                DC_TYPE.CLASSES);
+         new StringComparison("{Match_}" + PROPS.BASE_CLASSES_ONE, types, false),
+         new StringComparison("{Match_}" + PROPS.BASE_CLASSES_TWO, types, false))),
+         DC_TYPE.CLASSES);
         list = new ArrayList<>(filter.getTypes());
         getAdditionalTypesMap().put(vendorPanel.getSelectedTabName(), list);
         return list;

@@ -10,6 +10,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;
 
 import java.util.List;
+
 @Refactor
 public class ScoutingRule extends RoundRule {
     private Entity scout;
@@ -85,19 +86,19 @@ public class ScoutingRule extends RoundRule {
         switch (level) {
             case SIGNS:
                 string = scout.getName() + " has perceived signs of possible presence of: "
-                        + wave.getName();
+                 + wave.getName();
                 break;
             case TRACKS:
                 string = scout.getName() + " has perceived unmistakable signs of : "
-                        + wave.getName();
+                 + wave.getName();
                 break;
             case SPOTTED_APPROACH:
                 string = scout.getName() + " has spotted " + wave.getName()
-                        + " approaching from the " + wave.getSide();
+                 + " approaching from the " + wave.getSide();
                 break;
             case VISUAL_CONTACT:
                 string = scout.getName() + " has spotted " + getWaveUnitInfo(wave)
-                        + " approaching from the " + wave.getSide();
+                 + " approaching from the " + wave.getSide();
 
                 break;
             default:

@@ -8,7 +8,7 @@ import main.entity.obj.unit.Unit;
  */
 public class GiftMaster {
 
-    public void makeGift(Entity item, Unit receiver){
+    public void makeGift(Entity item, Unit receiver) {
 
     }
 }

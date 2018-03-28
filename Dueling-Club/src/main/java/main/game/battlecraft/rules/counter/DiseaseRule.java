@@ -55,7 +55,7 @@ public class DiseaseRule extends DamageCounterRule {
     protected Effect getSpecialRoundEffects() {
         // spread effects could go here! :)
         ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.C_STAMINA,
-                MOD.MODIFY_BY_CONST, getCounterRef() + "*" + STAMINA_PER_COUNTER);
+         MOD.MODIFY_BY_CONST, getCounterRef() + "*" + STAMINA_PER_COUNTER);
         modifyValueEffect.setMin_max_formula(new Formula("0"));
         Effects effects = new Effects(modifyValueEffect);
         return effects;
@@ -86,7 +86,7 @@ public class DiseaseRule extends DamageCounterRule {
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         int n = 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
-                / 100;
+         / 100;
         if (checkVirulent(unit)) {
             n -= 10;
         }
@@ -97,6 +97,7 @@ public class DiseaseRule extends DamageCounterRule {
     public COUNTER getCounter() {
         return COUNTER.Disease;
     }
+
     private boolean checkVirulent(Unit unit) {
         return unit.checkStatus(UnitEnums.STATUS.VIRULENT);
     }

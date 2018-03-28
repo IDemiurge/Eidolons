@@ -8,7 +8,6 @@ import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapZone {
@@ -16,8 +15,8 @@ public class MapZone {
     String xml;
     private List<MapBlock> blocks = new ArrayList<>();
     private String fillerType
-            // = "Stone Wall"
-            ;
+     // = "Stone Wall"
+     ;
     private String name;
     private List<Coordinates> exceptions;
     private Dungeon dungeon;
@@ -38,7 +37,7 @@ public class MapZone {
 
     public String getXml() {
         xml = XML_Converter.openXmlFormatted(getName() + ", "
-                + CoordinatesMaster.getBoundsString(x1, x2, y1, y2));
+         + CoordinatesMaster.getBoundsString(x1, x2, y1, y2));
         xml += XML_Converter.openXmlFormatted(LocationBuilder.BLOCKS_NODE);
         String blockData = "";
         for (MapBlock b : blocks) {
@@ -47,7 +46,7 @@ public class MapZone {
         xml += blockData;
         xml += XML_Converter.closeXmlFormatted(LocationBuilder.BLOCKS_NODE);
         xml += XML_Converter.closeXmlFormatted(getName() + ", "
-                + CoordinatesMaster.getBoundsString(x1, x2, y1, y2));
+         + CoordinatesMaster.getBoundsString(x1, x2, y1, y2));
         return xml;
 
     }
@@ -59,7 +58,7 @@ public class MapZone {
     @Override
     public String toString() {
         return getName() + " with " + blocks.size() + " blocks; "
-                + CoordinatesMaster.getBoundsString(x1, x2, y1, y2);
+         + CoordinatesMaster.getBoundsString(x1, x2, y1, y2);
     }
 
     public MapBlock getBlock(Coordinates coordinates) {

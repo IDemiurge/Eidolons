@@ -12,7 +12,7 @@ public class KnockdownEffect extends DC_Effect {
 
 
     public KnockdownEffect(String force) {
-        this.formula =new Formula(force);
+        this.formula = new Formula(force);
     }
 
     public KnockdownEffect() {

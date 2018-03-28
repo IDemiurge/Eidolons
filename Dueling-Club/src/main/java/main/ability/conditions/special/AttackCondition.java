@@ -21,8 +21,8 @@ public class AttackCondition extends MicroCondition {
         } else {
             try {
                 attackEffect = (AttackEffect) EffectFinder.getEffectsOfClass(
-                        ref.getActive().getAbilities(), AttackEffect.class)
-                        .get(0);
+                 ref.getActive().getAbilities(), AttackEffect.class)
+                 .get(0);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

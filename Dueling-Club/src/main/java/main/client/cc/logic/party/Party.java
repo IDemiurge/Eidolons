@@ -185,22 +185,23 @@ public class Party extends Obj {
 
     @Override
     public Player getOwner() {
-        if (owner!=null )
+        if (owner != null)
             return owner;
         return leader.getOwner();
     }
 
     @Override
-    public void setOriginalOwner(Player owner) {
-        this.originalOwner = owner;
-        if (members!=null&& owner!=null )
-        members.forEach(hero -> hero.setOriginalOwner(owner));
-    }
-    @Override
     public void setOwner(Player owner) {
         this.owner = owner;
-        if (members!=null&& owner!=null)
+        if (members != null && owner != null)
             members.forEach(hero -> hero.setOwner(owner));
+    }
+
+    @Override
+    public void setOriginalOwner(Player owner) {
+        this.originalOwner = owner;
+        if (members != null && owner != null)
+            members.forEach(hero -> hero.setOriginalOwner(owner));
     }
 
     public boolean isArcade() {

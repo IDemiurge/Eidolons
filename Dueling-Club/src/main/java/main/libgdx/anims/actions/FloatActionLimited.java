@@ -8,11 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 public class FloatActionLimited extends FloatAction {
 
 
-    protected void update (float percent) {
+    protected void update(float percent) {
         super.update(percent);
-        if (getStart()<getEnd())
-        setValue(Math.min(getValue(), getEnd()));
+        if (getStart() < getEnd())
+            setValue(Math.min(getValue(), getEnd()));
         else
-        setValue(Math.max(getValue(), getEnd()));
+            setValue(Math.max(getValue(), getEnd()));
     }
 }

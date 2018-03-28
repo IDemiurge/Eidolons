@@ -16,7 +16,7 @@ public class EffectMaster extends Master {
 
     public static AttackEffect getAttackEffect(ActiveObj action) {
         AttackEffect effect = (AttackEffect) EffectFinder.getEffectsOfClass((DC_ActiveObj) action,
-                AttackEffect.class).get(0);
+         AttackEffect.class).get(0);
         return effect;
     }
 }

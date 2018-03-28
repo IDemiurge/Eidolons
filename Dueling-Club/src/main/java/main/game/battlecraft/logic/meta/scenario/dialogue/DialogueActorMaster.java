@@ -14,12 +14,12 @@ import java.util.Map;
 /**
  * Created by JustMe on 5/17/2017.
  */
-public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta>{
+public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta> {
+    static Map<String, DialogueActor> map = new HashMap<>();
+
     public DialogueActorMaster(MetaGameMaster master) {
         super(master);
     }
-
-    static Map<String, DialogueActor> map = new HashMap<>();
 
     private static DialogueActor createActor(String name) {
 //        getMetaGame().getScenario().getProperty(PROPS.ACTORS);
@@ -28,9 +28,10 @@ public class DialogueActorMaster extends MetaGameHandler<ScenarioMeta>{
 
         return new DialogueActor(type);
     }
-    public static DialogueActor getActor(String name){
+
+    public static DialogueActor getActor(String name) {
         DialogueActor actor = map.get(name);
-        if (actor==null ){
+        if (actor == null) {
             actor = createActor(name);
             map.put(name, actor);
         }

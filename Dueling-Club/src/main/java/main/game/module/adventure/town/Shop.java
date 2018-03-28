@@ -34,15 +34,15 @@ import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Shop extends TownPlace implements ShopInterface{
-    private ShopListsPanel shopListsPanel;
+public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
     List<ObjType> items;
+    private ShopListsPanel shopListsPanel;
     private SHOP_TYPE shopType;
     private SHOP_LEVEL shopLevel;
     private SHOP_MODIFIER shopModifier;
@@ -59,8 +59,8 @@ public class Shop extends TownPlace implements ShopInterface{
         for (PROPERTY p : propMap.keySet()) {
             if (SaveMaster.isPropSaved(p, getOBJ_TYPE_ENUM())) {
                 s += XML_Writer.openXML(p.getName())
-                        + XML_Formatter.formatStringForXmlNodeName(getProperty(p))
-                        + XML_Writer.closeXML(p.getName());
+                 + XML_Formatter.formatStringForXmlNodeName(getProperty(p))
+                 + XML_Writer.closeXML(p.getName());
             }
         }
         return s;
@@ -69,8 +69,8 @@ public class Shop extends TownPlace implements ShopInterface{
     private void initItems() {
         if (!getProperty(MACRO_PROPS.SHOP_ITEMS).isEmpty()) {
             DataManager.toTypeList(StringMaster
-                            .openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
-                    C_OBJ_TYPE.ITEMS);
+              .openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
+             C_OBJ_TYPE.ITEMS);
         }
         if (getIntParam(PARAMS.GOLD) == 0) {
             setParam(PARAMS.GOLD, ShopMaster.getBaseGold(this));
@@ -80,7 +80,7 @@ public class Shop extends TownPlace implements ShopInterface{
         }
         if (getIntParam(MACRO_PARAMS.SHOP_INCOME) == 0) {
             setParam(MACRO_PARAMS.SHOP_INCOME,
-                    ShopMaster.getBaseGoldIncome(this), true);
+             ShopMaster.getBaseGoldIncome(this), true);
         }
         items = new ArrayList<>();
         // addStandardItems(); then randomize
@@ -104,8 +104,8 @@ public class Shop extends TownPlace implements ShopInterface{
             List<ObjType> pool;
             if (prop == null) {
                 pool = DataManager.toTypeList(DataManager
-                                .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
-                        C_OBJ_TYPE.ITEMS);
+                  .getTypesSubGroupNames(C_OBJ_TYPE.ITEMS, group),
+                 C_OBJ_TYPE.ITEMS);
             } else {
                 pool = ItemGenerator.getBaseTypes(C_OBJ_TYPE.ITEMS);
                 FilterMaster.filter(pool, new PropCondition(prop, group));
@@ -152,7 +152,7 @@ public class Shop extends TownPlace implements ShopInterface{
                     }
                     for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
                         filtered.add(ItemGenerator.getGeneratedItem(t,
-                                material, q));
+                         material, q));
                     }
                 }
 
@@ -169,12 +169,12 @@ public class Shop extends TownPlace implements ShopInterface{
         // TODO sell/buy randomly from repertoire
         modifyParameter(PARAMS.GOLD, getIntParam(MACRO_PARAMS.SHOP_INCOME));
         LogMaster.log(LOG_CHANNEL.MACRO_DYNAMICS, getName() + " now has "
-                + getIntParam(PARAMS.GOLD) + " " + PARAMS.GOLD.getName());
+         + getIntParam(PARAMS.GOLD) + " " + PARAMS.GOLD.getName());
 
         modifyParameter(MACRO_PARAMS.SHOP_INCOME,
-                getIntParam(MACRO_PARAMS.SHOP_INCOME_GROWTH));
+         getIntParam(MACRO_PARAMS.SHOP_INCOME_GROWTH));
         getType().modifyParameter(MACRO_PARAMS.SHOP_INCOME,
-                getIntParam(MACRO_PARAMS.SHOP_INCOME_GROWTH));
+         getIntParam(MACRO_PARAMS.SHOP_INCOME_GROWTH));
         // perhaps shops should getOrCreate "Level Ups" eventually too :)
     }
 
@@ -204,6 +204,7 @@ public class Shop extends TownPlace implements ShopInterface{
         items.add(type);
         refreshGui();
     }
+
     private void refreshGui() {
         if (shopListsPanel == null) {
             return;
@@ -215,16 +216,17 @@ public class Shop extends TownPlace implements ShopInterface{
 
     @Override
     public List<String> getTabs() {
-        return  StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS) );
+        return StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS));
     }
 
     @Override
     public List<String> getItemSubgroups(String tabName) {
         return null;
     }
+
     @Override
     public List<String> getItems(String groupList) {
-        if (isFullRepertoire()){
+        if (isFullRepertoire()) {
             //filters!
         }
         List<String> list = new ArrayList<>();
@@ -240,8 +242,9 @@ public class Shop extends TownPlace implements ShopInterface{
 
     public List<ObjType> getItems(DC_TYPE TYPE) {
         return DataManager.toTypeList(StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
-         TYPE) ;
+         TYPE);
     }
+
     private boolean isFullRepertoire() {
         return false;
     }
@@ -255,7 +258,7 @@ public class Shop extends TownPlace implements ShopInterface{
     public SHOP_TYPE getShopType() {
         if (shopType == null) {
             shopType = new EnumMaster<SHOP_TYPE>().retrieveEnumConst(
-                    SHOP_TYPE.class, getProperty(MACRO_PROPS.SHOP_TYPE));
+             SHOP_TYPE.class, getProperty(MACRO_PROPS.SHOP_TYPE));
         }
         return shopType;
     }
@@ -263,7 +266,7 @@ public class Shop extends TownPlace implements ShopInterface{
     public SHOP_LEVEL getShopLevel() {
         if (shopLevel == null) {
             shopLevel = new EnumMaster<SHOP_LEVEL>().retrieveEnumConst(
-                    SHOP_LEVEL.class, getProperty(MACRO_PROPS.SHOP_LEVEL));
+             SHOP_LEVEL.class, getProperty(MACRO_PROPS.SHOP_LEVEL));
         }
         return shopLevel;
     }
@@ -271,8 +274,8 @@ public class Shop extends TownPlace implements ShopInterface{
     public SHOP_MODIFIER getShopModifier() {
         if (shopModifier == null) {
             shopModifier = new EnumMaster<SHOP_MODIFIER>()
-                    .retrieveEnumConst(SHOP_MODIFIER.class,
-                            getProperty(MACRO_PROPS.SHOP_MODIFIER));
+             .retrieveEnumConst(SHOP_MODIFIER.class,
+              getProperty(MACRO_PROPS.SHOP_MODIFIER));
         }
         return shopModifier;
     }
@@ -292,8 +295,8 @@ public class Shop extends TownPlace implements ShopInterface{
     public void toBase() {
         super.toBase();
         setProperty(MACRO_PROPS.SHOP_ITEMS,
-                StringMaster.constructContainer(DataManager
-                        .toStringList(getItems())));
+         StringMaster.constructContainer(DataManager
+          .toStringList(getItems())));
 
     }
 

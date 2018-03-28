@@ -17,7 +17,7 @@ public class GreyscaleUtils {
 
     public static int luminosity(int rgba) {
         int[] srgba = separate(rgba);
-        return toGrayscaleRGBA((int) (srgba[0] * .21 + srgba[1] * .72 + srgba[2] * .07+srgba[3]));
+        return toGrayscaleRGBA((int) (srgba[0] * .21 + srgba[1] * .72 + srgba[2] * .07 + srgba[3]));
     }
 
     private static int[] separate(int rgba) {
@@ -27,7 +27,7 @@ public class GreyscaleUtils {
         result[2] = (rgba >> 8) & 0xFF;
         result[3] =
 //        rgba & 0xFF;
-(0xff0000 & rgba) >>> 24;
+         (0xff0000 & rgba) >>> 24;
         return result;
     }
 

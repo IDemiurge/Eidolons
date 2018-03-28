@@ -51,13 +51,13 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String EXIT_NODE = "Exits";
     public static final ROOM_TYPE[] std_room_types = {ROOM_TYPE.ENTRANCE_ROOM,
 
-            ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.TREASURE_ROOM,
-            ROOM_TYPE.TREASURE_ROOM, ROOM_TYPE.SECRET_ROOM};
+     ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.TREASURE_ROOM,
+     ROOM_TYPE.TREASURE_ROOM, ROOM_TYPE.SECRET_ROOM};
     public static final ROOM_TYPE[] spec_room_types = {ROOM_TYPE.DEATH_ROOM, ROOM_TYPE.GUARD_ROOM,
-            ROOM_TYPE.GUARD_ROOM,};
+     ROOM_TYPE.GUARD_ROOM,};
     public static final String ZONES_NODE = "Zones";
     public static final String AI_GROUPS_NODE = StringMaster
-            .getWellFormattedString("ai groups node");
+     .getWellFormattedString("ai groups node");
     private DungeonPlan plan;
     private Dungeon dungeon;
     private BuildHelper helper;
@@ -82,16 +82,16 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         switch (template) {
             case PRISON_CELLS:
                 return new ListMaster<ROOM_TYPE>().getList(ROOM_TYPE.DEATH_ROOM,
-                        ROOM_TYPE.GUARD_ROOM, ROOM_TYPE.COMMON_ROOM);
+                 ROOM_TYPE.GUARD_ROOM, ROOM_TYPE.COMMON_ROOM);
             case CLASSIC:
                 return new ListMaster<ROOM_TYPE>().getList(ROOM_TYPE.ENTRANCE_ROOM,
-                        ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.TREASURE_ROOM);
+                 ROOM_TYPE.COMMON_ROOM, ROOM_TYPE.TREASURE_ROOM);
             case PROMENADE:
                 return new ListMaster<ROOM_TYPE>().getList(ROOM_TYPE.DEATH_ROOM,
-                        ROOM_TYPE.TREASURE_ROOM, ROOM_TYPE.SECRET_ROOM);
+                 ROOM_TYPE.TREASURE_ROOM, ROOM_TYPE.SECRET_ROOM);
             case GREAT_ROOM:
                 return new ListMaster<ROOM_TYPE>().getList(ROOM_TYPE.THRONE_ROOM,
-                        ROOM_TYPE.TREASURE_ROOM, ROOM_TYPE.SECRET_ROOM);
+                 ROOM_TYPE.TREASURE_ROOM, ROOM_TYPE.SECRET_ROOM);
         }
         return list;
     }
@@ -111,19 +111,19 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {
 
                 objectMap = // TODO BETTER IN TYPES?
-                        DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
+                 DC_ObjInitializer.initMapBlockObjects(dungeon, b, subNode.getTextContent());
                 // TODO encounters?
             } else {
                 // BLOCK TYPE
                 if (StringMaster.compareByChar(subNode.getNodeName(), BLOCK_TYPE_NODE)) {
                     BLOCK_TYPE type = new EnumMaster<BLOCK_TYPE>().retrieveEnumConst(
-                            BLOCK_TYPE.class, subNode.getTextContent());
+                     BLOCK_TYPE.class, subNode.getTextContent());
                     b.setType(type);
 
                 }
                 if (StringMaster.compareByChar(subNode.getNodeName(), ROOM_TYPE_NODE)) {
                     ROOM_TYPE type = new EnumMaster<ROOM_TYPE>().retrieveEnumConst(ROOM_TYPE.class,
-                            subNode.getTextContent());
+                     subNode.getTextContent());
                     b.setRoomType(type);
                 }
 
@@ -233,7 +233,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
                 }
                 MapZone zone = new MapZone(location.getDungeon(), 0, x1, x2, y1, y2);
                 List<Coordinates> coordinates = CoordinatesMaster.getCoordinatesWithin(x1 - 1,
-                        x2 - 1, y1 - 1, y2 - 1);
+                 x2 - 1, y1 - 1, y2 - 1);
                 new MapBlock(0, BLOCK_TYPE.ROOM, zone, plan, coordinates);
                 plan.getZones().add(zone);
 
@@ -242,7 +242,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         }
         if (TestDungeonInitializer.PRESET_PLAN != null) {
             File file = FileManager.getFile(PathFinder.getDungeonLevelFolder()
-                    + TestDungeonInitializer.PRESET_PLAN);
+             + TestDungeonInitializer.PRESET_PLAN);
             if (file.isFile()) {
                 String data = FileManager.readFile(file);
                 DungeonPlan plan = null;
@@ -311,7 +311,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         List<MapZone> list = new ArrayList<>();
         int i = 0;
         MapZone zone = new MapZone(getDungeon().getDungeon(), i, 0, getDungeon().getCellsX(), 0, getDungeon()
-                .getCellsY());
+         .getCellsY());
         list.add(zone);
         // if (plan.getTemplate() == DUNGEON_TEMPLATES.GREAT_ROOM) {
         // // this is where it all starts... we need point of entry and exit
@@ -368,12 +368,12 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
             String string = getDungeon().getProperty(PROPS.ADDITIONAL_ROOM_TYPES);
             ROOM_TYPE roomType = new RandomWizard<ROOM_TYPE>().getObjectByWeight(string,
-                    ROOM_TYPE.class);
+             ROOM_TYPE.class);
 
             if (roomType == null) {
                 string = helper.getParams().getValue(BUILD_PARAMS.ADDITIONAL_ROOMS);
                 roomType = new RandomWizard<ROOM_TYPE>().getRandomListItem(Arrays
-                        .asList(spec ? spec_room_types : std_room_types));
+                 .asList(spec ? spec_room_types : std_room_types));
             }
             Coordinates c = getRandomCoordinate(roomType);
             if (c == null) {
@@ -386,7 +386,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             helper.tryPlaceRoom(roomType, c, size.width, size.height, flipX, flipY);
 
             if (helper.getUsedCoordinates().size() * 100
-                    / (getDungeon().getCellsX() * getDungeon().getCellsY()) > helper.getParams().PREFERRED_FILL_PERCENTAGE) {
+             / (getDungeon().getCellsX() * getDungeon().getCellsY()) > helper.getParams().PREFERRED_FILL_PERCENTAGE) {
                 break;
             }
         }
@@ -459,7 +459,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             case DEATH_ROOM:
             case GUARD_ROOM:
                 adjacentRoomRequired = new ROOM_TYPE[]{ROOM_TYPE.TREASURE_ROOM,
-                        ROOM_TYPE.THRONE_ROOM, ROOM_TYPE.EXIT_ROOM,};
+                 ROOM_TYPE.THRONE_ROOM, ROOM_TYPE.EXIT_ROOM,};
                 break;
             case SECRET_ROOM:
             case TREASURE_ROOM:
@@ -473,7 +473,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
                 MapBlock block = new RandomWizard<MapBlock>().getRandomListItem(plan.getBlocks());
                 if (Arrays.asList(adjacentRoomRequired).contains(block.getRoomType())) {
                     List<Coordinates> list = CoordinatesMaster.getAdjacentToSquare(block
-                            .getCoordinates());
+                     .getCoordinates());
                     c = new RandomWizard<Coordinates>().getRandomListItem(list);
                     if (c.isInvalid()) {
                         continue;
@@ -490,7 +490,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         Loop.startLoop(100);
         while (!Loop.loopEnded()) {
             c = CoordinatesMaster.getRandomCoordinate(getDungeon().getCellsX(), getDungeon()
-                    .getCellsY());
+             .getCellsY());
             if (helper.getUsedCoordinates().contains(c)) {
                 continue;
             }
@@ -522,7 +522,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
             } catch (Exception e) {
 //                main.system.ExceptionMaster.printStackTrace(e);
                 zone = new MapZone(plan.getDungeon(), zoneId, 0, plan.getDungeon().getWidth(), 0,
-                        plan.getDungeon().getHeight());
+                 plan.getDungeon().getHeight());
             } // ++ add coord exceptions
             zoneId++;
             zones.add(zone);
@@ -557,7 +557,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
 
     public DungeonPlan selectDungeonMap(Dungeon dungeon) {
         File file = FileManager.getRandomFile(getMapsPath()
-                + dungeon.getProperty(PROPS.DUNGEON_TEMPLATE_TYPE));
+         + dungeon.getProperty(PROPS.DUNGEON_TEMPLATE_TYPE));
         String data = FileManager.readFile(file);
         return loadDungeonMap(data);
     }

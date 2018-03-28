@@ -44,11 +44,11 @@ public class ParryRule {
         Integer chanceRounded = Math.round(chance);
 
 //        if (!simulation)
-            if (attack.getAction().getGame().getCombatMaster().isChancesOff()) {
-                if (chanceRounded < 50)
-                    chanceRounded= 0;
-               else chanceRounded= 100 ;
-            }
+        if (attack.getAction().getGame().getCombatMaster().isChancesOff()) {
+            if (chanceRounded < 50)
+                chanceRounded = 0;
+            else chanceRounded = 100;
+        }
 
         game.getLogManager().newLogEntryNode(ENTRY_TYPE.PARRY, attack.getAttackedUnit().getName(),
          attack.getAction().getName(), attack.getAttacker().getName(),
@@ -102,11 +102,12 @@ public class ParryRule {
         return true;
 
     }
+
     // precalculateRawDamageForDisplay
     private boolean canParry(Attack attack) {
         // if (!RuleMaster.isParryOn())return false;
         Unit attackedUnit = (Unit) attack.getAttackedUnit();
-        if (attackedUnit==null )
+        if (attackedUnit == null)
             return false;
         if (attackedUnit.getIntParam(PARAMS.PARRY_CHANCE) <= 0) {
             return false;

@@ -19,7 +19,7 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
     }
 
     public String getMissionResourceFolderPath() {
-        return getBattle().getMission().getMissionResourceFolderPath() ;
+        return getBattle().getMission().getMissionResourceFolderPath();
 
     }
 
@@ -43,7 +43,7 @@ public class MissionBattleMaster extends BattleMaster<MissionBattle> {
 
     @Override
     protected PlayerManager<MissionBattle> createPlayerManager() {
-        return new MissionPlayerManager (this);
+        return new MissionPlayerManager(this);
     }
 
     @Override

@@ -19,7 +19,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.math.Formula;
 
 public class DamageInversionEffect extends MicroEffect implements
-        AttachmentEffect, TriggeredEffect {
+ AttachmentEffect, TriggeredEffect {
 
     Boolean restoreEndurance = true;
     Boolean restoreToughness = false;
@@ -30,7 +30,7 @@ public class DamageInversionEffect extends MicroEffect implements
 
     private MOD code;
     private Conditions conditions = new Conditions(new RefCondition(
-            KEYS.EVENT_TARGET, KEYS.SOURCE, false));
+     KEYS.EVENT_TARGET, KEYS.SOURCE, false));
 
     private STANDARD_EVENT_TYPE event_type;
 
@@ -43,7 +43,7 @@ public class DamageInversionEffect extends MicroEffect implements
 
         conditions.add(new DamageTypeCondition(physical));
         event_type = (physical) ? STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_PHYSICAL_DAMAGE
-                : STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE;
+         : STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_SPELL_DAMAGE;
 
         this.formula = new Formula("{EVENT_AMOUNT}*" + formula + "/100");
         this.code = MOD.MODIFY_BY_CONST;

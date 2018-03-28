@@ -26,11 +26,11 @@ import main.system.auxiliary.StringMaster;
 public class WoundsBuffRule extends DC_BuffRule {
     public static final String BERSERK_WOUNDS_DAMAGE_MOD = "50";
 
-    public static final  String[] formulas = {
+    public static final String[] formulas = {
      "{SOURCE_ENDURANCE}/10", "{SOURCE_ENDURANCE}/5"};
 
-    public static final  String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
-            MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
+    public static final String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
+     MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
 
     public WoundsBuffRule(MicroGame game) {
         super(game);
@@ -41,21 +41,21 @@ public class WoundsBuffRule extends DC_BuffRule {
         switch (level) {
             case 0: {
                 ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.N_OF_ACTIONS,
-                        MOD.MODIFY_BY_PERCENT, getCriticalApPenalty());
+                 MOD.MODIFY_BY_PERCENT, getCriticalApPenalty());
                 return new IfElseEffect(modifyValueEffect, new NotCondition(
-                        new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), new Effects(
-                        new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
-                                BERSERK_WOUNDS_DAMAGE_MOD), new BehaviorModeEffect(
-                        AiEnums.BEHAVIOR_MODE.BERSERK)));
+                 new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), new Effects(
+                 new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
+                  BERSERK_WOUNDS_DAMAGE_MOD), new BehaviorModeEffect(
+                 AiEnums.BEHAVIOR_MODE.BERSERK)));
 
             }
             case 1: {
                 ModifyValueEffect modifyValueEffect = new ModifyValueEffect(PARAMS.N_OF_ACTIONS,
-                        MOD.MODIFY_BY_PERCENT, getApPenalty());
+                 MOD.MODIFY_BY_PERCENT, getApPenalty());
                 ModifyValueEffect modifyValueEffect2 = new ModifyValueEffect(PARAMS.DAMAGE_MOD,
-                        MOD.MODIFY_BY_PERCENT, BERSERK_WOUNDS_DAMAGE_MOD);
+                 MOD.MODIFY_BY_PERCENT, BERSERK_WOUNDS_DAMAGE_MOD);
                 return new IfElseEffect(modifyValueEffect, new NotCondition(
-                        new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), modifyValueEffect2);
+                 new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.BERSERKER)), modifyValueEffect2);
             }
         }
 
@@ -66,12 +66,12 @@ public class WoundsBuffRule extends DC_BuffRule {
         // return "min(-15, -33+" + StringMaster.getValueRef(KEYS.SOURCE,
         // PARAMS.FORTITUDE) + " )";
         return "-33+(33*" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.WOUNDS_RESISTANCE)
-                + ")/100";
+         + ")/100";
     }
 
     protected String getCriticalApPenalty() {
         return "-66+(66*" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.WOUNDS_RESISTANCE)
-                + ")/100";
+         + ")/100";
         // return "min(-25, -66+2*" + StringMaster.getValueRef(KEYS.SOURCE,
         // PARAMS.FORTITUDE) + " )";
     }

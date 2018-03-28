@@ -38,7 +38,7 @@ public class ParamElement extends ValueTextComp {
         // while (true)? :)
         setDefaultFont(getDefaultFont());
         if (FontMaster.getStringWidth(getDefaultFont(), getText()) >= visuals.getWidth() - X_1
-                * (X_2_FACTOR + 1)) {
+         * (X_2_FACTOR + 1)) {
             fontSize = DEFAULT_SIZE - 1;
             X_1 /= 2;
             X_2_FACTOR += 2;
@@ -141,7 +141,7 @@ public class ParamElement extends ValueTextComp {
     protected int getDefaultX2() {
         if (isMultiParameter()) {
             return Math.max(image.getWidth(null), (visuals.getImage().getWidth(null) - FontMaster
-                    .getStringWidth(getDefaultFont(), paramValue)) / 2);
+             .getStringWidth(getDefaultFont(), paramValue)) / 2);
         }
 
         return visuals.getImage().getWidth(null) - X_1 * X_2_FACTOR;

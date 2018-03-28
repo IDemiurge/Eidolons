@@ -57,7 +57,7 @@ public abstract class DungeonObjMaster<T extends DUNGEON_OBJ_ACTION> {
          unit.getGame().getActionManager().getOrCreateAction(typeName, unit);
         action.setTargeting(new SelectiveTargeting(
          new Conditions(new DistanceCondition("1", true)
-         , new FacingCondition(FACING_SINGLE.IN_FRONT))));
+          , new FacingCondition(FACING_SINGLE.IN_FRONT))));
         action.setConstructed(true);
         action.getTargeter().setTargetingInitialized(true);
         action.setTargetingCachingOff(true);

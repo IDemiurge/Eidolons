@@ -60,7 +60,7 @@ public class RollDecorator {
                     break;
             }
             addActor(table);
-            table.setSize( getWidth(),
+            table.setSize(getWidth(),
              getHeight());
         }
 
@@ -77,8 +77,8 @@ public class RollDecorator {
 
 //            setSize(contents.getWidth() + STD_IMAGES.DIRECTION_POINTER.getWidth(),
 //             contents.getHeight());
-            table.setSize( getWidth(),
-              getHeight());
+            table.setSize(getWidth(),
+             getHeight());
         }
 
         @Override
@@ -156,7 +156,7 @@ public class RollDecorator {
                     toX = open ? (int) origX - contents.getWidth() : origX;
                     break;
                 case EAST:
-                    toX =  open ? (int) origX + contents.getWidth() : origX;
+                    toX = open ? (int) origX + contents.getWidth() : origX;
                     break;
                 case SOUTH:
                     toY = open ? (int) origY - contents.getHeight() : origY;

@@ -21,6 +21,6 @@ public class SimulationUnit extends Unit {
 
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
         return (DC_FeatObj) getGame().getSimulationObj(this, type,
-                skill ? PROPS.SKILLS : PROPS.CLASSES);
+         skill ? PROPS.SKILLS : PROPS.CLASSES);
     }
 }

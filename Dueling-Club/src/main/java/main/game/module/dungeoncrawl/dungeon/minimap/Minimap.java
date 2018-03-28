@@ -40,11 +40,11 @@ public class Minimap {
         int borderY = editMode ? 100 : 50;
         if (!viewMode) {
             size = new Dimension((int) GuiManager.getScreenWidth() - borderX, (int) GuiManager
-                    .getScreenHeight()
-                    - borderY);
+             .getScreenHeight()
+             - borderY);
         } else {
             size = new Dimension(GuiManager.getBattleFieldWidth(), GuiManager
-                    .getBattleFieldHeight());
+             .getBattleFieldHeight());
             borderX = 0;
             borderY = 0;
         }

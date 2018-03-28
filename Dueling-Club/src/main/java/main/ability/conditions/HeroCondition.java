@@ -13,7 +13,7 @@ public class HeroCondition extends ConditionImpl {
 
     public HeroCondition(String obj_ref) {
         this.c = new StringComparison(hero, "{" + obj_ref + "_"
-                + G_PROPS.TYPE.name() + "}", false);
+         + G_PROPS.TYPE.name() + "}", false);
     }
 
     public HeroCondition() {

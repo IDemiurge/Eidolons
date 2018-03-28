@@ -17,7 +17,7 @@ public class Entrance extends Structure { //ScenarioUnit
     public Entrance(int x, int y, ObjType type, Dungeon dungeon,
                     Dungeon sublevel) {
         super(type, x, y, DC_Player.NEUTRAL, dungeon.getGame(),
-                new Ref());
+         new Ref());
         this.dungeon = dungeon;
         this.sublevel = sublevel;
         // door/trap can be on both sides... enter() will affect Z but not

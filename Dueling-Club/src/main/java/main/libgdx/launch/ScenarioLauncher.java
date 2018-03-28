@@ -46,7 +46,7 @@ public class ScenarioLauncher {
 //        Eidolons.mainGame.getMetaMaster().preStart();
         master = new ScenarioMetaMaster(typeName);
         if (!Eidolons.initScenario(master)) {
-            return ;
+            return;
         }
 
         ScreenData data = new ScreenData(ScreenType.BATTLE,

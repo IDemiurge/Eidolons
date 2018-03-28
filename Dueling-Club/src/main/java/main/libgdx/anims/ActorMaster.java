@@ -174,11 +174,12 @@ public class ActorMaster {
                                               float scaleY, float v) {
         addScaleAction(actor, scaleX, scaleY, v);
         actor.getScaleX();
-        float x =actor.getX() -(scaleX-actor.getScaleX())*actor.getWidth()/2;
-        float y =actor.getY() -(scaleY-actor.getScaleY())*actor.getHeight()/2;
+        float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
+        float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;
         addMoveToAction(actor, x, y, v);
     }
-        public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
+
+    public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
         ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);// new ScaleToAction();
         action.setScale(scaleX, scaleY);
         action.setDuration(v);

@@ -21,13 +21,13 @@ public class HallOfFame {
     private static List<String> getSortedArcadeParties() {
         // TODO filter the *finishers*
         return SortMaster.sortByValue(DataManager.getTypesSubGroupNames(
-                DC_TYPE.PARTY, StringMaster.ARCADE), PARAMS.GLORY,
-                DC_TYPE.PARTY, false);
+         DC_TYPE.PARTY, StringMaster.ARCADE), PARAMS.GLORY,
+         DC_TYPE.PARTY, false);
     }
 
     public static int getPlace(Party party) {
         return DataManager.toTypeList(getSortedArcadeParties(),
-                DC_TYPE.PARTY).indexOf(party) + 1;
+         DC_TYPE.PARTY).indexOf(party) + 1;
     }
 
     public static String getComment(int place) {

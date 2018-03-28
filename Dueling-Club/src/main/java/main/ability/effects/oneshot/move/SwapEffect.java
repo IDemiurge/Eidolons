@@ -12,14 +12,14 @@ public class SwapEffect extends MoveEffect {
         c = ref.getTargetObj().getCoordinates();
         try {
             game.getMovementManager().move(ref.getTargetObj(),
-                    ref.getSourceObj().getCoordinates(), free,
-                    MOVE_MODIFIER.DISPLACEMENT, ref);
+             ref.getSourceObj().getCoordinates(), free,
+             MOVE_MODIFIER.DISPLACEMENT, ref);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         return game.getMovementManager().move(ref.getObj(KEYS.TARGET2), c,
-                free, MOVE_MODIFIER.DISPLACEMENT, ref);
+         free, MOVE_MODIFIER.DISPLACEMENT, ref);
     }
 
 }

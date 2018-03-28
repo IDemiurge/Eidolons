@@ -10,9 +10,9 @@ import main.libgdx.stage.Closable;
  * Created by JustMe on 2/22/2018.
  */
 public class TextInputPanel extends TablePanel implements Closable, TextFieldListener {
-    private   TextField tf;
-    String title,   text,   hint;
+    String title, text, hint;
     TextInputListener textInputListener;
+    private TextField tf;
 
     public TextInputPanel(String title, String text, String hint, TextInputListener textInputListener) {
         this.title = title;
@@ -33,6 +33,7 @@ public class TextInputPanel extends TablePanel implements Closable, TextFieldLis
     public void keyTyped(TextField textField, char c) {
 //        Input.Keys.ENTER
     }
+
     @Override
     public void open() {
 

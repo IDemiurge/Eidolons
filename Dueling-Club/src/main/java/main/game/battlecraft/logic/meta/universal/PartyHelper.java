@@ -64,7 +64,7 @@ public class PartyHelper {
             // some fun with this loop...
             Loop.startLoop(10);
             while (!Loop.loopEnded()
-                    && hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
+             && hero.getIntParam(PARAMS.LEVEL) < getParty().getIntParam(PARAMS.LEVEL)) {
                 if (hero.getGame().isSimulation()) {
                     DC_SoundMaster.playStandardSound(STD_SOUNDS.LEVEL_UP);
                 }
@@ -130,7 +130,7 @@ public class PartyHelper {
                 if (StringMaster.isInteger(item)) {
                     try {
                         propValue = StringMaster.replaceFirst(propValue, item, type.getGame()
-                                .getObjectById(StringMaster.getInteger(item)).getType().getName());
+                         .getObjectById(StringMaster.getInteger(item)).getType().getName());
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
@@ -145,7 +145,7 @@ public class PartyHelper {
 
         if (party.getName().equals(DEFAULT_TYPE_NAME)) {
             party.setProperty(G_PROPS.NAME, party.getLeader().getProperty(G_PROPS.NAME)
-                    + StringMaster.PARTY_SUFFIX, true);
+             + StringMaster.PARTY_SUFFIX, true);
         }
         String xml = XML_Writer.openXML(XML_ROOT);
         xml += XML_Writer.getTypeXML(party.getType(), new StringBuilder(XML_Writer.STR_CAPACITY));
@@ -293,16 +293,16 @@ public class PartyHelper {
 
     public static List<Unit> loadParty(String typeName, DC_Game game, boolean readTypes) {
         // invoke before obj init, to getOrCreate full obj string
-       if (readTypes){
-        File file = getPartyFile(typeName);
-        String xml = FileManager.readFile(file);
-        if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {
-            String partyTypeData = StringMaster.getXmlNode(xml, typeName);
-            xml = xml.replace(partyTypeData, "");
-            XML_Reader.createCustomTypeList(partyTypeData, DC_TYPE.PARTY, game, true);
+        if (readTypes) {
+            File file = getPartyFile(typeName);
+            String xml = FileManager.readFile(file);
+            if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {
+                String partyTypeData = StringMaster.getXmlNode(xml, typeName);
+                xml = xml.replace(partyTypeData, "");
+                XML_Reader.createCustomTypeList(partyTypeData, DC_TYPE.PARTY, game, true);
+            }
+            XML_Reader.readCustomTypeFile(file, DC_TYPE.CHARS, game);
         }
-        XML_Reader.readCustomTypeFile(file, DC_TYPE.CHARS, game);
-       }
         ObjType partyType = DataManager.getType(typeName, DC_TYPE.PARTY);
         setParty(newParty(partyType));
         party.toBase();
@@ -396,7 +396,7 @@ public class PartyHelper {
         for (Unit m : party.getMembers()) {
             String principles = m.getProperty(G_PROPS.PRINCIPLES);
             Condition principlesCondition = new PrinciplesCondition(principles, "{MATCH_"
-                    + G_PROPS.PRINCIPLES + "}", true);
+             + G_PROPS.PRINCIPLES + "}", true);
             principlesConditions.add(principlesCondition);
 
         }

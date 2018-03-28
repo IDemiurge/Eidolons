@@ -27,7 +27,7 @@ public class ActionActiveMaster extends ActiveMaster {
 
     @Override
     protected EntityChecker<DC_ActiveObj> createEntityChecker() {
-        return new ActiveChecker(getEntity(), this) ;
+        return new ActiveChecker(getEntity(), this);
     }
 
     @Override
@@ -39,10 +39,10 @@ public class ActionActiveMaster extends ActiveMaster {
                 if (getEntity().getParentAction() != null) {
                     String tag = "";
                     if (getEntity().getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                            ActionEnums.ACTION_TAGS.OFF_HAND.toString())) {
+                     ActionEnums.ACTION_TAGS.OFF_HAND.toString())) {
                         tag = ActionEnums.ACTION_TAGS.OFF_HAND.toString();
                     } else if (getEntity().getParentAction().checkProperty(G_PROPS.ACTION_TAGS,
-                            ActionEnums.ACTION_TAGS.MAIN_HAND.toString())) {
+                     ActionEnums.ACTION_TAGS.MAIN_HAND.toString())) {
                         tag = ActionEnums.ACTION_TAGS.MAIN_HAND.toString();
                     }
                     if (!tag.isEmpty()) {

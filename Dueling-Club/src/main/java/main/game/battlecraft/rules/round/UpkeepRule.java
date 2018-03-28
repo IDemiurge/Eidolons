@@ -100,7 +100,7 @@ public class UpkeepRule extends RoundRule {
             enactUpkeepFail(getFailAction(payObj),
              Ref.getSelfTargetingRefCopy(payObj));
         }
-            for (Obj payObj : payObjects) {
+        for (Obj payObj : payObjects) {
             if (!checkCanUpkeep(unit, payObj)) { // positive upkeep?
                 enactUpkeepFail(getFailAction(payObj),
                  Ref.getSelfTargetingRefCopy(payObj));

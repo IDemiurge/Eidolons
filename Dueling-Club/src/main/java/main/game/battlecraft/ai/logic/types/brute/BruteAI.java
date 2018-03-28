@@ -30,24 +30,24 @@ public class BruteAI extends DC_AI_Logic {
                 break;
             case APPROACH:
                 active = (DC_ActiveObj) actionManager
-                        .getAction(DC_ActionManager.STD_ACTIONS.Move.name(), unit);
+                 .getAction(DC_ActionManager.STD_ACTIONS.Move.name(), unit);
                 break;
             case ATTACK:
                 active = (DC_ActiveObj) actionManager
-                        .getAction(DC_ActionManager.ATTACK, unit);
+                 .getAction(DC_ActionManager.ATTACK, unit);
                 if (((DC_UnitModel) unit).isHero()) {
                     active = (DC_ActiveObj) actionManager
-                            .getAction(DC_ActionManager.STD_ACTIONS.Attack.name(), unit);
+                     .getAction(DC_ActionManager.STD_ACTIONS.Attack.name(), unit);
                 }
                 break;
             case CLOSE_IN:
 
                 active = (DC_ActiveObj) actionManager
-                        .getAction(DC_ActionManager.STD_ACTIONS.Move.name(), unit);
+                 .getAction(DC_ActionManager.STD_ACTIONS.Move.name(), unit);
                 break;
             case ESCAPE:
                 active = (DC_ActiveObj) actionManager
-                        .getAction(DC_ActionManager.STD_ACTIONS.Move.name(), unit);
+                 .getAction(DC_ActionManager.STD_ACTIONS.Move.name(), unit);
                 break;
             case SPELL:
                 // TODO

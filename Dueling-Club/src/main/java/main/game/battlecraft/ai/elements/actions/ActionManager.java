@@ -32,9 +32,9 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
-import main.system.auxiliary.log.SpecialLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,15 +113,14 @@ public class ActionManager extends AiHandler {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         if (atomic)
-        if (isAtomicAiOn())
-            try {
-                action = getAtomicAi().getAtomicAction(ai);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                action = getAtomicAi().getAtomicWait(ai.getUnit());
-            }
-            if (action==null )
-        {
+            if (isAtomicAiOn())
+                try {
+                    action = getAtomicAi().getAtomicAction(ai);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    action = getAtomicAi().getAtomicWait(ai.getUnit());
+                }
+        if (action == null) {
             List<ActionSequence> actions = new ArrayList<>();
             try {
                 List<ActionSequence> sequences = getActionSequenceConstructor().createActionSequences(ai);
@@ -162,8 +161,8 @@ public class ActionManager extends AiHandler {
             String message = getUnit() + " has chosen: "
              + chosenSequence + " with priority of "
              + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + "");
-            LogMaster.log(LOG_CHANNEL.AI_DEBUG,message );
-            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI,message);
+            LogMaster.log(LOG_CHANNEL.AI_DEBUG, message);
+            SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, message);
         }
         //TODO for behaviors? ai-issued-orders?
         ai.checkSetOrders(chosenSequence);
@@ -188,8 +187,8 @@ public class ActionManager extends AiHandler {
             }
             action.setTaskDescription("Forced Behavior");
         }
-        action= getAtomicAi().getAtomicActionForced(ai);
-        if (action!=null )
+        action = getAtomicAi().getAtomicActionForced(ai);
+        if (action != null)
             return action;
         try {
             action = getAtomicAi().getAtomicActionPrepare(getUnit().getAI());

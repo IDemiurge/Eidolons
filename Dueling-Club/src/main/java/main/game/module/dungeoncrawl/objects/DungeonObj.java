@@ -32,7 +32,6 @@ public abstract class DungeonObj extends Structure {
     public abstract DUNGEON_OBJ_TYPE getDungeonObjType();
 
 
-
     public enum DUNGEON_OBJ_TYPE {
         DOOR, TRAP, LOCK, ENTRANCE, CONTAINER, INTERACTIVE, ITEM,
     }

@@ -14,6 +14,8 @@ import main.system.math.Formula;
 
 public class ResistMaster {
 
+    private static final String RESISTANCE = "{TARGET_RESISTANCE}";
+
     public static void initUnitResistances(Unit unit) {
         int resist = unit.getIntParam(PARAMS.RESISTANCE);
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
@@ -21,8 +23,8 @@ public class ResistMaster {
             if (resistForDmgType != null) {
                 if (dmg_type.isMagical()) {
                     RESIST_GRADE grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(
-                            RESIST_GRADE.class, unit.getProperty(DC_ContentManager
-                                    .getResistGradeForDmgType(dmg_type)));
+                     RESIST_GRADE.class, unit.getProperty(DC_ContentManager
+                      .getResistGradeForDmgType(dmg_type)));
                     if (grade == null) {
                         grade = GenericEnums.RESIST_GRADE.Normal;
                     }
@@ -36,7 +38,7 @@ public class ResistMaster {
     }
 
     public static int getResistanceForDamageType(BattleFieldObject attacked,
-                                                  Unit attacker, DAMAGE_TYPE type) {
+                                                 Unit attacker, DAMAGE_TYPE type) {
         if (type == null) {
             return 0;
         }
@@ -47,11 +49,10 @@ public class ResistMaster {
         return resistance;
     }
 
-    private static final String RESISTANCE = "{TARGET_RESISTANCE}";
     public static void addResistance(Formula formula) {
-             formula.setFormula( "((" +  formula + ")*100-" +
-              formula + "*" + RESISTANCE + ")/100"
-);
+        formula.setFormula("((" + formula + ")*100-" +
+         formula + "*" + RESISTANCE + ")/100"
+        );
 
     }
 }

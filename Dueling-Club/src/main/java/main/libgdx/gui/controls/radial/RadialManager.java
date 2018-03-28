@@ -404,7 +404,7 @@ public class RadialManager {
         if (el.getTargeting() instanceof SelectiveTargeting) {
             return configureSelectiveTargetedNode(el, target);
         }
-        RadialValueContainer valueContainer =null ;
+        RadialValueContainer valueContainer = null;
         if (el instanceof DC_SpellObj) {
             valueContainer = new SpellRadialContainer(
 

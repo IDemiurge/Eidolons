@@ -80,21 +80,6 @@ public class HpBar extends SuperActor {
     private Float lastOfferedToughness;
     private Float lastOfferedEndurance;
 
-    @Override
-    public void setScaleX(float scaleX) {
-        super.setScaleX(scaleX);
-    }
-
-    @Override
-    public void setScale(float scaleXY) {
-        super.setScale(scaleXY);
-    }
-
-    @Override
-    public void setScale(float scaleX, float scaleY) {
-        super.setScale(scaleX, scaleY);
-    }
-
     public HpBar(ResourceSourceImpl dataSource) {
         this.dataSource = dataSource;
         barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
@@ -115,6 +100,21 @@ public class HpBar extends SuperActor {
         addActor(label_t);
         addActor(label);
         offsetX = barRegion.getRegionWidth() - toughnessBarRegion.getRegionWidth();
+    }
+
+    @Override
+    public void setScaleX(float scaleX) {
+        super.setScaleX(scaleX);
+    }
+
+    @Override
+    public void setScale(float scaleXY) {
+        super.setScale(scaleXY);
+    }
+
+    @Override
+    public void setScale(float scaleX, float scaleY) {
+        super.setScale(scaleX, scaleY);
     }
 
     //make sure this isn't called all the time!
@@ -164,9 +164,10 @@ public class HpBar extends SuperActor {
 //            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar not visible " +
 //             dataSource);
             return;
-        }if (getActions().size != 0)
+        }
+        if (getActions().size != 0)
 //        getActions().clear();
-        return ;
+            return;
 //        if (getActions().size != 0)
 //        {
 //            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar already being animated " +
@@ -217,7 +218,7 @@ public class HpBar extends SuperActor {
     public void act(float delta) {
         super.act(delta);
         if (!queue && Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-            if (!label.isVisible()){
+            if (!label.isVisible()) {
                 label_t.setVisible(true);
                 label.setVisible(true);
                 label_t.setZIndex(Integer.MAX_VALUE);
@@ -227,15 +228,14 @@ public class HpBar extends SuperActor {
             label_t.setVisible(false);
             label.setVisible(false);
         }
-        if (isAnimated()&& getActions().size> 0){
+        if (isAnimated() && getActions().size > 0) {
 //            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " WAS " +displayedEndurancePerc);
             displayedEndurancePerc = MathMaster.minMax(enduranceAction.getValue(),
              Math.min(previousEndurancePerc, endurancePerc), Math.max(previousEndurancePerc, endurancePerc));
             displayedToughnessPerc = MathMaster.minMax(toughnessAction.getValue(),
              Math.min(previousToughnessPerc, toughnessPerc), Math.max(previousToughnessPerc, toughnessPerc));
 //            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
-        } else
-            if (!dirty)
+        } else if (!dirty)
             return;
         String text = "" + Math.round(dataSource.getIntParam(PARAMS.ENDURANCE) * displayedEndurancePerc)
          + "/" + dataSource.getIntParam(PARAMS.ENDURANCE);
@@ -300,7 +300,7 @@ public class HpBar extends SuperActor {
     }
 
     private boolean isDisplayedAlways() {
-        return GridUnitView.getHpAlwaysVisible()==true;
+        return GridUnitView.getHpAlwaysVisible() == true;
 
     }
 
@@ -434,8 +434,8 @@ public class HpBar extends SuperActor {
 
     public void setPreviousToughnessPerc(Float previousToughnessPerc) {
 
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> TOUGHNESS " +
-         " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
+//        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> TOUGHNESS " +
+//         " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
         this.previousToughnessPerc = previousToughnessPerc;
     }
 
@@ -446,8 +446,8 @@ public class HpBar extends SuperActor {
     public void setPreviousEndurancePerc(Float previousEndurancePerc) {
 //        if (previousEndurancePerc!=0 )
 //            if (previousEndurancePerc!=1 )
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> ENDURANCE " +
-         " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
+//        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>>>>>>>>> ENDURANCE " +
+//         " " + this.previousEndurancePerc + " t0 " + previousEndurancePerc);
         this.previousEndurancePerc = previousEndurancePerc;
     }
 

@@ -48,14 +48,14 @@ public class MacroGroup { // macro obj type?
     @Override
     public String toString() {
         return groupName
-                // + " encounter"
-                ; // ++ ambushing?: ; coordinates
+         // + " encounter"
+         ; // ++ ambushing?: ; coordinates
     }
 
     private void initTravelSpeed() {
         travelSpeed = 0;
         List<String> types = StringMaster.openContainer(encounterType
-                .getProperty(PROPS.PRESET_GROUP));
+         .getProperty(PROPS.PRESET_GROUP));
         int size = types.size();
         for (String s : types) { // PROPS.UNIT_TYPES - all possible types?
             ObjType type = DataManager.getType(s, C_OBJ_TYPE.UNITS_CHARS);
@@ -96,7 +96,7 @@ public class MacroGroup { // macro obj type?
         int x_offset = 0;
         if (diagonal) {
             y_offset = (int) Math.round(travelSpeed / region.getMilePerPixel()
-                    * Math.sqrt(2) / 2);
+             * Math.sqrt(2) / 2);
             x_offset = y_offset;
         } else if (westOrEast != null) {
             x_offset = Math.round(travelSpeed / region.getMilePerPixel());

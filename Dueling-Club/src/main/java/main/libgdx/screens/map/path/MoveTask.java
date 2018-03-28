@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by JustMe on 3/17/2018.
  */
-public   class MoveTask extends Task<SteeringBehavior<Vector2>> {
+public class MoveTask extends Task<SteeringBehavior<Vector2>> {
     private final SteeringAgent agent;
     SteeringBehavior<Vector2> behavior;
     boolean started;
@@ -22,7 +22,7 @@ public   class MoveTask extends Task<SteeringBehavior<Vector2>> {
 
     @Override
     public SteeringBehavior<Vector2> getObject() {
-        return behavior ;
+        return behavior;
     }
 
     @Override
@@ -52,8 +52,9 @@ public   class MoveTask extends Task<SteeringBehavior<Vector2>> {
         else
             return Status.SUCCEEDED;
     }
+
     @Override
-    public final void run () {
+    public final void run() {
         Status result = execute();
         if (result == null) throw new IllegalStateException("Invalid status 'null' returned by the execute method");
         switch (result) {

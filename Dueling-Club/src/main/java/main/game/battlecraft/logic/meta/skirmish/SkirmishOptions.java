@@ -13,7 +13,8 @@ public class SkirmishOptions {
         REAR,
 
     }
-        public enum SkirmishRules {
+
+    public enum SkirmishRules {
         FLANKING,
 
         OBJECTIVE,

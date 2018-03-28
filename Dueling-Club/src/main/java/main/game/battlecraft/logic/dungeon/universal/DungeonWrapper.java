@@ -21,6 +21,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         dungeon = entity;
         this.master = master;
     }
+
     public Coordinates getPlayerSpawnCoordinates() {
         String prop = getProperty(PROPS.PARTY_SPAWN_COORDINATES);
         if (prop.isEmpty()) {
@@ -28,6 +29,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         }
         return new Coordinates(prop);
     }
+
     public DungeonMaster<E> getDungeonMaster() {
         return master;
     }

@@ -47,7 +47,7 @@ public class ObjCreator extends Master {
         }
         if (!CoreEngine.isLevelEditor())
             if (!CoreEngine.isArcaneVault())
-        type = checkTypeSubstitution(type, ref);
+                type = checkTypeSubstitution(type, ref);
 
         BattleFieldObject obj = null;
 

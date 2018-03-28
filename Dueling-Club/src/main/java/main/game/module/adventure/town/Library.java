@@ -23,13 +23,13 @@ public class Library extends TownPlace {
 
     }
 
-    public enum LIBRARY_TYPE {
-
-    }
-
     public enum LIBRARY_MODIFIER {
         HERETIC, SHADOW, ARCANE,
         // PROPS.ASPECT_PREFS
+    }
+
+    public enum LIBRARY_TYPE {
+
     }
 
     public class Spellbook {

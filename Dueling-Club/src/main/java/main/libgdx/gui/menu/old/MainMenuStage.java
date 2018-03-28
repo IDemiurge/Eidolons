@@ -68,20 +68,20 @@ public class MainMenuStage extends DataStage {
 
     private void recalcPos() {
         menu.setPosition(
-                -menu.getPrefWidth() / 2,
-                -menu.getPrefHeight() / 2
+         -menu.getPrefWidth() / 2,
+         -menu.getPrefHeight() / 2
         );
         options.setPosition(
-                -options.getPrefWidth() / 2,
-                -options.getPrefHeight() / 2
+         -options.getPrefWidth() / 2,
+         -options.getPrefHeight() / 2
         );
         load.setPosition(
-                -load.getPrefWidth() / 2,
-                -load.getPrefHeight() / 2
+         -load.getPrefWidth() / 2,
+         -load.getPrefHeight() / 2
         );
         newGame.setPosition(
-                -newGame.getPrefWidth() / 2,
-                -newGame.getPrefHeight() / 2
+         -newGame.getPrefWidth() / 2,
+         -newGame.getPrefHeight() / 2
         );
     }
 

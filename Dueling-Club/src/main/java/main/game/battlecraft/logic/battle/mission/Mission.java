@@ -16,23 +16,24 @@ import main.system.auxiliary.StringMaster;
 public class Mission extends LightweightEntity {
     Scenario scenario;
     Place place;
+
     public Mission(ObjType type, Scenario scenario) {
         super(type);
-       this.scenario=(scenario);
+        this.scenario = (scenario);
     }
 
     public Place getPlace() {
-        if (place==null ){
+        if (place == null) {
             place = new Place(DataManager.getType(getProperty(PROPS.MISSION_PLACE),
-             DC_TYPE.PLACES)) ;
+             DC_TYPE.PLACES));
         }
         return place;
     }
 
     public String getMissionResourceFolderPath() {
-        return StringMaster.buildPath(PathFinder.getScenariosPath()  ,
-          getScenario().getName(),
-          getName());
+        return StringMaster.buildPath(PathFinder.getScenariosPath(),
+         getScenario().getName(),
+         getName());
 
     }
 

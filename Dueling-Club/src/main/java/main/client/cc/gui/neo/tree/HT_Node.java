@@ -78,7 +78,7 @@ public class HT_Node extends ListItem<ObjType> {
                     ObjType parent = DataManager.getParent(getType());
                     if (parent != null) {
                         reqOverlaysDrawn = CharacterCreator.getHero().checkProperty(
-                                getContainerProperty(), parent.getName());
+                         getContainerProperty(), parent.getName());
                         // so what's the issue?
                     }
                     if (reqOverlaysDrawn) {
@@ -157,7 +157,7 @@ public class HT_Node extends ListItem<ObjType> {
 
     public boolean isAcquired() {
         return CharacterCreator.getHero().checkProperty(getContainerProperty(),
-                getValue().getName());
+         getValue().getName());
     }
 
     protected PROPS getContainerProperty() {
@@ -189,7 +189,7 @@ public class HT_Node extends ListItem<ObjType> {
     public String getReq() {
         if (req == null) {
             setReq(DC_Game.game.getRequirementsManager().getRequirements(getType(), 0).checkReason(
-                    getRef(), getObj()));
+             getRef(), getObj()));
         }
         return req;
     }
@@ -213,7 +213,7 @@ public class HT_Node extends ListItem<ObjType> {
             Ref ref = getRef();
             DC_Game.game.getRequirementsManager().getRequirements(getType(), 0).check(ref, true);
             setReqs(DC_Game.game.getRequirementsManager().getRequirements(getType(), 0)
-                    .getReasons());
+             .getReasons());
         }
         return reqs;
     }

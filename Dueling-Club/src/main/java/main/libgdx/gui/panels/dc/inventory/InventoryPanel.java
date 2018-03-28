@@ -32,9 +32,9 @@ public class InventoryPanel extends TablePanel {
         inventorySlotsPanel = new InventorySlotsPanel();
 
         addElement(upper)
-                .height(340)
-                .pad(20, 20, 0, 20)
-                .top().expand(1, 0);
+         .height(340)
+         .pad(20, 20, 0, 20)
+         .top().expand(1, 0);
         row();
 
         quickSlot = new InventoryQuickSlotPanel();
@@ -105,8 +105,8 @@ public class InventoryPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        if (getUserObject()==null )
-            return ;
+        if (getUserObject() == null)
+            return;
         clear();
         super.updateAct(delta);
 

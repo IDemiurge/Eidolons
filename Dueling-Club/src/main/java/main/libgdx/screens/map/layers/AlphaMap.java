@@ -19,9 +19,19 @@ public class AlphaMap {
     public AlphaMap(ALPHA_MAP sub) {
         this.sub = sub;
         map = new Pixmap(new FileHandle(getPath(sub)));
-        if (isWritePoints(sub)){
-            PixmapPathBuilder.writePathFile(map,getPointsPath(sub));
+        if (isWritePoints(sub)) {
+            PixmapPathBuilder.writePathFile(map, getPointsPath(sub));
         }
+    }
+
+    public static String getPath(ALPHA_MAP sub) {
+        return PathFinder.getImagePath() + PathFinder.getMapLayersPath()
+         + StringMaster.getWellFormattedString(sub.name()) + ".png";
+    }
+
+    public static String getPointsPath(ALPHA_MAP sub) {
+        return PathFinder.getImagePath() + PathFinder.getMapLayersPath()
+         + StringMaster.getWellFormattedString(sub.name()) + ".txt";
     }
 
     private boolean isWritePoints(ALPHA_MAP sub) {
@@ -33,17 +43,8 @@ public class AlphaMap {
         return false;
     }
 
-    public static String getPath(ALPHA_MAP sub) {
-        return PathFinder.getImagePath() + PathFinder.getMapLayersPath()
-         + StringMaster.getWellFormattedString(sub.name()) + ".png";
-    }
-    public static String getPointsPath(ALPHA_MAP sub) {
-        return PathFinder.getImagePath() + PathFinder.getMapLayersPath()
-         + StringMaster.getWellFormattedString(sub.name()) + ".txt";
-    }
-
     public boolean isThere(int x, int y) {
-        Color c = new Color(map.getPixel(x, MapScreen.defaultSize- y));
+        Color c = new Color(map.getPixel(x, MapScreen.defaultSize - y));
         return !(c.a == 0);
     }
 

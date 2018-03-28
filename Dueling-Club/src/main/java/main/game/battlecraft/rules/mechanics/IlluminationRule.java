@@ -17,44 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IlluminationRule {
-    private static final boolean BASE_ILLUMINATION =true ;
+    private static final boolean BASE_ILLUMINATION = true;
     static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
     private final DC_Game game;
 
 
     public IlluminationRule(DC_Game game) {
         this.game = game;
-    }
-
-    public   void resetIllumination( ) {
-        game.getCells().forEach(cell -> {
-            cell.setParam(PARAMS.ILLUMINATION, 0);
-        });
-        game.getBfObjects().forEach(unit -> {
-            unit.setParam(PARAMS.ILLUMINATION, 0);
-        });
-    }
-
-    public   Map<Obj, LightEmittingEffect> getEffectCache() {
-        return effectCache;
-    }
-
-    public   void initLightEmission( ) {
-//        List<Effect> effects = new ArrayList<>();
-        for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
-            LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
-            if (effect != null) {
-//                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
-                effect.apply();
-            }
-        }
-//        if (effects.isEmpty()) {
-//            return;
-//        }
-//        for (Effect effect : effects) {
-//            effect.apply();
-//
-//        }
     }
 
     public static LightEmittingEffect getLightEmissionEffect(DC_Obj source) {
@@ -100,12 +69,12 @@ public class IlluminationRule {
         int value =
 //         source.getGame().getVisionMaster().
 //          getIlluminationMaster().getIllumination(source);
-         source.getIntParam(PARAMS.LIGHT_EMISSION,  BASE_ILLUMINATION );
+         source.getIntParam(PARAMS.LIGHT_EMISSION, BASE_ILLUMINATION);
         if (source instanceof Unit) {
             if (((Unit) source).isHero())
 //                if (source.getGame().getVisionMaster().
 //                 getIlluminationMaster().getIllumination(source) < 50)
-                    value += 40;
+                value += 40;
         }
         Integer mod = source.getGame().getVisionMaster().getIlluminationMaster().
          getLightEmissionModifier();
@@ -113,6 +82,37 @@ public class IlluminationRule {
             value = value * mod / 100;
 
         return value;
+    }
+
+    public void resetIllumination() {
+        game.getCells().forEach(cell -> {
+            cell.setParam(PARAMS.ILLUMINATION, 0);
+        });
+        game.getBfObjects().forEach(unit -> {
+            unit.setParam(PARAMS.ILLUMINATION, 0);
+        });
+    }
+
+    public Map<Obj, LightEmittingEffect> getEffectCache() {
+        return effectCache;
+    }
+
+    public void initLightEmission() {
+//        List<Effect> effects = new ArrayList<>();
+        for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
+            LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
+            if (effect != null) {
+//                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
+                effect.apply();
+            }
+        }
+//        if (effects.isEmpty()) {
+//            return;
+//        }
+//        for (Effect effect : effects) {
+//            effect.apply();
+//
+//        }
     }
 
     public void clearCache() {

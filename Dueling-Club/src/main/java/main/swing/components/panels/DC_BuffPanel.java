@@ -11,8 +11,8 @@ import main.system.datatypes.DequeImpl;
 import main.system.graphics.GuiManager;
 
 import javax.swing.*;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class DC_BuffPanel extends G_ListPanel<DC_BuffObj> {
 

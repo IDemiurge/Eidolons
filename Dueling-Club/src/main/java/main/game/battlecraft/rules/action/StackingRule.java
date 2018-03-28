@@ -63,7 +63,7 @@ public class StackingRule implements ActionRule {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
                 LogMaster.log(1, c
-                        + "******* Cell already has max number of overlaying Objects!");
+                 + "******* Cell already has max number of overlaying Objects!");
             }
 
             return result;
@@ -79,11 +79,11 @@ public class StackingRule implements ActionRule {
 
     public static void actionMissed(DC_ActiveObj action) {
         if (RuleMaster.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
-            return ;
+            return;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
         List<BattleFieldObject> units = action.getGame().getObjectsAt(
-                action.getOwnerObj().getCoordinates());
+         action.getOwnerObj().getCoordinates());
         units.addAll(action.getGame().getObjectsAt(
          target.getCoordinates()));
         units.remove(action.getOwnerObj());
@@ -133,7 +133,7 @@ public class StackingRule implements ActionRule {
             if (!units.contains(u)) {
                 if (!u.isAnnihilated())
 //                    continue; TODO why was Type necessary?
-                units.addCast(!u.isDead()? u.getType() : u);
+                    units.addCast(!u.isDead() ? u.getType() : u);
                 if (u.isWall())
                     if (!u.isDead())
                         return false;
@@ -196,13 +196,13 @@ public class StackingRule implements ActionRule {
             if (UnitAnalyzer.isWall(u)) {
                 // not flying
 //                if (!UnitAnalyzer.isFlying(unit)) {
-                    return false;
+                return false;
 //                }
             }
             if (u.isDead())
-                girth += u.getIntParam(PARAMS.GIRTH)/3;
+                girth += u.getIntParam(PARAMS.GIRTH) / 3;
             else
-            girth += u.getIntParam(PARAMS.GIRTH);
+                girth += u.getIntParam(PARAMS.GIRTH);
 //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
 //
 //            }
@@ -214,7 +214,7 @@ public class StackingRule implements ActionRule {
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {
             girth += StringMaster.getInteger(PARAMS.GIRTH.getDefaultValue());
         } else {
-              girth += unit.getIntParam(PARAMS.GIRTH);
+            girth += unit.getIntParam(PARAMS.GIRTH);
         }
         // main.system.auxiliary.LogMaster.log(1, "****************** " + space
         // + " Space vs " + girth

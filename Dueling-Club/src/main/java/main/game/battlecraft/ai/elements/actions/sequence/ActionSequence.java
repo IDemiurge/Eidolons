@@ -38,7 +38,7 @@ public class ActionSequence {
         this.task = task;
         this.ai = ai;
         this.actions = actions;
-        actions.forEach(action ->action.setTask(getTask()));
+        actions.forEach(action -> action.setTask(getTask()));
     }
 
     public ActionSequence(Task task2, UnitAI ai2, Action... actions) {
@@ -51,10 +51,10 @@ public class ActionSequence {
         // for (Action a : actions){
         //
         // }
-        return  StringMaster.getWellFormattedString(getType() .toString())
+        return StringMaster.getWellFormattedString(getType().toString())
          + ":" + actions.toString()
-                // + " priority: " + priority
-                ;
+         // + " priority: " + priority
+         ;
 
     }
 
@@ -72,7 +72,8 @@ public class ActionSequence {
     public Action getCurrentAction() {
         return actions.get(i);
     }
-        public Action nextAction() {
+
+    public Action nextAction() {
         if (actions.size() <= i) {
             return null;
         }

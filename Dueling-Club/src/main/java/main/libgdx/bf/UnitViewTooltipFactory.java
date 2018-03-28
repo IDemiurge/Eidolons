@@ -38,7 +38,7 @@ public class UnitViewTooltipFactory {
     }
 
     private static ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
-        final Integer cv =StringMaster.getInteger(hero.getCachedValue(max));
+        final Integer cv = StringMaster.getInteger(hero.getCachedValue(max));
         final Integer v = hero.getIntParam(cur);
         final String name = max.getName();
         final TextureRegion iconTexture =
@@ -61,7 +61,7 @@ public class UnitViewTooltipFactory {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return () ->
-            new ArrayList<>(Arrays.asList(new ValueContainer("Error", "")));
+         new ArrayList<>(Arrays.asList(new ValueContainer("Error", "")));
     }
 
     public static Supplier<List<ValueContainer>> create_(BattleFieldObject hero) {
@@ -87,7 +87,7 @@ public class UnitViewTooltipFactory {
                 }
             }
 
-           if (!hero.isMine())
+            if (!hero.isMine())
                 if (!hero.getGame().isDebugMode())
                     if (hero.getVisibilityLevelForPlayer() !=
                      VISIBILITY_LEVEL.CLEAR_SIGHT) {
@@ -95,20 +95,18 @@ public class UnitViewTooltipFactory {
                         nameContainer.setNameAlignment(Align.left);
                         values.add(nameContainer);
                         if (hero.getGame().isStarted())
-                        if (hero.getUnitVisionStatus() != null) {
-                            final ValueContainer valueContainer =
-                             new ValueContainer(StringMaster.getWellFormattedString(hero.getUnitVisionStatus().name()), "");
-                        valueContainer.setNameAlignment(Align.left);
-                        values.add(valueContainer);
-                        }
+                            if (hero.getUnitVisionStatus() != null) {
+                                final ValueContainer valueContainer =
+                                 new ValueContainer(StringMaster.getWellFormattedString(hero.getUnitVisionStatus().name()), "");
+                                valueContainer.setNameAlignment(Align.left);
+                                values.add(valueContainer);
+                            }
                         String text = hero.getGame().getVisionMaster().getHintMaster().getHintsString(hero);
                         TextureRegion texture = TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath());
                         final ValueContainer hintsContainer = new ValueContainer(texture, text);
                         hintsContainer.setNameAlignment(Align.left);
                         hintsContainer.setValueAlignment(Align.right);
                         values.add(hintsContainer);
-
-
 
 
                         return values;
@@ -118,32 +116,28 @@ public class UnitViewTooltipFactory {
             values.add(nameContainer);
 
 
-
-
-
-            INFO_LEVEL   info_level =
-              new EnumMaster<INFO_LEVEL>().
-               retrieveEnumConst(INFO_LEVEL.class,
-            OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.INFO_DETAIL_LEVEL));
+            INFO_LEVEL info_level =
+             new EnumMaster<INFO_LEVEL>().
+              retrieveEnumConst(INFO_LEVEL.class,
+               OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.INFO_DETAIL_LEVEL));
 
             values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
             values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
-if (info_level!=null )
-            switch (info_level){
-                case VERBOSE:
-                    values.add(getValueContainer(hero, PARAMS.C_STAMINA, PARAMS.STAMINA));
-                    values.add(getValueContainer(hero, PARAMS.C_FOCUS, PARAMS.FOCUS));
-                    values.add(getValueContainer(hero, PARAMS.C_MORALE, PARAMS.MORALE));
-                    values.add(getValueContainer(hero, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
-                case NORMAL:
-                    addParamStringToValues(hero, values, PARAMS.ARMOR);
-                    addParamStringToValues(hero, values, PARAMS.RESISTANCE);
-                case BASIC:
-                    addParamStringToValues(hero, values, PARAMS.DAMAGE);
-                    addParamStringToValues(hero, values, PARAMS.ATTACK);
-                    addParamStringToValues(hero, values, PARAMS.DEFENSE);
-            }
-
+            if (info_level != null)
+                switch (info_level) {
+                    case VERBOSE:
+                        values.add(getValueContainer(hero, PARAMS.C_STAMINA, PARAMS.STAMINA));
+                        values.add(getValueContainer(hero, PARAMS.C_FOCUS, PARAMS.FOCUS));
+                        values.add(getValueContainer(hero, PARAMS.C_MORALE, PARAMS.MORALE));
+                        values.add(getValueContainer(hero, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
+                    case NORMAL:
+                        addParamStringToValues(hero, values, PARAMS.ARMOR);
+                        addParamStringToValues(hero, values, PARAMS.RESISTANCE);
+                    case BASIC:
+                        addParamStringToValues(hero, values, PARAMS.DAMAGE);
+                        addParamStringToValues(hero, values, PARAMS.ATTACK);
+                        addParamStringToValues(hero, values, PARAMS.DEFENSE);
+                }
 
 
             if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
@@ -175,25 +169,25 @@ if (info_level!=null )
 
             if (hero.getCustomParamMap() != null) {
                 hero.getCustomParamMap().keySet().forEach(counter -> {
-                    final String name =  StringMaster.getWellFormattedString(counter);
+                    final String name = StringMaster.getWellFormattedString(counter);
                     String img = CounterMaster.getImagePath(counter);
                     if (img != null) {
 
-                    TextureRegion texture = TextureCache.getOrCreateR(
-                   img);
+                        TextureRegion texture = TextureCache.getOrCreateR(
+                         img);
 
-                    final ValueContainer valueContainer = (texture == null)
-                     ? new ValueContainer(name, hero.getCustomParamMap().get(counter))
-                     : new ValueContainer(texture, name, hero.getCustomParamMap().get(counter));
-                    valueContainer.setNameAlignment(Align.left);
-                    valueContainer.setValueAlignment(Align.right);
-                    values.add(valueContainer);
+                        final ValueContainer valueContainer = (texture == null)
+                         ? new ValueContainer(name, hero.getCustomParamMap().get(counter))
+                         : new ValueContainer(texture, name, hero.getCustomParamMap().get(counter));
+                        valueContainer.setNameAlignment(Align.left);
+                        valueContainer.setValueAlignment(Align.right);
+                        values.add(valueContainer);
                     }
                 });
             }
 
 //            if (VisionManager.isVisibilityOn()){
-            if ( RuleMaster.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()){
+            if (RuleMaster.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
                 addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
                 addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
                 addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
@@ -201,18 +195,17 @@ if (info_level!=null )
 //                     getGammaMaster().
 //                     getGamma(false, hero.getGame().getManager().getActiveObj(), hero), values);
             }
-            if ( hero.getGame().isDebugMode())
-            {
+            if (hero.getGame().isDebugMode()) {
 
                 final ValueContainer outlineContainer =
                  new ValueContainer(StringMaster.getWellFormattedString
-                  (hero.getOutlineTypeForPlayer()+""), "");
+                  (hero.getOutlineTypeForPlayer() + ""), "");
                 outlineContainer.setNameAlignment(Align.left);
                 values.add(outlineContainer);
 
                 final ValueContainer outlineContainer2 =
                  new ValueContainer(StringMaster.getWellFormattedString
-                  (hero.getVisibilityLevel()+""), "");
+                  (hero.getVisibilityLevel() + ""), "");
                 outlineContainer.setNameAlignment(Align.left);
                 values.add(outlineContainer);
             }
@@ -239,7 +232,7 @@ if (info_level!=null )
         if (hero.getIntParam(param) > 0) {
             String value = hero.getStrParam(param);
             String key = param.getName();
-           addKeyAndValue(key, value, values);
+            addKeyAndValue(key, value, values);
         }
     }
 
@@ -248,6 +241,7 @@ if (info_level!=null )
          new ValueContainer(key, value);
         valueContainer.setNameAlignment(Align.left);
         valueContainer.setValueAlignment(Align.right);
-        values.add(valueContainer);}
+        values.add(valueContainer);
+    }
 
 }

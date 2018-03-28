@@ -5,7 +5,7 @@ import main.ability.effects.OneshotEffect;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
-public class AlteringEffect extends DC_Effect  implements OneshotEffect {
+public class AlteringEffect extends DC_Effect implements OneshotEffect {
 
     private String factor;
     private String mod;
@@ -28,10 +28,10 @@ public class AlteringEffect extends DC_Effect  implements OneshotEffect {
         }
         if (factor != null) {
             ref.setAmount(MathMaster.addFactor(ref.getAmount(), new Formula(
-                    factor).getInt(ref)));
+             factor).getInt(ref)));
         } else {
             ref.setAmount(MathMaster.applyMod(ref.getAmount(),
-                    new Formula(mod).getInt(ref)));
+             new Formula(mod).getInt(ref)));
         }
         return true;
     }

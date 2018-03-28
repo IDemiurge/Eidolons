@@ -55,7 +55,7 @@ public class CellCondition extends OccupiedCondition {
         }
 
         return super.getCoordinates(ref).getAdjacentCoordinate(
-                DirectionMaster.getDirectionByFacing(f, direction));
+         DirectionMaster.getDirectionByFacing(f, direction));
     }
 }
 // boolean result = (free) ? !super.preCheck() : super.preCheck();

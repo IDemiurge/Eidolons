@@ -29,14 +29,14 @@ public class DynamicTooltip extends ValueTooltip {
 
     @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        updateRequired=true;
+        updateRequired = true;
         super.onMouseEnter(event, x, y, pointer, fromActor);
     }
 
     @Override
     public void updateAct(float delta) {
         //would be better to update - maybe time could change while displayed
-        setUserObject(new ValueContainer(pic==null ? null : pic.get(),
-         text==null ? null : text.get()));
+        setUserObject(new ValueContainer(pic == null ? null : pic.get(),
+         text == null ? null : text.get()));
     }
 }

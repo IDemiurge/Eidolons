@@ -53,8 +53,8 @@ public class ThrowEffect extends AttackEffect {
         DC_WeaponObj weapon = (DC_WeaponObj) ref.getObj(KEYS.WEAPON);
         try {
             if (offhand
-                    || ref.getObj(KEYS.ACTIVE).checkProperty(G_PROPS.ACTION_TAGS,
-                    "" + ActionEnums.ACTION_TAGS.OFF_HAND)) {
+             || ref.getObj(KEYS.ACTIVE).checkProperty(G_PROPS.ACTION_TAGS,
+             "" + ActionEnums.ACTION_TAGS.OFF_HAND)) {
                 weapon = (DC_WeaponObj) ref.getObj(KEYS.OFFHAND);
                 offhand = true;
             }
@@ -97,7 +97,7 @@ public class ThrowEffect extends AttackEffect {
             }
         }
         weapon.getGame().getDroppedItemManager().itemFalls(ref.getTargetObj().getCoordinates(),
-                weapon);
+         weapon);
 
         getActiveObj().getRef().setID(offhand ? KEYS.OFFHAND : KEYS.WEAPON, null);
 

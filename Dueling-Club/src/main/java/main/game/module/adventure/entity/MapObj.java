@@ -38,20 +38,24 @@ public abstract class MapObj extends MacroObj {
         this.coordinates = coordinates;
         setParam(G_PARAMS.POS_X, coordinates.x);
         setParam(G_PARAMS.POS_Y, coordinates.y);
-        setX(coordinates.x);setY(coordinates.y);
+        setX(coordinates.x);
+        setY(coordinates.y);
         setParam(MACRO_PARAMS.MAP_POS_X, x, true);
         setParam(MACRO_PARAMS.MAP_POS_Y, y, true);
         setMapRenderPoint(new MacroCoordinates(x, y));
 
     }
+
     public void setRegion(Region region) {
         getRef().setMacroId(MACRO_KEYS.REGION, region.getId());
         this.region = region;
     }
+
     @Override
     public String getNameAndCoordinate() {
         return getName() + StringMaster.wrapInParenthesis(getX() + "," + getY());
     }
+
     public abstract int getDefaultSize();
 
     public Coordinates getDefaultMapRenderPoint() {
@@ -62,12 +66,12 @@ public abstract class MapObj extends MacroObj {
         this.mapRenderPoint = mapRenderPoint;
     }
 
-    public void setDetected(boolean detected) {
-        this.detected = detected;
-    }
-
     public boolean isDetected() {
         return detected;
+    }
+
+    public void setDetected(boolean detected) {
+        this.detected = detected;
     }
 
     public boolean isHidden() {
@@ -78,11 +82,11 @@ public abstract class MapObj extends MacroObj {
         this.hidden = hidden;
     }
 
-    public void setInfoLevel(MAP_OBJ_INFO_LEVEL infoLevel) {
-        this.infoLevel = infoLevel;
-    }
-
     public MAP_OBJ_INFO_LEVEL getInfoLevel() {
         return infoLevel;
+    }
+
+    public void setInfoLevel(MAP_OBJ_INFO_LEVEL infoLevel) {
+        this.infoLevel = infoLevel;
     }
 }

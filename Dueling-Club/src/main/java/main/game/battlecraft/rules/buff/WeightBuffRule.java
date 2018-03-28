@@ -24,16 +24,16 @@ With 200%+, unit is Immobilized.
 public class WeightBuffRule extends DC_BuffRule {
     // integral effect
     public static final String FORMULA = StringMaster.getValueRef(KEYS.SOURCE,
-            PARAMS.C_CARRYING_WEIGHT)
-            + "-" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.CARRYING_CAPACITY);
-    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
-            MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
-    public static final  String[] formulas = {getCarryingCapacity() + "*2",
-            getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
+     PARAMS.C_CARRYING_WEIGHT)
+     + "-" + StringMaster.getValueRef(KEYS.SOURCE, PARAMS.CARRYING_CAPACITY);
+    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Immobilized.getName(), // TODO
+     MetaEnums.STD_BUFF_NAMES.Overburdened.getName(), MetaEnums.STD_BUFF_NAMES.Encumbered.getName(),};
+    public static final String[] formulas = {getCarryingCapacity() + "*2",
+     getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
     private static final String PARAMETERS_MODIFIED_1 =
-            StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
+     StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
     private static final String PARAMETERS_MODIFIED_2 =
-            StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
+     StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
 
 
     public WeightBuffRule(MicroGame game) {
@@ -57,15 +57,15 @@ public class WeightBuffRule extends DC_BuffRule {
             }
             case 1: {
                 return
-                        new ModifyValueEffect(
-                                PARAMETERS_MODIFIED_2,
-                                MOD.MODIFY_BY_CONST, FORMULA);
+                 new ModifyValueEffect(
+                  PARAMETERS_MODIFIED_2,
+                  MOD.MODIFY_BY_CONST, FORMULA);
             }
             case 2: {
                 return
-                        new ModifyValueEffect(
-                                PARAMETERS_MODIFIED_1,
-                                MOD.MODIFY_BY_CONST, FORMULA);
+                 new ModifyValueEffect(
+                  PARAMETERS_MODIFIED_1,
+                  MOD.MODIFY_BY_CONST, FORMULA);
             }
         }
         return null;

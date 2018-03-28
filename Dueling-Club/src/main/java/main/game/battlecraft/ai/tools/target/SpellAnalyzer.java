@@ -7,7 +7,7 @@ public class SpellAnalyzer {
 
     public static boolean isCounterModSpell(DC_ActiveObj active) {
         return (EffectFinder.check(active.getAbilities(),
-                ModifyCounterEffect.class));
+         ModifyCounterEffect.class));
     }
 
 }

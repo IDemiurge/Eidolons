@@ -423,6 +423,9 @@ public abstract class DC_Obj extends MicroObj {
                 setOutlineTypeForPlayer(outlineType);
             }
         }
+        else {
+            setOutlineTypeForPlayer(outlineType);
+        }
         if (outlineType != null)
             if (isMine()) {
                 return;

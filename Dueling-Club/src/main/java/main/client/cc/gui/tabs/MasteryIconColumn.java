@@ -36,7 +36,7 @@ public class MasteryIconColumn extends G_Panel implements MouseListener {
         this.hero = hero;
         this.group = group;
         panelSize = new Dimension((fullSize) * wrap - offset * wrap, (fullSize) * rows - offset
-                * rows);
+         * rows);
 
     }
 

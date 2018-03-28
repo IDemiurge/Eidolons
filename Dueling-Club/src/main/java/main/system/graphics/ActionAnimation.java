@@ -220,7 +220,7 @@ public class ActionAnimation extends PhaseAnimation {
         int x;
         String text;
         Image image = DC_ImageMaster.getImageDynamic(res_armor ? MOD_IDENTIFIER.RESISTANCE : MOD_IDENTIFIER.ARMOR,
-                value);
+         value);
         int width = 32;
         if (left_right_center == null) {
             width += res_armor ? 32 : -32;
@@ -271,7 +271,7 @@ public class ActionAnimation extends PhaseAnimation {
         drawOnTarget(image, 0, y - (image.getHeight(null) - FontMaster.getFontHeight(font)) / 2);
 
         String string = StringMaster.wrapInBraces(blocked + "") + " blocked "
-                + StringMaster.wrapInParenthesis(ArmorMaster.getArmorValue(armor, dmg_type) + " max.");
+         + StringMaster.wrapInParenthesis(ArmorMaster.getArmorValue(armor, dmg_type) + " max.");
         x = (w - FontMaster.getStringWidth(font, string)) / 2;
         y += drawTextOnTarget(string, font, x, y) - 6;
 
@@ -311,7 +311,7 @@ public class ActionAnimation extends PhaseAnimation {
         int y = (h - fontHeight) / 2;
         drawTextOnTarget(text, font, w, y, getColorForModifier(totalMod));
         addMouseItem(false, w, y, FontMaster.getStringWidth(font, text), fontHeight,
-                new MouseItemImpl(MOUSE_ITEM.SUB_PHASE, PHASE_TYPE.DAMAGE_FORMULA_MODS));
+         new MouseItemImpl(MOUSE_ITEM.SUB_PHASE, PHASE_TYPE.DAMAGE_FORMULA_MODS));
         return true;
     }
 
@@ -465,7 +465,7 @@ public class ActionAnimation extends PhaseAnimation {
                     }
                     if (arg == null) {
                         addMouseItem(false, x, y, width, height,
-                                new MouseItemImpl(MOUSE_ITEM.TOOLTIP, getSubPhaseTooltipMap().get(image)));
+                         new MouseItemImpl(MOUSE_ITEM.TOOLTIP, getSubPhaseTooltipMap().get(image)));
                     } else {
                         addMouseItem(false, x, y, width, height, new MouseItemImpl(MOUSE_ITEM.SUB_PHASE, arg));
                     }
@@ -474,8 +474,8 @@ public class ActionAnimation extends PhaseAnimation {
                 // addToolTip(s+modsMap.getOrCreate(s));
 
                 y +=
-                        // ((inverse) ? -1 : 1) *
-                        (MAX_MINI_ICON_SIZE + getIconMapOffsetY());
+                 // ((inverse) ? -1 : 1) *
+                 (MAX_MINI_ICON_SIZE + getIconMapOffsetY());
 
                 Integer mod = StringMaster.getInteger(s);
                 Color color = getColorForModifier(mod);
@@ -489,7 +489,7 @@ public class ActionAnimation extends PhaseAnimation {
 
             }
             base = base + ((!inverse) ? 1 : -1)
-                    * (MAX_MINI_ICON_SIZE + getIconMapOffsetY() + FontMaster.getFontHeight(font) / 2);
+             * (MAX_MINI_ICON_SIZE + getIconMapOffsetY() + FontMaster.getFontHeight(font) / 2);
 
         }
     }
@@ -509,7 +509,7 @@ public class ActionAnimation extends PhaseAnimation {
 
     protected int getOffsetBase(boolean positive) {
         int offset = (positive ? 1 : -1) * GuiManager.getCellHeight()
-                * game.getBattleField().getGrid().getGridComp().getZoom() / 100;
+         * game.getBattleField().getGrid().getGridComp().getZoom() / 100;
         if (!positive) {
             offset += 12;
         } else {
@@ -628,7 +628,7 @@ public class ActionAnimation extends PhaseAnimation {
         game = (DC_Game) target.getGame();
         setTargetCoordinates((target.getCoordinates()));
         targetPoint = game.getBattleField().getGrid().getGridComp()
-                .getPointForCoordinateWithOffset(getTargetCoordinates());
+         .getPointForCoordinateWithOffset(getTargetCoordinates());
     }
 
     @Override

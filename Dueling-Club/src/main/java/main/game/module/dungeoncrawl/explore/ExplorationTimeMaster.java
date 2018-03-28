@@ -328,6 +328,6 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     public void playerWaits() {
         int defaultWaitTime = OptionsMaster.getGameplayOptions().getIntValue(
          GAMEPLAY_OPTION.DEFAULT_WAIT_TIME);
-        wait (defaultWaitTime, false);
+        wait(defaultWaitTime, false);
     }
 }

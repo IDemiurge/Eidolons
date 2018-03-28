@@ -66,7 +66,7 @@ public class CharacterCreator {
         setHeroCreator(new HeroCreator(getGame()));
         setHeroManager(new HeroManager(getGame()));
         setHeroPanelSize(new Dimension((int) GuiManager.DEF_DIMENSION.getWidth(),
-                HeroPanel.HERO_PANEL_FRAME.getHeight() + 100));
+         HeroPanel.HERO_PANEL_FRAME.getHeight() + 100));
     }
 
     // heroes;
@@ -99,9 +99,9 @@ public class CharacterCreator {
         new Thread(new Runnable() {
             public void run() {
                 DialogMaster.ask("Save as...", // This name has already been
-                        // used, what would you like to
-                        // do?
-                        true, "Overwrite", "New Hero", "New Version");
+                 // used, what would you like to
+                 // do?
+                 true, "Overwrite", "New Hero", "New Version");
             }
         }).start();
 
@@ -141,13 +141,13 @@ public class CharacterCreator {
             String string = ListChooser.chooseEnum(WORKSPACE_GROUP.class);
             if (string != null) {
                 ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(WORKSPACE_GROUP.class,
-                        string);
+                 string);
             }
             newType.setWorkspaceGroup(ws);
         } else {
             newType.setGroup(getFilterGroup(), false);
             newType.setProperty(G_PROPS.CUSTOM_HERO_GROUP, StringMaster
-                    .getWellFormattedString(getDefaultSpecGroup().name()));
+             .getWellFormattedString(getDefaultSpecGroup().name()));
             newType.setWorkspaceGroup(getDoneWorkspaceGroup());
             // automatic ?
         }
@@ -469,7 +469,7 @@ public class CharacterCreator {
             result = (Boolean) WaitMaster.waitForInput(DialogMaster.ASK_WAIT);
         } else {
             result = DialogMaster.askAndWait("What about the hero's name?", true, "Random",
-                    "Input", "Back");
+             "Input", "Back");
         }
         if (result == null) {
             // TODO
@@ -478,7 +478,7 @@ public class CharacterCreator {
         while (true) {
             if (!result) {
                 name = DialogMaster.inputText(InfoMaster.INPUT_HERO_NAME, NameMaster
-                        .generateName(hero));
+                 .generateName(hero));
                 if (name == null) {
                     return null;
                 }
@@ -488,10 +488,10 @@ public class CharacterCreator {
             }
             name = NameMaster.generateName(hero);
             result = DialogMaster.askAndWait(RandomWizard.random() ? "Perhaps '" + name
-                            + "' will do?" : "How about '" + name + "'?", true,
-                    RandomWizard.random() ? "Keep going" : "Try Again",
-                    RandomWizard.random() ? "Sure" : "Great",
-                    RandomWizard.random() ? "I'd like to..." : "Let me...");
+              + "' will do?" : "How about '" + name + "'?", true,
+             RandomWizard.random() ? "Keep going" : "Try Again",
+             RandomWizard.random() ? "Sure" : "Great",
+             RandomWizard.random() ? "I'd like to..." : "Let me...");
 
             if (result == null) {
                 result = DialogMaster.askAndWait("Do what, exactly?", "Pick", "Set Group", "Edit");
@@ -500,7 +500,7 @@ public class CharacterCreator {
                 if (result == null) {
 
                     name = DialogMaster.inputText(RandomWizard.random() ? "Got a better idea?"
-                            : "You're the boss...", NameMaster.generateName(hero));
+                     : "You're the boss...", NameMaster.generateName(hero));
                     // if (name == null)
                     // {
                     // return null;
@@ -556,7 +556,7 @@ public class CharacterCreator {
 
     public static boolean isLevelUpEnabled(Unit hero) {
         if (hero.getGame().getGameType() == GAME_TYPE.SKIRMISH
-                || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
+         || hero.getGame().getGameType() == GAME_TYPE.SCENARIO) {
 //            if (hero.getLevel() >= ScenarioPrecombatMaster.getScenario().getMaxHeroLevel()) {
 //                return false;
 //            }
@@ -591,7 +591,7 @@ public class CharacterCreator {
         firstPanel.refresh();
         try {
             getHeroPanel().getMiddlePanel().getArc().getUpperIcon().setIcon(
-                    new ImageIcon(type.getImage()));
+             new ImageIcon(type.getImage()));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -601,7 +601,7 @@ public class CharacterCreator {
             secondPanel.refresh();
             try {
                 getHeroPanel().getMiddlePanel().getArc().getLowerIcon().setIcon(
-                        new ImageIcon(entity.getImage()));
+                 new ImageIcon(entity.getImage()));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

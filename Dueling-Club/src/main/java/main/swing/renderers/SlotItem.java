@@ -30,9 +30,9 @@ public class SlotItem extends ListItem<DC_HeroAttachedObj> {
         }
 
         Image ammo = ImageTransformer.getCircleCroppedImage(ImageManager.applyBorder(ImageManager
-                        .getSizedVersion(obj.getImagePath(),
-                                BORDER.CIRCLE_GLOW_40.getImage().getWidth(null)).getImage(),
-                BORDER.CIRCLE_GLOW_40));
+          .getSizedVersion(obj.getImagePath(),
+           BORDER.CIRCLE_GLOW_40.getImage().getWidth(null)).getImage(),
+         BORDER.CIRCLE_GLOW_40));
         return drawCounters(ImageManager.applyImage(compIcon.getImage(), ammo, 38, 28, false), obj);
     }
 

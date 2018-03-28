@@ -108,7 +108,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
-        if (p.get()==DIFFICULTY_PANEL_ARG ){
+        if (p.get() == DIFFICULTY_PANEL_ARG) {
             return new DifficultySelectionPanel();
         }
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());

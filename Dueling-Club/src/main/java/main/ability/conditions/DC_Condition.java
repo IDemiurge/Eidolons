@@ -8,7 +8,7 @@ import main.game.core.game.DC_Game;
  */
 public abstract class DC_Condition extends MicroCondition {
 
-    public DC_Game getGame(){
+    public DC_Game getGame() {
         return (DC_Game) game;
     }
 }

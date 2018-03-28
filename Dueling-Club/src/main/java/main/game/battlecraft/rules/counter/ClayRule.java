@@ -13,9 +13,9 @@ import main.game.core.game.DC_Game;
 /**
  * Created by JustMe on 4/19/2017.
  */
-public class ClayRule extends  DC_CounterRule {
+public class ClayRule extends DC_CounterRule {
     private static final String WEIGHT_PER_COUNTER = "1";
-    private static final String RESISTANCES ="Acid|Lightning|Bludgeoning" ;
+    private static final String RESISTANCES = "Acid|Lightning|Bludgeoning";
     private static final String RESIST_PER_COUNTER = "1";
 
     public ClayRule(DC_Game game) {
@@ -37,6 +37,7 @@ public class ClayRule extends  DC_CounterRule {
     public COUNTER getCounter() {
         return COUNTER.Clay;
     }
+
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.WEIGHT,

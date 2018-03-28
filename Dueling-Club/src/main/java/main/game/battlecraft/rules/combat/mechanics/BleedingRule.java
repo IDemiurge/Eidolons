@@ -46,13 +46,13 @@ public class BleedingRule extends DC_RuleImpl {
     public void initEffects() {
         // LIMIT BY MAX
         effects = new ModifyCounterEffect(COUNTER.Bleeding.getName(),
-                MOD.MODIFY_BY_CONST,
+         MOD.MODIFY_BY_CONST,
 
 //                "{ACTIVE_PARAMS.BLEEDING_MOD}/100*"+
-                StringMaster.wrapInParenthesis(
-                        // TODO formula?
-                        THRESHOLD + "-" + "({TARGET_C_TOUGHNESS}*100/"
-                                + "{TARGET_TOUGHNESS})*" + MODIFIER + "/100")
+         StringMaster.wrapInParenthesis(
+          // TODO formula?
+          THRESHOLD + "-" + "({TARGET_C_TOUGHNESS}*100/"
+           + "{TARGET_TOUGHNESS})*" + MODIFIER + "/100")
 
         );
     }
@@ -61,11 +61,11 @@ public class BleedingRule extends DC_RuleImpl {
     public void initConditions() {
         // DAMAGE TYPE CHECK? event_damage_type?
         conditions = new Conditions(ConditionMaster.getAliveCondition(KEYS.TARGET), ConditionMaster
-                .getLivingCondition("target"), new NotCondition(new ObjTypeComparison(
-                DC_TYPE.BF_OBJ, "target")), new NumericCondition("{TARGET_TOUGHNESS}*"
-                + THRESHOLD + "/100"
+         .getLivingCondition("target"), new NotCondition(new ObjTypeComparison(
+         DC_TYPE.BF_OBJ, "target")), new NumericCondition("{TARGET_TOUGHNESS}*"
+         + THRESHOLD + "/100"
 
-                , "{TARGET_C_TOUGHNESS}"));
+         , "{TARGET_C_TOUGHNESS}"));
 
     }
 

@@ -11,11 +11,11 @@ import java.util.Map;
  * Created by JustMe on 8/3/2017.
  */
 public class UnitStats {
+    Map<PARAMETER, Integer> allyModMap = new HashMap<>();
+    Map<PARAMETER, Integer> enemyModMap = new HashMap<>();
     private Unit unit;
-    private Map<Unit, Integer> killsMap= new HashMap<>();
-    private Map<COMBAT_STATS, Integer> statMap= new HashMap<>();
-    Map<PARAMETER, Integer> allyModMap= new HashMap<>();
-    Map<PARAMETER, Integer> enemyModMap= new HashMap<>();
+    private Map<Unit, Integer> killsMap = new HashMap<>();
+    private Map<COMBAT_STATS, Integer> statMap = new HashMap<>();
 
 
     public UnitStats(Unit unit) {
@@ -34,6 +34,7 @@ public class UnitStats {
         return statMap;
 
     }
+
     public Map<PARAMETER, Integer> getAllyModMap() {
         return allyModMap;
     }

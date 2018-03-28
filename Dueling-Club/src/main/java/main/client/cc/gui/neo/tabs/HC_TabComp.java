@@ -34,7 +34,7 @@ public class HC_TabComp extends G_Panel {
 
     public HC_TabComp(String imgPath, boolean centered, boolean selected, int index) {
         this(HC_TabPanel.TAB_DEFAULT, HC_TabPanel.TAB_SELECTED_DEFAULT, imgPath, centered,
-                selected, index);
+         selected, index);
     }
 
     public HC_TabComp(ComponentVisuals visualsNormal, ComponentVisuals visualsSelected,

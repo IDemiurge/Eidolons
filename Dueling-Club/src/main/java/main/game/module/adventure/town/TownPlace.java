@@ -26,7 +26,7 @@ public class TownPlace extends MacroObj {
     }
 
     public TOWN_PLACE_TYPE getTownPlaceType() {
-        if (townPlaceType==null )
+        if (townPlaceType == null)
             townPlaceType = new EnumMaster<TOWN_PLACE_TYPE>().
              retrieveEnumConst(TOWN_PLACE_TYPE.class, getProperty(MACRO_PROPS.TOWN_PLACE_TYPE));
         return townPlaceType;

@@ -100,7 +100,7 @@ public class MainPanel implements TabChangeListener {
         addMainComponents();
         comp.add(heroPanel, "id header, pos 0 0");
         comp.add(controls, "id controls,pos header.x2+" + VISUALS.BUTTON.getWidth() / 2 + " "
-                + OFFSET_Y);
+         + OFFSET_Y);
         comp.add(specialControls, "id specControls, pos mvp.x controls.y2");
 
         JLabel bg = new JLabel(ImageManager.getIcon(getBackgroundPath()));
@@ -183,7 +183,7 @@ public class MainPanel implements TabChangeListener {
             comp.remove(mvp);
             comp.remove(mp);
             comp.add(getPrincipleViewComp(), "id principleViewComp, pos header.x2 "
-                    + getMainComponentsY());
+             + getMainComponentsY());
             comp.setComponentZOrder(principleViewComp, 0);
         } else {
             comp.setAutoZOrder(isAutoZOrder());

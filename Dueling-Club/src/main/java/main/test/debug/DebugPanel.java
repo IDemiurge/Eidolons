@@ -37,7 +37,7 @@ public class DebugPanel {
 
     public static int getPanelHeight() {
         return (int) GuiManager.getScreenHeight() - GuiManager.getSquareCellSize()
-                * 2;
+         * 2;
     }
 
     private void initGUI() {

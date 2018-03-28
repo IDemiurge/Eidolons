@@ -41,11 +41,6 @@ public class DummyAction implements ActiveObj {
     }
 
     @Override
-    public void setConstructed(boolean b) {
-
-    }
-
-    @Override
     public boolean isFree() {
         return false;
     }
@@ -153,6 +148,11 @@ public class DummyAction implements ActiveObj {
     @Override
     public boolean isConstructed() {
         return false;
+    }
+
+    @Override
+    public void setConstructed(boolean b) {
+
     }
 
     @Override

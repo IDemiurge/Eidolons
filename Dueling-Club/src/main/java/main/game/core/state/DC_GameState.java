@@ -23,7 +23,7 @@ public class DC_GameState extends MicroGameState {
     }
 
     @Override
-    public  DC_StateManager getManager() {
+    public DC_StateManager getManager() {
         return (DC_StateManager) super.getManager();
     }
 

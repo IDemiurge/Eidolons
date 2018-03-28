@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class HeaderPanel extends G_Panel implements MouseListener,
-        ActionListener {
+ ActionListener {
 
     private static final String SAVE = "Save";
     private static final String BACK = "Back";
@@ -28,10 +28,10 @@ public class HeaderPanel extends G_Panel implements MouseListener,
     private static final String OPEN = "Open";
     boolean editable;
     String[] controls = {SAVE, SAVE_AS, OPEN, BACK, DELETE, LEVEL_UP, RENAME,
-            NEW};
+     NEW};
     VALUE[] displayedValuesTop = {G_PROPS.RACE, G_PROPS.RANK,};
     VALUE[] displayedValuesBottom = {PARAMS.HERO_LEVEL, G_PROPS.DEITY,
-            G_PROPS.PRINCIPLES,}; // classes
+     G_PROPS.PRINCIPLES,}; // classes
     private Unit hero;
     private JLabel portrait;
     private JLabel emblem;
@@ -94,12 +94,12 @@ public class HeaderPanel extends G_Panel implements MouseListener,
 
     private G_Panel initValues(VALUE[] values, boolean top) {
         G_Panel panel = new G_Panel(
-                // (top) ? "" :
-                "flowy");
+         // (top) ? "" :
+         "flowy");
         for (VALUE v : values) {
             String text =
 
-                    hero.getValue(v);
+             hero.getValue(v);
             if (!top) {
                 text = v.getName() + ": " + text;
             }

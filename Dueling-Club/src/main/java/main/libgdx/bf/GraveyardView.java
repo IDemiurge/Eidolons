@@ -25,12 +25,12 @@ public class GraveyardView extends TablePanel {
     private TablePanel<UnitView> graveTables;
 
     private Button graveyardButton;
-    private int graveCount=0;
+    private int graveCount = 0;
 
     public GraveyardView() {
         graveyardButton = new Button(new Image(
          TextureCache.getOrCreate(
-         "UI/components/small/skulls_32x32.png")),
+          "UI/components/small/skulls_32x32.png")),
 //                StyleHolder.getCustomButtonStyle("UI/components/small/skulls_32x32.png")
          StyleHolder.getDefaultTextButtonStyle()
         );
@@ -49,8 +49,8 @@ public class GraveyardView extends TablePanel {
         add(graveTables).expand().fill();
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(
-                new ValueContainer("\"Death smiles at us all,", ""),
-                new ValueContainer("all a man can do is smile back.\"", "")));
+         new ValueContainer("\"Death smiles at us all,", ""),
+         new ValueContainer("all a man can do is smile back.\"", "")));
         graveyardButton.addListener(tooltip.getController());
 
         graveyardButton.addListener(new BattleClickListener() {

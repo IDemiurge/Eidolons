@@ -61,12 +61,12 @@ public class GameControlPanel extends G_Panel {
 //                }
 //            }// bfBuilder.toggleDungeonsPanel();
 
-            // if (Launcher.getView() != VIEWS.MINI_MAP) {
-            // prevView = Launcher.getView();
-            // Launcher.setView(VIEWS.MINI_MAP);
-            // } else {
-            // Launcher.resetView(prevView);
-            // }
+        // if (Launcher.getView() != VIEWS.MINI_MAP) {
+        // prevView = Launcher.getView();
+        // Launcher.setView(VIEWS.MINI_MAP);
+        // } else {
+        // Launcher.resetView(prevView);
+        // }
     }
 
     public enum GAME_CONTROL {

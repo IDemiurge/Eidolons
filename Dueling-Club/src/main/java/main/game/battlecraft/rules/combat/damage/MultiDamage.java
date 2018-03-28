@@ -11,7 +11,6 @@ public class MultiDamage extends Damage {
     }
 
 
-
     public List<Damage> getAdditionalDamage() {
         if (additionalDamage == null) {
             additionalDamage = new ArrayList<>();

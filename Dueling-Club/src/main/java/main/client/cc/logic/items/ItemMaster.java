@@ -31,6 +31,7 @@ public class ItemMaster {
 
         return false;
     }
+
     static boolean isRing(ObjType type) {
         return type.checkProperty(G_PROPS.JEWELRY_TYPE, ItemEnums.JEWELRY_TYPE.RING + "");
     }
@@ -41,7 +42,7 @@ public class ItemMaster {
     }
 
     public static boolean checkMaterial(ObjType type, MATERIAL material) {
-        return checkMaterial(type,   material.getGroup());
+        return checkMaterial(type, material.getGroup());
     }
 
     public static boolean checkMaterial(ObjType type, ITEM_MATERIAL_GROUP group) {

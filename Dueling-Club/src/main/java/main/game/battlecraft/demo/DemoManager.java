@@ -29,19 +29,22 @@ import java.util.List;
 public class DemoManager {
 
 
-    public static final String PARTY_NAME ="Demo Party" ;
+    public static final String PARTY_NAME = "Demo Party";
     private static Unit leader;
-    private static String demoParty="Demo Party";
+    private static String demoParty = "Demo Party";
 
     public static void loadLast() {
 
     }
+
     public static void showInfo() {
 
     }
+
     public static void save() {
 //append leader, ...
     }
+
     public static void hqEntered() {
         initHero();
         initParty();
@@ -58,7 +61,7 @@ public class DemoManager {
         List<ObjType> demoHeroes = new ArrayList<>();
         DataManager.getTypesSubGroup(DC_TYPE.CHARS, "Demo");
         Unit entity = null;
-        
+
         ChoiceSequence sequence = new ChoiceSequence();
         sequence.addView(new EntityChoiceView(sequence, entity, demoHeroes) {
 
@@ -87,7 +90,7 @@ public class DemoManager {
                 return DC_TYPE.CHARS;
             }
         });
-        sequence .setManager(new SequenceManager() {
+        sequence.setManager(new SequenceManager() {
             @Override
             public void doneSelection() {
                 WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, sequence.getValue());
@@ -106,7 +109,7 @@ public class DemoManager {
             }
         });
         sequence.start();
-        
+
     }
 
     public static void setLeader(Unit leader) {
@@ -145,8 +148,9 @@ public class DemoManager {
         UNDERWORLD,
         ELDRITCH_SHRINE,;
         String path;
-        DEMO_DUNGEONS(){
-            path = "demo\\"+
+
+        DEMO_DUNGEONS() {
+            path = "demo\\" +
              StringMaster.getWellFormattedString(name() + ".xml");
 
         }

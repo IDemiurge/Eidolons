@@ -15,8 +15,8 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 public class QuickItemAnim extends Anim {
     private DC_QuickItemObj item;
 
-    public QuickItemAnim( DC_QuickItemObj item) {
-        super(item.getActive(),  new AnimData());
+    public QuickItemAnim(DC_QuickItemObj item) {
+        super(item.getActive(), new AnimData());
         this.item = item;
     }
 

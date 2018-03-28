@@ -20,7 +20,7 @@ import main.system.entity.ConditionMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
-public class TossItemEffect extends DC_Effect  implements OneshotEffect {
+public class TossItemEffect extends DC_Effect implements OneshotEffect {
 
     private Condition conditions;
 
@@ -39,23 +39,23 @@ public class TossItemEffect extends DC_Effect  implements OneshotEffect {
         Unit source = (Unit) ref.getSourceObj();
         Ref REF = ref.getCopy();
         conditions = new OrConditions(
-                DC_ConditionMaster
-                        .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_ITEM),
-                DC_ConditionMaster
-                        .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON));
+         DC_ConditionMaster
+          .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_ITEM),
+         DC_ConditionMaster
+          .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON));
         if (!new SelectiveTargeting(conditions).select(REF)) {
             ref.getActive().setCancelled(true);
             return false;
         }
         DC_HeroItemObj item = (DC_HeroItemObj) REF.getTargetObj();
         conditions = new Conditions(
-                // ++ Max distance?
-                new DistanceCondition(ref.getActive().getIntParam(PARAMS.RANGE, false) + ""),
-                // new NumericCondition("{match_c_n_of_actions}", "1"),
-                new CanActCondition(KEYS.MATCH),
-                new NotCondition(ConditionMaster.getSelfFilterCondition()),
-                DC_ConditionMaster
-                        .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.ANY_ALLY));
+         // ++ Max distance?
+         new DistanceCondition(ref.getActive().getIntParam(PARAMS.RANGE, false) + ""),
+         // new NumericCondition("{match_c_n_of_actions}", "1"),
+         new CanActCondition(KEYS.MATCH),
+         new NotCondition(ConditionMaster.getSelfFilterCondition()),
+         DC_ConditionMaster
+          .getSelectiveTargetingTemplateConditions(SELECTIVE_TARGETING_TEMPLATES.ANY_ALLY));
         // non-immobile, ++facing?
         if (!new SelectiveTargeting(conditions).select(REF)) {
             ref.getActive().setCancelled(true);
@@ -92,8 +92,8 @@ public class TossItemEffect extends DC_Effect  implements OneshotEffect {
 
     private boolean roll(Unit source, Unit unit, DC_HeroItemObj item) {
         String fail = "5*1.5*sqrt"
-                + StringMaster.wrapInParenthesis(""
-                + (1 + PositionMaster.getDistance(unit, source)));
+         + StringMaster.wrapInParenthesis(""
+         + (1 + PositionMaster.getDistance(unit, source)));
         // account for range
         if (item instanceof DC_QuickItemObj) {
             DC_QuickItemObj quickItemObj = (DC_QuickItemObj) item;
@@ -102,14 +102,14 @@ public class TossItemEffect extends DC_Effect  implements OneshotEffect {
         REF.setTarget(source.getId());
 
         boolean result = RollMaster.roll(GenericEnums.ROLL_TYPES.ACCURACY, "-", fail, ref, "@, missing the "
-                + item.getName() + " toss", item.getName() + " toss");
+         + item.getName() + " toss", item.getName() + " toss");
         fail = "5";
         if (!result) {
             fail += "*2";
         }
         REF.setTarget(unit.getId());
         result = !RollMaster.roll(GenericEnums.ROLL_TYPES.REFLEX, "-", fail, ref, "@, dropping the tossed "
-                + item.getName(), item.getName() + " toss");
+         + item.getName(), item.getName() + " toss");
 
         return result;
     }

@@ -9,11 +9,13 @@ import main.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 public class IntroFactory extends DialogueFactory {
 
     private static final String FILE_NAME = "intros.txt";
+
     @Override
     protected Speech getSpeech(Integer integer) {
         return new IntroSpeech(integer);
     }
+
     protected String getFileName() {
-         return  FILE_NAME ;
+        return FILE_NAME;
     }
 }

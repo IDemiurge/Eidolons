@@ -50,7 +50,7 @@ public class ScenarioGenerator {
          place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
         for (int i = 0; i < n; i++) {
             String mission = FileManager.getRandomFilePath(path);
-            mission =StringMaster.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
+            mission = StringMaster.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
             ObjType missionType = new ObjType("", DC_TYPE.MISSIONS);
             missionType.setProperty(PROPS.MISSION_FILE_PATH, mission);
             DataManager.addType(missionType);

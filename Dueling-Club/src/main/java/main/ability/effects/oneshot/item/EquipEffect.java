@@ -10,7 +10,7 @@ import main.entity.item.DC_HeroItemObj;
 import main.entity.item.DC_WeaponObj;
 import main.entity.obj.unit.Unit;
 
-public class EquipEffect extends MicroEffect  implements OneshotEffect {
+public class EquipEffect extends MicroEffect implements OneshotEffect {
 
     private DC_HeroItemObj item;
     private Boolean weapon = false;
@@ -38,7 +38,7 @@ public class EquipEffect extends MicroEffect  implements OneshotEffect {
                 item = (DC_HeroItemObj) ref.getObj(KEYS.ITEM);
             } else {
                 item = (DC_HeroItemObj) ref.getObj((weapon) ? KEYS.WEAPON
-                        : KEYS.ARMOR);
+                 : KEYS.ARMOR);
             }
         }
         // preCheck if item can be equipped at all!
@@ -54,11 +54,11 @@ public class EquipEffect extends MicroEffect  implements OneshotEffect {
         }
         if (weapon || quickItem) {
             slot = (mainHand || quickItem) ? ItemEnums.ITEM_SLOT.MAIN_HAND
-                    : ItemEnums.ITEM_SLOT.OFF_HAND;
+             : ItemEnums.ITEM_SLOT.OFF_HAND;
         }
 
         ref.setID((weapon || quickItem) ? KEYS.WEAPON : KEYS.ARMOR, item
-                .getId());
+         .getId());
 
         return hero.equip(item, slot);
     }

@@ -14,7 +14,7 @@ public class HungItem extends DungeonObj {
 
     public HungItem(ObjType type, int x, int y, ObjType item) {
         super(type, x, y);
-        itemType= item;
+        itemType = item;
     }
 
     @Override

@@ -6,7 +6,7 @@ import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
 import main.system.math.Formula;
 
-public class DispelEffect extends MicroEffect  implements OneshotEffect {
+public class DispelEffect extends MicroEffect implements OneshotEffect {
 
     private Formula chance;
     private Formula durationMod;
@@ -33,7 +33,7 @@ public class DispelEffect extends MicroEffect  implements OneshotEffect {
     public boolean applyThis() {
 
         for (Attachment attachment : game.getState().getAttachmentsMap()
-                .get(ref.getTargetObj())) {
+         .get(ref.getTargetObj())) {
 
             if (!(attachment instanceof BuffObj)) {
                 continue;

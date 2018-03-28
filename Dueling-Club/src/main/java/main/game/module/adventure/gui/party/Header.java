@@ -43,7 +43,7 @@ public class Header extends ValueIconPanel {
     public VALUE[][] getValueColumns() {
         if (valueColumns == null) {
             List<List<VALUE>> splitList = new ListMaster<VALUE>().splitList(
-                    getColumnCount(), list);
+             getColumnCount(), list);
             valueColumns = new VALUE[splitList.size()][];
             int i = 0;
             for (List<VALUE> row : splitList) {

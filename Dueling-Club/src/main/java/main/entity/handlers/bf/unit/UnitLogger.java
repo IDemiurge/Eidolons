@@ -4,9 +4,9 @@ import main.content.ContentManager;
 import main.content.VALUE;
 import main.content.ValuePages;
 import main.content.values.parameters.PARAMETER;
-import main.entity.obj.unit.Unit;
 import main.entity.handlers.EntityLogger;
 import main.entity.handlers.EntityMaster;
+import main.entity.obj.unit.Unit;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,21 +24,23 @@ public class UnitLogger extends EntityLogger<Unit> {
         vals.forEach(p -> logParam(p));
 
     }
+
     // FOR DEBUG
     public void logCoreParamPercentages() {
-        logVals(   Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
+        logVals(Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
          (PARAMETER p) -> ContentManager.getPercentageParam(p)).
          collect(Collectors.toList()));
 
     }
-        public void logCoreParams() {
-       logVals( Arrays.asList(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT));
+
+    public void logCoreParams() {
+        logVals(Arrays.asList(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT));
 
     }
 
     private void logParam(VALUE p) {
         main.system.auxiliary.log.LogMaster.log(1,
-         getEntity().getName() + "'s " + p + " = " + getValue(p)+"\n");
+         getEntity().getName() + "'s " + p + " = " + getValue(p) + "\n");
     }
 
 }

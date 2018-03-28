@@ -30,8 +30,8 @@ import main.system.entity.ConditionMaster;
 import main.system.math.PositionMaster;
 import main.system.math.roll.RollMaster;
 
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -148,7 +148,8 @@ public class AttackOfOpportunityRule {
     public static Boolean checkAttack(Unit unit, DC_ActiveObj active) {
         return checkAttack(unit, active, false, false);
     }
-@Deprecated
+
+    @Deprecated
     public static Boolean checkAttack(Unit unit, DC_ActiveObj active, boolean stealthAoO,
                                       boolean force) {
         // if (!getConditions().preCheck(unit)) return;
@@ -172,11 +173,11 @@ public class AttackOfOpportunityRule {
         }
         if (!force) {
             int distance = PositionMaster.getDistance(active.getOwnerObj().getCoordinates(), unit
-                    .getCoordinates());
+             .getCoordinates());
 
             if (active.getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.MOVE) {
                 distance = Math.max(distance, PositionMaster.getDistance(DC_MovementManager
-                        .getMovementDestinationCoordinate(active), unit.getCoordinates()));
+                 .getMovementDestinationCoordinate(active), unit.getCoordinates()));
             }
             // TODO moving away from same-cell ?
             if (distance > getAoOMaxDistance(unit, active)) {
@@ -225,15 +226,15 @@ public class AttackOfOpportunityRule {
     private static Condition getConditions() {
         if (conditions == null) {
             conditions = new Conditions(ConditionMaster.getAliveAndConsciousFilterCondition(),
-                    ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
-                    .getEnemyCondition(), new VisibilityCondition(KEYS.MATCH, KEYS.SOURCE,
-                    VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+             ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
+             .getEnemyCondition(), new VisibilityCondition(KEYS.MATCH, KEYS.SOURCE,
+             VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
         }
         return conditions;
     }
 
     private static DC_ActiveObj getAoO(Unit unit, boolean free) {
-        return null ;
+        return null;
 //   TODO      return unit.getAction(free ? DC_ActionManager.FREE_ATTACK_OF_OPPORTUNITY
 //                : DC_ActionManager.ATTACK_OF_OPPORTUNITY);
     }
@@ -258,8 +259,8 @@ public class AttackOfOpportunityRule {
 
     public static void triggerAttack(Unit attacker, Unit attacked, boolean free) {
         LogMaster.log(LogMaster.COMBAT_DEBUG, "Triggering "
-                + ((free) ? "free " : "") + "Attack of Opportunity for " + attacker + " on "
-                + attacked);
+         + ((free) ? "free " : "") + "Attack of Opportunity for " + attacker + " on "
+         + attacked);
 
         // attacker.getGame().getActionManager().activateAttackOfOpportunity(attacked,
         // attacker, free);
@@ -285,7 +286,7 @@ public class AttackOfOpportunityRule {
     private static boolean checkMove(DC_ActiveObj active) {
         // agile
         if (active.getOwnerObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
-                UnitEnums.STANDARD_PASSIVES.DEXTEROUS.getName())) {
+         UnitEnums.STANDARD_PASSIVES.DEXTEROUS.getName())) {
             return false;
         }
         return !active.checkProperty(PROPS.STANDARD_ACTION_PASSIVES, ActionEnums.STANDARD_ACTION_PASSIVES.DEXTEROUS
@@ -373,7 +374,7 @@ public class AttackOfOpportunityRule {
 
         if (unit.getPreferredAttackOfOpportunity() != null) {
             if (canMakeAttackOfOpportunityAgainst(action, unit.getPreferredAttackOfOpportunity(),
-                    unit)) {
+             unit)) {
                 return unit.getPreferredAttackOfOpportunity();
             }
         }
@@ -428,8 +429,8 @@ public class AttackOfOpportunityRule {
         }
         for (DC_UnitAction attack : attacks) {
             if (attack // TODO same tag?!
-                    .checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.ATTACK_OF_OPPORTUNITY_ACTION
-                            .toString())) {
+             .checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.ATTACK_OF_OPPORTUNITY_ACTION
+              .toString())) {
                 list.add(attack);
             }
         }
@@ -499,7 +500,7 @@ public class AttackOfOpportunityRule {
             }
         }
         return action.checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.ATTACK_OF_OPPORTUNITY
-                .toString());
+         .toString());
     }
 
 }

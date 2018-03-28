@@ -12,8 +12,12 @@ public interface HeroScreenDataSource
 {
 
     List<ValueContainer> getUnlockedMasteries();
+
     List<ValueContainer> getLockedMasteries();
+
     List<ValueContainer> getAvailableSkills();
+
     List<ValueContainer> getLearnedSkills();
+
     List<ValueContainer> getSkillsBlockedByXp();
 }

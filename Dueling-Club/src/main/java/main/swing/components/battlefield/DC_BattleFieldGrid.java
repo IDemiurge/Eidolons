@@ -65,8 +65,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         this.game = dungeon.getGame();
         this.w = GuiManager.getBF_CompDisplayedCellsX();
         this.h = GuiManager.getBF_CompDisplayedCellsY();
-            this.w = dungeon. getWidth();
-            this.h = dungeon. getHeight();
+        this.w = dungeon.getWidth();
+        this.h = dungeon.getHeight();
 
         gridComp = new BfGridComp(this);
         if (CoreEngine.isLevelEditor()) {
@@ -131,7 +131,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private int getDisplayedCellsY() {
         return gridComp.getDisplayedCellsY();
     }
-@Deprecated
+
+    @Deprecated
     private void resetComponents() {
         int offsetX = getOffsetX();
         int offsetY = getOffsetY();
@@ -143,10 +144,10 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 int y = j + getOffsetY();
                 Coordinates c = new Coordinates(x, y);
                 List<BattleFieldObject> objects = game.getObjectsOnCoordinate(getZ(), c, false, true,
-                        false);
+                 false);
                 List<Unit> overlayingObjects = new ArrayList<>(new DequeImpl(game
-                        .getObjectsOnCoordinate(getZ(), c, true, true, false))
-                        .getRemoveAll(objects));
+                 .getObjectsOnCoordinate(getZ(), c, true, true, false))
+                 .getRemoveAll(objects));
 
                 // visibility preCheck!
 
@@ -225,10 +226,10 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         int minMax = MathMaster.getMinMax(offset, 0, currentLevelCells - displayedCells);
         if (x) {
             minMax = MathMaster.getMinMax(minMax + manualOffsetX, 0, currentLevelCells
-                    - displayedCells);
+             - displayedCells);
         } else {
             minMax = MathMaster.getMinMax(minMax + manualOffsetY, 0, currentLevelCells
-                    - displayedCells);
+             - displayedCells);
         }
         return minMax;
 
@@ -249,8 +250,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             if (getActiveObj().getFacing().isVertical() != x) {
                 if (getActiveObj().getIntParam(PARAMS.SIGHT_RANGE) > displayedCells / 2) {
                     int additionalVisionOffset = Math.min(getActiveObj().getIntParam(
-                            PARAMS.SIGHT_RANGE)
-                            - displayedCells / 2, displayedCells / 2 - 1);
+                     PARAMS.SIGHT_RANGE)
+                     - displayedCells / 2, displayedCells / 2 - 1);
                     if (getActiveObj().getFacing().isCloserToZero()) {
                         additionalVisionOffset = -additionalVisionOffset;
                     }
@@ -378,7 +379,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             }
             Coordinates c = new Coordinates(X, Y);
             List<BattleFieldObject> objects = game.getMaster().
-             getObjectsOnCoordinate(c, false );
+             getObjectsOnCoordinate(c, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
@@ -400,7 +401,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         for (int i = min + 1; i < max; i++) {
             Coordinates c = (x_y) ? new Coordinates(xy, i) : new Coordinates(i, xy);
-            List<BattleFieldObject> objects = game.getMaster(). getObjectsOnCoordinate(getZ(), c, false, false, false);
+            List<BattleFieldObject> objects = game.getMaster().getObjectsOnCoordinate(getZ(), c, false, false, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
@@ -541,8 +542,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public Set<Obj> getCells() {
         if (cells == null) {
             cells = new HashSet<>();
-            for (DC_Cell comp : gridComp.getCellEntityMap(). values()) {
-                cells.add(comp );
+            for (DC_Cell comp : gridComp.getCellEntityMap().values()) {
+                cells.add(comp);
             }
         }
         return cells;
@@ -560,7 +561,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     @Override
     public Obj getCell(Coordinates coordinates) {
-        return gridComp.getCellEntityMap().get(coordinates) ;
+        return gridComp.getCellEntityMap().get(coordinates);
     }
 
     public Obj getObj(Coordinates c) {
@@ -635,10 +636,10 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
         if (alt) {
             manualOffsetX = MathMaster.getMinMax(manualOffsetX + n, -getFullCells(alt)
-                    + getDisplayedCells(alt), getFullCells(alt) - getDisplayedCells(alt));
+             + getDisplayedCells(alt), getFullCells(alt) - getDisplayedCells(alt));
         } else {
             manualOffsetY = MathMaster.getMinMax(manualOffsetY + n, -getFullCells(alt)
-                    + getDisplayedCells(alt), getFullCells(alt) - getDisplayedCells(alt));
+             + getDisplayedCells(alt), getFullCells(alt) - getDisplayedCells(alt));
         }
         game.getManager().refresh(false);
     }

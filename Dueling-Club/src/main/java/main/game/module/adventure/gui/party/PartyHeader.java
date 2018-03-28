@@ -11,17 +11,17 @@ import main.swing.components.panels.page.info.element.ValueTextComp;
 import main.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PartyHeader extends G_Panel {
     public final static PROPERTY[] party_props = {MACRO_PROPS.REGION,
-            MACRO_PROPS.AREA, MACRO_PROPS.PLACE, MACRO_PROPS.MACRO_STATUS, // route/town?
-            MACRO_PROPS.ROUTE,};
+     MACRO_PROPS.AREA, MACRO_PROPS.PLACE, MACRO_PROPS.MACRO_STATUS, // route/town?
+     MACRO_PROPS.ROUTE,};
     public final static VALUE[] party_params = {MACRO_PARAMS.TRAVEL_SPEED,
-            MACRO_PARAMS.EXPLORE_SPEED, MACRO_PARAMS.C_PROVISIONS,
-            MACRO_PARAMS.CONSUMPTION,};
+     MACRO_PARAMS.EXPLORE_SPEED, MACRO_PARAMS.C_PROVISIONS,
+     MACRO_PARAMS.CONSUMPTION,};
     PropertyPage propPage;
     Header header;
     List<ValueBox> boxes = new ArrayList<>();
@@ -43,7 +43,7 @@ public class PartyHeader extends G_Panel {
         locationComp = new WrappedTextComp(VISUALS.VALUE_BOX_BIG, true);
 
         header = new Header(new ArrayList<>(Arrays.asList(party_params)),
-                party);
+         party);
 
         add(locationComp, "@pos center_x 20, id lc");
         add(header, "@pos center_x lc.y2, id header");
@@ -66,16 +66,16 @@ public class PartyHeader extends G_Panel {
     private String getLocationString(boolean enRoute) {
         // TODO ++ STATUS!
         String locationString = party.getRegion().getName() + ", "
-                + party.getArea().getDisplayedName();
+         + party.getArea().getDisplayedName();
         if (enRoute) {
             locationString = locationString + " , on "
-                    + party.getCurrentRoute().getDisplayedName() + " to "
-                    + party.getCurrentDestination().getDisplayedName() + "("
-                    + party.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE)
-                    + "%)"; // TODO getOrCreate hours to go?
+             + party.getCurrentRoute().getDisplayedName() + " to "
+             + party.getCurrentDestination().getDisplayedName() + "("
+             + party.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE)
+             + "%)"; // TODO getOrCreate hours to go?
         } else {
             locationString = locationString + ", at "
-                    + party.getCurrentLocation().getDisplayedName();
+             + party.getCurrentLocation().getDisplayedName();
         }
         return locationString;
     }

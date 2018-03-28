@@ -1,8 +1,8 @@
 package main.game.core.atb;
 
 import main.entity.obj.unit.Unit;
-import main.game.core.atb.AtbController.AtbUnit;
 import main.game.core.GenericTurnManager;
+import main.game.core.atb.AtbController.AtbUnit;
 import main.game.core.game.DC_Game;
 
 import java.util.List;
@@ -29,6 +29,7 @@ public class AtbTurnManager extends GenericTurnManager {
     public String getTimeString() {
         return getAtbController().getTimeString();
     }
+
     @Override
     protected void addToQueue() {
         for (Unit sub : getUnits()) {

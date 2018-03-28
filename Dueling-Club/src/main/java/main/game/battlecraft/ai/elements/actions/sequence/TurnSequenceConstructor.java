@@ -34,7 +34,7 @@ public class TurnSequenceConstructor extends AiHandler {
 
     private Action getTurnAction(boolean clockwise, Unit source) {
         DC_UnitAction specAction = source.getAction("Quick Turn "
-                + (clockwise ? "Clockwise" : "Anticlockwise"));
+         + (clockwise ? "Clockwise" : "Anticlockwise"));
         if (specAction != null) {
             if (specAction.canBeActivated(source.getRef(), true)) {
                 return new Action(specAction, Ref.getSelfTargetingRefCopy(source));
@@ -42,9 +42,9 @@ public class TurnSequenceConstructor extends AiHandler {
         }
 
         return new Action(source.getAction(""
-                + ((clockwise) ? DC_ActionManager.STD_ACTIONS.Turn_Clockwise
-                : DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise)), Ref
-                .getSelfTargetingRefCopy(source));
+         + ((clockwise) ? DC_ActionManager.STD_ACTIONS.Turn_Clockwise
+         : DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise)), Ref
+         .getSelfTargetingRefCopy(source));
 
     }
 
@@ -62,24 +62,24 @@ public class TurnSequenceConstructor extends AiHandler {
             List<Object> list = ClassMaster.getInstances(c, FacingCondition.class);
             if (!list.isEmpty()) {
                 List<Action> front_sequence = getTurnSequence(FACING_SINGLE.IN_FRONT, source,
-                        target.getCoordinates());
+                 target.getCoordinates());
                 List<Action> side_sequence = null;
                 if (action.getSource().hasBroadReach()
-                        || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH))
+                 || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.BROAD_REACH))
                 // front_sequence.remove(front_sequence.size() - 1);
                 {
                     side_sequence = getTurnSequence(FACING_SINGLE.TO_THE_SIDE, source, target
-                            .getCoordinates());
+                     .getCoordinates());
                 }
                 List<Action> hind_sequence = null;
                 if (action.getSource().hasHindReach()
-                        || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
+                 || action.getActive().checkPassive(UnitEnums.STANDARD_PASSIVES.HIND_REACH)) {
                     hind_sequence = getTurnSequence(FACING_SINGLE.BEHIND, source, target
-                            .getCoordinates());
+                     .getCoordinates());
                 }
 
                 return new ListMaster<Action>().getSmallest(front_sequence, hind_sequence,
-                        side_sequence);
+                 side_sequence);
             }
 
         }
@@ -99,7 +99,8 @@ public class TurnSequenceConstructor extends AiHandler {
         return getTurnSequence(template, source, target.getCoordinates());
 
     }
-    public List<Action> getTurnSequence( Unit source,
+
+    public List<Action> getTurnSequence(Unit source,
                                         Coordinates target) {
         return getTurnSequence(FACING_SINGLE.IN_FRONT, source, target);
     }
@@ -115,9 +116,9 @@ public class TurnSequenceConstructor extends AiHandler {
         List<Action> clockwise_list = new ArrayList<>();
 
         if (template == FacingMaster.getSingleFacing(FacingMaster.rotate180(facing), source
-                .getCoordinates(), target)) {
+         .getCoordinates(), target)) {
             DC_UnitAction specAction = source.getAction("Turn About "
-                    + (RandomWizard.random() ? "anti" : "") + "clockwise");
+             + (RandomWizard.random() ? "anti" : "") + "clockwise");
             if (specAction != null) {
                 clockwise_list.add(new Action(specAction));
                 return clockwise_list;
@@ -151,7 +152,7 @@ public class TurnSequenceConstructor extends AiHandler {
             }
         }
         return (anticlockwise_list.size() > clockwise_list.size()) ? clockwise_list
-                : anticlockwise_list;
+         : anticlockwise_list;
     }
 
 

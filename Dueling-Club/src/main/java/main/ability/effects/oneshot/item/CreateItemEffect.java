@@ -19,11 +19,11 @@ import main.system.math.Formula;
 
 import java.util.List;
 
-public class CreateItemEffect extends MicroEffect  implements OneshotEffect {
+public class CreateItemEffect extends MicroEffect implements OneshotEffect {
 
     private static final String STD_ARMOR_ITEMS = "Chain Shirt;Cuirass;Half Plate;Full Plate";
     private static final String STD_WEAPON_ITEMS = "Great Sword;Claymore;Long Sword;Broad Sword; Falchion;Short Sword;Dagger;Knife"
-            + "Maul;Mace;Battle Hammer;Flail;";
+     + "Maul;Mace;Battle Hammer;Flail;";
     private static final String EXTENDED_ARMOR_ITEMS = "";
     private static final String EXTENDED_WEAPON_ITEMS = "";
 
@@ -52,7 +52,7 @@ public class CreateItemEffect extends MicroEffect  implements OneshotEffect {
         this.weapon = weapon;
         this.extended = extended;
         LogMaster.log(1, durabilityFormula + ""
-                + material);
+         + material);
     }
 
     private void initGroup() {
@@ -75,14 +75,14 @@ public class CreateItemEffect extends MicroEffect  implements OneshotEffect {
             typeList = StringMaster.openContainer(STD_ARMOR_ITEMS);
             if (extended) {
                 typeList.addAll(StringMaster
-                        .openContainer(EXTENDED_ARMOR_ITEMS));
+                 .openContainer(EXTENDED_ARMOR_ITEMS));
             }
         } else {
             TYPE = DC_TYPE.WEAPONS;
             typeList = StringMaster.openContainer(STD_WEAPON_ITEMS);
             if (extended) {
                 typeList.addAll(StringMaster
-                        .openContainer(EXTENDED_WEAPON_ITEMS));
+                 .openContainer(EXTENDED_WEAPON_ITEMS));
             }
         }
 
@@ -98,8 +98,8 @@ public class CreateItemEffect extends MicroEffect  implements OneshotEffect {
         typeName = typeName.trim();
         if (!DataManager.isTypeName(material.getName() + " " + typeName)) {
             ItemGenerator.getDefaultGenerator().generateItem(
-                    ItemEnums.QUALITY_LEVEL.NORMAL, material,
-                    DataManager.getType(typeName, TYPE));
+             ItemEnums.QUALITY_LEVEL.NORMAL, material,
+             DataManager.getType(typeName, TYPE));
         }
 
         typeName = material.getName() + " " + typeName;
@@ -107,12 +107,12 @@ public class CreateItemEffect extends MicroEffect  implements OneshotEffect {
         ObjType type = new ObjType(DataManager.getType(typeName, TYPE));
 
         Integer durability = (type.getIntParam(PARAMS.DURABILITY) * durabilityFormula
-                .getInt(ref)) / 100;
+         .getInt(ref)) / 100;
 
         type.setParam(PARAMS.DURABILITY, durability);
 
         DC_HeroItemObj item = ItemGenerator.getDefaultGenerator().createItem(
-                type, ref, false); // init
+         type, ref, false); // init
 
         String itemName = prefix + item.getName();
         item.setName(itemName);

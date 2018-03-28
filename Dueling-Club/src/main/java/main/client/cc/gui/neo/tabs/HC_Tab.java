@@ -38,7 +38,7 @@ public class HC_Tab {
 
     public Component generateTabComp(HC_TabPanel tabPanel) {
         tabComp = new HC_TabComp(tabPanel.getTAB(), tabPanel.getTAB_SELECTED(), name, centered,
-                selected, index);
+         selected, index);
         if (image != null) {
             tabComp.setImage(image);
             return tabComp;

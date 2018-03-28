@@ -18,7 +18,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
-        ListCellRenderer<HERO_SOUNDSET>, MouseListener {
+ ListCellRenderer<HERO_SOUNDSET>, MouseListener {
     private static final int X_OFFSET = -200;
     private static final Integer FONT_SIZE = 40;
 
@@ -80,7 +80,7 @@ public class SoundsetChoiceView extends ChoiceView<HERO_SOUNDSET> implements
     @Override
     protected PagedSelectionPanel<HERO_SOUNDSET> createSelectionComponent() {
         PagedSelectionPanel<HERO_SOUNDSET> selectionComp = new PagedSelectionPanel<HERO_SOUNDSET>(
-                this, getPageSize(), getItemSize(), getColumnsCount()) {
+         this, getPageSize(), getItemSize(), getColumnsCount()) {
 
             protected boolean isFillWithNullElements() {
                 return false;

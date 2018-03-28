@@ -14,19 +14,21 @@ import java.util.function.Supplier;
  */
 public class HeroSelectionPanel extends SelectionPanel {
 
- Supplier<List<? extends Entity>> dataSupplier;
+    Supplier<List<? extends Entity>> dataSupplier;
 
     public HeroSelectionPanel(Supplier<List<? extends Entity>> dataSupplier) {
-       super();
+        super();
         this.dataSupplier = dataSupplier;
         init();
     }
+
     protected boolean isReadyToBeInitialized() {
         return false;
     }
+
     @Override
     protected ItemInfoPanel createInfoPanel() {
-        return new HeroInfoPanel(null  );
+        return new HeroInfoPanel(null);
     }
 
     @Override

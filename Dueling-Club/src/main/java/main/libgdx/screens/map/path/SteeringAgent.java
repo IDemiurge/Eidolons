@@ -72,15 +72,6 @@ public class SteeringAgent extends SteerableAdapter<Vector2> {
         }
     }
 
-    public void setSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior) {
-        steeringOutput =
-         new SteeringAcceleration<>(new Vector2(0, 0));
-        linearVelocity = new Vector2(0, 0);
-        angularVelocity = 1;
-
-        this.steeringBehavior = steeringBehavior;
-    }
-
     private void applySteering(SteeringAcceleration<Vector2> steering, float time) {
         // Update position and linear velocity. Velocity is trimmed to maximum speed
         if (linearVelocity == null)
@@ -194,5 +185,14 @@ public class SteeringAgent extends SteerableAdapter<Vector2> {
 
     public SteeringBehavior<Vector2> getSteeringBehavior() {
         return steeringBehavior;
+    }
+
+    public void setSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior) {
+        steeringOutput =
+         new SteeringAcceleration<>(new Vector2(0, 0));
+        linearVelocity = new Vector2(0, 0);
+        angularVelocity = 1;
+
+        this.steeringBehavior = steeringBehavior;
     }
 }

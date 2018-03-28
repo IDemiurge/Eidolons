@@ -40,27 +40,28 @@ public class RageRule extends DC_CounterRule {
     public COUNTER getCounter() {
         return COUNTER.Rage;
     }
+
     @Override
     protected Effect getEffect() {
         return new Effects(
 
-                new ModifyValueEffect(true, PARAMS.DAMAGE_MOD,
-                        MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-                        + DAMAGE_PER_COUNTER), new ModifyValueEffect(true,
-                PARAMS.INITIATIVE_MODIFIER, MOD.MODIFY_BY_PERCENT,
-                getCounterRef() + "*" + INITIATIVE_PER_COUNTER),
-                new ModifyValueEffect(true, PARAMS.SPELLPOWER,
-                        MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-                        + SPELLPOWER_PER_COUNTER),
-                new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
-                        MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-                        + DEFENSE_PER_COUNTER), new ConditionalEffect(
+         new ModifyValueEffect(true, PARAMS.DAMAGE_MOD,
+          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+          + DAMAGE_PER_COUNTER), new ModifyValueEffect(true,
+         PARAMS.INITIATIVE_MODIFIER, MOD.MODIFY_BY_PERCENT,
+         getCounterRef() + "*" + INITIATIVE_PER_COUNTER),
+         new ModifyValueEffect(true, PARAMS.SPELLPOWER,
+          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+          + SPELLPOWER_PER_COUNTER),
+         new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
+          MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+          + DEFENSE_PER_COUNTER), new ConditionalEffect(
 
-                new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
-                new Effects(new ModifyPropertyEffect(
-                        G_PROPS.STANDARD_PASSIVES, MOD_PROP_TYPE.ADD,
-                        UnitEnums.STANDARD_PASSIVES.BERSERKER + ""),
-                        new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK)))
+         new NumericCondition(getCounterRef(), BERSERK_THRESHOLD),
+         new Effects(new ModifyPropertyEffect(
+          G_PROPS.STANDARD_PASSIVES, MOD_PROP_TYPE.ADD,
+          UnitEnums.STANDARD_PASSIVES.BERSERKER + ""),
+          new BehaviorModeEffect(AiEnums.BEHAVIOR_MODE.BERSERK)))
 
         );
     }
@@ -79,7 +80,7 @@ public class RageRule extends DC_CounterRule {
     @Override
     public int getMaxNumberOfCounters(Unit unit) {
         return (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.BERSERKER)) ? MAX_BERSERK
-                : MAX;
+         : MAX;
     }
 
     @Override

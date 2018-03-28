@@ -22,7 +22,8 @@ public class ConfigMaster {
     public int getInt(String key) {
         return 1;
     }
-        public Object getValue(String key) {
+
+    public Object getValue(String key) {
         return false;
     }
 

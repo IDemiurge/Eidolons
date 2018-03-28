@@ -36,13 +36,13 @@ public class CorrosionRule extends DC_CounterRule {
     @Override
     protected Effect getSpecialRoundEffects() {
         Effects effects = new Effects(new CustomTargetEffect(
-                new FixedTargeting(KEYS.WEAPON), new ModifyValueEffect(
-                PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
-                getCounterRef() + "*" + DURABILITY_PER_COUNTER)),
-                new CustomTargetEffect(new FixedTargeting(KEYS.ARMOR),
-                        new ModifyValueEffect(PARAMS.C_DURABILITY,
-                                MOD.MODIFY_BY_CONST, getCounterRef()
-                                + "*" + DURABILITY_PER_COUNTER)));
+         new FixedTargeting(KEYS.WEAPON), new ModifyValueEffect(
+         PARAMS.C_DURABILITY, MOD.MODIFY_BY_CONST,
+         getCounterRef() + "*" + DURABILITY_PER_COUNTER)),
+         new CustomTargetEffect(new FixedTargeting(KEYS.ARMOR),
+          new ModifyValueEffect(PARAMS.C_DURABILITY,
+           MOD.MODIFY_BY_CONST, getCounterRef()
+           + "*" + DURABILITY_PER_COUNTER)));
 
         return effects;
     }
@@ -51,6 +51,7 @@ public class CorrosionRule extends DC_CounterRule {
     public COUNTER getCounter() {
         return COUNTER.Corrosion;
     }
+
     @Override
     public String getBuffName() {
         return "Corroding";
@@ -59,14 +60,14 @@ public class CorrosionRule extends DC_CounterRule {
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.ARMOR,
-                MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-                + ARMOR_MOD_PER_COUNTER),
+         MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+         + ARMOR_MOD_PER_COUNTER),
 
-                new ModifyValueEffect(PARAMS.ARMOR, MOD.MODIFY_BY_CONST,
-                        getCounterRef() + "*" + ARMOR_PER_COUNTER),
-                new ModifyValueEffect(VALUE_GROUP.ELEMENTAL_RESISTANCES
-                        .toString(), MOD.MODIFY_BY_CONST,
-                        getCounterRef() + "*" + RESIST_PER_COUNTER));
+         new ModifyValueEffect(PARAMS.ARMOR, MOD.MODIFY_BY_CONST,
+          getCounterRef() + "*" + ARMOR_PER_COUNTER),
+         new ModifyValueEffect(VALUE_GROUP.ELEMENTAL_RESISTANCES
+          .toString(), MOD.MODIFY_BY_CONST,
+          getCounterRef() + "*" + RESIST_PER_COUNTER));
     }
 
     @Override

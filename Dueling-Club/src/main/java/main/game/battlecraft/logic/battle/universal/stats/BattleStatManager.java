@@ -73,15 +73,14 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
                     break;
                 }
             }
-        } else
-            if (AiTrainingRunner.running)
-            if (event.getRef().getAmount()!=null ){
-            if (event.getType() instanceof EventType) {
-                modifyUnitModStat(target.isEnemyTo(source.getOwner()), (event.getType()).getArg()
-                 , source, event.getRef().getAmount());
+        } else if (AiTrainingRunner.running)
+            if (event.getRef().getAmount() != null) {
+                if (event.getType() instanceof EventType) {
+                    modifyUnitModStat(target.isEnemyTo(source.getOwner()), (event.getType()).getArg()
+                     , source, event.getRef().getAmount());
 
+                }
             }
-        }
 
     }
 

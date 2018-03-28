@@ -10,7 +10,7 @@ import main.elements.targeting.Targeting;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
-public class DelayedEffect extends AddTriggerEffect  implements OneshotEffect {
+public class DelayedEffect extends AddTriggerEffect implements OneshotEffect {
 
     private static final STANDARD_EVENT_TYPE EVENT_TYPE = STANDARD_EVENT_TYPE.ROUND_ENDS;
     private static final STANDARD_EVENT_TYPE EVENT_TYPE_CHANNELING = STANDARD_EVENT_TYPE.UNIT_TURN_STARTED;

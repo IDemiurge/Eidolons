@@ -14,7 +14,7 @@ import main.system.auxiliary.EnumMaster;
 /**
  * Created by JustMe on 5/30/2017.
  */
-public class FormationMaster extends MetaPartyHandler  {
+public class FormationMaster extends MetaPartyHandler {
 
     public static final int MAX_UNITS_PER_FORMATION = 5;
 
@@ -22,19 +22,11 @@ public class FormationMaster extends MetaPartyHandler  {
         super(master);
     }
 
-    public enum FORMATION {
-        VANGUARD,
-        CENTER,
-        REAR,
-        SCOUTING,
-    }
-
     public void promptFormationChange() {
 
 //        showFormationWindow(this);
 
     }
-
 
     public void formationSet(FORMATION formation, Entity hero) {
 
@@ -69,17 +61,17 @@ public class FormationMaster extends MetaPartyHandler  {
     public void formationArrives(FORMATION formation, Party party) {
 
         Coordinates origin = getDefaultPoint(getMaster().getDungeonMaster().
-          getDungeon(), formation
-         );
+         getDungeon(), formation
+        );
         FACING_DIRECTION facing;
 //calculateOrganizationValue
     }
 
     private Coordinates getDefaultPoint(Dungeon dungeon, FORMATION formation) {
-        String arg="";
+        String arg = "";
         switch (formation) {
             case CENTER:
-               arg = POINTS.CENTER_SPAWN.toString();
+                arg = POINTS.CENTER_SPAWN.toString();
                 break;
             case REAR:
                 arg = POINTS.REAR_SPAWN.toString();
@@ -89,10 +81,17 @@ public class FormationMaster extends MetaPartyHandler  {
                 break;
         }
         Coordinates p = dungeon.getPoint(arg);
-        if (p==null )
-            p=dungeon.getPoint(EnumMaster.getEnumConstIndex(POINTS.class, formation));
+        if (p == null)
+            p = dungeon.getPoint(EnumMaster.getEnumConstIndex(POINTS.class, formation));
 
-      return   p;
+        return p;
+    }
+
+    public enum FORMATION {
+        VANGUARD,
+        CENTER,
+        REAR,
+        SCOUTING,
     }
 
 

@@ -10,8 +10,8 @@ import main.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import main.libgdx.gui.panels.dc.inventory.datasource.QuickSlotDataSource;
-import main.libgdx.gui.panels.headquarters.ShopValueContainerList;
 import main.libgdx.gui.panels.headquarters.ShopTabbedPanel;
+import main.libgdx.gui.panels.headquarters.ShopValueContainerList;
 import main.libgdx.texture.TextureCache;
 
 import java.util.List;
@@ -24,10 +24,10 @@ public class ShopScreenDataSourceImpl implements
  ShopDataSource,
  QuickSlotDataSource,
  InventoryTableDataSource,
- EquipDataSource
-{
+ EquipDataSource {
     ShopInterface shop;
     InventoryDataSource dataSource;
+
     public ShopScreenDataSourceImpl(ShopInterface shop, Unit unit) {
         this.shop = shop;
         dataSource = new InventoryDataSource(unit);
@@ -107,7 +107,7 @@ public class ShopScreenDataSourceImpl implements
 
     @Override
     public ShopTabbedPanel getTabs() {
-        ShopTabbedPanel tabs =  new ShopTabbedPanel();
+        ShopTabbedPanel tabs = new ShopTabbedPanel();
         for (String tab : shop.getTabs()) {
             tabs.addTab(new ShopPage(getGroupLists(tab)), tab);
         }
@@ -117,26 +117,25 @@ public class ShopScreenDataSourceImpl implements
     @Override
     public List<ShopValueContainerList> getGroupLists(String tabName) {
         return shop.getItemSubgroups(tabName).stream().map(
-         s-> new ShopValueContainerList(getTextures(s))).
+         s -> new ShopValueContainerList(getTextures(s))).
          collect(Collectors.toList());
     }
 
     @Override
-    public List<ValueContainer> getTextures(String groupList)
-    {
+    public List<ValueContainer> getTextures(String groupList) {
         return shop.getItems(groupList).stream().map(
-         s-> new ValueContainer(TextureCache.getOrCreateR(s))).
+         s -> new ValueContainer(TextureCache.getOrCreateR(s))).
          collect(Collectors.toList());
     }
 
     @Override
     public ValueContainer getName() {
-        return new ValueContainer(shop.getName(),"");
+        return new ValueContainer(shop.getName(), "");
     }
 
     @Override
     public ValueContainer getGold() {
-        return new ValueContainer("Gold: ",shop.getGold());
+        return new ValueContainer("Gold: ", shop.getGold());
     }
 
     @Override

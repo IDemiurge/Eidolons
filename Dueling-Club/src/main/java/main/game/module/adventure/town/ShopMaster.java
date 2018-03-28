@@ -8,8 +8,8 @@ import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import main.system.math.MathMaster;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShopMaster {
@@ -97,9 +97,9 @@ public class ShopMaster {
 
     public static boolean checkMaterialAllowed(ShopInterface shop, MATERIAL material) {
         if (!ShopMaster.getMaterialsForShopLevel(shop.getShopLevel()).contains(
-                material)) {
+         material)) {
             if (!ShopMaster.getMaterialsForShopModifier(shop.getShopModifier())
-                    .contains(material)) {
+             .contains(material)) {
                 if (!getSpecialMaterials(shop).contains(material)) {
                     return false;
                 }
@@ -115,7 +115,7 @@ public class ShopMaster {
     }
 
     public static List<MATERIAL> getMaterialsForShopModifier(
-            SHOP_MODIFIER shopModifier) {
+     SHOP_MODIFIER shopModifier) {
         MATERIAL[] array = new MATERIAL[0];
         List<MATERIAL> list = new ArrayList<>();
         switch (shopModifier) {
@@ -132,14 +132,14 @@ public class ShopMaster {
                 break;
             case DWARVEN:
                 array = new MATERIAL[]{ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.IRONWOOD,
-                        ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.MITHRIL,
-                        ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.DRAGONHIDE,};
+                 ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.ADAMANTIUM, ItemEnums.MATERIAL.MITHRIL,
+                 ItemEnums.MATERIAL.METEORITE, ItemEnums.MATERIAL.DRAGONHIDE,};
                 list.add(ItemEnums.MATERIAL.DRAGON_BONE);
                 break;
             case ELVEN:
                 array = new MATERIAL[]{ItemEnums.MATERIAL.PALEWOOD, ItemEnums.MATERIAL.MITHRIL,
-                        ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.BRONZE,
-                        ItemEnums.MATERIAL.FEYWOOD, ItemEnums.MATERIAL.LIZARD_SKIN,};
+                 ItemEnums.MATERIAL.MOON_SILVER, ItemEnums.MATERIAL.BRONZE,
+                 ItemEnums.MATERIAL.FEYWOOD, ItemEnums.MATERIAL.LIZARD_SKIN,};
                 break;
             case HOLY:
                 list.add(ItemEnums.MATERIAL.BRIGHT_STEEL);
@@ -147,7 +147,7 @@ public class ShopMaster {
                 break;
             case HUMAN:
                 array = new MATERIAL[]{ItemEnums.MATERIAL.IRON, ItemEnums.MATERIAL.IRONWOOD,
-                        ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.BRASS, ItemEnums.MATERIAL.THICK_LEATHER,};
+                 ItemEnums.MATERIAL.STEEL, ItemEnums.MATERIAL.BRASS, ItemEnums.MATERIAL.THICK_LEATHER,};
                 break;
             case UNDERGROUND:
                 list.add(ItemEnums.MATERIAL.WAILWOOD);

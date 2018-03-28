@@ -38,7 +38,6 @@ public class DC_MathManager extends MathMaster {
     }
 
 
-
     public static int getDurabilityForDamage(int damage, int armor, OBJ_TYPE TYPE) {
         if (TYPE == DC_TYPE.WEAPONS) {
             return getWeaponDurabilityForDamage(damage, armor);
@@ -59,7 +58,7 @@ public class DC_MathManager extends MathMaster {
         }
 
         int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_ARMOR)
-                / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
+         / DC_Formulas.DURABILITY_DAMAGE_FACTOR_ARMOR;
         return reduction;
     }
 
@@ -73,7 +72,7 @@ public class DC_MathManager extends MathMaster {
         }
 
         int reduction = 1 + MathMaster.round(max - DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON)
-                / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
+         / DC_Formulas.DURABILITY_DAMAGE_FACTOR_WEAPON;
         return reduction;
 
     }
@@ -92,7 +91,7 @@ public class DC_MathManager extends MathMaster {
         }
         if (type == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return MathMaster.getAverage(attacked.getIntParam(PARAMS.SLASHING_RESISTANCE),
-                    attacked.getIntParam(PARAMS.PIERCING_RESISTANCE), attacked.getIntParam(PARAMS.SLASHING_RESISTANCE));
+             attacked.getIntParam(PARAMS.PIERCING_RESISTANCE), attacked.getIntParam(PARAMS.SLASHING_RESISTANCE));
         }
         // AETHER/ASTRAL -> average of all elemental/astral TODO
         if (type == GenericEnums.DAMAGE_TYPE.PURE) {
@@ -194,7 +193,7 @@ public class DC_MathManager extends MathMaster {
             }
 
             divinationPoolFormula = new Formula(DC_Formulas.DIVINATION_POOL_FORMULA.toString().toLowerCase()
-                    .replace("{charisma}", hero.getProperty(PROPS.DIVINATION_PARAMETER)));
+             .replace("{charisma}", hero.getProperty(PROPS.DIVINATION_PARAMETER)));
         }
         return divinationPoolFormula.getInt(hero.getRef());
     }
@@ -206,10 +205,10 @@ public class DC_MathManager extends MathMaster {
 
     public static String getUnitXP(ObjType type) {
         return "" + type.getIntParam(PARAMS.POWER) * 10
-                // + DC_Formulas
-                // .getTotalXpForLevel(type.getIntParam(PARAMS.LEVEL))
+         // + DC_Formulas
+         // .getTotalXpForLevel(type.getIntParam(PARAMS.LEVEL))
 
-                ;
+         ;
     }
 
     public static int getParamPercentage(Unit unit, PARAMETER p) {

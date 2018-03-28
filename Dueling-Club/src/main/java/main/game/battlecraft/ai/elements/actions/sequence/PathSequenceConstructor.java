@@ -22,7 +22,10 @@ import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.XMap;
 import main.system.math.PositionMaster;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 3/3/2017.
@@ -163,7 +166,7 @@ public class PathSequenceConstructor extends AiHandler {
                     }
                     getUnit().setCoordinates(c); // TODO causes visuals!
 
-                    if (TargetingMaster.canBeTargeted(targetAction,true, true)) {
+                    if (TargetingMaster.canBeTargeted(targetAction, true, true)) {
                         list.add(c);
                     }
                 }

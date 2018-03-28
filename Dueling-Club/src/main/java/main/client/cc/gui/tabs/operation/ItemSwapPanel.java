@@ -44,7 +44,7 @@ public class ItemSwapPanel extends HeroItemTab {
 
     protected void addComps() {
         Object pos = "id drop, pos " + super.getMainPosX() + " "
-                + super.getMainPosY();
+         + super.getMainPosY();
         add(itemPool, pos);
         super.addComps();
     }
@@ -53,7 +53,7 @@ public class ItemSwapPanel extends HeroItemTab {
     protected void initData() {
         super.initData();
         droppedItemData = DataManager.toTypeList(StringMaster
-                .openContainer(obj.getProperty(getPROP2())), getTYPE());
+         .openContainer(obj.getProperty(getPROP2())), getTYPE());
 
     }
 

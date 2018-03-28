@@ -19,7 +19,7 @@ public class FocusRule extends RoundRule {
     public void apply(Unit unit) {
 
         int diff = unit.getIntParam(PARAMS.C_FOCUS)
-                - DC_MathManager.getStartingFocus(unit);
+         - DC_MathManager.getStartingFocus(unit);
         if (diff == 0) {
             return;
         }
@@ -27,12 +27,12 @@ public class FocusRule extends RoundRule {
         int mod;
         if (restore) {
             mod = 25
-                    // DC_Formulas.FOCUS_RESTORE_PERC
-                    + unit.getIntParam(PARAMS.FOCUS_RESTORATION);
+             // DC_Formulas.FOCUS_RESTORE_PERC
+             + unit.getIntParam(PARAMS.FOCUS_RESTORATION);
         } else {
             mod = 25
-                    // DC_Formulas.FOCUS_REDUCE_PERC
-                    - unit.getIntParam(PARAMS.FOCUS_RETAINMENT);
+             // DC_Formulas.FOCUS_REDUCE_PERC
+             - unit.getIntParam(PARAMS.FOCUS_RETAINMENT);
         }
         mod = Math.min(100, mod);
         int amount = diff;

@@ -181,24 +181,24 @@ public class DamageDealer {
 
 
         int blocked = 0;
-        if (attacked instanceof  Unit)
-        if (!DamageCalculator.isUnblockable(ref)) {
-            if (ref.getSource() != ref.getTarget()) {
-                if (isAttack(ref)) {
-                    blocked = attacked.getGame()
-                     .getArmorMaster().getArmorBlockDamage(amount,
-                      (Unit) attacked, attacker, active);
-                } else {
-                    blocked = attacked.getGame()
-                     .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
-                      attacker, active);
+        if (attacked instanceof Unit)
+            if (!DamageCalculator.isUnblockable(ref)) {
+                if (ref.getSource() != ref.getTarget()) {
+                    if (isAttack(ref)) {
+                        blocked = attacked.getGame()
+                         .getArmorMaster().getArmorBlockDamage(amount,
+                          (Unit) attacked, attacker, active);
+                    } else {
+                        blocked = attacked.getGame()
+                         .getArmorMaster().getArmorBlockForActionDamage(amount, dmg_type,
+                          attacker, active);
+                    }
                 }
             }
-        }
 
-        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount,   ref, blocked,
+        int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref, blocked,
          dmg_type);
-        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount,   ref, blocked,
+        int e_damage = DamageCalculator.calculateEnduranceDamage(attacked, attacker, amount, ref, blocked,
          dmg_type);
 //        PhaseAnimator.handleDamageAnimAndLog(ref, attacked, magical, dmg_type);
 
@@ -382,7 +382,7 @@ public class DamageDealer {
             // will start new entry... a good preCheck
             try {
                 attacked.kill(attacker, !annihilated, false);
-                if  (annihilated) {
+                if (annihilated) {
                     attacked.getGame().getManager().getDeathMaster().
                      unitAnnihilated(attacked, attacker);
 
@@ -393,8 +393,7 @@ public class DamageDealer {
             ref.setAmount(damageDealt);
             // if (DC_GameManager.checkInterrupted(ref))
             // return 0; ???
-        }
-        else {
+        } else {
             if (unconscious) {
                 attacked.getGame().getRules().getUnconsciousRule().
                  fallUnconscious((Unit) attacked);

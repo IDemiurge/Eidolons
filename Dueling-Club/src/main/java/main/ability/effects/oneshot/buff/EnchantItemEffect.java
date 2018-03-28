@@ -23,7 +23,7 @@ import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 
-public class EnchantItemEffect extends MicroEffect implements OneshotEffect{
+public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
 
     private static final String buffName = "Enchantment";
     private SPECIAL_EFFECTS_CASE case_type;
@@ -81,8 +81,8 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect{
         // String passive = "";
         // TODO why was only that 1st spell in SB filtered in???
         if (!new TemplateSelectiveTargeting(
-                (weapon) ? SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON
-                        : SELECTIVE_TARGETING_TEMPLATES.MY_ARMOR).select(ref)) {
+         (weapon) ? SELECTIVE_TARGETING_TEMPLATES.MY_WEAPON
+          : SELECTIVE_TARGETING_TEMPLATES.MY_ARMOR).select(ref)) {
             return false;
         }
         // new ModifyPropertyEffect(G_PROPS.PASSIVES, MOD_PROP_TYPE.ADD,
@@ -103,21 +103,21 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect{
 
         if (case_type == null) {
             case_type = (weapon) ? SPECIAL_EFFECTS_CASE.ON_ATTACK
-                    : SPECIAL_EFFECTS_CASE.ON_HIT;
+             : SPECIAL_EFFECTS_CASE.ON_HIT;
         }
         // another layer of customTargetEffect if ON SELF or so ! Some may even
         // be Zone-targeted!
         BuffType t = new BuffType(new Ref(ref.getGame(), ref.getSource()));
         t.setImage(ref.getActive().getProperty(G_PROPS.IMAGE, false));
         t.setName(buffName + " "
-                + StringMaster.wrapInParenthesis(spell.getName()));
+         + StringMaster.wrapInParenthesis(spell.getName()));
         t.setParam(G_PARAMS.DURATION,
-                ref.getActive().getIntParam(G_PARAMS.DURATION, false));
+         ref.getActive().getIntParam(G_PARAMS.DURATION, false));
         new AddBuffEffect(t, new AddSpecialEffects(case_type,
-                new EnergyCostEffect(cost, key, effects))).apply(ref);
+         new EnergyCostEffect(cost, key, effects))).apply(ref);
 
         ModifyValueEffect addEnergyEffect = new ModifyValueEffect(
-                PARAMS.C_ENERGY, MOD.MODIFY_BY_CONST, energy);
+         PARAMS.C_ENERGY, MOD.MODIFY_BY_CONST, energy);
         addEnergyEffect.setValueOverMax(true);
         addEnergyEffect.apply(ref);
 

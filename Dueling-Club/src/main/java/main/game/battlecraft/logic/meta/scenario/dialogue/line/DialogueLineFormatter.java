@@ -41,7 +41,8 @@ public class DialogueLineFormatter {
     public static void generate() {
 
     }
-        public static void fullUpdate() {
+
+    public static void fullUpdate() {
         //TODO TUTORIAL?
         for (File scenarioFolder : FileManager.getFilesFromDirectory(
          PathFinder.getEnginePath() + PathFinder.getScenariosPath()
@@ -49,15 +50,15 @@ public class DialogueLineFormatter {
             //TODO scenario intro?
             for (File missionFolder : FileManager.getFilesFromDirectory(scenarioFolder.getPath()
              , false, true)) {
-                if (missionFolder.isDirectory()){
-                    String path = getDialogueTextPath(missionFolder.getName()+ dialogueTextPath);
+                if (missionFolder.isDirectory()) {
+                    String path = getDialogueTextPath(missionFolder.getName() + dialogueTextPath);
                     parseDocs(path);
                 }
 
             }
         }
-        String path =  PathFinder.getEnginePath()
-         + "tutorial"+StringMaster.getPathSeparator()
+        String path = PathFinder.getEnginePath()
+         + "tutorial" + StringMaster.getPathSeparator()
          + TextMaster.getLocale()
          + dialogueTextPath;
         parseDocs(path);
@@ -65,7 +66,7 @@ public class DialogueLineFormatter {
 
     public static String getDialogueTextPath(String fileName) {
         return PathFinder.getEnginePath() + PathFinder.getScenariosPath()
-         + fileName+StringMaster.getPathSeparator()
+         + fileName + StringMaster.getPathSeparator()
          + TextMaster.getLocale()
          ;
     }

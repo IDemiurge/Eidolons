@@ -108,8 +108,8 @@ public abstract class DC_AI_Logic implements AI_Logic {
         this.action = aManager.getAction();
 
         LogMaster
-                .log(LogMaster.AI_DEBUG, "Action chosen: " + action + " for "
-                        + unit);
+         .log(LogMaster.AI_DEBUG, "Action chosen: " + action + " for "
+          + unit);
         return getAction();
     }
 

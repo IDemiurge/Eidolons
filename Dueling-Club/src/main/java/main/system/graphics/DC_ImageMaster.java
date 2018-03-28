@@ -24,7 +24,7 @@ public class DC_ImageMaster {
         ImageIcon base_image = ImageManager.getIcon(property);
         if (highlighted) {
             return new ImageIcon(ImageManager.applyBorder(base_image.getImage(),
-                    BORDER.SPELL_HIGHLIGHTED));
+             BORDER.SPELL_HIGHLIGHTED));
         }
         if (action.isBlocked()) {
             return getSpellVariant(SPELL_VARIANTS.BLOCKED, base_image);
@@ -49,12 +49,12 @@ public class DC_ImageMaster {
 //        } else
         if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
             unitEmblem = ImageManager.getSizedIcon(obj.getProperty(G_PROPS.EMBLEM),
-                    new Dimension(size, size)).getImage();
+             new Dimension(size, size)).getImage();
         } else {
             if (obj.getDeity() != null) {
                 ImageIcon icon = ImageManager.getSizedIcon(obj.getDeity()
-                        .getType().getProperty(
-                        G_PROPS.EMBLEM), new Dimension(size, size));
+                 .getType().getProperty(
+                  G_PROPS.EMBLEM), new Dimension(size, size));
                 if (icon == null) {
                     icon = ImageManager.getEmptyEmblem();
                 }
@@ -63,13 +63,13 @@ public class DC_ImageMaster {
         }
         if (!ImageManager.isValidImage(unitEmblem)) {
             unitEmblem = ImageManager.getSizedVersion(ImageManager.getEmptyEmblem().getImage(),
-                    new Dimension(size, size));
+             new Dimension(size, size));
         }
         if (obj.isSelected()) {
             return unitEmblem;
         }
         Image glow = ImageManager.getSizedVersion(ImageManager.getGlowFrame(obj.getOwner()
-                .getFlagColor(), 132), new Dimension(32, 32));
+         .getFlagColor(), 132), new Dimension(32, 32));
         BufferedImage glowAlpha = ImageManager.getBufferedImage(glow, 50);
         return ImageManager.getGlowOverlaidImage(unitEmblem, glowAlpha);
 
@@ -84,7 +84,7 @@ public class DC_ImageMaster {
         ImageIcon base_image = ImageManager.getIcon(property);
         if (highlighted) {
             return new ImageIcon(ImageManager.applyBorder(base_image.getImage(),
-                    BORDER.SPELL_HIGHLIGHTED));
+             BORDER.SPELL_HIGHLIGHTED));
         }
         if (spell.isBlocked()) {
             return getSpellVariant(SPELL_VARIANTS.BLOCKED, base_image);
@@ -130,7 +130,7 @@ public class DC_ImageMaster {
 
     public static Image getProcessedImage(Image image) {
         image = ImageManager.getSizedVersion(image, new Dimension(PhaseAnimation.MAX_MINI_ICON_SIZE,
-                PhaseAnimation.MAX_MINI_ICON_SIZE));
+         PhaseAnimation.MAX_MINI_ICON_SIZE));
         // image = ImageTransformer.getCircleCroppedImage(image);
         // image = ImageManager.applyBorder(image, BORDER.CIRCLE_GLOW_40);
         return image;
@@ -147,10 +147,10 @@ public class DC_ImageMaster {
                 return getProcessedImage(attack.getWeapon().getRef().getObj(KEYS.AMMO).getImage());
             case ATK_DEF:
                 return value > 0 ? ImageManager.getValueIcon(PARAMS.ATTACK) : // ACCURACY
-                        ImageManager.getValueIcon(PARAMS.DEFENSE);
+                 ImageManager.getValueIcon(PARAMS.DEFENSE);
             case RANDOM:
                 int n = attack.getWeapon().getIntParam(PARAMS.DIE_SIZE)
-                        * attack.getWeapon().getIntParam(PARAMS.DICE) / 2;
+                 * attack.getWeapon().getIntParam(PARAMS.DICE) / 2;
                 Boolean luck = RollMaster.getLuck(value, n);
                 return ImageManager.getDiceIcon(luck, true);
             case WEAPON:
@@ -189,11 +189,6 @@ public class DC_ImageMaster {
         return ImageManager.getEmptyEmblem().getImage();
     }
 
-    public enum VISUAL_EFFECTS {
-        DARKEN, GRAYSCALE, FLARE_BLUE, FLARE_RED,
-
-    }
-
     public enum SPELL_VARIANTS {
         BLOCKED(BORDER.SPELL_BLOCKED, VISUAL_EFFECTS.GRAYSCALE),
         UNPREPARED(BORDER.SPELL_UNPREPARED),
@@ -224,6 +219,11 @@ public class DC_ImageMaster {
         public void setEffects(VISUAL_EFFECTS[] effects) {
             this.effects = effects;
         }
+    }
+
+    public enum VISUAL_EFFECTS {
+        DARKEN, GRAYSCALE, FLARE_BLUE, FLARE_RED,
+
     }
 
 }

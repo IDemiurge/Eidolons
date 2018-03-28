@@ -26,7 +26,7 @@ public class AutoTestRunner {
         RuleMaster.setScope(RULE_SCOPE.TEST);
         if (test.getArg(TEST_ARGS.RULE_SCOPE) != null) {
             RuleMaster.setScope(new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
-                    test.getArg(TEST_ARGS.RULE_SCOPE)));
+             test.getArg(TEST_ARGS.RULE_SCOPE)));
         }
         switch (test.getType()) {
             case ACTION_SKILL:
@@ -63,14 +63,14 @@ public class AutoTestRunner {
 
     private void actionTest(String name, Ref ref, Unit unit) {
         unit.getAction(name).setRef(ref);
-        unit.getAction(name).activate( );
+        unit.getAction(name).activate();
         logMeasurements();
         logAssertions();
     }
 
     private void addTestTypes(Unit unit) {
         for (String typeName : StringMaster.open(test.getArgMap().get(
-                TEST_ARGS.TEST_SKILLS))) {
+         TEST_ARGS.TEST_SKILLS))) {
             // ObjType type = DataManager.getType(typeName, OBJ_TYPES.SKILLS);
             // DC_FeatObj feat;
             // unit.getSkills().add(feat);
@@ -78,8 +78,8 @@ public class AutoTestRunner {
                 master.getSource().addFeat((DC_FeatObj) test.getE());
             } else {
                 master.getSource().addFeat(
-                        (DC_FeatObj) master.getFactory().initEntity(
-                                DataManager.getType(typeName, C_OBJ_TYPE.FEATS)));
+                 (DC_FeatObj) master.getFactory().initEntity(
+                  DataManager.getType(typeName, C_OBJ_TYPE.FEATS)));
             }
         }
         // unit.toBase();

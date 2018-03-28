@@ -33,18 +33,18 @@ public class BindingSpellEffect extends DC_Effect {
         Effects effects = null;
         if (!shareOrRedirect) {
             effects = new Effects(new CustomTargetEffect(new FixedTargeting(
-                    KEYS.TARGET2), new DuplicateEffect(true)),
-                    new CustomTargetEffect(new FixedTargeting(KEYS.TARGET),
-                            new InterruptEffect()));
+             KEYS.TARGET2), new DuplicateEffect(true)),
+             new CustomTargetEffect(new FixedTargeting(KEYS.TARGET),
+              new InterruptEffect()));
         }
 
         Effect EFFECT = new DuplicateSpellEffect(KEYS.TARGET.name(), false,
-                true);
+         true);
         EFFECT.setTargetGroup(ref.getGroup());
         effects = new Effects(EFFECT);
         Event.STANDARD_EVENT_TYPE event_type = Event.STANDARD_EVENT_TYPE.SPELL_RESOLVED;
         conditions.add(ConditionMaster.getPropCondition("EVENT_SPELL",
-                G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.MIND_AFFECTING.name()));
+         G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.MIND_AFFECTING.name()));
         return false;
     }
 }

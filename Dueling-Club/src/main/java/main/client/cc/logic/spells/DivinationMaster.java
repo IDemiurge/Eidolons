@@ -63,8 +63,8 @@ public class DivinationMaster {
         // divination cap limiting?
 
         sdCondition = new NumericCondition(
-                DC_Formulas.DIVINATION_MAX_SD_FORMULA.toString(),
-                StringMaster.getValueRef(KEYS.MATCH, (PARAMS.SPELL_DIFFICULTY)));
+         DC_Formulas.DIVINATION_MAX_SD_FORMULA.toString(),
+         StringMaster.getValueRef(KEYS.MATCH, (PARAMS.SPELL_DIFFICULTY)));
 
         DC_SpellObj spell;
         spellGroups = initSpellGroups();
@@ -102,7 +102,7 @@ public class DivinationMaster {
             spell = LibraryManager.getSpellFromHero(hero, spellType.getName());
             if (spell == null) {
                 spell = new DC_SpellObj(spellType, hero.getOwner(),
-                        hero.getGame(), hero.getRef());
+                 hero.getGame(), hero.getRef());
                 hero.getSpells().add(spell);
                 if (LibraryManager.checkHeroHasSpell(hero, spellType)) {
                     applyKnownSpellDivinationEffect(spell);
@@ -127,8 +127,8 @@ public class DivinationMaster {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
             new ModifyValueEffect(PARAMS.C_ESSENCE,
-                    MOD.MODIFY_BY_CONST,
-                    DC_Formulas.DRUIDIC_VISIONS_ESSENCE).apply(ref);
+             MOD.MODIFY_BY_CONST,
+             DC_Formulas.DRUIDIC_VISIONS_ESSENCE).apply(ref);
             return;
         }
 
@@ -136,30 +136,30 @@ public class DivinationMaster {
             Ref ref = Ref.getSelfTargetingRefCopy(hero);
             ref.setID(KEYS.SPELL, spell.getId());
             new ModifyValueEffect(PARAMS.C_MORALE, MOD.MODIFY_BY_CONST,
-                    DC_Formulas.HOLY_PRAYER_MORALE).apply(ref);
+             DC_Formulas.HOLY_PRAYER_MORALE).apply(ref);
             // ++ REMOVE COOLDOWN FROM SPELL?
         }
         Ref ref = Ref.getSelfTargetingRefCopy(spell);
         AddBuffEffect buffEffect = new AddBuffEffect(BUFF_FAVORED, new Effects(
-                new ModifyValueEffect(PARAMS.ESS_COST,
-                        MOD.MODIFY_BY_PERCENT, "-25"),
-                new ModifyValueEffect(PARAMS.FOC_REQ,
-                        MOD.MODIFY_BY_PERCENT, "-25"),
-                new ModifyValueEffect(PARAMS.FOC_COST,
-                        MOD.MODIFY_BY_PERCENT, "-25"),
-                new ModifyValueEffect(PARAMS.STA_COST,
-                        MOD.MODIFY_BY_PERCENT, "-25"),
-                new ModifyValueEffect(PARAMS.SPELLPOWER_MOD,
-                        MOD.MODIFY_BY_PERCENT, "25")));
+         new ModifyValueEffect(PARAMS.ESS_COST,
+          MOD.MODIFY_BY_PERCENT, "-25"),
+         new ModifyValueEffect(PARAMS.FOC_REQ,
+          MOD.MODIFY_BY_PERCENT, "-25"),
+         new ModifyValueEffect(PARAMS.FOC_COST,
+          MOD.MODIFY_BY_PERCENT, "-25"),
+         new ModifyValueEffect(PARAMS.STA_COST,
+          MOD.MODIFY_BY_PERCENT, "-25"),
+         new ModifyValueEffect(PARAMS.SPELLPOWER_MOD,
+          MOD.MODIFY_BY_PERCENT, "25")));
         buffEffect.apply(ref);
 
         buffEffect.getBuff().setDuration((hero.getIntParam(PARAMS.CHARISMA) + // TODO
-                // LASTING
-                // GRACE!
-                hero.getIntParam(PARAMS.DIVINATION_MASTERY)) / 5);
+         // LASTING
+         // GRACE!
+         hero.getIntParam(PARAMS.DIVINATION_MASTERY)) / 5);
 
         buffEffect.getBuff().setProperty(G_PROPS.STD_BOOLS,
-                "" + GenericEnums.STD_BOOLS.STACKING, true);
+         "" + GenericEnums.STD_BOOLS.STACKING, true);
     }
 
     private static boolean checkSpell(ObjType spellType) {
@@ -185,12 +185,12 @@ public class DivinationMaster {
         // right?
 
         SPELL_GROUP chosenGroup = new RandomWizard<SPELL_GROUP>()
-                .getObjectByWeight(spellGroups);
+         .getObjectByWeight(spellGroups);
         List<ObjType> types = DataManager.toTypeList(
-                DataManager
-                        .getTypesSubGroupNames(DC_TYPE.SPELLS, StringMaster
-                                .getWellFormattedString(chosenGroup.name())),
-                DC_TYPE.SPELLS);
+         DataManager
+          .getTypesSubGroupNames(DC_TYPE.SPELLS, StringMaster
+           .getWellFormattedString(chosenGroup.name())),
+         DC_TYPE.SPELLS);
         FilterMaster.filterOut(types, sdCondition);
         Collections.sort(types, getComparator());
         spellPool.addAll(types);
@@ -198,17 +198,17 @@ public class DivinationMaster {
 
     private static Map<SPELL_GROUP, Integer> initSpellGroups() {
         String spellGroupProperty = hero.getDeity().getType()
-                .getProperty(PROPS.FAVORED_SPELL_GROUPS);
+         .getProperty(PROPS.FAVORED_SPELL_GROUPS);
 
         boolean forced = false;
         if (!hero.getProperty(PROPS.DIVINATION_FORCED_SPELL_GROUPS).isEmpty()) {
             spellGroupProperty = hero
-                    .getProperty(PROPS.DIVINATION_FORCED_SPELL_GROUPS);
+             .getProperty(PROPS.DIVINATION_FORCED_SPELL_GROUPS);
             forced = true;
         }
 
         Map<SPELL_GROUP, Integer> map = new RandomWizard<SPELL_GROUP>()
-                .constructWeightMap(spellGroupProperty, SPELL_GROUP.class);
+         .constructWeightMap(spellGroupProperty, SPELL_GROUP.class);
         if (forced) {
             return map;
         }
@@ -270,7 +270,7 @@ public class DivinationMaster {
 
     private static int getChanceForSpell(ObjType spellType) {
         int index = ListMaster.getIndexString(spellGroups.keySet(),
-                spellType.getProperty(G_PROPS.SPELL_GROUP), true);
+         spellType.getProperty(G_PROPS.SPELL_GROUP), true);
         if (index <= -1) {
             return 0;
         }
@@ -279,8 +279,8 @@ public class DivinationMaster {
         // getOrCreate the group randomly, then a spell randomly from it!
 
         int weight = spellGroups.get(new EnumMaster<SPELL_GROUP>()
-                .retrieveEnumConst(SPELL_GROUP.class,
-                        spellType.getProperty(G_PROPS.SPELL_GROUP)));
+         .retrieveEnumConst(SPELL_GROUP.class,
+          spellType.getProperty(G_PROPS.SPELL_GROUP)));
 
         return (Math.min(MAX_SPELL_DIVINE_CHANCE, spellPool.size()) / index); // poolsize?
     }

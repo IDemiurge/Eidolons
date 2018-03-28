@@ -24,15 +24,15 @@ import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class OrbElement extends SuperActor {
     private static final String EMPTY_PATH = "/UI/components/new/orb 64.png";
-    private   Label label;
-    private   Image background;
-    private   Image icon;
-    private   Image lighting;
+    private Label label;
+    private Image background;
+    private Image icon;
+    private Image lighting;
     private TextureRegion orbRegion;
     private TextureRegion iconRegion;
     private int orbFullness = 62;
     private int orbFullnessPrevious = 62;
-    private float fluctuation=0;
+    private float fluctuation = 0;
 
     public OrbElement(TextureRegion iconRegion, TextureRegion texture, String value) {
         background = new Image(getOrCreateR(EMPTY_PATH));
@@ -58,13 +58,13 @@ public class OrbElement extends SuperActor {
 
 //        lighting = new Image(getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
 //        lighting.sizeBy(0.3f);
-        Texture texture =TextureCache. getOrCreate ("/UI/components/new/orb " +
+        Texture texture = TextureCache.getOrCreate("/UI/components/new/orb " +
          param.getName() +
          " border.png");
         if (texture == TextureCache.getEmptyTexture()) return;
         lighting = new Image(texture);
         addActor(lighting);
-            lighting.setPosition(-15, -15);
+        lighting.setPosition(-15, -15);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class OrbElement extends SuperActor {
 
     @Override
     protected float getAlphaFluctuationPerDelta() {
-        return fluctuation ;
+        return fluctuation;
     }
 
     @Override
@@ -116,11 +116,11 @@ public class OrbElement extends SuperActor {
             orbFullness = 62;
         }
         if (!isAlphaFluctuationOn()) {
-            if (lighting!=null )
-                lighting.setColor(1,1,1, 0.5f + new Float(orbFullness)/100 );
+            if (lighting != null)
+                lighting.setColor(1, 1, 1, 0.5f + new Float(orbFullness) / 100);
         } else
-        fluctuation=MathMaster.getMinMax(
-         super.getAlphaFluctuationPerDelta() /(1+orbFullness)*30, 0.4f, 0.7f);
+            fluctuation = MathMaster.getMinMax(
+             super.getAlphaFluctuationPerDelta() / (1 + orbFullness) * 30, 0.4f, 0.7f);
 
     }
 
@@ -129,8 +129,8 @@ public class OrbElement extends SuperActor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         batch.flush();
-        if (fluctuatingAlpha!=1)
-            batch.setColor(new Color(1,1,1,1));
+        if (fluctuatingAlpha != 1)
+            batch.setColor(new Color(1, 1, 1, 1));
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = new Rectangle(getX(), getY(), 62, orbFullness);
         getStage().calculateScissors(clipBounds, scissors);

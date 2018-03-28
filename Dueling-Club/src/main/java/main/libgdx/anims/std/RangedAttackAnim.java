@@ -32,7 +32,7 @@ public class RangedAttackAnim extends AttackAnim {
 
         //another actor? separate sprite?
         rangedWeaponImage = TextureCache.getOrCreate(getRangedWeaponImage(getActive()));
-        ammo = weapon.getAmmo( );
+        ammo = weapon.getAmmo();
 //        if (ammo ==null )
 //        ammo = weapon.getRef().getLastRemovedObj(KEYS.AMMO);
         if (ammo instanceof DC_QuickItemObj) {
@@ -47,7 +47,7 @@ public class RangedAttackAnim extends AttackAnim {
             case CROSSBOWS:
             case BOWS:
                 list.
-                        add(ATK_ANIMS.SHOT);
+                 add(ATK_ANIMS.SHOT);
 //            case RIFLES:
 //            case PISTOLS:
         }
@@ -100,7 +100,6 @@ public class RangedAttackAnim extends AttackAnim {
     }
 
 
-
     @Override
     public float getPixelsPerSecond() {
         return 750;
@@ -108,8 +107,8 @@ public class RangedAttackAnim extends AttackAnim {
 
     @Override
     protected Action getAction() {
-        Action action =super.getAction();
-        if (action!=null )
+        Action action = super.getAction();
+        if (action != null)
             action.reset();
         return action;
 

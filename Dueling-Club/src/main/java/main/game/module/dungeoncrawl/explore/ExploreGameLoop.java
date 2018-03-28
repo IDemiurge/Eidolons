@@ -98,6 +98,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return super.startInNewThread();
     }
 
+    @Override
+    public void start() {
+//        game.getManager().reset();
+        super.start();
+    }
+
     protected WAIT_OPERATIONS getOperationToWaitFor() {
         return WAIT_OPERATIONS.GUI_READY;
     }

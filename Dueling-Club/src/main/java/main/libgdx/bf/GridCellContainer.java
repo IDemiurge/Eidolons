@@ -188,7 +188,7 @@ public class GridCellContainer extends GridCell {
             else if (actor.isActive()) {
                 if (hovered == null) hovered = actor;
             } else if (!actor.isHpBarVisible()) {
-                actor.setZIndex((n+ 1) / 2 );
+                actor.setZIndex(n + 1);
             } else
                 actor.setZIndex(n + 2);
             n++;

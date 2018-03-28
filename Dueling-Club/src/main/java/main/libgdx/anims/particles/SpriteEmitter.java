@@ -35,7 +35,7 @@ public class SpriteEmitter extends Emitter {
         try {
             animation = SpriteAnimationFactory.getSpriteAnimation(
              getImagePaths().get(0).split("img")[1]
-              );
+            );
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

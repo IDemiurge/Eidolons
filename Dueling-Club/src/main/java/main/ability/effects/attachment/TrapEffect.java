@@ -53,7 +53,7 @@ public class TrapEffect extends TriggerEffect {
     @Override
     protected void initConditions() {
         conditions = new Conditions(new RefCondition(KEYS.EVENT_TARGET,
-                KEYS.TARGET, false));
+         KEYS.TARGET, false));
         if (!friendlyFire) {
             ((Conditions) conditions).add(ConditionMaster.getEnemyCondition());
         }

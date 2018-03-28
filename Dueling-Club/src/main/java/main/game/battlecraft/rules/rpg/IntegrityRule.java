@@ -25,12 +25,12 @@ public class IntegrityRule {
     private static PARAMETER[] getIntegrityModifiedParameters() {
         if (INTEGRITY_MODIFIED_VALUES == null) {
             INTEGRITY_MODIFIED_VALUES = new PARAMETER[]{
-                    ContentManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
-                    ContentManager.getMasteryScore(PARAMS.DIVINATION_MASTERY), PARAMS.XP_LEVEL_MOD,
-                    PARAMS.GOLD_COST_REDUCTION, PARAMS.SPIRIT, PARAMS.FOCUS_RESTORATION,
-                    PARAMS.FOCUS_RETAINMENT, PARAMS.STARTING_FOCUS,
-                    // + Organization
-                    // + Personality modifiers
+             ContentManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
+             ContentManager.getMasteryScore(PARAMS.DIVINATION_MASTERY), PARAMS.XP_LEVEL_MOD,
+             PARAMS.GOLD_COST_REDUCTION, PARAMS.SPIRIT, PARAMS.FOCUS_RESTORATION,
+             PARAMS.FOCUS_RETAINMENT, PARAMS.STARTING_FOCUS,
+             // + Organization
+             // + Personality modifiers
             };
         }
         return INTEGRITY_MODIFIED_VALUES;
@@ -183,7 +183,7 @@ public class IntegrityRule {
             identity = item.getIntParam(identity_param);
         }
         return new Integer[]{identity, alignment,
-                getIntegrityProduct(hero.getIntParam(identity_param), alignment)};
+         getIntegrityProduct(hero.getIntParam(identity_param), alignment)};
     }
 
     private static void resetAlignment(Unit hero) {
@@ -234,7 +234,7 @@ public class IntegrityRule {
             return;
         }
         PARAMETER[] array = alignment_identity ? ValuePages.PRINCIPLE_ALIGNMENTS
-                : ValuePages.PRINCIPLE_IDENTITIES;
+         : ValuePages.PRINCIPLE_IDENTITIES;
         for (PARAMETER param : array) {
             Integer amount = from.getIntParam(param);
             // min/max?
@@ -314,7 +314,7 @@ public class IntegrityRule {
         VALUE_LEVEL lowestLevel = null;
         for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
             Integer amount = hero
-                    .getIntParam(DC_ContentManager.getAlignmentForPrinciple(principle));
+             .getIntParam(DC_ContentManager.getAlignmentForPrinciple(principle));
             VALUE_LEVEL level = alignment ? getAlignmentLevel(amount) : getIdentityLevel(amount);
             if (highestAmount < amount) {
                 highestPrinciple = principle;
@@ -642,19 +642,6 @@ public class IntegrityRule {
         }
     }
 
-    public enum INTEGRITY_LEVEL implements VALUE_LEVEL {
-        VERY_LOW(0), LOW(50), NORMAL(100), HIGH(150), VERY_HIGH(250),;
-        int barrier;
-
-        INTEGRITY_LEVEL(int barrier) {
-            this.barrier = barrier;
-        }
-
-        public int getBarrier() {
-            return barrier;
-        }
-    }
-
     public enum IDENTITY_LEVEL implements VALUE_LEVEL {
         HATRED(-5),
         CONTEMPT(-3),
@@ -666,6 +653,19 @@ public class IntegrityRule {
         int barrier;
 
         IDENTITY_LEVEL(int barrier) {
+            this.barrier = barrier;
+        }
+
+        public int getBarrier() {
+            return barrier;
+        }
+    }
+
+    public enum INTEGRITY_LEVEL implements VALUE_LEVEL {
+        VERY_LOW(0), LOW(50), NORMAL(100), HIGH(150), VERY_HIGH(250),;
+        int barrier;
+
+        INTEGRITY_LEVEL(int barrier) {
             this.barrier = barrier;
         }
 

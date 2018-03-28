@@ -50,10 +50,11 @@ public class Location extends DungeonWrapper {
     }
 
     public Coordinates getPlayerSpawnCoordinates() {
-       if (getMainEntrance()!=null )
-           return getMainEntrance().getCoordinates();
+        if (getMainEntrance() != null)
+            return getMainEntrance().getCoordinates();
         return super.getPlayerSpawnCoordinates();
     }
+
     public List<Entrance> getEntrances() {
         if (entrances == null) {
             entrances = new ArrayList<>();
@@ -122,7 +123,7 @@ public class Location extends DungeonWrapper {
                 }
             }
         }
-        if (getMainEntrance()==null ){
+        if (getMainEntrance() == null) {
             setMainEntrance(new Entrance(c.x, c.y, DataManager.getType(name, DC_TYPE.BF_OBJ),
              getDungeon(), getDungeon()));
         }
@@ -140,7 +141,7 @@ public class Location extends DungeonWrapper {
             }
         }
 
-        if (getMainExit()==null ){
+        if (getMainExit() == null) {
             setMainExit(new Entrance(c.x, c.y, DataManager.getType(name, DC_TYPE.BF_OBJ),
              getDungeon(), getDungeon()));
         }

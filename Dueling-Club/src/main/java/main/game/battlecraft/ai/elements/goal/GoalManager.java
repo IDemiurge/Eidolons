@@ -16,9 +16,9 @@ import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GoalManager extends AiHandler {
@@ -81,8 +81,7 @@ public class GoalManager extends AiHandler {
         return new Comparator<GOAL_TYPE>() {
             @Override
             public int compare(GOAL_TYPE o1, GOAL_TYPE o2) {
-                if (ai.getType().isCaster())
-                {
+                if (ai.getType().isCaster()) {
 //                    if (o1==)
                 }
                 return 0;

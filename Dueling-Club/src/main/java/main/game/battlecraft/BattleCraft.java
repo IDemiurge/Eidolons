@@ -57,14 +57,14 @@ public class BattleCraft {
             }
             int amount = StringMaster.getInteger(VariableManager.getVarPart(item));
             PARAMETER[] masteries = VALUE_GROUP.valueOf(
-                    StringMaster.toEnumFormat(VariableManager.removeVarPart(item))).getParams();
+             StringMaster.toEnumFormat(VariableManager.removeVarPart(item))).getParams();
             List<String> options = new ArrayList<>();
             for (PARAMETER m : masteries) {
                 options.add(m.toString().replace(" Mastery", ""));
             }
             // multi-disc groups?
             int index = DialogMaster.askOptionsAndWait(hero.getName() + tip
-                    + StringMaster.wrapInParenthesis("" + amount), false, options.toArray());
+             + StringMaster.wrapInParenthesis("" + amount), false, options.toArray());
             if (index == -1) {
                 index = RandomWizard.getRandomIntBetween(0, masteries.length - 1);
                 DialogMaster.inform("Random choice - " + masteries[index]);

@@ -25,12 +25,12 @@ public class ExplorationResetHandler extends ExplorationHandler {
     }
 
     public void resetAll() {
-       master.getGame(). getMaster(). clearCaches();
+        master.getGame().getMaster().clearCaches();
 
 //        master.getGame().getStateManager().checkTriggers();
 
         //position-based effects?
-        master.getGame().getRules().getIlluminationRule().resetIllumination( );
+        master.getGame().getRules().getIlluminationRule().resetIllumination();
 //        IlluminationRule.initLightEmission(master.game);
 
 //        checkCounterRules();
@@ -48,7 +48,7 @@ public class ExplorationResetHandler extends ExplorationHandler {
         Unit unit = input.getAction().getOwnerObj();
         Unit enemy = input.getAction().getGame().getAiManager().getAnalyzer().
          getClosestEnemy(unit);
-        if (enemy==null )
+        if (enemy == null)
             return false;
         double distance = PositionMaster.getExactDistance(enemy.getCoordinates(),
          input.getAction().getOwnerObj().getCoordinates());

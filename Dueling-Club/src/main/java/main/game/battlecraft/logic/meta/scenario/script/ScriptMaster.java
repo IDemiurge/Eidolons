@@ -21,7 +21,7 @@ public class ScriptMaster {
         return getScriptByName(name, true, vars.split(StringMaster.SEPARATOR));
     }
 
-    public static  String getScriptByName(String name, boolean variables, String... vars) {
+    public static String getScriptByName(String name, boolean variables, String... vars) {
         //TODO  use some official data format already!!!
 //        String text = null;
 //        FileManager.readFile(generated_scripts_path);
@@ -34,7 +34,6 @@ public class ScriptMaster {
     public void generateScripts() {
         //from missions? use ^VARs?
     }
-
 
 
 }

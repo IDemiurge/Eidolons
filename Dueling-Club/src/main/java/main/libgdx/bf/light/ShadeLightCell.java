@@ -17,9 +17,7 @@ import main.game.core.game.DC_Game;
 import main.libgdx.GdxColorMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.actions.FloatActionLimited;
-import main.libgdx.bf.GridConst;
-import main.libgdx.bf.GridMaster;
-import main.libgdx.bf.SuperActor;
+import main.libgdx.bf.*;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.libgdx.screens.DungeonScreen;
@@ -37,10 +35,11 @@ public class ShadeLightCell extends SuperContainer {
 
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean alphaFluctuation = true;
+    FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     private int x;
     private int y;
     private SHADE_LIGHT type;
-    private float baseAlpha=0;
+    private float baseAlpha = 0;
     private Float originalX;
     private Float originalY;
 
@@ -57,15 +56,6 @@ public class ShadeLightCell extends SuperContainer {
         this.y = y;
     }
 
-    private void transform() {
-        if (type == SHADE_LIGHT.GAMMA_SHADOW) {
-            int rotation = 90 * RandomWizard.getRandomInt(4);
-            getContent().setOrigin(Align.center);
-            getContent().setRotation(rotation);
-            getContent().setScale(new Random().nextFloat()/5 + 1f, new Random().nextFloat()/5 + 1f );
-        }
-        }
-
     private static String getTexturePath(SHADE_LIGHT type) {
         switch (type) {
 //            case GAMMA_SHADOW:
@@ -78,6 +68,15 @@ public class ShadeLightCell extends SuperContainer {
 
     public static void setAlphaFluctuation(boolean alphaFluctuation) {
         ShadeLightCell.alphaFluctuation = alphaFluctuation;
+    }
+
+    private void transform() {
+        if (type == SHADE_LIGHT.GAMMA_SHADOW) {
+            int rotation = 90 * RandomWizard.getRandomInt(4);
+            getContent().setOrigin(Align.center);
+            getContent().setRotation(rotation);
+            getContent().setScale(new Random().nextFloat() / 5 + 1f, new Random().nextFloat() / 5 + 1f);
+        }
     }
 
     public boolean isCachedPosition() {
@@ -118,6 +117,20 @@ public class ShadeLightCell extends SuperContainer {
         return baseAlpha;
     }
 
+    public void setBaseAlpha(float baseAlpha) {
+        if (isAnimated()) {
+            alphaAction.reset();
+            alphaAction.setStart(this.baseAlpha);
+            alphaAction.setEnd(baseAlpha);
+            addAction(alphaAction);
+            alphaAction.setTarget(this);
+            alphaAction.setDuration(0.25f + (Math.abs(this.baseAlpha - baseAlpha)) / 2);
+        } else
+            this.baseAlpha = baseAlpha;
+
+        if (isColored())
+            teamColor = initTeamColor();
+    }
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
@@ -138,7 +151,6 @@ public class ShadeLightCell extends SuperContainer {
         return super.isIgnored();
     }
 
-
     @Override
     public boolean isAlphaFluctuationOn() {
         if (!alphaFluctuationOn)
@@ -151,8 +163,7 @@ public class ShadeLightCell extends SuperContainer {
         return teamColor;
     }
 
-
-        public Color initTeamColor() {
+    public Color initTeamColor() {
 //for each coordinate?
         //default per dungeon
 //        Eidolons.getGame().getMaster().getObjCache()
@@ -173,7 +184,7 @@ public class ShadeLightCell extends SuperContainer {
         }
         if (colorTheme == null) {
             Dungeon obj = Eidolons.game.getDungeon();
-            colorTheme =obj.getColorTheme();
+            colorTheme = obj.getColorTheme();
         }
 
         Color c = null;
@@ -190,15 +201,15 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationMin() {
-        if (type== SHADE_LIGHT.GAMMA_SHADOW)
-            return baseAlpha/2;
+        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+            return baseAlpha / 2;
         return baseAlpha * 3 / 5;
     }
 
     @Override
     protected float getAlphaFluctuationMax() {
-        if (type== SHADE_LIGHT.GAMMA_SHADOW)
-            return baseAlpha*5/6;
+        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+            return baseAlpha * 5 / 6;
         return baseAlpha;
     }
 
@@ -206,8 +217,6 @@ public class ShadeLightCell extends SuperContainer {
     protected float getAlphaFluctuationPerDelta() {
         return new Float(RandomWizard.getRandomInt((int) (super.getAlphaFluctuationPerDelta() * 50))) / 100;
     }
-
-
 
     @Override
     public void act(float delta) {
@@ -219,25 +228,9 @@ public class ShadeLightCell extends SuperContainer {
              )) {
                 return;
             }
-            if (isAnimated())
-        baseAlpha= alphaAction.getValue();
+        if (isAnimated())
+            baseAlpha = alphaAction.getValue();
         super.act(delta);
-    }
-    FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
-
-    public void setBaseAlpha(float baseAlpha) {
-        if (isAnimated()) {
-        alphaAction.reset();
-        alphaAction.setStart(this.baseAlpha);
-        alphaAction.setEnd(baseAlpha);
-        addAction(alphaAction);
-        alphaAction.setTarget(this);
-            alphaAction.setDuration(0.25f + (Math.abs( this.baseAlpha - baseAlpha))/2);
-        } else
-        this.baseAlpha = baseAlpha;
-
-        if (isColored())
-            teamColor = initTeamColor();
     }
 
     private boolean isAnimated() {
@@ -257,6 +250,7 @@ public class ShadeLightCell extends SuperContainer {
         float offsetX = 0;
         float offsetY = 0;
         setScale(1f, 1f);
+        setVisible(true);
         for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
@@ -273,16 +267,27 @@ public class ShadeLightCell extends SuperContainer {
 
                             setScale(d.growX == null ? 1 : 0.8f, d.growY == null ? 1 : 0.8f);
                             Dimension dim = GridMaster.getOffsetsForOverlaying(d,
-                             (int) getWidth()-64,
-                             (int) getHeight()-64);
+                             (int) getWidth() - 64,
+                             (int) getHeight() - 64);
                             offsetX += dim.width;
                             offsetY += dim.height;
                             //so if 2+ overlays, will be centered between them...
+                        } else {
+
+                            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(sub);
+                            offsetX += view.getX() * 3;
+                            offsetY += view.getY() * 3;
+                            if (view.getParent() instanceof GridCellContainer) {
+                                if ((((GridCellContainer) view.getParent()).getUnitViews(true).size() > 1)) {
+                                    if (!view.isHovered())
+                                        setVisible(false);
+                                }
+                            }
                         }
             }
 
         }
 
-        setPosition(originalX + offsetX/3 , originalY + offsetY/3 );
+        setPosition(originalX + offsetX / 3, originalY + offsetY / 3);
     }
 }

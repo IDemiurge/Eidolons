@@ -35,8 +35,8 @@ public class MapScreen extends GameScreen {
 
     public final static String defaultPath = "global\\map\\ersidris plain.jpg";
     public final static String timeVersionRootPath = "global\\map\\ersidris at ";
+    public static final int defaultSize = 2988;
     protected static MapScreen instance;
-    public static final int defaultSize=2988;
     //    protected RealTimeGameLoop realTimeGameLoop;
     protected MapGuiStage guiStage;
     protected MapObjStage objectStage;
@@ -60,7 +60,7 @@ public class MapScreen extends GameScreen {
     public void centerCamera() {
         Coordinates coordinatesActiveObj =
          objectStage.getMainParty().getCoordinates();
-        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x,coordinatesActiveObj.y);
+        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x, coordinatesActiveObj.y);
         cameraPan(unitPosition);
     }
 
@@ -72,7 +72,7 @@ public class MapScreen extends GameScreen {
     @Override
     protected void preLoad() {
         if (preloaded)
-            return ;
+            return;
         guiStage = createGuiStage();
         objectStage = new MapObjStage(viewPort, getBatch());
         mapStage = new MapStage(viewPort, getBatch());
@@ -84,7 +84,7 @@ public class MapScreen extends GameScreen {
             //if
             XML_Reader.readTypes(true);
             MacroManager.newGame();
-            preloaded=true;
+            preloaded = true;
         }, "macro init thread").start();
 
 //        GuiEventManager.trigger(SHOW_SELECTION_PANEL,
@@ -103,10 +103,9 @@ public class MapScreen extends GameScreen {
 
     @Override
     protected void afterLoad() {
-        if (loaded)
-        {
+        if (loaded) {
             GuiEventManager.trigger(MAP_READY);
-            return ; //fix this!
+            return; //fix this!
         }
         GuiEventManager.trigger(UPDATE_MAP_BACKGROUND, defaultPath);
         cam = (OrthographicCamera) viewPort.getCamera();
@@ -166,8 +165,8 @@ public class MapScreen extends GameScreen {
         if (MacroGame.getGame() == null)
             return false;
         if (!CoreEngine.isMapEditor())
-        if (!MacroGame.getGame().isStarted()  )
-            return false;
+            if (!MacroGame.getGame().isStarted())
+                return false;
         return super.canShowScreen();
     }
 
@@ -175,8 +174,7 @@ public class MapScreen extends GameScreen {
 //        VignetteShader.getShader().begin();
 //        getBatch().setShader(VignetteShader.getShader());
         if (canShowScreen()) {
-            if (!CoreEngine.isMapEditor())
-            {
+            if (!CoreEngine.isMapEditor()) {
                 MacroGame.getGame().getRealtimeLoop().act(delta);
                 cameraShift();
             }

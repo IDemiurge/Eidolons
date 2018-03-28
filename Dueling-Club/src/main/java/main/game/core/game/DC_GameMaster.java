@@ -411,8 +411,8 @@ public class DC_GameMaster extends GameMaster {
             if (list.isEmpty())
                 array = new BattleFieldObject[0];
             else
-                array =list.toArray(new BattleFieldObject[list.size()]);
-            objCells[x_][y_]  =array ;
+                array = list.toArray(new BattleFieldObject[list.size()]);
+            objCells[x_][y_] = array;
         }
         return array;
     }

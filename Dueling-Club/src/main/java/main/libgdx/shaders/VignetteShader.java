@@ -8,7 +8,7 @@ import org.lwjgl.opengl.Display;
  */
 public class VignetteShader {
 
-    private static String fragmentShader="//texture 0\n" +
+    private static String fragmentShader = "//texture 0\n" +
      "uniform sampler2D u_texture;\n" +
      "uniform mat4 u_projTrans;\n" +
      "\n" +
@@ -42,11 +42,11 @@ public class VignetteShader {
      "\n" +
      "//apply our vignette\n" +
 //     "texColor.rgb *= vignette;\n" +
-     "texColor.rgb = mix(texColor.rgb, texColor.rgb * vignette, 0.5);"+
+     "texColor.rgb = mix(texColor.rgb, texColor.rgb * vignette, 0.5);" +
      "\n" +
      "gl_FragColor = texColor;\n" +
      "}";
-    private static String vertexShader="//combined projection and view matrix\n" +
+    private static String vertexShader = "//combined projection and view matrix\n" +
      "uniform mat4 u_projView;\n" +
      "uniform mat4 u_projTrans;\n" +
      "\n" +
@@ -67,7 +67,7 @@ public class VignetteShader {
      "gl_Position = u_projView * vec4(Position, 0.0, 1.0);\n" +
      "}";
     private static boolean used;
-    private static   ShaderProgram shader ;
+    private static ShaderProgram shader;
 
     public static boolean isUsed() {
         return used;
@@ -82,7 +82,7 @@ public class VignetteShader {
 //
         if (shader == null) {
             shader = new ShaderProgram(vertexShader,
-             fragmentShader );
+             fragmentShader);
             shader.setUniformf("resolution", Display.getWidth(), Display.getHeight());
         }
         return shader;

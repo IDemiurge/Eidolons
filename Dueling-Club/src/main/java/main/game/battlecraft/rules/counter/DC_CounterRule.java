@@ -122,10 +122,10 @@ public abstract class DC_CounterRule {
     public void newTurn() {
         for (Unit unit : game.getUnits()) {
             if (unit.isDead()) continue;
-        if (!ExplorationMaster.isExplorationOn())
-            if (isOutsideCombatIgnored())
-                if (game.getState().getManager().checkUnitIgnoresReset(unit))
-                    continue;
+            if (!ExplorationMaster.isExplorationOn())
+                if (isOutsideCombatIgnored())
+                    if (game.getState().getManager().checkUnitIgnoresReset(unit))
+                        continue;
             if (getNumberOfCounters(unit) <= 0) {
                 continue;
             }

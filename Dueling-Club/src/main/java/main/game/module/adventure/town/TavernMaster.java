@@ -5,9 +5,9 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.unit.Unit;
 import main.game.module.adventure.MacroManager;
-import main.game.module.adventure.global.TimeMaster;
-import main.game.module.adventure.entity.party.MacroPartyUtils;
 import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.entity.party.MacroPartyUtils;
+import main.game.module.adventure.global.TimeMaster;
 import main.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -48,7 +48,7 @@ public class TavernMaster {
         if (party.getSharedGold() < cost) {
             // "Well, you only got enough for " _ amount + ", interested?";
             amount = party.getSharedGold()
-                    / tavern.getIntParam(MACRO_PARAMS.FOOD_COST);
+             / tavern.getIntParam(MACRO_PARAMS.FOOD_COST);
             cost = amount * tavern.getIntParam(MACRO_PARAMS.FOOD_COST);
         }
         // preCheck(cost, party) return;
@@ -64,7 +64,7 @@ public class TavernMaster {
          *
 		 */
         Boolean result = DialogMaster.askAndWait("I'll buy a drink for...",
-                true, "all patrons!", "all of us", "myself");
+         true, "all patrons!", "all of us", "myself");
 
 //        int quality = tavern.getIntParam(MACRO_PARAMS.DRINK_QUALITY);
         List<Unit> drinkers = party.getMembers();
@@ -89,13 +89,13 @@ public class TavernMaster {
     public static void rentRooms(Tavern tavern) { // or 'seek sanctuary' in a
         // temple
         Boolean result = DialogMaster.askAndWait(
-                "How long will you be needing the rooms?", "24 hours",
-                "For...", "Until...");
+         "How long will you be needing the rooms?", "24 hours",
+         "For...", "Until...");
 
         Boolean preference = DialogMaster.askAndWait(
-                "And... what class do you think you will afford?",
-                "We'll be fine with cheap", "Common should do",
-                "It better be decent");
+         "And... what class do you think you will afford?",
+         "We'll be fine with cheap", "Common should do",
+         "It better be decent");
         String roomOption; // if has
         int rentDuration = 12;
         // tavern.setProperty(MACRO_PROPS.ROOM_TYPE, roomOption);
@@ -123,7 +123,7 @@ public class TavernMaster {
     }
 
     public static void entertain(Tavern tavern) {
-		/*
+        /*
          * getOrCreate some gold and raise mood of patrons and even inn-keep himself
 		 */
     }
@@ -136,7 +136,7 @@ public class TavernMaster {
 
     public static int getXpPerTurn(Tavern tavern) {
         return tavern.getIntParam(MACRO_PARAMS.TAVERN_XP_PER_HOUR)
-                * TimeMaster.getHoursPerTurn();
+         * TimeMaster.getHoursPerTurn();
     }
 
     public static Integer getMinimumHeroXp(Tavern tavern) {
@@ -157,30 +157,30 @@ public class TavernMaster {
                 // (var-chance)? could still work as a filter string, and then
                 // help with randoms
                 backgrounds += HeroEnums.BACKGROUND.MAN_OF_RAVEN_REALM.toString()
-                        + "(50);";
+                 + "(50);";
                 backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_RAVEN_REALM.toString()
-                        + "(35);";
+                 + "(35);";
                 backgrounds += HeroEnums.BACKGROUND.STONESHIELD_DWARF.toString()
-                        + "(20);";
+                 + "(20);";
                 backgrounds += HeroEnums.BACKGROUND.STRANGER.toString() + "(20);";
                 backgrounds += HeroEnums.BACKGROUND.ELF.toString() + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.DWARF.toString() + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.FEY_ELF.toString() + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.EASTERLING.toString() + "(10);";
                 backgrounds += HeroEnums.BACKGROUND.MAN_OF_WOLF_REALM.toString()
-                        + "(20);";
+                 + "(20);";
                 backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_WOLF_REALM.toString()
-                        + "(15);";
+                 + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.MAN_OF_KINGS_REALM.toString()
-                        + "(15);";
+                 + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_KINGS_REALM.toString()
-                        + "(12);";
+                 + "(12);";
                 backgrounds += HeroEnums.BACKGROUND.MAN_OF_EAGLE_REALM.toString()
-                        + "(10);";
+                 + "(10);";
                 backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_EAGLE_REALM.toString()
-                        + "(7);";
+                 + "(7);";
                 backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_KINGS_REALM.toString()
-                        + "(15);";
+                 + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.WOLFSBANE_DWARF.toString() + "(5);";
 
                 break;
@@ -193,10 +193,10 @@ public class TavernMaster {
 
     public static int getXpPool(Tavern tavern) {
         return 10
-                * // test
-                MacroManager.getCampaign().getIntParam(
-                        MACRO_PARAMS.HOURS_ELAPSED)
-                * tavern.getIntParam(MACRO_PARAMS.TAVERN_XP_PER_HOUR)
-                + tavern.getIntParam(MACRO_PARAMS.HERO_POWER_POOL);
+         * // test
+         MacroManager.getCampaign().getIntParam(
+          MACRO_PARAMS.HOURS_ELAPSED)
+         * tavern.getIntParam(MACRO_PARAMS.TAVERN_XP_PER_HOUR)
+         + tavern.getIntParam(MACRO_PARAMS.HERO_POWER_POOL);
     }
 }

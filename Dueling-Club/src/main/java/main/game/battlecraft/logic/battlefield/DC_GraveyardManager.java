@@ -58,12 +58,12 @@ public class DC_GraveyardManager implements GraveyardManager {
 
         graveMap.get(getZCoordinate(unit.getCoordinates())).remove(unit); // ???
         game.getCellByCoordinate(getZCoordinate(unit.getCoordinates())).setParam(G_PARAMS.N_OF_CORPSES,
-                graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+         graveMap.get(getZCoordinate(unit.getCoordinates())).size());
 
         if (game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())) != null) {
             game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())).setParam(
-                    G_PARAMS.N_OF_CORPSES,
-                    graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+             G_PARAMS.N_OF_CORPSES,
+             graveMap.get(getZCoordinate(unit.getCoordinates())).size());
         }
 
         removed.add(unit);
@@ -89,11 +89,11 @@ public class DC_GraveyardManager implements GraveyardManager {
         graveMap.get(getZCoordinate(unit.getCoordinates())).push(unit);
         Obj cell = game.getCellByCoordinate(getZCoordinate(unit.getCoordinates()));
         cell.setParam(G_PARAMS.N_OF_CORPSES, graveMap.get(getZCoordinate(unit.getCoordinates()))
-                .size());
+         .size());
         if (game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())) != null) {
             game.getObjectByCoordinate(getZCoordinate(unit.getCoordinates())).setParam(
-                    G_PARAMS.N_OF_CORPSES,
-                    graveMap.get(getZCoordinate(unit.getCoordinates())).size());
+             G_PARAMS.N_OF_CORPSES,
+             graveMap.get(getZCoordinate(unit.getCoordinates())).size());
         }
 
         GuiEventManager.trigger(UPDATE_GRAVEYARD, unit.getCoordinates());

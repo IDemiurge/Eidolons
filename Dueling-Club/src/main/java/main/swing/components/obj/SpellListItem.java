@@ -7,7 +7,7 @@ import main.system.images.ImageManager.BORDER;
 
 public class SpellListItem extends ListItem<DC_SpellObj> {
     public static final String EMPTY_SPELL = ImageManager
-            .getAltEmptyListIcon();
+     .getAltEmptyListIcon();
 
     public SpellListItem(DC_SpellObj item, boolean isSelected,
                          boolean cellHasFocus) {
@@ -38,7 +38,7 @@ public class SpellListItem extends ListItem<DC_SpellObj> {
     protected boolean isHighlighted() {
         try {
             return getValue().getGame().getManager().getSelectingSet()
-                    .contains(getValue());
+             .contains(getValue());
         } catch (Exception e) {
 
         }

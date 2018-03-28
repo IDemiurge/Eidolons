@@ -5,8 +5,7 @@ package main.game.module.arcade;
  */
 public class MissionGenerator {
 
-    public void generate(){
-
+    public void generate() {
 
 
     }

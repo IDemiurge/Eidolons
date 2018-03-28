@@ -8,7 +8,7 @@ import main.game.logic.event.Event.EVENT_TYPE;
 /**
  * Created by JustMe on 5/18/2017.
  */
-public class ScriptTrigger extends Trigger{
+public class ScriptTrigger extends Trigger {
 
     private String scriptText;
 
@@ -16,9 +16,11 @@ public class ScriptTrigger extends Trigger{
         super(eventType, conditions, abilities);
         scriptText = originalText;
     }
+
     public boolean isRemoveOnReset() {
         return false;
     }
+
     @Override
     public void init() {
     }
@@ -29,7 +31,7 @@ public class ScriptTrigger extends Trigger{
 
     @Override
     public String toString() {
-        return "Script Trigger: " +getScriptText();
+        return "Script Trigger: " + getScriptText();
 
     }
 }

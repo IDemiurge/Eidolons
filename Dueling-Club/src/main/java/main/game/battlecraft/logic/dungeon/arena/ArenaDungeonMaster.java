@@ -6,7 +6,7 @@ import main.game.core.game.DC_Game;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public class ArenaDungeonMaster extends DungeonMaster<ArenaDungeon>{
+public class ArenaDungeonMaster extends DungeonMaster<ArenaDungeon> {
     public ArenaDungeonMaster(DC_Game game) {
         super(game);
     }
@@ -23,7 +23,7 @@ public class ArenaDungeonMaster extends DungeonMaster<ArenaDungeon>{
 
     @Override
     protected Spawner<ArenaDungeon> createSpawner() {
-        return new ArenaSpawner (this);
+        return new ArenaSpawner(this);
     }
 
     @Override

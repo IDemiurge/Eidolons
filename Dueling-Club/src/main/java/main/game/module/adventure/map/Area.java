@@ -25,7 +25,7 @@ public class Area extends MacroObj {
 
     public List<String> getWanderingGroups() {
         return StringMaster
-                .openContainer(getProperty(MACRO_PROPS.WANDERING_GROUPS));
+         .openContainer(getProperty(MACRO_PROPS.WANDERING_GROUPS));
     }
 
     public List<MacroGroup> getGroups() {
@@ -40,7 +40,7 @@ public class Area extends MacroObj {
         if (boundaries == null) {
             boundaries = new ArrayList<>();
             for (String boundary : StringMaster
-                    .openContainer(getProperty(MACRO_PROPS.AREA_BOUNDARIES))) {
+             .openContainer(getProperty(MACRO_PROPS.AREA_BOUNDARIES))) {
                 boundaries.add(new MacroCoordinates(boundary));
             }
         }

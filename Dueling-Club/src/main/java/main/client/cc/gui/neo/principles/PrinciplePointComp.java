@@ -25,16 +25,16 @@ public class PrinciplePointComp extends HC_PointComp {// do I really need to?
     public PrinciplePointComp(PrinciplePanel panel, PRINCIPLES principle, Unit hero,
                               PrinciplePanel principlePanel, ObjType buffer) {
         super(true, hero, buffer, DC_ContentManager.getIdentityParamForPrinciple(principle),
-                PARAMS.IDENTITY_POINTS, VISUALS.PRINCIPLE_VALUE_BOX, true);
+         PARAMS.IDENTITY_POINTS, VISUALS.PRINCIPLE_VALUE_BOX, true);
         panelSize = new Dimension(textComp.getVisuals().getWidth() + getArrowOffsetX(), textComp
-                .getVisuals().getHeight());
+         .getVisuals().getHeight());
         this.principle = principle;
         this.panel = panel;
     }
 
     protected int getArrowOffsetY() {
         return VISUALS.PRINCIPLE_VALUE_BOX.getHeight() / 2
-                - ImageManager.getArrowImage(true, true, getArrowVersion()).getHeight(null);
+         - ImageManager.getArrowImage(true, true, getArrowVersion()).getHeight(null);
     }
 
     protected String getIconOffsetX() {

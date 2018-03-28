@@ -21,13 +21,13 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PointView extends HeroView implements ChangeListener,
-        ActionListener {
+ ActionListener {
 
     boolean attributes;
     int columns = 2;
@@ -154,28 +154,28 @@ public class PointView extends HeroView implements ChangeListener,
         String name = value.getName();
         if (editable && attributes) {
             name = name.replace(StringMaster
-                    .getWellFormattedString(StringMaster.BASE), "");
+             .getWellFormattedString(StringMaster.BASE), "");
         }
         JLabel lbl = new JLabel(name + ": ");
         valPanel.add(lbl, "id lbl" + i + ", sg lbls");
         if (editable) {
             PointComp pc = new PointComp(getBufferType().getIntParam(value),
-                    attributes);
+             attributes);
 
             // set minimum
             pc.setParam(value);
             pc.setFont(font);
             pc.addChangeListener(this);
             valPanel.add(pc, ((i % columns == 0) ? ",wrap" : "")
-                    // ,"pos lbl" + i + ".x2 0"
+             // ,"pos lbl" + i + ".x2 0"
             );
             compMap.put(value, pc);
         } else {
             JLabel comp = new JLabel(getBufferType().getParam(value));
             comp.setFont(font);
             valPanel.add(comp, ((i % columns == 0) ? ",wrap" : "")
-                    // ,"pos lbl" + i
-                    // + ".x2 0"
+             // ,"pos lbl" + i
+             // + ".x2 0"
             );
 
             compMap.put(value, comp);
@@ -193,7 +193,7 @@ public class PointView extends HeroView implements ChangeListener,
         int mod = newValue - oldValue;
 
         int cost = PointMaster
-                .getPointCost(Math.max(newValue, oldValue), hero, param);
+         .getPointCost(Math.max(newValue, oldValue), hero, param);
         if (mod < 0 || !checkCost(cost * mod)) {
             ((PointComp) e.getSource()).removeChangeListener(this);
             ((PointComp) e.getSource()).setValue(oldValue);
@@ -212,7 +212,7 @@ public class PointView extends HeroView implements ChangeListener,
         }
         this.values = new ArrayList<>();
         List<PARAMETER> list = (attributes) ? ContentManager.getAttributes()
-                : ContentManager.getMasteries();
+         : ContentManager.getMasteries();
         for (PARAMETER p : list) {
             if (checkValue(p)) {
                 values.add(p);
@@ -236,7 +236,7 @@ public class PointView extends HeroView implements ChangeListener,
 
     private void commitChanges() {
         CharacterCreator.getHeroManager()
-                .applyChangedType(hero, getBufferType());
+         .applyChangedType(hero, getBufferType());
     }
 
     private void resetBuffer() {

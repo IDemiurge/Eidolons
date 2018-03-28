@@ -79,7 +79,7 @@ public class DungeonPlan {
 
     public String toString() {
         return dungeon.getName() + " Dungeon Plan with [" + zones.size() + "] Zones: "
-                + zones.toString() + " and [" + blocks.size() + "] Blocks: " + blocks.toString();
+         + zones.toString() + " and [" + blocks.size() + "] Blocks: " + blocks.toString();
     }
 
     public String getStringData() {
@@ -289,7 +289,7 @@ public class DungeonPlan {
             i++;
             for (MapBlock b : z.getBlocks()) {
                 MapBlock block = new MapBlock(b.getId(), b.getType(), zone, plan, b
-                        .getCoordinates());
+                 .getCoordinates());
                 zone.addBlock(block);
                 block.setRoomType(b.getRoomType());
             }
@@ -321,7 +321,7 @@ public class DungeonPlan {
         if (location.getMainEntrance() != null) {
             if (entranceLayout == null) {
                 entranceLayout = DungeonLevelMaster.getLayout(this, location.getMainEntrance()
-                        .getCoordinates());
+                 .getCoordinates());
             }
             setEntranceLayout(entranceLayout);
             xml += XML_Converter.openXmlFormatted(LocationBuilder.ENTRANCE_NODE);
@@ -332,7 +332,7 @@ public class DungeonPlan {
             xml += XML_Converter.openXmlFormatted(LocationBuilder.EXIT_NODE);
             if (exitLayout == null) {
                 exitLayout = DungeonLevelMaster.getLayout(this, location.getMainExit()
-                        .getCoordinates());
+                 .getCoordinates());
             }
             setExitLayout(exitLayout);
             xml += StringMaster.getWellFormattedString(exitLayout.toString());
@@ -358,7 +358,6 @@ public class DungeonPlan {
     public void setEntranceLayout(ENTRANCE_LAYOUT layout) {
         entranceLayout = layout;
     }
-
 
 
     public int getDimension(boolean xOrY) {

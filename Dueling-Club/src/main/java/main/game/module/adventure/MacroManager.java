@@ -113,7 +113,7 @@ public class MacroManager {
                  sub1);
             }
             for (MacroParty sub1 : sub.getParties()) {
-                if ( game.getPlayerParty()==sub1)
+                if (game.getPlayerParty() == sub1)
                     continue;
                 GuiEventManager.trigger(CREATE_PARTY,
                  sub1);
@@ -126,19 +126,19 @@ public class MacroManager {
         for (Region region : getGame().getState().getRegions()) {
             String places = "";
             for (Place sub : getGame().getPlaces()) {
-                if (sub.getRegion()!=region)
+                if (sub.getRegion() != region)
                     continue;
                 places +=
-                 sub.getNameAndCoordinate()+";";
+                 sub.getNameAndCoordinate() + ";";
             }
             region.setProperty(MACRO_PROPS.PLACES, places, true);
 
             String parties = "";
             for (MacroParty sub : getGame().getParties()) {
-              if (sub.getRegion()!=region)
+                if (sub.getRegion() != region)
                     continue;
                 parties +=
-                 sub.getNameAndCoordinate()+";";
+                 sub.getNameAndCoordinate() + ";";
             }
             region.setProperty(MACRO_PROPS.PARTIES, parties, true);
 
@@ -508,7 +508,6 @@ public class MacroManager {
     public static MapPointMaster getPointMaster() {
         return getGame().getPointMaster();
     }
-
 
 
     // each object must maintain its values dynamically, always...

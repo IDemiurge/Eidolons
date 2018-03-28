@@ -32,6 +32,7 @@ public class LogPanel extends ScrollTextPanel {
     protected float getDefaultWidth() {
         return 400;
     }
+
     public void bind() {
         GuiEventManager.bind(getCallbackEvent(), p -> {
             LogMessageBuilder builder = LogMessageBuilder.createNew();

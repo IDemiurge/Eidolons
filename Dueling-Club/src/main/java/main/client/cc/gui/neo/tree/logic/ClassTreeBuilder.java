@@ -50,8 +50,8 @@ public class ClassTreeBuilder extends HT_MapBuilder {
         }
         boolean multiclass = DC_ContentManager.isMulticlass(type);
         List<ObjType> children = DataManager.getChildren(type, DC_ContentManager
-                        .getMulticlassTypes(), (multiclass ? G_PROPS.BASE_TYPE : PROPS.BASE_CLASSES_ONE),
-                G_PROPS.NAME);
+          .getMulticlassTypes(), (multiclass ? G_PROPS.BASE_TYPE : PROPS.BASE_CLASSES_ONE),
+         G_PROPS.NAME);
 
         int i = 0;
         initGroups(children);
@@ -94,7 +94,7 @@ public class ClassTreeBuilder extends HT_MapBuilder {
 
         }
         LogMaster.log(1, x + " X for " + i + "th of " + sublingCount + ""
-                + " with size = " + getNodeSize(sublingCount) + "; from parent's " + parentX);
+         + " with size = " + getNodeSize(sublingCount) + "; from parent's " + parentX);
         return x;
     }
 
@@ -118,7 +118,7 @@ public class ClassTreeBuilder extends HT_MapBuilder {
         if (parentPosSpecial != null) {
             y = maxHeight - baseLineY - 1 * rowGap + parentPosSpecial.y;
             LogMaster.log(1, y + " replaces Y;  from parent: "
-                    + parent.getName());
+             + parent.getName());
         }
         return y;
     }

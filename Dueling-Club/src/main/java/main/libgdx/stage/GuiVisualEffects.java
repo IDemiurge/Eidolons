@@ -15,23 +15,13 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 3/16/2018.
  */
-public class GuiVisualEffects extends GroupX{
+public class GuiVisualEffects extends GroupX {
+    private final String vignettePath = "ui\\macro\\vignette.png";
     LightLayer lightLayer;
     private SuperContainer vignette;
-    private final String vignettePath = "ui\\macro\\vignette.png";
-//    UiEmitters emitters;
-//TODO SHADERS?
-    public enum GUI_FX_TEMPLATE{
-        SUNNY,
-        SUN_AND_CLOUDS,
-        NIGHTLY,
-        MISTY,
-        DARKEST,
-
-    }
 
     public GuiVisualEffects() {
-initEmitters();
+        initEmitters();
         if (isVignetteOn()) {
             vignette = new SuperContainer(
              new Image(TextureCache.getOrCreateR(vignettePath)),
@@ -72,7 +62,19 @@ initEmitters();
         vignette.setZIndex(0);
 
     }
+
     private boolean isVignetteOn() {
         return true;
+    }
+
+    //    UiEmitters emitters;
+//TODO SHADERS?
+    public enum GUI_FX_TEMPLATE {
+        SUNNY,
+        SUN_AND_CLOUDS,
+        NIGHTLY,
+        MISTY,
+        DARKEST,
+
     }
 }

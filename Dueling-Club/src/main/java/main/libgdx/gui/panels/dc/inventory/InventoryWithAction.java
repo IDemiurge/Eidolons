@@ -22,7 +22,7 @@ import main.system.threading.WaitMaster;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_INVENTORY;
 
-public class InventoryWithAction extends TablePanel implements Closable{
+public class InventoryWithAction extends TablePanel implements Closable {
     private InventoryPanel inventoryPanel;
 
     private Cell<Actor> actionPointsText;
@@ -83,7 +83,7 @@ public class InventoryWithAction extends TablePanel implements Closable{
                 close((Boolean) param);
             } else {
                 if (!isVisible())
-                open();
+                    open();
                 setUserObject(param);
                 initButtonListeners();
             }
@@ -91,11 +91,10 @@ public class InventoryWithAction extends TablePanel implements Closable{
     }
 
 
-
     private void initButtonListeners() {
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
         ButtonStyled button = (ButtonStyled) doneButton.getActor();
-        button.clearListeners() ;
+        button.clearListeners();
         button.addListener(source.getDoneHandler());
 //        button.setDisabled(source.isDoneDisabled());
 
@@ -120,8 +119,8 @@ public class InventoryWithAction extends TablePanel implements Closable{
 
     @Override
     public void updateAct(float delta) {
-        if (getUserObject()==null )
-            return ;
+        if (getUserObject() == null)
+            return;
         super.updateAct(delta);
 
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
@@ -136,7 +135,7 @@ public class InventoryWithAction extends TablePanel implements Closable{
 
 
     public void close(Boolean result) {
-        if (result==null )
+        if (result == null)
             result = false;
         InventoryDataSource source = (InventoryDataSource) getUserObject();
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
@@ -148,8 +147,9 @@ public class InventoryWithAction extends TablePanel implements Closable{
         }
         setVisible(false);
     }
-        public void close() {
-       close(null );
+
+    public void close() {
+        close(null);
     }
 //    public void open() {
 //        if (getStage() instanceof StageWithClosable) {

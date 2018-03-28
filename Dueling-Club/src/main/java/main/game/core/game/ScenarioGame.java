@@ -13,7 +13,7 @@ public class ScenarioGame extends DC_Game {
 
     public ScenarioGame(ScenarioMetaMaster scenarioMetaMaster) {
         super(true);
-        metaMaster=scenarioMetaMaster;
+        metaMaster = scenarioMetaMaster;
         setGameMode(GAME_MODES.DUNGEON_CRAWL);
     }
 
@@ -29,7 +29,7 @@ public class ScenarioGame extends DC_Game {
 
     @Override
     public void start(boolean first) {
-        simulation=false;
+        simulation = false;
         super.start(first);
     }
 

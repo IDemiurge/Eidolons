@@ -14,7 +14,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WatchActionEffect extends DC_Effect  implements OneshotEffect {
+public class WatchActionEffect extends DC_Effect implements OneshotEffect {
 
     private Boolean alert = false;
 
@@ -41,7 +41,7 @@ public class WatchActionEffect extends DC_Effect  implements OneshotEffect {
                     DC_SoundMaster.playStandardSound(STD_SOUNDS.CLOSE);
                 }
                 LogMaster.log(1, sourceObj.getName() + " no longer watching "
-                        + ref.getTargetObj().getNameIfKnown());
+                 + ref.getTargetObj().getNameIfKnown());
                 return true;
             } else if (!list.isEmpty()) {
                 if (RandomWizard.random()) {

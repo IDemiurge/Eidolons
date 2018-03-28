@@ -20,8 +20,8 @@ import main.system.images.ImageManager;
 
 import java.awt.*;
 import java.beans.Transient;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HC_PagedListPanel extends G_PagePanel<ObjType> {
@@ -42,7 +42,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     public HC_PagedListPanel(HC_LISTS list_type, Unit hero, ItemListManager itemListManager,
                              List<ObjType> data, String listName) {
         super(list_type.getTemplate().getPageSize(), list_type.getTemplate().isVertical(),
-                list_type.getTemplate().getControlsVersion());
+         list_type.getTemplate().getControlsVersion());
         this.data = data;
         this.listName = listName;
         this.hero = hero;
@@ -212,7 +212,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
         }
 
         return (visuals == VISUALS.H_LIST_2_8) ? visuals.getHeight() / 16
-                : -visuals.getHeight() / 40;
+         : -visuals.getHeight() / 40;
     }
 
     @Override
@@ -232,7 +232,7 @@ public class HC_PagedListPanel extends G_PagePanel<ObjType> {
     @Override
     protected G_Component createPageComponent(List<ObjType> data) {
         HeroListPanel list = new HeroListPanel(hero, list_type.getTemplate().isVertical(),
-                list_type.getTemplate().getRows(), list_type.getTemplate().getColumns(), data);
+         list_type.getTemplate().getRows(), list_type.getTemplate().getColumns(), data);
         if (getEmptyIcon() != null) {
             list.setEmptyIcon(getEmptyIcon());
         }

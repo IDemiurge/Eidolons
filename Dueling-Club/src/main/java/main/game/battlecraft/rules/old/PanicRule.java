@@ -23,12 +23,12 @@ public class PanicRule extends DC_RuleImpl {
     // bad
     // formula!
     private static final Condition CONDITION = new NumericCondition(PANIC,
-            "{TARGET_C_MORALE}");
+     "{TARGET_C_MORALE}");
     private static final Condition CONDITION2 = new NumericCondition(
-            "{TARGET_C_MORALE}", TreasonRule.TREASON);
+     "{TARGET_C_MORALE}", TreasonRule.TREASON);
     private static final String MORALE = PARAMS.C_MORALE.name();
     private static final Condition CONDITION0 = new NotCondition(
-            new StatusCheckCondition(Ref.KEYS.TARGET.name(), UnitEnums.STATUS.IMMOBILE));
+     new StatusCheckCondition(Ref.KEYS.TARGET.name(), UnitEnums.STATUS.IMMOBILE));
 
     private String buffTypeName = "Panic";
     private Conditions retain_conditions;
@@ -51,7 +51,7 @@ public class PanicRule extends DC_RuleImpl {
     @Override
     public void initEventType() {
         event_type = new EventType(CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED,
-                MORALE);
+         MORALE);
 
     }
 
@@ -69,13 +69,13 @@ public class PanicRule extends DC_RuleImpl {
         conditions.add(CONDITION);
         conditions.add(CONDITION2);
         conditions.add(ConditionMaster
-                .getMoraleAffectedCondition(Ref.KEYS.TARGET));
+         .getMoraleAffectedCondition(Ref.KEYS.TARGET));
 
         retain_conditions = new Conditions();
         retain_conditions.add(CONDITION);
         retain_conditions.add(CONDITION2);
         retain_conditions.add(ConditionMaster
-                .getMoraleAffectedCondition(Ref.KEYS.TARGET));
+         .getMoraleAffectedCondition(Ref.KEYS.TARGET));
 
     }
 }

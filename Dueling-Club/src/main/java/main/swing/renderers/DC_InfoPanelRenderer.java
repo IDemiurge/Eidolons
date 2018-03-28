@@ -101,12 +101,12 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
 
     private Component getDefaultComp(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component component = new DefaultTableCellRenderer()
-                .getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+         .getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if (value.toString().equals(G_PROPS.EMPTY_VALUE.toString())
-                || table.getValueAt(row, 0).toString()
-                .equals(G_PROPS.EMPTY_VALUE.toString())) {
+         || table.getValueAt(row, 0).toString()
+         .equals(G_PROPS.EMPTY_VALUE.toString())) {
             component = new DefaultTableCellRenderer()
-                    .getTableCellRendererComponent(table, "", false, hasFocus, row, column);
+             .getTableCellRendererComponent(table, "", false, hasFocus, row, column);
             component.setBackground(Color.BLACK);
             table.setRowHeight(row, table.getRowHeight() / 2);
             return component;

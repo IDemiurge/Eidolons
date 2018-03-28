@@ -7,7 +7,7 @@ public class MacroManager {
     //objCache
     //create subGame and destroy it
 
-    public void locationEntered(){
+    public void locationEntered() {
 
     }
 }

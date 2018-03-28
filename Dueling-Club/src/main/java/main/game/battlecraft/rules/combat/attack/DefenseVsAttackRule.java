@@ -39,13 +39,13 @@ public class DefenseVsAttackRule {
         defense = defense * (action.getIntParam(PARAMS.DEFENSE_MOD)) / 100;
         defense += action.getIntParam(PARAMS.DEFENSE_BONUS);
         if (attacked instanceof Unit)
-        if (WatchRule.checkWatched((Unit) attacked, attacker)) {
-            //increase defense if attacked watches attacker
-            //TODO add reverse mods - 'defense when watched on attack' for trickster
-            int bonus = MathMaster.applyMod(WatchRule.DEFENSE_MOD, attacked
-             .getIntParam(PARAMS.WATCH_DEFENSE_MOD));
-            defense += bonus;
-        }
+            if (WatchRule.checkWatched((Unit) attacked, attacker)) {
+                //increase defense if attacked watches attacker
+                //TODO add reverse mods - 'defense when watched on attack' for trickster
+                int bonus = MathMaster.applyMod(WatchRule.DEFENSE_MOD, attacked
+                 .getIntParam(PARAMS.WATCH_DEFENSE_MOD));
+                defense += bonus;
+            }
         return defense;
     }
 
@@ -132,8 +132,8 @@ public class DefenseVsAttackRule {
         int chance = getChance(action, attacker, attacked, attack, defense, crit);
         if (logged) {
             main.system.auxiliary.log.LogMaster.log(1, ""
-                    + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
-                    + "'s chance to dodge: ") + String.valueOf(chance) + "%");
+             + (crit ? "...chance for critical strike: " : "..." + attacked.getName()
+             + "'s chance to dodge: ") + String.valueOf(chance) + "%");
         }
         boolean result = RandomWizard.chance(chance);
         if (isCRIT_TEST()) {
@@ -196,11 +196,11 @@ public class DefenseVsAttackRule {
         }
 
         chance = Math.min(100, chance);
-        if (action. getGame().getCombatMaster().isChancesOff()) {
+        if (action.getGame().getCombatMaster().isChancesOff()) {
             RULE rule = (critOrDodge) ? RULE.CRITICAL_ATTACK : RULE.DODGE;
-            if (RuleMaster.isRuleTestOn(rule)|| chance > 50)
-                chance= 100;
-            else chance= 0 ;
+            if (RuleMaster.isRuleTestOn(rule) || chance > 50)
+                chance = 100;
+            else chance = 0;
 
         }
         return chance;
@@ -237,7 +237,7 @@ public class DefenseVsAttackRule {
 
     public static int getCritOrDodgeChance(DC_ActiveObj entity, BattleFieldObject target) {
         Attack attack = DC_AttackMaster.getAttackFromAction(entity);
-        attack.setAttacked( target);
+        attack.setAttacked(target);
         int atk = getAttackValue(attack);
         int def = getDefenseValue(attack);
         return atk < def ? -getMissChance(atk, def, entity) : getCritChance(atk, def, entity);

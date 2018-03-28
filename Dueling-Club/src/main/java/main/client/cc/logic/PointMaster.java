@@ -17,9 +17,9 @@ public class PointMaster {
         value--;
         if (param.isAttribute()) {
             Integer defParam = hero
-                    .getIntParam(DC_ContentManager
-                            .getDefaultAttr(ContentManager
-                                    .getFinalAttrFromBase(param)));
+             .getIntParam(DC_ContentManager
+              .getDefaultAttr(ContentManager
+               .getFinalAttrFromBase(param)));
             defParam += 5;
             MOD_FACTOR = defParam * 2;
 
@@ -30,9 +30,9 @@ public class PointMaster {
         return 1 + mod;
     }
 
-    public static int getCost(int initial,int points, Entity hero, PARAMETER param) {
-        int cost=0;
-        for (int i = 0; i<points; i++) {
+    public static int getCost(int initial, int points, Entity hero, PARAMETER param) {
+        int cost = 0;
+        for (int i = 0; i < points; i++) {
             cost += getPointCost(initial + i, hero, param);
         }
         return cost;

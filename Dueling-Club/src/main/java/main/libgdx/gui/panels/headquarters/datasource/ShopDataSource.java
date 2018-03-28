@@ -1,8 +1,8 @@
 package main.libgdx.gui.panels.headquarters.datasource;
 
 import main.libgdx.gui.panels.dc.ValueContainer;
-import main.libgdx.gui.panels.headquarters.ShopValueContainerList;
 import main.libgdx.gui.panels.headquarters.ShopTabbedPanel;
+import main.libgdx.gui.panels.headquarters.ShopValueContainerList;
 
 import java.util.List;
 
@@ -12,9 +12,14 @@ import java.util.List;
 public interface ShopDataSource {
 
     ShopTabbedPanel getTabs();
+
     List<ShopValueContainerList> getGroupLists(String tabName);
+
     List<ValueContainer> getTextures(String groupList);
+
     ValueContainer getName();
+
     ValueContainer getGold();
+
     ValueContainer getIcon();
 }

@@ -18,8 +18,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.math.MathMaster;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +125,7 @@ public class HT_MapBuilder {
 
     public static LINK_VARIANT getPresetLink(ObjType type) {
         return new EnumMaster<LINK_VARIANT>().retrieveEnumConst(LINK_VARIANT.class, type
-                .getProperty(PROPS.LINK_VARIANT));
+         .getProperty(PROPS.LINK_VARIANT));
     }
 
     public static void sortDefault(List<ObjType> children) {
@@ -153,7 +153,7 @@ public class HT_MapBuilder {
         initGroups(data);
         sortDefault(rootTypes);
         LogMaster.log(1, "Building tree for " + arg + "... \n rootTypes== "
-                + rootTypes);
+         + rootTypes);
         // TODO next row of root types!
         if (rootTypes.size() > 3) {
             if (rootTypes.size() > 4) {
@@ -284,13 +284,13 @@ public class HT_MapBuilder {
             // getBasePoint();
             point = new PointX(getX(parentX, i, sublingCount, type, parent), getY(type, parent));
             LogMaster.log(1, "Base Node added: " + "" + "" + type.getName()
-                    + " at " + point);
+             + " at " + point);
         } else {
             StaticTreeLink link = getStaticLink(type);
             point = getNodePointFromLink(parentX, type, i, sublingCount, parent, link);
 
             LogMaster.log(1, "Node added: " + "" + type.getName() + " at "
-                    + point + " with " + link);
+             + point + " with " + link);
         }
         HT_Node node = createNode(type, defSize, parent);
         map.addNode(point, node, defSize);
@@ -324,7 +324,7 @@ public class HT_MapBuilder {
                 String typeName = VariableManager.removeVarPart(s);
                 String vars = VariableManager.getVar(s);
                 LINK_VARIANT variant = new EnumMaster<LINK_VARIANT>().retrieveEnumConst(
-                        LINK_VARIANT.class, vars.split("=")[0]);
+                 LINK_VARIANT.class, vars.split("=")[0]);
                 ObjType targetType = DataManager.getType(typeName, getTYPE());
                 Point point = map.getPointForType(c.getType());
 
@@ -370,7 +370,7 @@ public class HT_MapBuilder {
                 while (adjustLink(point, link, parent, type, parentX, i, sublingCount)) {
                     adjusted = true; // link point or node point?
                     point = new PointX(link.getPoint().x + variant.getNodeOffsetX(), link
-                            .getPoint().y - 64);// getPoint(link.getVariant(),
+                     .getPoint().y - 64);// getPoint(link.getVariant(),
                     // parent, type, parentX, i,
                     // sublingCount); //
                     // unnecessary?
@@ -379,12 +379,12 @@ public class HT_MapBuilder {
         }
         if (adjusted) {
             LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
-                    + variant + " from " + link.getVariant());
+             + variant + " from " + link.getVariant());
             LogMaster.log(1, "^v^ " + type.getName() + " adjusted to "
-                    + point + " from " + originalPoint);
+             + point + " from " + originalPoint);
             variant = link.getVariant();
             map.getStaticLinkMap().put(link,
-                    getPoint(variant, parent, type, parentX, i, sublingCount));
+             getPoint(variant, parent, type, parentX, i, sublingCount));
         }
 
         int x = point.x + variant.getNodeOffsetX();// +getGroupNodeOffsetX(type,
@@ -414,7 +414,7 @@ public class HT_MapBuilder {
                 if (finalY == y) { // just limit the diff!
 
                     LogMaster.log(1, type.getName()
-                            + " (x adjustment) -> Y decreased by " + abs);
+                     + " (x adjustment) -> Y decreased by " + abs);
                     finalY += abs; // increase or decrease Y for x-change?
                 }
             }
@@ -447,16 +447,16 @@ public class HT_MapBuilder {
             // v += point.x - (defTreeWidth - defSize);
         }
         List<ObjType> neighbors = map.getTypesWithinRange(type, i, sublingCount, point.x, point.y,
-                defSize, 64);
+         defSize, 64);
 
         // offset for neighbors to determine optimal adjustment!
         if (neighbors.size() > 0) // make sure it's not cyclic -
         // "left - right - left - right"
         {
             List<ObjType> neighborsH = map.getTypesWithinRange(type, sublingCount, sublingCount,
-                    point.x + 22, point.y - 22, 64, 64); // flexible numbers!!!
+             point.x + 22, point.y - 22, 64, 64); // flexible numbers!!!
             List<ObjType> neighborsV = map.getTypesWithinRange(type, sublingCount, sublingCount,
-                    point.x - 22, point.y + 22, 64, 64);
+             point.x - 22, point.y + 22, 64, 64);
             // getMoreVertical(link.getVariant()).getNodeOffsetX() difference...
 
             LogMaster.log(1, neighborsH + " vs " + neighborsV);
@@ -471,12 +471,12 @@ public class HT_MapBuilder {
         LogMaster.log(1, "h= " + h + "; v= " + v);
         if (((v - h) > 15)) {
             LogMaster.log(1, type.getName() + " adjusting vertically... "
-                    + point);
+             + point);
             return adjustLink(link, true);
         }
         if (((v - h) < -15)) {
             LogMaster.log(1, type.getName() + " adjusting horizontally... "
-                    + point);
+             + point);
             return adjustLink(link, false);
         }
 
@@ -492,7 +492,7 @@ public class HT_MapBuilder {
         ObjType parent = DataManager.getParent(type);
         int y1 = getY(type, parent);
         Point pointForType = parent == null ? new PointX(getX(0, i, sublingCount, type, parent), y1) // TODO
-                : map.getPointForType(parent); // ???
+         : map.getPointForType(parent); // ???
         int x1 = getX(pointForType.x, i, sublingCount, type, parent);
 
         return map.getTypesWithinRange(type, i, sublingCount, x1, y1, xMaxRange, yMaxRange);
@@ -501,7 +501,7 @@ public class HT_MapBuilder {
     private boolean adjustLink(StaticTreeLink link, boolean moreVertical) {
         LINK_VARIANT variant = getShiftedLinkVariant(link.getVariant(), moreVertical);
         LogMaster.log(1, "***** vertical= " + moreVertical
-                + " => adjusted to " + variant + "  [" + link);
+         + " => adjusted to " + variant + "  [" + link);
         if (variant == null) {
             return false;
         }
@@ -550,10 +550,10 @@ public class HT_MapBuilder {
             for (StaticTreeLink link : map.getStaticLinkMap().keySet()) {
                 // if (link.getSource() == parent) {
                 if (StringMaster.compareByChar(link.getChildren().get(0).getProperty(
-                        PROPS.TREE_NODE_GROUP), type.getProperty(PROPS.TREE_NODE_GROUP))) {
+                 PROPS.TREE_NODE_GROUP), type.getProperty(PROPS.TREE_NODE_GROUP))) {
                     link.getChildren().add(type);
                     LogMaster.log(1, "Group Type added: " + "" + ""
-                            + type.getName() + " for " + link);
+                     + type.getName() + " for " + link);
                     return;
                 }
             }
@@ -572,7 +572,7 @@ public class HT_MapBuilder {
         map.getStaticLinkMap().put(link, point);
 
         LogMaster.log(1, "LINK added: " + variant + " FOR " + type.getName()
-                + " at " + point);
+         + " at " + point);
 
     }
 
@@ -603,13 +603,13 @@ public class HT_MapBuilder {
         if (linkName.isEmpty()) {
             if (!isAddLinkPerChild()) {
                 List<ObjType> typesOnRow = getTypesWithinRange(type, sublingCount, sublingCount,
-                        64, 64);
+                 64, 64);
                 ObjType parent = DataManager.getParent(type);
                 if (typesOnRow.size() >= 1) {
                     int index = 0;
                     while (index < typesOnRow.size()) {
                         if (alteredTypeLinkMap.containsKey(DataManager.getParent(typesOnRow
-                                .get(index)))) {
+                         .get(index)))) {
                             return LINK_VARIANT.VERTICAL; // TODO short? if any
                         }
                         // in
@@ -618,7 +618,7 @@ public class HT_MapBuilder {
                     }
 
                     LogMaster.log(1, type.getName()
-                            + "*!* Link made LONG! - " + typesOnRow);
+                     + "*!* Link made LONG! - " + typesOnRow);
                     alteredTypeLinkMap.put(parent, type);
                     return LINK_VARIANT.VERTICAL_LONG;
                 }
@@ -647,7 +647,7 @@ public class HT_MapBuilder {
         }
         if (!linkName.isEmpty()) {
             variant = new EnumMaster<LINK_VARIANT>()
-                    .retrieveEnumConst(LINK_VARIANT.class, linkName);
+             .retrieveEnumConst(LINK_VARIANT.class, linkName);
         }
         if (variant == null) {
             variant = getDefaultLinkVariant();
@@ -667,7 +667,7 @@ public class HT_MapBuilder {
         int i = 0;
         for (ObjType t : group) {
             groupNodePosMap.put(t, new Point(defaultOffsetX + nodeOffsetX * i, defaultOffsetY
-                    + nodeOffsetY * i));
+             + nodeOffsetY * i));
             i++;
         }
 
@@ -717,7 +717,7 @@ public class HT_MapBuilder {
             x = x + i * getNodeSize(sublingCount) - defSize / 2;
         }
         LogMaster.log(1, x + " X for " + i + "th of " + sublingCount + ""
-                + " with size = " + getNodeSize(sublingCount) + "; from parent's " + parentX);
+         + " with size = " + getNodeSize(sublingCount) + "; from parent's " + parentX);
         return x;
     }
 
@@ -748,7 +748,7 @@ public class HT_MapBuilder {
         if (parentPosSpecial != null) {
             y = maxHeight - baseLineY - 1 * rowGap + parentPosSpecial.y;
             LogMaster.log(1, y + " replaces Y;  from parent: "
-                    + parent.getName());
+             + parent.getName());
         }
         return y;
 

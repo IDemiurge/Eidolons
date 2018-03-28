@@ -27,7 +27,7 @@ public class ArenaOptionsMaster extends BattleOptionManager<ArenaBattle> {
         arenaOptions = new BattleOptions();
         arenaOptions.setValue(ARENA_GAME_OPTIONS.NUMBER_OF_HEROES, ""
          +
-          PartyHelper.getParty().getMembers() .size());
+         PartyHelper.getParty().getMembers().size());
 
 //        arenaOptions.setValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE,
 //         ArenaPositioner. DEFAULT_SIDE);

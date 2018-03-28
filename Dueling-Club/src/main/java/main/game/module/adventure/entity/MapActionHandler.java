@@ -26,6 +26,7 @@ public class MapActionHandler {
 //        return place;
         return null;
     }
+
     public static void partyAction(MACRO_PARTY_ACTIONS action, MacroParty party) {
         Set<Place> set;
         Route route;
@@ -59,7 +60,7 @@ public class MapActionHandler {
                 party.setStatus(MACRO_STATUS.TRAVELING);
                 set = TravelMasterOld.getAvailablePlaces(party);
                 // set.addAll(TravelMaster.getAvailableRoutes(party));
-                place =   selectMapObj(set);
+                place = selectMapObj(set);
                 if (place == null) {
                     return;
                 }
@@ -73,10 +74,10 @@ public class MapActionHandler {
                 party.setCurrentDestination(place);
                 if (route.getOrigin() == place) {
                     party.addProperty(G_PROPS.DYNAMIC_BOOLS,
-                            DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
+                     DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
                 } else {
                     party.removeProperty(G_PROPS.DYNAMIC_BOOLS,
-                            DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
+                     DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL.toString());
                 }
 
                 party.setCurrentRoute(route);

@@ -20,8 +20,9 @@ import main.system.text.HelpMaster;
  */
 public class HeroInfoPanel extends ItemInfoPanel {
     Label mainInfo;
-    Image emblem ; //TODO implement choice/ color change
+    Image emblem; //TODO implement choice/ color change
     TablePanel stats; // class, power,
+
     //++ view inv, spellbook, info panel
     public HeroInfoPanel(SelectableItemData item) {
         super(item);
@@ -37,10 +38,10 @@ public class HeroInfoPanel extends ItemInfoPanel {
 
     @Override
     public void updateAct(float delta) {
-        if (getUserObject()==null )
+        if (getUserObject() == null)
             return;
         super.updateAct(delta);
-        emblem.setDrawable( TextureCache.getOrCreateTextureRegionDrawable(item.getEntity().getProperty(G_PROPS.EMBLEM)));
+        emblem.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.getEntity().getProperty(G_PROPS.EMBLEM)));
         mainInfo.setText(HelpMaster.getHeroMainInfoText(item.getName()));
     }
 
@@ -67,9 +68,9 @@ public class HeroInfoPanel extends ItemInfoPanel {
         return
          TextureCache.getOrCreate(
           StrPathBuilder.build("ui",
-          "emblems",
-          "auto",
-          "unknown.png")
+           "emblems",
+           "auto",
+           "unknown.png")
          );
     }
 }

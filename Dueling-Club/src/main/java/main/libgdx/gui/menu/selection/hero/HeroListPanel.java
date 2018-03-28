@@ -16,9 +16,9 @@ public class HeroListPanel extends ItemListPanel {
 
     @Override
     public boolean isBlocked(SelectableItemData item) {
-return
- !item.getEntity().getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(WORKSPACE_GROUP
-  .COMPLETE.toString());
+        return
+         !item.getEntity().getProperty(G_PROPS.WORKSPACE_GROUP).equalsIgnoreCase(WORKSPACE_GROUP
+          .COMPLETE.toString());
     }
 
     @Override
@@ -27,7 +27,7 @@ return
         for (Entity sub : objTypes) {
             SelectableItemData item = new SelectableItemData(sub);
             list.add(item);
-            item.setDescription(HelpMaster.getHeroInfoText(item.getName(),null));
+            item.setDescription(HelpMaster.getHeroInfoText(item.getName(), null));
         }
 
         return list;

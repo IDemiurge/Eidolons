@@ -11,8 +11,8 @@ import main.system.auxiliary.RandomWizard;
  */
 public class Ambience extends EmitterActor {
     private static boolean modifyParticles;
-    float moveSpeedMax=12;
-    float moveRadius=300;
+    float moveSpeedMax = 12;
+    float moveRadius = 300;
     Vector2 velocity;
     Vector2 acceleration;
     Vector2 originPos;
@@ -28,22 +28,21 @@ public class Ambience extends EmitterActor {
     @Override
     public void act(float delta) {
         if (!ParticleManager.isAmbienceOn())
-            return ;
+            return;
         if (!isVisible())
-            return ;
-        if (!ParticleManager.isAmbienceMoveOn())
-          {
-            return ;
+            return;
+        if (!ParticleManager.isAmbienceMoveOn()) {
+            return;
         }
         if (isCullingOn())
-        if ( DungeonScreen.getInstance().controller!=null )
-            if (!DungeonScreen.getInstance().controller.
-             isWithinCamera(getX(), getY(), getWidth()*2, getHeight()*2)) {
-                return;
-            }
+            if (DungeonScreen.getInstance().controller != null)
+                if (!DungeonScreen.getInstance().controller.
+                 isWithinCamera(getX(), getY(), getWidth() * 2, getHeight() * 2)) {
+                    return;
+                }
 
         super.act(delta);
-            float angle = acceleration.angle();
+        float angle = acceleration.angle();
         float dst = originPos.dst(new Vector2(getX(), getY()));
         if (dst > moveRadius) {
             angle += RandomWizard.getRandomInt(360);
@@ -55,8 +54,8 @@ public class Ambience extends EmitterActor {
 
     public void added() {
         originPos = new Vector2(getX(), getY());
-        acceleration= new Vector2(1, 1);
-        velocity= new Vector2(0, 0);
+        acceleration = new Vector2(1, 1);
+        velocity = new Vector2(0, 0);
     }
 
     @Override
@@ -78,13 +77,13 @@ public class Ambience extends EmitterActor {
     public void draw(Batch spriteBatch, float delta) {
 
         if (!ParticleManager.isAmbienceOn())
-            return ;
+            return;
         if (isCullingOn())
-        if ( DungeonScreen.getInstance().controller!=null )
-            if (!DungeonScreen.getInstance().controller.
-             isWithinCamera(getX(), getY(), getWidth() , getHeight() )) {
-                return;
-            }
+            if (DungeonScreen.getInstance().controller != null)
+                if (!DungeonScreen.getInstance().controller.
+                 isWithinCamera(getX(), getY(), getWidth(), getHeight())) {
+                    return;
+                }
         if (modifyParticles) {
             getEffect().modifyParticles();
         }

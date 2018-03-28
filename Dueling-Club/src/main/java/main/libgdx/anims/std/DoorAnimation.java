@@ -43,7 +43,7 @@ public class DoorAnimation extends Anim {
 //                newImage = new Image(r);
             }
         } else {
-            actor.setOriginalTextureAlt(null );
+            actor.setOriginalTextureAlt(null);
 //            newImage = actor.getAltPortrait();
         }
 //        newImage.setColor(1, 1, 1, 0);

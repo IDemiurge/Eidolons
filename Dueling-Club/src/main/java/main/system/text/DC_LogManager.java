@@ -84,15 +84,14 @@ public class DC_LogManager extends LogManager {
                 if (!unit.getAI().isOutsideCombat())
                     if (
                      (!start && unit.isDead()) ||
-                      (start && unit.getPlayerVisionStatus(false)!= UNIT_TO_PLAYER_VISION.INVISIBLE))
-            {
-                String name = unit.getNameIfKnown();
-                if (map.containsKey(name))
-                    MapMaster.addToIntegerMap(map, name, 1);
-                else {
-                    map.put(name, 1);
-                }
-            }
+                      (start && unit.getPlayerVisionStatus(false) != UNIT_TO_PLAYER_VISION.INVISIBLE)) {
+                        String name = unit.getNameIfKnown();
+                        if (map.containsKey(name))
+                            MapMaster.addToIntegerMap(map, name, 1);
+                        else {
+                            map.put(name, 1);
+                        }
+                    }
         });
         map.keySet().forEach(unit -> {
             int i = map.get(unit);
@@ -101,23 +100,23 @@ public class DC_LogManager extends LogManager {
             }
             text.append(unit + ", ");
         });
-        text.delete(text.length() - 2, text.length()  );
+        text.delete(text.length() - 2, text.length());
         String message = text.toString();
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT,message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, message);
         log(message);
     }
 
     public void logBattleJoined(List<Unit> newUnits) {
         StringBuilder text = new StringBuilder();
-            text.append("Battle joined by: ");
+        text.append("Battle joined by: ");
         newUnits.forEach(unit -> {
             text.append(unit.getNameIfKnown() + ", ");
         });
-        text.delete(text.length() - 2, text.length()  );
+        text.delete(text.length() - 2, text.length());
         String message = text.toString();
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,message);
-        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT,message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, message);
         log(message);
     }
 

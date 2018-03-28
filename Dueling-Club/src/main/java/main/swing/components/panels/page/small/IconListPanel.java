@@ -71,7 +71,7 @@ public class IconListPanel<E> extends G_ListPanel<E> implements ListCellRenderer
         }
 
         return new DefaultListCellRenderer().getListCellRendererComponent(list, value, index,
-                isSelected, cellHasFocus);
+         isSelected, cellHasFocus);
     }
 
     @Override

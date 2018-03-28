@@ -51,7 +51,7 @@ public class SkillPickView extends HeroItemView {
         }
 
         if (StringMaster.checkContainer(hero.getProperty(getPROP()),
-                value.getName(), true)) {
+         value.getName(), true)) {
             return BORDER.SILVER_64;
         }
         String r = hero.getGame().getRequirementsManager().check(hero, value);

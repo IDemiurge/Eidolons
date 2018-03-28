@@ -39,16 +39,16 @@ public class PoisonRule extends DamageCounterRule {
         Effects specialRoundEffects = new Effects();
         if (unit.getBuff(HALLUNICATE) != null) {
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_CONST,
-                    getNumberOfCounters(unit) + " * " + HALLUNICATE_FOCUS_PER_COUNTER));
+             getNumberOfCounters(unit) + " * " + HALLUNICATE_FOCUS_PER_COUNTER));
         }
         if (unit.getBuff(WEAKEN) != null) {
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_STAMINA, MOD.MODIFY_BY_CONST,
-                    getNumberOfCounters(unit) + " * " + WEAKEN_STAMINA_PER_COUNTER));
+             getNumberOfCounters(unit) + " * " + WEAKEN_STAMINA_PER_COUNTER));
         }
         if (unit.getBuff(PARALYZING) != null) {
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS,
-                    MOD.MODIFY_BY_CONST, getNumberOfCounters(unit) + " * "
-                    + PARALYZING_INITIATIVE_PER_COUNTER));
+             MOD.MODIFY_BY_CONST, getNumberOfCounters(unit) + " * "
+             + PARALYZING_INITIATIVE_PER_COUNTER));
         }
         return specialRoundEffects;
     }
@@ -69,11 +69,11 @@ public class PoisonRule extends DamageCounterRule {
     }
 
 
-
     @Override
     public COUNTER getCounter() {
         return COUNTER.Poison;
     }
+
     @Override
     public String getBuffName() {
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.WEAKENING_POISON)) {
@@ -99,7 +99,7 @@ public class PoisonRule extends DamageCounterRule {
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         return 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
-                / 100;
+         / 100;
     }
 
 

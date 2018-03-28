@@ -28,10 +28,10 @@ public class TransparentLauncher extends PreLauncher {
     private static final int SWP_NOMOVE = 0x0002;
 
     private static final int WS_EX_TOOLWINDOW = 0x00000080;
-    private static final int WS_EX_APPWINDOW  = 0x00040000;
+    private static final int WS_EX_APPWINDOW = 0x00040000;
 
     public static void main(String[] arg) {
-prestart();
+        prestart();
 
         WinDef.HWND hwnd;
         while ((hwnd = User32.INSTANCE.FindWindow(null,
@@ -54,7 +54,7 @@ prestart();
          getConf()));
     }
 
-//    public static LwjglApplicationConfiguration getConf() {
+    //    public static LwjglApplicationConfiguration getConf() {
 //        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 //        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 //        cfg.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width-1;
@@ -69,7 +69,7 @@ prestart();
         bb.dwFlags = DWM_BB_ENABLE;
         bb.fEnable = true;
         bb.hRgnBlur = null;
-      DWM.DwmEnableBlurBehindWindow(hwnd, bb);
+        DWM.DwmEnableBlurBehindWindow(hwnd, bb);
 
         int wl = User32.INSTANCE.GetWindowLong(hwnd, WinUser.GWL_EXSTYLE);
         wl = wl | WinUser.WS_EX_LAYERED | WinUser.WS_EX_TRANSPARENT;

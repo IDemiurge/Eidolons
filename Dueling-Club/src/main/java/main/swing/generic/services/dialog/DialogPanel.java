@@ -55,7 +55,7 @@ public class DialogPanel extends G_Panel {
             p = getTargetLocation();
 
             p.setLocation(p.x - (getPanelWidth() - GuiManager.getCellWidth()) / 2, p.y
-                    + GuiManager.getCellHeight());
+             + GuiManager.getCellHeight());
 
         }
         if (isBfDialog()) {
@@ -67,7 +67,7 @@ public class DialogPanel extends G_Panel {
 
     protected Point getTargetLocation() {
         return getGame().getBattleField().getGrid().getPointForCoordinateWithOffset(
-                target.getCoordinates());
+         target.getCoordinates());
     }
 
     protected boolean isCentered() {
@@ -83,7 +83,7 @@ public class DialogPanel extends G_Panel {
         int h = IMG.getHeight(null);
         ok = new Rectangle(getLocation().x + getPanelWidth() - w, getLocation().y, w, h);
         cancel = new Rectangle(getLocation().x + getPanelWidth() - w, getLocation().y
-                + getPanelHeight() - h, w, h);
+         + getPanelHeight() - h, w, h);
 
     }
 
@@ -134,7 +134,7 @@ public class DialogPanel extends G_Panel {
         if (isDrawBackground()) {
             g.setColor(getBackgroundColor());
             g.fillRect(getBackgroundX(), getBackgroundY(), getBackgroundWidth(),
-                    getBackgroundHeight());
+             getBackgroundHeight());
         }
         g.drawImage(image, getLocation().x, getLocation().y, null);
 

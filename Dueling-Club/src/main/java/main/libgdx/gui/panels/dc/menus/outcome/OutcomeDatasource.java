@@ -29,7 +29,7 @@ public class OutcomeDatasource {
     }
 
     private ValueContainer getPlayerStatsContainer(PLAYER_STATS stat) {
-       return  new ValueContainer(StringMaster.getWellFormattedString(stat.toString()), getPlayerStat(stat) + "");
+        return new ValueContainer(StringMaster.getWellFormattedString(stat.toString()), getPlayerStat(stat) + "");
     }
 
     private PLAYER_STATS[] getDisplayedPlayerStats() {

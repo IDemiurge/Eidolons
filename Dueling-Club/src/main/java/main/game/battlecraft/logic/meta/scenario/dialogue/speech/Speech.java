@@ -74,7 +74,8 @@ public class Speech implements SpeechInterface {
     }
 
     public SpeechBuilder getSpeechBuilder(String path) {
-        return new SpeechBuilder(path );  }
+        return new SpeechBuilder(path);
+    }
 
     public void addChild(Speech child) {
         getChildren().add(child);
@@ -85,11 +86,11 @@ public class Speech implements SpeechInterface {
         if (actorName == null)
             actorName = data.getValue(SPEECH_VALUE.ACTOR);
         if (!StringMaster.isEmpty(actorName))
-        try {
-            actor = DialogueActorMaster.getActor(actorName);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                actor = DialogueActorMaster.getActor(actorName);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         if (actorNames == null)
             actors = parent.getActors();
         actors = master.getDialogueActorMaster().getActors(actorNames);

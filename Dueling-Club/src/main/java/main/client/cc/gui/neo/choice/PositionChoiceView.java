@@ -83,7 +83,7 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
         Coordinates newCoordinates = new Coordinates(x, y);
         if (partyCoordinates.get(newCoordinates) != null) {
             Unit swappedHero = new MapMaster<Unit, Coordinates>().getKeyForValue(
-                    partyCoordinates, newCoordinates);
+             partyCoordinates, newCoordinates);
             partyCoordinates.put(swappedHero, c);
         }
         if (!valid) {
@@ -145,7 +145,7 @@ public class PositionChoiceView extends ChoiceView<Unit> implements MouseListene
             partyCoordinates = PartyHelper.getParty().getPartyCoordinates();
             if (partyCoordinates == null) {
                 partyCoordinates = DC_Game.game.getDungeonMaster().getPositioner().getPartyCoordinates(PartyHelper.getParty()
-                        .getMembers());
+                 .getMembers());
                 PartyHelper.getParty().setPartyCoordinates(partyCoordinates);
 
             }

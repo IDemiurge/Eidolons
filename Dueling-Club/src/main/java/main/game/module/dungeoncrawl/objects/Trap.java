@@ -11,15 +11,15 @@ public class Trap {
     }
 
 
+    public enum TRAP_TAGS {
+        DESTRUCTIBLE, STATIONARY, INFINITE,
+    }
+
     public enum TRAP_TRIGGER_TYPE {
         TRIP, WEIGHT, SOUND, LIGHT, WARMTH, PHYSICAL_PRESENCE, MAGICAL_PRESENCE, ANY_PRESENCE,
     }
 
     public enum TRAP_TYPE {
         PHYSICAL, MAGICAL
-    }
-
-    public enum TRAP_TAGS {
-        DESTRUCTIBLE, STATIONARY, INFINITE,
     }
 }

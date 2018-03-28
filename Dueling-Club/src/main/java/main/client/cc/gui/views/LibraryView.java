@@ -42,11 +42,11 @@ public class LibraryView extends HeroItemView {
                 }
 
                 if (o1.getIntParam(getSortingParam()) > o2
-                        .getIntParam(getSortingParam())) {
+                 .getIntParam(getSortingParam())) {
                     return 1;
                 }
                 if (o1.getIntParam(getSortingParam()) == o2
-                        .getIntParam(getSortingParam())) {
+                 .getIntParam(getSortingParam())) {
                     return 0;
                 }
                 return -1;
@@ -84,7 +84,7 @@ public class LibraryView extends HeroItemView {
             return b;
         }
         if (StringMaster.checkContainer(hero.getProperty(PROPS.KNOWN_SPELLS),
-                value.getName(), true)) {
+         value.getName(), true)) {
             return BORDER.SPELL_HIGHLIGHTED;
         }
         // if (StringMaster.checkContainer(hero.getProperty(getPROP2()), value

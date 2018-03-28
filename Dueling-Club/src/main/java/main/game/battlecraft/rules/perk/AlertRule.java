@@ -51,17 +51,17 @@ public class AlertRule {
         // new PropCondition(prop, str2)
 
         conditions.add(new Conditions(new NotCondition(new OwnershipCondition(KEYS.SOURCE,
-                KEYS.EVENT_SOURCE)), new OrConditions(
-                // "Active_Target"
+         KEYS.EVENT_SOURCE)), new OrConditions(
+         // "Active_Target"
 
-                new RefCondition(KEYS.EVENT_TARGET, KEYS.SOURCE), new GroupCondition(KEYS.SOURCE
-                .toString(), true))));
+         new RefCondition(KEYS.EVENT_TARGET, KEYS.SOURCE), new GroupCondition(KEYS.SOURCE
+         .toString(), true))));
 
         conditions.add(new ListSizeCondition(true, new Conditions(ConditionMaster
-                .getAliveAndConsciousFilterCondition(), ConditionMaster.getEnemyCondition(),
-                ConditionMaster.getAdjacentCondition())
+         .getAliveAndConsciousFilterCondition(), ConditionMaster.getEnemyCondition(),
+         ConditionMaster.getAdjacentCondition())
 
-                , "1"));
+         , "1"));
 
         return conditions;
 
@@ -69,7 +69,7 @@ public class AlertRule {
 
     public static Effect getWakeUpTriggerEffect() {
         return new DelayedEffect(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, new RemoveBuffEffect(
-                STD_MODES.ALERT.getBuffName()), AlertRule.getWakeUpConditions());
+         STD_MODES.ALERT.getBuffName()), AlertRule.getWakeUpConditions());
     }
 
 }

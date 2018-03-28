@@ -30,7 +30,7 @@ public class ClassTreeCondition extends MicroCondition {
                 return true;
             }
             if (c.getProperty(G_PROPS.CLASS_GROUP).equalsIgnoreCase(
-                    type.getProperty(G_PROPS.CLASS_GROUP))) {
+             type.getProperty(G_PROPS.CLASS_GROUP))) {
                 if (c.getIntParam(PARAMS.CIRCLE) >= type.getIntParam(PARAMS.CIRCLE)) {
                     return false;
                 }

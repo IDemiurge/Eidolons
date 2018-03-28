@@ -4,11 +4,11 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.module.adventure.faction.Faction;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.game.module.adventure.MacroGame;
 import main.game.module.adventure.MacroRef;
+import main.game.module.adventure.faction.Faction;
 import main.game.module.adventure.map.MacroCoordinates;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.utils.MacroContentManager;
@@ -58,21 +58,22 @@ public class MacroObj extends Obj {
         return y;
     }
 
-    public int getX() {
-        return x;
-    }
-
     public void setY(int y) {
         this.y = y;
         setParam(MACRO_PARAMS.MAP_POS_Y, y, true);
         getCoordinates().setY(y);
     }
+
+    public int getX() {
+        return x;
+    }
+
     public void setX(int x) {
         this.x = x;
         setParam(MACRO_PARAMS.MAP_POS_X, x, true);
         getCoordinates().setX(x);
     }
- 
+
 
     @Override
     public MacroRef getRef() {
@@ -93,7 +94,7 @@ public class MacroObj extends Obj {
 
     public Region getRegion() {
 //        if (region == null) {
-           return  getRef().getRegion();
+        return getRef().getRegion();
 //        }
 //        return region;
     }
@@ -130,11 +131,11 @@ public class MacroObj extends Obj {
         return null;
     }
 
-    public void setFaction(Faction faction) {
-        this.faction = faction;
-    }
-
     public Faction getFaction() {
         return faction;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
     }
 }

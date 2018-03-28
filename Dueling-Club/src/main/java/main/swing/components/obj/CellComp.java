@@ -43,7 +43,7 @@ public class CellComp {
         this.game = game;
         if (!CoreEngine.isLevelEditor()) {
             setTerrainObj(new DC_Cell(coordinates.x, coordinates.y, game, new Ref(), game
-                    .getDungeon()));
+             .getDungeon()));
         }
         grid = bfGridComp;
         initPanel();

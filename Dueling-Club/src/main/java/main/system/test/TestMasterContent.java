@@ -335,7 +335,7 @@ public class TestMasterContent {
         }
         if (addAllSpells) {
             addAllSpells(type);
-            return ;
+            return;
         }
 
         for (String s : StringMaster.open(getFOCUS_LIST())) {
@@ -370,7 +370,7 @@ public class TestMasterContent {
 
     public static void setAddAllSpells(boolean addAllSpells) {
         if (addAllSpells)
-        TestMasterContent.addSpells = true;
+            TestMasterContent.addSpells = true;
         TestMasterContent.addAllSpells = addAllSpells;
     }
 
@@ -462,7 +462,7 @@ public class TestMasterContent {
         if (weapon.isShield()) {
             return false;
         }
-        if (weapon.getOwnerObj().getLevel()<4)
+        if (weapon.getOwnerObj().getLevel() < 4)
             return false;
         return weapon.isMelee();
     }

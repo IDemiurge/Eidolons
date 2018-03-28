@@ -17,7 +17,7 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     protected HashMap<String, T> tabsToNamesMap;
     private List<T> tabs = new ArrayList<>();
     private String selectedTab;
-    private ButtonGroup<Button> buttonGroup = new ButtonGroup<Button>(){
+    private ButtonGroup<Button> buttonGroup = new ButtonGroup<Button>() {
         @Override
         public void setChecked(String tabName) {
             super.setChecked(tabName);
@@ -38,6 +38,7 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         buttonLayout.clearChildren();
         tabsToNamesMap.clear();
     }
+
     private void initContainer() {
         buttonLayout = new TablePanel<>();
         add(buttonLayout).expand(0, 0).fill(0, 0).left();
@@ -67,13 +68,13 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         }
 
         b.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-               tabSelected(tabName);
-                return true;
+                          @Override
+                          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                              tabSelected(tabName);
+                              return true;
 
-            }
-        }
+                          }
+                      }
         );
 
         buttonGroup.add(b);
@@ -99,6 +100,6 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
 
     protected TextButton.TextButtonStyle getButtonStyle() {
         return
-         StyleHolder.getDefaultTabStyle() ;
+         StyleHolder.getDefaultTabStyle();
     }
 }

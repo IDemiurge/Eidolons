@@ -84,9 +84,9 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     }
 
     protected boolean checkAction(Unit unit, Door door, DOOR_ACTION sub) {
-        if (PositionMaster.getDistance(unit, door)>1)
+        if (PositionMaster.getDistance(unit, door) > 1)
             return false;
-        if (FacingMaster.getSingleFacing(unit.getFacing(), unit, door)!= FACING_SINGLE.IN_FRONT)
+        if (FacingMaster.getSingleFacing(unit.getFacing(), unit, door) != FACING_SINGLE.IN_FRONT)
             return false;
         switch (sub) {
             case OPEN:
@@ -127,8 +127,8 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
     public List<DC_ActiveObj> getActions(DungeonObj door, Unit unit) {
         if (!(door instanceof Door))
             return new ArrayList<>();
-        if (!checkUnitCanHandleActions(unit)){
-            return      new ArrayList<>() ;
+        if (!checkUnitCanHandleActions(unit)) {
+            return new ArrayList<>();
         }
         //check intelligence, mastery
         List<DC_ActiveObj> list = new ArrayList<>();
@@ -147,14 +147,13 @@ public class DoorMaster extends DungeonObjMaster<DOOR_ACTION> {
         return list;
     }
 
-    protected  boolean checkUnitCanHandleActions(Unit unit) {
-        if ( unit.canUseItems())
+    protected boolean checkUnitCanHandleActions(Unit unit) {
+        if (unit.canUseItems())
             return true;
-        if (unit.getChecker().checkClassification(CLASSIFICATIONS.ANIMAL)||
-         unit.getChecker().checkClassification(CLASSIFICATIONS.INSECT))
-        {
-            if (unit.getIntParam(PARAMS.WEIGHT)<50)
-            return false;
+        if (unit.getChecker().checkClassification(CLASSIFICATIONS.ANIMAL) ||
+         unit.getChecker().checkClassification(CLASSIFICATIONS.INSECT)) {
+            if (unit.getIntParam(PARAMS.WEIGHT) < 50)
+                return false;
         }
 
         return true;

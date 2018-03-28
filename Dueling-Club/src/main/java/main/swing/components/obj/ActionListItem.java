@@ -44,7 +44,7 @@ public class ActionListItem extends ListItem<Entity> {
 
     protected ImageIcon getCompIcon(Entity entity, boolean isSelected) {
         BufferedImage buffered = ImageManager.getBufferedImage(super
-                .getCompIcon(entity, isSelected).getImage());
+         .getCompIcon(entity, isSelected).getImage());
         if (action != null) {
             if (action.isThrow()) {
                 buffered = ImageTransformer.flip(FLIP.CW90, buffered);
@@ -66,8 +66,8 @@ public class ActionListItem extends ListItem<Entity> {
                 if (modeImage != null) {
                     Image img = ImageManager.getSizedVersion(modeImage, 50);
                     g.drawImage(img,
-                            // getSize().width - img.getWidth(null)
-                            0, getSize().height - img.getHeight(null), null);
+                     // getSize().width - img.getWidth(null)
+                     0, getSize().height - img.getHeight(null), null);
                 }
             }
             if (action.isOffhand()) {
@@ -78,7 +78,7 @@ public class ActionListItem extends ListItem<Entity> {
             if (action.isThrow()) {
                 Image image = STD_IMAGES.THROW.getImage();
                 g.drawImage(image, obj_size - image.getWidth(null), obj_size
-                        - image.getHeight(null), null);
+                 - image.getHeight(null), null);
             }
         }
     }

@@ -22,8 +22,8 @@ import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

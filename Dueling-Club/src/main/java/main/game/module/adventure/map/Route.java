@@ -36,7 +36,7 @@ public class Route extends Place {
     public Route(MacroGame game, ObjType type, MacroRef ref, String orig,
                  String dest) {
         this(game, type, ref, ref.getRegion().getPlace(orig), ref.getRegion()
-                .getPlace(dest));
+         .getPlace(dest));
     }
 
     public Route(MacroGame game, ObjType type, MacroRef ref, Place orig,
@@ -53,7 +53,7 @@ public class Route extends Place {
     public Route(ObjType type, String img, String orig, String dest, Coordinates coordinates) {
         super(MacroGame.getGame(), type, new MacroRef());
         originPoint = orig;
-      destinationPoint = dest;
+        destinationPoint = dest;
         setProperty(MACRO_PROPS.MAP_IMAGE, img, true);
         setCoordinates(coordinates);
     }
@@ -89,7 +89,7 @@ public class Route extends Place {
     public void setDestination(Place dest) {
         this.dest = dest;
         if (dest != null)
-        dest.addRoute(this);
+            dest.addRoute(this);
 
     }
 
@@ -110,7 +110,7 @@ public class Route extends Place {
     public void setOrigin(Place orig) {
         this.orig = orig;
         if (orig != null)
-        orig.addRoute(this);
+            orig.addRoute(this);
     }
 
     public void addLinkedPlace(Place place) {
@@ -146,8 +146,8 @@ public class Route extends Place {
         for (Route route : orig.getRoutes()) {
             if (route.isCoordinatesValid()) {
                 if ((route.getOrigin() == dest || route.getOrigin() == orig)
-                        && (route.getDestination() == dest || route
-                        .getDestination() == orig)) {
+                 && (route.getDestination() == dest || route
+                 .getDestination() == orig)) {
                     index++;
                 }
             }
@@ -168,13 +168,13 @@ public class Route extends Place {
         if (isActive()) {
             MacroManager.getActiveParty().getCurrentDestination();
             displacement = MacroManager.getActiveParty().getIntParam(
-                    MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
+             MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
             if (isBackwards(MacroManager.getActiveParty())) {
                 displacement = 100 - displacement;
             }
         }
         this.coordinates = CoordinatesMaster.getCoordinateBetween(c1, c2,
-                displacement, perpendicularOffset);
+         displacement, perpendicularOffset);
         // active route would be {ROUTE_PROGRESS} dependent...
         // the rest, well, display them in the middle?
         // available routes should be 'at hand'
@@ -192,7 +192,7 @@ public class Route extends Place {
 
     public boolean isAvailable() {
         return dest == MacroManager.getActiveParty().getCurrentLocation()
-                || orig == MacroManager.getActiveParty().getCurrentLocation();
+         || orig == MacroManager.getActiveParty().getCurrentLocation();
     }
 
     public boolean isCoordinatesValid() {
@@ -205,7 +205,7 @@ public class Route extends Place {
 
     public List<String> getAmbushingGroups() {
         return StringMaster
-                .openContainer(getProperty(MACRO_PROPS.AMBUSHING_GROUPS));
+         .openContainer(getProperty(MACRO_PROPS.AMBUSHING_GROUPS));
     }
 
     public Place getOtherEnd(Place oneEnd) {

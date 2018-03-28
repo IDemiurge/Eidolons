@@ -6,7 +6,7 @@ import main.content.ContentManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
-public class ModifyEnumEffect extends DC_Effect  implements OneshotEffect {
+public class ModifyEnumEffect extends DC_Effect implements OneshotEffect {
 
     boolean set;
     private String name;
@@ -16,7 +16,7 @@ public class ModifyEnumEffect extends DC_Effect  implements OneshotEffect {
     public ModifyEnumEffect(String name, int mod) {
         this.name = name;
         this.mod = mod;
-        prop = ContentManager.getPROP(name ).getName();
+        prop = ContentManager.getPROP(name).getName();
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ModifyEnumEffect extends DC_Effect  implements OneshotEffect {
         int index = EnumMaster.getEnumConstIndex(clazz, prevValue);
         int newIndex = index + mod;
         String value = StringMaster.getWellFormattedString(clazz.getEnumConstants()[newIndex]
-                .toString());
+         .toString());
         getTarget().setProperty(prop, value);
 
         return true;

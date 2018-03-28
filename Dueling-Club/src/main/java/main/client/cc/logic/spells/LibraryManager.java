@@ -28,7 +28,7 @@ public class LibraryManager {
         // SD: Mastery or Knowledge
         String spellGroup = spell.getProperty(G_PROPS.SPELL_GROUP);
         return new NumericCondition("max({SOURCE_KNOWLEDGE}/2-5," + "{SOURCE_" + spellGroup
-                + "MASTERY})", SD);
+         + "MASTERY})", SD);
     }
 
     public static synchronized String initSpellbook(Unit hero) {
@@ -93,11 +93,11 @@ public class LibraryManager {
         for (String spell : StringMaster.open(hero.getProperty(PROPS.LEARNED_SPELLS))) {
             boolean result = false;
             ObjType type = DataManager.getType(spell, DC_TYPE.SPELLS);
-if (type==null ) {
-    main.system.auxiliary.log.LogMaster.log(1,"LibraryManager::checkNewAutoVerbatim - No such spell "+spell );
-    continue;
-}
-if (checkStandardSpell(type)) {
+            if (type == null) {
+                main.system.auxiliary.log.LogMaster.log(1, "LibraryManager::checkNewAutoVerbatim - No such spell " + spell);
+                continue;
+            }
+            if (checkStandardSpell(type)) {
                 if (checkDoubleKnowledge(hero, type)) {
                     result = true;
                 }
@@ -156,16 +156,16 @@ if (checkStandardSpell(type)) {
     // IF MASTERY IS >1
     public static boolean checkDoubleKnowledge(Unit hero, ObjType type) {
         return (hero.checkParam(PARAMS.KNOWLEDGE, ""
-                + Math.round(type.getIntParam(PARAMS.SPELL_DIFFICULTY)
-                * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR)))
-                && hero.checkParam(ContentManager
-                .findMastery(type.getProperty(G_PROPS.SPELL_GROUP)));
+         + Math.round(type.getIntParam(PARAMS.SPELL_DIFFICULTY)
+         * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR)))
+         && hero.checkParam(ContentManager
+         .findMastery(type.getProperty(G_PROPS.SPELL_GROUP)));
     }
 
     public static boolean checkMastery(Unit hero, ObjType type) {
 
         return hero.checkParam(ContentManager.findMastery(type.getProperty(G_PROPS.SPELL_GROUP)),
-                type.getParam(PARAMS.SPELL_DIFFICULTY));
+         type.getParam(PARAMS.SPELL_DIFFICULTY));
     }
 
     public static boolean checkStandardSpell(ObjType type) {

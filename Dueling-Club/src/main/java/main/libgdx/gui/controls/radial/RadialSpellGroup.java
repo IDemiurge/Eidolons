@@ -25,9 +25,9 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     public List<RADIAL_ITEM> getItems(Unit source) {
         ArrayList<RADIAL_ITEM> nodes = new ArrayList<>();
         List<DC_SpellObj> spells = source.getSpells()
-                .stream()
-                .filter(spell -> spell.getSpellGroup()== (group))
-                .collect(Collectors.toList());
+         .stream()
+         .filter(spell -> spell.getSpellGroup() == (group))
+         .collect(Collectors.toList());
         spells.forEach(s -> {
             nodes.add(new EntityNode(s));
         });
@@ -42,6 +42,6 @@ public class RadialSpellGroup implements RADIAL_ITEM {
     @Override
     public String getTexturePath() {
         return ImageManager.getValueIconsPath() + "masteries\\"
-                + StringMaster.getWellFormattedString(group.toString()) + ".png";
+         + StringMaster.getWellFormattedString(group.toString()) + ".png";
     }
 }

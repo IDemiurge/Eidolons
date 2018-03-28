@@ -11,7 +11,7 @@ import main.game.battlecraft.ai.tools.target.EffectFinder;
 public class UnconsciousBuffEffect extends AddBuffEffect {
     private static final String BUFF_TYPE_NAME = "Unconscious";
     private static final String PARAM_MOD_EFFECTS_STRING = "" + "defense([set]0);"
-            + "willpower([mod]-50);" + "";
+     + "willpower([mod]-50);" + "";
 
     public UnconsciousBuffEffect() {
         super(BUFF_TYPE_NAME, getEffects());

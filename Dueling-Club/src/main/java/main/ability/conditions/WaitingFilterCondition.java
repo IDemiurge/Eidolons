@@ -12,7 +12,7 @@ public class WaitingFilterCondition extends MicroCondition {
 
     public static boolean canBeWaitedUpon(Obj waiter, Unit unit) {
         if (unit.getAI().isOutsideCombat()) {
-           return false;
+            return false;
         }
         return unit.canActNow() && (unit.checkInSight() || waiter.getOwner() == unit.getOwner());
     }

@@ -50,7 +50,7 @@ public class ChoiceMaster {
         new Thread(new Runnable() {
             public void run() {
                 WaitMaster.receiveInput(WAIT_OPERATIONS.SELECTION, chooseType(TYPE, types, info,
-                        filterValue, PROP));
+                 filterValue, PROP));
             }
         }, " thread").start();
 

@@ -14,12 +14,12 @@ public class CostsPanel extends TablePanel {
 
     public CostsPanel() {
         addElement(new ValueContainer(getOrCreateR("UI\\components\\infopanel\\action_cost_header.png")))
-                .fill(1, 0).expand(1, 0).top();
+         .fill(1, 0).expand(1, 0).top();
         row();
         final CostTableTooltip tooltip = new CostTableTooltip();
         tooltip.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         costsPanel = addElement(tooltip)
-                .fill(1, 0).expand(1, 0).top();
+         .fill(1, 0).expand(1, 0).top();
 
         addElement(null);//plug element
 

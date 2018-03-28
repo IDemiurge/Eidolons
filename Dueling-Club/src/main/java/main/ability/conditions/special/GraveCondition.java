@@ -30,11 +30,11 @@ public class GraveCondition extends MicroCondition {
     @Override
     public boolean check(Ref ref) {
         List<Obj> deadUnits = ref.getGame().getGraveyardManager().getDeadUnits(
-                ref.getMatchObj().getCoordinates());
+         ref.getMatchObj().getCoordinates());
         if (!ListMaster.isNotEmpty(deadUnits)) {
             return false;
         }
-        Set<Entity> filtered = new Filter<>(deadUnits,ref, getConditions()).getObjects();
+        Set<Entity> filtered = new Filter<>(deadUnits, ref, getConditions()).getObjects();
 
         if (!(ref.getMatchObj() instanceof DC_Cell)) {
             return filtered.contains(ref.getMatchObj());

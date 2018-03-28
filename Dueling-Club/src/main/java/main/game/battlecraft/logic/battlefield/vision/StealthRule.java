@@ -47,11 +47,6 @@ public class StealthRule implements ActionRule {
         return u.getPlayerVisionStatus(true) == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE;
     }
 
-    @Override
-    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
-        return true;
-    }
-
     public static void applySpotted(Unit target) {
         BuffMaster.applyBuff(SPOTTED, new AddStatusEffect(UnitEnums.STATUS.SPOTTED), target, 1); // TODO
         // also negate concealment? // dispel
@@ -133,6 +128,11 @@ public class StealthRule implements ActionRule {
     }
 
     @Override
+    public boolean isAppliedOnExploreAction(DC_ActiveObj action) {
+        return true;
+    }
+
+    @Override
     public boolean unitBecomesActive(Unit unit) {
         return true;
     }
@@ -142,26 +142,26 @@ public class StealthRule implements ActionRule {
             return;
         DC_ActiveObj action = (DC_ActiveObj) active; // perhaps only moves?
         Unit source = action.getOwnerObj();
-//        if (VisionManager.isVisionHacked()) {
-//            return;
-//        }
-//        if (source.getPlayerVisionStatus(true) != UNIT_TO_PLAYER_VISION.INVISIBLE)
-//            return ;
         List<? extends DC_Obj> list = Analyzer.getEnemies(source, false, false, false);
+
+        list.removeIf(unit -> {
+            double d = PositionMaster.getExactDistance(source, unit);
+            if ((d > getMaxDistance(source, unit))) {
+                return true;
+            }
+            if ((d > getMaxDistance((Unit) unit, source))) {
+                return true;
+            }
+            return false;
+        });
         for (DC_Obj sub : list) {
             Unit u = (Unit) sub;
             if (checkHidden(source)) {
-//                if (!game.getVisionMaster().getVisibilityMaster().isZeroVisibility(source, true)) {
-                // if (ConcealmentRule.getVisibilityLevel(u, source,
-                // source.checkInSightForUnit(u)) !=
-                // VISIBILITY_LEVEL.CONCEALED) {
                 if (u.isUnconscious())
                     continue;
                 if (source.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
                     continue;
                 checkSpotRoll(u, source);
-//                    rollSpotted(u, source, true);
-//                }
             }
 
             if (checkHidden(u)) {
@@ -171,6 +171,10 @@ public class StealthRule implements ActionRule {
             }
         }
 
+    }
+
+    private double getMaxDistance(Unit source, DC_Obj unit) {
+        return (source.getSightRangeTowards(unit) + 1) * 2;
     }
 
     private void checkSpotRoll(Unit spotter, Unit unit) {

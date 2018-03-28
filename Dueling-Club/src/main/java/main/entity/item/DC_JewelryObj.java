@@ -16,21 +16,21 @@ public class DC_JewelryObj extends DC_HeroItemObj {
         super(type, owner, game, ref, getJewelryParams());
     }
 
+    private static PARAMETER[] getJewelryParams() {
+        String entity = DC_TYPE.CHARS.getName();
+        return ContentManager.getParamsForType(entity, false).toArray(
+         new PARAMETER[ContentManager.getParamsForType("chars", false)
+          .size()]);
+
+    }
+
     @Override
     protected void applyDurability() {
 
     }
 
-    private static PARAMETER[] getJewelryParams() {
-        String entity = DC_TYPE.CHARS.getName();
-        return ContentManager.getParamsForType(entity, false).toArray(
-                new PARAMETER[ContentManager.getParamsForType("chars", false)
-                        .size()]);
-
-    }
-
-    public boolean isAmulet () {
-        return checkProperty(G_PROPS.JEWELRY_TYPE, JEWELRY_TYPE.AMULET .toString());
+    public boolean isAmulet() {
+        return checkProperty(G_PROPS.JEWELRY_TYPE, JEWELRY_TYPE.AMULET.toString());
     }
 
     protected PARAMETER getDurabilityParam() {

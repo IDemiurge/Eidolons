@@ -101,7 +101,7 @@ public class AttackAnim extends ActionAnim {
             }
         }
 
-        return path+file;
+        return path + file;
     }
 
     private String findWeaponSprite(String path, DC_WeaponObj weapon) {

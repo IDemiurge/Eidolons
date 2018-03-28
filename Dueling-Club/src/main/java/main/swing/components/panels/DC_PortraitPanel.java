@@ -55,7 +55,7 @@ public class DC_PortraitPanel extends G_Panel implements MouseListener {
             if (isNonUnit()) {
                 if (icon.getIconHeight() < GuiManager.getFullObjSize()) {
                     icon = ImageManager.getOffsetImage(icon.getImage(),
-                            GuiManager.getFullObjSize(), ALIGNMENT.CENTER);
+                     GuiManager.getFullObjSize(), ALIGNMENT.CENTER);
                 }
             }
             if (icon != null) {

@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ShopView extends HeroItemView {
     public static final QUALITY_LEVEL[] DEFAULT_QUALITY_LEVELS = {
-            ItemEnums.QUALITY_LEVEL.INFERIOR, ItemEnums.QUALITY_LEVEL.NORMAL,
-            ItemEnums.QUALITY_LEVEL.SUPERIOR};
+     ItemEnums.QUALITY_LEVEL.INFERIOR, ItemEnums.QUALITY_LEVEL.NORMAL,
+     ItemEnums.QUALITY_LEVEL.SUPERIOR};
     private QUALITY_LEVEL[] qualityLevels;
 
     public ShopView(Unit hero) {
@@ -36,7 +36,7 @@ public class ShopView extends HeroItemView {
 
     protected VendorListsPanel generatePanel() {
         return new ShopListsPanel(hero, getTYPE(), getPROP(), isResponsive(),
-                isShowAll(), getItemManager(), getTypeFilter()) {
+         isShowAll(), getItemManager(), getTypeFilter()) {
 
             protected boolean checkSpecial(String name) {
                 return isSpecial(name);
@@ -99,20 +99,20 @@ public class ShopView extends HeroItemView {
         // (KEYS.MATCH, PROPS.MAGICAL_ITEM_TRAIT), "", true));
 
         OrConditions specialConditions = new OrConditions(
-                ConditionMaster.getTYPECondition(DC_TYPE.JEWELRY),
-                new Conditions(new NotCondition(new StringComparison("{MATCH_"
-                        + G_PROPS.QUALITY_LEVEL + "}", "", true)),
-                        ConditionMaster.getTYPECondition(DC_TYPE.ITEMS)));
+         ConditionMaster.getTYPECondition(DC_TYPE.JEWELRY),
+         new Conditions(new NotCondition(new StringComparison("{MATCH_"
+          + G_PROPS.QUALITY_LEVEL + "}", "", true)),
+          ConditionMaster.getTYPECondition(DC_TYPE.ITEMS)));
 
         Conditions conditions = new Conditions(new NotCondition(
-                new StringComparison("{MATCH_" + G_PROPS.MATERIAL + "}", "",
-                        true)));
+         new StringComparison("{MATCH_" + G_PROPS.MATERIAL + "}", "",
+          true)));
         Conditions qualityConditions = new OrConditions();
         for (QUALITY_LEVEL quality : getQualityLevels()) {
             qualityConditions.add(new StringComparison(StringMaster
-                    .getValueRef(KEYS.MATCH, G_PROPS.QUALITY_LEVEL),
-                    StringMaster.getWellFormattedString(quality.toString()),
-                    true));
+             .getValueRef(KEYS.MATCH, G_PROPS.QUALITY_LEVEL),
+             StringMaster.getWellFormattedString(quality.toString()),
+             true));
         }
         conditions.add(qualityConditions);
         return new OrConditions(specialConditions, conditions);

@@ -6,8 +6,8 @@ import main.entity.obj.unit.Unit;
 import main.game.battlecraft.ai.AI_Manager;
 import main.game.battlecraft.ai.tools.target.AI_SpellMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**

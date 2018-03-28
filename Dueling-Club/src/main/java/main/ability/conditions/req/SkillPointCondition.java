@@ -41,8 +41,8 @@ public class SkillPointCondition extends MicroCondition {
             amount = amount * match.getIntParam(PARAMS.RANK_SD_MOD) / 100;
         }
         pointsRequired = amount
-                - DC_MathManager
-                .getFreeMasteryPoints((Unit) ref.getSourceObj(), masteryParam);
+         - DC_MathManager
+         .getFreeMasteryPoints((Unit) ref.getSourceObj(), masteryParam);
 
         return pointsRequired <= 0;
     }

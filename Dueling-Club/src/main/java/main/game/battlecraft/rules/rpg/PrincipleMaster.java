@@ -55,7 +55,7 @@ public class PrincipleMaster {
         Integer points = type.getIntParam(PARAMS.IDENTITY_POINTS);
 
         points = +type.getIntParam(PARAMS.HERO_LEVEL)
-                * type.getIntParam(PARAMS.IDENTITY_POINTS_PER_LEVEL);
+         * type.getIntParam(PARAMS.IDENTITY_POINTS_PER_LEVEL);
 
         // maximize by alignment first, randomize last?
 
@@ -89,7 +89,7 @@ public class PrincipleMaster {
 
     private static boolean initParams(ObjType type, boolean alignmentOrIdentity) {
         Map<PRINCIPLES, String> map = new RandomWizard<PRINCIPLES>().constructStringWeightMap(type
-                .getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
+         .getProperty(G_PROPS.PRINCIPLES), PRINCIPLES.class);
         if (map.isEmpty()) {
             return false;
         }
@@ -100,8 +100,8 @@ public class PrincipleMaster {
             // continue;
             result = true;
             PARAMETER param = alignmentOrIdentity ? DC_ContentManager
-                    .getAlignmentForPrinciple(principle) : DC_ContentManager
-                    .getIdentityParamForPrinciple(principle);
+             .getAlignmentForPrinciple(principle) : DC_ContentManager
+             .getIdentityParamForPrinciple(principle);
             type.setParam(param, map.get(principle));
         }
         return result;
@@ -119,12 +119,12 @@ public class PrincipleMaster {
     private static void fixParamBonuses(ObjType type) {
         String prop = type.getProperty(PROPS.PARAMETER_BONUSES);
         Map<PARAMS, String> map = new RandomWizard<PARAMS>().constructStringWeightMap(prop,
-                PARAMS.class);
+         PARAMS.class);
         Ref ref = new Ref(type.getGame());
         ref.setID(KEYS.INFO, type.getId());
         for (PARAMS param : map.keySet()) {
             if (!(param.getName().contains(StringMaster.ALIGNMENT) || param.getName().contains(
-                    StringMaster.IDENTITY))) {
+             StringMaster.IDENTITY))) {
                 continue;
             }
             String string = map.get(param);
@@ -132,7 +132,7 @@ public class PrincipleMaster {
             // TextParser.INFO_PARSING_CODE);
             // Ref.setInfoObject(type); TODO support {n} or is it useless?
             int amount = StringMaster.getInteger(TextParser.parse(string, ref,
-                    TextParser.INFO_PARSING_CODE));
+             TextParser.INFO_PARSING_CODE));
             // if (param.getName().contains(StringMaster.ALIGNMENT)) {
             //
             // type.modifyParameter(param, amount);
@@ -160,9 +160,9 @@ public class PrincipleMaster {
         for (String substring : StringMaster.open(prop)) {
             newValue += substring + StringMaster.wrapInParenthesis(i + "") + ";";
             PRINCIPLES principle = new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class,
-                    substring);
+             substring);
             newValue += principle.getOpposite().toString()
-                    + StringMaster.wrapInParenthesis(-i + "") + ";";
+             + StringMaster.wrapInParenthesis(-i + "") + ";";
             i--;
         }
 

@@ -31,12 +31,12 @@ public class BlockEffect extends MicroEffect implements AttachmentEffect, Trigge
             case ATTACK:
                 event_type = Event.STANDARD_EVENT_TYPE.UNIT_IS_BEING_ATTACKED;
                 conditions.add(new RefCondition(KEYS.EVENT_TARGET, KEYS.SOURCE,
-                        false));
+                 false));
                 break;
             case HOSTILE_ACTION:
                 event_type = Event.STANDARD_EVENT_TYPE.HOSTILE_ACTION;
                 conditions.add(new RefCondition(KEYS.EVENT_TARGET, KEYS.SOURCE,
-                        false));
+                 false));
                 break;
             case DAMAGE:
                 event_type = Event.STANDARD_EVENT_TYPE.UNIT_IS_BEING_DEALT_TOUGHNESS_DAMAGE;
@@ -49,7 +49,7 @@ public class BlockEffect extends MicroEffect implements AttachmentEffect, Trigge
             case HOSTILE_SPELLS:
                 event_type = Event.STANDARD_EVENT_TYPE.SPELL_BEING_RESOLVED;
                 conditions.add(new RefCondition(KEYS.EVENT_TARGET, KEYS.TARGET,
-                        false));
+                 false));
                 OBJ_REF = Ref.KEYS.SPELL.name();
                 break;
             case SPELLS_FROM_SOURCE:
@@ -61,7 +61,7 @@ public class BlockEffect extends MicroEffect implements AttachmentEffect, Trigge
 
         effects = new Effects(new InterruptEffect(OBJ_REF));
         ActiveAbility abilities = new ActiveAbility(new FixedTargeting(
-                KEYS.SOURCE), effects);
+         KEYS.SOURCE), effects);
         abilities.setRef(ref);
 
         new AddTriggerEffect(event_type, conditions, abilities).apply(ref);

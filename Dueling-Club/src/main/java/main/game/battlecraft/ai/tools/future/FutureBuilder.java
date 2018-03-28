@@ -49,7 +49,7 @@ public class FutureBuilder {
         for (Effect e : effects) {
             damage += getDamage(active, targetObj, e, min_max_normal);
         }
-        cache.put(active.getNameAndId() + targetObj.getNameAndId() , damage);
+        cache.put(active.getNameAndId() + targetObj.getNameAndId(), damage);
         return damage;
     }
 
@@ -106,11 +106,11 @@ public class FutureBuilder {
             Attack attack = ((AttackEffect) e).initAttack();
             // attack.setAttacked((DC_HeroObj) targetObj);
             Map<String, Integer> _cache = getCache(min_max_normal);
-           damage =  _cache.get(getCacheKey(active, targetObj));
-           if (damage == null ){
-               damage = DamageCalculator.precalculateDamage(attack, min_max_normal);
+            damage = _cache.get(getCacheKey(active, targetObj));
+            if (damage == null) {
+                damage = DamageCalculator.precalculateDamage(attack, min_max_normal);
                 _cache.put(getCacheKey(active, targetObj), damage);
-           }
+            }
         }
         // active.toBase();
         LogMaster.log(1, active.getName() + " on " + targetObj.getName()

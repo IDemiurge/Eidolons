@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class XmlHelper {
 
-public static void replaceSpecEffectsWithBonusDamage(){
-    String passiveAbils;
+    public static void replaceSpecEffectsWithBonusDamage() {
+        String passiveAbils;
 
 
-}
+    }
 
 
     private static String removeDuplicateWalls(String content) {

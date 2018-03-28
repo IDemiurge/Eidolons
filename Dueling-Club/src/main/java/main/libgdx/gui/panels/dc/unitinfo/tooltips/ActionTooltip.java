@@ -23,6 +23,7 @@ public class ActionTooltip extends Tooltip {
     public Entity getEntity() {
         return action;
     }
+
     @Override
     public void updateAct(float delta) {
         clear();

@@ -90,7 +90,7 @@ public class PixmapPathBuilder {
     }
 
     public static Sequence<SteeringBehavior<Vector2>> buildPathSequence(SteeringAgent agent, Vector2 orig,
-                                                               Vector2 dest, ALPHA_MAP map) {
+                                                                        Vector2 dest, ALPHA_MAP map) {
 
 
         //to road, on road, from road
@@ -113,7 +113,7 @@ public class PixmapPathBuilder {
     }
 
     static Sequence<SteeringBehavior<Vector2>> buildMapPathSequence(SteeringAgent agent, Vector2 orig,
-                                                           Vector2 dest, ALPHA_MAP map) {
+                                                                    Vector2 dest, ALPHA_MAP map) {
         Sequence<SteeringBehavior<Vector2>> sequence = new Sequence<>();
         Path<Vector2, LinePathParam> path = buildPath(map, orig, dest, getImpassable());
         SteeringBehavior<Vector2> behavior = getFollowPath(path, agent);
@@ -141,7 +141,7 @@ public class PixmapPathBuilder {
     }
 
     static Sequence<SteeringBehavior<Vector2>> getRoadSequence(SteeringAgent agent, Vector2 orig,
-                                                      Vector2 dest) {
+                                                               Vector2 dest) {
         Sequence<SteeringBehavior<Vector2>> sequence = new Sequence<>();
 
         Vector2 roadPoint = lastPoint;

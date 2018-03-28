@@ -9,16 +9,16 @@ import main.system.launch.CoreEngine;
  */
 public abstract class MapObjFactory<E extends MapActor, T extends MacroObj> {
 
-    public abstract E   get(T obj);
-    public   E   create(T obj){
+    public abstract E get(T obj);
+
+    public E create(T obj) {
         E e = get(obj);
-        handle(e,obj);
+        handle(e, obj);
         return e;
     }
 
-    public void handle(E actor, T obj){
-        if (CoreEngine.isMapEditor())
-        {
+    public void handle(E actor, T obj) {
+        if (CoreEngine.isMapEditor()) {
             EditorManager.map(actor, obj);
             actor.addListener(EditorManager.getMouseListener(actor));
         }

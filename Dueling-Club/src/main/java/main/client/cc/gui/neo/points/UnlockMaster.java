@@ -34,7 +34,7 @@ public class UnlockMaster {
         // Intelligence point cost limit!
 
         if (!entity.checkParam(PARAMS.GOLD, goldCost + "")
-                && !entity.checkParam(PARAMS.XP, xpCost + "")) {
+         && !entity.checkParam(PARAMS.XP, xpCost + "")) {
             DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK_BLOCKED);
             return false;
         }
@@ -61,10 +61,10 @@ public class UnlockMaster {
 
     private static int getGoldCost(Entity entity, int masteriesUnlocked, Unit hero) {
         int goldCost = (int) Math.min(MAX_GOLD_COST, GOLD_FACTOR
-                + (GOLD_FACTOR * Math.pow(2, masteriesUnlocked)));
+         + (GOLD_FACTOR * Math.pow(2, masteriesUnlocked)));
 
         int goldFactor = -hero.getIntParam(PARAMS.GOLD_COST_REDUCTION)
-                + hero.getIntParam(PARAMS.HERO_LEVEL) * hero.getIntParam(PARAMS.HERO_LEVEL);
+         + hero.getIntParam(PARAMS.HERO_LEVEL) * hero.getIntParam(PARAMS.HERO_LEVEL);
         goldCost = MathMaster.addFactor(goldCost, goldFactor);
         if (!entity.checkParam(PARAMS.GOLD, goldCost + "")) {
             goldCost = -1;
@@ -74,9 +74,9 @@ public class UnlockMaster {
 
     private static int getXpCost(Entity entity, int masteriesUnlocked, Unit hero) {
         int xpCost = (int) Math.min(MAX_XP_COST, XP_FACTOR
-                + (XP_FACTOR * Math.pow(2, masteriesUnlocked)));
+         + (XP_FACTOR * Math.pow(2, masteriesUnlocked)));
         int xpFactor = -hero.getIntParam(PARAMS.XP_COST_REDUCTION)
-                + hero.getIntParam(PARAMS.HERO_LEVEL) * hero.getIntParam(PARAMS.HERO_LEVEL);
+         + hero.getIntParam(PARAMS.HERO_LEVEL) * hero.getIntParam(PARAMS.HERO_LEVEL);
         xpCost = MathMaster.addFactor(xpCost, xpFactor);
         if (!entity.checkParam(PARAMS.XP, xpCost + "")) {
             xpCost = -1;
@@ -91,7 +91,7 @@ public class UnlockMaster {
         Unit hero = CharacterCreator.getHeroManager().getHero((ObjType) entity);
 
         int cost = gold ? getGoldCost(entity, masteriesUnlocked, hero) : getXpCost(entity,
-                masteriesUnlocked, hero);
+         masteriesUnlocked, hero);
         unlock(entity, param, gold, cost);
     }
 

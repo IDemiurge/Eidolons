@@ -9,8 +9,9 @@ public class DialogueLine {
     public DialogueLine(int id) {
         this.id = id;
     }
+
     //locale!
-    public String getText(){
+    public String getText() {
         return null;
     }
 }

@@ -13,7 +13,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.util.Untested;
 
 @Untested
-public class InjuryEffect extends DC_Effect  implements OneshotEffect {
+public class InjuryEffect extends DC_Effect implements OneshotEffect {
 
     private INJURY template;
     private boolean random;
@@ -55,7 +55,7 @@ public class InjuryEffect extends DC_Effect  implements OneshotEffect {
         }
         // preCheck applicable
         getTarget().addProperty(PROPS.INJURIES,
-                StringMaster.getWellFormattedString(injury.toString()));
+         StringMaster.getWellFormattedString(injury.toString()));
         Effects effects = EffectFinder.initParamModEffects(injury.getModString(), ref);
         // TODO ++ PROPS
         if (mod != 100) {

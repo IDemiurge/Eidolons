@@ -28,8 +28,8 @@ public class MacroActionPagedPanel extends G_PagedListPanel<MacroAction> {
     @Override
     protected List<List<MacroAction>> getPageData() {
         return new ListMaster<MacroAction>().splitList(true, pageSize,
-                MacroActionManager.getMacroActions(group, MacroGame.getGame()
-                        .getPlayerParty()));
+         MacroActionManager.getMacroActions(group, MacroGame.getGame()
+          .getPlayerParty()));
     }
 
     @Override

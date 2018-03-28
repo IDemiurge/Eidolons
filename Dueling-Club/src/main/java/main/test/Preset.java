@@ -84,14 +84,6 @@ public class Preset extends DataUnit<PRESET_DATA> {
         this.name = name2;
     }
 
-    public enum PRESET_TYPE {
-        TEST, FREE, SKIRMISH, SPECIAL, CAMPAIGN,
-    }
-
-    public enum PRESET_OPTION {
-        DEBUG, ITEM_GENERATION_OFF, OMNIVISION,
-    }
-
     public enum PRESET_DATA {
         PLAYER_PARTY, // CHAR IF NULL
         ENEMY_PARTY,
@@ -107,6 +99,14 @@ public class Preset extends DataUnit<PRESET_DATA> {
         LEVEL_RANGE, // ANIM/AI DELAYS, INFO ICONS/TEXT,
         MODE, // FREE, TEST, ARCADE, SEQUENCE...
 
+    }
+
+    public enum PRESET_OPTION {
+        DEBUG, ITEM_GENERATION_OFF, OMNIVISION,
+    }
+
+    public enum PRESET_TYPE {
+        TEST, FREE, SKIRMISH, SPECIAL, CAMPAIGN,
     }
 
 }

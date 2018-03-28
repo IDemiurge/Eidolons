@@ -54,22 +54,22 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
         if (palette != null)
             EditorMapView.getInstance().getGuiStage().getPalette().tabSelected(palette.name());
         INFO_TABS tabs = new EnumMaster<INFO_TABS>().retrieveEnumConst(INFO_TABS.class, tabName);
-    if (tabs!=null  )
-        switch (tabs) {
-            case EMITTERS:
-                break;
-            case PLACES:
-                break;
-            case PARTIES:
-                break;
-            case AREAS:
-                break;
-            case POINTS:
-                EditorManager.setMode(MAP_EDITOR_MOUSE_MODE.POINT);
-                break;
-            case SCRIPTS:
-                break;
-        }
+        if (tabs != null)
+            switch (tabs) {
+                case EMITTERS:
+                    break;
+                case PLACES:
+                    break;
+                case PARTIES:
+                    break;
+                case AREAS:
+                    break;
+                case POINTS:
+                    EditorManager.setMode(MAP_EDITOR_MOUSE_MODE.POINT);
+                    break;
+                case SCRIPTS:
+                    break;
+            }
     }
 
     private void add(Object o) {
@@ -110,7 +110,7 @@ public class EditorInfoPanel extends TabbedPanel<EditorInfoTab> {
     //removeSelected
     //trigger highlight
     public enum INFO_TABS {
-        EMITTERS, POINTS,PLACES, PARTIES, AREAS,  SCRIPTS,
+        EMITTERS, POINTS, PLACES, PARTIES, AREAS, SCRIPTS,
     }
 
     public class EditorInfoTab extends TabbedPanel {

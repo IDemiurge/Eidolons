@@ -70,7 +70,7 @@ public class MiniGrid implements Refreshable {
         // comp.addMouseListener(customMouseListener);
 
         LogMaster.log(1, getComp().getMouseListeners() + " on "
-                + getComp().hashCode());
+         + getComp().hashCode());
         // comp.addMouseMotionListener(new DragOffsetMouseListener(this));
 
         setCellWidth((int) (getSize().getWidth() / dungeon.getCellsX()));
@@ -130,7 +130,7 @@ public class MiniGrid implements Refreshable {
             }
         }
         this.comp.add(minicomp.getComp(), getOverlayingMigString((Unit) minicomp.getObj(),
-                multi));
+         multi));
         minicomp.initSize(getSize());
     }
 
@@ -281,7 +281,7 @@ public class MiniGrid implements Refreshable {
 
     private String getMigString(Coordinates c) {
         return "pos " + (defaultOffsetX + (offsetX + c.x) * getCellWidth()) + " "
-                + (defaultOffsetY + (offsetY + c.y) * cellHeight);
+         + (defaultOffsetY + (offsetY + c.y) * cellHeight);
 
     }
 

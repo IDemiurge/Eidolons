@@ -13,8 +13,8 @@ public class PartyInfoPanel extends Header {
 	 */
 
     public final static VALUE[] party_info_values = {MACRO_PARAMS.PROVISIONS,
-            PARAMS.GOLD, PARAMS.GOLD, PARAMS.GOLD, MACRO_PARAMS.PROVISIONS,
-            MACRO_PARAMS.PROVISIONS,
+     PARAMS.GOLD, PARAMS.GOLD, PARAMS.GOLD, MACRO_PARAMS.PROVISIONS,
+     MACRO_PARAMS.PROVISIONS,
 
     };
 

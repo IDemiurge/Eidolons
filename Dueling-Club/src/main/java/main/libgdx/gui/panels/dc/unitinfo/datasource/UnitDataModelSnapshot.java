@@ -18,10 +18,10 @@ import java.util.List;
  */
 public class UnitDataModelSnapshot extends DataModel implements BfObj {
 
-    private   boolean unconscious;
-    private   boolean mine;
-    private  int x;
-    private  int y;
+    private boolean unconscious;
+    private boolean mine;
+    private int x;
+    private int y;
     private boolean playerDetected;
     private UNIT_TO_PLAYER_VISION activePlayerVisionStatus;
     private UNIT_TO_UNIT_VISION unitVisionStatus;
@@ -37,10 +37,10 @@ public class UnitDataModelSnapshot extends DataModel implements BfObj {
         this.activePlayerVisionStatus = obj.getActivePlayerVisionStatus();
 //        this.unitVisionStatus = obj.getUnitVisionStatus();
         this.coordinates = obj.getCoordinates();
-         mine = obj.isMine();
+        mine = obj.isMine();
         dead = obj.isDead();
         if (obj instanceof Unit) {
-            unconscious=((Unit) obj).isUnconscious();
+            unconscious = ((Unit) obj).isUnconscious();
 
         }
     }

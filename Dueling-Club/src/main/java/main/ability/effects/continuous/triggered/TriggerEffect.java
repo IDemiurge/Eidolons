@@ -10,7 +10,7 @@ import main.elements.conditions.Condition;
 import main.elements.targeting.Targeting;
 
 public abstract class TriggerEffect extends MicroEffect implements
-        AttachmentEffect, TriggeredEffect {
+ AttachmentEffect, TriggeredEffect {
 
     protected boolean initialized = false;
     protected AddTriggerEffect triggerEffect;

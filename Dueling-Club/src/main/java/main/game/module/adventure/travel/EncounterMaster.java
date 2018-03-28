@@ -90,7 +90,7 @@ public class EncounterMaster {
         // bribe, intimidate, taunt, ++ converse/chat/blather
 
         Boolean choice = DialogMaster.askAndWait(getEncounterDescription(e), true, "Bribe",
-                "Intimidate", "Taunt");
+         "Intimidate", "Taunt");
         if (choice == null) {
             return taunt(e);
         } else {
@@ -121,7 +121,7 @@ public class EncounterMaster {
     public static boolean resolveEncounter(Encounter e) {
         // return outcome, what for? Fled, Surrendered
         Boolean choice = DialogMaster.askAndWait(getEncounterDescription(e), true, "Fight", "Flee",
-                "Parlay");
+         "Parlay");
         boolean result = false;
         if (choice == null) {
             result = parlay(e);
@@ -285,15 +285,15 @@ public class EncounterMaster {
 
     public static int getMinCreepWavePower() {
         return MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE)
-                + MacroManager.getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
-                * MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR);
+         + MacroManager.getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
+         * MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR);
     }
 
     public static int getMaxCreepWavePower() {
         return MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_MAX_FACTOR)
-                * (MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE) + MacroManager
-                .getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
-                * MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR));
+         * (MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE) + MacroManager
+         .getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
+         * MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR));
     }
 
     public static boolean isEncounterBeingResolved() {

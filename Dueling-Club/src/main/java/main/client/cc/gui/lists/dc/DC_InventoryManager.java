@@ -25,8 +25,8 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
  */
 public class DC_InventoryManager {
 
-    protected Integer operationsLeft =0;
-    protected Integer operationsPool=0;
+    protected Integer operationsLeft = 0;
+    protected Integer operationsPool = 0;
     private DC_Game game;
     private Unit hero;
     private OBJ_TYPE TYPE;
@@ -97,7 +97,7 @@ public class DC_InventoryManager {
             return true;
         }
 
-            if (!hasOperations()) {
+        if (!hasOperations()) {
             return false;
         }
 

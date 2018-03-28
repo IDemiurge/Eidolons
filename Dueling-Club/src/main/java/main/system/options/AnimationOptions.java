@@ -2,7 +2,7 @@ package main.system.options;
 
 import main.system.options.AnimationOptions.ANIMATION_OPTION;
 
-public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION> {
+public class AnimationOptions extends Options<ANIMATION_OPTION, ANIMATION_OPTION> {
     @Override
     protected Class getOptionClass() {
         return ANIMATION_OPTION.class;
@@ -11,12 +11,12 @@ public class AnimationOptions extends Options<ANIMATION_OPTION,ANIMATION_OPTION>
 
     // AI_PARAMS,
     public enum ANIMATION_OPTION implements Options.OPTION {
-        WAIT_FOR_ANIM(false ),
+        WAIT_FOR_ANIM(false),
         MAX_ANIM_WAIT_TIME(1000, 0, 3000),
-        PARALLEL_DRAWING (false) ,
+        PARALLEL_DRAWING(false),
         SPEED(100, 1, 1500),
         TEXT_DURATION(100, 0, 300),
-//        INFO_LEVEL(1, 0, 1),
+        //        INFO_LEVEL(1, 0, 1),
 //        PHASE_TIME(500, 0, 1000),
 //        OFFSET_FOR_OVERLAP(true),
         PRECAST_ANIMATIONS(true),

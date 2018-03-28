@@ -39,7 +39,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     @Override
     protected String chooseHero(List<String> members) {
         if (isWaitForGdx())
-        WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
+            WaitMaster.waitForInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
         return super.chooseHero(members);
     }
 
@@ -84,8 +84,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public Party initPlayerParty() {
-        if (!getMaster().getMetaGame().isPartyRespawn())
-        {
+        if (!getMaster().getMetaGame().isPartyRespawn()) {
             party = Eidolons.getParty();
             return party;
         }
@@ -110,8 +109,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                  members);
                 type.setProperty(PROPS.MEMBERS, hero);
             } else {
-                String hero =selectedHero; //for restart
-                if (hero == null )
+                String hero = selectedHero; //for restart
+                if (hero == null)
                     hero = chooseHero(members);
                 if (hero == null) {
                     return null; //aborted

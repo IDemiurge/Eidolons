@@ -1,6 +1,5 @@
 package main.game.module.adventure;
 
-import main.client.cc.logic.party.Party;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
@@ -9,14 +8,14 @@ import main.data.DataManager;
 import main.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.module.adventure.faction.Faction;
-import main.game.module.adventure.faction.FactionObj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.GameLoop;
 import main.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.faction.Faction;
+import main.game.module.adventure.faction.FactionObj;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
@@ -43,13 +42,13 @@ public class MacroGame extends Game {
     main.game.module.adventure.global.World world;
     MacroRef ref; // with active party/route/region/place/town
     DequeImpl<TurnRule> turnRules;
+    DequeImpl<Faction> factions = new DequeImpl<>();
     private main.game.module.adventure.global.Campaign campaign;
     private GameLoop loop;
     private DAY_TIME time = DAY_TIME.MIDDAY;
     private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
     private Thread gameLoopThread;
-    DequeImpl<Faction> factions= new DequeImpl<>();
     private Faction playerFaction;
 
     // ...masters
@@ -101,7 +100,6 @@ public class MacroGame extends Game {
         routeMaster = new RouteMaster();
 
     }
-
 
 
     public void initObjTypes() {
@@ -244,6 +242,7 @@ public class MacroGame extends Game {
     public WEATHER getWeather() {
         return getLoop().getTimeMaster().getWeather();
     }
+
     public DIRECTION getWindDirection() {
         return getLoop().getTimeMaster().getWindDirection();
     }

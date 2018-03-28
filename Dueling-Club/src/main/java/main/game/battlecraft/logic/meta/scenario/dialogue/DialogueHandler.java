@@ -28,8 +28,8 @@ public class DialogueHandler {
         for (DialogScenario actor : actors) {
             map.put(actor, line);
             line = line.getChildren().get(0);
-        } 
-       
+        }
+
     }
 
     public void lineSpoken(DialogScenario actorObject) {

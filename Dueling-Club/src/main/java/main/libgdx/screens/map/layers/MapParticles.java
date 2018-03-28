@@ -34,14 +34,14 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
     @Override
     protected void clearLayer() {
         displayed.forEach(emitterActor -> {
-        emitterActor.remove();
+            emitterActor.remove();
 //      TODO       emitterActor.getEffect().dispose();
-    });
+        });
     }
 
     @Override
     protected void spawnLayer() {
-          displayed = new ArrayList<>(map.get(time));
+        displayed = new ArrayList<>(map.get(time));
         displayed.addAll(map.get(null)); //all-time
         displayed.forEach(emitterActor -> {
             addActor(emitterActor);
@@ -108,30 +108,30 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
         EmitterActor actor = EmitterPools.getEmitterActor(path);// new EmitterActor(sfx.sfxPath);
         actor.setPosition(x, y);
         actor.setSpeed(getSpeed(path));
-        actor.setFlipX(isFlipX(path,   MacroGame.getGame().getWindDirection()  ));
-        actor.setFlipY(isFlipY(path,   MacroGame.getGame().getWindDirection()  ));
+        actor.setFlipX(isFlipX(path, MacroGame.getGame().getWindDirection()));
+        actor.setFlipY(isFlipY(path, MacroGame.getGame().getWindDirection()));
         MapMaster.addToListMap(map, time, actor);
         return actor;
     }
 
     private boolean isFlipY(String path, DIRECTION windDirection) {
-        Boolean downOrUp=null ;
+        Boolean downOrUp = null;
         if (StringMaster.contains(path, "snow ") ||
-         StringMaster.contains(path, "cloud")||
-         StringMaster.contains(path, "smoke")){
-            downOrUp=false;
+         StringMaster.contains(path, "cloud") ||
+         StringMaster.contains(path, "smoke")) {
+            downOrUp = false;
         }
         if (StringMaster.contains(path, "snowfall") ||
-         StringMaster.contains(path, "leaves")||
-         StringMaster.contains(path, "smoke")){
-            downOrUp=true;
+         StringMaster.contains(path, "leaves") ||
+         StringMaster.contains(path, "smoke")) {
+            downOrUp = true;
         }
         return windDirection.growY != downOrUp;
     }
 
     private boolean isFlipX(String path, DIRECTION windDirection) {
         if (StringMaster.contains(path, "mist") ||
-         StringMaster.contains(path, "cloud")||
+         StringMaster.contains(path, "cloud") ||
          StringMaster.contains(path, "smoke")
          ) {
             if (windDirection.growX != true)
@@ -144,7 +144,8 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
         List<String> paths = StringMaster.getPathSegments(path);
         if (paths.size() > 1) {
             switch (paths.get(1)) {
-                case "leaves": return 0.3f;
+                case "leaves":
+                    return 0.3f;
             }
 
         }

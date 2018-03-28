@@ -39,7 +39,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActionSequenceConstructor extends AiHandler {
@@ -55,7 +54,7 @@ public class ActionSequenceConstructor extends AiHandler {
 
 
     public List<ActionSequence> createActionSequences(UnitAI ai) {
-        TimeLimitMaster. markTimeForAI(ai);
+        TimeLimitMaster.markTimeForAI(ai);
         List<ActionSequence> list = new ArrayList<>();
         getActionSequenceConstructor().setPrioritizedCells(null);
         boolean forced = false;
@@ -273,11 +272,11 @@ public class ActionSequenceConstructor extends AiHandler {
     }
 
     public List<ActionSequence> getSequencesFromPaths(List<ActionPath> paths, Task task,
-                                                       Action action) {
+                                                      Action action) {
         List<ActionSequence> list = new ArrayList<>();
         for (ActionPath path : paths) {
             if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
-             break;
+                break;
             ActionSequence sequence = new ActionSequence(path.getActions(), task, task.getAI());
             if (action.getActive().isRanged()) {
                 List<Action> rangedAttackSequence = constructSingleAttackSequence(action, task);

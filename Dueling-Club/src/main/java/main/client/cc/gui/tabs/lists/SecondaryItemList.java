@@ -58,7 +58,7 @@ public abstract class SecondaryItemList extends G_Panel {
                 poolComp.setText(getPoolText());
             } else {
                 poolComp = new PoolComp(getPoolText(), getPoolTooltip(),
-                        isPoolC());
+                 isPoolC());
 
             }
         }
@@ -66,7 +66,7 @@ public abstract class SecondaryItemList extends G_Panel {
 
     protected HC_PagedListPanel initList() {
         list = new HC_PagedListPanel(getTemplate(), hero, itemListManager,
-                data, getTitle());
+         data, getTitle());
         return list;
     }
 
@@ -76,7 +76,7 @@ public abstract class SecondaryItemList extends G_Panel {
 
     protected List<ObjType> initData() {
         data = DataManager
-                .toTypeList(hero.getProperty(getPROP()), getTYPE());
+         .toTypeList(hero.getProperty(getPROP()), getTYPE());
         return data;
     }
 
@@ -123,9 +123,9 @@ public abstract class SecondaryItemList extends G_Panel {
         add(list, "id list, pos 0 title.y2+" + GuiManager.getSmallObjSize() / 4);
         if (poolComp != null) {
             add(poolComp, "id pool, pos "
-                    + MigMaster.getCenteredPosition(list.getVisuals()
-                    .getWidth(), poolComp.getVisuals().getWidth())
-                    + " list.y2");
+             + MigMaster.getCenteredPosition(list.getVisuals()
+             .getWidth(), poolComp.getVisuals().getWidth())
+             + " list.y2");
         }
     }
 

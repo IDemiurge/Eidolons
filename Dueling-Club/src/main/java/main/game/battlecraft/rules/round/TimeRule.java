@@ -13,8 +13,8 @@ import main.game.core.game.DC_Game;
 import main.system.auxiliary.log.LogMaster.LOG;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 // The idea is to make rounds imitate real-time combat as accurately as possible
@@ -69,7 +69,7 @@ public class TimeRule {
     }
 
     public void newRound() {
-        if (DC_Engine.isAtbMode()){
+        if (DC_Engine.isAtbMode()) {
             return;
         }
         active = false;
@@ -108,7 +108,7 @@ public class TimeRule {
             float percent = new Float(delta) / baseTime;
             if (game.getDungeonMaster().getExplorationMaster() != null)
                 game.getDungeonMaster().getExplorationMaster().
-                getAiMaster().tryMoveAiTurnBased(percent);
+                 getAiMaster().tryMoveAiTurnBased(percent);
             //% of time spent...
 
             timeRemaining = baseTime - time;
@@ -162,7 +162,7 @@ public class TimeRule {
     }
 
     public boolean actionComplete(DC_ActiveObj action, int time_cost) {
-        if (DC_Engine.isAtbMode()){
+        if (DC_Engine.isAtbMode()) {
             return false;
         }
         if (!active) {

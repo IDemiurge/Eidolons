@@ -7,14 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public interface Closable {
 
-    default void close(){
-        ((Actor)this).setVisible(false);
+    default void close() {
+        ((Actor) this).setVisible(false);
     }
 
-        default void open(){
-            ((StageWithClosable)((Actor)this).getStage()).closeDisplayed();
-            ((StageWithClosable)((Actor)this).getStage()).setDisplayedClosable(this);
-            ((Actor)this).setVisible(true);
+    default void open() {
+        ((StageWithClosable) ((Actor) this).getStage()).closeDisplayed();
+        ((StageWithClosable) ((Actor) this).getStage()).setDisplayedClosable(this);
+        ((Actor) this).setVisible(true);
     }
 
 }

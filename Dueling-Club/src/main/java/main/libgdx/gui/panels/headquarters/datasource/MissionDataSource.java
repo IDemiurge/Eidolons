@@ -7,9 +7,13 @@ import main.libgdx.gui.panels.dc.ValueContainer;
  */
 public interface MissionDataSource {
     ValueContainer getPosition();
+
     ValueContainer getName();
+
     ValueContainer getTooltip();
+
     ValueContainer getMapIcon();
+
     ValueContainer getTooltipIcon();
 
 }

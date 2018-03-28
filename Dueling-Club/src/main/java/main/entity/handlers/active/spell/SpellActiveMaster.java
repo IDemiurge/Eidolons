@@ -37,7 +37,7 @@ public class SpellActiveMaster extends ActiveMaster {
     @Override
     protected Executor createHandler() {
         if (CoreEngine.isArcaneVault())
-            return null ;
-        return new SpellExecutor(getEntity(), this) ;
+            return null;
+        return new SpellExecutor(getEntity(), this);
     }
 }

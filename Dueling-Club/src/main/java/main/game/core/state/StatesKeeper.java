@@ -37,7 +37,7 @@ public class StatesKeeper {
     private void loadLastState() {
         DC_GameState state = states.pop();
         game.setState(state);
-        GuiEventManager.trigger(GuiEventType.REFRESH_GRID, null );
+        GuiEventManager.trigger(GuiEventType.REFRESH_GRID, null);
     }
 
     public void save() {

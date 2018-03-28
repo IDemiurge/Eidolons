@@ -45,7 +45,7 @@ public class PanelActionsDataSource implements
         boolean valid = el.canBeManuallyActivated();
         final ActionValueContainer container = new ActionValueContainer(
          valid,
-           TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), getImage(el))
+         TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), getImage(el))
          ,
          el::invokeClicked
         );
@@ -91,7 +91,7 @@ public class PanelActionsDataSource implements
              ListMaster.fillWithNullElements(new ArrayList<ActionValueContainer>(), unit.getRemainingQuickSlots());
         List<ActionValueContainer> list = items.stream()
          .map((DC_QuickItemObj key) -> {
-            boolean valid = key.getActive().canBeManuallyActivated();
+             boolean valid = key.getActive().canBeManuallyActivated();
              final ActionValueContainer valueContainer = new ActionValueContainer(
               valid,
               getOrCreateR(key.getImagePath()),
@@ -111,7 +111,7 @@ public class PanelActionsDataSource implements
             return list;
         boolean valid = action.canBeManuallyActivated();
         ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
-                action.clicked();
+            action.clicked();
         });
         list.add(invButton);
         for (int i = 0; i < unit.getRemainingQuickSlots() - 1; i++) {

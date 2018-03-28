@@ -10,8 +10,8 @@ import main.entity.active.DC_SpellObj;
 public class EnchantSpellCondition extends MicroCondition {
 
     private TARGETING_MODE[] modes = {AbilityEnums.TARGETING_MODE.ANY_ALLY,
-            AbilityEnums.TARGETING_MODE.ANY_ENEMY, AbilityEnums.TARGETING_MODE.ANY_UNIT,
-            AbilityEnums.TARGETING_MODE.SINGLE,};
+     AbilityEnums.TARGETING_MODE.ANY_ENEMY, AbilityEnums.TARGETING_MODE.ANY_UNIT,
+     AbilityEnums.TARGETING_MODE.SINGLE,};
 
     public EnchantSpellCondition(SPELL_ENCHANT_GROUP type) {
 

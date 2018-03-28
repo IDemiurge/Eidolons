@@ -35,7 +35,7 @@ public class PriorityModifier extends AiHandler {
 
         // if (behaviorMode != BEHAVIOR_MODE.PANIC)
         mod -= getCostPenalty(sequence);
-        mod -=mod*(  getSequenceLengthPenalty(sequence))/100;
+        mod -= mod * (getSequenceLengthPenalty(sequence)) / 100;
         return mod;
     }
 
@@ -50,7 +50,7 @@ public class PriorityModifier extends AiHandler {
 
     public int getCostPenalty(ActionSequence as) {
         Costs cost = ActionManager.getTotalCost(as.getActions());
-        int cost_penalty =100- getParamAnalyzer().getCostPriorityFactor(cost, getUnit());
+        int cost_penalty = 100 - getParamAnalyzer().getCostPriorityFactor(cost, getUnit());
         String string = "cost";
         try {
             if (as.getLastAction().getActive().isChanneling()) {
@@ -68,10 +68,10 @@ public class PriorityModifier extends AiHandler {
 
     public int getSequenceLengthPenalty(ActionSequence as) {
         int length = as.getActions().size() - 1;
-        int penalty =  (int) Math.round(length * Math.sqrt(length) * getConstInt(AiConst.SEQUENCE_LENGTH_PENALTY_POW15))
+        int penalty = (int) Math.round(length * Math.sqrt(length) * getConstInt(AiConst.SEQUENCE_LENGTH_PENALTY_POW15))
          + length * getConstInt(AiConst.SEQUENCE_LENGTH_PENALTY);
-        if (penalty >95) {
-            penalty =95;
+        if (penalty > 95) {
+            penalty = 95;
         }
         return (penalty);
     }

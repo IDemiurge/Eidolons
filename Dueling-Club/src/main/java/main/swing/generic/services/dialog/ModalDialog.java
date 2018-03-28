@@ -55,7 +55,7 @@ public abstract class ModalDialog extends G_Dialog {
     @Override
     public Dimension getSize() {
         return new Dimension(GuiManager.getScreenWidthInt() / 3,
-                GuiManager.getScreenHeightInt() / 2);
+         GuiManager.getScreenHeightInt() / 2);
     }
 
     @Override

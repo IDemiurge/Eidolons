@@ -309,6 +309,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public DC_UnitAction getAttack() {
         return getAction(DC_ActionManager.ATTACK);
     }
+
     public DC_UnitAction getOffhandAttack() {
         return getAction(DC_ActionManager.OFFHAND_ATTACK);
     }

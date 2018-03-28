@@ -45,19 +45,22 @@ public class OverlayTextPanel extends LogPanel implements Closable {
     @Override
     protected void initScrollPanel() {
         super.initScrollPanel();
-        scrollPanel.addListener(new ClickListener(){
+        scrollPanel.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
     }
+
     protected int getFontSize() {
         return 20;
     }
+
     protected FONT getFontStyle() {
         return FONT.RU;
     }
+
     private void initListeners() {
 
         addListener(new InputListener() {
@@ -67,6 +70,7 @@ public class OverlayTextPanel extends LogPanel implements Closable {
                 super.scrolled(event, x, y, amount);
                 return false;
             }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 event.stop();
@@ -97,7 +101,6 @@ public class OverlayTextPanel extends LogPanel implements Closable {
 //        }
 //        setVisible(true);
 //    }
-
 
 
     @Override

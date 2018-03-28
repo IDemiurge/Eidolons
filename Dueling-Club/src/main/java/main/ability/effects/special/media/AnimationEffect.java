@@ -35,7 +35,7 @@ public class AnimationEffect extends DC_Effect {
             getGame().getAnimationManager().actionResolves(action, ref);
         } else if (actionName == null) {
             getGame().getAnimationManager().actionResolves(
-                    (DC_ActiveObj) ref.getActive(), ref);
+             (DC_ActiveObj) ref.getActive(), ref);
         } else {
             ImageIcon icon;
             ObjType type = DataManager.getType(actionName, C_OBJ_TYPE.ACTIVE);

@@ -15,7 +15,9 @@ import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -44,9 +46,9 @@ public class DC_Player extends Player {
 
 
     public DC_Player(String name, FLAG_COLOR color,
-                     String emblem, String portrait,  ALLEGIENCE allegience) {
+                     String emblem, String portrait, ALLEGIENCE allegience) {
         super(name, color.getColor(), allegience.isNeutral(), allegience.isMe()
-                , portrait, emblem);
+         , portrait, emblem);
     }
 
     @Override
@@ -83,9 +85,10 @@ public class DC_Player extends Player {
         return getGame().getUnits().stream().filter(unit -> unit.isOwnedBy(this))
          .collect(Collectors.toSet());
     }
-        public Set<Obj> getControlledUnits() {
-           return getGame().getUnits().stream().
-            filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toSet());
+
+    public Set<Obj> getControlledUnits() {
+        return getGame().getUnits().stream().
+         filter(unit -> unit.isOwnedBy(this)).collect(Collectors.toSet());
 //        Set<Obj> units = new LinkedHashSet<>();
 //        for (Unit unit : (getGame().getUnits())) {
 //            if (unit.getOwner() == this) {
@@ -122,11 +125,11 @@ public class DC_Player extends Player {
         this.unitData = unitData;
     }
 
-    public void setFaction(Faction faction) {
-        this.faction = faction;
-    }
-
     public Faction getFaction() {
         return faction;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
     }
 }

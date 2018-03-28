@@ -6,7 +6,7 @@ import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActiveObj;
 
-public class CostEffect extends MicroEffect  implements OneshotEffect {
+public class CostEffect extends MicroEffect implements OneshotEffect {
 
     private DC_ActiveObj active;
     private KEYS key;

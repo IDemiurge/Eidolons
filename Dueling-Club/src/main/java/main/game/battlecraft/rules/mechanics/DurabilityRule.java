@@ -33,12 +33,11 @@ public class DurabilityRule extends DC_RuleImpl {
     public static int physicalDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
                                      DC_HeroSlotItem armor, DC_WeaponObj weapon, boolean simulation) {
         int self_damage_mod = armor.getIntParam(DC_ContentManager
-                .getArmorSelfDamageParamForDmgType(damage_type));
-if (!RuleMaster.isRuleOn(RULE.DURABILITY))
-    self_damage_mod= 0;
-else 
-    if (self_damage_mod==0)
-        self_damage_mod=100;
+         .getArmorSelfDamageParamForDmgType(damage_type));
+        if (!RuleMaster.isRuleOn(RULE.DURABILITY))
+            self_damage_mod = 0;
+        else if (self_damage_mod == 0)
+            self_damage_mod = 100;
         // new EnumMaster<ENUM>().retrieveEnumConst(ENUM.class, )
 
         MATERIAL m1 = armor.getMaterial();
@@ -48,14 +47,15 @@ else
         int armor_amount = blocked * self_damage_mod / 100;
         armor_amount = MathMaster.addFactor(armor_amount, armor_vs_weapon);
         DurabilityReductionEffect durabilityReductionEffect = new DurabilityReductionEffect(false,
-                armor_amount);
+         armor_amount);
         durabilityReductionEffect.setSimulation(simulation);
         Ref ref = Ref.getSelfTargetingRefCopy(armor);
-        ref.setID(KEYS.WEAPON, weapon.getId()); if (armor_amount>0)
-        durabilityReductionEffect.apply(ref);
+        ref.setID(KEYS.WEAPON, weapon.getId());
+        if (armor_amount > 0)
+            durabilityReductionEffect.apply(ref);
 
         self_damage_mod = weapon.getIntParam(DC_ContentManager
-                .getArmorSelfDamageParamForDmgType(damage_type));
+         .getArmorSelfDamageParamForDmgType(damage_type));
         int weapon_amount = blocked * self_damage_mod / 100;
         weapon_amount = MathMaster.addFactor(weapon_amount, armor_vs_weapon);
         durabilityReductionEffect = new DurabilityReductionEffect(true, weapon_amount);
@@ -67,11 +67,11 @@ else
     public static int spellDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
                                   DC_HeroSlotItem armor, boolean simulation) {
         int self_damage_mod = armor.getIntParam(DC_ContentManager
-                .getArmorSelfDamageParamForDmgType(damage_type));
+         .getArmorSelfDamageParamForDmgType(damage_type));
         // special cases may apply for Damage
         int amount = blocked * self_damage_mod / 100;
         DurabilityReductionEffect durabilityReductionEffect = new DurabilityReductionEffect(null,
-                amount);
+         amount);
         durabilityReductionEffect.setSimulation(simulation);
         durabilityReductionEffect.apply(Ref.getSelfTargetingRefCopy(armor));
         return durabilityReductionEffect.getDurabilityLost();
@@ -83,10 +83,10 @@ else
         String target_ref = "{EVENT_TARGET}";
 
         return new Effects(new ConditionalEffect(new OrConditions(new ItemCondition(source_ref,
-                ItemEnums.ITEM_SLOT.MAIN_HAND.getProp().getName()), new ItemCondition(source_ref,
-                ItemEnums.ITEM_SLOT.OFF_HAND.getProp().getName())), new DurabilityReductionEffect(true,
-                amount)), new ConditionalEffect(new ItemCondition(target_ref, ItemEnums.ITEM_SLOT.ARMOR
-                .getProp().getName()), new DurabilityReductionEffect(false, amount)));
+         ItemEnums.ITEM_SLOT.MAIN_HAND.getProp().getName()), new ItemCondition(source_ref,
+         ItemEnums.ITEM_SLOT.OFF_HAND.getProp().getName())), new DurabilityReductionEffect(true,
+         amount)), new ConditionalEffect(new ItemCondition(target_ref, ItemEnums.ITEM_SLOT.ARMOR
+         .getProp().getName()), new DurabilityReductionEffect(false, amount)));
     }
 
     @Override

@@ -24,14 +24,15 @@ public class OrderMaster extends AiHandler {
         Task task = action.getTask();
         return false;
     }
-        public static int getSuccessChance(boolean partyTargeting, Order order,
-         Unit target, Unit source, ActiveObj active) {
+
+    public static int getSuccessChance(boolean partyTargeting, Order order,
+                                       Unit target, Unit source, ActiveObj active) {
         int chance = DEFAULT_CHANCE;
         chance += source.getIntParam(PARAMS.LEADERSHIP_MASTERY);
         chance += target.getIntParam(PARAMS.ORGANIZATION) - 50;
 //        order.geti
-      chance= MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
-             false));
+        chance = MathMaster.applyMod(chance, active.getIntParam(PARAMS.ORDER_CHANCE_MOD,
+         false));
         if (partyTargeting) {
             chance = chance * 75 / 100;
         }

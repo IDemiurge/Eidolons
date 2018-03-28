@@ -87,7 +87,7 @@ public class BaseSlotPanel extends TablePanel {
             float scale = imageSize / valueContainer.getImageContainer().getActor().getWidth();
             valueContainer.setScale(scale, scale);
         }
-      page.  add(valueContainer).left().bottom().size(imageSize);
+        page.add(valueContainer).left().bottom().size(imageSize);
 
     }
 
@@ -113,7 +113,7 @@ public class BaseSlotPanel extends TablePanel {
         TablePanel page = new TablePanel();
         for (int i = 0; i < getPageSize(); i++) {
             ActionValueContainer valueContainer = null;
-            if (sources.size() >  i )
+            if (sources.size() > i)
                 valueContainer = sources.get(i);
             addValueContainer(page, valueContainer, getOrCreateR(emptyImagePath));
         }

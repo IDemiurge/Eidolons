@@ -1,6 +1,9 @@
 package main.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.*;
+import main.ability.effects.MicroEffect;
+import main.ability.effects.OneshotEffect;
+import main.ability.effects.ReducedEffect;
+import main.ability.effects.ResistibleEffect;
 import main.content.DC_ContentManager;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.data.ability.AE_ConstrArgs;
@@ -15,7 +18,7 @@ import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
-public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, ResistibleEffect, ReducedEffect {
+public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, ResistibleEffect, ReducedEffect {
 
     private String counterName;
     private MOD modtype;
@@ -33,7 +36,7 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
         this(counter.getName(), modtype, amount);
     }
 
-    @AE_ConstrArgs(argNames = {"name","modtype","amount",})
+    @AE_ConstrArgs(argNames = {"name", "modtype", "amount",})
     public ModifyCounterEffect(String name, MOD modtype, String amount) {
         this(name, modtype, new Formula(amount));
     }
@@ -56,8 +59,8 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
         if (ref.getTargetObj() instanceof DC_HeroItemObj) {
             try {
                 mod = ref.getSourceObj().getIntParam(
-                        DC_ContentManager.getCoatingAppliedModParam(CounterMaster
-                                .findCounterConst(counterName)));
+                 DC_ContentManager.getCoatingAppliedModParam(CounterMaster
+                  .findCounterConst(counterName)));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -82,15 +85,15 @@ public class ModifyCounterEffect extends MicroEffect  implements OneshotEffect, 
 
         }
         if (CoreEngine.isPhaseAnimsOn())
-        if (result) {
-            try {
-                getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+            if (result) {
+                try {
+                    getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            } else {
+                return false;
             }
-        } else {
-            return false;
-        }
         REF.setAmount(ref.getTargetObj().getCounter(counterName));
 
         return new Event(STANDARD_EVENT_TYPE.COUNTER_MODIFIED, REF).fire();

@@ -26,8 +26,8 @@ public class BoundaryMaster {
         float vectorSlope = (RandomWizard.getRandomInt(10) + 1) / 10;
         int length = 100; // random? any? maximum?
         AreaLine vectorLine = new AreaLine(new BoundaryPoint(p.x, p.y),
-                new BoundaryPoint((int) (p.x * vectorSlope),
-                        (int) (p.y * (1 - vectorSlope))), null);
+         new BoundaryPoint((int) (p.x * vectorSlope),
+          (int) (p.y * (1 - vectorSlope))), null);
         List<AreaLine> relevantLines = new ArrayList<>();
         for (AreaLine line : lines) {
             boolean side = isToTheLeft(vectorLine, line.p1);
@@ -56,7 +56,7 @@ public class BoundaryMaster {
     public static Boolean isToTheLeft(AreaLine line, Point p) {
         if (line.slope == null) {
             line.slope = new Float(line.p1.x - line.p2.x)
-                    / new Float(line.p1.y - line.p2.y);
+             / new Float(line.p1.y - line.p2.y);
         }
         float xToY = new Float(p.x) / new Float(p.y);
         if (line.slope == xToY) {

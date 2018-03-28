@@ -39,12 +39,11 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
  */
 public class GenericLauncher extends Game {
     public static final int FRAMERATE = 60;
+    public GameScreen gameScreen;
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
     private boolean firstInitDone;
-    public GameScreen gameScreen;
-
 
     @Override
     public void create() {
@@ -205,7 +204,7 @@ public class GenericLauncher extends Game {
     @Override
     public void setScreen(Screen screen) {
         super.setScreen(screen);
-        if (screen instanceof  GameScreen)
+        if (screen instanceof GameScreen)
             this.gameScreen = (GameScreen) screen;
     }
 

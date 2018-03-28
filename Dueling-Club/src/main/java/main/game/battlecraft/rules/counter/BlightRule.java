@@ -38,6 +38,7 @@ public class BlightRule extends DC_CounterRule {
     public COUNTER getCounter() {
         return COUNTER.Blight;
     }
+
     @Override
     public String getBuffName() {
         return "Blighted";
@@ -46,11 +47,11 @@ public class BlightRule extends DC_CounterRule {
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.RESISTANCE,
-                MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
-                + RESIST_PER_COUNTER), new ModifyValueEffect(
-                VALUE_GROUP.ASTRAL_RESISTANCES.toString(),
-                MOD.MODIFY_BY_CONST, getCounterRef() + "*"
-                + ASTRAL_RESIST_PER_COUNTER));
+         MOD.MODIFY_BY_PERCENT, getCounterRef() + "*"
+         + RESIST_PER_COUNTER), new ModifyValueEffect(
+         VALUE_GROUP.ASTRAL_RESISTANCES.toString(),
+         MOD.MODIFY_BY_CONST, getCounterRef() + "*"
+         + ASTRAL_RESIST_PER_COUNTER));
     }
 
     @Override

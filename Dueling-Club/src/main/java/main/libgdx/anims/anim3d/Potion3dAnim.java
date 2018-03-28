@@ -15,9 +15,10 @@ public class Potion3dAnim extends Weapon3dAnim {
     protected float getSpriteScale() {
         return 0.66f;
     }
+
     @Override
     protected PROJECTION getProjection() {
-        return PROJECTION.HOR ;
+        return PROJECTION.HOR;
     }
 
     @Override

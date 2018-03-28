@@ -14,12 +14,24 @@ import java.util.List;
  */
 public class GroupX extends Group {
 
+    public static List<Group> getAncestors(Actor actor) {
+        List<Group> list = new ArrayList<>();
+        while (true) {
+            actor = actor.getParent();
+            if (actor == null) {
+                break;
+            }
+            list.add(actor.getParent());
+        }
+        return list;
+    }
+
     public void addAt(float x, float y, Actor actor) {
         super.addActor(actor);
         actor.setPosition(x, y);
     }
 
-    public   Group getFirstParentOfClass(Class clazz ) {
+    public Group getFirstParentOfClass(Class clazz) {
         Group actor = getParent();
         while (true) {
             actor = actor.getParent();
@@ -31,19 +43,9 @@ public class GroupX extends Group {
             }
 
         }
-        return null ;
+        return null;
     }
-        public static List<Group> getAncestors(Actor actor) {
-        List<Group> list = new ArrayList<>();
-        while (true) {
-            actor = actor.getParent();
-            if (actor == null) {
-                break;
-            }
-            list.add(actor.getParent());
-        }
-        return list;
-    }
+
     public Array<Action> getAllChildrenActions() {
         return getAllChildrenActions(null);
     }
@@ -55,11 +57,13 @@ public class GroupX extends Group {
 
         return list;
     }
+
     public Array<Action> getActionsOfClass(Class actionClass) {
         Array<Action> list = new Array<>();
         addActions(list, this, actionClass);
         return list;
     }
+
     private void addActions(Array<Action> list, Actor actor, Class actionClass) {
 
         for (Action sub : actor.getActions()) {
@@ -72,8 +76,8 @@ public class GroupX extends Group {
 
         if (actor instanceof Group) {
 
-            for (Actor sub :   ((Group) actor) .getChildren()) {
-                    addActions(list,   sub, actionClass);
+            for (Actor sub : ((Group) actor).getChildren()) {
+                addActions(list, sub, actionClass);
             }
         }
     }

@@ -19,14 +19,14 @@ public class PlaceActor extends MapActor {
 
     public PlaceActor(PlaceActorParameters parameters) {
         super(parameters.getMainIcon());
-        scaleMod=Math.max(portrait.getWidth() / portrait.getHeight(),
+        scaleMod = Math.max(portrait.getWidth() / portrait.getHeight(),
          portrait.getHeight() / portrait.getWidth());
         init(parameters);
     }
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        if (getColor().a==0)
+        if (getColor().a == 0)
             return null;
         return super.hit(x, y, touchable);
     }
@@ -34,7 +34,7 @@ public class PlaceActor extends MapActor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (getColor().a==0)
+        if (getColor().a == 0)
             setTouchable(Touchable.disabled);
         else
             setTouchable(Touchable.enabled);
@@ -48,16 +48,16 @@ public class PlaceActor extends MapActor {
 
     private float getHoveredScale() {
         return getHoveredSize()
-         / originalTexture.getRegionHeight() ;
+         / originalTexture.getRegionHeight();
     }
 
     private float getDefaultScale() {
         return
-         (getDefaultSize() / originalTexture.getRegionHeight()) ;
+         (getDefaultSize() / originalTexture.getRegionHeight());
     }
 
     private float getDefaultSize() {
-        return GdxMaster.adjustSize(80)*getScaleMod();
+        return GdxMaster.adjustSize(80) * getScaleMod();
     }
 
     private float getScaleMod() {
@@ -69,7 +69,7 @@ public class PlaceActor extends MapActor {
     }
 
     private float getHoveredSize() {
-        return GdxMaster.adjustSize(120)*getScaleMod();
+        return GdxMaster.adjustSize(120) * getScaleMod();
     }
 
     public void minimize() {
@@ -82,7 +82,7 @@ public class PlaceActor extends MapActor {
         this.place = parameters.getPlace();
         border = new Image(parameters.getBorder());
         addActor(border);
-        if (isHighlightUnder()){
+        if (isHighlightUnder()) {
             border.setZIndex(0);
         }
         setPosition(parameters.getPosition().x - portrait.getImageWidth() / 2,

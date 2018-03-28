@@ -16,6 +16,7 @@ import main.game.module.dungeoncrawl.dungeon.Entrance;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.test.debug.DebugMaster;
@@ -67,6 +68,7 @@ public class VisionMaster implements GenericVisionManager {
 
 
     public void resetVisibilityStatuses() {
+        Chronos.mark("VISIBILITY REFRESH");
         ClearShotCondition.clearCache();
         getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
@@ -91,7 +93,7 @@ public class VisionMaster implements GenericVisionManager {
 
         setAlliedVisibility(game.getPlayer(mine).getControlledUnits());
 
-        getVisibilityMaster().resetVisibilityLevels();
+        getVisibilityMaster().resetOutlinesAndVisibilityLevels();
 
 //        setRelativePlayerVisibility(game.getPlayer(mine), cells);
         //Chronos.logTimeElapsedForMark("PLAYER for terain cells VISIBILITY REFRESH");
@@ -108,7 +110,7 @@ public class VisionMaster implements GenericVisionManager {
 //        resetLastKnownCoordinates();
         triggerGuiEvents();
         firstResetDone = true;
-        //Chronos.logTimeElapsedForMark("PLAYER VISIBILITY REFRESH");
+        Chronos.logTimeElapsedForMark("VISIBILITY REFRESH", true);
     }
 
     public void triggerGuiEvents() {
@@ -241,7 +243,7 @@ public class VisionMaster implements GenericVisionManager {
         if (target instanceof Unit) {
             if (ExplorationMaster.isExplorationOn() || ((Unit) target).getAI().isOutsideCombat()) {
                 status = (UNIT_TO_PLAYER_VISION.UNKNOWN);
-            } else {
+            } else { //DEBUGGING
                 status = target.getActivePlayerVisionStatus();
             }
         }
@@ -285,9 +287,9 @@ public class VisionMaster implements GenericVisionManager {
                         status = (UNIT_TO_PLAYER_VISION.CONCEALED);
                 } else {
                     target.setDetected(true);
-//                        if (player.isMe()) { why not?
+                        if (player.isMe()) { //why not?
                     target.setDetectedByPlayer(true);
-//                        }
+                        }
                     if (visibilityLevel == VISIBILITY_LEVEL.CLEAR_SIGHT) {
                         status = (UNIT_TO_PLAYER_VISION.DETECTED);
                     } else {

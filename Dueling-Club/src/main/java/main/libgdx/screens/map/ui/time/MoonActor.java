@@ -34,16 +34,16 @@ public class MoonActor extends Group {
         this.moon = moon;
         float fullSize = //GdxMaster.adjustSize
          (FULL_SIZE);
-        setSize(fullSize,fullSize);
+        setSize(fullSize, fullSize);
 
-        main = new ImageContainer(getPath()+ moon.name() + ".png" );
-        circle = new ImageContainer(getPath()+
+        main = new ImageContainer(getPath() + moon.name() + ".png");
+        circle = new ImageContainer(getPath() +
 //         moon.name() +
-         "circle.png" );
-        underlay = new ImageContainer(getPath()+"under" + StringMaster.getPathSeparator()+
-         moon.name() + ".png") ;
-        overlay = new ImageContainer(getPath()+"over" + StringMaster.getPathSeparator()+
-         moon.name() + ".png") ;
+         "circle.png");
+        underlay = new ImageContainer(getPath() + "under" + StringMaster.getPathSeparator() +
+         moon.name() + ".png");
+        overlay = new ImageContainer(getPath() + "over" + StringMaster.getPathSeparator() +
+         moon.name() + ".png");
 
         circle.setAlphaTemplate(ALPHA_TEMPLATE.MOON);
         overlay.setAlphaTemplate(ALPHA_TEMPLATE.MOON);
@@ -51,12 +51,12 @@ public class MoonActor extends Group {
 
         float moonSize = fullSize * 1f;
         main.setSize(moonSize, moonSize);
-        circle.setSize(fullSize* 1.2f, fullSize* 1.2f);
-        circle.setPosition(-fullSize*0.1f,-fullSize*0.1f );
-        overlay.setSize(moonSize, moonSize );
+        circle.setSize(fullSize * 1.2f, fullSize * 1.2f);
+        circle.setPosition(-fullSize * 0.1f, -fullSize * 0.1f);
+        overlay.setSize(moonSize, moonSize);
         underlay.setSize(fullSize, fullSize);
-        overlay.getContent(). setOrigin(Align.center);
-        circle.getContent(). setOrigin(Align.center);
+        overlay.getContent().setOrigin(Align.center);
+        circle.getContent().setOrigin(Align.center);
 
         initEmitters();
 //        addActor(underlay);
@@ -85,19 +85,19 @@ public class MoonActor extends Group {
         emitter.setSpeed(0.12f);
         float size = getEmitterScale();
         emitter.getEffect().getEmitters().get(0).scaleSize(size, size);
-        emitter.setPosition((FULL_SIZE / 2 + offsetX) , (FULL_SIZE / 2 + offsetY) );
+        emitter.setPosition((FULL_SIZE / 2 + offsetX), (FULL_SIZE / 2 + offsetY));
 
         circleEmitter = new EmitterActor(StrPathBuilder.build(PathFinder.getSfxPath(),
-         "moons",  "circle "+moon.name()));
+         "moons", "circle " + moon.name()));
         addActor(circleEmitter);
-          offsetX = getOffset();
-          offsetY = getOffset();
+        offsetX = getOffset();
+        offsetY = getOffset();
         circleEmitter.start();
         circleEmitter.setSpeed(0.12f);
-          size = 1.4f;
+        size = 1.4f;
 //        size =1/(size+2)/3;
         circleEmitter.getEffect().getEmitters().get(0).scaleSize(size, size);
-        circleEmitter.setPosition((FULL_SIZE / 2 + offsetX) , (FULL_SIZE / 2 + offsetY) );
+        circleEmitter.setPosition((FULL_SIZE / 2 + offsetX), (FULL_SIZE / 2 + offsetY));
 
     }
 
@@ -112,16 +112,17 @@ public class MoonActor extends Group {
     @Override
     public void act(float delta) {
 
-        circle.setPosition(-FULL_SIZE*0.1f,-FULL_SIZE*0.1f );
+        circle.setPosition(-FULL_SIZE * 0.1f, -FULL_SIZE * 0.1f);
         super.act(delta);
         float r = overlay.getContent().getRotation();
         float dx = getRotationSpeedOverlay() * delta;
-        overlay.getContent().setRotation(r+dx);
+        overlay.getContent().setRotation(r + dx);
         circleEmitter.setVisible(active);
         circle.setVisible(false);
         if (active) {
-            r=circle.getRotation(); dx=-(Math.abs(dx)+1);
-            circle.setRotation(r+dx);
+            r = circle.getRotation();
+            dx = -(Math.abs(dx) + 1);
+            circle.setRotation(r + dx);
         }
 
 //        ActorMaster.addMoveToAction(overlay.getContent(), );
@@ -146,8 +147,8 @@ public class MoonActor extends Group {
     }
 
     private String getPath() {
-        return         StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "moons")+ StringMaster.getPathSeparator();
+        return StrPathBuilder.build(PathFinder.getMacroUiPath()
+         , "component", "time panel", "moons") + StringMaster.getPathSeparator();
     }
 
     public void setActive(boolean active) {

@@ -41,7 +41,7 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isThrow() {
-        if (getName().contains(ActionEnums.ACTION_TAGS.THROW .toString())) {
+        if (getName().contains(ActionEnums.ACTION_TAGS.THROW.toString())) {
             return true;
         }
         if (getEntity() instanceof DC_QuickItemAction) {
@@ -52,17 +52,17 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
                 }
             }
         }
-        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW .toString())
-                || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW .toString());
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.THROW.toString())
+         || checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.THROW.toString());
     }
 
     public boolean isBlocked() {
         getEntity().setCustomTooltip(null);
         if (!AI_Manager.isOff())
-        if (getEntity().getOwnerObj().isAiControlled()) {
-            getEntity().getCosts().setReason("This unit is AI controlled!");
-            return true;
-        }
+            if (getEntity().getOwnerObj().isAiControlled()) {
+                getEntity().getCosts().setReason("This unit is AI controlled!");
+                return true;
+            }
         if (!getEntity().getOwnerObj().isMine()) {
             getEntity().setCustomTooltip("You do not control this unit!");
             return true;
@@ -106,14 +106,15 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isAttackGeneric() {
         return getName().equals(DC_ActionManager.ATTACK)
-                || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
+         || getName().equals(DC_ActionManager.OFFHAND_ATTACK);
     }
 
     public boolean isOffhand() {
-        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.OFF_HAND .toString());
+        return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.OFF_HAND.toString());
     }
+
     public boolean isTopDown() {
-        return checkProperty(getTagProp(), ActionEnums.ACTION_TAGS.TOP_DOWN .toString());
+        return checkProperty(getTagProp(), ActionEnums.ACTION_TAGS.TOP_DOWN.toString());
     }
 
     protected PROPERTY getTagProp() {
@@ -124,8 +125,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
         if (getEntity().getActionGroup() != ActionEnums.ACTION_TYPE_GROUPS.ATTACK) {
             return false;
         }
-        return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED .toString()) || checkProperty(
-                G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED .toString()));
+        return (checkProperty(G_PROPS.GROUP, ActionEnums.ACTION_TAGS.RANGED.toString()) || checkProperty(
+         G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED.toString()));
         // return false;
         // return getIntParam(PARAMS.RANGE) > 1;
     }
@@ -173,18 +174,19 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isCancellable() {
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.CANCELLABLE
-                .toString());
+         .toString());
     }
 
     public boolean isRangedTouch() {
         return getEntity().isRangedTouch();
     }
 
-    public boolean isAttack () {
+    public boolean isAttack() {
         return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK;
     }
-        public boolean isAttackAny() {
-            return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttackGeneric() || isStandardAttack();
+
+    public boolean isAttackAny() {
+        return getActionGroup() == ActionEnums.ACTION_TYPE_GROUPS.ATTACK || isAttackGeneric() || isStandardAttack();
     }
 
 
@@ -218,9 +220,9 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
 
     public boolean isPotentiallyHostile() {
-        if (getActionGroup()== ACTION_TYPE_GROUPS.MOVE)
+        if (getActionGroup() == ACTION_TYPE_GROUPS.MOVE)
             return false;
-        if (getActionGroup()== ACTION_TYPE_GROUPS.MODE)
+        if (getActionGroup() == ACTION_TYPE_GROUPS.MODE)
             return false;
         return getActionGroup() != ACTION_TYPE_GROUPS.TURN;
     }

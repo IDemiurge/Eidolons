@@ -35,11 +35,11 @@ public class CleaveRule {
 
     public static void addCriticalCleave(Unit attacker) {
         attacker.modifyParameter(PARAMS.CLEAVE_MAX_TARGETS,
-                DEFAULT_CRITICAL_JUMPS);
+         DEFAULT_CRITICAL_JUMPS);
         attacker.modifyParameter(PARAMS.CLEAVE_DAMAGE_PERCENTAGE_TRANSFER,
-                DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER);
+         DEFAULT_CRITICAL_DAMAGE_PERCENTAGE_TRANSFER);
         attacker.setParam(PARAMS.CLEAVE_DAMAGE_LOSS_PER_JUMP,
-                DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP);
+         DEFAULT_CRITICAL_DAMAGE_LOSS_PER_JUMP);
 
     }
 
@@ -94,19 +94,19 @@ public class CleaveRule {
         // it fails, then short one
 
         DIRECTION direction = DirectionMaster.getRelativeDirection(source,
-                currentTarget);
+         currentTarget);
         Obj objectByCoordinate = game.getObjectByCoordinate(
-                source.getCoordinates().getAdjacentCoordinate(
-                        DirectionMaster.rotate45(direction, clockwise)), true);
+         source.getCoordinates().getAdjacentCoordinate(
+          DirectionMaster.rotate45(direction, clockwise)), true);
         if (objectByCoordinate instanceof Unit) {
             currentTarget = (Unit) objectByCoordinate;
 
         } else if (first) {
             clockwise = false;
             objectByCoordinate = game.getObjectByCoordinate(
-                    source.getCoordinates().getAdjacentCoordinate(
-                            DirectionMaster.rotate45(direction, clockwise)),
-                    true);
+             source.getCoordinates().getAdjacentCoordinate(
+              DirectionMaster.rotate45(direction, clockwise)),
+             true);
 
             if (objectByCoordinate != null) {
                 currentTarget = (Unit) objectByCoordinate;
@@ -145,7 +145,7 @@ public class CleaveRule {
             }
         }
         if (attack.getDamageType() == GenericEnums.DAMAGE_TYPE.SLASHING
-                || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
+         || attack.getDamageType() == GenericEnums.DAMAGE_TYPE.PHYSICAL) {
             return true;
         }
         if (attack.isCritical()) {

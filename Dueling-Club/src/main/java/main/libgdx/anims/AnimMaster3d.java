@@ -250,9 +250,9 @@ public class AnimMaster3d {
         }
         if (name.equalsIgnoreCase("fist")) {
             if (weapon.getOwnerObj().getArmor() != null) {
-                if (weapon.getOwnerObj().getArmor().getArmorType()==
+                if (weapon.getOwnerObj().getArmor().getArmorType() ==
                  ARMOR_TYPE.HEAVY)
-                name = "Armored Fist";
+                    name = "Armored Fist";
                 else
                     name = "Gloved Fist";
             }
@@ -434,14 +434,14 @@ public class AnimMaster3d {
     }
 
     private static void preloadAtlas(String path) {
-        main.system.auxiliary.log.LogMaster.log(1,path +"   to preload...");
+        main.system.auxiliary.log.LogMaster.log(1, path + "   to preload...");
         if (!FileManager.isFile(path))
             return;
-        if (atlasMap.containsKey(path) )
+        if (atlasMap.containsKey(path))
             return;
-        main.system.auxiliary.log.LogMaster.log(1,path +" loading...");
+        main.system.auxiliary.log.LogMaster.log(1, path + " loading...");
         Assets.get().getManager().load(path, TextureAtlas.class);
-        atlasMap.put(path, null );
+        atlasMap.put(path, null);
     }
 
     public static TextureAtlas getOrCreateAtlas(DC_WeaponObj weapon) {

@@ -39,7 +39,7 @@ public class SpellTab extends HeroItemTab {
 
     protected void initData() {
         data = DataManager.toTypeList(StringMaster.openContainer(hero
-                .getProperty(getPROP2())), getTYPE());
+         .getProperty(getPROP2())), getTYPE());
     }
 
     @Override
@@ -57,20 +57,20 @@ public class SpellTab extends HeroItemTab {
     private void addMemorized() {
         memorized = new MemorizedList(hero, getItemManager());
         add(memorized, "id " + MEMORIZED_LIST_ID + ", pos " + VERBATIM_LIST_ID
-                + ".x2+" + something + " " + LIST_ID + ".y2");
+         + ".x2+" + something + " " + LIST_ID + ".y2");
 
     }
 
     private void addVerbatim() {
         verbatim = new VerbatimList(hero, getItemManager());
         add(verbatim, "id " + VERBATIM_LIST_ID + ", pos @center_x-width*2/3+5 "
-                + LIST_ID + ".y2");
+         + LIST_ID + ".y2");
     }
 
     private void addDivination() {
         divination = new DivinationPanel(hero, getItemManager());
         add(divination, "id " + DIVINATION_LIST_ID + ", pos @center_x "
-                + VERBATIM_LIST_ID + ".y2");
+         + VERBATIM_LIST_ID + ".y2");
     }
 
     // @Override
@@ -112,9 +112,9 @@ public class SpellTab extends HeroItemTab {
 
     private boolean checkHero(ObjType item, boolean alt) {
         return hero
-                .getGame()
-                .getRequirementsManager()
-                .check(hero, item, !alt ? DC_RequirementsManager.NORMAL_MODE
-                        : DC_RequirementsManager.ALT_MODE) == null;
+         .getGame()
+         .getRequirementsManager()
+         .check(hero, item, !alt ? DC_RequirementsManager.NORMAL_MODE
+          : DC_RequirementsManager.ALT_MODE) == null;
     }
 }

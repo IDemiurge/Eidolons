@@ -76,7 +76,7 @@ public class FAST_DC {
 
         List<String> arglist = new ArrayList<>(Arrays.asList(args));
         if (args != null) {
-            if (args[0].contains(PRESET_OPTION_ARG) ||args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
+            if (args[0].contains(PRESET_OPTION_ARG) || args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
              (arglist.contains(PRESET_ARG)))) {
                 skipChoice = true;
 

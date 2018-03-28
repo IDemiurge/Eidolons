@@ -256,9 +256,9 @@ public class ValueContainer extends TablePanel {
                 imageContainer.getActor().setScale(getImageScaleX(),
                  getImageScaleY());
                 imageContainer.setActorX(
-                 imageContainer.getActor().getWidth()*imageScaleX - w);
+                 imageContainer.getActor().getWidth() * imageScaleX - w);
                 imageContainer.setActorY(
-                 imageContainer.getActor().getHeight());//*imageScaleY - h);
+                 imageContainer.getActor().getHeight() * imageScaleY - h);//*imageScaleY - h);
 
 //                imageContainer.getActor().getContent(). setX(
 //                 imageContainer.getActor().getWidth() - w);
@@ -268,7 +268,7 @@ public class ValueContainer extends TablePanel {
 //                table.add(button).width(Value.percentWidth(.75F, table));
             } else
 //                imageContainer.maxSize(w, h);
-            imageContainer.size(w, h);
+                imageContainer.size(w, h);
         }
     }
 

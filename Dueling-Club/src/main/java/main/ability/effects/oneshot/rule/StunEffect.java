@@ -3,7 +3,7 @@ package main.ability.effects.oneshot.rule;
 import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 
-public class StunEffect extends DC_Effect  implements OneshotEffect {
+public class StunEffect extends DC_Effect implements OneshotEffect {
     public StunEffect(String potential) {
 
     }

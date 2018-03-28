@@ -5,7 +5,6 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
-import main.system.auxiliary.StringMaster;
 
 public class AbilityEffect extends MicroEffect {
 
@@ -30,7 +29,7 @@ public class AbilityEffect extends MicroEffect {
         if (effects != null) {
             return effects;
         }
-        effects =EffectFinder.getEffectsFromAbilityString(abilName, ref);
+        effects = EffectFinder.getEffectsFromAbilityString(abilName, ref);
 
 
         return effects;

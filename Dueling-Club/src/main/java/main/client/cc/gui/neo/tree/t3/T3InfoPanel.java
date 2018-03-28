@@ -67,7 +67,7 @@ public class T3InfoPanel extends G_Panel {
             add(controlPanel, pos);
 
             x = getPanelWidth() + "-" + VISUALS.POOL.getWidth() + "-"
-                    + (VISUALS.INFO_PANEL.getWidth() + controlPanel.getPanelWidth());
+             + (VISUALS.INFO_PANEL.getWidth() + controlPanel.getPanelWidth());
             y = "64";
             pos = "id costPool, pos " + x + " " + y;
             add(costPool, pos);

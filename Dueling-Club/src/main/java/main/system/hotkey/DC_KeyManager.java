@@ -20,6 +20,7 @@ import main.system.controls.Controller;
 import main.system.controls.Controller.CONTROLLER;
 import main.system.controls.GlobalController;
 import main.system.entity.ValueHelper;
+import main.system.launch.CoreEngine;
 import main.test.debug.DebugController;
 import main.test.debug.DebugMaster;
 
@@ -30,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DC_KeyManager
 // extends KeyboardFocusManager
-        implements KeyListener {
+ implements KeyListener {
 
     public static final int DEFAULT_MODE = JIntellitype.MOD_CONTROL;
     public static final int ALT_MODE = JIntellitype.MOD_ALT;
@@ -38,7 +39,7 @@ public class DC_KeyManager
     private static final int SPELL_MASK = KeyEvent.CTRL_DOWN_MASK;
     private static final int ACTION_MASK = KeyEvent.ALT_DOWN_MASK;
     private static final int ITEM_MASK = KeyEvent.ALT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK;
-    public static CONTROLLER DEFAULT_CONTROLLER=CONTROLLER.DEBUG;
+    public static CONTROLLER DEFAULT_CONTROLLER = CONTROLLER.DEBUG;
     G_PagePanel<?> p;
     GlobalController globalController = new GlobalController();
     private Map<String, Integer> stdActionKeyMap;
@@ -49,6 +50,7 @@ public class DC_KeyManager
     private DC_GameManager mngr;
     private ACTION_TYPE action_group = ActionEnums.ACTION_TYPE.STANDARD;
     private Controller controller;
+
     public DC_KeyManager(DC_GameManager mngr) {
         this.mngr = mngr;
         stdActionKeyMap = new ConcurrentHashMap<>();
@@ -74,11 +76,11 @@ public class DC_KeyManager
         int i = 0; //TODO [quick fix] - due to "either camp or defend", one removed always
         for (STD_MODE_ACTIONS action : STD_MODE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+             G_PROPS.HOTKEY);
             stdModeKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> mode hotkey " + key);
             if (action != STD_MODE_ACTIONS.Defend)
-            i++;
+                i++;
 
         }
 
@@ -88,7 +90,7 @@ public class DC_KeyManager
         int i = 0;
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+             G_PROPS.HOTKEY);
             stdActionKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -96,7 +98,7 @@ public class DC_KeyManager
         i = 0;
         for (ADDITIONAL_MOVE_ACTIONS action : ADDITIONAL_MOVE_ACTIONS.values()) {
             String key = DataManager.getType(action.toString(), DC_TYPE.ACTIONS).getProperty(
-                    G_PROPS.HOTKEY);
+             G_PROPS.HOTKEY);
             addMoveActionKeyMap.put(key, i);
             LogMaster.log(LogMaster.CORE_DEBUG, ">> std hotkey " + key);
             i++;
@@ -183,7 +185,7 @@ public class DC_KeyManager
 
     private void selectController() {
         CONTROLLER c =
-                new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
+         new EnumMaster<CONTROLLER>().selectEnum(CONTROLLER.class);
         if (c == null) {
             controller = new GlobalController();
         } else {
@@ -216,41 +218,47 @@ public class DC_KeyManager
     }
 
     public boolean handleKeyTyped(int keyMod, char CHAR) {
-        if (checkControllerHotkey(keyMod, CHAR)) {
-            return true;
-        }
-        if (globalController != null) {
-            if (globalController.charTyped(CHAR)) {
+        if (!CoreEngine.isJar() && !CoreEngine.isJarlike()) {
+            if (checkControllerHotkey(keyMod, CHAR)) {
                 return true;
             }
-        }
-        if (controller != null) {
-            try {
-                if (controller.charTyped(CHAR)) {
+            if (globalController != null) {
+                if (globalController.charTyped(CHAR)) {
                     return true;
                 }
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                return false;
             }
-
+            if (controller != null) {
+                try {
+                    if (controller.charTyped(CHAR)) {
+                        return true;
+                    }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    return false;
+                }
+            }
         }
-
         int index = -1;
+        String charString = CHAR + "";
+        boolean preview = false;
+        if (Character.isUpperCase(CHAR)) {
+            preview = true;
+            charString = charString.toLowerCase();
+        }
         if (numberChars.indexOf(CHAR) != -1) {
-            index = Integer.valueOf(CHAR + "");
+            index = Integer.valueOf(charString);
         }
         if (index == -1) {
-            if (stdActionKeyMap.containsKey(CHAR + "")) {
-                actionHotkey(stdActionKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.STANDARD);
+            if (stdActionKeyMap.containsKey(charString)) {
+                actionHotkey(stdActionKeyMap.get(charString), ActionEnums.ACTION_TYPE.STANDARD, preview);
                 return true;
             }
-            if (addMoveActionKeyMap.containsKey(CHAR + "")) {
-                actionHotkey(addMoveActionKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE);
+            if (addMoveActionKeyMap.containsKey(charString)) {
+                actionHotkey(addMoveActionKeyMap.get(charString), ActionEnums.ACTION_TYPE.ADDITIONAL_MOVE, preview);
                 return true;
             }
-            if (stdModeKeyMap.containsKey(CHAR + "")) {
-                actionHotkey(stdModeKeyMap.get(CHAR + ""), ActionEnums.ACTION_TYPE.MODE);
+            if (stdModeKeyMap.containsKey(charString)) {
+                actionHotkey(stdModeKeyMap.get(charString), ActionEnums.ACTION_TYPE.MODE, preview);
                 return true;
             }
 
@@ -324,8 +332,13 @@ public class DC_KeyManager
     }
 
     private void actionHotkey(int index, ACTION_TYPE group) {
-        mngr.activateMyAction(index, group);
+        actionHotkey(index, group, false);
+    }
 
+    private void actionHotkey(int index, ACTION_TYPE group, boolean preview) {
+        if (preview) {
+            mngr.previewMyAction(index, group);
+        } else mngr.activateMyAction(index, group);
     }
 
     private void hotkeyPressed(HOTKEYS hotKey) {

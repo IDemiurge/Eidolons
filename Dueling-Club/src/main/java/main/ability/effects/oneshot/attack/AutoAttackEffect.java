@@ -9,7 +9,7 @@ import main.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
+public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
     private boolean manual;
 
     // boolean offhand; auto!
@@ -67,13 +67,13 @@ public class AutoAttackEffect extends DC_Effect  implements OneshotEffect {
         }
         DC_ActiveObj pick = null;
         if (manual)
-        try {
-            pick = pickManually(subActions);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                pick = pickManually(subActions);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         if (pick == null)
-        pick = pickAutomatically(subActions);
+            pick = pickAutomatically(subActions);
         if (pick != null) {
             return pick;
         }

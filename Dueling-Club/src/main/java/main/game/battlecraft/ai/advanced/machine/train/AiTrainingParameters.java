@@ -20,11 +20,11 @@ public class AiTrainingParameters {
     Integer roundsMax;
     boolean deterministic;
     TRAINING_ENVIRONMENT environmentType;
-    private ObjType traineeType;
     STANDARD_TRAINING_PARAMETERS preset = STANDARD_TRAINING_PARAMETERS.GWYN;
+    private ObjType traineeType;
 
     public AiTrainingParameters(String[] args) {
-        if (preset!=null ){
+        if (preset != null) {
             args = preset.args;
         }
         int i = 0;
@@ -128,37 +128,36 @@ public class AiTrainingParameters {
         RULE_SCOPE
     }
 
-    public enum TRAINING_CRITERIA_MODS {
-        AGGRO,
-        COWARDICE(CRITERIA_TYPE_NUMERIC.DAMAGE_TAKEN,CRITERIA_TYPE_NUMERIC.DIED,CRITERIA_TYPE_NUMERIC.FALLEN_UNCONSCIOUS ),
-        EFFICIENT,
-        ;
-        CRITERIA_TYPE_NUMERIC[] consts;
-
-        TRAINING_CRITERIA_MODS(CRITERIA_TYPE_NUMERIC... consts) {
-            this.consts = consts;
-        }
-    }
-
     public enum STANDARD_TRAINING_CRITERIA {
         ASSASSIN(
          new CriteriaMod(TRAINING_CRITERIA_MODS.COWARDICE, 225)
-        ),
-        ;
-            CriteriaMod[] mods;
+        ),;
+        CriteriaMod[] mods;
 
-            STANDARD_TRAINING_CRITERIA(CriteriaMod... mods) {
-                this.mods = mods;
-            }
+        STANDARD_TRAINING_CRITERIA(CriteriaMod... mods) {
+            this.mods = mods;
         }
-        public enum STANDARD_TRAINING_PARAMETERS {
-        GWYN("DUNGEON_LEVEL","","GWYN"),;
-String[] args;
+    }
+
+    public enum STANDARD_TRAINING_PARAMETERS {
+        GWYN("DUNGEON_LEVEL", "", "GWYN"),;
+        String[] args;
 
         STANDARD_TRAINING_PARAMETERS(String... args) {
             this.args = args;
         }
 
+    }
+
+    public enum TRAINING_CRITERIA_MODS {
+        AGGRO,
+        COWARDICE(CRITERIA_TYPE_NUMERIC.DAMAGE_TAKEN, CRITERIA_TYPE_NUMERIC.DIED, CRITERIA_TYPE_NUMERIC.FALLEN_UNCONSCIOUS),
+        EFFICIENT,;
+        CRITERIA_TYPE_NUMERIC[] consts;
+
+        TRAINING_CRITERIA_MODS(CRITERIA_TYPE_NUMERIC... consts) {
+            this.consts = consts;
+        }
     }
 
     public enum TRAINING_ENVIRONMENT {

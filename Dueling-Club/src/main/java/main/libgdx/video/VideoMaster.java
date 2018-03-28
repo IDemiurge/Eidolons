@@ -24,7 +24,7 @@ public class VideoMaster {
     private CameraInputController inputController;
     private Music audio;
     private boolean videoAvailable = true;
-    private boolean available=true;
+    private boolean available = true;
 
     public VideoPlayer getPlayer() {
         return player;
@@ -87,61 +87,74 @@ public class VideoMaster {
         return inputController;
     }
 
-    public boolean isAvailable () {
+    public boolean isAvailable() {
         return available;
     }
 
     private static class DummyVideoPlayer implements VideoPlayer {
 
-        @Override public boolean play (FileHandle file) throws FileNotFoundException {
+        @Override
+        public boolean play(FileHandle file) throws FileNotFoundException {
             return false;
         }
 
-        @Override public boolean render () {
+        @Override
+        public boolean render() {
             return false;
         }
 
-        @Override public boolean isBuffered () {
+        @Override
+        public boolean isBuffered() {
             return false;
         }
 
-        @Override public void resize (int width, int height) {
+        @Override
+        public void resize(int width, int height) {
 
         }
 
-        @Override public void pause () {
+        @Override
+        public void pause() {
 
         }
 
-        @Override public void resume () {
+        @Override
+        public void resume() {
 
         }
 
-        @Override public void stop () {
+        @Override
+        public void stop() {
 
         }
 
-        @Override public void setOnVideoSizeListener (VideoSizeListener listener) {
+        @Override
+        public void setOnVideoSizeListener(VideoSizeListener listener) {
 
         }
 
-        @Override public void setOnCompletionListener (CompletionListener listener) {
+        @Override
+        public void setOnCompletionListener(CompletionListener listener) {
 
         }
 
-        @Override public int getVideoWidth () {
+        @Override
+        public int getVideoWidth() {
             return 0;
         }
 
-        @Override public int getVideoHeight () {
+        @Override
+        public int getVideoHeight() {
             return 0;
         }
 
-        @Override public boolean isPlaying () {
+        @Override
+        public boolean isPlaying() {
             return false;
         }
 
-        @Override public void dispose () {
+        @Override
+        public void dispose() {
 
         }
     }

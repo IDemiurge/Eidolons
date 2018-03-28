@@ -22,8 +22,8 @@ import main.system.text.TextWrapper;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
@@ -120,7 +120,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                     lineIndex = getRowCount();
                 }
                 Integer y = Math.min(getPanelHeight() - EntryNodeMaster.getRowHeight(isTopPage()),
-                        EntryNodeMaster.getRowHeight(isTopPage()) * (lineIndex));
+                 EntryNodeMaster.getRowHeight(isTopPage()) * (lineIndex));
 
                 // TODO
                 // top
@@ -272,7 +272,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
                 entryNodes = new ArrayList<>();
                 for (LogEntryNode node : game.getLogManager().getTopNodes()) {
                     if (node.getLineIndex() > getRowCount() * getCurrentIndex()
-                            && node.getLineIndex() <= (getCurrentIndex() + 1) * getRowCount())
+                     && node.getLineIndex() <= (getCurrentIndex() + 1) * getRowCount())
                     // if (node.getPageIndex() == getCurrentIndex())
                     // line index range for the page
                     {
@@ -327,7 +327,7 @@ public class DC_PagedLogPanel extends G_PagePanel<String> implements MouseListen
         List<String> entries = game.getLogManager().getTopDisplayedEntries();
         for (String entry : entries) {
             for (String subString : TextWrapper.wrapIntoArray(entry, EntryNodeMaster
-                    .getWrapLength(isTopPage()))) {
+             .getWrapLength(isTopPage()))) {
                 lines.add(subString);
             }
         }

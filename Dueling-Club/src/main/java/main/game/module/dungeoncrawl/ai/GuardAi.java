@@ -18,7 +18,7 @@ public class GuardAi extends AiBehavior {
     @Override
     public ActionSequence getOrders(UnitAI ai) {
         if (isEnabled(ai))
-            return null ;
+            return null;
         //check mode
 
         Coordinates target = CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates());

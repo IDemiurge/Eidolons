@@ -63,7 +63,7 @@ public class HeroPanel extends G_Panel {
         itemPanel = new DC_ItemPanel(hero.getGame(), true);
         itemPanel.setObj(hero);
         lowerPanel = new DC_PagedInfoPanel(hero
-                // , true
+         // , true
         );
         header = new HeroHeader(hero, this);
         comps = new G_Component[]{header, values, buffPanel, infoPanel, lowerPanel};
@@ -113,12 +113,12 @@ public class HeroPanel extends G_Panel {
         add(xpText, "@id xpText, pos center_x header.y2-6");
 
         add(new GraphicComponent(ImageManager.getValueIcon(PARAMS.XP), "Experience"),
-                "@id xpIcon, pos 52 xpText.y2-30");
+         "@id xpIcon, pos 52 xpText.y2-30");
         xpBar.refresh();
         add(xpBar, "id xpBar, pos xpIcon.x2-2 xpText.y2-17");
 
         add(new GraphicComponent(ImageManager.getValueIcon(PARAMS.INTEGRITY), "integrity"),
-                "@id integrityIcon, pos 52 xpBar.y2-3");
+         "@id integrityIcon, pos 52 xpBar.y2-3");
         integrityBar.refresh();
         add(integrityBar, "id integrityBar, pos integrityIcon.x2-2 xpBar.y2");
 

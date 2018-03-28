@@ -30,9 +30,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     protected FacingAdjuster<E> facingAdjuster;
     protected DungeonMapGenerator<E> mapGenerator;
     private ExplorationMaster explorationMaster;
-    private   DoorMaster doorMaster;
+    private DoorMaster doorMaster;
     private LockMaster lockMaster;
-    private   ContainerMaster containerMaster;
+    private ContainerMaster containerMaster;
 
 
     public DungeonMaster(DC_Game game) {
@@ -43,12 +43,12 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         facingAdjuster = createFacingAdjuster();
         builder = createBuilder();
         mapGenerator = new DungeonMapGenerator<E>(this);
-    if (ExplorationMaster.isExplorationSupported(game))
-    explorationMaster = new ExplorationMaster(game);
+        if (ExplorationMaster.isExplorationSupported(game))
+            explorationMaster = new ExplorationMaster(game);
 
-        doorMaster=new DoorMaster(this);
-        lockMaster=new LockMaster(this);
-        containerMaster=new ContainerMaster(this);
+        doorMaster = new DoorMaster(this);
+        lockMaster = new LockMaster(this);
+        containerMaster = new ContainerMaster(this);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -67,10 +67,9 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
         if (!ImageManager.isImage(dungeonWrapper.getMapBackground())) {
             LogMaster.log(1,
-                    dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
+             dungeonWrapper.getMapBackground() + " is not a valid image! >> " + dungeonWrapper);
             return;
         }
-
 
 
     }

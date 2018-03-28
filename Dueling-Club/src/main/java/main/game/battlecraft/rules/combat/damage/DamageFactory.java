@@ -98,11 +98,11 @@ public class DamageFactory {
         // if (ref.getActive().isSpell())
         DAMAGE_TYPE damageType = ref.getDamageType();
 
-            if (ref.getActive() instanceof DC_ActiveObj) {
-                DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
-                dmg.setAction(activeObj);
-                if (damageType == null) {
-                    damageType = activeObj.getDamageType();
+        if (ref.getActive() instanceof DC_ActiveObj) {
+            DC_ActiveObj activeObj = (DC_ActiveObj) ref.getActive();
+            dmg.setAction(activeObj);
+            if (damageType == null) {
+                damageType = activeObj.getDamageType();
             }
         }
         dmg.setRef(ref);
@@ -113,7 +113,7 @@ public class DamageFactory {
 
     public static MultiDamage getMultiDamage(Damage damage) {
         MultiDamage d = new MultiDamage();
-        d.setAmount(damage.amount)        ;
+        d.setAmount(damage.amount);
         d.setRef(damage.getRef());
         d.setDmgType(damage.getDmgType());
         return d;

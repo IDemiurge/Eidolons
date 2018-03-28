@@ -15,10 +15,10 @@ import main.entity.obj.Structure;
 import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.universal.DC_Player;
-import main.game.module.dungeoncrawl.objects.HungItemMaster.HUNG_ITEM_ACTION;
 import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.bf.Coordinates;
 import main.game.core.game.MicroGame;
+import main.game.module.dungeoncrawl.objects.HungItemMaster.HUNG_ITEM_ACTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -32,16 +32,40 @@ import java.util.List;
  */
 public class HungItemMaster extends DungeonObjMaster<HUNG_ITEM_ACTION> {
 
-    private static   final String SPRITE = " sprite";
-    static  ObjType  dummyHungObjType;
+    private static final String SPRITE = " sprite";
+    static ObjType dummyHungObjType;
     private static String typeName = "Dummy Hung Obj";
 
-    public enum HUNG_ITEM_ACTION implements DUNGEON_OBJ_ACTION {
-        TAKE,
-        USE,
-    }
     public HungItemMaster(DungeonMaster dungeonMaster) {
         super(dungeonMaster);
+    }
+
+    public static Structure createBfObjForItem(ObjType item, Coordinates c) {
+//
+        ObjType bfType = getOrCreateBfType(item);
+        return new HungItem(bfType, c.x, c.y, item);
+    }
+
+    private static ObjType getOrCreateBfType(ObjType item) {
+        if (dummyHungObjType == null)
+            dummyHungObjType = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
+        ObjType type = new ObjType(dummyHungObjType);
+        type.setName(item.getName());
+        String imagePath = StringMaster.cropFormat(item.getImagePath()) +
+         SPRITE + ".png";
+        type.setImage(imagePath);
+        type.setProperty(G_PROPS.BF_OBJECT_TAGS,
+         BF_OBJECT_TAGS.ITEM.toString() + StringMaster.getSeparator() +
+          BF_OBJECT_TAGS.OVERLAYING.toString());
+// so the sprite will be 50% size as always?
+
+/*
+weapons
+keys
+potions
+ */
+
+        return type;
     }
 
     @Override
@@ -49,7 +73,7 @@ public class HungItemMaster extends DungeonObjMaster<HUNG_ITEM_ACTION> {
                                       Unit unit, DungeonObj obj) {
         if (!(obj instanceof HungItem)) return false;
 
-            HungItem  hungObj = ((HungItem) obj);
+        HungItem hungObj = ((HungItem) obj);
         switch (sub) {
             case TAKE:
                 DC_HeroItemObj item = hungObj.getItem();
@@ -58,10 +82,9 @@ public class HungItemMaster extends DungeonObjMaster<HUNG_ITEM_ACTION> {
                 }
                 //quick slot?
                 if (!unit.isQuickSlotsFull()
-                 && item instanceof DC_QuickItemObj){
+                 && item instanceof DC_QuickItemObj) {
                     unit.addQuickItem((DC_QuickItemObj) item);
-                }
-                else {
+                } else {
                     unit.addItemToInventory(item);
                 }
                 GuiEventManager.trigger(GuiEventType.ITEM_TAKEN, hungObj);
@@ -82,35 +105,6 @@ public class HungItemMaster extends DungeonObjMaster<HUNG_ITEM_ACTION> {
         return itemObj;
     }
 
-
-    public static Structure createBfObjForItem(ObjType item, Coordinates c) {
-//
-        ObjType bfType = getOrCreateBfType(item);
-        return new HungItem(bfType, c.x, c.y, item);
-    }
-
-    private static ObjType getOrCreateBfType(ObjType item) {
-        if (dummyHungObjType == null)
-            dummyHungObjType = DataManager.getType(typeName, DC_TYPE.BF_OBJ);
-        ObjType type = new ObjType(dummyHungObjType);
-        type.setName(item.getName());
-        String imagePath = StringMaster.cropFormat(item.getImagePath()) +
-         SPRITE + ".png";
-        type.setImage(imagePath);
-        type.setProperty(G_PROPS.BF_OBJECT_TAGS,
-         BF_OBJECT_TAGS.ITEM.toString() + StringMaster.getSeparator()+
-         BF_OBJECT_TAGS.OVERLAYING.toString());
-// so the sprite will be 50% size as always?
-
-/*
-weapons
-keys
-potions
- */
-
-        return type;
-    }
-
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
         if (!(obj instanceof HungItem))
             return new ArrayList<>();
@@ -121,8 +115,8 @@ potions
             if (checkAction(unit, (HungItem) obj, sub)) {
                 String name = StringMaster.getWellFormattedString(sub.name()) + " Door";
                 action = unit.getAction(name);
-                if (action==null )
-                    action = createAction(sub, unit,name, obj);
+                if (action == null)
+                    action = createAction(sub, unit, name, obj);
                 if (action != null) {
                     list.add(action);
 
@@ -136,7 +130,7 @@ potions
         switch (sub) {
             case TAKE:
                 if (PositionMaster.getExactDistance(unit.getCoordinates(),
-                 hungItem.getCoordinates())>1)
+                 hungItem.getCoordinates()) > 1)
                     return false;
                 return !(hungItem.getVisibilityLevel() == VISIBILITY_LEVEL.CONCEALED
                  || hungItem.getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED);
@@ -154,5 +148,10 @@ potions
     @Override
     public DC_ActiveObj getDefaultAction(Unit source, DungeonObj target) {
         return null;
+    }
+
+    public enum HUNG_ITEM_ACTION implements DUNGEON_OBJ_ACTION {
+        TAKE,
+        USE,
     }
 }

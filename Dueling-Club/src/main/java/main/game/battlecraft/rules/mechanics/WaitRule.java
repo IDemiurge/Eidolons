@@ -53,12 +53,12 @@ public class WaitRule {
         if (game == null) {
             game = unit.getGame();
         }
-        getWaitMap().put(unit , target );
+        getWaitMap().put(unit, target);
     }
 
     private static void wakeUp(Unit unit) {
         LogMaster.log(LogMaster.CORE_DEBUG_1,
-                "waking unit up: " + unit);
+         "waking unit up: " + unit);
         unit.removeBuff(WAIT_BUFF);
         getWaitMap().remove(unit);
         // TODO remove Wait mode

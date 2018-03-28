@@ -12,7 +12,7 @@ public class OverlayView extends BaseView {
     public OverlayView(UnitViewOptions viewOptions, BattleFieldObject bfObj) {
         super(viewOptions);
         if (portrait != null)
-        portrait.remove();
+            portrait.remove();
         portrait = new Image(viewOptions.getPortrateTexture());
         addActor(portrait);
 
@@ -30,7 +30,7 @@ public class OverlayView extends BaseView {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible)
-            return ;
+            return;
     }
 
     @Override

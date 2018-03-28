@@ -63,12 +63,12 @@ public class TestSpawner extends Spawner<TestDungeon> {
 
     @Override
     public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {
-        if (data.getValue(PARTY_VALUE.MEMBERS)==null )
+        if (data.getValue(PARTY_VALUE.MEMBERS) == null)
             return new ArrayList<>();
         String units = data.getValue(PARTY_VALUE.MEMBERS).
          replace(DataUnitFactory.getContainerSeparator(UnitData.FORMAT), "");
         if (FileManager.isFile(units))
-            return spawnUnitGroup(owner.isMe(),units);
+            return spawnUnitGroup(owner.isMe(), units);
         return super.spawn(data, owner, mode);
     }
 
@@ -76,9 +76,10 @@ public class TestSpawner extends Spawner<TestDungeon> {
     public void spawnPartyAt(Party party, Coordinates coordinates) {
         spawnUnitsAt(party.getMembers(), coordinates);
     }
+
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
         List<String> partyTypes = StringMaster.toNameList(units);
-        List<Coordinates> coordinateList =((TestPositioner) getPositioner())
+        List<Coordinates> coordinateList = ((TestPositioner) getPositioner())
          .initPartyCoordinates(partyTypes, null);
         int index = 0;
         for (Unit m : units) {

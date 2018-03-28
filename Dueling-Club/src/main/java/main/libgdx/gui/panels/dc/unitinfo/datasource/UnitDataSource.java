@@ -14,8 +14,8 @@ import main.libgdx.gui.panels.dc.VerticalValueContainer;
 import main.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
-import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
+import main.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.texture.TextureCache;
@@ -97,7 +97,7 @@ public class UnitDataSource implements
 
     @Override
     public String getAttribute(String name) {
-        return unit.getStrParam(name );
+        return unit.getStrParam(name);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class UnitDataSource implements
         int c = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
         int m = unit.getIntParam(PARAMS.N_OF_ACTIONS);
         final String value = c + "/" + m;
-        VerticalValueContainer  container= getValueContainer(PARAMS.N_OF_ACTIONS, value);
+        VerticalValueContainer container = getValueContainer(PARAMS.N_OF_ACTIONS, value);
 
         ValueTooltip toolTip = new ValueTooltip();
         toolTip.setUserObject(Arrays.asList(
@@ -249,7 +249,7 @@ public class UnitDataSource implements
           param);
         container.overrideImageSize(UiMaster.getSmallIconSize(), UiMaster.getSmallIconSize());
         ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer(paramName , param)));
+        tooltip.setUserObject(Arrays.asList(new ValueContainer(paramName, param)));
         container.addListener(tooltip.getController());
         return container;
     }

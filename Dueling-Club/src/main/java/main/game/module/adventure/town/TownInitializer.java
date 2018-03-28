@@ -37,7 +37,7 @@ public class TownInitializer {
             }
         }
         ObjType type = DataManager
-                .getType(typeName, MACRO_OBJ_TYPES.TOWN_PLACE);
+         .getType(typeName, MACRO_OBJ_TYPES.TOWN_PLACE);
         if (type == null) // TODO yeah...
         {
             type = DataManager.getTypes(MACRO_OBJ_TYPES.TOWN_PLACE).get(0);
@@ -60,13 +60,13 @@ public class TownInitializer {
             min = default_shop_min;
         }
         for (String shopTypeName : StringMaster.open(town
-                .getProperty(MACRO_PROPS.SHOPS))) {
+         .getProperty(MACRO_PROPS.SHOPS))) {
             i++;
             if (i > max) {
                 break;
             }
             ObjType type = new ObjType(DataManager.getType(shopTypeName,
-                    MACRO_OBJ_TYPES.SHOP));
+             MACRO_OBJ_TYPES.SHOP));
             type.initType();
             if (type == null) {
                 type = getGenericShopType(shopTypeName);
@@ -77,19 +77,19 @@ public class TownInitializer {
             // generate by preferred type/level/mod
 
             Map<SHOP_TYPE, Integer> typeMap = new RandomWizard<SHOP_TYPE>()
-                    .constructWeightMap(
-                            town.getProperty(MACRO_PROPS.SHOP_TYPE),
-                            SHOP_TYPE.class, MACRO_OBJ_TYPES.SHOP);
+             .constructWeightMap(
+              town.getProperty(MACRO_PROPS.SHOP_TYPE),
+              SHOP_TYPE.class, MACRO_OBJ_TYPES.SHOP);
             Map<SHOP_MODIFIER, Integer> modMap = new RandomWizard<SHOP_MODIFIER>()
-                    .constructWeightMap(
-                            town.getProperty(MACRO_PROPS.SHOP_MODIFIER),
-                            SHOP_MODIFIER.class, MACRO_OBJ_TYPES.SHOP);
+             .constructWeightMap(
+              town.getProperty(MACRO_PROPS.SHOP_MODIFIER),
+              SHOP_MODIFIER.class, MACRO_OBJ_TYPES.SHOP);
 
             while (true) {
                 SHOP_TYPE shopType = new RandomWizard<SHOP_TYPE>()
-                        .getObjectByWeight(typeMap);
+                 .getObjectByWeight(typeMap);
                 SHOP_MODIFIER shopMode = new RandomWizard<SHOP_MODIFIER>()
-                        .getObjectByWeight(modMap);
+                 .getObjectByWeight(modMap);
                 ObjType type = getGenericShopType(shopType.toString());
                 type.setProperty(MACRO_PROPS.SHOP_MODIFIER, shopMode.toString());
                 addShop(town, ref, type);
@@ -104,7 +104,7 @@ public class TownInitializer {
         type.setProperty(MACRO_PROPS.SHOP_TYPE, shopType);
         type.setProperty(MACRO_PROPS.SHOP_LEVEL, SHOP_LEVEL.COMMON.toString()); // TODO
         type.setProperty(MACRO_PROPS.SHOP_MODIFIER,
-                SHOP_MODIFIER.HUMAN.toString());
+         SHOP_MODIFIER.HUMAN.toString());
         return type;
     }
 

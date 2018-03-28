@@ -12,17 +12,17 @@ import java.util.List;
  * Created by JustMe on 11/28/2017.
  */
 public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
-    MainMenuHandler handler;
     private static MainMenu instance;
+    MainMenuHandler handler;
 
-    private MainMenu( ) {
+    private MainMenu() {
         super();
-        instance=this;
+        instance = this;
         this.handler = new MainMenuHandler();
     }
 
     public static MainMenu getInstance() {
-        if (instance!=null ) return instance;
+        if (instance != null) return instance;
         instance = new MainMenu();
         return instance;
     }
@@ -37,14 +37,17 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     protected float getTopPadding(int size) {
         return 200;
     }
+
     @Override
     protected List<MenuItem<MAIN_MENU_ITEM>> getFullItemList() {
-        return  new ArrayList<>(Arrays.asList(MAIN_MENU_ITEM.values()));
+        return new ArrayList<>(Arrays.asList(MAIN_MENU_ITEM.values()));
     }
+
     @Override
     protected boolean isHidden(MAIN_MENU_ITEM item) {
         return item.secondary;
     }
+
     @Override
     protected FONT getFontStyle() {
         return FONT.AVQ;
@@ -70,11 +73,11 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
         CRAWL(), STANDOFF(true), SKIRMISH(true),
         ADVENTURE,
-        NEW_GAME(CRAWL, ADVENTURE,STANDOFF, SKIRMISH),
+        NEW_GAME(CRAWL, ADVENTURE, STANDOFF, SKIRMISH),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),
-        EXIT, ;
+        EXIT,;
         boolean secondary;
         private MAIN_MENU_ITEM[] items;
 

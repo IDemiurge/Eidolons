@@ -30,8 +30,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
     @Override
     public void closed(Object selection) {
         setVisible(false);
-        if (selection == null)
-        {
+        if (selection == null) {
             return;
         }
 //        new Thread(new Runnable() {

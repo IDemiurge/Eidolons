@@ -103,7 +103,7 @@ public class UnitAnalyzer {
 
     public static boolean isMeleePreferred(Entity unit) {
         AI_TYPE ai_type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
-                .getProperty(PROPS.AI_TYPE));
+         .getProperty(PROPS.AI_TYPE));
         if (ai_type == AiEnums.AI_TYPE.CASTER) {
             return false;
         }
@@ -112,7 +112,7 @@ public class UnitAnalyzer {
 
     public static boolean isOffensePreferred(Entity unit) {
         AI_TYPE ai_type = new EnumMaster<AI_TYPE>().retrieveEnumConst(AI_TYPE.class, unit
-                .getProperty(PROPS.AI_TYPE));
+         .getProperty(PROPS.AI_TYPE));
         return ai_type != AI_TYPE.TANK;
     }
 

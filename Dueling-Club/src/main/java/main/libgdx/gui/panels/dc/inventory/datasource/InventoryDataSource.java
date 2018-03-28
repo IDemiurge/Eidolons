@@ -14,8 +14,8 @@ import main.system.datatypes.DequeImpl;
 import java.util.List;
 
 public class InventoryDataSource implements QuickSlotDataSource,
-        InventoryTableDataSource,
-        EquipDataSource {
+ InventoryTableDataSource,
+ EquipDataSource {
 
     private InventoryValueContainerFactory factory;
     private Unit unit;
@@ -64,7 +64,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
     @Override
     public List<InventoryValueContainer> rings() {
         List<InventoryValueContainer> list = factory.getList(unit.getRings(),
-                CELL_TYPE.RING);
+         CELL_TYPE.RING);
         ListMaster.fillWithNullElements(list, 8);
         return list;
     }
@@ -74,7 +74,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
         List<InventoryValueContainer> list = (factory.getList(new DequeImpl<>(
          unit.getInventory()), CELL_TYPE.INVENTORY));
         ListMaster.fillWithNullElements(list
-                , InventorySlotsPanel.SIZE);
+         , InventorySlotsPanel.SIZE);
         return list;
     }
 

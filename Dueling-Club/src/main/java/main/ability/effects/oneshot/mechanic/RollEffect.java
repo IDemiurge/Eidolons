@@ -16,7 +16,7 @@ import main.system.math.roll.Rolls;
  * 
  * 
  */
-public class RollEffect extends MicroEffect  implements OneshotEffect, ContainerEffect {
+public class RollEffect extends MicroEffect implements OneshotEffect, ContainerEffect {
     private Effect effect;
     private String success;
     private String fail;
@@ -130,9 +130,9 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
 
             // ++ event
             result =
-                    // new ChanceCondition(new Formula(successFormula),
-                    // new Formula(failFormula)).preCheck(ref);
-                    RollMaster.roll(rollType, getSuccess(), getFail(), ref);
+             // new ChanceCondition(new Formula(successFormula),
+             // new Formula(failFormula)).preCheck(ref);
+             RollMaster.roll(rollType, getSuccess(), getFail(), ref);
 
             // roll method instead, with proper logging!
         }
@@ -154,10 +154,10 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
             elseEffect = new Effects();
         }
         for (String s : StringMaster.open(elseAbilityName,
-                StringMaster.AND_SEPARATOR)) {
+         StringMaster.AND_SEPARATOR)) {
             ((Effects) effect).addAll(EffectFinder
-                    .getEffectsFromAbilityType(VariableManager.getVarType(s,
-                            false, ref)));
+             .getEffectsFromAbilityType(VariableManager.getVarType(s,
+              false, ref)));
         }
 
         return elseEffect;
@@ -169,10 +169,10 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
         if (effect == null) {
             effect = new Effects();
             for (String s : StringMaster.open(abilityName,
-                    StringMaster.AND_SEPARATOR)) {
+             StringMaster.AND_SEPARATOR)) {
                 ((Effects) effect).addAll(EffectFinder
-                        .getEffectsFromAbilityType(VariableManager.getVarType(
-                                s, false, ref)));
+                 .getEffectsFromAbilityType(VariableManager.getVarType(
+                  s, false, ref)));
             }
         }
         return effect;
@@ -200,7 +200,7 @@ public class RollEffect extends MicroEffect  implements OneshotEffect, Container
     public ROLL_TYPES getRollType() {
         if (rollType == null) {
             rollType = new EnumMaster<ROLL_TYPES>().retrieveEnumConst(
-                    ROLL_TYPES.class, rollString);
+             ROLL_TYPES.class, rollString);
         }
         return rollType;
     }

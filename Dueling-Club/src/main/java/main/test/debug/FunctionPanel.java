@@ -42,10 +42,10 @@ public class FunctionPanel extends G_ButtonPanel {
             @Override
             public void run() {
                 DEBUG_FUNCTIONS func = new EnumMaster<DEBUG_FUNCTIONS>().retrieveEnumConst(
-                        DEBUG_FUNCTIONS.class, e.getActionCommand());
+                 DEBUG_FUNCTIONS.class, e.getActionCommand());
                 if (func == null) {
                     HIDDEN_DEBUG_FUNCTIONS hfunc = new EnumMaster<HIDDEN_DEBUG_FUNCTIONS>()
-                            .retrieveEnumConst(HIDDEN_DEBUG_FUNCTIONS.class, e.getActionCommand());
+                     .retrieveEnumConst(HIDDEN_DEBUG_FUNCTIONS.class, e.getActionCommand());
 
                     master.executeHiddenDebugFunction(hfunc);
                     return;

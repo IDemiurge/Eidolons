@@ -20,9 +20,9 @@ public class ArenaStatManager extends BattleStatManager<ArenaBattle> {
     public void unitDies(Unit killed) {
         if (killed.getGame().isDummyMode()
 
-                // TODO until fixed
-                || true
-                ) {
+         // TODO until fixed
+         || true
+         ) {
             return;
         }
 //        if (killed.getOriginalOwner().isMe()) {

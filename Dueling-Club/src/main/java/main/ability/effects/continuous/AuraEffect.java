@@ -54,7 +54,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
     }
 
     @AE_ConstrArgs(argNames = {"continuous", "effect", "radius", "onlyEnemiesOrAllies", "notSelf",
-            "additionalConditions"})
+     "additionalConditions"})
     public AuraEffect(Boolean continuous, Effect effect, Formula radius,
                       Boolean onlyEnemiesOrAllies, Boolean notSelf, Condition additionalConditions) {
         this.continuous = continuous; // TODO ??? how to ensure that c_effects
@@ -86,7 +86,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
      * "Damage Aura"? Property Aura, e.g. demonic! :)
      */
     public boolean applyThis() {
-        if (!on){
+        if (!on) {
             return true;
         }
         if (game.isSimulation()) {
@@ -106,11 +106,11 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
             }
             //remove aura-bearer from targets list
             targeting.getConditions().add(
-                    new NotCondition(new RefCondition(KEYS.MATCH, KEYS.SOURCE)));
+             new NotCondition(new RefCondition(KEYS.MATCH, KEYS.SOURCE)));
             AddBuffEffect buffEffect = new AddBuffEffect(getBuffType(), effect, true);
             Effects auraEffects = new Effects(
              new ConditionalEffect(ConditionMaster
-                    .getAliveCondition(KEYS.SOURCE),
+              .getAliveCondition(KEYS.SOURCE),
               new CustomTargetEffect(targeting, buffEffect)));
             auraEffect = new AddBuffEffect(auraEffects);
             // auraEffect.setTransient(false);
@@ -143,7 +143,7 @@ public class AuraEffect extends MicroEffect implements AttachmentEffect {
     private void init() {
 
         event_type = (continuous) ? STANDARD_EVENT_TYPE.UNIT_MOVED
-                : STANDARD_EVENT_TYPE.UNIT_TURN_STARTED;
+         : STANDARD_EVENT_TYPE.UNIT_TURN_STARTED;
 
         Targeting t = new FixedTargeting(KEYS.SOURCE);
 

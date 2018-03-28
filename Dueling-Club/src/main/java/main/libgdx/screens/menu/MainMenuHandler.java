@@ -27,21 +27,21 @@ public class MainMenuHandler {
                  DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
                   StringMaster.getWellFormattedString(item.toString())));
 
-                return null  ;
+                return null;
             case ADVENTURE:
                 CoreEngine.setMacro(true);
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
                  ScreenType.MAP, "Mistfall"));
 
-                return null  ;
+                return null;
             case OPTIONS:
-                OptionsMaster.init( );
+                OptionsMaster.init();
                 OptionsMaster.openMenu();
-            return false;
+                return false;
             case MANUAL:
-                GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL , ""); //null closes!
+                GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL, ""); //null closes!
 
-                return null  ;
+                return null;
             case ABOUT:
                 break;
             case EXIT:

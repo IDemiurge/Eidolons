@@ -254,6 +254,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public void addDungeonEncounter(Dungeon c_dungeon, MapBlock block, Coordinates c, ObjType type) {
     }
+
     protected List<Unit> spawnUnitGroup(boolean me, String filePath) {
         String data = UnitGroupMaster.readGroupFile(filePath);
         boolean mirror = me;
@@ -297,7 +298,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
          + width);
 
         List<Unit> list = new ArrayList<>();
-        units.stream().forEach(unit-> list.add((Unit) unit));
+        units.stream().forEach(unit -> list.add((Unit) unit));
         return list;
     }
 

@@ -29,7 +29,6 @@ import main.libgdx.anims.CompositeAnim;
 import main.libgdx.audio.SoundPlayer;
 import main.libgdx.bf.GridMaster;
 import main.libgdx.screens.DungeonScreen;
-import main.system.content.ContentGenerator;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
@@ -37,6 +36,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.content.ContentGenerator;
 import main.system.sound.Player;
 import main.system.sound.SoundMaster;
 

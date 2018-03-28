@@ -11,13 +11,15 @@ import java.util.List;
 
 public class ValueTooltip extends Tooltip {
 
-    public ValueTooltip(  String text) {
+    public ValueTooltip(String text) {
         this(null, text);
     }
+
     public ValueTooltip(TextureRegion texture, String text) {
         super();
         setUserObject(new ListMaster<ValueContainer>().getList(new ValueContainer(texture, text)));
     }
+
     public ValueTooltip() {
         super();
     }

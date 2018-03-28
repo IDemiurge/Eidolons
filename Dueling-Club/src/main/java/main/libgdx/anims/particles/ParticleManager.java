@@ -11,9 +11,9 @@ import java.util.List;
 public class ParticleManager {
     private static final SFX FOG_SFX = SFX.SMOKE_TEST;
     private static boolean ambienceOn = true;
+    private static boolean ambienceMoveOn;
     public boolean debugMode;
     EmitterMap emitterMap;
-    private static boolean ambienceMoveOn;
 
 
     public ParticleManager() {
@@ -29,7 +29,7 @@ public class ParticleManager {
     }
 
     public static Ambience addFogOn(Vector2 at, List<Ambience> fogList) {
-        Ambience fog = new Ambience(FOG_SFX){
+        Ambience fog = new Ambience(FOG_SFX) {
             @Override
             protected boolean isCullingOn() {
                 return false;

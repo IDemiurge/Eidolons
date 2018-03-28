@@ -26,7 +26,7 @@ public class BuyButton extends CustomButton {
 
     protected VISUALS getVisuals(boolean attr) {
         return (attr) ? isEnabled() ? VISUALS.ADD : VISUALS.ADD_BLOCKED
-                : isEnabled() ? VISUALS.REMOVE : VISUALS.REMOVE_BLOCKED;
+         : isEnabled() ? VISUALS.REMOVE : VISUALS.REMOVE_BLOCKED;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class BuyButton extends CustomButton {
 
     public boolean isEnabled() {
         return statsControlComponent.checkParam(DC_MathManager.getBuyCost(attr, gold,
-                statsControlComponent.getBufferType()), gold);
+         statsControlComponent.getBufferType()), gold);
     }
 
     protected void playClickSound() {

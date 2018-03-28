@@ -122,7 +122,7 @@ public class MainViewPanel extends G_Panel {
         }
         if (heroView == null) {
             LogMaster.log(1, "null hero view. Current view: "
-                    + getCurrentViewComp().getClass().getSimpleName());
+             + getCurrentViewComp().getClass().getSimpleName());
             return;
         }
         removeAll();
@@ -185,7 +185,7 @@ public class MainViewPanel extends G_Panel {
 
         if (treeArg == null) {
             treeArg = skills ? DC_ContentManager.getHighestMastery(hero) : DC_ContentManager
-                    .getMainClassGroup(hero);
+             .getMainClassGroup(hero);
         }
 
         if (treeView == null) {

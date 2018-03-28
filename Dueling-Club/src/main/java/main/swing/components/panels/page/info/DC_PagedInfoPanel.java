@@ -160,8 +160,8 @@ public class DC_PagedInfoPanel extends G_PagePanel<VALUE> {
                 return "Armor Values";
             }
             return
-                    // entity.getOBJ_TYPE_ENUM().getFullName()+ " " +
-                    PARAMETERS;
+             // entity.getOBJ_TYPE_ENUM().getFullName()+ " " +
+             PARAMETERS;
         }
         return null;
     }

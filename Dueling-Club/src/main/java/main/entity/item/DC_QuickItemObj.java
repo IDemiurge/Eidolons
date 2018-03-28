@@ -24,7 +24,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
-    PARAMS.FORMULA, G_PROPS.DESCRIPTION, };
+     PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
     // or aggregation?
     private DC_QuickItemAction active;
     private boolean wrapped;
@@ -80,7 +80,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.ACTIONS));
         type.setProperty(G_PROPS.IMAGE, getImagePath());
         type.setProperty(G_PROPS.NAME, type.getName() + ""
-                + StringMaster.wrapInParenthesis(getName()));
+         + StringMaster.wrapInParenthesis(getName()));
         type.setGame(game);
         setActive(new DC_QuickItemAction(type, getOriginalOwner(), getGame(), ref));
         getActive().setItem(this);
@@ -203,7 +203,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
                 getActive().setRef(ref);
             }
             ref.setID(KEYS.ACTIVE, getActive().getId());
-              getActive().activate();
+            getActive().activate();
             if (getActive().isCancelled() != null) {
                 if (getActive().isCancelled()) {
                     return false;
@@ -362,7 +362,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 	 */
 
     public DC_QuickItemAction getActive() {
-        if (active==null )
+        if (active == null)
             if (!isConstructed())
                 construct();
         return active;

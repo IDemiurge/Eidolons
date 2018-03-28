@@ -47,7 +47,7 @@ public class WaterRule extends RoundRule implements ActionRule {
 
     private static float getSubmergedFactor(Unit unit) {
         float heightFactor = Math.abs(waterObj.getIntParam(PARAMS.HEIGHT))
-                / unit.getIntParam(PARAMS.HEIGHT);
+         / unit.getIntParam(PARAMS.HEIGHT);
         return heightFactor;
     }
 
@@ -114,14 +114,14 @@ public class WaterRule extends RoundRule implements ActionRule {
         Effects effects = new Effects();
         Formula formula = new Formula("x*50");
         effects.add(new ModifyValueEffect(PARAMS.STEALTH, MOD.MODIFY_BY_PERCENT, formula
-                .substituteVarValue("x", factor + "").toString()));
+         .substituteVarValue("x", factor + "").toString()));
         effects.add(new ModifyValueEffect(PARAMS.NOISE, MOD.MODIFY_BY_PERCENT, formula
-                .substituteVarValue("x", factor + "").toString()));
+         .substituteVarValue("x", factor + "").toString()));
         formula = new Formula("-x*50");
         effects.add(new ModifyValueEffect(PARAMS.DEFENSE, MOD.MODIFY_BY_PERCENT, formula
-                .substituteVarValue("x", factor + "").toString()));
+         .substituteVarValue("x", factor + "").toString()));
         effects.add(new ModifyValueEffect(PARAMS.FIRE_RESISTANCE, MOD.MODIFY_BY_CONST,
-                formula.substituteVarValue("x", factor + "").toString()));
+         formula.substituteVarValue("x", factor + "").toString()));
         return effects;
     }
 

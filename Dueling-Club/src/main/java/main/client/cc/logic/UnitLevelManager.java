@@ -22,6 +22,10 @@ public class UnitLevelManager {
 
     private static final String LEVEL = ", Level ";
 
+    public static String getLeveledTypeName(Integer level, String name) {
+        return name + LEVEL + level;
+    }
+
     public ObjType getLeveledType(ObjType baseType, int levelUps,
                                   boolean generateType) {
         generateType = true; // yeah...
@@ -39,16 +43,12 @@ public class UnitLevelManager {
             name = name.substring(0, name.indexOf(LEVEL));
         }
         newType.setName(
-                // .setProperty(G_PROPS.NAME,
+         // .setProperty(G_PROPS.NAME,
          getLeveledTypeName(newType.getIntParam(PARAMS.UNIT_LEVEL), name));
         if (generateType) {
             baseType.getGame().initType(newType);
         }
         return newType;
-    }
-
-    public static String getLeveledTypeName(Integer level, String name) {
-        return name + LEVEL + level;
     }
 
     public ObjType getLeveledType(ObjType baseType, int levelUps) {
@@ -72,7 +72,7 @@ public class UnitLevelManager {
         type.modifyParameter(PARAMS.LEVEL, 1);
         type.modifyParameter(PARAMS.UNIT_LEVEL, 1);
         type.modifyParameter(PARAMS.POWER,
-                DC_MathManager.getLeveledUnitPowerBonus(type));
+         DC_MathManager.getLeveledUnitPowerBonus(type));
         // special PER LEVEL? >> as PASSIVES?
     }
 
@@ -89,7 +89,7 @@ public class UnitLevelManager {
         for (PARAMETER p : ContentManager.getPerLevelParams()) {
             if (newType.getIntParam(p) > 0) {
                 PARAMETER param = ContentManager.getPARAM(p.toString().replace(
-                        StringMaster.PER_LEVEL, ""));
+                 StringMaster.PER_LEVEL, ""));
                 newType.modifyParameter(param, newType.getIntParam(p));
             }
         }
@@ -98,22 +98,22 @@ public class UnitLevelManager {
 
     public void up(Entity newType, int i, boolean attrs) {
         PARAMS perLevel = (attrs) ? PARAMS.ATTR_POINTS_PER_LEVEL
-                : PARAMS.MASTERY_POINTS_PER_LEVEL;
+         : PARAMS.MASTERY_POINTS_PER_LEVEL;
         Integer attrsPerLevel = newType.getIntParam(perLevel);
         if (attrsPerLevel <= 0) {
             int forLevel = newType.getLevel()
-                    * DC_Formulas.getPointsPerLevelIncrease(newType, attrs);
+             * DC_Formulas.getPointsPerLevelIncrease(newType, attrs);
             attrsPerLevel = forLevel
-                    + DC_Formulas.getAttrPointsPerLevelDefault(newType);
+             + DC_Formulas.getAttrPointsPerLevelDefault(newType);
             newType.setParam(perLevel, attrsPerLevel);
             newType.modifyParameter(perLevel, forLevel);
         }
         PARAMS pointsParam = (attrs) ? PARAMS.ATTR_POINTS
-                : PARAMS.MASTERY_POINTS;
+         : PARAMS.MASTERY_POINTS;
         newType.modifyParameter(pointsParam, attrsPerLevel);
         Integer points = newType.getIntParam(pointsParam);
         newType.modifyParameter(perLevel,
-                DC_Formulas.getPointsPerLevelIncrease(newType, attrs));
+         DC_Formulas.getPointsPerLevelIncrease(newType, attrs));
         // double for monsters?
         spendPoints(points, newType, attrs);
     }
@@ -128,23 +128,23 @@ public class UnitLevelManager {
 
     public Integer spendPoints(Entity newType, boolean attrs) {
         PARAMS pointsParam = (attrs) ? PARAMS.ATTR_POINTS
-                : PARAMS.MASTERY_POINTS;
+         : PARAMS.MASTERY_POINTS;
         Integer points = newType.getIntParam(pointsParam);
         return spendPoints(points, newType, attrs);
     }
 
     public Integer spendPoints(int points, Entity newType, boolean attrs) {
         String progression = newType
-                .getProperty((attrs) ? PROPS.ATTRIBUTE_PROGRESSION
-                        : PROPS.MASTERY_PROGRESSION);
+         .getProperty((attrs) ? PROPS.ATTRIBUTE_PROGRESSION
+          : PROPS.MASTERY_PROGRESSION);
         if (StringMaster.isEmpty(progression)) {
             progression = generateProgression(newType, attrs); // TODO set for
             newType.setProperty((attrs) ? PROPS.ATTRIBUTE_PROGRESSION
-                    : PROPS.MASTERY_PROGRESSION, progression); // type?
+             : PROPS.MASTERY_PROGRESSION, progression); // type?
         }
         List<String> list = StringMaster.openContainer(progression);
         PARAMS pointsParam = (attrs) ? PARAMS.ATTR_POINTS
-                : PARAMS.MASTERY_POINTS;
+         : PARAMS.MASTERY_POINTS;
 
         if (list.isEmpty()) {
             return points;
@@ -164,7 +164,7 @@ public class UnitLevelManager {
                 continue;
             }
             int cost = PointMaster.getPointCost(newType.getIntParam(param),
-                    newType, param);
+             newType, param);
             if (points >= cost) {
                 newType.modifyParameter(param, 1);
                 points -= cost;
@@ -178,14 +178,14 @@ public class UnitLevelManager {
         PARAMETER param;
         if (attrs) {
             ATTRIBUTE a = new RandomWizard<ATTRIBUTE>().getObjectByWeight(
-                    newType.getProperty(PROPS.ATTRIBUTE_PROGRESSION),
-                    ATTRIBUTE.class);
+             newType.getProperty(PROPS.ATTRIBUTE_PROGRESSION),
+             ATTRIBUTE.class);
             param = ContentManager.getBaseAttribute(ContentManager.getPARAM(a
-                    .toString()));
+             .toString()));
         } else {
             MASTERY mstr = new RandomWizard<MASTERY>().getObjectByWeight(
-                    newType.getProperty(PROPS.MASTERY_PROGRESSION),
-                    MASTERY.class);
+             newType.getProperty(PROPS.MASTERY_PROGRESSION),
+             MASTERY.class);
             if (mstr == null) {
                 return null;
             }
@@ -204,15 +204,15 @@ public class UnitLevelManager {
         if (attrs) {
             for (ATTRIBUTE attr : ATTRIBUTE.values()) {
                 progression += attr.getParameter().getName()
-                        + StringMaster.wrapInParenthesis(newType.getParam(attr
-                        .getParameter())) + ";";
+                 + StringMaster.wrapInParenthesis(newType.getParam(attr
+                 .getParameter())) + ";";
             }
         } else {
             for (PARAMETER mstr : ValuePages.MASTERIES) {
                 Integer value = newType.getIntParam(mstr);
                 if (value > 0) {
                     progression += mstr.getName()
-                            + StringMaster.wrapInParenthesis(value + "") + ";";
+                     + StringMaster.wrapInParenthesis(value + "") + ";";
                 }
             }
         }
@@ -226,7 +226,7 @@ public class UnitLevelManager {
     public ObjType awardXP(ObjType newType, int n, boolean fromLevel) {
         if (fromLevel) {
             int totalXp = DC_Formulas.getTotalXpForLevel(newType
-                    .getIntParam(PARAMS.LEVEL) + n);
+             .getIntParam(PARAMS.LEVEL) + n);
             // int addedXp = totalXp
             // - DC_Formulas.getTotalXpForLevel(newType
             // .getIntParam(PARAMS.LEVEL));
@@ -240,8 +240,8 @@ public class UnitLevelManager {
             // newType.modifyParameter(PARAMS.XP, n);
             // newType.modifyParameter(PARAMS.TOTAL_XP, n);
             int levelUps = DC_Formulas.getLevelForXp(newType
-                    .getIntParam(PARAMS.TOTAL_XP) + n)
-                    - newType.getIntParam(PARAMS.LEVEL);
+             .getIntParam(PARAMS.TOTAL_XP) + n)
+             - newType.getIntParam(PARAMS.LEVEL);
             if (levelUps <= 0) {
                 return newType;
             }
@@ -253,14 +253,14 @@ public class UnitLevelManager {
 
     private void awardGold(ObjType newType, int levelUps) {
         int gold = DC_Formulas.getGoldForLevel(newType
-                .getIntParam(PARAMS.LEVEL) + levelUps);
+         .getIntParam(PARAMS.LEVEL) + levelUps);
         newType.modifyParameter(PARAMS.GOLD, gold);
 
     }
 
     private void upPlanItems(ObjType newType, int i, boolean xp) {
         List<String> array = StringMaster.openContainer(newType
-                .getProperty((xp) ? PROPS.GOLD_PLAN : PROPS.XP_PLAN));
+         .getProperty((xp) ? PROPS.GOLD_PLAN : PROPS.XP_PLAN));
         boolean success = false;
         for (String item : array) { // getOrCreate all the xp items next in line while
             // there is xp to spend
@@ -294,14 +294,14 @@ public class UnitLevelManager {
         PARAMS param = (attr) ? PARAMS.ATTR_POINTS : PARAMS.MASTERY_POINTS;
 
         PARAMS buyParam = (attr) ? (gold) ? PARAMS.ATTR_BOUGHT_WITH_GOLD
-                : PARAMS.ATTR_BOUGHT_WITH_XP
-                : (gold) ? PARAMS.MASTERY_BOUGHT_WITH_GOLD
-                : PARAMS.MASTERY_BOUGHT_WITH_XP;
+         : PARAMS.ATTR_BOUGHT_WITH_XP
+         : (gold) ? PARAMS.MASTERY_BOUGHT_WITH_GOLD
+         : PARAMS.MASTERY_BOUGHT_WITH_XP;
 
         int amount = DC_MathManager.getBuyCost(attr, gold, type);
 
         if (((gold) ? type.getIntParam(PARAMS.GOLD) : type
-                .getIntParam(PARAMS.XP)) < amount) {
+         .getIntParam(PARAMS.XP)) < amount) {
             return false;
         }
 

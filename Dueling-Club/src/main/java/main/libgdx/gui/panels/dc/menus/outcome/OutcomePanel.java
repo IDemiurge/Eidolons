@@ -140,7 +140,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
         if (event.getType() != Type.touchDown)
             return true;
-        if (getActions().size>0)            return true;        Actor actor = event.getTarget();
+        if (getActions().size > 0) return true;
+        Actor actor = event.getTarget();
         if (actor instanceof Label) {
             if (actor.getParent() instanceof TextButton) {
                 ActorMaster.addMoveToAction(this, getX(), GdxMaster.getHeight(), 1.5f);
@@ -152,43 +153,43 @@ public class OutcomePanel extends TablePanel implements EventListener {
 //
 //                @Override
 //                public boolean act(float delta) {
-                    if (exit_continue_next == null ) {
-                        if (!ExplorationMaster.isExplorationOn())
+                if (exit_continue_next == null) {
+                    if (!ExplorationMaster.isExplorationOn())
                         Eidolons.getGame().getMaster().nextLevel();
 
-                        if (!BooleanMaster.isTrue(outcome))
+                    if (!BooleanMaster.isTrue(outcome))
                         Eidolons.getGame().getMetaMaster().getBattleMaster().
                          getOutcomeManager().restart();
-                        else
-                            Eidolons.getGame().getMetaMaster().getBattleMaster().
-                             getOutcomeManager().next();
+                    else
+                        Eidolons.getGame().getMetaMaster().getBattleMaster().
+                         getOutcomeManager().next();
 
-                    } else if (exit_continue_next) {
+                } else if (exit_continue_next) {
 //                        if (DialogMaster.confirm("Must you really go?.."))
-                        if (CoreEngine.isMacro()) {
-                            GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
-                        } else {
-                            Gdx.app.exit();
-                        }
+                    if (CoreEngine.isMacro()) {
+                        GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
+                    } else {
+                        Gdx.app.exit();
+                    }
 //                    else DialogMaster.inform("Glad you're still with us! :)");
 
-                    } else   {
-                        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
-                         false);
+                } else {
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
+                     false);
 //                        DialogMaster.inform("Feel free to roam around, until next round...))");
 
-                    }
-                    remove();
-                    return true;
+                }
+                remove();
+                return true;
 //                }
 //            });
-        }
+            }
 
-    }
+        }
 
 
         return false;
-}
+    }
 
     @Override
     public void act(float delta) {

@@ -22,6 +22,7 @@ public class SpellInitializer extends ActiveInitializer {
     public SpellInitializer(DC_ActiveObj entity, EntityMaster<DC_ActiveObj> entityMaster) {
         super(entity, entityMaster);
     }
+
     public DC_SpellObj getEntity() {
         return (DC_SpellObj) super.getEntity();
     }
@@ -33,16 +34,17 @@ public class SpellInitializer extends ActiveInitializer {
         getEntity().setChannelingActivateCosts(channelingActivateCosts);
         getEntity().setChannelingResolveCosts(channelingResolveCosts);
     }
+
     @Override
     public void initCosts() {
         Costs costs;
-            costs = DC_CostsFactory.getCostsForSpell(getEntity(),
+        costs = DC_CostsFactory.getCostsForSpell(getEntity(),
 //             isSpell()
-                    true);
-            costs.getRequirements().add(
-                    new Requirement(new NotCondition(
-                            new StatusCheckCondition(UnitEnums.STATUS.SILENCED)),
-                            InfoMaster.SILENCE));
+         true);
+        costs.getRequirements().add(
+         new Requirement(new NotCondition(
+          new StatusCheckCondition(UnitEnums.STATUS.SILENCED)),
+          InfoMaster.SILENCE));
         costs.setActive(getEntity());
         getEntity().getActivator().setCanActivate(costs.canBePaid(getRef()));
         getEntity().setCosts(costs);

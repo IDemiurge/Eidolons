@@ -44,7 +44,7 @@ public class TestPositioner<E extends DungeonWrapper> extends Positioner<E> {
 
         }
         if (coordinates == null) {
-            coordinates =  getPartyCoordinates(null, BooleanMaster
+            coordinates = getPartyCoordinates(null, BooleanMaster
              .isTrue(mine_enemy_third), partyTypes);
         }
 

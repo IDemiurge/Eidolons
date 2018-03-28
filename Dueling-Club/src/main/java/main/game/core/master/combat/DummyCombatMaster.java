@@ -13,13 +13,15 @@ public class DummyCombatMaster extends CombatMaster {
     public DummyCombatMaster(DC_Game game) {
         super(game);
     }
+
     @Override
     public boolean isActionBlocked(DC_ActiveObj activeObj) {
         if (blockActionExceptions != null)
             if (blockActionExceptions.contains(activeObj.getName()))
-        return false;
+                return false;
         return actionsBlocked;
     }
+
     public String getBlockActionExceptions() {
         return blockActionExceptions;
     }

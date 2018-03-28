@@ -17,8 +17,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,6 +42,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
     public DC_Game getGame() {
         return (DC_Game) super.getGame();
     }
+
     @Override
     public void init() {
         super.init();
@@ -53,9 +54,9 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
     }
 
     protected void addDefaultFacing() {
-        if (getEntity().getOwner()!=null )
-        getEntity().setFacing(
-         DC_MovementManager.getDefaultFacingDirection(getEntity().getOwner().isMe()));
+        if (getEntity().getOwner() != null)
+            getEntity().setFacing(
+             DC_MovementManager.getDefaultFacingDirection(getEntity().getOwner().isMe()));
     }
 
     public void addDefaultValues() {
@@ -84,7 +85,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                 ObjType type = DataManager.getType(subString, DC_ContentManager.getTypeForProperty(prop));
 //|| !StringMaster.isInteger(subString)
                 DC_HeroItemObj item = null;
-                if (game.isSimulation() ) {
+                if (game.isSimulation()) {
                     item = (DC_HeroItemObj) getGame().getSimulationObj(getEntity(), type, prop);
                 }
                 if (item == null) {

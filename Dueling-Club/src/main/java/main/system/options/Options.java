@@ -8,7 +8,7 @@ import main.system.options.Options.OPTION;
 public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataUnit<E> {
 
 
-    public T getKey(String name){
+    public T getKey(String name) {
         return new EnumMaster<T>().retrieveEnumConst(getOptionClass(), name);
     }
 
@@ -42,7 +42,8 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
         }
         return null;
     }
-    public   interface OPTION {
+
+    public interface OPTION {
         Integer getMin();
 
         Integer getMax();
@@ -53,8 +54,8 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
 
         Object[] getOptions();
 
-        default String getName(){
-            return StringMaster.getWellFormattedString( toString());
+        default String getName() {
+            return StringMaster.getWellFormattedString(toString());
         }
     }
 }

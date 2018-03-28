@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class WanderAi extends AiBehavior{
+public class WanderAi extends AiBehavior {
 
     public static List<? extends DC_Obj> getWanderCells(UnitAI ai) {
         DIRECTION d = ai.getGroup().getWanderDirection();
@@ -76,7 +76,7 @@ public class WanderAi extends AiBehavior{
     private static boolean isAheadOfLeader(UnitAI ai) {
         Coordinates c = ai.getGroup().getOriginCoordinates();
         return PositionMaster.getDistance(c, ai.getUnit().getCoordinates()) > PositionMaster
-                .getDistance(c, ai.getGroup().getLeader().getCoordinates());
+         .getDistance(c, ai.getGroup().getLeader().getCoordinates());
         // ai.getGroup().getTargetCoordinate();
 
     }
@@ -116,7 +116,7 @@ public class WanderAi extends AiBehavior{
         } // group.getLeader().getGame().getDungeon().getCellsX()
         if (x_y_diag == null) {
             return (int) Math
-                    .round(Math.sqrt(dungeon.getSquare()) * getDistanceFactor(type, group));
+             .round(Math.sqrt(dungeon.getSquare()) * getDistanceFactor(type, group));
         }
         if (x_y_diag) {
             return Math.round(dungeon.getCellsX() * getDistanceFactor(type, group));
@@ -165,7 +165,7 @@ public class WanderAi extends AiBehavior{
                 {
                     forwards.add(ai);
                     if (forwards.size() > Math.round(group.getMembers().size()
-                            * getCatchUpFactor(group, type))) {
+                     * getCatchUpFactor(group, type))) {
 
                         // if (group.isCatchUp())
                         // change = null;
@@ -225,17 +225,17 @@ public class WanderAi extends AiBehavior{
             if (group.isBackAndForth()) // GUARD?
             {
                 wanderDirection = DirectionMaster.rotate90(DirectionMaster.rotate90(
-                        wanderDirection, true), true);
+                 wanderDirection, true), true);
             } else {
                 wanderDirection = DirectionMaster.rotate90(wanderDirection, group
-                        .isClockwisePatrol());
+                 .isClockwisePatrol());
             }
 
         } else if (type == AiEnums.GOAL_TYPE.WANDER) {
             if (PositionMaster.getDistance(group.getOriginCoordinates(), group.getLeader()
-                    .getCoordinates()) >= getMaxWanderTotalDistance(group, type)) {
+             .getCoordinates()) >= getMaxWanderTotalDistance(group, type)) {
                 wanderDirection = DirectionMaster.getRelativeDirection(group.getLeader()
-                        .getCoordinates(), group.getOriginCoordinates());
+                 .getCoordinates(), group.getOriginCoordinates());
             }
 
         }
@@ -260,7 +260,7 @@ public class WanderAi extends AiBehavior{
         boolean adjust = targetCoordinates == null;
         if (!adjust) {
             adjust = (!unit.getGame().getRules().getStackingRule().canBeMovedOnto(unit,
-                    targetCoordinates));
+             targetCoordinates));
         }
         if (adjust) {
             Coordinates c = null;
@@ -273,7 +273,7 @@ public class WanderAi extends AiBehavior{
                     return null;
                 }
                 if (DirectionMaster.getRelativeDirection(unit.getCoordinates(), c) != group
-                        .getWanderDirection()) {
+                 .getWanderDirection()) {
 
                     continue;
                 }
@@ -299,19 +299,19 @@ public class WanderAi extends AiBehavior{
             main.system.ExceptionMaster.printStackTrace(e);
         }
         c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing()
-        , getWanderPredicate(ai.getUnit(),ai.getUnit().getFacing(), c1 ));
+         , getWanderPredicate(ai.getUnit(), ai.getUnit().getFacing(), c1));
 
         Task task = new Task(ai, GOAL_TYPE.WANDER, null);
 
         List<Action> turnSequence = getMaster(ai).
          getTurnSequenceConstructor().getTurnSequence(ai.getUnit(), c1);
-        if (ListMaster.isNotEmpty(turnSequence )){
+        if (ListMaster.isNotEmpty(turnSequence)) {
             return new ActionSequence(turnSequence, task, ai);
         }
 
         List<Coordinates> c = new ArrayList<>();
         c.add(c1);
-       getMaster(ai).setUnit(ai.getUnit());
+        getMaster(ai).setUnit(ai.getUnit());
 //        getMaster(ai).getPathBuilder().init(null, null);
 //        TimeLimitMaster.markTimeForAI(ai);
         List<ActionPath> paths = new ArrayList<>();
@@ -323,11 +323,11 @@ public class WanderAi extends AiBehavior{
                 action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
             else
                 action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
-            if (action!=null )
-            return new ActionSequence(GOAL_TYPE.WANDER, action);
+            if (action != null)
+                return new ActionSequence(GOAL_TYPE.WANDER, action);
         } else
             action = paths.get(0).getActions().get(0);
-        if (action==null )
+        if (action == null)
             return null;
         List<ActionSequence> sequences = getMaster(ai).getActionSequenceConstructor().
          getSequencesFromPaths(paths, task, action);
@@ -342,20 +342,20 @@ public class WanderAi extends AiBehavior{
         return new Predicate<Coordinates>() {
             @Override
             public boolean test(Coordinates coordinates) {
-                int wallCount =0;
+                int wallCount = 0;
                 for (Coordinates sub : c1.getAdjacentCoordinates()) {
-                    if (unit.getGame().getBattleFieldManager().getWallMap().get(sub)!=null ){
+                    if (unit.getGame().getBattleFieldManager().getWallMap().get(sub) != null) {
                         wallCount++;
                     }
                 }
                 if (unit.getAI().getType().isRanged()) {
-                    return wallCount>=4;
+                    return wallCount >= 4;
                 }
                 if (unit.getAI().getType().isCaster()) {
-                    return wallCount>=4;
+                    return wallCount >= 4;
                 }
 
-                return wallCount>=3;
+                return wallCount >= 3;
             }
         };
     }

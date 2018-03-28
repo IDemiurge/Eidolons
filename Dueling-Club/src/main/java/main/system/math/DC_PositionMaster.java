@@ -7,15 +7,15 @@ import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.math.PositionMaster.SHAPES;
 
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DC_PositionMaster {
     public static Set<Coordinates> getShapedCoordinates(
-            Coordinates baseCoordinate, FACING_DIRECTION facing, int width,
-            int height, SHAPES shape) {
+     Coordinates baseCoordinate, FACING_DIRECTION facing, int width,
+     int height, SHAPES shape) {
         Set<Coordinates> list = new HashSet<>();
         List<Coordinates> line;
         switch (shape) {
@@ -33,11 +33,11 @@ public class DC_PositionMaster {
                 for (int i = 0; i < height; i++) {
 
                     list.addAll(getLine(FacingMaster.rotate(facing, false)
-                            .getDirection(), baseCoordinate, width));
+                     .getDirection(), baseCoordinate, width));
                     list.addAll(getLine(FacingMaster.rotate(facing, true)
-                            .getDirection(), baseCoordinate, width));
+                     .getDirection(), baseCoordinate, width));
                     baseCoordinate = baseCoordinate
-                            .getAdjacentCoordinate(facing.getDirection());
+                     .getAdjacentCoordinate(facing.getDirection());
                     if (baseCoordinate == null) {
                         break;
                     }
@@ -47,13 +47,13 @@ public class DC_PositionMaster {
                 break;
             case RECTANGLE:
                 list.addAll(getLine(facing.getDirection(), baseCoordinate,
-                        height));
+                 height));
                 line = getLine(facing.getDirection(), baseCoordinate, height);
                 for (Coordinates c : line) {
                     list.addAll(getLine(FacingMaster.rotate(facing, false)
-                            .getDirection(), c, width));
+                     .getDirection(), c, width));
                     list.addAll(getLine(FacingMaster.rotate(facing, true)
-                            .getDirection(), c, width));
+                     .getDirection(), c, width));
                 }
                 line.remove(baseCoordinate);
                 list.addAll(line);
@@ -77,18 +77,18 @@ public class DC_PositionMaster {
     }
 
     public static List<Coordinates> getRectangle(
-            FACING_DIRECTION lengthDirection, Coordinates baseCoordinate,
-            int length, int width) {
+     FACING_DIRECTION lengthDirection, Coordinates baseCoordinate,
+     int length, int width) {
         return getRectangle(lengthDirection,
-                FacingMaster.rotate(lengthDirection, true), baseCoordinate,
-                length, width);
+         FacingMaster.rotate(lengthDirection, true), baseCoordinate,
+         length, width);
     }
 
     public static List<Coordinates> getRectangle(
-            FACING_DIRECTION lengthDirection, FACING_DIRECTION widthDirection,
-            Coordinates baseCoordinate, int length, int width) {
+     FACING_DIRECTION lengthDirection, FACING_DIRECTION widthDirection,
+     Coordinates baseCoordinate, int length, int width) {
         return getRectangle(false, lengthDirection, widthDirection,
-                baseCoordinate, length, width);
+         baseCoordinate, length, width);
     }
 
     public static List<Coordinates> getRectangle(boolean allowInvalid,
@@ -104,11 +104,11 @@ public class DC_PositionMaster {
             return list;
         }
         List<Coordinates> line = getLine(allowInvalid,
-                lengthDirection.getDirection(), baseCoordinate, length);
+         lengthDirection.getDirection(), baseCoordinate, length);
         list.addAllUnique(line);
         for (Coordinates c : line) {
             list.addAllUnique(getLine(allowInvalid,
-                    widthDirection.getDirection(), c, width));
+             widthDirection.getDirection(), c, width));
         }
         return list;
     }

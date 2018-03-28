@@ -23,7 +23,7 @@ public class CounterMasterAdvanced {
     public static void afterRoundEnds(Unit unit) {
 //some interactions should happen immediately - e.g. moist vs blaze
 // so we need to Interact, Convert and Transfer... what's the order? probably exactly that!
-        Map<COUNTER, Integer> map =createCounterMap(unit);
+        Map<COUNTER, Integer> map = createCounterMap(unit);
         map.forEach((counter, value) -> map.forEach((counter2, value2) -> {
             if (counter != counter2) {
                 COUNTER_INTERACTION interaction = getInteraction(counter, counter2);
@@ -31,13 +31,13 @@ public class CounterMasterAdvanced {
                 interact(counter, counter2, interaction, max, unit);
             }
         }));
-        Map<COUNTER, Integer> convertMap =createCounterMap(unit);
-        map.forEach((counter, value) ->  {
-                COUNTER counter2 = getConvertion(counter);
-                int max = getMaxConvertionValue(unit, counter, counter2, value );
-                convertCounters(counter, counter2, max, unit);
+        Map<COUNTER, Integer> convertMap = createCounterMap(unit);
+        map.forEach((counter, value) -> {
+            COUNTER counter2 = getConvertion(counter);
+            int max = getMaxConvertionValue(unit, counter, counter2, value);
+            convertCounters(counter, counter2, max, unit);
         });
-        Map<COUNTER, Integer> transferMap =createCounterMap(unit);
+        Map<COUNTER, Integer> transferMap = createCounterMap(unit);
         map.forEach((counter, value) -> map.forEach((counter2, value2) -> {
             if (counter != counter2) {
                 COUNTER_INTERACTION interaction = getInteraction(counter, counter2);
@@ -55,7 +55,7 @@ public class CounterMasterAdvanced {
         return counter;
     }
 
-    private static Map<COUNTER,Integer> createCounterMap(Unit unit) {
+    private static Map<COUNTER, Integer> createCounterMap(Unit unit) {
         Map<COUNTER, Integer> map = new XLinkedMap<>();
         for (DC_CounterRule rule : unit.getGame().getRules().getCounterRules()) {
             COUNTER c = getCounter(rule.getCounterName());

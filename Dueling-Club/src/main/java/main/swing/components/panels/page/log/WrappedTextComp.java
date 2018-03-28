@@ -30,7 +30,7 @@ public class WrappedTextComp extends TextCompDC {
     public WrappedTextComp(VISUALS v, boolean autoWrapText, Integer gaps, Color colors, Font fonts,
                            Boolean centring) {
         this(v, new ListMaster<Integer>().getList(gaps), new ListMaster<Color>().getList(colors),
-                new ListMaster<Font>().getList(fonts), new ListMaster<Boolean>().getList(centring));
+         new ListMaster<Font>().getList(fonts), new ListMaster<Boolean>().getList(centring));
         this.autoWrapText = autoWrapText;
     }
 
@@ -84,7 +84,7 @@ public class WrappedTextComp extends TextCompDC {
 
     protected int getWrapLength() {
         return FontMaster.getStringLengthForWidth(getDefaultFont(), (int) getPreferredSize()
-                .getWidth());
+         .getWidth());
     }
 
     protected boolean isAutoWrapText() {
@@ -184,8 +184,8 @@ public class WrappedTextComp extends TextCompDC {
 
     protected int getLineHeight() {
         return FontMaster.getFontHeight(getFont())
-                // * 5 / 4
-                ;
+         // * 5 / 4
+         ;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class WrappedTextComp extends TextCompDC {
 
     public Dimension initSizeFromTextLines() {
         return new Dimension(getMaxLineWidth(), getTextLines().size()
-                * FontMaster.getFontHeight(getDefaultFont()) * 3 / 2);
+         * FontMaster.getFontHeight(getDefaultFont()) * 3 / 2);
     }
 
     private int getMaxLineLength() {

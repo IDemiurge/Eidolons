@@ -12,5 +12,4 @@ public class EntityChoice<T extends Entity> extends CustomDialog<T> {
     }
 
 
-
 }

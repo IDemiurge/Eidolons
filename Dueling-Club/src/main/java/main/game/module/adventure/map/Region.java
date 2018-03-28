@@ -24,7 +24,7 @@ public class Region extends MacroObj {
     private DequeImpl<Town> towns = new DequeImpl<>();
     private DequeImpl<Route> routes = new DequeImpl<>();
     private DequeImpl<Area> areas = new DequeImpl<>();
-    private DequeImpl<MacroParty> parties= new DequeImpl<>();
+    private DequeImpl<MacroParty> parties = new DequeImpl<>();
 
     // ++ AREAS?
     public Region(MacroGame game, ObjType type, Ref ref) {

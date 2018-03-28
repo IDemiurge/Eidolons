@@ -31,8 +31,8 @@ public class Place extends MapObj {
             // ref.getMacroObj(MACRO_KEYS.AREA);
 
         }
-        if (!checkProperty(MACRO_PROPS.MAP_ICON)){
-            setProperty(MACRO_PROPS.MAP_ICON, "UI\\macro\\sign.png",true);
+        if (!checkProperty(MACRO_PROPS.MAP_ICON)) {
+            setProperty(MACRO_PROPS.MAP_ICON, "UI\\macro\\sign.png", true);
         }
     }
 
@@ -96,7 +96,6 @@ public class Place extends MapObj {
     public void setComp(PlaceComp comp) {
         this.comp = comp;
     }
-
 
 
     public int getDefaultSize() {

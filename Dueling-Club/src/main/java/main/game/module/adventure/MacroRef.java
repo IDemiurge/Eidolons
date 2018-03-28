@@ -3,10 +3,10 @@ package main.game.module.adventure;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.module.adventure.entity.MacroObj;
+import main.game.module.adventure.entity.MacroParty;
 import main.game.module.adventure.global.World;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
-import main.game.module.adventure.entity.MacroParty;
 
 public class MacroRef extends Ref {
 

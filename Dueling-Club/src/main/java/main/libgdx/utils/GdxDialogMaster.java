@@ -22,16 +22,16 @@ public class GdxDialogMaster {
     public static String inputText(String title, String hint, String text) {
         if (GdxMaster.isLwjglThread()) {
             Gdx.app.postRunnable(() -> textInput(new TextInputListener() {
-                                                                  @Override
-                                                                  public void input(String text) {
-                                                                      WaitMaster.receiveInput(OPERATION, text);
-                                                                  }
+                                                     @Override
+                                                     public void input(String text) {
+                                                         WaitMaster.receiveInput(OPERATION, text);
+                                                     }
 
-                                                                  @Override
-                                                                  public void canceled() {
-                                                                      WaitMaster.interrupt(OPERATION);
-                                                                  }
-                                                              }
+                                                     @Override
+                                                     public void canceled() {
+                                                         WaitMaster.interrupt(OPERATION);
+                                                     }
+                                                 }
              , title, text, hint
             ));
         }
@@ -43,8 +43,8 @@ public class GdxDialogMaster {
                                   String text, String hint) {
         GameScreen screen = Eidolons.getScreen();
         if (screen instanceof MapScreen) {
-            MapScreen.getInstance().getGuiStage().textInput(textInputListener,   title,
-               text,   hint);
+            MapScreen.getInstance().getGuiStage().textInput(textInputListener, title,
+             text, hint);
         }
     }
 }

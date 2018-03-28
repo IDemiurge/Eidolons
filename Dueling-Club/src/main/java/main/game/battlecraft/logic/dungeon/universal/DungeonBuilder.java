@@ -147,15 +147,15 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
         for (MapZone zone : plan.getZones()) {
             ObjType wallType = DataManager.getType(zone.getFillerType(), DC_TYPE.BF_OBJ);
-          if (wallType==null )
-              continue;
+            if (wallType == null)
+                continue;
             List<Coordinates> list = zone.getCoordinates();
             for (MapBlock b : zone.getBlocks()) {
                 list.removeAll(b.getCoordinates());
             }
             for (Coordinates c : list) {
-            getGame().getManager().getObjCreator().createUnit(wallType, c.x, c.y,
-             Player.NEUTRAL, new Ref(game));
+                getGame().getManager().getObjCreator().createUnit(wallType, c.x, c.y,
+                 Player.NEUTRAL, new Ref(game));
             }
         }
 

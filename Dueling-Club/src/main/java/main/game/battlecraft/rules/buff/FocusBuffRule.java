@@ -19,8 +19,8 @@ import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {
-    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),
-            MetaEnums.STD_BUFF_NAMES.Dizzy.getName(), MetaEnums.STD_BUFF_NAMES.Razorsharp.getName()};
+    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Discombobulated.getName(),
+     MetaEnums.STD_BUFF_NAMES.Dizzy.getName(), MetaEnums.STD_BUFF_NAMES.Razorsharp.getName()};
     public static final String[] formulas = {"1", "10", "50",};
 
     // reverse means MORE THAN {THIS} and
@@ -42,23 +42,23 @@ public class FocusBuffRule extends DC_BuffRule {
             }
             case 1: {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
-                        MOD.MODIFY_BY_PERCENT, "("
-                        + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                        + formulas[1] + ")*5"),
+                 MOD.MODIFY_BY_PERCENT, "("
+                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
+                 + formulas[1] + ")*5"),
 
-                        new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
-                                + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
-                                + ")*5"));
+                 new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
+                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
+                  + ")*5"));
             }
             case 2: {
                 return new Effects(new ModifyValueEffect(true, PARAMS.DEFENSE_MOD,
-                        MOD.MODIFY_BY_PERCENT, "("
-                        + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                        + formulas[2] + ")"),
+                 MOD.MODIFY_BY_PERCENT, "("
+                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
+                 + formulas[2] + ")"),
 
-                        new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
-                                + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[2]
-                                + ")"));
+                 new ModifyValueEffect(true, PARAMS.ATTACK_MOD, MOD.MODIFY_BY_PERCENT, "("
+                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[2]
+                  + ")"));
             }
         }
 

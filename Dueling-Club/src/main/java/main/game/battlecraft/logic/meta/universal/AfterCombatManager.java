@@ -7,14 +7,15 @@ import main.game.module.adventure.travel.LootMaster;
 /**
  * Created by JustMe on 5/8/2017.
  */
-public abstract class AfterCombatManager<E extends MetaGame> extends MetaGameHandler<E>{
-    public AfterCombatManager(MetaGameMaster master) {
-        super(master);
-    }
+public abstract class AfterCombatManager<E extends MetaGame> extends MetaGameHandler<E> {
     LootMaster lootMaster;
     FormationMaster formationMaster;
     LoyaltyMaster loyaltyMaster;
-    public void combatOver(){
+    public AfterCombatManager(MetaGameMaster master) {
+        super(master);
+    }
+
+    public void combatOver() {
         getMaster().getBattleMaster().getBattle();
 //        data= getMaster().getBattleMaster().getStatManager().getStats();
 //        lootMaster.awardLoot(data);

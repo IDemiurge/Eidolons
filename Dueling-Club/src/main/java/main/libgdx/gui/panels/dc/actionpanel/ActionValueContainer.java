@@ -43,7 +43,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public ActionValueContainer(TextureRegion texture, Runnable action) {
-        this(texture, null ,action);
+        this(texture, null, action);
     }
 
     public ActionValueContainer(TextureRegion texture, String value, Runnable action) {
@@ -52,11 +52,6 @@ public class ActionValueContainer extends ValueContainer {
 
     }
 
-
-    protected void initSize() {
-        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
-        imageContainer.top().right();
-    }
     public static boolean isDarkened() {
         return darkened;
     }
@@ -77,6 +72,11 @@ public class ActionValueContainer extends ValueContainer {
         else
             main.system.auxiliary.log.LogMaster.log(1, lastPressed.getName() +
              " pressed " + lastPressed);
+    }
+
+    protected void initSize() {
+        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
+        imageContainer.top().right();
     }
 
     public void bindAction(Runnable action) {
@@ -205,8 +205,8 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected void drawLightUnderlay(Batch batch) {
-        if (getParent()==null )
-            return ;
+        if (getParent() == null)
+            return;
         float regionHeight = lightUnderlay.getRegionHeight() * getUnderlayScale() * getImageContainer().getActor().getScaleY()
          * getImageContainer().getActor().getScaleY();
         float regionWidth = lightUnderlay.getRegionWidth() * getUnderlayScale() *

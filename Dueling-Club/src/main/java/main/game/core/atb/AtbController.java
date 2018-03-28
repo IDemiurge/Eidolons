@@ -61,14 +61,14 @@ public class AtbController implements Comparator<Unit> {
         if (timeElapsed > getDefaultTimePeriod() || checkAllInactive()) {
             timeElapsed = getDefaultTimePeriod(); //gradual time loop! For modes etc
         }
-        if (timeElapsed <= 0){
+        if (timeElapsed <= 0) {
             if (checkAllInactive())
-                timeElapsed= getDefaultTimePeriod();
-            int n = 100* OptionsMaster.getGameplayOptions().getIntValue(
-            (GAMEPLAY_OPTION.ATB_WAIT_TIME));
+                timeElapsed = getDefaultTimePeriod();
+            int n = 100 * OptionsMaster.getGameplayOptions().getIntValue(
+             (GAMEPLAY_OPTION.ATB_WAIT_TIME));
             WaitMaster.WAIT(n);
         }
-            this.processTimeElapsed(timeElapsed + 0.0001f);
+        this.processTimeElapsed(timeElapsed + 0.0001f);
         this.updateTimeTillTurn();
         this.updateTurnOrder();
         if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_IN_ROUND) {
@@ -79,12 +79,12 @@ public class AtbController implements Comparator<Unit> {
     }
 
     private float getDefaultTimePeriod() {
-        return TIME_IN_ROUND/10;
+        return TIME_IN_ROUND / 10;
     }
 
     private boolean checkAllInactive() {
         for (AtbUnit sub : getUnits()) {
-            if (sub.getInitiative()>0)
+            if (sub.getInitiative() > 0)
                 return false;
         }
         return true;
@@ -122,10 +122,9 @@ public class AtbController implements Comparator<Unit> {
 
     public void updateTimeTillTurn() {
         for (AtbUnit unit : this.unitsInAtb) {
-            if (unit.getInitiative()<=0){
+            if (unit.getInitiative() <= 0) {
                 unit.setTimeTillTurn(Float.MAX_VALUE);
-            } else
-            {
+            } else {
                 unit.setTimeTillTurn((TIME_IN_ROUND - unit.getAtbReadiness()) / unit.getInitiative());
 
             }
@@ -207,6 +206,8 @@ public class AtbController implements Comparator<Unit> {
         Unit getUnit();
 
         float getInitialInitiative();
+
+        int getDisplayedAtbReadiness();
     }
 
 

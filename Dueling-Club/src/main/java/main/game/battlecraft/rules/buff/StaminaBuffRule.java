@@ -17,9 +17,9 @@ import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 
 public class StaminaBuffRule extends DC_BuffRule {
-    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Exhausted.getName(),
-            MetaEnums.STD_BUFF_NAMES.Fatigued.getName(), MetaEnums.STD_BUFF_NAMES.Energized.getName()};
-    public static final  String[] formulas = {"1", "10", "150",};
+    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Exhausted.getName(),
+     MetaEnums.STD_BUFF_NAMES.Fatigued.getName(), MetaEnums.STD_BUFF_NAMES.Energized.getName()};
+    public static final String[] formulas = {"1", "10", "150",};
 
     public StaminaBuffRule(MicroGame game) {
         super(game);
@@ -40,11 +40,11 @@ public class StaminaBuffRule extends DC_BuffRule {
             }
             case 1: {
                 return new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
-                        getEffectFormula());
+                 getEffectFormula());
             }// ++ Endurance regen?
             case 2: {
                 return new ModifyValueEffect(PARAMS.DAMAGE_MOD, MOD.MODIFY_BY_PERCENT,
-                        getEffectFormula());
+                 getEffectFormula());
 
             }
         }
@@ -58,7 +58,7 @@ public class StaminaBuffRule extends DC_BuffRule {
             case 0:
             case 1: {
                 return "(" + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-" + formulas[1]
-                        + ")*5";
+                 + ")*5";
             }
             case 2: {
                 // "5*sqrt(" +

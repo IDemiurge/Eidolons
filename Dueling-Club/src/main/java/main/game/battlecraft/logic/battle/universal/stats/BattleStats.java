@@ -25,7 +25,7 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
     private DequeImpl<Unit> destroyedObjects = new DequeImpl<>();
 
     private Map<Unit, UnitStats> unitStatMap = new XLinkedMap<>();
-    private Map<DC_Player, PlayerStats>  playerStatMap= new XLinkedMap<>();
+    private Map<DC_Player, PlayerStats> playerStatMap = new XLinkedMap<>();
 
     public int getLevel() {
         return getIntValue(BATTLE_STATS.LEVEL);
@@ -80,14 +80,15 @@ public class BattleStats extends DataUnit<BATTLE_STATS> {
         return playerStatMap;
     }
 
-    public  PlayerStats getPlayerStats(DC_Player player) {
-        if (!getPlayerStatMap().containsKey(player)){
+    public PlayerStats getPlayerStats(DC_Player player) {
+        if (!getPlayerStatMap().containsKey(player)) {
             getPlayerStatMap().put(player, new PlayerStats(player));
         }
         return getPlayerStatMap().get(player);
     }
+
     public UnitStats getUnitStats(Unit unit) {
-        if (!getUnitStatMap().containsKey(unit)){
+        if (!getUnitStatMap().containsKey(unit)) {
             getUnitStatMap().put(unit, new UnitStats(unit));
         }
         return getUnitStatMap().get(unit);

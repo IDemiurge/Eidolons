@@ -24,13 +24,12 @@ public class LavaRule extends DamageCounterRule {
     private static final String DAMAGE_PER_COUNTER = "5";
     private static final String DURABILITY_PER_COUNTER = "(-0.5)";
     private static final String WEIGHT_PER_COUNTER = "1";
-    private static final String RESISTANCES ="Acid|Lightning|Cold" ;
+    private static final String RESISTANCES = "Acid|Lightning|Cold";
     private static final String RESIST_PER_COUNTER = "1";
 
     public LavaRule(DC_Game game) {
         super(game);
     }
-
 
 
     protected Effect getSpecialRoundEffects() {
@@ -43,6 +42,7 @@ public class LavaRule extends DamageCounterRule {
 
         // immolation???
     }
+
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.WEIGHT,
@@ -58,6 +58,7 @@ public class LavaRule extends DamageCounterRule {
     public COUNTER getCounter() {
         return COUNTER.Lava;
     }
+
     @Override
     public DAMAGE_TYPE getDamageType() {
         return GenericEnums.DAMAGE_TYPE.FIRE;

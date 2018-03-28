@@ -7,7 +7,7 @@ import main.entity.Ref.KEYS;
 import main.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
 
-public class DurabilityReductionEffect extends MicroEffect  implements OneshotEffect {
+public class DurabilityReductionEffect extends MicroEffect implements OneshotEffect {
 
     private Boolean attacker;
     private Integer dmg_amount;

@@ -30,7 +30,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
     public static final FACING_DIRECTION SECOND_PLAYER_SIDE = FACING_DIRECTION.SOUTH;
     public static final DIRECTION DEFAULT_CENTER_SPAWN_SIDE = DIRECTION.LEFT;
     private FACING_DIRECTION DEFAULT_ENEMY_SIDE = RandomWizard.random() ? FACING_DIRECTION.EAST
-            : FACING_DIRECTION.WEST;
+     : FACING_DIRECTION.WEST;
     // = FACING_DIRECTION.NORTH;
     private int VERTICAL_MAX_UNIT_PER_ROW = 7;
     private int HORIZONTAL_MAX_UNIT_PER_ROW = 5;
@@ -62,7 +62,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
-                    .getMiddleIndex(true));
+             .getMiddleIndex(true));
         } else {
             FACING_DIRECTION side = ArenaPositioner.DEFAULT_PLAYER_SIDE;
 //            if ( getSpawningSide() != null) {
@@ -98,7 +98,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
             // forcedSide = null;
         } else {
             side = new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
-                    wave.getProperty(PROPS.SPAWNING_SIDE));
+             wave.getProperty(PROPS.SPAWNING_SIDE));
             if (side == null) {
                 nextSide();
             }
@@ -108,7 +108,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         int maxUnitsPerRow = getMaxUnitsPerRow(side);
 
         List<Coordinates> list = getCoordinatesForUnits(presetGroupTypes, custom,
-                presetCenterCoordinate, maxUnitsPerRow);
+         presetCenterCoordinate, maxUnitsPerRow);
 
         List<ObjAtCoordinate> group = new ArrayList<>();
         int i = 0;
@@ -196,7 +196,7 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         boolean vertical = !side.isVertical();
         Coordinates c = null;
         while (row < ((vertical) ? GuiManager.getBF_CompDisplayedCellsY() : GuiManager
-                .getBF_CompDisplayedCellsX())) {
+         .getBF_CompDisplayedCellsX())) {
             c = getCoordinateInRow(row, side, maxUnitsPerRow);
             if (c != null) {
                 break;
@@ -208,8 +208,8 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
     public Coordinates getCoordinatesForNewUnitInGroup(FACING_DIRECTION side, ObjType type) {
         Coordinates c = // getNextCoordinate(side, getMaxUnitsPerRow(side));
-                // [QUICK FIX]
-                getFirstLayerCenterCoordinate(unitCache.keySet().iterator().next(), type);
+         // [QUICK FIX]
+         getFirstLayerCenterCoordinate(unitCache.keySet().iterator().next(), type);
         unitGroups.get(side).put(c, type);
         // if center?
 //        facingMap.put(c,
@@ -305,11 +305,11 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
         boolean vertical = !facing.isVertical();
         boolean invert = !facing.isCloserToZero();
         int index = PositionMaster.getMiddleIndex(vertical);
-        int rowIndex = (invert) ? ((!vertical) ? getGame().getDungeonMaster().getDungeonWrapper(). getHeight()
-                : getGame().getDungeonMaster().getDungeonWrapper(). getWidth())
-                - row : row;
+        int rowIndex = (invert) ? ((!vertical) ? getGame().getDungeonMaster().getDungeonWrapper().getHeight()
+         : getGame().getDungeonMaster().getDungeonWrapper().getWidth())
+         - row : row;
         Coordinates coordinate = (vertical) ? new Coordinates(rowIndex, index) : new Coordinates(
-                index, rowIndex);
+         index, rowIndex);
         if (checkCanPlaceUnitOnCoordinate(coordinate, null)) {
             return coordinate;
         }
@@ -329,9 +329,9 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
                 c += i;
             }
             if (invert) {
-                c = ((vertical) ? getGame().getDungeonMaster().getDungeonWrapper(). getHeight() : getGame()
-                        .getDungeonMaster().getDungeonWrapper(). getWidth())
-                        - c;
+                c = ((vertical) ? getGame().getDungeonMaster().getDungeonWrapper().getHeight() : getGame()
+                 .getDungeonMaster().getDungeonWrapper().getWidth())
+                 - c;
             }
             coordinate = (vertical) ? new Coordinates(rowIndex, c) : new Coordinates(c, rowIndex);
             if (checkCanPlaceUnitOnCoordinate(coordinate, null)) {
@@ -347,12 +347,12 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
     private Coordinates getAdjacentCoordinateInRow(Coordinates c) {
         boolean clockwise = RandomWizard.random();
         Coordinates adjacentCoordinate = c.getAdjacentCoordinate(DirectionMaster.rotate90(side
-                .getDirection(), clockwise));
+         .getDirection(), clockwise));
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, null)) {
             return adjacentCoordinate;
         }
         adjacentCoordinate = c.getAdjacentCoordinate(DirectionMaster.rotate90(side.getDirection(),
-                !clockwise));
+         !clockwise));
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, null)) {
             return adjacentCoordinate;
         }
@@ -377,12 +377,12 @@ public class ArenaPositioner extends Positioner<ArenaDungeon> {
 
     public FACING_DIRECTION getClosestEdgeY(Coordinates coordinates) {
         return coordinates.y < getGame().getDungeon().getCellsY() / 2 ? FACING_DIRECTION.NORTH
-                : FACING_DIRECTION.SOUTH;
+         : FACING_DIRECTION.SOUTH;
     }
 
     public FACING_DIRECTION getClosestEdgeX(Coordinates coordinates) {
         return coordinates.x < getGame().getDungeon().getCellsX() / 2 ? FACING_DIRECTION.WEST
-                : FACING_DIRECTION.EAST;
+         : FACING_DIRECTION.EAST;
     }
 
     public Spawner getSpawner() {

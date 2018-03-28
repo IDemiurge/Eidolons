@@ -122,7 +122,7 @@ public class TextureCache {
         }
 
         region = new TextureRegion(textureCache._getOrCreate(path));
-        if (region.getTexture()!=emptyTexture)
+        if (region.getTexture() != emptyTexture)
             regionCache.put(path, region);
         return region;
     }
@@ -186,6 +186,10 @@ public class TextureCache {
         if (path.endsWith("/"))
             return path.substring(0, path.length() - 1);
         return path;
+    }
+
+    public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
+        return new TextureRegion(GdxImageTransformer.size(path, iconSize, true));
     }
 
     private String getAltTexturePath(String filePath) {
@@ -269,10 +273,6 @@ public class TextureCache {
 
             }
         return t;
-    }
-
-    public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
-        return new TextureRegion(GdxImageTransformer.size(path, iconSize, true));
     }
 
 }

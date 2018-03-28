@@ -273,9 +273,10 @@ public class DC_Game extends MicroGame {
             dungeonMaster.getExplorationMaster().init();
 
         }
-        startGameLoop(first);
-
         visionMaster.refresh();
+        startGameLoop(first);
+        getManager().reset();
+
 
         Chronos.logTimeElapsedForMark("GAME_START");
     }

@@ -19,15 +19,15 @@ import java.util.List;
  */
 public class TexturePackerLaunch {
     public static final String ATLAS_EXTENSION = ".txt";
-    public static final String WORKSPACE_PATH_POTIONS = PathFinder.getImagePath()+
+    public static final String WORKSPACE_PATH_POTIONS = PathFinder.getImagePath() +
      PathFinder.getPotionsAnimPath() + "processing//";
 
-    public static final String WORKSPACE_PATH = PathFinder.getImagePath()+PathFinder.getWeaponAnimPath() + "workspace//";
+    public static final String WORKSPACE_PATH = PathFinder.getImagePath() + PathFinder.getWeaponAnimPath() + "workspace//";
     public static final boolean TRIM = true;
     public static final boolean POTIONS = false;
-    private static final String OUTPUT_DIR = PathFinder.getImagePath()+
+    private static final String OUTPUT_DIR = PathFinder.getImagePath() +
      PathFinder.getWeaponAnimPath() + "atlas//";
-    private static final String OUTPUT_DIR_POTION = PathFinder.getImagePath()+
+    private static final String OUTPUT_DIR_POTION = PathFinder.getImagePath() +
      PathFinder.getPotionsAnimPath() + "atlas//";
 
     static String packs[] = {
@@ -59,15 +59,15 @@ public class TexturePackerLaunch {
 
     public static void main(String[] args) {
 //        packImages(mainFolders);
-        String [] chosen =packs;
+        String[] chosen = packs;
         GuiManager.init();
-        if (CoreEngine.isExe() || CoreEngine.isJar() )
-        chosen =
-         ListChooser.chooseFile(POTIONS? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
-          .split(";");
+        if (CoreEngine.isExe() || CoreEngine.isJar())
+            chosen =
+             ListChooser.chooseFile(POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true)
+              .split(";");
         else if (DialogMaster.confirm("Choose?")) {
             chosen =
-             ListChooser.chooseFile(POTIONS? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true )
+             ListChooser.chooseFile(POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH, null, SELECTION_MODE.MULTIPLE, true)
               .split(";");
         }
         packWeaponSprites(chosen);
@@ -104,12 +104,12 @@ public class TexturePackerLaunch {
 
     public static void packWeaponSprites(String[] args) {
         Settings settings = getSetting();
-        String outputDir =POTIONS? OUTPUT_DIR_POTION: OUTPUT_DIR;
+        String outputDir = POTIONS ? OUTPUT_DIR_POTION : OUTPUT_DIR;
         for (String sub : args) {
-            String dir =POTIONS? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH
+            String dir = POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH
              + sub;
             List<File> subFolders = FileManager.getFilesFromDirectory(dir, true);
-            boolean processed=false;
+            boolean processed = false;
             for (File subFolder : subFolders) {
                 if (!subFolder.isDirectory())
                     continue;
@@ -122,11 +122,11 @@ public class TexturePackerLaunch {
                 TexturePacker.process(settings, inputDir, outputDir, packFileName);
                 processed = true;
             }
-            if (!processed){
+            if (!processed) {
                 TexturePacker.process(settings, dir, outputDir, sub);
             }
         }
-        return ;
+        return;
 //            TexturePacker.process(inputDir, outputDir, packFileName);
     }
 

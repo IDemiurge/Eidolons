@@ -61,14 +61,14 @@ public class MainMenu extends G_Panel {
 
         int height = (VISUALS.MENU_ITEM.getHeight() + Y_GAP) * length;
         int centeredHeight = MigMaster.getCenteredPosition((int) GuiManager.DEF_DIMENSION
-                .getHeight(), height);
+         .getHeight(), height);
         return centeredHeight + Y_OFFSET;
     }
 
     private void addItem(MAIN_MENU_ITEMS item) {
         String pos = "pos "
-                + MigMaster.getCenteredPosition(FRAME.getWidth(), VISUALS.MENU_ITEM.getWidth())
-                + " " + y;
+         + MigMaster.getCenteredPosition(FRAME.getWidth(), VISUALS.MENU_ITEM.getWidth())
+         + " " + y;
         itemPanel.add(getItemComp(item), pos);
         y += VISUALS.MENU_ITEM.getHeight() + Y_GAP;
 

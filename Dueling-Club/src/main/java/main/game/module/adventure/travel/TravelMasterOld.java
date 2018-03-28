@@ -31,7 +31,7 @@ public class TravelMasterOld {
 
     public static int calculateRouteLength(Route route) {
         int distance = PositionMaster.getDistance(route.getOrigin().getCoordinates(), route
-                .getDestination().getCoordinates());
+         .getDestination().getCoordinates());
         float scale = route.getRef().getRegion().getMilePerPixel();
 
         return Math.round(distance * scale);
@@ -78,7 +78,7 @@ public class TravelMasterOld {
 
     private static boolean checkAvailableRoute(MacroParty party, Route route) {
         if (route.getOrigin() == party.getCurrentLocation()
-                || route.getDestination() == party.getCurrentLocation()) {
+         || route.getDestination() == party.getCurrentLocation()) {
             return true;
         }
         for (Route r : route.getLinkedRoutes()) {
@@ -131,9 +131,9 @@ public class TravelMasterOld {
         int mod = route.getSpeedMod();
         mod = mod - mod * route.getBendFactor() / 100;
         Boolean back = party // TODO
-                .checkBool(DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL);
+         .checkBool(DYNAMIC_BOOLS.BACKWARDS_ROUTE_TRAVEL);
         int leaguesTraveled = party.getIntParam(MACRO_PARAMS.TRAVEL_SPEED) * hoursToTravel * mod
-                / 100;
+         / 100;
         int progress = party.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS);
         int progressPercentageMade = 100 * leaguesTraveled / length;
         TimeMaster.hoursPassed(1);
@@ -151,7 +151,7 @@ public class TravelMasterOld {
             boolean result = EncounterMaster.resolveEncounter(e);
             if (result) {
                 progress += party.getIntParam(MACRO_PARAMS.TRAVEL_SPEED) * mod / 100
-                        * hoursToTravel;
+                 * hoursToTravel;
             } else {
                 return false;
             }
@@ -166,7 +166,7 @@ public class TravelMasterOld {
             int progressPerc = 100 * route.getLength() / progress;
             route.setParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE, progressPerc);
             Journal.logTravelProgress(RandomWizard.random(), RandomWizard.random(),
-                    leaguesTraveled, progress, route, party);
+             leaguesTraveled, progress, route, party);
             party.setParam(MACRO_PARAMS.ROUTE_PROGRESS, progress);
             // backwards? undo progress if necessary... negative progress
             // for
@@ -179,9 +179,9 @@ public class TravelMasterOld {
             route.setParam(MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE, progressPerc);
             Place place = back ? route.getOrigin() : route.getDestination();
             int hoursLeft = (progress - length) * TimeMaster.getHoursPerTurn()
-                    / party.getIntParam(MACRO_PARAMS.TRAVEL_SPEED);
+             / party.getIntParam(MACRO_PARAMS.TRAVEL_SPEED);
             Journal.logTravelComplete(RandomWizard.random(), RandomWizard.random(), back ? route
-                    .getOrigin() : route.getDestination(), route, party, hoursLeft);
+             .getOrigin() : route.getDestination(), route, party, hoursLeft);
             // TimeMaster.setTimeRemaining(hoursLeft);
             enterPlace(party, place);
             // party.useTime(hoursLeft);
@@ -242,7 +242,7 @@ public class TravelMasterOld {
         mod = Math.min(mod, 200);
 
         boolean flyer = entity.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
-                + UnitEnums.STANDARD_PASSIVES.FLYING);
+         + UnitEnums.STANDARD_PASSIVES.FLYING);
         float speed = new Float(entity.getIntParam(MACRO_PARAMS.TRAVEL_SPEED, true)); //
         if (speed == 0) {
             speed = DEFAULT_TRAVEL_SPEED;

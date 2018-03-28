@@ -88,10 +88,10 @@ public class GammaMaster {
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_LIGHT type) {
 
-        if (type == SHADE_LIGHT.BLACKOUT){
+        if (type == SHADE_LIGHT.BLACKOUT) {
             return getBlackoutAlpha(x, y);
         }
-        if (type == SHADE_LIGHT.HIGLIGHT){
+        if (type == SHADE_LIGHT.HIGLIGHT) {
             return getHiglightAlpha(x, y);
         }
         Unit unit = Eidolons.game.getManager().getMainHero();
@@ -127,7 +127,7 @@ public class GammaMaster {
             case GAMMA_LIGHT:
 //                if (gamma < 2)
 //                    return 0;
-                alpha = (float) Math.min(Math.sqrt(gamma*2), gamma/3);
+                alpha = (float) Math.min(Math.sqrt(gamma * 2), gamma / 3);
                 alpha = Math.min(alpha, 0.5f);
                 break;
             case LIGHT_EMITTER:
@@ -168,8 +168,8 @@ public class GammaMaster {
             Entrance exit = ((Location) master.getGame().getDungeonMaster().
              getDungeonWrapper()).getMainExit();
             if (exit != null) {
-                if (exit.getX()==x)
-                    if (exit.getY()==y)
+                if (exit.getX() == x)
+                    if (exit.getY() == y)
                         return 1;
             }
         }
@@ -204,9 +204,9 @@ public class GammaMaster {
                 }
 
             }
-        if (cell.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+        if (cell.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
             return 0;
-        if (cell.getOutlineType()== OUTLINE_TYPE.BLOCKED_OUTLINE)
+        if (cell.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
             return 0;
 
 //        Unit unit =  master.getSeeingUnit();

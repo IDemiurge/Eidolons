@@ -38,9 +38,9 @@ public class PortraitChoiceView extends ChoiceView<String> {
 
     protected PagedSelectionPanel<String> createSelectionComponent() {
         pages = new PagedSelectionPanel<String>(this, getPageSize(), getItemSize(),
-                getColumnsCount(), isVertical(), // TODO vertical
-                // fix
-                PagedSelectionPanel.VERSION) {
+         getColumnsCount(), isVertical(), // TODO vertical
+         // fix
+         PagedSelectionPanel.VERSION) {
             @Override
             protected boolean isControlPosInverted() {
                 return true;
@@ -60,12 +60,12 @@ public class PortraitChoiceView extends ChoiceView<String> {
 
     protected String getOkButtonPos() {
         return "@id ok, pos pages.x2+width "
-                + MigMaster.getCenteredHeight(okButton.getVisuals().getHeight());
+         + MigMaster.getCenteredHeight(okButton.getVisuals().getHeight());
     }
 
     protected String getBackButtonPos() {
         return "@id back, pos pages.x-width "
-                + MigMaster.getCenteredHeight(backButton.getVisuals().getHeight());
+         + MigMaster.getCenteredHeight(backButton.getVisuals().getHeight());
     }
 
     protected boolean isVertical() {

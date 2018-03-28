@@ -34,16 +34,16 @@ public class MoistRule extends DC_CounterRule {
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.LIGHTNING_RESISTANCE,
-                MOD.MODIFY_BY_CONST, getNumberOfCounters(unit) + "* "
-                + LIGHTNING_RES_PER_COUNTER), new ModifyValueEffect(
-                PARAMS.COLD_RESISTANCE, MOD.MODIFY_BY_CONST,
-                getNumberOfCounters(unit) + "* " + COLD_RES_PER_COUNTER),
-                new ModifyValueEffect(PARAMS.FIRE_RESISTANCE,
-                        MOD.MODIFY_BY_CONST, getNumberOfCounters(unit)
-                        + "* " + FIRE_RES_PER_COUNTER),
-                new ModifyValueEffect(PARAMS.WEIGHT,
-                        MOD.MODIFY_BY_CONST, getNumberOfCounters(unit)
-                        + "* " + WEIGHT_PER_COUNTER));
+         MOD.MODIFY_BY_CONST, getNumberOfCounters(unit) + "* "
+         + LIGHTNING_RES_PER_COUNTER), new ModifyValueEffect(
+         PARAMS.COLD_RESISTANCE, MOD.MODIFY_BY_CONST,
+         getNumberOfCounters(unit) + "* " + COLD_RES_PER_COUNTER),
+         new ModifyValueEffect(PARAMS.FIRE_RESISTANCE,
+          MOD.MODIFY_BY_CONST, getNumberOfCounters(unit)
+          + "* " + FIRE_RES_PER_COUNTER),
+         new ModifyValueEffect(PARAMS.WEIGHT,
+          MOD.MODIFY_BY_CONST, getNumberOfCounters(unit)
+          + "* " + WEIGHT_PER_COUNTER));
 
     }
 
@@ -65,12 +65,11 @@ public class MoistRule extends DC_CounterRule {
     }
 
 
-
-
     @Override
     public COUNTER getCounter() {
         return COUNTER.Moist;
     }
+
     @Override
     public int getCounterNumberReductionPerTurn(Unit unit) {
         if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {

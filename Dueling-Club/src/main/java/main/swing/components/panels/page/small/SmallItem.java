@@ -56,7 +56,7 @@ public class SmallItem extends JLabel {
         } else {
             if (icon.getIconHeight() > GuiManager.getTinyObjSize()) {
                 icon = new ImageIcon(ImageManager.getSizedVersion(icon.getImage(), new Dimension(
-                        GuiManager.getTinyObjSize(), GuiManager.getTinyObjSize())));
+                 GuiManager.getTinyObjSize(), GuiManager.getTinyObjSize())));
             }
             setIcon(icon);
         }

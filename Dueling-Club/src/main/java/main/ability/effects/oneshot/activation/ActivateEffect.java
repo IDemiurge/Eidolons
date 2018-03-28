@@ -12,7 +12,7 @@ public class ActivateEffect extends DC_Effect implements OneshotEffect {
     private boolean spell;
     private String name;
     private boolean free;
-    private KEYS sourceKey=KEYS.SOURCE;
+    private KEYS sourceKey = KEYS.SOURCE;
 
     public ActivateEffect(String name, KEYS key, boolean spell) {
         this.name = name;

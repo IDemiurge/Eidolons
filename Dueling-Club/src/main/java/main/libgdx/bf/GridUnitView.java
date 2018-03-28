@@ -211,9 +211,10 @@ public class GridUnitView extends UnitView {
         this.outlineSupplier = outlineSupplier;
         initiativeQueueUnitView.setOutlineSupplier(outlineSupplier);
     }
+
     protected void updateVisible() {
-        if (isIgnored())
-            return;
+//        if (isIgnored()) //TODO [quick fix] this should actually be on for speed, but somehow in-camera views get ignored
+//            return;
         if (outline != null) {
             if (emblemImage != null)
                 emblemImage.setVisible(false);
@@ -331,10 +332,12 @@ public class GridUnitView extends UnitView {
         if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setTeamColor(teamColor);
     }
+
     @Override
     public boolean isCachedPosition() {
         return isCellBackground();
     }
+
     @Override
     public void setTeamColorBorder(boolean teamColorBorder) {
         super.setTeamColorBorder(teamColorBorder);

@@ -11,7 +11,7 @@ import java.util.Map;
 public class Warband {
     Map<FORMATION, Party> formationsMap;
 
-    public Warband(){
+    public Warband() {
     }
 
     public Map<FORMATION, Party> getFormationsMap() {

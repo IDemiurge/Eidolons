@@ -59,21 +59,6 @@ public class BuffMaster extends Master {
 
     }
 
-    public void atbTimeElapsed(Float time) {
-        for (Obj sub : getBuffs()) {
-            BuffObj buff = ((BuffObj) sub);
-            if (buff.isDead())
-                continue;
-            buff.timeElapsed(time);
-
-        }
-
-    }
-
-    private Collection<Obj> getBuffs() {
-        return state.getObjMaps().get(DC_TYPE.BUFFS).values();
-    }
-
     public static boolean checkBuffDispelable(BuffObj buff) {
         if (buff.getBuffType() == GenericEnums.BUFF_TYPE.SPELL) {
             if (!buff.isPermanent()) {
@@ -89,7 +74,7 @@ public class BuffMaster extends Master {
     public static List<ObjType> getBuffsFromSpell(DC_ActiveObj spell) {
         List<ObjType> buffTypes = new ArrayList<>();
         for (Effect e : EffectFinder.getEffectsOfClass(spell.getAbilities(),
-                AddBuffEffect.class)) {
+         AddBuffEffect.class)) {
             ObjType buffType = ((AddBuffEffect) e).getBuffTypeLazily();
 
             if (buffType != null) {
@@ -98,6 +83,21 @@ public class BuffMaster extends Master {
         }
 
         return buffTypes;
+    }
+
+    public void atbTimeElapsed(Float time) {
+        for (Obj sub : getBuffs()) {
+            BuffObj buff = ((BuffObj) sub);
+            if (buff.isDead())
+                continue;
+            buff.timeElapsed(time);
+
+        }
+
+    }
+
+    private Collection<Obj> getBuffs() {
+        return state.getObjMaps().get(DC_TYPE.BUFFS).values();
     }
 
     public void checkForDispels() {
@@ -183,7 +183,7 @@ public class BuffMaster extends Master {
                         LogMaster.error("APPLY THRU ERROR: " + effect + " HAS NO CONSTRUCT");
                     } else {
                         createBuff(type, active, player, REF, copy, duration, retainCondition)
-                                .setAppliedThrough(true);
+                         .setAppliedThrough(true);
                     }
                 }
             }
@@ -203,7 +203,7 @@ public class BuffMaster extends Master {
         REF.setBasis(obj.getId());
         REF.setTarget(obj.getId());
         createBuff(buff.getType(), buff.getActive(), buff.getOwner(), REF, buff.getEffect(), buff
-                .getDuration(), Conditions.join(buff.getRetainConditions(), retainCondition));
+         .getDuration(), Conditions.join(buff.getRetainConditions(), retainCondition));
 
     }
 

@@ -5,7 +5,7 @@ import main.ability.effects.TriggeredEffect;
 import main.system.util.Unimplemented;
 
 @Unimplemented
-public class RedirectEffect extends MicroEffect implements TriggeredEffect{
+public class RedirectEffect extends MicroEffect implements TriggeredEffect {
 
     private BIND_FILTER filter;
 

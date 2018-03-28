@@ -8,10 +8,10 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.item.DC_WeaponObj;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.active.action.ActionActiveMaster;
 import main.entity.handlers.active.action.ActionExecutor;
+import main.entity.item.DC_WeaponObj;
 import main.entity.type.ObjType;
 import main.game.battlecraft.ai.tools.target.EffectFinder;
 import main.game.core.game.MicroGame;
@@ -45,15 +45,15 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     @Override
     public DC_WeaponObj getActiveWeapon() {
-            if (isUnarmed())
-                return getOwnerObj().getNaturalWeapon(isOffhand());
+        if (isUnarmed())
+            return getOwnerObj().getNaturalWeapon(isOffhand());
         return super.getActiveWeapon();
     }
 
 
     public String getModeBuffName() {
-        if (getModeEffect()==null )
-            return null ;
+        if (getModeEffect() == null)
+            return null;
         return getModeEffect().getMode().getBuffName();
     }
 
@@ -92,7 +92,7 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     private void initActionType() {
         actionType = new EnumMaster<ACTION_TYPE>().retrieveEnumConst(ACTION_TYPE.class,
-                getProperty(G_PROPS.ACTION_TYPE));
+         getProperty(G_PROPS.ACTION_TYPE));
 
     }
 
@@ -110,8 +110,9 @@ public class DC_UnitAction extends DC_ActiveObj {
 
     public boolean isUnarmed() {
         return checkProperty(G_PROPS.ACTION_TAGS, ACTION_TAGS.UNARMED.toString())
-         || checkGroup("Creature")|| checkGroup("Unarmed");
+         || checkGroup("Creature") || checkGroup("Unarmed");
     }
+
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.ACTION_TAGS, ActionEnums.ACTION_TAGS.RANGED_TOUCH.toString());
     }

@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 public class UnitData extends DataUnit<PARTY_VALUE> {
 
 
-    public static final Boolean FORMAT =false ;
+    public static final Boolean FORMAT = false;
 
     public UnitData(Party party) {
-        this(PARTY_VALUE.MEMBERS+
-          DataUnitFactory.getPairSeparator(FORMAT)+
+        this(PARTY_VALUE.MEMBERS +
+         DataUnitFactory.getPairSeparator(FORMAT) +
          StringMaster.joinList(party.getMembers().stream().
-         map(s -> s.getName()).collect(Collectors.toList())
+           map(s -> s.getName()).collect(Collectors.toList())
 //         ,
-        )+ DataUnitFactory.getSeparator(FORMAT));
+         ) + DataUnitFactory.getSeparator(FORMAT));
     }
 
     public UnitData(String data) {
@@ -63,15 +63,15 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
 
 
      */
-    public enum PARTY_VALUE{
-     LEADER, MEMBERS,
-    PLAYER_NAME,
+    public enum PARTY_VALUE {
+        LEADER, MEMBERS,
+        PLAYER_NAME,
 
-    SPAWN_SIDE,
-     COORDINATES,
-    FACING,
-    LEVEL,
-    FACING_TEMPLATE,
+        SPAWN_SIDE,
+        COORDINATES,
+        FACING,
+        LEVEL,
+        FACING_TEMPLATE,
 
     }
 

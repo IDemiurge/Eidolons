@@ -31,9 +31,9 @@ public class DialogueWizard {
             });
         }
         GuiEventManager.trigger(GuiEventType.DIALOGUE_UPDATED,
-                new DialogueDataSource(
-                        displayedSpeech,
-                        displayedOptions));
+         new DialogueDataSource(
+          displayedSpeech,
+          displayedOptions));
     }
 
     public void start() {

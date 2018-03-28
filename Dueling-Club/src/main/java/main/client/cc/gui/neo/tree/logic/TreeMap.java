@@ -11,8 +11,8 @@ import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +125,7 @@ public class TreeMap {
         HT_Node replaced = getNodeMap().put(new PointX(point.x, point.y), node);
         if (replaced != null) {
             LogMaster.log(1, " !!! " + node + " replaces " + replaced
-                    + " !!! ");
+             + " !!! ");
         }
         getMouseMap().put(new Rectangle(point.x, point.y, size, size), node);
     }
@@ -304,7 +304,7 @@ public class TreeMap {
         public Image getSelectedImage() {
             if (imageSelected == null) {
                 imageSelected = ImageManager.getImage("UI\\components\\ht\\selected\\" + "LINK_"
-                        + name() + " s.png");
+                 + name() + " s.png");
             }
             return imageSelected;
         }
@@ -312,7 +312,7 @@ public class TreeMap {
         public Image getDarkenedImage() {
             if (imageDarkened == null) {
                 imageDarkened = ImageManager.getImage("UI\\components\\ht\\darkened\\" + "LINK_"
-                        + name() + " d.png");
+                 + name() + " d.png");
             }
             return imageDarkened;
         }
@@ -320,7 +320,7 @@ public class TreeMap {
         public Image getAvailableImage() {
             if (imageSelected == null) {
                 imageSelected = ImageManager.getImage("UI\\components\\ht\\selected\\" + "LINK_"
-                        + name() + " s.png");
+                 + name() + " s.png");
             }
             return imageSelected;
         }

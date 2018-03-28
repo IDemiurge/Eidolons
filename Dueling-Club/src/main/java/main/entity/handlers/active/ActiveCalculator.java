@@ -23,19 +23,19 @@ public class ActiveCalculator extends EntityCalculator<DC_ActiveObj> {
             return 0;
         }
         return getEntity().getCosts().getCost(PARAMS.C_N_OF_ACTIONS).getPayment()
-                .getAmountFormula().getInt(getRef())
-                * getEntity().getOwnerObj().getIntParam(PARAMS.INITIATIVE_MODIFIER);
+         .getAmountFormula().getInt(getRef())
+         * getEntity().getOwnerObj().getIntParam(PARAMS.INITIATIVE_MODIFIER);
 
     }
 
     public int getCritOrDodgeChance(DC_Obj target) {
-        if (!getEntity().getChecker(). isAttackGeneric())
+        if (!getEntity().getChecker().isAttackGeneric())
             if (target instanceof BattleFieldObject)
-                if (getEntity().getChecker(). isAttack()) {
+                if (getEntity().getChecker().isAttack()) {
 //            Attack attack = DC_AttackMaster.getAttackFromAction(getEntity());
 //             new AttackCalculator(attack, true).getCritOrDodgeChance();
-           return  DefenseVsAttackRule.getCritOrDodgeChance(getEntity(), (BattleFieldObject) target);
-        }
+                    return DefenseVsAttackRule.getCritOrDodgeChance(getEntity(), (BattleFieldObject) target);
+                }
         return 100;
     }
 }

@@ -7,7 +7,7 @@ public class UiStage extends StageX {
 
     private boolean active;
 
-    public boolean isActive(){
+    public boolean isActive() {
         return active;
     }
 

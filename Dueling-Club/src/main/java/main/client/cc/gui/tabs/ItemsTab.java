@@ -48,7 +48,7 @@ public class ItemsTab extends HeroItemTab {
     @Override
     protected ItemListManager getItemManager() {
 //        if (game.isSimulation())
-            return super.getItemManager();
+        return super.getItemManager();
 //        return game.getInventoryTransactionManager().getInvListManager(); for swing
     }
 
@@ -74,8 +74,6 @@ public class ItemsTab extends HeroItemTab {
         // list.addMouseListener(this);
 
     }
-
-
 
 
     private void addItemSlots() {
@@ -183,7 +181,6 @@ public class ItemsTab extends HeroItemTab {
     protected PROPERTY getPROP2() {
         return PROPS.QUICK_ITEMS;
     }
-
 
 
 }

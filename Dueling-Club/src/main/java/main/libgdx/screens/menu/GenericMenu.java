@@ -31,10 +31,6 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
     private T previousItem;
     private List<MenuItem<T>> defaultItems;
 
-    public Map<T, TextButton> getCache() {
-        return cache;
-    }
-
     public GenericMenu() {
         Drawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
          "UI", "components", "2017", "game menu", "background.png"));
@@ -43,11 +39,15 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
 
     }
 
+    public Map<T, TextButton> getCache() {
+        return cache;
+    }
+
     protected List<MenuItem<T>> getItems() {
-        if (currentItem != null){
+        if (currentItem != null) {
             MenuItem[] items = currentItem.getItems();
             List<MenuItem<T>> list = new ArrayList<>();
-            for (MenuItem sub: items)
+            for (MenuItem sub : items)
                 list.add(sub);
             list.add(new MenuItem<T>() {
                 @Override
@@ -68,12 +68,13 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
     }
 
     protected T[] getBackItems() {
-        if (previousItem==null )
+        if (previousItem == null)
             return getDefaultItems().toArray((T[]) new MenuItem[getDefaultItems().size()]);
         return previousItem.getItems();
     }
 
     protected abstract List<MenuItem<T>> getFullItemList();
+
     protected List<MenuItem<T>> getDefaultItems() {
         if (defaultItems == null) {
             defaultItems = getFullItemList();
@@ -108,10 +109,10 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
             addNormalSize(button).top().pad(10, 10, 10, 10);
             row();
         }
-        float top= getTopPadding(items.size());
-        float left= getLeftPadding();
-        float botton= getBottonPadding(items.size());
-        float right= getRightPadding();
+        float top = getTopPadding(items.size());
+        float left = getLeftPadding();
+        float botton = getBottonPadding(items.size());
+        float right = getRightPadding();
         pad(top, left, botton, right);
 
 
@@ -135,12 +136,12 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
 
     protected TextButton getButton(T sub, String name) {
         TextButton button = getCache().get(sub);
-        if (button == null || sub== null )
-        {  button = new TextButton((name),
+        if (button == null || sub == null) {
+            button = new TextButton((name),
              StyleHolder.getTextButtonStyle(getButtonStyle(),
               getFontStyle(), getFontColor(), getFontSize()));
-        getCache().put(sub, button);
-        button.addListener(getClickListener(sub));
+            getCache().put(sub, button);
+            button.addListener(getClickListener(sub));
         }
         return button;
     }
@@ -164,7 +165,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
                 if (currentItem == sub) {
                     return true; //why duplicate events?!
                 }
-                if (sub==null ){
+                if (sub == null) {
                     setCurrentItem(previousItem);
                     setPreviousItem(null);
                     updateRequired = true;
@@ -176,9 +177,9 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
                     return true;
                 }
                 if (result) {
-                        setPreviousItem(currentItem);
-                        setCurrentItem(sub);
-                        updateRequired = true;
+                    setPreviousItem(currentItem);
+                    setCurrentItem(sub);
+                    updateRequired = true;
                 }
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -208,18 +209,18 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
     }
 
     public void setCurrentItem(T currentItem) {
-        main.system.auxiliary.log.LogMaster.log(1,"setCurrentItem " +
+        main.system.auxiliary.log.LogMaster.log(1, "setCurrentItem " +
          this.currentItem +
          " to " +
-         currentItem );
+         currentItem);
         this.currentItem = currentItem;
     }
 
     public void setPreviousItem(T previousItem) {
-        main.system.auxiliary.log.LogMaster.log(1,"setPreviousItem " +
+        main.system.auxiliary.log.LogMaster.log(1, "setPreviousItem " +
          this.previousItem +
          " to " +
-         previousItem );
+         previousItem);
         this.previousItem = previousItem;
     }
 }

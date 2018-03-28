@@ -12,6 +12,7 @@ public class ManualDetails extends ItemInfoPanel {
     public ManualDetails(SelectableItemData item) {
         super(item);
     }
+
     protected String getEmptyImagePath() {
         return VISUALS.QUESTION.getImgPath();
     }

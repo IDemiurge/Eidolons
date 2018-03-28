@@ -97,7 +97,7 @@ public class TreeControlPanel extends G_Panel {
 
     private Component createButton(final TREE_CONTROLS c) {
         return new CustomButton(VISUALS.VALUE_BOX_TINY, StringMaster.getWellFormattedString(c
-                .toString())) {
+         .toString())) {
             @Override
             public void handleAltClick() {
                 handleControl(c, true);
@@ -133,12 +133,12 @@ public class TreeControlPanel extends G_Panel {
                         SkillTreeView skillTreeView = (SkillTreeView) view;
 
                         String enums = new ListChooser(SELECTION_MODE.MULTIPLE, MASTERY.class)
-                                .choose();
+                         .choose();
                         if (StringMaster.isEmpty(enums)) {
                             return;
                         }
                         List<MASTERY> list = new EnumMaster<MASTERY>().getEnumList(MASTERY.class,
-                                enums);
+                         enums);
 
                         skillTreeView.setWorkspace(list.toArray(new MASTERY[list.size()]));
 

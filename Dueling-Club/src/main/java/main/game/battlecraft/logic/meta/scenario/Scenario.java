@@ -26,8 +26,6 @@ public class Scenario extends LightweightEntity {
 //    }
 
 
-
-
     private List<Mission> initAvailableMissions() {
         List<String> missions =
          StringMaster.openContainer(getProperty(PROPS.SCENARIO_MISSIONS));
@@ -54,7 +52,8 @@ public class Scenario extends LightweightEntity {
     public void missionChosen() {
 
     }
-        public void next() {
+
+    public void next() {
         initAvailableMissions();
         //set mission? init choice?
     }

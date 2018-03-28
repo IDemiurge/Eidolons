@@ -21,8 +21,8 @@ import main.system.text.TextParser;
 import main.system.text.TextWrapper;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ToolTipTextComp extends WrappedTextComp {
@@ -100,7 +100,7 @@ public class ToolTipTextComp extends WrappedTextComp {
         int sd = item.getIntParam(PARAMS.SPELL_DIFFICULTY);
         int amount = (int) (sd * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR);
         String mastery = ContentManager.findMastery(item.getProperty(G_PROPS.SPELL_GROUP))
-                .getName().replace(" Mastery", "");
+         .getName().replace(" Mastery", "");
         // CharacterCreator.getHeroManager().
         if (req) {
 
@@ -152,14 +152,14 @@ public class ToolTipTextComp extends WrappedTextComp {
             int rank = feat.getIntParam(PARAMS.RANK);
             if (rank > 0) {
                 int xp = feat.getIntParam(PARAMS.XP_COST) * feat.getIntParam(PARAMS.RANK_XP_MOD)
-                        / 100;
+                 / 100;
                 int skillPoints = sd * feat.getIntParam(PARAMS.RANK_SD_MOD) / 100;
                 String rankInfo = "Current rank: " + rank + ", max: "
-                        + feat.getIntParam(PARAMS.RANK_MAX);
+                 + feat.getIntParam(PARAMS.RANK_MAX);
                 String rankBonus = "Rank Bonus: " + rank
-                        * feat.getIntParam(PARAMS.RANK_FORMULA_MOD) + "%";
+                 * feat.getIntParam(PARAMS.RANK_FORMULA_MOD) + "%";
                 String skillRanksInfo = "Increase rank for " + xp
-                        + (skill ? " Xp and " + skillPoints + " Skill Points" : "");
+                 + (skill ? " Xp and " + skillPoints + " Skill Points" : "");
                 if (!skill) {// skills also have those!
                     addReqLines(item, hero, list, RequirementsManager.RANK_MODE);
                 }
@@ -183,7 +183,7 @@ public class ToolTipTextComp extends WrappedTextComp {
 
     private void addReqLines(ObjType item, Unit hero, List<String> list, int mode) {
         String reqs = hero.getGame().getRequirementsManager().getRequirements(item, mode)
-                .getInfoStrings();
+         .getInfoStrings();
         reqs = TextParser.parse(reqs, new Ref(hero), TextParser.VARIABLE_PARSING_CODE);
         List<String> rankReqs = TextWrapper.wrap(reqs, getWrapLength(), getRef());
         list.addAll(rankReqs);

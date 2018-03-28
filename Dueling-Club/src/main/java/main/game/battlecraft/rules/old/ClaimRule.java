@@ -26,9 +26,9 @@ public class ClaimRule extends DC_RuleImpl {
     private static final String thresholdFunction = "[AV(CLAIM_COUNTERS_THRESHOLD,EVENT_TARGET)]";
     private static final String buffName = "Claimed";
     NumericCondition nOfCounters = new NumericCondition(false, CLAIM_COUNTERS,
-            thresholdFunction);
+     thresholdFunction);
     private Condition counterCheck = new StringComparison(KEYS.STRING.name(),
-            "CLAIM", false);
+     "CLAIM", false);
 
     public ClaimRule(MicroGame game) {
         super(game);
@@ -46,10 +46,10 @@ public class ClaimRule extends DC_RuleImpl {
         RemoveBuffEffect removeBuffEffect = new RemoveBuffEffect(buffName);
         Effect effect = new OwnershipChangeEffect(false);
         AddBuffEffect addBuffEffect = new AddBuffEffect(new NumericCondition(
-                "{BASIS_CLAIM_COUNTERS}", "0"), buffName, effect);
+         "{BASIS_CLAIM_COUNTERS}", "0"), buffName, effect);
 
         effects = new IfElseEffect(removeBuffEffect, conditions,
-                new ConditionalEffect(conditions2, addBuffEffect));
+         new ConditionalEffect(conditions2, addBuffEffect));
     }
 
     @Override

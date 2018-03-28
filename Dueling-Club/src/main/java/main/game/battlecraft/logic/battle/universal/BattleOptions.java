@@ -13,8 +13,8 @@ public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
     public FACING_DIRECTION getPlayerPartySide() {
         if (getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE) != null) {
             return new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(
-                    FACING_DIRECTION.class,
-                    getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE));
+             FACING_DIRECTION.class,
+             getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE));
         }
         return FACING_DIRECTION.NONE;
     }
@@ -22,7 +22,7 @@ public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
     public DIFFICULTY getDifficulty() {
         if (getValue(ARENA_GAME_OPTIONS.DIFFICULTY) != null) {
             return new EnumMaster<DIFFICULTY>().retrieveEnumConst(
-                    DIFFICULTY.class, getValue(ARENA_GAME_OPTIONS.DIFFICULTY));
+             DIFFICULTY.class, getValue(ARENA_GAME_OPTIONS.DIFFICULTY));
         }
         return GenericEnums.DIFFICULTY.DISCIPLE;
     }

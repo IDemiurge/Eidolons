@@ -62,24 +62,24 @@ public class ButtonStyled extends Image implements EventListener {
         CANCEL("UI/components/small/no.png"),
         UNDO("UI/components/small/back2.png"),
         NEXT("UI/components/small/forward.png"),
-        GAME_MENU("UI/components/2017/generic/button.png") ,
+        GAME_MENU("UI/components/2017/generic/button.png"),
 
-        HELP(VISUALS.QUESTION.getImgPath()){
+        HELP(VISUALS.QUESTION.getImgPath()) {
             @Override
             public boolean isVersioned() {
                 return false;
             }
         },
-        OPTIONS(VISUALS.MENU_BUTTON.getImgPath()){
+        OPTIONS(VISUALS.MENU_BUTTON.getImgPath()) {
             @Override
             public boolean isVersioned() {
                 return false;
             }
         },
         //        NEXT, LEVEL_UP,
-        PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(),"component", "time panel", "pause.png")),
-        SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component","time panel", "SPEED UP.png")),
-        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component","time panel", "SPEED DOWN.png")),;
+        PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "pause.png")),
+        SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED UP.png")),
+        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED DOWN.png")),;
         String path;
         private Drawable texture;
 
@@ -88,31 +88,32 @@ public class ButtonStyled extends Image implements EventListener {
         }
 
         public boolean isVersioned() {
-            return true;}
+            return true;
+        }
 
         public Drawable getTexture() {
-            if (texture==null ){
+            if (texture == null) {
                 texture = TextureCache.getOrCreateTextureRegionDrawable(path);
             }
             return texture;
         }
 
         public Drawable getTextureDown() {
-            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path, " down"));
+            return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path, " down"));
         }
 
         public Drawable getTextureOver() {
-            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path, " over"));
+            return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path, " over"));
         }
 
         public Drawable getTextureDisabled() {
-            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path,
+            return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
              " disabled"));
 
         }
 
         public Drawable getTextureChecked() {
-            return TextureCache.getOrCreateTextureRegionDrawable( StringMaster.getAppendedImageFile(path,
+            return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
              " checked"));
         }
     }

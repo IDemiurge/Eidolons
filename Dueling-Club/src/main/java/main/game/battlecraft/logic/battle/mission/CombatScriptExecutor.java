@@ -70,10 +70,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
     public void createMissionTriggers() {
         String scripts = getBattle().getMission().getProperty(PROPS.MISSION_SCRIPTS);
-       if (!scripts.isEmpty())
-           scripts += ScriptSyntax.SCRIPTS_SEPARATOR;
+        if (!scripts.isEmpty())
+            scripts += ScriptSyntax.SCRIPTS_SEPARATOR;
         try {
-            scripts +=  readScriptsFile();
+            scripts += readScriptsFile();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -89,7 +89,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
           , ScriptGenerator.SCRIPTS_FILE_NAME));
 //        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
         String[] parts = text.split(ScriptSyntax.COMMENT_CLOSE);
-        if (parts.length==1)
+        if (parts.length == 1)
             return "";
         return parts[1];
     }
@@ -302,7 +302,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         SPAWN_MODE mode = SPAWN_MODE.SCRIPT;
 
         List<Unit> unitsList = getSpawner().spawn(unitData, player, mode);
-getSpawner().getFacingAdjuster().adjustFacing(unitsList);
+        getSpawner().getFacingAdjuster().adjustFacing(unitsList);
         return true;
     }
 

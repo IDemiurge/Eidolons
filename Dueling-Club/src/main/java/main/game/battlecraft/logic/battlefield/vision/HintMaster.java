@@ -9,8 +9,8 @@ import main.entity.obj.unit.Unit;
 import main.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +19,8 @@ import java.util.Map;
  */
 public class HintMaster {
 
+    Map<BattleFieldObject, Map<OUTLINE_IMAGE, String>> cache = new HashMap<>();
     private VisionMaster master;
-    Map<BattleFieldObject, Map<OUTLINE_IMAGE, String>> cache=new HashMap<>();
 
     public HintMaster(VisionMaster visionMaster) {
         master = visionMaster;
@@ -135,7 +135,7 @@ public class HintMaster {
         }
 
         String hintString = map.get(img);
-        if (hintString!=null )
+        if (hintString != null)
             return hintString;
         hintString = "";
         List<OUTLINE_HINT> hints =

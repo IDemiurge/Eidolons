@@ -12,34 +12,34 @@ import java.util.Map;
  * Created by JustMe on 3/12/2018.
  */
 public class FreeTravelMaster {
-    private static   FreeTravelMaster instance;
+    private static FreeTravelMaster instance;
 
     //path finding? or just bumping...
 
     Map<ALPHA_MAP, AlphaMap> map = new HashMap<>();
-
-    public void init(){
-        for (ALPHA_MAP sub : ALPHA_MAP.values()) {
-            map.put(sub, new AlphaMap(sub));
-
-        }
-    }
-
-    public static FreeTravelMaster getInstance() {
-        if (instance==null )
-            instance = new FreeTravelMaster();
-        return instance;
-    }
 
     private FreeTravelMaster() {
         instance = this;
         init();
     }
 
-    public TravelAction travelTo(PartyActor actor, int x, int y, float speed){
+    public static FreeTravelMaster getInstance() {
+        if (instance == null)
+            instance = new FreeTravelMaster();
+        return instance;
+    }
+
+    public void init() {
+        for (ALPHA_MAP sub : ALPHA_MAP.values()) {
+            map.put(sub, new AlphaMap(sub));
+
+        }
+    }
+
+    public TravelAction travelTo(PartyActor actor, int x, int y, float speed) {
         float dur = actor.getParty().getCoordinates().dst(new Coordinates(true, x, y))
-         / speed ;
-        TravelAction action = new TravelAction(  this  );
+         / speed;
+        TravelAction action = new TravelAction(this);
         action.setPosition(x, y);
         action.setDuration(dur);
         actor.addAction(action);
@@ -48,18 +48,19 @@ public class FreeTravelMaster {
 
 
     }
-        public   void check(PartyActor actor){
+
+    public void check(PartyActor actor) {
 
         boolean stop = false;
 
 
-
     }
-        public void act( float delta){
+
+    public void act(float delta) {
 
     }
 
     public boolean check(ALPHA_MAP mapType, float x, float y) {
-      return   map.get(mapType).isThere((int) x, (int)y);
+        return map.get(mapType).isThere((int) x, (int) y);
     }
 }

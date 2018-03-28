@@ -9,10 +9,10 @@ import main.system.auxiliary.RandomWizard;
  * Created by JustMe on 2/19/2018.
  */
 public class MapMoveLayer extends ImageContainer {
+    public float rotationMod = RandomWizard.random() ? 1 : -1;
+    MAP_MOVING_LAYER type;
     private float originalX, originalY, maxDistance, speed, shakiness, directionModX, directionModY;
     private MAP_AREA spawnArea;
-    MAP_MOVING_LAYER type;
-    public float rotationMod= RandomWizard.random()? 1: -1;
 
     public MapMoveLayer(String path, MAP_AREA spawnArea, MAP_MOVING_LAYER type) {
         super(path);
@@ -20,18 +20,22 @@ public class MapMoveLayer extends ImageContainer {
         this.type = type;
         if (type.flipX)
             if (RandomWizard.random())
-            setFlipX(RandomWizard.random());
+                setFlipX(RandomWizard.random());
         if (type.flipY)
             if (RandomWizard.random())
-            setFlipY(RandomWizard.random());
+                setFlipY(RandomWizard.random());
 
         if (RandomWizard.random())
-        setRotation(RandomWizard.getRandomFloatBetween(0,360* type.rotation));
-        setScale(RandomWizard.getRandomFloatBetween(1-type.sizeRange, 1+type.sizeRange));
+            setRotation(RandomWizard.getRandomFloatBetween(0, 360 * type.rotation));
+        setScale(RandomWizard.getRandomFloatBetween(1 - type.sizeRange, 1 + type.sizeRange));
     }
 
     public float getMaxDistance() {
         return maxDistance;
+    }
+
+    public void setMaxDistance(float maxDistance) {
+        this.maxDistance = maxDistance;
     }
 
     public MAP_MOVING_LAYER getType() {
@@ -40,10 +44,6 @@ public class MapMoveLayer extends ImageContainer {
 
     public void setType(MAP_MOVING_LAYER type) {
         this.type = type;
-    }
-
-    public void setMaxDistance(float maxDistance) {
-        this.maxDistance = maxDistance;
     }
 
     public float getSpeed() {

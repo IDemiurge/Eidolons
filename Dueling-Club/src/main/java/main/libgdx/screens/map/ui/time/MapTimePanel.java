@@ -166,7 +166,8 @@ public class MapTimePanel extends GroupX {
         }
 
     }
-        private void initPositions() {
+
+    private void initPositions() {
 
         labelBg.setPosition(GdxMaster.adjustPos(true, timeLabelBgPoint.x), GdxMaster.adjustPos(false, timeLabelBgPoint.y));
 
@@ -202,9 +203,9 @@ public class MapTimePanel extends GroupX {
             weave.setImage(getPath() + "weave.png");
 
         if (time.isNight())
-            mainCircle.setImage(getPath() + StrPathBuilder.build("circle",   "night.png"));
+            mainCircle.setImage(getPath() + StrPathBuilder.build("circle", "night.png"));
         else
-            mainCircle.setImage(getPath() + StrPathBuilder.build("circle",   "day.png"));
+            mainCircle.setImage(getPath() + StrPathBuilder.build("circle", "day.png"));
 //        mainCircle.setImage(getPath() + StrPathBuilder.build("circle", time.toString() + ".png"));
         setSize(GdxMaster.adjustSize(mainCircle.getWidth())
          , GdxMaster.adjustSize(mainCircle.getHeight()));
@@ -242,6 +243,7 @@ public class MapTimePanel extends GroupX {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
     }
+
     @Override
     public void act(float delta) {
 //        initPositions();
@@ -250,13 +252,13 @@ public class MapTimePanel extends GroupX {
          (delta / 5 * MacroGame.getGame().getLoop().getTimeMaster().getSpeed());
 
         for (MoonActor moon : displayedMoons) {
-            if (moon==null )
+            if (moon == null)
                 return;
             moon.act(deltaX);
         }
         activeMoon.act(deltaX);
         sun.act(deltaX);
-        deltaX = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed( );
+        deltaX = delta * MacroGame.getGame().getLoop().getTimeMaster().getSpeed();
         undersun.act(deltaX);
 
         String text = TimeMaster.getDate().getHour() + "";
@@ -279,8 +281,6 @@ public class MapTimePanel extends GroupX {
 //            dx = -dx;
 //        stoneCircle.setRotation(r+dx);
     }
-
-
 
 
     @Override

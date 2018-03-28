@@ -5,8 +5,8 @@ import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.entity.active.DC_ActiveObj;
 import main.entity.obj.unit.Unit;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.logic.battlefield.vision.StealthRule;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import main.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule;
 import main.game.battlecraft.rules.combat.mechanics.ForceRule;
@@ -72,7 +72,7 @@ public class CollisionRule {
         if (!moveObj.getOwner().equals(collideObj.getOwner())) {
             // any action
             Boolean incomerAlive = AttackOfOpportunityRule.collisionAoO(moveObj.getDummyAction(),
-                    collideObj);
+             collideObj);
             if (!BooleanMaster.isFalse(incomerAlive)) {
                 InstantAttackRule.checkCollisionAttack(moveObj, activeObj, collideObj);
             }
@@ -95,9 +95,9 @@ public class CollisionRule {
         }
         if (force != 0) {
             new DealDamageEffect(ForceRule.getCollisionDamageFormula(moveObj, collideObj, force,
-                    true), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(collideObj));
+             true), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(collideObj));
             new DealDamageEffect(ForceRule.getCollisionDamageFormula(moveObj, collideObj, force,
-                    false), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(moveObj));
+             false), GenericEnums.DAMAGE_TYPE.BLUDGEONING).apply(Ref.getSelfTargetingRefCopy(moveObj));
         }
         if (!VisionManager.checkVisible(collideObj))
         // if (moveObj.canAct())

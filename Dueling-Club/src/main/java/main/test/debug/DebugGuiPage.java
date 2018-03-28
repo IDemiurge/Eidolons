@@ -43,7 +43,7 @@ public class DebugGuiPage extends G_Panel {
 
     private CustomButton createButton(final DEBUG_FUNCTIONS func) {
         return new CustomButton(BUTTON_VISUALS, StringMaster
-                .getWellFormattedString(func.toString())) {
+         .getWellFormattedString(func.toString())) {
 
             public void handleClick() {
                 DC_Game.game.getDebugMaster().executeDebugFunctionNewThread(func);

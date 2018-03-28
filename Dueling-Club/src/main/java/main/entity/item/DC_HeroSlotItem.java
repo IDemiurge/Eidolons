@@ -20,7 +20,7 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
                            // , PROPERTY[] props
     ) {
         super(type, owner, game, ref, params
-                // , props
+         // , props
         );
     }
 
@@ -42,7 +42,7 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
 
     public MATERIAL getMaterial() {
         return new EnumMaster<MATERIAL>().retrieveEnumConst(MATERIAL.class,
-                getProperty(G_PROPS.MATERIAL));
+         getProperty(G_PROPS.MATERIAL));
     }
 
     public void applySpecialEffects(SPECIAL_EFFECTS_CASE case_type, DC_UnitModel target, Ref REF) {

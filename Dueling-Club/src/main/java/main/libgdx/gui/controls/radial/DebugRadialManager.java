@@ -14,7 +14,6 @@ import main.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,14 +53,14 @@ public class DebugRadialManager {
             DEBUG_CONTROL c = (DEBUG_CONTROL) object;
             if (c.getChildObjects() != null) {
                 list = Arrays.stream(c.getChildObjects())
-                        .map(el -> createNodeBranch(el, obj))
-                        .collect(Collectors.toList()
-                        );
+                 .map(el -> createNodeBranch(el, obj))
+                 .collect(Collectors.toList()
+                 );
             } else if (c.getChildren() != null) {
                 list = Arrays.stream(c.getChildren())
-                        .map(el -> createNodeBranch(el, obj))
-                        .collect(Collectors.toList()
-                        );
+                 .map(el -> createNodeBranch(el, obj))
+                 .collect(Collectors.toList()
+                 );
             }
         }
         if (list.size() == 0) {
@@ -90,7 +89,7 @@ public class DebugRadialManager {
 
     private static List<DEBUG_FUNCTIONS> getUnlistedFunctions() {
         return Arrays.stream(DEBUG_FUNCTIONS.values())
-                .filter(func -> !isListed(func)).collect(Collectors.toList());
+         .filter(func -> !isListed(func)).collect(Collectors.toList());
     }
 
     private static boolean isListed(DEBUG_FUNCTIONS func) {
@@ -107,12 +106,12 @@ public class DebugRadialManager {
     public static void handleDebugControl(Object control) {
         if (control instanceof DEBUG_FUNCTIONS) {
             DC_Game.game.getDebugMaster()
-                    .executeDebugFunctionNewThread(((DEBUG_FUNCTIONS) control));
+             .executeDebugFunctionNewThread(((DEBUG_FUNCTIONS) control));
         }
 
         if (control instanceof HIDDEN_DEBUG_FUNCTIONS) {
             DC_Game.game.getDebugMaster()
-                    .executeHiddenDebugFunction(((HIDDEN_DEBUG_FUNCTIONS) control));
+             .executeHiddenDebugFunction(((HIDDEN_DEBUG_FUNCTIONS) control));
         }
     }
 
@@ -124,16 +123,16 @@ public class DebugRadialManager {
                     break;
                 case PICK:
                     DC_Game.game.getDebugMaster().executeDebugFunction(new EnumMaster<DEBUG_FUNCTIONS>()
-                            .retrieveEnumConst(DEBUG_FUNCTIONS.class,
-                                    ListChooser.chooseEnum(DEBUG_FUNCTIONS.class)));
+                     .retrieveEnumConst(DEBUG_FUNCTIONS.class,
+                      ListChooser.chooseEnum(DEBUG_FUNCTIONS.class)));
                     break;
                 case TYPE:
                     DC_Game.game.getDebugMaster().promptFunctionToExecute();
                     break;
                 case PICK_HIDDEN:
                     DC_Game.game.getDebugMaster().executeHiddenDebugFunction(new EnumMaster<HIDDEN_DEBUG_FUNCTIONS>()
-                            .retrieveEnumConst(HIDDEN_DEBUG_FUNCTIONS.class,
-                                    ListChooser.chooseEnum(HIDDEN_DEBUG_FUNCTIONS.class)));
+                     .retrieveEnumConst(HIDDEN_DEBUG_FUNCTIONS.class,
+                      ListChooser.chooseEnum(HIDDEN_DEBUG_FUNCTIONS.class)));
                     break;
             }
         }, "debug radial click handle").start();
@@ -183,8 +182,8 @@ public class DebugRadialManager {
         TYPE(),
         PICK_HIDDEN(),
         FUNCTION(FUNC_STANDARD, FUNC_ADD_BF, FUNC_ADD_NON_BF, FUNC_GLOBAL,
-                FUNC_OTHER, FUNC_TOGGLE,
-                PICK, TYPE, PICK_HIDDEN) {
+         FUNC_OTHER, FUNC_TOGGLE,
+         PICK, TYPE, PICK_HIDDEN) {
             @Override
             public boolean isRoot() {
                 return true;

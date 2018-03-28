@@ -18,6 +18,7 @@ public class TestDungeonBuilder<E extends DungeonWrapper> extends DungeonBuilder
     public int getDefaultHeight() {
         return BASE_HEIGHT;
     }
+
     public int getDefaultWidth() {
         return BASE_WIDTH;
     }

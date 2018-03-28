@@ -28,7 +28,7 @@ public class ModifyPropertyEffect extends DC_Effect implements ResistibleEffect 
     public ModifyPropertyEffect(PROPERTY prop, MOD_PROP_TYPE modtype, String value) {
         this.prop = prop;
         this.value = value.replace(StringMaster.AND_PROPERTY_SEPARATOR,
-                StringMaster.CONTAINER_SEPARATOR);
+         StringMaster.CONTAINER_SEPARATOR);
         this.modtype = modtype;
     }
 
@@ -50,7 +50,7 @@ public class ModifyPropertyEffect extends DC_Effect implements ResistibleEffect 
     public String toString() {
 
         return "Property modifying effect (" + prop + " " + modtype + " " + value + "), Layer "
-                + getLayer();
+         + getLayer();
     }
 
     @Override

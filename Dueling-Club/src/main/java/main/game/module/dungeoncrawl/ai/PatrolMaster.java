@@ -13,8 +13,8 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class PatrolMaster {
@@ -50,15 +50,15 @@ public class PatrolMaster {
         if (!leader) {
             Coordinates leaderCoordinates = ai.getGroup().getLeader().getCoordinates();
             DIRECTION direction = DirectionMaster.getRelativeDirection(patrol.getDestination(),
-                    leaderCoordinates);
+             leaderCoordinates);
 
             List<Object> list = new ArrayList<>();
 
             list.add(leaderCoordinates.getAdjacentCoordinate(direction));
             list.add(leaderCoordinates.getAdjacentCoordinate(DirectionMaster.rotate45(direction,
-                    true)));
+             true)));
             list.add(leaderCoordinates.getAdjacentCoordinate(DirectionMaster.rotate45(direction,
-                    false)));
+             false)));
 
             c = leaderCoordinates.getAdjacentCoordinate(direction);
         }
@@ -80,14 +80,14 @@ public class PatrolMaster {
 
         Ref ref = new Ref(unit);
         ref.setTarget(blocker.getId());
-        new Action(ai.getUnit().getAction( "Wait"), ref);
+        new Action(ai.getUnit().getAction("Wait"), ref);
         return null;
     }
 
     private static Unit getBlockingUnit(Patrol patrol, UnitAI ai) {
         Unit unit = ai.getUnit();
         DIRECTION direction = DirectionMaster.getRelativeDirection(unit.getCoordinates(), patrol
-                .getDestination());
+         .getDestination());
         // paths.getOrCreate(unit);
         Coordinates coordinates = unit.getCoordinates().getAdjacentCoordinate(direction);
         // TODO more than 1 coordinate?
@@ -196,16 +196,16 @@ public class PatrolMaster {
         Coordinates c;
         if (patrol.getBlock() != null) {
             c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
-                    .getCoordinates(), prefLessMoreMiddle);
+             .getCoordinates(), prefLessMoreMiddle);
         } else {
             if (distance == null) {
                 distance = WanderAi.getMaxWanderTotalDistance(patrol.getGroup(),
-                        AiEnums.GOAL_TYPE.PATROL);
+                 AiEnums.GOAL_TYPE.PATROL);
                 patrol.setDistance(distance);
             }
             if (distance == null) {
                 c = CoordinatesMaster.getFarmostCoordinateInDirection(d, patrol.getBlock()
-                        .getCoordinates(), prefLessMoreMiddle);
+                 .getCoordinates(), prefLessMoreMiddle);
             }
             c = patrol.getLeadingUnit().getCoordinates();
             Integer offsetX = distance;

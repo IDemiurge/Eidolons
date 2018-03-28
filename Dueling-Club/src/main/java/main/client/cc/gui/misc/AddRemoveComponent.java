@@ -86,7 +86,7 @@ public class AddRemoveComponent extends G_Panel {
         addIconComps();
         if (!isBuffPanelNeeded(upperPanel.getEntity())) {
             add(new GraphicComponent(VISUALS.ADD_REMOVE.getImage()), "id arc, pos " + FULL_WIDTH
-                    + "/2-" + VISUALS.ADD_REMOVE.getWidth() + "/2 " + GuiManager.getSmallObjSize());
+             + "/2-" + VISUALS.ADD_REMOVE.getWidth() + "/2 " + GuiManager.getSmallObjSize());
         }
 
         addRemoveComp();
@@ -109,7 +109,7 @@ public class AddRemoveComponent extends G_Panel {
 
     protected void addRemoveComp() {
         boolean blocked = getView() == HERO_VIEWS.LIBRARY || getView() == HERO_VIEWS.CLASSES
-                || getView() == HERO_VIEWS.SKILLS;
+         || getView() == HERO_VIEWS.SKILLS;
         // verbatim and other cases?
         // add(getRemoveComp(blocked), "id remove, pos add.x+" + REMOVE_X +
         // " add.y+" + REMOVE_Y);
@@ -125,7 +125,7 @@ public class AddRemoveComponent extends G_Panel {
             offsetX = "(poolhero.w-remove.w)/2";
         }
         add(getRemoveComp(blocked), "id remove, pos " + relative + ".x+" + offsetX + " " + relative
-                + ".y+" + offsetY);
+         + ".y+" + offsetY);
     }
 
     protected void addAddComp() {
@@ -139,7 +139,7 @@ public class AddRemoveComponent extends G_Panel {
             offsetX = "(pool.w-add.w)/2";
         }
         add(getAddComp(false), "id add, pos " + relative + ".x+" + offsetX + " " + relative + ".y+"
-                + offsetY);
+         + offsetY);
     }
 
     @Override
@@ -188,19 +188,19 @@ public class AddRemoveComponent extends G_Panel {
         }
         CostPoolComp pool = new CostPoolComp(item, cost_param);
         String X = "icon.x2+("
-                + (FULL_WIDTH + "-icon.x2-" + getPoolSymbol().getImg().getWidth(null)) + ")/2";
+         + (FULL_WIDTH + "-icon.x2-" + getPoolSymbol().getImg().getWidth(null)) + ")/2";
         // if (heroItem)
         // if (isOnTheLeft(item))
         // X = getLeftSymbolX();
 
         String id = "symbol2" + (heroItem ? "hero" : "");
         String pos = "id "
-                + id
-                + ", pos "
-                + X
-                + " "
-                + (heroItem ? "icon2.y2-" + getPoolSymbol().getImg().getHeight(null) + "-"
-                + pool.getVisuals().getHeight() : "buffComp.y2");
+         + id
+         + ", pos "
+         + X
+         + " "
+         + (heroItem ? "icon2.y2-" + getPoolSymbol().getImg().getHeight(null) + "-"
+         + pool.getVisuals().getHeight() : "buffComp.y2");
         add(getPoolSymbol(), pos);
 
         X = "(icon.x-" + pool.getVisuals().getWidth() + ")/2";
@@ -210,9 +210,9 @@ public class AddRemoveComponent extends G_Panel {
 
         pos = "id pool" + (heroItem ? "second" : "") + ", pos " +
 
-                "icon.x2+" + X +
+         "icon.x2+" + X +
 
-                " " + "" + id + ".y2 ";
+         " " + "" + id + ".y2 ";
         add(pool, pos);
     }
 
@@ -286,12 +286,12 @@ public class AddRemoveComponent extends G_Panel {
 
     public void add() {
         CharacterCreator.getHeroPanel((Unit) hero).getMvp().getItemManager().addType(
-                (ObjType) upperPanel.getEntity());
+         (ObjType) upperPanel.getEntity());
     }
 
     public void remove() {
         CharacterCreator.getHeroPanel((Unit) hero).getMvp().getItemManager().removeType(
-                lowerPanel.getEntity());
+         lowerPanel.getEntity());
     }
 
     protected PARAMETER getParam() {
@@ -353,11 +353,11 @@ public class AddRemoveComponent extends G_Panel {
             }
             int discount;
             discount = new Formula(getEntity().getParam(cost_param)
-                    + "-"
-                    + (!heroItem ? HeroManager.getCost(getEntity(), hero) : HeroManager.getCost(
-                    getEntity(), hero, TYPE, PROP))).getInt(hero.getRef());
+             + "-"
+             + (!heroItem ? HeroManager.getCost(getEntity(), hero) : HeroManager.getCost(
+             getEntity(), hero, TYPE, PROP))).getInt(hero.getRef());
             return getEntity().getParamRounded(cost_param, false)
-                    + (discount > 0 ? "-" + discount : "");
+             + (discount > 0 ? "-" + discount : "");
         }
     }
 }

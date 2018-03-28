@@ -33,7 +33,7 @@ public abstract class MapObjComp implements MouseListener {
                 BORDER border_ = MapObjComp.this.getBorder();
                 if (border_ != null) {
                     g.drawImage(border_.getImage(), 0, 0, (int) getSize().getWidth(),
-                            (int) getSize().getHeight(), null);
+                     (int) getSize().getHeight(), null);
                 }
 
             }
@@ -74,7 +74,7 @@ public abstract class MapObjComp implements MouseListener {
 
         if (isSymbolRepresentation()) {
             image = ImageManager.getImage(highlighted ? getSymbolHighlightedImagePath()
-                    : getSymbolImagePath());
+             : getSymbolImagePath());
             Dimension size = getSymbolImageSize();
             if (size != null) {
                 image = ImageManager.getSizedVersion(image, size);
@@ -87,7 +87,7 @@ public abstract class MapObjComp implements MouseListener {
         // (this.highlighted)
         image = ImageManager.getSizedIcon(getObj().getImagePath(), d).getImage();
         image = ImageTransformer.getCircleCroppedImage(image
-                // , null, getDimension() //TODO
+         // , null, getDimension() //TODO
         );
         // if (highlighted)
         // image = ImageManager.applyBorder(image, BORDER.CIRCLE_HIGHLIGHT_96,

@@ -16,11 +16,11 @@ public class FormationRequest {
         this.lineId = lineId;
     }
 
-    public void refused(){
+    public void refused() {
         //how to calc effects?
     }
 
-    public void accepted(){
+    public void accepted() {
         //set formation, add Trust/...
     }
 

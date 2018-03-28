@@ -2,10 +2,10 @@ package main.entity.handlers.bf.structure;
 
 import main.content.PROPS;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Structure;
-import main.entity.obj.unit.DC_UnitModel;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
+import main.entity.obj.Structure;
+import main.entity.obj.unit.DC_UnitModel;
 import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
@@ -33,7 +33,7 @@ public class StructureResetter extends EntityResetter<Structure> {
             facing = (new EnumMaster<FACING_DIRECTION>().retrieveEnumConst(FACING_DIRECTION.class,
              name));
             if (facing == null) {
-                if (getEntity(). getDirection() != null) {
+                if (getEntity().getDirection() != null) {
                     FacingMaster.getFacingFromDirection(getEntity().getDirection());
                 } else if (getRef().getObj(KEYS.SUMMONER) != null) {
                     facing = ((DC_UnitModel) getRef().getObj(KEYS.SUMMONER)).getFacing();

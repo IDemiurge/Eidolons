@@ -94,7 +94,7 @@ public class ReasonMaster {
         // if reasons are something other than single FACING, we don't care about OTHERS
         if (!reasonsCannotTarget.isEmpty()) {
             if (reasonsCannotTarget.size() != 1
-                    && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING)) {
+             && reasonsCannotTarget.get(0) != (FILTER_REASON.FACING)) {
                 return reasonsCannotTarget;
             }
         }

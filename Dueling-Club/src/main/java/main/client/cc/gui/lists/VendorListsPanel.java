@@ -218,12 +218,12 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             if (Launcher.ILYA_MODE) {
                 if (TYPE == DC_TYPE.SPELLS || TYPE == DC_TYPE.SKILLS) {
                     FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                            + MetaEnums.WORKSPACE_GROUP.DESIGN, TYPE, true);
+                     + MetaEnums.WORKSPACE_GROUP.DESIGN, TYPE, true);
                     FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                            + MetaEnums.WORKSPACE_GROUP.IMPLEMENT, TYPE, true);
+                     + MetaEnums.WORKSPACE_GROUP.IMPLEMENT, TYPE, true);
 
                     FilterMaster.filterByProp(types, PROPS.ITEM_SHOP_CATEGORY.getName(), ""
-                            + ItemEnums.ITEM_SHOP_CATEGORY.SPECIAL, TYPE, true);
+                     + ItemEnums.ITEM_SHOP_CATEGORY.SPECIAL, TYPE, true);
                     // so you see, it wouldn't be hard to filter the items for
                     // each shop in macro
                 }
@@ -252,7 +252,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
                 }
                 // if (TYPE != OBJ_TYPES.SPELLS)
                 if (tabName.equalsIgnoreCase(ItemEnums.ARMOR_TYPE.LIGHT.toString())
-                        || tabName.equalsIgnoreCase(ItemEnums.ARMOR_TYPE.HEAVY.toString())) {
+                 || tabName.equalsIgnoreCase(ItemEnums.ARMOR_TYPE.HEAVY.toString())) {
                     T = DC_TYPE.ARMOR;
                 }
             }
@@ -300,9 +300,9 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
 
     protected void putList(String listName, List<ObjType> data, Map<String, HC_PagedListPanel> map) {
         HC_PagedListPanel list =
-                // new HeroListPanel(listName, hero, responsive,
-                // vertical, rowsPerList, itemSize, data);
-                new HC_PagedListPanel(HC_LISTS.VENDOR, hero, manager, data, listName);
+         // new HeroListPanel(listName, hero, responsive,
+         // vertical, rowsPerList, itemSize, data);
+         new HC_PagedListPanel(HC_LISTS.VENDOR, hero, manager, data, listName);
         list.setTYPE(TYPE);
         list.setBorderChecker(getBorderChecker());
         map.put(listName, list);

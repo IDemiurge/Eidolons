@@ -41,7 +41,7 @@ public class Showcase {
     private static final int DEFAULT_EXE_INDEX = 4;
     public static String launchData = "";
     private static boolean running;
-    private static String scenarioName="Mini Release Pack";//"Crawl Levels";//"Crawl Demo";
+    private static String scenarioName = "Mini Release Pack";//"Crawl Levels";//"Crawl Demo";
 
     public static void main(String[] args) {
         running = true;
@@ -49,12 +49,12 @@ public class Showcase {
         FontMaster.init();
         GuiManager.init();
         int index = -1;
-        if (args .length>0 || CoreEngine.isExe()) {
+        if (args.length > 0 || CoreEngine.isExe()) {
             preset = true;
             if (CoreEngine.isExe()) {
                 index = DEFAULT_EXE_INDEX;
-            }else
-            index = Integer.valueOf(args[0]);
+            } else
+                index = Integer.valueOf(args[0]);
         } else
             index = DialogMaster.optionChoice(launch_options,
              "Choose the type of Eidolons game you want to launch...");
@@ -74,7 +74,7 @@ public class Showcase {
             FAST_DC.ENEMY_PARTY = parts.get(2);
 
         }
-        if ( index == 4 ||
+        if (index == 4 ||
          index == 0) {
             boolean showcase = index == 4;
             String[] options = !showcase ? missions : missions_showcase;

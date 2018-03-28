@@ -12,36 +12,6 @@ import main.system.auxiliary.StringMaster;
 
 public class DC_CONSTS {
 
-    public enum MAGICAL_ITEM_LEVEL {
-        MINOR(0, 10, ""),
-        LESSER(1, 25, ""),
-        COMMON(2, 50, ""),
-        GREATER(3, 125, ""),
-        LEGENDARY(4, 300, "");
-
-        private int level;
-        private int costFactor;
-        private String iconSuffix;
-
-        MAGICAL_ITEM_LEVEL(int n, int costFactor, String iconSuffix) {
-            this.costFactor = costFactor;
-            this.iconSuffix = iconSuffix;
-            this.level = n;
-        }
-
-        public int getInt() {
-            return level;
-        }
-
-        public int getCostFactor() {
-            return costFactor;
-        }
-
-        public String toString() {
-            return StringMaster.getWellFormattedString(super.toString());
-        }
-    }
-
     public enum AMMO_LEVEL {
         NORMAL(1), DOUBLE(2), TRIPPLE(3);
         private int charges;
@@ -53,6 +23,10 @@ public class DC_CONSTS {
         public int getCharges() {
             return charges;
         }
+
+    }
+
+    public enum ARMOR_PASSIVE_ENCHANTMENT {
 
     }
 
@@ -96,66 +70,6 @@ public class DC_CONSTS {
         public int getCost() {
             return cost;
         }
-    }
-
-    public enum POTION_LEVEL {
-        MINOR(1, 100, "", ItemEnums.QUALITY_LEVEL.INFERIOR),
-        AVERAGE(2, 225, "1", ItemEnums.QUALITY_LEVEL.NORMAL),
-        GREATER(3, 400, "2", ItemEnums.QUALITY_LEVEL.SUPERIOR);
-
-        private int charges;
-        private String imgCode;
-        private int cost;
-        private QUALITY_LEVEL quality;
-
-        POTION_LEVEL(int charges, int cost, String imgCode,
-                     QUALITY_LEVEL quality) {
-            this.charges = charges;
-            this.imgCode = imgCode;
-            this.cost = cost;
-            this.quality = quality;
-        }
-
-        public QUALITY_LEVEL getQuality() {
-            return quality;
-        }
-
-        public int getCharges() {
-            return charges;
-        }
-
-        public String getName() {
-            // if (this == AVERAGE)
-            // return "";
-            return StringMaster.getWellFormattedString(name());
-
-        }
-
-        public String getImgCode() {
-            return imgCode;
-        }
-
-        public int getCost() {
-            return cost;
-        }
-    }
-
-    public enum MAGIC_ITEM_PASSIVE_ENCHANTMENT {
-
-    }
-
-    public enum WEAPON_PASSIVE_ENCHANTMENT {
-        RAZORSHARP, // process via switch? (blade, passives, keen* ) *-> armor
-        // penetration? crit bonus?
-        BRUTAL, // interrupt mod, durability dmg mod
-        VICIOUS, // bleeding - serrated?
-        TRUSTY, // durability
-
-        ;
-    }
-
-    public enum ARMOR_PASSIVE_ENCHANTMENT {
-
     }
 
     public enum JEWELRY_ITEM_TRAIT {
@@ -259,16 +173,6 @@ public class DC_CONSTS {
 
     }
 
-    public enum MAGIC_ITEM_PASSIVE_TRAIT {
-        WARP, VOID, AETHER,
-
-    }
-
-    public enum MAGIC_ITEM_ACTIVE_TRAIT {
-        ECHO, SUPPRESSION, CATALYST, MIRROR,
-
-    }
-
     public enum JEWELRY_PASSIVE_ENCHANTMENT { // for amulets only?
         GRACE(400, true, UnitEnums.STANDARD_PASSIVES.DEXTEROUS, "_b", "", "Necklace"),
         SNAKE(400, true, UnitEnums.STANDARD_PASSIVES.FIRST_STRIKE, "_c", "", "Necklace"),
@@ -354,6 +258,102 @@ public class DC_CONSTS {
         public int getCostBase() {
             return costBase;
         }
+    }
+
+    public enum MAGICAL_ITEM_LEVEL {
+        MINOR(0, 10, ""),
+        LESSER(1, 25, ""),
+        COMMON(2, 50, ""),
+        GREATER(3, 125, ""),
+        LEGENDARY(4, 300, "");
+
+        private int level;
+        private int costFactor;
+        private String iconSuffix;
+
+        MAGICAL_ITEM_LEVEL(int n, int costFactor, String iconSuffix) {
+            this.costFactor = costFactor;
+            this.iconSuffix = iconSuffix;
+            this.level = n;
+        }
+
+        public int getInt() {
+            return level;
+        }
+
+        public int getCostFactor() {
+            return costFactor;
+        }
+
+        public String toString() {
+            return StringMaster.getWellFormattedString(super.toString());
+        }
+    }
+
+    public enum MAGIC_ITEM_ACTIVE_TRAIT {
+        ECHO, SUPPRESSION, CATALYST, MIRROR,
+
+    }
+
+    public enum MAGIC_ITEM_PASSIVE_ENCHANTMENT {
+
+    }
+
+    public enum MAGIC_ITEM_PASSIVE_TRAIT {
+        WARP, VOID, AETHER,
+
+    }
+
+    public enum POTION_LEVEL {
+        MINOR(1, 100, "", ItemEnums.QUALITY_LEVEL.INFERIOR),
+        AVERAGE(2, 225, "1", ItemEnums.QUALITY_LEVEL.NORMAL),
+        GREATER(3, 400, "2", ItemEnums.QUALITY_LEVEL.SUPERIOR);
+
+        private int charges;
+        private String imgCode;
+        private int cost;
+        private QUALITY_LEVEL quality;
+
+        POTION_LEVEL(int charges, int cost, String imgCode,
+                     QUALITY_LEVEL quality) {
+            this.charges = charges;
+            this.imgCode = imgCode;
+            this.cost = cost;
+            this.quality = quality;
+        }
+
+        public QUALITY_LEVEL getQuality() {
+            return quality;
+        }
+
+        public int getCharges() {
+            return charges;
+        }
+
+        public String getName() {
+            // if (this == AVERAGE)
+            // return "";
+            return StringMaster.getWellFormattedString(name());
+
+        }
+
+        public String getImgCode() {
+            return imgCode;
+        }
+
+        public int getCost() {
+            return cost;
+        }
+    }
+
+    public enum WEAPON_PASSIVE_ENCHANTMENT {
+        RAZORSHARP, // process via switch? (blade, passives, keen* ) *-> armor
+        // penetration? crit bonus?
+        BRUTAL, // interrupt mod, durability dmg mod
+        VICIOUS, // bleeding - serrated?
+        TRUSTY, // durability
+
+        ;
     }
 
 }

@@ -8,6 +8,7 @@ import main.client.dc.Launcher;
 import main.client.dc.Launcher.VIEWS;
 import main.client.dc.SequenceManager;
 import main.content.DC_TYPE;
+import main.content.enums.GenericEnums.DIFFICULTY;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -17,7 +18,6 @@ import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.battlecraft.logic.battle.arena.Wave;
-import main.content.enums.GenericEnums.DIFFICULTY;
 import main.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import main.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
@@ -35,8 +35,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +53,7 @@ public class SkirmishMaster {
         // customize nemesis groups! spawn coordinates - how to specify?
         for (NEMESIS_GROUP g : skirmish.getNemesisGroups()) {
             for (ObjType type : DataManager.getTypesSubGroup(DC_TYPE.ENCOUNTERS, StringMaster
-                    .getWellFormattedString(g.toString()))) {
+             .getWellFormattedString(g.toString()))) {
                 Wave wave = new Wave(type, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
                 map.put(wave, round);
 //                round += DC_Game.game.getBattleMaster().getBattleConstructor().getRoundsToFight(
@@ -105,7 +105,7 @@ public class SkirmishMaster {
         // filter!
         final ArrayList<OBJECTIVE_TYPE> allowed = new ArrayList<>();
         EnumChoiceView<OBJECTIVE_TYPE> objectiveChoiceView = new EnumChoiceView<OBJECTIVE_TYPE>(cs,
-                null, OBJECTIVE_TYPE.class) {
+         null, OBJECTIVE_TYPE.class) {
             @Override
             public boolean isOkBlocked() {
                 return allowed.contains(getSelectedItem());
@@ -128,7 +128,7 @@ public class SkirmishMaster {
         // result on another
 
         ChoiceMaster.chooseTypeNewThread(MACRO_OBJ_TYPES.MISSION, DataManager.getTypesGroup(
-                MACRO_OBJ_TYPES.MISSION, "Skirmish"), "Choose Skirmish to Fight in", null, null);
+         MACRO_OBJ_TYPES.MISSION, "Skirmish"), "Choose Skirmish to Fight in", null, null);
         new Thread(new Runnable() {
             public void run() {
                 ObjType type = (ObjType) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION);
@@ -246,8 +246,21 @@ public class SkirmishMaster {
         return skirmish;
     }
 
-    public enum SKIRMISH_TYPE {
-        ARENA,
+    public enum NEMESIS_GROUP {
+        // TODO filtering property for Encounter objects!
+        RAVENGUARD,
+        GOBLINS,
+        ORCS,
+        ABYSSAL_DEMONS,
+        OBLIVION_DEMONS,
+        FIENDS,
+        WARP_SPAWN,
+        SPIDERS,
+        COLONY_BROOD,
+        MUTANTS,
+        MAGIC_BEASTS,
+        ARCANE_CONSTRUCTS,
+        MECHANICUM,
     }
 
     public enum SKIRMISH {
@@ -320,21 +333,8 @@ public class SkirmishMaster {
         }
     }
 
-    public enum NEMESIS_GROUP {
-        // TODO filtering property for Encounter objects!
-        RAVENGUARD,
-        GOBLINS,
-        ORCS,
-        ABYSSAL_DEMONS,
-        OBLIVION_DEMONS,
-        FIENDS,
-        WARP_SPAWN,
-        SPIDERS,
-        COLONY_BROOD,
-        MUTANTS,
-        MAGIC_BEASTS,
-        ARCANE_CONSTRUCTS,
-        MECHANICUM,
+    public enum SKIRMISH_TYPE {
+        ARENA,
     }
 
 }

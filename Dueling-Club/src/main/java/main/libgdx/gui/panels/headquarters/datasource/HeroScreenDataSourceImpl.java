@@ -44,10 +44,10 @@ public class HeroScreenDataSourceImpl implements HeroScreenDataSource {
     @Override
     public List<ValueContainer> getAvailableSkills() {
         List<ValueContainer> list = new ArrayList<>();
-       hero.getSkills().forEach(skill->{
+        hero.getSkills().forEach(skill -> {
 //           list.add(new ValueContainer(StyleHolder.getSizedColoredLabelStyle(FONT.DARK, 18,
 //            GdxColorMaster.getColor(FLAG_COLOR.DARK_GREEN))), );
-       });
+        });
         return null;
     }
 

@@ -24,31 +24,32 @@ public class TrampleRule extends DC_RuleImpl {
 
 
     protected RULE getRuleEnum() {
-        return RULE.TRAMPLE ;
+        return RULE.TRAMPLE;
     }
+
     @Override
     public void initEffects() {
         effects = new Effects(
-                // new RollCondition(ROLL_TYPES.REFLEX))
-                new InstantDeathEffect(false, null),
-                // conditional ( new SpaceCondition(),
-                new SelfMoveEffect());
+         // new RollCondition(ROLL_TYPES.REFLEX))
+         new InstantDeathEffect(false, null),
+         // conditional ( new SpaceCondition(),
+         new SelfMoveEffect());
         // new ConditionalEffect //isDead
     }
 
     @Override
     public void initConditions() {
         conditions = new Conditions(
-                // make sure the *source* is correct ref!
-                new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.TRAMPLE, KEYS.EVENT_SOURCE),
-                new AttackCondition(false),
-                new NumericCondition("{source_total_weight}+{Strength}*2",
-                        "{event_target_bludgeoning_resistance}/100*{event_target_total_weight}*2+{event_target_Strength}*6")
-                // reflex roll?
-                , new RollCondition(GenericEnums.ROLL_TYPES.REFLEX)
+         // make sure the *source* is correct ref!
+         new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.TRAMPLE, KEYS.EVENT_SOURCE),
+         new AttackCondition(false),
+         new NumericCondition("{source_total_weight}+{Strength}*2",
+          "{event_target_bludgeoning_resistance}/100*{event_target_total_weight}*2+{event_target_Strength}*6")
+         // reflex roll?
+         , new RollCondition(GenericEnums.ROLL_TYPES.REFLEX)
 
-                // space
-                // force
+         // space
+         // force
         );
         conditions.setFastFailOnCheck(true);
     }

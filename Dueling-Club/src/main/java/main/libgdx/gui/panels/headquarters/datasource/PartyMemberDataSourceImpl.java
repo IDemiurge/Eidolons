@@ -6,7 +6,7 @@ import main.libgdx.gui.panels.dc.ValueContainer;
 /**
  * Created by JustMe on 6/2/2017.
  */
-public class PartyMemberDataSourceImpl implements  PartyMemberDataSource {
+public class PartyMemberDataSourceImpl implements PartyMemberDataSource {
     Unit hero;
 
     public PartyMemberDataSourceImpl(Unit hero) {

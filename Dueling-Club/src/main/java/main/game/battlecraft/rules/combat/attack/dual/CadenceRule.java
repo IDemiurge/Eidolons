@@ -75,19 +75,17 @@ public class CadenceRule {
         }
         boolean singleCadence = checkSingleWeaponCadence(unit, action);
         if (!UnitAnalyzer.checkDualWielding(unit) && !UnitAnalyzer.checkDualNaturalWeapons(unit)
-                && !singleCadence
+         && !singleCadence
             // || checkSingleCadence(action)
-                ) {
+         ) {
             return;
         }
         Boolean offhand = null;
         if (action.checkProperty(PROP, MAIN_HAND)) {
             offhand = false;
-        } else
-        if (action.checkProperty(PROP, OFF_HAND)) {
+        } else if (action.checkProperty(PROP, OFF_HAND)) {
             offhand = true;
-        } else
-        if (singleCadence)
+        } else if (singleCadence)
         // offhand = !action.isOffhand();
         {
             offhand = false;
@@ -105,7 +103,7 @@ public class CadenceRule {
         if (unit.getNaturalWeapon(!offhand) != null) {
             targets.add(unit.getNaturalWeapon(!offhand));
         }
-        GroupImpl group = new GroupImpl(  targets);
+        GroupImpl group = new GroupImpl(targets);
         LogMaster.log(LogMaster.RULES_DEBUG, "Cadence Rule applies to " + group);
         ref.setGroup(group);
 
@@ -114,7 +112,7 @@ public class CadenceRule {
             Integer amount = action.getOwnerObj().getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
             amount += action.getIntParam(PARAMS.CADENCE_FOCUS_BOOST);
             amount += action.getOwnerObj().getActiveWeapon(!offhand).getIntParam(
-                    PARAMS.CADENCE_FOCUS_BOOST);
+             PARAMS.CADENCE_FOCUS_BOOST);
             action.getOwnerObj().modifyParameter(PARAMS.C_FOCUS, amount, 100);
         }
         // INIT COST CADENCE EFFECTS
@@ -124,9 +122,8 @@ public class CadenceRule {
             cadence = DC_Formulas.DEFAULT_CADENCE_AP_MOD + "";
         }
         ModifyValueEffect valueEffect = new ModifyValueEffect(
-         PARAMS. ATTACK_AP_PENALTY,
-                MOD.MODIFY_BY_CONST, cadence);
-
+         PARAMS.ATTACK_AP_PENALTY,
+         MOD.MODIFY_BY_CONST, cadence);
 
 
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
@@ -136,36 +133,36 @@ public class CadenceRule {
             cadence = DC_Formulas.DEFAULT_CADENCE_STA_MOD + "";
         }
         valueEffect = new ModifyValueEffect(
-         PARAMS. ATTACK_STA_PENALTY,
+         PARAMS.ATTACK_STA_PENALTY,
          MOD.MODIFY_BY_CONST, cadence);
         valueEffect.appendFormulaByMod(100 + weapon.getIntParam(PARAMS.CADENCE_BONUS));
 
         effects.add(valueEffect);
         if (unit.getIntParam(PARAMS.CADENCE_DAMAGE_MOD) > 0) {
             effects.add(new ModifyValueEffect(
-                    PARAMS.DAMAGE_MOD,
-                    MOD.MODIFY_BY_CONST, unit
-                    .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
+             PARAMS.DAMAGE_MOD,
+             MOD.MODIFY_BY_CONST, unit
+             .getParam(PARAMS.CADENCE_DAMAGE_MOD)));
         }
         if (unit.getIntParam(PARAMS.CADENCE_ATTACK_MOD) > 0) {
             effects.add(new ModifyValueEffect(
-                    PARAMS.ATTACK_MOD
-                    , MOD.MODIFY_BY_CONST, unit
-                    .getParam(PARAMS.CADENCE_ATTACK_MOD)));
+             PARAMS.ATTACK_MOD
+             , MOD.MODIFY_BY_CONST, unit
+             .getParam(PARAMS.CADENCE_ATTACK_MOD)));
         }
         String buffTypeName = (!offhand) ? buffTypeNameOffHand : buffTypeNameMainHand;
 
         // ADD REMOVE TRIGGER
         int percentage = 100 - unit.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE)
-                - action.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE)
-                - weapon.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE);
+         - action.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE)
+         - weapon.getIntParam(PARAMS.CADENCE_RETAINMENT_CHANCE);
         Conditions conditions = new Conditions(new RefCondition(KEYS.EVENT_SOURCE, KEYS.SOURCE));
         if (percentage != 100) {
             conditions.add(new ChanceCondition(new Formula("" + percentage)));
         }
         effects.add(new AddTriggerEffect(STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, conditions,
-                new ActiveAbility(new FixedTargeting(KEYS.BASIS),
-                        new RemoveBuffEffect(buffTypeName))));
+         new ActiveAbility(new FixedTargeting(KEYS.BASIS),
+          new RemoveBuffEffect(buffTypeName))));
 
 //        effect = new AddBuffEffect(buffTypeName, effects, DURATION);
 
@@ -184,18 +181,18 @@ public class CadenceRule {
          effects
 //        )
          ,
-                DURATION);
+         DURATION);
         // preCheck perk
         addBuffEffect.addEffect(new AddTriggerEffect( // what about
-                // counters/AoO?
-                STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, new RefCondition(KEYS.EVENT_SOURCE,
-                KEYS.SOURCE), new ActiveAbility(new FixedTargeting(KEYS.SOURCE),
-                new RemoveBuffEffect(buffTypeName))));
+         // counters/AoO?
+         STANDARD_EVENT_TYPE.UNIT_ACTION_COMPLETE, new RefCondition(KEYS.EVENT_SOURCE,
+         KEYS.SOURCE), new ActiveAbility(new FixedTargeting(KEYS.SOURCE),
+         new RemoveBuffEffect(buffTypeName))));
 
         Integer param = unit.getIntParam(PARAMS.CADENCE_DEFENSE_MOD);
         if (param != 0) {
             addBuffEffect.addEffect(new ModifyValueEffect(PARAMS.DEFENSE_MOD,
-                    MOD.MODIFY_BY_CONST, "" + param));
+             MOD.MODIFY_BY_CONST, "" + param));
         }
 
         addBuffEffect.setIrresistible(true);

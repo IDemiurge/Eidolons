@@ -20,8 +20,8 @@ import main.game.battlecraft.rules.combat.attack.GuardRule;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -36,12 +36,12 @@ public class TaskManager extends AiHandler {
         TARGETING_MODE mode = action.getTargetingMode();
         if (mode == null) {
             mode = new EnumMaster<TARGETING_MODE>().retrieveEnumConst(TARGETING_MODE.class, action
-                    .getProperty(G_PROPS.TARGETING_MODE));
+             .getProperty(G_PROPS.TARGETING_MODE));
         }
         if (mode != null) {
             if (action.getGame().getObjectById((Integer) task.getArg()) instanceof Unit) {
                 Unit target = (Unit) action.getGame().getObjectById(
-                        (Integer) task.getArg());
+                 (Integer) task.getArg());
                 switch (mode) {
 
                     case ANY_ITEM:
@@ -220,9 +220,9 @@ public class TaskManager extends AiHandler {
             case COATING:
                 Set<Obj> objects = action.getTargeting().getFilter().getObjects(action.getRef());
                 for (Obj q : objects) {
-                    if ( q.getRef().getSourceObj()== getUnit()) { //q.isOwnedBy(ai.getUnit().getOwner())
+                    if (q.getRef().getSourceObj() == getUnit()) { //q.isOwnedBy(ai.getUnit().getOwner())
                         ids.add(q.getId());
-                   }
+                    }
                 }
                 break;
 
@@ -254,6 +254,7 @@ public class TaskManager extends AiHandler {
 
         return list;
     }
+
     private void checkPrune(List<? extends DC_Obj> targets, GOAL_TYPE goal, UnitAI ai,
                             DC_ActiveObj action) {
         getPruneMaster().pruneTargetsForAction(targets, goal, ai, action);

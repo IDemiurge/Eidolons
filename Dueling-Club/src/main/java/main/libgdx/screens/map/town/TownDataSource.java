@@ -19,28 +19,7 @@ public class TownDataSource {
         this.town = town;
         init();
     }
-public enum TOWN_TYPE{
-        VILLAGE,
-    SWAMP_VILLAGE,
-    FOREST_VILLAGE,
-    TOWN,
 
-    RIVEREND,
-    EVERMYST,
-    GREENTORCH,
-    TWILIGHT_MONASTERY,
-
-    WITCHFORT,
-    GREYROCK,
-    ORODRIS,
-    STONESHIELD_HALLS,
-    IRONHELM_HALLS,
-
-    BLACKLAKE,
-    ELMGRAVE,
-
-
-}
     private void init() {
         String points = FileManager.readFile(getDataFilePath());
         for (String substring : StringMaster.openContainer(points)) {
@@ -52,7 +31,6 @@ public enum TOWN_TYPE{
         return null;
     }
 
-
     public Image getTownBackground() {
 
         return null;
@@ -61,5 +39,28 @@ public enum TOWN_TYPE{
     public List<TownPlaceActor> getTownPlaces() {
         List<TownPlaceActor> list = new ArrayList<>();
         return list;
+    }
+
+    public enum TOWN_TYPE {
+        VILLAGE,
+        SWAMP_VILLAGE,
+        FOREST_VILLAGE,
+        TOWN,
+
+        RIVEREND,
+        EVERMYST,
+        GREENTORCH,
+        TWILIGHT_MONASTERY,
+
+        WITCHFORT,
+        GREYROCK,
+        ORODRIS,
+        STONESHIELD_HALLS,
+        IRONHELM_HALLS,
+
+        BLACKLAKE,
+        ELMGRAVE,
+
+
     }
 }

@@ -23,7 +23,7 @@ public class IdentificationChoiceView extends PrincipleChoiceView {
         super.addInfoPanels();
 
         new PoolComp(hero, PARAMS.IDENTITY_POINTS, PARAMS.IDENTITY_POINTS.getName()
-                + " to spend", true);
+         + " to spend", true);
 
     }
 
@@ -41,8 +41,8 @@ public class IdentificationChoiceView extends PrincipleChoiceView {
             // if using Renderer technique, gonna have to cache model to support
             // down()
             super(editable, hero, buffer, DC_ContentManager
-                            .getIdentityParamForPrinciple(principle), PARAMS.IDENTITY_POINTS,
-                    VISUALS.ENUM_CHOICE_COMP, true);
+              .getIdentityParamForPrinciple(principle), PARAMS.IDENTITY_POINTS,
+             VISUALS.ENUM_CHOICE_COMP, true);
             // VISUALS.ENUM_CHOICE_COMP_SELECTED : VISUALS.ENUM_CHOICE_COMP;
             // DC_ContentManager.getAlignmentForPrinciple(principle) ;
 

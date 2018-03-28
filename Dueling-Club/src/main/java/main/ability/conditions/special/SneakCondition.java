@@ -34,12 +34,13 @@ public class SneakCondition extends MicroCondition {
     @Override
     public boolean check(Ref ref) {
         boolean result = checkSneak(ref);
-        if (result){
-            main.system.auxiliary.log.LogMaster.log(1,"ya sneaky, ser!" );
+        if (result) {
+            main.system.auxiliary.log.LogMaster.log(1, "ya sneaky, ser!");
         }
         return result;
     }
-        public boolean checkSneak(Ref ref) {
+
+    public boolean checkSneak(Ref ref) {
         if (!(ref.getObj(key) instanceof Unit)) {
             return false;
         }
@@ -80,7 +81,7 @@ public class SneakCondition extends MicroCondition {
 
             if (!action.isRanged()) {
                 if (attacker.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
-                        || !VisionManager.checkVisible(attacker)) {
+                 || !VisionManager.checkVisible(attacker)) {
                     return true;
                 } else { //TODO allow sneak in front for specialists
                     return FacingMaster.getSingleFacing(attacked, attacker) == UnitEnums.FACING_SINGLE.BEHIND;

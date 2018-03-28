@@ -95,8 +95,8 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
 
-        if (CoreEngine.isFastMode() || CoreEngine.isMacro()){
-        listPanel.updateAct(0);
+        if (CoreEngine.isFastMode() || CoreEngine.isMacro()) {
+            listPanel.updateAct(0);
             tryDone();
         }
     }
@@ -144,8 +144,7 @@ public abstract class SelectionPanel extends TablePanel {
         if (listPanel.getCurrentItem() == null) {
             if (!MainLauncher.presetNumbers.isEmpty()) {
                 listPanel.select(MainLauncher.presetNumbers.pop());
-            } else
-            if (isRandom()) {
+            } else if (isRandom()) {
                 listPanel.selectRandomItem();
                 WaitMaster.WAIT(400);
             } else

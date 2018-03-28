@@ -23,17 +23,14 @@ public class GameDialogue {
         return name;
     }
 
-    public void skipped(){
+    public void skipped() {
 
     }
+
     @Deprecated
-    public DequeImpl<Speech> getOptions(){
+    public DequeImpl<Speech> getOptions() {
         return root.getChildren();
     }
-
-
-
-
 
 
 }

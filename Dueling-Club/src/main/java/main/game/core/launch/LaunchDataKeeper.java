@@ -50,7 +50,7 @@ public class LaunchDataKeeper {
                             String hardcodedDungeonData) {
         unitData = new UnitData[2];
         //suppose it's just a list of units? coordinates will be figured out later then
-        unitData[0] =  generateData(hardcodedPlayerData,
+        unitData[0] = generateData(hardcodedPlayerData,
 //         game.getPlayer(true)
          null, null, null);
         unitData[1] = generateData(hardcodedEnemyData,
@@ -61,7 +61,7 @@ public class LaunchDataKeeper {
 
     public LaunchDataKeeper(DC_Game game, Preset preset) {
         this(game, preset.getValue(PRESET_DATA.PLAYER_UNITS),
-                preset.getValue(PRESET_DATA.ENEMIES),
+         preset.getValue(PRESET_DATA.ENEMIES),
          preset.getValue(PRESET_DATA.FIRST_DUNGEON));
 
         PresetLauncher.initPresetData(dungeonData, preset);
@@ -72,7 +72,47 @@ public class LaunchDataKeeper {
         this.unitData = unitData;
         this.dungeonData = dungeonData;
     }
-@Refactor
+
+    public static UnitData generateData(String dataString) {
+        return generateData(dataString, null, null, null);
+    }
+
+    public static UnitData generateData(String dataString,
+                                        DC_Player player,
+                                        Coordinates spawnAt,
+                                        Positioner positioner) {
+        String units = "";
+        String coordinates = "";
+        String data = "";
+
+        for (String substring : StringMaster.open(dataString)) {
+            if (dataString.contains("=")) {
+                coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
+                units += substring.split("=")[1] + StringMaster.SEPARATOR;
+            } else if (dataString.contains("(") && dataString.contains(")")) {
+                units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
+                coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
+            } else
+                units += substring + StringMaster.SEPARATOR;
+        }
+
+        if (positioner != null)
+            if (coordinates.isEmpty()) {
+                StringMaster.joinStringList(
+                 StringMaster.convertToStringList(
+                  positioner.getPlayerPartyCoordinates(StringMaster.openContainer(units))), ",");
+//                List<Coordinates> coordinatesList =
+//                 positioner.getCoordinates(player, spawnAt, units);
+//                coordinates = StringMaster.joinStringList(
+//                 StringMaster.convertToStringList(coordinatesList), ",");
+            }
+        if (!coordinates.isEmpty())
+            data += PARTY_VALUE.COORDINATES + PAIR_SEPARATOR + coordinates + SEPARATOR;
+        data += PARTY_VALUE.MEMBERS + PAIR_SEPARATOR + units + SEPARATOR;
+        return new UnitData(data);
+    }
+
+    @Refactor
     public void addUnitData(UnitData data) {
         int i = 0;
         if (unitData != null) i = unitData.length;
@@ -97,52 +137,13 @@ public class LaunchDataKeeper {
     }
 
     public DungeonData getDungeonData() {
-        if (dungeonData==null )
+        if (dungeonData == null)
             dungeonData = new DungeonData();
         return dungeonData;
     }
 
     public void setDungeonData(DungeonData dungeonData) {
         this.dungeonData = dungeonData;
-    }
-
-    public static UnitData generateData(String dataString) {
-        return generateData(dataString, null, null, null);
-    }
-
-    public static UnitData generateData(String dataString,
-                                        DC_Player player,
-                                        Coordinates spawnAt,
-                                        Positioner positioner) {
-        String units = "";
-        String coordinates = "";
-        String data = "";
-
-        for (String substring : StringMaster.open(dataString)) {
-            if (dataString.contains("=")) {
-                coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
-                units += substring.split("=")[1] + StringMaster.SEPARATOR;
-            } else if (dataString.contains("(") && dataString.contains(")")) {
-                units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
-                coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
-            } else
-                units += substring+ StringMaster.SEPARATOR;
-        }
-
-        if (positioner != null)
-            if (coordinates.isEmpty()) {
-                StringMaster.joinStringList(
-                 StringMaster.convertToStringList(
-                  positioner.getPlayerPartyCoordinates(StringMaster.openContainer(units))), ",");
-//                List<Coordinates> coordinatesList =
-//                 positioner.getCoordinates(player, spawnAt, units);
-//                coordinates = StringMaster.joinStringList(
-//                 StringMaster.convertToStringList(coordinatesList), ",");
-            }
-        if (!coordinates.isEmpty())
-            data += PARTY_VALUE.COORDINATES + PAIR_SEPARATOR + coordinates + SEPARATOR;
-        data += PARTY_VALUE.MEMBERS + PAIR_SEPARATOR + units + SEPARATOR;
-        return new UnitData(data);
     }
 
 }

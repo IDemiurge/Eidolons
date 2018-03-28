@@ -188,7 +188,7 @@ public class OptionsMaster {
 //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
-                applyOption(key, value, bool  );
+                applyOption(key, value, bool);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -196,7 +196,7 @@ public class OptionsMaster {
         }
     }
 
-    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool ) {
+    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
             case FRAMERATE:
                 GenericLauncher launcher = Eidolons.getLauncher();

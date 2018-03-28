@@ -60,8 +60,8 @@ public abstract class ValueInfoPage extends InfoPage {
     protected String getHeaderText() {
         if (header != null) {
             return entity.getDisplayedName() + " " +
-                    // StringMaster.wrapInParenthesis
-                    (header);
+             // StringMaster.wrapInParenthesis
+             (header);
         }
         return entity.getDisplayedName() + InfoMaster.getWorkspaceTip(entity);
     }
@@ -72,7 +72,7 @@ public abstract class ValueInfoPage extends InfoPage {
 
     protected void addHeader() {
         if (FontMaster.getStringWidth(FontMaster.getDefaultFont(PropertyElement.DEFAULT_SIZE),
-                getHeaderText()) > PropertyElement.ALT_HEADER_COMPONENT.getWidth() * 8 / 10) {
+         getHeaderText()) > PropertyElement.ALT_HEADER_COMPONENT.getWidth() * 8 / 10) {
             headerComp = new ContainerTextElement(getHeaderText());
         } else {
             headerComp = new PropertyElement(getHeaderText());

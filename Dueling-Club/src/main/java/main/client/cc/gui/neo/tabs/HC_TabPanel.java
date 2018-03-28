@@ -15,9 +15,9 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HC_TabPanel extends G_Panel implements MouseListener {
@@ -163,7 +163,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
         // else
         Chronos.mark("[[[click]]]");
         select(SwingMaster.getComponentIndex(((Component) e.getSource()).getParent(), (Component) e
-                .getSource()));
+         .getSource()));
         Chronos.logTimeElapsedForMark("[[[click]]]");
 
     }
@@ -206,7 +206,7 @@ public class HC_TabPanel extends G_Panel implements MouseListener {
             if (tabPanel.getCurrentIndex() > 0) {
                 // int pageIndex = newIndex/ tabPanel.getPageSize();
                 newIndex += tabPanel.getPageSize()
-                        * (tabPanel.getCurrentIndex() - newIndex / tabPanel.getPageSize());
+                 * (tabPanel.getCurrentIndex() - newIndex / tabPanel.getPageSize());
             }
         }
         if (tabs.size() > getIndex()) {

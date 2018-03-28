@@ -11,24 +11,27 @@ import main.game.core.Eidolons;
  */
 public class BattleClickListener extends ClickListener {
 
-    public boolean isShift( ) {
+    public boolean isShift() {
         return Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
          || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT);
     }
-    public boolean isControl( ) {
+
+    public boolean isControl() {
         return Gdx.input.isKeyPressed(Keys.CONTROL_LEFT)
          || Gdx.input.isKeyPressed(Keys.CONTROL_RIGHT);
     }
-    public boolean isAlt( ) {
+
+    public boolean isAlt() {
         return Gdx.input.isKeyPressed(Keys.ALT_RIGHT)
          || Gdx.input.isKeyPressed(Keys.ALT_LEFT);
     }
+
     @Override
     public boolean handle(Event e) {
-        if (Eidolons.game==null )
+        if (Eidolons.game == null)
             return true;
         if (!Eidolons.game.isBattleInit())
-                return true;
+            return true;
         return super.handle(e);
     }
 }

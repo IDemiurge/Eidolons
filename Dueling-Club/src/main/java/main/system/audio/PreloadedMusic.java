@@ -19,12 +19,12 @@ public class PreloadedMusic implements Music {
     }
 
     public long play(float volume) {
-        playing=true;
+        playing = true;
         return sound.play(volume);
     }
 
     public long play(float volume, float pitch, float pan) {
-        playing=true;
+        playing = true;
         return sound.play(volume, pitch, pan);
     }
 
@@ -41,17 +41,17 @@ public class PreloadedMusic implements Music {
     }
 
     public void stop(long soundId) {
-        playing=false;
+        playing = false;
         sound.stop(soundId);
     }
 
     public void pause(long soundId) {
-        playing=false;
+        playing = false;
         sound.pause(soundId);
     }
 
     public void resume(long soundId) {
-        playing=true;
+        playing = true;
         sound.resume(soundId);
     }
 
@@ -68,12 +68,12 @@ public class PreloadedMusic implements Music {
     }
 
     public void play() {
-        playing=true;
-          sound.play();
+        playing = true;
+        sound.play();
     }
 
     public void stop() {
-        playing=false;
+        playing = false;
         sound.stop();
     }
 
@@ -83,17 +83,12 @@ public class PreloadedMusic implements Music {
     }
 
     @Override
-    public void setLooping(boolean isLooping) {
-
-    }
-
-    @Override
     public boolean isLooping() {
         return false;
     }
 
     @Override
-    public void setVolume(float volume) {
+    public void setLooping(boolean isLooping) {
 
     }
 
@@ -103,13 +98,13 @@ public class PreloadedMusic implements Music {
     }
 
     @Override
-    public void setPan(float pan, float volume) {
+    public void setVolume(float volume) {
 
     }
 
     @Override
-    public void setPosition(float position) {
-return ;
+    public void setPan(float pan, float volume) {
+
     }
 
     @Override
@@ -117,13 +112,18 @@ return ;
         return 0;
     }
 
+    @Override
+    public void setPosition(float position) {
+        return;
+    }
+
     public void pause() {
-        playing=false;
+        playing = false;
         sound.pause();
     }
 
     public void resume() {
-        playing=true;
+        playing = true;
         sound.resume();
     }
 

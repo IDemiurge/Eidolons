@@ -47,16 +47,17 @@ public class DialogueFactory {
 
     public void init(MetaGameMaster master) {
         this.master = master;
-        constructDialogues(getFileRootPath()+getFileName());
+        constructDialogues(getFileRootPath() + getFileName());
     }
 
     protected String getFileRootPath() {
         return
          StringMaster.buildPath(
-         master.getMetaDataManager().getDataPath()
-         , TextMaster.getLocale(),
-         StringMaster.getPathSeparator() );
+          master.getMetaDataManager().getDataPath()
+          , TextMaster.getLocale(),
+          StringMaster.getPathSeparator());
     }
+
     protected String getFileName() {
         return FILE_NAME;
     }

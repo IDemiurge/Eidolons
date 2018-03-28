@@ -7,9 +7,9 @@ import main.swing.generic.components.panels.G_PagePanel;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.GuiManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
@@ -106,20 +106,20 @@ public class DC_PagedBuffPanel extends G_PagePanel<BuffObj> {
                 }
 
                 if (o1.getIntParam(G_PARAMS.C_DURATION) < o2
-                        .getIntParam(G_PARAMS.C_DURATION)) {
+                 .getIntParam(G_PARAMS.C_DURATION)) {
                     return 1;
                 }
                 if (o1.getIntParam(G_PARAMS.C_DURATION) > o2
-                        .getIntParam(G_PARAMS.C_DURATION)) {
+                 .getIntParam(G_PARAMS.C_DURATION)) {
                     return -1;
                 }
 
                 if (o1.getIntParam(G_PARAMS.DURATION) < o2
-                        .getIntParam(G_PARAMS.DURATION)) {
+                 .getIntParam(G_PARAMS.DURATION)) {
                     return 1;
                 }
                 if (o1.getIntParam(G_PARAMS.DURATION) > o2
-                        .getIntParam(G_PARAMS.DURATION)) {
+                 .getIntParam(G_PARAMS.DURATION)) {
                     return -1;
                 }
 

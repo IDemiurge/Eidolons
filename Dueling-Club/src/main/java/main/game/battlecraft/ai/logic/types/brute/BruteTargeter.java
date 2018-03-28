@@ -19,7 +19,7 @@ public class BruteTargeter extends TargetingManager {
 
             case APPROACH:
                 Obj cell = logic.getAnalyzer().getClosestCell(logic.getAnalyzer()
-                        .getClosestAttackTarget(), true);
+                 .getClosestAttackTarget(), true);
                 if (cell == null) {
                     return id;
                 } else {

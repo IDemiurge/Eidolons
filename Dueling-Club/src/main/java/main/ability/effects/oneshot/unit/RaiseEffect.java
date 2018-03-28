@@ -60,10 +60,10 @@ public class RaiseEffect extends SummonEffect {
     public RaiseEffect(String RAISE_TYPE, String RAISE_MODIFIER) {
         super(null);
         this.raiseType = new EnumMaster<RAISE_TYPE>().retrieveEnumConst(
-                RAISE_TYPE.class, RAISE_TYPE, true);
+         RAISE_TYPE.class, RAISE_TYPE, true);
         if (!StringMaster.isEmpty(RAISE_MODIFIER)) {
             this.raiseMod = new EnumMaster<RAISE_MODIFIER>().retrieveEnumConst(
-                    RAISE_MODIFIER.class, RAISE_MODIFIER, true);
+             RAISE_MODIFIER.class, RAISE_MODIFIER, true);
         }
     }
 
@@ -81,20 +81,20 @@ public class RaiseEffect extends SummonEffect {
 
     public void initCorpse() {
         corpse = ref.getGame().getGraveyardManager()
-                .getTopDeadUnit(ref.getTargetObj().getCoordinates());
+         .getTopDeadUnit(ref.getTargetObj().getCoordinates());
         if (corpse != null) {
             humanoid = corpse.checkProperty(G_PROPS.CLASSIFICATIONS, ""
-                    + UnitEnums.CLASSIFICATIONS.HUMANOID);
+             + UnitEnums.CLASSIFICATIONS.HUMANOID);
         }
     }
 
     @Override
     public boolean applyThis() {
         corpse = ref.getGame().getGraveyardManager()
-                .destroyTopCorpse(ref.getTargetObj().getCoordinates());
+         .destroyTopCorpse(ref.getTargetObj().getCoordinates());
 
         humanoid = corpse.checkProperty(G_PROPS.CLASSIFICATIONS, ""
-                + UnitEnums.CLASSIFICATIONS.HUMANOID);
+         + UnitEnums.CLASSIFICATIONS.HUMANOID);
         initUnitType();
 
         super.applyThis();
@@ -121,12 +121,12 @@ public class RaiseEffect extends SummonEffect {
             String varPart = VariableManager.getVarPart(s);
             String valueName = s.replace(varPart, "");
             String formula = StringMaster.cropParenthesises(varPart) + "*"
-                    + getParamModFormula(valueName);// MAX?
+             + getParamModFormula(valueName);// MAX?
             effect.add(new ModifyValueEffect(valueName,
-                    MOD.MODIFY_BY_CONST, formula));
+             MOD.MODIFY_BY_CONST, formula));
         }
         BuffType buffType = new BuffType(
-                DataManager.getType(BUFF_NAME));
+         DataManager.getType(BUFF_NAME));
         buffType.setName(BUFF_NAME + corpse.getName());
         AddBuffEffect e = new AddBuffEffect(buffType, effect);
 
@@ -135,19 +135,19 @@ public class RaiseEffect extends SummonEffect {
 
     private String getParamModFormula(String valueName) {
         return "{"
-                + CORPSE_REF.toString()
-                + "_"
-                + valueName
-                + "}*min("
-                + MAX_RAISE_FACTOR
-                + ",("
-                + SP_FACTOR
-                + StringMaster.getValueRef(KEYS.SUMMONER, PARAMS.SPELLPOWER)
-                + "+"
-                + MSTR_FACTOR
-                + " *"
-                + StringMaster.getValueRef(KEYS.SUMMONER,
-                PARAMS.NECROMANCY_MASTERY) + "))";
+         + CORPSE_REF.toString()
+         + "_"
+         + valueName
+         + "}*min("
+         + MAX_RAISE_FACTOR
+         + ",("
+         + SP_FACTOR
+         + StringMaster.getValueRef(KEYS.SUMMONER, PARAMS.SPELLPOWER)
+         + "+"
+         + MSTR_FACTOR
+         + " *"
+         + StringMaster.getValueRef(KEYS.SUMMONER,
+         PARAMS.NECROMANCY_MASTERY) + "))";
     }
 
     private String getModifiedParam() {
@@ -158,17 +158,17 @@ public class RaiseEffect extends SummonEffect {
                 return "Strength(0.6);Vitality(0.6);Dexterity(0.35);Agility(0.5)";
             case LICH:
                 return "Strength(0.4);Vitality(0.4);Dexterity(0.1);Agility(0.1);Willpower(0.5)"
-                        + "Wisdom(0.75);Intelligence(1);Spellpower(1.5);Knowledge(1)";
+                 + "Wisdom(0.75);Intelligence(1);Spellpower(1.5);Knowledge(1)";
             case SKELETON:
                 return "Strength(0.75);Vitality(0.35);Dexterity(0.25);Agility(0.15)";
             case ZOMBIE:
                 return "Strength(0.6);Vitality(1);";
             case VAMPIRE:
                 return "Strength(0.75);Vitality(0.5);Dexterity(0.65);Agility(0.75);Willpower(0.75)"
-                        + "Wisdom(0.5);Intelligence(0.75);Spellpower(0.75);Knowledge(0.75)";
+                 + "Wisdom(0.5);Intelligence(0.75);Spellpower(0.75);Knowledge(0.75)";
             case WRAITH_LORD:
                 return "Strength(1.25);Vitality(0.75);Willpower(1.75);Dexterity(0.25);Agility(0.35)"
-                        + "Intelligence(0.75);Wisdom(1.25);Spellpower(1.75);Knowledge(0.75)";
+                 + "Intelligence(0.75);Wisdom(1.25);Spellpower(1.75);Knowledge(0.75)";
 
         }
         return null;

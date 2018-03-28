@@ -14,20 +14,6 @@ import java.util.List;
  */
 public class ProfileChooser extends AiHandler {
 
-    public ProfileChooser(AiMaster master) {
-        super(master);
-    }
-
-        public enum AI_PROFILE_GROUP{
-            UNIT_SPECIFIC,
-            AI_TYPE,
-            RPG,
-            ORDER,
-            BEHAVIOR,
-
-    }
-    //TODO IDEA: merge multiple profiles?
-
     public Class[] profileClasses = {
      CHARACTER_TYPE.class,
      INCLINATION_TYPE.class,
@@ -36,6 +22,11 @@ public class ProfileChooser extends AiHandler {
      ORDER_PRIORITY_MODS.class,
      BEHAVIOR_MODE.class,
     };
+
+    public ProfileChooser(AiMaster master) {
+        super(master);
+    }
+    //TODO IDEA: merge multiple profiles?
 
     public String getProfileType(UnitAI ai) {
         switch (getPriorityProfileManager().getGroup()) {
@@ -63,6 +54,7 @@ public class ProfileChooser extends AiHandler {
 
         return ai.getType().toString();
     }
+
     //profile grouping:
     public PriorityProfile chooseProfile(String role) {
         // some function to evaluatate a profile's fitness for situation?
@@ -77,5 +69,14 @@ public class ProfileChooser extends AiHandler {
 
         //try to find unit-specific profile
         return profile;
+    }
+
+    public enum AI_PROFILE_GROUP {
+        UNIT_SPECIFIC,
+        AI_TYPE,
+        RPG,
+        ORDER,
+        BEHAVIOR,
+
     }
 }

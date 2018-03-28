@@ -67,7 +67,7 @@ public class ConcealmentRule {
         if (chance < 0) {
             chance += 500;
             if (chance < 0)
-                return -(chance)/2;
+                return -(chance) / 2;
             else
                 return 0;
         }

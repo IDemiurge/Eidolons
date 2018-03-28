@@ -63,7 +63,7 @@ public class EditorPalette extends TabbedPanel {
         int columns = (int) (getWidth() / 64);
         for (EDITOR_PALETTE sub : EDITOR_PALETTE.values()) {
             OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(sub.name());
-            if (TYPE==null ){
+            if (TYPE == null) {
                 addCustomTab(sub);
                 continue;
             }
@@ -114,8 +114,9 @@ public class EditorPalette extends TabbedPanel {
 
     private void addEmitterTab() {
         emitterPalette = new EmitterPalette();
-        addTab(emitterPalette,EDITOR_PALETTE.EMITTERS.name());
+        addTab(emitterPalette, EDITOR_PALETTE.EMITTERS.name());
     }
+
     private void addCustomTab(EDITOR_PALETTE sub) {
         switch (sub) {
             case EMITTERS:
@@ -145,10 +146,10 @@ public class EditorPalette extends TabbedPanel {
     }
 
     private Actor getSelectionBorder() {
-        if (selectionBorder==null )
-          selectionBorder = new SuperContainer(new Image(
-         TextureCache.getOrCreateR(BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath()
-         )), true);
+        if (selectionBorder == null)
+            selectionBorder = new SuperContainer(new Image(
+             TextureCache.getOrCreateR(BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath()
+             )), true);
 //        border.setSize(75, 75);
         return selectionBorder;
     }
@@ -168,6 +169,6 @@ public class EditorPalette extends TabbedPanel {
     }
 
     public enum EDITOR_PALETTE {
-        EMITTERS ,LOCATION, PLACE, SHOP, TAVERN, PARTY, ENCOUNTER,;
+        EMITTERS, LOCATION, PLACE, SHOP, TAVERN, PARTY, ENCOUNTER,;
     }
 }

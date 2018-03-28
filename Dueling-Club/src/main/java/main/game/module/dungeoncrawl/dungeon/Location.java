@@ -27,8 +27,8 @@ import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +78,7 @@ public class Location {
     private void initBossLevel() {
         if (isScenario()) {
             String data = FileManager.readFile(PathFinder.getDungeonLevelFolder()
-                    + getPlaceOrScenario().getProperty(MACRO_PROPS.BOSS_LEVEL));
+             + getPlaceOrScenario().getProperty(MACRO_PROPS.BOSS_LEVEL));
             if (data.isEmpty()) {
                 return;
             }
@@ -87,7 +87,7 @@ public class Location {
             return;
         } else {
             ObjType type = RandomWizard.getObjTypeByWeight(getPlaceOrScenario().getProperty(
-                    MACRO_PROPS.BOSS_LEVEL_POOL), DC_TYPE.DUNGEONS);
+             MACRO_PROPS.BOSS_LEVEL_POOL), DC_TYPE.DUNGEONS);
             bossLevel = new Dungeon(type);
         }
 
@@ -98,13 +98,13 @@ public class Location {
         // TODO entrance fit?
         if (isScenario()) {
             String data = FileManager.readFile(PathFinder.getDungeonLevelFolder()
-                    + getPlaceOrScenario().getProperty(MACRO_PROPS.ROOT_LEVEL));
+             + getPlaceOrScenario().getProperty(MACRO_PROPS.ROOT_LEVEL));
             DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
             root = plan.getDungeon();
             return;
         } else {
             ObjType type = RandomWizard.getObjTypeByWeight(getPlaceOrScenario().getProperty(
-                    MACRO_PROPS.ROOT_POOL), DC_TYPE.DUNGEONS);
+             MACRO_PROPS.ROOT_POOL), DC_TYPE.DUNGEONS);
             root = new Dungeon(type);
         }
     }
@@ -117,7 +117,7 @@ public class Location {
         dungeon = bossLevel;
         int z = dungeon.getZ();
         ENTRANCE_LAYOUT entranceLayout = getFirstEntranceLayout(root, DirectionMaster
-                .getRandomDirection());
+         .getRandomDirection());
 
         if (isScenario()) {
             // Map<SUBDUNGEON_TYPE, String> map = new
@@ -132,7 +132,7 @@ public class Location {
             // .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS), SUBDUNGEON_TYPE)
             List<String> list = new ArrayList<>();
             for (String stretch : StringMaster.open(scenario
-                    .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS))) {
+             .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS))) {
                 int i = 0;
                 if (StringMaster.isInteger(stretch)) {
                     // for (int i = 0; i < StringMaster.getInteger(stretch);
@@ -150,7 +150,7 @@ public class Location {
                 typeName = VariableManager.removeVarPart(stretch);
                 int depth = (StringMaster.getInteger(VariableManager.getVarPart(stretch)));
                 SUBDUNGEON_TYPE type = new EnumMaster<SUBDUNGEON_TYPE>().retrieveEnumConst(
-                        SUBDUNGEON_TYPE.class, typeName);
+                 SUBDUNGEON_TYPE.class, typeName);
 
                 String element = i + "=" + typeName + StringMaster.wrapInParenthesis("" + depth);
                 list.add(element);
@@ -174,12 +174,12 @@ public class Location {
 
             String stretch = null;
             int depth = RandomWizard.getRandomInt(StringMaster.getInteger(VariableManager
-                    .getVarPart(stretch)));
+             .getVarPart(stretch)));
             for (int level = 0; level < depth; level++) {
                 z = (up) ? z++ : z--;
                 String typeName = null;
                 File randomFile = FileManager.getRandomFile(PathFinder.getDungeonLevelFolder()
-                        + typeName);
+                 + typeName);
                 // filter?
                 String data = FileManager.readFile(randomFile);
                 DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
@@ -193,7 +193,7 @@ public class Location {
 
             int i = maxLevel;
             List<ObjType> typePool = DataManager.toTypeList(getPlaceOrScenario()
-                    .getProperty(MACRO_PROPS.SUBLEVEL_POOL), DC_TYPE.DUNGEONS);
+             .getProperty(MACRO_PROPS.SUBLEVEL_POOL), DC_TYPE.DUNGEONS);
             Map<Integer, ObjType> map = distributeLevels(typePool, maxLevel);
             ObjType prevType = null;
             int level = 0;
@@ -275,7 +275,7 @@ public class Location {
                     for (Boolean b1 : BooleanMaster.FALSE_TRUE_NULL) {
                         flipY = b1;
                         entranceLayout = DungeonLevelMaster.transformLayout(entranceLayout, flipX,
-                                flipY, rotate);
+                         flipY, rotate);
                         if (entranceLayout == requiredEntranceLayout) {
                             break transformLoop;
                         }
@@ -339,12 +339,12 @@ public class Location {
 
     public boolean isFlipY(Coordinates enterCoordinate) {
         return CoordinatesMaster.getClosestEdgeY(enterCoordinate, dungeon.getCellsX(), dungeon
-                .getCellsY()) == FLIP_Y_EDGE;
+         .getCellsY()) == FLIP_Y_EDGE;
     }
 
     public boolean isFlipX(Coordinates enterCoordinate) {
         return CoordinatesMaster.getClosestEdgeX(enterCoordinate, dungeon.getCellsX(), dungeon
-                .getCellsY()) == FLIP_X_EDGE;
+         .getCellsY()) == FLIP_X_EDGE;
     }
 
     //

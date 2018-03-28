@@ -30,7 +30,8 @@ public class OrbsPanel extends TablePanel {
         tooltip.setUserObject(Arrays.asList(new ValueContainer(el.getIconRegion(), name, val)));
         el.addListener(tooltip.getController());
     }
-//TODO smooth update?
+
+    //TODO smooth update?
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);
@@ -42,14 +43,13 @@ public class OrbsPanel extends TablePanel {
         int i = 0;
         for (OrbElement orb : orbs) {
             if (orb == null) {
-                orb  = (new OrbElement( params[i]
+                orb = (new OrbElement(params[i]
                  , source.getParam(params[i]))
                 );
-                orbs[i]=orb;
-                orb.setPosition(i*100, 0);
+                orbs[i] = orb;
+                orb.setPosition(i * 100, 0);
                 addActor(orb);
-            }
-            else
+            } else
                 orb.updateValue(source.getParam(params[i]));
             orb.act(delta);
 //            if (orb.getActor() != null)

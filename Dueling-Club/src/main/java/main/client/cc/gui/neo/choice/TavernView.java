@@ -65,9 +65,9 @@ public class TavernView extends HeroChoiceView<Unit> {
         TextCompDC patrons = new TextCompDC(VISUALS.PROP_BOX, tavern.getName() + "'s patrons", 18);
         add(patrons, "id patrons, pos " + getPagePosX() + " info.y2");
         CustomButton buyProvisions = new DialogueButton(VISUALS.BUTTON, "Buy Provisions",
-                "How much supplies do you need?", "All you have", "All that "
-                + MacroManager.getActiveParty().getSharedGold() + " can buy",
-                "None, actually") {
+         "How much supplies do you need?", "All you have", "All that "
+         + MacroManager.getActiveParty().getSharedGold() + " can buy",
+         "None, actually") {
             protected void processChoice(Boolean waitForInput) {
                 if (waitForInput != null) {
                     tavern.buyProvisions(waitForInput);
@@ -76,7 +76,7 @@ public class TavernView extends HeroChoiceView<Unit> {
         };
         add(buyProvisions, "id buyProvisions, pos 0 0");
         CustomButton rentRooms = new DialogueButton(VISUALS.BUTTON, "Rent Rooms",
-                getRentRoomsInfoText(), "Just Tonight", "As needed", "Never mind") {
+         getRentRoomsInfoText(), "Just Tonight", "As needed", "Never mind") {
             protected void processChoice(Boolean waitForInput) {
                 if (waitForInput != null) {
                     tavern.rentRooms(waitForInput);
@@ -90,9 +90,9 @@ public class TavernView extends HeroChoiceView<Unit> {
 
     private String getRentRoomsInfoText() {
         return "We've got just the right accomodations for"
-                + (MacroManager.getActiveParty().getMembers().size() > 1 ? (" the "
-                + MacroManager.getActiveParty().getMembers().size() + " of") : "")
-                + " you! How long will you be staying? We normally charge payment upfront...";
+         + (MacroManager.getActiveParty().getMembers().size() > 1 ? (" the "
+         + MacroManager.getActiveParty().getMembers().size() + " of") : "")
+         + " you! How long will you be staying? We normally charge payment upfront...";
     }
 
     @Override
@@ -103,7 +103,7 @@ public class TavernView extends HeroChoiceView<Unit> {
     @Override
     public String getInfo() {
         return "Welcome to " + tavern.getName() + "! Here for a drink, a meal or a good company? "
-                + "We have excellent rooms as well if you are looking for accomodations...";
+         + "We have excellent rooms as well if you are looking for accomodations...";
     }
 
     public void itemIndexSelected(int i) {

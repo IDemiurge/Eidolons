@@ -19,7 +19,7 @@ public class MapInputController extends InputController {
 
     @Override
     protected MapScreen getScreen() {
-        return  MapScreen.getInstance();
+        return MapScreen.getInstance();
     }
 
     @Override

@@ -33,8 +33,9 @@ public class Structure extends BattleFieldObject {
         this(type, owner, game, ref);
         setCoordinates(new Coordinates(x, y));
     }
+
     public boolean isWall() {
-        if (wall==null )
+        if (wall == null)
             wall = getType().checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.WALL.toString());
         return wall;
     }
@@ -53,7 +54,7 @@ public class Structure extends BattleFieldObject {
 
     @Override
     public Boolean isLandscape() {
-        if (landscape==null )
+        if (landscape == null)
             landscape = getType().checkProperty(G_PROPS.BF_OBJECT_TAGS, BfObjEnums.BF_OBJECT_TAGS.LANDSCAPE.toString());
         return landscape;
     }
@@ -78,10 +79,10 @@ public class Structure extends BattleFieldObject {
 
     public void resetFacing() {
 //        getResetter().setFacing();
-        if (getDirection()!=null ){
-            setFacing(  FacingMaster.getFacingFromDirection(getDirection()));
+        if (getDirection() != null) {
+            setFacing(FacingMaster.getFacingFromDirection(getDirection()));
         } else {
-            setFacing( FACING_DIRECTION.NONE);
+            setFacing(FACING_DIRECTION.NONE);
         }
     }
 
@@ -92,6 +93,6 @@ public class Structure extends BattleFieldObject {
     }
 
     public boolean isLightEmitter() {
-      return    checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
+        return checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
     }
 }

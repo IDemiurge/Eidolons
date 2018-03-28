@@ -50,7 +50,7 @@ public class ClassBottomPanel extends HT_BottomPanel {
             // selectedType.getProperty(PROPS.REQUIREMENTS)
             displayedMasteries.clear();
             for (String req : hero.getGame().getRequirementsManager().getRequirements(selectedType,
-                    0).getReqMap().keySet()) {
+             0).getReqMap().keySet()) {
                 String[] parts = req.split(InfoMaster.PARAM_REASON_STRING);
                 if (parts.length < 2) {
                     continue;
@@ -79,7 +79,7 @@ public class ClassBottomPanel extends HT_BottomPanel {
 
     private HC_PointComp generateMasteryComp(PARAMETER param) {
         HC_PointComp c = new HC_PointComp(true, hero, getBuffer(), param, PARAMS.MASTERY_POINTS,
-                VISUALS.BUTTON_NEW_TINY) {
+         VISUALS.BUTTON_NEW_TINY) {
 
         };
         return c;

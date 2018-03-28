@@ -68,7 +68,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
 
     protected boolean addType(ObjType type, HeroListPanel hlp, boolean alt) {
         if (isQuickItemList(hlp, type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS ? PROPS.QUICK_ITEMS
-                : null)) {
+         : null)) {
             return false;
         }
         if (hlp != null) {
@@ -88,7 +88,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                 if (TYPE == DC_TYPE.SPELLS) {
                     if (!alt) {
                         return CharacterCreator.getHeroManager().addItem(getHero(), type, TYPE,
-                                PROPS.VERBATIM_SPELLS);
+                         PROPS.VERBATIM_SPELLS);
 
                     } else {
                         return CharacterCreator.getHeroManager().addMemorizedSpell(getHero(), type);
@@ -194,7 +194,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
                 CharacterCreator.getHeroPanel().getMiddlePanel().getToolTipPanel().setHero(hero);
                 CharacterCreator.getHeroPanel().getMiddlePanel().getToolTipPanel().setItem(type);
                 CharacterCreator.getHeroPanel().getMiddlePanel().getToolTipPanel().setPrompted(
-                        prompted);
+                 prompted);
                 CharacterCreator.getHeroPanel().getMiddlePanel().getToolTipPanel().refresh();
             }
         }
@@ -238,7 +238,7 @@ public class ItemListManager implements MouseListener, ListSelectionListener {
         ObjType type = list.getSelectedValue();
         if (right && e.getClickCount() == 1) {
             if (isRemovable((HC_PagedListPanel) hlp.getParent())
-                    || (!getHero().getGame().isSimulation() && PROP == PROPS.INVENTORY)) {
+             || (!getHero().getGame().isSimulation() && PROP == PROPS.INVENTORY)) {
                 removeType(type, hlp, isAltProp(hlp) ? prop2 : PROP);
                 DC_SoundMaster.playStandardSound(getRemoveSound(type.getOBJ_TYPE_ENUM()));
                 // coins clink! failed to parse xml

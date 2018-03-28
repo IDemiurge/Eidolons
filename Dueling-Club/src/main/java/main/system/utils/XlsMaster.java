@@ -114,11 +114,11 @@ public class XlsMaster {
                     }
                 };
 
-                 Map<VALUE, Integer> valueMap = null;
+                Map<VALUE, Integer> valueMap = null;
                 int simUnitRow = 0;
 //                Map<VALUE, Integer> entityMap;
                 for (String raw_formula : formulas) {
-                    String formula= getFormula(raw_formula, row, column, valueMap, simUnitRow );
+                    String formula = getFormula(raw_formula, row, column, valueMap, simUnitRow);
                     rowhead.createCell(column).setCellFormula(
                      formula
 //                     String.valueOf(new Formula(formula.split(formula_sep)[1]).getInt(ref))
@@ -139,11 +139,13 @@ public class XlsMaster {
 
     private static String getFormula(String raw_formula, int row, int column, Map<VALUE, Integer> valueMap, int simUnitRow) {
 //
-        return getLetter(raw_formula) + ":" +getNumber(raw_formula); }
+        return getLetter(raw_formula) + ":" + getNumber(raw_formula);
+    }
 
     private static String getNumber(String raw_formula) {
         return raw_formula;
     }
+
     private static String getLetter(String raw_formula) {
         return raw_formula;
     }

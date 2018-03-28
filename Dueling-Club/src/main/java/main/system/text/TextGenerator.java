@@ -18,7 +18,7 @@ public class TextGenerator {
     public static String generatePerkParamBonuses(Entity e) {
 
         List<List<VALUE>> pages = ValuePageManager.getValuesForHCInfoPages(e
-                .getOBJ_TYPE_ENUM());
+         .getOBJ_TYPE_ENUM());
 
         String string = PREFIX;
         for (List<VALUE> list : pages) {

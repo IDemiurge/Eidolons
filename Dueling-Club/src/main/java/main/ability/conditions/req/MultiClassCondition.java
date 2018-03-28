@@ -38,7 +38,7 @@ public class MultiClassCondition extends MicroCondition {
         // return true;
         // }
         for (String className : StringMaster
-                .openContainer(type.getProperty(PROPS.BASE_CLASSES_ONE))) {
+         .openContainer(type.getProperty(PROPS.BASE_CLASSES_ONE))) {
             if (!new ClassTreeCondition(className).preCheck(ref))
             // setReason()
             {
@@ -46,15 +46,15 @@ public class MultiClassCondition extends MicroCondition {
             }
         }
         for (String className : StringMaster
-                .openContainer(type.getProperty(PROPS.BASE_CLASSES_TWO))) {
+         .openContainer(type.getProperty(PROPS.BASE_CLASSES_TWO))) {
             if (!new ClassTreeCondition(className).preCheck(ref)) {
                 return false;
             }
         }
 
         return new StringContainersComparison(ref.getSourceObj().getProperty(PROPS.CLASSES), type
-                .getProperty(PROPS.BASE_CLASSES_ONE)).preCheck(ref)
-                && new StringContainersComparison(ref.getSourceObj().getProperty(PROPS.CLASSES),
-                type.getProperty(PROPS.BASE_CLASSES_TWO)).preCheck(ref);
+         .getProperty(PROPS.BASE_CLASSES_ONE)).preCheck(ref)
+         && new StringContainersComparison(ref.getSourceObj().getProperty(PROPS.CLASSES),
+         type.getProperty(PROPS.BASE_CLASSES_TWO)).preCheck(ref);
     }
 }

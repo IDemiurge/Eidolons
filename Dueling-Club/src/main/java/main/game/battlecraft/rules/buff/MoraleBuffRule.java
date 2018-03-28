@@ -20,21 +20,21 @@ import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {
-    public static final  String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Panic.getName(),
-            // STD_TYPE_NAMES.Terrified.getName(), // panic -> auto-run away,
-            // disable
-            // counters
-            MetaEnums.STD_BUFF_NAMES.Fearful.getName(), MetaEnums.STD_BUFF_NAMES.Inspired.getName()};
-    public static final  String[] formulas = {"1", "10", "100",}; // make
+    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Panic.getName(),
+     // STD_TYPE_NAMES.Terrified.getName(), // panic -> auto-run away,
+     // disable
+     // counters
+     MetaEnums.STD_BUFF_NAMES.Fearful.getName(), MetaEnums.STD_BUFF_NAMES.Inspired.getName()};
+    public static final String[] formulas = {"1", "10", "100",}; // make
     // fearful
     // and
     // treason
     // stack?
-    public static final  String parameterString = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
-            + PARAMS.INITIATIVE_MODIFIER.getName() + StringMaster.AND_SEPARATOR
-            + PARAMS.RESISTANCE.getName();
-    public static final  String parameterStringPanic = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
-            + PARAMS.RESISTANCE.getName();
+    public static final String parameterString = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
+     + PARAMS.INITIATIVE_MODIFIER.getName() + StringMaster.AND_SEPARATOR
+     + PARAMS.RESISTANCE.getName();
+    public static final String parameterStringPanic = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
+     + PARAMS.RESISTANCE.getName();
 
     // reverse means MORE THAN {THIS} and
     public MoraleBuffRule(MicroGame game) {
@@ -50,27 +50,27 @@ public class MoraleBuffRule extends DC_BuffRule {
         switch (level) {
             case 0: {
                 return new ConditionalEffect(new NotCondition(new StdPassiveCondition(
-                        UnitEnums.STANDARD_PASSIVES.FEARLESS)),
+                 UnitEnums.STANDARD_PASSIVES.FEARLESS)),
 
-                        new Effects(new ModifyValueEffect(parameterStringPanic,
-                                MOD.MODIFY_BY_PERCENT, "("
-                                + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                                + formulas[1] + ")*2"), new BehaviorModeEffect(
-                                AiEnums.BEHAVIOR_MODE.PANIC)));
+                 new Effects(new ModifyValueEffect(parameterStringPanic,
+                  MOD.MODIFY_BY_PERCENT, "("
+                  + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
+                  + formulas[1] + ")*2"), new BehaviorModeEffect(
+                  AiEnums.BEHAVIOR_MODE.PANIC)));
                 // return new OwnershipChangeEffect();
             }
             case 1: {
                 return new ConditionalEffect(new NotCondition(new StdPassiveCondition(
-                        UnitEnums.STANDARD_PASSIVES.FEARLESS)), new Effects(new ModifyValueEffect(
-                        parameterString, MOD.MODIFY_BY_PERCENT, "("
-                        + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                        + formulas[1] + ")*2")));
+                 UnitEnums.STANDARD_PASSIVES.FEARLESS)), new Effects(new ModifyValueEffect(
+                 parameterString, MOD.MODIFY_BY_PERCENT, "("
+                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
+                 + formulas[1] + ")*2")));
             }
             case 2: {
                 return new Effects(new ModifyValueEffect(parameterString,
-                        MOD.MODIFY_BY_PERCENT, "("
-                        + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
-                        + formulas[2] + ")/4"));
+                 MOD.MODIFY_BY_PERCENT, "("
+                 + StringMaster.getValueRef(KEYS.SOURCE, getValue()) + "-"
+                 + formulas[2] + ")/4"));
 
             }
         }

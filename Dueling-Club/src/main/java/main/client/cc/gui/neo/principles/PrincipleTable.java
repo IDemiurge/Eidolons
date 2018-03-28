@@ -79,7 +79,7 @@ public class PrincipleTable extends G_Panel {
                     if (selectedPrinciple == null) {
                         int n = 0;
                         List<PRINCIPLES> principles = IntegrityRule.getAffectingPrinciples(item,
-                                hero);
+                         hero);
                         for (PRINCIPLES principle : principles) {
                             Integer[] values = IntegrityRule.getValues(principle, item, hero);
                             drawRow(principle, i, values, g, principles.size(), n);
@@ -105,7 +105,7 @@ public class PrincipleTable extends G_Panel {
                          int rowNumber) {
 
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setFont(PrincipleView.getDefaultFont());
         g.setColor(ColorManager.getHC_DefaultColor());
         int column = -1;
@@ -119,7 +119,7 @@ public class PrincipleTable extends G_Panel {
                 int percentage = 100 / rows + 15 + Math.min(20, rows * 3);
                 img = ImageManager.getSizedVersion(img, percentage);
                 g.setFont(PrincipleView.getDefaultFont().deriveFont(
-                        new Float(PrincipleView.getDefaultFont().getSize() / rows + 6 + rows)));
+                 new Float(PrincipleView.getDefaultFont().getSize() / rows + 6 + rows)));
             }
             y += getRowHeight() / rows * rowNumber;
             x -= img.getWidth(null) / 2;

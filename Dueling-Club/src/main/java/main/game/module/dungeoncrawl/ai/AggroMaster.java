@@ -40,14 +40,14 @@ public class AggroMaster {
                     list.add(unit);
             }
         }
-        main.system.auxiliary.log.LogMaster.log(1,"Aggro group: " +list+"; last: " + lastAggroGroup);
-     if (!ExplorationMaster.isExplorationOn())   if (!list.isEmpty()) {
+        main.system.auxiliary.log.LogMaster.log(1, "Aggro group: " + list + "; last: " + lastAggroGroup);
+        if (!ExplorationMaster.isExplorationOn()) if (!list.isEmpty()) {
             logAggro(list);
         }
-        if (lastAggroGroup!=null )
-        if (lastAggroGroup.size() > list.size()){
-            main.system.auxiliary.log.LogMaster.log(1,"Aggro group reduced: " +lastAggroGroup+" last vs new: " + list);
-        }
+        if (lastAggroGroup != null)
+            if (lastAggroGroup.size() > list.size()) {
+                main.system.auxiliary.log.LogMaster.log(1, "Aggro group reduced: " + lastAggroGroup + " last vs new: " + list);
+            }
         lastAggroGroup = list;
         return list;
     }
@@ -71,7 +71,7 @@ public class AggroMaster {
 //        Analyzer.getEnemies(hero, false, false, false);
 //            if (ExplorationMaster.isExplorationOn())
 
-        boolean newAggro=false;
+        boolean newAggro = false;
         for (Unit unit : DC_Game.game.getUnits()) {
             if (unit.isDead())
                 continue;
@@ -84,7 +84,7 @@ public class AggroMaster {
             }
             if (unit.getAI().isEngaged()) {
                 set.add(unit);
-                newAggro=true;
+                newAggro = true;
                 unit.getAI().setEngaged(false);
             }
             if (hero.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE)
@@ -103,7 +103,7 @@ public class AggroMaster {
         }
         //TODO add whole group of each unit
 
-        for (Unit unit: set) {
+        for (Unit unit : set) {
             if (unit.getAI().getGroup() != null) {
                 for (Unit sub : unit.getAI().getGroup().getMembers()) {
                     set.add(sub);
@@ -116,8 +116,8 @@ public class AggroMaster {
         }
 
 
-        for (Unit unit: set) {
-            if (unit.getAI().getEngagementDuration()<=1)
+        for (Unit unit : set) {
+            if (unit.getAI().getEngagementDuration() <= 1)
                 return set;
         }
         return set;
@@ -197,11 +197,11 @@ public class AggroMaster {
 //
 //        } else {
 
-            if (targetObj.isMine()) {
-                action.getOwnerObj().
-                 getAI().setEngaged(true);
-            } else {
-                ((Unit)targetObj).getAI().setEngaged(true);
+        if (targetObj.isMine()) {
+            action.getOwnerObj().
+             getAI().setEngaged(true);
+        } else {
+            ((Unit) targetObj).getAI().setEngaged(true);
 //                                GroupAI g = ((Unit) getAction().getTargetObj()).getAI().getGroup();
 //                                //TODO
 //                                if (g == null) {
@@ -210,7 +210,7 @@ public class AggroMaster {
 //                                 getMembers().forEach(
 //                                 unit -> unit.getAI().setEngagementDuration(2)
 //                                );
-            }
+        }
 
 
 //        }

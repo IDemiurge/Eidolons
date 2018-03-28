@@ -8,8 +8,8 @@ import main.game.module.adventure.faction.FactionObj;
  */
 public class ArmyFactory {
 
-    public static Army getArmy(Unit general, FactionObj faction, Skirmish skirmish){
-        Army army=new Army(general, faction, skirmish);
+    public static Army getArmy(Unit general, FactionObj faction, Skirmish skirmish) {
+        Army army = new Army(general, faction, skirmish);
 //        generateArmyUnits(army);
         return army;
     }

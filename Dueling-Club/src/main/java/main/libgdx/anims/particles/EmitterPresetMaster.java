@@ -15,8 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,19 +66,19 @@ public class EmitterPresetMaster {
             suffix = " ";
             for (String substring : StringMaster.open(buffer, value_separator)) {
                 suffix += StringMaster.cropFormat(
-                        StringMaster.getLastPathSegment(substring)) + " ";
+                 StringMaster.getLastPathSegment(substring)) + " ";
             }
         }
         String newName = (name != null) ? name :
-                FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + prefix +
-                        "\\" + last.path + suffix));
+         FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + prefix +
+          "\\" + last.path + suffix));
 
         String path = StringMaster.replace(true, last.path,
-                PathFinder.getSfxPath(), "").replace(prefix, "");
+         PathFinder.getSfxPath(), "").replace(prefix, "");
         String pathAndName = PathFinder.getSfxPath() + prefix +
-                "\\" +
-                StringMaster.cropLastPathSegment(path) +
-                newName;
+         "\\" +
+         StringMaster.cropLastPathSegment(path) +
+         newName;
         XML_Writer.write(c, pathAndName);
 
         return pathAndName;
@@ -106,7 +106,7 @@ public class EmitterPresetMaster {
 
     public String findImagePath(String path) {
         String imagePath = getImagePath(path);
-        if (imagePath.isEmpty()){
+        if (imagePath.isEmpty()) {
             //TODO how to handle this?
         }
         FileHandle file = Gdx.files.internal(imagePath);
@@ -136,8 +136,8 @@ public class EmitterPresetMaster {
         }
 
         imagePath =
-                PathFinder.removeSpecificPcPrefix(
-                        EmitterPresetMaster.getInstance().getImagePath(path));
+         PathFinder.removeSpecificPcPrefix(
+          EmitterPresetMaster.getInstance().getImagePath(path));
         file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;
@@ -153,7 +153,7 @@ public class EmitterPresetMaster {
         if (spriteEmitterTest) {
 //            effect.getEmitters().forEach(e -> {
             String randomPath = FileManager.getRandomFile(PathFinder.getSpritesPath() +
-                    "impact\\").getPath();
+             "impact\\").getPath();
             return randomPath;
 //        ((Emitter) e).offset(20, "scale");
 //        e.setImagePath(randomPath);
@@ -180,7 +180,7 @@ public class EmitterPresetMaster {
         if (imgPath.contains(StringMaster.NEW_LINE)) {
             imgPath = imgPath.split(StringMaster.NEW_LINE)[0];
         }
-        if ( imgPath.contains("\n")) {
+        if (imgPath.contains("\n")) {
             imgPath = imgPath.split("\n")[0];
         }
         return imgPath;
@@ -262,8 +262,8 @@ public class EmitterPresetMaster {
             if (lowHighMinMax.contains(p.getKey().toString())) {
                 double newValue = StringMaster.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
-                        p.getKey() + value_separator + String.valueOf(
-                                newValue));
+                 p.getKey() + value_separator + String.valueOf(
+                  newValue));
             }
         }
         data = data.replace(getGroupText(data, group), text);
@@ -309,9 +309,9 @@ public class EmitterPresetMaster {
         if (parts.length > 2) {
             valuePart = valuePart.split("\n\n")[0];
         }
-        if (valuePart == null )
-            return null ;
-            String text = valuePart.split("- ")[0];
+        if (valuePart == null)
+            return null;
+        String text = valuePart.split("- ")[0];
         return text;
     }
 
@@ -354,13 +354,6 @@ public class EmitterPresetMaster {
      */
     }
 
-    public enum EMITTER_VALUE_SHORTCUTS {
-        EMISSION_AMOUNT,
-        PARTICLE_VELOCITY,
-        PARTICLE_DURATION,
-
-    }
-
     public enum EMITTER_VALUE_GROUP {
         Image_Path(),
         Angle(true),
@@ -383,6 +376,13 @@ public class EmitterPresetMaster {
         public String getFieldName() {
             return StringMaster.getCamelCase(name());
         }
+    }
+
+    public enum EMITTER_VALUE_SHORTCUTS {
+        EMISSION_AMOUNT,
+        PARTICLE_VELOCITY,
+        PARTICLE_DURATION,
+
     }
 }
 

@@ -41,7 +41,7 @@ public class DebugGui extends G_Panel {
         int y = pages.getArrowHeight() + VISUALS.MENU_BUTTON.getHeight();
         add(valueButton, "id value,pos " + x + " " + y);
         add(functionButton, " pos " + x + " value.y2" // +
-                // valueButton.getVisuals().getHeight()
+         // valueButton.getVisuals().getHeight()
         );
 
         setComponentZOrder(functionButton, 0);

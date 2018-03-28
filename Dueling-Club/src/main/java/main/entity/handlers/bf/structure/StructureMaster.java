@@ -1,12 +1,12 @@
 package main.entity.handlers.bf.structure;
 
-import main.entity.obj.Structure;
 import main.entity.handlers.*;
+import main.entity.obj.Structure;
 
 /**
  * Created by JustMe on 3/5/2017.
  */
-public class StructureMaster extends EntityMaster<Structure>{
+public class StructureMaster extends EntityMaster<Structure> {
 
 
     public StructureMaster(Structure entity) {

@@ -5,7 +5,7 @@ import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.graphics.GuiManager;
 
 @Deprecated
-public class DC_Builder  {
+public class DC_Builder {
     public static final int OFFSET_X = 18;
     /*
      * builder array? bf grid player panels control panel ...

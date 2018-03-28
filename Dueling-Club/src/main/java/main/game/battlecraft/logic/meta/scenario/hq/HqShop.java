@@ -25,8 +25,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -155,14 +155,14 @@ public class HqShop extends LightweightEntity implements ShopInterface {
             items = DataManager.toTypeList(StringMaster
               .openContainer(getProperty(PROPS.SHOP_ITEMS)),
              C_OBJ_TYPE.ITEMS);
-                return;
+            return;
         }
         List<ObjType> templates = DataManager.toTypeList(StringMaster
           .openContainer(getProperty(PROPS.SHOP_ITEM_TEMPLATES)),
          C_OBJ_TYPE.ITEMS);
         items = getItemsFromTemplates(templates);
 
-        if (getShopType()==null )
+        if (getShopType() == null)
             return;
         // addStandardItems(); then randomize
         PROPERTY prop = getShopType().getFilterProp();

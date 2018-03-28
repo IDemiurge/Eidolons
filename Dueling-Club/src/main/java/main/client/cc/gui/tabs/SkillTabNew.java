@@ -17,8 +17,8 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SkillTabNew extends HeroItemTab {
@@ -44,7 +44,7 @@ public class SkillTabNew extends HeroItemTab {
                 }
             }
             HC_SkillPagedListPanel pagedListPanel = new HC_SkillPagedListPanel(getTemplate(), hero,
-                    getItemManager(), data, group.getName());
+             getItemManager(), data, group.getName());
             listPages.add(pagedListPanel);
         }
 
@@ -101,7 +101,7 @@ public class SkillTabNew extends HeroItemTab {
         int h = getTemplate().getTemplate().getVisuals().getHeight();
         for (HC_PagedListPanel pagedListPanel : listPages) {
             String constraints = "id " + LIST_ID + i + ", " + "pos " + offsetX + " " + h * i + "+"
-                    + getMainPosY();
+             + getMainPosY();
             add(pagedListPanel, constraints);
             MasteryIconColumn icons = new MasteryIconColumn(hero, SKILL_DISPLAY_GROUPS.values()[i]);
             constraints = "pos " + (offsetX + w + 3) + " " + (h * i) + "-2";

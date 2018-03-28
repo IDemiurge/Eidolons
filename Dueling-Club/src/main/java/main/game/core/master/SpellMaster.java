@@ -18,8 +18,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.test.TestMasterContent;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,12 +67,12 @@ public class SpellMaster extends Master {
             }
 
             SPELL_POOL spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
-                    PROP.getName());
+             PROP.getName());
             if (spellPool != null) {
                 spell.setProperty(G_PROPS.SPELL_POOL, spellPool.toString());
             } else {
                 LogMaster.log(1, PROP.getName()
-                        + " spell pool not found for " + typeName);
+                 + " spell pool not found for " + typeName);
             }
 
             spells.add((DC_SpellObj) spell);
@@ -85,12 +85,12 @@ public class SpellMaster extends Master {
             return new ArrayList<>();
         }
         List<DC_SpellObj> spells = obj.getSpells();
-      if (!TestMasterContent.addAllSpells)
-          if (spells != null && !reset) {
-            if (!spells.isEmpty()) {
-                return spells;
+        if (!TestMasterContent.addAllSpells)
+            if (spells != null && !reset) {
+                if (!spells.isEmpty()) {
+                    return spells;
+                }
             }
-        }
 
         spells = new ArrayList<>(initSpellpool(obj, VERBATIM));
         spells.addAll(initSpellpool(obj, MEMORIZED));
@@ -109,6 +109,6 @@ public class SpellMaster extends Master {
 
     private List<DC_SpellObj> getMySpells() {
         return ((Unit)
-                getGame().getPlayer(true).getHeroObj()).getSpells();
+         getGame().getPlayer(true).getHeroObj()).getSpells();
     }
 }

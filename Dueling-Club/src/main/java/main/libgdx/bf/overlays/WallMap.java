@@ -101,16 +101,19 @@ public class WallMap extends SuperActor {
             doorMap = new XLinkedMap<>(
              (Map<Coordinates, DOOR_STATE>) p.get());
             updateRequired = true;
+            main.system.auxiliary.log.LogMaster.log(1,"Handled UPDATE_DOOR_MAP" );
         });
         GuiEventManager.bind(GuiEventType.UPDATE_WALL_MAP, p -> {
             wallMap = new XLinkedMap<>(
              (Map<Coordinates, List<DIRECTION>>) p.get());
             updateRequired = true;
+            main.system.auxiliary.log.LogMaster.log(1,"Handled UPDATE_WALL_MAP" );
         });
         GuiEventManager.bind(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, p -> {
             diagonalJoints = new XLinkedMap<>(
              (Map<Coordinates, List<DIRECTION>>) p.get());
             updateRequired = true;
+            main.system.auxiliary.log.LogMaster.log(1,"Handled UPDATE_DIAGONAL_WALL_MAP" );
         });
     }
 

@@ -7,8 +7,8 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +27,8 @@ public class EmitterPools {
     }
 
     public static EmitterActor getEmitterActor(String path) {
-      if (CoreEngine.isJar())
-          System.out.println("getEmitterActor "+path);
+        if (CoreEngine.isJar())
+            System.out.println("getEmitterActor " + path);
         if (!actorPoolingOn) {
             return new EmitterActor(path);
 
@@ -54,7 +54,7 @@ public class EmitterPools {
 
     public static ParticleEffect getEffect(String path) {
         if (CoreEngine.isJar())
-            System.out.println("getEffect "+path);
+            System.out.println("getEffect " + path);
         if (!effectPoolingOn) {
             return new ParticleEffect(path);
         }

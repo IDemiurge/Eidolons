@@ -43,7 +43,7 @@ public class DeathAnim extends ActionAnim {
         super(e.getRef().getObj(KEYS.ACTIVE), getDeathAnimData(e));
         unit = (BattleFieldObject) e.getRef().getTargetObj();
         template = getTemplate(getActive(), unit);
-        setDuration( 2);
+        setDuration(2);
     }
 
     private static AnimData getDeathAnimData(Event e) {
@@ -57,6 +57,10 @@ public class DeathAnim extends ActionAnim {
             return false;
         }
         return on;
+    }
+
+    public static void setOn(boolean on) {
+        DeathAnim.on = on;
     }
 
     @Override
@@ -103,8 +107,8 @@ public class DeathAnim extends ActionAnim {
     public Actor getActor() {
         BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
          .get(unit);
-        if (actor!=null )
-        return actor;
+        if (actor != null)
+            return actor;
         if (skull == null) {
             skull = new Image(TextureCache.getOrCreate("UI\\Empty.png")) {
                 @Override
@@ -121,10 +125,6 @@ public class DeathAnim extends ActionAnim {
     private DEATH_ANIM getTemplate(DC_ActiveObj active, BattleFieldObject unit) {
 //        getRef().getEvent().getRef().getDamageType();
         return DEATH_ANIM.FADE;
-    }
-
-    public static void setOn(boolean on) {
-        DeathAnim.on = on;
     }
 
     @Override

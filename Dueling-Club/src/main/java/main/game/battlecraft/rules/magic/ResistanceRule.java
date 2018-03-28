@@ -26,9 +26,9 @@ public class ResistanceRule {
 
         if (RandomWizard.chance(resistance)) {
             ref.getGame().getLogManager().logAlert(
-                    ref.getTargetObj().getName() + " has resisted "
-                            + ref.getObj(KEYS.SPELL).getName()
-                            + StringMaster.wrapInParenthesis(resistance + "%"));
+             ref.getTargetObj().getName() + " has resisted "
+              + ref.getObj(KEYS.SPELL).getName()
+              + StringMaster.wrapInParenthesis(resistance + "%"));
             return false; // TODO special effect case?
         }
 

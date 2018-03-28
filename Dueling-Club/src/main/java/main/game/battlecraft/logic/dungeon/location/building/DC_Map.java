@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
 @Deprecated
 public class DC_Map {
     /**
@@ -109,7 +110,7 @@ public class DC_Map {
 
     private String initRandomBackground() {
         File f = new File(ImageManager.getDefaultImageLocation()
-                + PathFinder.getBgPicsPath());
+         + PathFinder.getBgPicsPath());
         if (!f.isDirectory()) {
             LogMaster.log(4, "failed to init bg!");
             return "";
@@ -147,11 +148,11 @@ public class DC_Map {
         switch (template) {
             case DUEL:
                 initMapGateways(BOTTOM_LEFT_CORNER, TOP_RIGHT_CORNER, "",
-                        MIDDLE_RIGHT + "," + MIDDLE_LEFT, 0);
+                 MIDDLE_RIGHT + "," + MIDDLE_LEFT, 0);
                 initMapCrystals(TOP_LEFT_CORNER, BOTTOM_RIGHT_CORNER, MIDDLE,
-                        ""
-                        // MIDDLE_LEFT_2 + "," + MIDDLE_RIGHT_2
-                        , 0);
+                 ""
+                 // MIDDLE_LEFT_2 + "," + MIDDLE_RIGHT_2
+                 , 0);
 
         }
         return null;
@@ -163,27 +164,27 @@ public class DC_Map {
         for (Coordinates c : Coordinates.getCoordinates(factiongateways)) {
             TYPE = BF_OBJ_OWNER.MY;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " gateway at " + c);
+             TYPE + " gateway at " + c);
             gateways.put(c, BF_OBJ_OWNER.MY);
         }
         for (Coordinates c : Coordinates.getCoordinates(enemygateways)) {
             TYPE = BF_OBJ_OWNER.ENEMY;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " gateway at " + c);
+             TYPE + " gateway at " + c);
 
             gateways.put(c, BF_OBJ_OWNER.ENEMY);
         }
         for (Coordinates c : Coordinates.getCoordinates(neutralgateways)) {
             TYPE = BF_OBJ_OWNER.NEUTRAL;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " gateway at " + c);
+             TYPE + " gateway at " + c);
 
             gateways.put(c, BF_OBJ_OWNER.NEUTRAL);
         }
         for (Coordinates c : Coordinates.getCoordinates(randomgateways)) {
             TYPE = BF_OBJ_OWNER.RANDOM;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " gateway at " + c);
+             TYPE + " gateway at " + c);
             gateways.put(c, TYPE);
         }
 
@@ -201,26 +202,26 @@ public class DC_Map {
         for (Coordinates c : Coordinates.getCoordinates(factioncrystals)) {
             TYPE = BF_OBJ_OWNER.MY;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " crystal at " + c);
+             TYPE + " crystal at " + c);
 
             crystals.put(c, BF_OBJ_OWNER.MY);
         }
         for (Coordinates c : Coordinates.getCoordinates(enemycrystals)) {
             TYPE = BF_OBJ_OWNER.ENEMY;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " crystal at " + c);
+             TYPE + " crystal at " + c);
             crystals.put(c, BF_OBJ_OWNER.ENEMY);
         }
         for (Coordinates c : Coordinates.getCoordinates(neutralcrystals)) {
             TYPE = BF_OBJ_OWNER.NEUTRAL;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " crystal at " + c);
+             TYPE + " crystal at " + c);
             crystals.put(c, BF_OBJ_OWNER.NEUTRAL);
         }
         for (Coordinates c : Coordinates.getCoordinates(randomcrystals)) {
             TYPE = BF_OBJ_OWNER.RANDOM;
             LogMaster.log(LogMaster.MAP_GENERATION_DEBUG,
-                    TYPE + " crystal at " + c);
+             TYPE + " crystal at " + c);
             crystals.put(c, BF_OBJ_OWNER.RANDOM);
         }
 
@@ -287,13 +288,13 @@ public class DC_Map {
         this.objMap = objMap;
     }
 
+    public enum BF_OBJ_OWNER {
+        MY, ENEMY, RANDOM, NEUTRAL
+    }
+
     // + hero positions
     public enum MAP_TEMPLATE {
         ARENA(), DUEL(),;
 
-    }
-
-    public enum BF_OBJ_OWNER {
-        MY, ENEMY, RANDOM, NEUTRAL
     }
 }

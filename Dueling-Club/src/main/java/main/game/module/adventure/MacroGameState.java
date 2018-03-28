@@ -3,9 +3,9 @@ package main.game.module.adventure;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
-import main.game.module.adventure.faction.FactionObj;
 import main.game.core.state.GameState;
 import main.game.module.adventure.entity.MacroParty;
+import main.game.module.adventure.faction.FactionObj;
 import main.game.module.adventure.map.Place;
 import main.game.module.adventure.map.Region;
 import main.game.module.adventure.map.Route;
@@ -41,8 +41,7 @@ public class MacroGameState extends GameState {
 
             if (obj instanceof Town) {
                 towns.remove(obj);
-            } else
-            if (obj instanceof Route) {
+            } else if (obj instanceof Route) {
                 routes.remove(obj);
             } else
                 places.remove(obj);
@@ -63,8 +62,7 @@ public class MacroGameState extends GameState {
 
             if (obj instanceof Town) {
                 towns.add((Town) obj);
-            } else
-            if (obj instanceof Route) {
+            } else if (obj instanceof Route) {
                 routes.add((Route) obj);
             } else
                 places.add((Place) obj);

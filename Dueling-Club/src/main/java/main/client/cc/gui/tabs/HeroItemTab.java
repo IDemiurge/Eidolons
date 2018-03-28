@@ -93,7 +93,7 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
 
     protected void initComps() {
         pagedListPanel = new HC_PagedListPanel(getTemplate(), hero,
-                getItemManager(), data, title);
+         getItemManager(), data, title);
 
     }
 
@@ -106,8 +106,8 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
         // add(new JLabel(title), "id title, pos" + getMainPosX() + " "
         // + getMainPosY());
         add(pagedListPanel, "id " + LIST_ID + ", pos " + getMainPosX() + " "
-                        + getMainPosY()
-                // + "title.y2"
+          + getMainPosY()
+         // + "title.y2"
         );
     }
 
@@ -133,7 +133,7 @@ public abstract class HeroItemTab extends HeroPanelTab implements BorderChecker 
 
     protected void initData() {
         data = DataManager.toTypeList(StringMaster.openContainer(hero
-                .getProperty(getPROP())), getTYPE());
+         .getProperty(getPROP())), getTYPE());
         // if (!ListMaster.isNotEmpty(data) && !game.isSimulation())
         // data = DataManager
         // .convertToTypeList(StringMaster.openContainer(hero

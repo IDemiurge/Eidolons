@@ -5,9 +5,9 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import main.entity.item.DC_QuickItemObj;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.active.item.ItemActiveMaster;
+import main.entity.item.DC_QuickItemObj;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
@@ -35,7 +35,7 @@ public class DC_QuickItemAction extends DC_ActiveObj {
 
     public boolean isRangedTouch() {
         return checkProperty(G_PROPS.SPELL_TAGS,
-                SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
+         SpellEnums.SPELL_TAGS.RANGED_TOUCH.toString());
     }
 
     @Override

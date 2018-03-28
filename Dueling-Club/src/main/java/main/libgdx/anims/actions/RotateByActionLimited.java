@@ -19,8 +19,8 @@ public class RotateByActionLimited extends RotateByAction {
     protected void begin() {
         super.begin();
         saveInitialState();
-        main.system.auxiliary.log.LogMaster.log(1, "rotation; initial = " + initialRotation
-         + " current= " + target.getRotation()+ " getAmount= " + getAmount());
+//        main.system.auxiliary.log.LogMaster.log(1, "rotation; initial = " + initialRotation
+//         + " current= " + target.getRotation() + " getAmount= " + getAmount());
     }
 
     private boolean checkExceeds() {
@@ -34,15 +34,15 @@ public class RotateByActionLimited extends RotateByAction {
     private void applyLeftover() {
         if (initialRotation + getAmount() != target.getRotation()) {
             target.setRotation(initialRotation + getAmount());
-            LogMaster.log(1, "applyLeftover rotation " );
+            LogMaster.log(1, "applyLeftover rotation ");
         } else
-            LogMaster.log(1, "rotation; no applyLeftover "  );
+            LogMaster.log(1, "rotation; no applyLeftover ");
     }
 
     @Override
     public boolean act(float delta) {
-        LogMaster.log(1, "rotation; initial = " + initialRotation
-         + " current= " + target.getRotation());
+//        LogMaster.log(1, "rotation; initial = " + initialRotation
+//         + " current= " + target.getRotation());
         boolean result = super.act(delta);
         if (result) {
 //            applyLeftover();

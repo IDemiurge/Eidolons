@@ -322,10 +322,10 @@ public class Tavern extends TownPlace {
     }
 
     public enum TOWN_PLACE_TYPE {
-        TAVERN,  LIBRARY, TEMPLE,        QUEST_GIVER,
+        TAVERN, LIBRARY, TEMPLE, QUEST_GIVER,
         FACTION_QUARTER,
 
-        SMITHY,BROTHEL,GUILD,SLAVE_MARKET,
-        } // DETERMINES AVAILABLE BUTTONS... pray, whore, take up quest, buy slaves,
+        SMITHY, BROTHEL, GUILD, SLAVE_MARKET,
+    } // DETERMINES AVAILABLE BUTTONS... pray, whore, take up quest, buy slaves,
 
 }

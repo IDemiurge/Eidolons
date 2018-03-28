@@ -46,7 +46,7 @@ public class MapView extends Builder {
     public void init() {
         mapComp = new MapComp();
         macroInfoPanel = new MacroInfoPanel(MacroManager.getActiveParty()
-                .getCurrentLocation());
+         .getCurrentLocation());
         macroActionPanel = new MacroAP_Holder();
         PartyTabPanel = new PartyTabPanel();
         macroControlPanel = new MacroControlPanel();
@@ -61,9 +61,9 @@ public class MapView extends Builder {
                     public void run() {
                         if (MacroManager.getActiveParty().getStatus() == null) {
                             if (DialogMaster
-                                    .confirm("No orders given; should the party rest?")) {
+                             .confirm("No orders given; should the party rest?")) {
                                 if (!RestMasterOld.rest(MacroManager
-                                        .getActiveParty())) {
+                                 .getActiveParty())) {
                                     return;
                                 }
                             }
@@ -77,16 +77,16 @@ public class MapView extends Builder {
         });
         timeComp = new TimeComp(TimeMaster.getDate());
         compArray = new G_Component[]{PartyTabPanel, macroActionPanel,
-                mapComp.getComp(), macroInfoPanel, endTurnButton,
-                macroControlPanel, timeComp};
+         mapComp.getComp(), macroInfoPanel, endTurnButton,
+         macroControlPanel, timeComp};
         cInfoArray = new String[]{
-                "id ptp, pos 0 0",
+         "id ptp, pos 0 0",
 
-                "id MacroActionPanel, pos mapComp.x mapComp.y2 mapComp.x2 visual.y2,  ",
-                "id mapComp, pos ptp.x2 mcp.y2", "id mip, pos mapComp.x2 0",
-                "id endTurn, pos mip.x mip.y2",
-                "id LogPanel, pos mip.x endTurn.y2", "id mcp, pos ptp.x2 0",
-                "id timeComp, @pos 1680-240 MacroActionPanel.y2-50",};
+         "id MacroActionPanel, pos mapComp.x mapComp.y2 mapComp.x2 visual.y2,  ",
+         "id mapComp, pos ptp.x2 mcp.y2", "id mip, pos mapComp.x2 0",
+         "id endTurn, pos mip.x mip.y2",
+         "id LogPanel, pos mip.x endTurn.y2", "id mcp, pos ptp.x2 0",
+         "id timeComp, @pos 1680-240 MacroActionPanel.y2-50",};
     }
 
     public int getMapOffsetX() {

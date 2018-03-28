@@ -55,9 +55,9 @@ public class DrawMasterStatic {
             java.util.List<DC_Obj> watchedObjects = WatchRule.getWatchersMap().get(info);
             if (watchedObjects != null) {
                 drawWatchVisuals(watchedObjects, (Unit) info, g, zoom, watchedObjects, false,
-                        true);
+                 true);
                 drawWatchVisuals(watchedObjects, (Unit) info, g, zoom, watchedObjects, false,
-                        false);
+                 false);
             }
         } else {
             Unit active = DC_Game.game.getManager().getActiveObj();
@@ -76,11 +76,11 @@ public class DrawMasterStatic {
         int w = ImageManager.STD_IMAGES.WATCHER.getWidth() * zoom / 100;
         int h = ImageManager.STD_IMAGES.WATCHER.getHeight() * zoom / 100;
         Point p = getPointFromCoordinates(lines_images, w, h, watcher.getCoordinates(), watcher
-                .getFacing().getDirection(), zoom);
+         .getFacing().getDirection(), zoom);
         for (DC_Obj watched : watchedObjects) {
             Point p2 = getPointFromCoordinates(lines_images, w, h, watched.getCoordinates(),
-                    DirectionMaster.rotate180(DirectionMaster
-                            .getRelativeDirection(watcher, watched)), zoom);
+             DirectionMaster.rotate180(DirectionMaster
+              .getRelativeDirection(watcher, watched)), zoom);
             if (lines_images) {
                 g.setColor(watcher.isMine() ? ColorManager.CYAN : ColorManager.CRIMSON);
                 int offsetX = 0;

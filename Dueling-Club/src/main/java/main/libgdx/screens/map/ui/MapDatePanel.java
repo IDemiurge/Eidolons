@@ -61,7 +61,7 @@ public class MapDatePanel extends TablePanel {
     }
 
     private String getSecondLabelText() {
-        return date.getDayTime().getText()+", " +StringMaster.getOrdinal(date.getDay()) + " of " +
+        return date.getDayTime().getText() + ", " + StringMaster.getOrdinal(date.getDay()) + " of " +
          date.getMonth().getName();
     }
 

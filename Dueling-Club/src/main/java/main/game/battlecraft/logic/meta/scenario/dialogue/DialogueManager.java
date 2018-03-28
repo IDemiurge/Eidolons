@@ -39,13 +39,12 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     public void startDialogue(GameDialogue dialogue) {
         //if in game
 
-     getGame().getGameLoop().setPaused(true);
+        getGame().getGameLoop().setPaused(true);
         try {
             new DialogueWizard(dialogue).start();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        }
-        finally {
+        } finally {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
         }
     }

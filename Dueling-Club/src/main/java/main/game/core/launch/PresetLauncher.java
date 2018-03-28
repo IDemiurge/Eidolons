@@ -7,7 +7,6 @@ import main.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData;
 import main.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import main.game.module.adventure.faction.FactionMaster;
 import main.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.game.core.game.DC_Game;
 import main.game.core.game.DC_Game.GAME_MODES;
@@ -15,6 +14,7 @@ import main.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.game.core.launch.TestLauncher.CODE;
 import main.game.core.state.Loader;
 import main.game.core.state.Saver;
+import main.game.module.adventure.faction.FactionMaster;
 import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.anims.controls.EmitterController;
 import main.libgdx.anims.particles.ParticleManager;
@@ -37,19 +37,19 @@ import main.test.debug.DebugMaster;
 import main.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.test.frontend.FAST_DC;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static main.test.Preset.PRESET_DATA.FIRST_DUNGEON;
 
 public class PresetLauncher {
     public final static String[] LAUNCH_OPTIONS_TUTORIAL = {
-     "Basic", "Advanced","Trial",
+     "Basic", "Advanced", "Trial",
     };
     public static final int OPTION_NEW = 4;
     public final static String[] LAUNCH_OPTIONS = {
-    "AI", "Gui", "Last", "Recent", "New", "Anims", "Load", "Exploration", "Exploration Test",
+     "AI", "Gui", "Last", "Recent", "New", "Anims", "Load", "Exploration", "Exploration Test",
 //           "Usability", "Emitters","Light",     "Standoff Test", "Standoff Preset", "Standoff",
      "Profiling"
 
@@ -65,16 +65,16 @@ public class PresetLauncher {
 
 
         LAUNCH.Standoff_Test.gameMode = GAME_MODES.ARENA;
-        LAUNCH.Standoff_Test.gameType =  GAME_SUBCLASS.ARENA;
+        LAUNCH.Standoff_Test.gameType = GAME_SUBCLASS.ARENA;
         LAUNCH.Standoff_Test.dungeonPath = "Pit.xml";
 
         LAUNCH.Standoff_Preset.gameMode = GAME_MODES.ARENA;
-        LAUNCH.Standoff_Preset.gameType =  GAME_SUBCLASS.ARENA;
+        LAUNCH.Standoff_Preset.gameType = GAME_SUBCLASS.ARENA;
         LAUNCH.Standoff_Preset.dungeonPath = "Pit.xml";
         LAUNCH.Standoff_Preset.maxAnimTime = 2000;
 
         LAUNCH.Standoff.gameMode = GAME_MODES.ARENA;
-        LAUNCH.Standoff.gameType =  GAME_SUBCLASS.ARENA;
+        LAUNCH.Standoff.gameType = GAME_SUBCLASS.ARENA;
 
         LAUNCH.Standoff.workspaceFilter = WORKSPACE_GROUP.FOCUS;
         LAUNCH.Standoff.PARTY_CODE = CODE.CHOOSE;
@@ -98,12 +98,16 @@ public class PresetLauncher {
         LAUNCH.Profiling.dungeonPath = "Test\\Broken Ravenguard Fort.xml";
     }
 
+    static {
+        LAUNCH.AI.logicTest = true;
+    }
+
     public static DataUnit<?> getData() {
         return data;
     }
 
     public static Boolean chooseLaunchOption() {
-        if (PRESET_LAUNCH !=null )
+        if (PRESET_LAUNCH != null)
             return init(PRESET_LAUNCH);
 
         int i = PRESET_OPTION;
@@ -141,7 +145,7 @@ public class PresetLauncher {
                     FAST_DC.getLauncher().DUMMY_MODE = false;
                     FAST_DC.getLauncher().DUMMY_PP = false;
                     if (FactionMaster.isFactionsSupported())
-                    UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
+                        UnitGroupMaster.setFactionMode(DialogMaster.confirm("Faction Mode?"));
                     return null;
                 case "Superfast":
                     FAST_DC.getLauncher().DUMMY_MODE = true;
@@ -154,7 +158,7 @@ public class PresetLauncher {
 //                       Loader.setPendingLoadPath(save.getPath());
 //                   }
 
-                    Loader.setPendingLoadPath(Saver.getSavePath()+"test.xml");
+                    Loader.setPendingLoadPath(Saver.getSavePath() + "test.xml");
                     break;
 
             }
@@ -347,13 +351,6 @@ public class PresetLauncher {
         }
     }
 
-    private static void initOptionParams(String value) {
-        // DebugMaster.setOmnivisionOn(VISION_HACK);
-        // game.setDebugMode(FAST_MODE || SUPER_FAST_MODE);
-        // CoreEngine.setLogicTest(true);
-
-    }
-
 //    private static void initDefaultParty(String value, boolean me) {
 //        ObjType type = null;
 //        if (!value.contains(StringMaster.getSeparator())) {
@@ -389,6 +386,13 @@ public class PresetLauncher {
 //        DC_Game.game.getDungeonMaster().setDungeonPath(name);
 //    }
 
+    private static void initOptionParams(String value) {
+        // DebugMaster.setOmnivisionOn(VISION_HACK);
+        // game.setDebugMode(FAST_MODE || SUPER_FAST_MODE);
+        // CoreEngine.setLogicTest(true);
+
+    }
+
     private static void initDungeonsList(String value) {
         for (String name : StringMaster.open(value)) {
             // else TODO
@@ -403,26 +407,13 @@ public class PresetLauncher {
 
     }
 
-
-
-    public enum LAUNCH_MODS {
-        //modify launch!
-        SELECT_DUNGEON,
-        SELECT_party,
-        SELECT_enemy,
-        SELECT_config,
-
-    }
-static{
-    LAUNCH.AI.logicTest = true;
-}
     public enum LAUNCH {
-        EXPLORATION("exploration.xml", RULE_SCOPE.FULL, null ),
+        EXPLORATION("exploration.xml", RULE_SCOPE.FULL, null),
         EXPLORATION_TEST("exploration test.xml", RULE_SCOPE.TEST, true),
         AI("ai.xml", RULE_SCOPE.TEST, false),
         Gui("graphics test.xml", RULE_SCOPE.BASIC, true),
         Playtest("ai full.xml", RULE_SCOPE.FULL, null),
-        Anims(null , RULE_SCOPE.BASIC, true),
+        Anims(null, RULE_SCOPE.BASIC, true),
         Emitters(true),
         Light("light preview.xml", RULE_SCOPE.BASIC, true),
         JUnit(null
@@ -432,7 +423,7 @@ static{
         Standoff(null, RULE_SCOPE.FULL, null),
         Standoff_Test(null, RULE_SCOPE.TEST, true),
         Standoff_Preset(null, RULE_SCOPE.FULL, null),
-        Usability("Usability.xml", RULE_SCOPE.FULL, null) ;
+        Usability("Usability.xml", RULE_SCOPE.FULL, null);
         public Boolean immortal;
         public CONTROLLER controller;
         public String preset;
@@ -467,7 +458,8 @@ static{
         }
 
         LAUNCH(String preset, RULE_SCOPE ruleScope, Boolean dummyPlus) {
-         this(dummyPlus);   this.preset = preset;
+            this(dummyPlus);
+            this.preset = preset;
             this.ruleScope = ruleScope;
         }
 
@@ -522,6 +514,15 @@ static{
 
         }
 
+
+    }
+
+    public enum LAUNCH_MODS {
+        //modify launch!
+        SELECT_DUNGEON,
+        SELECT_party,
+        SELECT_enemy,
+        SELECT_config,
 
     }
 

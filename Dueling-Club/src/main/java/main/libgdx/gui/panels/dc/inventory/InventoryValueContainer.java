@@ -17,7 +17,7 @@ public class InventoryValueContainer extends ValueContainer {
 
 
     public InventoryValueContainer(TextureRegion texture, String name) {
-        super(texture, name,"");
+        super(texture, name, "");
     }
 
     public InventoryValueContainer(String name, String value) {

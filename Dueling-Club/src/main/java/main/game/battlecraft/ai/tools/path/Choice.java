@@ -8,8 +8,8 @@ import main.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,8 +76,8 @@ public class Choice {
             return actions.get(0).getActive().getName() + " to " + coordinates;
         }
         return StringMaster.joinStringList(StringMaster.toNameList(AiUnitActionMaster
-                .getActionObjectList(actions)), ", ")
-                + " to " + coordinates;
+         .getActionObjectList(actions)), ", ")
+         + " to " + coordinates;
     }
 
     public Coordinates getCoordinates() {

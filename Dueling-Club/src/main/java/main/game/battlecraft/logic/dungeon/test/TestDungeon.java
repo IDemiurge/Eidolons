@@ -19,7 +19,6 @@ public class TestDungeon extends DungeonWrapper {
     }
 
 
-
     public Coordinates getEnemySpawningCoordinates() {
         String prop = getProperty(PROPS.ENEMY_SPAWN_COORDINATES);
         if (prop.isEmpty()) {

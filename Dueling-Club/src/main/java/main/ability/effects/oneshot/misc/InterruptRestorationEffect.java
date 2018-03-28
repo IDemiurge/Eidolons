@@ -4,7 +4,7 @@ import main.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.entity.obj.BuffObj;
 
-public class InterruptRestorationEffect extends DC_Effect  implements OneshotEffect {
+public class InterruptRestorationEffect extends DC_Effect implements OneshotEffect {
 
     @Override
     public boolean applyThis() {

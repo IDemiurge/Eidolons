@@ -46,7 +46,7 @@ public class MacroGameManager extends GameManager {
         SaveMaster.saveInNewThread();
 
         getGame().getCampaign().modifyParameter(MACRO_PARAMS.HOURS_ELAPSED,
-                TimeMaster.getHoursPerTurn());
+         TimeMaster.getHoursPerTurn());
         for (MacroParty p : getGame().getParties()) {
             p.newTurn();
         }
@@ -129,7 +129,6 @@ public class MacroGameManager extends GameManager {
     }
 
 
-
     public Set<Obj> getSelectionSet() {
         return selectionSet;
     }
@@ -209,11 +208,11 @@ public class MacroGameManager extends GameManager {
         //get closest?
         float minDistance = Float.MAX_VALUE;
         Coordinates c = getGame().getPointMaster().getCoordinates(point);
-        Place place=null ;
+        Place place = null;
         for (Place sub : getGame().getPlaces()) {
             float distance = new Vector2(c.x, c.y).dst(new Vector2(sub.getX(), sub.getY()));
             if (distance < minDistance) {
-                minDistance=distance;
+                minDistance = distance;
                 place = sub;
             }
             //can we not attach click listeners to emtiterActors?!

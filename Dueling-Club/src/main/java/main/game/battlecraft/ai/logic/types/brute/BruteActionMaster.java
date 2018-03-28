@@ -11,11 +11,11 @@ public class BruteActionMaster extends ActionTypeManager {
 
     private static final ACTION_TYPES DEFAULT_CASE = ACTION_TYPES.APPROACH;
     ACTION_CASES[] DEFAULT_ACTION_CASE_PRIORITIES = {
-            // ACTION_CASES.FREE_KILL,
-            // ACTION_CASES.HIT_TO_KILL,
-            // ACTION_CASES.MOVE_TO_KILL,
-            // ACTION_CASES.MOVE_TO_HIT,
-            ACTION_CASES.HIT};
+     // ACTION_CASES.FREE_KILL,
+     // ACTION_CASES.HIT_TO_KILL,
+     // ACTION_CASES.MOVE_TO_KILL,
+     // ACTION_CASES.MOVE_TO_HIT,
+     ACTION_CASES.HIT};
     Map<ACTION_CASES, ACTION_TYPES> caseActionMap = new HashMap<>();
 
     public BruteActionMaster(AI_Logic ai) {

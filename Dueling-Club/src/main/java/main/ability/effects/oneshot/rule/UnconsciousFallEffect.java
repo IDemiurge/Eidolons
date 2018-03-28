@@ -6,7 +6,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.content.PARAMS;
 
-public class UnconsciousFallEffect extends DC_Effect  implements OneshotEffect {
+public class UnconsciousFallEffect extends DC_Effect implements OneshotEffect {
     ModifyValueEffect valueModEffect;
 
     public UnconsciousFallEffect() {

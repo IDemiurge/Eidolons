@@ -38,14 +38,14 @@ public class RestEffect extends DC_Effect {
             new ModeEffect(STD_MODES.SLEEPING).apply(REF);
 
         }
-        float time =120;
+        float time = 120;
         Boolean result = getGame().getDungeonMaster().getExplorationMaster().getTimeMaster().playerRests(time); //(Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.WAIT_COMPLETE);
         if (result) {
 //            applyRested();
             for (Unit sub : allies) {
                 sub.removeBuff("Sleeping");
                 Ref REF = sub.getRef().getTargetingRef(sub);
-                 getRestedBuffEffect().apply(REF);
+                getRestedBuffEffect().apply(REF);
                 new ModifyValueEffect(PARAMS.C_MORALE,
                  MOD.MODIFY_BY_PERCENT, "15").apply(REF);
             }

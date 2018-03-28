@@ -46,21 +46,21 @@ public class SpellResetter extends ActiveResetter {
 
         for (PARAMETER param : DC_ContentManager.getCostParams()) {
             addCustomMod(
-                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_GROUP,
-                    getEntity().getSpellGroup().toString(), param, false);
+             MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_GROUP,
+             getEntity().getSpellGroup().toString(), param, false);
             addCustomMod(
-                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_POOL,
-                    getEntity().getSpellPool().toString(), param, false);
+             MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_POOL,
+             getEntity().getSpellPool().toString(), param, false);
             addCustomMod(
-                    MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_TYPE,
-                    getEntity().getSpellType().toString(), param, false);
+             MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_TYPE,
+             getEntity().getSpellType().toString(), param, false);
 
             addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_GROUP,
-                    getEntity().getSpellGroup().toString(), param, true);
+             getEntity().getSpellGroup().toString(), param, true);
             addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_POOL,
-                    getEntity().getSpellPool().toString(), param, true);
+             getEntity().getSpellPool().toString(), param, true);
             addCustomMod(MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_MOD_SPELL_TYPE,
-                    getEntity().getSpellType().toString(), param, true);
+             getEntity().getSpellType().toString(), param, true);
         }
     }
 }

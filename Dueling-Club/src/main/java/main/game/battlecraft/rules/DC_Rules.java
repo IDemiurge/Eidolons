@@ -2,7 +2,10 @@ package main.game.battlecraft.rules;
 
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.battlefield.vision.StealthRule;
-import main.game.battlecraft.rules.action.*;
+import main.game.battlecraft.rules.action.ActionRule;
+import main.game.battlecraft.rules.action.EngagedRule;
+import main.game.battlecraft.rules.action.StackingRule;
+import main.game.battlecraft.rules.action.WatchRule;
 import main.game.battlecraft.rules.buff.*;
 import main.game.battlecraft.rules.combat.mechanics.BleedingRule;
 import main.game.battlecraft.rules.combat.mechanics.MoraleKillingRule;
@@ -27,7 +30,7 @@ public class DC_Rules implements GameRules {
     private DequeImpl<DC_CounterRule> counterRules = new DequeImpl<>();
     private DequeImpl<RoundRule> roundRules = new DequeImpl<>();
     private DequeImpl<ActionRule> actionRules = new DequeImpl<>();
-    private DequeImpl<DC_RuleImpl> triggerRules= new DequeImpl<>();
+    private DequeImpl<DC_RuleImpl> triggerRules = new DequeImpl<>();
 
     private TimeRule timeRule;
     private WatchRule watchRule;
@@ -150,7 +153,6 @@ public class DC_Rules implements GameRules {
         counterRules.add(greaseRule);
 
 
-
         timeRule = new TimeRule(getGame());
         moraleBuffRule = new MoraleBuffRule(getGame());
         this.buffRules.add(moraleBuffRule);
@@ -163,10 +165,10 @@ public class DC_Rules implements GameRules {
         woundsRule = new WoundsBuffRule(getGame());
         this.buffRules.add(woundsRule);
 
-         getTriggerRules().add(trampleRule = new TrampleRule(getGame()));
+        getTriggerRules().add(trampleRule = new TrampleRule(getGame()));
         getTriggerRules().add(durabilityRule = new DurabilityRule(getGame()));
         getTriggerRules().add(bleedingTriggerRule = new BleedingRule(game));
-        getTriggerRules().add( ashAnnihilationRule = new AshAnnihilationRule(game));
+        getTriggerRules().add(ashAnnihilationRule = new AshAnnihilationRule(game));
 
         CounterMasterAdvanced.defineInteractions();
 

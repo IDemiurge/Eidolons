@@ -23,8 +23,8 @@ public class AirborneRule {
 
     public static Condition getMeleeAttackCondition() {
         return new Conditions(new StatusCheckCondition("", UnitEnums.STATUS.AIRBORNE),
-                new NotCondition(new NumericCondition("{source_height}", "" + REACH_HEIGHT, false
-                ))
+         new NotCondition(new NumericCondition("{source_height}", "" + REACH_HEIGHT, false
+         ))
         );
 
     }

@@ -31,16 +31,16 @@ public class MapStage extends Stage {
     private final MapAlphaLayers alphaLayers;
     protected MapMoveLayers moveLayerMaster;
     protected MapParticles particles;
+    List<MapTimedLayer> layers = new ArrayList<>();
     private Group topLayer;
     private ImageContainer map;
     private ImageContainer nextMap;
     private MapRoutes routes;
-    List<MapTimedLayer> layers=    new ArrayList<>() ;
     private float lastNextMapAlphaPercentage;
 
     public MapStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
-        addActor( alphaLayers=new MapAlphaLayers());
+        addActor(alphaLayers = new MapAlphaLayers());
         addActor(particles = new MapParticles());
         addActor(routes = new MapRoutes());
         addActor(map = new ImageContainer());
@@ -49,19 +49,20 @@ public class MapStage extends Stage {
         layers.add(particles);
         layers.add(MapScreen.getInstance().getGuiStage().getLights());
         if (isMovingLayersOn())
-            layers.add(moveLayerMaster = new MapMoveLayers(MapScreen.defaultSize, MapScreen.defaultSize)); {
+            layers.add(moveLayerMaster = new MapMoveLayers(MapScreen.defaultSize, MapScreen.defaultSize));
+        {
             addActor(moveLayerMaster);
         }
         GuiEventManager.bind(MapEvent.TIME_CHANGED, param -> {
             for (MapTimedLayer sub : layers) {
                 sub.update();
             }
-                DAY_TIME time = (DAY_TIME) param.get();
-                String path = getBackgroundPath(time);
-                updateBackground(path, false);
-                path = getBackgroundPath(time.getNext());
-                updateBackground(path, true);
-                GuiEventManager.trigger(MapEvent.TIME_UPDATED, param.get());
+            DAY_TIME time = (DAY_TIME) param.get();
+            String path = getBackgroundPath(time);
+            updateBackground(path, false);
+            path = getBackgroundPath(time.getNext());
+            updateBackground(path, true);
+            GuiEventManager.trigger(MapEvent.TIME_UPDATED, param.get());
 
         });
 
@@ -84,12 +85,11 @@ public class MapStage extends Stage {
         final String path = s;
         TextureRegion backTexture = getOrCreateR(path);
         ImageContainer map = this.map;
-        if (nextMapUpdate)
-        {
+        if (nextMapUpdate) {
             map = this.nextMap;
         }
         map.setContents(new Image(backTexture));
-        lastNextMapAlphaPercentage=0;
+        lastNextMapAlphaPercentage = 0;
     }
 
 
@@ -97,16 +97,16 @@ public class MapStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         resetZIndices();
-if (CoreEngine.isMapEditor())
-    return ;
+        if (CoreEngine.isMapEditor())
+            return;
         Color color = nextMap.getContent().getColor();
-        float percentage=
+        float percentage =
          MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
         if (percentage <= lastNextMapAlphaPercentage) //no going back in time...
-            return ;
-        layers.forEach(layer-> layer.applyDynamicTint());
-        lastNextMapAlphaPercentage=percentage;
-        color.a= percentage;
+            return;
+        layers.forEach(layer -> layer.applyDynamicTint());
+        lastNextMapAlphaPercentage = percentage;
+        color.a = percentage;
 //        nextMap.getContent().setColor(color);
     }
 
@@ -122,7 +122,7 @@ if (CoreEngine.isMapEditor())
     }
 
     private String getBackgroundPath(DAY_TIME time) {
-        if (time==null )
+        if (time == null)
             return MapScreen.defaultPath;
         return MapScreen.timeVersionRootPath + time.toString() + ".jpg";
     }

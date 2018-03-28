@@ -22,11 +22,11 @@ public class MoraleKillingRule extends DC_RuleImpl {
     final String FORMULA = "{SOURCE_POWER}/4";
     // "{SOURCE_LEVEL}*{SOURCE_LEVEL}";
     private ModifyValueEffect boostEffect = new ModifyValueEffect(PARAMS.C_MORALE,
-            MOD.MODIFY_BY_CONST, FORMULA);
+     MOD.MODIFY_BY_CONST, FORMULA);
     private Conditions reduction_conditions = new Conditions();
 
     private ModifyValueEffect reductionEffect = new ModifyValueEffect(PARAMS.C_MORALE,
-            MOD.MODIFY_BY_CONST, FORMULA);
+     MOD.MODIFY_BY_CONST, FORMULA);
 
     private Conditions boost_conditions = new Conditions();
 
@@ -58,8 +58,8 @@ public class MoraleKillingRule extends DC_RuleImpl {
                 continue;
             }
             if (u.checkPassive(UnitEnums.STANDARD_PASSIVES.DISPASSIONATE)
-                    || u.checkPassive(UnitEnums.STANDARD_PASSIVES.COLD_BLOODED)
-                    || u.checkPassive(UnitEnums.STANDARD_PASSIVES.FEARLESS))
+             || u.checkPassive(UnitEnums.STANDARD_PASSIVES.COLD_BLOODED)
+             || u.checkPassive(UnitEnums.STANDARD_PASSIVES.FEARLESS))
 
             {
                 continue;

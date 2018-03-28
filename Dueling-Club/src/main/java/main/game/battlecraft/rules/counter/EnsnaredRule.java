@@ -16,7 +16,6 @@ import main.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.rules.action.ActionRule;
-import main.game.battlecraft.rules.counter.DC_CounterRule;
 import main.game.core.game.DC_Game;
 import main.system.math.MathMaster;
 import main.system.math.roll.RollMaster;
@@ -107,14 +106,14 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         // so this must act as *action rule*... I can add it to such!
 
         return new Effects(new ModifyValueEffect(PARAMS.AGILITY,
-                MOD.MODIFY_BY_PERCENT, getNumberOfCounters(unit)
-                + " * " + AGI_REDUCTION_PER_COUNTER),
-                // TODO square root maybe? so that there is some chance at least for big
-                // values and some harm from small ones!
-                new ModifyValueEffect(PARAMS.DEXTERITY,
-                        MOD.MODIFY_BY_PERCENT,
-                        getNumberOfCounters(unit) + " * "
-                                + DEX_REDUCTION_PER_COUNTER));
+         MOD.MODIFY_BY_PERCENT, getNumberOfCounters(unit)
+         + " * " + AGI_REDUCTION_PER_COUNTER),
+         // TODO square root maybe? so that there is some chance at least for big
+         // values and some harm from small ones!
+         new ModifyValueEffect(PARAMS.DEXTERITY,
+          MOD.MODIFY_BY_PERCENT,
+          getNumberOfCounters(unit) + " * "
+           + DEX_REDUCTION_PER_COUNTER));
     }
 
     protected Integer getEffectLayer() {
@@ -134,16 +133,16 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         Ref ref = new Ref(unit);
         ref.setTarget(unit.getId());
         if (!RollMaster.roll(GenericEnums.ROLL_TYPES.BODY_STRENGTH, "-",
-                getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
-                "Entanglement")) {
+         getNumberOfCounters(unit) + "*1.5", ref, " and breaks free!",
+         "Entanglement")) {
             unit.setCounter(getCounterName(), 0);
             unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
             return false;
         }
 
         if (RollMaster.roll(GenericEnums.ROLL_TYPES.QUICK_WIT, "-",
-                getNumberOfCounters(unit) + "/2.5", ref,
-                "@, unable to figure out how to cut free...", "Entanglement")) {
+         getNumberOfCounters(unit) + "/2.5", ref,
+         "@, unable to figure out how to cut free...", "Entanglement")) {
             unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
             return false;
         }
@@ -168,7 +167,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         }
 
         DC_UnitAction attack_action = unit.getAction(offhand ? "Offhand Attack"
-                : "Attack");
+         : "Attack");
         if (!attack_action.canBeActivated(unit.getRef(), true)) // unit.getRef(),
         // true
         {
@@ -185,7 +184,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         }
 
         amount = MathMaster.applyMod(amount, unit
-                .getIntParam(offhand ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK));
+         .getIntParam(offhand ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK));
         amount = MathMaster.applyMod(amount, CUT_AWAY_MOD);
         amount = Math.min(getNumberOfCounters(unit), amount);
         unit.modifyCounter(getCounterName(), -amount);
@@ -195,9 +194,9 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         // unit.modifyParameter(PARAMS.C_STAMINA, -sta_cost);
         // unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
         String string = ((offhand) ? "...Then " : unit.getName())
-                + " cuts away "
-                + ((offhand) ? " another " + amount : amount
-                + " Ensnare counters") + " with " + weapon.getName();
+         + " cuts away "
+         + ((offhand) ? " another " + amount : amount
+         + " Ensnare counters") + " with " + weapon.getName();
 
         if (getNumberOfCounters(unit) <= 0) {
             string += " and breaks free!";

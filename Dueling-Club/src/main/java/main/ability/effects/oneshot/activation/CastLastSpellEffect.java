@@ -8,7 +8,7 @@ import main.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 
-public class CastLastSpellEffect extends MicroEffect  implements OneshotEffect {
+public class CastLastSpellEffect extends MicroEffect implements OneshotEffect {
 
     private String obj_ref;
     private Boolean free;

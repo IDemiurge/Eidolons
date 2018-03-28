@@ -45,7 +45,7 @@ public class FacingCondition extends ConditionImpl {
             if (!(ref.getObj(KEYS.MATCH) instanceof DC_HeroSlotItem)) {
                 return false;
             }
-            obj2 =   ((DC_HeroAttachedObj) ref.getObj(KEYS.MATCH)).getOwnerObj();
+            obj2 = ((DC_HeroAttachedObj) ref.getObj(KEYS.MATCH)).getOwnerObj();
 
         } else {
             obj2 = (DC_Obj) ref.getObj(KEYS.MATCH);
@@ -55,20 +55,19 @@ public class FacingCondition extends ConditionImpl {
 
         if (getTemplate() != null) {
             Coordinates c = obj2.getCoordinates();
-            if (obj2.isOverlaying())  if (obj2 instanceof BattleFieldObject)
-            {
+            if (obj2.isOverlaying()) if (obj2 instanceof BattleFieldObject) {
                 DIRECTION d = ((BattleFieldObject) obj2).getDirection();
                 if (d != null) {
-                    c = c.getAdjacentCoordinate(d.rotate180(),2);
+                    c = c.getAdjacentCoordinate(d.rotate180(), 2);
                 }
 //the coordinate to which unit must be facing in order to face the overlaying obj on the other side
             }
-            if (obj1== null )
+            if (obj1 == null)
                 return false;
-            if (c== null )
+            if (c == null)
                 return false;
             FACING_SINGLE facing = FacingMaster.getSingleFacing(obj1.getFacing(),
-             obj1.getCoordinates (), c);
+             obj1.getCoordinates(), c);
             result = Arrays.asList(templates).contains(facing);
             if (facing == UnitEnums.FACING_SINGLE.TO_THE_SIDE) {
                 if (result) {
@@ -78,7 +77,7 @@ public class FacingCondition extends ConditionImpl {
                     if (left_right) {
                         int degrees = obj1.getFacing().getDirection().getDegrees();
                         int degrees2 = DirectionMaster.getRelativeDirection(obj1, obj2)
-                                .getDegrees();
+                         .getDegrees();
                         boolean left = degrees > degrees2;
                         if (left) {
                             return left_right;

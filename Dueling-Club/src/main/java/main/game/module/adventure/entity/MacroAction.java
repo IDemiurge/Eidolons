@@ -32,7 +32,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
 
     public MacroAction(ObjType type, MacroRef ref) {
         super(ref.getGame(), type, ref, ref.getGame().getPlayerParty()
-                .getOwner());
+         .getOwner());
     }
 
     public MacroAction(ObjType type, MacroRef ref, MACRO_PARTY_ACTIONS mpa) {
@@ -73,7 +73,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
 
             MapActionHandler.partyAction(mpa, ref.getParty());
         }
-        getGame().getLoop().actionInput(null );//new ActionInput(this, new Context(ref)));
+        getGame().getLoop().actionInput(null);//new ActionInput(this, new Context(ref)));
         // costs?
         return false;
     }
