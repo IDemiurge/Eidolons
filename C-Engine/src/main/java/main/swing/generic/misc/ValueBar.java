@@ -38,13 +38,13 @@ public class ValueBar extends G_Panel {
     public void paint(Graphics g) {
         super.paint(g);
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         if (getObj() == null) {
             return;
         }
         int transparency = COLOR_TRANSPARENCY
-                + MathMaster.getCentimalPercent(percentage);
+         + MathMaster.getCentimalPercent(percentage);
         // MathManager.getFractionValue(256, percentage)
 
         g.setColor(ColorManager.getTranslucent(color, transparency));
@@ -59,11 +59,11 @@ public class ValueBar extends G_Panel {
             g.setColor(ColorManager.WHITE);
             g.drawLine(w, h, w, 0);
             g.drawString(param.getName() + ": " + c_val + "/" + max_val, 0,
-                    this.getHeight() / 2);
+             this.getHeight() / 2);
         } else {
             g.drawString(
-                    param + ": " + MathMaster.getCentimalPercent(percentage)
-                            + "%", 0, this.getHeight() / 2);
+             param + ": " + MathMaster.getCentimalPercent(percentage)
+              + "%", 0, this.getHeight() / 2);
 
         }
     }

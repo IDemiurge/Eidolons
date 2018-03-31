@@ -89,8 +89,8 @@ public abstract class Builder implements GameGUI {
 
             LogMaster.log(LogMaster.GUI_DEBUG,
 
-                    "building " + builder.getClass().getSimpleName() + " for " + getClass().getSimpleName()
-                            + " at " + info);
+             "building " + builder.getClass().getSimpleName() + " for " + getClass().getSimpleName()
+              + " at " + info);
 
             if (keyListener != null) {
                 builder.setKeyListener(keyListener);

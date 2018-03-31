@@ -17,8 +17,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.Transient;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -170,7 +170,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
     @SuppressWarnings("unchecked")
     protected G_Component createEmptyPageComponent() {
         return createPageComponent((List<E>) ListMaster.fillWithNullElements((new ArrayList<E>()),
-                pageSize));
+         pageSize));
     }
 
     protected abstract G_Component createPageComponent(List<E> list);
@@ -184,10 +184,10 @@ public abstract class G_PagePanel<E> extends G_Panel {
         }
         if (isControlPosInverted()) {
             button = new G_VisualComponent(ImageManager.getArrowImagePath(!vertical, forward,
-                    version));
+             version));
         } else {
             button = new G_VisualComponent(ImageManager.getArrowImagePath(vertical, forward,
-                    version));
+             version));
         }
 
         button.addMouseListener(new PageMouseListener(this, button, forward));
@@ -273,7 +273,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
         }
         try {
             if (!getCurrentComponent().equals(pages.get(currentIndex))
-                    || getComponents().length == 0) {
+             || getComponents().length == 0) {
                 setDirty(true);
             }
         } catch (Exception e) {
@@ -308,7 +308,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
 
         } else {
             LogMaster.log(1, "Null component on "
-                    + getClass().getSimpleName() + " with " + getData());
+             + getClass().getSimpleName() + " with " + getData());
         }
         repaint();
     }
@@ -459,7 +459,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
             // add(backButton, "id btn2, pos " + pos);
         } else {
             addControl((isForwardPreferred()) ? forwardButton : backButton, !isForwardPreferred(),
-                    isForwardPreferred() ? x : y, isForwardPreferred() ? y : x);
+             isForwardPreferred() ? x : y, isForwardPreferred() ? y : x);
             // + ((isForwardPreferred()) ? x + " " + y : +x2 + " " + y2));
         }
 
@@ -485,7 +485,7 @@ public abstract class G_PagePanel<E> extends G_Panel {
 
     protected void addControl(G_VisualComponent component, boolean second, int x, int y) {
         String pos = "id " + ((second) ? CONTROLS_POS_2 : CONTROLS_POS) + ",pos "
-                + (isControlPosInverted() ? y : x) + " " + (!isControlPosInverted() ? y : x);
+         + (isControlPosInverted() ? y : x) + " " + (!isControlPosInverted() ? y : x);
         add(component, pos);
 
     }

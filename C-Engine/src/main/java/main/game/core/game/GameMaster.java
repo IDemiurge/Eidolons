@@ -11,7 +11,7 @@ public class GameMaster {
     protected Game game;
 
     public GameMaster(Game game) {
-        this.game= game;
+        this.game = game;
     }
 
 
@@ -22,7 +22,7 @@ public class GameMaster {
             return null;
         }
         try {
-            return  game.getState().getObjMap().get(id);
+            return game.getState().getObjMap().get(id);
         } catch (Exception e) {
             LogMaster.log(LogMaster.CORE_DEBUG_1, "no obj found by id " + id);
             return null;

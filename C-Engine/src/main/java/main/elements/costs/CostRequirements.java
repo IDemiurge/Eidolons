@@ -46,15 +46,15 @@ public class CostRequirements extends Requirements {
             }
             Formula amountFormula = payment.getAmountFormula();
             if (amountFormula.toString().contains(
-                    StringMaster.FORMULA_FUNC_OPEN_CHAR)) {
+             StringMaster.FORMULA_FUNC_OPEN_CHAR)) {
                 continue;
             }
             String value = "" + amountFormula.getInt(ref);
             String r = InfoMaster.getParamReasonString(value,
-                    payment.getParamToPay());
+             payment.getParamToPay());
             Condition c = new NumericCondition(false,
-                    StringMaster.getValueRef(KEYS.SOURCE.toString(), payment
-                            .getParamToPay().toString()), value);
+             StringMaster.getValueRef(KEYS.SOURCE.toString(), payment
+              .getParamToPay().toString()), value);
             reqMap.put(r, c);
 
         }

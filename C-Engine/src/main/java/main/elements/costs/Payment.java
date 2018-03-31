@@ -27,11 +27,11 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         if (amountFormula.toString().equals("0")
-                || amountFormula.toString().equals("")) {
+         || amountFormula.toString().equals("")) {
             return "";
         }
         return "Pay: " + amountFormula.toString() + " of "
-                + valueToPay.toString();
+         + valueToPay.toString();
     }
 
     public boolean pay(Obj payee, Ref ref) {
@@ -48,7 +48,7 @@ public class Payment implements Serializable {
                     if (!up) {
                         try {
                             ref.getGame().getLogManager()
-                                    .logFastAction(payee, ref);
+                             .logFastAction(payee, ref);
                         } catch (Exception e) {
                             main.system.ExceptionMaster.printStackTrace(e);
                         }

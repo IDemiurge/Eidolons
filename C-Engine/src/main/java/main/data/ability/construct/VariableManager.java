@@ -139,12 +139,11 @@ public class VariableManager {
     }
 
     public static String getVar(String typeName, int i) {
-        try {
-            return StringMaster.cropParenthesises(getVarPart(typeName)).split(",")[i].trim();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        return null;
+        String[] parts = StringMaster.cropParenthesises(getVarPart(typeName)).split(",");
+        if (parts.length > i)
+            return parts[i].trim();
+
+        return "";
     }
 
     public static String getVarPart(String typeName) {

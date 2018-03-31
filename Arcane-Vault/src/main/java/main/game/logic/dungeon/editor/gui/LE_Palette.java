@@ -1,8 +1,8 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.client.cc.gui.neo.tabs.HC_Tab;
-import main.client.cc.gui.neo.tabs.HC_TabPanel;
-import main.client.cc.gui.neo.tabs.TabChangeListener;
+import eidolons.client.cc.gui.neo.tabs.HC_Tab;
+import eidolons.client.cc.gui.neo.tabs.HC_TabPanel;
+import eidolons.client.cc.gui.neo.tabs.TabChangeListener;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -16,13 +16,13 @@ import main.game.logic.dungeon.editor.LE_DataMaster;
 import main.game.logic.dungeon.editor.Level;
 import main.game.logic.dungeon.editor.LevelEditor;
 import main.game.logic.dungeon.editor.Mission;
-import main.swing.components.buttons.CustomButton;
+import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.ImageChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;

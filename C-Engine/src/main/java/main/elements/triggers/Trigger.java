@@ -29,21 +29,23 @@ public class Trigger {
         this.eventType = eventType;
         this.abilities = abilities;
         game = abilities.getRef().getGame();
-        basis =abilities.getRef().getTarget();
+        basis = abilities.getRef().getTarget();
         init();
     }
-public void init(){
-    abilities.getEffects().setTrigger(this);
-}
+
+    public void init() {
+        abilities.getEffects().setTrigger(this);
+    }
+
     @Override
     public String toString() {
         return "Trigger: " + abilities.getEffects().toString() + " on " + eventType.toString();
     }
 
     public boolean trigger() {
-    if (LogMaster.TRIGGER_DEBUG_ON)
-        LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
-         + " has been triggered!");
+        if (LogMaster.TRIGGER_DEBUG_ON)
+            LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
+             + " has been triggered!");
         abilities.setForceTargeting(forceTargeting);
         if (removeAfterTriggers) {
             remove();
@@ -84,7 +86,7 @@ public void init(){
             ref.getGame().getManager().setTriggerBeingChecked(true);
             try {
                 if (conditions.preCheck(ref)) {
-                    this.event=event;
+                    this.event = event;
                     ref.getGame().getManager().setTriggerBeingActivated(true);
                     return trigger();
                 } else {
@@ -102,7 +104,6 @@ public void init(){
             return false;
         }
     }
-
 
 
     // public void addCondition(Condition condition) {
@@ -183,16 +184,16 @@ public void init(){
     }
 
     public boolean isRemoveOnReset() {
-    return true;
+        return true;
     }
 
     public String toXml() {
         StringBuilder builder = new StringBuilder(120);
-      return   builder.append(  XML_Converter.openXml("Trigger")).
-         append(  XML_Converter.wrap("STANDARD_EVENT_TYPE",
-         getEventType().toString())).
-         append(  XML_Converter.wrap("Conditions",getConditions()==null ?"": getConditions().toXml())).
-         append(  XML_Converter.wrap("Abilities", getAbilities().toXml())).
+        return builder.append(XML_Converter.openXml("Trigger")).
+         append(XML_Converter.wrap("STANDARD_EVENT_TYPE",
+          getEventType().toString())).
+         append(XML_Converter.wrap("Conditions", getConditions() == null ? "" : getConditions().toXml())).
+         append(XML_Converter.wrap("Abilities", getAbilities().toXml())).
          append(XML_Converter.closeXml("Trigger")).toString();
     }
 }

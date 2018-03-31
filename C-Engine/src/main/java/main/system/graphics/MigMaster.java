@@ -123,14 +123,14 @@ public class MigMaster {
         constraints = constraints.replace(HEIGHT, "" + height);
         if (constraints.contains("_")) {
             constraints = constraints.replace(CENTER_X, ""
-                    + getCenteredPosition(container_width, width));
+             + getCenteredPosition(container_width, width));
             constraints = constraints.replace(CENTER_Y, ""
-                    + getCenteredPosition(container_height, height));
+             + getCenteredPosition(container_height, height));
 
             constraints = constraints.replace(CENTER_X_ALT, ""
-                    + getCenteredPosition(container_width, width));
+             + getCenteredPosition(container_width, width));
             constraints = constraints.replace(CENTER_Y_ALT, ""
-                    + getCenteredPosition(container_height, height));
+             + getCenteredPosition(container_height, height));
 
             constraints = constraints.replace(MAX_TOP, "" + height);
             constraints = constraints.replace(MAX_BOTTOM, "" + (container_height - height));
@@ -148,10 +148,10 @@ public class MigMaster {
     }
 
     public static float center(float parentSize, float size) {
-        return (parentSize-size)/2;
+        return (parentSize - size) / 2;
     }
 
     public static float top(float parentHeight, float height) {
-        return (parentHeight-height) ;
+        return (parentHeight - height);
     }
 }

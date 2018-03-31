@@ -62,8 +62,9 @@ public class Ref implements Cloneable, Serializable {
     }
 
 
-    public Ref(Integer summonerId) {
-        setValue(KEYS.SUMMONER, summonerId + "");
+    public Ref(Integer amount) {
+        this();
+        setAmount(amount);
     }
 
 
@@ -522,7 +523,7 @@ public class Ref implements Cloneable, Serializable {
         }
         if (obj instanceof ActiveObj) // TODO QUICK ITEM INTERFACE
         {
-                return (ActiveObj) obj;
+            return (ActiveObj) obj;
         }
         return null;
     }

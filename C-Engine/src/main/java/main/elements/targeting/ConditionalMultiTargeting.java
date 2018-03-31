@@ -18,7 +18,7 @@ public class ConditionalMultiTargeting extends SelectiveTargeting {
     private boolean consecutive = true;
 
     public ConditionalMultiTargeting(
-            Condition c) {
+     Condition c) {
         super(c);
 
 
@@ -31,6 +31,7 @@ public class ConditionalMultiTargeting extends SelectiveTargeting {
         }
         return super.equals(obj);
     }
+
     @Override
     public Conditions getConditions() {
         if (consecutive) {

@@ -46,11 +46,11 @@ public abstract class InfoTable extends G_Panel {
 
                 boolean special = false;
                 PropertyComponent comp = new PropertyComponent(value, obj,
-                        special);
+                 special);
                 components.add(comp);
 
                 String pos = "sg comps, wrap, " + "pos 0 " + y
-                        * comp.getPanelSize().getHeight() * y;
+                 * comp.getPanelSize().getHeight() * y;
                 add(comp, pos);
             }
             x++;

@@ -116,7 +116,7 @@ public class ArcaneTower {
         }
 
         ImageIcon img = ImageManager.getIcon(ICON_PATH);
-        getGateWindow().getWindow().setIconImage(img.getImage());
+        GatewayWindow.getWindow().setIconImage(img.getImage());
 
         ZeitMaster.checkCreateTimeTypes();
     }

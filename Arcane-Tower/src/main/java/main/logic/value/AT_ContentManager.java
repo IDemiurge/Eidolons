@@ -3,7 +3,7 @@ package main.logic.value;
 import main.content.ContentManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
-import main.content.ValuePageManager;
+import eidolons.content.ValuePageManager;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

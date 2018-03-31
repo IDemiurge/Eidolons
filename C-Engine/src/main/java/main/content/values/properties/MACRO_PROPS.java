@@ -7,7 +7,7 @@ import main.system.auxiliary.StringMaster;
 
 public enum MACRO_PROPS implements PROPERTY {
     FACTIONS(null, false, "town", "world"),
-    PLAYER_FACTION(null, false,  "world"),
+    PLAYER_FACTION(null, false, "world"),
     REGIONS("world", null),
     STARTING_LOCATION("campaign", "Starting Location"),
     CAMPAIGN_PARTY("campaign", "Campaign Party"),
@@ -25,7 +25,7 @@ public enum MACRO_PROPS implements PROPERTY {
     DUNGEON_LEVELS(false, null, true, "place", "mission"),
     DUNGEONS(null, true, "town", "place"), //explicit by in-game name for generation
 
-    MAP_ICON(false, null, false, "town","place"),
+    MAP_ICON(false, null, false, "town", "place"),
 
     //advanced
     BOSS_LEVEL_POOL(false, null, true, "placeX"),
@@ -44,7 +44,7 @@ public enum MACRO_PROPS implements PROPERTY {
     HERO_BACKGROUNDS(null, true, "town place"),
     HERO_GROUPS(null, true, "town place"),
     TOWN_PLACES(null, true, "town", "place"),
-    PARTIES(null, true, "region","town", "place", "route"),
+    PARTIES(null, true, "region", "town", "place", "route"),
     AREA(true, null, false, "region", "party", "route", "town", "place"),
     PLACE_VISIBILITY_STATUS(true, null, false, "route", "town", "place"),
     SHOP_ITEMS("shop", null), // true,
@@ -60,7 +60,7 @@ public enum MACRO_PROPS implements PROPERTY {
     LINKED_ROUTES(null, false, "route", "town", "place"),
     LINKED_TOWNS(null, false, "route", "town", "place"),
     FACTION(null, false, "town", "party"),
-    MAP_IMAGE( null, false, "route","region" ),
+    MAP_IMAGE(null, false, "route", "region"),
     // WORLD
     // REGIONS("world", "Regions"),
     // MAP_IMAGE("world", "Map Image"),
@@ -123,7 +123,7 @@ public enum MACRO_PROPS implements PROPERTY {
     // FACTIONS
 
     // ARMY
-;
+    ;
 
     private Metainfo metainfo;
     private String shortName;

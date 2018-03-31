@@ -8,7 +8,7 @@ import main.system.auxiliary.log.LogMaster;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public   class EntityInitializer<E extends Entity> extends EntityHandler<E> {
+public class EntityInitializer<E extends Entity> extends EntityHandler<E> {
 
     public EntityInitializer(E entity, EntityMaster<E> entityMaster) {
         super(entity, entityMaster);
@@ -21,7 +21,7 @@ public   class EntityInitializer<E extends Entity> extends EntityHandler<E> {
 
     public void init() {
         getEntity().addToState();
-        getEntity(). cloneMaps(getType());
+        getEntity().cloneMaps(getType());
         setParam(G_PARAMS.TURN_CREATED, game.getState().getRound());
     }
 
@@ -29,10 +29,10 @@ public   class EntityInitializer<E extends Entity> extends EntityHandler<E> {
     public void construct() {
         if (!getEntity().isConstructed() || game.isSimulation() || getEntity().isConstructAlways()) {
             try {
-                getEntity(). resetRef( ); // potential threat
+                getEntity().resetRef(); // potential threat
                 AbilityConstructor.constructObj(getEntity());
                 if (!game.isSimulation()) {
-                    getEntity(). setConstructed(true);
+                    getEntity().setConstructed(true);
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

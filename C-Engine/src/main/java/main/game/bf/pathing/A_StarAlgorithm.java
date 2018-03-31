@@ -32,8 +32,8 @@ public class A_StarAlgorithm {
 
     public Path getPath(boolean flying, boolean agile, Coordinates c1, Coordinates c2) {
         LogMaster
-                .log(LogMaster.PATHING_DEBUG, "building path from" + c1
-                        + " to " + c2);
+         .log(LogMaster.PATHING_DEBUG, "building path from" + c1
+          + " to " + c2);
         N = 0;
         dest = getPathNode(c2);
         orig = getPathNode(c1);
@@ -140,7 +140,7 @@ public class A_StarAlgorithm {
         C.setCost(getCost(agile, flying, C));
 
         LogMaster.log(LogMaster.PATHING_DEBUG, "Step #"
-                + N + " to " + C + " with closed list " + closedList
+         + N + " to " + C + " with closed list " + closedList
 
         );
         N++;
@@ -166,9 +166,9 @@ public class A_StarAlgorithm {
         node.setH(h);
         node.setF(f);
         LogMaster.log(LogMaster.PATHING_DEBUG, node
-                + " has: g = " + g + " h = " +
+         + " has: g = " + g + " h = " +
 
-                h + " f = " + f);
+         h + " f = " + f);
     }
 
     private PathNode getNodeWithLowestF() {

@@ -128,7 +128,6 @@ public abstract class GameState {
     }
 
 
-
     public void addAttachment(Attachment attachment) {
         attachments.add(attachment);
     }
@@ -171,8 +170,6 @@ public abstract class GameState {
     }
 
 
-
-
     public synchronized DequeImpl<Effect> getEffects() {
         return effects;
     }
@@ -181,6 +178,9 @@ public abstract class GameState {
         return manager;
     }
 
+    public void setManager(StateManager manager) {
+        this.manager = manager;
+    }
 
     public void addObject(Obj obj) {
         manager.addObject(obj);
@@ -202,16 +202,11 @@ public abstract class GameState {
         manager.addEffect(effect);
     }
 
-
-    public void setManager(StateManager manager) {
-        this.manager = manager;
+    public boolean isCloned() {
+        return cloned;
     }
 
     public void setCloned(boolean cloned) {
         this.cloned = cloned;
-    }
-
-    public boolean isCloned() {
-        return cloned;
     }
 }

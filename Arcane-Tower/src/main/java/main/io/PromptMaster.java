@@ -11,7 +11,7 @@ import main.logic.util.AT_SortMaster;
 import main.session.Session;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListObjChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class PromptMaster {
     }
 
     public static void add(ArcaneEntity entity) {
-        AT_OBJ_TYPE TYPE = AT_OBJ_TYPE.getChildType((AT_OBJ_TYPE) entity.getOBJ_TYPE_ENUM());
+        AT_OBJ_TYPE TYPE = AT_OBJ_TYPE.getChildType(entity.getOBJ_TYPE_ENUM());
         String property = entity.getProperty(TYPE.getChildValue());
         String children = ListChooser.chooseTypes(TYPE, property);
         entity.setProperty(TYPE.getChildValue(), children, true);

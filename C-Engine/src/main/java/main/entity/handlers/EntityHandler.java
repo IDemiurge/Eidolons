@@ -34,6 +34,7 @@ public class EntityHandler<E extends Entity> {
     public String toString() {
         return StringMaster.getPossessive(getEntity().getName()) + " " + getClass().getSimpleName();
     }
+
     protected void log(String string, boolean gameLog) {
         if (gameLog) {
             getGame().getLogManager().log(string);
@@ -46,6 +47,7 @@ public class EntityHandler<E extends Entity> {
     protected int getLogChannel() {
         return 1;
     }
+
     public E getEntity() {
         return entity;
     }
@@ -78,9 +80,10 @@ public class EntityHandler<E extends Entity> {
         return getEntity().checkParameter(param, value);
     }
 
-    public boolean checkProperty(PROPERTY p ) {
-        return getEntity().checkProperty(p );
+    public boolean checkProperty(PROPERTY p) {
+        return getEntity().checkProperty(p);
     }
+
     public boolean checkProperty(PROPERTY p, String value) {
         return getEntity().checkProperty(p, value);
     }
@@ -108,6 +111,7 @@ public class EntityHandler<E extends Entity> {
     public String getValue(String param) {
         return getEntity().getValue(param);
     }
+
     public String getValue(VALUE param) {
         return getEntity().getValue(param);
     }

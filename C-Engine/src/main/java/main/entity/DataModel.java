@@ -36,7 +36,6 @@ import main.system.entity.CounterMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
-import main.system.math.FormulaFactory;
 import main.system.math.FormulaMaster;
 import main.system.math.MathMaster;
 import main.system.text.TextParser;
@@ -259,7 +258,11 @@ public abstract class DataModel {
     }
 
     public Double getParamDouble(PARAMETER param, boolean base) {
-        return StringMaster.getDouble(getDoubleParam(param, base));
+        String string = getDoubleParam(param, base);
+        if (StringMaster.isNumber(string, false)) {
+            return StringMaster.getDouble(string);
+        }
+        return new Formula(string).evaluate(getRef()).doubleValue();
     }
 
     public String getDoubleParam(PARAMETER param) {
@@ -303,6 +306,7 @@ public abstract class DataModel {
     public String getStrParam(String param) {
         return String.valueOf(getIntParam(param));
     }
+
     public String getStrParam(PARAMETER param) {
         return String.valueOf(getIntParam(param));
     }
@@ -313,10 +317,12 @@ public abstract class DataModel {
 
     public Integer getIntParam(PARAMETER param, boolean base) {
 
-        Integer result;
-        // getIntegerMap(base).get(param);
-        // if (result != null)
-        // return result;
+        Integer result = null;
+        if (isIntegerCacheOn()) {
+            getIntegerMap(base).get(param);
+            if (result != null)
+                return result;
+        }
         String string;
         if (base) {
             string = getType().getParam(param);
@@ -330,17 +336,15 @@ public abstract class DataModel {
             return 0;
         }
         result = FormulaMaster.getInt(string, ref);
-        getIntegerMap(base).put(param, result);
-        return result; // return new Formula(string).getInt(ref);
-        // try {
-        // return Integer.valueOf(string);
-        // } catch (NumberFormatException e) {
-        // try {
-        //
-        // } catch (Exception e1) {
-        // return -1;
-        // }
-        // }
+
+        if (isIntegerCacheOn()) {
+            getIntegerMap(base).put(param, result);
+        }
+        return result;
+    }
+
+    private boolean isIntegerCacheOn() {
+        return false;
     }
 
     public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
@@ -427,17 +431,9 @@ public abstract class DataModel {
         if (value.isEmpty()) {
             return true;
         }
-        int val2;
-        try {
-            val2 = StringMaster.getInteger(value); // Integer.valueOf(value);
-        } catch (Exception e) {
-            try {
-                val2 = new Formula(value).getInt(ref);
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return true;
-            }
-        }
+        Integer val2 = StringMaster.getInteger(value);
+        if (val2 == null)
+            return false;
         return checkParameter(param, val2);
     }
 
@@ -619,18 +615,23 @@ public abstract class DataModel {
         if (amountString.isEmpty()) {
             return true;
         }
-
-        if (StringMaster.isInteger(amountString)) {
-            if (StringMaster.getInteger(amountString) == 0) {
-                return true;
-            }
-        }
-        Number amount = StringMaster.getDouble(amountString);
-        if (amount.equals(0.0))
+        Number amount = null;
+        if (!StringMaster.isNumber(amountString, false))
             amount = new Formula(amountString).evaluate(ref);
+        else if (StringMaster.isInteger(amountString)) {
+            amount = StringMaster.getInteger(amountString);
+            if (amount.equals(0)) {
+                return false;
+            }
+        } else {
+            amount = StringMaster.getDouble(amountString);
+            if (amount.equals(0.0))
+                return false;
+        }
 
-        LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
-         + param.getName() + " by " + amount);
+        if (LogMaster.VALUE_DEBUG_ON)
+            LogMaster.log(LogMaster.VALUE_DEBUG, "modifying " + getName() + "'s "
+             + param.getName() + " by " + amount);
         if (!quietly || GuiEventManager.isParamEventAlwaysFired(param.getName()))
             if (!fireParamEvent(param, String.valueOf(amount),
              CONSTRUCTED_EVENT_TYPE.PARAM_BEING_MODIFIED)) {
@@ -638,67 +639,62 @@ public abstract class DataModel {
             }
 
         boolean result = true;
-        try {
-            String prevValue = getDoubleParam(param, false);
-
-            // } catch (Exception e) {
-            // }
-            Number newValue;
-            if (!prevValue.isEmpty()) {
-                try {
-
-                    newValue = FormulaFactory.getFormulaByAppend(prevValue,
-                     amount).evaluate(ref);
-                } catch (Exception e) {
-                    setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
-                     quietly);
-                    return true;
+        Double newValue;
+        Double prevValue = getParamDouble(param, false);
+        if (prevValue > 0) {
+            newValue = amount.doubleValue() + prevValue;
+        } else {
+            newValue = amount.doubleValue();
+        }
+//        if (!prevValue.isEmpty()) {
+//            try {
+//                newValue = FormulaFactory.getFormulaByAppend(prevValue,
+//                 amount).evaluate(ref);
+//            } catch (Exception e) {
+//                setParam(param, FormulaFactory.getFormulaByAppend(prevValue, amount).toString(),
+//                 quietly);
+//                return true;
+//            }
+//        }
+        // intAmount = prevValue
+        if (minMax != null) {
+            if (amount.doubleValue() < 0) {
+                if ((prevValue) < minMax) {
+                    return false;
+                }
+                if (newValue.doubleValue() < minMax) {
+                    newValue = (double) minMax;
                 }
             } else {
-                newValue = amount;
-            }
-            // intAmount = prevValue
-            if (minMax != null) {
-                if (amount.intValue() < 0) {
-                    if (StringMaster.getInteger(prevValue) < minMax) {
-                        return false;
-                    }
-                    if (newValue.intValue() < minMax) {
-                        newValue = minMax;
-                    }
-                } else {
-                    if (StringMaster.getInteger(prevValue) > minMax) {
-                        return false;
-                    }
-                    if (newValue.intValue() > minMax) {
-                        newValue = minMax;
-                    }
+                if ((prevValue) > minMax) {
+                    return false;
+                }
+                if (newValue.intValue() > minMax) {
+                    newValue = (double) minMax;
                 }
             }
+        }
 
-            setParam(param, newValue.toString(), quietly);
+        setParam(param, newValue.toString(), quietly);
 
-            Map<String, Double> map = getModifierMaps().get(param);
-            if (map == null) {
-                map = new XLinkedMap<>();
-                getModifierMaps().put(param, map);
-            }
-            if (modifierKey == null) {
-                modifierKey = this.modifierKey;
-            }
-            Double amountByModifier = map.get(modifierKey);
-            this.modifierKey = null;
-            if (amountByModifier == null) {
-                map.put(modifierKey, amount.doubleValue());
-            } else {
-                map.put(modifierKey, amountByModifier + amount.doubleValue());
-            }
+        Map<String, Double> map = getModifierMaps().get(param);
+        if (map == null) {
+            map = new XLinkedMap<>();
+            getModifierMaps().put(param, map);
+        }
+        if (modifierKey == null) {
+            modifierKey = this.modifierKey;
+        }
+        Double amountByModifier = map.get(modifierKey);
+        this.modifierKey = null;
+        if (amountByModifier == null) {
+            map.put(modifierKey, amount.doubleValue());
+        } else {
+            map.put(modifierKey, amountByModifier + amount.doubleValue());
+        }
 
-            if (newValue.intValue() <= 0) {
-                result = false;
-            }
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+        if (newValue.intValue() <= 0) {
+            result = false;
         }
         return result;
     }
@@ -815,10 +811,7 @@ public abstract class DataModel {
         if (getGame().isSimulation() || this instanceof ObjType) {
             return false;
         }
-        if (GuiEventManager.isParamEventAlwaysFired(param)) {
-            return true;
-        }
-        return false;
+        return GuiEventManager.isParamEventAlwaysFired(param);
     }
 
     public boolean fireParamEvent(PARAMETER param, String amount, CONSTRUCTED_EVENT_TYPE event_type) {

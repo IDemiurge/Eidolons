@@ -61,8 +61,7 @@ public class Obj extends Entity {
     public void init() {
         if (getInitializer() == null) {
             addToState();
-        }
-        else {
+        } else {
             getInitializer().init();
         }
 
@@ -76,9 +75,11 @@ public class Obj extends Entity {
         return null;
 
     }
+
     public boolean isOutsideCombat() {
         return false;
     }
+
     @Override
     public void construct() {
         if (!added) {
@@ -165,7 +166,8 @@ public class Obj extends Entity {
 
     @Override
     public boolean setParam(PARAMETER param, String value, boolean quiety) {
-        boolean result = super.setParam(param, value, quiety); if (GuiEventManager.isParamEventAlwaysFired(param.getName())) quiety=false;
+        boolean result = super.setParam(param, value, quiety);
+        if (GuiEventManager.isParamEventAlwaysFired(param.getName())) quiety = false;
         if (!quiety && game.isStarted()) {
             fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
 
@@ -361,7 +363,6 @@ public class Obj extends Entity {
     }
 
 
-
     public boolean isInfoSelected() {
         return infoSelected;
     }
@@ -382,7 +383,7 @@ public class Obj extends Entity {
     public void toBase() {
         super.toBase();
         if (!game.isSimulation())
-        construct();
+            construct();
     }
 
     public void resetObjects() {
@@ -390,7 +391,7 @@ public class Obj extends Entity {
     }
 
     public boolean isObstructing() {
-            return false;
+        return false;
     }
 
     public boolean isObstructing(Obj source) {
@@ -419,12 +420,11 @@ public class Obj extends Entity {
 
     }
 
+    public boolean isAnnihilated() {
+        return annihilated;
+    }
 
     public void setAnnihilated(boolean annihilated) {
         this.annihilated = annihilated;
-    }
-
-    public boolean isAnnihilated() {
-        return annihilated;
     }
 }

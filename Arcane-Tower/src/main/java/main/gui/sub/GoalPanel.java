@@ -2,7 +2,7 @@ package main.gui.sub;
 
 import main.ArcaneMaster;
 import main.ArcaneTower;
-import main.client.cc.gui.neo.tree.logic.HT_MapBuilder;
+import eidolons.client.cc.gui.neo.tree.logic.HT_MapBuilder;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.enums.StatEnums.TASK_STATUS;
@@ -11,7 +11,7 @@ import main.logic.AT_OBJ_TYPE;
 import main.logic.Goal;
 import main.logic.Task;
 import main.session.SessionMaster;
-import main.swing.components.panels.page.info.element.TextCompDC;
+import eidolons.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.panels.G_ScrolledPanel;
 import main.system.graphics.FontMaster.FONT;

@@ -28,17 +28,17 @@ public class Construct {
     private Class CLASS;
     private Argument arg;
     private boolean genericPrimitive;
-    private   String xml;
+    private String xml;
 
     public Construct(String className, List<Construct> constructs, String xml) {
 
         LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed: "
-                + className + " : " + constructs);
+         + className + " : " + constructs);
         this.className = className;
         this.constructs = constructs;
         this.CLASS = Mapper.getMappedClass(className);
         this.setArg(Mapper.translateToArg(CLASS));
-        this.xml=xml;
+        this.xml = xml;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Construct {
      */
     public Construct(String className, String textContent) {
         LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed primitive: "
-                + className + " : " + textContent);
+         + className + " : " + textContent);
         this.className = className;
         this.primitive = true;
         this.content = textContent;
@@ -59,7 +59,7 @@ public class Construct {
 
     public Construct(String className, String textContent, boolean ENUM) {
         LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "constructed enum: "
-                + className + " : " + textContent);
+         + className + " : " + textContent);
         this.className = className;
         this.content = textContent;
         this.ENUM = ENUM;
@@ -74,6 +74,7 @@ public class Construct {
     public String toXml() {
         return xml;
     }
+
     private ARGS getPrimitiveArg(String className) {
         switch (className) {
             case "FORMULA": {
@@ -127,14 +128,14 @@ public class Construct {
         Object obj = new EnumMaster().getEnum(content, CLASS.getEnumConstants());
         if (obj == null) {
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "*** constructEnum:"
-                    + content);
+             + content);
         }
         return obj;
     }
 
     private Object constructPrimitive() {
         LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
-                "...constructing primitive: " + className + " : " + content);
+         "...constructing primitive: " + className + " : " + content);
 
         Object object;
         switch (className) {
@@ -170,10 +171,10 @@ public class Construct {
         if (object == null) {
 
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
-                    "*** PRIMITIVE CONSTRUCTION FAILED! " + className);
+             "*** PRIMITIVE CONSTRUCTION FAILED! " + className);
         }
         LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
-                ">>> PRIMITIVE CONSTRUCT: " + object);
+         ">>> PRIMITIVE CONSTRUCT: " + object);
         return object;
     }
 
@@ -222,7 +223,7 @@ public class Construct {
 
         if (CLASS == null) {
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
-                    "no class found for construct: " + className);
+             "no class found for construct: " + className);
             return null;
         }
         for (Constructor<?> constructor : CLASS.getConstructors()) {
@@ -240,16 +241,16 @@ public class Construct {
         Object result = null;
         try {
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG, "=> constructing: " + className
-                    + "'s constructor " + constructor + " with args: " + args);
+             + "'s constructor " + constructor + " with args: " + args);
             result = constructor.newInstance(args.toArray());
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
-                    "==> instantiation successful!  ");
+             "==> instantiation successful!  ");
 
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(LogMaster.CONSTRUCTION_DEBUG,
-                    "*** construction failed *** " + className + "'s constructor " + constructor
-                            + " with args: " + args);
+             "*** construction failed *** " + className + "'s constructor " + constructor
+              + " with args: " + args);
 
         }
         return result;

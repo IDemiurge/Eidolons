@@ -40,7 +40,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             public Rectangle getNodeDimensions(Object value, int row, int depth, boolean expanded,
                                                Rectangle rect) {
                 Rectangle dimensions = super.getNodeDimensions(value, row, depth, expanded, rect);
-                dimensions.setSize((int) ArcaneVault.TREE_WIDTH, size);
+                dimensions.setSize(ArcaneVault.TREE_WIDTH, size);
 
                 return dimensions;
             }
@@ -56,7 +56,7 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
             return null;
         }
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-        String typeName = (String) node.toString();
+        String typeName = node.toString();
         ObjType type = null;
         String parent = null;
         try {
@@ -125,7 +125,6 @@ public class AV_TreeCellRenderer extends BasicTreeUI implements TreeCellRenderer
         LogMaster.log(LogMaster.GUI_DEBUG, "drawing default lbl: " + value);
         Component treeCellRendererComponent = defRenderer.getTreeCellRendererComponent(tree, value,
                 selected, expanded, leaf, row, hasFocus);
-        ;
         if (colorsInverted) {
             Color c = ColorManager.ALLY_COLOR;
             Color c2 = ColorManager.GOLDEN_WHITE;

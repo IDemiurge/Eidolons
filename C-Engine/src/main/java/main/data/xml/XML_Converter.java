@@ -71,7 +71,8 @@ public class XML_Converter {
     public static List<Node> getNodeList(Node node) {
         return getNodeList(node, true);
     }
-        public static List<Node> getNodeList(Node node  , boolean ignoreTextNodes) {
+
+    public static List<Node> getNodeList(Node node, boolean ignoreTextNodes) {
         List<Node> list = new ArrayList<>();
         if (node == null) {
             return list;
@@ -81,9 +82,9 @@ public class XML_Converter {
 
             Node item = nl.item(i);
             if (ignoreTextNodes)
-            if (checkTextNode(item)) {
-                continue;
-            }
+                if (checkTextNode(item)) {
+                    continue;
+                }
             list.add(item);
 
         }
@@ -162,7 +163,7 @@ public class XML_Converter {
             }
         } catch (Exception e) {
             LogMaster.log(LogMaster.DATA_DEBUG,
-                    "failed to parse xml: " + myString);
+             "failed to parse xml: " + myString);
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
@@ -170,9 +171,9 @@ public class XML_Converter {
     }
 
     public static String getXmlFromNode(DefaultMutableTreeNode node)
-            throws java.lang.ClassCastException {
+     throws java.lang.ClassCastException {
         String nodeName;
-        boolean primitive=false;
+        boolean primitive = false;
         if ((node.getUserObject() instanceof AE_Item)) {
             nodeName = ((AE_Item) node.getUserObject()).getName();
             AE_Item item = (AE_Item) node.getUserObject();
@@ -182,14 +183,14 @@ public class XML_Converter {
             if (item.isENUM()) {
                 return wrapLeaf(((AE_Item) node.getUserObject()).getName(), getEnumNodeValue(node));
             }
-            primitive=item.isPrimitive();
+            primitive = item.isPrimitive();
         } else {
-            nodeName =node.getUserObject().toString() ;
+            nodeName = node.getUserObject().toString();
             primitive = true;
         }
 
         if (primitive) {
-            return wrapLeaf( nodeName, getPrimitiveNodeValue(
+            return wrapLeaf(nodeName, getPrimitiveNodeValue(
 //                    (item).getArg()
              nodeName
              , node));
@@ -224,7 +225,7 @@ public class XML_Converter {
         }
         TreeNode child = node.getFirstChild();
         Object object = ((DefaultMutableTreeNode) child).getUserObject();
-        return object.toString().replace(argumentName , "");
+        return object.toString().replace(argumentName, "");
     }
 
     private static String getStringFromXMLNode(Node node) {
@@ -263,7 +264,8 @@ public class XML_Converter {
     public static String toString(Node child) {
         return getStringFromXML(child);
     }
-        public static String getStringFromXML(Node child) {
+
+    public static String getStringFromXML(Node child) {
         return getStringFromXML(child, true);
     }
 
@@ -302,7 +304,7 @@ public class XML_Converter {
 
     public static String wrapLeaf(String valName, String value) {
         return ("<" + XML_Formatter.formatStringForXmlNodeName(valName) + ">" + value + "</"
-                + XML_Formatter.formatStringForXmlNodeName(valName) + ">\n");
+         + XML_Formatter.formatStringForXmlNodeName(valName) + ">\n");
     }
 
     public static String getXmlNodeName(VALUE val) {
@@ -368,15 +370,14 @@ public class XML_Converter {
         //TODO recursive
         Document node = getDoc(xml);
 
-        for (Node sub : getNodeList( node )) {
+        for (Node sub : getNodeList(node)) {
             if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
                 return sub;
             }
         }
-        for (Node sub : getNodeListFromFirstChild( node, true ))
-        {
+        for (Node sub : getNodeListFromFirstChild(node, true)) {
             Node found = findNode(getStringFromXML(sub, false), nodeName);
-            if (found!=null )
+            if (found != null)
                 return found;
         }
 
@@ -391,11 +392,11 @@ public class XML_Converter {
         }
 
         for (Node node : nodes) {
-            Node found = findNode(getNodeListFromFirstChild( node, true ), nodeName);
-            if (found!=null )
+            Node found = findNode(getNodeListFromFirstChild(node, true), nodeName);
+            if (found != null)
                 return found;
         }
-        return null ;
+        return null;
     }
 
 
@@ -404,8 +405,8 @@ public class XML_Converter {
         int lastIndexOf = xmlString.lastIndexOf(closeXml(string));
         String nodeContent = xmlString.substring(firstIndexOf, lastIndexOf);
         Document node = getDoc(
-                // openXML(string) + already there?
-                nodeContent + closeXml(string));
+         // openXML(string) + already there?
+         nodeContent + closeXml(string));
         return node;
     }
 
@@ -438,9 +439,10 @@ public class XML_Converter {
     public static Node getChildByName(Node parent, String name) {
         return getNodeByName(getNodeList(parent), name);
     }
-        public static Node getNodeByName(List<Node> list, String name) {
+
+    public static Node getNodeByName(List<Node> list, String name) {
         for (Node node : (list)) {
-            if (StringMaster.compare(node.getNodeName(), name)){ //node.getNodeName().equalsIgnoreCase(name))
+            if (StringMaster.compare(node.getNodeName(), name)) { //node.getNodeName().equalsIgnoreCase(name))
                 return node;
             }
         }

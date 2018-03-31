@@ -31,9 +31,9 @@ public abstract class MicroGame extends Game {
     protected BattleFieldManager battleFieldManager;
     protected String unitData1;
     protected String unitData2;
+    protected SwingBattleField battlefield;
     private boolean hotseatMode = false;
     private UIOptions uiOptions;
-    protected SwingBattleField battlefield;
 
     public MicroGame() {
         this.gameName = "Battlecraft Game";
@@ -131,7 +131,7 @@ public abstract class MicroGame extends Game {
     }
 
     public GraveyardManager getGraveyardManager() {
-        return null ;
+        return null;
     }
 
 
@@ -160,7 +160,6 @@ public abstract class MicroGame extends Game {
     }
 
 
-
     public void remove(Obj obj) {
         state.removeObject(obj.getId());
 
@@ -169,7 +168,6 @@ public abstract class MicroGame extends Game {
     public Collection<? extends Obj> getCellsForCoordinates(Set<Coordinates> coordinates) {
         return null;
     }
-
 
 
 }

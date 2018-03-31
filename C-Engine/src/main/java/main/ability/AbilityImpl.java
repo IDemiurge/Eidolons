@@ -42,7 +42,7 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public void setXml(String xml) {
-        this.xml=xml;
+        this.xml = xml;
     }
 
     @Override
@@ -52,8 +52,8 @@ public class AbilityImpl extends ReferredElement implements Ability {
 
     @Override
     public String toString() {
-        if (effects==null )
-        return "Ability has null effects!";
+        if (effects == null)
+            return "Ability has null effects!";
         return "Ability has effects: " + effects.toString();
     }
 
@@ -181,7 +181,8 @@ public class AbilityImpl extends ReferredElement implements Ability {
     public void setForceTargeting(boolean forceTargeting) {
         this.forceTargeting = forceTargeting;
     }
-@Override
+
+    @Override
     public boolean isForcePresetTargeting() {
         return forcePresetTargeting;
     }

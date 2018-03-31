@@ -10,9 +10,9 @@ import main.music.entity.MusicList;
 import main.music.gui.MusicMouseListener;
 import main.swing.generic.components.editors.lists.GenericListChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.text.NameMaster;
+import eidolons.system.text.NameMaster;
 
 public class MusicListMaster {
 

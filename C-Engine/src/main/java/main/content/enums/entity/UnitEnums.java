@@ -74,6 +74,132 @@ public class UnitEnums {
         }
     }
 
+    public enum COUNTER {
+        Bleeding,
+        Blaze,
+        Poison,
+        Freeze,
+        Disease,
+        Ensnared,
+        Moist,
+        Charge {
+            public boolean isNegativeAllowed() {
+                return true;
+            }
+        },
+        Lava,
+        Ash,
+        Clay,
+        Encase,
+        Grease,
+        Rage,
+        Madness,
+        Despair,
+        Lust,
+        Hatred,
+
+        Virtue,
+        Light,
+        Haze,
+        Zeal,
+        Encryption,
+        Void,
+        Magnetized,
+        Time_Warped {
+            public boolean isNegativeAllowed() {
+                return true;
+            }
+        },
+        Mutagenic,
+        Zen,
+        Loyalty,
+        Demon_Debt {
+            public boolean isNegativeAllowed() {
+                return true;
+            }
+        },
+        Demon_Names,
+        Ward,
+
+        Soul,
+        Undying_Counter,
+        Undying {
+            @Override
+            public String toString() {
+                return super.toString();
+            }
+        },
+        Blight,
+        Corrosion, Oblivion,
+        Taint, Aether,
+        Warp, Suffocation;
+
+        private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
+        private COUNTER down;
+        private COUNTER up;
+        private String imagePath;
+        private String name =
+         StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
+
+        COUNTER() {
+            imagePath = ImageManager.getValueIconsPath() + "counters\\" + toString() + ".jpg";
+        }
+
+        public boolean isNegativeAllowed() {
+            return false;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void isNegative() {
+            // TODO Auto-generated method stub
+
+        }
+
+        public Map<COUNTER, COUNTER_INTERACTION> getInteractionMap() {
+            return interactionMap;
+        }
+
+        public void setInteractionMap(Map<COUNTER, COUNTER_INTERACTION> interactionMap) {
+            this.interactionMap = interactionMap;
+        }
+
+        public COUNTER getDown() {
+            return down;
+        }
+
+        public void setDown(COUNTER down) {
+            this.down = down;
+        }
+
+        public COUNTER getUp() {
+            return up;
+        }
+
+        public void setUp(COUNTER up) {
+            this.up = up;
+        }
+
+        public String getImagePath() {
+            return imagePath;
+        }
+
+    }
+
+    public enum COUNTER_INTERACTION {
+        CONVERT_TO, CONVERT_FROM, MUTUAL_DELETION, DELETE_OTHER, DELETE_SELF,
+        TRANSFORM_UP, TRANSFORM_DOWN,
+        GROW_SELF, GROW_OTHER, GROW_BOTH,
+    }
+
+    public enum COUNTER_OPERATION {
+        TRANSFER_TO,
+        TRANSFER_FROM,;
+
+    }
+
     public enum FACING_MUTUAL {
         FACE_TO_FACE, FROM_BEHIND, FLANKING, PARALLEL
     }
@@ -286,131 +412,7 @@ public class UnitEnums {
             return StringMaster.getWellFormattedString(name());
         }
     }
-    public enum COUNTER {
-        Bleeding,
-        Blaze,
-        Poison,
-        Freeze,
-        Disease,
-        Ensnared,
-        Moist,
-        Charge{
-            public boolean isNegativeAllowed() {
-                return true ;
-            }
-        },
-        Lava,
-        Ash,
-        Clay,
-        Encase,
-        Grease,
-        Rage,
-        Madness,
-        Despair,
-        Lust,
-        Hatred,
 
-        Virtue,
-        Light,
-        Haze,
-        Zeal,
-        Encryption,
-        Void,
-        Magnetized,
-        Time_Warped{
-            public boolean isNegativeAllowed() {
-                return true ;
-            }
-        },
-        Mutagenic,
-        Zen,
-        Loyalty,
-        Demon_Debt{
-            public boolean isNegativeAllowed() {
-                return true ;
-            }
-        },
-        Demon_Names,
-        Ward,
-
-        Soul,
-        Undying_Counter,
-        Undying{
-            @Override
-            public String toString() {
-                return super.toString();
-            }
-        },
-        Blight,
-        Corrosion, Oblivion,
-        Taint, Aether,
-        Warp, Suffocation;
-
-        private Map<COUNTER, COUNTER_INTERACTION> interactionMap;
-        private COUNTER down;
-        private COUNTER up;
-        private String imagePath;
-        private String name=
-         StringMaster.getWellFormattedString(name())+ StringMaster.COUNTER ;
-
-        public boolean isNegativeAllowed(){
-            return false;
-        }
-
-        COUNTER() {
-            imagePath= ImageManager.getValueIconsPath()+"counters\\"+ toString()+".jpg";
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void isNegative() {
-            // TODO Auto-generated method stub
-
-        }
-
-        public void setInteractionMap(Map<COUNTER, COUNTER_INTERACTION> interactionMap) {
-            this.interactionMap = interactionMap;
-        }
-
-        public Map<COUNTER, COUNTER_INTERACTION> getInteractionMap() {
-            return interactionMap;
-        }
-
-        public void setDown(COUNTER down) {
-            this.down = down;
-        }
-
-        public COUNTER getDown() {
-            return down;
-        }
-
-        public void setUp(COUNTER up) {
-            this.up = up;
-        }
-
-        public COUNTER getUp() {
-            return up;
-        }
-
-        public String getImagePath() {
-            return imagePath;
-        }
-
-    }
-    public enum COUNTER_INTERACTION {
-        CONVERT_TO,  CONVERT_FROM, MUTUAL_DELETION, DELETE_OTHER, DELETE_SELF,
-        TRANSFORM_UP, TRANSFORM_DOWN,
-        GROW_SELF,GROW_OTHER,GROW_BOTH,
-    }
-        public enum COUNTER_OPERATION {
-        TRANSFER_TO,
-            TRANSFER_FROM,
-
-            ;
-
-        }
     public enum STD_UNDEAD_TYPES {
         GHOST,
         GHOUL,
@@ -434,7 +436,7 @@ public class UnitEnums {
 
     // PERHAPS ENCOUNTERS COULD HAVE DEITY PROPERTY AS WELL;
     public enum UNIT_GROUP {
-ELEMENTALS(""),
+        ELEMENTALS(""),
         RAVENGUARD("Traitor,Corrupted,Royal"),
 
         HUMANS("Militia,Scum,Guards,Army,"),

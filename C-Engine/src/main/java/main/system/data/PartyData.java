@@ -34,7 +34,7 @@ public class PartyData extends DataUnit<PARTY_VALUES> {
 
     private void initHeroType() {
         setHeroObjType(DataManager
-                .getType(getValue(PARTY_VALUES.HERO_TYPE), DC_TYPE.CHARS));
+         .getType(getValue(PARTY_VALUES.HERO_TYPE), DC_TYPE.CHARS));
 
     }
 

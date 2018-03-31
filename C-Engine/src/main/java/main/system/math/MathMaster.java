@@ -160,7 +160,7 @@ public abstract class MathMaster {
 
     public static String formatFormula(String formula) {
 
-        if (formula.charAt(0) == '-')  {
+        if (formula.charAt(0) == '-') {
             while (formula.startsWith("(", 1)) {
                 formula = StringMaster.replaceFirst(formula, "(", "");
                 formula = StringMaster.replaceFirst(formula, ")", "");
@@ -205,6 +205,7 @@ public abstract class MathMaster {
         }
         return i;
     }
+
     public static float getMinMax(float i, float min, float max) {
         if (i >= max) {
             return max;
@@ -214,6 +215,7 @@ public abstract class MathMaster {
         }
         return i;
     }
+
     public static float minMax(float i, float min, float max) {
         if (i >= max) {
             return max;
@@ -237,9 +239,10 @@ public abstract class MathMaster {
         }
         return mode ? n : -n;
     }
+
     public static int getTotalOrMinMax(Boolean mode, int n, int n2) {
         if (mode == null) {
-            return  (n + n2);
+            return (n + n2);
         }
         if (mode)
             return Math.min(n, n2);
@@ -254,6 +257,23 @@ public abstract class MathMaster {
             return Math.min(n, n2);
         return Math.max(n, n2);
     }
+
+    public static int applyMods(int amount, Integer... mods) {
+        for (int mod : mods) {
+            amount = applyMod(amount, mod);
+        }
+        return amount;
+    }
+
+    public static List<Integer> getIntsInRange(int first, int last) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = first; i < last; i++) {
+            list.add(i);
+        }
+        return list;
+
+    }
+
     public Integer evaluateMeditation(Obj obj) {
 
         return null;
@@ -286,20 +306,4 @@ public abstract class MathMaster {
     public abstract Integer calculateEssenceRegenBonus(Obj dc_HeroObj);
 
     public abstract Integer evaluateSummonEnergyCost(Entity obj, String s);
-
-    public static int applyMods(int amount, Integer... mods) {
-       for (int mod : mods){
-           amount = applyMod(amount, mod);
-       }
-        return amount;
-    }
-
-    public static List<Integer> getIntsInRange(int first , int last ) {
-        List<Integer> list = new ArrayList<>();
-        for (int i = first; i < last; i++) {
-            list.add(i);
-        }
-        return list;
-
-    }
 }

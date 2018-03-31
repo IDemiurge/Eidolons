@@ -13,12 +13,9 @@ public class PlayerData extends DataUnit<PLAYER_VALUE> {
 
     @Override
     public Boolean getFormat() {
-        return FORMAT ;
+        return FORMAT;
     }
 
-    public enum PLAYER_VALUE {
-        NAME, COLOR, EMBLEM, PORTRAIT, ALLEGIENCE, MAIN_HERO,
-    }
     public enum ALLEGIENCE {
         PLAYER, ALLY, ENEMY, NEUTRAL, PASSIVE;
 
@@ -32,9 +29,7 @@ public class PlayerData extends DataUnit<PLAYER_VALUE> {
         }
 
         public boolean isAi() {
-            if (isMe())
-                return false;
-            return true;
+            return !isMe();
         }
 
         public boolean isMe() {
@@ -44,6 +39,10 @@ public class PlayerData extends DataUnit<PLAYER_VALUE> {
             }
             return false;
         }
+    }
+
+    public enum PLAYER_VALUE {
+        NAME, COLOR, EMBLEM, PORTRAIT, ALLEGIENCE, MAIN_HERO,
     }
 
 

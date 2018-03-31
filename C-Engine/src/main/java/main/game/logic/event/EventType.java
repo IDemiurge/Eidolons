@@ -28,7 +28,7 @@ public class EventType implements EVENT_TYPE {
         }
 
         return (this.getType() == ((EventType) type).getType())
-                && (StringMaster.compare(getArg(), type.getArg(), true));
+         && (StringMaster.compare(getArg(), type.getArg(), true));
 
     }
 

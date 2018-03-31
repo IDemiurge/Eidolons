@@ -47,7 +47,7 @@ public class PropertyComponent extends G_Panel {
         setPanelSize(ImageManager.getImgSize(getVisuals().getImage()));
 
         this.font = FontMaster
-                .getFont(FONT.MAIN, VAL_COMP_FONT_SIZE, Font.PLAIN);
+         .getFont(FONT.MAIN, VAL_COMP_FONT_SIZE, Font.PLAIN);
         srm = new SmartTextManager();
     }
 

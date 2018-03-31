@@ -10,8 +10,8 @@ import java.util.HashSet;
 
 public class G_HostedGame extends DataUnit<GAME_VALUES> {
     public static final String[] gameRelevantValues = {
-            GAME_VALUES.TITLE.name(), GAME_VALUES.HOST_NAME.name(),
-            GAME_VALUES.HOST_IP.name()};
+     GAME_VALUES.TITLE.name(), GAME_VALUES.HOST_NAME.name(),
+     GAME_VALUES.HOST_IP.name()};
 
     protected boolean started;
 

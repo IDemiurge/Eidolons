@@ -8,7 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public abstract class G_ElementPanel<T extends Enum<T>> extends G_Panel
-        implements ActionListener, ItemListener {
+ implements ActionListener, ItemListener {
 
     private static final int HEIGHT = 64;
     private int y = 0;
@@ -28,8 +28,8 @@ public abstract class G_ElementPanel<T extends Enum<T>> extends G_Panel
         box.setActionCommand(name);
         // box.setSelectedIndex(db_index);
         add(box, "pos " + "0 " +
-                // "visual.x2/4*3 " +
-                y + ", h " + HEIGHT);
+         // "visual.x2/4*3 " +
+         y + ", h " + HEIGHT);
         y += HEIGHT;
         return box;
     }

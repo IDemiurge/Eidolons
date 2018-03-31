@@ -79,7 +79,7 @@ public enum ARGS implements Argument {
     FORMULA(Formula.class, true, AE_ELEMENT_TYPE.TEXT),
     STRING(String.class, true, AE_ELEMENT_TYPE.TEXT),
     INTEGER(Integer.class, true, AE_ELEMENT_TYPE.TEXT),
-    BOOLEAN(Boolean.class, true, AE_ELEMENT_TYPE.BOOLEAN){
+    BOOLEAN(Boolean.class, true, AE_ELEMENT_TYPE.BOOLEAN) {
         @Override
         public String getEmptyName() {
             return "FALSE";

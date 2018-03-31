@@ -1,14 +1,14 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.client.cc.gui.neo.tabs.HC_Tab;
-import main.client.cc.gui.neo.tabs.HC_TabPanel;
-import main.client.cc.gui.neo.tabs.TabChangeListener;
-import main.content.PROPS;
+import eidolons.client.cc.gui.neo.tabs.HC_Tab;
+import eidolons.client.cc.gui.neo.tabs.HC_TabPanel;
+import eidolons.client.cc.gui.neo.tabs.TabChangeListener;
+import eidolons.content.PROPS;
 import main.game.logic.dungeon.editor.LE_DataMaster;
 import main.game.logic.dungeon.editor.Level;
 import main.game.logic.dungeon.editor.LevelEditor;
 import main.game.logic.dungeon.editor.Mission;
-import main.game.module.dungeoncrawl.dungeon.minimap.MiniGrid;
+import eidolons.game.module.dungeoncrawl.dungeon.minimap.MiniGrid;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.auxiliary.data.ListMaster;

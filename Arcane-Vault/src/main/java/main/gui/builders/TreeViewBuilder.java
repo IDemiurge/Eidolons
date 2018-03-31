@@ -1,7 +1,7 @@
 package main.gui.builders;
 
 import main.ability.utilities.NodeMaster;
-import main.client.dc.Simulation;
+import eidolons.client.dc.Simulation;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;

@@ -38,7 +38,7 @@ public class PathingManager {
 
     private void initNodeGrid() {
         nodeGrid = new PathNode[GuiManager.getBF_CompDisplayedCellsX()][GuiManager
-                .getBF_CompDisplayedCellsY()];
+         .getBF_CompDisplayedCellsY()];
         for (Coordinates c : grid.getCoordinatesList()) {
             PathNode node = new PathNode(c);
             nodeGrid[c.x][c.y] = node;

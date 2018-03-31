@@ -45,7 +45,7 @@ public class Property extends DynamicValue {
     public String getFullString() {
         if (autovar) {
             return FunctionManager.evaluateFunction(ref, FUNCTIONS.AUTOVAR,
-                    string);
+             string);
         }
         if (obj_string == null) {
             if (fullString == null) {
@@ -63,20 +63,20 @@ public class Property extends DynamicValue {
             if (obj_string.equalsIgnoreCase("EVENT")) {
                 Ref REF = ref.getEvent().getRef();
                 if (!value_string.contains(StringMaster.FORMULA_REF_SEPARATOR)
-                        && REF.getValue(value_string) != null) {
+                 && REF.getValue(value_string) != null) {
                     return REF.getValue(value_string);
                 } else {
                     return new Property(
-                            StringMaster.wrapInCurlyBraces(value_string))
-                            .getStr(REF);
+                     StringMaster.wrapInCurlyBraces(value_string))
+                     .getStr(REF);
                 }
 
             }
             return ref.getValue(value_string);
         }
         String str = (strict) ? entity.getProperty(
-                ContentManager.getPROP(value_string ), base) : entity
-                .getProperty(ContentManager.getPROP(value_string), base);
+         ContentManager.getPROP(value_string), base) : entity
+         .getProperty(ContentManager.getPROP(value_string), base);
 
         return str;
     }

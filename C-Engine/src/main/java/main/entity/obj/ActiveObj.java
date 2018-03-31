@@ -15,8 +15,6 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
 
     Obj getOwnerObj();
 
-    void setConstructed(boolean b);
-
     boolean isFree();
 
     boolean isEffectSoundPlayed();
@@ -60,4 +58,6 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
     GroupImpl getTargetGroup();
 
     boolean isConstructed();
+
+    void setConstructed(boolean b);
 }

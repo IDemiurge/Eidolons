@@ -4,8 +4,8 @@ import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AnimPhase {

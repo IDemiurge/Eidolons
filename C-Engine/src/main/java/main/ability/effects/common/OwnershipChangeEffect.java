@@ -10,7 +10,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.log.LogMaster;
 
 public class OwnershipChangeEffect extends MicroEffect implements
-        ResistibleEffect {
+ ResistibleEffect {
 
     private boolean neutral = false;
     private boolean permanent = false;
@@ -40,8 +40,8 @@ public class OwnershipChangeEffect extends MicroEffect implements
         Player newOwner = obj.getOriginalOwner();
         if (!neutral) {
             newOwner =
-                    // ref.getSourceObj().getOwner();
-                    ((MicroGame) ref.getGame()).getPlayer(!obj.getOwner().isMe());
+             // ref.getSourceObj().getOwner();
+             ((MicroGame) ref.getGame()).getPlayer(!obj.getOwner().isMe());
         }
         obj.setOwner(newOwner);
 
@@ -53,7 +53,7 @@ public class OwnershipChangeEffect extends MicroEffect implements
 
         }
         LogMaster.log(LogMaster.CORE_DEBUG_1, ref
-                .getTargetObj().getName() + "'s new owner: " + obj.getOwner());
+         .getTargetObj().getName() + "'s new owner: " + obj.getOwner());
         return true;
     }
 }

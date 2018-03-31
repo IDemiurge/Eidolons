@@ -7,7 +7,7 @@ import main.enums.StatEnums.TASK_TYPE;
 import main.logic.AT_PARAMS;
 import main.logic.AT_PROPS;
 import main.logic.ArcaneEntity;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.TimeMaster;
 import main.time.ZeitMaster;

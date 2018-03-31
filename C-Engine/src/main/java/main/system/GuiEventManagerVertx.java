@@ -23,6 +23,7 @@ public class GuiEventManagerVertx extends GuiEventManager {
     public static void cleanUp() {
         callbacks.clear();
     }
+
     public static void bind(GuiEventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
@@ -38,7 +39,7 @@ public class GuiEventManagerVertx extends GuiEventManager {
 
     public static void trigger(final GuiEventType type, Object obj) {
         if (CoreEngine.isGraphicsOff())
-            return   ;
+            return;
         DeliveryOptions options = new DeliveryOptions();
         options.setSendTimeout(50000);
         options.setCodecName("default-codec");

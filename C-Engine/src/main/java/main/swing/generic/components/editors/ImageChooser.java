@@ -26,7 +26,7 @@ public class ImageChooser extends FileChooser {
 
     @Override
     protected String cropPrefix(String selected) {
-    return  StringMaster.replaceFirst(selected,
+        return StringMaster.replaceFirst(selected,
          PathFinder.getImagePath()
          , "");
     }
@@ -41,9 +41,9 @@ public class ImageChooser extends FileChooser {
         size = 64;
         if (table.getName() != null) {
             boolean big = table.getName().equals(DC_TYPE.CHARS.getName())
-                    || table.getName().equals(DC_TYPE.UNITS.getName());
+             || table.getName().equals(DC_TYPE.UNITS.getName());
             boolean small = table.getName().equals(DC_TYPE.ABILS.getName())
-                    || table.getName().equals(DC_TYPE.BUFFS.getName());
+             || table.getName().equals(DC_TYPE.BUFFS.getName());
 
             if (big) {
                 size = 128;
@@ -104,9 +104,9 @@ public class ImageChooser extends FileChooser {
 				 * handle so we don't try to draw something silly.
 				 */
                 if ((name != null) && name.toLowerCase().endsWith(".jpg")
-                        || name.toLowerCase().endsWith(".jpeg")
-                        || name.toLowerCase().endsWith(".gif")
-                        || name.toLowerCase().endsWith(".png")) {
+                 || name.toLowerCase().endsWith(".jpeg")
+                 || name.toLowerCase().endsWith(".gif")
+                 || name.toLowerCase().endsWith(".png")) {
                     icon = new ImageIcon(name);
                     image = icon.getImage();
                     scaleImage();
@@ -154,7 +154,7 @@ public class ImageChooser extends FileChooser {
             g.setColor(bg);
 
 			/*
-			 * If we don't do this, we will end up with garbage from previous
+             * If we don't do this, we will end up with garbage from previous
 			 * images if they have larger sizes than the one we are currently
 			 * drawing. Also, it seems that the file list can paint outside of
 			 * its rectangle, and will cause odd behavior if we don't clear or

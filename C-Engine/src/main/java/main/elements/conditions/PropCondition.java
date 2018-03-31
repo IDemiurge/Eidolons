@@ -20,6 +20,6 @@ public class PropCondition extends StringComparison {
 
     public PropCondition(PROPERTY prop, Object str2) {
         super(StringMaster.getValueRef(KEYS.MATCH, prop), str2.toString(),
-                false);
+         false);
     }
 }

@@ -9,7 +9,7 @@ public class VerboseChecker {
 
     public boolean check(Condition c, Ref ref) {
         LogMaster.log(LogMaster.VERBOSE_CHECK, c.toString()
-                + " being checked with ref: " + ref);
+         + " being checked with ref: " + ref);
         if (c instanceof Conditions) {
             boolean result = true;
             for (Condition condition : ((Conditions) c)) {
@@ -22,7 +22,7 @@ public class VerboseChecker {
 
     private boolean log(Condition c, boolean check) {
         LogMaster.log(LogMaster.VERBOSE_CHECK, c.toString() + " checked "
-                + check);
+         + check);
         return check;
     }
 }

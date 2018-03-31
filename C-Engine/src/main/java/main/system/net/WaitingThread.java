@@ -6,8 +6,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.net.socket.ServerConnector;
 import main.system.net.socket.ServerConnector.NetCode;
 
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -82,7 +82,7 @@ public class WaitingThread implements Runnable {
             return false;
         }
         LogMaster.log(1, lastReceivedCode.name()
-                + " - waiting thread input set: " + INPUT);
+         + " - waiting thread input set: " + INPUT);
 
         return true;
     }
@@ -154,7 +154,7 @@ public class WaitingThread implements Runnable {
             // && ServerConnector.getHandler().getStatus() ==
             // CONNECTION_STATUS.CONNECTED
 
-                ) {
+         ) {
             try {
                 synchronized (this) {
                     wait(WAITING_PERIOD);
@@ -256,10 +256,10 @@ public class WaitingThread implements Runnable {
         }
         if (VIEWER != null) {
             VIEWER.info("WAITING THREAD FINISHED FOR " + getCode().name() + "; input: " + input
-                    + " " + INPUT);
+             + " " + INPUT);
         }
         LogMaster.log(1, "WAITING THREAD FINISHED FOR " + getCode().name()
-                + "; input: " + input + " " + INPUT);
+         + "; input: " + input + " " + INPUT);
 
         i++;
         synchronized (this) {
@@ -302,7 +302,7 @@ public class WaitingThread implements Runnable {
     }
 
 	/*
-	 * public class Waiter extends SwingWorker<Boolean, Void> {
+     * public class Waiter extends SwingWorker<Boolean, Void> {
 	 * 
 	 * private Thread t;
 	 * 

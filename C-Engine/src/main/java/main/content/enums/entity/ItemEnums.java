@@ -33,30 +33,30 @@ public class ItemEnums {
     }
 
     public enum ITEM_GROUP {
-        POTIONS, CONCOCTIONS, COATING
-        , KEY
+        POTIONS, CONCOCTIONS, COATING, KEY
         // THROWING, TRAP, GEMSTONE
 
     }
-    public enum ITEM_RARITY{
+
+    public enum ITEM_MATERIAL_GROUP {
+        METAL, WOOD, LEATHER, CLOTH, BONE, STONE, NATURAL, CRYSTAL
+    }
+
+    public enum ITEM_RARITY {
         //don't change the order!!!
         EXCEPTIONAL(5),
         RARE(15),
         UNCOMMON(25),
-        COMMON(55),
-        ;
+        COMMON(55),;
         int chance;
-
-        public int getChance() {
-            return chance;
-        }
 
         ITEM_RARITY(int chance) {
             this.chance = chance;
         }
-    }
-    public enum ITEM_MATERIAL_GROUP {
-        METAL, WOOD, LEATHER, CLOTH, BONE, STONE, NATURAL, CRYSTAL
+
+        public int getChance() {
+            return chance;
+        }
     }
 
     public enum ITEM_SHOP_CATEGORY {

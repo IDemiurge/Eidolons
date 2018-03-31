@@ -1,39 +1,39 @@
 package main.game.logic.dungeon.editor;
 
 import main.content.DC_TYPE;
-import main.content.PARAMS;
-import main.content.PROPS;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import main.data.DataManager;
 import main.data.XList;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
-import main.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
-import main.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import main.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
-import main.game.battlecraft.logic.dungeon.location.building.MapBlock;
-import main.game.battlecraft.logic.dungeon.location.building.MapZone;
-import main.game.battlecraft.logic.dungeon.universal.Dungeon;
-import main.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper;
+import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BUILD_PARAMS;
+import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
+import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
+import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.DirectionMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.TextEditor;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.GuiManager;
-import main.system.math.DC_PositionMaster;
+import eidolons.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -308,7 +308,7 @@ public class LE_MapMaster {
         }
 
         try {
-            LevelEditor.getObjMaster().removeObjects(coordinates);
+            LE_ObjMaster.removeObjects(coordinates);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
@@ -356,7 +356,7 @@ public class LE_MapMaster {
     public void removeBlock(MapBlock block) {
         // fill
         LevelEditor.getMainPanel().getPlanPanel().getTreePanel().blockRemoved(block);
-        LevelEditor.getObjMaster().removeObjects(block.getCoordinates());
+        LE_ObjMaster.removeObjects(block.getCoordinates());
 
         LE_ObjMaster.fill(block.getCoordinates(), DataManager.getType(block.getZone()
                 .getFillerType(), DC_TYPE.BF_OBJ));

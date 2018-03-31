@@ -4,8 +4,8 @@ import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TextWrapper {
@@ -44,7 +44,7 @@ public class TextWrapper {
             String sub = list.get(j);
             if (j != list.size() - 1)
                 result += sub + StringMaster.NEW_LINE;
-            else result += sub  ;
+            else result += sub;
         }
         return result;
     }

@@ -88,14 +88,14 @@ public class SmartTextManager {
         Integer percentage;
         int base_amount =
 
-                obj.getIntParam(base_value);
+         obj.getIntParam(base_value);
         if (base_amount == 0) {
             percentage = 100;
         } else {
             percentage = amount * 100 / base_amount;
         }
         LogMaster.log(0, param + ": " + amount + " out of " + base_amount
-                + " = " + percentage + "%");
+         + " = " + percentage + "%");
         // try {
         //
         // } catch (Exception e) {
@@ -137,7 +137,7 @@ public class SmartTextManager {
 
     public enum VALUE_CASES {
         NULL(ColorManager.OBSIDIAN), DEFAULT(ColorManager.BLUE), MODIFIED(ColorManager.PURPLE
-                // , ColorManager.LIGHT_PURPLE
+         // , ColorManager.LIGHT_PURPLE
         ), // STATUS,
         MODIFIED_POSITIVELY(ColorManager.GREEN),
         MODIFIED_NEGATIVELY(ColorManager.RED),

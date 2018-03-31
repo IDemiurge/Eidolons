@@ -55,11 +55,11 @@ public class OwnershipCondition extends ConditionImpl {
 
         if (enemy) {
             return obj.getOwner() != Player.NEUTRAL
-                    && obj.getOwner() != obj2
-                    .getOwner();
+             && obj.getOwner() != obj2
+             .getOwner();
         } else {
             return obj.getOwner() == obj2
-                    .getOwner();
+             .getOwner();
         }
     }
 }

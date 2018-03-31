@@ -131,7 +131,7 @@ public class HeroEnums {
         MELEE, SPECIALIST, SPELLCASTER, GODLY
     }
 
-    public   enum CUSTOM_HERO_GROUP {
+    public enum CUSTOM_HERO_GROUP {
         PLAYTEST, ERSIDRIS, EDALAR, TEST,
 
     }

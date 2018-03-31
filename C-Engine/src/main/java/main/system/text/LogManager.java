@@ -51,14 +51,10 @@ public abstract class LogManager {
         setEntryMap(new HashMap<>());
         topDisplayedEntries = new ArrayList<>();
         if (!LogMaster.isOff())
-        initDefaultEntries();
+            initDefaultEntries();
         for (LOG log : LOG.values()) {
             entryMap.put(log, new ArrayList<>());
         }
-    }
-
-    public Game getGame() {
-        return game;
     }
 
     public static boolean isDirty() {
@@ -67,6 +63,10 @@ public abstract class LogManager {
 
     public static void setDirty(boolean dirty) {
         LogManager.dirty = dirty;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public LogEntryNode newLogEntryNode(ENTRY_TYPE type, Object... args) {
@@ -94,8 +94,8 @@ public abstract class LogManager {
     }
 
     public LogEntryNode newLogEntryNode(boolean logLater, ENTRY_TYPE type, Object... args) {
-       if (LogMaster.isOff())
-           return null;
+        if (LogMaster.isOff())
+            return null;
         Object[] argArray = args;
         if (argArray == null) {
             args = new Boolean[]{false}; // TODO quickfix logLater
@@ -116,8 +116,8 @@ public abstract class LogManager {
         }
 
         LogEntryNode entry = logLater ? new LogEntryNode(currentNode, type, getDisplayedLines()
-                .size() + 1, logLater) : new LogEntryNode(currentNode, type, getDisplayedLines()
-                .size() + 1, logLater, argArray);
+         .size() + 1, logLater) : new LogEntryNode(currentNode, type, getDisplayedLines()
+         .size() + 1, logLater, argArray);
         // TODO why +1? could lineIndex be the reason why first/last position
         // isn't filled?
         entry.addLinkedAnimations(getPendingAnimsToLink().remove(type));
@@ -128,12 +128,13 @@ public abstract class LogManager {
         // start point is known, so why not init index/y ?
         if (CoreEngine.isGraphicsOff()) {
             addTextToDisplayed(entry.getHeader());
-            return entry; }
+            return entry;
+        }
 
         if (top || writeToTop) {
             int size = getDisplayedLines().size();
             int pageIndex = size
-                    / (EntryNodeMaster.INNER_HEIGHT / EntryNodeMaster.getRowHeight(true));
+             / (EntryNodeMaster.INNER_HEIGHT / EntryNodeMaster.getRowHeight(true));
             entry.setPageIndex(pageIndex);
         }
         if (!top) {
@@ -197,10 +198,10 @@ public abstract class LogManager {
         if (entry == null || log == null || LogMaster.isOff()) {
             return false;
         }
-        entry=entry.trim();
+        entry = entry.trim();
         if (addPeriod) {
             if (!entry.endsWith(".") && !entry.endsWith("?") && !entry.endsWith("!")
-                    && !entry.endsWith("<")) {
+             && !entry.endsWith("<")) {
                 entry += ".";
             }
         }
@@ -245,7 +246,7 @@ public abstract class LogManager {
 
     protected void addTextToDisplayed(String entry) {
         if (CoreEngine.isGraphicsOff())
-            return ;
+            return;
         getTopDisplayedEntries().add(entry);
         getDisplayedLines().addAll(TextWrapper.wrap(entry, EntryNodeMaster.getWrapLength(true)));
     }
@@ -352,10 +353,10 @@ public abstract class LogManager {
 
     public void logDamageBeingDealt(int amount, Obj attacker, Obj attacked, DAMAGE_TYPE dmg_type) {
         String entry = attacker.getNameIfKnown() + " is dealing " + amount + " damage to "
-                + attacked.getNameIfKnown() + " (" + dmg_type.getName() + ")";
+         + attacked.getNameIfKnown() + " (" + dmg_type.getName() + ")";
         if (attacker == attacked) {
             entry = amount + " " + dmg_type.getName() + " damage is being dealt to "
-                    + attacked.getNameIfKnown();
+             + attacked.getNameIfKnown();
         }
 
         entry = StringMaster.MESSAGE_PREFIX_MISC + entry;
@@ -366,10 +367,10 @@ public abstract class LogManager {
 
     public void logDamageDealt(int t_damage, int e_damage, Obj attacker, Obj attacked) {
         String entry = attacker.getNameIfKnown() + " has dealt " + t_damage + " / " + e_damage
-                + " damage to " + attacked.getNameIfKnown();
+         + " damage to " + attacked.getNameIfKnown();
         if (attacker == attacked) {
             entry = t_damage + " / " + e_damage + " damage has been dealt to "
-                    + attacked.getNameIfKnown();
+             + attacked.getNameIfKnown();
         }
 
         // if (attacked.getOwner().isMe()) {
@@ -400,9 +401,9 @@ public abstract class LogManager {
             positive = !positive;
         }
         String prefix = (positive) ? StringMaster.MESSAGE_PREFIX_SUCCESS
-                : StringMaster.MESSAGE_PREFIX_FAIL;
+         : StringMaster.MESSAGE_PREFIX_FAIL;
         String s = (obj.getNameIfKnown()) + string + " " + amount.toString().replace("-", "") + " "
-                + baseParameter.getShortName();
+         + baseParameter.getShortName();
         log(prefix + s);
     }
 
@@ -473,7 +474,7 @@ public abstract class LogManager {
         Obj target = ref.getEvent().getRef().getTargetObj();
         boolean fail = randomInt2 > randomInt;
         String rollTarget = target.getNameIfKnown() + ((fail) ? " fails" : " wins") + " a "
-                + roll_type.getName() + " roll with " + randomInt + " out of " + greater;
+         + roll_type.getName() + " roll with " + randomInt + " out of " + greater;
         String rollSource = source.getNameIfKnown() + "'s " + randomInt2 + " out of " + than;
         String string = rollTarget + " vs " + rollSource;
         if (!target.getOwner().isMe()) {
@@ -499,7 +500,7 @@ public abstract class LogManager {
             }
         }
         String string = payee.getNameIfKnown() + text + active.getName()
-                + " rapidly, saving 1 Action point";
+         + " rapidly, saving 1 Action point";
         // logAlert(string);
         log(LOG.GAME_INFO, StringMaster.MESSAGE_PREFIX_ALERT + string, ENTRY_TYPE.ACTION);
 
@@ -509,9 +510,9 @@ public abstract class LogManager {
         Integer value = entity.getCounter(name);
         if (modValue > 0) {
             logInfo(modValue + " " + name + "s applied to " + entity.getNameIfKnown() + ", total "
-                    + name + "s: " + value);
+             + name + "s: " + value);
         } else {
-            logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown()+ ", total "
+            logInfo(modValue + " " + name + "s removed from " + entity.getNameIfKnown() + ", total "
              + name + "s: " + value);
         }
 

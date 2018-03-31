@@ -186,7 +186,7 @@ public class EnumMaster<T> {
             return new EnumMaster<>().retrieveEnumConst(class1, name);
         }
         Map<String, Object> cache = getCache(class1, false);
-        Object  enumConst = cache.get(name);
+        Object enumConst = cache.get(name);
         if (enumConst != null) {
             return enumConst;
         }
@@ -292,6 +292,16 @@ public class EnumMaster<T> {
         ALT_CONSTS_CLASS = aLT_CONSTS_CLASS;
     }
 
+    private static Map<String, Object> getCache(Class<?> clazz, boolean strict) {
+        Map<Class, Map<String, Object>> caches = strict ? enumCacheStrict : enumCache;
+        Map<String, Object> cache = caches.get(clazz);
+        if (cache == null) {
+            cache = new HashMap<>();
+            caches.put(clazz, cache);
+        }
+        return cache;
+    }
+
     public T retrieveEnumConst(Class<? extends T> class1, String name) {
         return retrieveEnumConst(class1, name, false);
     }
@@ -299,6 +309,7 @@ public class EnumMaster<T> {
     public T retrieveEnumConst(Class<? extends T> clazz, String name, boolean findClosest) {
         return retrieveEnumConst(clazz, name, false, findClosest);
     }
+
     @SuppressWarnings("unchecked")
     public T retrieveEnumConst(Class<? extends T> clazz, String name, boolean strict, boolean findClosest) {
 
@@ -350,16 +361,6 @@ public class EnumMaster<T> {
             LogMaster.log(0, "ENUM NOT FOUND: " + name);
         }
         return t;
-    }
-
-    private static Map<String, Object> getCache(Class<?> clazz, boolean strict) {
-        Map<Class, Map<String, Object>> caches =strict? enumCacheStrict  : enumCache;
-        Map<String, Object>   cache = caches.get(clazz);
-        if (cache == null ){
-            cache = new HashMap<>();
-            caches.put(clazz, cache);
-        }
-        return cache;
     }
 
     public Object getEnum(String content, Object[] enumConstants) {
@@ -551,8 +552,8 @@ public class EnumMaster<T> {
     }
 
     public T getNextEnumConst(Class<T> clazz, T c) {
-        int i = getEnumConstIndex(clazz, c)+1;
-        if (i>=clazz.getEnumConstants().length) i=0;
-        return         clazz.getEnumConstants()[i];
+        int i = getEnumConstIndex(clazz, c) + 1;
+        if (i >= clazz.getEnumConstants().length) i = 0;
+        return clazz.getEnumConstants()[i];
     }
 }

@@ -131,11 +131,10 @@ public class Requirements implements Condition {
     }
 
 
-
     @Override
     public String getTooltip() {
         return StringMaster.cropByLength(ConditionImpl.MAX_TOOLTIP_LENGTH, reqMap.values()
-                .toString());
+         .toString());
     }
 
     @Override

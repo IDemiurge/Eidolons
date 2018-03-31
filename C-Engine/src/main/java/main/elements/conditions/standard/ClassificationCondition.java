@@ -10,12 +10,12 @@ import main.entity.Ref;
 public class ClassificationCondition extends ConditionImpl {
 
     private final static String comparison = "{MATCH_"
-            + G_PROPS.CLASSIFICATIONS + "}";
+     + G_PROPS.CLASSIFICATIONS + "}";
     private StringComparison c;
 
     public ClassificationCondition(String classification, String comparison) {
         this.c = new StringContainersComparison(true, "{" + comparison + "_"
-                + G_PROPS.CLASSIFICATIONS + "}", classification, false);
+         + G_PROPS.CLASSIFICATIONS + "}", classification, false);
     }
 
     public ClassificationCondition(String classification) {

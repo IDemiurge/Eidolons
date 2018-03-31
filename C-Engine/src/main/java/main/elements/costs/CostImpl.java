@@ -54,7 +54,7 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
         }
 
         return c.getPayment().getAmountFormula().getInt(ref).compareTo(
-                getPayment().getAmountFormula().getInt(ref));
+         getPayment().getAmountFormula().getInt(ref));
 
     }
 
@@ -118,9 +118,9 @@ public class CostImpl extends ReferredElement implements Cost, Serializable {
     public String toString() {
         return
 
-                ((requirements == null) ? "" : "req: " + requirements.toString()) + " "
+         ((requirements == null) ? "" : "req: " + requirements.toString()) + " "
 
-                        + "to pay: " + toPay.toString();
+          + "to pay: " + toPay.toString();
     }
 
     public CostRequirements getRequirements() {

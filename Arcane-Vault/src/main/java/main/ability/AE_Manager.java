@@ -6,7 +6,7 @@ import main.ability.gui.AE_MainPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.PROPS;
+import eidolons.content.PROPS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;

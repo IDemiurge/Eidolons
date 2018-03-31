@@ -1,5 +1,7 @@
 package main.data.xml;
 
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;

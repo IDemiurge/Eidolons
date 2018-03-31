@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public class Abilities implements Ability, Iterable<Ability> {
     private List<Ability> abils;
 
-     public Abilities() {
+    public Abilities() {
         abils = new ArrayList<>();
 
     }
@@ -22,8 +22,9 @@ public class Abilities implements Ability, Iterable<Ability> {
         add(ability);
         add(ability1);
     }
+
     @OmittedConstructor
-    public Abilities(Ability ability ) {
+    public Abilities(Ability ability) {
         this();
         add(ability);
     }
@@ -35,7 +36,7 @@ public class Abilities implements Ability, Iterable<Ability> {
 
     @Override
     public String toXml() {
-        StringBuilder builder=new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         for (Ability sub : getAbils()) {
             builder.append(sub.toXml());
         }

@@ -16,30 +16,30 @@ public abstract class DynamicValue implements Referred {
     protected Entity entity;
     protected Game game;
     protected boolean base;
-@Optimize
+
+    @Optimize
     public DynamicValue(String fullString) {
         if (fullString.contains("@")) {
             fullString = fullString.replace("@", "");
             base = true;
         }
 
-        if (base || fullString.contains("{"))  {
+        if (base || fullString.contains("{")) {
             fullString = fullString.replace("{", "").replace("}", "");
             if (Ref.isKey(fullString)) {
                 this.value_string = fullString;
             } else {
 
-                if ( fullString.contains("_") ){
+                if (fullString.contains("_")) {
                     String s[] = fullString.split("_");
                     obj_string = s[0];
                     this.value_string = fullString.substring(fullString.indexOf("_") + 1);
-                }
-                else {
+                } else {
                     obj_string = KEYS.SOURCE.toString();
                     obj_string = fullString;
                 }
 
-                 }
+            }
         } else {
             this.fullString = fullString;
         }

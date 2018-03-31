@@ -16,7 +16,7 @@ import java.util.List;
  * @param unit
  */
 public interface GraveyardManager {
-      int GRAVE_ROWS = 4;
+    int GRAVE_ROWS = 4;
 
     String getRipString(Obj obj);
 

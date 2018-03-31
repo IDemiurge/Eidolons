@@ -2,6 +2,7 @@ package main.entity.obj;
 
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
+import main.ability.effects.periodic.PeriodicEffect;
 import main.content.ContentManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.BUFF_TYPE;
@@ -20,10 +21,13 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     public static final String DUMMY_BUFF_TYPE = "Dummy Buff";
-    protected int duration;
+    protected Double duration;
     protected Effect effect;
     protected boolean retainAfterDeath = false;
     protected Obj basis;
@@ -38,13 +42,17 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private boolean isTransient;
     private Boolean negative;
     private Effect dispelEffects;
+    private double timeInGame = 0;
+    private double period;
+    private List<PeriodicEffect> timeEffects;
 
     public BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
-                   int duration, Condition retainCondition) {
+                   double duration, Condition retainCondition) {
         super(type, owner, game, ref);
         this.retainConditions = retainCondition;
         this.effect = effect;
-        this.duration = duration;
+        initTimeEffect();
+        setDuration(duration);
         if (duration == 0 || duration == ContentManager.INFINITE_VALUE) {
             // this.duration = ContentManager.INFINITE_VALUE;
             this.permanent = true;
@@ -52,7 +60,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         this.basis = game.getObjectById(ref.getBasis());
         addDynamicValues();
 //     if   instance
-        setTransient(((BuffType)type).isTransient());
+        setTransient(((BuffType) type).isTransient());
         if (checkBool(GenericEnums.STD_BOOLS.INVISIBLE_BUFF)) {
             visible = false;
         }
@@ -65,6 +73,23 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         if (getName().contains(StringMaster.INVISIBLE_BUFF)) {
             visible = false;
         }
+    }
+
+    private void initTimeEffect() {
+//        for (String sub : StringMaster.openContainer(getProperty(G_PROPS.PASSIVES))) {
+//            timeAbility = AbilityConstructor.newAbility(sub, this, true);
+//        }
+        timeEffects = new ArrayList<>();
+        if (effect instanceof Effects) {
+            for (Effect sub : new ArrayList<>(((Effects) effect).getEffects())) {
+                if (sub instanceof PeriodicEffect) {
+                    timeEffects.add((PeriodicEffect) sub);
+                    ((Effects) effect).remove(sub);
+                }
+            }
+
+        }
+
     }
 
     @Override
@@ -92,7 +117,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         setRef(ref);
 
         LogMaster.log(0, "BUFF EFFECT (" + toString() + ") applied to "
-                + ref.getTargetObj());
+         + ref.getTargetObj());
         return effect.apply(ref);
     }
 
@@ -137,7 +162,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         game.getManager().buffRemoved(this);
         if (dispelEffects != null) {
             dispelEffects.apply(ref
-                    // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
+             // Ref.getSelfTargetingRefCopy(ref.getSourceObj())
             );
         }
         // game.fireEvent(new Event(STANDARD_EVENT_TYPE.BUFF_REMOVED, REF));
@@ -147,7 +172,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     @Override
     protected void addDynamicValues() {
-        setParam(G_PARAMS.DURATION, duration);
+        setParam(G_PARAMS.DURATION, duration.toString());
         setParam(G_PARAMS.C_DURATION, getIntParam(G_PARAMS.DURATION));
     }
 
@@ -187,9 +212,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         return getIntParam(G_PARAMS.C_DURATION);
     }
 
-    public void setDuration(int duration) {
-
-        this.duration = duration;
+    public void setDuration(Number duration) {
+        this.duration = duration.doubleValue();
     }
 
     public Effect getEffect() {
@@ -214,24 +238,52 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         return basis;
     }
 
-    @Override
-    public int tick() {
+    public void timeElapsed(double time) {
 
+
+        if (permanent) {
+            applyTimeEffect(time);
+            return;
+        }
+        main.system.auxiliary.log.LogMaster.log(1, this + " Buff duration reduced by " + time);
+        duration -= time;
+        main.system.auxiliary.log.LogMaster.log(1, this + " Buff duration = " + duration);
+        if (duration < 0) {
+            time += duration;
+        }
+        if (time > 0)
+            applyTimeEffect(time);
+        durationModified();
+    }
+
+    private void applyTimeEffect(double time) {
+        for (PeriodicEffect sub : timeEffects) {
+            sub.timeElapsed(time);
+        }
+
+    }
+
+    private void durationModified() {
+        setParam(G_PARAMS.C_DURATION, duration.toString());
+        checkDuration();
+    }
+
+    @Override
+    public Double tick() {
         if (permanent) {
             return duration;
         }
         duration--;
-        setParam(G_PARAMS.C_DURATION, duration);
+        durationModified();
+
         modifyParameter(G_PARAMS.TURNS_IN_GAME, 1);
-
-        LogMaster.log(1, getName() + " ticked! duration: " + duration);
-        checkDuration();
-
         return duration;
     }
 
     public boolean checkDuration() {
         if (duration <= 0) {
+            if (!permanent)
+                main.system.auxiliary.log.LogMaster.log(1, this + " duration elapsed " + duration);
             kill();
             return false;
         }
@@ -256,7 +308,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         if (retainConditions != null) {
             if (!retainConditions.preCheck(ref)) {
                 LogMaster.log(LOG_CHANNEL.BUFF_DEBUG,
-                        "Retain conditions preCheck false for " + getName());
+                 "Retain conditions preCheck false for " + getName());
                 kill();
 
                 return false;
@@ -347,15 +399,15 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     public BUFF_TYPE getBuffType() {
         if (buffType == null) {
             buffType = new EnumMaster<BUFF_TYPE>().retrieveEnumConst(BUFF_TYPE.class,
-                    getProperty(G_PROPS.BUFF_TYPE));
+             getProperty(G_PROPS.BUFF_TYPE));
         }
         return buffType;
     }
 
     public boolean isDisplayed() {
-        if (getType().getType()!=null )
+        if (getType().getType() != null)
             if (getType().getType().getName().equals("Dummy Buff"))
-            return  false;
+                return false;
         return true;
     }
 }

@@ -44,7 +44,7 @@ public class AE_Item implements Comparable<AE_Item> {
         String args = ": ";
         try {
             for (String str : constr
-                    .getAnnotation(AE_ConstrArgs.class).argNames()) {
+             .getAnnotation(AE_ConstrArgs.class).argNames()) {
                 args += str + ", ";
             }
             args = args.substring(0, args.length() - 2);

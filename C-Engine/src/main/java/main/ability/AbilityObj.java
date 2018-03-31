@@ -54,12 +54,12 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         return (AbilityType) super.getType();
     }
 
-    @Override
-    public void setXml(String stringFromXML) {
-    }
-
     public String getXml() {
         return getType().getXml();
+    }
+
+    @Override
+    public void setXml(String stringFromXML) {
     }
 
     public Node getDoc() {
@@ -70,6 +70,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     public String toXml() {
         return getXml();
     }
+
     @Override
     public boolean isSetThis() {
         return false;
@@ -98,26 +99,19 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     }
 
     @Override
-    public boolean isForcePresetTargeting() {
-        return abilities.isForcePresetTargeting();
-    }
-
-    @Override
     public void setInterrupted(boolean b) {
         this.interrupted = b;
 
     }
 
     @Override
-    public void setForcePresetTargeting(boolean forcePresetTargeting) {
-        abilities.setForcePresetTargeting(forcePresetTargeting);
+    public boolean isForcePresetTargeting() {
+        return abilities.isForcePresetTargeting();
     }
 
     @Override
-    public void setRef(Ref ref) {
-        Ref REF = ref.getCopy();
-        super.setRef(REF);
-        this.ref.setID(KEYS.ABILITY, id);
+    public void setForcePresetTargeting(boolean forcePresetTargeting) {
+        abilities.setForcePresetTargeting(forcePresetTargeting);
     }
 
     public boolean activate(boolean transmit) {
@@ -263,18 +257,13 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     }
 
     @Override
-    public void setForceTargeting(boolean forceTargeting) {
-        abilities.setForceTargeting(forceTargeting);
-    }
-
-    @Override
     public void setEffects(Effects effects) {
         abilities.setEffects(effects);
     }
 
     @Override
-    public void setTargeting(Targeting targeting) {
-        abilities.setTargeting(targeting);
+    public void setForceTargeting(boolean forceTargeting) {
+        abilities.setForceTargeting(forceTargeting);
     }
 
     @Override
@@ -283,8 +272,20 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
     }
 
     @Override
+    public void setTargeting(Targeting targeting) {
+        abilities.setTargeting(targeting);
+    }
+
+    @Override
     public Ref getRef() {
         return abilities.getRef();
+    }
+
+    @Override
+    public void setRef(Ref ref) {
+        Ref REF = ref.getCopy();
+        super.setRef(REF);
+        this.ref.setID(KEYS.ABILITY, id);
     }
 
     @Override
@@ -362,10 +363,7 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         if (getAbilityGroup() == ABILITY_GROUP.TEMPLATE_PASSIVE) {
             return false;
         }
-        if (getAbilityGroup() == ABILITY_GROUP.VALUE_MOD) {
-            return false;
-        }
-        return true;
+        return getAbilityGroup() != ABILITY_GROUP.VALUE_MOD;
 
     }
 

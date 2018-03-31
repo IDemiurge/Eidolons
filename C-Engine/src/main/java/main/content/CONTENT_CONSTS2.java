@@ -15,8 +15,8 @@ import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -40,116 +40,25 @@ public class CONTENT_CONSTS2 {
 
     }
 
-    public enum INJURY_TYPE {
-        LIMB, HEAD, BODY, INTERNAL
+    public enum AI_MODIFIERS {
+        TRUE_BRUTE, COWARD, MERCIFUL, CRUEL,
     }
 
-    public enum MIST_SFX_SUFFIX {
-        LIGHT,
-        THICK,
-        WIND,
+    public enum AUTO_TEST_ASSERTION {
+        POS, DEAD, VAL
 
-    }
-        public enum MIST_SFX {
-            WHITE_MIST,
-            CYAN_MIST,
-            DARK_MIST,
-            CLOUDS,
-            ;
-public String getPath(){
-    return StrPathBuilder.build("mist", name().replace("_", " "));
-}
-            MIST_SFX() {
-
-            }
-        }
-        public enum SFX {
-        DARK_MIST("mist\\dark mist"),
-        SMOKE_TEST("Smoke_Test1.pt"),
-        DARK_SOULS("dark souls"),
-        DARK_SOULS2("dark souls2"),
-        DARK_SOULS3("dark souls3"),
-        SKULL("skulls"),
-        SKULL2("skulls2"),
-        SKULL3("skulls3"),
-
-        //TODO sub-emitters
-
-            SNOW("snow\\snow"),
-            SNOW_TIGHT("snow\\snow tight"),
-            SNOW_TIGHT2("snow\\snow tight2"),
-            SNOWFALL_SMALL("snow\\snowfall small"),
-            SNOWFALL("snow\\snowfall"),
-            SNOWFALL_THICK("snow\\snowfall thick"),
-            WISPS("woods\\wisps"),
-            LEAVES("woods\\leaves"),
-            STARS("woods\\stars"),
-
-            ;
-        public String path;
-
-        SFX(String path) {
-            this.path = path;
-        }
-
-
-    }
-    public enum INJURY {
-        RIPPED,
-        MAIMED,
-        SLASHED,
-        PIERCED,
-        CHOPPED,
-
-        CRACKED_SKULL,
-
-        TWISTED_ANKLE,
-        SPRINGED_LEG(INJURY_TYPE.LIMB, "Move Ap Penalty(50);Defense Mod(-20);Stealth([mod]-25"),
-        CRUSHED_KNEE, // Reaction Roll Save Bonus();
-
-        DAMAGED_FINGERS(INJURY_TYPE.LIMB, "Attack Ap Penalty(20);Damage Mod(-20);Attack Mod(-20);"),
-        SNAPPED_WRIST(INJURY_TYPE.LIMB, "Throw Attack Mod(-30);Attack Ap Penalty(35);Damage Mod|Diagonal Damage Mod|Side Damage Mod(-20)"),
-        BROKEN_ARM(INJURY_TYPE.LIMB, "Attack Ap Penalty(50);Damage Mod(-20);Force Mod(-35)"),
-
-        BROKEN_RIBS(INJURY_TYPE.BODY, "Bludgeoning Resistance(-25);Stamina Penalty(35);"),
-        CRACKED_SPINE(INJURY_TYPE.BODY, "Ap Penalty(35);"),;
-        public DAMAGE_TYPE[] dmg_types;
-        private String modString;
-        private INJURY_TYPE type;
-
-        INJURY() {
-        }
-
-        INJURY(INJURY_TYPE type, String modString) { // int shock,
-            this.modString = modString;
-            this.type = type;
-        }
-
-        public String getModString() {
-            return modString;
-        }
-
-        public INJURY_TYPE getType() {
-            return type;
-        }
-
-    }
-
-    public enum AUTO_TEST_TYPE {
-        ACTION, PASSIVE_MEASURE, ACTION_SKILL,
-    }
-
-    public enum AUTO_TEST_PREFS {
-        SOURCE_TYPE, TARGET_TYPE, TARGETS_COUNT, RELATIVE_POS,
     }
 
     public enum AUTO_TEST_MEASUREMENT {
         VALUE, DISTANCE, COUNTER, DMG
     }
 
-    public enum AUTO_TEST_ASSERTION {
-        POS, DEAD, VAL
+    public enum AUTO_TEST_PREFS {
+        SOURCE_TYPE, TARGET_TYPE, TARGETS_COUNT, RELATIVE_POS,
+    }
 
+    public enum AUTO_TEST_TYPE {
+        ACTION, PASSIVE_MEASURE, ACTION_SKILL,
     }
 
     public enum FACTION {
@@ -237,22 +146,56 @@ public String getPath(){
         }
     }
 
-    // to use {INDEXES} ... I'd need a lot of smarts :) >|< separator for
-    /*
-     * Pestlego
-	 * Astro 
-	 * Syphron
-	 * 
-	 */
-
-    public enum ORDER_TYPE {
-        PATROL, PURSUIT, MOVE, ATTACK, KILL, SPECIAL, HEAL, SUPPORT, PROTECT, HOLD, WANDER
-    }
-
     public enum GLOBAL_ORDER_TYPE {
         EXPLORE, RALLY, SCATTER, WANDER,
     }
-//FOR AV!!! DON'T JUST REMOVE
+
+    public enum INJURY {
+        RIPPED,
+        MAIMED,
+        SLASHED,
+        PIERCED,
+        CHOPPED,
+
+        CRACKED_SKULL,
+
+        TWISTED_ANKLE,
+        SPRINGED_LEG(INJURY_TYPE.LIMB, "Move Ap Penalty(50);Defense Mod(-20);Stealth([mod]-25"),
+        CRUSHED_KNEE, // Reaction Roll Save Bonus();
+
+        DAMAGED_FINGERS(INJURY_TYPE.LIMB, "Attack Ap Penalty(20);Damage Mod(-20);Attack Mod(-20);"),
+        SNAPPED_WRIST(INJURY_TYPE.LIMB, "Throw Attack Mod(-30);Attack Ap Penalty(35);Damage Mod|Diagonal Damage Mod|Side Damage Mod(-20)"),
+        BROKEN_ARM(INJURY_TYPE.LIMB, "Attack Ap Penalty(50);Damage Mod(-20);Force Mod(-35)"),
+
+        BROKEN_RIBS(INJURY_TYPE.BODY, "Bludgeoning Resistance(-25);Stamina Penalty(35);"),
+        CRACKED_SPINE(INJURY_TYPE.BODY, "Ap Penalty(35);"),;
+        public DAMAGE_TYPE[] dmg_types;
+        private String modString;
+        private INJURY_TYPE type;
+
+        INJURY() {
+        }
+
+        INJURY(INJURY_TYPE type, String modString) { // int shock,
+            this.modString = modString;
+            this.type = type;
+        }
+
+        public String getModString() {
+            return modString;
+        }
+
+        public INJURY_TYPE getType() {
+            return type;
+        }
+
+    }
+
+    public enum INJURY_TYPE {
+        LIMB, HEAD, BODY, INTERNAL
+    }
+
+    //FOR AV!!! DON'T JUST REMOVE
     public enum LINK_VARIANT {
 
         ANGLE_TO_LEFT_2,
@@ -401,8 +344,72 @@ public String getPath(){
 
     }
 
+    // to use {INDEXES} ... I'd need a lot of smarts :) >|< separator for
+    /*
+     * Pestlego
+	 * Astro 
+	 * Syphron
+	 * 
+	 */
+
     public enum MACRO_STATUS {
         CAMPING, EXPLORING, TRAVELING, IN_AMBUSH, IDLE,
+    }
+
+    public enum MIST_SFX {
+        WHITE_MIST,
+        CYAN_MIST,
+        DARK_MIST,
+        CLOUDS,;
+
+        MIST_SFX() {
+
+        }
+
+        public String getPath() {
+            return StrPathBuilder.build("mist", name().replace("_", " "));
+        }
+    }
+
+    public enum MIST_SFX_SUFFIX {
+        LIGHT,
+        THICK,
+        WIND,
+
+    }
+
+    public enum ORDER_TYPE {
+        PATROL, PURSUIT, MOVE, ATTACK, KILL, SPECIAL, HEAL, SUPPORT, PROTECT, HOLD, WANDER
+    }
+
+    public enum SFX {
+        DARK_MIST("mist\\dark mist"),
+        SMOKE_TEST("Smoke_Test1.pt"),
+        DARK_SOULS("dark souls"),
+        DARK_SOULS2("dark souls2"),
+        DARK_SOULS3("dark souls3"),
+        SKULL("skulls"),
+        SKULL2("skulls2"),
+        SKULL3("skulls3"),
+
+        //TODO sub-emitters
+
+        SNOW("snow\\snow"),
+        SNOW_TIGHT("snow\\snow tight"),
+        SNOW_TIGHT2("snow\\snow tight2"),
+        SNOWFALL_SMALL("snow\\snowfall small"),
+        SNOWFALL("snow\\snowfall"),
+        SNOWFALL_THICK("snow\\snowfall thick"),
+        WISPS("woods\\wisps"),
+        LEAVES("woods\\leaves"),
+        STARS("woods\\stars"),;
+        public String path;
+
+        SFX(String path) {
+            this.path = path;
+        }
+
+
     }
 
     public enum SHOP_LEVEL { // quality and materials - filter in and Type will
@@ -460,10 +467,6 @@ public String getPath(){
         }
     }
 
-    public enum AI_MODIFIERS {
-        TRUE_BRUTE, COWARD, MERCIFUL, CRUEL,
-    }
-
     public enum STD_ACTION_MODES {
         STANDARD,
         SWIFT("", "", "", "", "", "-35;25;-25;-35", "DAMAGE_MOD;ATTACK_MOD;STA_COST;AP_COST;", "", "", ActionEnums.ACTION_TYPE_GROUPS.ATTACK),
@@ -500,13 +503,13 @@ public String getPath(){
             }
             this.description = description;
             this.addPropMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(addProps), StringMaster.openContainer(addPropValues));
+             .openContainer(addProps), StringMaster.openContainer(addPropValues));
             this.setPropMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(setProps), StringMaster.openContainer(setPropValues));
+             .openContainer(setProps), StringMaster.openContainer(setPropValues));
             this.paramModMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(modParams), StringMaster.openContainer(modParamValues));
+             .openContainer(modParams), StringMaster.openContainer(modParamValues));
             this.paramBonusMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(bonusParams), StringMaster.openContainer(bonusParamVals,
+             .openContainer(bonusParams), StringMaster.openContainer(bonusParamVals,
              StringMaster.UPGRADE_SEPARATOR));
         }
 

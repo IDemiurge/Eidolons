@@ -4,7 +4,7 @@ import main.gui.components.controls.ModelManager;
 import main.gui.components.menu.AV_Menu.MENU_ITEMS;
 import main.launch.ArcaneVault;
 import main.system.auxiliary.EnumMaster;
-import main.system.text.TextMaster;
+import eidolons.system.text.TextMaster;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;

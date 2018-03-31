@@ -336,7 +336,7 @@ public class MusicKeyMaster implements HotkeyListener {
     }
 
     private boolean find() {
-        AHK_Master.getPanel().getControlPanel().doFind(true);
+        MC_ControlPanel.doFind(true);
         return true;
     }
 

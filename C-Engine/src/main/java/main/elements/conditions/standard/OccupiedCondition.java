@@ -26,8 +26,8 @@ public class OccupiedCondition extends ConditionImpl {
         boolean result;
         if (permitCollision) {
             result =
-            !game.getMovementManager().getPathingManager().isGroundPassable(
-                    ref.getSourceObj(), c);
+             !game.getMovementManager().getPathingManager().isGroundPassable(
+              ref.getSourceObj(), c);
         } else {
             result = game.getMovementManager().getPathingManager().isOccupied(c);
         }
@@ -44,10 +44,10 @@ public class OccupiedCondition extends ConditionImpl {
                 }
                 try {
                     if (ref.getSourceObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
-                            "" + UnitEnums.STANDARD_PASSIVES.FLYING)) {
+                     "" + UnitEnums.STANDARD_PASSIVES.FLYING)) {
                         if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
                             if (obj.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
-                                    + UnitEnums.STANDARD_PASSIVES.TALL)) {
+                             + UnitEnums.STANDARD_PASSIVES.TALL)) {
                                 result = false;
                             }
                             continue;

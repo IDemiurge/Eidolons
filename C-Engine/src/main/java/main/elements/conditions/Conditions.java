@@ -10,13 +10,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Vector;
 
-public class Conditions extends Vector<Condition> implements  Condition {
+public class Conditions extends Vector<Condition> implements Condition {
 
     protected boolean negative = false;
     boolean isTrue;
     boolean or = false;
     private Condition lastCheckedCondition;
-    private  boolean fastFailOnCheck= !CoreEngine.isLogicTest();
+    private boolean fastFailOnCheck = !CoreEngine.isLogicTest();
 
     @OmittedConstructor
     public Conditions(Condition... c) {
@@ -129,6 +129,7 @@ public class Conditions extends Vector<Condition> implements  Condition {
         }
         return isTrue;
     }
+
     @Override
     public boolean check(Ref ref) {
         isTrue = true;
@@ -159,7 +160,7 @@ public class Conditions extends Vector<Condition> implements  Condition {
 
     @Override
     public boolean check(Entity match) {
-       Ref ref = match.getRef().getCopy();
+        Ref ref = match.getRef().getCopy();
         ref.setMatch(match.getId());
         return check(ref);
     }
@@ -239,8 +240,8 @@ public class Conditions extends Vector<Condition> implements  Condition {
 
     @Override
     public String toXml() {
-        StringBuilder builder=new StringBuilder();
-        for (Condition sub :this) {
+        StringBuilder builder = new StringBuilder();
+        for (Condition sub : this) {
             builder.append(sub.toXml());
         }
         return builder.toString();

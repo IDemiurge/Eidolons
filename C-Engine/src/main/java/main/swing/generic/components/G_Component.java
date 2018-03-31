@@ -97,15 +97,17 @@ public abstract class G_Component extends JPanel implements Refreshable
             super.paint(g);
         }
     }
+
     protected Frame getFrame() {
         Container parent = getParent();
-        while (parent !=null ){
-        if (parent instanceof Frame)
-            return (Frame) parent;
-            parent =parent.getParent();
+        while (parent != null) {
+            if (parent instanceof Frame)
+                return (Frame) parent;
+            parent = parent.getParent();
+        }
+        return null;
     }
-    return null ;
-    }
+
     // DELEGATES
     public KeyListener getKeyManager() {
         return keyManager;

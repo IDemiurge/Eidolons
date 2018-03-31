@@ -29,21 +29,21 @@ public class ReflectionMaster<T> {
     }
 
     public void setValue(String fieldName, T value, Object obj) {
-          setValue(fieldName, value, obj,obj==null ? null : obj.getClass());
+        setValue(fieldName, value, obj, obj == null ? null : obj.getClass());
     }
-        public void setValue(String fieldName, T value, Object obj, Class<?> clazz) {
+
+    public void setValue(String fieldName, T value, Object obj, Class<?> clazz) {
         Field field = null;
         try {
-            field = clazz. getDeclaredField(fieldName);
+            field = clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            if (clazz !=null )
-                if (clazz.getSuperclass()!=null )
-            {
-                setValue(fieldName, value, obj, clazz.getSuperclass());
-                return ;
-            } else {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            if (clazz != null)
+                if (clazz.getSuperclass() != null) {
+                    setValue(fieldName, value, obj, clazz.getSuperclass());
+                    return;
+                } else {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
         }
         field.setAccessible(true);
         try {

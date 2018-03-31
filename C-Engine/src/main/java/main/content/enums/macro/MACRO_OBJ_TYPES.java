@@ -21,22 +21,22 @@ MACRO_OBJ_TYPES implements OBJ_TYPE {
     REGION("region", MACRO_PROPS.AREA, 2),
     PLACE(("place"), MACRO_PROPS.PLACE_TYPE, 3, MACRO_PROPS.PLACE_SUBTYPE),
     SHOP("shop", MACRO_PROPS.SHOP_LEVEL, 4, MACRO_PROPS.SHOP_TYPE),
-    TOWN("town", MACRO_PROPS.AREA, 5, MACRO_PROPS.REGION){
+    TOWN("town", MACRO_PROPS.AREA, 5, MACRO_PROPS.REGION) {
         public OBJ_TYPE getParent() {
             return PLACE;
         }
     },
     ROUTE("route", MACRO_PROPS.AREA, 6, MACRO_PROPS.REGION),
     // DIALOGUE(("dialogue"), G_PROPS.GROUP, 8, MACRO_PROPS.ACTOR, true),
-     FACTIONS("factions", G_PROPS.FACTION_GROUP, 7),
+    FACTIONS("factions", G_PROPS.FACTION_GROUP, 7),
     CAMPAIGN("campaign", G_PROPS.GROUP, 8),
     AREA("area", MACRO_PROPS.REGION, 9),
     TOWN_PLACE("town place", MACRO_PROPS.REGION, 10),
 
     MISSION("missions", G_PROPS.GROUP, 11, MACRO_PROPS.MISSION_TYPE),
 
-    DIALOGUE("dialogue", G_PROPS.GROUP,12 ),
-    TAVERN("tavern", G_PROPS.GROUP,13 ),;
+    DIALOGUE("dialogue", G_PROPS.GROUP, 12),
+    TAVERN("tavern", G_PROPS.GROUP, 13),;
 //    MAP_ACTIONS("map actions", G_PROPS.GROUP,14 );
     // MACRO_CHAR(OBJ_TYPES.CHARS, "MACRO_CHAR", 7),
     // MACRO_UNIT(OBJ_TYPES.UNITS, "MACRO_UNIT", 8),

@@ -1,8 +1,8 @@
 package main.game.logic.dungeon.editor.gui;
 
-import main.client.cc.gui.neo.tabs.HC_Tab;
-import main.client.cc.gui.neo.tabs.HC_TabComp;
-import main.client.cc.gui.neo.tabs.HC_TabPanel;
+import eidolons.client.cc.gui.neo.tabs.HC_Tab;
+import eidolons.client.cc.gui.neo.tabs.HC_TabComp;
+import eidolons.client.cc.gui.neo.tabs.HC_TabPanel;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
