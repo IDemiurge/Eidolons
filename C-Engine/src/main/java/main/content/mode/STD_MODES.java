@@ -8,14 +8,14 @@ import main.system.math.Formulas;
 public enum STD_MODES implements MODE {
     ALERT(true, false, true),
     CONCENTRATION(true, false, true, "C_FOCUS", "max(100, {SOURCE_CONCENTRATION_MOD})/100*("
-            + Formulas.CONCENTRATION_BASE + "+{SOURCE_CONCENTRATION_BONUS})"),
+     + Formulas.CONCENTRATION_BASE + "+{SOURCE_CONCENTRATION_BONUS})"),
 
     RESTING(false, true, true, "C_STAMINA", "max(100, {SOURCE_RESTING_MOD})/100*("
-            + Formulas.REST_CONST + "+{SOURCE_REST_BONUS})"),
+     + Formulas.REST_CONST + "+{SOURCE_REST_BONUS})"),
     MEDITATION(true, true, true, "C_ESSENCE", "max(100, {SOURCE_MEDITATION_MOD})/100*("
-            + Formulas.MEDITATION_BASE + "+{SOURCE_MEDITATION_BONUS})"), // {ACTIVE_something}
+     + Formulas.MEDITATION_BASE + "+{SOURCE_MEDITATION_BONUS})"), // {ACTIVE_something}
     DEFENDING(false, false, true),
-    WAITING(false ,false  , true,false),
+    WAITING(false, false, true, false),
     CHANNELING(true, true, false),
     DIVINATION(true, true, true),
     HIDE(true, false, true),
@@ -26,7 +26,7 @@ public enum STD_MODES implements MODE {
     SEARCH(false, false, false, "Detection(50);", "Detection(5);Ap penalty(50)", ""),
 
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
-            + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
+     + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
 
     NORMAL(false, false, false),
     COWER(true, true, true);
@@ -37,9 +37,9 @@ public enum STD_MODES implements MODE {
         DEFENDING.setDefenseMod(Formulas.DEFENDING_MODE_DEF_MOD);
 
         String paramModString = StringMaster.getParamModString("PARRY_CHANCE",
-                Formulas.DEFEND_PARRY_CHANCE_MOD)
-                + StringMaster.SEPARATOR
-                + StringMaster.getParamModString("BLOCK_CHANCE", Formulas.DEFEND_BLOCK_CHANCE_MOD);
+         Formulas.DEFEND_PARRY_CHANCE_MOD)
+         + StringMaster.SEPARATOR
+         + StringMaster.getParamModString("BLOCK_CHANCE", Formulas.DEFEND_BLOCK_CHANCE_MOD);
         DEFENDING.setParameterMods(paramModString);
 
         paramModString = StringMaster.getParamModString("DETECTION", Formulas.ALERT_DETECTION_MOD);
@@ -64,27 +64,27 @@ public enum STD_MODES implements MODE {
         // DEFENDING.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
         // ALERT.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
 
-        MEDITATION.period="1";
-        CONCENTRATION.period="1";
-        RESTING.period="1";
-        DIVINATION.period="1";
-        CHANNELING.period="1";
-        
-        MEDITATION.periodicValues=MEDITATION.getParameter()+"(" +
+        MEDITATION.period = "1";
+        CONCENTRATION.period = "1";
+        RESTING.period = "1";
+        DIVINATION.period = "1";
+        CHANNELING.period = "1";
+
+        MEDITATION.periodicValues = MEDITATION.getParameter() + "(" +
          Formulas.MEDITATION_PERIODIC_GAIN +
          "," +
          FormulaMaster.getMaxParamFormula(MEDITATION.getParameter() +
-         ")" );
-        CONCENTRATION.periodicValues=CONCENTRATION.getParameter()+"(" +
+          ")");
+        CONCENTRATION.periodicValues = CONCENTRATION.getParameter() + "(" +
          Formulas.CONCENTRATION_PERIODIC_GAIN +
          "," +
          FormulaMaster.getMaxParamFormula(CONCENTRATION.getParameter() +
-          ")" );
-        RESTING.periodicValues=RESTING.getParameter()+"(" +
+          ")");
+        RESTING.periodicValues = RESTING.getParameter() + "(" +
          Formulas.RESTING_PERIODIC_GAIN +
          "," +
          FormulaMaster.getMaxParamFormula(RESTING.getParameter() +
-          ")" );
+          ")");
 //     TODO    DIVINATION.periodicValues=MEDITATION.getParameter()+"(" +
 //         Formulas.MEDITATION_PERIODIC_GAIN +
 //         "," +
@@ -156,6 +156,12 @@ public enum STD_MODES implements MODE {
         }
         return StringMaster.getWellFormattedString(name());
     }
+
+    @Override
+    public void setBuffName(String buffName) {
+        this.buffName = buffName;
+    }
+
     @Override
     public String getPeriod() {
         return period;
@@ -165,13 +171,10 @@ public enum STD_MODES implements MODE {
     public Integer getDuration() {
         return Formulas.DEFAULT_MODE_DURATION;
     }
+
     @Override
     public String getPeriodicValues() {
         return periodicValues;
-    }
-    @Override
-    public void setBuffName(String buffName) {
-        this.buffName = buffName;
     }
 
     public String getParameter() {

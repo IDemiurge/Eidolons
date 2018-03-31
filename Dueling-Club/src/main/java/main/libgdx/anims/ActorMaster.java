@@ -4,8 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
+import main.libgdx.anims.actions.AutoFloatAction;
 import main.libgdx.anims.actions.RotateByActionLimited;
 import main.libgdx.anims.particles.EmitterActor;
+import main.libgdx.gui.panels.dc.clock.GearCluster;
 import main.system.auxiliary.ClassMaster;
 
 import java.util.*;
@@ -41,18 +43,19 @@ public class ActorMaster {
 
     public static void addRemoveAfter(Actor actor) {
         addAfter(actor, new RemoveActorAction());
-
-
     }
 
-    public static void addHideAfter(Actor actor) {
+    public static void addSetVisibleAfter(Actor actor, boolean b) {
         addAfter(actor, new Action() {
             @Override
             public boolean act(float delta) {
-                actor.setVisible(false);
+                actor.setVisible(b);
                 return true;
             }
         });
+    }
+    public static void addHideAfter(Actor actor) {
+        addSetVisibleAfter(actor, false);
     }
 
     public static MoveByAction getMoveByAction(Vector2 origin, Vector2 destination,
@@ -172,17 +175,39 @@ public class ActorMaster {
 
     public static void addScaleActionCentered(Actor actor, float scaleX,
                                               float scaleY, float v) {
-        addScaleAction(actor, scaleX, scaleY, v);
-        actor.getScaleX();
-        float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
-        float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;
-        addMoveToAction(actor, x, y, v);
+        addScaleAction(actor, scaleX, scaleY, v, true);
+
     }
 
     public static void addScaleAction(Actor actor, float scaleX, float scaleY, float v) {
+        addScaleAction(actor, scaleX, scaleY, v, false);
+    }
+
+    public static void addScaleAction(Actor actor, float scaleX, float scaleY,
+                                      float v, boolean centered) {
         ScaleToAction action = (ScaleToAction) getAction(ScaleToAction.class);// new ScaleToAction();
         action.setScale(scaleX, scaleY);
         action.setDuration(v);
+       addAction(actor, action);
+        if (centered) {
+            float x = actor.getX() - (scaleX - actor.getScaleX()) * actor.getWidth() / 2;
+            float y = actor.getY() - (scaleY - actor.getScaleY()) * actor.getHeight() / 2;
+            addMoveToAction(actor, x, y, v);
+        }
+    }
+
+    public static AutoFloatAction addFloatAction(GearCluster actor, Float float_, float from, float to, float dur) {
+        AutoFloatAction action =new AutoFloatAction ();//(AutoFloatAction) getAction(AutoFloatAction.class);
+        action.setFloat_(float_);
+        action.setDuration(dur);
+        action.setStart(from);
+        action.setEnd(to);
+        addAction(actor, action);
+
+        return action;
+    }
+
+    public static void addAction(Actor actor, Action action) {
         actor.addAction(action);
         action.setTarget(actor);
     }
@@ -223,4 +248,11 @@ public class ActorMaster {
         }
         actor.addAction(action);
     }
+
+    public static void addDelayedAction(Actor actor, float delay, Action action) {
+        DelayAction delayAction= new DelayAction(delay);
+        delayAction.setAction(action);
+        addAction(actor, delayAction);
+    }
+
 }

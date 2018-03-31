@@ -69,8 +69,8 @@ public class LogEntryNode {
         if (lines.size() > EntryNodeMaster.getMaxLinesPerHeader()) {
             ListMaster.cropLast(lines, lines.size() - EntryNodeMaster.getMaxLinesPerHeader());
             lines.set(EntryNodeMaster.getMaxLinesPerHeader() - 1, lines.get(EntryNodeMaster
-                    .getMaxLinesPerHeader() - 1)
-                    + EntryNodeMaster.CROP_SUFFIX);
+             .getMaxLinesPerHeader() - 1)
+             + EntryNodeMaster.CROP_SUFFIX);
         }
         entries.addAll(lines);
         // track subnode page displayed line count!!! TODO
@@ -82,7 +82,7 @@ public class LogEntryNode {
     public String toString() {
 
         return "Entry: " + getHeader() + " at " + getLineIndex() + " line" + " of "
-                + getPageIndex() + " page";
+         + getPageIndex() + " page";
     }
 
     // INFO_LEVEL info_level ?

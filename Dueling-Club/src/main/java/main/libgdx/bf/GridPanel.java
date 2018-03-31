@@ -21,6 +21,7 @@ import main.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -395,7 +396,7 @@ public class GridPanel extends Group {
                 GuiEventManager.trigger(BOTTOM_PANEL_UPDATE, null);
             }
             if (!firstUpdateDone) {
-//                DC_Game.game.getVisionMaster().triggerGuiEvents();
+                DC_Game.game.getVisionMaster().triggerGuiEvents();
                 GuiEventManager.trigger(UPDATE_GUI, null);
                 GuiEventManager.trigger(UPDATE_LIGHT);
             }
@@ -466,11 +467,27 @@ public class GridPanel extends Group {
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
-        if (!unitMap.containsKey(sub))
+        BaseView view = unitMap.get(sub);
+        if (view == null)
             return;
-        if (getUnitMap().get(sub).getParent() == null)
-            addActor(getUnitMap().get(sub));
-        unitMap.get(sub).setVisible(b);
+        if (view.getParent() == null)
+            addActor(view);
+        if (view.isVisible() == b)
+            return;
+        if (isFadeAnimForUnitsOn()) {
+            if (b) {
+                view.getColor().a = 0;
+                view.setVisible(true);
+                ActorMaster.addFadeInAction(view, 0.25f);
+            } else {
+                ActorMaster.addFadeOutAction(view, 0.25f);
+                ActorMaster.addSetVisibleAfter(view, false);
+            }
+        } else view.setVisible(b);
+    }
+
+    private boolean isFadeAnimForUnitsOn() {
+        return true;
     }
 
     public void setUpdateRequired(boolean updateRequired) {

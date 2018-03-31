@@ -416,4 +416,10 @@ public class DC_GameMaster extends GameMaster {
         }
         return array;
     }
+
+    public List<Structure> getWalls() {
+        ArrayList<Structure> list = new ArrayList<>(getStructures());
+        list.removeIf(obj -> !obj.isWall());
+        return list;
+    }
 }

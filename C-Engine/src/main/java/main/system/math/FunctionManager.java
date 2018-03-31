@@ -32,8 +32,8 @@ public class FunctionManager {
         String funcName;
         if (func.contains("(")) {
             arguments = func
-                    .substring(func.indexOf('(') + 1, func.indexOf(')')).split(
-                            ",");
+             .substring(func.indexOf('(') + 1, func.indexOf(')')).split(
+              ",");
             funcName = func.substring(0, func.indexOf('('));
         } else {
             arguments = null;
@@ -51,21 +51,21 @@ public class FunctionManager {
     public static String evaluateFunction(Ref ref, FUNCTIONS function,
                                           String string) {
         String[] arguments = StringMaster.getSubString(string, "" + ('('),
-                "" + (')'), false).split(",");
+         "" + (')'), false).split(",");
         return evaluateFunction(ref, function, arguments);
     }
 
     public static Condition getAllConditions() {
         Conditions c = new Conditions(
-                ConditionMaster.getUnit_CharTypeCondition());
+         ConditionMaster.getUnit_CharTypeCondition());
         c.add(ConditionMaster.getNotDeadCondition());
         return c;
     }
 
     public static Condition getSumAllyConditions() {
         Conditions c = new Conditions(
-                ConditionMaster.getOwnershipFilterCondition(
-                        Ref.KEYS.MATCH.name(), true));
+         ConditionMaster.getOwnershipFilterCondition(
+          Ref.KEYS.MATCH.name(), true));
         c.add(ConditionMaster.getUnit_CharTypeCondition());
         c.add(ConditionMaster.getNotDeadCondition());
         return c;
@@ -73,8 +73,8 @@ public class FunctionManager {
 
     public static Condition getSumEnemyConditions() {
         Conditions c = new Conditions(
-                ConditionMaster.getOwnershipFilterCondition(
-                        Ref.KEYS.MATCH.name(), false));
+         ConditionMaster.getOwnershipFilterCondition(
+          Ref.KEYS.MATCH.name(), false));
         c.add(ConditionMaster.getUnit_CharTypeCondition());
         c.add(ConditionMaster.getNotDeadCondition());
         return c;
@@ -82,7 +82,7 @@ public class FunctionManager {
 
     public static Condition getSumAdjacentConditions() {
         Conditions c = new Conditions(
-                ConditionMaster.getTYPECondition(DC_TYPE.TERRAIN));
+         ConditionMaster.getTYPECondition(DC_TYPE.TERRAIN));
         c.add(ConditionMaster.getAdjacentCondition());
         return c;
     }
@@ -105,58 +105,6 @@ public class FunctionManager {
         return "[AV(" + av + "," + string + ")]";
     }
 
-    public enum FUNC_ARGS {
-        OBJ_REF {
-            public Object evaluate(String s_arg, Ref ref) {
-                try {
-                    Obj obj = ref.getObj(s_arg);
-                    if (obj == null) {
-                        LogMaster.log(1, s_arg
-                                + " - failed to evaluate obj_ref!" + ref);
-                        throw new RuntimeException();
-                    }
-                    return obj;
-                } catch (Exception e) {
-                    ObjType type = ref.getType(s_arg);
-                    if (type == null) {
-                        LogMaster.log(1, s_arg
-                                + " - failed to evaluate type ref!" + ref);
-                        throw new RuntimeException();
-                    }
-
-                    LogMaster.log(1,
-                            s_arg + " evaluated to type: " + type.getName());
-                    return type;
-                }
-            }
-        },
-        // REF {
-        // public Object evaluate(String s_arg, Ref ref) {
-        // return ref.getObj(s_arg).getRef();
-        // }
-        // },
-        FORMULA {
-            public Object evaluate(String s_arg, Ref ref) {
-                return new Formula(s_arg);
-            }
-        },
-        INTEGER {
-            public Object evaluate(String s_arg, Ref ref) {
-                return new Formula(s_arg).getInt(ref);
-            }
-        },
-        CONST {
-            public Object evaluate(String s_arg, Ref ref) {
-                return s_arg;
-            }
-        },;
-
-        public Object evaluate(String s_arg, Ref ref) {
-            return null;
-        }
-
-    }
-
     public enum FUNCTIONS {
         BOOL(false, FUNC_ARGS.CONST, FUNC_ARGS.CONST, FUNC_ARGS.CONST) {
             public Object evaluate(List<Object> values) {
@@ -167,7 +115,7 @@ public class FunctionManager {
                 String IF = values.get(1).toString();
                 String ELSE = values.get(2).toString();
                 return ConditionMaster.checkStringCondition(condition,
-                        new Ref()) ? IF : ELSE;
+                 new Ref()) ? IF : ELSE;
             }
         },
         RANDOM(true, FUNC_ARGS.CONST) {
@@ -181,7 +129,7 @@ public class FunctionManager {
                     }
                 }
                 return RandomWizard.getRandomInt(Integer.valueOf(values.get(0)
-                        .toString()));
+                 .toString()));
             }
         },
         FILTER_LIST_SIZE(true, FUNC_ARGS.CONST) {
@@ -189,7 +137,7 @@ public class FunctionManager {
             public Object evaluate(List<Object> values) {
 
                 Filter<Obj> filter = new Filter<>((Ref) values.get(1),
-                        ConditionMaster.toConditions(values.get(0).toString()));
+                 ConditionMaster.toConditions(values.get(0).toString()));
                 return getSum(values.get(0).toString(), filter.getObjects());
 
             }
@@ -199,7 +147,7 @@ public class FunctionManager {
             public Object evaluate(List<Object> values) {
 
                 Filter<Obj> filter = new Filter<>((Ref) values.get(1),
-                        getSumAdjacentConditions());
+                 getSumAdjacentConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
             }
@@ -209,7 +157,7 @@ public class FunctionManager {
             public Object evaluate(List<Object> values) {
 
                 Filter<Obj> filter = new Filter<>((Ref) values.get(1),
-                        getAllConditions());
+                 getAllConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
             }
@@ -219,7 +167,7 @@ public class FunctionManager {
             public Object evaluate(List<Object> values) {
 
                 Filter<Obj> filter = new Filter<>((Ref) values.get(1),
-                        getSumEnemyConditions());
+                 getSumEnemyConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
             }
@@ -230,7 +178,7 @@ public class FunctionManager {
             public Object evaluate(List<Object> values) {
 
                 Filter<Obj> filter = new Filter<>((Ref) values.get(1),
-                        getSumAllyConditions());
+                 getSumAllyConditions());
                 return getSum(values.get(0).toString(), filter.getObjects());
 
             }
@@ -240,9 +188,9 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
                 return VariableManager.getAutoVarValue(
-                        values.get(0).toString(),
-                        (values.size() > 1) ? (Entity) values.get(1) : ref
-                                .getThisObj(), null); // REF would be better
+                 values.get(0).toString(),
+                 (values.size() > 1) ? (Entity) values.get(1) : ref
+                  .getThisObj(), null); // REF would be better
                 // for AV!
             }
         },
@@ -250,8 +198,8 @@ public class FunctionManager {
             @Override
             public Object evaluate(List<Object> values) {
                 return VariableManager.getAutoVarValue(
-                        values.get(0).toString(), (Obj) values.get(1), values
-                                .get(2).toString());
+                 values.get(0).toString(), (Obj) values.get(1), values
+                  .get(2).toString());
             }
         },
         CONST(true, FUNC_ARGS.CONST) {
@@ -263,7 +211,7 @@ public class FunctionManager {
         ABS(true, FUNC_ARGS.INTEGER) {
             public Object evaluate(List<Object> values) {
                 return new Integer(Math.abs(Integer.valueOf(values.get(0)
-                        .toString())));
+                 .toString())));
             }
         },
         DISTANCE(true, FUNC_ARGS.OBJ_REF, FUNC_ARGS.OBJ_REF) {
@@ -272,11 +220,11 @@ public class FunctionManager {
                 Obj obj1 = (Obj) values.get(0);
 
                 Integer integer = Math.round(PositionMaster.getDistance(obj1,
-                        (Obj) values.get(1)));
+                 (Obj) values.get(1)));
                 boolean shortDiags;
                 try {
                     shortDiags = obj1.getRef().getObj(KEYS.ACTIVE)
-                            .checkBool(GenericEnums.STD_BOOLS.SHORTEN_DIAGONALS);
+                     .checkBool(GenericEnums.STD_BOOLS.SHORTEN_DIAGONALS);
                 } catch (Exception e) {
                     return integer;
                 }
@@ -315,5 +263,57 @@ public class FunctionManager {
 
             return evaluate(values);
         }
+    }
+
+    public enum FUNC_ARGS {
+        OBJ_REF {
+            public Object evaluate(String s_arg, Ref ref) {
+                try {
+                    Obj obj = ref.getObj(s_arg);
+                    if (obj == null) {
+                        LogMaster.log(1, s_arg
+                         + " - failed to evaluate obj_ref!" + ref);
+                        throw new RuntimeException();
+                    }
+                    return obj;
+                } catch (Exception e) {
+                    ObjType type = ref.getType(s_arg);
+                    if (type == null) {
+                        LogMaster.log(1, s_arg
+                         + " - failed to evaluate type ref!" + ref);
+                        throw new RuntimeException();
+                    }
+
+                    LogMaster.log(1,
+                     s_arg + " evaluated to type: " + type.getName());
+                    return type;
+                }
+            }
+        },
+        // REF {
+        // public Object evaluate(String s_arg, Ref ref) {
+        // return ref.getObj(s_arg).getRef();
+        // }
+        // },
+        FORMULA {
+            public Object evaluate(String s_arg, Ref ref) {
+                return new Formula(s_arg);
+            }
+        },
+        INTEGER {
+            public Object evaluate(String s_arg, Ref ref) {
+                return new Formula(s_arg).getInt(ref);
+            }
+        },
+        CONST {
+            public Object evaluate(String s_arg, Ref ref) {
+                return s_arg;
+            }
+        },;
+
+        public Object evaluate(String s_arg, Ref ref) {
+            return null;
+        }
+
     }
 }

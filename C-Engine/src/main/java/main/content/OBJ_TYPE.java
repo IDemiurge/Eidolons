@@ -29,7 +29,7 @@ public interface OBJ_TYPE {
 
     boolean isHeroTreeType();
 
-    default OBJ_TYPE getParent(){
-        return null ;
+    default OBJ_TYPE getParent() {
+        return null;
     }
 }

@@ -4,8 +4,8 @@ import main.data.XLinkedMap;
 import main.swing.generic.components.G_Panel;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

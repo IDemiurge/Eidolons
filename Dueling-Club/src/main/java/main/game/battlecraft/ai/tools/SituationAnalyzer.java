@@ -33,10 +33,14 @@ public class SituationAnalyzer extends AiHandler {
         int factor = 0;
         for (Entity e : Analyzer.getVisibleEnemies(unit.getAI())) {
             Unit enemy = (Unit) e;
-            int rangedThreat = getThreatAnalyzer().getRangedThreat(unit,
-             enemy);
-            factor += rangedThreat;
-            LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Ranged threat " + rangedThreat + " from " + enemy.getName());
+            try {
+                int rangedThreat = getThreatAnalyzer().getRangedThreat(unit,
+                 enemy);
+                factor += rangedThreat;
+                LogMaster.log(LOG_CHANNEL.AI_DEBUG, "Ranged threat " + rangedThreat + " from " + enemy.getName());
+            } catch (Exception ex) {
+                main.system.ExceptionMaster.printStackTrace(ex);
+            }
         }
 
         int mod = getConstInt(AiConst.DANGER_RANGED_BASE) - ParamPriorityAnalyzer.getUnitLifeFactor(unit);

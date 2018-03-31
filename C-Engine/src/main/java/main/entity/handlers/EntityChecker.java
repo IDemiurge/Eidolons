@@ -13,12 +13,10 @@ import main.system.auxiliary.StringMaster;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class EntityChecker  <E extends Entity> extends EntityHandler<E> {
+public class EntityChecker<E extends Entity> extends EntityHandler<E> {
 
     public EntityChecker(E entity, EntityMaster<E> entityMaster) {
         super(entity, entityMaster);
-
-
 
 
     }

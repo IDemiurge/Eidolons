@@ -142,8 +142,8 @@ public class UnitCalculator extends EntityCalculator<Unit> {
         if (getEntity().getMainWeapon() != null) {
             weight += getEntity().getMainWeapon().getIntParam(PARAMS.WEIGHT);
         }
-        if (getEntity().getSecondWeapon() != null) {
-            weight += getEntity().getSecondWeapon().getIntParam(PARAMS.WEIGHT);
+        if (getEntity().getOffhandWeapon() != null) {
+            weight += getEntity().getOffhandWeapon().getIntParam(PARAMS.WEIGHT);
         }
         if (getEntity().getArmor() != null) {
             weight += getEntity().getArmor().getIntParam(PARAMS.WEIGHT);

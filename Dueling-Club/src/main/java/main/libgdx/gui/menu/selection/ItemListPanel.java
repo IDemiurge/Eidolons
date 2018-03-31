@@ -171,7 +171,9 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected String getBackgroundPath() {
-        return VISUALS.FRAME_BIG_FILLED.getImgPath();
+        if (GdxMaster.getHeight()>900)
+            return VISUALS.FRAME_BIG_FILLED.getImgPath();
+        return VISUALS.FRAME_FILLED.getImgPath();
     }
 
     public SelectableItemData getCurrentItem() {

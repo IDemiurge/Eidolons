@@ -25,8 +25,8 @@ public class EngineEventManager {
     public static void bind(EngineEventType type, final EventCallback event) {
         final MessageConsumer<EventCallbackParam> consumer = getInstance().localConsumer(type.name());
         consumer.handler(objectMessage ->
-                callbacks.add(() ->
-                        event.call(objectMessage.body())));
+         callbacks.add(() ->
+          event.call(objectMessage.body())));
     }
 
     public static void trigger(final EngineEventType type) {

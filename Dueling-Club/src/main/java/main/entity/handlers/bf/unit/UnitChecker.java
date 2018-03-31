@@ -61,16 +61,16 @@ public class UnitChecker extends EntityChecker<Unit> {
     }
 
     public boolean checkDualWielding() {
-        if (getEntity().getSecondWeapon() == null || getEntity().getMainWeapon() == null) {
+        if (getEntity().getOffhandWeapon() == null || getEntity().getMainWeapon() == null) {
             return false;
         }
         if (getEntity().getMainWeapon().isRanged() || getEntity().getMainWeapon().isMagical()) {
             return false;
         }
-        if (getEntity().getSecondWeapon().isRanged() || getEntity().getSecondWeapon().isMagical()) {
+        if (getEntity().getOffhandWeapon().isRanged() || getEntity().getOffhandWeapon().isMagical()) {
             return false;
         }
-        return (getEntity().getSecondWeapon().isWeapon());
+        return (getEntity().getOffhandWeapon().isWeapon());
 
     }
 

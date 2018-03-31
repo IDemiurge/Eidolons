@@ -109,10 +109,10 @@ public class DC_ItemPanel extends G_ListPanel<DC_HeroAttachedObj> implements BOR
 
             items.add((hero).getArmor());
 
-            if (hero.getSecondWeapon() == null && hero.getNaturalWeapon(true) != null) {
+            if (hero.getOffhandWeapon() == null && hero.getNaturalWeapon(true) != null) {
                 items.add(hero.getNaturalWeapon(true));
             } else {
-                items.add((hero).getSecondWeapon());
+                items.add((hero).getOffhandWeapon());
             }
             // boots =
             // hero.getBoots();

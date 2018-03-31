@@ -8,15 +8,15 @@ public class RandomizedEffect extends MicroEffect {
     private Effects effects;
 
     public RandomizedEffect(
-            // RANDOMIZATION_CONSTRAINTS RC, RANDOMIZATION_TYPE RT,
-            Effects e) {
+     // RANDOMIZATION_CONSTRAINTS RC, RANDOMIZATION_TYPE RT,
+     Effects e) {
         this.effects = e;
     }
 
     @Override
     public boolean applyThis() {
         int index = RandomWizard.getRandomIntBetween(0, effects.getEffects()
-                .size());
+         .size());
         return effects.getEffects().get(index).apply(ref);
     }
 

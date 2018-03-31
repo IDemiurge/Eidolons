@@ -10,8 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -251,7 +251,7 @@ public class CustomList<E> extends G_List<E> {
         int n = 0;
         for (E e : getData()) {
             Component comp = getCellRenderer().getListCellRendererComponent(this, e, n,
-                    isSelectedIndex(n), false);
+             isSelectedIndex(n), false);
             comps.add(comp);
             n++;
         }

@@ -109,7 +109,7 @@ public class MiniObjComp implements Refreshable {
         }
         // ImageManager.getOutlineImage(obj);
         // ImageTransformer.getTransparent(image, trasparency);
-        // // ImageManager.STD_IMAGES.THICK_DARKNESS
+        // // ImageManager.STD_IMAGES.DEEPER_DARKNESS
         // PerceptionRule.getHints(obj, perception, visibility);
         // TO BE USED WHEN UNIT ACTS -
         // "something huge/monstrous/humanoid/mechanical/ghostly/demonic..." etc
@@ -136,7 +136,7 @@ public class MiniObjComp implements Refreshable {
                  : (ImageManager.getUnknownCellIcon()).getImage();
             }
         } else {
-            // if (visibility == VISIBILITY_LEVEL.THICK_DARKNESS) {
+            // if (visibility == VISIBILITY_LEVEL.DEEPER_DARKNESS) {
             //
             // }
         }

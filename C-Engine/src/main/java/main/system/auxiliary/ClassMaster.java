@@ -2,8 +2,8 @@ package main.system.auxiliary;
 
 import main.system.auxiliary.data.ListMaster;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ClassMaster {
@@ -14,10 +14,10 @@ public class ClassMaster {
         }
         Class<? extends Object> OBJ_CLASS = object.getClass();
         while (OBJ_CLASS != null) {
-            if (OBJ_CLASS!= Object.class)
-            if (OBJ_CLASS.equals(CLASS)) {
-                return true;
-            }
+            if (OBJ_CLASS != Object.class)
+                if (OBJ_CLASS.equals(CLASS)) {
+                    return true;
+                }
             OBJ_CLASS = OBJ_CLASS.getSuperclass();
         }
         return false;

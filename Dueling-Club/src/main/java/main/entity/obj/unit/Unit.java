@@ -30,6 +30,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.active.DC_ActionManager;
+import main.entity.active.DC_ActionManager.STD_ACTIONS;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_QuickItemAction;
 import main.entity.active.DC_SpellObj;
@@ -417,7 +418,7 @@ public class Unit extends DC_UnitModel {
         this.spells = spells;
     }
 
-    public DC_WeaponObj getSecondWeapon() {
+    public DC_WeaponObj getOffhandWeapon() {
         return secondWeapon;
     }
 
@@ -621,7 +622,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public DC_WeaponObj getWeapon(boolean offhand) {
-        return (offhand) ? getSecondWeapon() : getMainWeapon();
+        return (offhand) ? getOffhandWeapon() : getMainWeapon();
     }
 
     public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
@@ -687,7 +688,7 @@ public class Unit extends DC_UnitModel {
             case MAIN_HAND:
                 return getMainWeapon();
             case OFF_HAND:
-                return getSecondWeapon();
+                return getOffhandWeapon();
         }
         return null;
     }
@@ -790,7 +791,7 @@ public class Unit extends DC_UnitModel {
                 setWeapon(null);
                 break;
             case OFF_HAND:
-                item = getSecondWeapon();
+                item = getOffhandWeapon();
                 setSecondWeapon(null);
                 break;
         }
@@ -1384,28 +1385,11 @@ public class Unit extends DC_UnitModel {
         super.toBase();
     }
 
-    @Override
-    protected void putParameter(PARAMETER param, String value) {
-//       if (!isMine()){
-//           if (param == PARAMS.C_TOUGHNESS){
-//            int v = StringMaster.getInteger(value);
-//            if (v > getIntParam(PARAMS.TOUGHNESS)) {
-//                return ;
-//            }
-//        }
-//        if (param == PARAMS.C_ENDURANCE){
-//            int v = StringMaster.getInteger(value);
-//            if (v > getIntParam(PARAMS.ENDURANCE)) {
-//                return ;
-//            }
-//        }}
 
-//        if (param == PARAMS.AP_PENALTY){
-//            int v = StringMaster.getInteger(value);
-//            if (v > 50) {
-//                return ;
-//            }
-//        }
-        super.putParameter(param, value);
+    public DC_ActiveObj getTurnAction(boolean clockwise) {
+        return getAction(
+         clockwise
+         ?  STD_ACTIONS.Turn_Clockwise.toString()
+         :  STD_ACTIONS.Turn_Clockwise.toString());
     }
 }

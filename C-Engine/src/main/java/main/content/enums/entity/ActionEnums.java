@@ -46,7 +46,7 @@ public class ActionEnums {
     }
 
     public enum ACTION_TYPE_GROUPS {
-        MOVE, TURN, ATTACK, SPELL, ADDITIONAL,SPECIAL, HIDDEN, MODE, ITEM, ORDER,
+        MOVE, TURN, ATTACK, SPELL, ADDITIONAL, SPECIAL, HIDDEN, MODE, ITEM, ORDER,
         DUNGEON, // security fix...
         STANDARD
 

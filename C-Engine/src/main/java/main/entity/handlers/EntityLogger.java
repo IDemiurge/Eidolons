@@ -6,7 +6,7 @@ import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 /**
  * Created by JustMe on 2/23/2017.
  */
-public class EntityLogger   <E extends Entity> extends EntityHandler<E> {
+public class EntityLogger<E extends Entity> extends EntityHandler<E> {
 
     public EntityLogger(E entity, EntityMaster<E> entityMaster) {
         super(entity, entityMaster);
@@ -14,6 +14,6 @@ public class EntityLogger   <E extends Entity> extends EntityHandler<E> {
     }
 
     public ENTRY_TYPE log() {
-return null ;
+        return null;
     }
 }

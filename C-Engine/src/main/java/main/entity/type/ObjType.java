@@ -22,15 +22,11 @@ public class ObjType extends Entity {
         this(Game.game);
     }
 
-    @Override
-    protected EntityMaster initMaster() {
-        return null;
-    }
-
     public ObjType(String newName, ObjType type) {
         this(type);
         setName(newName);
     }
+
     public ObjType(ObjType type) {
         this.var = true;
         this.setType(type);
@@ -64,6 +60,11 @@ public class ObjType extends Entity {
     public ObjType(String typeName, OBJ_TYPE TYPE) {
         this((typeName));
         setOBJ_TYPE_ENUM(TYPE);
+    }
+
+    @Override
+    protected EntityMaster initMaster() {
+        return null;
     }
 
     @Override

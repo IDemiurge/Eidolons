@@ -59,11 +59,12 @@ public class PositionMaster {
         return grid.noObstaclesOnDiagonal(c1, c2, source);
     }
 
-    public static boolean inLine(int x1, int x2, int y1, int y2 ) {
-        if (x1==x2)
+    public static boolean inLine(int x1, int x2, int y1, int y2) {
+        if (x1 == x2)
             return true;
         return y1 == y2;
     }
+
     public static boolean inLine(Coordinates coordinates1, Coordinates coordinates2) {
         return inLine(coordinates1.x, coordinates2.x, coordinates1.y, coordinates2.y);
 
@@ -99,15 +100,16 @@ public class PositionMaster {
     public static double getExactDistance(Coordinates coordinates1, Coordinates coordinates2) {
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
-        if (x==0) {
-            return  y;
+        if (x == 0) {
+            return y;
         }
-        if (y==0) {
-            return  x;
+        if (y == 0) {
+            return x;
         }
 
         return Math.sqrt(x * x + y * y);
     }
+
     public static double getExactDistance(Obj obj, Obj obj1) {
         return getExactDistance(obj.getCoordinates(), obj1.getCoordinates());
     }
@@ -140,7 +142,7 @@ public class PositionMaster {
 
     public static int getMaxStraightDistance(Obj obj, Obj cell) {
 
-        int range = Math.max( (getX_Diff(obj, cell)),  (getY_Diff(obj, cell)));
+        int range = Math.max((getX_Diff(obj, cell)), (getY_Diff(obj, cell)));
         return range;
     }
 

@@ -21,7 +21,7 @@ public class UnitViewOptions {
 
     public boolean cellBackground;
     private Runnable runnable;
-    private TextureRegion portrateTexture;
+    private TextureRegion portraitTexture;
     private TextureRegion directionPointerTexture;
     private Texture iconTexture;
     private TextureRegion clockTexture;
@@ -32,6 +32,7 @@ public class UnitViewOptions {
     private boolean mainHero;
     private String name;
     private boolean hoverResponsive;
+    private String portraitPath;
 
 
     public UnitViewOptions(BattleFieldObject obj) {
@@ -50,8 +51,8 @@ public class UnitViewOptions {
         this.runnable = var1;
     }
 
-    public final TextureRegion getPortrateTexture() {
-        return this.portrateTexture;
+    public final TextureRegion getPortraitTexture() {
+        return this.portraitTexture;
     }
 
 
@@ -83,7 +84,8 @@ public class UnitViewOptions {
     }
 
     public final void createFromGameObject(BattleFieldObject obj) {
-        this.portrateTexture = getOrCreateR(obj.getImagePath());
+        this.portraitTexture = getOrCreateR(obj.getImagePath());
+        this.portraitPath =  (obj.getImagePath());
         this.name = obj.getName();
         this.mainHero = obj.isMainHero();
 
@@ -148,4 +150,11 @@ public class UnitViewOptions {
         return hoverResponsive;
     }
 
+    public String getPortraitPath() {
+        return portraitPath;
+    }
+
+    public void setPortraitPath(String portraitPath) {
+        this.portraitPath = portraitPath;
+    }
 }

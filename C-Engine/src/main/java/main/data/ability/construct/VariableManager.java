@@ -140,7 +140,7 @@ public class VariableManager {
 
     public static String getVar(String typeName, int i) {
         String[] parts = StringMaster.cropParenthesises(getVarPart(typeName)).split(",");
-        if (parts.length >i)
+        if (parts.length > i)
             return parts[i].trim();
 
         return "";

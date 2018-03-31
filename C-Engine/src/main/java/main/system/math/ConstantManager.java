@@ -10,7 +10,7 @@ public class ConstantManager {
 
     public static Object getConst(String string) {
         CONSTANTS c = new EnumMaster<CONSTANTS>()
-                .retrieveEnumConst(CONSTANTS.class, string);
+         .retrieveEnumConst(CONSTANTS.class, string);
         if (c != null) {
             return c.getValue();
         }

@@ -16,10 +16,10 @@ public class MicroObj extends Obj {
     protected int x;
     protected int y;
     protected Coordinates coordinates;
+    protected boolean overlaying;
     private Coordinates lastKnownCoordinates;
     private int z;
     private Boolean overlayingInitialized; //for performance
-    protected boolean overlaying;
 
     public MicroObj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -99,13 +99,13 @@ public class MicroObj extends Obj {
 
     @Override
     public void toBase() {
-        coordinates=null ;
+        coordinates = null;
         super.toBase();
         int x = getIntParam(G_PARAMS.POS_X);
-        if (this.x!=x)
+        if (this.x != x)
             setX(x);
         int y = getIntParam(G_PARAMS.POS_Y);
-        if (this.y!=y)
+        if (this.y != y)
             setY(y);
     }
 
@@ -113,7 +113,7 @@ public class MicroObj extends Obj {
         if (overlayingInitialized == null) {
             overlaying = checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
              || checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
-            overlayingInitialized= true;
+            overlayingInitialized = true;
         }
         return overlaying;
     }

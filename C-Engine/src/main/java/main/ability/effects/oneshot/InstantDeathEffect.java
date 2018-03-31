@@ -17,7 +17,7 @@ public class InstantDeathEffect extends MicroEffect implements ResistibleEffect,
     @Override
     public boolean applyThis() {
         return ref.getTargetObj()
-                .kill(ref.getSourceObj(), leaveCorpse, quietly);
+         .kill(ref.getSourceObj(), leaveCorpse, quietly);
     }
 
 }

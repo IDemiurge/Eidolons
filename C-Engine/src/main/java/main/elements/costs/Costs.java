@@ -8,8 +8,8 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -90,9 +90,9 @@ public class Costs extends CostImpl {
         for (Cost cost : costs) {
             if (cost.getCostParam() == param || cost.getPayment().getParamToPay() == param) {
                 cost.getPayment().setAmountFormula(
-                        new Formula(StringMaster.wrapInParenthesis(cost.getPayment()
-                                .getAmountFormula().toString())
-                                + mod));
+                 new Formula(StringMaster.wrapInParenthesis(cost.getPayment()
+                  .getAmountFormula().toString())
+                  + mod));
             }
         }
     }
@@ -243,7 +243,7 @@ public class Costs extends CostImpl {
     }
 
     public String getReasonsString() {
-        if (getReasonList().size()<2)
+        if (getReasonList().size() < 2)
             return getReason();
         return StringMaster.joinStringList(getReasonList(), ", ");
     }

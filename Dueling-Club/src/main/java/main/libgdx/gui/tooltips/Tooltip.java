@@ -89,11 +89,10 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         if (showing) {
             return;
         }
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
-        showing = true;
+        entered();
     }
 
-    private boolean checkGuiStageBlocking() {
+    protected boolean checkGuiStageBlocking() {
         if (this.actor != null && getManager() != null)
             if (this.actor.getStage() != getManager().getStage()) {
                 Actor actor = ((StageX) getManager().getStage()).getMouseOverActor();
@@ -105,8 +104,11 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         return false;
     }
 
+    public void setActor(Actor actor) {
+        this.actor = actor;
+    }
 
-    private boolean checkUiActorBlocks(Actor actor) {
+    protected boolean checkUiActorBlocks(Actor actor) {
         List<Group> list = GdxMaster.getAncestors(actor);
         if (actor instanceof Group) {
             list.add((Group) actor);
@@ -123,6 +125,10 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         if (checkGuiStageBlocking()) {
             return;
         }
+        entered();
+    }
+
+    protected void entered() {
         showing = true;
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
     }

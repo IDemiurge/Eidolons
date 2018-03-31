@@ -17,6 +17,7 @@ public class SpellEnums {
     private static final String SPELL_DIFFICULTY = "{spell_spell_difficulty}";
     private static final String MSTR = "{Mastery}";
     private static final String SP = "{Spellpower}";
+
     public enum RESISTANCE_MODIFIERS {
         NO_SPELL_ARMOR, NO_ARMOR, NO_RESISTANCE, NO_DEFENCE, NO_DAMAGE_TO_UNDEAD,
 
@@ -49,10 +50,6 @@ public class SpellEnums {
         MEMORIZED, DIVINED, VERBATIM,;
     }
 
-    public enum SPELL_TABS {
-        ARCANE,
-    }
-
     public enum SPELL_SUBGROUP {
         FIRE,
         LAVA,
@@ -73,7 +70,12 @@ public class SpellEnums {
         POISON,
         ENTROPY,
     }
-        public enum SPELL_TAGS {
+
+    public enum SPELL_TABS {
+        ARCANE,
+    }
+
+    public enum SPELL_TAGS {
         MIND_AFFECTING,
 
         FIRE,
@@ -105,7 +107,7 @@ public class SpellEnums {
         CHANNELING,
         INSTANT,
         MISSILE,
-TOP_DOWN,
+        TOP_DOWN,
     }
 
     public enum SPELL_TYPE {
@@ -115,52 +117,52 @@ TOP_DOWN,
 
     public enum SPELL_UPGRADE {
         ELEMENTAL(" Deals additional 15% as Lightning, Cold and Fire damage each.", 25, 25, " el", "passives;", getDamagePercentSpecialEffect(
-                false, "15,Lightning", "15,Cold", "15,Fire")),
+         false, "15,Lightning", "15,Cold", "15,Fire")),
         ASTRAL(" Deals additional 10% as Holy, Shadow, " + "Chaos and Death damage each.", 25, 25, " as", "passives;", getDamagePercentSpecialEffect(
-                false, "10,Holy", "10,Shadow", "10,Chaos", "10,Death")),
+         false, "10,Holy", "10,Shadow", "10,Chaos", "10,Death")),
 
         PSIONIC(" Deals additional Psionic damage based on the spell's Difficulty.", 25, 25, " el", "passives;", getDamageSpecialEffect("({Mastery}+{Spellpower}+{spell_spell_difficulty}) +({Mastery}+{Spellpower}+{spell_spell_difficulty}) *({Mastery}+{Spellpower}+{spell_spell_difficulty}) /5,Psionic")),
 
         IRIDESCENT(" Deals additional 15% as Lightning, Fire and Holy damage each.", 25, 25, " ir", "passives;", getDamagePercentSpecialEffect(
-                false, "15,Light", "15,Holy", "15,Fire"), "", "", "", "", "resistance mod;range", "-25>|<1"),
+         false, "15,Light", "15,Holy", "15,Fire"), "", "", "", "", "resistance mod;range", "-25>|<1"),
 
         BLAZE("Deals additional 25% Fire damage and applies an amount of Blaze counters equal to 10% of damage dealt.", 25, 25, " ir", "passives;", getDamagePercentSpecialEffect(
-                false, "25,Fire")
-                + ">|<" + getAddCounterSpecialEffect("Blaze,{active_damage_last_dealt}/10")),
+         false, "25,Fire")
+         + ">|<" + getAddCounterSpecialEffect("Blaze,{active_damage_last_dealt}/10")),
 
         MESMERIC(" Reduces target's Focus by " + STD_CONSTS + "/2.", 25, 25, " me", "passives;", getValueModSpecialEffect("C_Focus,-"
-                + STD_CONSTS + "/2")),
+         + STD_CONSTS + "/2")),
 
         FEARSOME(" Reduces target's Morale by " + STD_CONSTS + ".", 25, 25, " fe", "passives;", getValueModSpecialEffect("C_Morale,-"
-                + STD_CONSTS + "")),
+         + STD_CONSTS + "")),
 
         DARK_FIRE(" Deals additional 10% as Fire and Shadow damage.", 25, 25, " as", "passives;", getDamagePercentSpecialEffect(
-                false, "25,Shadow", "25,Fire")),
+         false, "25,Shadow", "25,Fire")),
 
         CORROSION(" Adds " + STD_CONSTS + "/10 Corrosion counters.", 25, 25, " as", "passives;", getAddCounterSpecialEffect("Corrosion,"
-                + STD_CONSTS + "/10")),
+         + STD_CONSTS + "/10")),
 
         BLIGHT(" Adds " + STD_CONSTS + "/8 Blight counters.", 25, 25, " as", "passives;", getAddCounterSpecialEffect("Blight,"
-                + STD_CONSTS + "/8")),
+         + STD_CONSTS + "/8")),
 
         DRAINING(" Reduces target's Stamina by " + STD_CONSTS + "/4.", 25, 25, " dr", "passives;", getValueModSpecialEffect("C_Stamina,-"
-                + STD_CONSTS + "/4")),
+         + STD_CONSTS + "/4")),
 
         HELLFIRE(" Deals additional 10% as " + "Chaos and Fire damage.", 25, 25, " as", "passives;", getDamagePercentSpecialEffect(
-                false, "25,Chaos", "25,Fire"), "", "", "", "", "", ""),
+         false, "25,Chaos", "25,Fire"), "", "", "", "", "", ""),
 
         PUTRID(" Adds " + STD_CONSTS + "/10 Disease counters.", 20, 15, " as", "passives;", getAddCounterSpecialEffect("Disease,"
-                + STD_CONSTS + "/10")),
+         + STD_CONSTS + "/10")),
 
         TOXIC(" Adds " + "" + "/5 Poison counters.", 15, 10, " as", "passives;", getAddCounterSpecialEffect("Poison,"
-                + "" + "/5")),
+         + "" + "/5")),
 
         APHOTIC,
 
         VAMPIRIC(" Drains (10+{Mastery}/2)% of damage dealt into caster's Endurance.",
-                35, 25, " de", "passives;", "LifeStealSpell(10+{Mastery}/2)"),
+         35, 25, " de", "passives;", "LifeStealSpell(10+{Mastery}/2)"),
         DEATH_CHILL(" Adds " + STD_CONSTS + "/10 Freeze counters.", 20, 15, " de", "passives;", getAddCounterSpecialEffect("Freeze,"
-                + STD_CONSTS + "/5")),
+         + STD_CONSTS + "/5")),
         SHOCK,
 
         ELDRITCH,
@@ -177,7 +179,7 @@ TOP_DOWN,
         // resistance penetration? special roll? add Intelligence to the Beat
         WICKED,
         VOODOO(" Random curse/impossible to dispel unless caster is dead/.", 20, 15, " de", "passives;", getAddCounterSpecialEffect("Freeze,"
-                + STD_CONSTS + "/5")),
+         + STD_CONSTS + "/5")),
         ENTROPY, // % of max toughness
 
         DESPAIR,
@@ -190,7 +192,7 @@ TOP_DOWN,
         MUTAGENIC,
         ACIDIC,
         DIRE(" Increases Spellpower by " + SPELL_DIFFICULTY + " and an additional {Mastery}/10%.", 35, 25, " de", "passives;", "AddParam(Spellpower Bonus 10+{Mastery}/2)", "", "", "", "", "Spellpower Bonus;Spellpower Mod", ""
-                + SPELL_DIFFICULTY +StringMaster.UPGRADE_SEPARATOR + "{Mastery}/10"),
+         + SPELL_DIFFICULTY + StringMaster.UPGRADE_SEPARATOR + "{Mastery}/10"),
         RAGE,
 
         LIFEBLOOD, // append {endurance}*(min(10+{Mastery},{1})/100 to formula
@@ -228,7 +230,7 @@ TOP_DOWN,
         NOVA,
         BLAST,
         GLOBAL
-		/*
+        /*
 		 * META MAGIC IN WIZARDRY!
 		 */;
         private Map<String, String> addPropMap;
@@ -251,7 +253,7 @@ TOP_DOWN,
         SPELL_UPGRADE(String description, int spellDifficultyMod, int costMod, String imgSuffix,
                       String addProps, String addPropValues) {
             this(description, spellDifficultyMod, costMod, imgSuffix, addProps, addPropValues, "",
-                    "", "", "", "", "");
+             "", "", "", "", "");
         }
 
         SPELL_UPGRADE(String description, int spellDifficultyMod, int costMod, String imgSuffix,
@@ -262,13 +264,13 @@ TOP_DOWN,
             this.costMod = costMod;
             this.spellDifficultyMod = spellDifficultyMod;
             this.addPropMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(addProps), StringMaster.openContainer(addPropValues));
+             .openContainer(addProps), StringMaster.openContainer(addPropValues));
             this.setPropMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(setProps), StringMaster.openContainer(setPropValues));
+             .openContainer(setProps), StringMaster.openContainer(setPropValues));
             this.paramModMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(modParams), StringMaster.openContainer(modParamValues));
+             .openContainer(modParams), StringMaster.openContainer(modParamValues));
             this.paramBonusMap = new MapMaster<String, String>().constructMap(StringMaster
-                    .openContainer(bonusParams), StringMaster.openContainer(bonusParamVals,
+             .openContainer(bonusParams), StringMaster.openContainer(bonusParamVals,
              StringMaster.UPGRADE_SEPARATOR));
         }
 
@@ -353,7 +355,7 @@ TOP_DOWN,
         public Image getGlyphImageSelected() {
             if (glyphImageSelected == null) {
                 glyphImageSelected = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                        + StringMaster.getWellFormattedString(name()) + " s.png");
+                 + StringMaster.getWellFormattedString(name()) + " s.png");
             }
             if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
@@ -364,7 +366,7 @@ TOP_DOWN,
         public Image getGlyphImageActive() {
             if (glyphImageActive == null) {
                 glyphImageActive = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                        + StringMaster.getWellFormattedString(name()) + " a.png");
+                 + StringMaster.getWellFormattedString(name()) + " a.png");
             }
             if (!ImageManager.isValidImage(glyphImageSelected)) {
                 return glyphImage;
@@ -375,7 +377,7 @@ TOP_DOWN,
         public Image getGlyphImage() {
             if (glyphImage == null) {
                 glyphImage = ImageManager.getImage(PathFinder.getSpellUpgradeGlyphsFolder()
-                        + StringMaster.getWellFormattedString(name()) + ".png");
+                 + StringMaster.getWellFormattedString(name()) + ".png");
             }
             return glyphImage;
         }

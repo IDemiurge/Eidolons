@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import main.libgdx.GdxImageTransformer;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.bf.overlays.HpBar;
@@ -13,6 +14,7 @@ import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import main.libgdx.gui.tooltips.Tooltip;
 import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.STD_IMAGES;
 
 import java.util.function.Supplier;
@@ -207,9 +209,23 @@ public class GridUnitView extends UnitView {
         initiativeQueueUnitView.setOutline(outline);
     }
 
-    public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
-        this.outlineSupplier = outlineSupplier;
-        initiativeQueueUnitView.setOutlineSupplier(outlineSupplier);
+    public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
+        this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
+        if (pathSupplier.get() == null) {
+            initiativeQueueUnitView.
+             setOutlineSupplier(() -> null);
+            return;
+        }
+        String sized = StringMaster.getAppendedImageFile(pathSupplier.get(), " " + InitiativePanel.imageSize);
+
+        initiativeQueueUnitView.
+         setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
+          TextureCache.getRegion(sized, GdxImageTransformer.size(sized, InitiativePanel.imageSize, true)));
+    }
+
+    public void setMainHero(boolean mainHero) {
+        this.mainHero = mainHero;
+        initiativeQueueUnitView.setMainHero(mainHero);
     }
 
     protected void updateVisible() {
@@ -235,6 +251,13 @@ public class GridUnitView extends UnitView {
             if (getHpBar() != null)
                 getHpBar().setVisible(isHpBarVisible());
         }
+    }
+
+    protected void setPortraitTexture(TextureRegion textureRegion) {
+//        if (initiativeQueueUnitView != null) {
+//            initiativeQueueUnitView.setPortraitTexture(textureRegion);
+//        } now set separately!
+        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 
     @Override

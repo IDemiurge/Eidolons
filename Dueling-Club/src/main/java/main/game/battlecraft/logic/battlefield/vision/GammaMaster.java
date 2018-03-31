@@ -8,7 +8,6 @@ import main.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
 import main.entity.obj.unit.Unit;
 import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.battlecraft.rules.mechanics.IlluminationRule;
 import main.game.bf.Coordinates;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
@@ -138,7 +137,8 @@ public class GammaMaster {
                         if (sub.getCoordinates().y == y)
                             if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
                              UNIT_TO_PLAYER_VISION.DETECTED) {
-                                alpha += LIGHT_EMITTER_ALPHA_FACTOR * IlluminationRule
+                                alpha += LIGHT_EMITTER_ALPHA_FACTOR *
+                                 master.getGame().getRules().getIlluminationRule()
                                  .getLightEmission((DC_Obj) sub);
                             }
                 }

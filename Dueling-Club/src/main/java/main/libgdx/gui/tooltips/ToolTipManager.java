@@ -8,6 +8,7 @@ import main.entity.Entity;
 import main.entity.active.DC_ActiveObj;
 import main.entity.active.DC_UnitAction;
 import main.game.battlecraft.DC_Engine;
+import main.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster3d;
@@ -132,6 +133,7 @@ public class ToolTipManager extends TablePanel {
 
     public void entityHoverOff(Entity entity) {
         if (DC_Engine.isAtbMode())
+            if (!ExplorationMaster.isExplorationOn())
             if (entity instanceof DC_ActiveObj) {
                 GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
             }

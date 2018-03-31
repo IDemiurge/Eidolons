@@ -55,8 +55,8 @@ public class TaskManager extends AiHandler {
                         if (target.getMainWeapon() != null) {
                             return target.getMainWeapon().getId();
                         }
-                        if (target.getSecondWeapon() != null) {
-                            return target.getSecondWeapon().getId();
+                        if (target.getOffhandWeapon() != null) {
+                            return target.getOffhandWeapon().getId();
                         }
                         return null;
 
@@ -71,8 +71,8 @@ public class TaskManager extends AiHandler {
                         if (target.getMainWeapon() != null) {
                             return target.getMainWeapon().getId();
                         }
-                        if (target.getSecondWeapon() != null) {
-                            return target.getSecondWeapon().getId();
+                        if (target.getOffhandWeapon() != null) {
+                            return target.getOffhandWeapon().getId();
                         }
                         return null;
                     case MY_ITEM:
@@ -81,8 +81,8 @@ public class TaskManager extends AiHandler {
                         if (action.getOwnerObj().getMainWeapon() != null) {
                             return action.getOwnerObj().getMainWeapon().getId();
                         }
-                        if (action.getOwnerObj().getSecondWeapon() != null) {
-                            return action.getOwnerObj().getSecondWeapon().getId();
+                        if (action.getOwnerObj().getOffhandWeapon() != null) {
+                            return action.getOwnerObj().getOffhandWeapon().getId();
                         }
                         return null;
                     case MY_ARMOR:

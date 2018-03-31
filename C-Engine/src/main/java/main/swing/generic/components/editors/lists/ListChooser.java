@@ -24,7 +24,9 @@ import main.system.graphics.GuiManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 public class ListChooser extends GenericListChooser<String> {
@@ -155,13 +157,14 @@ public class ListChooser extends GenericListChooser<String> {
     public static String chooseFiles(String path, String filter) {
         return chooseFile(path, filter, SELECTION_MODE.MULTIPLE, true);
     }
+
     public static File chooseFile(String path, String filter, SELECTION_MODE mode) {
-        return FileManager.getFile(path + "\\" +  chooseFile(path,filter,mode, false));
+        return FileManager.getFile(path + "\\" + chooseFile(path, filter, mode, false));
     }
 
-        public static String chooseFile(String path, String filter, SELECTION_MODE mode, boolean dirs) {
-            List<String> data = FileManager
-                .getFileNames(FileManager.getFilesFromDirectory(path, dirs));
+    public static String chooseFile(String path, String filter, SELECTION_MODE mode, boolean dirs) {
+        List<String> data = FileManager
+         .getFileNames(FileManager.getFilesFromDirectory(path, dirs));
         if (filter != null) {
             for (String str : new ArrayList<>(data)) {
                 if (!str.contains(filter)) {
@@ -173,7 +176,7 @@ public class ListChooser extends GenericListChooser<String> {
         if (name == null) {
             return null;
         }
-        return   name ;
+        return name;
     }
 
     public static String chooseStrings(List<String> stringList) {
@@ -190,7 +193,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseType(OBJ_TYPE TYPE, String group) {
         return new ListChooser(DataManager.toStringList(DataManager.getTypesGroup(TYPE, group)),
-                false, TYPE).getString();
+         false, TYPE).getString();
     }
 
     public static ObjType chooseType_(OBJ_TYPE TYPE) {
@@ -199,22 +202,22 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static ObjType chooseTypeFromSubgroup_(OBJ_TYPE TYPE, String subgroup) {
         return DataManager.getType(new ListChooser((DataManager.getTypesSubGroupNames(TYPE,
-                subgroup)), false, TYPE).getString(), TYPE);
+         subgroup)), false, TYPE).getString(), TYPE);
     }
 
     public static ObjType chooseTypeFromGroup_(OBJ_TYPE TYPE, String subgroup) {
         return DataManager.getType(new ListChooser(
-                (DataManager.getTypesGroupNames(TYPE, subgroup)), false, TYPE).getString(), TYPE);
+         (DataManager.getTypesGroupNames(TYPE, subgroup)), false, TYPE).getString(), TYPE);
     }
 
     public static ObjType chooseTypeObj_(OBJ_TYPE TYPE, String subgroup) {
         return DataManager.getType(new ListChooser((DataManager.getTypesSubGroupNames(TYPE,
-                subgroup)), false, TYPE).getString(), TYPE);
+         subgroup)), false, TYPE).getString(), TYPE);
     }
 
     public static ObjType chooseTypeObj(OBJ_TYPE TYPE, String group) {
         return DataManager.getType(new ListChooser((DataManager.getTypesGroupNames(TYPE, group)),
-                false, TYPE).getString(), TYPE);
+         false, TYPE).getString(), TYPE);
     }
 
     public static String chooseType(OBJ_TYPE TYPE, Ref ref, Condition heroCondition) {
@@ -249,7 +252,7 @@ public class ListChooser extends GenericListChooser<String> {
 
     public static String chooseTypes(List<ObjType> types) {
         return chooseTypes(types.get(0).getOBJ_TYPE_ENUM(), DataManager.toStringList(types),
-                new ArrayList<>());
+         new ArrayList<>());
     }
 
     public static List<ObjType> chooseTypes_(List<ObjType> types) {
@@ -262,7 +265,7 @@ public class ListChooser extends GenericListChooser<String> {
             listData = DataManager.toStringList(DataManager.getTypesGroup(TYPE, group));
         }
         List<String> secondListData = DataManager.toStringList(DataManager.toTypeList(property,
-                TYPE));
+         TYPE));
 
         listData.removeAll(secondListData);
         // setDecorator(decorator)
@@ -357,7 +360,7 @@ public class ListChooser extends GenericListChooser<String> {
                 } catch (Exception e) {
                     try {
                         Collections.sort(listData, new EnumMaster<>().getEnumTypesSorter(false,
-                                TYPE));
+                         TYPE));
                     } catch (Exception e2) {
                         e2.printStackTrace();
                     }
@@ -468,7 +471,7 @@ public class ListChooser extends GenericListChooser<String> {
     @Override
     protected String getMultiValue() {
         Enumeration<String> elements = ((DefaultListModel<String>) secondList.getModel())
-                .elements();
+         .elements();
         if (!elements.hasMoreElements()) {
             if (getSelectedItems(list).isEmpty()) {
                 return "";

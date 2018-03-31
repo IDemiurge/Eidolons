@@ -62,12 +62,12 @@ public class NumericCondition extends ConditionImpl {
     public String toString() {
 
         return greater.toString()
-                + ((!equal) ? (" greater than " + ((!strict) ? "or equal to "
-                : ""))
+         + ((!equal) ? (" greater than " + ((!strict) ? "or equal to "
+         : ""))
 
-                : " equal to ")
+         : " equal to ")
 
-                + than.toString();
+         + than.toString();
     }
 
     public Formula getComparedValue() {

@@ -18,21 +18,21 @@ public class WorkspaceMaster {
 
     public static final boolean FILTER_UNITS_LIST = false;
     private static final MASTERY[] SKILL_CONTENT_SCOPE = new MASTERY[]{SkillEnums.MASTERY.DEFENSE_MASTERY,
-            SkillEnums.MASTERY.DISCIPLINE_MASTERY, SkillEnums.MASTERY.ARMORER_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY,
-            SkillEnums.MASTERY.DETECTION_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY, SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,
-            SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY, SkillEnums.MASTERY.BLADE_MASTERY,
-            SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY, SkillEnums.MASTERY.POLEARM_MASTERY,
-            SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.UNARMED_MASTERY,};
+     SkillEnums.MASTERY.DISCIPLINE_MASTERY, SkillEnums.MASTERY.ARMORER_MASTERY, SkillEnums.MASTERY.STEALTH_MASTERY,
+     SkillEnums.MASTERY.DETECTION_MASTERY, SkillEnums.MASTERY.TWO_HANDED_MASTERY, SkillEnums.MASTERY.DUAL_WIELDING_MASTERY,
+     SkillEnums.MASTERY.MOBILITY_MASTERY, SkillEnums.MASTERY.ATHLETICS_MASTERY, SkillEnums.MASTERY.BLADE_MASTERY,
+     SkillEnums.MASTERY.AXE_MASTERY, SkillEnums.MASTERY.BLUNT_MASTERY, SkillEnums.MASTERY.POLEARM_MASTERY,
+     SkillEnums.MASTERY.MARKSMANSHIP_MASTERY, SkillEnums.MASTERY.UNARMED_MASTERY,};
     private static boolean testAllowed;
     private static boolean polishAllowed;
     private static boolean implAllowed;
     private static boolean focusAllowed;
     private static boolean fixAllowed;
     private static List<String> completeSkillSubgroups = new ListMaster<String>()
-            .getList("Axe", "Blade", "Polearm", "Blunt", "Two handed",
-                    "Dual Wielding", "Armorer", "Defense", "Meditation", "Discipline",
+     .getList("Axe", "Blade", "Polearm", "Blunt", "Two handed",
+      "Dual Wielding", "Armorer", "Defense", "Meditation", "Discipline",
 
-                    "Marksmanship", "Mobility", "Athletics", "Spellcraft", "Wizardry", "");
+      "Marksmanship", "Mobility", "Athletics", "Spellcraft", "Wizardry", "");
     String[] DESIGN_GROUPS = {};
     String[] IMPL_GROUPS = {};
     String[] POLISH_GROUPS = {};
@@ -65,14 +65,14 @@ public class WorkspaceMaster {
 
     public static boolean checkTypeIsReadyForUse(ObjType type) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
-                WORKSPACE_GROUP.class, type);
+         WORKSPACE_GROUP.class, type);
         switch ((DC_TYPE) type.getOBJ_TYPE_ENUM()) {
             case SKILLS:
                 if (ws == MetaEnums.WORKSPACE_GROUP.COMPLETE || ws == MetaEnums.WORKSPACE_GROUP.POLISH) {
                     return true;
                 }
                 return completeSkillSubgroups.contains(type.getSubGroupingKey()
-                        .replace(" Mastery", ""));
+                 .replace(" Mastery", ""));
         }
         if (ws == null) {
             return true;
@@ -103,7 +103,7 @@ public class WorkspaceMaster {
         // if (!checkTypeIsGenerallyReady(type))
         // return BORDER.HIGHLIGHTED_RED;
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
-                WORKSPACE_GROUP.class, type);
+         WORKSPACE_GROUP.class, type);
         if (ws != null) {
             switch (ws) {
                 case DESIGN:
@@ -124,7 +124,7 @@ public class WorkspaceMaster {
 
     public static boolean checkTypeIsReadyToTest(ObjType type) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
-                WORKSPACE_GROUP.class, type);
+         WORKSPACE_GROUP.class, type);
         if (ws != null) {
             switch (ws) {
                 case DESIGN:
@@ -151,7 +151,7 @@ public class WorkspaceMaster {
 
     public static boolean checkTypeIsGenerallyReady(ObjType type) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumFromEntityProp(
-                WORKSPACE_GROUP.class, type);
+         WORKSPACE_GROUP.class, type);
         if (ws != null) {
             switch (ws) {
                 case DESIGN:

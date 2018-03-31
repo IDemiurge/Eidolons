@@ -524,11 +524,11 @@ public class Coordinates {
             this.degrees = degrees;
         }
 
-        public Boolean isGrowX  (){
+        public Boolean isGrowX() {
             return growX;
         }
 
-        public Boolean isGrowY (){
+        public Boolean isGrowY() {
             return growY;
         }
 

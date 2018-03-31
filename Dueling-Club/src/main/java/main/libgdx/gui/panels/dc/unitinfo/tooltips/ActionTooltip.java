@@ -6,6 +6,7 @@ import main.entity.active.DC_ActiveObj;
 import main.libgdx.gui.NinePatchFactory;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.tooltips.Tooltip;
+import main.libgdx.screens.DungeonScreen;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public class ActionTooltip extends Tooltip {
     private final DC_ActiveObj action;
+    private boolean radial;
 
     public ActionTooltip(DC_ActiveObj el) {
         this.action = el;
@@ -35,8 +37,24 @@ public class ActionTooltip extends Tooltip {
     }
 
     @Override
+    protected boolean checkGuiStageBlocking() {
+        if (radial)
+            if (!DungeonScreen.getInstance().getGuiStage().getRadial().isReady())
+                return true;
+        return super.checkGuiStageBlocking();
+    }
+
+    @Override
     public void afterUpdateAct(float delta) {
         super.afterUpdateAct(delta);
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+    }
+
+    public boolean isRadial() {
+        return radial;
+    }
+
+    public void setRadial(boolean radial) {
+        this.radial = radial;
     }
 }

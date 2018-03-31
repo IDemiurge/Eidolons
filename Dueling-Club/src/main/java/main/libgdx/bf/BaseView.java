@@ -5,26 +5,26 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.active.DefaultActionHandler;
+import main.libgdx.bf.generic.FadeImageContainer;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.system.GuiEventManager;
 
 import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
 
 public class BaseView extends SuperActor {
-    protected final TextureRegion originalTexture;
+    protected   TextureRegion originalTexture;
     protected TextureRegion originalTextureAlt;
-    protected Image portrait;
+    protected FadeImageContainer portrait;
     private Image altPortrait;
 
     public BaseView(UnitViewOptions o) {
-        this(o.getPortrateTexture());
+        this(o.getPortraitTexture(), o.getPortraitPath());
 
     }
 
 
-    public BaseView(TextureRegion portraitTexture) {
-        portrait = new Image(portraitTexture);
-        originalTexture = portraitTexture;
+    public BaseView(TextureRegion portraitTexture, String path) {
+        portrait =initPortrait(portraitTexture, path);
         addActor(portrait);
 
         addListener(new BattleClickListener() {
@@ -52,12 +52,17 @@ public class BaseView extends SuperActor {
         });
     }
 
-    public Image getPortrait() {
-        return portrait;
+    protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
+        originalTexture = processPortraitTexture(portraitTexture, path);
+        return   new FadeImageContainer(new Image(originalTexture));
     }
 
-    public void setPortrait(Image portrait) {
-        this.portrait = portrait;
+    protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
+        return texture;
+    }
+
+    public FadeImageContainer getPortrait() {
+        return portrait;
     }
 
     public void setOriginalTextureAlt(TextureRegion originalTextureAlt) {

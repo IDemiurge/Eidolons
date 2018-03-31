@@ -187,8 +187,8 @@ public class UnitResetter extends EntityResetter<Unit> {
         // getMainWeapon().applyMods();
         // if (getArmor() != null)
         // getArmor().applyMods();
-        // if (getSecondWeapon() != null)
-        // getSecondWeapon().applyMods();
+        // if (getOffhandWeapon() != null)
+        // getOffhandWeapon().applyMods();
 
         if (getEntity().getEngagementTarget() != null) {
             EngagedRule.applyMods(getEntity());
@@ -267,8 +267,8 @@ public class UnitResetter extends EntityResetter<Unit> {
             getEntity().getNaturalWeapon().apply();
         }
 
-        if (getEntity().getSecondWeapon() != null) {
-            getEntity().getSecondWeapon().apply();
+        if (getEntity().getOffhandWeapon() != null) {
+            getEntity().getOffhandWeapon().apply();
             // if (checkDualWielding())
             // DC_Formulas.MAIN_HAND_DUAL_ATTACK_MOD
         } else if (getEntity().getOffhandNaturalWeapon() != null) {
@@ -514,9 +514,9 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void afterBuffRuleEffects() {
-        if (getEntity().getSecondWeapon() != null) {
+        if (getEntity().getOffhandWeapon() != null) {
             setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));
-            getEntity().getSecondWeapon().applyMasteryBonus();
+            getEntity().getOffhandWeapon().applyMasteryBonus();
 
         } else if (getEntity().getNaturalWeapon(true) != null) {
             setParam(PARAMS.OFF_HAND_ATTACK, getIntParam(PARAMS.ATTACK));

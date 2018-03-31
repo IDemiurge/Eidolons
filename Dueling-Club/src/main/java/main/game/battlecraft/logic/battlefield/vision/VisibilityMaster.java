@@ -42,9 +42,9 @@ public class VisibilityMaster {
             return null;
         }
         if (type == VisionEnums.OUTLINE_TYPE.BLOCKED_OUTLINE) {
-            return getImagePath(VisionEnums.OUTLINE_TYPE.THICK_DARKNESS, obj);
+            return getImagePath(VisionEnums.OUTLINE_TYPE.DEEPER_DARKNESS, obj);
         }
-        if ((type == VisionEnums.OUTLINE_TYPE.THICK_DARKNESS || type == VisionEnums.OUTLINE_TYPE.BLINDING_LIGHT)) {
+        if ((type == VisionEnums.OUTLINE_TYPE.DEEPER_DARKNESS || type == VisionEnums.OUTLINE_TYPE.BLINDING_LIGHT)) {
             return getImagePath(type, obj);
         }
         if (obj instanceof DC_Cell) {
@@ -109,9 +109,9 @@ public class VisibilityMaster {
     private VISIBILITY_LEVEL getVisibility(OUTLINE_TYPE type) {
         if (type != null) {
             switch (type) {
-                case OUT_OF_RANGE:
+                case UNKNOWN:
                     return VISIBILITY_LEVEL.UNSEEN;
-                case THICK_DARKNESS:
+                case DEEPER_DARKNESS:
                 case BLINDING_LIGHT:
                     return VISIBILITY_LEVEL.CONCEALED;
                 case BLOCKED_OUTLINE:

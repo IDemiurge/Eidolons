@@ -36,16 +36,17 @@ public class ConstructionManager {
 
         if (item.isENUM()) {
             return new Construct(node.getNodeName(), node.getTextContent(),
-                    true);
+             true);
         }
-        String xml=XML_Converter.getStringFromXML(node, false);
+        String xml = XML_Converter.getStringFromXML(node, false);
         return new Construct(node.getNodeName(), getConstructs(node), xml);
     }
+
     public static String getXmlFromObject(Object obj) { //for restoring constructor xml
-        String xml=""+obj;
-        if (obj.getClass().isEnum()){
+        String xml = "" + obj;
+        if (obj.getClass().isEnum()) {
 // StringMaster.getWellFormattedString(string
-        }else {
+        } else {
             //primitive
 
         }
@@ -54,11 +55,11 @@ public class ConstructionManager {
     }
 
     public static String getXmlFromConstructorData(String name, Pair<Class, String>[] pairs) {
-        String xml="";
+        String xml = "";
         for (Pair<Class, String> sub : pairs) {
             //TODO find arg for that class?
             // do  xml node and classname match?
-            xml+= XML_Converter.wrap(Mapper.getArgName( sub.getKey() ), sub.getValue());
+            xml += XML_Converter.wrap(Mapper.getArgName(sub.getKey()), sub.getValue());
         }
         return XML_Converter.wrap(name, xml);
     }

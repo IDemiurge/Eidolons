@@ -722,7 +722,7 @@ public class StringMaster {
         if (value == null)
             return 0;
         if (!isInteger(value)) {
-                return new Formula(value).getInt(ref == null ? new Ref() : ref);
+            return new Formula(value).getInt(ref == null ? new Ref() : ref);
         }
         if (value.contains(".")) {
             value = value.split(Pattern.quote("."))[0];
@@ -747,19 +747,19 @@ public class StringMaster {
             }
             return result;
         } else {
-                String result = "";
-                for (char c : value.toCharArray()) {
-                    if (c == ('.')) {
-                        break;
-                    }
-                    if (c == ('-') || Character.isDigit(c)) {
+            String result = "";
+            for (char c : value.toCharArray()) {
+                if (c == ('.')) {
+                    break;
+                }
+                if (c == ('-') || Character.isDigit(c)) {
 
-                        result += c;
-                    }
+                    result += c;
                 }
-                if (!result.isEmpty()) {
-                    return Integer.valueOf(result);
-                }
+            }
+            if (!result.isEmpty()) {
+                return Integer.valueOf(result);
+            }
         }
 
         return 0;
@@ -770,9 +770,10 @@ public class StringMaster {
     }
 
     public static String getOrdinal(int number) {
-        return number+getOrdinalEnding(number);
+        return number + getOrdinalEnding(number);
     }
-        public static String getOrdinalEnding(int number) {
+
+    public static String getOrdinalEnding(int number) {
         int lastDigit = number % 10;
         if (lastDigit == 1) {
             return "st";
@@ -1511,7 +1512,7 @@ public class StringMaster {
         try {
             return Double.valueOf(doubleParam);
         } catch (Exception e) {
-             main.system.ExceptionMaster.printStackTrace(e);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0;
     }
@@ -1524,7 +1525,7 @@ public class StringMaster {
         try {
             return Float.valueOf(floatParam);
         } catch (Exception e) {
-             main.system.ExceptionMaster.printStackTrace(e);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0f;
     }
@@ -1617,7 +1618,7 @@ public class StringMaster {
 
 
     public static String removePreviousPathSegments(String string, String path) {
-            String p = string.toLowerCase();
+        String p = string.toLowerCase();
 
         path = path.toLowerCase();
         String prefix = "";
@@ -1706,9 +1707,9 @@ public class StringMaster {
     }
 
     public static String getAppendedImageFile(String file, String suffix) {
-        String format= getFormat(file);
+        String format = getFormat(file);
         String newFile = cropFormat(file) + suffix + format;
-        if (FileManager.isFile(PathFinder.getImagePath()+ newFile)) {
+        if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {
             return newFile;
         }
         return file;

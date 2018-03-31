@@ -53,7 +53,7 @@ public class Parameter extends DynamicValue {
         }
         Integer id = ref.getId(obj_string);
 
-        if (id==null )
+        if (id == null)
             entity = ref.getType(obj_string);
         else {
             entity = game.getObjectById(id);

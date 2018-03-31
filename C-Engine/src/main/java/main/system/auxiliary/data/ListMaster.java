@@ -9,7 +9,6 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.*;
 
@@ -34,16 +33,7 @@ public class ListMaster<E> {
         return list;
     }
 
-    public   List<E> toList_(E... values) {
-        List<E> list = new ArrayList<>();
-        for (E v : values) {
-            if (v != null) {
-                list.add(v);
-            }
-        }
-        return list;
-    }
-        public static List<Object> toList(Object... values) {
+    public static List<Object> toList(Object... values) {
         List<Object> list = new ArrayList<>();
         for (Object v : values) {
             if (v != null) {
@@ -74,7 +64,7 @@ public class ListMaster<E> {
                 if (v instanceof Entity && preferEntityNameOrIfNameKnown != null) {
                     Entity entity = (Entity) v;
                     string = preferEntityNameOrIfNameKnown ? entity.getName() : entity
-                            .getNameIfKnown();
+                     .getNameIfKnown();
                 } else {
                     if (v instanceof Object[]) {
                         Object[] objects = (Object[]) v;
@@ -252,6 +242,16 @@ public class ListMaster<E> {
         }
         list.clear();
         list.addAll(inv_list);
+    }
+
+    public List<E> toList_(E... values) {
+        List<E> list = new ArrayList<>();
+        for (E v : values) {
+            if (v != null) {
+                list.add(v);
+            }
+        }
+        return list;
     }
 
     public List<E> toList(String string) {

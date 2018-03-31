@@ -78,8 +78,8 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
 //        if (         (coordinates == null || getActiveObj().checkBool(STD_BOOLS.APPLY_THRU))) {
         if (ref.getGroup() != null) {
             if (!ref.getGroup().getObjects().isEmpty()) {
-                if (coordinates==null )
-                coordinates = new LinkedHashSet();
+                if (coordinates == null)
+                    coordinates = new LinkedHashSet();
                 ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
             }
         } else {

@@ -21,8 +21,8 @@ public abstract class TargetingImpl implements Targeting
     public String toString() {
 
         return getClass().getSimpleName()
-                // + " with " + filter.toString()
-                ;
+         // + " with " + filter.toString()
+         ;
     }
 
     @Override

@@ -6,7 +6,7 @@ import main.ability.effects.TriggeredEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 
-public class InterruptEffect extends MicroEffect implements TriggeredEffect{
+public class InterruptEffect extends MicroEffect implements TriggeredEffect {
 
     private String OBJ_REF;
 

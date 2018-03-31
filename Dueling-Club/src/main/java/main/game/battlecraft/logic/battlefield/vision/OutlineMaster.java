@@ -101,7 +101,7 @@ public class OutlineMaster {
         } else {
             if (activeUnit.isMine()) //TODO fix this
                 unit.setGamma(0);
-            return OUTLINE_TYPE.OUT_OF_RANGE;
+            return OUTLINE_TYPE.UNKNOWN;
         }
         int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);
 
@@ -114,7 +114,7 @@ public class OutlineMaster {
         }
         // TODO LIGHT_EMISSION !
         if (gamma <= GammaMaster.getGammaForThickDarkness()) {
-            return OUTLINE_TYPE.THICK_DARKNESS;
+            return OUTLINE_TYPE.DEEPER_DARKNESS;
         }
         if (gamma < GammaMaster.getGammaForDarkOutline()) {
             return OUTLINE_TYPE.DARK_OUTLINE;
@@ -123,18 +123,6 @@ public class OutlineMaster {
     }
 
     protected OUTLINE_IMAGE getImageVague(Unit unit) {
-        // if (unit.isHuge()) {
-        //
-        // }
-        // if (unit.isShort()) {
-        //
-        // }
-        // if (unit.isSmall()) {
-        //
-        // }
-        // if (unit.isTall()) {
-        //
-        // }
         if (unit.isWall()) {
             return OUTLINE_IMAGE.WALL;
         }

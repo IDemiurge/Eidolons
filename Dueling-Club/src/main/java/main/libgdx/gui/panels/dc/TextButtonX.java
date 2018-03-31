@@ -40,6 +40,10 @@ public class TextButtonX extends TextButton implements EventListener {
         addListener(this);
     }
 
+    public TextButtonX(STD_BUTTON button) {
+        this("", button, null);
+    }
+
     @Override
     public boolean handle(Event e) {
         if (runnable == null)

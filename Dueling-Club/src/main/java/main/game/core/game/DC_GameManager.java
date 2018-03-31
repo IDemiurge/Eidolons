@@ -203,7 +203,7 @@ public class DC_GameManager extends GameManager {
 
 //TODO shouldn't be necessary!
         getGame().getRules().getIlluminationRule().resetIllumination();
-        getGame().getRules().getIlluminationRule().initLightEmission();
+        getGame().getRules().getIlluminationRule().applyLightEmission();
 
 //        DrawMasterStatic.getObjImageCache().clear();
         if (!OutlineMaster.isAutoOutlinesOff())
@@ -223,6 +223,7 @@ public class DC_GameManager extends GameManager {
         //set dirty flag?
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
+        GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, getMainHero());
     }
 
     public void resetWallMap() {

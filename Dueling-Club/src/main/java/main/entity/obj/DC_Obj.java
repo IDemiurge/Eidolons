@@ -78,7 +78,7 @@ public abstract class DC_Obj extends MicroObj {
         if (!CoreEngine.isLevelEditor()) {
             if ((this instanceof DC_Cell) || (this instanceof Unit)) {
                 playerVisionStatus = VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED;
-                outlineTypeForPlayer = (this instanceof DC_Cell) ? VisionEnums.OUTLINE_TYPE.THICK_DARKNESS
+                outlineTypeForPlayer = (this instanceof DC_Cell) ? VisionEnums.OUTLINE_TYPE.DEEPER_DARKNESS
                  : VisionEnums.OUTLINE_TYPE.DARK_OUTLINE;
                 visibilityLevelForPlayer = VISIBILITY_LEVEL.CONCEALED;
             }

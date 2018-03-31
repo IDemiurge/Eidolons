@@ -50,7 +50,7 @@ public class DataManager {
     private static ObjType[] baseArmorTypes;
     private static ObjType[] baseGarmentTypes;
     private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
-    private static int log=0;
+    private static int log = 0;
 
     public static void init() {
         subGroupsMaps = new HashMap<>();

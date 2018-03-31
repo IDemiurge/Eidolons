@@ -53,7 +53,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     DUNGEONS("dungeons", G_PROPS.ARCADE_REGION, 16),
     PARTY("party", G_PROPS.GROUP, 17),
     TERRAIN("terrain", G_PROPS.GROUP, 18, false),
-//    FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),
+    //    FACTIONS("factions", G_PROPS.FACTION_GROUP, 19),
     ARCADES("arcades", G_PROPS.GROUP, 20),
 
     SCENARIOS("scenarios", G_PROPS.GROUP, 21),
@@ -67,7 +67,7 @@ public enum DC_TYPE implements OBJ_TYPE {
     ACTORS("actors", G_PROPS.GROUP, 25),
     SHOPS("shops", G_PROPS.GROUP, 26),
 
-//    CHARACTER("character", G_PROPS.GROUP, 32),
+    //    CHARACTER("character", G_PROPS.GROUP, 32),
 //    MERCHANT(DC_TYPE.CHARACTER, "merchant", G_PROPS.GROUP, 27),
 //    INNKEEPER(DC_TYPE.CHARACTER, "innkeeper", G_PROPS.GROUP, 28),
 //    LIBRARIAN(DC_TYPE.CHARACTER, "librarian", G_PROPS.GROUP, 29),

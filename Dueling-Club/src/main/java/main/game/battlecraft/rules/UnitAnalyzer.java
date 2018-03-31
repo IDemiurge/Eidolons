@@ -34,12 +34,12 @@ public class UnitAnalyzer {
 
         // if (checkDualNaturalWeapons(unit))
         // return true;
-        // if (unit.getSecondWeapon() == null)
+        // if (unit.getOffhandWeapon() == null)
         // return false;
-        // if (unit.getSecondWeapon().isRanged() ||
-        // unit.getSecondWeapon().isMagical())
+        // if (unit.getOffhandWeapon().isRanged() ||
+        // unit.getOffhandWeapon().isMagical())
         // return false;
-        // return (unit.getSecondWeapon().isWeapon());
+        // return (unit.getOffhandWeapon().isWeapon());
     }
 
     public static boolean isFlying(Entity u) {
@@ -67,21 +67,21 @@ public class UnitAnalyzer {
     }
 
     public static boolean checkDualWielding(Unit unit) {
-        if (unit.getSecondWeapon() == null || unit.getMainWeapon() == null) {
+        if (unit.getOffhandWeapon() == null || unit.getMainWeapon() == null) {
             return false;
         }
         if (unit.getMainWeapon().isRanged() || unit.getMainWeapon().isMagical()) {
             return false;
         }
-        if (unit.getSecondWeapon().isRanged() || unit.getSecondWeapon().isMagical()) {
+        if (unit.getOffhandWeapon().isRanged() || unit.getOffhandWeapon().isMagical()) {
             return false;
         }
-        return (unit.getSecondWeapon().isWeapon());
+        return (unit.getOffhandWeapon().isWeapon());
 
     }
 
     public static boolean checkDualNaturalWeapons(Unit unit) {
-        if (unit.getMainWeapon() == null && unit.getSecondWeapon() == null) {
+        if (unit.getMainWeapon() == null && unit.getOffhandWeapon() == null) {
             if (unit.getNaturalWeapon(false) != null && unit.getNaturalWeapon(true) != null) {
                 return true;
             }

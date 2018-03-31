@@ -30,14 +30,14 @@ public class G_TablePanel extends G_Panel {
             names = emptyNames;
         }
         table = new G_Table(new DefaultTableModel(data, new Vector<>(
-                Arrays.asList(names))) {
+         Arrays.asList(names))) {
             public java.lang.Class<?> getColumnClass(int arg0) {
                 return String.class;
             }
 
         }
 
-                , b
+         , b
 
         );
         setColumnSizes();
@@ -55,12 +55,12 @@ public class G_TablePanel extends G_Panel {
         // .setMinWidth(GuiManager.getInfoNamesColumnMinWidth());
         table.getColumn(names[0]).setPreferredWidth(GuiManager.getObjSize());
         table.getColumn(names[0])
-                .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
+         .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
 
         table.getColumnModel().getColumn(1)
-                .setPreferredWidth(GuiManager.getSquareCellSize());
+         .setPreferredWidth(GuiManager.getSquareCellSize());
         table.getColumnModel().getColumn(1)
-                .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
+         .setMaxWidth(GuiManager.getInfoNamesColumnMaxWidth());
         // table.getColumnModel().getColumn(1)
         // .setMinWidth(GuiManager.getInfoNamesColumnMinWidth());
 

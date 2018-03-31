@@ -2,8 +2,8 @@ package main.system.auxiliary;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.util.Enumeration;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 public class TreeMaster {

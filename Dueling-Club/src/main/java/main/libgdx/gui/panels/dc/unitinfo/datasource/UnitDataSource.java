@@ -369,7 +369,7 @@ public class UnitDataSource implements
 
     @Override
     public ValueContainer getOffWeapon() {
-        DC_WeaponObj mainWeapon = unit.getSecondWeapon();
+        DC_WeaponObj mainWeapon = unit.getOffhandWeapon();
 
         return getWeaponValueContainer(mainWeapon);
     }

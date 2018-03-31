@@ -237,7 +237,7 @@ public class HeroManager {
                 e.apply(Ref.getSelfTargetingRefCopy(hero));
             }
             EffectFinder.applyAttachmentEffects(hero.getMainWeapon(), null);
-            EffectFinder.applyAttachmentEffects(hero.getSecondWeapon(), null);
+            EffectFinder.applyAttachmentEffects(hero.getOffhandWeapon(), null);
             EffectFinder.applyAttachmentEffects(hero.getArmor(), null);
 
         }
@@ -802,12 +802,12 @@ public class HeroManager {
         }
         if (save) {
             if (slot == ItemEnums.ITEM_SLOT.MAIN_HAND) {
-                if (hero.getSecondWeapon() != null) {
-                    if (hero.getSecondWeapon().isWeapon()) {
-                        if (!hero.getSecondWeapon().checkSingleProp(G_PROPS.WEAPON_CLASS,
+                if (hero.getOffhandWeapon() != null) {
+                    if (hero.getOffhandWeapon().isWeapon()) {
+                        if (!hero.getOffhandWeapon().checkSingleProp(G_PROPS.WEAPON_CLASS,
                          ItemEnums.WEAPON_CLASS.OFF_HAND_ONLY + "")) {
                             removeSlotItem(hero, ItemEnums.ITEM_SLOT.OFF_HAND, false);
-                            setHeroItem(hero, slot, hero.getSecondWeapon().getType());
+                            setHeroItem(hero, slot, hero.getOffhandWeapon().getType());
                             return;
                         }
                     }

@@ -813,12 +813,12 @@ public class ContentManager {
         if (type == null) {
             if (!CoreEngine.isMapEditor())
                 if (CoreEngine.isArcaneVault())
-                    return null ;
-        if (!XML_Reader.isMacro()) {
-            type = MACRO_OBJ_TYPES.getType(typeName);
-        } else {
-            type = DC_TYPE.getType(typeName);
-        }
+                    return null;
+            if (!XML_Reader.isMacro()) {
+                type = MACRO_OBJ_TYPES.getType(typeName);
+            } else {
+                type = DC_TYPE.getType(typeName);
+            }
         }
         return type;
     }
@@ -877,14 +877,14 @@ public class ContentManager {
             return instance.checkAllApplies(p, type);
         }
         if (p.getEntityType().equals(type))
-        return true;
+            return true;
         OBJ_TYPE TYPE = getOBJ_TYPE(type);
-        if (TYPE==null )
+        if (TYPE == null)
             return false;
         TYPE = TYPE.getParent();
-        while (TYPE!=null ){
+        while (TYPE != null) {
             if (isValueForOBJ_TYPE(TYPE, p)) {
-                return  true;
+                return true;
             }
             TYPE = TYPE.getParent();
         }

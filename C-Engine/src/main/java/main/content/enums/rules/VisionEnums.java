@@ -56,14 +56,9 @@ public class VisionEnums {
     }
 
     public enum OUTLINE_TYPE {
-        BLINDING_LIGHT, VAGUE_LIGHT, THICK_DARKNESS, VAGUE_OUTLINE, DARK_OUTLINE,
+        BLINDING_LIGHT, VAGUE_LIGHT, DEEPER_DARKNESS, VAGUE_OUTLINE, DARK_OUTLINE,
         BRILLIANT_OUTLINE, CLEAR_OUTLINE, MASS_OUTLINE, BLOCKED_OUTLINE, FLAT_OUTLINE,
-        OUT_OF_RANGE {
-            @Override
-            public String getImagePath() {
-                return THICK_DARKNESS.toString();
-            }
-        };
+        UNKNOWN;
 
         String outlinePath = "ui\\outlines\\" + toString();
         String path;

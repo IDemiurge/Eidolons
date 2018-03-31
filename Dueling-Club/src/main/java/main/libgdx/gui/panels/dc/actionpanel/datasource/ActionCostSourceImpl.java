@@ -1,9 +1,13 @@
 package main.libgdx.gui.panels.dc.actionpanel.datasource;
 
+import main.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.entity.active.DC_ActiveObj;
+import main.game.battlecraft.DC_Engine;
+import main.game.core.atb.AtbController;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.system.images.ImageManager;
+import main.system.math.MathMaster;
 import main.system.text.TextWrapper;
 
 import java.util.ArrayList;
@@ -28,9 +32,15 @@ public class ActionCostSourceImpl implements ActionCostSource {
         for (int i = 0, costsLength = RESOURCE_COSTS.length; i < costsLength; i++) {
             PARAMETER cost = RESOURCE_COSTS[i];
             final double param = el.getParamDouble(cost);
+            String text = String.format(Locale.US, "%.1f", param);
+            if (cost == PARAMS.AP_COST) {
+                if (DC_Engine.isAtbMode()) {
+                    text =   MathMaster.round((float) (param * AtbController.ATB_MOD))  + "%";
+                }
+            }
             if (param > 0) {
                 final String iconPath = ImageManager.getValueIconPath(COSTS_ICON_PARAMS[i]);
-                costsList.add(new ValueContainer(getOrCreateR(iconPath), String.format(Locale.US, "%.1f", param)));
+                costsList.add(new ValueContainer(getOrCreateR(iconPath), text));
             }
         }
 

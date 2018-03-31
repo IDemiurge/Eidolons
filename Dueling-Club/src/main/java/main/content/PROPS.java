@@ -445,7 +445,9 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
      ("", true, "spells", "actions"), ANIM_SFX_IMPACT
      ("", true, "spells", "actions"), ANIM_SFX_AFTEREFFECT
      ("", true, "spells", "actions"), ANIM_MODS_SFX
-     ("", true, "spells", "actions"),;
+     ("", true, "spells", "actions"),
+
+    SPRITE_PATH("weapons", null);
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

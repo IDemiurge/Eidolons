@@ -49,7 +49,7 @@ public class EquipEffect extends MicroEffect implements OneshotEffect {
 
         boolean mainHand = true;
         // item.getProp(prop)
-        if (hero.getMainWeapon() != null && hero.getSecondWeapon() == null) {
+        if (hero.getMainWeapon() != null && hero.getOffhandWeapon() == null) {
             mainHand = false;
         }
         if (weapon || quickItem) {

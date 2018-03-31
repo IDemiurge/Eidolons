@@ -44,7 +44,7 @@ public class ListObjRenderer<String> implements ListCellRenderer<String> {
                 switch (sub) {
                     case TEXT_DISPLAYED:
                         component = SwingMaster.decorateWithText(type.getName(), Color.black,
-                                component, "pos 0 20");
+                         component, "pos 0 20");
                         break;
                     default:
                         break;

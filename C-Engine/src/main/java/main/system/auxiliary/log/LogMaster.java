@@ -108,7 +108,7 @@ public class LogMaster {
     public static boolean CONDITION_DEBUG_ON = false;
     public static boolean MATH_DEBUG_ON = false;
     public static boolean TRAVEL_DEBUG_ON = false;
-    public static boolean VISIBILITY_DEBUG_ON = true;
+    public static boolean VISIBILITY_DEBUG_ON = false;
     public static boolean WAITING_DEBUG_ON = false;
     public static boolean ATTACKING_DEBUG_ON = false;
     public static boolean VALUE_DEBUG_ON = false;
@@ -125,20 +125,20 @@ public class LogMaster {
     public static boolean EFFECT_PASSIVE_DEBUG_ON = !true;
     public static boolean MACRO_DYNAMICS_ON = true;
     public static boolean GENERATION_ON = false;
-    public static boolean AI_TRAINING_ON=true;
+    public static boolean AI_TRAINING_ON = true;
     static String shout = "\n******************\n";
     private static boolean off = false;
     private static int PRIORITY = 1;
 
     public static Logger getInstance() {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
-                .getCanonicalName();
+         .getCanonicalName();
         return Logger.getLogger(callingClassName);
     }
 
     public static void shout(String s) {
-if (!CoreEngine.isExe())
-        System.out.println(shout + s + shout);
+        if (!CoreEngine.isExe())
+            System.out.println(shout + s + shout);
     }
 
     public static void log(String s) {
@@ -356,6 +356,7 @@ if (!CoreEngine.isExe())
 
         LogFileMaster.checkWriteToFileNewThread(priority, s);
     }
+
     private static boolean isLogInNewThread() {
         return false;
     }

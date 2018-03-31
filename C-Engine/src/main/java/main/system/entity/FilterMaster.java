@@ -26,8 +26,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.Formula;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -40,8 +40,8 @@ public class FilterMaster {
     }
 
     public static Collection<? extends Entity> filterByPropJ8
-            (Collection<? extends Entity> list,
-             String prop, String value) {
+     (Collection<? extends Entity> list,
+      String prop, String value) {
         list.removeIf(getPredicateProperty(ContentManager.getPROP(prop), value, true));
         return list;
     }
@@ -51,18 +51,20 @@ public class FilterMaster {
         return getPredicateProperty(prop, value, false);
     }
 
-        private static Predicate<Entity> getPredicateProperty(PROPERTY prop, String value, boolean negative) {
-            return e -> {
+    private static Predicate<Entity> getPredicateProperty(PROPERTY prop, String value, boolean negative) {
+        return e -> {
             if (negative) return !e.checkProperty((prop), value);
             return e.checkProperty((prop), value);
         };
     }
+
     public static List<ObjType> getFilteredTypeList(OBJ_TYPE TYPE, PROPERTY prop, String value) {
-         List<ObjType> list = new ArrayList<>(DataManager.getTypes(TYPE));
+        List<ObjType> list = new ArrayList<>(DataManager.getTypes(TYPE));
 
         list.removeIf(getPredicateProperty(prop, value, true));
         return list;
     }
+
     public static Collection<?> filterByProp(Collection<?> list, String prop, String value) {
         return filterByProp(list, prop, value, false);
     }
@@ -85,7 +87,7 @@ public class FilterMaster {
     public static Collection<?> filterByParam(List<ObjType> list, PARAMETER param, int value,
                                               OBJ_TYPE TYPE, Boolean greater_less_equal) {
         return filter(list, param.getName(), value + "", TYPE, false, false,
-                greater_less_equal);
+         greater_less_equal);
     }
 
     public static Collection<?> filter(Collection<?> list, String valueName, String value,
@@ -107,13 +109,13 @@ public class FilterMaster {
             if (prop) {
                 PROPERTY property = ContentManager.getPROP(valueName);
                 if (property.isContainer())
-                    // if (!BooleanMaster.isFalse(strict_or_greater_less_equal))
+                // if (!BooleanMaster.isFalse(strict_or_greater_less_equal))
                 {
                     result = entity.checkContainerProp(property, value,
-                            strict_or_greater_less_equal == null);
+                     strict_or_greater_less_equal == null);
                 } else {
                     result = StringMaster.compareByChar(entity.getProperty(property), value,
-                            BooleanMaster.isTrue(strict_or_greater_less_equal));
+                     BooleanMaster.isTrue(strict_or_greater_less_equal));
                 }
                 // entity.checkProperty();
             } else {
@@ -186,7 +188,7 @@ public class FilterMaster {
         return list;
     }
 
-    public static void applyFilter(Collection<? extends  Obj> objects, FILTERS filter, Ref ref, boolean out) {
+    public static void applyFilter(Collection<? extends Obj> objects, FILTERS filter, Ref ref, boolean out) {
         List<Obj> objectsToRemove = new ArrayList<>();
         for (Obj obj : objects) {
             if ((out) == checkFilter(obj, filter, ref)) {
@@ -220,9 +222,9 @@ public class FilterMaster {
 
     public static List<? extends Entity> getUnitsInRadius(Obj unit, int radius) {
         Conditions conditions = new Conditions(ConditionMaster.getAliveFilterCondition(),
-                ConditionMaster.getDistanceFilterCondition("SOURCE", radius, true));
+         ConditionMaster.getDistanceFilterCondition("SOURCE", radius, true));
         Set<Obj> set = new Filter<Obj>(unit.getRef(), conditions, C_OBJ_TYPE.UNITS_CHARS)
-                .getObjects();
+         .getObjects();
         return new ArrayList<>(set);
     }
 
@@ -235,7 +237,7 @@ public class FilterMaster {
         conditions.add(ConditionMaster.getDistanceFilterCondition("SOURCE", radius, true));
         conditions.add(new NotCondition(new OccupiedCondition("MATCH")));
         Set<Obj> set = new Filter<Obj>(centerObj.getRef(), conditions, DC_TYPE.TERRAIN)
-                .getObjects();
+         .getObjects();
         return set;
     }
 

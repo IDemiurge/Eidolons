@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.*;
 import main.entity.Entity;
+import main.entity.item.DC_WeaponObj;
 import main.entity.obj.DC_Obj;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.anims.AnimMaster;
@@ -19,9 +17,11 @@ import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.stage.Closable;
 import main.libgdx.stage.StageWithClosable;
 import main.libgdx.texture.TextureCache;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.audio.SoundController;
 import main.system.audio.SoundController.SOUND_EVENT;
+import main.system.math.MathMaster;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,28 +29,29 @@ import java.util.List;
 import static main.system.GuiEventType.*;
 
 public class RadialMenu extends Group implements Closable {
-    private RadialValueContainer currentNode;
+    protected RadialValueContainer currentNode;
 
-    private RadialValueContainer closeButton;
-    private int radius;
+    protected RadialValueContainer closeButton;
+    protected int radius;
+    protected boolean ready = true;
 
     public RadialMenu() {
         final TextureRegion t = TextureCache.getOrCreateR(getEmptyNodePath());
         closeButton = new RadialValueContainer(new TextureRegion(t), this::close);
-//        closeButton.setX(-getOffsetX() );
-//        closeButton.setWidth(80);
-//        closeButton.setHeight(80);
         ValueTooltip tooltip = new ValueTooltip();
         tooltip.setUserObject(Arrays.asList(new ValueContainer("Close", "")));
         closeButton.addListener(tooltip.getController());
 
+        bindEvents();
+    }
+
+    protected void bindEvents() {
         addListener(new InputListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 return event.getTarget() == RadialMenu.this || super.mouseMoved(event, x, y);
             }
         });
-
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             RadialManager.clearCache();
         });
@@ -59,18 +60,28 @@ public class RadialMenu extends Group implements Closable {
             close();
         });
         GuiEventManager.bind(CREATE_RADIAL_MENU, obj -> {
-            DC_Obj dc_obj = (DC_Obj) obj.get();
-            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-                init(DebugRadialManager.getDebugNodes(dc_obj));
-            } else {
-                init(RadialManager.getOrCreateRadialMenu(dc_obj));
-            }
+            triggered(obj);
+
         });
+    }
+
+    protected void triggered(EventCallbackParam obj) {
+        if (!(obj.get() instanceof DC_Obj))
+            return;
+        if ((obj.get() instanceof DC_WeaponObj))
+            return;
+        DC_Obj dc_obj = (DC_Obj) obj.get();
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            init(DebugRadialManager.getDebugNodes(dc_obj));
+        } else {
+            init(RadialManager.getOrCreateRadialMenu(dc_obj));
+        }
     }
 
     public void close() {
         if (currentNode == null)
             return;
+        ready = false;
         if (isAnimated()) {
             currentNode.getChildNodes().forEach(child -> {
                 ActorMaster.addMoveToAction(child, currentNode.getX(), currentNode.getY(), getAnimationDuration());
@@ -96,11 +107,8 @@ public class RadialMenu extends Group implements Closable {
 
     public void init(List<RadialValueContainer> nodes) {
         currentNode = closeButton;
-        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        v2 = getStage().screenToStageCoordinates(v2);
+        Vector2 v2 = getInitialPosition();
         setPosition(v2.x + getOffsetX(), v2.y);
-//        closeButton.
-//         setX(closeButton.getX()+getOffsetX() );
 
         closeButton.setChildNodes(nodes);
 
@@ -114,16 +122,21 @@ public class RadialMenu extends Group implements Closable {
         setCurrentNode(closeButton);
     }
 
-    private float getOffsetX() {
+    protected Vector2 getInitialPosition() {
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        return getStage().screenToStageCoordinates(v2);
+    }
+
+    protected float getOffsetX() {
         return -20;
     }
 
-    private void setParents(RadialValueContainer el, RadialValueContainer parent) {
+    protected void setParents(RadialValueContainer el, RadialValueContainer parent) {
         el.setParent(parent);
         el.getChildNodes().forEach(inn -> setParents(inn, el));
     }
 
-    private void setCurrentNode(RadialValueContainer node) {
+    protected void setCurrentNode(RadialValueContainer node) {
         clearChildren();
         addActor(node);
         currentNode = node;
@@ -147,21 +160,27 @@ public class RadialMenu extends Group implements Closable {
         setColor(new Color(1, 1, 1, 0));
 //  TODO fade out the old nodes       ActorMaster.addChained
 //         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
-        ActorMaster.addFadeInAction(this, getAnimationDuration()
-
-        );
+        ActorMaster.addFadeInAction(this, getAnimationDuration());
+        ActorMaster.addAfter(this, new Action() {
+            @Override
+            public boolean act(float delta) {
+                ready = true;
+                return true;
+            }
+        });
         ActorMaster.addRotateByAction(closeButton, -90);
     }
 
-    private void updatePosition() {
-        int step = 360 / currentNode.getChildNodes().size();
-        int pos;
+    protected void updatePosition() {
+        int step = getSpectrumDegrees() / currentNode.getChildNodes().size();
+        int initial = getStartDegree();
 
-        double coefficient = currentNode.getChildNodes().size() > 6 ? 2 : 1.5;
-
-        if (currentNode.getChildNodes().size() > 10) {
-            coefficient = 2.5;
-        }
+//        double coefficient = currentNode.getChildNodes().size() > 6 ? 2 : 1.5;
+//        if (currentNode.getChildNodes().size() > 10) {
+//            coefficient = 2.5;
+//        }
+        double coefficient = MathMaster.getMinMax((float) (currentNode.
+                 getChildNodes().size() / Math.PI), 1.25f, 3.5f);
         boolean makeSecondRing = false;
         if (currentNode.getChildNodes().size() > 15) {
             makeSecondRing = true;
@@ -169,16 +188,19 @@ public class RadialMenu extends Group implements Closable {
         }
 
         radius = (int) (72 * coefficient);
-        final List<RadialValueContainer> childs = currentNode.getChildNodes();
-        for (int i = 0; i < childs.size(); i++) {
-            final RadialValueContainer valueContainer = childs.get(i);
+        final List<RadialValueContainer> children = currentNode.getChildNodes();
+        for (int i = 0; i < children.size(); i++) {
+            final RadialValueContainer valueContainer = children.get(i);
             int r = radius;
             if (makeSecondRing && i % 2 == 0) {
                 r = (int) (72 * (coefficient - 1));
             }
-            pos = i * step;
-            int y = (int) (r * Math.sin(Math.toRadians(pos + 90)));
-            int x = (int) (r * Math.cos(Math.toRadians(pos + 90)));
+            int pos = initial + i * step;
+            if (isClockwise()) {
+                pos = initial - i * step;
+            }
+            int y = (int) (r * Math.sin(Math.toRadians(pos )));
+            int x = (int) (r * Math.cos(Math.toRadians(pos )));
             Vector2 v = new Vector2(x + currentNode.getX(), y + currentNode.getY());
             if (isAnimated()) {
                 valueContainer.setPosition(currentNode.getX(), currentNode.getY());
@@ -188,21 +210,33 @@ public class RadialMenu extends Group implements Closable {
         }
     }
 
-    private float getAnimationDuration() {
+    protected boolean isClockwise() {
+        return false;
+    }
+
+    protected int getStartDegree() {
+        return 90;
+    }
+
+    protected int getSpectrumDegrees() {
+        return 360;
+    }
+
+    protected float getAnimationDuration() {
         return 0.2f * AnimMaster.getInstance().getAnimationSpeedFactor();
     }
 
-    private String getEmptyNodePath() {
+    protected String getEmptyNodePath() {
         return "UI\\components\\2017\\radial\\empty.png";
 //        return "UI\\components\\2017\\radial\\empty dark.png";
 //        return "UI\\components\\2017\\radial\\empty dark.png";
     }
 
-    private boolean isAnimated() {
+    protected boolean isAnimated() {
         return true;
     }
 
-/*    final List<RadialValueContainer> childs = currentNode.getChildNodes();
+/*
     final int length = childs.size() * (step+1);
         for (int i = 90, c = 0; i <= length; i += step, c++) {
         final RadialValueContainer valueContainer = childs.get(c);
@@ -216,7 +250,7 @@ public class RadialMenu extends Group implements Closable {
         valueContainer.setPosition(x + currentNode.getX(), y + currentNode.getY());
     }*/
 
-    private void updateCallbacks() {
+    protected void updateCallbacks() {
         if (currentNode.getParent() != null) {
             currentNode.bindAction(() -> setCurrentNode(currentNode.getParent()));
         }
@@ -257,5 +291,13 @@ public class RadialMenu extends Group implements Closable {
     }
 
     public void hoverOff(Entity entity) {
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 }

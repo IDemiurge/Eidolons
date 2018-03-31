@@ -20,20 +20,46 @@ public class IlluminationRule {
     private static final boolean BASE_ILLUMINATION = true;
     static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
     private final DC_Game game;
-
+    private static boolean applied;
 
     public IlluminationRule(DC_Game game) {
         this.game = game;
     }
 
-    public static LightEmittingEffect getLightEmissionEffect(DC_Obj source) {
-        // if (!source.getVisionMode()==VISION_MODE.NORMAL_VISION)
-        // whether to be added to the objects IN SIGHT; but there ought to be
-        // other levels... e.g. detection from afar without revealing the real
-        // obj-type... as with walls
+    public void applyLightEmission() {
+        if (applied){
+            main.system.auxiliary.log.LogMaster.log(1,"IlluminationRule already applied!" );
+            return;
+        }
+        for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
+            LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
+            if (effect != null) {
+//                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
+                effect.apply();
+            }
+        }
+        applied=true;
+    }
 
-        // Twilight Rule!
+    public void resetIllumination() {
+        game.getCells().forEach(cell -> {
+            cell.setParam(PARAMS.ILLUMINATION, 0);
+        });
+        game.getBfObjects().forEach(unit -> {
+            unit.setParam(PARAMS.ILLUMINATION, 0);
+        });
+        applied=false;
+    }
 
+    public Map<Obj, LightEmittingEffect> getEffectCache() {
+        return effectCache;
+    }
+
+    public void clearCache() {
+        effectCache.clear();
+    }
+
+    public   LightEmittingEffect getLightEmissionEffect(DC_Obj source) {
         LightEmittingEffect effect = effectCache.get(source);
         if (effect == null) {
             int value = getLightEmission(source);
@@ -61,14 +87,9 @@ public class IlluminationRule {
 
     }
 
-    public static int getLightEmission(DC_Obj source) {
 
-//        Integer concealment = source.getIntParam(PARAMS.CONCEALMENT)
-//                + source.getGame().getCellByCoordinate(source.getCoordinates()).getIntParam(
-//                PARAMS.CONCEALMENT);
+    public   int getLightEmission(DC_Obj source) {
         int value =
-//         source.getGame().getVisionMaster().
-//          getIlluminationMaster().getIllumination(source);
          source.getIntParam(PARAMS.LIGHT_EMISSION, BASE_ILLUMINATION);
         if (source instanceof Unit) {
             if (((Unit) source).isHero())
@@ -82,40 +103,5 @@ public class IlluminationRule {
             value = value * mod / 100;
 
         return value;
-    }
-
-    public void resetIllumination() {
-        game.getCells().forEach(cell -> {
-            cell.setParam(PARAMS.ILLUMINATION, 0);
-        });
-        game.getBfObjects().forEach(unit -> {
-            unit.setParam(PARAMS.ILLUMINATION, 0);
-        });
-    }
-
-    public Map<Obj, LightEmittingEffect> getEffectCache() {
-        return effectCache;
-    }
-
-    public void initLightEmission() {
-//        List<Effect> effects = new ArrayList<>();
-        for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
-            LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
-            if (effect != null) {
-//                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
-                effect.apply();
-            }
-        }
-//        if (effects.isEmpty()) {
-//            return;
-//        }
-//        for (Effect effect : effects) {
-//            effect.apply();
-//
-//        }
-    }
-
-    public void clearCache() {
-        effectCache.clear();
     }
 }

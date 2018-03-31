@@ -1,8 +1,8 @@
 package main.data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ArrayList;
 
 public class XList<E> extends ArrayList<E> {
     public XList() {

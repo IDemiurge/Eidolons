@@ -14,7 +14,6 @@ public class DynamicTooltip extends ValueTooltip {
 
     Supplier<String> text;
     Supplier<TextureRegion> pic;
-    Supplier<Actor> actor;
 
     public DynamicTooltip(Supplier<String> text) {
         this.text = text;
@@ -34,9 +33,10 @@ public class DynamicTooltip extends ValueTooltip {
     }
 
     @Override
-    public void updateAct(float delta) {
+    public void act(float delta) {
         //would be better to update - maybe time could change while displayed
         setUserObject(new ValueContainer(pic == null ? null : pic.get(),
          text == null ? null : text.get()));
+        super.act(delta);
     }
 }

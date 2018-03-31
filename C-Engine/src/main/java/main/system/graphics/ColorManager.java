@@ -18,7 +18,7 @@ public class ColorManager {
     public static final Color ENEMY_COLOR = new Color(150, 100, 50);
     // new Color(55, 215, 65)
     public static final Color HEALTH = new Color(210, 100, 110);
-    public static final Color ENDURANCE =  new Color(210, 100, 110);
+    public static final Color ENDURANCE = new Color(210, 100, 110);
     public static final Color TOUGHNESS = new Color(65, 35, 15);
     public static final Color STAMINA = new Color(180, 150, 45);
     public static final Color ESSENCE = new Color(80, 30, 225);
@@ -81,9 +81,9 @@ public class ColorManager {
     public static Color getDarkerColor(Color color, int percent) {
 
         return new Color(Math.max(color.getRed() * (100 - percent) / 100, 0), Math.max(
-                color.getGreen() * (100 - percent) / 100, 0), Math.max(color
-                .getBlue()
-                * (100 - percent) / 100, 0), color.getAlpha());
+         color.getGreen() * (100 - percent) / 100, 0), Math.max(color
+         .getBlue()
+         * (100 - percent) / 100, 0), color.getAlpha());
     }
 
     /**
@@ -117,7 +117,7 @@ public class ColorManager {
 
     public static Color getAspectColor(ObjType type, boolean alt) {
         ASPECT aspect = new EnumMaster<ASPECT>().retrieveEnumConst(ASPECT.class, type
-                .getProperty(G_PROPS.ASPECT));
+         .getProperty(G_PROPS.ASPECT));
         if (aspect == null) {
             aspect = GenericEnums.ASPECT.NEUTRAL;
         }
@@ -235,38 +235,12 @@ public class ColorManager {
 
     public static String toStringForLog(Color goldenWhite) {
         return
-         ( Integer.toHexString(goldenWhite.getRed()))+
-          (  Integer.toHexString(goldenWhite.getGreen()))+
-          ( Integer.toHexString(goldenWhite.getBlue()))
+         (Integer.toHexString(goldenWhite.getRed())) +
+          (Integer.toHexString(goldenWhite.getGreen())) +
+          (Integer.toHexString(goldenWhite.getBlue()))
 
          ;
 
-    }
-
-    public enum FLAG_COLOR {
-        BLUE(new Color(25, 25, 255)),
-        CYAN(new Color(35, 215, 185)),
-        GREEN(new Color(25, 175, 65)),
-        DARK_GREEN(new Color(25, 85, 65)),
-        PURPLE(new Color(115, 85, 255)),
-        RED(new Color(255, 25, 25)),
-        CRIMSON(new Color(145, 25, 95)),
-        YELLOW(new Color(245, 200, 85)),
-        BROWN(new Color(95, 45, 45)),
-        ORANGE(new Color(225, 135, 55)),
-        BLACK(new Color(25, 25, 35)),
-        GRAY(new Color(100, 100, 120)),
-        WHITE(new Color(225, 235, 245)),;
-
-        private Color color;
-
-        FLAG_COLOR(Color c) {
-            this.color = c;
-        }
-
-        public Color getColor() {
-            return color;
-        }
     }
 
     public enum COLORS {
@@ -351,6 +325,32 @@ public class ColorManager {
             return code;
         }
 
+    }
+
+    public enum FLAG_COLOR {
+        BLUE(new Color(25, 25, 255)),
+        CYAN(new Color(35, 215, 185)),
+        GREEN(new Color(25, 175, 65)),
+        DARK_GREEN(new Color(25, 85, 65)),
+        PURPLE(new Color(115, 85, 255)),
+        RED(new Color(255, 25, 25)),
+        CRIMSON(new Color(145, 25, 95)),
+        YELLOW(new Color(245, 200, 85)),
+        BROWN(new Color(95, 45, 45)),
+        ORANGE(new Color(225, 135, 55)),
+        BLACK(new Color(25, 25, 35)),
+        GRAY(new Color(100, 100, 120)),
+        WHITE(new Color(225, 235, 245)),;
+
+        private Color color;
+
+        FLAG_COLOR(Color c) {
+            this.color = c;
+        }
+
+        public Color getColor() {
+            return color;
+        }
     }
 
 }

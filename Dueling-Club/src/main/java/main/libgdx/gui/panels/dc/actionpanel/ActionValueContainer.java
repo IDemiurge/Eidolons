@@ -28,13 +28,14 @@ public class ActionValueContainer extends ValueContainer {
      (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
     private static ActionValueContainer lastPressed;
     private static boolean darkened;
-    private final float scaleByOnHover = (new Float(64) / ActionPanelController.IMAGE_SIZE) - 1;
+    private final float scaleByOnHover = (new Float(64) / ActionPanel.IMAGE_SIZE) - 1;
     protected Runnable clickAction;
     protected boolean valid = true;
     protected boolean hover;
     protected TextureRegion underlay;
     protected float underlayOffsetX;
     protected float underlayOffsetY;
+    private float size=UiMaster.getIconSize();
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -75,7 +76,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     protected void initSize() {
-        overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
+        overrideImageSize(getSize(), getSize());
         imageContainer.top().right();
     }
 
@@ -242,5 +243,13 @@ public class ActionValueContainer extends ValueContainer {
                 clickAction.run();
             }
         });
+    }
+
+    public float getSize() {
+        return size;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
     }
 }

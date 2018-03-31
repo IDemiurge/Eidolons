@@ -9,9 +9,9 @@ import main.content.enums.GenericEnums.ASPECT;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.entity.handlers.*;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.handlers.*;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
@@ -57,8 +57,8 @@ public abstract class Entity extends DataModel implements OBJ {
     protected Player originalOwner;
 
     protected boolean added;
+    protected Map<VALUE, String> valueCache = new HashMap<>(); //to cache valid tooltip values
     EntityMaster master;
-    protected Map<VALUE, String > valueCache= new HashMap<>(); //to cache valid tooltip values
 
 
     public Entity() {
@@ -89,9 +89,11 @@ public abstract class Entity extends DataModel implements OBJ {
             init();
         }
     }
+
     public boolean checkGroupingProperty(String string) {
         return checkSingleProp(getOBJ_TYPE_ENUM().getGroupingKey(), string);
     }
+
     protected EntityMaster initMaster() {
         return new EntityMaster(this) {
             @Override
@@ -200,7 +202,7 @@ public abstract class Entity extends DataModel implements OBJ {
             String baseValue = getType().getParam(p);
             String value = getParam(p);
 
-            getValueCache().put(p, value );
+            getValueCache().put(p, value);
 
             if (!value.equals(baseValue)) {
                 String amount = getType().getParam(p);
@@ -230,7 +232,7 @@ public abstract class Entity extends DataModel implements OBJ {
                 }
             }
             String value = getProperty(p);
-            getValueCache().put(p, value );
+            getValueCache().put(p, value);
             if (!value.equals(baseValue)) {
                 putProperty(p, baseValue);
             } else {
@@ -243,18 +245,20 @@ public abstract class Entity extends DataModel implements OBJ {
         setBeingReset(false);
 
     }
+
     public Map<VALUE, String> getValueCache() {
         return valueCache;
     }
 
     public String getCachedValue(VALUE value) {
         String val = valueCache.get(value);
-        if (val==null){
+        if (val == null) {
             return getValue(value);
         }
 
         return val;
     }
+
     public void constructConcurrently() {
         if (constructing) {
             return;
@@ -326,9 +330,9 @@ public abstract class Entity extends DataModel implements OBJ {
         if (game == null) {
             LogMaster.log(1, "Null game on " + toString());
             if (Game.game != null)
-            if (Game.game.isSimulation()) {
-                game = Game.game;
-            }
+                if (Game.game.isSimulation()) {
+                    game = Game.game;
+                }
         }
         return game;
     }
@@ -474,16 +478,17 @@ public abstract class Entity extends DataModel implements OBJ {
     public String getImagePath() {
         return getProperty(G_PROPS.IMAGE);
     }
+
     public String getEmblemPath() {
         return getProperty(G_PROPS.EMBLEM);
     }
 
     public void resetRawValues() {
         if (isRawValuesOn())
-        for (PARAMETER param : ContentManager.getParamsForType(getOBJ_TYPE(), false)) {
-            // get values from ValueIcons?
-            getRawValues().put(param, String.valueOf(getIntParam(param)));
-        }
+            for (PARAMETER param : ContentManager.getParamsForType(getOBJ_TYPE(), false)) {
+                // get values from ValueIcons?
+                getRawValues().put(param, String.valueOf(getIntParam(param)));
+            }
 
     }
 

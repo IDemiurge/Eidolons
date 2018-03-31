@@ -21,7 +21,7 @@ public class SpecialLogger implements FileLogger {
     private static final int WRITE_ALL_PERIOD = 5000;
     private static SpecialLogger instance;
     Map<LOG_CHANNEL, StringBuilder> channelMap = new HashMap<>();
-//    private StringBuilder combatActionLogBuilder = new StringBuilder();
+    //    private StringBuilder combatActionLogBuilder = new StringBuilder();
 //    private StringBuilder aiLogBuilder = new StringBuilder();
 //    private StringBuilder visibilityLogBuilder = new StringBuilder();
 //    private StringBuilder inputLogBuilder = new StringBuilder();
@@ -51,7 +51,7 @@ public class SpecialLogger implements FileLogger {
         SpecialLogger.instance = instance;
     }
 
-    public  void appendExceptionToFileLog(String message) {
+    public void appendExceptionToFileLog(String message) {
         appendSpecialLog(SPECIAL_LOG.EXCEPTIONS, message);
     }
 
@@ -66,7 +66,7 @@ public class SpecialLogger implements FileLogger {
     }
 
     public void startWritingThread() {
-        
+
         timeStamp = TimeMaster.getTimeStamp();
         thread = new Thread(() -> {
             WaitMaster.WAIT(WRITE_ALL_PERIOD);
@@ -104,8 +104,7 @@ public class SpecialLogger implements FileLogger {
             }
         }
         StringBuilder builder = channelMap.get(channel);
-        if (builder!=null )
-        {
+        if (builder != null) {
             String string = builder.toString();
             writeLog(channel.name(), builder, string,
              true, false);
@@ -123,16 +122,17 @@ public class SpecialLogger implements FileLogger {
     public void writeLog(SPECIAL_LOG log) {
         Object builder = getBuilder(log);
         String string = builder.toString();
-        writeLog(log.name(), builder, string,  isConsoleLogged(log), isGameLogged(log ));
+        writeLog(log.name(), builder, string, isConsoleLogged(log), isGameLogged(log));
     }
-        public void writeLog(String logName,
-                             Object builder, String string,
-                             boolean consoleLogged,
-                             boolean gameLogged) {
-            if (string==null )
-                return;
+
+    public void writeLog(String logName,
+                         Object builder, String string,
+                         boolean consoleLogged,
+                         boolean gameLogged) {
+        if (string == null)
+            return;
         if (consoleLogged)
-            if (gameLogged )
+            if (gameLogged)
                 Game.game.getLogManager().log(string);
             else
                 LogMaster.log(string);
@@ -155,11 +155,10 @@ public class SpecialLogger implements FileLogger {
 
     private StringBuilder getBuilder(SPECIAL_LOG log) {
         StringBuilder builder = builderMap.get(log);
-       if (builder== null )
-       {
-           builder = new StringBuilder();
-           builderMap.put(log, builder);
-       }
+        if (builder == null) {
+            builder = new StringBuilder();
+            builderMap.put(log, builder);
+        }
 
         return builder;
     }
@@ -167,7 +166,6 @@ public class SpecialLogger implements FileLogger {
     public void logCombatLog() {
         writeLog(SPECIAL_LOG.COMBAT);
     }
-
 
 
 }

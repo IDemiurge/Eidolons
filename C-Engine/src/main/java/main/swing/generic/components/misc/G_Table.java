@@ -38,7 +38,7 @@ public class G_Table extends JTable {
     public void setEditListener(int i, CellEditorListener l) {
 
         LogMaster.log(0, getColumnName(i) + ""
-                + getColumn(getColumnName(i)).getCellEditor());
+         + getColumn(getColumnName(i)).getCellEditor());
 
         getColumn(getColumnName(i)).getCellEditor().addCellEditorListener(l);
 

@@ -47,9 +47,9 @@ public class Mapper {
      };
     private static final String TEXT_NODE = "#text";
     private static final String ARG_LIST_SEPARATOR = ": ";
-    static Map<String,Map<List<Argument>, AE_Item>> caches = new HashMap<>();
-    
-    
+    static Map<String, Map<List<Argument>, AE_Item>> caches = new HashMap<>();
+
+
     private static Map<Argument, List<AE_Item>> map = new HashMap<>();
     private static Map<String, AE_Item> itemMap = new HashMap<>();
     private static Map<ARGS, AE_Item> primitiveItems = new HashMap<>();
@@ -62,7 +62,7 @@ public class Mapper {
 
     public static AE_Item getItem(String itemName, List<Argument> argList) {
         Map<List<Argument>, AE_Item> itemCache = caches.get(itemName);
-        AE_Item item =itemCache==null ? null : itemCache.get(argList);
+        AE_Item item = itemCache == null ? null : itemCache.get(argList);
         if (item != null)
             return item;
         item = itemMap.get(itemName);
@@ -87,7 +87,7 @@ public class Mapper {
                         if (itemMap.get(key).getArgList().equals(argList)) {
                             {
                                 caches.put(itemName, itemCache);
-                                if (itemCache==null )
+                                if (itemCache == null)
                                     itemCache = new HashMap<>();
                                 itemCache.put(argList, item);
                                 return itemMap.get(key);
@@ -279,8 +279,7 @@ public class Mapper {
 
                 AE_Item item = new AE_Item(name, mappedArg, argList, CLASS, container, constr);
                 Map<List<Argument>, AE_Item> itemCache = caches.get(name);
-                if (itemCache==null )
-                {
+                if (itemCache == null) {
                     itemCache = new HashMap<>();
                     caches.put(name, itemCache);
                 }

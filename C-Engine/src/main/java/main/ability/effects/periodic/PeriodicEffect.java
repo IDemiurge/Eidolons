@@ -50,7 +50,7 @@ public class PeriodicEffect extends MicroEffect implements AttachmentEffect {
         main.system.auxiliary.log.LogMaster.log(1, this + " timeInGame = " + timeInGame);
         main.system.auxiliary.log.LogMaster.log(1, this + " period = " + getPeriod());
         if (periodTimer >= getPeriod()) {
-            periodTimer = periodTimer-period;
+            periodTimer = periodTimer - period;
             applyThis();
         }
     }

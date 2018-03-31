@@ -66,8 +66,8 @@ public abstract class G_TabbedPagePanel<E> extends G_PagePanel<E> {
     @Override
     protected String getCompDisplacementX() {
         return !vertical ? "0" : ""
-                + FontMaster.getStringWidth(TextComp.getDefaultFontAll(), StringMaster
-                .getLongestString(ListMaster.toStringList(getTabData().toArray())));
+         + FontMaster.getStringWidth(TextComp.getDefaultFontAll(), StringMaster
+         .getLongestString(ListMaster.toStringList(getTabData().toArray())));
 
     }
 

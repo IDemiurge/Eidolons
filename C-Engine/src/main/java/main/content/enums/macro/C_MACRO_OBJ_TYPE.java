@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 public class C_MACRO_OBJ_TYPE implements OBJ_TYPE {
     public static final C_MACRO_OBJ_TYPE TOWN_PLACES = new C_MACRO_OBJ_TYPE(MACRO_OBJ_TYPES.SHOP
-            // ,MACRO_OBJ_TYPES.LIBRARY,
-            // MACRO_OBJ_TYPES.TOWN_HALL,
-            // MACRO_OBJ_TYPES.TAVERN
+     // ,MACRO_OBJ_TYPES.LIBRARY,
+     // MACRO_OBJ_TYPES.TOWN_HALL,
+     // MACRO_OBJ_TYPES.TAVERN
     );
     public static final OBJ_TYPE MAP_OBJ = new C_MACRO_OBJ_TYPE(
-            MACRO_OBJ_TYPES.TOWN, MACRO_OBJ_TYPES.ROUTE);
+     MACRO_OBJ_TYPES.TOWN, MACRO_OBJ_TYPES.ROUTE);
     private MACRO_OBJ_TYPES[] TYPES;
 
     public C_MACRO_OBJ_TYPE(MACRO_OBJ_TYPES... types) {

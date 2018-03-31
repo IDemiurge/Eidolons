@@ -14,7 +14,7 @@ public class LightweightEntity extends DataModel {
         this.type = type;
         setProperty(G_PROPS.NAME, type.getName());
         propMap = type.getPropMap();
-        paramMap =type.getParamMap();
+        paramMap = type.getParamMap();
     }
 
     @Override

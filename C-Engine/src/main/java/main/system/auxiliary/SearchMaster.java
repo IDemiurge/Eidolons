@@ -8,8 +8,29 @@ import java.util.Collection;
 
 public class SearchMaster<T> {
 
-    public void bfs()
-    {
+    public static Object findClosest(String name, Object... objects) {
+        return new SearchMaster<>().findClosest(name, Arrays.asList(objects));
+    }
+
+    public static String getPropPart(String s, PROPERTY property, Entity entity) {
+        return getPropPart(s, property, entity, StringMaster.SEPARATOR);
+    }
+
+    public static String getPropPart(String s, PROPERTY property,
+                                     Entity entity, String separator) {
+        for (String substring : StringMaster.open(entity.getProperty(property), separator)) {
+            if (StringMaster.contains(substring, s)) {
+                return substring;
+            }
+        }
+//        List list = StringMaster.openContainer(entity.getProperty(property), separator);
+//        Object closest = findClosest(s, list.toArray());
+//        if (closest!=null )
+//            return closest.toString();
+        return s;
+    }
+
+    public void bfs() {
         // BFS uses Queue data structure
 //        Queue queue = new ArrayList();
 //        queue.add(this.rootNode);
@@ -26,11 +47,6 @@ public class SearchMaster<T> {
 //        }
 //        // Clear visited property of nodes
 //        clearNodes();
-    }
-
-
-    public static Object findClosest(String name, Object... objects) {
-        return new SearchMaster<>().findClosest(name, Arrays.asList(objects));
     }
 
     public int getIndex(String name, Collection<T> list) {
@@ -68,7 +84,7 @@ public class SearchMaster<T> {
         T item = null;
         for (T t : list) {
             int weight = (StringMaster.compareSimilar(StringMaster.toStringForm(t).toLowerCase(),
-                    name.toLowerCase()));
+             name.toLowerCase()));
             if (weight > max_weight) {
                 max_weight = weight;
                 item = t;
@@ -103,22 +119,6 @@ public class SearchMaster<T> {
             }
         }
         return null;
-    }
-    public static String getPropPart(String s, PROPERTY property, Entity entity) {
-        return getPropPart(s, property, entity, StringMaster.SEPARATOR);
-    }
-    public static String getPropPart(String s, PROPERTY property,
-                                     Entity entity, String separator) {
-        for(String substring: StringMaster.open( entity.getProperty(property), separator )){
-            if (StringMaster.contains(substring, s)){
-                return substring;
-            }
-        }
-//        List list = StringMaster.openContainer(entity.getProperty(property), separator);
-//        Object closest = findClosest(s, list.toArray());
-//        if (closest!=null )
-//            return closest.toString();
-        return s ;
     }
 
 }

@@ -95,11 +95,11 @@ public class TipMaster {
                 return "Use Restoration Mode on the bottom panel to regain lost Stamina, Focus or Essence";
 
             case GAME_START:
-               return
-                "Normally, you choose one hero to control in your party when game starts.";
+                return
+                 "Normally, you choose one hero to control in your party when game starts.";
             case DEFAULT_ACTIONS:
                 return
-                 "To move quickly to a cell, press alt and left-click it." ;
+                 "To move quickly to a cell, press alt and left-click it.";
 //                 "To make a default action on a unit or cell, press alt and left-click it." +
 //                 "Your hero will try to either move or attack accordingly.";
             case RESISTANCE:

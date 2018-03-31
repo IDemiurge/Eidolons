@@ -86,6 +86,7 @@ public class SpellRadialManager {
             valueContainer =
              RadialManager.configureActionNode(target, action);
             ActionCostTooltip tooltip = new ActionCostTooltip(action);
+            tooltip.setRadial(true);
             tooltip.setUserObject(new ActionCostSourceImpl(action));
             valueContainer.addListener(tooltip.getController());
         } else {

@@ -267,7 +267,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     @Override
     protected void putParameter(PARAMETER param, String value) {
-        if (param == PARAMS.C_N_OF_ACTIONS) {
+        if (param == PARAMS.C_TOUGHNESS) {
+            if (StringMaster.getInteger(value) >
+             getIntParam(PARAMS.TOUGHNESS) ){
+                main.system.auxiliary.log.LogMaster.log(1, "gotcha dwarf " + this + value);
+            }
+        }
+            if (param == PARAMS.C_N_OF_ACTIONS) {
             Integer prev = getIntParam(param);
             int diff = StringMaster.getInteger(value) - prev;
             modifyParameter(PARAMS.C_INITIATIVE, AtbController.ATB_MOD * diff);

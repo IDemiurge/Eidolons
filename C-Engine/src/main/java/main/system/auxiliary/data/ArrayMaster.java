@@ -1,6 +1,9 @@
 package main.system.auxiliary.data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class ArrayMaster<T> {
 
@@ -20,6 +23,16 @@ public class ArrayMaster<T> {
             a++;
         }
         return result;
+    }
+
+    public static String[] getFilledStringArray(int instances, String defaultData) {
+        String[] array = new String[instances];
+        List<String> list = new ArrayList<>();
+        while (instances > 0) {
+            list.add(defaultData);
+            instances--;
+        }
+        return list.toArray(array);
     }
 
     public int indexOf(T[] array, T item) {
@@ -52,7 +65,7 @@ public class ArrayMaster<T> {
     }
 
     public boolean contains(T[] damage_mods, T unblockable) {
-        for (T d: damage_mods){
+        for (T d : damage_mods) {
             if (unblockable == null) {
                 if (d == null) {
                     return true;
@@ -63,16 +76,6 @@ public class ArrayMaster<T> {
             }
         }
         return false;
-    }
-
-    public static String[] getFilledStringArray(int instances, String defaultData) {
-        String[] array = new String[instances];
-         List<String> list = new ArrayList<>();
-        while (instances>0){
-            list.add(defaultData);
-            instances--;
-        }
-        return list.toArray(array);
     }
 //java generics are broken shit
 //    public T[] addToArray(T[] strings, T dataString) {

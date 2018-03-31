@@ -25,8 +25,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.text.TextParser;
 import org.w3c.dom.Node;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +38,13 @@ public class AbilityConstructor {
 
     private static final String TARGETING = "Targeting";
     private static final String EFFECTS = "Effect";
-    private static Map<Game,Map<Integer, Map<String, AbilityObj>>> safeCache = new XLinkedMap<>();
+    private static Map<Game, Map<Integer, Map<String, AbilityObj>>> safeCache = new XLinkedMap<>();
 
     //if Game is reinitialized, static id-caches must be destroyed!
     //TODO get rid of static
     public static Map<Integer, Map<String, AbilityObj>> getAbilCache() {
         Map<Integer, Map<String, AbilityObj>> cache = safeCache.get(Game.game);
-        if (cache==null ){
+        if (cache == null) {
             safeCache.clear();
             cache = new XLinkedMap<>();
             safeCache.put(Game.game, cache);
@@ -54,7 +54,6 @@ public class AbilityConstructor {
 
     /**
      * a method per OBJ_TYPE? passives and actives
-     *
      */
 
     @SuppressWarnings("rawtypes")
@@ -123,15 +122,13 @@ public class AbilityConstructor {
             targeting = new FixedTargeting();
         }
 
-        Ability abil=null ;
+        Ability abil = null;
         if (node.getNodeName().equals(ACTIVE_ABILITY)) {
-            abil= new ActiveAbility(targeting, effects);
-        } else
-        if (node.getNodeName().equals(ONESHOT_ABILITY)) {
-            abil= new OneshotAbility(targeting, effects);
-        } else
-        if (node.getNodeName().equals(PASSIVE_ABILITY)) {
-            abil= new PassiveAbility(targeting, effects);
+            abil = new ActiveAbility(targeting, effects);
+        } else if (node.getNodeName().equals(ONESHOT_ABILITY)) {
+            abil = new OneshotAbility(targeting, effects);
+        } else if (node.getNodeName().equals(PASSIVE_ABILITY)) {
+            abil = new PassiveAbility(targeting, effects);
         }
         abil.setXml(XML_Converter.getStringFromXML(node));
         return abil;
@@ -311,7 +308,7 @@ public class AbilityConstructor {
         return list;
     }
 
-    public static Abilities getAbilities (String data, Ref ref) {
+    public static Abilities getAbilities(String data, Ref ref) {
         Abilities a = new Abilities();
         for (String abilTypeName : StringMaster.open(
          data)) {

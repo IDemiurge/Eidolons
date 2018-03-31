@@ -38,7 +38,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     @Override
     public InventoryValueContainer offWeapon() {
-        return factory.get(unit.getSecondWeapon(), CELL_TYPE.WEAPON_OFFHAND);
+        return factory.get(unit.getOffhandWeapon(), CELL_TYPE.WEAPON_OFFHAND);
     }
 
     @Override

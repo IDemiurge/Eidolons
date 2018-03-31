@@ -13,7 +13,7 @@ import main.system.graphics.ANIM;
 import main.system.math.Formula;
 
 public interface Effect extends Interruptable, Referred, XmlConvertable,
-  Reconstructable<Effect> {
+ Reconstructable<Effect> {
     int BASE_LAYER = 0;
     int SECOND_LAYER = 1;
     int ZERO_LAYER = -1;
@@ -35,11 +35,11 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
 
     void setReconstruct(boolean reconstruct);
 
-    void setAmount(int amount);
-
     int getAmount();
 
-        void setAltering(boolean altering);
+    void setAmount(int amount);
+
+    void setAltering(boolean altering);
 
 
     void setAltered(boolean altered);
@@ -106,21 +106,42 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
     void setOriginalFormula(Formula formula);
 
 
-    enum UPKEEP_FAIL_ACTION {
-        TREASON(" turns on its summoner as he is no longer able to pay the due!"),
-        DEATH(" is destroyed as its summoner is no longer able to pay the upkeep!"),
-        STASIS(" stands still as its summoner is no longer able to pay the upkeep!"),
-        CONFUSION(" is rendered mindless as its summoner is no longer able to pay the upkeep!"),
-        BERSERK(" goes berserk as its summoner is no longer able to pay the upkeep!"),;
+    enum ABILITY_MANIPULATION {
+        ADD, REMOVE, REMOVE_ALL, MODIFY_FORMULA, STEAL
+    }
 
-        private String logString;
+    enum ABSORB_TYPES {
+        HOSTILE_SPELLS, DAMAGE, DAMAGE_TYPE, SPELLS_FROM_SOURCE, DAMAGE_FROM_SOURCE,
 
-        UPKEEP_FAIL_ACTION(String l) {
-            this.logString = l;
-        }
+    }
 
-        public String getLogString() {
-            return logString;
+    enum BIND_FILTER {
+        DAMAGE, SPELL_DAMAGE, ALL_DAMAGE, ALL_SPELLS, CUSTOM, // counters
+        // ALL_BUFFS?
+    }
+
+    enum BIND_TYPE {
+        SHARE,
+
+        REDIRECT,
+        // MULTI_SHARE,
+    }
+
+    enum BLOCK_TYPES {
+        HOSTILE_SPELLS,
+        DAMAGE,
+        ATTACK,
+        HOSTILE_ACTION,
+        DAMAGE_TYPE,
+        SPELLS_FROM_SOURCE,
+        DAMAGE_FROM_SOURCE,
+
+    }
+
+    enum MOD {
+        MODIFY_BY_PERCENT(1), MODIFY_BY_CONST(2), SET(3), SET_TO_PERCENTAGE(3);
+
+        MOD(int i) {
         }
     }
 
@@ -128,13 +149,6 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         ADD(1), REMOVE(2), SET(3);
 
         MOD_PROP_TYPE(int i) {
-        }
-    }
-
-    enum MOD {
-        MODIFY_BY_PERCENT(1), MODIFY_BY_CONST(2), SET(3), SET_TO_PERCENTAGE(3);
-
-        MOD(int i) {
         }
     }
 
@@ -173,41 +187,27 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
         END_TURN,
     }
 
-    enum ABILITY_MANIPULATION {
-        ADD, REMOVE, REMOVE_ALL, MODIFY_FORMULA, STEAL
-    }
-
     enum SPELL_MANIPULATION {
         PREPARE, OBLIVIATE, BLOCK, UNBLOCK, STEAL, ADD,
 
     }
 
-    enum BIND_TYPE {
-        SHARE,
+    enum UPKEEP_FAIL_ACTION {
+        TREASON(" turns on its summoner as he is no longer able to pay the due!"),
+        DEATH(" is destroyed as its summoner is no longer able to pay the upkeep!"),
+        STASIS(" stands still as its summoner is no longer able to pay the upkeep!"),
+        CONFUSION(" is rendered mindless as its summoner is no longer able to pay the upkeep!"),
+        BERSERK(" goes berserk as its summoner is no longer able to pay the upkeep!"),;
 
-        REDIRECT,
-        // MULTI_SHARE,
-    }
+        private String logString;
 
-    enum BIND_FILTER {
-        DAMAGE, SPELL_DAMAGE, ALL_DAMAGE, ALL_SPELLS, CUSTOM, // counters
-        // ALL_BUFFS?
-    }
+        UPKEEP_FAIL_ACTION(String l) {
+            this.logString = l;
+        }
 
-    enum BLOCK_TYPES {
-        HOSTILE_SPELLS,
-        DAMAGE,
-        ATTACK,
-        HOSTILE_ACTION,
-        DAMAGE_TYPE,
-        SPELLS_FROM_SOURCE,
-        DAMAGE_FROM_SOURCE,
-
-    }
-
-    enum ABSORB_TYPES {
-        HOSTILE_SPELLS, DAMAGE, DAMAGE_TYPE, SPELLS_FROM_SOURCE, DAMAGE_FROM_SOURCE,
-
+        public String getLogString() {
+            return logString;
+        }
     }
 
 }

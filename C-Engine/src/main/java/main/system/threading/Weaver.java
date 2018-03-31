@@ -31,7 +31,7 @@ public class Weaver {
         }
         if (m == null) {
             LogMaster.log(4, "failed to find method: "
-                    + methodname);
+             + methodname);
             return;
         }
         inNewThread(object, m, arg);
@@ -51,7 +51,7 @@ public class Weaver {
         }
         if (m == null) {
             LogMaster.log(4, "failed to find method: "
-                    + methodname);
+             + methodname);
             return;
         }
         inNewThread(object, m, args);
@@ -72,15 +72,15 @@ public class Weaver {
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                     LogMaster.log(4,
-                            "METHOD INVOCATION FAILED: " + m.getName()
-                                    + " FOR ARGS "
-                                    + Arrays.asList(args).toString()
+                     "METHOD INVOCATION FAILED: " + m.getName()
+                      + " FOR ARGS "
+                      + Arrays.asList(args).toString()
 
                     );
 
                 }
                 String s = (args != null) ? Arrays.asList(args).toString()
-                        : "nullargs";
+                 : "nullargs";
                 // logger.fatal("THREAD " + name + " FOR " + s
                 // + " FINISHED: "
                 // + Chronos.getTimeElapsedForMark(name));
@@ -111,7 +111,7 @@ public class Weaver {
         if (priorityMinMax != null) {
             try {
                 thread.setPriority(priorityMinMax ? Thread.MIN_PRIORITY
-                        : Thread.MAX_PRIORITY);
+                 : Thread.MAX_PRIORITY);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -120,6 +120,6 @@ public class Weaver {
     }
 
     public static void newThread(String s, EventCallback callback, EventCallbackParam param) {
-        new Thread(() -> callback.call(param),s+ " thread").start();
+        new Thread(() -> callback.call(param), s + " thread").start();
     }
 }

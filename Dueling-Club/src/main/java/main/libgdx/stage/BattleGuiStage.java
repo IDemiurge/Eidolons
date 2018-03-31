@@ -10,7 +10,7 @@ import main.game.core.game.DC_Game;
 import main.libgdx.GdxMaster;
 import main.libgdx.anims.ActorMaster;
 import main.libgdx.gui.panels.dc.InitiativePanel;
-import main.libgdx.gui.panels.dc.actionpanel.ActionPanelController;
+import main.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import main.libgdx.gui.panels.dc.inventory.InventoryWithAction;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
@@ -24,7 +24,7 @@ import main.system.GuiEventType;
 public class BattleGuiStage extends GuiStage {
 
     private final InitiativePanel initiativePanel;
-    private final ActionPanelController bottomPanel;
+    private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
 
 
@@ -38,7 +38,7 @@ public class BattleGuiStage extends GuiStage {
         initiativePanel = new InitiativePanel();
         initiativePanel.setPosition(0, GdxMaster.getHeight() - initiativePanel.getHeight());
         addActor(initiativePanel);
-        bottomPanel = new ActionPanelController(0, 0);
+        bottomPanel = new ActionPanel(0, 0);
         addActor(bottomPanel);
 
         addActor(new UnitInfoPanel(0, 0));
@@ -105,7 +105,7 @@ public class BattleGuiStage extends GuiStage {
         return initiativePanel;
     }
 
-    public ActionPanelController getBottomPanel() {
+    public ActionPanel getBottomPanel() {
         return bottomPanel;
     }
 

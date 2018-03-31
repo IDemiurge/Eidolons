@@ -18,10 +18,10 @@ public class SoundMaster {
     private static final String STD_SOUND_PATH = PathFinder.getSoundPath() + "STD\\";
     private static final String FORMAT = ".mp3";
     private static final String ALT_FORMAT = ".wav";
-    private static String path;
     public static int masterVolume = 100;
+    private static String path;
     private static boolean blockNextSound;
-    private static boolean on=true;
+    private static boolean on = true;
 
     public static void initialize() {
         path = PathFinder.getSoundPath();
@@ -54,7 +54,7 @@ public class SoundMaster {
     }
 
     public static boolean playEffectSound(SOUNDS sound_type, SOUNDSET soundset) {
-        if (isOn())  return  getPlayer().playEffectSound(sound_type, soundset);
+        if (isOn()) return getPlayer().playEffectSound(sound_type, soundset);
         return false;
     }
 
@@ -116,7 +116,7 @@ public class SoundMaster {
 
     public static boolean playEffectSound(SOUNDS sound_type, SOUNDSET soundset,
                                           int volume_percentage, int delay) {
-        if (isOn())   return getPlayer().playEffectSound(sound_type, soundset, volume_percentage, delay);
+        if (isOn()) return getPlayer().playEffectSound(sound_type, soundset, volume_percentage, delay);
         return false;
     }
 
@@ -198,6 +198,29 @@ public class SoundMaster {
 
     public static void setOn(boolean on) {
         SoundMaster.on = on;
+    }
+
+    public enum SOUNDS {
+        ATTACK, HIT, WHAT, MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, DEATH, READY, SPEC_ACTION,
+        // spell
+        IMPACT,
+        CAST,
+        EFFECT, // ON CUSTOM EFFECTS, PLAY SPELL'S 'EFFECT' SOUND
+        ZONE,
+        PRECAST,
+        FAIL,
+        CHANNELING,
+        W_CHANNELING,
+        RESOLVE {
+            public String toString() {
+                return "";
+            }
+        },
+        FALL;
+
+        public String getPath() {
+            return "effects\\" + name().toLowerCase() + "\\" + name();
+        }
     }
 
     public enum STD_SOUNDS {
@@ -287,8 +310,8 @@ public class SoundMaster {
         STD_SOUNDS(boolean alt) {
             this.alt = alt;
             path = STD_SOUND_PATH
-                    + (alt ? toString().replace("__", "\\").replace("_", " ") + ALT_FORMAT
-                    : toString() + FORMAT);
+             + (alt ? toString().replace("__", "\\").replace("_", " ") + ALT_FORMAT
+             : toString() + FORMAT);
 
         }
 
@@ -302,29 +325,6 @@ public class SoundMaster {
 
         public boolean hasAlt() {
             return false;
-        }
-    }
-
-    public enum SOUNDS {
-        ATTACK, HIT, WHAT, MOVEMENT, CRITICAL, FLEE, TAUNT, THREAT, DEATH, READY, SPEC_ACTION,
-        // spell
-        IMPACT,
-        CAST,
-        EFFECT, // ON CUSTOM EFFECTS, PLAY SPELL'S 'EFFECT' SOUND
-        ZONE,
-        PRECAST,
-        FAIL,
-        CHANNELING,
-        W_CHANNELING,
-        RESOLVE {
-            public String toString() {
-                return "";
-            }
-        },
-        FALL;
-
-        public String getPath() {
-            return "effects\\" + name().toLowerCase() + "\\" + name();
         }
     }
 

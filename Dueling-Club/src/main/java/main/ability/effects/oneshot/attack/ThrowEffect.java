@@ -86,10 +86,10 @@ public class ThrowEffect extends AttackEffect {
                 hero.setSecondWeapon(null);
             } else {
                 hero.setWeapon(null);
-                if (hero.getSecondWeapon() != null) {
-                    if (!hero.getSecondWeapon().isRanged()) {
-                        if (hero.getSecondWeapon().isWeapon()) {
-                            hero.setWeapon(hero.getSecondWeapon());
+                if (hero.getOffhandWeapon() != null) {
+                    if (!hero.getOffhandWeapon().isRanged()) {
+                        if (hero.getOffhandWeapon().isWeapon()) {
+                            hero.setWeapon(hero.getOffhandWeapon());
                             hero.setSecondWeapon(null);
                         }
                     }

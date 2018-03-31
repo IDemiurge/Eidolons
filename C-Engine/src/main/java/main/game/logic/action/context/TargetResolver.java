@@ -9,15 +9,15 @@ import java.util.Stack;
  * Created by JustMe on 3/23/2017.
  */
 public class TargetResolver {
-/*
-Event
+    /*
+    Event
 
 
 
- */
+     */
 //Remark: The idea was to use "<IdAttributeIdentifier>", not the same with context "Role".
     //it should have been a separate enum.
-    public Obj resolveTarget(Stack<IdKey> queue, Obj obj){
+    public Obj resolveTarget(Stack<IdKey> queue, Obj obj) {
         if (queue.isEmpty()) {
             return obj;
         }
@@ -28,7 +28,7 @@ Event
     }
 
     private Obj getObj(IdKey key, Obj obj) {
-        switch(key){
+        switch (key) {
 
         }
         return obj;

@@ -275,5 +275,13 @@ public class TextureCache {
         return t;
     }
 
+    public static TextureRegion getRegion(String path, Texture texture) {
+        TextureRegion region = regionCache.get(path);
+        if (region==null ){
+            region = new TextureRegion(texture);
+            regionCache.put(path, region);
+        }
+        return region;
+    }
 }
 

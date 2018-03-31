@@ -9,8 +9,8 @@ import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +47,7 @@ public class BarPanel {
             };
             bars.put(v, valueBar);
             panel.add(valueBar, "w " + getWidth() + ",h " + getHeight()
-                    // getPos(i)
+             // getPos(i)
             );
             i++;
         }

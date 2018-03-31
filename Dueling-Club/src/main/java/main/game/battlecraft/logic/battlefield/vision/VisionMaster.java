@@ -31,7 +31,6 @@ import java.util.Set;
  */
 public class VisionMaster implements GenericVisionManager {
 
-
     private SightMaster sightMaster;
     private DetectionMaster detectionMaster;
     private IlluminationMaster illuminationMaster;
@@ -57,14 +56,6 @@ public class VisionMaster implements GenericVisionManager {
 
     }
 
-    private void resetLastKnownCoordinates() {
-        for (Unit u : game.getUnits()) {
-            if (checkVisible(u)) {
-                u.setLastKnownCoordinates(u.getCoordinates());
-            }
-        }
-
-    }
 
 
     public void resetVisibilityStatuses() {
@@ -73,10 +64,6 @@ public class VisionMaster implements GenericVisionManager {
         getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
         getSightMaster().clearCaches();
-//        setActiveUnit(
-//         ExplorationMaster.isExplorationOn()
-//          ? getSeeingUnit() :
-//          game.getTurnManager().getActiveUnit(true));
 
         if (getActiveUnit() == null) {
             LogMaster.log(1, "***********null active activeUnit for visibility!");
@@ -95,24 +82,32 @@ public class VisionMaster implements GenericVisionManager {
 
         getVisibilityMaster().resetOutlinesAndVisibilityLevels();
 
-//        setRelativePlayerVisibility(game.getPlayer(mine), cells);
-        //Chronos.logTimeElapsedForMark("PLAYER for terain cells VISIBILITY REFRESH");
-
         setRelativePlayerVisibility(game.getPlayer(mine), game.getStructures()); // DC_Player.NEUTRAL.getControlledUnits());
 
         setRelativePlayerVisibility(game.getPlayer(mine), game.getPlayer(!mine)
          .getControlledUnits());
+
         setRelativePlayerVisibility(game.getPlayer(!mine), game.getPlayer(mine)
          .getControlledUnits());
 
         getActiveUnit().setUnitVisionStatus(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT);
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
-//        resetLastKnownCoordinates();
+
+         resetLastKnownCoordinates();
+
         triggerGuiEvents();
         firstResetDone = true;
         Chronos.logTimeElapsedForMark("VISIBILITY REFRESH", true);
     }
 
+    private void resetLastKnownCoordinates() {
+        //   TODO must communicate with GridPanel
+//        for (Unit u : game.getUnits()) {
+//            if (checkVisible(u)) {
+//                u.setLastKnownCoordinates(u.getCoordinates());
+//            }
+//        }
+    }
     public void triggerGuiEvents() {
         List<BattleFieldObject> visibleList = new ArrayList<>();
         List<BattleFieldObject> invisibleList = new ArrayList<>();
@@ -146,30 +141,23 @@ public class VisionMaster implements GenericVisionManager {
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }
 
-    private boolean isVisibleOnGrid(BattleFieldObject sub) {
-//        if (sub.isDead())
-//            if (view.getActions().size == 0) {
-//                return false;
-//            }
-//sub instanceof Unit && !((Unit)sub).getAI().isOutsideCombat()
-
-        if (sub.isMine())
+    private boolean isVisibleOnGrid(BattleFieldObject object) {
+        if (object.isMine())
             return true;
-        if (sub.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
+        if (object.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
             return false;
-        if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.UNKNOWN)
-            if (sub.getOutlineTypeForPlayer() == null ||
-             sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.THICK_DARKNESS
+        //TODO why for active player?
+        if (object.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.UNKNOWN)
+            if (object.getOutlineTypeForPlayer() == null ||
+             object.getOutlineTypeForPlayer() == OUTLINE_TYPE.DEEPER_DARKNESS
              || !firstResetDone)
                 return false;
-            else if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
-//            if (ExplorationMaster.isExplorationOn())
-
+            else if (object.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
                 return false;
             } else //if (!sub.isWall())
-                if (sub.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+                if (object.getOutlineTypeForPlayer() == OUTLINE_TYPE.BLOCKED_OUTLINE)
                     return false;
-                else if (sub.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
+                else if (object.getVisibilityLevelForPlayer() == VISIBILITY_LEVEL.UNSEEN)
                     return false;
 
         return true;

@@ -37,7 +37,7 @@ public class DualAttackMaster {
         List<DC_UnitAction> list = new ArrayList<>();
 
         unit.getMainWeapon().getAttackActions().forEach(main -> {
-            unit.getSecondWeapon().getAttackActions().forEach(offhand -> {
+            unit.getOffhandWeapon().getAttackActions().forEach(offhand -> {
                 if (checkRangeCanMerge(main, offhand))
                     if (checkCostsCanMerge(main, offhand))
                         if (checkTypeCanMerge(main, offhand))

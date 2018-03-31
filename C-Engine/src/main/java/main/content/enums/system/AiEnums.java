@@ -87,6 +87,14 @@ public class AiEnums {
         }
     }
 
+    public enum CHARACTER_TYPE {
+        PROTECTOR,
+        ASSASSIN,
+        LEADER,
+        ARCHER,
+        SUPPORT,
+    }
+
     public enum CUSTOM_HERO_GROUP {
         PLAYTEST, ERSIDRIS, EDALAR, TEST,
 
@@ -150,22 +158,17 @@ public class AiEnums {
         }
 
     }
+
     public enum IMPULSE_TYPE {
         IMPULSES, VENGEANCE, HATRED, FEAR, GREED, CURIOSITY, PROTECTIVENESS
     }
+
     public enum INCLINATION_TYPE {
         DEFENSE,
         ASSASSINATION,
         BRAWL,
         SUPPORT,
         CAUTION,
-    }
-    public enum CHARACTER_TYPE {
-        PROTECTOR,
-        ASSASSIN,
-        LEADER,
-        ARCHER,
-        SUPPORT,
     }
 
     public enum META_GOAL_TYPE {
@@ -176,6 +179,7 @@ public class AiEnums {
         BRAWL,
         ASSASSINATE,
     }
+
     public enum ORDER_PRIORITY_MODS {
         ATTACK(GOAL_TYPE.ATTACK),
         RETREAT(GOAL_TYPE.RETREAT),

@@ -5,6 +5,7 @@ import main.ability.effects.common.ModifyValueEffect;
 import main.content.ContentManager;
 import main.content.DC_ContentManager;
 import main.content.PARAMS;
+import main.content.PROPS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
@@ -116,7 +117,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
                 checkApplyOffhandPenalties();
             }
         } else {
-            if (hero.getSecondWeapon() == null) {
+            if (hero.getOffhandWeapon() == null) {
                 checkApplySingleHandBonus();
             }
         }
@@ -160,7 +161,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public boolean isTwoHanded() {
         // if (mainHand)
-        // if (hero.getSecondWeapon() == null) {
+        // if (hero.getOffhandWeapon() == null) {
         // return true;
         // }
         return checkProperty(G_PROPS.WEAPON_CLASS, StringMaster
@@ -290,6 +291,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
 
     public boolean isMainHand() {
         return mainHand;
+    }
+    public boolean isOffhand() {
+        return !mainHand;
     }
 
     public void setMainHand(boolean mainHand) {
@@ -436,5 +440,9 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
         }
 
         multiplyParamByPercent(getDurabilityParam(), durability, false);
+    }
+
+    public String getSpriteImagePath() {
+        return getProperty(PROPS.SPRITE_PATH);
     }
 }

@@ -34,7 +34,7 @@ public enum G_PROPS implements PROPERTY {
     ABILITY_TYPE("abils", "Ability_Type"),
 
     ACTION_TYPE("actions", "Action_Type"),
-    ACTION_TYPE_GROUP("actions", null ),
+    ACTION_TYPE_GROUP("actions", null),
     ACTION_TAGS("Action tags", true, "actions"),
     ABILITIES("abils", "Abilities"),
     SOUNDSET("Soundset", "units", "chars", "spells", "items"),
@@ -134,7 +134,7 @@ public enum G_PROPS implements PROPERTY {
     GARMENT_TYPE("garment"),
     TOOLTIP("all"),
     FACTION_GROUP("factions"),
-    UNIQUE_ID("all"), FULLSIZE_IMAGE("scenarios" );
+    UNIQUE_ID("all"), FULLSIZE_IMAGE("scenarios");
 
     static {
         NAME.setInputReq(INPUT_REQ.STRING);

@@ -108,7 +108,7 @@ public class AttackEffect extends MicroEffect implements OneshotEffect {
         } else if (ref.getSourceObj() instanceof Unit) {
             Integer id = null;
             try {
-                id = (!offhand) ? attacker.getMainWeapon().getId() : attacker.getSecondWeapon()
+                id = (!offhand) ? attacker.getMainWeapon().getId() : attacker.getOffhandWeapon()
                  .getId();
             } catch (Exception ignored) {
             }

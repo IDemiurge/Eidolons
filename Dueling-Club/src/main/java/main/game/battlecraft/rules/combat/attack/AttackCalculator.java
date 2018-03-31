@@ -707,7 +707,7 @@ public class AttackCalculator {
         atkMap.put(MOD_IDENTIFIER.WEAPON, atk_mod);
     }
 
-    private int initSneakMods(Obj obj, int rangedMod) {
+    private int     initSneakMods(Obj obj, int rangedMod) {
         int mod = obj.getIntParam(PARAMS.SNEAK_ATTACK_MOD) * rangedMod / 100;
         atkMap.put(MOD_IDENTIFIER.SNEAK, mod);
         addModifier(PARAMS.ATTACK_MOD, mod);

@@ -112,7 +112,6 @@ public class EntityWrapper<E extends DataModel> {
     }
 
 
-
     public String getDoubleParam(PARAMETER param) {
         return entity.getDoubleParam(param);
     }

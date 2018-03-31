@@ -93,9 +93,9 @@ public class Viewer extends JPanel {
 
     public void log(String text, String type) {
         int time = (int) ((int) Calendar.getInstance().getTime().getTime() - calendar.getTime()
-                .getTime());
+         .getTime());
         String s = ta.getText() + "\n" + time / 1000 + " " + prefix + " " + type.toUpperCase()
-                + ": " + text;
+         + ": " + text;
         ta.setRows(i);
         if (i < max) {
             i++;

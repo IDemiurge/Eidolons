@@ -11,7 +11,7 @@ public class CustomImage extends BufferedImage {
 
     public CustomImage(String imgPath, Image image) {
         super(image.getWidth(null), image.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB);
+         BufferedImage.TYPE_INT_ARGB);
         this.imgPath = imgPath;
         getGraphics().drawImage(image, 0, 0, null);
     }

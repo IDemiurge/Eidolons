@@ -26,6 +26,7 @@ import main.libgdx.bf.UnitView;
 import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.bf.generic.SuperContainer;
 import main.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import main.libgdx.gui.panels.dc.clock.GearCluster;
 import main.libgdx.gui.tooltips.ValueTooltip;
 import main.libgdx.screens.DungeonScreen;
 import main.libgdx.texture.TextureCache;
@@ -46,6 +47,7 @@ public class InitiativePanel extends Group {
     private final int maxSize = 25;
     private final int visualSize = 10;
     private final int offset = -12;
+    private final GearCluster gears;
     Label timeLabel;
     private QueueView[] queue;
     private WidgetGroup queueGroup;
@@ -63,6 +65,8 @@ public class InitiativePanel extends Group {
         init();
         registerCallback();
         resetZIndices();
+        addActor(gears = new GearCluster(3, 0.8f));
+        gears.setPosition(80, -25);
     }
 
     public static boolean isLeftToRight() {
@@ -263,6 +267,7 @@ public class InitiativePanel extends Group {
 
     private void checkPositions() {
         int n = 0;
+        boolean moveApplied = false;
         for (int i = queue.length - 1; i >= 0; i--) {
             QueueView sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
             if (sub == null)
@@ -273,9 +278,13 @@ public class InitiativePanel extends Group {
             n++;
             if (sub.getX() == x)
                 continue;
+            if (sub.mainHero){
+                gears.setClockwise(sub.getX()>x);
+            }
+            moveApplied=true;
             sub.getActions().clear();
             AfterAction a = new AfterAction();
-            a.setAction(ActorMaster.getMoveToAction(x, sub.getY(), 1));
+            a.setAction(ActorMaster.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
             sub.addAction(a);
             a.setTarget(sub);
 //            sub.setX(relToPixPos(n));
@@ -283,6 +292,13 @@ public class InitiativePanel extends Group {
         }
         timePassedSincePosCheck = 0;
         checkPositionsRequired = false;
+        if (moveApplied){
+            gears.activeWork(getViewMoveDuration()/2, getViewMoveDuration()/2);
+        }
+    }
+
+    private float getViewMoveDuration() {
+        return 1;
     }
 
     private void cleanUp() {
@@ -310,38 +326,8 @@ public class InitiativePanel extends Group {
                 removeView((sub.id));
             }
         }
+        previewAtbReadiness(null); // to ensure proper values are displayed
 
-
-    }
-
-    private void removePreviewAtbPos() {
-        if (previewActor != null) {
-            previewActor.setVisible(false);
-        }
-    }
-
-    private void previewAtbPos(int i) {
-        if (i > maxSize) {
-            //TODO
-        }
-        if (previewActor == null) {
-            addActor(previewActor = new ImageContainer(getPreviewPath()));
-            previewActor.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
-        }
-        previewActor.setVisible(true);
-        previewActor.setScale(1.25f);
-        previewActor.clearActions();
-        previewActor.setY(-30);
-        previewActor.setX(container.getX() + (i+1) * (imageSize + offset) -  offset/2);
-        ActorMaster.addScaleActionCentered(previewActor, 0, 1, 8);
-//        ActorMaster.addMoveToAction(previewActor, previewActor.getX()+previewActor.getWidth()/2,
-//         previewActor.getY(), 5);
-    }
-
-    private String getPreviewPath() {
-        return StrPathBuilder.build(PathFinder.getComponentsPath()
-         , "2018", "atb pos preview.png"
-        ) + StringMaster.getPathSeparator();
     }
 
     private void addOrUpdate(UnitView unitView) {
@@ -361,20 +347,6 @@ public class InitiativePanel extends Group {
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.getMobilityState();
         sort();
-    }
-
-
-    private Image newImage(int pos, InitiativePanelParam panelParam) {
-        Image i = new Image(panelParam.getTextureRegion());
-        i.setBounds(relToPixPos(pos), 0, imageSize, imageSize);
-        return i;
-    }
-
-    private Image newImage(Image old, InitiativePanelParam panelParam) {
-        Image image = new Image(panelParam.getTextureRegion());
-        image.setBounds(old.getX(), 0, old.getWidth(), old.getHeight());
-        old.clear();
-        return image;
     }
 
     private int getLastEmptySlot() {
@@ -421,6 +393,14 @@ public class InitiativePanel extends Group {
              timePassedSincePosCheck > 2 ||
              (checkPositionsRequired && timePassedSincePosCheck >= maxMoveAnimDuration))
                 checkPositions();
+            else {
+//                for (QueueView sub : queue)
+//                    if (sub != null)
+//                        if (sub.getActions().size > 0)
+//                            return;
+//
+//                gears.work();
+            }
         }
     }
 
@@ -430,6 +410,7 @@ public class InitiativePanel extends Group {
         float x = container.getX();
         float y = !visible ? container.getHeight() : queueOffsetY;
         ActorMaster.addMoveToAction(container, x, y, 1);
+        gears.activeWork(0.5f, 1);
         if (visible)
             container.setVisible(visible);
         else
@@ -470,7 +451,10 @@ public class InitiativePanel extends Group {
                     queue[i] = null;
                     queue[ip1] = cur;
                 } else {
-                    if (cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative)) {
+                    boolean result =
+                     isSortByTimeTillTurn() ? cur.queuePriority > next.queuePriority || (cur.id > next.id && cur.queuePriority == next.queuePriority)
+                      :                      cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative);
+                    if (result) {
                         queue[ip1] = cur;
                         queue[i] = next;
                         for (int y = i; y > 0; y--) {
@@ -508,40 +492,39 @@ public class InitiativePanel extends Group {
 //        applyImageMove();
     }
 
-    private void applyImageMove() {
-        int from = queue.length - visualSize;
-        int to = queue.length - 1;
-        int rpos = 0;
-        setupAnim(from, to, rpos);
-
-        to = from;
-        from = 0;
-        rpos = queue.length - visualSize * -1;
-        setupAnim(from, to, rpos);
+    private boolean isSortByTimeTillTurn() {
+        return false;
     }
 
-    private void setupAnim(int from, int to, int rpos) {
-        if (from <= to)
-            return;
-        maxMoveAnimDuration = 0;
-        timePassedSincePosCheck = 0;
-        for (int i = from; i <= to; i++) {
-            QueueView container = queue[i];
-            float pixPos = relToPixPos(rpos);
-            if (container != null) {
-                if (container.getX() != pixPos) {
-                    MoveToAction a = new MoveToAction();
-                    a.setX(pixPos);
-                    float dur = Math.abs(container.getX() - pixPos) / 400;
-                    if (dur > maxMoveAnimDuration)
-                        maxMoveAnimDuration = dur;
-                    a.setDuration(dur);
-                    a.setTarget(container);
-                    container.addAction(a);
-                }
-                rpos++;
-            }
+
+    private void removePreviewAtbPos() {
+        if (previewActor != null) {
+            previewActor.setVisible(false);
         }
+    }
+
+    private void previewAtbPos(int i) {
+        if (i > maxSize) {
+            //TODO
+        }
+        if (previewActor == null) {
+            addActor(previewActor = new ImageContainer(getPreviewPath()));
+            previewActor.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
+        }
+        previewActor.setVisible(true);
+        previewActor.setScale(1.25f);
+        previewActor.clearActions();
+        previewActor.setY(-30);
+        previewActor.setX(container.getX() + (i + 1) * (imageSize + offset) - offset / 2);
+        ActorMaster.addScaleActionCentered(previewActor, 0, 1, 8);
+//        ActorMaster.addMoveToAction(previewActor, previewActor.getX()+previewActor.getWidth()/2,
+//         previewActor.getY(), 5);
+    }
+
+    private String getPreviewPath() {
+        return StrPathBuilder.build(PathFinder.getComponentsPath()
+         , "2018", "atb pos preview.png"
+        ) + StringMaster.getPathSeparator();
     }
 
     private float relToPixPos(int pos) {
@@ -565,9 +548,11 @@ public class InitiativePanel extends Group {
         public float precalcQueuePriority;
         public int id;
         public boolean mobilityState;
+        public boolean mainHero;
 
         public QueueView(UnitView actor) {
             super(actor);
+            mainHero=actor.isMainHero();
             if (actor == null) {
                 return;
             }

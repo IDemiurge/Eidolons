@@ -18,7 +18,6 @@ import main.game.core.game.DC_Game;
 import main.libgdx.DialogScenario;
 import main.libgdx.bf.mouse.BattleClickListener;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
-import main.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.test.frontend.IntroTestLauncher;
@@ -34,7 +33,9 @@ public class UnitViewFactory {
     public static BaseView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
-        view.setOutlineSupplier(() -> {
+        if (bfObj.isMine())
+            view.setMainHero(bfObj.isMainHero());
+        view.setOutlinePathSupplier(() -> {
             OUTLINE_TYPE type = null;
             if (bfObj instanceof Unit) {
                 if (!VisionManager.checkVisible(bfObj)) {
@@ -48,7 +49,8 @@ public class UnitViewFactory {
                 return null;
             String path = Eidolons.game.getVisionMaster().getVisibilityMaster()
              .getImagePath(type, bfObj);
-            return TextureCache.getOrCreateR(path);
+
+            return (path);
         });
 
         view.createHpBar((new ResourceSourceImpl(bfObj)));
@@ -60,12 +62,14 @@ public class UnitViewFactory {
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.setToolTip(tooltip);
-        view.addListener(createListener(bfObj));
+        ClickListener listener = createListener(bfObj);
+        view.addListener(listener);
+        view.getInitiativeQueueUnitView().addListener(listener);
         return view;
     }
 
     public static BaseView createGraveyardView(BattleFieldObject bfObj) {
-        BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()));
+        BaseView view = new BaseView(getOrCreateR(bfObj.getImagePath()), bfObj.getImagePath());
         final UnitViewTooltip tooltip = new UnitViewTooltip(view);
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.addListener(tooltip.getController());

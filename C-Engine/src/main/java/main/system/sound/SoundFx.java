@@ -24,12 +24,12 @@ public class SoundFx {
         this.delay = delay;
     }
 
-    public void setOrigin(Vector2 origin) {
-        this.origin = origin;
-    }
-
     public Vector2 getOrigin() {
         return origin;
+    }
+
+    public void setOrigin(Vector2 origin) {
+        this.origin = origin;
     }
 
     public String getSound() {

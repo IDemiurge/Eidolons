@@ -1,6 +1,11 @@
 package main.game.core.atb;
 
+import main.entity.Ref;
 import main.entity.obj.unit.Unit;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
@@ -14,7 +19,10 @@ import java.util.Stack;
  */
 public class AtbController implements Comparator<Unit> {
     public static final int ATB_MOD = 20;
-    public static final float TIME_IN_ROUND = 10;
+    public static final float TIME_IN_ROUND = 12;
+    public static final float TIME_TO_READY = 10;
+    private static final Float TIME_LOGIC_MODIFIER = 10f;
+    private static final Float TIME_DISPLAY_MODIFIER = 1f;
     private AtbCalculator calculator;
     private AtbTurnManager manager;
     private Stack<AtbUnit> unitsInAtb;
@@ -48,13 +56,6 @@ public class AtbController implements Comparator<Unit> {
         return compareForSort(getAtbUnit(first), getAtbUnit(second));
     }
 
-    public void newRound() {
-        time = 0;
-        processAtbRelevantEvent();
-        /*
-        readiness is not lost!
-         */
-    }
 
     public AtbUnit step() {
         float timeElapsed = this.unitsInAtb.get(0).getTimeTillTurn();
@@ -71,7 +72,7 @@ public class AtbController implements Comparator<Unit> {
         this.processTimeElapsed(timeElapsed + 0.0001f);
         this.updateTimeTillTurn();
         this.updateTurnOrder();
-        if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_IN_ROUND) {
+        if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_TO_READY) {
             return this.unitsInAtb.get(0);
         } else {
             return null; //this.step();
@@ -79,7 +80,7 @@ public class AtbController implements Comparator<Unit> {
     }
 
     private float getDefaultTimePeriod() {
-        return TIME_IN_ROUND / 10;
+        return 1;
     }
 
     private boolean checkAllInactive() {
@@ -90,9 +91,20 @@ public class AtbController implements Comparator<Unit> {
         return true;
     }
 
+    public void newRound() {
+        processAtbRelevantEvent();
+        /*
+        readiness is not lost!
+         */
+    }
     public void processTimeElapsed(Float time) {
         this.time += time;
+
+        getManager().getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.TIME_ELAPSED,
+         new Ref(Math.round(time * TIME_LOGIC_MODIFIER))));
+        GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         if (this.time >= TIME_IN_ROUND) {
+            this.time = this.time-TIME_IN_ROUND;
             manager.getGame().getStateManager().newRound();
             newRound();
         }
@@ -125,7 +137,7 @@ public class AtbController implements Comparator<Unit> {
             if (unit.getInitiative() <= 0) {
                 unit.setTimeTillTurn(Float.MAX_VALUE);
             } else {
-                unit.setTimeTillTurn((TIME_IN_ROUND - unit.getAtbReadiness()) / unit.getInitiative());
+                unit.setTimeTillTurn((TIME_TO_READY - unit.getAtbReadiness()) / unit.getInitiative());
 
             }
 

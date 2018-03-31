@@ -12,10 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import main.content.PARAMS;
+import main.data.filesys.PathFinder;
 import main.game.core.Eidolons;
 import main.libgdx.StyleHolder;
 import main.libgdx.bf.SuperActor;
+import main.libgdx.bf.generic.ImageContainer;
 import main.libgdx.texture.TextureCache;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
@@ -23,9 +27,16 @@ import main.system.math.MathMaster;
 import static main.libgdx.texture.TextureCache.getOrCreateR;
 
 public class OrbElement extends SuperActor {
-    private static final String EMPTY_PATH = "/UI/components/new/orb 64.png";
+    private static final String EMPTY_PATH = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "new", "orb 64.png");
+    private static final String OVERLAY_PATH = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "2018","orbs", "overlay.png");
     private Label label;
     private Image background;
+    private Image gem;
+    private ImageContainer gemLight;
+    private Image overlay;
+
     private Image icon;
     private Image lighting;
     private TextureRegion orbRegion;
@@ -34,27 +45,43 @@ public class OrbElement extends SuperActor {
     private int orbFullnessPrevious = 62;
     private float fluctuation = 0;
 
-    public OrbElement(TextureRegion iconRegion, TextureRegion texture, String value) {
-        background = new Image(getOrCreateR(EMPTY_PATH));
+    public OrbElement(TextureRegion iconRegion, TextureRegion texture, String value, PARAMS param) {
         icon = new Image(iconRegion);
         orbRegion = texture;
         this.iconRegion = iconRegion;
         label = new Label(value, StyleHolder.
          getSizedLabelStyle(FONT.AVQ, 18));
         calculateOrbFullness(value);
-        addActor(background);
+        addActor( background = new Image(getOrCreateR(EMPTY_PATH)));
 //        addActor(icon);
         icon.setPosition(orbRegion.getRegionWidth() / 2 - icon.getWidth() / 2,
          orbRegion.getRegionHeight() / 2 - icon.getHeight() / 2);
 
+//        addActor( overlay = new Image(getOrCreateR(OVERLAY_PATH)));
+//        String p = ContentManager.getBaseParameterFromCurrent(param).getName();
+//        addActor(gem = new Image(getOrCreateR(getGemPath(p))));
+//        addActor( gemLight = new ImageContainer((getGemLightPath(p))));
+//        gemLight.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT);
 
+        //TODO ORB GOES TO THE FORE ON HOVER
+    }
+
+    private String getGemLightPath(String value) {
+        return getGemPath(value + " light");
+    }
+    private String getGemPath(String value) {
+        return StrPathBuilder.build(
+         PathFinder.getComponentsPath(), "2018","orbs", "gem",
+         value+ ".png ");
     }
 
     public OrbElement(PARAMS param, String value) {
-        this(getOrCreateR(ImageManager.getValueIconPath(param)),
+        this(getOrCreateR(
+         StringMaster.getAppendedImageFile(
+          ImageManager.getValueIconPath(param), " alpha")),
          getOrCreateR("/UI/components/new/orb " +
           param.getName() +
-          ".png"), value);
+          ".png"), value, param);
 
 //        lighting = new Image(getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
 //        lighting.sizeBy(0.3f);
@@ -72,6 +99,8 @@ public class OrbElement extends SuperActor {
 //        alphaFluctuation(icon, delta);
         if (lighting != null)
             alphaFluctuation(lighting, delta);
+        if (gemLight != null)
+            alphaFluctuation(gemLight, delta);
         super.act(delta);
     }
 

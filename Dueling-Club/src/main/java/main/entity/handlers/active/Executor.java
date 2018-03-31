@@ -23,7 +23,7 @@ import main.game.battlecraft.rules.mechanics.ConcealmentRule;
 import main.game.battlecraft.rules.perk.EvasionRule;
 import main.game.core.ActionInput;
 import main.game.core.Eidolons;
-import main.game.core.atb.AtbController;
+import main.game.core.atb.AtbMaster;
 import main.game.core.atb.AtbTurnManager;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -374,7 +374,8 @@ public class Executor extends ActiveHandler {
 
     private void reduceAtbReadiness() {
 
-        double initiativeCost = -getAction().getParamDouble(PARAMS.AP_COST) * AtbController.ATB_MOD;
+        double initiativeCost =
+         -AtbMaster.getReadinessCost(getAction());
         getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
          initiativeCost + "", 0, false);
         ((AtbTurnManager) getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();

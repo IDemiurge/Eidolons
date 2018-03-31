@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import main.libgdx.GdxImageTransformer;
 import main.libgdx.GdxMaster;
 import main.libgdx.StyleHolder;
 import main.libgdx.anims.ActorMaster;
@@ -48,6 +48,7 @@ public class UnitView extends BaseView {
     protected boolean stealth;
     private Tooltip tooltip;
     private float timeTillTurn = 10;
+    private float resetTimer;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -226,7 +227,25 @@ public class UnitView extends BaseView {
             alphaFluctuation(mainHeroLabel, delta);
         }
 //        alphaFluctuation(emblemBorder, delta);
-
+        if (!mainHero)
+            if (resetTimer <= 0) {
+                if (outlineSupplier != null)
+                    outline = outlineSupplier.get();
+                if (outline != null) {
+                    setPortraitTexture(outline);
+                } else {
+                    if (originalTextureAlt != null) {
+                        setPortraitTexture(originalTextureAlt);
+                    } else {
+                        {
+                            setPortraitTexture(originalTexture);
+                        }
+                    }
+                }
+                resetTimer = 0.2f;
+            } else {
+                resetTimer = resetTimer - delta;
+            }
 
     }
 
@@ -251,19 +270,8 @@ public class UnitView extends BaseView {
                 ActorMaster.addFadeInOrOutIfNoActions(this, 5);
             else if (getColor().a == 0)
                 getColor().a = 1;
-        if (outlineSupplier != null)
-            outline = outlineSupplier.get();
-        if (outline != null) {
-            getPortrait().setDrawable(new TextureRegionDrawable(outline));
-        } else {
-            if (originalTextureAlt != null) {
-                getPortrait().setDrawable(TextureCache.getOrCreateTextureRegionDrawable(originalTextureAlt));
-            } else {
-                {
-                    getPortrait().setDrawable(TextureCache.getOrCreateTextureRegionDrawable(originalTexture));
-                }
-            }
-        }
+
+
         super.draw(batch, parentAlpha);
 
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
@@ -275,6 +283,17 @@ public class UnitView extends BaseView {
         }
     }
 
+    protected void setPortraitTexture(TextureRegion textureRegion) {
+
+        getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
+    }
+
+    protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
+        if (!(this instanceof GridUnitView)) {
+            return new TextureRegion(GdxImageTransformer.size(path, InitiativePanel.imageSize, true));
+        }
+        return texture;
+    }
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {
         this.outlineSupplier = outlineSupplier;
     }
@@ -361,5 +380,13 @@ public class UnitView extends BaseView {
     public void setInitiativeLabelText(String initiativeLabelText) {
         initiativeLabel.setText(initiativeLabelText);
 
+    }
+
+    public boolean isMainHero() {
+        return mainHero;
+    }
+
+    public void setMainHero(boolean mainHero) {
+        this.mainHero = mainHero;
     }
 }

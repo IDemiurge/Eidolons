@@ -13,6 +13,7 @@ import main.entity.obj.BattleFieldObject;
 import main.entity.obj.DC_Cell;
 import main.entity.obj.DC_Obj;
 import main.entity.obj.unit.Unit;
+import main.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.game.core.ActionInput;
 import main.game.core.Eidolons;
 import main.game.core.game.DC_Game;
@@ -24,7 +25,6 @@ import main.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.libgdx.gui.panels.dc.ValueContainer;
 import main.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import main.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
-import main.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import main.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import main.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import main.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
@@ -42,9 +42,9 @@ import static main.libgdx.texture.TextureCache.getOrCreateRoundedRegion;
 import static main.system.GuiEventType.GAME_FINISHED;
 
 public class RadialManager {
-    private static final ActiveObj SHORTCUT = new DummyAction();
-    private static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
-    private static boolean processingShortcuts;
+    protected static final ActiveObj SHORTCUT = new DummyAction();
+    protected static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
+    protected static boolean processingShortcuts;
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
 //        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
@@ -53,7 +53,7 @@ public class RadialManager {
         return getOrCreateRoundedRegion(obj.getImagePath());
     }
 
-    private static boolean isActionShown(ActiveObj el, DC_Obj target) {
+    protected static boolean isActionShown(ActiveObj el, DC_Obj target) {
         if (el == SHORTCUT)
             return true;
         if (!(el instanceof DC_ActiveObj)) {
@@ -105,6 +105,7 @@ public class RadialManager {
 
     public static void addCostTooltip(DC_ActiveObj el, ValueContainer valueContainer) {
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
+        tooltip.setRadial(true);
         tooltip.setUserObject(new ActionCostSourceImpl(el));
         valueContainer.addListener(tooltip.getController());
     }
@@ -112,39 +113,42 @@ public class RadialManager {
     public static List<RadialValueContainer> getOrCreateRadialMenu(DC_Obj target) {
         List<RadialValueContainer> nodes = cache.get(target);
         if (!ListMaster.isNotEmpty(nodes))
-            nodes = createNew(target);
+            nodes = createNodes(target);
 
         cache.put(target, nodes);
         return nodes;
     }
 
-    public static List<RadialValueContainer> createNew(DC_Obj target) {
+    public static List<RadialValueContainer> createNodes(DC_Obj target) {
         if (OutcomePanel.TEST_MODE)
             try {
                 GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        if (OverlayTextPanel.TEST_MODE)
-            try {
-//                GuiEventManager.trigger(SHOW_TEXT_CENTERED, "Hey\nyo\nman!");
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        List<RadialValueContainer> list = new ArrayList<>();
-        if (target instanceof Unit) {
-            list.add(getExamineNode(target));
-        }
 
         Unit sourceUnit = (Unit) Game.game.getManager().getActiveObj();
         if (sourceUnit == null) {
-            return list;
+            return new ArrayList<>();
         }
         if (!sourceUnit.isMine()) {
             if (!sourceUnit.getGame().isDebugMode()) {
-                return list;
+                return new ArrayList<>();
             }
         }
+        List<? extends ActiveObj> actions = getActions(sourceUnit, target);
+        return createNodes(sourceUnit, target, actions, true);
+    }
+
+    public static List<RadialValueContainer> createNodes(
+     Unit sourceUnit, DC_Obj target, List<? extends ActiveObj> actives,
+    boolean groupedAttacks
+    ) {
+
+        List<RadialValueContainer> list = new ArrayList<>();
+
+        if (checkExamineNode(target))
+            list.add(getExamineNode(target));
 
 
         List<RadialValueContainer> moves = new ArrayList<>();
@@ -159,17 +163,11 @@ public class RadialManager {
         List<DC_ActiveObj> topActions = new ArrayList<>();
         List<DC_ActiveObj> shortcuts = new ArrayList<>();
 //top actions = last? recommended?
-        List<? extends ActiveObj> actives = getActions(sourceUnit, target);
         processingShortcuts = false;
         for (ActiveObj action : actives) {
             if (!isActionShown(action, target))
                 continue;
 
-//        actives.parallelStream()
-//         .filter(action -> isActionShown(action, target))
-//         .distinct()
-//         .sequential()
-//         .forEach(action -> {
             if (action == SHORTCUT) {
                 processingShortcuts = true;
                 continue;
@@ -227,22 +225,33 @@ public class RadialManager {
 
 
         if (!attacks.isEmpty()) {
+            if (groupedAttacks)
             list.add(configureAttackParentNode(attacks,
              RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, sourceUnit.getAttackAction(false)));
+            else {
+                for (RadialValueContainer sub : attacks) {
+                    list.add(sub);
+                }
+            }
         }
         list.add(getParentNode(RADIAL_PARENT_NODE.TURN_ACTIONS, turns));
         list.add(getParentNode(RADIAL_PARENT_NODE.MOVES, moves));
 
         if (!offhandAttacks.isEmpty()) {
-            list.add(configureAttackParentNode(offhandAttacks,
-             RADIAL_PARENT_NODE.OFFHAND_ATTACKS, target, sourceUnit.getAttackAction(true)));
+            if (groupedAttacks)
+                list.add(configureAttackParentNode(offhandAttacks,
+                 RADIAL_PARENT_NODE.OFFHAND_ATTACKS, target, sourceUnit.getAttackAction(true)));
+            else {
+                for (RadialValueContainer sub : offhandAttacks) {
+                    list.add(sub);
+                }
+            }
         }
 
         list.add(getParentNode(RADIAL_PARENT_NODE.QUICK_ITEMS, quickItems));
         list.add(getParentNode(RADIAL_PARENT_NODE.MODES, modes));
         list.add(getParentNode(RADIAL_PARENT_NODE.ORDERS, orders));
         list.add(getParentNode(RADIAL_PARENT_NODE.DUAL_ATTACKS, dualAttacks));
-
 
         list.add(getParentNode(RADIAL_PARENT_NODE.SPECIAL, specialActions));
 
@@ -251,7 +260,6 @@ public class RadialManager {
              SpellRadialManager.getSpellNodes(sourceUnit, target);
             list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spellNodes));
         }
-
 
         topActions.forEach(activeObj -> {
             list.add(configureActionNode(target, activeObj));
@@ -265,7 +273,14 @@ public class RadialManager {
         return list;
     }
 
-    private static RadialValueContainer configureShortcutActionNode(DC_Obj target, DC_ActiveObj activeObj) {
+
+    protected static boolean checkExamineNode(DC_Obj target) {
+        return target instanceof Unit && (
+         target.getOutlineTypeForPlayer() == null
+          && VisionManager.checkKnown(target));
+    }
+
+    protected static RadialValueContainer configureShortcutActionNode(DC_Obj target, DC_ActiveObj activeObj) {
         if (activeObj.isMove()) {
             if (target instanceof BattleFieldObject) {
                 target = target.getGame().getCellByCoordinate(target.getCoordinates());
@@ -280,7 +295,7 @@ public class RadialManager {
         return node;
     }
 
-    private static List<? extends ActiveObj> getActions(Unit sourceUnit, DC_Obj target) {
+    protected static List<? extends ActiveObj> getActions(Unit sourceUnit, DC_Obj target) {
 
         List<ActiveObj> actives = new ArrayList<>(sourceUnit.getActives());
 //        actives.addAll(sourceUnit.getSpells());
@@ -304,8 +319,8 @@ public class RadialManager {
         return actives;
     }
 
-    private static Collection<? extends ActiveObj> getShortcuts(Unit sourceUnit,
-                                                                DC_Obj target) {
+    protected static Collection<? extends ActiveObj> getShortcuts(Unit sourceUnit,
+                                                                  DC_Obj target) {
 
         List<ActiveObj> list = new ArrayList<>();
         for (RADIAL_ACTION_SHORTCUT sub : RADIAL_ACTION_SHORTCUT.values()) {
@@ -319,7 +334,7 @@ public class RadialManager {
         return list;
     }
 
-    private static boolean checkShortcut(RADIAL_ACTION_SHORTCUT sub, Unit sourceUnit, DC_Obj target) {
+    protected static boolean checkShortcut(RADIAL_ACTION_SHORTCUT sub, Unit sourceUnit, DC_Obj target) {
         switch (sub) {
             case ATTACK:
                 return target instanceof BattleFieldObject;
@@ -327,8 +342,8 @@ public class RadialManager {
         return true;
     }
 
-    private static DC_ActiveObj getShortcut(RADIAL_ACTION_SHORTCUT sub,
-                                            Unit sourceUnit, DC_Obj target) {
+    protected static DC_ActiveObj getShortcut(RADIAL_ACTION_SHORTCUT sub,
+                                              Unit sourceUnit, DC_Obj target) {
         switch (sub) {
             case TURN_TO:
                 return DefaultActionHandler.getTurnToAction(sourceUnit, target.getCoordinates());
@@ -341,7 +356,7 @@ public class RadialManager {
         return null;
     }
 
-    private static boolean isQuickItemShown(DC_QuickItemObj item, DC_Obj target) {
+    protected static boolean isQuickItemShown(DC_QuickItemObj item, DC_Obj target) {
         if (target != item.getOwnerObj()) {
             if (!(item.getActive().getTargeting() instanceof SelectiveTargeting)) {
                 return false;
@@ -350,8 +365,8 @@ public class RadialManager {
         return !item.isAmmo();
     }
 
-    private static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
-                                                      List<RadialValueContainer> containers) {
+    protected static RadialValueContainer getParentNode(RADIAL_PARENT_NODE type,
+                                                        List<RadialValueContainer> containers) {
         if (containers.isEmpty()) {
             return null;
         }
@@ -362,13 +377,13 @@ public class RadialManager {
         return (valueContainer);
     }
 
-    private static RadialValueContainer getAttackParentNode(RADIAL_PARENT_NODE type,
-                                                            RadialValueContainer valueContainer) {
+    protected static RadialValueContainer getAttackParentNode(RADIAL_PARENT_NODE type,
+                                                              RadialValueContainer valueContainer) {
         addSimpleTooltip(valueContainer, type.getName());
         return valueContainer;
     }
 
-    private static RadialValueContainer getExamineNode(DC_Obj target) {
+    protected static RadialValueContainer getExamineNode(DC_Obj target) {
 
         Runnable runnable = () -> {
             GuiEventManager.trigger(
@@ -391,9 +406,9 @@ public class RadialManager {
         el.addListener(tooltip.getController());
     }
 
-    private static void addAttackTooltip(RadialValueContainer valueContainer,
-                                         DC_ActiveObj activeObj,
-                                         DC_Obj target) {
+    protected static void addAttackTooltip(RadialValueContainer valueContainer,
+                                           DC_ActiveObj activeObj,
+                                           DC_Obj target) {
         valueContainer.setTooltipSupplier(() -> AttackTooltipFactory.createAttackTooltip((DC_UnitAction)
          activeObj, target));
 
@@ -421,17 +436,17 @@ public class RadialManager {
         return valueContainer;
     }
 
-    private static boolean checkValid(DC_ActiveObj activeObj, DC_Obj target) {
+    protected static boolean checkValid(DC_ActiveObj activeObj, DC_Obj target) {
         Ref ref = activeObj.getOwnerObj().getRef().getTargetingRef(target);
         return activeObj.canBeActivated(ref);
     }
 
-    private static RadialValueContainer
+    protected static RadialValueContainer
     configureSelectiveTargetedNode(DC_ActiveObj active) {
         return configureSelectiveTargetedNode(active, null);
     }
 
-    private static RadialValueContainer configureSelectiveTargetedNode(
+    protected static RadialValueContainer configureSelectiveTargetedNode(
      DC_ActiveObj active, DC_Obj target) {
         boolean wasValid;
 //        if (target == null|| target.equals(active.getOwnerObj())){
@@ -466,7 +481,7 @@ public class RadialManager {
         return new RadialValueContainer(textureRegion, runnable, valid, active, target);
     }
 
-    private static RadialValueContainer configureAttackParentNode(
+    protected static RadialValueContainer configureAttackParentNode(
 
      List<RadialValueContainer> list, RADIAL_PARENT_NODE parentNode, DC_Obj target, DC_ActiveObj parent) {
         if (parent.getActiveWeapon().isRanged()) {
@@ -488,7 +503,7 @@ public class RadialManager {
         return valueContainer;
     }
 
-    private static RadialValueContainer getAttackActionNode(DC_ActiveObj activeObj, DC_Obj target) {
+    protected static RadialValueContainer getAttackActionNode(DC_ActiveObj activeObj, DC_Obj target) {
 //        if (activeObj.getOwnerObj() == target) {
         final RadialValueContainer valueContainer =
          configureSelectiveTargetedNode(activeObj, target);
@@ -504,8 +519,8 @@ public class RadialManager {
 //        return null;
     }
 
-    private static RadialValueContainer configureMoveNode(DC_Obj target,
-                                                          DC_ActiveObj activeObj) {
+    protected static RadialValueContainer configureMoveNode(DC_Obj target,
+                                                            DC_ActiveObj activeObj) {
         RadialValueContainer result;
 
         if (target == activeObj.getOwnerObj()) {
@@ -588,7 +603,7 @@ public class RadialManager {
         };
     }
 
-    private List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
+    protected List<RadialValueContainer> getChildNodes(RADIAL_PARENT_NODE type, DC_ActiveObj activeObj, DC_Obj target) {
         List<RadialValueContainer> list = new ArrayList<>();
         return list;
     }
@@ -611,7 +626,7 @@ public class RadialManager {
         ORDERS("UI\\components\\2017\\radial\\orders.png"),
         DUAL_ATTACKS("UI\\components\\2017\\radial\\DUAL_ATTACKS.png");
 
-        private String iconPath;
+        protected String iconPath;
 
         RADIAL_PARENT_NODE() {
         }

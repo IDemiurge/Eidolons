@@ -33,12 +33,12 @@ import main.system.text.LogManager;
 
 import javax.swing.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Game  implements Serializable {
+public abstract class Game implements Serializable {
     public static Game game;
     protected GameMaster master;
     protected GameState state;
@@ -64,10 +64,10 @@ public abstract class Game  implements Serializable {
     private boolean running;
     private boolean dummyMode;
     private boolean cloningMode;
+
     public Game() {
 
     }
-
 
 
     public Obj getObjectById(Integer id) {
@@ -77,9 +77,11 @@ public abstract class Game  implements Serializable {
     public boolean fireEvent(Event event) {
         return manager.handleEvent(event);
     }
-    public  GameMaster getMaster() {
-        return  master;
+
+    public GameMaster getMaster() {
+        return master;
     }
+
     public Set<Integer> getObjectIds() {
         return getState().getObjects().keySet();
     }
@@ -137,7 +139,7 @@ public abstract class Game  implements Serializable {
     public abstract void start(boolean host);
 
     public ActionManager getActionManager() {
-        return null ;
+        return null;
     }
 
     public GenericItemGenerator getItemGenerator() {
@@ -158,7 +160,7 @@ public abstract class Game  implements Serializable {
     }
 
     public BfAnalyzer getAnalyzer() {
-        return null ;
+        return null;
     }
 
 
@@ -218,9 +220,9 @@ public abstract class Game  implements Serializable {
 
         if (type.isInitialized() && type.getGame() != null) {
             if (type.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS
-                    || type.getOBJ_TYPE_ENUM() == DC_TYPE.PARTY) {
+             || type.getOBJ_TYPE_ENUM() == DC_TYPE.PARTY) {
                 LogMaster.log(0, type + " already initialized for " + type.getGame() + " with id: "
-                        + type.getId());
+                 + type.getId());
             }
             type.setGame(this);
             return;
@@ -232,19 +234,22 @@ public abstract class Game  implements Serializable {
         state.getTypeMap().put(type.getId(), type);
         type.setInitialized(true);
     }
+
     public MovementManager getMovementManager() {
-        return null ;
+        return null;
     }
+
     public TurnManager getTurnManager() {
-        return null ;
+        return null;
     }
+
     public GraveyardManager getGraveyardManager() {
-        return null ;
+        return null;
     }
+
     public EffectManager getEffectManager() {
         return effectManager;
     }
-
 
 
     public boolean isSimulation() {

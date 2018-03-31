@@ -72,7 +72,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
 
     @Override
     public void remove() {
-        getEffects().forEach(e-> e.remove());
+        getEffects().forEach(e -> e.remove());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
                 if (effect.getConstruct() != null) {
                     try {
                         result &= ((Effect) ConstructionManager.construct(effect.getConstruct()))
-                                .apply(ref);
+                         .apply(ref);
                         continue;
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
@@ -231,9 +231,9 @@ public class Effects extends EffectImpl implements Iterable<Effect> {
     }
 
     @Override
-    public void  setOriginalFormula(Formula formula) {
+    public void setOriginalFormula(Formula formula) {
         for (Effect e : this.effects) {
-            e. setOriginalFormula(formula);
+            e.setOriginalFormula(formula);
         }
     }
 

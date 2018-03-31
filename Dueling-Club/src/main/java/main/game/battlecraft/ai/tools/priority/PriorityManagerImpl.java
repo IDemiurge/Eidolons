@@ -1030,7 +1030,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
         if (getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.BERSERK
          && getUnit().getBehaviorMode() != AiEnums.BEHAVIOR_MODE.CONFUSED) {
-            if (targetObj.isOwnedBy(getUnit().getOwner())) {
+            if (targetObj.isOwnedBy(active.getOwnerObj().getOwner())) {
                 return -10000;
             }
         }

@@ -42,7 +42,7 @@ public class FontMaster {
 
     public static Font getFont(FONT f, float size, int style) {
         if (CoreEngine.isGraphicsOff())
-            return null ;
+            return null;
 
         if (style == 0) {
             style = Font.PLAIN;
@@ -68,9 +68,9 @@ public class FontMaster {
         String path = PathFinder.getFontPath();
 
 
-        for (FONT F: FONT.values()){
+        for (FONT F : FONT.values()) {
             try {
-                F.font=Font.createFont(Font.TRUETYPE_FONT, new File(path +F.path));
+                F.font = Font.createFont(Font.TRUETYPE_FONT, new File(path + F.path));
             } catch (FontFormatException e) {
                 // TODO Auto-generated catch block
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -138,7 +138,7 @@ public class FontMaster {
 
     public static int getStringLengthForWidth(Font font, int width) {
         return Math.round(width / getFontMetrics(font).getMaxAdvance()
-                * getFontWidthCoefficient(font.getFontName()));
+         * getFontWidthCoefficient(font.getFontName()));
     }
 
     private static float getFontWidthCoefficient(String fontName) {
@@ -168,15 +168,15 @@ public class FontMaster {
         // the font metrics - this guarantees that there is at least one row of
         // black pixels at the top and the bottom
         image = new BufferedImage((int) rect.getWidth() + 1, metrics.getHeight() + 2,
-                BufferedImage.TYPE_INT_RGB);
+         BufferedImage.TYPE_INT_RGB);
         g = image.createGraphics();
 
         // take the rendering hints from the target graphics context to ensure
         // the results are accurate.
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, targetGraphicsContext
-                .getRenderingHint(RenderingHints.KEY_ANTIALIASING));
+         .getRenderingHint(RenderingHints.KEY_ANTIALIASING));
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, targetGraphicsContext
-                .getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING));
+         .getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING));
 
         g.setColor(textColour);
         g.setFont(font);
@@ -236,20 +236,20 @@ public class FontMaster {
     }
 
     public enum FONT {
-        AVQ( "/Avqest.ttf"),
-        SC( "/Starcraft.ttf"),
-        DARK( "/Dark.ttf"),
-        NYALA( "/nyala.ttf"),
-        RU( "/Philosopher-Regular.ttf"),
-        MAIN( "/main.otf"),
-        METAMORPH( "/Metamorphous-Regular.ttf"),
-        MAGIC( "/MagicMedieval.ttf"),
-        MANORLY_( "/Manorly_.ttf"),
-        FERTIGO( "/Fertigo_PRO.otf"),
-        ;
+        AVQ("/Avqest.ttf"),
+        SC("/Starcraft.ttf"),
+        DARK("/Dark.ttf"),
+        NYALA("/nyala.ttf"),
+        RU("/Philosopher-Regular.ttf"),
+        MAIN("/main.otf"),
+        METAMORPH("/Metamorphous-Regular.ttf"),
+        MAGIC("/MagicMedieval.ttf"),
+        MANORLY_("/Manorly_.ttf"),
+        FERTIGO("/Fertigo_PRO.otf"),;
         public Font font;
-        public   String path;
-        FONT(  String path) {
+        public String path;
+
+        FONT(String path) {
             this.path = path;
         }
     }

@@ -139,10 +139,11 @@ public class DC_AttackMaster {
                 if (action != null) {
                     AttackEffect effect = EffectMaster.getAttackEffect(action);
                     waitForAttackAnimation(effect.getAttack());
-                    attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
-                    countered = true;
-                    result = true;
                 }
+                attackNow(attack, ref, free, false, onHit, onKill, offhand, counter);
+                countered = true;
+                result = true;
+
             }
             if ((!countered) || attack.getAttacker().hasDoubleCounter()) {
                 if (canCounter) {
@@ -367,8 +368,8 @@ public class DC_AttackMaster {
         }
         if (!attacked.isDead())
             if (attackedUnit != null)
-                if (attackedUnit.getSecondWeapon() != null) {
-                    if (attackedUnit.getSecondWeapon().isShield()) {
+                if (attackedUnit.getOffhandWeapon() != null) {
+                    if (attackedUnit.getOffhandWeapon().isShield()) {
                         if (!attack.isSneak()) {// && !isCounter) {
                             int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attackedUnit,
                              attacker, action, getAttackWeapon(ref, attack.isOffhand()),

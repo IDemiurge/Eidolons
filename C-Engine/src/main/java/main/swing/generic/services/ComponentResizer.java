@@ -18,7 +18,7 @@ public class ComponentResizer extends MouseAdapter {
     protected static final int EAST = 8;
     private final static Dimension MINIMUM_SIZE = new Dimension(10, 10);
     private final static Dimension MAXIMUM_SIZE = new Dimension(Integer.MAX_VALUE,
-            Integer.MAX_VALUE);
+     Integer.MAX_VALUE);
     private static Map<Integer, Integer> cursors = new HashMap<>();
     private Insets dragInsets;
     private Dimension snapSize;

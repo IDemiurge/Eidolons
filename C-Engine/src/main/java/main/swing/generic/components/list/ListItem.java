@@ -73,7 +73,7 @@ public class ListItem<E> extends JLabel {
                 if (isHighlightSelected()) {
                     try {
                         setIcon(new ImageIcon(ImageManager.applyBorder(ImageManager
-                                .getImage((String) getValue()), BORDER.HIGHLIGHTED)));
+                         .getImage((String) getValue()), BORDER.HIGHLIGHTED)));
                     } catch (Exception e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
@@ -114,7 +114,7 @@ public class ListItem<E> extends JLabel {
     private boolean isTextShownAlways() {
         if (getValue() instanceof Entity) {
             return ContentManager.getInstance().isTextAlwaysShownInListItems(
-                    getObj().getOBJ_TYPE_ENUM());
+             getObj().getOBJ_TYPE_ENUM());
         }
         return false;
     }
@@ -135,34 +135,34 @@ public class ListItem<E> extends JLabel {
         if (entity == null) {
             return null;
         }
-        Image img =null ;
+        Image img = null;
         if (!noImage) {
             try {
                 img = (entity.getCustomIcon() != null ? entity.getCustomIcon().getImage()
-                        : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, false)));
+                 : ImageManager.getImage(entity.getProperty(G_PROPS.IMAGE, false)));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         if (img == null) {
-            noImage=true;
+            noImage = true;
             if (entity.getRef() != null) {
                 img = ImageManager.getImage(new Property(entity.getProperty(G_PROPS.IMAGE, false))
-                        .getStr(entity.getRef()));
+                 .getStr(entity.getRef()));
             }
         }
         if (img == null) {
 
             img = (getEmptyIcon() != null) ? ImageManager.getImage(getEmptyIcon()) : ImageManager
-                    .getEmptyIcon(getObjSize()).getImage();
+             .getEmptyIcon(getObjSize()).getImage();
         }
         if (getObjSize() != 0) {
             if (img.getHeight(null) != getObjSize() || img.getWidth(null) != getObjSize()) {
                 img = ImageManager.getSizedVersion(img, new Dimension(getObjSize(), getObjSize()));
             } else if (img.getWidth(null) > ImageManager.getMaxTypeIconSize()
-                    || img.getHeight(null) > ImageManager.getMaxTypeIconSize()) {
+             || img.getHeight(null) > ImageManager.getMaxTypeIconSize()) {
                 img = ImageManager.getSizedVersion(img, new Dimension(ImageManager
-                        .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
+                 .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
             }
         }
 
@@ -218,10 +218,10 @@ public class ListItem<E> extends JLabel {
             if (isHighlightSelected()) {
                 if (!ImageManager.isValidImage(getImage())) {
                     setFont(getFont().deriveFont(15).deriveFont(Font.ITALIC).deriveFont(Font.BOLD)
-                            .deriveFont(Font.HANGING_BASELINE));
+                     .deriveFont(Font.HANGING_BASELINE));
                 } else {
                     setIcon(new ImageIcon(ImageManager.applyBorder(getIcon().getImage(),
-                            BORDER.HIGHLIGHTED)));
+                     BORDER.HIGHLIGHTED)));
                 }
             }
         }
@@ -238,7 +238,7 @@ public class ListItem<E> extends JLabel {
             return;
         }
         listItem.setIcon(new ImageIcon(ImageManager.applyBorder(listItem.getIcon().getImage(),
-                border)));
+         border)));
         // listItem.initDefaultBorders(); breaks icon, doesn't it
         // new SwingWorker<BORDER, BORDER>() {
         // BORDER border;

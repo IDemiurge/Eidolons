@@ -23,7 +23,8 @@ public class WaitMaster {
         return
          getCompleteOperations().contains(operation);
     }
-        public static void markAsComplete(WAIT_OPERATIONS operation) {
+
+    public static void markAsComplete(WAIT_OPERATIONS operation) {
         getCompleteOperations().add(operation);
         LogMaster.log(LogMaster.WAIT_DEBUG, "Marked As Complete: " + operation);
         // waiters.get(operation).
@@ -46,7 +47,7 @@ public class WaitMaster {
             return true;
         }
         LogMaster.log(LOG_CHANNEL.WAIT_DEBUG,
-                " waiting for " + operation.toString());
+         " waiting for " + operation.toString());
         Waiter waiter = waiters.get(operation);
         boolean remove = true;
         if (waiter == null) {
@@ -64,7 +65,7 @@ public class WaitMaster {
             waiters.remove(operation);
         } else {
             LogMaster.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
-                    + operation.toString());
+             + operation.toString());
         }
 
         return result;
@@ -76,7 +77,7 @@ public class WaitMaster {
 
     public static boolean receiveInput(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
         LogMaster.log(LOG_CHANNEL.WAIT_DEBUG, " received input for "
-                + operation.toString() + ": " + input);
+         + operation.toString() + ": " + input);
         Waiter waiter = waiters.get(operation);
         if (waiter == null) {
             waiter = new Waiter(operation);
@@ -138,7 +139,7 @@ public class WaitMaster {
         AUTO_TEST_INPUT,
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
-         WAIT_COMPLETE
+        WAIT_COMPLETE
     }
 
 }

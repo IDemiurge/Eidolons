@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import main.entity.obj.BattleFieldObject;
 import main.game.bf.Coordinates;
+import main.libgdx.bf.generic.FadeImageContainer;
 
 public class OverlayView extends BaseView {
     public static final float SCALE = 0.5F;
@@ -13,7 +14,7 @@ public class OverlayView extends BaseView {
         super(viewOptions);
         if (portrait != null)
             portrait.remove();
-        portrait = new Image(viewOptions.getPortrateTexture());
+        portrait = new FadeImageContainer(new Image(viewOptions.getPortraitTexture()));
         addActor(portrait);
 
 //        ValueTooltip tooltip = new ValueTooltip();

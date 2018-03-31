@@ -101,7 +101,7 @@ public class HintMaster {
         if (target.getOutlineType() == null) {
             return null;
         }
-        if (target.getOutlineType() == VisionEnums.OUTLINE_TYPE.THICK_DARKNESS) {
+        if (target.getOutlineType() == VisionEnums.OUTLINE_TYPE.DEEPER_DARKNESS) {
             return "Impenetrable darkness...";
         }
         if (target.getOutlineType() == VisionEnums.OUTLINE_TYPE.BLINDING_LIGHT) {

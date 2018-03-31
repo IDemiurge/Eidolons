@@ -618,8 +618,7 @@ public abstract class DataModel {
         Number amount = null;
         if (!StringMaster.isNumber(amountString, false))
             amount = new Formula(amountString).evaluate(ref);
-        else
-        if (StringMaster.isInteger(amountString)) {
+        else if (StringMaster.isInteger(amountString)) {
             amount = StringMaster.getInteger(amountString);
             if (amount.equals(0)) {
                 return false;
@@ -642,9 +641,9 @@ public abstract class DataModel {
         boolean result = true;
         Double newValue;
         Double prevValue = getParamDouble(param, false);
-        if (prevValue>0){
-            newValue=amount.doubleValue()+prevValue;
-        }else {
+        if (prevValue > 0) {
+            newValue = amount.doubleValue() + prevValue;
+        } else {
             newValue = amount.doubleValue();
         }
 //        if (!prevValue.isEmpty()) {
@@ -664,14 +663,14 @@ public abstract class DataModel {
                     return false;
                 }
                 if (newValue.doubleValue() < minMax) {
-                    newValue =(double) minMax;
+                    newValue = (double) minMax;
                 }
             } else {
                 if ((prevValue) > minMax) {
                     return false;
                 }
                 if (newValue.intValue() > minMax) {
-                    newValue =(double) minMax;
+                    newValue = (double) minMax;
                 }
             }
         }

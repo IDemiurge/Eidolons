@@ -17,7 +17,7 @@ public class PointComp extends JSpinner {
 
     public PointComp(Number value) {
         super(new SpinnerNumberModel(value, Integer.MIN_VALUE,
-                Integer.MAX_VALUE, 1));
+         Integer.MAX_VALUE, 1));
     }
 
     public PointComp(Integer intParam, boolean attributes) {

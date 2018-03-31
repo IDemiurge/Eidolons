@@ -25,7 +25,8 @@ public class EncounterEnums {
         DEMONS_OF_ABYSS,
 
     }
-        public enum ENCOUNTER_SUBGROUP {
+
+    public enum ENCOUNTER_SUBGROUP {
         AVIANS,
         NOCTURNAL,
         WULFEN,
