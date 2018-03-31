@@ -3,7 +3,7 @@ package main.gui.components.tree;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.PARAMS;
+import eidolons.content.PARAMS;
 import main.content.enums.system.MetaEnums;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;

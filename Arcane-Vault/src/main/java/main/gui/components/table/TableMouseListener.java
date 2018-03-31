@@ -1,8 +1,12 @@
 package main.gui.components.table;
 
+import eidolons.content.DC_CONSTS;
+import eidolons.content.DC_ContentManager;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.content.*;
-import main.content.DC_ValueManager.VALUE_GROUP;
+import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.SkillEnums.ATTRIBUTE;
 import main.content.enums.entity.SpellEnums.SPELL_GROUP;

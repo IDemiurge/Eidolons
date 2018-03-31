@@ -1,5 +1,6 @@
 package main.data;
 
+import eidolons.content.PARAMS;
 import main.AV_DataManager;
 import main.content.*;
 import main.content.enums.macro.MACRO_OBJ_TYPES;

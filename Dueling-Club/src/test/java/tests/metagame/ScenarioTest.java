@@ -1,6 +1,6 @@
 package tests.metagame;
 
-import main.libgdx.launch.ScenarioLauncher;
+import eidolons.libgdx.launch.ScenarioLauncher;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Test;

@@ -22,13 +22,13 @@ import main.swing.generic.components.editors.lists.GenericListChooser.LC_MODS;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.editors.lists.ListObjChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.entity.FilterMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
-import main.system.text.NameMaster;
+import eidolons.system.text.NameMaster;
 import main.time.ZeitMaster;
 
 import java.awt.event.MouseEvent;

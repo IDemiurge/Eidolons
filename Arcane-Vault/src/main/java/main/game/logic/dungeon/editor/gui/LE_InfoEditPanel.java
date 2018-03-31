@@ -1,8 +1,8 @@
 package main.game.logic.dungeon.editor.gui;
 
 import main.content.DC_TYPE;
-import main.content.PARAMS;
-import main.content.PROPS;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.entity.DataModel;
 import main.entity.Entity;
@@ -10,7 +10,7 @@ import main.entity.type.ObjType;
 import main.game.logic.dungeon.editor.Level;
 import main.game.logic.dungeon.editor.LevelEditor;
 import main.game.logic.dungeon.editor.Mission;
-import main.game.module.adventure.gui.MacroGuiManager;
+import eidolons.game.module.adventure.gui.MacroGuiManager;
 import main.gui.builders.EditViewPanel;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;

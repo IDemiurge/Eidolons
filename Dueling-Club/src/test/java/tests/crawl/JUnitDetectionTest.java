@@ -1,8 +1,8 @@
 package tests.crawl;
 
-import main.entity.obj.DC_Obj;
-import main.entity.obj.Structure;
-import main.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 
 import static org.junit.Assert.assertTrue;
 

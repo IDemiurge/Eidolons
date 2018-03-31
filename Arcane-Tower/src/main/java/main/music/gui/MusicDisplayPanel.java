@@ -4,7 +4,7 @@ import main.data.DataManager;
 import main.music.MusicCore;
 import main.music.entity.MusicList;
 import main.swing.components.TextComp;
-import main.swing.components.panels.page.log.WrappedTextComp;
+import eidolons.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Panel;
 
 import javax.swing.*;

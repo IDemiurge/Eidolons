@@ -1,20 +1,20 @@
 package main.gui.tree;
 
-import main.client.cc.CharacterCreator;
-import main.client.cc.HC_Master;
-import main.client.cc.gui.neo.tree.t3.T3UpperPanel;
-import main.client.cc.gui.neo.tree.t3.ThreeTreeView;
-import main.client.cc.gui.neo.tree.view.HT_View;
-import main.client.dc.Launcher;
+import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.HC_Master;
+import eidolons.client.cc.gui.neo.tree.t3.T3UpperPanel;
+import eidolons.client.cc.gui.neo.tree.t3.ThreeTreeView;
+import eidolons.client.cc.gui.neo.tree.view.HT_View;
+import eidolons.client.dc.Launcher;
 import main.content.OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.entity.obj.unit.Unit;
+import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
+import eidolons.game.core.game.DC_Game;
 import main.gui.builders.EditViewPanel;
 import main.gui.components.controls.ModelManager;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 

@@ -1,6 +1,6 @@
 package tests;
 
-import main.game.battlecraft.ai.AI_Manager;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import org.junit.Before;

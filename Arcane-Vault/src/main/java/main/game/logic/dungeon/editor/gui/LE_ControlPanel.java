@@ -4,7 +4,7 @@ import main.game.logic.dungeon.editor.LE_DataMaster;
 import main.game.logic.dungeon.editor.LE_MapMaster;
 import main.game.logic.dungeon.editor.LE_ObjMaster;
 import main.game.logic.dungeon.editor.LevelEditor;
-import main.swing.components.buttons.CustomButton;
+import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster;

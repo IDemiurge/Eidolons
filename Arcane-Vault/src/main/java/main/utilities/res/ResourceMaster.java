@@ -1,7 +1,7 @@
 package main.utilities.res;
 
 import main.content.DC_TYPE;
-import main.content.PROPS;
+import eidolons.content.PROPS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;

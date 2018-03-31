@@ -1,13 +1,13 @@
 package tests;
 
-import main.entity.obj.unit.Unit;
-import main.game.core.Eidolons;
-import main.game.core.game.DC_Game;
-import main.game.core.launch.PresetLauncher.LAUNCH;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import main.test.frontend.FAST_DC;
+import eidolons.test.frontend.FAST_DC;
 import org.junit.Before;
 
 /**

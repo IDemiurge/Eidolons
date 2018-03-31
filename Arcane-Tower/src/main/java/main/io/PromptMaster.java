@@ -11,7 +11,7 @@ import main.logic.util.AT_SortMaster;
 import main.session.Session;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListObjChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;

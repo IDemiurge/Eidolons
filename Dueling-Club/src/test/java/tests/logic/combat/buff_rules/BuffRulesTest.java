@@ -1,9 +1,9 @@
 package tests.logic.combat.buff_rules;
 
 import TestUtils.printingAsserts;
-import main.content.PARAMS;
+import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.rules.buff.*;
 import main.entity.Ref;
-import main.game.battlecraft.rules.buff.*;
 import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;

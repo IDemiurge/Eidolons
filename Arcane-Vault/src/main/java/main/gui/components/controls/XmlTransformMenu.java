@@ -1,6 +1,6 @@
 package main.gui.components.controls;
 
-import main.content.PROPS;
+import eidolons.content.PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.xml.XML_Transformer;

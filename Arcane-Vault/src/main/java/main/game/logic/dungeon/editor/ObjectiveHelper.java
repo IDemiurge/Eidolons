@@ -2,9 +2,9 @@ package main.game.logic.dungeon.editor;
 
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.obj.Obj;
-import main.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
+import eidolons.game.battlecraft.logic.meta.scenario.ObjectiveMaster.OBJECTIVE_TYPE;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;

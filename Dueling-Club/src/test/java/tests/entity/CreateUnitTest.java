@@ -1,7 +1,7 @@
 package tests.entity;
 
-import main.content.PARAMS;
-import main.entity.obj.unit.Unit;
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
 import tests.FastDcTest;

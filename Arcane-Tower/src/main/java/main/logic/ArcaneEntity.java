@@ -1,7 +1,7 @@
 package main.logic;
 
 import main.ArcaneTower;
-import main.content.DC_ContentManager;
+import eidolons.content.DC_ContentManager;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;

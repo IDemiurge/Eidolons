@@ -1,5 +1,7 @@
 package main;
 
+import eidolons.content.PROPS;
+import eidolons.content.ValuePageManager;
 import main.content.*;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;

@@ -1,5 +1,8 @@
 package main.utilities.workspace;
 
+import eidolons.content.DC_ContentManager;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import main.content.*;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.MetaEnums;
