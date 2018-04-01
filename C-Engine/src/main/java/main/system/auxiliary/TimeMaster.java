@@ -131,7 +131,7 @@ public class TimeMaster {
 
     public static String getDateString() {
         return StringMaster.getFormattedTimeString(getDay(), 2) + "."
-                + StringMaster.getFormattedTimeString(getMonth() + 1, 2);
+         + StringMaster.getFormattedTimeString(getMonth() + 1, 2);
 
     }
 

@@ -70,7 +70,7 @@ public class UserList extends GenericList<User> {
     @Override
     public void valueChanged(ListSelectionEvent e) {
         LogMaster.log(1, ((UserList) e.getSource())
-                .getSelectedValue().getData().replace(";", "\n"));
+         .getSelectedValue().getData().replace(";", "\n"));
 
     }
 

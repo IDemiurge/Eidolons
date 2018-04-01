@@ -17,13 +17,13 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListControlPanel<E> extends JPanel implements ActionListener {
     String[] commands = new String[]{"Add", "Remove", "Move Up", "Move Down", "Top", "Bottom",
-            "Edit"};
+     "Edit"};
     char[] mnemonics = new char[]{};
     private GenericListChooser<E> chooser;
     private G_List<E> secondList;
@@ -148,7 +148,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
         initSelected();
 
         ((DefaultListModel<E>) getSecondList().getModel()).removeRange(firstSelectedIndex,
-                lastSelectedIndex);
+         lastSelectedIndex);
 
         // if (((DefaultListModel<E>) getSecondList().getModel()).getSize()
         // < selected.size()){
@@ -192,7 +192,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
             return;
         }
         ((DefaultListModel<E>) getSecondList().getModel()).set(getSecondList().getSelectedIndex(),
-                (E) newValue);
+         (E) newValue);
 
     }
 
@@ -304,7 +304,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
         for (E element : selected) {
             ((DefaultListModel<E>) getSecondList().getModel()).removeElement(element);
             ((DefaultListModel<E>) getSecondList().getModel()).add(
-                    ((DefaultListModel<E>) getSecondList().getModel()).size(), element);
+             ((DefaultListModel<E>) getSecondList().getModel()).size(), element);
             newIndices[i] = selected.size() - i - 1;
         }
         getSecondList().setSelectedIndices(newIndices);
@@ -322,8 +322,8 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
         int i = 0;
         while (true) {
             int n =
-                    // (up) ? i :
-                    selectedIndices.length - 1 - i;
+             // (up) ? i :
+             selectedIndices.length - 1 - i;
             if (n > selectedIndices.length - 1 || n < 0) {
                 break;
             }
@@ -340,7 +340,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
             i++;
         }
         newIndices = up ? ArrayMaster.getIntArrayBetween(0, i) : ArrayMaster.getIntArrayBetween(
-                getSecondList().getData().size() - 1 - i, getSecondList().getData().size() - 1);
+         getSecondList().getData().size() - 1 - i, getSecondList().getData().size() - 1);
         // new ListMaster<Integer>().getal
         getSecondList().setSelectedIndices(newIndices);
     }

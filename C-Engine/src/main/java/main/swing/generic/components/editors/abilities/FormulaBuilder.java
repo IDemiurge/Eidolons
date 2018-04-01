@@ -49,7 +49,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
 
     public String launch() {
         int result = JOptionPane
-                .showConfirmDialog(textField.getParent(), panel);
+         .showConfirmDialog(textField.getParent(), panel);
         if (result != JOptionPane.YES_OPTION) {
             done();
             return textField.getText();
@@ -157,7 +157,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         currentList = (G_List) ((JTabbedPane) e.getSource())
-                .getSelectedComponent();
+         .getSelectedComponent();
     }
 
     public synchronized JTextField getTextField() {

@@ -31,7 +31,7 @@ public class TypeSorter {
         NAME,
         ID,
         LEVEL,
-        CUSTOM_PROPERTY;
+        CUSTOM_PROPERTY
     }
 
     public enum CUSTOM_LIST_TYPE {

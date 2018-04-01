@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -162,13 +165,12 @@ public class ClassFinder {
                 if (!je.getName().startsWith("main")) {
                     continue;
                 }
-                String  className = je.getName().replace('/', '.');
-                if (!className.contains(packageName))
-                {
+                String className = je.getName().replace('/', '.');
+                if (!className.contains(packageName)) {
                     continue;
                 }
                 // -6 because of .class
-                 className = className.substring(0, je.getName().length() - 6);
+                className = className.substring(0, je.getName().length() - 6);
 
                 Class c = cl.loadClass(className);
 //                System.out.println(packageName+ "- Class found: " +c.getName());

@@ -6,7 +6,7 @@ import main.logic.*;
 import main.session.SessionMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 

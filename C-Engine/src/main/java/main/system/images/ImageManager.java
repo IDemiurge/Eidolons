@@ -37,8 +37,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImageManager {
 
@@ -207,15 +209,17 @@ public class ImageManager {
         }
         return new ImageIcon(getImageFolderPath() + "UI\\EMPTY_ITEM.jpg");
     }
+
     public static String getEmptyUnitIconPath() {
-        return  "UI\\Empty.jpg";
+        return "UI\\Empty.jpg";
     }
 
     public static String getEmptyUnitIconFullSizePath() {
-        return  "UI\\Empty Full.jpg";
+        return "UI\\Empty Full.jpg";
     }
-        public static ImageIcon getEmptyUnitIcon() {
-        return new ImageIcon(getImageFolderPath() +getEmptyUnitIconPath());
+
+    public static ImageIcon getEmptyUnitIcon() {
+        return new ImageIcon(getImageFolderPath() + getEmptyUnitIconPath());
     }
 
     public static String getDEFAULT() {
@@ -295,11 +299,11 @@ public class ImageManager {
 
         if (x == CENTERED) {
             x = MigMaster
-                    .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
+             .getCenteredPosition(applied.getWidth(observer), target.getWidth(observer));
         }
         if (y == CENTERED) {
             y = MigMaster.getCenteredPosition(applied.getHeight(observer), target
-                    .getHeight(observer));
+             .getHeight(observer));
         }
         // return applied;
         if (target == null || applied == null) {
@@ -309,20 +313,20 @@ public class ImageManager {
             BufferedImage IMG;
             if (resize == null && size != null) {
                 IMG = new BufferedImage((int) size.getWidth(), (int) size.getHeight(),
-                        BufferedImage.TYPE_INT_ARGB);
+                 BufferedImage.TYPE_INT_ARGB);
                 IMG.getGraphics().drawImage(target, 0, 0, (int) size.getWidth(),
-                        (int) size.getHeight(), observer);
+                 (int) size.getHeight(), observer);
                 IMG.getGraphics().drawImage(applied, x, y, (int) size.getHeight(),
-                        (int) size.getWidth(), observer);
+                 (int) size.getWidth(), observer);
                 return IMG;
             }
             IMG = new BufferedImage(target.getWidth(observer), target.getHeight(observer),
-                    BufferedImage.TYPE_INT_ARGB);
+             BufferedImage.TYPE_INT_ARGB);
             IMG.getGraphics().drawImage(target, 0, 0, observer);
             if (resize) {
                 if (target.getHeight(observer) != applied.getHeight(observer)) {
                     IMG.getGraphics().drawImage(applied, x, y, target.getWidth(observer),
-                            target.getHeight(observer), observer);
+                     target.getHeight(observer), observer);
                     return IMG;
                 }
             }
@@ -331,7 +335,7 @@ public class ImageManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             LogMaster.log(1, " failed " + target.getWidth(observer) + " and "
-                    + applied.getWidth(observer));
+             + applied.getWidth(observer));
             // if (retry)
             // return applyImage(target, applied, x, y, resize, false);
             return target;
@@ -354,7 +358,7 @@ public class ImageManager {
                 throw new Exception();
             }
             if (icon.getImage().getHeight(null) == size.getHeight()
-                    && icon.getImage().getWidth(null) == size.getWidth()) {
+             && icon.getImage().getWidth(null) == size.getWidth()) {
                 return icon;
             }
 
@@ -382,7 +386,7 @@ public class ImageManager {
         }
         if (img.getWidth(null) != tsize.width || img.getHeight(null) != tsize.height) {
             image = img.getScaledInstance((int) tsize.getWidth(), (int) tsize.getHeight(),
-                    Image.SCALE_SMOOTH);
+             Image.SCALE_SMOOTH);
             if (checkMemoryForSizedCache() || forceCache) {
                 sizedImageCache.put(img.hashCode() + tsize.toString(), image);
             }
@@ -454,10 +458,10 @@ public class ImageManager {
                                                   UNIT_TO_UNIT_VISION visibility) {
         String suffix = (!huge) ? "96" : "HUGE";
         if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
-                || detection == VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED) {
+         || detection == VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED) {
             suffix += " unknown";
         } else if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN
-                || visibility == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+         || visibility == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
             suffix += " hidden";
         }
         return getIcon("UI//CELL for " + suffix + ".png");
@@ -483,8 +487,9 @@ public class ImageManager {
     public static ImageIcon getEmptyEmblem() {
         return getIcon("UI//emblems//empty emblem.jpg");
     }
+
     public static String getEmptyEmblemPath() {
-        return  ("UI//emblems//auto//Knights.png");
+        return ("UI//emblems//auto//Knights.png");
     }
 
     // public static ImageIcon getHighlightedVersion(ImageIcon pic, HIGHLIGHT
@@ -537,8 +542,8 @@ public class ImageManager {
             return label;
         }
         ImageIcon image = new ImageIcon(ImageManager.getSizedVersion(
-                ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
-                        : getDefaultImage()), new Dimension(w, h)));
+         ((ImageManager.getImage(img) != null) ? ImageManager.getImage(img)
+          : getDefaultImage()), new Dimension(w, h)));
         label = new JLabel(image);
         labelCache.put(img + w + h, label);
         return label;
@@ -578,7 +583,7 @@ public class ImageManager {
         if (icon != null) {
             if (CoreEngine.isSwingOn()) {
                 return
-                        icon.getImage();
+                 icon.getImage();
             }
 
             return new CustomImage(icon.imgPath, icon.getImage());
@@ -600,7 +605,7 @@ public class ImageManager {
         String imgPath = colorImgCache.get(colorTheme).get(imagePath);
         if (imgPath == null) {
             imgPath = StringMaster.cropFormat(imagePath) + colorTheme.getSuffix()
-                    + DEFAULT_ENTITY_IMAGE_FORMAT;
+             + DEFAULT_ENTITY_IMAGE_FORMAT;
         }
         if (isImage(imgPath)) {
             colorImgCache.get(colorTheme).put(imagePath, imgPath);
@@ -627,7 +632,7 @@ public class ImageManager {
     }
 
     public static String getValueIconsPath() {
-        return  VALUE_ICONS_PATH;
+        return VALUE_ICONS_PATH;
     }
 
     public static boolean isValidImage(Image img) {
@@ -677,7 +682,6 @@ public class ImageManager {
     public static Image getValueIcon(VALUE value) {
         return getValueIcon(value, true);
     }
-
 
 
     public static String getValueIconPath(VALUE value) {
@@ -747,10 +751,11 @@ public class ImageManager {
     public static String getDamageTypeImagePath(String enumConstName) {
         return getDamageTypeImagePath(enumConstName, false);
     }
-        public static String getDamageTypeImagePath(String enumConstName, boolean alpha) {
+
+    public static String getDamageTypeImagePath(String enumConstName, boolean alpha) {
         if (alpha)
             return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + " alpha.png");
-            return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + ".png");
+        return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + ".png");
     }
 
     public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {
@@ -783,7 +788,7 @@ public class ImageManager {
 
     public static Image getFacingImage(FACING_DIRECTION facing) {
         return new EnumMaster<STD_IMAGES>().retrieveEnumConst(STD_IMAGES.class, facing.name())
-                .getImage();
+         .getImage();
     }
 
     public static boolean isImageFile(String name) {
@@ -837,7 +842,7 @@ public class ImageManager {
         while (loop.continues()) {
             try {
                 String bg = HeroEnums.BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, HeroEnums.BACKGROUND
-                        .values().length - 1)].toString();
+                 .values().length - 1)].toString();
                 List<String> portraitsForBackground = ImageManager.getPortraitsForBackground(bg);
                 int index = RandomWizard.getRandomListIndex(portraitsForBackground);
                 String image = portraitsForBackground.get(index);
@@ -1014,7 +1019,7 @@ public class ImageManager {
         for (String path : paths) {
             folder = new File(getImageFolderPath() + path);
             path += "\\";
-            for (String file :FileManager.listFiles(folder)) {
+            for (String file : FileManager.listFiles(folder)) {
                 if (new File(getImageFolderPath() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
                         list.add(path + file);
@@ -1046,7 +1051,7 @@ public class ImageManager {
         ASPECT[] aspects = new ASPECT[]{A};
         if (A == GenericEnums.ASPECT.NEUTRAL) {
             aspects = new ASPECT[]{GenericEnums.ASPECT.NEUTRAL, GenericEnums.ASPECT.LIGHT, GenericEnums.ASPECT.ARCANUM, GenericEnums.ASPECT.LIFE,
-                    GenericEnums.ASPECT.DARKNESS, GenericEnums.ASPECT.CHAOS, GenericEnums.ASPECT.DEATH,
+             GenericEnums.ASPECT.DARKNESS, GenericEnums.ASPECT.CHAOS, GenericEnums.ASPECT.DEATH,
 
             };
         }
@@ -1058,7 +1063,7 @@ public class ImageManager {
             File folder = new File(PATH + path);
 
             path += "\\";
-            for (String file : FileManager.listFiles(folder )) {
+            for (String file : FileManager.listFiles(folder)) {
                 list.add(path + file);
             }
         }
@@ -1161,9 +1166,9 @@ public class ImageManager {
         icm.getBlues(blues);
         IndexColorModel icm2 = new IndexColorModel(8, size, reds, greens, blues, pixel);
         return new BufferedImage(icm2, raster,
-                image.isAlphaPremultiplied(),
+         image.isAlphaPremultiplied(),
 
-                null);
+         null);
     }
 
     public static BufferedImage getBufferedImage(Image image) {
@@ -1175,12 +1180,12 @@ public class ImageManager {
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         }
         BufferedImage buf = new BufferedImage(image.getWidth(null), image.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB);
+         BufferedImage.TYPE_INT_ARGB);
         if (alpha != 100) {
             Graphics2D g2d = (Graphics2D) buf.getGraphics();
 
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                    new Float(alpha) / 100));
+             new Float(alpha) / 100));
         }
         buf.getGraphics().drawImage(image, 0, 0, null);
         return buf;
@@ -1233,211 +1238,15 @@ public class ImageManager {
 
     public static String getFullSizeImage(Entity entity) {
         String format = StringMaster.getFormat(entity.getImagePath());
-         String path=StringMaster.cropFormat(entity.getImagePath()) + " full" + format ;
+        String path = StringMaster.cropFormat(entity.getImagePath()) + " full" + format;
         if (isImage(path))
             return path;
-        return entity.getImagePath() ;
+        return entity.getImagePath();
 
     }
 
     public enum ALIGNMENT {
         NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST, NORTH_EAST, SOUTH_WEST
-    }
-
-    public enum STD_IMAGES {
-        LIGHT("UI\\outlines\\shadows\\light emitter.png"),
-        SCROLL_ATTACK_CHOICE("UI\\components\\neo\\attack choice scroll.png"),
-        SCROLL_ATTACK_TEXT("UI\\components\\neo\\choose attack.png"),
-        SCROLL_END_HORIZONTAL_DOUBLE("UI\\components\\neo\\scroll.png"),
-
-        EYE("UI\\bf\\eye.png"),
-        THROW("UI\\components\\small\\throw.png"),
-        ATTACK_OF_OPPORTUNITY("ui\\actions\\modes\\misc\\ATTACK OF OPPORTUNITY.png"),
-        COUNTER_ATTACK("ui\\actions\\modes\\misc\\COUNTER ATTACK.png"),
-        INSTANT_ATTACK("ui\\actions\\modes\\misc\\INSTANT ATTACK.png"),
-        WATCHER("ui\\bf\\WATCHER.png"),
-        WATCHED("ui\\bf\\WATCHED.png"),
-        GUARDIAN("ui\\components\\HC\\GUARDIAN.png"),
-        ALIGNMENT("ui\\value icons\\alignment.png"),
-        BLOCKED_SIGHT("ui\\bf\\blocked sight.png"),
-        COIN("ui\\components\\small\\coin.png"),
-        GUARD("ui\\components\\level editor\\guard.png"),
-        HAND("ui\\components\\level editor\\hand.png"),
-        DEATH("ui\\components\\level editor\\dead.png"),
-        SECRET("ui\\components\\level editor\\secret.png"),
-
-        SEARCH("ui\\macro\\filter.png"),
-        FOOT("ui\\macro\\foot.png"),
-        MOVES("ui\\special\\moves.png"),
-        ACTIONS("ui\\special\\actions.png"),
-        ATTACKS("ui\\special\\attacks.png"),
-        COUNTERS("ui\\special\\counter2.png"),
-        TRAP("ui\\special\\trap.jpg"),
-        WING("ui\\special\\WING.png"),
-        FLAG("ui\\special\\FLAG.png"),
-        NORTH("ui\\DIRECTION POINTER NORTH.png"),
-        WEST("ui\\DIRECTION POINTER WEST.png"),
-        EAST("ui\\DIRECTION POINTER EAST.png"),
-        NONE("ui\\DIRECTION POINTER NONE.png"),
-        DIRECTION_POINTER("ui\\DIRECTION POINTER.png"),
-        SOUTH("ui\\DIRECTION POINTER SOUTH.png"),
-        UNKNOWN_UNIT("ui\\Empty.jpg"),
-        UNKNOWN_CELL(UNSEEN_CELL),
-        KNOWN_CELL(CELL),
-        HIGHLIGHTED_CELL(HL_CELL),
-        HIDDEN_CELL(CONCEALED_CELL),
-        BAG("ui\\components\\small\\bag2.png"),
-        MAP_PLACE("ui\\macro\\place3.png"),
-        MAP_PLACE_HIGHLIGHTED("ui\\macro\\place3 highlight.png"),
-        MAP_PLACE_ALT("ui\\macro\\place2.png"),
-        MAP_PLACE_HIGHLIGHTED_ALT("ui\\macro\\place2 highlight.png"),
-
-        BF_BORDER_UP("ui\\custom\\border up.png"),
-        BF_BORDER_UP_DARKENED("ui\\custom\\border up.png"),
-
-        BF_BORDER_DOWN("ui\\custom\\border down.png"),
-        BF_BORDER_DOWN_DARKENED("ui\\custom\\border down.png"),
-
-        BF_BORDER_DOWN_LEFT("ui\\custom\\border DOWN_LEFT.png"),
-        BF_BORDER_DOWN_LEFT_DARKENED("ui\\custom\\border DOWN_LEFT.png"),
-
-        BF_BORDER_DOWN_RIGHT("ui\\custom\\border DOWN_RIGHT.png"),
-        BF_BORDER_DOWN_RIGHT_DARKENED("ui\\custom\\border DOWN_RIGHT.png"),
-
-        BF_BORDER_LEFT("ui\\custom\\border LEFT.png"),
-        BF_BORDER_LEFT_DARKENED("ui\\custom\\border LEFT.png"),
-
-        BF_BORDER_RIGHT("ui\\custom\\border RIGHT.png"),
-        BF_BORDER_RIGHT_DARKENED("ui\\custom\\border RIGHT.png"),
-
-        BF_BORDER_UP_RIGHT("ui\\custom\\border UP_RIGHT.png"),
-        BF_BORDER_UP_RIGHT_DARKENED("ui\\custom\\border UP_RIGHT.png"),
-
-        BF_BORDER_UP_LEFT("ui\\custom\\border UP_LEFT.png"),
-        BF_BORDER_UP_LEFT_DARKENED("ui\\custom\\border UP_LEFT.png"),
-        ZONE_NODE("ui\\components\\new\\zone.jpg"),
-        BLINDING_LIGHT("ui\\outlines\\BLINDING_LIGHT.jpg"),
-        THICK_DARKNESS("ui\\outlines\\THICK_DARKNESS.jpg"),
-        ENGAGER("ui\\components\\new\\exclam2.png"),
-        ENGAGEMENT_TARGET("ui\\components\\new\\swords.png"),
-        HT_LINK_VERTICAL("ui\\components\\ht\\LINK_VERTICAL.png"),
-        RANK_COMP("ui\\components\\ht\\rank comp.png"),
-        RANK_COMP_DARKENED("ui\\components\\ht\\rank comp dark.png"),
-        CROSS("ui\\components\\small\\cross.png"),
-        REQ_BLOCKED("ui\\Borders\\neo\\blocked mid.png"),
-        REQ_MASTERY("ui\\Borders\\neo\\no rank mid.png"),
-        REQ_XP("ui\\Borders\\neo\\no xp mid.png"),
-        WALL_DIAGONAL_DOWN_RIGHT("ui\\BF\\WALL_DOWN_RIGHT.png"),
-        WALL_DIAGONAL_DOWN_LEFT("ui\\BF\\WALL_DOWN_LEFT.png"),
-        WALL_DIAGONAL_UP_RIGHT("ui\\BF\\WALL_UP_RIGHT.png"),
-        WALL_DIAGONAL_UP_LEFT("ui\\BF\\WALL_UP_LEFT.png"),
-        WALL_HORIZONTAL_LEFT("ui\\BF\\WALL_LEFT.png"),
-        WALL_HORIZONTAL_RIGHT("ui\\BF\\WALL_RIGHT.png"),
-        WALL_VERTICAL_UP("ui\\BF\\WALL_UP.png"),
-        WALL_VERTICAL_DOWN("ui\\BF\\WALL_DOWN.png"),
-        WALL_CORNER("ui\\BF\\CORNER SQUARE.png"),
-        WALL_CORNER_ROUND("ui\\BF\\CORNER ROUND.png"),
-        WALL_CORNER_ALMOND("ui\\BF\\CORNER ALMOND.png"),
-        WALL_CORNER_ALMOND_H("ui\\BF\\CORNER ALMOND h.png"),
-        WALL_CORNER_ALMOND_V("ui\\BF\\CORNER ALMOND v.png"),
-        WALL_CORNER_MESH("ui\\BF\\CORNER MESH.png"),
-        WALL_CORNER_DIAMOND("ui\\BF\\CORNER diamond.png"),;
-
-        private String path;
-        private Image image;
-        private int height;
-        private int width;
-
-        STD_IMAGES(String path) {
-            this.setPath(path);
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-
-        public ImageIcon getIcon() {
-            return new ImageIcon(getImage());
-        }
-
-        public Image getPathPrefixedImage(String pathPrefix) {
-            if (pathPrefix == null) {
-                return getImage();
-            }
-            String name = StringMaster.getLastPathSegment(path);
-            return ImageManager.getImage(path.replace(name, "") + pathPrefix + "\\" + name);
-        }
-
-        public Image getSuffixedImage(String suffix) {
-            if (suffix == null) {
-                return getImage();
-            }
-            String f = StringMaster.getFormat(path);
-            return ImageManager.getImage(StringMaster.cropFormat(path) + suffix + f);
-        }
-
-        public Image getImage() {
-            if (image == null) {
-                image = ImageManager.getImage(path);
-                if (image == null) {
-                    return null;
-                }
-                height = (image.getHeight(null));
-                width = (image.getWidth(null));
-            }
-            return image;
-        }
-
-        public int getWidth() {
-            if (width == 0) {
-                getImage();
-            }
-            return width;
-        }
-
-        public int getHeight() {
-            if (height == 0) {
-                getImage();
-            }
-            return height;
-        }
-
-
-    }
-
-    public enum HIGHLIGHT {
-        TRAVERSED_PATH(BORDER.HIGHLIGHTED),
-        DONE(BORDER.CONCEALED),
-        AVAILABLE(BORDER.HIGHLIGHTED_GREEN),
-        PATH_ORIGIN(BORDER.HIGHLIGHTED),
-        TRAVERSED_PATH_FLYING,
-
-        // MACRO
-
-        DESTINATION_AVAILABLE(BORDER.CIRCLE_HIGHLIGHT_GREEN),
-        INFO(BORDER.CIRCLE_HIGHLIGHT),
-        DEFAULT(BORDER.HIGHLIGHTED),;
-        private BORDER border;
-
-        HIGHLIGHT() {
-
-        }
-
-        HIGHLIGHT(BORDER border) {
-            this.setBorder(border);
-        }
-
-        public BORDER getBorder() {
-            return border;
-        }
-
-        public void setBorder(BORDER border) {
-            this.border = border;
-        }
     }
 
     public enum BORDER {
@@ -1559,6 +1368,202 @@ public class ImageManager {
         public void setFilename(String filename) {
             this.filename = filename;
         }
+    }
+
+    public enum HIGHLIGHT {
+        TRAVERSED_PATH(BORDER.HIGHLIGHTED),
+        DONE(BORDER.CONCEALED),
+        AVAILABLE(BORDER.HIGHLIGHTED_GREEN),
+        PATH_ORIGIN(BORDER.HIGHLIGHTED),
+        TRAVERSED_PATH_FLYING,
+
+        // MACRO
+
+        DESTINATION_AVAILABLE(BORDER.CIRCLE_HIGHLIGHT_GREEN),
+        INFO(BORDER.CIRCLE_HIGHLIGHT),
+        DEFAULT(BORDER.HIGHLIGHTED),;
+        private BORDER border;
+
+        HIGHLIGHT() {
+
+        }
+
+        HIGHLIGHT(BORDER border) {
+            this.setBorder(border);
+        }
+
+        public BORDER getBorder() {
+            return border;
+        }
+
+        public void setBorder(BORDER border) {
+            this.border = border;
+        }
+    }
+
+    public enum STD_IMAGES {
+        LIGHT("UI\\outlines\\shadows\\light emitter.png"),
+        SCROLL_ATTACK_CHOICE("UI\\components\\neo\\attack choice scroll.png"),
+        SCROLL_ATTACK_TEXT("UI\\components\\neo\\choose attack.png"),
+        SCROLL_END_HORIZONTAL_DOUBLE("UI\\components\\neo\\scroll.png"),
+
+        EYE("UI\\bf\\eye.png"),
+        THROW("UI\\components\\small\\throw.png"),
+        ATTACK_OF_OPPORTUNITY("ui\\actions\\modes\\misc\\ATTACK OF OPPORTUNITY.png"),
+        COUNTER_ATTACK("ui\\actions\\modes\\misc\\COUNTER ATTACK.png"),
+        INSTANT_ATTACK("ui\\actions\\modes\\misc\\INSTANT ATTACK.png"),
+        WATCHER("ui\\bf\\WATCHER.png"),
+        WATCHED("ui\\bf\\WATCHED.png"),
+        GUARDIAN("ui\\components\\HC\\GUARDIAN.png"),
+        ALIGNMENT("ui\\value icons\\alignment.png"),
+        BLOCKED_SIGHT("ui\\bf\\blocked sight.png"),
+        COIN("ui\\components\\small\\coin.png"),
+        GUARD("ui\\components\\level editor\\guard.png"),
+        HAND("ui\\components\\level editor\\hand.png"),
+        DEATH("ui\\components\\level editor\\dead.png"),
+        SECRET("ui\\components\\level editor\\secret.png"),
+
+        SEARCH("ui\\macro\\filter.png"),
+        FOOT("ui\\macro\\foot.png"),
+        MOVES("ui\\special\\moves.png"),
+        ACTIONS("ui\\special\\actions.png"),
+        ATTACKS("ui\\special\\attacks.png"),
+        COUNTERS("ui\\special\\counter2.png"),
+        TRAP("ui\\special\\trap.jpg"),
+        WING("ui\\special\\WING.png"),
+        FLAG("ui\\special\\FLAG.png"),
+        NORTH("ui\\DIRECTION POINTER NORTH.png"),
+        WEST("ui\\DIRECTION POINTER WEST.png"),
+        EAST("ui\\DIRECTION POINTER EAST.png"),
+        NONE("ui\\DIRECTION POINTER NONE.png"),
+        DIRECTION_POINTER("ui\\DIRECTION POINTER.png"),
+        SOUTH("ui\\DIRECTION POINTER SOUTH.png"),
+        UNKNOWN_UNIT("ui\\Empty.jpg"),
+        UNKNOWN_CELL(UNSEEN_CELL),
+        KNOWN_CELL(CELL),
+        HIGHLIGHTED_CELL(HL_CELL),
+        HIDDEN_CELL(CONCEALED_CELL),
+        BAG("ui\\components\\small\\bag2.png"),
+        MAP_PLACE("ui\\macro\\place3.png"),
+        MAP_PLACE_HIGHLIGHTED("ui\\macro\\place3 highlight.png"),
+        MAP_PLACE_ALT("ui\\macro\\place2.png"),
+        MAP_PLACE_HIGHLIGHTED_ALT("ui\\macro\\place2 highlight.png"),
+
+        BF_BORDER_UP("ui\\custom\\border up.png"),
+        BF_BORDER_UP_DARKENED("ui\\custom\\border up.png"),
+
+        BF_BORDER_DOWN("ui\\custom\\border down.png"),
+        BF_BORDER_DOWN_DARKENED("ui\\custom\\border down.png"),
+
+        BF_BORDER_DOWN_LEFT("ui\\custom\\border DOWN_LEFT.png"),
+        BF_BORDER_DOWN_LEFT_DARKENED("ui\\custom\\border DOWN_LEFT.png"),
+
+        BF_BORDER_DOWN_RIGHT("ui\\custom\\border DOWN_RIGHT.png"),
+        BF_BORDER_DOWN_RIGHT_DARKENED("ui\\custom\\border DOWN_RIGHT.png"),
+
+        BF_BORDER_LEFT("ui\\custom\\border LEFT.png"),
+        BF_BORDER_LEFT_DARKENED("ui\\custom\\border LEFT.png"),
+
+        BF_BORDER_RIGHT("ui\\custom\\border RIGHT.png"),
+        BF_BORDER_RIGHT_DARKENED("ui\\custom\\border RIGHT.png"),
+
+        BF_BORDER_UP_RIGHT("ui\\custom\\border UP_RIGHT.png"),
+        BF_BORDER_UP_RIGHT_DARKENED("ui\\custom\\border UP_RIGHT.png"),
+
+        BF_BORDER_UP_LEFT("ui\\custom\\border UP_LEFT.png"),
+        BF_BORDER_UP_LEFT_DARKENED("ui\\custom\\border UP_LEFT.png"),
+        ZONE_NODE("ui\\components\\new\\zone.jpg"),
+        BLINDING_LIGHT("ui\\outlines\\BLINDING_LIGHT.jpg"),
+        THICK_DARKNESS("ui\\outlines\\DEEPER_DARKNESS.jpg"),
+        ENGAGER("ui\\components\\new\\exclam2.png"),
+        ENGAGEMENT_TARGET("ui\\components\\new\\swords.png"),
+        HT_LINK_VERTICAL("ui\\components\\ht\\LINK_VERTICAL.png"),
+        RANK_COMP("ui\\components\\ht\\rank comp.png"),
+        RANK_COMP_DARKENED("ui\\components\\ht\\rank comp dark.png"),
+        CROSS("ui\\components\\small\\cross.png"),
+        REQ_BLOCKED("ui\\Borders\\neo\\blocked mid.png"),
+        REQ_MASTERY("ui\\Borders\\neo\\no rank mid.png"),
+        REQ_XP("ui\\Borders\\neo\\no xp mid.png"),
+        WALL_DIAGONAL_DOWN_RIGHT("ui\\BF\\WALL_DOWN_RIGHT.png"),
+        WALL_DIAGONAL_DOWN_LEFT("ui\\BF\\WALL_DOWN_LEFT.png"),
+        WALL_DIAGONAL_UP_RIGHT("ui\\BF\\WALL_UP_RIGHT.png"),
+        WALL_DIAGONAL_UP_LEFT("ui\\BF\\WALL_UP_LEFT.png"),
+        WALL_HORIZONTAL_LEFT("ui\\BF\\WALL_LEFT.png"),
+        WALL_HORIZONTAL_RIGHT("ui\\BF\\WALL_RIGHT.png"),
+        WALL_VERTICAL_UP("ui\\BF\\WALL_UP.png"),
+        WALL_VERTICAL_DOWN("ui\\BF\\WALL_DOWN.png"),
+        WALL_CORNER("ui\\BF\\CORNER SQUARE.png"),
+        WALL_CORNER_ROUND("ui\\BF\\CORNER ROUND.png"),
+        WALL_CORNER_ALMOND("ui\\BF\\CORNER ALMOND.png"),
+        WALL_CORNER_ALMOND_H("ui\\BF\\CORNER ALMOND h.png"),
+        WALL_CORNER_ALMOND_V("ui\\BF\\CORNER ALMOND v.png"),
+        WALL_CORNER_MESH("ui\\BF\\CORNER MESH.png"),
+        WALL_CORNER_DIAMOND("ui\\BF\\CORNER diamond.png"),;
+
+        private String path;
+        private Image image;
+        private int height;
+        private int width;
+
+        STD_IMAGES(String path) {
+            this.setPath(path);
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public ImageIcon getIcon() {
+            return new ImageIcon(getImage());
+        }
+
+        public Image getPathPrefixedImage(String pathPrefix) {
+            if (pathPrefix == null) {
+                return getImage();
+            }
+            String name = StringMaster.getLastPathSegment(path);
+            return ImageManager.getImage(path.replace(name, "") + pathPrefix + "\\" + name);
+        }
+
+        public Image getSuffixedImage(String suffix) {
+            if (suffix == null) {
+                return getImage();
+            }
+            String f = StringMaster.getFormat(path);
+            return ImageManager.getImage(StringMaster.cropFormat(path) + suffix + f);
+        }
+
+        public Image getImage() {
+            if (image == null) {
+                image = ImageManager.getImage(path);
+                if (image == null) {
+                    return null;
+                }
+                height = (image.getHeight(null));
+                width = (image.getWidth(null));
+            }
+            return image;
+        }
+
+        public int getWidth() {
+            if (width == 0) {
+                getImage();
+            }
+            return width;
+        }
+
+        public int getHeight() {
+            if (height == 0) {
+                getImage();
+            }
+            return height;
+        }
+
+
     }
 
     // public static Image generateValueIcon(Object arg, boolean selected,

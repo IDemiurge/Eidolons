@@ -88,10 +88,11 @@ public class GenericEnums {
         ATTACK,
         ACTION,
     }
-        public enum DAMAGE_MODIFIER {
+
+    public enum DAMAGE_MODIFIER {
         VORPAL, PERIODIC, QUIET,
         UNBLOCKABLE, ENDURANCE_ONLY,
-            ARMOR_AVERAGED
+        ARMOR_AVERAGED
     }
 
     public enum DAMAGE_TYPE {
@@ -206,11 +207,9 @@ public class GenericEnums {
         }
 
 
-
         public int getHealthPercentageAlly() {
             return healthPercentageAlly;
         }
-
 
 
         public int getHealthPercentageMainHero() {

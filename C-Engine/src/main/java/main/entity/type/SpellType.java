@@ -18,7 +18,7 @@ public class SpellType extends ActiveObjType {
     public SPELL_GROUP getSpellGroup() {
         if (spellPool == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(
-                    SPELL_GROUP.class, getProperty(G_PROPS.SPELL_GROUP));
+             SPELL_GROUP.class, getProperty(G_PROPS.SPELL_GROUP));
         }
         return spellGroup;
     }
@@ -26,7 +26,7 @@ public class SpellType extends ActiveObjType {
     public SPELL_TYPE getSpellType() {
         if (spellType == null) {
             spellType = new EnumMaster<SPELL_TYPE>().retrieveEnumConst(
-                    SPELL_TYPE.class, getProperty(G_PROPS.SPELL_TYPE));
+             SPELL_TYPE.class, getProperty(G_PROPS.SPELL_TYPE));
         }
         if (spellType == null) {
             spellType = DEFAULT_SPELL_TYPE;
@@ -37,7 +37,7 @@ public class SpellType extends ActiveObjType {
     public SPELL_POOL getSpellPool() {
         if (spellPool == null) {
             spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(
-                    SPELL_POOL.class, getProperty(G_PROPS.SPELL_POOL));
+             SPELL_POOL.class, getProperty(G_PROPS.SPELL_POOL));
         }
         return spellPool;
 
@@ -59,13 +59,13 @@ public class SpellType extends ActiveObjType {
     public boolean isEnchantment() {
 
         return checkSingleProp(G_PROPS.SPELL_TYPE,
-                SpellEnums.SPELL_TYPE.ENCHANTMENT.name());
+         SpellEnums.SPELL_TYPE.ENCHANTMENT.name());
     }
 
     public boolean isSummoning() {
 
         return checkSingleProp(G_PROPS.SPELL_TYPE,
-                SpellEnums.SPELL_TYPE.SUMMONING.name());
+         SpellEnums.SPELL_TYPE.SUMMONING.name());
     }
 
     public boolean activate(boolean transmit) {
@@ -77,7 +77,6 @@ public class SpellType extends ActiveObjType {
         // TODO Auto-generated method stub
         return false;
     }
-
 
 
     @Override

@@ -5,13 +5,13 @@ import main.entity.Ref;
 import main.game.core.game.Game;
 import main.system.auxiliary.StringMaster;
 
-public abstract class ConditionImpl  implements Condition {
+public abstract class ConditionImpl implements Condition {
     public static final int MAX_TOOLTIP_LENGTH = 50;
-    private static final boolean FORCE_LOG =false ;
+    private static final boolean FORCE_LOG = false;
     protected Game game;
     private boolean isTrue;
     private Entity match;
-    private  String xml;
+    private String xml;
 
     @Override
     public String toString() {
@@ -25,7 +25,7 @@ public abstract class ConditionImpl  implements Condition {
 
     @Override
     public void setXml(String xml) {
-      this.xml=xml;
+        this.xml = xml;
 
     }
 
@@ -46,7 +46,7 @@ public abstract class ConditionImpl  implements Condition {
     @Override
     public String getTooltip() {
         return StringMaster.cropByLength(MAX_TOOLTIP_LENGTH, StringMaster
-                .getWellFormattedString(toString()));
+         .getWellFormattedString(toString()));
     }
 
     public void setGame(Game game) {
@@ -55,17 +55,17 @@ public abstract class ConditionImpl  implements Condition {
 
     @Override
     public boolean preCheck(Ref ref) {
-        ref =ref.getCopy();
-       setGame(ref.getGame());
+        ref = ref.getCopy();
+        setGame(ref.getGame());
         boolean logged = false;
         if (!isLoggingBlocked()) {
             if (ref.getGame().getManager().isSelecting()
-                    || ref.getGame().getManager().isTriggerBeingChecked()) {
+             || ref.getGame().getManager().isTriggerBeingChecked()) {
                 logged = true;
             }
         }
         try {
-            setTrue( check(ref));
+            setTrue(check(ref));
             if (logged) {
 //                LogMaster.log((FORCE_LOG ? 1 : LogMaster.CONDITION_DEBUG),
 //                        toString() + " checks " + isTrue + " on " + ref);
@@ -85,7 +85,7 @@ public abstract class ConditionImpl  implements Condition {
         // LogMaster.log(LogMaster.CONDITION_DEBUG, "" + toString()
         // + " checks FALSE for " + ref);
         // TODO init REASON!
-       setTrue(false);
+        setTrue(false);
         return false;
     }
 
@@ -100,6 +100,7 @@ public abstract class ConditionImpl  implements Condition {
         this.match = match;
         return preCheck(REF);
     }
+
     @Override
     public boolean check(Entity source, Entity match) {
         Ref REF = source.getRef().getCopy();
@@ -107,8 +108,6 @@ public abstract class ConditionImpl  implements Condition {
         this.match = match;
         return preCheck(REF);
     }
-
-
 
 
     @Override

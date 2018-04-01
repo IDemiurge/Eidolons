@@ -80,7 +80,7 @@ public class SelectiveTargeting extends TargetingImpl {
             ref.setTarget(target);
         }
         LogMaster.log(1, "TARGET SELECTED : "
-                + ref.getGame().getObjectById(target));
+         + ref.getGame().getObjectById(target));
         return true;
 
     }

@@ -17,9 +17,9 @@ import main.io.PromptMaster;
 import main.logic.*;
 import main.stats.StatsMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.TimeMaster;
-import main.system.text.NameMaster;
+import eidolons.system.text.NameMaster;
 import main.time.ZeitMaster;
 
 import java.util.Collections;

@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class G_ListMenu extends JList<String> implements
-        ListCellRenderer<String>, MouseListener {
+ ListCellRenderer<String>, MouseListener {
 
     protected DefaultListModel<String> model;
 

@@ -17,6 +17,7 @@ public class MapMaster<E, T> {
             map.put(key, new Integer(i + n));
         }
     }
+
     public static void addToFloatMap(Map map, Object key, Float n) {
         Float i = (Float) map.get(key);
         if (i == null) {
@@ -24,17 +25,6 @@ public class MapMaster<E, T> {
         } else {
             map.put(key, new Float(i + n));
         }
-    }
-
-    public HashMap<E, T> cloneHashMap(Map<E, T> map) {
-        HashMap<E, T> clone = new HashMap<E, T>();
-        clone.putAll(map);
-        return clone;
-    }
-    public LinkedHashMap<E, T> cloneLinkedHashMap(Map<E, T> map) {
-        LinkedHashMap<E, T> clone = new LinkedHashMap<E, T>();
-        clone.putAll(map);
-        return clone;
     }
 
     public static void addToListMap(Map map, Object key, Object value) {
@@ -80,8 +70,8 @@ public class MapMaster<E, T> {
     }
 
     public static Object get(Map map, int i) {
-        if (map.keySet().size()<=i)
-            return null ;
+        if (map.keySet().size() <= i)
+            return null;
         return map.keySet().toArray()[i];
     }
 
@@ -95,7 +85,19 @@ public class MapMaster<E, T> {
         values.put(name, val);
     }
 
-        public E getKeyForValue(Map<E, T> itemMap, T value) {
+    public HashMap<E, T> cloneHashMap(Map<E, T> map) {
+        HashMap<E, T> clone = new HashMap<E, T>();
+        clone.putAll(map);
+        return clone;
+    }
+
+    public LinkedHashMap<E, T> cloneLinkedHashMap(Map<E, T> map) {
+        LinkedHashMap<E, T> clone = new LinkedHashMap<E, T>();
+        clone.putAll(map);
+        return clone;
+    }
+
+    public E getKeyForValue(Map<E, T> itemMap, T value) {
         for (Entry<E, T> e : itemMap.entrySet()) {
             if (itemMap.get(e.getKey()).equals(value)) {
                 return e.getKey();

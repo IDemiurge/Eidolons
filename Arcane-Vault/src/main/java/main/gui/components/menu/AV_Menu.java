@@ -171,10 +171,7 @@ public class AV_Menu {
             if (items == null) {
                 return false;
             }
-            if (items.length < 1) {
-                return false;
-            }
-            return true;
+            return items.length >= 1;
         }
 
         public String getName() {

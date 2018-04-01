@@ -26,7 +26,6 @@ public abstract class AI {
     }
 
 
-
     public AI_Controller getController() {
         return controller;
     }

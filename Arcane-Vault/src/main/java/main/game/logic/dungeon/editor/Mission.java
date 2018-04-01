@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
-import main.game.module.dungeoncrawl.dungeon.Location;
+import eidolons.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;

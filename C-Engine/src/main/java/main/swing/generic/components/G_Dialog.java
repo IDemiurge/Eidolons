@@ -78,7 +78,7 @@ public abstract class G_Dialog {
         }
 
         return new Point((int) (GuiManager.getScreenWidth() - getSize().getWidth()) / 2,
-                (int) (GuiManager.getScreenHeight() - getSize().getHeight()) / 2);
+         (int) (GuiManager.getScreenHeight() - getSize().getHeight()) / 2);
     }
 
     protected boolean isOnMousePoint() {

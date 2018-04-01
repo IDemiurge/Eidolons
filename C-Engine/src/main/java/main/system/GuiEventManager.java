@@ -22,14 +22,15 @@ public class GuiEventManager {
     }
 
     public static void bind(EventType type, final EventCallback event) {
-bind(false, type, event);
+        bind(false, type, event);
     }
-        public static void bind( boolean removePreviousBind, EventType type, final EventCallback event) {
+
+    public static void bind(boolean removePreviousBind, EventType type, final EventCallback event) {
         if (CoreEngine.isGraphicsOff())
             return;
         if (!vertx) {
             if (removePreviousBind)
-                GuiEventManagerOld.removeBind(type );
+                GuiEventManagerOld.removeBind(type);
             GuiEventManagerOld.bind(type, event);
         } else {
 //            if (removePreviousBind)
@@ -95,8 +96,8 @@ bind(false, type, event);
             }
 
         } else {
-          if (  event.getType().name().startsWith("PARAM_MODIFIED")){
-               return isParamEventAlwaysFired(event.getType().getArg());
+            if (event.getType().name().startsWith("PARAM_MODIFIED")) {
+                return isParamEventAlwaysFired(event.getType().getArg());
 
             }
         }
@@ -111,7 +112,7 @@ bind(false, type, event);
             case "Toughness":
             case "C Toughness":
 //            case "Illumination":
-        return true;
+                return true;
         }
         return false;
     }

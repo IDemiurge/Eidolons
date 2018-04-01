@@ -29,8 +29,8 @@ public class Path {
     public String toString() {
 
         return ((agile) ? " agile " : "")
-                + ((flying) ? " flying path" : " path: ") + nodes.toString()
-                + " cost = " + cost;
+         + ((flying) ? " flying path" : " path: ") + nodes.toString()
+         + " cost = " + cost;
     }
 
     public void add(PathNode node) {
@@ -53,8 +53,8 @@ public class Path {
 //			double cost = node.traverse(obj, this);
             if (cost == -1) {
                 LogMaster
-                        .log(LogMaster.COMBAT_DEBUG, "Path traversal stopped at "
-                                + node.getCoordinates());
+                 .log(LogMaster.COMBAT_DEBUG, "Path traversal stopped at "
+                  + node.getCoordinates());
                 interrupted = true;
                 break;
             }
@@ -71,10 +71,10 @@ public class Path {
                 }
             }
             LogMaster
-                    .log(LogMaster.COMBAT_DEBUG, "Path traversal interrupted "
-                            + this);
+             .log(LogMaster.COMBAT_DEBUG, "Path traversal interrupted "
+              + this);
             obj.getGame().getManager()
-                    .setLastTraversedPath(new Path(NODES, result));
+             .setLastTraversedPath(new Path(NODES, result));
         } else {
             obj.getGame().getManager().setLastTraversedPath(this);
         }

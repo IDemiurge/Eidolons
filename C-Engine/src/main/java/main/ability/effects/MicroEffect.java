@@ -26,14 +26,14 @@ public abstract class MicroEffect extends EffectImpl {
         boolean result = super.apply();
 // FOR PHASE ANIMATIONS
         if (CoreEngine.isPhaseAnimsOn())
-        if (result) {
-            if (!isContinuousWrapped() || !isApplied()) {
-                if (!isAnimationDisabled()) {
-                    if (getAnimation() != null)
-                    // if (!getAnimation().isVisible()) {
-                    // TODO wait till all resolved?
-                    // more exceptions?
-                    {
+            if (result) {
+                if (!isContinuousWrapped() || !isApplied()) {
+                    if (!isAnimationDisabled()) {
+                        if (getAnimation() != null)
+                        // if (!getAnimation().isVisible()) {
+                        // TODO wait till all resolved?
+                        // more exceptions?
+                        {
 
 						/*
                          * DelayedEffect will come here
@@ -41,46 +41,46 @@ public abstract class MicroEffect extends EffectImpl {
 						 * Pending
 						 *
 						 */
-                        if (getTrigger() != null) {
-                            cleanAnimation();
-                            // this ends up giving me a delay...
-                            // of course - the delayed effect must have been
-                            // activated *AFTER* ...
-                            // solution?
+                            if (getTrigger() != null) {
+                                cleanAnimation();
+                                // this ends up giving me a delay...
+                                // of course - the delayed effect must have been
+                                // activated *AFTER* ...
+                                // solution?
 
-                            // TODO how to retain only *newly added phases*,
-                            // e.g. PARAM_MOD?
-                            ENTRY_TYPE entryType = EntryNodeMaster
-                                    .getEntryTypeForEvent(getTrigger().getEventType());
-                            if (entryType != null) {
-                                Boolean first_last_custom = null;
-                                LogEntryNode entry = game.getLogManager().getLogEntryNode(
-                                        first_last_custom, entryType);
-                                if (entry != null) {
-                                    List<PHASE_TYPE> animPhasesToPlay = getPhaseTypesForLink(
-                                            entryType, getAnimation());
-                                    entry.setAnimPhasesToPlay(animPhasesToPlay);
-                                    entry.setLinkedAnimation(getAnimation());
-                                } else {
-                                    game.getLogManager().addPendingAnim(entryType, getAnimation());
-                                }
-                            }
-                        }
-                        try {
-                            if (!checkAnimDisabledForAction(getActiveObj())) {
-                                if (!getAnimation().isPending()) {
-                                    if (!getAnimation().isFinished()) {
-                                        getAnimation().start();
+                                // TODO how to retain only *newly added phases*,
+                                // e.g. PARAM_MOD?
+                                ENTRY_TYPE entryType = EntryNodeMaster
+                                 .getEntryTypeForEvent(getTrigger().getEventType());
+                                if (entryType != null) {
+                                    Boolean first_last_custom = null;
+                                    LogEntryNode entry = game.getLogManager().getLogEntryNode(
+                                     first_last_custom, entryType);
+                                    if (entry != null) {
+                                        List<PHASE_TYPE> animPhasesToPlay = getPhaseTypesForLink(
+                                         entryType, getAnimation());
+                                        entry.setAnimPhasesToPlay(animPhasesToPlay);
+                                        entry.setLinkedAnimation(getAnimation());
+                                    } else {
+                                        game.getLogManager().addPendingAnim(entryType, getAnimation());
                                     }
                                 }
                             }
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
+                            try {
+                                if (!checkAnimDisabledForAction(getActiveObj())) {
+                                    if (!getAnimation().isPending()) {
+                                        if (!getAnimation().isFinished()) {
+                                            getAnimation().start();
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+                                main.system.ExceptionMaster.printStackTrace(e);
+                            }
                         }
                     }
                 }
             }
-        }
         return result;
     }
 
@@ -100,9 +100,9 @@ public abstract class MicroEffect extends EffectImpl {
 
     private void cleanAnimation() {
         if (!CoreEngine.isPhaseAnimsOn())
-            return ;
+            return;
         AnimPhase lastPhase = getAnimation().getPhases().isEmpty() ? null : getAnimation()
-                .getPhases().get(getAnimation().getPhases().size() - 1);
+         .getPhases().get(getAnimation().getPhases().size() - 1);
         // getActiveObj().initAnimation();
         // setAnimation(getActiveObj().getAnimation());
 

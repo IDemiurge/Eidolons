@@ -12,7 +12,7 @@ import main.logic.*;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

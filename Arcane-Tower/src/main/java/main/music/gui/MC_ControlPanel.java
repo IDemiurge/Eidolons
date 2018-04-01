@@ -25,7 +25,7 @@ import main.music.m3u.M3uMaster;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.entity.EntityFilter;
 import main.system.entity.FilterMaster;
 import main.system.auxiliary.*;

@@ -78,7 +78,7 @@ public class SwingMaster {
     public static Dimension getMinMaxSize(Dimension preferredSize, int minX, int minY, int maxX,
                                           int maxY) {
         Dimension dimension = new Dimension(MathMaster.getMinMax(preferredSize.width, minX, maxX),
-                MathMaster.getMinMax(preferredSize.height, minY, maxY));
+         MathMaster.getMinMax(preferredSize.height, minY, maxY));
         return dimension;
 
     }
@@ -119,8 +119,8 @@ public class SwingMaster {
         if (top.isShowing()) {
             if (top instanceof RootPaneContainer) {
                 c = ((RootPaneContainer) top).getLayeredPane().findComponentAt(
-                        SwingUtilities.convertPoint(top, p, ((RootPaneContainer) top)
-                                .getLayeredPane()));
+                 SwingUtilities.convertPoint(top, p, ((RootPaneContainer) top)
+                  .getLayeredPane()));
             } else {
                 c = ((Container) top).findComponentAt(p);
             }

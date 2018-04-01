@@ -11,8 +11,8 @@ import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.launch.CoreEngine;
 import main.system.threading.TimerTaskMaster;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class LogFileMaster {
     private static String getGameSubfolder() {
         if (gameSubfolder == null) {
             gameSubfolder = FileManager.getUniqueFileVersion(getGameLogFileNameBase(),
-                    getLogFilePath());
+             getLogFilePath());
         }
         return gameSubfolder;
 

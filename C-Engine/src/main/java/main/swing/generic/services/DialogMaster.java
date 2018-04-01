@@ -10,8 +10,8 @@ import main.system.images.ImageManager;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DialogMaster {
@@ -95,7 +95,7 @@ public class DialogMaster {
     public static int optionChoice(Object[] array, String message) {
         array = ListMaster.toStringList(array).toArray();
         return JOptionPane.showOptionDialog(null, message, "Choose...",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, array, array[0]);
+         JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, array, array[0]);
     }
 
     public static Obj objChoice(String string, Obj[] array) {
@@ -116,13 +116,13 @@ public class DialogMaster {
             ImageIcon icon = t.getIcon();
             if (icon.getIconHeight() > GuiManager.getBfObjSize()) {
                 icon = new ImageIcon(ImageManager.getSizedVersion(icon.getImage(), GuiManager
-                        .getBfObjSize()));
+                 .getBfObjSize()));
             }
             array[i] = icon;
             i++;
         }
         int index = JOptionPane.showOptionDialog(null, "Select type: ", "Choose...",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, array, array[0]);
+         JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, array, array[0]);
         if (index == -1) {
             return null;
         }
@@ -135,9 +135,9 @@ public class DialogMaster {
 
     public static boolean confirm(String string) {
         int showConfirmDialog = JOptionPane.showConfirmDialog(null, string, "Confirm",
-                JOptionPane.YES_NO_OPTION);
+         JOptionPane.YES_NO_OPTION);
         return showConfirmDialog == JOptionPane.YES_OPTION
-                || showConfirmDialog == JOptionPane.OK_OPTION;
+         || showConfirmDialog == JOptionPane.OK_OPTION;
     }
 
     public enum CONTROLS_SCHEME {

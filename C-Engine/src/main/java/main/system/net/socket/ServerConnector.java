@@ -98,9 +98,9 @@ public abstract class ServerConnector {
                         public void run() {
                             if (launchInputWaitingThread(CODES.USER_ACTIVATION_CODE)) {
                                 String acode = WaitingThread
-                                        .getINPUT(CODES.USER_ACTIVATION_CODE);
+                                 .getINPUT(CODES.USER_ACTIVATION_CODE);
                                 String input = JOptionPane
-                                        .showInputDialog("Enter the code you received in your confirmation email...");
+                                 .showInputDialog("Enter the code you received in your confirmation email...");
                                 if (acode.equals(input)) {
                                     send(CODES.USER_ACTIVATION_SUCCESSFULL);
 

@@ -8,9 +8,9 @@ import java.util.Map;
  * Created by JustMe on 5/11/2017.
  */
 public class DataUnitFactory<E extends DataUnit> {
+    Boolean format = true;
     private Object[] valueNames;
     private String[] values;
-    Boolean format = true;
 
     public DataUnitFactory(Boolean format) {
         this.format = format;
@@ -23,6 +23,7 @@ public class DataUnitFactory<E extends DataUnit> {
         return std_alt_map ?
          StringMaster.AND_SEPARATOR : StringMaster.getSeparator();
     }
+
     public static String getSeparator(Boolean std_alt_map) {
         return std_alt_map ? StringMaster.getSeparator() : StringMaster.getAltSeparator();
     }
@@ -33,13 +34,14 @@ public class DataUnitFactory<E extends DataUnit> {
 
     public static String getKeyValueString(Boolean format, Object o, String value) {
         StringBuilder builder = new StringBuilder();
-            builder.append(o.toString());
-            builder.append(getPairSeparator(format));
-            builder.append(value );
-            builder.append(getSeparator(format));
+        builder.append(o.toString());
+        builder.append(getPairSeparator(format));
+        builder.append(value);
+        builder.append(getSeparator(format));
         return builder.toString();
 
     }
+
     public void setValueNames(Object... valueNames) {
         this.valueNames = valueNames;
     }
@@ -52,13 +54,14 @@ public class DataUnitFactory<E extends DataUnit> {
         this.format = format;
     }
 
-    public Map<String,String > deconstructDataString(String dataString) {
+    public Map<String, String> deconstructDataString(String dataString) {
 
         return null;
     }
-        public String constructDataString() {
+
+    public String constructDataString() {
         StringBuilder builder = new StringBuilder();
-    int i =0;
+        int i = 0;
         for (Object o : valueNames) {
             builder.append(getKeyValueString(format, o, values[i]));
             builder.append(o.toString());

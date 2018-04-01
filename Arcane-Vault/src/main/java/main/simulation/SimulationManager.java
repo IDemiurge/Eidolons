@@ -3,11 +3,11 @@ package main.simulation;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.unit.Unit;
+import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.battlecraft.DC_Engine;
-import main.game.battlecraft.logic.battle.universal.DC_Player;
-import main.game.core.game.DC_Game;
+import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.core.game.DC_Game;
 import main.launch.ArcaneVault;
 
 import java.util.Arrays;

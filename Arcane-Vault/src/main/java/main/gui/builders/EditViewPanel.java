@@ -2,13 +2,13 @@ package main.gui.builders;
 
 import main.ability.AE_Manager;
 import main.ability.gui.AE_MainPanel;
-import main.client.cc.HC_Master;
-import main.client.cc.gui.neo.tree.HT_Node;
-import main.client.cc.gui.neo.tree.view.HT_View;
-import main.client.cc.gui.neo.tree.view.TreeControlPanel;
+import eidolons.client.cc.HC_Master;
+import eidolons.client.cc.gui.neo.tree.HT_Node;
+import eidolons.client.cc.gui.neo.tree.view.HT_View;
+import eidolons.client.cc.gui.neo.tree.view.TreeControlPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
-import main.content.PARAMS;
+import eidolons.content.PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.TableDataManager;
@@ -22,7 +22,7 @@ import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.G_Table;
-import main.system.DC_Formulas;
+import eidolons.system.DC_Formulas;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager;
@@ -75,7 +75,6 @@ public class EditViewPanel implements TableModelListener {
                 return true;
             }
 
-            ;
         });
         names.add(NAME);
         names.add(VALUE);
@@ -348,9 +347,9 @@ public class EditViewPanel implements TableModelListener {
 
             String typeName = type.getName();
 
-            String newValue = (String) ((JTable) getTable()).getValueAt(e.getFirstRow(), e
+            String newValue = (String) getTable().getValueAt(e.getFirstRow(), e
                     .getColumn());
-            String valName = (String) ((JTable) getTable()).getValueAt(e.getFirstRow(), e
+            String valName = (String) getTable().getValueAt(e.getFirstRow(), e
                     .getColumn() - 1);
             if (!modified(type, valName, newValue)) {
                 return;

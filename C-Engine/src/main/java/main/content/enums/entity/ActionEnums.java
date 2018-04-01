@@ -7,6 +7,7 @@ import main.system.auxiliary.StringMaster;
  */
 public class ActionEnums {
     public enum ACTION_TAGS {
+        FIXED_COST,
         FLYING,
         DUAL,
         UNARMED,
@@ -45,13 +46,13 @@ public class ActionEnums {
     }
 
     public enum ACTION_TYPE_GROUPS {
-        MOVE, TURN, ATTACK, SPELL, ADDITIONAL,SPECIAL, HIDDEN, MODE, ITEM, ORDER,
+        MOVE, TURN, ATTACK, SPELL, ADDITIONAL, SPECIAL, HIDDEN, MODE, ITEM, ORDER,
         DUNGEON, // security fix...
         STANDARD
 
     }
 
-    public static enum CUSTOM_HERO_GROUP {
+    public enum CUSTOM_HERO_GROUP {
         PLAYTEST, ERSIDRIS, EDALAR, TEST,
 
     }

@@ -28,18 +28,20 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public String getContainerValue(T t, int index) {
-       List<String> values = getContainerValues(t);
-       if (values.size()<=index)
-           return null ;
+        List<String> values = getContainerValues(t);
+        if (values.size() <= index)
+            return null;
         return values.get(index);
     }
-        public List<String> getContainerValues(T t) {
-      return
-              StringMaster.openContainer(getValue(t));
+
+    public List<String> getContainerValues(T t) {
+        return
+         StringMaster.openContainer(getValue(t));
     }
-    public T getKeyConst(String name){
+
+    public T getKeyConst(String name) {
         return new EnumMaster<T>().retrieveEnumConst(getEnumClazz(), name);
-}
+    }
 
     public Class<? extends T> getEnumClazz() {
         return enumClazz;
@@ -63,7 +65,7 @@ public class DataUnit<T extends Enum<T>> {
 
     public T getEnumConst(String string) {
         if (enumClass == null) {
-            enumClass=getEnumClazz();
+            enumClass = getEnumClazz();
             return null;
         }
         return (T) new EnumMaster<>().getEnum(string, getEnumClazz().getEnumConstants());
@@ -84,6 +86,7 @@ public class DataUnit<T extends Enum<T>> {
         this.values = values;
 
     }
+
     public String removeValue(T t) {
         return removeValue(t.name());
     }
@@ -93,15 +96,15 @@ public class DataUnit<T extends Enum<T>> {
     }
 
 
-
     public void setValue(T name, String value) {
         if (value == null) {
             removeValue(name);
         }
         values.put(name.name(), value);
     }
+
     public void addValue(T name, String value) {
-      MapMaster.addToStringMap(values, name.name(), value);
+        MapMaster.addToStringMap(values, name.name(), value);
     }
 
     public void setValue(String name, String value) {
@@ -115,7 +118,6 @@ public class DataUnit<T extends Enum<T>> {
     public String getValue(String name) {
         return values.get(name);
     }
-
 
 
     public void setData(String data, Boolean std_alt_map) {
@@ -206,7 +208,7 @@ public class DataUnit<T extends Enum<T>> {
         String data = "";
         for (String p : getValues().keySet()) {
             data += p + StringMaster.getAltPairSeparator() + getValue(p)
-                    + StringMaster.getAltSeparator();
+             + StringMaster.getAltSeparator();
         }
         return data;
 

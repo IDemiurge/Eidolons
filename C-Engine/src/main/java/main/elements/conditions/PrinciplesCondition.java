@@ -20,9 +20,9 @@ public class PrinciplesCondition extends StringComparison {
         for (String s : StringMaster.open(val1)) {
             for (String s2 : StringMaster.open(val2)) {
                 PRINCIPLES p1 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(
-                        PRINCIPLES.class, s);
+                 PRINCIPLES.class, s);
                 PRINCIPLES p2 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(
-                        PRINCIPLES.class, s2);
+                 PRINCIPLES.class, s2);
                 if (exclusive) {
                     if (p1.getOpposite() == p2) {
                         return false;

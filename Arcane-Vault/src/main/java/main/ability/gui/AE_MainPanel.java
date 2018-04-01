@@ -59,7 +59,7 @@ public class AE_MainPanel extends G_Panel implements TreeSelectionListener,
         try {
             DefaultMutableTreeNode node = getSelectedNode();
 
-            item = (AE_Item) ((DefaultMutableTreeNode) node).getUserObject();
+            item = (AE_Item) node.getUserObject();
         } catch (Exception e) {
 
             return null;

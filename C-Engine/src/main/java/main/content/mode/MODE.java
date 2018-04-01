@@ -60,4 +60,10 @@ public interface MODE {
     String getPropsAdded();
 
     boolean isWatchSupported();
+
+    String getPeriod();
+
+    String getPeriodicValues();
+
+    Integer getDuration();
 }

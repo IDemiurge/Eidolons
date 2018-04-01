@@ -722,11 +722,7 @@ public class StringMaster {
         if (value == null)
             return 0;
         if (!isInteger(value)) {
-            try {
-                return new Formula(value).getInt(ref == null ? new Ref() : ref);
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
+            return new Formula(value).getInt(ref == null ? new Ref() : ref);
         }
         if (value.contains(".")) {
             value = value.split(Pattern.quote("."))[0];
@@ -751,29 +747,18 @@ public class StringMaster {
             }
             return result;
         } else {
-            try {
-                String result = "";
-                for (char c : value.toCharArray()) {
-                    if (c == ('.')) {
-                        break;
-                    }
-                    if (c == ('-') || Character.isDigit(c)) {
-
-                        result += c;
-                    }
+            String result = "";
+            for (char c : value.toCharArray()) {
+                if (c == ('.')) {
+                    break;
                 }
-                if (!result.isEmpty()) {
-                    return Integer.valueOf(result);
-                }
+                if (c == ('-') || Character.isDigit(c)) {
 
-                // value = value.trim();
-                // return Integer.valueOf(value);
-            } catch (Exception e) {
-                // int index = value.indexOf('.');
-                // if (index != -1)
-                // if (StringMaster.isInteger(value))
-                // return Integer.valueOf(value.substring(0, index));
-                main.system.ExceptionMaster.printStackTrace(e);
+                    result += c;
+                }
+            }
+            if (!result.isEmpty()) {
+                return Integer.valueOf(result);
             }
         }
 
@@ -785,9 +770,10 @@ public class StringMaster {
     }
 
     public static String getOrdinal(int number) {
-        return number+getOrdinalEnding(number);
+        return number + getOrdinalEnding(number);
     }
-        public static String getOrdinalEnding(int number) {
+
+    public static String getOrdinalEnding(int number) {
         int lastDigit = number % 10;
         if (lastDigit == 1) {
             return "st";
@@ -1519,21 +1505,27 @@ public class StringMaster {
     }
 
     public static Double getDouble(String doubleParam) {
+        if (isEmpty(doubleParam)) {
+            return 0.0;
+        }
         doubleParam = doubleParam.replace("(", "").replace(")", "");
         try {
             return Double.valueOf(doubleParam);
         } catch (Exception e) {
-            // main.system.ExceptionMaster.printStackTrace(e);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0;
     }
 
     public static Float getFloat(String floatParam) {
+        if (isEmpty(floatParam)) {
+            return 0f;
+        }
         floatParam = floatParam.replace("(", "").replace(")", "");
         try {
             return Float.valueOf(floatParam);
         } catch (Exception e) {
-            // main.system.ExceptionMaster.printStackTrace(e);
+            main.system.ExceptionMaster.printStackTrace(e);
         }
         return 0.0f;
     }
@@ -1626,7 +1618,7 @@ public class StringMaster {
 
 
     public static String removePreviousPathSegments(String string, String path) {
-            String p = string.toLowerCase();
+        String p = string.toLowerCase();
 
         path = path.toLowerCase();
         String prefix = "";
@@ -1715,9 +1707,9 @@ public class StringMaster {
     }
 
     public static String getAppendedImageFile(String file, String suffix) {
-        String format= getFormat(file);
+        String format = getFormat(file);
         String newFile = cropFormat(file) + suffix + format;
-        if (FileManager.isFile(PathFinder.getImagePath()+ newFile)) {
+        if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {
             return newFile;
         }
         return file;

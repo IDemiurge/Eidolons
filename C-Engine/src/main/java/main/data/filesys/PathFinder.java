@@ -12,8 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PathFinder {
 
-    private static final String BG_PATH = "big"+StringMaster.getPathSeparator();
-    private static final String PRESENTATION = "presentation"+StringMaster.getPathSeparator();
+    private static final String BG_PATH = "big" + StringMaster.getPathSeparator();
+    private static final String PRESENTATION = "presentation" + StringMaster.getPathSeparator();
     private static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
     private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
@@ -43,24 +43,23 @@ public class PathFinder {
             CoreEngine.setJar(true);
 
 
-
             URI uri = null;
             try {
                 uri =
-                new CoreEngine().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+                 new CoreEngine().getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
             } catch (URISyntaxException e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-            if (jarName==null )
+            if (jarName == null)
                 jarName = StringMaster.getLastPathSegment((uri.toString()));
 
-            if (jarName.contains(".exe")){
+            if (jarName.contains(".exe")) {
                 CoreEngine.setExe(true);
             }
 
             System.out.println("jarName: " + jarName);
             String path =
-             new File(uri.toString().replace(jarName+StringMaster.getPathSeparator(), "")).getAbsolutePath();
+             new File(uri.toString().replace(jarName + StringMaster.getPathSeparator(), "")).getAbsolutePath();
             path = path.split("file:")[0];
             System.out.println("Engine path for Jar: " + path);
 
@@ -70,16 +69,16 @@ public class PathFinder {
         }
 
         RES_PATH = RES_FOLDER_NAME + File.separator;
-        IMG_PATH = ENGINE_PATH + RES_PATH + "img"+StringMaster.getPathSeparator();
+        IMG_PATH = ENGINE_PATH + RES_PATH + "img" + StringMaster.getPathSeparator();
 
-        main.system.auxiliary.log.LogMaster.log(1,"IMG_PATH PATH= "+IMG_PATH   );
-        SND_PATH = ENGINE_PATH + RES_PATH + "sound"+StringMaster.getPathSeparator();
+        main.system.auxiliary.log.LogMaster.log(1, "IMG_PATH PATH= " + IMG_PATH);
+        SND_PATH = ENGINE_PATH + RES_PATH + "sound" + StringMaster.getPathSeparator();
 
-        FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts"+StringMaster.getPathSeparator();
+        FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts" + StringMaster.getPathSeparator();
 
-        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + StringMaster.getPathSeparator()+"types"+StringMaster.getPathSeparator();
+        MACRO_TYPES_PATH = XML_PATH + MACRO_MODULE_NAME + StringMaster.getPathSeparator() + "types" + StringMaster.getPathSeparator();
 
-        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + StringMaster.getPathSeparator()+"types"+StringMaster.getPathSeparator()
+        TYPES_PATH = XML_PATH + MICRO_MODULE_NAME + StringMaster.getPathSeparator() + "types" + StringMaster.getPathSeparator()
          + ((PRESENTATION_MODE) ? PRESENTATION : "");
 
     }
@@ -100,42 +99,42 @@ public class PathFinder {
 
     public static String getDungeonFolder() {
         init();
-        return XML_PATH + StringMaster.getPathSeparator()+"dungeons"+StringMaster.getPathSeparator();
+        return XML_PATH + StringMaster.getPathSeparator() + "dungeons" + StringMaster.getPathSeparator();
     }
 
     public static String getDungeonMissionFolder() {
         init();
-        return XML_PATH + StringMaster.getPathSeparator()+"dungeons"+StringMaster.getPathSeparator()+"missions"+StringMaster.getPathSeparator();
+        return XML_PATH + StringMaster.getPathSeparator() + "dungeons" + StringMaster.getPathSeparator() + "missions" + StringMaster.getPathSeparator();
     }
 
     public static String getSkirmishBattlefieldFolder() {
         init();
-        return getDungeonLevelFolder() + StringMaster.getPathSeparator()+"skirmish"+StringMaster.getPathSeparator()+"battlefields"+StringMaster.getPathSeparator();
+        return getDungeonLevelFolder() + StringMaster.getPathSeparator() + "skirmish" + StringMaster.getPathSeparator() + "battlefields" + StringMaster.getPathSeparator();
     }
 
     public static String getDungeonLevelFolder() {
         init();
-        return XML_PATH  +"dungeons"+StringMaster.getPathSeparator()+"levels"+StringMaster.getPathSeparator();
+        return XML_PATH + "dungeons" + StringMaster.getPathSeparator() + "levels" + StringMaster.getPathSeparator();
     }
 
     public static String getTextPath() {
         init();
-        return RES_PATH + StringMaster.getPathSeparator()+"text"+StringMaster.getPathSeparator();
+        return RES_PATH + StringMaster.getPathSeparator() + "text" + StringMaster.getPathSeparator();
     }
 
     public static String getScenariosPath() {
         init();
-        return RES_PATH + StringMaster.getPathSeparator()+"text"+StringMaster.getPathSeparator()+"scenario"+StringMaster.getPathSeparator();
+        return RES_PATH + StringMaster.getPathSeparator() + "text" + StringMaster.getPathSeparator() + "scenario" + StringMaster.getPathSeparator();
     }
 
     public static String getLogPath() {
         init();
-        return getTextPath() + StringMaster.getPathSeparator()+"log"+StringMaster.getPathSeparator();
+        return getTextPath() + StringMaster.getPathSeparator() + "log" + StringMaster.getPathSeparator();
     }
 
     public static String getUnitGroupPath() {
         init();
-        return XML_PATH + StringMaster.getPathSeparator()+"groups"+StringMaster.getPathSeparator();
+        return XML_PATH + StringMaster.getPathSeparator() + "groups" + StringMaster.getPathSeparator();
     }
 
     public static String getImagePath() {
@@ -183,14 +182,15 @@ public class PathFinder {
 //            return ENGINE_PATH;
         return StringMaster.cropLastPathSegment(ENGINE_PATH);
     }
+
     public static String getEnginePathPlusNewResourceProject() {
         init();
-        return ENGINE_PATH  +StringMaster.getPathSeparator()+RES_FOLDER_NAME+StringMaster.getPathSeparator();
+        return ENGINE_PATH + StringMaster.getPathSeparator() + RES_FOLDER_NAME + StringMaster.getPathSeparator();
     }
 
     public static String getThemedBgPicsPath() {
         init();
-        return IMG_PATH + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"bg"+StringMaster.getPathSeparator();
+        return IMG_PATH + StringMaster.getPathSeparator() + "mini" + StringMaster.getPathSeparator() + "bg" + StringMaster.getPathSeparator();
     }
 
     public static String getMACRO_TYPES_PATH() {
@@ -200,12 +200,12 @@ public class PathFinder {
 
     public static String getPrefsPath() {
         init();
-        return ENGINE_PATH + getTextPath() + "prefs"+StringMaster.getPathSeparator();
+        return ENGINE_PATH + getTextPath() + "prefs" + StringMaster.getPathSeparator();
     }
 
     public static String getWorkspacePath() {
         init();
-        return XML_PATH + StringMaster.getPathSeparator()+"workspaces"+StringMaster.getPathSeparator();
+        return XML_PATH + StringMaster.getPathSeparator() + "workspaces" + StringMaster.getPathSeparator();
     }
 
     public static String getXML_PATH() {
@@ -215,17 +215,17 @@ public class PathFinder {
 
     public static String getMapBlockFolderPath() {
         init();
-        return getLevelEditorPath() + "blocks"+StringMaster.getPathSeparator();
+        return getLevelEditorPath() + "blocks" + StringMaster.getPathSeparator();
     }
 
     public static String getLevelEditorPath() {
         init();
-        return XML_PATH + "Level Editor"+StringMaster.getPathSeparator();
+        return XML_PATH + "Level Editor" + StringMaster.getPathSeparator();
     }
 
     public static String getSpellUpgradeGlyphsFolder() {
         init();
-        return getImagePath() + "ui"+StringMaster.getPathSeparator()+"glyphs"+StringMaster.getPathSeparator();
+        return getImagePath() + "ui" + StringMaster.getPathSeparator() + "glyphs" + StringMaster.getPathSeparator();
     }
 
     public static boolean isFullPath(String path) {
@@ -235,32 +235,34 @@ public class PathFinder {
 
     public static String getSfxPath() {
         init();
-        return getImagePath() + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
+        return getImagePath() + StringMaster.getPathSeparator() + "mini" + StringMaster.getPathSeparator() + "sfx" + StringMaster.getPathSeparator();
     }
 
     public static String getSpritesPath() {
         init();
-        return getImagePath() +  StringMaster.getPathSeparator()+
-         "mini"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+        return getImagePath() + StringMaster.getPathSeparator() +
+         "mini" + StringMaster.getPathSeparator() + "sprites" + StringMaster.getPathSeparator();
     }
 
     public static String getSpritesPathNew() {
         init();
-        return getImagePath() +  StringMaster.getPathSeparator()+
-         "main"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+        return getImagePath() + StringMaster.getPathSeparator() +
+         "main" + StringMaster.getPathSeparator() + "sprites" + StringMaster.getPathSeparator();
     }
+
     public static String getParticlePresetPath() {
         init();
-        return getImagePath() + StringMaster.getPathSeparator()+"mini"+StringMaster.getPathSeparator()+"sfx"+StringMaster.getPathSeparator();
+        return getImagePath() + StringMaster.getPathSeparator() + "mini" + StringMaster.getPathSeparator() + "sfx" + StringMaster.getPathSeparator();
     }
 
     public static String getMusicPath() {
         init();
-        return getEnginePathPlusNewResourceProject()+"music"+StringMaster.getPathSeparator();
+        return getEnginePathPlusNewResourceProject() + "music" + StringMaster.getPathSeparator();
     }
+
     public static String getParticleImagePath() {
         init();
-        return getParticlePresetPath() + "images"+StringMaster.getPathSeparator();
+        return getParticlePresetPath() + "images" + StringMaster.getPathSeparator();
     }
 
     public static String removeSpecificPcPrefix(String imagePath) {
@@ -269,24 +271,25 @@ public class PathFinder {
     }
 
     public static String getJarPath() {
-        return getEnginePath()+jarName;
+        return getEnginePath() + jarName;
     }
 
     public static String getEmblemAutoFindPath() {
-        return StrPathBuilder.build( "ui", "emblems", "auto")+StringMaster.getPathSeparator();
+        return StrPathBuilder.build("ui", "emblems", "auto") + StringMaster.getPathSeparator();
     }
 
     public static String getWeaponAnimPath() {
-        return StrPathBuilder.build(getSpritesPathMain(), "weapons3d")+StringMaster.getPathSeparator();
+        return StrPathBuilder.build(getSpritesPathMain(), "weapons3d") + StringMaster.getPathSeparator();
     }
 
     public static String getPotionsAnimPath() {
-        return StrPathBuilder.build(getSpritesPathMain(), "potions")+StringMaster.getPathSeparator();
+        return StrPathBuilder.build(getSpritesPathMain(), "potions") + StringMaster.getPathSeparator();
     }
+
     private static String getSpritesPathMain() {
         init();
         return
-         "main"+StringMaster.getPathSeparator()+"sprites"+StringMaster.getPathSeparator() ;
+         "main" + StringMaster.getPathSeparator() + "sprites" + StringMaster.getPathSeparator();
     }
 
     public static String getVideoPath() {
@@ -306,19 +309,31 @@ public class PathFinder {
 
     public static String getRouteImagePath() {
         return
-        StrPathBuilder.build(getMacroImgPath(), "routes")+ StringMaster.getPathSeparator();
+         StrPathBuilder.build(getMacroImgPath(), "routes") + StringMaster.getPathSeparator();
     }
 
     public static String getMacroPath() {
         return "global";
     }
+
     public static String getMapLayersPath() {
-        return StrPathBuilder.build(getMacroPath(), "map", "layers")+ StringMaster.getPathSeparator();
+        return StrPathBuilder.build(getMacroPath(), "map", "layers") + StringMaster.getPathSeparator();
+    }
+
+    public static String getComponentsPath() {
+        return StrPathBuilder.build(getUiPath(),
+         "components") + StringMaster.getPathSeparator();
+
+    }
+
+    public static String getUiPath() {
+        return "ui" + StringMaster.getPathSeparator();
+
     }
 
     public static String getMacroUiPath() {
-        return   StrPathBuilder.build(
-         "ui","macro")+ StringMaster.getPathSeparator();
+        return StrPathBuilder.build(
+         "ui", "macro") + StringMaster.getPathSeparator();
 
     }
 }

@@ -91,8 +91,6 @@ public class Player {
     }
 
 
-
-
     public Set<Obj> getControlledUnits() {
         if (units == null) {
             resetUnits();
@@ -133,7 +131,6 @@ public class Player {
     public void setAi(boolean ai) {
         this.ai = ai;
     }
-
 
 
     public FLAG_COLOR getFlagColor() {

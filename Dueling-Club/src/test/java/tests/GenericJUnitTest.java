@@ -1,6 +1,6 @@
 package tests;
 
-import main.game.battlecraft.ai.AI_Manager;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import org.junit.Before;
@@ -10,7 +10,7 @@ import org.junit.Before;
  */
 public class GenericJUnitTest {
     @Before
-    public  void  init(){
+    public void init() {
         LogMaster.setOff(true); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(true);
         AI_Manager.setOff(true);

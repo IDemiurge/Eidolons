@@ -5,7 +5,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.DC_Engine;
 import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PROPS;
 import main.music.MusicCore;

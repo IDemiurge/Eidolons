@@ -9,7 +9,6 @@ import main.system.math.Formula;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ArrayList;
 
 public class MultiTargeting extends TargetingImpl {
     private Targeting[] targetings;
@@ -18,9 +17,11 @@ public class MultiTargeting extends TargetingImpl {
     private Formula nOfTargets;
     private boolean noDuplicates = true;
     private boolean ignoreGroupTargeting = true;
+
     public MultiTargeting(Targeting targeting1, Targeting targeting2) {
         this(true, targeting1, targeting2);
     }
+
     public MultiTargeting(Targeting targeting1, Targeting targeting2, Targeting targeting3) {
         this(true, targeting1, targeting2, targeting3);
     }

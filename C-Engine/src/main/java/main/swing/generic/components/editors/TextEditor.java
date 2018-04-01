@@ -34,10 +34,10 @@ public class TextEditor implements EDITOR {
         // }
         // });
         int result = JOptionPane.showConfirmDialog(null,
-                // // new FormulaBuilder(
-                textField
-                // // ) .getPanel()
-                , tip, JOptionPane.OK_CANCEL_OPTION);
+         // // new FormulaBuilder(
+         textField
+         // // ) .getPanel()
+         , tip, JOptionPane.OK_CANCEL_OPTION);
         if (result != JOptionPane.OK_OPTION) {
             return null;
         }

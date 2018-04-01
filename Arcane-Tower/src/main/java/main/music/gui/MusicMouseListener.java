@@ -7,7 +7,7 @@ import main.music.entity.Track;
 import main.music.m3u.M3uGenerator;
 import main.swing.generic.components.editors.lists.EnumListChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.swing.generic.services.listener.MouseClickListener;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;

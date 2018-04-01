@@ -14,7 +14,6 @@ public class PropMap implements ValueMap {
     Map<PROPERTY, String> map = new HashMap<>();
 
 
-
     @Override
     public String toString() {
         return map.toString();

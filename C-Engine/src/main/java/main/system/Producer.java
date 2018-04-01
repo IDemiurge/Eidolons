@@ -6,5 +6,5 @@ package main.system;
 @FunctionalInterface
 public interface Producer<T, E> {
 
-    public E produce(T t);
+    E produce(T t);
 }

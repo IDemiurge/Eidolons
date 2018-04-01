@@ -25,7 +25,7 @@ public class ObjListMouseListener<E> implements MouseListener { // ? extends
         E selectedValue = list.getSelectedValue();
         if (selectedValue == null) {
             selectedValue = new ArrayList<>(list.getData())
-                    .get(list.locationToIndex(e.getPoint()));
+             .get(list.locationToIndex(e.getPoint()));
         }
         if (!(selectedValue instanceof Entity)) {
             return;

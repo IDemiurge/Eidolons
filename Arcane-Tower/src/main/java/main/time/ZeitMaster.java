@@ -10,7 +10,7 @@ import main.logic.AT_OBJ_TYPE;
 import main.logic.AT_PARAMS;
 import main.logic.AT_PROPS;
 import main.logic.ArcaneEntity;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;

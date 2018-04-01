@@ -15,11 +15,11 @@ public interface FileLogger {
 
     void writeLog(SPECIAL_LOG log);
 
-    public enum SPECIAL_LOG {
+    enum SPECIAL_LOG {
         AI(LOG_CHANNEL.AI_DEBUG, LOG_CHANNEL.AI_DEBUG2),
         VISIBILITY,
         COMBAT(LOG_CHANNEL.GAME_INFO),
-        INPUT, MAIN(), EXCEPTIONS, ;
+        INPUT, MAIN(), EXCEPTIONS,;
 
         private List<LOG_CHANNEL> channels;
 
@@ -27,7 +27,7 @@ public interface FileLogger {
             this.channels = Arrays.asList(channels);
         }
 
-         public List<LOG_CHANNEL> getChannels() {
+        public List<LOG_CHANNEL> getChannels() {
             return channels;
         }
     }

@@ -14,15 +14,23 @@ import main.system.auxiliary.log.LogMaster;
 public class Formula {
     //TODO extract parsing into Parser!
 
+    private static FuncMap functionMap;
     private String formula;
     private String buffer;
-    private static FuncMap functionMap;
 
     public Formula(String formula) {
         this.formula = formula;
         if (formula.equals("")) {
             this.formula = "0";
         }
+    }
+
+    public static FuncMap getFunctionMap() {
+        if (functionMap == null) {
+            functionMap = new FuncMap(false);
+            functionMap.loadDefaultFunctions();
+        }
+        return functionMap;
     }
 
     public Number evaluate(Ref ref) {
@@ -40,36 +48,14 @@ public class Formula {
         buffer = formula;
         VarMap vm = new VarMap(false /* case sensitive */);
 
-        try {
-            buffer = new DynamicValueParser().parseDynamicValues(buffer, ref);
-        } catch (Exception e) {
-            return 0;
-        }
+        buffer = new DynamicValueParser().parseDynamicValues(buffer, ref);
         buffer = MathMaster.formatFormula(buffer);
 
-        Expression expression;
-        try {
-            expression = ExpressionTree.parse(buffer);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            return 0;
-        }
+        Expression expression = ExpressionTree.parse(buffer);
 
-        double result = 0;
-        try {
-            result = expression.eval(vm, getFunctionMap());
-        } catch (Exception e) {
-            if (!FormulaMaster.getFailedFormulas().contains(toString())) {
-                main.system.ExceptionMaster.printStackTrace(e);
-                FormulaMaster.getFailedFormulas().add(toString());
-            }
-        }
-
-        LogMaster.log(0, "Formula after parsing: " + formula);
-        LogMaster.log(0, "Result: " + result);
+        double result = expression.eval(vm, getFunctionMap());
         return result;
     }
-
 
     public Integer getInt(Ref ref) {
         Number number;
@@ -88,10 +74,8 @@ public class Formula {
     }
 
     public int getInt() {
-        return getInt(null );
+        return getInt(null);
     }
-
-
 
     public void setFormula(String formula) {
         this.formula = formula;
@@ -101,8 +85,6 @@ public class Formula {
     public String toString() {
         return formula;
     }
-
-
 
     public Double getDouble(Ref ref) {
         return Double.valueOf(evaluate(ref).toString());
@@ -129,15 +111,13 @@ public class Formula {
         return new Formula("1/(" + this.formula + ")");
     }
 
-
-
     public Formula wrapObjRef() {
         return new Formula("{" + formula + "}");
     }
 
     public void applyFactor(Object mod) {
         setFormula("((" + this.formula + ")*100+" + this.formula + "*" + "(" + mod.toString()
-                + "))/100");
+         + "))/100");
 
     }
 
@@ -165,21 +145,13 @@ public class Formula {
         return new Formula("(" + this.formula + ")" + "*" + "(" + mod.toString() + ")");
 
     }
-        public Formula getAppendedByFactor(Object mod) {
+
+    public Formula getAppendedByFactor(Object mod) {
         if (mod == null) {
             return this;
         }
         return new Formula("" + this.formula + "+" + "(" + this.formula + ")*" + "("
-                + mod.toString() + ")");
-    }
-
-
-    public static FuncMap getFunctionMap() {
-        if (functionMap == null) {
-        functionMap = new FuncMap(false);
-        functionMap.loadDefaultFunctions();
-    }
-        return functionMap;
+         + mod.toString() + ")");
     }
 
 }

@@ -17,18 +17,17 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CoreEngine {
-    public static   boolean EXE_MODE = true;
-    private static CoreEngine engineObject;
-
     public final static String[] classFolderPaths = {"main.elements", "main.ability"};
-    public static final String VERSION = "0.44";
+    public static final String VERSION = "0.502";
+    public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
     public static boolean animationTestMode;
+    private static CoreEngine engineObject;
     private static boolean TEST_MODE = true;
     private static SoundMaster sm;
     private static boolean arcaneVault;
@@ -114,16 +113,16 @@ public class CoreEngine {
 
         if (selectivelyReadTypes != null) {
             return StringMaster.checkContainer(
-                    selectivelyReadTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-                    false);
+             selectivelyReadTypes,
+             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+             false);
         }
 
         if (exceptionTypes != null) {
             if (StringMaster.checkContainer(
-                    exceptionTypes,
-                    StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
-                    false
+             exceptionTypes,
+             StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
+             false
             )) {
                 return false;
             }
@@ -248,6 +247,7 @@ public class CoreEngine {
     public static boolean isExceptionTraceLogged() {
         return true;
     }
+
     public static boolean isPhaseAnimsOn() {
         return phaseAnimsOn;
     }
@@ -256,27 +256,27 @@ public class CoreEngine {
         CoreEngine.phaseAnimsOn = phaseAnimsOn;
     }
 
-    public static void  dataInit(boolean macro) {
+    public static void dataInit(boolean macro) {
 
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
-        List<String> classFolders=    new ArrayList<>(Arrays.asList(classFolderPaths)) ;
+        List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
 //         if (dialogueDataRequired){
 //             classFolders.add( "main.data.dialogue" );
 //             classFolders.add(  "main.game.battlecraft.logic.meta.scenario.dialogue.speech" );
 //         }
 
         Chronos.logTimeElapsedForMark("TYPES INIT");
-         if (!macro)
-        try {
-            Chronos.mark("MAPPER INIT");
-            Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
-            classFolders);
-            Chronos.logTimeElapsedForMark("MAPPER INIT");
-        } catch (ClassNotFoundException | SecurityException | IOException e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+        if (!macro)
+            try {
+                Chronos.mark("MAPPER INIT");
+                Mapper.compileArgMap(Arrays.asList(ARGS.getArgs()),
+                 classFolders);
+                Chronos.logTimeElapsedForMark("MAPPER INIT");
+            } catch (ClassNotFoundException | SecurityException | IOException e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
     }
 
@@ -292,13 +292,12 @@ public class CoreEngine {
         return !isLogicTest();
     }
 
+    public static CoreEngine getEngineObject() {
+        return engineObject;
+    }
 
     public static void setEngineObject(CoreEngine engineObject) {
         CoreEngine.engineObject = engineObject;
-    }
-
-    public static CoreEngine getEngineObject(){
-        return engineObject;
     }
 
     public static boolean isJar() {
@@ -314,8 +313,9 @@ public class CoreEngine {
     }
 
     public static boolean isIDE() {
-        return !exe&& !jar&& !jarlike;
+        return !exe && !jar && !jarlike;
     }
+
     public static boolean isExe() {
         return exe;
     }
@@ -328,35 +328,35 @@ public class CoreEngine {
         return false;
     }
 
-    public static void setMapEditor(boolean mapEditor) {
-        CoreEngine.mapEditor = mapEditor;
-    }
-
     public static boolean isMapEditor() {
         return mapEditor;
     }
 
-    public static void setMacro(boolean macro) {
-        CoreEngine.macro = macro;
+    public static void setMapEditor(boolean mapEditor) {
+        CoreEngine.mapEditor = mapEditor;
     }
 
     public static boolean isMacro() {
         return macro;
     }
 
-    public static void setJarlike(boolean jarlike) {
-        CoreEngine.jarlike = jarlike;
+    public static void setMacro(boolean macro) {
+        CoreEngine.macro = macro;
     }
 
     public static boolean isJarlike() {
         return jarlike;
     }
 
-    public static void setFastMode(boolean fastMode) {
-        CoreEngine.fastMode = fastMode;
+    public static void setJarlike(boolean jarlike) {
+        CoreEngine.jarlike = jarlike;
     }
 
     public static boolean isFastMode() {
         return fastMode;
+    }
+
+    public static void setFastMode(boolean fastMode) {
+        CoreEngine.fastMode = fastMode;
     }
 }

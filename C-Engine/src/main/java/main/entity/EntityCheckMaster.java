@@ -36,12 +36,12 @@ public class EntityCheckMaster {
             return false;
         }
         return entity.checkProperty(G_PROPS.BF_OBJECT_TAGS, "" + BfObjEnums.BF_OBJECT_TAGS.OVERLAYING)
-                || entity.checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
+         || entity.checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
     }
 
     public static BACKGROUND getBackground(Entity hero) {
         return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, hero
-                .getProperty(G_PROPS.BACKGROUND));
+         .getProperty(G_PROPS.BACKGROUND));
 
     }
 
@@ -51,6 +51,6 @@ public class EntityCheckMaster {
 
     public static GENDER getGender(Entity hero) {
         return new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, hero
-                .getProperty(G_PROPS.GENDER));
+         .getProperty(G_PROPS.GENDER));
     }
 }

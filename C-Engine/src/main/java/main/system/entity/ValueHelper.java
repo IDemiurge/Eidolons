@@ -70,14 +70,14 @@ public class ValueHelper {
             initialSelectionValue = searches.pop();
         }
         String value = JOptionPane.showInputDialog(parent, "Enter value name to be set for "
-                + getEntity(), initialSelectionValue);
+         + getEntity(), initialSelectionValue);
         if (value == null) {
             return;
         }
         searches.push(value);
         setValue(value);
         SoundMaster.playStandardSound(RandomWizard.random() ? STD_SOUNDS.CLOSE
-                : STD_SOUNDS.DONE2);
+         : STD_SOUNDS.DONE2);
     }
 
     public void setValue(String valueName) {

@@ -24,11 +24,6 @@ public class ContinuousEffect extends MicroEffect {
         }
     }
 
-    @Override
-    public String toXml() {
-        return getEffect().toXml();
-    }
-
     public static Effect transformEffectToContinuous(Effect effect) {
         if (effect instanceof OneshotEffect) {
             throw new RuntimeException("OneshotEffect cannot be made Continuous!" + effect);
@@ -53,7 +48,7 @@ public class ContinuousEffect extends MicroEffect {
             return effect;
         } else {
             boolean isTransform = !(effect instanceof ContinuousEffect)
-                    && !(effect instanceof AttachmentEffect);
+             && !(effect instanceof AttachmentEffect);
             if (isTransform) {
                 if (effect instanceof ContainerEffect) {
                     ContainerEffect containerEffect = (ContainerEffect) effect;
@@ -70,6 +65,11 @@ public class ContinuousEffect extends MicroEffect {
         }
 
         return effect;
+    }
+
+    @Override
+    public String toXml() {
+        return getEffect().toXml();
     }
 
     @Override

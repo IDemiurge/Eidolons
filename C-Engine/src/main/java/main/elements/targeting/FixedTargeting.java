@@ -47,14 +47,14 @@ public class FixedTargeting extends TargetingImpl {
                 return true;
             } else {
                 LogMaster.log(1,
-                        "keyword returned non-Integer: " + keyword);
+                 "keyword returned non-Integer: " + keyword);
 
                 return false;
             }
 
         } else {
             LogMaster.log(1, "keyword returned null: "
-                    + keyword);
+             + keyword);
             return false;
         }
 

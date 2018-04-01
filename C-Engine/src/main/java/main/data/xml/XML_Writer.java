@@ -18,8 +18,8 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +44,6 @@ public class XML_Writer {
     private static boolean dirtyOnly;
     private static Boolean writingBlocked;
     private static List<OBJ_TYPE> blocked = new ArrayList<>();
-
 
 
     public static void createXmlFileForTypeGroup(OBJ_TYPE TYPE) {
@@ -105,7 +104,7 @@ public class XML_Writer {
                     String name = obj.toString();
                     List<String> types = DataManager.getTypeNamesGroup(TYPE, name);
                     map = new MapMaster<String, ObjType>().constructMap(types, DataManager
-                            .toTypeList(types, TYPE));
+                     .toTypeList(types, TYPE));
                     writeXML_ForTypeGroup(TYPE, name);
 
                 }
@@ -146,7 +145,7 @@ public class XML_Writer {
             path = XML_Reader.getCustomTypesPath();
         } else {
             path = (!DC_TYPE.isOBJ_TYPE(TYPE.toString()) ? PathFinder.getMACRO_TYPES_PATH()
-                    : PathFinder.getTYPES_PATH());
+             : PathFinder.getTYPES_PATH());
         }
         if (backUp) {
             path += BACK_UP;
@@ -203,7 +202,7 @@ public class XML_Writer {
                 stringPool = xml.replace(groupNode, groupNode + newTypeString);
             } else {
                 stringPool = xml.replace(closeXML(XML), groupNode + newTypeString
-                        + closeXML(type.getProperty(TYPE.getGroupingKey())) + closeXML(XML));
+                 + closeXML(type.getProperty(TYPE.getGroupingKey())) + closeXML(XML));
             }
         }
         return write();
@@ -312,11 +311,11 @@ public class XML_Writer {
             }
             if (prop == null) {
                 LogMaster.log(1, "null key! ; value = "
-                        + type.getPropMap().get(prop));
+                 + type.getPropMap().get(prop));
             }
             appendLeafNode(builder, StringMaster.capitalizeFirstLetter(prop
 
-                    .getName()), value);
+             .getName()), value);
         }
 
         builder.append("</props>");
@@ -329,7 +328,7 @@ public class XML_Writer {
             return false;
         }
         if (TYPE == DC_TYPE.SKILLS || TYPE == DC_TYPE.CHARS || TYPE == DC_TYPE.UNITS
-                || TYPE == DC_TYPE.SPELLS) {
+         || TYPE == DC_TYPE.SPELLS) {
             if (StringMaster.isEmpty(value) || value.equals("0")) {
                 if (!val.getName().equalsIgnoreCase("CIRCLE")) {
                     return false;
@@ -358,7 +357,7 @@ public class XML_Writer {
 
     private static void appendLeafNode(StringBuilder sub, String valName, String value) {
         sub.append(openXML(valName) + value + closeXML(valName)
-                // + "\n" //costs 10x performance...
+         // + "\n" //costs 10x performance...
         );
     }
 
@@ -381,21 +380,22 @@ public class XML_Writer {
         return write(content, StringMaster.cropLastPathSegment(pathAndName),
          StringMaster.getLastPathSegment(pathAndName));
     }
-        public static boolean write(String content, String path, String fileName) {
 
-            if (fileName.contains("rack")) {
-                return false;
-            }
+    public static boolean write(String content, String path, String fileName) {
+
+        if (fileName.contains("rack")) {
+            return false;
+        }
 
         File dir = new File(path);
-            if (!dir.isDirectory()) {
-                try {
-                    dir.mkdirs();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    return false;
-                }
+        if (!dir.isDirectory()) {
+            try {
+                dir.mkdirs();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                return false;
             }
+        }
         return FileManager.write(content, path + "\\" + fileName);
     }
 

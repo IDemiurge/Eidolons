@@ -8,7 +8,7 @@ import javax.swing.event.ListSelectionListener;
 import java.util.Vector;
 
 public abstract class GenericList<E> extends JList<E> implements
-        ListSelectionListener, ListCellRenderer<E>, Refreshable {
+ ListSelectionListener, ListCellRenderer<E>, Refreshable {
     protected Vector<E> list = new Vector<>();
     protected RefresherImpl refresher;
 

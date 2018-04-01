@@ -65,7 +65,7 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
         int i = new ListMaster<E>().getIndex(getData(), e);
         int x = isVertical() ? getObj_size() * i / getWrap() : getObj_size() * i % getWrap();
         int y = isVertical() ? getObj_size() * i % (getWrap()) : getObj_size() * i
-                / (getVisibleRowCount());
+         / (getVisibleRowCount());
 
         Point p = new Point(x, y);
         return p;
@@ -88,7 +88,7 @@ public class G_List<E> extends JList<E> implements ListCellRenderer<E>, MouseLis
 
     protected boolean isVertical() {
         return getLayoutOrientation() == JList.VERTICAL_WRAP
-                || getLayoutOrientation() == JList.VERTICAL;
+         || getLayoutOrientation() == JList.VERTICAL;
     }
 
     @Override

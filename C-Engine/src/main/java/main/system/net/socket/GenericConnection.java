@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class GenericConnection implements Runnable {
@@ -57,7 +57,7 @@ public abstract class GenericConnection implements Runnable {
 
         if (code == null) {
             LogMaster.log(4, "NO NETCODE FOUND!"
-                    + input.split(StringMaster.NETCODE_SEPARATOR)[0]);
+             + input.split(StringMaster.NETCODE_SEPARATOR)[0]);
             return false;
         }
 
@@ -66,7 +66,7 @@ public abstract class GenericConnection implements Runnable {
         handleInputCodeConcurrently(code);
         setLastReceivedCode(code);
         LogMaster.log(4, code + " - input for code: "
-                + input.split(StringMaster.NETCODE_SEPARATOR)[1]);
+         + input.split(StringMaster.NETCODE_SEPARATOR)[1]);
         INPUT(INPUT, code); // waiting thread fail
 
         return true;
@@ -143,7 +143,7 @@ public abstract class GenericConnection implements Runnable {
 
     public void setCODES() {
         setTHIS_CODES(new ArrayList<>((List<NetCode>) Arrays.asList(codestype
-                .getEnumConstants())));
+         .getEnumConstants())));
     }
 
     public void handleInputConcurrently(final NetCode code) {
@@ -210,7 +210,7 @@ public abstract class GenericConnection implements Runnable {
         }
         if (!result) {
             LogMaster.log(0, "FAILED TO SET INPUT: " + input + " for "
-                    + getLastReceivedCode().name());
+             + getLastReceivedCode().name());
 
             // create that waiting thread and go?!
         }

@@ -92,21 +92,21 @@ public abstract class BfAnalyzer {
         }
         if (cell == null) {
             LogMaster
-                    .log(LogMaster.AI_DEBUG, "failed to find a cell for : "
-                            + getAi().getUnit() + " to attack " + targetUnit);
+             .log(LogMaster.AI_DEBUG, "failed to find a cell for : "
+              + getAi().getUnit() + " to attack " + targetUnit);
             // throw new RuntimeException();
         }
 
         LogMaster.log(LogMaster.AI_DEBUG, cell
-                + " is the closest cell to " + targetUnit);
+         + " is the closest cell to " + targetUnit);
         return cell;
 
     }
 
     public int getMaxDistance() {
         return PositionMaster
-                .getDistance(new Coordinates(0, 0), new Coordinates(game
-                        .getBF_Width(), game.getBF_Height()));
+         .getDistance(new Coordinates(0, 0), new Coordinates(game
+          .getBF_Width(), game.getBF_Height()));
     }
 
     public Obj checkCells(Obj targetUnit, Collection<Obj> set, boolean canMove) {
@@ -116,15 +116,15 @@ public abstract class BfAnalyzer {
             if (canMove) {
                 if (!movementManager.canMove(getAi().getUnit(), adjCell)) {
                     LogMaster
-                            .log(LogMaster.AI_DEBUG, ai.getLogic().getUnit()
-                                    + " can't move to " + adjCell);
+                     .log(LogMaster.AI_DEBUG, ai.getLogic().getUnit()
+                      + " can't move to " + adjCell);
                     continue;
                 }
             }
             Path path = movementManager.getPath(targetUnit, adjCell);
             if (path == null) {
                 LogMaster.log(LogMaster.AI_DEBUG, ai
-                        .getLogic().getUnit() + " has no path to " + adjCell);
+                 .getLogic().getUnit() + " has no path to " + adjCell);
 
                 continue;
             }
@@ -222,15 +222,15 @@ public abstract class BfAnalyzer {
         return true;
     }
 
-    public enum PRIORITY_CASES implements GameLogicCase {
-        // TODO when something needs to be done before anything else...
-    }
-
     public enum ACTION_CASES implements GameLogicCase {
         // TODO when something is obviously a good idea...
         HIT, HIT_TO_KILL, MOVE_TO_CLAIM, MOVE_TO_KILL, MOVE_TO_ESCAPE,
         MOVE_TO_HIT, MOVE_TO_DECLAIM,
 
+    }
+
+    public enum PRIORITY_CASES implements GameLogicCase {
+        // TODO when something needs to be done before anything else...
     }
 
     // CASES

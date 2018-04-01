@@ -61,7 +61,7 @@ public class XML_Reader {
         LogMaster.log(LogMaster.DATA_DEBUG, "type map: " + key);
 
         Map<String, ObjType> typeMap =
-                typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
+         typeMaps.computeIfAbsent(key, k -> new XLinkedMap<>());
 
         NodeList nl = doc.getFirstChild().getChildNodes();
         Set<String> groupSet = new LinkedHashSet<>();
@@ -93,7 +93,7 @@ public class XML_Reader {
 
                     typeMap.put(name, type);
                     LogMaster.log(LogMaster.DATA_DEBUG, typeNode.getNodeName()
-                            + " has been put into map as " + type);
+                     + " has been put into map as " + type);
                 }
             }
         }
@@ -120,14 +120,14 @@ public class XML_Reader {
                 if (checkFile(file)) {
                     try {
                         XML_File xmlFile = readFile(file);
-                        if (xmlFile==null )
+                        if (xmlFile == null)
                             continue;
                         getFiles().add(xmlFile);
                         Document doc = XML_Converter.getDoc(xmlFile.contents);
                         loadMap(xmlFile.type == null ? xmlFile.name : xmlFile.type.getName(), doc);
                     } catch (Exception e) {
                         brokenXml = true;
-                        main.system.auxiliary.log.LogMaster.log(1,file+" is broken!" );
+                        main.system.auxiliary.log.LogMaster.log(1, file + " is broken!");
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
@@ -157,10 +157,9 @@ public class XML_Reader {
 
     public static XML_File readFile(File file) {
         String text = FileManager.readFile(file);
-        if (FileManager.readFile(file).length()<15)
-        {
-            main.system.auxiliary.log.LogMaster.log(1,"empty xml file " +file.getName());
-            return null ;
+        if (FileManager.readFile(file).length() < 15) {
+            main.system.auxiliary.log.LogMaster.log(1, "empty xml file " + file.getName());
+            return null;
         }
         final String name = file.getName();
         String fileName = name.substring(0, name.length() - ".xml".length());
@@ -223,7 +222,7 @@ public class XML_Reader {
 
             if (incompleteTypes) {
                 ObjType parent = DataManager.getType(type.getProperty(G_PROPS.PARENT_TYPE), type
-                        .getOBJ_TYPE_ENUM());
+                 .getOBJ_TYPE_ENUM());
                 if (parent != null) {
                     type.setType(parent);
                     for (PROPERTY prop : parent.getPropMap().keySet()) {
@@ -303,7 +302,7 @@ public class XML_Reader {
         constructTypeMap(doc, name, tabGroupMap, treeSubGroupMap);
 
         LogMaster.getInstance().log(LogMaster.INFO,
-                "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
+         "" + Chronos.getTimeElapsedForMark("TYPE MAPPING " + name));
     }
 
     public static void loadMap(String name, String text) {
@@ -399,13 +398,13 @@ public class XML_Reader {
         String key = DC_TYPE.CHARS.getName();
         if (originalCharTypeMap == null) {
             originalCharTypeMap = new MapMaster<String, ObjType>().constructMap(new ArrayList<>(
-                    getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps()
-                    .get(key).values()));
+             getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps()
+             .get(key).values()));
         }
 
         bufferCharTypeMap = new MapMaster<String, ObjType>().constructMap(new ArrayList<>(
-                getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps().get(key)
-                .values()));
+         getTypeMaps().get(key).keySet()), new ArrayList<>(getTypeMaps().get(key)
+         .values()));
 
         try {
             reloadHeroFiles();

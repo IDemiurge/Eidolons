@@ -37,7 +37,7 @@ public class G_TabbedPanel extends G_Panel {
             double w = c.getPreferredSize().getWidth();
             double h = c.getPreferredSize().getHeight();
             panelSize = new Dimension((int) Math.max(panelSize.getWidth(), w),
-                    (int) Math.max(panelSize.getHeight(), h));
+             (int) Math.max(panelSize.getHeight(), h));
         }
 
     }

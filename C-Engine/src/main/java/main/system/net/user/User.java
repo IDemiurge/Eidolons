@@ -12,9 +12,9 @@ public class User extends DataUnit<USER_VALUES> {
     public static final String HOST = "HOST_USER";
     public static final String CLIENT = "CLIENT_USER";
     static String[] relevantUserValues = {USER_VALUES.USERNAME.name(),
-            // USER_VALUES.GUILD.name(),
-            // USER_VALUES.RANG.name(),
-            // USER_VALUES.RATING.name(),
+     // USER_VALUES.GUILD.name(),
+     // USER_VALUES.RANG.name(),
+     // USER_VALUES.RATING.name(),
     };
     USER_STATUS status;
     private long ping;

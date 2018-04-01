@@ -3,8 +3,8 @@ package main.data.filesys;
 import main.system.datatypes.DequeImpl;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ResourceManager {
@@ -16,7 +16,7 @@ public class ResourceManager {
 
     public static List<String> getFilesInFolder(String path) {
         DequeImpl<String> list = new DequeImpl<>(
-                Arrays.asList(getResourcesInFolder(path)));
+         Arrays.asList(getResourcesInFolder(path)));
         // for (String s : list) {
         // if (!getFile(s).isFile()) {
         // list.remove(s);

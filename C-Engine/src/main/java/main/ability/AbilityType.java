@@ -26,7 +26,7 @@ public class AbilityType extends XmlHoldingType {
 
     public void cloned() {
         this.doc = XML_Converter
-                .getAbilitiesDoc(getProperty(G_PROPS.ABILITIES));
+         .getAbilitiesDoc(getProperty(G_PROPS.ABILITIES));
 
     }
 

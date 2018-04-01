@@ -9,17 +9,18 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static main.system.GuiEventType.* ;
+import static main.system.GuiEventType.SCREEN_LOADED;
+import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class GuiEventManagerOld {
-    private static GuiEventManagerOld instance;
-    private static boolean isInitialized;
-    private static Lock initLock = new ReentrantLock();
     private static final GuiEventType[] savedBindings = {
-        SWITCH_SCREEN,
+     SWITCH_SCREEN,
      SCREEN_LOADED,
 
     };
+    private static GuiEventManagerOld instance;
+    private static boolean isInitialized;
+    private static Lock initLock = new ReentrantLock();
     private Map<EventType, EventCallback> eventMap = new HashMap<>();
     private List<Runnable> eventQueue = new ArrayList<>();
     private Lock lock = new ReentrantLock();
@@ -34,12 +35,9 @@ public class GuiEventManagerOld {
     public static void bind(EventType type, final EventCallback event) {
         getInstance().bind_(type, event);
     }
-    public static void removeBind(EventType type ) {
-        getInstance().removeBind_(type );
-    }
 
-    private void removeBind_(EventType type) {
-        eventMap.remove(type);
+    public static void removeBind(EventType type) {
+        getInstance().removeBind_(type);
     }
 
     public static void trigger(final EventType type, Object obj) {
@@ -77,6 +75,10 @@ public class GuiEventManagerOld {
 
     private static void init() {
         instance = new GuiEventManagerOld();
+    }
+
+    private void removeBind_(EventType type) {
+        eventMap.remove(type);
     }
 
     private void _cleanUp() {
@@ -130,7 +132,7 @@ public class GuiEventManagerOld {
 
     public void trigger_(final EventType type, final EventCallbackParam obj) {
         EventCallback event = eventMap.get(type);
-        if (event!=null ) {
+        if (event != null) {
             lock.lock();
             try {
                 eventQueue.add(() -> event.call(obj));
@@ -154,7 +156,14 @@ public class GuiEventManagerOld {
             eventQueue = new ArrayList<>();
             lock.unlock();
 
-            list.forEach(Runnable::run);
+//            list.forEach(Runnable::run); apparently we still need crutches
+            for (Runnable runnable : list) {
+                try {
+                    runnable.run();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
         }
     }
 

@@ -38,7 +38,7 @@ public class RefCondition extends ConditionImpl {
     @Override
     public String toString() {
         return super.toString() + ": " + id1 + ((negative) ? " != " : " == ")
-                + id2;
+         + id2;
     }
 
     // example: dispel buffs on target: /*
@@ -58,7 +58,7 @@ public class RefCondition extends ConditionImpl {
             setTrue((id.toString().equals(id_.toString())));
         } catch (Exception e) {
             LogMaster.log(1, toString() + " failed on "
-                    + ref);
+             + ref);
         }
         if (negative) {
             setTrue(!isTrue());

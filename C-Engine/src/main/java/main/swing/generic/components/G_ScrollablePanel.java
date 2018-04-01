@@ -23,7 +23,7 @@ public class G_ScrollablePanel extends G_Panel implements Scrollable {
 
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         return ((orientation == SwingConstants.VERTICAL) ? visibleRect.height
-                : visibleRect.width) - 10;
+         : visibleRect.width) - 10;
     }
 
     public boolean getScrollableTracksViewportWidth() {

@@ -13,13 +13,13 @@ public class GeometryMaster {
     public static Point getFarthestPointInRectangleForImage(int w, int h, Image img,
                                                             DIRECTION direction) {
         return getFarthestPointInRectangleForImage(w, h, img.getWidth(null), img.getHeight(null),
-                direction);
+         direction);
     }
 
     public static Point getFarthestPointInRectangleForImage(int w, int h, int width, int height,
                                                             DIRECTION direction) {
-        Boolean xSide = direction.isGrowX();
-        Boolean ySide = direction.isGrowY();
+        Boolean xSide = direction.growX;
+        Boolean ySide = direction.growY;
         int x = (w - width) / 2;
         int y = (h - height) / 2;
         if (xSide != null) {
@@ -49,7 +49,6 @@ public class GeometryMaster {
 
 
     }
-
 
 
     public static Point2D[] getIntersectionPoint(Line2D line, Rectangle2D rectangle) {
@@ -115,6 +114,6 @@ public class GeometryMaster {
     }
 
     public static float hyp(int a, int b) {
-        return (float) Math.sqrt(a*a+ b*b);
+        return (float) Math.sqrt(a * a + b * b);
     }
 }

@@ -16,15 +16,15 @@ public class Context extends Ref {
 
     public Context(Obj source, Obj target) {
         super(source);
-        this. source = source;
-        this. target = target;
+        this.source = source;
+        this.target = target;
         if (target != null) {
             setTarget(target.getId());
         }
     }
 
-    public Context(Ref ref){
-        cloneMaps(ref );
+    public Context(Ref ref) {
+        cloneMaps(ref);
         setPlayer(ref.getPlayer());
         setEvent(ref.event);
         setGroup(ref.getGroup());
@@ -32,8 +32,9 @@ public class Context extends Ref {
         setGame(ref.game);
         setEffect(ref.getEffect());
         setTriggered(ref.isTriggered());
-        setDebug(ref.isDebug()); if (CoreEngine.isPhaseAnimsOn())
-        setAnimationActive(ref.getAnimationActive());
+        setDebug(ref.isDebug());
+        if (CoreEngine.isPhaseAnimsOn())
+            setAnimationActive(ref.getAnimationActive());
 
         target = getTargetObj();
         source = getSourceObj();
@@ -42,13 +43,13 @@ public class Context extends Ref {
     public void setSource(Obj source) {
         this.source = source;
         if (source != null)
-        setTarget(source.getId());
+            setTarget(source.getId());
     }
 
     public void setTarget(Obj target) {
         this.target = target;
         if (target != null)
-        setTarget(target.getId());
+            setTarget(target.getId());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class Context extends Ref {
     }
 
 
-    public enum IdKey{
+    public enum IdKey {
 
         TARGET,
         SOURCE,

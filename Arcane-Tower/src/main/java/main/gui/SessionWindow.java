@@ -11,7 +11,7 @@ import main.logic.Direction;
 import main.session.Session;
 import main.session.SessionMaster;
 import main.swing.components.TextComp;
-import main.swing.components.buttons.CustomButton;
+import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.graphics.GuiManager;

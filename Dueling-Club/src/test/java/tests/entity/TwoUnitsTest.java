@@ -3,7 +3,7 @@ package tests.entity;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.unit.Unit;
+import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import org.junit.Before;
 

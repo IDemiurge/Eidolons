@@ -12,9 +12,9 @@ import java.util.Map;
 
 /**
  * @author JustMe
- *
- * State for a MicroGame
- * Initializes speciafically micro OBJ_TYPE's
+ *         <p>
+ *         State for a MicroGame
+ *         Initializes speciafically micro OBJ_TYPE's
  */
 public abstract class MicroGameState extends GameState {
 
@@ -47,8 +47,6 @@ public abstract class MicroGameState extends GameState {
     }
 
 
-
-
     public Map<OBJ_TYPE, List<Obj>> getGraveyard() {
         return graveyard;
     }
@@ -56,8 +54,6 @@ public abstract class MicroGameState extends GameState {
     public void setGraveyard(Map<OBJ_TYPE, List<Obj>> graveyard) {
         this.graveyard = graveyard;
     }
-
-
 
 
     public abstract void gameStarted(boolean host);

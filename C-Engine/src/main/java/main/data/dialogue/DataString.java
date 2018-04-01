@@ -7,29 +7,21 @@ import main.data.ability.OmittedConstructor;
  */
 public class DataString {
 
-    public enum SPEECH_VALUE {
-        SFX,
-        SOUND,
-        MUSIC,
-        ACTOR,
-        ACTORS,
-        BACKGROUND,
-        MESSAGE,
-    }
     SPEECH_VALUE type;
     //idea - use it in generic way, Object type and any n of constructors
     String data;
     String enumName;
-
     public DataString(String enumName, String data) {
         this.enumName = enumName;
         this.data = data;
     }
+
     public DataString(SPEECH_VALUE type, String data) {
         this.type = type;
         this.data = data;
     }
-@OmittedConstructor
+
+    @OmittedConstructor
     public DataString() {
     }
 
@@ -43,5 +35,15 @@ public class DataString {
 
     public String getEnumName() {
         return enumName;
+    }
+
+    public enum SPEECH_VALUE {
+        SFX,
+        SOUND,
+        MUSIC,
+        ACTOR,
+        ACTORS,
+        BACKGROUND,
+        MESSAGE,
     }
 }

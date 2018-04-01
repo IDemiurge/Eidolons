@@ -1,10 +1,10 @@
 package tests.logic.combat;
 
 import TestUtils.printingAsserts;
-import main.entity.active.DC_ActiveObj;
-import main.game.battlecraft.rules.combat.attack.Attack;
-import main.game.battlecraft.rules.combat.attack.DC_AttackMaster;
-import main.game.battlecraft.rules.combat.damage.DamageCalculator;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
+import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
+import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import org.junit.Test;
 import tests.entity.TwoUnitsTest;
 

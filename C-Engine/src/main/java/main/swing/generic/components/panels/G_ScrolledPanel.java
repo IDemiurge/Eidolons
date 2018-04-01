@@ -81,7 +81,7 @@ public abstract class G_ScrolledPanel<E> extends G_Panel implements MouseWheelLi
         });
         add(arrow, pos);
         spaceTaken += (vertical ? getArrowImage(true).getHeight(null) : getArrowImage(true)
-                .getWidth(null));
+         .getWidth(null));
     }
 
     private Image getArrowImage(final boolean forward) {

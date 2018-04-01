@@ -1,7 +1,7 @@
 package tests.entity;
 
-import main.content.PARAMS;
-import main.entity.obj.unit.Unit;
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
 import tests.FastDcTest;
@@ -32,7 +32,7 @@ public class CreateUnitTest extends FastDcTest {
     public void testUnitCreatedWithRightName() {
 
         assertTrue(!game.getUnits().isEmpty());
-        assertTrue (entity!=null );
+        assertTrue(entity != null);
 
     }
 
@@ -43,9 +43,9 @@ public class CreateUnitTest extends FastDcTest {
     @Test
     public void testToBase() {
 
-        entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR)+5);
+        entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR) + 5);
         entity.toBase();
-        assertTrue (entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
+        assertTrue(entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
 
     }
 

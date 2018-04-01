@@ -7,7 +7,7 @@ import main.swing.generic.components.Builder;
 import main.system.launch.CoreEngine;
 
 import javax.swing.*;
-import java.lang.reflect.InvocationTargetException;
+
 //for Level Editor and other legacy....
 public abstract class SwingBattleField implements BattleField {
     protected BattleFieldGrid grid;
@@ -19,13 +19,11 @@ public abstract class SwingBattleField implements BattleField {
     private Obj activeSelectedObj;
     private Obj infoSelectedObj;
 
-    public SwingBattleField(  MicroGameState state) {
+    public SwingBattleField(MicroGameState state) {
         this.state = state;
         this.game = state.getGame();
 
     }
-
-
 
 
     public Builder getBuilder() {

@@ -17,7 +17,7 @@ public class TimerTaskMaster {
             final Method method = object.getClass().getMethod(methodName, params);
             if (method == null) {
                 LogMaster.log(1, "*** Timer cannot find method: "
-                        + methodName);
+                 + methodName);
                 return null;
             }
             LogMaster.log(1, "Timer started for " + methodName);
@@ -35,7 +35,7 @@ public class TimerTaskMaster {
                         }
 
                     } catch (IllegalAccessException | IllegalArgumentException
-                            | InvocationTargetException e) {
+                     | InvocationTargetException e) {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
 

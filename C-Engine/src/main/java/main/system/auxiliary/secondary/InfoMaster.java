@@ -41,7 +41,7 @@ public class InfoMaster {
     public static final String MULTICLASS = "Hero does not have the right class combination for this multiclass!";
 
     public static final String MAX_CLASS_NUMBER = "Hero has maximum number of base classes. "
-            + "Two base classes can be merged into a Multiclass.";
+     + "Two base classes can be merged into a Multiclass.";
     public static final String NOT_ENOUGH_MASTERY_SLOTS = "Mastery needs more points invested: ";
     // public static final String NOT_ENOUGH_MASTERY_SLOTS =
     // "Additional skill points required: ";
@@ -50,8 +50,8 @@ public class InfoMaster {
     public static final String SILENCE = "Cannot cast while Silenced!";
     public static final String CHOOSE_SOUNDSET = "Choose your personality";
     public static final String MIDDLE_HERO =
-            // "Select the hero to be in the middle of party formation";
-            "Select the middle hero of party formation";
+     // "Select the hero to be in the middle of party formation";
+     "Select the middle hero of party formation";
     public static final String CHOOSE_ARCADE = "Select arcade to continue";
     public static final String CHOOSE_HERO = "Select a leader";
     public static final String CHOOSE_SCENARIO = "Select a Scenario";
@@ -66,9 +66,9 @@ public class InfoMaster {
 
     public static String getPropReasonString(Entity type, PROPERTY p) {
         return p.getName()
-                + PROP_REASON_STRING
-                + StringMaster.cropLast(type.getProperty(p).replace(
-                StringMaster.CONTAINER_SEPARATOR, StringMaster.VAR_SEPARATOR + " "), 2);
+         + PROP_REASON_STRING
+         + StringMaster.cropLast(type.getProperty(p).replace(
+         StringMaster.CONTAINER_SEPARATOR, StringMaster.VAR_SEPARATOR + " "), 2);
     }
 
     public static String getParamReasonString(Entity type, PARAMETER p, PARAMETER p_cost) {
@@ -115,7 +115,7 @@ public class InfoMaster {
         }
         string = string.substring(0, string.length() - OR.length());
         return p.getName().replace("Or ", "").replace("Requirements ", "") + PARAM_REASON_STRING
-                + string;
+         + string;
     }
 
     public static String getModifiedParamReasonString(String comparedValue, String value) {
@@ -136,7 +136,7 @@ public class InfoMaster {
 
     public static String getSkillRankReqString(String mastery, Entity type, MASTERY_RANK rank) {
         return mastery + SKILL_RANK_REQUIRED + rank.getName() + " "
-                + StringMaster.wrapInParenthesis("" + rank.getMasteryReq());
+         + StringMaster.wrapInParenthesis("" + rank.getMasteryReq());
     }
 
     public static String getTotalReasonString(String amount, PARAMETER... parameters) {
@@ -151,7 +151,7 @@ public class InfoMaster {
 
     public static String getWorkspaceTip(DataModel entity) {
         WORKSPACE_GROUP ws = new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(
-                WORKSPACE_GROUP.class, entity.getProperty(G_PROPS.WORKSPACE_GROUP));
+         WORKSPACE_GROUP.class, entity.getProperty(G_PROPS.WORKSPACE_GROUP));
         return getWorkspaceTip(ws);
     }
 

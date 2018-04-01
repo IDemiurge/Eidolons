@@ -3,14 +3,14 @@ package tests.gdx;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.obj.BattleFieldObject;
-import main.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.game.DC_Game;
+import eidolons.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import main.libgdx.bf.BaseView;
-import main.libgdx.bf.GridCellContainer;
-import main.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.bf.BaseView;
+import eidolons.libgdx.bf.GridCellContainer;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -65,28 +65,28 @@ public class GdxUnitPosSizeTest extends GdxJUnit {
         int offset = container.getUnitViewOffset();
         int size = (int) container.getUnitViewSize();
 //        container.getUnitViewsVisible()
-        String expected=StringMaster.getOrdinal(i) + " view of " + n
+        String expected = StringMaster.getOrdinal(i) + " view of " + n
          + " must have "
-         + container.getViewX(offset, i ) + " x; "
+         + container.getViewX(offset, i) + " x; "
          + container.getViewY(offset, i, n) + " y; "
          + size + " width; "
          + size + " height; ";
-        String actual=  component
+        String actual = component
          + " has "
          + component.getX() + " x; "
          + component.getY() + " y; "
-         + component.getWidth()*component.getScaledHeight() + " width; "
-         + component.getHeight()*component.getScaledHeight() + " height; ";
+         + component.getWidth() * component.getScaledHeight() + " width; "
+         + component.getHeight() * component.getScaledHeight() + " height; ";
 
         main.system.auxiliary.log.LogMaster.log(1, expected
         );
-        main.system.auxiliary.log.LogMaster.log(1,actual
+        main.system.auxiliary.log.LogMaster.log(1, actual
         );
 
-        assertTrue(expected+ "\n"+ actual, component.getHeight()*component.getScaledHeight() == size);
-        assertTrue(expected+ "\n"+ actual,component.getWidth()*component.getScaledWidth() == size);
-        assertTrue(expected+ "\n"+ actual,component.getX() == container.getViewX(offset, i));
-        assertTrue(expected+ "\n"+ actual,component.getY() == container.getViewY(offset, i, n));
+        assertTrue(expected + "\n" + actual, component.getHeight() * component.getScaledHeight() == size);
+        assertTrue(expected + "\n" + actual, component.getWidth() * component.getScaledWidth() == size);
+        assertTrue(expected + "\n" + actual, component.getX() == container.getViewX(offset, i));
+        assertTrue(expected + "\n" + actual, component.getY() == container.getViewY(offset, i, n));
     }
 
     private BattleFieldObject getUnit() {

@@ -13,14 +13,14 @@ public class DistanceCondition extends NumericCondition {
     @AE_ConstrArgs(argNames = {"distance", "objRef", "objRef2"})
     public DistanceCondition(String distance, String objRef, String objRef2) {
         super(new Formula(distance), new Formula("[DISTANCE(" + objRef + "," + objRef2 + ")]-1"),
-                false);
+         false);
         this.setDistance(greater);
     }
 
-    public DistanceCondition(String distance, Boolean equal_less ) {
+    public DistanceCondition(String distance, Boolean equal_less) {
         this(distance, KEYS.SOURCE.toString(), KEYS.MATCH.toString());
         if (equal_less)
-        setEqual(equal);
+            setEqual(equal);
         else {
             Formula buffer = getComparedValue();
             setComparedValue(getComparingValue());

@@ -42,15 +42,15 @@ public class ListRenderer implements ListCellRenderer<String> {
             img = ImageManager.getEmptyUnitIcon().getImage();
         }
         if (img.getWidth(null) > ImageManager.getMaxTypeIconSize()
-                || img.getHeight(null) > ImageManager.getMaxTypeIconSize()) {
+         || img.getHeight(null) > ImageManager.getMaxTypeIconSize()) {
             img = ImageManager.getSizedVersion(img, new Dimension(ImageManager
-                    .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
+             .getMaxTypeIconSize(), ImageManager.getMaxTypeIconSize()));
         }
 
         ImageIcon icon = new ImageIcon(img);
         if (isSelected) {
             icon = new ImageIcon(
-                    ImageManager.applyBorder(icon.getImage(), BORDER.HIGHLIGHTED));
+             ImageManager.applyBorder(icon.getImage(), BORDER.HIGHLIGHTED));
         }
         return icon;
     }

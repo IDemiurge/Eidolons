@@ -32,9 +32,9 @@ public class G_Panel extends G_Component implements VisualComponent {
     public G_Panel(String constraints) {
         setMigLayout("insets 0 0 0 0," +
 
-                (GuiManager.isGuiDebug() ? "debug," : "")
+         (GuiManager.isGuiDebug() ? "debug," : "")
 
-                + constraints);// "debug,"
+         + constraints);// "debug,"
         // +
         setBorder(null);
         setOpaque(false);
@@ -108,8 +108,8 @@ public class G_Panel extends G_Component implements VisualComponent {
         super.add(comp, constraints);
         if (SwingMaster.DEBUG_ON) {
             LogMaster.log(isSizeLogged() ? 1 : 0, comp.getWidth()
-                    + " width, " + comp.getHeight() + " height comp at " + comp.getX() + "-"
-                    + comp.getY());
+             + " width, " + comp.getHeight() + " height comp at " + comp.getX() + "-"
+             + comp.getY());
         }
         if (isAutoZOrder()) {
             setComponentZOrder(comp, getComponentCount() - 1);
@@ -123,9 +123,9 @@ public class G_Panel extends G_Component implements VisualComponent {
             return panelSize;
         }
         LogMaster.log(isSizeLogged() ? 1 : 0, "getMaximumSize no panel size!"
-                + toString());
+         + toString());
         if (!isAutoSizingOn() || !isValid() || super.getMaximumSize().width <= 0
-                || super.getMaximumSize().height <= 0) {
+         || super.getMaximumSize().height <= 0) {
             return super.getMaximumSize();
         }
         panelSize = super.getMaximumSize();
@@ -148,9 +148,9 @@ public class G_Panel extends G_Component implements VisualComponent {
             return panelSize;
         }
         LogMaster.log(isSizeLogged() ? 1 : 0, "getMinimumSize no panel size!"
-                + toString());
+         + toString());
         if (!isAutoSizingOn() || !isValid() || super.getMinimumSize().width <= 0
-                || super.getMinimumSize().height <= 0) {
+         || super.getMinimumSize().height <= 0) {
             try {
                 return super.getMinimumSize();
             } catch (Exception e) {
@@ -168,9 +168,9 @@ public class G_Panel extends G_Component implements VisualComponent {
             return panelSize;
         }
         LogMaster.log(isSizeLogged() ? 1 : 0,
-                "getPreferredSize no panel size!" + toString());
+         "getPreferredSize no panel size!" + toString());
         if (!isAutoSizingOn() || !isValid() || super.getPreferredSize().width <= 0
-                || super.getPreferredSize().height <= 0) {
+         || super.getPreferredSize().height <= 0) {
             try {
                 return super.getPreferredSize();
             } catch (Exception e) {
@@ -194,9 +194,9 @@ public class G_Panel extends G_Component implements VisualComponent {
             return panelSize;
         }
         LogMaster.log(isSizeLogged() ? 1 : 0, "getSize no panel size!"
-                + toString());
+         + toString());
         if (!isAutoSizingOn() || !isValid() || super.getSize().width <= 0
-                || super.getSize().height <= 0) {
+         || super.getSize().height <= 0) {
             return super.getSize();
         }
         panelSize = super.getSize();
@@ -282,16 +282,16 @@ public class G_Panel extends G_Component implements VisualComponent {
             // if (visualsImage == null) {
             if (getGenericVisuals().getImage() != null) {
                 visualsImage = ImageManager.getSizedVersion(getGenericVisuals().getImage(),
-                        panelSize);
+                 panelSize);
             } else {
                 visualsImage = ImageManager.getSizedIcon(getGenericVisuals().getImgPath(),
-                        panelSize).getImage();
+                 panelSize).getImage();
             }
 
             // }
             if (visualsImage.getWidth(null) < 1) {
                 g.drawImage(getGenericVisuals().getImage(), 0, 0, panelSize.width,
-                        panelSize.height, null);
+                 panelSize.height, null);
             } else {
                 g.drawImage(visualsImage, 0, 0, null);
             }
@@ -447,6 +447,7 @@ public class G_Panel extends G_Component implements VisualComponent {
 
         FRAME("UI\\components\\Frame.png"),
         FRAME_BIG_FILLED("UI\\components\\Frame big filled.png"),
+        FRAME_FILLED("UI\\components\\Frame filled.png"),
         FRAME_MENU("UI\\components\\main\\Frame Menu.png"),
         TAB("UI\\components\\small\\tab.png"),
         TAB_SELECTED("UI\\components\\small\\tab_blocked.png"),

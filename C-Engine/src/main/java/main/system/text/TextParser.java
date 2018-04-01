@@ -113,7 +113,7 @@ public class TextParser {
                 String ref_substring = null;
                 String result = null;
                 if (ch == StringMaster.VARIABLES_OPEN_CHAR.charAt(0) && !xmlParsing
-                        && variableParsing) {
+                 && variableParsing) {
                     ref_substring = StringMaster.openNextParenthesis(text);
                     // StringMaster.getSubString(true, text,
                     // StringMaster.VARIABLES_OPEN_CHAR,
@@ -124,14 +124,14 @@ public class TextParser {
                     result = parseVariables(ref_substring);
                 }
                 if (ch == StringMaster.FORMULA_REF_OPEN_CHAR.charAt(0) && !xmlParsing || xmlParsing
-                        && ch == StringMaster.VAR_REF_OPEN_CHAR.charAt(0)) {
+                 && ch == StringMaster.VAR_REF_OPEN_CHAR.charAt(0)) {
                     if (xmlParsing) {
                         ref_substring = StringMaster.getSubString(text,
-                                StringMaster.VAR_REF_OPEN_CHAR, StringMaster.VAR_REF_CLOSE_CHAR);
+                         StringMaster.VAR_REF_OPEN_CHAR, StringMaster.VAR_REF_CLOSE_CHAR);
                     } else {
                         ref_substring = StringMaster.getSubString(text,
-                                StringMaster.FORMULA_REF_OPEN_CHAR,
-                                StringMaster.FORMULA_REF_CLOSE_CHAR);
+                         StringMaster.FORMULA_REF_OPEN_CHAR,
+                         StringMaster.FORMULA_REF_CLOSE_CHAR);
                     }
 
                     if (ref_substring != null) {
@@ -141,7 +141,7 @@ public class TextParser {
                         } catch (Exception e) {
                             main.system.ExceptionMaster.printStackTrace(e);
                             LogMaster.log(LogMaster.MATH_DEBUG, ref_substring
-                                    + " failed to parse ref for text: " + text);
+                             + " failed to parse ref for text: " + text);
                             return buffer;
                         }
                     }
@@ -201,7 +201,7 @@ public class TextParser {
 
     private static String parseVarRef(String ref_substring) {
         String value = (xmlParsing) ? StringMaster.cropVarRef(ref_substring) : StringMaster
-                .cropRef(ref_substring);
+         .cropRef(ref_substring);
         if (!StringMaster.isInteger(value)) {
             return ref_substring;
         }
@@ -285,26 +285,26 @@ public class TextParser {
                     }
                     try {
                         if (isAbilityParsing())
-                            // if (replacement.contains(",")) {
-                            // // TODO all function names!
-                            // if (replacement.toLowerCase().contains("min")
-                            // || replacement.toLowerCase().contains(
-                            // "max")) {
-                            // // get the insides of the formula?
-                            // // parts = replacement.split(regex);
-                            // // parts[1] = parts[1].
-                            // //
-                            // // replacement = parts[0] + parts[1];
-                            // return replacement.replace(",",
-                            // StringMaster.COMMA_CODE);
-                            // }
-                            // } else
+                        // if (replacement.contains(",")) {
+                        // // TODO all function names!
+                        // if (replacement.toLowerCase().contains("min")
+                        // || replacement.toLowerCase().contains(
+                        // "max")) {
+                        // // get the insides of the formula?
+                        // // parts = replacement.split(regex);
+                        // // parts[1] = parts[1].
+                        // //
+                        // // replacement = parts[0] + parts[1];
+                        // return replacement.replace(",",
+                        // StringMaster.COMMA_CODE);
+                        // }
+                        // } else
                         {
                             return replacement.replace(",", StringMaster.COMMA_CODE);
                         }
                         if (game.isSimulation()) {
                             replacement = new Formula(replacement).getInt(ref) + " ("
-                                    + formatFormula(replacement) + ")";
+                             + formatFormula(replacement) + ")";
                         } else {
                             replacement = new Formula(replacement).getInt(ref) + "";
                         }
@@ -350,13 +350,13 @@ public class TextParser {
         //
         // replacement = parts[0] + parts[1];
         return replaceVarBraces(varString.replace(StringMaster.VAR_SEPARATOR,
-                StringMaster.COMMA_CODE));
+         StringMaster.COMMA_CODE));
 
     }
 
     private static String replaceCommaCodes(String varString) {
         return replaceVarBraces(varString.replace(StringMaster.COMMA_CODE,
-                StringMaster.VAR_SEPARATOR));
+         StringMaster.VAR_SEPARATOR));
     }
 
     public static String replaceCodes(String varString) {
@@ -365,26 +365,26 @@ public class TextParser {
 
     private static String replaceRefBraceCodes(String string) {
         return string.replace(StringMaster.FORMULA_REF_CLOSE_CHAR_CODE,
-                StringMaster.FORMULA_REF_CLOSE_CHAR).replace(
-                StringMaster.FORMULA_REF_OPEN_CHAR_CODE, StringMaster.FORMULA_REF_OPEN_CHAR);
+         StringMaster.FORMULA_REF_CLOSE_CHAR).replace(
+         StringMaster.FORMULA_REF_OPEN_CHAR_CODE, StringMaster.FORMULA_REF_OPEN_CHAR);
     }
 
     private static String replaceRefBraces(String string) {
         return string.replace(StringMaster.FORMULA_REF_CLOSE_CHAR,
-                StringMaster.FORMULA_REF_CLOSE_CHAR_CODE).replace(
-                StringMaster.FORMULA_REF_OPEN_CHAR, StringMaster.FORMULA_REF_OPEN_CHAR_CODE);
+         StringMaster.FORMULA_REF_CLOSE_CHAR_CODE).replace(
+         StringMaster.FORMULA_REF_OPEN_CHAR, StringMaster.FORMULA_REF_OPEN_CHAR_CODE);
     }
 
     private static String replaceVarBraceCodes(String string) {
         return string.replace(StringMaster.VARIABLES_CLOSE_CHAR_CODE,
-                StringMaster.VARIABLES_CLOSE_CHAR).replace(StringMaster.VARIABLES_OPEN_CHAR_CODE,
-                StringMaster.VARIABLES_OPEN_CHAR);
+         StringMaster.VARIABLES_CLOSE_CHAR).replace(StringMaster.VARIABLES_OPEN_CHAR_CODE,
+         StringMaster.VARIABLES_OPEN_CHAR);
     }
 
     private static String replaceVarBraces(String string) {
         return string.replace(StringMaster.VARIABLES_CLOSE_CHAR,
-                StringMaster.VARIABLES_CLOSE_CHAR_CODE).replace(StringMaster.VARIABLES_OPEN_CHAR,
-                StringMaster.VARIABLES_OPEN_CHAR_CODE);
+         StringMaster.VARIABLES_CLOSE_CHAR_CODE).replace(StringMaster.VARIABLES_OPEN_CHAR,
+         StringMaster.VARIABLES_OPEN_CHAR_CODE);
     }
 
     private static String formatString(String replacement) {
@@ -393,8 +393,8 @@ public class TextParser {
 
     public static String formatRequirements(String requirements) {
         return "Requirements: "
-                + StringMaster.getWellFormattedString(requirements.replace("=", " ")).replace("Or",
-                "or").replace("Principles", "Principle -");
+         + StringMaster.getWellFormattedString(requirements.replace("=", " ")).replace("Or",
+         "or").replace("Principles", "Principle -");
 
     }
 
@@ -402,10 +402,10 @@ public class TextParser {
         // TODO {} -> (); CAPS -> Caps; + -> " " + " "
         return StringMaster.getWellFormattedString(formula)
 
-                .replace("Source ", "").replace("source ", "").replace("av", "").replace("(mastery)",
-                        "mastery").replace("Min(", "(Max ").replace("min(", "(Max ").replace(",", ") ")
+         .replace("Source ", "").replace("source ", "").replace("av", "").replace("(mastery)",
+          "mastery").replace("Min(", "(Max ").replace("min(", "(Max ").replace(",", ") ")
 
-                .replace("+", " + ").replace("{", "[").replace("}", "]");
+         .replace("+", " + ").replace("{", "[").replace("}", "]");
     }
 
     public static boolean checkHasRefs(String baseValue) {
@@ -415,7 +415,7 @@ public class TextParser {
     public static boolean checkHasVarRefs(String baseValue) {
         for (int i = 1; i < 10; i++) {
             if (baseValue.contains(StringMaster.VAR_REF_OPEN_CHAR + i
-                    + StringMaster.VAR_REF_CLOSE_CHAR)) {
+             + StringMaster.VAR_REF_CLOSE_CHAR)) {
                 return true;
             }
         }
@@ -425,7 +425,7 @@ public class TextParser {
     public static boolean checkHasValueRefs(String baseValue) {
         for (int i = 1; i < 10; i++) {
             if (baseValue.contains(StringMaster.FORMULA_REF_OPEN_CHAR + i
-                    + StringMaster.FORMULA_REF_CLOSE_CHAR)) {
+             + StringMaster.FORMULA_REF_CLOSE_CHAR)) {
                 return true;
             }
         }
@@ -434,7 +434,7 @@ public class TextParser {
 
     public static boolean isRef(String baseValue) {
         return baseValue.startsWith(StringMaster.FORMULA_REF_OPEN_CHAR)
-                && baseValue.endsWith(StringMaster.FORMULA_REF_CLOSE_CHAR);
+         && baseValue.endsWith(StringMaster.FORMULA_REF_CLOSE_CHAR);
 
     }
 

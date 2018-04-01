@@ -18,7 +18,7 @@ public class ListSizeCondition extends MicroCondition {
     private Filter<Entity> filter;
 
     @AE_ConstrArgs(argNames = {"bf obj?", "filter conditions",
-            "required list size"})
+     "required list size"})
     public ListSizeCondition(Boolean bfObj, Condition c, String filterFormula) {
         this.c = c;
         this.sizeFormula = filterFormula;

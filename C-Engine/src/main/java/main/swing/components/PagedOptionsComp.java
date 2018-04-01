@@ -6,8 +6,8 @@ import main.swing.listeners.OptionListener;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PagedOptionsComp<E> extends G_PagePanel<E> {
@@ -37,8 +37,8 @@ public class PagedOptionsComp<E> extends G_PagePanel<E> {
     protected G_Component createPageComponent(List<E> list) {
         return
 
-                new TextComp(VISUALS.OPTION_COMP, getTooltip()
-                        + StringMaster.getWellFormattedString(list.get(0).toString()));
+         new TextComp(VISUALS.OPTION_COMP, getTooltip()
+          + StringMaster.getWellFormattedString(list.get(0).toString()));
     }
 
     private String getTooltip() {

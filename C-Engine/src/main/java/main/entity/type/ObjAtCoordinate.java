@@ -22,12 +22,12 @@ public class ObjAtCoordinate {
         if (obj instanceof ObjAtCoordinate) {
             ObjAtCoordinate obj2 = (ObjAtCoordinate) obj;
             return getCoordinates().equals(obj2.getCoordinates())
-                    && getType().equals(obj2.getType());
+             && getType().equals(obj2.getType());
         }
         if (obj instanceof Obj) {
             Obj obj2 = (Obj) obj;
             return getCoordinates().equals(obj2.getCoordinates())
-                    && getType().equals(obj2.getType());
+             && getType().equals(obj2.getType());
         }
         return super.equals(obj);
     }

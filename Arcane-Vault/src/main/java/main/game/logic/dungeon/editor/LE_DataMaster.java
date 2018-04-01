@@ -1,7 +1,7 @@
 package main.game.logic.dungeon.editor;
 
 import main.content.DC_TYPE;
-import main.content.PROPS;
+import eidolons.content.PROPS;
 import main.content.enums.DungeonEnums.DUNGEON_SUBFOLDER;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.enums.system.MetaEnums;
@@ -13,17 +13,17 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
-import main.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import main.game.battlecraft.logic.dungeon.location.Location;
-import main.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.text.NameMaster;
+import eidolons.system.text.NameMaster;
 import main.utilities.workspace.Workspace;
 import main.utilities.workspace.WorkspaceManager;
 

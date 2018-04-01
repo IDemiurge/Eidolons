@@ -21,8 +21,8 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Err;
 
 import javax.swing.*;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ListEditor implements EDITOR {
@@ -143,7 +143,7 @@ public class ListEditor implements EDITOR {
                 if (getConditions() != null) {
                     Ref ref = new Ref(Game.game, getEntity().getId());
                     listData = DataManager.toStringList(new Filter<ObjType>(ref,
-                            getConditions()).filter(DataManager.toTypeList(listData, TYPE)));
+                     getConditions()).filter(DataManager.toTypeList(listData, TYPE)));
                 }
             }
         }

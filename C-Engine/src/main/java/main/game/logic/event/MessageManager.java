@@ -10,7 +10,7 @@ public class MessageManager extends Manager {
 
     public static boolean confirm(String message) {
         int result = JOptionPane
-                .showConfirmDialog(null, message, "Confirm", JOptionPane.YES_NO_OPTION);
+         .showConfirmDialog(null, message, "Confirm", JOptionPane.YES_NO_OPTION);
         return (result == JOptionPane.YES_OPTION);
     }
 
@@ -24,14 +24,14 @@ public class MessageManager extends Manager {
         }
 
         String message = "Do you want to swap " + itemName + " for "
-                + type.getNameOrId() + "?";
+         + type.getNameOrId() + "?";
 
         return confirm(message);
     }
 
     public static boolean promptSpellReplace(Obj hero, Entity newType, Entity type) {
         String message = "Do you want to replace " + type.getName() + " with "
-                + newType.getName() + " upgrade?";
+         + newType.getName() + " upgrade?";
         return confirm(message);
     }
 }

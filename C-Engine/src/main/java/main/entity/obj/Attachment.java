@@ -5,7 +5,7 @@ import main.ability.effects.Effects;
 public interface Attachment {
     int getDuration();
 
-    int tick();
+    Double tick();
 
     boolean isRetainAfterDeath();
 

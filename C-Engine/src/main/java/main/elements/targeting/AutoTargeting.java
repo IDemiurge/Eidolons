@@ -79,7 +79,7 @@ public class AutoTargeting extends TargetingImpl {
         if (group != null) {
             if (getConditions() != null) {
                 Set<Obj> filteredGroup = new Filter<Obj>(group.getObjects(),
-                        ref, getConditions()).getObjects();
+                 ref, getConditions()).getObjects();
                 group = new GroupImpl(filteredGroup);
             }
             ref.setGroup(this.group);
@@ -135,7 +135,7 @@ public class AutoTargeting extends TargetingImpl {
     private Obj selectObj(Set<Obj> objects) {
 
         return lastTarget.getGame().getAnalyzer()
-                .getClosestUnit(lastTarget, friendlyFire);
+         .getClosestUnit(lastTarget, friendlyFire);
     }
 
     public Obj getLastTarget() {

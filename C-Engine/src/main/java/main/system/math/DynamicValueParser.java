@@ -18,6 +18,7 @@ public class DynamicValueParser {
 
     /**
      * Replaces all {dynamicValues} with plain integers in a given formula, using @ref to evaluate them
+     *
      * @param formula
      * @param ref
      * @return

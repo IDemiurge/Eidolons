@@ -8,7 +8,7 @@ import main.entity.type.ObjType;
 import main.logic.AT_OBJ_TYPE;
 import main.swing.generic.components.editors.lists.GenericListChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.services.dialog.DialogMaster;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;

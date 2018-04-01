@@ -1,11 +1,11 @@
 package tests.init;
 
-import main.game.core.Eidolons;
-import main.game.core.game.DC_Game;
-import main.game.core.launch.PresetLauncher.LAUNCH;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import main.test.frontend.FAST_DC;
+import eidolons.test.frontend.FAST_DC;
 
 /**
  * Created by JustMe on 3/6/2017.
@@ -15,18 +15,18 @@ public class JUnitDcInitializer {
     public DC_Game game;
 
 
-
-    public void  launchFastDc( ) {
+    public void launchFastDc() {
         FAST_DC.main(new String[]{
          LAUNCH.JUnit.name()
         });
         game = Eidolons.game;
     }
-    public JUnitDcInitializer( ) {
+
+    public JUnitDcInitializer() {
         //        PathFinder.setJUnitMode(true); to find all test/resources
         LogMaster.setOff(true); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(true);
-       launchFastDc();
+        launchFastDc();
 //        DC_Engine.systemInit();
 //        DC_Engine.gameInit(false);
 //        JUnitResources.init();

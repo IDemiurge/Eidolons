@@ -15,8 +15,9 @@ import java.util.*;
 public class RandomWizard<E> {
     public static final long seed = System.nanoTime();
     static Random randomGenerator = new Random(seed);
-    private LinkedHashMap<Integer, E> invertedMap;
     private static boolean averaged;
+    private LinkedHashMap<Integer, E> invertedMap;
+
     public static boolean isWeightMap(String property) {
         for (String string : StringMaster.open(property)) {
             try {
@@ -60,7 +61,7 @@ public class RandomWizard<E> {
         if (inclusive) {
             n++;
         }
-        int k =(averaged)? i+MathMaster.round(n/2) : i + randomGenerator.nextInt(n);
+        int k = (averaged) ? i + MathMaster.round(n / 2) : i + randomGenerator.nextInt(n);
         // main.system.auxiliary.LogMaster.log(1, "*** NEW RANDOM: " + k + "[" +
         // i + " - " + j + "], "
         // + randomGenerator);
@@ -105,10 +106,10 @@ public class RandomWizard<E> {
 
     public static int getRandomListIndex(Collection list) {
         boolean bool = averaged;
-        averaged=false;
+        averaged = false;
         int index = getRandomListIndex(list, randomGenerator);
-        averaged=bool;
-        return index ;
+        averaged = bool;
+        return index;
     }
 
     public static int getRandomListIndex(Collection list, Random random) {
@@ -178,7 +179,7 @@ public class RandomWizard<E> {
         int randomInt = getRandomInt(greater);
         int randomInt2 = getRandomInt(than);
         ref.getGame().getLogManager().logStdRoll(ref, greater, randomInt, than, randomInt2,
-                roll_type);
+         roll_type);
         return randomInt > randomInt2;
     }
 
@@ -211,6 +212,19 @@ public class RandomWizard<E> {
 
     public static void setRandomGenerator(Random randomGenerator) {
         RandomWizard.randomGenerator = randomGenerator;
+    }
+
+    public static Object getRandomListObject(List list) {
+        return list.get(getRandomListIndex(list));
+    }
+
+    public static float getRandomFloatBetween() {
+        return getRandomFloatBetween(0, 1f);
+    }
+
+    public static float getRandomFloatBetween(float alphaMin, float alphaMax) {
+        return new Float(getRandomIntBetween((int) (alphaMin * 100),
+         (int) (alphaMax * 100))) / 100;
     }
 
     public E getObjectByWeight(String string, Class<? extends E> CLASS) {
@@ -330,14 +344,5 @@ public class RandomWizard<E> {
 
     public E getRandomEnumConst(Class<E> CLASS) {
         return CLASS.getEnumConstants()[getRandomInt(CLASS.getEnumConstants().length)];
-    }
-
-    public static Object getRandomListObject(List list) {
-        return list.get(getRandomListIndex(list));
-    }
-
-    public static float getRandomFloatBetween(float alphaMin, float alphaMax) {
-        return new Float(getRandomIntBetween((int) (alphaMin * 100),
-         (int) (alphaMax * 100))) / 100 ;
     }
 }

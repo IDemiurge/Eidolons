@@ -77,8 +77,8 @@ public class GuiManager {
         // if (!isWide())
         try {
             UIManager.setLookAndFeel("" + "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
-                    // "main.system.auxiliary.DarkNimbus"
-                    // "com.jtattoo.plaf.noire.NoireLookAndFeel"
+             // "main.system.auxiliary.DarkNimbus"
+             // "com.jtattoo.plaf.noire.NoireLookAndFeel"
             );
 
             FontMaster.setUIFont();
@@ -90,7 +90,7 @@ public class GuiManager {
     private static void initDisplayMode() {
         if (size.getWidth() >= 1920) {
             displayMode = (size.getHeight() > 1080) ? DISPLAY_MODE._1920x1200_
-                    : DISPLAY_MODE._1920x1080_;
+             : DISPLAY_MODE._1920x1080_;
         } else {
             displayMode = DISPLAY_MODE._1680x1050_;
         }
@@ -212,16 +212,17 @@ public class GuiManager {
         return inNewWindow(false, comp, title, SIZE);
     }
 
-    public static JDialog inModalWindow(  JComponent comp, String title,
-                                     Dimension SIZE) {
-        final JDialog frame = new JDialog(   );
+    public static JDialog inModalWindow(JComponent comp, String title,
+                                        Dimension SIZE) {
+        final JDialog frame = new JDialog();
         frame.setTitle(title);
         frame.setSize(SIZE);
-         frame.getContentPane().add(comp);
+        frame.getContentPane().add(comp);
         frame.pack();
         frame.setVisible(true);
         return frame;
     }
+
     public static JFrame inNewWindow(boolean undecorated, JComponent comp, String title,
                                      Dimension SIZE) {
         JFrame window = new JFrame(title);
@@ -290,7 +291,7 @@ public class GuiManager {
 
     public static void setWindowToFullscreen(JFrame frame) {
         GraphicsDevice myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice();
+         .getDefaultScreenDevice();
         try {
             myDevice.setFullScreenWindow(frame);
             setFullscreen(true);
@@ -334,7 +335,7 @@ public class GuiManager {
 
     public static Point getCenterPoint(Dimension size) {
         return new Point(MigMaster.getCenteredPosition(getScreenWidthInt(), size.width), MigMaster
-                .getCenteredPosition(getScreenHeightInt(), size.height));
+         .getCenteredPosition(getScreenHeightInt(), size.height));
     }
 
     public static DISPLAY_MODE getDisplayMode() {

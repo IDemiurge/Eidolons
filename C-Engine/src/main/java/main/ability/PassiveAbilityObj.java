@@ -44,7 +44,7 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
         }
 
         if (!game.fireEvent(new Event(
-                STANDARD_EVENT_TYPE.PASSIVE_BEING_REMOVED, REF))) {
+         STANDARD_EVENT_TYPE.PASSIVE_BEING_REMOVED, REF))) {
             return false;
         }
 
@@ -70,8 +70,8 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
     }
 
     @Override
-    public int tick() {
-        return 0;
+    public Double tick() {
+        return 0.0;
     }
 
     @Override

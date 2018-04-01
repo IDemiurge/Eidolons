@@ -30,7 +30,7 @@ public class NameValidator {
     public static boolean checkChars(String s) {
         for (Character c : s.toCharArray()) {
             if (!((ALLOWED_CHARACTERS.toUpperCase()).contains(c.toString()) || ALLOWED_CHARACTERS
-                    .contains(c.toString()))) {
+             .contains(c.toString()))) {
                 return false;
             }
         }
@@ -40,7 +40,7 @@ public class NameValidator {
     public static boolean checkExtendedChars(String s) {
         for (Character c : s.toCharArray()) {
             if (!((EXTENDED_CHARACTERS.toUpperCase()).contains(c.toString()) || EXTENDED_CHARACTERS
-                    .contains(c.toString()))) {
+             .contains(c.toString()))) {
                 return false;
             }
         }
@@ -50,7 +50,7 @@ public class NameValidator {
     public static boolean checkMailChars(String s) {
         for (Character c : s.toCharArray()) {
             if (!((MAIL_CHARACTERS.toUpperCase()).contains(c.toString()) || MAIL_CHARACTERS
-                    .contains(c.toString()))) {
+             .contains(c.toString()))) {
                 return false;
             }
         }
@@ -64,7 +64,7 @@ public class NameValidator {
     public static boolean checkGameName(String gameName) {
 
         return (checkExtendedChars(gameName) && (ALLOWED_CHARACTERS
-                .contains(gameName.substring(0, 1)) || ALLOWED_CHARACTERS
-                .toUpperCase().contains(gameName.substring(0, 1))));
+         .contains(gameName.substring(0, 1)) || ALLOWED_CHARACTERS
+         .toUpperCase().contains(gameName.substring(0, 1))));
     }
 }

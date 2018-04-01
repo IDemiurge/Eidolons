@@ -4,7 +4,7 @@ package main.content.enums;
  * Created by JustMe on 2/14/2017.
  */
 public class EncounterEnums {
-    public static enum CUSTOM_HERO_GROUP {
+    public enum CUSTOM_HERO_GROUP {
         PLAYTEST, ERSIDRIS, EDALAR, TEST,
 
     }
@@ -25,7 +25,8 @@ public class EncounterEnums {
         DEMONS_OF_ABYSS,
 
     }
-        public enum ENCOUNTER_SUBGROUP {
+
+    public enum ENCOUNTER_SUBGROUP {
         AVIANS,
         NOCTURNAL,
         WULFEN,

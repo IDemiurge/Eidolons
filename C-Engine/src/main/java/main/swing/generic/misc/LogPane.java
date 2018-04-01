@@ -19,9 +19,9 @@ public class LogPane extends G_Panel {
         textArea = new LogComponent();
         scrollPane = new JScrollPane(textArea);
         scrollPane
-                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+         .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane
-                .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+         .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(scrollPane);
 
         // gotta override paintComponent
@@ -31,7 +31,7 @@ public class LogPane extends G_Panel {
         // setComponentZOrder(scrollPane, 0);
         textArea.setForeground(Color.white);
         textArea.setBg(ImageManager.getIcon("UI//custom//GRID_BG_WIDE.png")
-                .getImage());
+         .getImage());
         // scrollPane.setOpaque(false);
         ((JComponent) scrollPane.getParent()).setOpaque(false);
         scrollPane.setBackground(ColorManager.TRANSPARENT);
@@ -61,7 +61,7 @@ public class LogPane extends G_Panel {
 
     private void setBackground() {
         bg = new JLabel(
-                ImageManager.getIcon("UI//custom//GRID_BG_WIDE - Copy.png"));
+         ImageManager.getIcon("UI//custom//GRID_BG_WIDE - Copy.png"));
         textArea.setOpaque(false);
         textArea.setBackground(ColorManager.TRANSPARENT);
     }

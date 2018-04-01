@@ -14,11 +14,11 @@ public class HeroInfoTable extends InfoTable {
     @Override
     protected void initValues() {
         valueTable = new VALUE[][]{
-                {G_PROPS.NAME},
-                // loyalty
-                // ++ health %
-                {MACRO_PARAMS.CONSUMPTION, MACRO_PARAMS.FATIGUE},
-                {MACRO_PARAMS.TRAVEL_SPEED, MACRO_PARAMS.EXPLORE_SPEED},
+         {G_PROPS.NAME},
+         // loyalty
+         // ++ health %
+         {MACRO_PARAMS.CONSUMPTION, MACRO_PARAMS.FATIGUE},
+         {MACRO_PARAMS.TRAVEL_SPEED, MACRO_PARAMS.EXPLORE_SPEED},
 
         };
 

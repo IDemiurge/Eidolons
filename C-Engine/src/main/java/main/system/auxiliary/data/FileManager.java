@@ -184,10 +184,7 @@ public class FileManager {
         if (!file.exists()) {
             return false;
         }
-        if (!file.isFile()) {
-            return false;
-        }
-        return true;
+        return file.isFile();
     }
 
     public static boolean isDirectory(String file) {
@@ -227,18 +224,20 @@ public class FileManager {
     }
 
     public static String getRandomFilePathVariant(String corePath,
-                                                  String format, boolean underslash ) {
+                                                  String format, boolean underslash) {
         return getRandomFilePathVariant(corePath, format, underslash, false);
     }
+
     public static String getRandomFilePathVariant(String corePath,
                                                   String format,
                                                   boolean underslash,
                                                   boolean recursion) {
         return getRandomFilePathVariant("", corePath, format, underslash, recursion);
     }
-        public static String getRandomFilePathVariant(String prefixPath,String corePath,
-         String format, boolean underslash, boolean recursion) {
-            corePath = StringMaster.cropFormat(corePath);
+
+    public static String getRandomFilePathVariant(String prefixPath, String corePath,
+                                                  String format, boolean underslash, boolean recursion) {
+        corePath = StringMaster.cropFormat(corePath);
         File file = new File(prefixPath + corePath + format);
         if (!file.isFile()) {
             LogMaster.log(1, "no  file available for " + corePath + " - " + format);
@@ -247,7 +246,7 @@ public class FileManager {
         int i = 2;
         while (file.isFile()) {
 
-            String newPath = prefixPath +corePath + ((underslash) ? "_" : "") + i + format;
+            String newPath = prefixPath + corePath + ((underslash) ? "_" : "") + i + format;
             file = new File(newPath);
             if (!file.isFile()) {
 
@@ -256,8 +255,8 @@ public class FileManager {
             i++;
         }
         if (i == 2) {
-            if (!recursion){
-                return getRandomFilePathVariant(prefixPath ,corePath, format, underslash, true);
+            if (!recursion) {
+                return getRandomFilePathVariant(prefixPath, corePath, format, underslash, true);
             }
             return corePath + format;
         }
@@ -283,6 +282,7 @@ public class FileManager {
         return list;
 
     }
+
     public static List<String> getFilePaths(List<File> files) {
 
         List<String> list = new ArrayList<>();
@@ -485,17 +485,17 @@ public class FileManager {
         }
         return list;
     }
+
     public static List<File> getFiles(String path, String name, String format) {
         return getFiles(path, name, format, false, false);
     }
-        public static List<File> getFiles(String path, String name, String format, boolean dirs, boolean subdirs) {
+
+    public static List<File> getFiles(String path, String name, String format, boolean dirs, boolean subdirs) {
         List<File> files = getFilesFromDirectory(path, dirs, subdirs);
         files.removeIf(file -> {
             if (!StringMaster.getFormat(file.getName()).equalsIgnoreCase(format))
                 return true;
-            if (!StringMaster.contains(file.getName(), name))
-                return true;
-            return false;
+            return !StringMaster.contains(file.getName(), name);
         });
         return files;
     }
@@ -521,7 +521,10 @@ public class FileManager {
     }
 
     public static String getRandomFileName(String path) {
-        return getRandomFile(path).getName();
+        File file = getRandomFile(path);
+        if (file == null)
+            return null;
+        return file.getName();
     }
 
 }

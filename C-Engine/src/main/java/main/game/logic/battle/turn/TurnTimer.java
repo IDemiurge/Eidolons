@@ -62,7 +62,7 @@ public class TurnTimer implements ActionListener {
 
     public void start() {
         LogMaster.log(0, "TIMER STARTED!!! seconds:"
-                + turnMax / 1000);
+         + turnMax / 1000);
         update();
         handler.timerStarted();
         timer.start();

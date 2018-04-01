@@ -8,16 +8,16 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
 
     public static final C_OBJ_TYPE ALL = new C_OBJ_TYPE(DC_TYPE.values());
     public static final C_OBJ_TYPE ITEMS = new C_OBJ_TYPE(DC_TYPE.WEAPONS, DC_TYPE.ARMOR,
-            DC_TYPE.JEWELRY, DC_TYPE.ITEMS);
+     DC_TYPE.JEWELRY, DC_TYPE.ITEMS);
     public static final C_OBJ_TYPE UNITS_CHARS = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.CHARS);
 
     public static final C_OBJ_TYPE HERO_SKILLS = new C_OBJ_TYPE(DC_TYPE.SKILLS, DC_TYPE.CLASSES);
     public static final C_OBJ_TYPE XP_ITEMS = new C_OBJ_TYPE(DC_TYPE.SKILLS, DC_TYPE.ACTIONS,
-            DC_TYPE.SPELLS);
+     DC_TYPE.SPELLS);
     public static final C_OBJ_TYPE BF = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.BF_OBJ,
-            DC_TYPE.CHARS, DC_TYPE.TERRAIN);
+     DC_TYPE.CHARS, DC_TYPE.TERRAIN);
     public static final C_OBJ_TYPE BF_OBJ = new C_OBJ_TYPE(DC_TYPE.UNITS, DC_TYPE.BF_OBJ,
-            DC_TYPE.CHARS);
+     DC_TYPE.CHARS);
     public static final C_OBJ_TYPE QUICK_ITEMS = new C_OBJ_TYPE(DC_TYPE.ITEMS, DC_TYPE.WEAPONS);
     public static final C_OBJ_TYPE SLOT_ITEMS = new C_OBJ_TYPE(DC_TYPE.ARMOR, DC_TYPE.WEAPONS);
     public static final C_OBJ_TYPE ACTIVE = new C_OBJ_TYPE(DC_TYPE.ACTIONS, DC_TYPE.SPELLS);
@@ -25,12 +25,12 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
     public static final C_OBJ_TYPE FEATS = new C_OBJ_TYPE(DC_TYPE.SKILLS, DC_TYPE.CLASSES);
 
     public static final C_OBJ_TYPE LIGHT_EMITTERS = new C_OBJ_TYPE(DC_TYPE.UNITS,
-            DC_TYPE.BF_OBJ, DC_TYPE.CHARS
+     DC_TYPE.BF_OBJ, DC_TYPE.CHARS
 //    , DC_TYPE.TERRAIN ,DC_TYPE.ARMOR,
 //            DC_TYPE.WEAPONS
     );
 
-    public static final C_OBJ_TYPE XML_TYPES = new C_OBJ_TYPE(DC_TYPE.ABILS,DC_TYPE.DIALOGUE);
+    public static final C_OBJ_TYPE XML_TYPES = new C_OBJ_TYPE(DC_TYPE.ABILS, DC_TYPE.DIALOGUE);
 
     private DC_TYPE[] TYPES;
 
@@ -55,12 +55,12 @@ public class C_OBJ_TYPE implements OBJ_TYPE {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof C_OBJ_TYPE) {
-            for (DC_TYPE sub: getTypes())
+            for (DC_TYPE sub : getTypes())
                 if (obj.equals(sub))
                     return true;
         }
 
-        for (DC_TYPE sub: getTypes())
+        for (DC_TYPE sub : getTypes())
             if (sub.equals(obj))
                 return true;
         return false;
