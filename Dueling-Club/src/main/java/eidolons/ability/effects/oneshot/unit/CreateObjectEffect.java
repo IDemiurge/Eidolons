@@ -1,13 +1,13 @@
 package eidolons.ability.effects.oneshot.unit;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.game.core.master.BuffMaster;
 import main.ability.effects.Effects;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
-import eidolons.game.core.master.BuffMaster;
 import main.system.auxiliary.StringMaster;
 
 public class CreateObjectEffect extends SummonEffect {

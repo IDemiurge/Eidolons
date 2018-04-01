@@ -2,13 +2,13 @@ package eidolons.game.module.adventure.travel;
 
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.entity.MacroObj;
-import main.content.CONTENT_CONSTS2.MACRO_STATUS;
-import main.content.values.parameters.MACRO_PARAMS;
-import main.content.values.properties.MACRO_PROPS;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
 import eidolons.game.module.adventure.map.Route;
+import main.content.CONTENT_CONSTS2.MACRO_STATUS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.content.values.properties.MACRO_PROPS;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
 

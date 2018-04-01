@@ -1,12 +1,6 @@
 package eidolons.game.battlecraft.logic.battle.test;
 
-import eidolons.game.core.game.TestGame;
-import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.entity.Entity;
-import main.entity.Ref;
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.battle.test.TestScriptExecutor.TEST_SCRIPT;
@@ -15,6 +9,12 @@ import eidolons.game.battlecraft.logic.battle.universal.ScriptManager;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
+import eidolons.game.core.game.TestGame;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.Entity;
+import main.entity.Ref;
+import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;

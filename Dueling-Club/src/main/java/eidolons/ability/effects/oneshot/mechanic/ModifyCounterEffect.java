@@ -1,15 +1,15 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
+import eidolons.content.DC_ContentManager;
+import eidolons.entity.item.DC_HeroItemObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
-import eidolons.content.DC_ContentManager;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_HeroItemObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.CounterMaster;

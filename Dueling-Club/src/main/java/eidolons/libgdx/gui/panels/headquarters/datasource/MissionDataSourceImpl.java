@@ -2,9 +2,9 @@ package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.mission.Mission;
-import main.game.bf.Coordinates;
 import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.texture.TextureCache;
+import main.game.bf.Coordinates;
 
 /**
  * Created by JustMe on 6/2/2017.

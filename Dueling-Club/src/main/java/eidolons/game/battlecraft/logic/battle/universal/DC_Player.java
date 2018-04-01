@@ -2,13 +2,13 @@ package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.PlayerAI;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.faction.Faction;
 import main.content.enums.system.AiEnums;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.ai.PlayerAI;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
 import main.system.data.PlayerData.ALLEGIENCE;

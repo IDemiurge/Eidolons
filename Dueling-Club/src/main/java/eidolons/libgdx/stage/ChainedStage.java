@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import eidolons.libgdx.DialogScenario;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.GdxMaster;
 
 import java.util.Iterator;

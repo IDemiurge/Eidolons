@@ -1,13 +1,13 @@
 package eidolons.libgdx.anims.std;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.libgdx.anims.AnimData;
+import eidolons.libgdx.bf.GridConst;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
-import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.bf.GridConst;
 import main.system.Producer;
 
 import java.util.List;

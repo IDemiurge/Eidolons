@@ -1,10 +1,10 @@
 package eidolons.ability;
 
+import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.containers.AbilityEffect;
 import eidolons.entity.obj.DC_Obj;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
-import eidolons.ability.effects.attachment.AddTriggerEffect;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 

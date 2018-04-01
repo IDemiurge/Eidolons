@@ -1,13 +1,13 @@
 package eidolons.game.module.dungeoncrawl.dungeon.minimap;
 
-import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.DC_Cell;
-import main.entity.obj.Obj;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.core.game.DC_Game;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import eidolons.game.core.game.DC_Game;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
 import main.system.auxiliary.log.Chronos;

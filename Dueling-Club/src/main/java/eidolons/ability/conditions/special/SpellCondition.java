@@ -1,9 +1,9 @@
 package eidolons.ability.conditions.special;
 
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
-import eidolons.entity.active.DC_SpellObj;
 
 public class SpellCondition extends MicroCondition {
 

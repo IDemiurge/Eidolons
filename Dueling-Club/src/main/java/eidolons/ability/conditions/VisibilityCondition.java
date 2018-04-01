@@ -1,14 +1,14 @@
 package eidolons.ability.conditions;
 
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;
-import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.game.DC_Game;
 
 public class VisibilityCondition extends ConditionImpl {
 

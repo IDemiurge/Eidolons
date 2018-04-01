@@ -1,9 +1,10 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
-import main.ability.effects.Effect.MOD;
-import main.ability.effects.continuous.CustomTargetEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.ability.targeting.TemplateAutoTargeting;
+import eidolons.game.battlecraft.rules.DC_RuleImpl;
+import main.ability.effects.Effect.MOD;
+import main.ability.effects.continuous.CustomTargetEffect;
 import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
@@ -14,7 +15,6 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.PropCondition;
 import main.elements.conditions.standard.ClassificationCondition;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
-import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 

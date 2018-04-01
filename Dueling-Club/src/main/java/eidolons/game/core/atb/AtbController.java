@@ -1,13 +1,13 @@
 package eidolons.game.core.atb;
 
-import main.entity.Ref;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
+import main.entity.Ref;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;

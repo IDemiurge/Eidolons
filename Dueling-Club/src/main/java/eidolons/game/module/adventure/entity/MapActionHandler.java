@@ -3,12 +3,12 @@ package eidolons.game.module.adventure.entity;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.entity.MacroActionManager.MACRO_PARTY_ACTIONS;
 import eidolons.game.module.adventure.map.Place;
+import eidolons.game.module.adventure.map.Route;
 import eidolons.game.module.adventure.travel.RestMaster;
 import eidolons.game.module.adventure.travel.TravelMasterOld;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.values.properties.G_PROPS;
-import eidolons.game.module.adventure.map.Route;
 
 import java.util.Set;
 

@@ -2,8 +2,8 @@ package eidolons.libgdx.bf.overlays;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import main.game.bf.Coordinates.DIRECTION;
 import eidolons.libgdx.bf.SuperActor;
+import main.game.bf.Coordinates.DIRECTION;
 
 import java.util.List;
 import java.util.Map;

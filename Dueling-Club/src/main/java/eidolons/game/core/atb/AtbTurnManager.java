@@ -1,9 +1,9 @@
 package eidolons.game.core.atb;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.atb.AtbController.AtbUnit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.GenericTurnManager;
 
 import java.util.List;
 

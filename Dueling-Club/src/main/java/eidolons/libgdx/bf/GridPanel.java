@@ -12,49 +12,50 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.light.ShadowMap;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
-import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.options.OptionsMaster;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.mode.STD_MODES;
-import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.EVENT_TYPE;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.light.ShadowMap;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
+import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.HelpMaster;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.mode.STD_MODES;
+import main.entity.Ref;
+import main.entity.Ref.KEYS;
+import main.game.bf.Coordinates;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.system.text.HelpMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -281,7 +282,20 @@ public class GridPanel extends Group {
         GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
         });
-        GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
+        GuiEventManager.bind(GuiEventType.UPDATE_LAST_SEEN_VIEWS, p -> {
+            List<BattleFieldObject> list = (List<BattleFieldObject>) p.get();
+
+            for (BattleFieldObject sub : unitMap.keySet()) {
+              GridUnitView  view = (GridUnitView) unitMap.get(sub);
+                if (list.contains(sub)) {
+                    setVisible(view.getLastSeenView(), true);
+                }else {
+                    setVisible(view.getLastSeenView(), false);
+                }
+            }
+
+        });
+            GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
                 return;
@@ -467,7 +481,10 @@ public class GridPanel extends Group {
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
-        BaseView view = unitMap.get(sub);
+        setVisible(unitMap.get(sub), b);
+    }
+        private void setVisible(  BaseView view  , boolean b) {
+
         if (view == null)
             return;
         if (view.getParent() == null)
@@ -698,17 +715,23 @@ public class GridPanel extends Group {
         return battleFieldObjectbj instanceof Entrance;
     }
 
-    private void moveUnitView(BattleFieldObject heroObj) {
+    private void moveUnitView(BattleFieldObject object) {
         int rows1 = rows - 1;
-        BaseView uv = unitMap.get(heroObj);
+        GridUnitView uv = (GridUnitView) unitMap.get(object);
         if (uv == null) {
             return;
         }
-        Coordinates c = heroObj.getCoordinates();
+        Coordinates c = object.getCoordinates();
 
 //        uv.setVisible(true);
+
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
+            if (uv.getLastSeenView()!=null )
+            {
+                if (LastSeenMaster.isUpdateRequired(object))
+                   cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
+            }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

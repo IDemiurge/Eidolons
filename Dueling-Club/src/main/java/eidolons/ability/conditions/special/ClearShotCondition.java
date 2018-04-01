@@ -3,6 +3,7 @@ package eidolons.ability.conditions.special;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.math.DC_PositionMaster;
 import main.content.DC_TYPE;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
@@ -14,7 +15,6 @@ import main.game.bf.DirectionMaster;
 import main.swing.XLine;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
-import eidolons.system.math.DC_PositionMaster;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;

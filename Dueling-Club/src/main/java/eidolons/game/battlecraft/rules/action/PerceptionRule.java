@@ -1,14 +1,14 @@
 package eidolons.game.battlecraft.rules.action;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.adventure.rules.TurnRule;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
-import eidolons.content.PARAMS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.rules.TurnRule;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;

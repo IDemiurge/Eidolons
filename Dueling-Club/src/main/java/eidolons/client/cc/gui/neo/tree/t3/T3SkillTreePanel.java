@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.tree.t3;
 
+import eidolons.client.cc.HC_Master;
 import eidolons.client.cc.gui.neo.tree.HT_Node;
 import eidolons.client.cc.gui.neo.tree.view.SkillTreeView;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.HC_Master;
 import main.entity.type.ObjType;
 import main.system.launch.CoreEngine;
 

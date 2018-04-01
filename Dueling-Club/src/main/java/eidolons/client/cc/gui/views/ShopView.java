@@ -1,11 +1,13 @@
 package eidolons.client.cc.gui.views;
 
+import eidolons.client.cc.gui.lists.ShopListsPanel;
 import eidolons.client.cc.gui.lists.VendorListsPanel;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.gui.lists.ShopListsPanel;
-import main.content.*;
+import main.content.C_OBJ_TYPE;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.values.parameters.PARAMETER;

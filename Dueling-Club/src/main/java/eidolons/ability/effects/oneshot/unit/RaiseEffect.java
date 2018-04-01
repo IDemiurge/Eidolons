@@ -1,11 +1,11 @@
 package eidolons.ability.effects.oneshot.unit;
 
+import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.ability.InventoryTransactionManager;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.common.ModifyValueEffect;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STD_UNDEAD_TYPES;
 import main.content.values.properties.G_PROPS;

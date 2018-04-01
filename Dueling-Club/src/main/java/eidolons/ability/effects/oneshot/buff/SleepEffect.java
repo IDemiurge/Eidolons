@@ -1,12 +1,12 @@
 package eidolons.ability.effects.oneshot.buff;
 
 import eidolons.ability.effects.DC_Effect;
-import main.ability.effects.Effects;
-import main.ability.effects.OneshotEffect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.attachment.AddTriggerEffect;
-import main.ability.effects.common.AddStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
+import main.ability.effects.Effects;
+import main.ability.effects.OneshotEffect;
+import main.ability.effects.common.AddStatusEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.MetaEnums;

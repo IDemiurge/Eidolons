@@ -3,10 +3,10 @@ package eidolons.game.battlecraft.logic.meta.skirmish;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.meta.scenario.Objective;
 import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
+import eidolons.game.battlecraft.logic.meta.skirmish.SkirmishMaster.NEMESIS_GROUP;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.meta.skirmish.SkirmishMaster.NEMESIS_GROUP;
 
 import java.util.List;
 

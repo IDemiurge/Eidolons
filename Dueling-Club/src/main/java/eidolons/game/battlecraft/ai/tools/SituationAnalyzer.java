@@ -3,14 +3,14 @@ package eidolons.game.battlecraft.ai.tools;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import main.content.enums.system.AiEnums;
-import main.entity.Entity;
-import main.entity.obj.ActiveObj;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.priority.ParamPriorityAnalyzer;
+import main.content.enums.system.AiEnums;
+import main.entity.Entity;
+import main.entity.obj.ActiveObj;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 

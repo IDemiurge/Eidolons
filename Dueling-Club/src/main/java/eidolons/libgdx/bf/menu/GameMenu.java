@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.GenericMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
-import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.ArrayList;

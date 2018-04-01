@@ -1,11 +1,11 @@
 package eidolons.entity.handlers.active.spell;
 
-import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
-import main.entity.handlers.EntityMaster;
 import eidolons.entity.handlers.active.ActiveChecker;
+import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PROPERTY;
+import main.entity.handlers.EntityMaster;
 
 /**
  * Created by JustMe on 4/29/2017.

@@ -5,9 +5,9 @@ import eidolons.client.cc.HeroManager;
 import eidolons.client.cc.gui.lists.dc.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

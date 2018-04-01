@@ -1,9 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
 import java.util.List;
 

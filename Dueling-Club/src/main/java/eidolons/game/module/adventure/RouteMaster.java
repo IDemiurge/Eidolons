@@ -1,12 +1,12 @@
 package eidolons.game.module.adventure;
 
+import eidolons.game.module.adventure.map.Place;
+import eidolons.game.module.adventure.map.Route;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import eidolons.game.module.adventure.map.Place;
-import eidolons.game.module.adventure.map.Route;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.StrPathBuilder;

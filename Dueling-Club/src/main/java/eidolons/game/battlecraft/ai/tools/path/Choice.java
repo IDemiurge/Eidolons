@@ -2,9 +2,9 @@ package eidolons.game.battlecraft.ai.tools.path;
 
 import eidolons.ability.effects.oneshot.mechanic.ChangeFacingEffect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.ability.effects.Effect;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 

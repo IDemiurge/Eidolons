@@ -1,10 +1,5 @@
 package eidolons.libgdx.launch;
 
-import main.content.DC_TYPE;
-import main.data.filesys.PathFinder;
-import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
-import main.entity.Ref;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
@@ -15,16 +10,21 @@ import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
+import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.test.frontend.FAST_DC;
+import main.content.DC_TYPE;
+import main.data.filesys.PathFinder;
+import main.elements.conditions.Condition;
+import main.elements.conditions.Conditions;
+import main.entity.Ref;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
-import eidolons.test.frontend.FAST_DC;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,8 +1,8 @@
 package eidolons.ability.effects.containers.customtarget;
 
+import eidolons.ability.targeting.TemplateAutoTargeting;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
-import eidolons.ability.targeting.TemplateAutoTargeting;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 
 public class GlobalEffect extends SpecialTargetingEffect {

@@ -1,16 +1,19 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
+import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator;
 import eidolons.game.battlecraft.rules.combat.attack.SneakRule;
+import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
@@ -18,10 +21,7 @@ import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 

@@ -1,21 +1,20 @@
 package eidolons.game.module.dungeoncrawl.dungeon.minimap;
 
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.PerceptionRule.PERCEPTION_STATUS;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.system.graphics.ImageTransformer;
 import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.Refreshable;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import eidolons.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.HIGHLIGHT;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -99,7 +98,7 @@ public class MiniObjComp implements Refreshable {
         UNIT_TO_PLAYER_VISION detection = obj.getActivePlayerVisionStatus();
         UNIT_TO_UNIT_VISION vision = obj.getUnitVisionStatus();
         VISIBILITY_LEVEL visibility = obj.getVisibilityLevel();
-        PERCEPTION_STATUS perception = obj.getPerceptionStatus();
+//        PERCEPTION_STATUS perception = obj.getPerceptionStatus();
         // ++ TARGETING HL
         boolean hidden = false; // draw image / info icons
         if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {

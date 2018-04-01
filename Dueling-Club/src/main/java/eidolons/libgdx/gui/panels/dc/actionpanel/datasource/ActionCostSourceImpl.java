@@ -2,10 +2,10 @@ package eidolons.libgdx.gui.panels.dc.actionpanel.datasource;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.core.atb.AtbController;
-import main.content.values.parameters.PARAMETER;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.core.atb.AtbController;
 import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import main.content.values.parameters.PARAMETER;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
 import main.system.text.TextWrapper;

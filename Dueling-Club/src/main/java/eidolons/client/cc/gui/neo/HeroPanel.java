@@ -1,17 +1,17 @@
 package eidolons.client.cc.gui.neo;
 
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.gui.neo.bars.SpecialValueBar;
 import eidolons.client.cc.gui.neo.header.HeroHeader;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.swing.components.panels.DC_ItemPanel;
+import eidolons.swing.components.panels.ValueIconPanel;
 import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
-import eidolons.client.cc.gui.neo.bars.SpecialValueBar;
-import main.entity.obj.Obj;
-import eidolons.swing.components.panels.ValueIconPanel;
 import eidolons.swing.components.panels.page.small.DC_PagedBuffPanel;
+import main.entity.obj.Obj;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;

@@ -1,11 +1,11 @@
 package eidolons.game.module.dungeoncrawl.ai;
 
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 
 import java.util.List;

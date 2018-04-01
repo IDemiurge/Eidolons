@@ -1,7 +1,7 @@
 package eidolons.system.options;
 
-import eidolons.test.frontend.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.test.frontend.RESOLUTION;
 
 public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
     static {

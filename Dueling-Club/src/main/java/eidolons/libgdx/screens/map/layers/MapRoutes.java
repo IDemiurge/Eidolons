@@ -1,10 +1,10 @@
 package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import eidolons.libgdx.anims.ActorMaster;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Route;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 

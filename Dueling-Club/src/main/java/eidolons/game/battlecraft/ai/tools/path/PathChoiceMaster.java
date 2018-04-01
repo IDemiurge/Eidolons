@@ -1,23 +1,23 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
 import eidolons.ability.conditions.special.SneakCondition;
+import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.tools.target.ReasonMaster;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.Effect;
-import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;

@@ -1,12 +1,12 @@
 package eidolons.libgdx.gui.menu.old;
 
-import eidolons.libgdx.gui.panels.mainmenu.NewGamePanel;
-import eidolons.libgdx.gui.panels.mainmenu.StartMenuPanel;
-import eidolons.libgdx.stage.DataStage;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
 import eidolons.libgdx.gui.panels.mainmenu.GameLoadingPanel;
+import eidolons.libgdx.gui.panels.mainmenu.NewGamePanel;
 import eidolons.libgdx.gui.panels.mainmenu.OptionsPanel;
+import eidolons.libgdx.gui.panels.mainmenu.StartMenuPanel;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.stage.DataStage;
 
 import java.util.function.Consumer;
 

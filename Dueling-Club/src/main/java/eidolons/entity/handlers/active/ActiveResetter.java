@@ -1,8 +1,12 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.game.battlecraft.rules.mechanics.TerrainRule;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.mechanics.TerrainRule;
+import eidolons.game.battlecraft.rules.perk.FlyingRule;
+import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -12,13 +16,9 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_ActiveObj;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.perk.FlyingRule;
-import eidolons.system.CustomValueManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;

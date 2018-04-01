@@ -1,8 +1,8 @@
 package eidolons.client.cc.gui.lists.dc;
 
+import eidolons.client.cc.gui.lists.HeroListPanel;
 import eidolons.client.cc.gui.lists.dc.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.gui.lists.HeroListPanel;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.entity.type.ObjType;

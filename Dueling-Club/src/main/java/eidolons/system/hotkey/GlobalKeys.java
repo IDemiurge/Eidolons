@@ -2,8 +2,8 @@ package eidolons.system.hotkey;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
-import eidolons.game.core.game.DC_Game;
 import eidolons.client.dc.Launcher;
+import eidolons.game.core.game.DC_Game;
 
 import java.awt.event.KeyEvent;
 

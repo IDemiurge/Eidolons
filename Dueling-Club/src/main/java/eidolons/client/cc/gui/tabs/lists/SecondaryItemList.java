@@ -1,10 +1,10 @@
 package eidolons.client.cc.gui.tabs.lists;
 
+import eidolons.client.cc.gui.lists.ItemListManager;
+import eidolons.client.cc.gui.misc.PoolComp;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.gui.lists.ItemListManager;
-import eidolons.client.cc.gui.misc.PoolComp;
 import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;

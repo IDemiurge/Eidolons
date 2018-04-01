@@ -1,8 +1,8 @@
 package eidolons.game.module.adventure.town;
 
+import eidolons.game.module.adventure.MacroGame;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
 
 public class FactionQuarters extends TownPlace {
 

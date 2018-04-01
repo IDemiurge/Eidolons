@@ -1,7 +1,12 @@
 package eidolons.test.auto;
 
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.test.auto.AutoTest.TEST_ARGS;
+import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -10,18 +15,13 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
-import eidolons.entity.item.DC_WeaponObj;
 import main.entity.obj.MicroObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.launch.TestLauncher.CODE;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import eidolons.test.frontend.FAST_DC;
 
 import java.util.ArrayList;
 import java.util.List;

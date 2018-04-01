@@ -2,14 +2,14 @@ package eidolons.client.cc.gui.tabs.lists;
 
 import eidolons.client.cc.gui.lists.ItemListManager;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
+import eidolons.client.cc.logic.spells.DivinationMaster;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.components.buttons.CustomButton;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.client.cc.logic.spells.DivinationMaster;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.values.properties.PROPERTY;
-import eidolons.swing.components.buttons.CustomButton;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 // display max sd, total sd... 

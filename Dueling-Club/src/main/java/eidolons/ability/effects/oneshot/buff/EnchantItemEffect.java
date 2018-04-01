@@ -1,9 +1,6 @@
 package eidolons.ability.effects.oneshot.buff;
 
 import eidolons.ability.AddSpecialEffects;
-import main.ability.effects.Effects;
-import main.ability.effects.MicroEffect;
-import main.ability.effects.OneshotEffect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.containers.EnergyCostEffect;
@@ -12,14 +9,17 @@ import eidolons.ability.effects.special.media.SoundEffect;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.client.cc.logic.items.Enchanter;
 import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_SpellObj;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import main.ability.effects.Effects;
+import main.ability.effects.MicroEffect;
+import main.ability.effects.OneshotEffect;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_SpellObj;
 import main.entity.type.BuffType;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 

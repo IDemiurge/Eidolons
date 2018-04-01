@@ -1,11 +1,11 @@
 package eidolons.libgdx.screens;
 
 
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
 import main.entity.Entity;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import main.system.EventCallbackParam;
 
 import java.util.List;

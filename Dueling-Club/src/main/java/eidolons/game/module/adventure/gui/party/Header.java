@@ -1,10 +1,10 @@
 package eidolons.game.module.adventure.gui.party;
 
+import eidolons.swing.components.panels.ValueBox;
+import eidolons.swing.components.panels.ValueIconPanel;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import eidolons.swing.components.panels.ValueBox;
-import eidolons.swing.components.panels.ValueIconPanel;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;

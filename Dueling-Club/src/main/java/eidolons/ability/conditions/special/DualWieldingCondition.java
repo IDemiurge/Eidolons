@@ -1,9 +1,9 @@
 package eidolons.ability.conditions.special;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
-import eidolons.game.battlecraft.rules.UnitAnalyzer;
 
 public class DualWieldingCondition extends MicroCondition {
 

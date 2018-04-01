@@ -1461,7 +1461,7 @@ public abstract class DataModel {
 
     public void copyValue(VALUE param, Entity entity) {
         if (param instanceof PARAMETER) {
-            setParamDouble((PARAMETER) param, entity.getParamDouble((PARAMETER) param), false);
+            setParam((PARAMETER) param, entity.getParam((PARAMETER) param), false);
         } else {
             setProperty((PROPERTY) param, entity.getProperty(param.toString()));
         }

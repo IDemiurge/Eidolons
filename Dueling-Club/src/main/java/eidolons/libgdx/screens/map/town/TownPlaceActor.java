@@ -1,7 +1,7 @@
 package eidolons.libgdx.screens.map.town;
 
-import eidolons.libgdx.screens.map.obj.PlaceActor;
 import eidolons.game.module.adventure.town.TownPlace;
+import eidolons.libgdx.screens.map.obj.PlaceActor;
 import eidolons.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;
 
 /**

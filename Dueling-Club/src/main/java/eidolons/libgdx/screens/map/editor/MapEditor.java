@@ -1,11 +1,11 @@
 package eidolons.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.libgdx.launch.GenericLauncher;
-import main.data.xml.XML_Reader;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
+import main.data.xml.XML_Reader;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;

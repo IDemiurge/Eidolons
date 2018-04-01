@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
-import eidolons.game.battlecraft.ai.elements.task.Task;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.task.Task;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 

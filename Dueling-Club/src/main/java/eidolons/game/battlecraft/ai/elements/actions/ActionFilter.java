@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +18,9 @@ public class ActionFilter {
                                                   List<DC_ActiveObj> actionsList) {
         List<DC_ActiveObj> list = new ArrayList<>();
         for (DC_ActiveObj a : actionsList) {
+            if (a==null || unit == null ){
+                continue;
+            }
             if (a.canBeActivated(unit.getRef(), true) || checkException(a)) {
                 list.add(a);
             }

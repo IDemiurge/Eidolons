@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.location.building;
 
 import eidolons.content.PROPS;
-import main.data.xml.XML_Converter;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.data.xml.XML_Converter;
 import main.game.bf.Coordinates;
 
 import java.util.ArrayList;

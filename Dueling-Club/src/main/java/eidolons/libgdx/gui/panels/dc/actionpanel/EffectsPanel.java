@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
 
 public class EffectsPanel extends TablePanel {
     public EffectsPanel() {

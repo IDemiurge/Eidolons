@@ -7,10 +7,10 @@ import eidolons.client.cc.gui.neo.tree.HC_Tree;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
+import eidolons.system.math.DC_MathManager;
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.type.ObjType;
-import eidolons.system.math.DC_MathManager;
 
 import java.awt.event.MouseEvent;
 

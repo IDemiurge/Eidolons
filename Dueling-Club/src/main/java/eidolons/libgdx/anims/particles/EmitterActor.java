@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import eidolons.libgdx.bf.SuperActor;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.game.bf.Coordinates;
-import eidolons.libgdx.bf.SuperActor;
 
 /**
  * Created by JustMe on 1/10/2017.

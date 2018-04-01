@@ -1,19 +1,19 @@
 package eidolons.game.battlecraft.ai.tools.path;
 
-import eidolons.game.battlecraft.ai.tools.Analyzer;
-import main.content.DC_TYPE;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
+import main.content.DC_TYPE;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;

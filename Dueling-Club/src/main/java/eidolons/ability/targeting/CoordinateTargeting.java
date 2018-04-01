@@ -1,12 +1,12 @@
 package eidolons.ability.targeting;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
 import main.elements.targeting.TargetingImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
-import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;

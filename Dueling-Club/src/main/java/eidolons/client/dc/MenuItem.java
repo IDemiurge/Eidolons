@@ -1,8 +1,8 @@
 package eidolons.client.dc;
 
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.client.dc.MainManager.MAIN_MENU_ITEMS;
 import eidolons.swing.components.buttons.CustomButton;
+import eidolons.system.audio.DC_SoundMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.sound.SoundMaster.STD_SOUNDS;

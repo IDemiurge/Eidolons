@@ -1,9 +1,9 @@
 package eidolons.swing.neo;
 
 import eidolons.client.cc.gui.neo.top.HC_ControlButton;
+import eidolons.system.audio.DC_SoundMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.listeners.ButtonHandler;
-import eidolons.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.awt.*;

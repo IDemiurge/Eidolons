@@ -1,10 +1,10 @@
 package eidolons.entity.handlers.active;
 
 import eidolons.ability.ActivesConstructor;
+import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import main.ability.Ability;
-import eidolons.ability.targeting.TemplateSelectiveTargeting;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
 import main.content.values.properties.G_PROPS;

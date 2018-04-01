@@ -1,9 +1,9 @@
 package eidolons.ability.effects.oneshot.spell;
 
+import eidolons.client.cc.logic.spells.DivinationMaster;
 import eidolons.entity.obj.unit.Unit;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
-import eidolons.client.cc.logic.spells.DivinationMaster;
 
 public class DivinationEffect extends MicroEffect implements OneshotEffect {
 

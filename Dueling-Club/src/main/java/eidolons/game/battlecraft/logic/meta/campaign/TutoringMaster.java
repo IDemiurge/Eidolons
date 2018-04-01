@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.campaign;
 
+import eidolons.client.cc.logic.PointMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.logic.PointMaster;
 import main.content.values.parameters.PARAMETER;
 
 import java.util.List;

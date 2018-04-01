@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.task.Task;
@@ -13,7 +14,6 @@ import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 

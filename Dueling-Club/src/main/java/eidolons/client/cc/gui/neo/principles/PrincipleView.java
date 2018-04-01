@@ -1,8 +1,8 @@
 package eidolons.client.cc.gui.neo.principles;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.gui.MainPanel;
 import eidolons.client.cc.gui.neo.HeroPanel;
+import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.FontMaster;

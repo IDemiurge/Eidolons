@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai.advanced.machine.train;
 
-import main.entity.Ref;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
@@ -8,6 +7,7 @@ import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager.
 import eidolons.game.battlecraft.logic.battle.universal.stats.PlayerStats;
 import eidolons.game.battlecraft.logic.battle.universal.stats.UnitStats;
 import eidolons.game.core.game.DC_Game;
+import main.entity.Ref;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Comparator;

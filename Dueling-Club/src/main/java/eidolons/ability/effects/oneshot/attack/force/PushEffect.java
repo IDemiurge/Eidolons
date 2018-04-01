@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot.attack.force;
 
+import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.misc.KnockdownRule;
-import eidolons.ability.effects.DC_Effect;
 import main.system.math.Formula;
 
 /**

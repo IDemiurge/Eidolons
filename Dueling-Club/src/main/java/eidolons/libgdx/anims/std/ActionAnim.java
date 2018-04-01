@@ -3,14 +3,14 @@ package eidolons.libgdx.anims.std;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.anims.Anim;
-import main.ability.Ability;
-import main.entity.Entity;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
+import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
+import main.ability.Ability;
+import main.entity.Entity;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;

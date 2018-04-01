@@ -7,11 +7,11 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
-import main.content.values.properties.G_PROPS;
-import main.data.filesys.PathFinder;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.values.properties.G_PROPS;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 

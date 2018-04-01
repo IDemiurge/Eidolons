@@ -1,18 +1,18 @@
 package eidolons.libgdx.gui.menu.selection.manual;
 
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
-import main.data.filesys.PathFinder;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualArticles.MANUAL_ARTICLE;
+import eidolons.system.text.TextMaster;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import eidolons.system.text.TextMaster;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package eidolons.swing.components.panels;
 
-import main.entity.obj.Obj;
 import eidolons.swing.components.panels.page.log.WrappedTextComp;
+import main.entity.obj.Obj;
 import main.system.graphics.ColorManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;

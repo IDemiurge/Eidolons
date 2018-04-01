@@ -1,9 +1,9 @@
 package eidolons.swing.frames;
 
+import eidolons.ability.InventoryTransactionManager;
 import eidolons.client.cc.gui.tabs.HeroItemTab;
 import eidolons.client.cc.gui.tabs.ItemsTab;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.ability.InventoryTransactionManager;
 import main.swing.generic.components.G_Panel.VISUALS;
 
 public class InventoryWindow extends OperationWindow {

@@ -1,13 +1,13 @@
 package eidolons.ability.conditions.req;
 
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
-import eidolons.content.PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
 
 public class ClassTreeCondition extends MicroCondition {

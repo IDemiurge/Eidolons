@@ -1,7 +1,7 @@
 package eidolons.swing.generic.services.dialog;
 
-import main.entity.Entity;
 import eidolons.swing.components.buttons.CustomButton;
+import main.entity.Entity;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Dialog;
 import main.swing.generic.components.G_Panel;

@@ -2,9 +2,9 @@ package eidolons.libgdx.gui.panels.dc.logpanel.text;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.GroupX;
 import eidolons.libgdx.gui.panels.dc.logpanel.ScrollPanel;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;

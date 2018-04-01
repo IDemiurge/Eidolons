@@ -1,16 +1,16 @@
 package eidolons.entity.obj.attach;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.master.BuffMaster;
 import main.ability.effects.Effect;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
-import eidolons.entity.handlers.DC_ObjMaster;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
-import eidolons.game.core.master.BuffMaster;
 import main.game.logic.battle.player.Player;
 
 public class DC_BuffObj extends BuffObj {

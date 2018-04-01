@@ -1,17 +1,17 @@
 package eidolons.entity.handlers.bf;
 
+import eidolons.content.DC_ContentManager;
+import eidolons.content.PROPS;
+import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.core.game.DC_Game;
-import eidolons.content.DC_ContentManager;
-import eidolons.content.PROPS;
 import main.content.enums.rules.VisionEnums;
 import main.data.DataManager;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.ItemFactory;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

@@ -1,7 +1,7 @@
 package eidolons.client.cc.logic;
 
-import main.ability.AbilityObj;
 import eidolons.client.cc.gui.MainPanel;
+import main.ability.AbilityObj;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;

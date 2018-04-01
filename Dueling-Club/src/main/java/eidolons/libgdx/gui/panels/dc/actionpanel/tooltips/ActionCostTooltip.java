@@ -6,12 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
-import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.CostTableTooltip;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltip;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.CostTableTooltip;
 
 public class ActionCostTooltip extends ActionTooltip {
 

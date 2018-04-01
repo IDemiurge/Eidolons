@@ -1,8 +1,8 @@
 package eidolons.system.content;
 
+import eidolons.content.PROPS;
 import eidolons.game.core.master.ObjCreator;
 import main.content.DC_TYPE;
-import eidolons.content.PROPS;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;

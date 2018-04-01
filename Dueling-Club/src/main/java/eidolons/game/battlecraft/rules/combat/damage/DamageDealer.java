@@ -1,23 +1,23 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.content.PARAMS;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;

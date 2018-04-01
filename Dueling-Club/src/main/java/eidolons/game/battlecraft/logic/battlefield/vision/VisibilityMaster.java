@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.ability.conditions.special.ClearShotCondition;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
@@ -8,7 +9,6 @@ import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.system.images.ImageManager;
 import main.system.math.PositionMaster;

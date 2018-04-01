@@ -2,12 +2,12 @@ package eidolons.client.cc.gui.lists;
 
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel;
+import eidolons.client.cc.gui.views.HeroItemView;
 import eidolons.client.cc.logic.HeroCreator;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.client.cc.gui.views.HeroItemView;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;

@@ -1,14 +1,14 @@
 package eidolons.client.cc.gui.tabs.operation;
 
+import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.gui.lists.dc.DC_InventoryManager;
+import eidolons.content.PROPS;
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.ObjUtilities;
-import eidolons.client.cc.CharacterCreator;
 import main.content.C_OBJ_TYPE;
-import eidolons.content.PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import eidolons.entity.item.DC_HeroItemObj;
 import main.entity.type.ObjType;
 
 //will it support Undo?

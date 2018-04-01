@@ -1,9 +1,9 @@
 package eidolons.game.module.adventure.travel;
 
-import main.game.bf.Coordinates;
 import eidolons.libgdx.screens.map.layers.AlphaMap;
 import eidolons.libgdx.screens.map.layers.AlphaMap.ALPHA_MAP;
 import eidolons.libgdx.screens.map.obj.PartyActor;
+import main.game.bf.Coordinates;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,10 +2,10 @@ package eidolons.swing.components.panels.page.info;
 
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.logic.spells.SpellUpgradeMaster;
+import eidolons.swing.components.panels.page.log.WrappedTextComp;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.SpellEnums.SPELL_UPGRADE;
 import main.entity.Entity;
-import eidolons.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;

@@ -2,6 +2,7 @@ package eidolons.client.cc.logic.spells;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
 import main.content.ContentManager;
@@ -12,7 +13,6 @@ import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NumericCondition;
 import main.entity.Entity;
-import eidolons.entity.active.DC_SpellObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 

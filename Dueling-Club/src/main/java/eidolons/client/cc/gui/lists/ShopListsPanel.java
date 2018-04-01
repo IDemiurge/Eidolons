@@ -1,11 +1,11 @@
 package eidolons.client.cc.gui.lists;
 
 import eidolons.client.cc.gui.pages.HC_PagedListPanel;
+import eidolons.client.dc.Launcher;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.town.Shop;
 import eidolons.game.module.adventure.town.Town;
-import eidolons.client.dc.Launcher;
 import main.content.OBJ_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;

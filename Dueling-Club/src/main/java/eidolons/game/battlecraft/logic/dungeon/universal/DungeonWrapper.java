@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import main.content.CONTENT_CONSTS.COLOR_THEME;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 

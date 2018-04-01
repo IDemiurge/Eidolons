@@ -2,14 +2,14 @@ package eidolons.ability.conditions.special;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 
 public class SneakCondition extends MicroCondition {
 

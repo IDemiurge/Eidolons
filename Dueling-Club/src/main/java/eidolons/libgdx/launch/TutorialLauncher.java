@@ -2,8 +2,8 @@ package eidolons.libgdx.launch;
 
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialMetaMaster;
-import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

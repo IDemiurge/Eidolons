@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.content.PARAMS;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
-import main.elements.costs.Costs;
 import eidolons.game.battlecraft.ai.advanced.machine.AiConst;
 import eidolons.game.battlecraft.ai.elements.actions.ActionManager;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.elements.costs.Costs;
 
 /**
  * Created by JustMe on 8/2/2017.

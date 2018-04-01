@@ -1,9 +1,9 @@
 package eidolons.game.module.adventure.gui.party;
 
 import eidolons.content.PARAMS;
+import eidolons.game.module.adventure.entity.MacroParty;
 import main.content.VALUE;
 import main.content.values.parameters.MACRO_PARAMS;
-import eidolons.game.module.adventure.entity.MacroParty;
 
 import java.util.Arrays;
 

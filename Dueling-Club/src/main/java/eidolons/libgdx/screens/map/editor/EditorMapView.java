@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.module.adventure.MacroManager;
-import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.map.MapGuiStage;
+import eidolons.libgdx.screens.map.MapScreen;
 
 /**
  * Created by JustMe on 2/9/2018.

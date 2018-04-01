@@ -2,13 +2,13 @@ package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.screens.ScreenType;
-import eidolons.system.options.OptionsMaster;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenType;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import eidolons.system.text.HelpMaster;
 
 /**
  * Created by JustMe on 11/24/2017.

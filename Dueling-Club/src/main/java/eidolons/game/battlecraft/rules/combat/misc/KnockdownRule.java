@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.rules.combat.misc;
 
-import main.ability.effects.Effect.MOD;
-import main.ability.effects.Effect.MOD_PROP_TYPE;
-import main.ability.effects.Effects;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import main.ability.effects.Effect.MOD;
+import main.ability.effects.Effect.MOD_PROP_TYPE;
+import main.ability.effects.Effects;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.Unit;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 public class KnockdownRule {

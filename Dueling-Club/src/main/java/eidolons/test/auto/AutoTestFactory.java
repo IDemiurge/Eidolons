@@ -1,10 +1,11 @@
 package eidolons.test.auto;
 
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.test.auto.AutoTest.TEST_ARGS;
 import main.content.CONTENT_CONSTS2.AUTO_TEST_TYPE;
 import main.content.DC_TYPE;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
@@ -14,7 +15,6 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.entity.Entity;
 import main.entity.Ref;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;

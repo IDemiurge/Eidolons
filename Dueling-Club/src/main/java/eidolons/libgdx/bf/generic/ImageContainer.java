@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import main.entity.Entity;
 import eidolons.libgdx.texture.TextureCache;
+import main.entity.Entity;
 import main.system.images.ImageManager;
 
 /**

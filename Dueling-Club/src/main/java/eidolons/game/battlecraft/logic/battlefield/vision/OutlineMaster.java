@@ -6,16 +6,16 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.test.debug.DebugMaster;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.math.PositionMaster;
-import eidolons.test.debug.DebugMaster;
 
 /**
  * Created by JustMe on 2/22/2017.

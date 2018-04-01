@@ -1,7 +1,7 @@
 package eidolons.ability.conditions;
 
-import main.elements.conditions.MicroCondition;
 import eidolons.game.core.game.DC_Game;
+import main.elements.conditions.MicroCondition;
 
 /**
  * Created by JustMe on 11/16/2017.

@@ -7,11 +7,11 @@ import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.QuickSlotDataSource;
 import eidolons.libgdx.gui.panels.headquarters.ShopTabbedPanel;
 import eidolons.libgdx.gui.panels.headquarters.ShopValueContainerList;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.texture.TextureCache;
 
 import java.util.List;

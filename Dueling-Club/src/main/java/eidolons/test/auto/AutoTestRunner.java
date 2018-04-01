@@ -1,15 +1,15 @@
 package eidolons.test.auto;
 
-import main.content.C_OBJ_TYPE;
-import main.data.DataManager;
-import main.entity.Ref;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import eidolons.test.auto.AutoTest.TEST_ARGS;
+import main.content.C_OBJ_TYPE;
+import main.data.DataManager;
+import main.entity.Ref;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import eidolons.test.auto.AutoTest.TEST_ARGS;
 
 public class AutoTestRunner {
 

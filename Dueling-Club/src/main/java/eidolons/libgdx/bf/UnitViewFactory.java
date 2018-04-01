@@ -4,23 +4,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import eidolons.entity.active.DefaultActionHandler;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import eidolons.test.frontend.IntroTestLauncher;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import eidolons.test.frontend.IntroTestLauncher;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +35,11 @@ public class UnitViewFactory {
         GridUnitView view = new GridUnitView(options);
         if (bfObj.isMine())
             view.setMainHero(bfObj.isMainHero());
+        else {
+            LastSeenView lsv = new LastSeenView(options);
+            view.setLastSeenView(lsv);
+            lsv.addListener( new LastSeenTooltip(view).getController()) ;
+        }
         view.setOutlinePathSupplier(() -> {
             OUTLINE_TYPE type = null;
             if (bfObj instanceof Unit) {

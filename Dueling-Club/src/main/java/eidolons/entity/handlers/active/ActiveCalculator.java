@@ -4,9 +4,9 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
 import main.entity.handlers.EntityCalculator;
 import main.entity.handlers.EntityMaster;
-import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
 
 /**
  * Created by JustMe on 2/23/2017.

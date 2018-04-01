@@ -1,18 +1,18 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.content.PARAMS;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
 
 import java.util.HashMap;

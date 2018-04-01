@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.tree.t3;
 
-import eidolons.client.cc.gui.neo.header.DeityComp;
-import eidolons.client.cc.gui.neo.header.PortraitComp;
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.HC_Master;
+import eidolons.client.cc.gui.neo.header.DeityComp;
+import eidolons.client.cc.gui.neo.header.PortraitComp;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;

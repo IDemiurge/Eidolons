@@ -1,17 +1,17 @@
 package eidolons.game.module.adventure.entity;
 
-import main.content.values.parameters.MACRO_PARAMS;
-import main.entity.Ref;
-import main.entity.obj.Obj;
-import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import main.game.logic.battle.player.Player;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.faction.Faction;
 import eidolons.game.module.adventure.map.MacroCoordinates;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.utils.MacroContentManager;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.entity.Ref;
+import main.entity.obj.Obj;
+import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
+import main.game.logic.battle.player.Player;
 
 public class MacroObj extends Obj {
 

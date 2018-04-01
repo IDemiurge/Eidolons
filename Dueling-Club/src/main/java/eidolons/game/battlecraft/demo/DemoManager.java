@@ -1,15 +1,15 @@
 package eidolons.game.battlecraft.demo;
 
 import eidolons.client.cc.gui.neo.choice.ChoiceSequence;
+import eidolons.client.cc.gui.neo.choice.EntityChoiceView;
+import eidolons.client.dc.Launcher;
+import eidolons.client.dc.Launcher.VIEWS;
 import eidolons.client.dc.SequenceManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.arcade.Arcade;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
-import eidolons.client.cc.gui.neo.choice.EntityChoiceView;
-import eidolons.client.dc.Launcher;
-import eidolons.client.dc.Launcher.VIEWS;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;

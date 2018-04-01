@@ -1,15 +1,15 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.system.math.DC_MathManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
-import eidolons.system.math.DC_MathManager;
 import main.system.math.Formula;
 
 public class ResistMaster {

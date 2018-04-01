@@ -1,12 +1,12 @@
 package eidolons.ability.effects.oneshot.attack.force;
 
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.ability.effects.DC_Effect;
-import main.ability.effects.OneshotEffect;
-import main.data.ability.AE_ConstrArgs;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
+import main.ability.effects.OneshotEffect;
+import main.data.ability.AE_ConstrArgs;
 import main.system.math.Formula;
 
 public class ForceEffect extends DC_Effect implements OneshotEffect {

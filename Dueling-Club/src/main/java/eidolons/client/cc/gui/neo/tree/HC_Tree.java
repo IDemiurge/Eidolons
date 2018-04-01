@@ -1,15 +1,15 @@
 package eidolons.client.cc.gui.neo.tree;
 
-import eidolons.client.cc.gui.neo.tree.logic.StaticTreeLink;
-import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.ability.conditions.req.SkillPointCondition;
 import eidolons.client.cc.HC_Master;
 import eidolons.client.cc.gui.neo.tree.logic.HT_MapBuilder;
+import eidolons.client.cc.gui.neo.tree.logic.StaticTreeLink;
 import eidolons.client.cc.gui.neo.tree.logic.TreeLink;
 import eidolons.client.cc.gui.neo.tree.logic.TreeMap;
 import eidolons.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import eidolons.client.dc.Launcher;
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;

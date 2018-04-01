@@ -1,8 +1,8 @@
 package eidolons.ability.conditions;
 
+import eidolons.entity.obj.unit.Unit;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.Unit;
 
 public class ImmobilizedCondition extends MicroCondition {
 

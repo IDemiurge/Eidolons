@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.misc;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.logic.HeroLevelManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;

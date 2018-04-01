@@ -1,9 +1,9 @@
 package eidolons.libgdx.anims.std;
 
 import eidolons.entity.active.DC_ActiveObj;
-import main.entity.Ref.KEYS;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
+import main.entity.Ref.KEYS;
 
 /**
  * Created by JustMe on 2/5/2017.

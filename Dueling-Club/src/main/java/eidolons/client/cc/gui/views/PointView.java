@@ -1,10 +1,10 @@
 package eidolons.client.cc.gui.views;
 
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.logic.PointMaster;
 import eidolons.content.DC_ContentManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.logic.PointMaster;
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.type.ObjType;

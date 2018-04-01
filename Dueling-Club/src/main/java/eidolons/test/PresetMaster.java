@@ -1,27 +1,27 @@
 package eidolons.test;
 
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.launch.PresetLauncher;
+import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.test.Preset.PRESET_DATA;
+import eidolons.test.Preset.PRESET_OPTION;
+import eidolons.test.Preset.PRESET_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
-import eidolons.test.Preset.PRESET_DATA;
-import eidolons.test.Preset.PRESET_OPTION;
-import eidolons.test.Preset.PRESET_TYPE;
 
 import java.io.File;
 import java.util.ArrayList;

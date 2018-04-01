@@ -1,12 +1,13 @@
 package eidolons.ability;
 
 import eidolons.client.cc.HeroManager;
+import eidolons.client.cc.logic.spells.LibraryManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
-import eidolons.client.cc.logic.spells.LibraryManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
@@ -15,7 +16,6 @@ import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.RequirementsManager;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

@@ -2,15 +2,15 @@ package eidolons.client.cc.gui.tabs;
 
 import eidolons.client.cc.gui.MainViewPanel;
 import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;

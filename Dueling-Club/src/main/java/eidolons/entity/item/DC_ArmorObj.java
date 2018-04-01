@@ -1,9 +1,9 @@
 package eidolons.entity.item;
 
-import main.ability.effects.Effect;
-import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
+import main.ability.effects.Effect;
+import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

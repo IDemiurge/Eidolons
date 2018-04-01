@@ -2,19 +2,19 @@ package eidolons.game.battlecraft.ai.tools.priority;
 
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
-import eidolons.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import main.game.logic.action.context.Context;
 
 import java.util.List;

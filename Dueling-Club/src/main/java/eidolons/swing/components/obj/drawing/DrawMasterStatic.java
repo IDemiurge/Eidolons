@@ -1,19 +1,19 @@
 package eidolons.swing.components.obj.drawing;
 
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
+import eidolons.game.core.game.DC_Game;
+import eidolons.system.graphics.ImageTransformer;
+import eidolons.test.debug.DebugMaster;
 import main.content.enums.rules.VisionEnums;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
 import main.game.bf.DirectionMaster;
-import eidolons.game.core.game.DC_Game;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
-import eidolons.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
-import eidolons.test.debug.DebugMaster;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

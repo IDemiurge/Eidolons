@@ -1,11 +1,11 @@
 package eidolons.entity.handlers.active;
 
+import eidolons.ability.DC_CostsFactory;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.ability.DC_CostsFactory;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
@@ -18,6 +18,7 @@ import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.math.Formula;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,9 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
 
             Cost cp_cost = costs.getCost(PARAMS.C_N_OF_COUNTERS);
-            Cost ap_cost = costs.getCost(PARAMS.C_N_OF_ACTIONS);
+            Formula ap_cost = DC_Engine.isAtbMode() ? new Formula(getParam(PARAMS.AP_COST))
+             : costs.getCost(PARAMS.C_N_OF_ACTIONS)
+             .getPayment().getAmountFormula();
             boolean noCounterCost = cp_cost == null;
             if (!noCounterCost) {
                 noCounterCost = cp_cost.getPayment().getAmountFormula().toString().isEmpty()
@@ -72,8 +75,8 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             }
             if (noCounterCost) { // if not specifically set...
                 if (getHandler().isExtraAttackMode()) {
-                    cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS, ap_cost.getPayment()
-                     .getAmountFormula()));
+                    cp_cost = new CostImpl(new Payment(PARAMS.C_N_OF_COUNTERS,
+                     (ap_cost)));
                     cp_cost.getPayment().getAmountFormula().applyModifier(
                      getEntity().getOwnerObj().getIntParam(PARAMS.EXTRA_ATTACKS_POINT_COST_MOD));
                     cp_cost.setCostParam(PARAMS.CP_COST);
@@ -84,10 +87,11 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
                     costs.getCosts().remove(cp_cost);
                 }
             }
-            if (getHandler().isAttackOfOpportunityMode()) { // TODO only if watched? better
-                // here perhaps!
-                cp_cost.addAltCost(ap_cost);
-            }
+            if (!DC_Engine.isAtbMode())
+                if (getHandler().isAttackOfOpportunityMode()) { // TODO only if watched? better
+                    // here perhaps!
+                    cp_cost.addAltCost(new CostImpl(new Payment(PARAMS.C_N_OF_ACTIONS, ap_cost)));
+                }
             costs.removeCost(getHandler().isExtraAttackMode() ? PARAMS.C_N_OF_ACTIONS : PARAMS.C_N_OF_COUNTERS);
         }
         if (anim) {

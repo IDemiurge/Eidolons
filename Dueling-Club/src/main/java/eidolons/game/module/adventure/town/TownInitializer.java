@@ -1,5 +1,7 @@
 package eidolons.game.module.adventure.town;
 
+import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.MacroRef;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
@@ -7,8 +9,6 @@ import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroRef;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

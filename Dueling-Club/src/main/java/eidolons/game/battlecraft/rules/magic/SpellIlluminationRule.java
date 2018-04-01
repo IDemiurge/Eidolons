@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.rules.magic;
 
+import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.ability.effects.common.LightEmittingEffect;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
 import main.system.threading.WaitMaster;

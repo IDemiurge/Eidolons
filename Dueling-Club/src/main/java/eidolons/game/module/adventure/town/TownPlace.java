@@ -1,11 +1,11 @@
 package eidolons.game.module.adventure.town;
 
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.entity.MacroObj;
 import eidolons.game.module.adventure.town.Tavern.TOWN_PLACE_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
 import main.system.auxiliary.EnumMaster;
 
 public class TownPlace extends MacroObj {

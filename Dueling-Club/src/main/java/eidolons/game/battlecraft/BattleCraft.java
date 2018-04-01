@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.VariableManager;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

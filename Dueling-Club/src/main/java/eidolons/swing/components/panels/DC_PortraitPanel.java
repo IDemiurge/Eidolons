@@ -1,7 +1,7 @@
 package eidolons.swing.components.panels;
 
-import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.client.dc.Launcher;
+import eidolons.entity.obj.unit.DC_UnitModel;
 import main.entity.Entity;
 import main.game.core.game.Game;
 import main.swing.generic.components.G_Panel;

@@ -1,12 +1,12 @@
 package eidolons.swing.components.panels.page.info;
 
 import eidolons.swing.components.panels.page.info.element.ContainerTextElement;
+import eidolons.swing.components.panels.page.info.element.EntityValueComponent;
+import eidolons.swing.components.panels.page.info.element.PropertyElement;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
 import main.entity.Entity;
-import eidolons.swing.components.panels.page.info.element.EntityValueComponent;
-import eidolons.swing.components.panels.page.info.element.PropertyElement;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.FontMaster;

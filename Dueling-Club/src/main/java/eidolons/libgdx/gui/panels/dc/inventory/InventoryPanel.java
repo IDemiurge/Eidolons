@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 

@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.ai.advanced.machine;
 
 import eidolons.content.PARAMS;
-import main.content.values.parameters.PARAMETER;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import main.content.values.parameters.PARAMETER;
 
 import java.util.HashMap;
 import java.util.Map;

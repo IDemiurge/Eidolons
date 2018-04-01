@@ -2,9 +2,9 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import main.entity.Entity;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.bf.GridConst;
+import main.entity.Entity;
 
 /**
  * Created by JustMe on 1/19/2017.

@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.GroupX;
-import eidolons.libgdx.GdxColorMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 

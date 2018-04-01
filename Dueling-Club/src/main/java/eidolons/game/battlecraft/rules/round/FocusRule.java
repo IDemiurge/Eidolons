@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.round;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.DC_MathManager;

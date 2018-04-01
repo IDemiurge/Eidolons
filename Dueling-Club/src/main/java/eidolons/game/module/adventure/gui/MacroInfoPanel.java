@@ -1,11 +1,11 @@
 package eidolons.game.module.adventure.gui;
 
-import main.content.DC_TYPE;
 import eidolons.content.HC_ValuePages;
+import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
+import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
 import main.swing.generic.components.G_Panel;
 
 import javax.swing.*;

@@ -1,8 +1,8 @@
 package eidolons.libgdx.launch;
 
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.game.battlecraft.DC_Engine;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;

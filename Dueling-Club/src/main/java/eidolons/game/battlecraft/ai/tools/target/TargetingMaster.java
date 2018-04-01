@@ -2,7 +2,13 @@ package eidolons.game.battlecraft.ai.tools.target;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
+import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
+import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
+import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
@@ -11,12 +17,6 @@ import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.Targeting;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
-import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
-import eidolons.game.battlecraft.ai.tools.target.ReasonMaster.FILTER_REASON;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ClassMaster;
 

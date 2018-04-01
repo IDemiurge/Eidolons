@@ -1,11 +1,11 @@
 package eidolons.swing.components.panels;
 
-import eidolons.game.core.game.DC_Game;
 import eidolons.client.cc.gui.misc.HC_TopComp;
+import eidolons.game.core.game.DC_Game;
 import eidolons.swing.components.buttons.MenuButton;
+import eidolons.test.debug.DebugGui;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.VisualComponent;
-import eidolons.test.debug.DebugGui;
 
 import java.awt.*;
 

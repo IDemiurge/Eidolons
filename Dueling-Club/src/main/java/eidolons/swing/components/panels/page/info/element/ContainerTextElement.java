@@ -1,10 +1,13 @@
 package eidolons.swing.components.panels.page.info.element;
 
-import eidolons.client.cc.logic.HeroCreator;
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.logic.HeroCreator;
 import eidolons.content.DC_ContentManager;
-import main.content.DC_TYPE;
 import eidolons.content.PROPS;
+import eidolons.swing.components.panels.page.info.ValueInfoPage;
+import eidolons.swing.components.panels.page.log.WrappedTextComp;
+import eidolons.system.text.TextGenerator;
+import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
@@ -14,11 +17,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import eidolons.swing.components.panels.page.info.ValueInfoPage;
-import eidolons.swing.components.panels.page.log.WrappedTextComp;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster;
-import eidolons.system.text.TextGenerator;
 import main.system.text.TextParser;
 
 import java.awt.*;

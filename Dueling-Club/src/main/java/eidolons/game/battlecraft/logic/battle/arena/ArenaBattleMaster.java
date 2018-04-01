@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.battle.arena;
 
-import eidolons.game.battlecraft.logic.battle.universal.BattleOutcomeManager;
 import eidolons.game.battlecraft.logic.battle.universal.BattleConstructor;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
+import eidolons.game.battlecraft.logic.battle.universal.BattleOutcomeManager;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.core.game.DC_Game;
 

@@ -1,8 +1,8 @@
 package eidolons.client.cc.logic;
 
+import eidolons.content.DC_ContentManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.content.DC_ContentManager.ATTRIBUTE;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;

@@ -1,16 +1,16 @@
 package eidolons.content;
 
+import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
+import eidolons.system.math.DC_MathManager;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.content.text.Descriptions;
 import main.content.values.parameters.PARAMETER;
-import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.ColorManager;
-import eidolons.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
 import java.awt.*;

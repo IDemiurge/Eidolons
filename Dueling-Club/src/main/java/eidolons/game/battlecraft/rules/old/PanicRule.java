@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.rules.old;
 
+import eidolons.ability.conditions.StatusCheckCondition;
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
-import eidolons.ability.conditions.StatusCheckCondition;
-import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;

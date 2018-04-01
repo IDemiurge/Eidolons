@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.rules;
 
+import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;

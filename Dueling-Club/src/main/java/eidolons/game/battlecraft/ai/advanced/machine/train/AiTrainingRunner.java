@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.ai.advanced.machine.train;
 
-import eidolons.game.battlecraft.ai.advanced.machine.profile.ProfileWriter;
-import main.data.filesys.PathFinder;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfileManager;
 import eidolons.game.battlecraft.ai.advanced.machine.evolution.EvolutionMaster;
+import eidolons.game.battlecraft.ai.advanced.machine.profile.ProfileWriter;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;

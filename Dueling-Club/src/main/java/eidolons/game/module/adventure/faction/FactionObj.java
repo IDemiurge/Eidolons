@@ -1,9 +1,9 @@
 package eidolons.game.module.adventure.faction;
 
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.entity.MacroObj;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
 
 public class FactionObj extends MacroObj {
 

@@ -1,8 +1,8 @@
 package eidolons.system.graphics;
 
 import eidolons.entity.active.DC_ActiveObj;
-import main.entity.obj.Obj;
 import eidolons.system.graphics.AnimationManager.ANIM_TYPE;
+import main.entity.obj.Obj;
 
 import java.awt.*;
 

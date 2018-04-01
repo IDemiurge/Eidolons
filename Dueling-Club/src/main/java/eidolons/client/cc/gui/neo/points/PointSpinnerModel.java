@@ -1,10 +1,10 @@
 package eidolons.client.cc.gui.neo.points;
 
+import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.logic.PointMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.panels.page.info.element.ValueTextComp;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.logic.PointMaster;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.system.launch.CoreEngine;

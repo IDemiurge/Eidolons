@@ -1,11 +1,11 @@
 package eidolons.client.cc.gui.neo.principles;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.Entity;
-import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;

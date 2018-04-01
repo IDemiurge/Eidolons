@@ -1,13 +1,10 @@
 package eidolons.system.text;
 
-import eidolons.entity.obj.DC_Obj;
 import eidolons.client.cc.CharacterCreator;
-import main.content.VALUE;
-import main.content.enums.entity.ActionEnums;
-import main.content.enums.system.AiEnums.AI_LOGIC;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
@@ -15,6 +12,9 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.swing.components.obj.CellComp;
+import main.content.VALUE;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.swing.generic.components.G_Panel;
 
 import java.awt.event.MouseEvent;

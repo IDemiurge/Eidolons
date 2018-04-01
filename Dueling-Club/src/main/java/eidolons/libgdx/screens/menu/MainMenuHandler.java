@@ -1,12 +1,12 @@
 package eidolons.libgdx.screens.menu;
 
 import com.badlogic.gdx.Gdx;
+import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;

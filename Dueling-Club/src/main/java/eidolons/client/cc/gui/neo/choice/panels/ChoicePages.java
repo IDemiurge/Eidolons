@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.choice.panels;
 
-import eidolons.client.cc.gui.neo.choice.PagedSelectionPanel;
 import eidolons.client.cc.gui.neo.choice.ChoiceView;
+import eidolons.client.cc.gui.neo.choice.PagedSelectionPanel;
 
 public class ChoicePages<E> extends PagedSelectionPanel<E> {
 

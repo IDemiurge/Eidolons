@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
-import main.game.bf.Coordinates;
 import eidolons.libgdx.screens.DungeonScreen;
+import main.game.bf.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;

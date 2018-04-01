@@ -1,10 +1,10 @@
 package eidolons.ability.effects.oneshot.activation;
 
+import eidolons.entity.active.DC_SpellObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
 

@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.logic.battle.universal.stats;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import main.data.XLinkedMap;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStats.BATTLE_STATS;
+import main.data.XLinkedMap;
 import main.system.data.DataUnit;
 import main.system.datatypes.DequeImpl;
 

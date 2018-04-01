@@ -3,10 +3,10 @@ package eidolons.libgdx.screens.map.layers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
-import eidolons.game.module.adventure.MacroGame;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;

@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
-import main.content.values.properties.G_PROPS;
-import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.text.HelpMaster;
+import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
-import eidolons.system.text.HelpMaster;
 
 /**
  * Created by JustMe on 11/29/2017.

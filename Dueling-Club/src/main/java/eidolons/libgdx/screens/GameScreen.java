@@ -10,10 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.DialogScenario;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.libgdx.GdxMaster;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
 

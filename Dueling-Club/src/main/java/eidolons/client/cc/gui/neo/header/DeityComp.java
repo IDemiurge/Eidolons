@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.header;
 
-import main.content.values.properties.G_PROPS;
 import eidolons.entity.obj.unit.Unit;
+import main.content.values.properties.G_PROPS;
 import main.swing.generic.components.G_CompHolder;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;

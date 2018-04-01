@@ -1,6 +1,8 @@
 package eidolons.entity.obj.attach;
 
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.ability.AbilityObj;
 import main.content.ContentManager;
 import main.content.enums.entity.UnitEnums;
@@ -11,9 +13,7 @@ import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.AttachedObj;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.game.bf.Coordinates;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;

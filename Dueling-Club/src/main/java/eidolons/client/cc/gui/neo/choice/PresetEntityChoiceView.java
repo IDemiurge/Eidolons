@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.choice;
 
-import main.entity.Entity;
 import eidolons.entity.obj.unit.Unit;
+import main.entity.Entity;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;

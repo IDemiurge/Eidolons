@@ -1,24 +1,24 @@
 package eidolons.game.battlecraft.rules.counter;
 
+import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
+import eidolons.ability.targeting.TemplateAutoTargeting;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.magic.ImmunityRule;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.attachment.AddBuffEffect;
 import main.ability.effects.common.AddStatusEffect;
 import main.ability.effects.continuous.ContinuousEffect;
 import main.ability.effects.continuous.CustomTargetEffect;
-import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
-import eidolons.ability.targeting.TemplateAutoTargeting;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.data.filesys.PathFinder;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.magic.ImmunityRule;
-import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
 
 import java.util.HashMap;

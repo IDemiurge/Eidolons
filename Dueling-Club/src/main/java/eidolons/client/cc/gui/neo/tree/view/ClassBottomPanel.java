@@ -1,10 +1,10 @@
 package eidolons.client.cc.gui.neo.tree.view;
 
 import eidolons.client.cc.gui.neo.points.HC_PointComp;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.gui.neo.tree.HC_Tree;
-import main.content.ContentManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import main.content.ContentManager;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.entity.type.ObjType;

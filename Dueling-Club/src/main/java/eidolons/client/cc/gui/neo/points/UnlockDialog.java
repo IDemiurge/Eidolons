@@ -1,10 +1,10 @@
 package eidolons.client.cc.gui.neo.points;
 
 import eidolons.content.PARAMS;
-import main.content.values.parameters.PARAMETER;
-import main.entity.Entity;
 import eidolons.swing.components.buttons.CustomButton;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
+import main.content.values.parameters.PARAMETER;
+import main.entity.Entity;
 import main.swing.generic.components.G_Dialog;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;

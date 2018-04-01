@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.tree.logic;
 
 import eidolons.client.cc.gui.neo.tree.HT_Node;
+import eidolons.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;

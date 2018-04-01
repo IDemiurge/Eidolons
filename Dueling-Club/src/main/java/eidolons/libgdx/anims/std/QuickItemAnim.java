@@ -3,10 +3,10 @@ package eidolons.libgdx.anims.std;
 import com.badlogic.gdx.graphics.Texture;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimData;
 import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
-import eidolons.libgdx.anims.AnimData;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 /**

@@ -1,10 +1,13 @@
 package eidolons.game.module.adventure.town;
 
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.gui.lists.ShopListsPanel;
 import eidolons.client.cc.logic.items.ItemGenerator;
 import eidolons.client.cc.logic.items.ItemMaster;
 import eidolons.content.PARAMS;
-import eidolons.client.cc.gui.lists.ShopListsPanel;
+import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
+import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.utils.SaveMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
@@ -22,9 +25,6 @@ import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.utils.SaveMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;

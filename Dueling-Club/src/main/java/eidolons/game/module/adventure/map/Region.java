@@ -3,12 +3,12 @@ package eidolons.game.module.adventure.map;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef.MACRO_KEYS;
 import eidolons.game.module.adventure.entity.MacroObj;
+import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.town.Town;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.entity.MacroParty;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 

@@ -1,21 +1,21 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
-import main.content.C_OBJ_TYPE;
-import main.data.DataManager;
-import main.entity.Entity;
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import eidolons.game.battlecraft.logic.dungeon.test.TestSpawner;
+import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.rules.action.StackingRule;
+import eidolons.game.core.game.DC_Game;
+import main.content.C_OBJ_TYPE;
+import main.data.DataManager;
+import main.entity.Entity;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.DirectionMaster;
-import eidolons.game.core.game.DC_Game;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

@@ -1,18 +1,18 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.content.PROPS;
+import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.XList;
-import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import eidolons.game.battlecraft.ai.tools.target.AI_SpellMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 

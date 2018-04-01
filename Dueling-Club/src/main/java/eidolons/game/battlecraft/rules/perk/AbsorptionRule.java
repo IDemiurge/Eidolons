@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.rules.perk;
 
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.counter.DC_CounterRule;
+import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.counter.DC_CounterRule;
-import eidolons.game.core.game.DC_Game;
 
 /**
  * Created by JustMe on 12/27/2016.

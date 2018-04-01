@@ -1,9 +1,9 @@
 package eidolons.game.module.adventure.gui.map.obj;
 
-import eidolons.game.module.adventure.entity.MacroObj;
 import eidolons.game.module.adventure.MacroGame;
-import main.swing.generic.components.G_Panel;
+import eidolons.game.module.adventure.entity.MacroObj;
 import eidolons.system.graphics.ImageTransformer;
+import main.swing.generic.components.G_Panel;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 

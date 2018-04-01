@@ -2,12 +2,12 @@ package eidolons.game.core.game;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import main.data.XList;
 import main.entity.Ref;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.core.game.GameMaster;

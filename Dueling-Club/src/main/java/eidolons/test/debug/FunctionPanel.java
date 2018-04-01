@@ -1,10 +1,10 @@
 package eidolons.test.debug;
 
+import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
+import eidolons.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
 import main.swing.generic.components.panels.G_ButtonPanel;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
-import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
-import eidolons.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
 
 import java.awt.event.ActionEvent;
 import java.util.List;

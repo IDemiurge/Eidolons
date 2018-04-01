@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.choice;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.components.panels.page.info.element.ListTextItem;
 import main.content.ContentManager;
 import main.content.values.properties.PROPERTY;
-import eidolons.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;

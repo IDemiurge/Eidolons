@@ -3,8 +3,8 @@ package eidolons.game.core.master;
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import main.entity.obj.ActiveObj;
 import eidolons.game.core.game.DC_Game;
+import main.entity.obj.ActiveObj;
 
 /**
  * Created by JustMe on 2/16/2017.

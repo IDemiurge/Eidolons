@@ -3,6 +3,7 @@ package eidolons.entity.handlers.active;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.system.graphics.AttackAnimation;
+import eidolons.system.graphics.PhaseAnimation;
 import main.entity.Ref;
 import main.entity.handlers.EntityAnimator;
 import main.entity.handlers.EntityMaster;
@@ -11,7 +12,6 @@ import main.game.bf.Coordinates;
 import main.system.graphics.ANIM;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import eidolons.system.graphics.PhaseAnimation;
 import main.system.threading.WaitMaster;
 
 import java.util.Set;

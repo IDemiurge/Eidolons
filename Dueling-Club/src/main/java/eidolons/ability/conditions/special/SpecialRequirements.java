@@ -1,9 +1,9 @@
 package eidolons.ability.conditions.special;
 
+import eidolons.entity.obj.unit.DC_UnitModel;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.DC_UnitModel;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 

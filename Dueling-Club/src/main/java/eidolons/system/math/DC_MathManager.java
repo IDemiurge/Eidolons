@@ -1,14 +1,17 @@
 package eidolons.system.math;
 
+import eidolons.client.cc.logic.PointMaster;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
-import eidolons.client.cc.logic.PointMaster;
-import main.content.*;
+import main.content.ContentManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -18,7 +21,6 @@ import main.elements.Filter;
 import main.elements.conditions.Conditions;
 import main.entity.Entity;
 import main.entity.Ref;
-import eidolons.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;

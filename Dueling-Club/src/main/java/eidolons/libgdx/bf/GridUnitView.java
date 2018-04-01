@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
-import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
@@ -30,6 +30,7 @@ public class GridUnitView extends UnitView {
 
     private UnitView initiativeQueueUnitView;
     private boolean cellBackground;
+    private LastSeenView lastSeenView;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
@@ -381,5 +382,13 @@ public class GridUnitView extends UnitView {
         getHpBar().animateChange();
         if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.getHpBar().animateChange();
+    }
+
+    public void setLastSeenView(LastSeenView lastSeenView) {
+        this.lastSeenView = lastSeenView;
+    }
+
+    public LastSeenView getLastSeenView() {
+        return lastSeenView;
     }
 }

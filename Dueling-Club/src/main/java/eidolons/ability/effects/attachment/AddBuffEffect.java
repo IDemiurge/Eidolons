@@ -1,6 +1,7 @@
 package eidolons.ability.effects.attachment;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.*;
@@ -8,7 +9,6 @@ import main.ability.effects.continuous.ContinuousEffect;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
-import eidolons.content.PROPS;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;

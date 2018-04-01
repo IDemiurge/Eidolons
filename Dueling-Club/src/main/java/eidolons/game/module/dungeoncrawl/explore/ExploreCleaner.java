@@ -1,16 +1,16 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
+import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
 import eidolons.game.core.Eidolons;
-import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BuffObj;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
 
 /**
  * Created by JustMe on 9/11/2017.

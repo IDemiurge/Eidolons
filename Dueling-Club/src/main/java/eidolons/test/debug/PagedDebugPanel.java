@@ -1,10 +1,10 @@
 package eidolons.test.debug;
 
+import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.GuiManager;
-import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import java.util.List;
 

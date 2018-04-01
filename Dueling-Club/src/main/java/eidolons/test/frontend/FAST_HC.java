@@ -1,7 +1,7 @@
 package eidolons.test.frontend;
 
-import eidolons.client.dc.MainMenu;
 import eidolons.client.dc.MainManager;
+import eidolons.client.dc.MainMenu;
 
 public class FAST_HC {
 

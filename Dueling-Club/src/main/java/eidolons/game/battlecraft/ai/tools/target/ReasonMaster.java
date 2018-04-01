@@ -3,13 +3,13 @@ package eidolons.game.battlecraft.ai.tools.target;
 import eidolons.ability.conditions.FacingCondition;
 import eidolons.ability.conditions.VisibilityCondition;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 

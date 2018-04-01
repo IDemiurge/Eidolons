@@ -1,13 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.datasource;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.entity.item.DC_ArmorObj;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
-import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.content.PARAMS;
-import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
@@ -16,9 +12,13 @@ import eidolons.libgdx.gui.panels.dc.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.values.parameters.PARAMETER;
+import main.content.values.properties.G_PROPS;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;

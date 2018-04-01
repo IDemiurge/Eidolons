@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.client.cc.logic.party.Party;
+import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.TargetRunnable;
 import main.content.DC_TYPE;
-import eidolons.content.PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import eidolons.libgdx.bf.TargetRunnable;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.GuiEventManager;

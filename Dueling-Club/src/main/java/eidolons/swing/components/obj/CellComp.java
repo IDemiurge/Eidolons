@@ -1,11 +1,11 @@
 package eidolons.swing.components.obj;
 
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.swing.components.obj.drawing.DrawMaster;
 import main.entity.Ref;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.swing.generic.components.G_Panel;

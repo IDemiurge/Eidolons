@@ -1,10 +1,10 @@
 package eidolons.ability.effects.attachment;
 
 import eidolons.ability.ActivesConstructor;
+import eidolons.ability.effects.continuous.triggered.TriggerEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.common.AddStatusEffect;
-import eidolons.ability.effects.continuous.triggered.TriggerEffect;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;

@@ -1,6 +1,7 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -22,8 +23,9 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_SpellObj;
-import main.entity.obj.*;
+import main.entity.obj.Attachment;
+import main.entity.obj.BuffObj;
+import main.entity.obj.Obj;
 import main.game.core.game.GameManager;
 import main.game.core.state.StateManager;
 import main.game.logic.event.Event;

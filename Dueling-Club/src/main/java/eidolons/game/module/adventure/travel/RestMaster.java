@@ -1,10 +1,10 @@
 package eidolons.game.module.adventure.travel;
 
+import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.values.properties.MACRO_PROPS;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.entity.MacroParty;
 
 /**
  * Created by JustMe on 2/24/2018.

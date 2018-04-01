@@ -1,6 +1,7 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.client.cc.logic.HeroAnalyzer;
+import eidolons.client.cc.logic.spells.DivinationMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
@@ -11,7 +12,6 @@ import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import eidolons.client.cc.logic.spells.DivinationMaster;
 import main.content.enums.entity.SpellEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;

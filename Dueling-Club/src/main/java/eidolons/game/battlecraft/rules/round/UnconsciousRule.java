@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.rules.round;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
+import eidolons.ability.effects.oneshot.rule.UnconsciousBuffEffect;
 import eidolons.ability.effects.oneshot.rule.UnconsciousFallEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -14,7 +15,6 @@ import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.oneshot.rule.UnconsciousBuffEffect;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;

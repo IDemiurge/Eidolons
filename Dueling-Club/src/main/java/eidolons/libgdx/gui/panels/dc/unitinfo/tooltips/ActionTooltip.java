@@ -2,11 +2,11 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.entity.Entity;
-import eidolons.libgdx.gui.NinePatchFactory;
 
 import java.util.List;
 

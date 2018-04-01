@@ -1,19 +1,19 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
 import eidolons.content.DC_ValueManager;
 import eidolons.content.PARAMS;
-import main.content.VALUE;
-import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.values.properties.G_PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.rules.combat.attack.AttackCalculator.MOD_IDENTIFIER;
 import eidolons.game.battlecraft.rules.combat.attack.CriticalAttackRule;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
+import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
+import eidolons.system.math.ModMaster;
+import main.content.VALUE;
+import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;
-import eidolons.system.math.ModMaster;
 
 /**
  * Created by JustMe on 3/12/2017.

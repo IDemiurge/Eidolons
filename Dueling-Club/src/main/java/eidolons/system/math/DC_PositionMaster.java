@@ -1,7 +1,7 @@
 package eidolons.system.math;
 
-import main.data.XList;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import main.data.XList;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;

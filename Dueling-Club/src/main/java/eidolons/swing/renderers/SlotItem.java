@@ -1,13 +1,13 @@
 package eidolons.swing.renderers;
 
+import eidolons.entity.obj.attach.DC_HeroAttachedObj;
+import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
+import eidolons.system.graphics.ImageTransformer;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.attach.DC_HeroAttachedObj;
-import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import main.swing.generic.components.list.ListItem;
-import eidolons.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 

@@ -1,14 +1,7 @@
 package eidolons.game.battlecraft.ai.elements.task;
 
-import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
-import main.content.enums.system.AiEnums;
-import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
-import main.content.values.properties.G_PROPS;
-import main.data.XList;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -17,6 +10,13 @@ import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.GuardRule;
+import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
+import main.content.enums.system.AiEnums;
+import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.data.XList;
+import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 

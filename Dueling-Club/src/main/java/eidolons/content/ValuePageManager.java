@@ -1,8 +1,8 @@
 package eidolons.content;
 
-import eidolons.content.ValuePages.PAGE_NAMES;
 import eidolons.client.dc.Launcher;
 import eidolons.client.dc.Launcher.VIEWS;
+import eidolons.content.ValuePages.PAGE_NAMES;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;

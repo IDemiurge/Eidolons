@@ -2,13 +2,13 @@ package eidolons.game.module.adventure;
 
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.GameLoop;
+import eidolons.game.module.adventure.global.ScenarioGenerator;
+import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.game.bf.Coordinates;
-import eidolons.game.module.adventure.global.ScenarioGenerator;
-import eidolons.game.module.adventure.map.Place;
-import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;

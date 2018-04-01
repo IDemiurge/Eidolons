@@ -1,18 +1,18 @@
 package eidolons.game.module.adventure.entity;
 
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.MacroRef.MACRO_KEYS;
-import main.content.values.parameters.G_PARAMS;
-import main.content.values.parameters.MACRO_PARAMS;
-import main.entity.type.ObjType;
-import main.game.bf.Coordinates;
-import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.gui.map.obj.MapObjComp;
 import eidolons.game.module.adventure.map.Area;
 import eidolons.game.module.adventure.map.MacroCoordinates;
 import eidolons.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.game.module.adventure.map.Place.PLACE_VISIBILITY_STATUS;
 import eidolons.game.module.adventure.map.Region;
+import main.content.values.parameters.G_PARAMS;
+import main.content.values.parameters.MACRO_PARAMS;
+import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 
 public abstract class MapObj extends MacroObj {

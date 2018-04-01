@@ -1,13 +1,13 @@
 package eidolons.test.auto;
 
+import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
 import main.content.CONTENT_CONSTS2.AUTO_TEST_ASSERTION;
 import main.content.CONTENT_CONSTS2.AUTO_TEST_TYPE;
-import eidolons.content.PROPS;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;

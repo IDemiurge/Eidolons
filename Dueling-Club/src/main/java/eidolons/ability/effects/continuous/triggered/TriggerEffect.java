@@ -1,11 +1,11 @@
 package eidolons.ability.effects.continuous.triggered;
 
+import eidolons.ability.effects.attachment.AddTriggerEffect;
 import main.ability.ActiveAbility;
 import main.ability.effects.AttachmentEffect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.TriggeredEffect;
-import eidolons.ability.effects.attachment.AddTriggerEffect;
 import main.elements.conditions.Condition;
 import main.elements.targeting.Targeting;
 

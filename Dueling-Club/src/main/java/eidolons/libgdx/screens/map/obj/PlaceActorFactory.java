@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
-import eidolons.libgdx.screens.map.ui.tooltips.PlaceTooltip;
 import eidolons.game.module.adventure.map.Place;
+import eidolons.libgdx.screens.map.ui.tooltips.PlaceTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 

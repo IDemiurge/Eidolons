@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.views;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.gui.misc.PoolComp;
 import eidolons.client.cc.gui.neo.tabs.HC_TabPanel;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel;
 
 public abstract class HeroView extends G_Panel {

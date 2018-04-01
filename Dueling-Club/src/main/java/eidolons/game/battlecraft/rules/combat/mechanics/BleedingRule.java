@@ -1,7 +1,8 @@
 package eidolons.game.battlecraft.rules.combat.mechanics;
 
-import main.ability.effects.Effect.MOD;
 import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
+import eidolons.game.battlecraft.rules.DC_RuleImpl;
+import main.ability.effects.Effect.MOD;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.elements.conditions.Conditions;
@@ -10,7 +11,6 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.ObjTypeComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;

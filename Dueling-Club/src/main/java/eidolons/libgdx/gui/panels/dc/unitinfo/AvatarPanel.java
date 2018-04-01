@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.AvatarDataSource;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.AvatarDataSource;
 import eidolons.libgdx.texture.TextureCache;
 
 public class AvatarPanel extends TablePanel {

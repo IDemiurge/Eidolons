@@ -1,8 +1,8 @@
 package eidolons.client.cc.gui.neo.points;
 
 import eidolons.client.cc.CharacterCreator;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.swing.components.buttons.CustomButton;
+import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.math.DC_MathManager;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 

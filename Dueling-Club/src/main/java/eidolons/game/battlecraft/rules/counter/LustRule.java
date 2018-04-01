@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.rules.counter;
 
-import main.ability.effects.Effect;
 import eidolons.content.PARAMS;
-import main.content.enums.entity.UnitEnums.COUNTER;
-import main.content.enums.entity.UnitEnums.STATUS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import main.ability.effects.Effect;
+import main.content.enums.entity.UnitEnums.COUNTER;
+import main.content.enums.entity.UnitEnums.STATUS;
 
 public class LustRule extends DC_CounterRule {
 

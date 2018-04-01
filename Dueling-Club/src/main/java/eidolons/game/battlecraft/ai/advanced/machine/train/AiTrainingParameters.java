@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.ai.advanced.machine.train;
 
+import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
+import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import main.system.auxiliary.StringMaster;
 
 /**

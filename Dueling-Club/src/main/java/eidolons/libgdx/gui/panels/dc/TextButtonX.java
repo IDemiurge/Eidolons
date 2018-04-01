@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import eidolons.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import main.system.graphics.FontMaster.FONT;
 
 /**

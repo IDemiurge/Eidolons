@@ -3,11 +3,11 @@ package eidolons.game.battlecraft.rules;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.controls.Controller;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
-import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 
 import java.util.HashMap;
 import java.util.Map;

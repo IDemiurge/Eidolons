@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
+import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DIFFICULTY;
-import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.data.DataUnit;

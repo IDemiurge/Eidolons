@@ -1,10 +1,10 @@
 package eidolons.ability.effects.oneshot.rule;
 
+import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroItemObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
-import eidolons.content.PARAMS;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_HeroItemObj;
 import main.entity.obj.Obj;
 
 public class DurabilityReductionEffect extends MicroEffect implements OneshotEffect {

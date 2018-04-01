@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui;
 
+import eidolons.libgdx.GdxMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.libgdx.GdxMaster;
 
 /**
  * Created by JustMe on 12/4/2017.

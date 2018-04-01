@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.libgdx.anims.particles.EmitterActor;
-import eidolons.libgdx.bf.generic.ImageContainer;
-import main.data.filesys.PathFinder;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 

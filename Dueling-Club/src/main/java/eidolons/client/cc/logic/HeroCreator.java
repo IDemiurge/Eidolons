@@ -1,7 +1,10 @@
 package eidolons.client.cc.logic;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.gui.misc.HeroItemChooser;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import main.content.CONTENT_CONSTS.RANK;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -12,9 +15,6 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

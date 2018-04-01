@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.rules.rpg;
 
 import eidolons.content.DC_ContentManager;
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;

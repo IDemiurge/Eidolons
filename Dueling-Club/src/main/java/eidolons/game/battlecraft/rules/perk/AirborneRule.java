@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.rules.perk;
 
+import eidolons.ability.conditions.StatusCheckCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.ability.conditions.StatusCheckCondition;
 import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;

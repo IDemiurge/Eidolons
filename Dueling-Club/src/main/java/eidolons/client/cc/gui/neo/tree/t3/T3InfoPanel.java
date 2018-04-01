@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.tree.t3;
 
+import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.gui.misc.PoolComp;
 import eidolons.content.PARAMS;
 import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
-import eidolons.client.cc.CharacterCreator;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
 import main.system.images.ImageManager;

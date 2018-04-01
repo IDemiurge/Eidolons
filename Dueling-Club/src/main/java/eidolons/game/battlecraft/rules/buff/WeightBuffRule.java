@@ -1,15 +1,15 @@
 package eidolons.game.battlecraft.rules.buff;
 
-import main.ability.effects.Effect;
-import main.ability.effects.Effect.MOD;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
-import main.content.VALUE;
 import eidolons.content.ValuePages;
+import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
+import main.ability.effects.Effect;
+import main.ability.effects.Effect.MOD;
+import main.content.VALUE;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
 import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 

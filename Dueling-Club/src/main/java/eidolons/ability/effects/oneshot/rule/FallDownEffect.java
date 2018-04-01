@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot.rule;
 
 import eidolons.ability.effects.DC_Effect;
-import main.ability.effects.OneshotEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
+import main.ability.effects.OneshotEffect;
 import main.content.enums.GenericEnums;
 import main.system.math.Formula;
 

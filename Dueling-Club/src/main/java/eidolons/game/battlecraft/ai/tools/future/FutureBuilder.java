@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.ai.tools.future;
 
+import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
+import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.ability.effects.Effect;
-import eidolons.ability.effects.oneshot.DealDamageEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.HashMap;

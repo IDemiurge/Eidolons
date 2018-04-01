@@ -1,16 +1,16 @@
 package eidolons.game.module.dungeoncrawl.ai;
 
-import io.vertx.core.impl.ConcurrentHashSet;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import eidolons.entity.active.DC_ActiveObj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.game.DC_Game;
-import main.game.logic.battle.player.Player;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import io.vertx.core.impl.ConcurrentHashSet;
+import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.entity.obj.Obj;
+import main.game.logic.battle.player.Player;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;

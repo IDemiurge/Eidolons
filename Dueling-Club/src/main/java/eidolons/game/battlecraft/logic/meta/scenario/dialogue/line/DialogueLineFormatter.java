@@ -1,14 +1,14 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.line;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
+import eidolons.system.text.TextMaster;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import eidolons.system.text.TextMaster;
 
 import java.io.File;
 

@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.rules.rpg;
 
+import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
 import main.content.ContentManager;
-import eidolons.content.DC_ContentManager;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.PARAMETER;

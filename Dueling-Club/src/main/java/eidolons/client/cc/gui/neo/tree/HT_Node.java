@@ -1,10 +1,10 @@
 package eidolons.client.cc.gui.neo.tree;
 
-import eidolons.content.PARAMS;
-import eidolons.game.core.game.DC_Game;
 import eidolons.client.cc.CharacterCreator;
-import main.content.DC_TYPE;
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.game.core.game.DC_Game;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;

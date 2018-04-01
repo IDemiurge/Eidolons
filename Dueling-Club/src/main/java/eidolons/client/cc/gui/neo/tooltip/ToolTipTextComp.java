@@ -1,13 +1,13 @@
 package eidolons.client.cc.gui.neo.tooltip;
 
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.logic.spells.LibraryManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.panels.page.log.WrappedTextComp;
 import eidolons.system.DC_Formulas;
-import eidolons.client.cc.logic.spells.LibraryManager;
 import main.content.ContentManager;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
