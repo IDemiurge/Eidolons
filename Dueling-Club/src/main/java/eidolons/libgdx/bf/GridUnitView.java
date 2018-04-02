@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.GdxImageTransformer;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
@@ -56,6 +55,7 @@ public class GridUnitView extends UnitView {
     private void initQueueView(UnitViewOptions o) {
         setHoverResponsive(o.isHoverResponsive());
         initiativeQueueUnitView = new UnitView(o, curId);
+        initiativeQueueUnitView.setParentView(this);
         initiativeQueueUnitView.setSize(InitiativePanel.imageSize, InitiativePanel.imageSize);
         initiativeQueueUnitView.setHoverResponsive(isHoverResponsive());
     }
@@ -166,8 +166,8 @@ public class GridUnitView extends UnitView {
 
     @Override
     public void act(float delta) {
-//        if (isIgnored())
-//            return; TODO make it work with actions
+        if (!isVisible())
+            return; //TODO make withinCamera()  work with actions
         if (getY() < 0)
             setY(0);
         if (getX() < 0)
@@ -212,16 +212,10 @@ public class GridUnitView extends UnitView {
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
-        if (pathSupplier.get() == null) {
-            initiativeQueueUnitView.
-             setOutlineSupplier(() -> null);
-            return;
-        }
-        String sized = StringMaster.getAppendedImageFile(pathSupplier.get(), " " + InitiativePanel.imageSize);
 
         initiativeQueueUnitView.
          setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-          TextureCache.getRegion(sized, GdxImageTransformer.size(sized, InitiativePanel.imageSize, true)));
+          TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get())) ;
     }
 
     public void setMainHero(boolean mainHero) {
@@ -384,11 +378,11 @@ public class GridUnitView extends UnitView {
             initiativeQueueUnitView.getHpBar().animateChange();
     }
 
-    public void setLastSeenView(LastSeenView lastSeenView) {
-        this.lastSeenView = lastSeenView;
-    }
-
     public LastSeenView getLastSeenView() {
         return lastSeenView;
+    }
+
+    public void setLastSeenView(LastSeenView lastSeenView) {
+        this.lastSeenView = lastSeenView;
     }
 }

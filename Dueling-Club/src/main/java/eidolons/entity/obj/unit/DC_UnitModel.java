@@ -25,6 +25,7 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
@@ -94,7 +95,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) //!VisionManager.checkVisible(this)) {
             return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
 
-        if (getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
+        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
             // return "Something huge";
             // if (isSmall())

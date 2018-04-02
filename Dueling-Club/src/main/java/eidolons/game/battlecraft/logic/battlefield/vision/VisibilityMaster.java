@@ -90,17 +90,17 @@ public class VisibilityMaster {
     }
 
     public String getImagePath(OUTLINE_TYPE type, DC_Obj unit) {
-        String outlinePath = "ui\\outlines\\" + type.getImagePath();
-        if (unit.isTargetHighlighted()) {
-            outlinePath += TARGET;
-        } else {
-            if (unit.isInfoSelected()) {
-                outlinePath += INFO;
-            }
-        }
-        String image = (outlinePath + ".jpg");
+        String outlinePath =  type.getImagePath();
+//        if (unit.isTargetHighlighted()) {
+//            outlinePath += TARGET;
+//        } else {
+//            if (unit.isInfoSelected()) {
+//                outlinePath += INFO;
+//            }
+//        }
+        String image = (outlinePath );
         if (!ImageManager.isImage(image)) {
-            image = ("ui\\outlines\\" + type.getImagePath() + ".jpg");
+            image = (  type.getImagePath() );
         }
         return image;
     }

@@ -104,4 +104,8 @@ public class IlluminationRule {
 
         return value;
     }
+
+    public static boolean isConcealed(Unit source, BattleFieldObject object) {
+        return false;
+    }
 }

@@ -32,6 +32,7 @@ import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -54,6 +55,7 @@ import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
@@ -97,6 +99,9 @@ public class GridPanel extends Group {
     private boolean updateRequired;
     private boolean firstUpdateDone;
     private boolean welcomeInfoShown;
+    private OverlaysManager overlayManager;
+    private GridUnitView mainHeroView;
+    private float resetTimer;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -244,10 +249,9 @@ public class GridPanel extends Group {
                 return false;
             }
         });
-
-        animMaster = AnimMaster.getInstance();
+        addActor(overlayManager = new OverlaysManager(this));
+        addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
-        addActor(animMaster);
 
         if (AnimationConstructor.isPreconstructAllOnGameInit())
             units.forEach(unit ->
@@ -286,16 +290,16 @@ public class GridPanel extends Group {
             List<BattleFieldObject> list = (List<BattleFieldObject>) p.get();
 
             for (BattleFieldObject sub : unitMap.keySet()) {
-              GridUnitView  view = (GridUnitView) unitMap.get(sub);
+                GridUnitView view = (GridUnitView) unitMap.get(sub);
                 if (list.contains(sub)) {
                     setVisible(view.getLastSeenView(), true);
-                }else {
+                } else {
                     setVisible(view.getLastSeenView(), false);
                 }
             }
 
         });
-            GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
+        GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
                 return;
@@ -483,7 +487,8 @@ public class GridPanel extends Group {
     private void setVisible(BattleFieldObject sub, boolean b) {
         setVisible(unitMap.get(sub), b);
     }
-        private void setVisible(  BaseView view  , boolean b) {
+
+    private void setVisible(BaseView view, boolean b) {
 
         if (view == null)
             return;
@@ -727,10 +732,9 @@ public class GridPanel extends Group {
 
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
-            if (uv.getLastSeenView()!=null )
-            {
+            if (uv.getLastSeenView() != null) {
                 if (LastSeenMaster.isUpdateRequired(object))
-                   cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
+                    cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -739,12 +743,15 @@ public class GridPanel extends Group {
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
-        BaseView uv = UnitViewFactory.create(battleFieldObjectbj);
-        unitMap.put(battleFieldObjectbj, uv);
+        GridUnitView view = UnitViewFactory.create(battleFieldObjectbj);
+        unitMap.put(battleFieldObjectbj, view);
+        if (battleFieldObjectbj.isPlayerCharacter()){
+            mainHeroView = view;
+        }
         moveUnitView(battleFieldObjectbj);
         if (!isVisibleByDefault(battleFieldObjectbj))
-            uv.setVisible(false);
-        return uv;
+            view.setVisible(false);
+        return view;
     }
 
     private void addUnitView(BattleFieldObject heroObj) {
@@ -852,6 +859,22 @@ public class GridPanel extends Group {
             resetZIndices();
             update();
         }
+        if (isAutoResetVisibleOn()){
+            if (resetTimer<=0){
+                resetTimer=0.5f;
+            for (BattleFieldObject sub: DC_Game.game.getVisionMaster().getVisibleList()){
+                setVisible(unitMap.get(sub), true);
+            }
+            for (BattleFieldObject sub: DC_Game.game.getVisionMaster().getInvisibleList()){
+                setVisible(unitMap.get(sub), false);
+            }
+            }
+            resetTimer-=delta;
+        }
+    }
+
+    private boolean isAutoResetVisibleOn() {
+        return true;
     }
 
     private void update() {
@@ -931,7 +954,7 @@ public class GridPanel extends Group {
 //            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
                 shadowMap.setZtoMax(sub);
             }
-
+        overlayManager.setZIndex(Integer.MAX_VALUE);
 
         animMaster.setZIndex(Integer.MAX_VALUE);
         if (fpsLabel != null)
@@ -974,5 +997,14 @@ public class GridPanel extends Group {
 
     public void setFpsLabel(Label fpsLabel) {
         this.fpsLabel = fpsLabel;
+    }
+
+    public GridUnitView getMainHeroView() {
+        return mainHeroView;
+    }
+
+    public BattleFieldObject getObjectForView(GridUnitView source) {
+        return new MapMaster<BattleFieldObject, BaseView>()
+         .getKeyForValue(unitMap, source);
     }
 }

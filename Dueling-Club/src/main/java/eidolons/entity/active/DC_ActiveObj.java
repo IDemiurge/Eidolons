@@ -23,8 +23,8 @@ import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.values.parameters.PARAMETER;
@@ -405,12 +405,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
+    public UNIT_VISION getUnitVisionStatus() {
         return ownerObj.getUnitVisionStatus();
     }
 
     @Override
-    public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
+    public PLAYER_VISION getActivePlayerVisionStatus() {
         return ownerObj.getActivePlayerVisionStatus();
     }
 

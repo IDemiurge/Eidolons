@@ -260,6 +260,8 @@ public class DefaultActionHandler {
     }
 
     private static boolean doDebugStuff(Unit source, BattleFieldObject target) {
+        target.getGame().getVisionMaster().getVisionController().log(source, target);
+
         OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
         VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
         target.getPlayerVisionStatus(true);

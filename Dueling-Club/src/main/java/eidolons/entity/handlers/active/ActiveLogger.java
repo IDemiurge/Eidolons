@@ -7,7 +7,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.handlers.EntityLogger;
 import main.entity.handlers.EntityMaster;
@@ -107,15 +107,15 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
 
             return getGame().isDebugMode() ||
              (getEntity().getOwnerObj().isMine() &&
-              getEntity().getOwnerObj().getPlayerVisionStatus(false) != UNIT_TO_PLAYER_VISION.KNOWN
-              && getEntity().getOwnerObj().getPlayerVisionStatus(false) != UNIT_TO_PLAYER_VISION.DETECTED
+              getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.KNOWN
+              && getEntity().getOwnerObj().getPlayerVisionStatus(false) != PLAYER_VISION.DETECTED
              );
         }
         if (!getEntity().getOwnerObj().isMine())
             if (!getGame().isDebugMode() &&
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.CONCEALED
+             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.CONCEALED
              ||
-             getEntity().getOwnerObj().getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.INVISIBLE
+             getEntity().getOwnerObj().getPlayerVisionStatus(false) == PLAYER_VISION.INVISIBLE
              )
                 return false;
         return true;

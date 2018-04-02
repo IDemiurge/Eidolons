@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
@@ -87,7 +87,7 @@ public class AggroMaster {
                 newAggro = true;
                 unit.getAI().setEngaged(false);
             }
-            if (hero.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE)
+            if (hero.getPlayerVisionStatus(true) == PLAYER_VISION.INVISIBLE)
                 continue;
             VISIBILITY_LEVEL visibility = VisionManager.getMaster().getVisibilityLevel(unit, hero);
             if (visibility != VISIBILITY_LEVEL.CLEAR_SIGHT)

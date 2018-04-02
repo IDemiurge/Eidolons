@@ -5,8 +5,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.core.game.DC_Game;
-import main.content.enums.rules.VisionEnums;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
@@ -44,7 +43,7 @@ public class DC_LogManager extends LogManager {
     }
 
     public void logMovement(DC_Obj obj, Coordinates c) {
-        if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE) {
+        if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.INVISIBLE) {
             return;
         }
         String name = obj.getName();
@@ -85,7 +84,7 @@ public class DC_LogManager extends LogManager {
                 if (!unit.getAI().isOutsideCombat())
                     if (
                      (!start && unit.isDead()) ||
-                      (start && unit.getPlayerVisionStatus(false) != UNIT_TO_PLAYER_VISION.INVISIBLE)) {
+                      (start && unit.getPlayerVisionStatus(false) != PLAYER_VISION.INVISIBLE)) {
                         String name = unit.getNameIfKnown();
                         if (map.containsKey(name))
                             MapMaster.addToIntegerMap(map, name, 1);

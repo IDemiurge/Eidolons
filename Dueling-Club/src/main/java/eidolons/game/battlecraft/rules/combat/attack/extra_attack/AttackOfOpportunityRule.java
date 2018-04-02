@@ -18,7 +18,7 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.Condition;
@@ -228,7 +228,7 @@ public class AttackOfOpportunityRule {
             conditions = new Conditions(ConditionMaster.getAliveAndConsciousFilterCondition(),
              ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
              .getEnemyCondition(), new VisibilityCondition(KEYS.MATCH, KEYS.SOURCE,
-             VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+             UNIT_VISION.IN_PLAIN_SIGHT));
         }
         return conditions;
     }

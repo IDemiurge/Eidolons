@@ -449,6 +449,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return false;
     }
 
+    public boolean isPlayerCharacter() {
+        return false;
+    }
     public boolean isItemsInitialized() {
         return false;
     }

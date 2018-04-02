@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.rules.mechanics;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.rules.VisionEnums;
@@ -86,4 +87,7 @@ public class ConcealmentRule {
 
     }
 
+    public static boolean isConcealed(Unit source, BattleFieldObject object) {
+        return false;
+    }
 }

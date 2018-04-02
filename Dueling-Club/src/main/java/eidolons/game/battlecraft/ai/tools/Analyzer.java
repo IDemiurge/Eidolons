@@ -21,7 +21,7 @@ import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.data.XList;
 import main.entity.obj.Obj;
@@ -439,7 +439,7 @@ public class Analyzer extends AiHandler {
             }
             if (detected) // TODO in sight etc
             {
-                if (cell.getActivePlayerVisionStatus() != VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
+                if (cell.getActivePlayerVisionStatus() != PLAYER_VISION.DETECTED) {
                     continue;
                 }
             }

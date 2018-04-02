@@ -16,7 +16,7 @@ import eidolons.system.graphics.AttackAnimation;
 import eidolons.system.graphics.DC_ImageMaster;
 import main.content.ContentManager;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
@@ -426,12 +426,12 @@ public class AttackCalculator {
 
     private int applyVisibilityPenalty(int atk_mod) {
         int penalty = 0;
-        if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT) {
+        if (attacked.getUnitVisionStatus() == UNIT_VISION.IN_SIGHT) {
             // as opposed to IN_PLAIN_SIGHT
             penalty = applyParamMod(-20, (PARAMS.RANGED_PENALTY_MOD));
-        } else if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+        } else if (attacked.getUnitVisionStatus() == UNIT_VISION.BEYOND_SIGHT) {
             penalty = applyParamMod(-35, (PARAMS.RANGED_PENALTY_MOD));
-        } else if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED) {
+        } else if (attacked.getUnitVisionStatus() == UNIT_VISION.CONCEALED) {
             penalty = applyParamMod(-50, (PARAMS.RANGED_PENALTY_MOD));
         }
 

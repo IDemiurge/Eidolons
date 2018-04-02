@@ -18,8 +18,8 @@ import main.ability.effects.common.AddStatusEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
@@ -44,14 +44,14 @@ public class StealthRule implements ActionRule {
     }
 
     public static boolean checkHidden(Unit u) {
-        return u.getPlayerVisionStatus(true) == VisionEnums.UNIT_TO_PLAYER_VISION.INVISIBLE;
+        return u.getPlayerVisionStatus(true) == PLAYER_VISION.INVISIBLE;
     }
 
     public static void applySpotted(Unit target) {
         BuffMaster.applyBuff(SPOTTED, new AddStatusEffect(UnitEnums.STATUS.SPOTTED), target, 1); // TODO
         // also negate concealment? // dispel
         // hidden?
-        target.setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED);
+        target.setPlayerVisionStatus(PLAYER_VISION.DETECTED);
         // to be dispelled by renewed use of Invisiblity or special Hide
         // actions
         // or perhaps upon moving beyond vision range TODO

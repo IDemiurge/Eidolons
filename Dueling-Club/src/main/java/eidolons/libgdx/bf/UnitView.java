@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxImageTransformer;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -18,6 +20,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,8 +29,8 @@ import java.util.function.Supplier;
 public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
     private static Boolean hpAlwaysVisible;
-    protected final int curId;
-    private final String name;
+    protected  int curId;
+    private  String name;
     protected int initiativeIntVal;
     protected TextureRegion clockTexture;
     protected HpBar hpBar;
@@ -49,6 +52,7 @@ public class UnitView extends BaseView {
     private Tooltip tooltip;
     private float timeTillTurn = 10;
     private float resetTimer;
+    private GridUnitView parentView;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -56,13 +60,16 @@ public class UnitView extends BaseView {
 
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
-        this.mainHero = o.isMainHero();
         this.curId = curId;
-        setTeamColor(o.getTeamColor());
-        init(o.getClockTexture(), o.getClockValue());
-        this.name = o.getName();
     }
 
+    public void init(UnitViewOptions o) {
+        this.mainHero = o.isMainHero();
+        setTeamColor(o.getTeamColor());
+        this.name = o.getName();
+        init(o.getPortraitTexture(), o.getPortraitPath());
+        init(o.getClockTexture(), o.getClockValue());
+    }
     public static Boolean getHpAlwaysVisible() {
         if (hpAlwaysVisible == null) {
             hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
@@ -227,9 +234,16 @@ public class UnitView extends BaseView {
             alphaFluctuation(mainHeroLabel, delta);
         }
 //        alphaFluctuation(emblemBorder, delta);
+
+        if (!(this instanceof GridUnitView)) {
+            if (!getParentView().isVisible()){
+                setInvisibleQueueTexture();
+                return;
+            }
+        }
         if (!mainHero)
-            if (resetTimer <= 0) {
-                if (outlineSupplier != null)
+            if (resetTimer <= 0 || OutlineMaster.isAutoOutlinesOff()) {
+                if (outlineSupplier != null && !OutlineMaster.isAutoOutlinesOff())
                     outline = outlineSupplier.get();
                 if (outline != null) {
                     setPortraitTexture(outline);
@@ -237,9 +251,9 @@ public class UnitView extends BaseView {
                     if (originalTextureAlt != null) {
                         setPortraitTexture(originalTextureAlt);
                     } else {
-                        {
+
                             setPortraitTexture(originalTexture);
-                        }
+
                     }
                 }
                 resetTimer = 0.2f;
@@ -247,6 +261,23 @@ public class UnitView extends BaseView {
                 resetTimer = resetTimer - delta;
             }
 
+    }
+
+    private void setInvisibleQueueTexture() {
+        setPortraitTexture(TextureCache.getSizedRegion(
+         InitiativePanel.imageSize,
+         OUTLINE_TYPE.UNKNOWN.getImagePath()));
+    }
+
+    protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
+        originalTexture = processPortraitTexture(portraitTexture, path);
+        if (isMainHero()){
+            return new FadeImageContainer(new Image(originalTexture));
+        }
+        return   new FadeImageContainer(new Image(getInvisibleQueueTexture()));
+    }
+    private TextureRegion getInvisibleQueueTexture() {
+        return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 
 
@@ -277,10 +308,6 @@ public class UnitView extends BaseView {
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
 
-        if (!(this instanceof GridUnitView)) {
-//            getHpBar().drawAt(batch, 0, 0);
-            return;
-        }
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
@@ -388,5 +415,13 @@ public class UnitView extends BaseView {
 
     public void setMainHero(boolean mainHero) {
         this.mainHero = mainHero;
+    }
+
+    public void setParentView(GridUnitView parentView) {
+        this.parentView = parentView;
+    }
+
+    public GridUnitView getParentView() {
+        return parentView;
     }
 }

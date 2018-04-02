@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.atb.AtbController.AtbUnit;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -21,6 +22,8 @@ public class AtbCalculator {
     public AtbCalculator(AtbController controller) {
         this.controller = controller;
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
+            if ( ExplorationMaster.isExplorationOn())
+                return;
             Stack<AtbUnit> units = controller.getUnits();
             int index = getIndexAfterAction((DC_ActiveObj) p.get());
             GuiEventManager.trigger(GuiEventType.

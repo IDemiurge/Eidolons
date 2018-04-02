@@ -10,7 +10,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
@@ -122,6 +122,9 @@ public class GammaMaster {
                     alpha = 1;
                 else
                     alpha = 1 - gamma;
+                if (unit.getX()==x && unit.getY()==y){
+                    alpha = alpha/2;
+                }
                 break;
             case GAMMA_LIGHT:
 //                if (gamma < 2)
@@ -136,7 +139,7 @@ public class GammaMaster {
                     if (sub.getCoordinates().x == x)
                         if (sub.getCoordinates().y == y)
                             if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
-                             UNIT_TO_PLAYER_VISION.DETECTED) {
+                             PLAYER_VISION.DETECTED) {
                                 alpha += LIGHT_EMITTER_ALPHA_FACTOR *
                                  master.getGame().getRules().getIlluminationRule()
                                  .getLightEmission((DC_Obj) sub);

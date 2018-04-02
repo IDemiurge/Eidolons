@@ -87,7 +87,8 @@ public class UnitViewOptions {
         this.portraitTexture = getOrCreateR(obj.getImagePath());
         this.portraitPath =  (obj.getImagePath());
         this.name = obj.getName();
-        this.mainHero = obj.isMainHero();
+
+        this.mainHero =obj.isMine() && obj.isMainHero();
 
         if (obj instanceof Structure) {
             if (obj.isLandscape()) {

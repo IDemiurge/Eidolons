@@ -5,7 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.ScenarioGame;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -31,8 +31,8 @@ public class Entrance extends Structure { //ScenarioUnit
     }
 
     @Override
-    public UNIT_TO_PLAYER_VISION getPlayerVisionStatus(boolean active) {
-        return UNIT_TO_PLAYER_VISION.DETECTED;
+    public PLAYER_VISION getPlayerVisionStatus(boolean active) {
+        return PLAYER_VISION.DETECTED;
     }
 
     @Override

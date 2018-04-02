@@ -8,9 +8,8 @@ import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
-import main.content.enums.rules.VisionEnums;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
@@ -454,14 +453,14 @@ public class ImageManager {
         return path;
     }
 
-    public static ImageIcon getCellBorderForBfObj(boolean huge, UNIT_TO_PLAYER_VISION detection,
-                                                  UNIT_TO_UNIT_VISION visibility) {
+    public static ImageIcon getCellBorderForBfObj(boolean huge, PLAYER_VISION detection,
+                                                  UNIT_VISION visibility) {
         String suffix = (!huge) ? "96" : "HUGE";
-        if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
-         || detection == VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED) {
+        if (detection == PLAYER_VISION.UNKNOWN
+         || detection == PLAYER_VISION.CONCEALED) {
             suffix += " unknown";
-        } else if (detection == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN
-         || visibility == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+        } else if (detection == PLAYER_VISION.KNOWN
+         || visibility == UNIT_VISION.BEYOND_SIGHT) {
             suffix += " hidden";
         }
         return getIcon("UI//CELL for " + suffix + ".png");

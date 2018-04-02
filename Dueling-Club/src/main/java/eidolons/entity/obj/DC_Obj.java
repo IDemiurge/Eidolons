@@ -8,7 +8,13 @@ import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.vision.*;
+import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMapper;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.DetectionMapper;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.PlayerVisionMapper;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.UnitVisionMapper;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.VisibilityLevelMapper;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.graphics.PhaseAnimation;
@@ -23,10 +29,9 @@ import main.content.enums.entity.UnitEnums.CLASSIFICATIONS;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.enums.entity.UnitEnums.STATUS;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
@@ -54,7 +59,7 @@ public abstract class DC_Obj extends MicroObj {
     protected Map<SPECIAL_EFFECTS_CASE, Effect> specialEffects;
     protected Map<DAMAGE_CASE, List<Damage>> bonusDamage;
     protected DAMAGE_TYPE dmg_type;
-//    protected UNIT_TO_PLAYER_VISION activeVisionStatus;
+    //    protected UNIT_TO_PLAYER_VISION activeVisionStatus;
 //    protected UNIT_TO_UNIT_VISION activeUnitVisionStatus;
 //    protected boolean detected;
 //protected boolean detectedByPlayer;
@@ -64,7 +69,7 @@ public abstract class DC_Obj extends MicroObj {
 //    protected VISIBILITY_LEVEL visibilityLevel;
 //    protected OUTLINE_TYPE outlineType;
     protected Integer gamma;
-//    protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
+    //    protected PERCEPTION_STATUS_PLAYER playerPerceptionStatus;
 //    protected PERCEPTION_STATUS perceptionStatus;
 //    protected IDENTIFICATION_LEVEL identificationLevel;
     protected DIRECTION blockingWallDirection;
@@ -72,6 +77,7 @@ public abstract class DC_Obj extends MicroObj {
     protected Coordinates blockingWallCoordinate;
     protected PhaseAnimation animation;
     Coordinates blockingCoordinate;
+    VisionController visionController;
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -84,6 +90,27 @@ public abstract class DC_Obj extends MicroObj {
 //                visibilityLevelForPlayer = VISIBILITY_LEVEL.CONCEALED;
             }
         }
+        visionController=getGame().getVisionMaster().getVisionController();
+    }
+
+    public OutlineMapper getOutlineMapper() {
+        return visionController.getOutlineMapper();
+    }
+
+    public PlayerVisionMapper getPlayerVisionMapper() {
+        return visionController.getPlayerVisionMapper();
+    }
+
+    public VisibilityLevelMapper getVisibilityLevelMapper() {
+        return visionController.getVisibilityLevelMapper();
+    }
+
+    public UnitVisionMapper getUnitVisionMapper() {
+        return visionController.getUnitVisionMapper();
+    }
+
+    public DetectionMapper getDetectionMapper() {
+        return visionController.getDetectionMapper();
     }
 
     @Override
@@ -135,13 +162,12 @@ public abstract class DC_Obj extends MicroObj {
     }
 
     public boolean checkInSight() {
-        return getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
+        return getUnitVisionStatus() == UNIT_VISION.IN_PLAIN_SIGHT;
     }
 
     public boolean checkInSightForUnit(Unit unit) {
-        return getGame().getVisionMaster().getUnitVisibilityStatus(this, unit) == VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT;
+        return getGame().getVisionMaster().getUnitVisibilityStatus(this, unit) == UNIT_VISION.IN_PLAIN_SIGHT;
     }
-
 
     @Override
     public String getToolTip() {
@@ -167,6 +193,8 @@ public abstract class DC_Obj extends MicroObj {
         this.game = game;
     }
 
+    // StringMaster.getWellFormattedString
+
     public boolean checkClassification(CLASSIFICATIONS PROP) {
         return checkProperty(G_PROPS.CLASSIFICATIONS, PROP.toString());
 
@@ -185,8 +213,6 @@ public abstract class DC_Obj extends MicroObj {
     public boolean isFlying() {
         return checkPassive(UnitEnums.STANDARD_PASSIVES.FLYING);
     }
-
-    // StringMaster.getWellFormattedString
 
     public boolean hasDoubleCounter() {
         return checkPassive(UnitEnums.STANDARD_PASSIVES.DOUBLE_RETALIATION);
@@ -299,83 +325,99 @@ public abstract class DC_Obj extends MicroObj {
 
     }
 
-    public UNIT_TO_PLAYER_VISION getActiveVisionStatus() {
-        return activeVisionStatus;
+
+
+    public PLAYER_VISION getActiveVisionStatus() {
+        return getPlayerVisionMapper().get(this);
     }
 
-    public void setActiveVisionStatus(UNIT_TO_PLAYER_VISION activeVisionStatus) {
-        getPlayerVisionMapper().set(
-         getGame().getVisionMaster().getSeeingUnit(),
-         this, activeVisionStatus);
+    public void setActiveVisionStatus(PLAYER_VISION activeVisionStatus) {
+        getPlayerVisionMapper().set(this, activeVisionStatus);
     }
 
-    public UNIT_TO_UNIT_VISION getActiveUnitVisionStatus() {
-        return activeUnitVisionStatus;
+    public PLAYER_VISION getPlayerVisionStatus() {
+        return getPlayerVisionMapper().getForMe(this);
     }
-OutlineMapper outlineMapper;
-    PlayerVisionMapper playerVisionMapper;
-    UnitVisionMapper unitVisionMapper;
-    DetectionMapper detectionMapper;
-    public void setActiveUnitVisionStatus(UNIT_TO_UNIT_VISION activeUnitVisionStatus) {
-        this.activeUnitVisionStatus = activeUnitVisionStatus;
+
+    public void setPlayerVisionStatus(PLAYER_VISION playerVisionStatus) {
+        getPlayerVisionMapper().setForMe(this, playerVisionStatus);
     }
+
+
+
+    public UNIT_VISION getActiveUnitVisionStatus() {
+        return getUnitVisionMapper().get(this);
+    }
+
+    public void setActiveUnitVisionStatus(UNIT_VISION activeUnitVisionStatus) {
+        getUnitVisionMapper().set(this, activeUnitVisionStatus);
+    }
+    public UNIT_VISION getUnitVisionStatus() {
+        return getUnitVisionMapper().getForMe(this);
+    }
+
+    public void setUnitVisionStatus(UNIT_VISION activeUnitVisionStatus) {
+        getUnitVisionMapper().setForMe(this, activeUnitVisionStatus);
+    }
+
+
 
     public boolean isDetected() {
-        return detected;
+        return getDetectionMapper().get(this);
     }
 
     public void setDetected(boolean detected) {
-        this.detected = detected;
+        getDetectionMapper().set(this, detected);
     }
 
     public boolean isDetectedByPlayer() {
-        return detectedByPlayer;
+        return getDetectionMapper().getForMe(this);
     }
 
     public void setDetectedByPlayer(boolean detectedByPlayer) {
-        this.detectedByPlayer = detectedByPlayer;
+          getDetectionMapper().setForMe(this, detectedByPlayer);
     }
 
-    public OUTLINE_TYPE getOutlineTypeForPlayer() {
-        return outlineTypeForPlayer;
+
+
+    public OUTLINE_TYPE getOutlineType() {
+        return getOutlineMapper().get(this);
     }
 
-    public void setOutlineTypeForPlayer(OUTLINE_TYPE outlineTypeForPlayer) {
-        this.outlineTypeForPlayer = outlineTypeForPlayer;
-    }
-
-    public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
-        return visibilityLevelForPlayer;
-    }
-
-    public void setVisibilityLevelForPlayer(VISIBILITY_LEVEL visibilityLevelForPlayer) {
-        this.visibilityLevelForPlayer = visibilityLevelForPlayer;
-    }
-
-    public UNIT_TO_PLAYER_VISION getPlayerVisionStatus() {
-        return playerVisionStatus;
-    }
-
-    public void setPlayerVisionStatus(UNIT_TO_PLAYER_VISION playerVisionStatus) {
-        this.playerVisionStatus = playerVisionStatus;
+    public void setOutlineType(OUTLINE_TYPE outlineTypeForPlayer) {
+        getOutlineMapper().set(this,outlineTypeForPlayer);
     }
 
     public VISIBILITY_LEVEL getVisibilityLevel() {
-        return visibilityLevel;
+        return getVisibilityLevelMapper().get(this);
     }
 
-    public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevel) {
-        this.visibilityLevel = visibilityLevel;
+    public void setVisibilityLevel(VISIBILITY_LEVEL visibilityLevelForPlayer) {
+        getVisibilityLevelMapper().set(this, visibilityLevelForPlayer);
     }
 
-    public OUTLINE_TYPE getOutlineType() {
-        return outlineType;
+
+
+    public OUTLINE_TYPE getOutlineTypeForPlayer() {
+        return getOutlineMapper().getForMe(this);
     }
 
-    public void setOutlineType(OUTLINE_TYPE outlineType) {
-        this.outlineType = outlineType;
+    public void setOutlineTypeForPlayer(OUTLINE_TYPE outlineTypeForPlayer) {
+        getOutlineMapper().setForMe(this,outlineTypeForPlayer);
     }
 
+    public VISIBILITY_LEVEL getVisibilityLevelForPlayer() {
+        return getVisibilityLevelMapper().getForMe(this);
+    }
+
+    public void setVisibilityLevelForPlayer(VISIBILITY_LEVEL visibilityLevelForPlayer) {
+        getVisibilityLevelMapper().setForMe(this, visibilityLevelForPlayer);
+    }
+
+
+
+
+//           TODO OLD                                <><><><><>
     //    public VISIBILITY_LEVEL getActiveVisibilityLevel() {
 //        return getVisibilityLevel(true);
 //    }
@@ -620,6 +662,7 @@ OutlineMapper outlineMapper;
 
         return VisionManager.checkVisible(this);
     }
+
     public boolean isFlippedImage() {
         if (this instanceof Unit) {
             Unit heroObj = (Unit) this;
@@ -630,6 +673,7 @@ OutlineMapper outlineMapper;
         }
         return false;
     }
+
     public boolean checkStatus(STATUS STATUS) {
         return checkProperty(G_PROPS.STATUS, (STATUS.name()));
     }
@@ -690,5 +734,29 @@ OutlineMapper outlineMapper;
     public void outsideCombatReset() {
         setParam(PARAMS.ILLUMINATION, 0);
         setDirty(false);
+    }
+
+    public PLAYER_VISION getActivePlayerVisionStatus() {
+        return getPlayerVisionMapper().get(this);
+    }
+
+    public PLAYER_VISION getPlayerVisionStatus(boolean active) {
+        if (active)
+            return getActivePlayerVisionStatus();
+        return getPlayerVisionStatus();
+    }
+
+    public VISIBILITY_LEVEL getVisibilityLevel(boolean active) {
+        if (active)
+            return getVisibilityLevelMapper().get(this);
+        return getVisibilityLevelMapper().getForMe(this);
+    }
+
+    public UNIT_VISION getUnitVisionStatus(BattleFieldObject object) {
+        return getUnitVisionMapper().get(object, this);
+    }
+
+    public boolean isDetected(DC_Player owner) {
+        return getDetectionMapper().get(owner, this);
     }
 }

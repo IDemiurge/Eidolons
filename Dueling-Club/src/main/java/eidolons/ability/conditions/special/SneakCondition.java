@@ -5,7 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
@@ -80,7 +80,7 @@ public class SneakCondition extends MicroCondition {
             // return false;
 
             if (!action.isRanged()) {
-                if (attacker.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN
+                if (attacker.getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN
                  || !VisionManager.checkVisible(attacker)) {
                     return true;
                 } else { //TODO allow sneak in front for specialists

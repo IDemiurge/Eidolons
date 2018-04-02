@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
@@ -30,25 +30,25 @@ import static main.system.GuiEventType.CREATE_RADIAL_MENU;
 import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
 public class UnitViewFactory {
-    public static BaseView create(BattleFieldObject bfObj) {
+    public static GridUnitView create(BattleFieldObject bfObj) {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         GridUnitView view = new GridUnitView(options);
-        if (bfObj.isMine())
-            view.setMainHero(bfObj.isMainHero());
-        else {
+
+        if (VisionMaster.isLastSeenOn())
+            {
             LastSeenView lsv = new LastSeenView(options);
             view.setLastSeenView(lsv);
             lsv.addListener( new LastSeenTooltip(view).getController()) ;
         }
         view.setOutlinePathSupplier(() -> {
             OUTLINE_TYPE type = null;
-            if (bfObj instanceof Unit) {
-                if (!VisionManager.checkVisible(bfObj)) {
-                    type = OUTLINE_TYPE.DARK_OUTLINE;
-                }
-            }
-            if (type == null)
-                type = bfObj.getOutlineType();
+//            if (bfObj instanceof Unit) {
+//                if (!VisionManager.checkVisible(bfObj)) {
+//                    type = OUTLINE_TYPE.DARK_OUTLINE;
+//                }
+//            }
+//            if (type == null)
+                type = bfObj.getOutlineTypeForPlayer();
 
             if (type == null)
                 return null;

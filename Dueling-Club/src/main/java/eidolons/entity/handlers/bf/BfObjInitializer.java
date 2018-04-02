@@ -8,7 +8,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.core.game.DC_Game;
-import main.content.enums.rules.VisionEnums;
 import main.data.DataManager;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
@@ -60,7 +59,6 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
     }
 
     public void addDefaultValues() {
-        getEntity().setPlayerVisionStatus(VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN);
         addDefaultFacing();
 
     }

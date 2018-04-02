@@ -84,25 +84,31 @@ public class OutlineMaster {
                 }
             }
         }
-        Ref ref = new Ref(activeUnit);
-        ref.setMatch(unit.getId());
         // [quick fix] must be the distance on which nothing is visible anyway...
-        if (PositionMaster.getExactDistance(unit.getCoordinates(), activeUnit.getCoordinates()) <
-         ClearShotCondition.getMaxCheckDistance(activeUnit, unit)) {
-            //it is assumed that if a unit is farther away than that, it cannot have anything but Concealed status for activeUnit
-            if (!new ClearShotCondition().preCheck(ref)) {
-                // vision type preCheck - x.ray or so TODO
-                if (activeUnit.isMine()) // TODO fix this !!! some other way to darken blocked stuff!
+
+        if (!VisionMaster.isNewVision())
+            if (PositionMaster.getExactDistance(unit.getCoordinates(), activeUnit.getCoordinates()) <
+             ClearShotCondition.getMaxCheckDistance(activeUnit, unit)) {
+                Ref ref = new Ref(activeUnit);
+                ref.setMatch(unit.getId());
+                //it is assumed that if a unit is farther away than that, it cannot have anything but Concealed status for activeUnit
+                if (!new ClearShotCondition().preCheck(ref)) {
+                    // vision type preCheck - x.ray or so TODO
+                    if (activeUnit.isMine()) // TODO fix this !!! some other way to darken blocked stuff!
+                        unit.setGamma(0);
+                    return OUTLINE_TYPE.BLOCKED_OUTLINE;
+                } else
+                    //TODO [visibility FIX]
+                    unit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
+            } else {
+                if (activeUnit.isMine()) //TODO fix this
                     unit.setGamma(0);
-                return OUTLINE_TYPE.BLOCKED_OUTLINE;
-            } else
-                //TODO [visibility FIX]
-                unit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
-        } else {
-            if (activeUnit.isMine()) //TODO fix this
-                unit.setGamma(0);
-            return OUTLINE_TYPE.UNKNOWN;
-        }
+                return OUTLINE_TYPE.UNKNOWN;
+            }
+        return getOutline(unit, activeUnit);
+    }
+
+    public OUTLINE_TYPE getOutline(DC_Obj unit, Unit activeUnit) {
         int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);
 
         if (gamma == Integer.MIN_VALUE) {

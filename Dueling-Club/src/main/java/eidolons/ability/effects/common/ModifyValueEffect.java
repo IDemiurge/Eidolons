@@ -377,7 +377,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             if (mod_type == MOD.MODIFY_BY_CONST || mod_type == MOD.MODIFY_BY_PERCENT) {
                 if (!isContinuousWrapped())
                     GuiEventManager.trigger(GuiEventType.VALUE_MOD,
-                     new ImmutablePair<>(param, ref));
+                     new ImmutablePair<>(param, ref.getCopy()));
             }
 
         if (amount > 0) {

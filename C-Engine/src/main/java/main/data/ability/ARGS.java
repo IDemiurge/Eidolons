@@ -15,7 +15,8 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
 import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.content.mode.STD_MODES;
 import main.content.values.parameters.PARAMETER;
@@ -121,8 +122,8 @@ public enum ARGS implements Argument {
     SPECIAL_REQUIREMENTS(SPECIAL_REQUIREMENTS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     TARGETING_MODIFIERS(AbilityEnums.TARGETING_MODIFIERS.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     MATERIAL(ItemEnums.MATERIAL.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
-    UNIT_TO_UNIT_VISION(VisionEnums.UNIT_TO_UNIT_VISION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
-    UNIT_TO_PLAYER_VISION(VisionEnums.UNIT_TO_PLAYER_VISION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    UNIT_TO_UNIT_VISION(UNIT_VISION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
+    UNIT_TO_PLAYER_VISION(PLAYER_VISION.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     DAMAGE_MODIFIER(GenericEnums.DAMAGE_MODIFIER.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     OBJ_TYPES(DC_TYPE.class, AE_ELEMENT_TYPE.ENUM_CHOOSING),
     // ZONE_EFFECT_TEMPLATES(ZONE_EFFECT_TEMPLATES.class,

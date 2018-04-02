@@ -116,6 +116,7 @@ public class ToolTipManager extends TablePanel {
 
     public void entityHover(Entity entity) {
         if (entity instanceof DC_ActiveObj) {
+            if (!ExplorationMaster.isExplorationOn())
             GuiEventManager.trigger(ACTION_HOVERED, entity);
         }
         if (entity instanceof DC_UnitAction) {

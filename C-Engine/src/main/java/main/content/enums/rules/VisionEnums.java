@@ -60,7 +60,7 @@ public class VisionEnums {
         BRILLIANT_OUTLINE, CLEAR_OUTLINE, MASS_OUTLINE, BLOCKED_OUTLINE, FLAT_OUTLINE,
         UNKNOWN;
 
-        String outlinePath = "ui\\outlines\\" + toString();
+        String outlinePath = "ui\\outlines\\" + toString()+".jpg";
         String path;
         private Image image;
 
@@ -92,12 +92,12 @@ public class VisionEnums {
         }
 
         public String getImagePath() {
-            return toString();
+            return outlinePath;
         }
 
     }
 
-    public enum UNIT_TO_PLAYER_VISION {
+    public enum PLAYER_VISION {
         DETECTED, KNOWN, // CURRENTLY UNDETECTED
         UNKNOWN,
         CONCEALED,
@@ -105,10 +105,13 @@ public class VisionEnums {
         INVISIBLE_ALLY
     }
 
-    public enum UNIT_TO_UNIT_VISION {
-        IN_PLAIN_SIGHT, IN_SIGHT, BEYOND_SIGHT, CONCEALED;
+    public enum UNIT_VISION {
+        IN_PLAIN_SIGHT, IN_SIGHT, BEYOND_SIGHT,
+        BLOCKED,
 
-        public boolean isSufficient(UNIT_TO_UNIT_VISION u_vision) {
+        CONCEALED;
+
+        public boolean isSufficient(UNIT_VISION u_vision) {
             if (u_vision == BEYOND_SIGHT) {
                 if (this == CONCEALED) {
                     return true;

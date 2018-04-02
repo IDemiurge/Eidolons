@@ -13,9 +13,8 @@ import eidolons.system.graphics.ImageTransformer;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.ContentManager;
 import main.content.enums.entity.BfObjEnums;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -641,7 +640,7 @@ public class DrawMaster {
                 img = ImageManager.getHighlightedCellIcon().getImage();
             } else {
                 VISIBILITY_LEVEL vl = cellComp.getTerrainObj().getVisibilityLevel(false);
-                UNIT_TO_PLAYER_VISION ds = cellComp.getTerrainObj().getPlayerVisionStatus(false);
+                PLAYER_VISION ds = cellComp.getTerrainObj().getPlayerVisionStatus(false);
 
                 // if (vl==VISIBILITY_LEVEL.CONCEALED){
                 // VisibilityMaster.getDisplayImageForUnit(type,
@@ -655,7 +654,7 @@ public class DrawMaster {
                 // " for "
                 // + cellComp.getTerrainObj().getNameAndCoordinate());
                 if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(cellComp.getTerrainObj())) {
-                    if (ds == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN || ds == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
+                    if (ds == PLAYER_VISION.KNOWN || ds == PLAYER_VISION.DETECTED) {
                         img = (ImageManager.getHiddenCellIcon().getImage());
                     } else {
                         img = ImageManager.getUnknownCellIcon().getImage();
@@ -848,7 +847,7 @@ public class DrawMaster {
 
     private void drawWallOverlays(Unit obj, Graphics g, Coordinates coordinates) {
         if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
-            if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
+            if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
                 return;
             }
         }
@@ -1452,7 +1451,7 @@ public class DrawMaster {
     }
 
     private void applyBeyondSight(BufferedImage image, Unit obj) {
-        if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
+        if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.DETECTED) {
             image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
         } else {
             image.getGraphics().drawImage(BORDER.HIDDEN.getImage(), 0, 0, null);

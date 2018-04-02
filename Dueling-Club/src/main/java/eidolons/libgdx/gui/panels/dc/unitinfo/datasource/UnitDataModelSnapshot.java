@@ -4,8 +4,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import main.ability.AbilityObj;
 import main.content.OBJ_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.DataModel;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
@@ -23,8 +23,8 @@ public class UnitDataModelSnapshot extends DataModel implements BfObj {
     private int x;
     private int y;
     private boolean playerDetected;
-    private UNIT_TO_PLAYER_VISION activePlayerVisionStatus;
-    private UNIT_TO_UNIT_VISION unitVisionStatus;
+    private PLAYER_VISION activePlayerVisionStatus;
+    private UNIT_VISION unitVisionStatus;
     private Coordinates coordinates;
     private boolean dead;
 
@@ -84,12 +84,12 @@ public class UnitDataModelSnapshot extends DataModel implements BfObj {
     }
 
     @Override
-    public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
+    public UNIT_VISION getUnitVisionStatus() {
         return unitVisionStatus;
     }
 
     @Override
-    public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
+    public PLAYER_VISION getActivePlayerVisionStatus() {
         return activePlayerVisionStatus;
     }
 
