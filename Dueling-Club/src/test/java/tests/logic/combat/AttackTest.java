@@ -11,12 +11,17 @@ import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.game.core.ActionInput;
 import main.game.core.Eidolons;
+import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import tests.init.JUnitDcInitializer;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -41,8 +46,16 @@ public class AttackTest {
 
 
 
+        @Mock
+        DC_Game my_gam;
+
+
+
         @Before
         public void createEntity() {
+
+
+
             judi = new JUnitDcInitializer();
             ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
             source =judi.game.getUnits().get(0);
