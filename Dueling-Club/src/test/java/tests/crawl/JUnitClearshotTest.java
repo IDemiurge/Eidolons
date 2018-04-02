@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Created by JustMe on 10/26/2017.
@@ -26,7 +27,19 @@ public class JUnitClearshotTest extends FastDcTest {
 
     protected List<Coordinates> insideCoords;
     protected List<Coordinates> outsideCoords;
-    protected boolean diagonal;
+    protected boolean diagonal = false;
+
+
+    @Test
+    public void makeChecks() {
+
+
+        checkClearshots(false);
+        checkClearshots(true);
+        diagonal = true;
+        checkClearshots(false);
+        checkClearshots(true);
+    }
 
     @Override
     public String getDungeonPath() {
@@ -66,8 +79,7 @@ public class JUnitClearshotTest extends FastDcTest {
                      "; hero_inside= " +
                      hero_inside +
                      "; inside="+ inside );
-
-                    assertTrue(false);
+                    fail();
                 }
             }
         else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline)
@@ -77,7 +89,7 @@ public class JUnitClearshotTest extends FastDcTest {
                  "; hero_inside= " +
                  hero_inside +
                  "; inside="+ inside );
-                assertTrue(false);
+                fail();
             }
 
         if (sub instanceof BattleFieldObject)
@@ -89,7 +101,7 @@ public class JUnitClearshotTest extends FastDcTest {
                      "; hero_inside= " +
                      hero_inside +
                      "; inside="+ inside );
-                    assertTrue(false);
+                    fail();
                 }
     }
 
@@ -199,16 +211,7 @@ public class JUnitClearshotTest extends FastDcTest {
         return true;
     }
 
-    @Test
-    public void makeChecks() {
 
-
-        checkClearshots(false);
-        checkClearshots(true);
-        diagonal = true;
-        checkClearshots(false);
-        checkClearshots(true);
-    }
 
     public void checkClearshots(boolean breakMode) {
         ClearShotCondition.setUnitTestBreakMode(breakMode);
