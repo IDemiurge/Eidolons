@@ -109,14 +109,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             quietly = false;
 
         }
-        if (!ignoreInterrupt) {
-            if (!quietly) {
-                if (checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+        if ((game.isDebugMode()&&isMine())|| (!ignoreInterrupt&&!quietly)) {
+                if ((game.isDebugMode()&&isMine())|| checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                     preventDeath();
                     return false;
                 }
             }
-        }
         ref.setID(KEYS.KILLER, killer.getId());
 
         Ref REF = Ref.getCopy(killer.getRef());

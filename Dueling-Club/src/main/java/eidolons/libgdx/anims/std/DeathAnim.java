@@ -105,7 +105,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(unit);
         if (actor != null)
             return actor;

@@ -58,7 +58,6 @@ public class DungeonScreen extends GameScreen {
 
     protected ParticleManager particleManager;
     protected Stage gridStage;
-    protected BattleGuiStage guiStage;
     protected GridPanel gridPanel;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
@@ -203,7 +202,7 @@ public class DungeonScreen extends GameScreen {
 
     public void updateGui() {
 //        gridPanel.updateGui();
-        guiStage.getBottomPanel().update();
+        getGuiStage().getBottomPanel().update();
         checkGraphicsUpdates();
     }
 
@@ -362,7 +361,7 @@ public class DungeonScreen extends GameScreen {
     }
 
     public BattleGuiStage getGuiStage() {
-        return guiStage;
+        return (BattleGuiStage) guiStage;
     }
 
     public InputController getController() {

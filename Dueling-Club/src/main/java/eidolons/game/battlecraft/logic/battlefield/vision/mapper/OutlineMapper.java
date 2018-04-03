@@ -1,6 +1,5 @@
-package eidolons.game.battlecraft.logic.battlefield.vision;
+package eidolons.game.battlecraft.logic.battlefield.vision.mapper;
 
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.ObjVisionMapper;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 
 /**

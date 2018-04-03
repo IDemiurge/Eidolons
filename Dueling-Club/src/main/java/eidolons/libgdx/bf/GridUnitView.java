@@ -12,6 +12,7 @@ import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -21,15 +22,15 @@ import java.util.function.Supplier;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 public class GridUnitView extends UnitView {
-    private Image arrow;
-    private Image emblemLighting;
-    private Image icon;
-    private int arrowRotation;
-    private float alpha = 1f;
+    protected Image arrow;
+    protected Image emblemLighting;
+    protected Image icon;
+    protected int arrowRotation;
+    protected float alpha = 1f;
 
-    private UnitView initiativeQueueUnitView;
-    private boolean cellBackground;
-    private LastSeenView lastSeenView;
+    protected UnitView initiativeQueueUnitView;
+    protected boolean cellBackground;
+    protected LastSeenView lastSeenView;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
@@ -52,7 +53,7 @@ public class GridUnitView extends UnitView {
         return initiativeQueueUnitView;
     }
 
-    private void initQueueView(UnitViewOptions o) {
+    protected void initQueueView(UnitViewOptions o) {
         setHoverResponsive(o.isHoverResponsive());
         initiativeQueueUnitView = new UnitView(o, curId);
         initiativeQueueUnitView.setParentView(this);
@@ -95,7 +96,7 @@ public class GridUnitView extends UnitView {
 
     }
 
-    private void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
+    protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
 
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
@@ -129,7 +130,7 @@ public class GridUnitView extends UnitView {
         setInitialized(true);
     }
 
-    private float getEmblemSize() {
+    protected float getEmblemSize() {
         if (mainHero)
             return 36;
         return 32;
@@ -338,6 +339,13 @@ public class GridUnitView extends UnitView {
              resourceSource);
     }
 
+    protected void setDefaultTexture() {
+        if (mainHero){
+            return;
+        }
+        setPortraitTexture(TextureCache.getOrCreateR(
+         OUTLINE_TYPE.UNKNOWN.getImagePath()));
+    }
     @Override
     public void setHpBar(HpBar hpBar) {
         super.setHpBar(hpBar);

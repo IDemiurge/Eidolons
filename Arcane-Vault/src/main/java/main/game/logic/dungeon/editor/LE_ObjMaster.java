@@ -277,7 +277,7 @@ public class LE_ObjMaster {
             return;
         }
         // if (!noRemove)
-        // LevelEditor.getSimulation().getUnitMap().put(c, new
+        // LevelEditor.getSimulation().getViewMap().put(c, new
         // ArrayList<DC_HeroObj>());
         Coordinates newCoordinates = new Coordinates(c.x + offsetX, c.y + offsetY);
         if (mirror) {

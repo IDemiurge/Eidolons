@@ -245,7 +245,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
               loop.continues() &&
               (
                DungeonScreen.getInstance().getGridPanel()
-                .getUnitMap().get(activeUnit).getActions().size > 0 ||
+                .getViewMap().get(activeUnit).getActions().size > 0 ||
                 AnimMaster.getInstance().isDrawingPlayer()
               )) {
                 WaitMaster.WAIT(100);

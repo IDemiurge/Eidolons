@@ -281,7 +281,8 @@ public class HpBar extends SuperActor {
         if (reverse) {
             x = x + region.getRegionWidth() * (fullLengthPerc - perc);
         }
-        batch.draw(region, x, getY());
+        batch.draw(region, x, getY(), getScaleX()*region.getRegionWidth(),
+         getScaleY()*region.getRegionHeight());
     }
 
     @Override

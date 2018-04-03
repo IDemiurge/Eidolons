@@ -30,6 +30,11 @@ public class GenericMapper<O, T> {
         }
     }
 
+    public void logForValue(DC_Obj val) {
+        for (O unit : map.keySet()) {
+            log(unit, val);
+        }
+    }
     public void log(O unit) {
         log(unit, map.get(unit).keySet().toArray(new DC_Obj[map.get(unit).size()]));
     }

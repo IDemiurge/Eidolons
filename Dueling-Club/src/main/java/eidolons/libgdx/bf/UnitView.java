@@ -210,18 +210,27 @@ public class UnitView extends BaseView {
     }
 
     @Override
+    public void setVisible(boolean visible) {
+        if (!visible)
+            if (isVisible()){
+                setDefaultTexture();
+            }
+        super.setVisible(visible);
+    }
+
+    @Override
     public void act(float delta) {
 
         super.act(delta);
         updateVisible();
-        if (GdxMaster.isHpBarAttached()) {
+        if (GdxMaster.isHpBarAttached() && !GridPanel.isHpBarsOnTop()) {
             addActor(hpBar);
 //            hpBar.setPosition(1,1);
         }
         if (mainHeroLabel != null) {
             if (!isActive()) {
 //                new MapMaster<>()
-//                 .getKeyForValue(DungeonScreen.getInstance().getGridPanel().getUnitMap())
+//                 .getKeyForValue(DungeonScreen.getInstance().getGridPanel().getViewMap())
 //                getCurId()
 
                 mainHeroLabel.setVisible(false);
@@ -237,7 +246,7 @@ public class UnitView extends BaseView {
 
         if (!(this instanceof GridUnitView)) {
             if (!getParentView().isVisible()){
-                setInvisibleQueueTexture();
+                setDefaultTexture();
                 return;
             }
         }
@@ -263,7 +272,7 @@ public class UnitView extends BaseView {
 
     }
 
-    private void setInvisibleQueueTexture() {
+    protected void setDefaultTexture() {
         setPortraitTexture(TextureCache.getSizedRegion(
          InitiativePanel.imageSize,
          OUTLINE_TYPE.UNKNOWN.getImagePath()));

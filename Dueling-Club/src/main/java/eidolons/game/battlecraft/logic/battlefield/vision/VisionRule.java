@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
@@ -11,6 +12,8 @@ import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.game.bf.Coordinates;
+import main.system.auxiliary.secondary.BooleanMaster;
 
 /**
  * Created by JustMe on 4/1/2018.
@@ -51,12 +54,33 @@ public class VisionRule {
         return observer.getPlayerVisionStatus() == PLAYER_VISION.DETECTED;
     }
 
+    public void fullReset(Unit observer) {
+        BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[0].length; j++) {
+                BattleFieldObject[] objects = master.getGame().getMaster().getObjects(i, j);
+                master.getGammaMaster().getGamma(false,
+                 observer,
+                 master.getGame().getCellByCoordinate(new Coordinates(i, j)));
+                for (BattleFieldObject sub : objects) {
+                    //check ignore?
+                    master.getGammaMaster().getGamma(false, observer, sub);
+                    sub.setUnitVisionStatus(master.getUnitVisibilityStatus(sub, observer));
+                    sub.setVisibilityLevel(visibility(observer, sub));
+                    sub.setOutlineType(outline(observer, sub));
+                    sub.setPlayerVisionStatus(playerVision(observer, sub));
+                }
+            }
+        }
+
+    }
+
     public VISIBILITY_LEVEL visibility(Unit source, DC_Obj object) {
         UNIT_VISION sight = controller.getUnitVisionMapper().get(source, object);
-        boolean landmark = false;
-        if (object instanceof BattleFieldObject) {
-            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
-        }
+        boolean landmark = object instanceof Structure;
+//        if (object instanceof BattleFieldObject) {
+//            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
+//        }
 
         switch (sight) {
             case IN_PLAIN_SIGHT:
@@ -86,6 +110,17 @@ public class VisionRule {
     }
 
     public PLAYER_VISION playerVision(Unit source, BattleFieldObject object) {
+        if (DebugMaster.isOmnivisionOn()) {
+            if (source.isMine()) {
+                return PLAYER_VISION.DETECTED;
+
+            }
+        }
+        if (object instanceof Unit) {
+            if (StealthRule.checkInvisible(object)) {
+                return (PLAYER_VISION.INVISIBLE);
+            }
+        }
 
         VISIBILITY_LEVEL visibilityLevel = controller.getVisibilityLevelMapper().
          get(source, object);
@@ -116,6 +151,10 @@ public class VisionRule {
     public boolean isDisplayedOnGrid(Unit source, BattleFieldObject object) {
         if (object.isMine())
             return true;
+        if (object.isOverlaying()) {
+            return controller.getPlayerVisionMapper().get(source.getOwner(), object) ==
+             PLAYER_VISION.DETECTED;
+        }
         if (controller.getPlayerVisionMapper().get(source.getOwner(), object)
          == PLAYER_VISION.INVISIBLE)
             return false;
@@ -130,11 +169,21 @@ public class VisionRule {
     }
 
     private void reveal(Unit source, BattleFieldObject object) {
+        if (BooleanMaster.isTrue(controller.getDetectionMapper()
+         .get(source.getOwner(), object)))
+            return;
         controller.getDetectionMapper().set(source.getOwner(), object, true);
+        if (source == object)
+            return;
+        master.getGame().getLogManager().logReveal(source, object);
     }
 
     private void hide(Unit source, BattleFieldObject object) {
+        if (BooleanMaster.isFalse(controller.getDetectionMapper()
+         .get(source.getOwner(), object)))
+            return;
         controller.getDetectionMapper().set(source.getOwner(), object, false);
+        master.getGame().getLogManager().logHide(source, object);
     }
 
     public OUTLINE_TYPE outline(Unit source, BattleFieldObject object) {
@@ -171,4 +220,18 @@ public class VisionRule {
 
         return null;
     }
+
+
+    public boolean isAggro(Unit hero, Unit unit) {
+
+        if (controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT)
+            return true;
+
+//        if (isDisplayedOnGrid(unit, hero))
+//            return true;
+
+        return false;
+    }
+
+
 }

@@ -9,8 +9,8 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
@@ -127,8 +127,8 @@ public class GammaMaster {
                 }
                 break;
             case GAMMA_LIGHT:
-//                if (gamma < 2)
-//                    return 0;
+                if (gamma < 0)
+                    return 0;
                 alpha = (float) Math.min(Math.sqrt(gamma * 2), gamma / 3);
                 alpha = Math.min(alpha, 0.5f);
                 break;
@@ -207,14 +207,17 @@ public class GammaMaster {
                 }
 
             }
-        if (cell.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+        if (cell.getUnitVisionStatus() == UNIT_VISION.BLOCKED)
             return 0;
-        if (cell.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
-            return 0;
+
 
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
          cell.getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 }

@@ -37,6 +37,11 @@ public class ImageContainer extends SuperContainer {
     }
 
     @Override
+    public void clearActions() {
+        getContent().clearActions();
+    }
+
+    @Override
     public void addAction(Action action) {
         getContent().addAction(action);
     }

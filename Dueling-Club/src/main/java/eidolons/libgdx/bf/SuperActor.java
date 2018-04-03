@@ -3,6 +3,7 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.Eidolons;
@@ -143,6 +144,12 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     public InputController getController() {
         return Eidolons.getScreen().controller;
+    }
+
+    @Override
+    public void addAction(Action action) {
+        if (!getActions().contains(action, true))
+         super.addAction(action);
     }
 
     @Override

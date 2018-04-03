@@ -36,7 +36,7 @@ public class UnitViewFactory {
 
         if (VisionMaster.isLastSeenOn())
             {
-            LastSeenView lsv = new LastSeenView(options);
+            LastSeenView lsv = new LastSeenView(options, view);
             view.setLastSeenView(lsv);
             lsv.addListener( new LastSeenTooltip(view).getController()) ;
         }

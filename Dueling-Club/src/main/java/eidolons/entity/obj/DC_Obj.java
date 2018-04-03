@@ -8,7 +8,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMapper;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.OutlineMapper;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.DetectionMapper;

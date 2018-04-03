@@ -13,6 +13,7 @@ import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
@@ -37,6 +38,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected TextureRegion backTexture;
     private RealTimeGameLoop realTimeGameLoop;
 
+    protected GuiStage guiStage;
 
     public TextureRegion getBackTexture() {
         return backTexture;
@@ -133,5 +135,9 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     public OrthographicCamera getCamera() {
         return cam;
+    }
+
+    public GuiStage getGuiStage() {
+        return guiStage;
     }
 }

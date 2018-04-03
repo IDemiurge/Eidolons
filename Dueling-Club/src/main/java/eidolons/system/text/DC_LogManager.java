@@ -1,6 +1,7 @@
 package eidolons.system.text;
 
 import com.badlogic.gdx.utils.StringBuilder;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
@@ -135,6 +136,36 @@ public class DC_LogManager extends LogManager {
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
         return super.log(log, entry, enclosingEntryType);
     }
+
+
+    public void logHide(Unit source, BattleFieldObject object) {
+        log(LOG.GAME_INFO, source+ " loses sight of " + object.getName());
+    }
+
+    public void logReveal(Unit source, BattleFieldObject object) {
+        log(LOG.GAME_INFO, source+ " spots " + object.getName());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

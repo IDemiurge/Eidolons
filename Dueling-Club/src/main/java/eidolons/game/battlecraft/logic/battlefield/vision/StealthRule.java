@@ -8,7 +8,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.FEATURE;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
@@ -18,7 +17,6 @@ import main.ability.effects.common.AddStatusEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
@@ -43,9 +41,6 @@ public class StealthRule implements ActionRule {
         this.game = g;
     }
 
-    public static boolean checkHidden(Unit u) {
-        return u.getPlayerVisionStatus(true) == PLAYER_VISION.INVISIBLE;
-    }
 
     public static void applySpotted(Unit target) {
         BuffMaster.applyBuff(SPOTTED, new AddStatusEffect(UnitEnums.STATUS.SPOTTED), target, 1); // TODO
@@ -58,9 +53,8 @@ public class StealthRule implements ActionRule {
     }
 
     public static boolean checkInvisible(DC_Obj unit) {
-        if (!RuleMaster.checkFeature(FEATURE.VISIBILITY))
-            return false;
         if (VisionManager.isVisionHacked()) {
+            if (!unit.isMine())
             return false;
         }
         if (unit.checkStatus(UnitEnums.STATUS.SPOTTED))
@@ -71,14 +65,14 @@ public class StealthRule implements ActionRule {
         }
         if (unit.checkStatus(STATUS.UNCONSCIOUS))
             return false;
-        if (unit.checkStatus(UnitEnums.STATUS.INVISIBLE))
-        // TODO mind-affecting preCheck?
-        {
-            return true;
-        }
-        if (unit.checkStatus(UnitEnums.STATUS.HIDDEN)) {
-            return true; // TODO sight-override?
-        }
+//        if (unit.checkStatus(UnitEnums.STATUS.INVISIBLE))
+//        // TODO mind-affecting preCheck?
+//        {
+//            return true;
+//        }
+//        if (unit.checkStatus(UnitEnums.STATUS.HIDDEN)) {
+//            return true; // TODO sight-override?
+//        }
 
         // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
         // return false; // TODO ???
@@ -96,10 +90,9 @@ public class StealthRule implements ActionRule {
                 // continue; TODO Used to be like this? If within sight range,
                 // no stealth possible?
                 int detection = getDetection(unit, obj);
-                if (obj.isMine()) {
-                    if (obj.isMainHero())
+                if (obj.isPlayerCharacter())
                         detection += DETECTION_BONUS_MAIN_HERO;
-                }
+
                 if (detection >= stealth) { // detected
                     result = false;
                     break;
@@ -155,22 +148,34 @@ public class StealthRule implements ActionRule {
             return false;
         });
         for (DC_Obj sub : list) {
-            Unit u = (Unit) sub;
-            if (checkHidden(source)) {
-                if (u.isUnconscious())
-                    continue;
-                if (source.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
-                    continue;
-                checkSpotRoll(u, source);
+            Unit unit = (Unit) sub;
+            double d = PositionMaster.getExactDistance(source, unit);
+
+            if ((d <= getMaxDistance( unit, source))) {
+                if (isSpotRollAllowed(unit, source)) {
+                    checkSpotRoll(unit, source);
+                }
             }
 
-            if (checkHidden(u)) {
-                if (u.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
-                    continue;
-                checkSpotRoll(source, u);
+            if ((d <= getMaxDistance(source, unit ))) {
+                if (isSpotRollAllowed(source,unit)) {
+                    checkSpotRoll(source, unit);
+                }
             }
         }
 
+    }
+
+    private boolean isSpotRollAllowed(Unit source, Unit unit) {
+//        if (unit.getUnitVisionStatus(source) == UNIT_VISION.BLOCKED) {
+//        }
+        if (!source.isMine()){
+            source.isOutsideCombat();
+        }
+        if (source.isUnconscious())
+            return false;
+
+        return unit.getPlayerVisionMapper().get(source.getOwner(), unit) == PLAYER_VISION.INVISIBLE;
     }
 
     private double getMaxDistance(Unit source, DC_Obj unit) {

@@ -226,7 +226,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        return DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        return DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(getRef().getTargetObj());
     }
 
@@ -264,7 +264,7 @@ public class HitAnim extends ActionAnim {
 //        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
 //         MoveEffect.class)))
 //            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
-//        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+//        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
 //         .get(BattleFieldObject);
 //        return actor;
         return getActor();

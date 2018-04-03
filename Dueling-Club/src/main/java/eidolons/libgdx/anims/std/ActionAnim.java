@@ -83,7 +83,7 @@ public class ActionAnim extends Anim {
     }
 
     public Actor getActor() {
-        return DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        return DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(getActive().getOwnerObj());
     }
 

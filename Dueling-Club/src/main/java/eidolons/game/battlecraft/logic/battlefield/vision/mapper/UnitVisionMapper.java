@@ -14,7 +14,7 @@ public class UnitVisionMapper extends ObjVisionMapper<UNIT_VISION> {
 
     @Override
     protected boolean isClearRequired() {
-        return true;
+        return false;
     }
 
     @Override

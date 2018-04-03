@@ -360,7 +360,7 @@ public class FloatingTextMaster {
         if (obj == null)
             obj = active.getRef().getSourceObj();
         if (obj != null) {
-            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(obj);
+            BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(obj);
             if (view != null) {
                 Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
                 text.setPosition(v.x, v.y);

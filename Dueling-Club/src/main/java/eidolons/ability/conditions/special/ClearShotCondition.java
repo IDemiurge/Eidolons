@@ -283,13 +283,18 @@ public class ClearShotCondition extends MicroCondition {
 //         + new ArrayMaster<Boolean>().get2dList(array));
         return checkClearShot(x, y, array);
     }
-
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
         if (isUnitTestBreakMode()) {
             return false;
         }
+        Boolean result =source.getGame().getVisionMaster().getVisionController().
+         getWallObstructionMapper().get(source.getCoordinates(),
+         source.getGame().getCellByCoordinate(target.getCoordinates()));
+        if (result!=null ){
+            return result;
+        }
         DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
-        target.setBlockingCoordinate(coordinates);
+//        target.setBlockingCoordinate(coordinates);
         float angle = getAngle(source.getCoordinates(), target.getCoordinates());
 
         // and distance!
@@ -404,14 +409,17 @@ public class ClearShotCondition extends MicroCondition {
 
                 } // if (d.growX == !left)
                 // continue;
-                target.setBlockingWallDirection(d);
-                target.setBlockingWallCoordinate(c);
-                target.setBlockingDiagonalSide(left);
 
-                if (showVisuals) {
+//                if (showVisuals) {
+//                target.setBlockingWallDirection(d);
+//                target.setBlockingWallCoordinate(c);
+//                target.setBlockingDiagonalSide(left);
 //                    GuiEventManager.trigger(GuiEventType.SHOW_CLEARSHOT, new ClearShotData(target, d, c, left));
-                }
+//                }
                 // TODO WALL HEIGHT!
+                source.getGame().getVisionMaster().getVisionController().
+                 getWallObstructionMapper().set(source.getCoordinates(),
+                 source.getGame().getCellByCoordinate(target.getCoordinates()), true);
                 return true;
 
 
@@ -421,6 +429,9 @@ public class ClearShotCondition extends MicroCondition {
         // getRelevantCoordinates(source, target);
 
         // for each uninterrupted wall segment...
+        source.getGame().getVisionMaster().getVisionController().
+         getWallObstructionMapper().set(source.getCoordinates(),
+         source.getGame().getCellByCoordinate(target.getCoordinates()), false);
         return false;
     }
 

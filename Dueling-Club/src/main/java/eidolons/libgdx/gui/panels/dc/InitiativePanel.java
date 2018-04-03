@@ -314,7 +314,7 @@ public class InitiativePanel extends Group {
     private void cleanUp() {
         Map<Integer, UnitView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
-            UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getUnitMap().get(unit);
+            UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
             views.put(view.getCurId(), view);
         });
         /*
@@ -503,7 +503,7 @@ public class InitiativePanel extends Group {
     }
 
     private boolean isSortByTimeTillTurn() {
-        return false;
+        return true;
     }
 
 

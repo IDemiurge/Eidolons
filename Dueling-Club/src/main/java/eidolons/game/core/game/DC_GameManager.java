@@ -210,8 +210,6 @@ public class DC_GameManager extends GameManager {
         resetWallMap();
 
 //TODO shouldn't be necessary!
-        getGame().getRules().getIlluminationRule().resetIllumination();
-        getGame().getRules().getIlluminationRule().applyLightEmission();
 
 //        DrawMasterStatic.getObjImageCache().clear();
         if (!VisionMaster.isNewVision()) {

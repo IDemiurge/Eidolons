@@ -33,7 +33,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected GameMenuHandler initHandler() {
-        return new GameMenuHandler();
+        return new GameMenuHandler(this);
     }
 
     @Override

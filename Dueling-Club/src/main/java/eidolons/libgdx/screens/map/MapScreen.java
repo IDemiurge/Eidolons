@@ -38,7 +38,6 @@ public class MapScreen extends GameScreen {
     public static final int defaultSize = 2988;
     protected static MapScreen instance;
     //    protected RealTimeGameLoop realTimeGameLoop;
-    protected MapGuiStage guiStage;
     protected MapObjStage objectStage;
     protected MapStage mapStage;
     private boolean loaded;
@@ -241,7 +240,7 @@ public class MapScreen extends GameScreen {
     }
 
     public MapGuiStage getGuiStage() {
-        return guiStage;
+        return (MapGuiStage) guiStage;
     }
 
     public InputController getController() {

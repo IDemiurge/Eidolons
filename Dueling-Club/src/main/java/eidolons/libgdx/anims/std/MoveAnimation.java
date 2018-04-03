@@ -119,7 +119,7 @@ public class MoveAnimation extends ActionAnim {
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(unit);
         if (!DungeonScreen.getInstance().getGridPanel().detachUnitView(unit)) {
             return;

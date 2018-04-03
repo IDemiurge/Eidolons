@@ -2,6 +2,8 @@ package eidolons.libgdx.screens.menu;
 
 import eidolons.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.OptionsWindow;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     private MainMenu() {
         super();
         instance = this;
-        this.handler = new MainMenuHandler();
+        this.handler = new MainMenuHandler(this);
     }
 
     public static MainMenu getInstance() {
@@ -69,6 +71,8 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     public MainMenuHandler getHandler() {
         return handler;
     }
+
+
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
         CRAWL(), STANDOFF(true), SKIRMISH(true),

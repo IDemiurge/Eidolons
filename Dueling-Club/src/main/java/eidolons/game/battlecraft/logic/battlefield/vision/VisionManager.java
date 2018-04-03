@@ -2,15 +2,14 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 
 public class VisionManager {
 
     private static boolean visionHacked;
 
     public static boolean isVisionHacked() {
-
-
-        return visionHacked;
+        return visionHacked || DC_Game.game.isDebugMode();
     }
 
     public static void setVisionHacked(boolean visionHacked) {

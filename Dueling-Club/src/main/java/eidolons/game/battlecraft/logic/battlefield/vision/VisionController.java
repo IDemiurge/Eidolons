@@ -47,18 +47,28 @@ public class VisionController {
     DetectionMapper detectionMapper;
     VisibilityLevelMapper visibilityLevelMapper;
     ClearshotMapper clearshotMapper;
-    List<GenericMapper> mappers = new ArrayList<>();
+    WallObstructionMapper wallObstructionMapper;
+    List<GenericMapper> mappers ;
+
 
     public VisionController(VisionMaster visionMaster) {
         this.master = visionMaster;
         game = visionMaster.getGame();
+        init();
+    }
 
+    public void init() {
+        mappers = new ArrayList<>();
         mappers.add(clearshotMapper = new ClearshotMapper());
         mappers.add(unitVisionMapper = new UnitVisionMapper());
         mappers.add(visibilityLevelMapper = new VisibilityLevelMapper());
         mappers.add(outlineMapper = new OutlineMapper());
         mappers.add(playerVisionMapper = new PlayerVisionMapper());
         mappers.add(detectionMapper = new DetectionMapper());
+        mappers.add(wallObstructionMapper= new WallObstructionMapper());
+    }
+    public WallObstructionMapper getWallObstructionMapper() {
+        return wallObstructionMapper;
     }
 
     public DC_Game getGame() {
@@ -136,6 +146,15 @@ public class VisionController {
             sub.log(unit);
         }
     }
+    public void logFor(Unit unit) {
+        main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> FOR VALUE"
+         + unit);
+        for (GenericMapper sub : mappers) {
+            main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> "
+             + sub);
+            sub.logForValue(unit);
+        }
+    }
 
     public void log(Unit unit, DC_Obj... objs) {
         for (GenericMapper sub : mappers) {
@@ -146,6 +165,8 @@ public class VisionController {
             else sub.log(unit, objs);
         }
     }
+
+
 
     public enum VISIBILITY_CHECK_OBJ_CASE {
         WALL, UNIT, STRUCTURE

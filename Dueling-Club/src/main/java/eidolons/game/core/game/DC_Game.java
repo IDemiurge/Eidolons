@@ -821,6 +821,7 @@ public class DC_Game extends MicroGame {
         for (Obj sub : cachedObjects) {
             getState().addObject(sub);
         }
+        visionMaster.reinit();
     }
 
     public enum GAME_MODES {

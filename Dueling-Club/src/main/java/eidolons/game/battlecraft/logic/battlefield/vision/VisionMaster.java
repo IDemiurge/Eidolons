@@ -24,10 +24,9 @@ import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -35,8 +34,8 @@ import java.util.Set;
 public class VisionMaster implements GenericVisionManager {
 
     private final VisionRule visionRule;
-    List<BattleFieldObject> visibleList = new ArrayList<>();
-    List<BattleFieldObject> invisibleList = new ArrayList<>();
+    ConcurrentLinkedDeque<BattleFieldObject> visibleList = new ConcurrentLinkedDeque<>();
+    ConcurrentLinkedDeque<BattleFieldObject> invisibleList = new ConcurrentLinkedDeque<>();
     private SightMaster sightMaster;
     private DetectionMaster detectionMaster;
     private IlluminationMaster illuminationMaster;
@@ -68,9 +67,12 @@ public class VisionMaster implements GenericVisionManager {
     }
 
     public static boolean isLastSeenOn() {
-        return false;
+        return true;
     }
 
+    public void reinit() {
+        visionController.init();
+    }
     public void resetVisibilityStatuses() {
         Chronos.mark("VISIBILITY REFRESH");
         ClearShotCondition.clearCache();
@@ -96,7 +98,7 @@ public class VisionMaster implements GenericVisionManager {
         triggerGuiEvents();
         resetForPlayerVisibleUnits();
         firstResetDone = true;
-
+        gammaMaster.setDirty(false);
 //    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
         getVisionController().log(getActiveUnit(), visibleList.toArray(new DC_Obj[visibleList.size()]));
         Chronos.logTimeElapsedForMark("VISIBILITY REFRESH", true);
@@ -114,19 +116,28 @@ public class VisionMaster implements GenericVisionManager {
         boolean mine = getActiveUnit().getOwner().isMe();
         getActiveUnit().setUnitVisionStatus(UNIT_VISION.IN_PLAIN_SIGHT);
 
-        sightMaster.resetSightStatuses(getActiveUnit());
 
-        setAlliedVisibility(game.getPlayer(mine).getControlledUnits());
+        sightMaster.resetSightStatuses(getActiveUnit());
+        getGame().getRules().getIlluminationRule().resetIllumination();
+        getGame().getRules().getIlluminationRule().applyLightEmission();
 
         if (isNewVision()) {
-            resetVisibilityLevels();
-            resetOutlines();
+            if (isFinalVersion())
+            visionRule.fullReset(getActiveUnit());
+           else {
+               resetVisibilityLevels();
+                resetOutlines();
+            }
             if (!mine) {
-                //if conscious etc...
-                resetVisibilityLevels(getGame().getManager().getMainHero());
-                resetOutlines(getGame().getManager().getMainHero());
+                if (isFinalVersion())
+                     visionRule.fullReset(getGame().getManager().getMainHero());
+                else {
+                    resetVisibilityLevels(getGame().getManager().getMainHero());
+                    resetOutlines(getGame().getManager().getMainHero());
+                }
             }
         } else {
+            setAlliedVisibility(game.getPlayer(mine).getControlledUnits());
             getVisibilityMaster().resetOutlinesAndVisibilityLevels();
         }
 //        setRelativePlayerVisibility(game.getPlayer(mine), game.getStructures()); // DC_Player.NEUTRAL.getControlledUnits());
@@ -137,6 +148,14 @@ public class VisionMaster implements GenericVisionManager {
 
         getActiveUnit().setUnitVisionStatus(UNIT_VISION.IN_PLAIN_SIGHT);
         getActiveUnit().setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
+    }
+
+    private boolean isFinalVersion() {
+        return true;
+    }
+
+    private void resetGamma() {
+
     }
 
     private void resetPlayerVision(DC_Player player) {
@@ -560,11 +579,12 @@ public class VisionMaster implements GenericVisionManager {
         return visionController;
     }
 
-    public List<BattleFieldObject> getVisibleList() {
+    public ConcurrentLinkedDeque<BattleFieldObject> getVisibleList() {
         return visibleList;
     }
 
-    public List<BattleFieldObject> getInvisibleList() {
+    public ConcurrentLinkedDeque<BattleFieldObject> getInvisibleList() {
         return invisibleList;
     }
+
 }

@@ -17,6 +17,12 @@ import main.system.launch.CoreEngine;
  */
 public class MainMenuHandler {
 
+    private final MainMenu menu;
+
+    public MainMenuHandler(MainMenu mainMenu) {
+        menu = mainMenu;
+    }
+
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
             case CRAWL:
@@ -36,7 +42,7 @@ public class MainMenuHandler {
                 return null;
             case OPTIONS:
                 OptionsMaster.init();
-                OptionsMaster.openMenu();
+                menu.openOptionsMenu();
                 return false;
             case MANUAL:
                 GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL, ""); //null closes!

@@ -17,11 +17,9 @@ import main.game.bf.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
+import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Supposed to provide all Grid-relevant data and methods for changing it
@@ -241,4 +239,9 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         return diagonalJoints;
     }
 
+    public Set<Obj> getCellsWithinRange(BattleFieldObject observer, int i) {
+        HashSet<Obj> set = new HashSet<>(game.getCells());
+        set.removeIf(cell -> PositionMaster.getDistance(observer, cell) > i);
+        return set;
+    }
 }

@@ -47,7 +47,7 @@ public class GdxUnitPosSizeTest extends GdxJUnit {
         player = DC_Game.game.getPlayer(true);
         for (Unit unit : DC_Game.game.getUnits()) {
             BaseView component =
-             DungeonScreen.getInstance().getGridPanel().getUnitMap().get(unit);
+             DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
             container = (GridCellContainer) component.getParent();
 
             container.recalcUnitViewBounds();

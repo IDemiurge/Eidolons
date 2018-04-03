@@ -20,10 +20,6 @@ import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StrPathBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
 
 /**
@@ -32,7 +28,7 @@ import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
 public class OverlaysManager extends SuperActor {
 
     private final static OVERLAY[] DEFAULT_VIEW_OVERLAYS = {
-     HP_BAR
+
     };
     private static final OVERLAY[] SIGHT_INFO_OVERLAYS = {
      BLOCKED, IN_PLAIN_SIGHT, IN_SIGHT,
@@ -57,11 +53,11 @@ public class OverlaysManager extends SuperActor {
                 observer = gridPanel.getObjectForView(gridPanel.getMainHeroView());
             } else {
                 if (!VisionRule.isSightInfoAvailable(observer))
-                    sightInfoDisplayed=false ;
+                    sightInfoDisplayed = false;
             }
         }
         super.draw(batch, parentAlpha);
-        batch.setColor(1,1,1,1);
+        batch.setColor(1, 1, 1, 1);
         try {
             drawOverlays(batch);
         } catch (Exception e) {
@@ -74,74 +70,92 @@ public class OverlaysManager extends SuperActor {
     private void drawOverlays(Batch batch) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                GridCellContainer actor = cells[i][j];
-                List<OVERLAY> overlays = getOverlaysForCell(actor, i, cells[i].length - j - 1);
-                for (OVERLAY overlay : overlays)
-                    drawOverlay(actor, overlay, batch);
+                drawOverlaysForCell(cells[i][j],  i, cells[i].length - j - 1, batch);
 
-//                for (GridUnitView sub : actor.getUnitViewsVisible()) {
-//                    overlays = getOverlaysForView(sub);
-//                    for (OVERLAY overlay : overlays)
-//                        drawOverlay(actor, overlay, batch);
-//                }
+                for (GridUnitView sub : cells[i][j].getUnitViewsVisible()) {
+                    drawOverlaysForView(sub, batch);
+                }
 
             }
         }
     }
 
-    private List<OVERLAY> getOverlaysForView(GridUnitView actor) {
-        List<OVERLAY> list = new ArrayList<>(Arrays.asList(DEFAULT_VIEW_OVERLAYS));
+    private void drawOverlaysForView(GridUnitView actor, Batch batch) {
         if (actor.isHovered()) {
             //emblem etc?
         }
-
-        return list;
+        if (GridPanel.isHpBarsOnTop()) {
+            drawOverlay(actor, HP_BAR, batch);
+        }
     }
 
-
-    private List<OVERLAY> getOverlaysForCell(GridCellContainer actor, int x, int y) {
-        List<OVERLAY> list = new ArrayList<>();
-
+    private void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
         if (sightInfoDisplayed) {
             DC_Cell cell = observer.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
 
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
-                return list;
+                return ;
             }
             switch (vision) {
                 case IN_PLAIN_SIGHT:
-                    list.add(IN_PLAIN_SIGHT);
+                    drawOverlay(container,IN_PLAIN_SIGHT, batch);
                     break;
                 case IN_SIGHT:
-                    list.add(IN_SIGHT);
+                    drawOverlay(container,IN_SIGHT, batch);
                     break;
                 case BLOCKED:
-                    list.add(BLOCKED);
+                    drawOverlay(container,BLOCKED, batch);
                     break;
                 case CONCEALED:
-                    list.add(FOG_OF_WAR);
+                   drawOverlay(container, FOG_OF_WAR, batch);
                     break;
             }
         }
 
-        return list;
     }
 
     public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch) {
         if (isOverlayAlphaOn(overlay)) {
             batch.setColor(1, 1, 1, fluctuatingAlpha);
         } else {
-            batch.setColor(1,1,1,1);
+            batch.setColor(1, 1, 1, 1);
         }
         float x = 0, y = 0;
         switch (overlay) {
+            case HP_BAR: {
+                y = -12;
+                break;
+            }
             //init offsets
         }
         Vector2 v = parent.localToStageCoordinates(new Vector2(x, y));
-        TextureRegion region = getRegion(overlay);
+        drawOverlay(parent, overlay, batch, v);
 
-        batch.draw(region, v.x, v.y);
+    }
+
+    private void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Vector2 v) {
+        TextureRegion region = getRegion(overlay);
+        if (region != null) {
+            batch.draw(region, v.x, v.y);
+        } else {
+            Actor actor = getOverlayActor(parent, overlay);
+            if (actor.isVisible()) {
+                actor.setPosition(v.x, v.y);
+                actor.setScale(parent.getScaleX(), parent.getScaleY());
+                actor.draw(batch, 1);
+            }
+        }
+    }
+
+    private Actor getOverlayActor(Actor parent, OVERLAY overlay) {
+        switch (overlay) {
+            case HP_BAR: {
+                GridUnitView view = (GridUnitView) parent;
+                return view.getHpBar();
+            }
+        }
+        return null;
     }
 
     private boolean isColorFlagOn(OVERLAY overlay) {
@@ -152,7 +166,8 @@ public class OverlaysManager extends SuperActor {
         }
         return false;
     }
-        private boolean isOverlayAlphaOn(OVERLAY overlay) {
+
+    private boolean isOverlayAlphaOn(OVERLAY overlay) {
         switch (overlay) {
             case IN_PLAIN_SIGHT:
             case IN_SIGHT:
@@ -162,6 +177,12 @@ public class OverlaysManager extends SuperActor {
     }
 
     private TextureRegion getRegion(OVERLAY overlay) {
+        switch (overlay) {
+            case HP_BAR:
+            case ITEM:
+            case CORPSE:
+                return null;
+        }
         return TextureCache.getOrCreateR(
          overlay.path);
     }
@@ -180,6 +201,7 @@ public class OverlaysManager extends SuperActor {
         IN_SIGHT,
         FOG_OF_WAR,
         STEALTH;
+
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
          "2018", "overlays", toString() + ".png");
     }

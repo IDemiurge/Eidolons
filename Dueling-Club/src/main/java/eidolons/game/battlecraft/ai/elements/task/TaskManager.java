@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.ai.elements.task;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
@@ -209,6 +210,7 @@ public class TaskManager extends AiHandler {
                 checkPrune(targets, goal, ai, action);
                 break;
             case WAIT:
+                if (!DC_Engine.isAtbMode())
                 targets = Analyzer.getWaitUnits(ai);
                 break;
             case PROTECT:

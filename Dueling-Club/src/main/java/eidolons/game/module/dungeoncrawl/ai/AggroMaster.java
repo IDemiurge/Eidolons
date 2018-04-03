@@ -4,6 +4,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
@@ -87,14 +88,19 @@ public class AggroMaster {
                 newAggro = true;
                 unit.getAI().setEngaged(false);
             }
-            if (hero.getPlayerVisionStatus(true) == PLAYER_VISION.INVISIBLE)
+            if (VisionMaster.isNewVision())
+            if (!unit.getGame(). getVisionMaster().getVisionRule().isAggro(hero, unit))
                 continue;
-            VISIBILITY_LEVEL visibility = VisionManager.getMaster().getVisibilityLevel(unit, hero);
-            if (visibility != VISIBILITY_LEVEL.CLEAR_SIGHT)
-                continue;
+            else {
+                if (hero.getPlayerVisionStatus(true) == PLAYER_VISION.INVISIBLE)
+                    continue;
+                VISIBILITY_LEVEL visibility = VisionManager.getMaster().getVisibilityLevel(unit, hero);
+                if (visibility != VISIBILITY_LEVEL.CLEAR_SIGHT)
+                    continue;
 
-            if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
-                continue;
+                if (unit.getVisibilityLevel() == VISIBILITY_LEVEL.UNSEEN)
+                    continue;
+            }
             //TODO these units will instead 'surprise attack' you or stalk
 
             newAggro = true;

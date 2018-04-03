@@ -112,6 +112,9 @@ public class ReasonMaster {
         if (targeting == null) {
             targeting = TargetingMaster.findTargeting(action.getActive());
         }
+        if (targeting == null) {
+            return     new ArrayList<>() ;
+        }
         Conditions conditions = targeting.getFilter().getConditions();
         // conditions.preCheck(REF);
         List<FILTER_REASON> reasons = new ArrayList<>();

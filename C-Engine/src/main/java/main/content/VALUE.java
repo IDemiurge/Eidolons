@@ -30,6 +30,10 @@ public interface VALUE extends Serializable { //TODO test serializable is needed
 
     String getEntityType();
 
+    default String getDisplayedName(){
+        return getName();
+    }
+
     String[] getEntityTypes();
 
     Metainfo getMetainfo();
