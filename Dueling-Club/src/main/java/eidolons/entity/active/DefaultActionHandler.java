@@ -260,12 +260,13 @@ if (!isMoveToOn())
         DC_Obj target = source.getGame().getCellByCoordinate(c);
         target.getGame().getVisionMaster().getGammaMaster().clearCache();
         target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
-        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
+        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
         return false;
     }
 
     private static boolean doDebugStuff(Unit source, BattleFieldObject target) {
         target.getGame().getVisionMaster().getVisionController().log(source, target);
+        target.getGame().getVisionMaster().getVisionController().logFor(target);
 
         OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
         VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
@@ -275,7 +276,7 @@ if (!isMoveToOn())
 
         target.getGame().getVisionMaster().getGammaMaster().clearCache();
         target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
-        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(true, source, target);
+        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
         outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
         vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
         ClearShotCondition.clearCache();

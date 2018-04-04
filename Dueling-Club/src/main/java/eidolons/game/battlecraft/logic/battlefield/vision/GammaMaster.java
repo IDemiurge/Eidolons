@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -52,37 +51,14 @@ public class GammaMaster {
         return 45;
     }
 
-    public int getGamma(boolean minusForVagueLight, Unit source, DC_Obj target) {
+    public int getGamma(Unit source, DC_Obj target) {
         if (target instanceof Entrance)
             return 200;
-        if (source == null) {
-            source = target.getGame().getManager().getActiveObj();
-        }
-        if (!dirty)
-            if (target.getGamma() != null)
-                if (source == target.getGame().getManager().getActiveObj())
-                    return target.getGamma();
-
-        Integer illumination = master.getIlluminationMaster().getIllumination(source, target);
-        Integer concealment = master.getIlluminationMaster().getConcealment(source, target);
-
-        Integer gamma = illumination - concealment;
-//        cache.put(target, gamma); TODO use or remove
-        if (source == master.getSeeingUnit()) {
-            target.setGamma(gamma);
-        }
-//        if (PositionMaster.getDistance(source, target) < 4) {
-//            main.system.auxiliary.log.LogMaster.log(1,target + " has illumination= "+illumination
-//             + " gamma= "+gamma );
-//        }
-
-        if (target.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
-
-        }
-//        if (i > 50 && c > 50) {
-//            return Integer.MIN_VALUE; TODO twilight
-//        }
-        return gamma;
+        Integer gamma = target.getGamma(source);
+        if (gamma !=null )
+            return gamma;
+        return master.getIlluminationMaster().getIllumination(source, target)
+         -master.getIlluminationMaster().getConcealment(source, target);
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_LIGHT type) {
@@ -201,7 +177,7 @@ public class GammaMaster {
             if (cell.getGamma() == 0) {
 //            if ( cell.getIntParam("illumination")!=0 )
                 try {
-                    return getGamma(true, master.getSeeingUnit(), cell);
+                    return getGamma(master.getSeeingUnit(), cell);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }

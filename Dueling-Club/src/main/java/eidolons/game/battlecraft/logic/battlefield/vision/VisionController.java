@@ -48,6 +48,7 @@ public class VisionController {
     VisibilityLevelMapper visibilityLevelMapper;
     ClearshotMapper clearshotMapper;
     WallObstructionMapper wallObstructionMapper;
+    GammaMapper gammaMapper;
     List<GenericMapper> mappers ;
 
 
@@ -59,6 +60,7 @@ public class VisionController {
 
     public void init() {
         mappers = new ArrayList<>();
+        mappers.add(gammaMapper = new GammaMapper());
         mappers.add(clearshotMapper = new ClearshotMapper());
         mappers.add(unitVisionMapper = new UnitVisionMapper());
         mappers.add(visibilityLevelMapper = new VisibilityLevelMapper());
@@ -69,6 +71,10 @@ public class VisionController {
     }
     public WallObstructionMapper getWallObstructionMapper() {
         return wallObstructionMapper;
+    }
+
+    public GammaMapper getGammaMapper() {
+        return gammaMapper;
     }
 
     public DC_Game getGame() {
@@ -146,7 +152,7 @@ public class VisionController {
             sub.log(unit);
         }
     }
-    public void logFor(Unit unit) {
+    public void logFor(DC_Obj unit) {
         main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> FOR VALUE"
          + unit);
         for (GenericMapper sub : mappers) {

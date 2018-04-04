@@ -8,13 +8,9 @@ import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.OutlineMapper;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.DetectionMapper;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.PlayerVisionMapper;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.UnitVisionMapper;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.VisibilityLevelMapper;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.graphics.PhaseAnimation;
@@ -111,6 +107,9 @@ public abstract class DC_Obj extends MicroObj {
 
     public DetectionMapper getDetectionMapper() {
         return visionController.getDetectionMapper();
+    }
+    public GammaMapper getGammaMapper() {
+        return visionController.getGammaMapper();
     }
 
     @Override
@@ -758,5 +757,19 @@ public abstract class DC_Obj extends MicroObj {
 
     public boolean isDetected(DC_Player owner) {
         return getDetectionMapper().get(owner, this);
+    }
+
+    public Integer getGamma(Unit source) {
+        return getGammaMapper().get(source, this);
+    }
+    public void setGamma(Unit source, Integer i) {
+          getGammaMapper().set(source, this, i);
+        if (source.isPlayerCharacter()) {
+            setGamma(i);
+        }
+    }
+
+    public void setVisibilityLevel(Unit source, VISIBILITY_LEVEL visibilityLevel) {
+        getVisibilityLevelMapper().set(source, this, visibilityLevel);
     }
 }

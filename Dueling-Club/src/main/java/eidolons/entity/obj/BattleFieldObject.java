@@ -48,6 +48,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     protected FACING_DIRECTION facing;
     private DIRECTION direction;
     private Coordinates bufferedCoordinates;
+    private boolean sneaking;
+    protected int maxVisionDistance;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -58,6 +60,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     }
 
+    @Override
+    public void toBase() {
+        maxVisionDistance=0;
+        super.toBase();
+    }
     public boolean isWall() {
         return false;
     }
@@ -466,4 +473,19 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     public void setBufferedCoordinates(Coordinates bufferedCoordinates) {
         this.bufferedCoordinates = bufferedCoordinates;
     }
+
+    public boolean isSneaking() {
+        return sneaking;
+    }
+
+    public void setSneaking(boolean sneaking) {
+        this.sneaking = sneaking;
+    }
+
+    public int getMaxVisionDistance() {
+        if (maxVisionDistance==0  )
+            maxVisionDistance = getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1;
+        return maxVisionDistance;
+    }
+
 }

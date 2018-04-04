@@ -456,6 +456,7 @@ public class AttackOfOpportunityRule {
         // cases...
         List<Unit> list = new ArrayList<>();
         for (Unit unit : action.getGame().getUnits()) {
+            if (unit.canActNow())
             if (unit.isOwnedBy(action.getGame().getPlayer(!action.getOwner().isMe())))
             // if (!VisionManager.checkVisibileForUnit(unit,
             // action.getOwnerObj())) TODO

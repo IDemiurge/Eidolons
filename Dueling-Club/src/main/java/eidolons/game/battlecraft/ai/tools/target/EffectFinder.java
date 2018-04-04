@@ -276,7 +276,7 @@ public class EffectFinder {
                 }
                 if (amount.contains(StringMaster.SET)) {
                     code = MOD.SET;
-                    amount.replace(StringMaster.SET, "");
+                    amount = amount.replace(StringMaster.SET, "");
                 }
             }
             if (ref.getId(KEYS.INFO) == null) {

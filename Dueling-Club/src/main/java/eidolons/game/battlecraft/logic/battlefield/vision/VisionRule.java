@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
@@ -14,6 +15,7 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.math.PositionMaster;
 
 /**
  * Created by JustMe on 4/1/2018.
@@ -54,25 +56,68 @@ public class VisionRule {
         return observer.getPlayerVisionStatus() == PLAYER_VISION.DETECTED;
     }
 
-    public void fullReset(Unit observer) {
+    public void fullReset(Unit... observers) {
         BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
                 BattleFieldObject[] objects = master.getGame().getMaster().getObjects(i, j);
-                master.getGammaMaster().getGamma(false,
-                 observer,
-                 master.getGame().getCellByCoordinate(new Coordinates(i, j)));
-                for (BattleFieldObject sub : objects) {
-                    //check ignore?
-                    master.getGammaMaster().getGamma(false, observer, sub);
-                    sub.setUnitVisionStatus(master.getUnitVisibilityStatus(sub, observer));
-                    sub.setVisibilityLevel(visibility(observer, sub));
-                    sub.setOutlineType(outline(observer, sub));
-                    sub.setPlayerVisionStatus(playerVision(observer, sub));
+                DC_Cell cell = master.getGame().getCellByCoordinate(new Coordinates(i, j));
+
+                for (Unit observer : observers) {
+                    if (!isResetRequired(observer, cell))
+                        continue;
+                    if (isGammaResetRequired(observer, cell)) {
+                        cell.setGamma(observer, master.getGammaMaster().getGamma(
+                         observer, cell));
+                    }
+                    master.getSightMaster().resetUnitVision(observer, cell);
+                    for (BattleFieldObject sub : objects) {
+                        //check ignore?
+                        if (!isObjResetRequired(observer, sub))
+                            continue;
+                        if (isGammaResetRequired(observer, sub))
+                            sub.setGamma(observer, master.getGammaMaster().getGamma(observer, sub));
+//                    master.getSightMaster().resetSightStatuses(observer);
+                        master.getSightMaster().resetUnitVision(observer, sub);
+//                        controller.getUnitVisionMapper()
+//                        sub.setUnitVisionStatus(observer, master.getUnitVisibilityStatus(sub, observer));
+                        controller.getVisibilityLevelMapper().set(observer, sub, visibility(observer, sub));
+                        controller.getOutlineMapper().set(observer, sub, outline(observer, sub));
+                        controller.getPlayerVisionMapper().set(observer.getOwner(), sub, playerVision(observer, sub));
+                    }
                 }
             }
         }
 
+    }
+
+    private boolean isGammaResetRequired(Unit observer, DC_Obj sub) {
+        return true;
+    }
+
+    private boolean isObjResetRequired(Unit observer, DC_Obj sub) {
+        if (sub instanceof Unit)
+            if (!observer.isPlayerCharacter())
+                return observer.isHostileTo(sub.getOwner());
+        if (sub.isDead())
+            return false;
+        return true;
+    }
+
+    private boolean isResetRequired(Unit observer, DC_Obj cell) {
+        //changed position
+        //is close enough
+        //is hostile
+        if (observer.isDead())
+            return false;
+        if (observer.isUnconscious())
+            return false;
+        if (observer.isPlayerCharacter())
+            return true;
+        if (PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance()) {
+            return false;
+        }
+        return true;
     }
 
     public VISIBILITY_LEVEL visibility(Unit source, DC_Obj object) {
@@ -173,9 +218,19 @@ public class VisionRule {
          .get(source.getOwner(), object)))
             return;
         controller.getDetectionMapper().set(source.getOwner(), object, true);
-        if (source == object)
-            return;
-        master.getGame().getLogManager().logReveal(source, object);
+        if (isDetectionLogged(source, object))
+            master.getGame().getLogManager().logReveal(source, object);
+    }
+
+    private boolean isDetectionLogged(Unit source, BattleFieldObject object) {
+            if (object instanceof Structure)
+                return false;
+
+        if (source != object)
+         if (source.isMine())
+            if (source.isHostileTo(object.getOwner()))
+                return true;
+        return false;
     }
 
     private void hide(Unit source, BattleFieldObject object) {
@@ -183,7 +238,8 @@ public class VisionRule {
          .get(source.getOwner(), object)))
             return;
         controller.getDetectionMapper().set(source.getOwner(), object, false);
-        master.getGame().getLogManager().logHide(source, object);
+        if (isDetectionLogged(source, object))
+            master.getGame().getLogManager().logHide(source, object);
     }
 
     public OUTLINE_TYPE outline(Unit source, BattleFieldObject object) {
@@ -201,7 +257,11 @@ public class VisionRule {
         VISIBILITY_LEVEL visibility = controller.getVisibilityLevelMapper().get(source, object);
 
         if (visibility == VISIBILITY_LEVEL.OUTLINE) {
-            return master.getOutlineMaster().getOutline(object, source);
+            OUTLINE_TYPE outline = master.getOutlineMaster().getOutline(object, source);
+            if (outline == null) {
+                object.setVisibilityLevel(source, VISIBILITY_LEVEL.CLEAR_SIGHT);
+            }
+            return outline;
         }
 
         if (

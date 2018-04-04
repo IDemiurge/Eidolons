@@ -187,6 +187,15 @@ public class OverlaysManager extends SuperActor {
          overlay.path);
     }
 
+    public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object) {
+        switch (overlay) {
+            case STEALTH:
+                return object.isSneaking();
+        }
+
+
+        return false;
+    }
     public enum OVERLAY {
         SPOTTED,
         HP_BAR,

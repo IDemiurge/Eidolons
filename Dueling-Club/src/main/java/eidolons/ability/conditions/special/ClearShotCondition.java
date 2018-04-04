@@ -21,7 +21,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/*
+     *
+	 * I draw a line between centers of "Shooter"(caster, the one watching,
+	 * whatever) and Target.
+	 *
+	 * The line might be straight or diagonal, this are trivial cases where any
+	 * unit on the line blocks the attack.
+	 *
+	 * Alternatively the line is drawn as a diagonal to a rectangle: it has long
+	 * side and short side.
+	 *
+	 * I take Shooter and Target to form this rectangle. According to shooter
+	 * and target sizes I determine which tiles contain something blocking, and
+	 * which do not.
+	 *
+	 * Now I will rotate and mirror my rectangle to make shooter have
+	 * coordinates 0,0 and target dX,dY, where dX > dY(if not, mirror!).
+	 *
+	 * I draw a line between centers of Shooter and Target. if a line goes close
+	 * to a border of two cells, I will require that they both be occupied to
+	 * block the target. If the line goes close to the center of the cell, only
+	 * this cell must be checked on this step. Now all cells on the line will be
+	 * checked.
+	 *
+	 * I implemented the preCheck based on dX, dY and obstructionArray, which
+	 * should containt True if cell contains something blocking, and False if
+	 * not.
+	 *
+	 * Return meaning: True for "is in clear shot".
+	 *                                   <><><><><>
+	 * 1) get slope factor (rectangle)
+	 * 2) get base y (intersect vector with y axis)
+	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires)
+	 *
+	 * get rectangle -> transform it ->
+	 *
+	 *
+	 */
 public class ClearShotCondition extends MicroCondition {
 
     public static final float SIGHT_RANGE_FACTOR = 2.5f;
@@ -67,44 +104,7 @@ public class ClearShotCondition extends MicroCondition {
         ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
     }
 
-	/*
-     *
-	 * I draw a line between centers of "Shooter"(caster, the one watching,
-	 * whatever) and Target.
-	 * 
-	 * The line might be straight or diagonal, this are trivial cases where any
-	 * unit on the line blocks the attack.
-	 * 
-	 * Alternatively the line is drawn as a diagonal to a rectangle: it has long
-	 * side and short side.
-	 * 
-	 * I take Shooter and Target to form this rectangle. According to shooter
-	 * and target sizes I determine which tiles contain something blocking, and
-	 * which do not.
-	 * 
-	 * Now I will rotate and mirror my rectangle to make shooter have
-	 * coordinates 0,0 and target dX,dY, where dX > dY(if not, mirror!).
-	 * 
-	 * I draw a line between centers of Shooter and Target. if a line goes close
-	 * to a border of two cells, I will require that they both be occupied to
-	 * block the target. If the line goes close to the center of the cell, only
-	 * this cell must be checked on this step. Now all cells on the line will be
-	 * checked.
-	 * 
-	 * I implemented the preCheck based on dX, dY and obstructionArray, which
-	 * should containt True if cell contains something blocking, and False if
-	 * not.
-	 * 
-	 * Return meaning: True for "is in clear shot".
-	 *                                   <><><><><> 
-	 * 1) get slope factor (rectangle)
-	 * 2) get base y (intersect vector with y axis)
-	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires) 
-	 * 
-	 * get rectangle -> transform it ->
-	 * 
-	 * 
-	 */
+
 
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
@@ -129,7 +129,6 @@ public class ClearShotCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        // consider flying/non-obstructing!
         Obj obj = game.getObjectById(ref.getId(str2));
         if (!(obj instanceof DC_Obj)) {
             return false;
@@ -146,11 +145,6 @@ public class ClearShotCondition extends MicroCondition {
             return false;
         if (c2.equals(source.getCoordinates()))
             return true;
-        // if (c2.isAdjacent(source.getCoordinates()))
-        // toc
-//        if (source.getGame().getDungeon().isSurface() )
-//        if (source.checkProperty(G_PROPS.STANDARD_PASSIVES, STANDARD_PASSIVES.FLYING.getName()))
-//            return true; //TODO use lift height instead!!
 
         if (target.isOverlaying()) {
             if (target instanceof BattleFieldObject) {
@@ -344,31 +338,9 @@ public class ClearShotCondition extends MicroCondition {
             if (source.getY() != c.y) {
                 left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) < angle;
 
-            } else {
-                // by direction
-                // if (BooleanMaster.areOpposite(d1.growX,
-                // direction.growX))
-                // if (!BooleanMaster.areOpposite(d2.growY,
-                // direction.growY)) {
-                // left = true;
-                // if (target.isInfoSelected())
-                // main.system.auxiliary.LogMaster.log(1, d1 + " 1vs " +
-                // direction);
-                // }
-                // if (BooleanMaster.areOpposite(d2.growY,
-                // direction.growY))
-                // if (!BooleanMaster.areOpposite(d1.growX,
-                // direction.growX)) {
-                // left = true;
-                // if (target.isInfoSelected())
-                // main.system.auxiliary.LogMaster.log(1, d2 + " 2vs " +
-                // direction);
-                // }
             }
-            // positive/negative?
 
             List<DIRECTION> list = source.getGame().getBattleFieldManager().getWallMap().get(c);
-            // boolean hasDiagonal = false;
             if (list == null) {
                 continue;
             }
@@ -407,16 +379,7 @@ public class ClearShotCondition extends MicroCondition {
                          / Math.abs(source.getX() - c.y));
                     }
 
-                } // if (d.growX == !left)
-                // continue;
-
-//                if (showVisuals) {
-//                target.setBlockingWallDirection(d);
-//                target.setBlockingWallCoordinate(c);
-//                target.setBlockingDiagonalSide(left);
-//                    GuiEventManager.trigger(GuiEventType.SHOW_CLEARSHOT, new ClearShotData(target, d, c, left));
-//                }
-                // TODO WALL HEIGHT!
+                }
                 source.getGame().getVisionMaster().getVisionController().
                  getWallObstructionMapper().set(source.getCoordinates(),
                  source.getGame().getCellByCoordinate(target.getCoordinates()), true);
@@ -426,9 +389,6 @@ public class ClearShotCondition extends MicroCondition {
             }
         }
 
-        // getRelevantCoordinates(source, target);
-
-        // for each uninterrupted wall segment...
         source.getGame().getVisionMaster().getVisionController().
          getWallObstructionMapper().set(source.getCoordinates(),
          source.getGame().getCellByCoordinate(target.getCoordinates()), false);

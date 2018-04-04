@@ -43,12 +43,13 @@ public class GenericMapper<O, T> {
 
         main.system.auxiliary.log.LogMaster.log(1, unit + "'s " + toString());
         for (DC_Obj object : objects) {
-            try {
+            if (map.get(unit)==null )
+                main.system.auxiliary.log.LogMaster.log(1,
+                 object.getNameAndCoordinate() + " is not in " +
+                  unit +"'s map");
+                 else
                 main.system.auxiliary.log.LogMaster.log(1, object.getNameAndCoordinate() + " has "
                  + map.get(unit).get(object));
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
 
         }
     }

@@ -17,11 +17,12 @@ public class VisionManager {
     }
 
     public static boolean checkVisible(DC_Obj obj) {
-        return getMaster().checkVisible(obj, true);
+        return !getMaster().checkInvisible(obj, true);
     }
 
     public static boolean checkVisible(DC_Obj obj, boolean active) {
-        return getMaster().checkVisible(obj, active);
+        return !getMaster()
+         .checkInvisible(obj, active);
     }
 
     public static void refresh() {

@@ -34,6 +34,11 @@ public class XML_Converter {
     private static final String TYPES_NODE = "Types";
     private static final String DOCUMENT_ROOT = null;
     public static Pattern p = Pattern.compile("\n");
+    private static DocumentBuilder builder;
+
+    public static List<Node> getNodeList(Node node) {
+        return getNodeList(node, true);
+    }
 
     // public Document reformDocument(Collection<String> newGroups)
     // {
@@ -67,10 +72,6 @@ public class XML_Converter {
         return groupDoc;
 
     }*/
-
-    public static List<Node> getNodeList(Node node) {
-        return getNodeList(node, true);
-    }
 
     public static List<Node> getNodeList(Node node, boolean ignoreTextNodes) {
         List<Node> list = new ArrayList<>();
@@ -148,11 +149,9 @@ public class XML_Converter {
     }
 
     public static Document getDoc(String myString, boolean removeDocumentRootNode) {
-        DocumentBuilder builder;
         Document document = null;
         try {
-            builder = builderFactory.newDocumentBuilder();
-            document = builder.parse(new InputSource(new StringReader(myString)));
+            document = getBuilder().parse(new InputSource(new StringReader(myString)));
 
             if (removeDocumentRootNode) {
                 if (document.getNodeName().equalsIgnoreCase("#document")) {
@@ -399,7 +398,6 @@ public class XML_Converter {
         return null;
     }
 
-
     public static Document findAndBuildNode(String xmlString, String string) {
         int firstIndexOf = xmlString.indexOf(openXml(string));
         int lastIndexOf = xmlString.lastIndexOf(closeXml(string));
@@ -435,7 +433,6 @@ public class XML_Converter {
         return openXmlFormatted(enclosing) + node + closeXmlFormatted(enclosing);
     }
 
-
     public static Node getChildByName(Node parent, String name) {
         return getNodeByName(getNodeList(parent), name);
     }
@@ -449,6 +446,16 @@ public class XML_Converter {
 
 
         return null;
+    }
+
+    public static DocumentBuilder getBuilder() {
+        if (builder == null)
+            try {
+                builder = builderFactory.newDocumentBuilder();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        return builder;
     }
 
 }

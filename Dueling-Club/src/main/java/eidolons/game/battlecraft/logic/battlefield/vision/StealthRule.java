@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
@@ -18,7 +19,7 @@ import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
@@ -52,7 +53,7 @@ public class StealthRule implements ActionRule {
         // or perhaps upon moving beyond vision range TODO
     }
 
-    public static boolean checkInvisible(DC_Obj unit) {
+    public static boolean checkInvisible(BattleFieldObject unit) {
         if (VisionManager.isVisionHacked()) {
             if (!unit.isMine())
             return false;
@@ -98,7 +99,9 @@ public class StealthRule implements ActionRule {
                     break;
                 }
             }
-
+            if (result) {
+            unit.setSneaking(true);
+            }
             return result;
         }
 
@@ -153,13 +156,13 @@ public class StealthRule implements ActionRule {
 
             if ((d <= getMaxDistance( unit, source))) {
                 if (isSpotRollAllowed(unit, source)) {
-                    checkSpotRoll(unit, source);
+                    rollSpotted(unit, source);
                 }
             }
 
             if ((d <= getMaxDistance(source, unit ))) {
                 if (isSpotRollAllowed(source,unit)) {
-                    checkSpotRoll(source, unit);
+                    rollSpotted(source, unit);
                 }
             }
         }
@@ -167,31 +170,34 @@ public class StealthRule implements ActionRule {
     }
 
     private boolean isSpotRollAllowed(Unit source, Unit unit) {
-//        if (unit.getUnitVisionStatus(source) == UNIT_VISION.BLOCKED) {
-//        }
-        if (!source.isMine()){
-            source.isOutsideCombat();
-        }
         if (source.isUnconscious())
             return false;
-
-        return unit.getPlayerVisionMapper().get(source.getOwner(), unit) == PLAYER_VISION.INVISIBLE;
+        UNIT_VISION status = unit.getUnitVisionMapper().get(source, unit);
+        if (status== UNIT_VISION.BEYOND_SIGHT )
+            return false;
+        if (status== UNIT_VISION.BLOCKED )
+            return false;
+        if (PositionMaster.getExactDistance(source, unit) > source.getMaxVisionDistance()) {
+            return false;
+        }
+        return unit.getPlayerVisionMapper().get(source.getOwner(), unit)
+         == PLAYER_VISION.INVISIBLE;
     }
 
     private double getMaxDistance(Unit source, DC_Obj unit) {
         return (source.getSightRangeTowards(unit) + 1) * 2;
     }
 
-    private void checkSpotRoll(Unit spotter, Unit unit) {
-        VISIBILITY_LEVEL vl = game.getVisionMaster().getVisibilityMaster().
-         getUnitVisibilityLevel(spotter, unit);
-        if (vl != VISIBILITY_LEVEL.BLOCKED)
-            if (vl != VISIBILITY_LEVEL.UNSEEN)
-//                if (vl != VISIBILITY_LEVEL.CONCEALED)
-            {
-                rollSpotted(spotter, unit);
-            }
-    }
+//    private void checkSpotRoll(Unit spotter, Unit unit) {
+//        VISIBILITY_LEVEL vl = game.getVisionMaster().getVisibilityMaster().
+//         getUnitVisibilityLevel(spotter, unit);
+//        if (vl != VISIBILITY_LEVEL.BLOCKED)
+//            if (vl != VISIBILITY_LEVEL.UNSEEN)
+////                if (vl != VISIBILITY_LEVEL.CONCEALED)
+//            {
+//                rollSpotted(spotter, unit);
+//            }
+//    }
 
     private boolean isOn() {
         return RuleMaster.isRuleOn(RULE.STEALTH);

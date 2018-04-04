@@ -1,21 +1,14 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.GenericTurnManager;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.test.debug.DebugMaster;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_IMAGE;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import main.entity.Ref;
-import main.system.math.PositionMaster;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -31,36 +24,11 @@ public class OutlineMaster {
     }
 
     public static boolean isOutlinesOn() {
-//        if (outlinesOn==null )
-//            outlinesOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.OUTLINES);
         return outlinesOn;
-    }
-
-    public static void setOutlinesOn(boolean outlinesOn) {
-        OutlineMaster.outlinesOn = outlinesOn;
     }
 
     public static boolean isAutoOutlinesOff() {
         return false;
-    }
-
-    public OUTLINE_TYPE getOutlineType(DC_Obj unit) {
-        if (unit.getGame().isDebugMode()) {
-            if (unit.isMine()) {
-                return null;
-            }
-        }
-        Unit activeUnit = ExplorationMaster.isExplorationOn()
-         ? master.getSeeingUnit() :
-         DC_Game.game.getTurnManager().getActiveUnit(true);
-        GenericTurnManager.setVisionInitialized(true);
-        if (activeUnit == null) {
-            return null;
-        }
-        if (unit == activeUnit) {
-            return null;
-        }
-        return getOutlineType(unit, activeUnit);
     }
 
     public OUTLINE_TYPE getOutlineType(DC_Obj unit, Unit activeUnit) {
@@ -74,9 +42,6 @@ public class OutlineMaster {
             return null;
         }
         if (unit.isDetectedByPlayer()) {
-//            if (unit instanceof DC_Cell) {
-//                return null;
-//            }
             if (unit instanceof BattleFieldObject) {
                 BattleFieldObject battleFieldObject = (BattleFieldObject) unit;
                 if (battleFieldObject.isWall() || battleFieldObject.isLandscape()) {
@@ -84,32 +49,11 @@ public class OutlineMaster {
                 }
             }
         }
-        // [quick fix] must be the distance on which nothing is visible anyway...
-
-        if (!VisionMaster.isNewVision())
-            if (PositionMaster.getExactDistance(unit.getCoordinates(), activeUnit.getCoordinates()) <
-             ClearShotCondition.getMaxCheckDistance(activeUnit, unit)) {
-                Ref ref = new Ref(activeUnit);
-                ref.setMatch(unit.getId());
-                //it is assumed that if a unit is farther away than that, it cannot have anything but Concealed status for activeUnit
-                if (!new ClearShotCondition().preCheck(ref)) {
-                    // vision type preCheck - x.ray or so TODO
-                    if (activeUnit.isMine()) // TODO fix this !!! some other way to darken blocked stuff!
-                        unit.setGamma(0);
-                    return OUTLINE_TYPE.BLOCKED_OUTLINE;
-                } else
-                    //TODO [visibility FIX]
-                    unit.setVisibilityLevel(VISIBILITY_LEVEL.CLEAR_SIGHT);
-            } else {
-                if (activeUnit.isMine()) //TODO fix this
-                    unit.setGamma(0);
-                return OUTLINE_TYPE.UNKNOWN;
-            }
         return getOutline(unit, activeUnit);
     }
 
     public OUTLINE_TYPE getOutline(DC_Obj unit, Unit activeUnit) {
-        int gamma = master.getGammaMaster().getGamma(true, activeUnit, unit);
+        int gamma = master.getGammaMaster().getGamma(activeUnit, unit);
 
         if (gamma == Integer.MIN_VALUE) {
             return OUTLINE_TYPE.VAGUE_LIGHT;

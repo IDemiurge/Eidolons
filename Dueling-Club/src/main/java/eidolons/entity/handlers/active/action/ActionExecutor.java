@@ -19,7 +19,6 @@ import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
 import main.system.entity.ConditionMaster;
-import main.system.math.Formula;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -145,7 +144,7 @@ public class ActionExecutor extends Executor {
                     conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);
                     conditions.add(new DistanceCondition("" + maxRange));
                     SelectiveTargeting selectiveTargeting = new SelectiveTargeting(
-                     SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions, new Formula("1"));
+                     SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions);
                     return selectiveTargeting;
 
                 }

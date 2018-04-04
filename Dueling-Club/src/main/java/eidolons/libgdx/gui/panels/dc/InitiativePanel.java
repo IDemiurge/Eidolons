@@ -353,7 +353,7 @@ public class InitiativePanel extends Group {
             queueGroup.addActor(container);
         }
 
-        container.queuePriority = 1f / unitView.getTimeTillTurn();
+        container.queuePriority =  unitView.getTimeTillTurn();
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.getMobilityState();
         sort();

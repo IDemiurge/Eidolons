@@ -11,7 +11,6 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.log.LogMaster;
-import main.system.math.Formula;
 
 import java.util.Set;
 
@@ -24,25 +23,18 @@ public class SelectiveTargeting extends TargetingImpl {
      * 1 constructor only? mapping system... or maybe not! AE_Item per
 	 * constructor, that's all
 	 */
-
     public SelectiveTargeting(Condition conditions) {
-        this(conditions, new Formula("1"));
+        this(conditions, null);
     }
 
-    public SelectiveTargeting(Condition conditions, Formula formula) {
-        this(conditions, formula, null);
-    }
-
-    public SelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template, Condition conditions,
-                              Formula formula) {
-        this(conditions, formula, null);
+    public SelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template, Condition conditions) {
+        this(conditions, null);
         this.template = template;
     }
 
-    public SelectiveTargeting(Condition conditions, Formula formula, OBJ_TYPE filteredType) {
+    public SelectiveTargeting(Condition conditions, OBJ_TYPE filteredType) {
         this.filter = new Filter<>();
         this.filter.setConditions(conditions);
-        numberOfTargets = formula;
         this.filteredType = filteredType;
     }
 

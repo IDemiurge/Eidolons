@@ -184,7 +184,7 @@ public class ActivesConstructor {
     public static Targeting getDefaultSingleTargeting(DC_ActiveObj entity) {
         Conditions conditions = (DC_ConditionMaster
          .getSelectiveTargetingTemplateConditions(DEFAULT_TARGETING_TEMPLATE));
-        Targeting targeting = new SelectiveTargeting(conditions, new Formula("1"));
+        Targeting targeting = new SelectiveTargeting(conditions);
         return targeting;
     }
 

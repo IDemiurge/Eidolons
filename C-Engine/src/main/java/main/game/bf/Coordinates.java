@@ -281,40 +281,40 @@ public class Coordinates {
         Coordinates c = this;
         Coordinates e;
         if (!diagonal) {
-            e = new Coordinates(c.x, c.y - 1);
+            e = new Coordinates(false, c.x, c.y - 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
 
-            e = new Coordinates(c.x - 1, c.y);
+            e = new Coordinates(false, c.x - 1, c.y);
             if (!e.isInvalid()) {
                 list.add(e);
             }
-            e = new Coordinates(c.x + 1, c.y);
+            e = new Coordinates(false, c.x + 1, c.y);
             if (!e.isInvalid()) {
                 list.add(e);
             }
 
-            e = new Coordinates(c.x, c.y + 1);
+            e = new Coordinates(false, c.x, c.y + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
         } else {
-            e = new Coordinates(c.x - 1, c.y + 1);
+            e = new Coordinates(false, c.x - 1, c.y + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
-            e = new Coordinates(c.x + 1, c.y - 1);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
-
-            e = new Coordinates(c.x - 1, c.y - 1);
+            e = new Coordinates(false, c.x + 1, c.y - 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
 
-            e = new Coordinates(c.x + 1, c.y + 1);
+            e = new Coordinates(false, c.x - 1, c.y - 1);
+            if (!e.isInvalid()) {
+                list.add(e);
+            }
+
+            e = new Coordinates(false, c.x + 1, c.y + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }

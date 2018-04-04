@@ -6,19 +6,18 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
-import main.system.math.Formula;
 
 public class TemplateSelectiveTargeting extends SelectiveTargeting {
     private boolean initialized;
 
     public TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template) {
-        super(null, new Formula("1"));
+        super(null);
         this.template = template;
 
     }
 
     public TemplateSelectiveTargeting(SELECTIVE_TARGETING_TEMPLATES template, Condition c) {
-        super(c, new Formula("1"));
+        super(c);
         this.template = template;
     }
 

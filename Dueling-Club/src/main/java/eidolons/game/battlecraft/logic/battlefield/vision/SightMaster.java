@@ -341,7 +341,8 @@ public class SightMaster {
         resetUnitVision(observer, master.getGame().getUnits());
 //        master.getVisionController().getUnitVisionMapper().
         Set<Obj> cells = isFastMode() ? master.getGame().getBattleFieldManager().
-         getCellsWithinRange(observer, observer.getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1) : master.getGame().getCells();
+         getCellsWithinRange(observer, observer.getMaxVisionDistance()
+          ) : master.getGame().getCells();
         resetUnitVision(observer, cells);
     }
 
@@ -360,5 +361,10 @@ public class SightMaster {
             UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
             master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
         }
+    }
+    public void resetUnitVision(BattleFieldObject observer,DC_Obj unit) {
+        UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
+        master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
+
     }
 }
