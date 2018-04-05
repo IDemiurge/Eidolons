@@ -20,6 +20,10 @@ public class ClockActor extends GroupX {
      "2018", "clock", "SMALL HAND.png");
     private static final String HAND = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "2018", "clock", "HAND.png");
+    private final ImageContainer background;
+
+    GearCluster centerGears;
+    GearCluster underGears;
     boolean exploreMode;
     boolean paused;
     //TODO gears
@@ -29,18 +33,33 @@ public class ClockActor extends GroupX {
     private float displayedTime=0;
 
     public ClockActor() {
-        addActor(new ImageContainer(BACKGROUND));
+        addActor(underGears = new GearCluster(5, 1f));
+        addActor(new GearCluster(5, 1f));
+        addActor(background = new ImageContainer(BACKGROUND));
+        addActor(centerGears = new GearCluster(3, 0.5f));
         addActor(hand = new ImageContainer(HAND));
         addActor(smallHand = new ImageContainer(SMALL_HAND));
+        setSize(background.getWidth(), background.getHeight());
+
+//        centerGears.setPosition(GdxMaster.centerWidth(centerGears),
+//         GdxMaster.centerHeight(centerGears));
+        centerGears.setPosition(smallHand.getX()-30,
+         smallHand.getY()-30);
+        underGears.setPosition(smallHand.getX()+30,
+         smallHand.getY()+30);
 
         smallHand.setOrigin(0, smallHand.getHeight() / 2);
         hand.setOrigin(0, smallHand.getHeight() / 2);
 
-        smallHand.setPosition(getWidth() / 2, getHeight() / 2);
-        hand.setPosition(getWidth() / 2, getHeight() / 2);
+        smallHand.setPosition(background.getWidth() / 2,
+         background.getHeight() / 2-smallHand.getHeight()/2
+        );
+        hand.setPosition(background.getWidth() / 2,
+         background.getHeight() / 2-hand.getHeight()/2);
 
         smallHand.setRotation(90);
         hand.setRotation(90);
+        bindEvents();
     }
 
     public void bindEvents() {
@@ -56,11 +75,13 @@ public class ClockActor extends GroupX {
             if (exploreMode) {
                 if (timeToTurn < 1)
                     return;
-                ActorMaster.addRotateByAction(smallHand, 6 * timeToTurn); //60 sec == 360 degrees
+                displayedTime+= timeToTurn;//+delta;
+                ActorMaster.addRotateByAction(smallHand, -6 * timeToTurn); //60 sec == 360 degrees
             } else {
                 if (timeToTurn < 0.1f)
                     return;
-                ActorMaster.addRotateByAction(smallHand, 30 * timeToTurn); //12 sec == 360 degrees
+                ActorMaster.addRotateByAction(smallHand, -30 * timeToTurn); //12 sec == 360 degrees
+                centerGears.activeWork(0.25f, timeToTurn);
             }
             timeToTurn = 0;
         }
@@ -78,9 +99,12 @@ public class ClockActor extends GroupX {
             ActorMaster.addRotateByAction(smallHand, smallHand.getRotation(), seconds * 6);
             ActorMaster.addRotateByAction(hand, hand.getRotation(), minutes * 6);
 
+            centerGears.setDefaultSpeed(0.45f);
         } else {
+            centerGears.setDefaultSpeed(0.15f);
             ActorMaster.addRotateByAction(smallHand, smallHand.getRotation(), 90);
             ActorMaster.addRotateByAction(hand, hand.getRotation(), 90);
+            centerGears.activeWork(0.25f, 1);
             displayedTime=0;
         }
         this.exploreMode = exploreMode;
@@ -90,8 +114,12 @@ public class ClockActor extends GroupX {
     @Override
     public void act(float delta) {
         super.act(delta);
-        smallHand.setPosition(getWidth() / 2, getHeight() / 2);
-        hand.setPosition(getWidth() / 2, getHeight() / 2);
+        smallHand.setPosition(background.getWidth() / 2,
+         background.getHeight() / 2-smallHand.getHeight()/2
+        );
+        hand.setPosition(background.getWidth() / 2,
+         background.getHeight() / 2-hand.getHeight()/2);
+
         if (ExplorationMaster.isExplorationOn() != exploreMode) {
 
             setExploreMode(ExplorationMaster.isExplorationOn());
@@ -100,7 +128,7 @@ public class ClockActor extends GroupX {
             float time = DC_Game.game.getDungeonMaster().getExplorationMaster().
              getTimeMaster().getTime();
             timeToTurn = time - displayedTime;
-            displayedTime = time;//+delta;
+
         }
 
         initActions();

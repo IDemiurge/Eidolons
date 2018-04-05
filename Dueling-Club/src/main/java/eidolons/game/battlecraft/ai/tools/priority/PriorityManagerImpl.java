@@ -921,7 +921,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         }
         float numericPriority = 0;
         if (!ParamPriorityAnalyzer.isParamIgnored(param, target))
-            numericPriority = getParamPriority(param);
+            try {
+                numericPriority = getParamPriority(param);
+            } catch (Exception ex) {
+                main.system.ExceptionMaster.printStackTrace(ex);
+            }
 //         ParamPriorityAnalyzer.getParamNumericPriority(param, target);
         int mod = 100;
         if (roll != null) {

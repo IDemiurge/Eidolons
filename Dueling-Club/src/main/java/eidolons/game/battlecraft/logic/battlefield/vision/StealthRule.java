@@ -48,6 +48,7 @@ public class StealthRule implements ActionRule {
         // also negate concealment? // dispel
         // hidden?
         target.setPlayerVisionStatus(PLAYER_VISION.DETECTED);
+        target.setSneaking(false);
         // to be dispelled by renewed use of Invisiblity or special Hide
         // actions
         // or perhaps upon moving beyond vision range TODO
@@ -58,7 +59,7 @@ public class StealthRule implements ActionRule {
             if (!unit.isMine())
             return false;
         }
-        if (unit.checkStatus(UnitEnums.STATUS.SPOTTED))
+        if (unit.isSpotted())
         // ***BY UNIT*** - if "spotter" is killed, can become invisible
         // again!!!
         {
@@ -100,7 +101,7 @@ public class StealthRule implements ActionRule {
                 }
             }
             if (result) {
-            unit.setSneaking(true);
+                unit.setSneaking(true);
             }
             return result;
         }
@@ -172,6 +173,9 @@ public class StealthRule implements ActionRule {
     private boolean isSpotRollAllowed(Unit source, Unit unit) {
         if (source.isUnconscious())
             return false;
+        if (!unit.isSneaking()){
+            return  false;
+        }
         UNIT_VISION status = unit.getUnitVisionMapper().get(source, unit);
         if (status== UNIT_VISION.BEYOND_SIGHT )
             return false;

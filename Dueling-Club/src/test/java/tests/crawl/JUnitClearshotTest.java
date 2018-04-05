@@ -1,11 +1,11 @@
 package tests.crawl;
 
 import eidolons.ability.conditions.special.ClearShotCondition;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.log.LogMaster;
@@ -231,3 +231,4 @@ public class JUnitClearshotTest extends FastDcTest {
 
 
 }
+

@@ -11,20 +11,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  *
  */
 public class LastSeenView extends  GridUnitView{
-    private final GridUnitView source;
 
     public LastSeenView(UnitViewOptions o, GridUnitView view) {
         super(o);
         greyedOut=true;
-        source=view;
+       setParentView(view);
+        debug();
     }
 
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (visible) {
-            arrow.setRotation(source.arrow.getRotation());
-        }
+//        if (visible) {
+//            arrow.setRotation(getParentView().arrow.getRotation());
+//        }
     }
 
     @Override
@@ -34,7 +34,12 @@ public class LastSeenView extends  GridUnitView{
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
+        setVisible(!getParentView().isVisible());
         super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public boolean isHpBarVisible() {
+        return false;
     }
 }

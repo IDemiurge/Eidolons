@@ -259,7 +259,9 @@ public class VisionRule {
         if (visibility == VISIBILITY_LEVEL.OUTLINE) {
             OUTLINE_TYPE outline = master.getOutlineMaster().getOutline(object, source);
             if (outline == null) {
-                object.setVisibilityLevel(source, VISIBILITY_LEVEL.CLEAR_SIGHT);
+                if (source.isMine())
+             //TODO QUICK FIX - NOW ENEMIES HAVE 100% CLEARSHOT AND WILL AGGRO IF THIS WORKS FOR THEM
+                    object.setVisibilityLevel(source, VISIBILITY_LEVEL.CLEAR_SIGHT);
             }
             return outline;
         }

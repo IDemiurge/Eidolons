@@ -66,4 +66,6 @@ public interface MODE {
     String getPeriodicValues();
 
     Integer getDuration();
+
+    String getImagePath();
 }

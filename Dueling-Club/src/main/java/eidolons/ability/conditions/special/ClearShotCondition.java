@@ -21,44 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-/*
-     *
-	 * I draw a line between centers of "Shooter"(caster, the one watching,
-	 * whatever) and Target.
-	 *
-	 * The line might be straight or diagonal, this are trivial cases where any
-	 * unit on the line blocks the attack.
-	 *
-	 * Alternatively the line is drawn as a diagonal to a rectangle: it has long
-	 * side and short side.
-	 *
-	 * I take Shooter and Target to form this rectangle. According to shooter
-	 * and target sizes I determine which tiles contain something blocking, and
-	 * which do not.
-	 *
-	 * Now I will rotate and mirror my rectangle to make shooter have
-	 * coordinates 0,0 and target dX,dY, where dX > dY(if not, mirror!).
-	 *
-	 * I draw a line between centers of Shooter and Target. if a line goes close
-	 * to a border of two cells, I will require that they both be occupied to
-	 * block the target. If the line goes close to the center of the cell, only
-	 * this cell must be checked on this step. Now all cells on the line will be
-	 * checked.
-	 *
-	 * I implemented the preCheck based on dX, dY and obstructionArray, which
-	 * should containt True if cell contains something blocking, and False if
-	 * not.
-	 *
-	 * Return meaning: True for "is in clear shot".
-	 *                                   <><><><><>
-	 * 1) get slope factor (rectangle)
-	 * 2) get base y (intersect vector with y axis)
-	 * 3) run for each X cell : project intersection with  verticals , IFF 2 integers - big circle (2 blocks requires)
-	 *
-	 * get rectangle -> transform it ->
-	 *
-	 *
-	 */
+
+
 public class ClearShotCondition extends MicroCondition {
 
     public static final float SIGHT_RANGE_FACTOR = 2.5f;
@@ -69,6 +33,7 @@ public class ClearShotCondition extends MicroCondition {
     private String str1;
     private String str2;
     private int log_priority = 1;
+    private boolean wallObstruction;
 
     public ClearShotCondition() {
         this(KEYS.SOURCE.toString(), KEYS.MATCH.toString());
@@ -101,9 +66,8 @@ public class ClearShotCondition extends MicroCondition {
     }
 
     public static void setUnitTestBreakMode(boolean unitTestBreakMode) {
-        ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
+        eidolons.ability.conditions.special.ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
     }
-
 
 
     private boolean isBlocking(DC_Obj source, DC_Obj target,
@@ -159,34 +123,22 @@ public class ClearShotCondition extends MicroCondition {
                 }
             }
         }
-
+        wallObstruction=false;
         Coordinates c1 = source.getCoordinates();
-        Map<Obj, Boolean> map = cache.get(source);
-        if (map == null) {
-            map = new HashMap<>();
-            cache.put(source, map);
-        }
-        Boolean result = map.get(target);
-        if (result == null)
-            result = true;
-        else
-            return result;
         boolean toCheck = true;
-        if (target.isInfoSelected()) {
-            toCheck = true;
-        }
+        boolean result = true;
         if (PositionMaster.inLine(c1, c2)) {
             result = PositionMaster.noObstaclesInLine(source, target, game.getBattleField()
              .getGrid());
             toCheck = false;
             if (!result)
-                return cacheResult(map, target, result);
+                return cacheResult(source, target, result);
         } else { // TODO TRANSPARENT FOR VISION!
             if (PositionMaster.inLineDiagonally(c1, c2)) {
                 result = PositionMaster.noObstaclesInDiagonal(c1, c2, game.getBattleField()
                  .getGrid(), source);
                 if (!result)
-                    return cacheResult(map, target, result);
+                    return cacheResult(source, target, result);
 
                 List<Coordinates> list = new ArrayList<>();
                 if (!c2.isAdjacent(source.getCoordinates())) {
@@ -198,26 +150,30 @@ public class ClearShotCondition extends MicroCondition {
                 }
                 for (Coordinates c : list) {
                     if (checkWallObstruction(source, target, c))
-                        return cacheResult(map, target, false);
+                        return cacheResult(source, target, false);
                 }
-                return cacheResult(map, target, true);
+                return cacheResult(source, target, true);
             }
         }
 
         if (!result)
-            return cacheResult(map, target, result);
+            return cacheResult(source, target, result);
         if (!toCheck)
-            return cacheResult(map, target, result);
+            return cacheResult(source, target, result);
 
 
         result = checkClearShot(source, target);
-        return cacheResult(map, target, result);
+        return cacheResult(source, target, result);
     }
 
-    private boolean cacheResult(Map<Obj, Boolean> map, DC_Obj target, Boolean result) {
-        map.put(target, result);
+    private boolean cacheResult(BattleFieldObject source, DC_Obj target, boolean result) {
+        if (wallObstruction)
+            source.getGame().getVisionMaster().getVisionController().
+             getWallObstructionMapper().set(source.getCoordinates(),
+             source.getGame().getCellByCoordinate(target.getCoordinates()), !result);
         return result;
     }
+
 
     public boolean checkClearShot(DC_Obj source, DC_Obj target,
                                   boolean mirrorRectangle) {
@@ -277,14 +233,15 @@ public class ClearShotCondition extends MicroCondition {
 //         + new ArrayMaster<Boolean>().get2dList(array));
         return checkClearShot(x, y, array);
     }
+
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
         if (isUnitTestBreakMode()) {
             return false;
         }
-        Boolean result =source.getGame().getVisionMaster().getVisionController().
+        Boolean result =  source.getGame().getVisionMaster().getVisionController().
          getWallObstructionMapper().get(source.getCoordinates(),
          source.getGame().getCellByCoordinate(target.getCoordinates()));
-        if (result!=null ){
+        if (result != null) {
             return result;
         }
         DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
@@ -380,18 +337,13 @@ public class ClearShotCondition extends MicroCondition {
                     }
 
                 }
-                source.getGame().getVisionMaster().getVisionController().
-                 getWallObstructionMapper().set(source.getCoordinates(),
-                 source.getGame().getCellByCoordinate(target.getCoordinates()), true);
+                wallObstruction=true;
                 return true;
 
 
             }
         }
 
-        source.getGame().getVisionMaster().getVisionController().
-         getWallObstructionMapper().set(source.getCoordinates(),
-         source.getGame().getCellByCoordinate(target.getCoordinates()), false);
         return false;
     }
 
@@ -412,6 +364,7 @@ public class ClearShotCondition extends MicroCondition {
             return false;
         }
         if (secondDimension > 0) {
+            wallObstruction=false;
             return checkClearShot(source, target, !mirrorRectangle);
         }
         return true;

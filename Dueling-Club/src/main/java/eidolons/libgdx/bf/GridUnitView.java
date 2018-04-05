@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -79,6 +80,13 @@ public class GridUnitView extends UnitView {
     }
 
     @Override
+    protected void updateModeImage(String pathToImage) {
+        super.updateModeImage(pathToImage);
+        initiativeQueueUnitView.updateModeImage(pathToImage);
+        modeImage.setPosition(0, 0);
+    }
+
+    @Override
     public void reset() {
         super.reset();
         if (emblemImage != null) {
@@ -122,7 +130,7 @@ public class GridUnitView extends UnitView {
                 emblemLighting.setColor(getTeamColor());
             addActor(emblemLighting);
 
-            emblemImage = new Image(emblem);
+            emblemImage = new FadeImageContainer(new Image(emblem));
             addActor(emblemImage);
             emblemImage.setSize(getEmblemSize(), getEmblemSize());
             emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
@@ -200,7 +208,7 @@ public class GridUnitView extends UnitView {
     public boolean isHpBarVisible() {
         if (!getHpBar().getDataSource().canHpBarBeVisible())
             return false;
-        if (!isCellBackground() && getHpAlwaysVisible())
+        if (!isCellBackground() &&HpBar. getHpAlwaysVisible())
             return true;
         return getHpBar().getDataSource().isHpBarVisible();
     }
@@ -294,11 +302,8 @@ public class GridUnitView extends UnitView {
             image.setScaleX(getScaledWidth());
             image.setScaleY(getScaledHeight());
         }
-        image = emblemImage;
-        if (image != null) {
-            image.setScaleX(getScaledWidth());
-            image.setScaleY(getScaledHeight());
-        }
+        if (emblemImage!=null )
+            emblemImage.setScale(getScaledWidth(), getScaledHeight());
 //        image = arrow;
 //        if (image != null) {
 //            image.setScaleX(getScaledWidth());

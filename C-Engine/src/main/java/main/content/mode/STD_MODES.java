@@ -1,6 +1,8 @@
 package main.content.mode;
 
+import main.data.filesys.PathFinder;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.math.FormulaMaster;
 import main.system.math.Formulas;
@@ -170,6 +172,15 @@ public enum STD_MODES implements MODE {
     @Override
     public Integer getDuration() {
         return Formulas.DEFAULT_MODE_DURATION;
+    }
+
+    @Override
+    public String getImagePath() {
+        return
+         StrPathBuilder.build(
+         PathFinder.getUiContentPath(),"modes",
+           toString() +
+           ".png");
     }
 
     @Override

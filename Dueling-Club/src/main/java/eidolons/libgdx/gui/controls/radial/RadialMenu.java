@@ -180,7 +180,7 @@ public class RadialMenu extends Group implements Closable {
 //            coefficient = 2.5;
 //        }
         double coefficient = MathMaster.getMinMax((float) (currentNode.
-                 getChildNodes().size() / Math.PI), 1.25f, 3.5f);
+                 getChildNodes().size() / (Math.PI+1)), 1.4f, 3.25f);
         boolean makeSecondRing = false;
         if (currentNode.getChildNodes().size() > 15) {
             makeSecondRing = true;

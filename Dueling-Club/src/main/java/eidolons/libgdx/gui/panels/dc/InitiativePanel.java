@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -28,6 +29,7 @@ import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.panels.dc.clock.GearCluster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -61,7 +63,7 @@ public class InitiativePanel extends Group {
     private float maxMoveAnimDuration = 0;
     private float timePassedSincePosCheck = Integer.MAX_VALUE;
     private ImageContainer previewActor;
-    private boolean animatedClock=true;
+    private boolean animatedClock = true;
 
     public InitiativePanel() {
         init();
@@ -71,12 +73,12 @@ public class InitiativePanel extends Group {
         gears.setPosition(80, -25);
     }
 
-    private Actor createAnimatedClock() {
-        return new ClockActor();
-    }
-
     public static boolean isLeftToRight() {
         return true;
+    }
+
+    private Actor createAnimatedClock() {
+        return new ClockActor();
     }
 
     private void registerCallback() {
@@ -200,20 +202,20 @@ public class InitiativePanel extends Group {
          animatedClock
           ? createAnimatedClock()
           :
-         new SuperContainer(
-         new Image(TextureCache.getOrCreateR(StrPathBuilder.build("UI",
-          "components", "2017", "panels", "initiativepanel",
-          "clock.png"))), true) {
-            @Override
-            protected float getAlphaFluctuationMin() {
-                return 0.6f;
-            }
+          new SuperContainer(
+           new Image(TextureCache.getOrCreateR(StrPathBuilder.build("UI",
+            "components", "2017", "panels", "initiativepanel",
+            "clock.png"))), true) {
+              @Override
+              protected float getAlphaFluctuationMin() {
+                  return 0.6f;
+              }
 
-            @Override
-            protected float getAlphaFluctuationPerDelta() {
-                return super.getAlphaFluctuationPerDelta() / 3;
-            }
-        };
+              @Override
+              protected float getAlphaFluctuationPerDelta() {
+                  return super.getAlphaFluctuationPerDelta() / 3;
+              }
+          };
         clock.addListener(getClockListener());
 
         addActor(light);
@@ -288,10 +290,10 @@ public class InitiativePanel extends Group {
             n++;
             if (sub.getX() == x)
                 continue;
-            if (sub.mainHero){
-                gears.setClockwise(sub.getX()>x);
+            if (sub.mainHero) {
+                gears.setClockwise(sub.getX() > x);
             }
-            moveApplied=true;
+            moveApplied = true;
             sub.getActions().clear();
             AfterAction a = new AfterAction();
             a.setAction(ActorMaster.getMoveToAction(x, sub.getY(), getViewMoveDuration()));
@@ -302,8 +304,8 @@ public class InitiativePanel extends Group {
         }
         timePassedSincePosCheck = 0;
         checkPositionsRequired = false;
-        if (moveApplied){
-            gears.activeWork(getViewMoveDuration()/2, getViewMoveDuration()/2);
+        if (moveApplied) {
+            gears.activeWork(getViewMoveDuration() / 2, getViewMoveDuration() / 2);
         }
     }
 
@@ -353,7 +355,7 @@ public class InitiativePanel extends Group {
             queueGroup.addActor(container);
         }
 
-        container.queuePriority =  unitView.getTimeTillTurn();
+        container.queuePriority = 1f/unitView.getTimeTillTurn();
         container.initiative = unitView.getInitiativeIntVal();
         container.mobilityState = unitView.getMobilityState();
         sort();
@@ -463,7 +465,7 @@ public class InitiativePanel extends Group {
                 } else {
                     boolean result =
                      isSortByTimeTillTurn() ? cur.queuePriority > next.queuePriority || (cur.id > next.id && cur.queuePriority == next.queuePriority)
-                      :                      cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative);
+                      : cur.initiative > next.initiative || (cur.id > next.id && cur.initiative == next.initiative);
                     if (result) {
                         queue[ip1] = cur;
                         queue[i] = next;
@@ -551,7 +553,7 @@ public class InitiativePanel extends Group {
     }
 
 
-    private class QueueView extends Container<Actor> {
+    private class QueueView extends Container<UnitView> {
         public int initiative;
         public int precalcInitiative;
         public float queuePriority;
@@ -559,10 +561,11 @@ public class InitiativePanel extends Group {
         public int id;
         public boolean mobilityState;
         public boolean mainHero;
+        public boolean immobilized;
 
         public QueueView(UnitView actor) {
             super(actor);
-            mainHero=actor.isMainHero();
+            mainHero = actor.isMainHero();
             if (actor == null) {
                 return;
             }
@@ -577,13 +580,13 @@ public class InitiativePanel extends Group {
         }
 
         @Override
-        public void setActor(Actor actor) {
-            super.setActor(actor);
-        }
-
-        @Override
         public void draw(Batch batch, float parentAlpha) {
+            ShaderProgram shader = batch.getShader();
+            if (immobilized) {
+                batch.setShader(DarkShader.getShader());
+            }
             super.draw(batch, parentAlpha);
+            batch.setShader(shader);
         }
     }
 }

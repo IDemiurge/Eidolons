@@ -3,7 +3,7 @@ package main.entity.obj;
 import main.ability.effects.Effects;
 
 public interface Attachment {
-    int getDuration();
+    double getDuration();
 
     Double tick();
 

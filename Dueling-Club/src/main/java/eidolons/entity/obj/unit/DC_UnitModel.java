@@ -303,7 +303,13 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         } else {
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
         }
-        GuiEventManager.trigger(SHOW_MODE_ICON, this);
+        if (mode == null || mode==STD_MODES.NORMAL)
+        {
+            GuiEventManager.trigger(SHOW_MODE_ICON, this, null);
+        }
+        else {
+            GuiEventManager.trigger(SHOW_MODE_ICON, this,mode.getImagePath());
+        }
     }
 
 

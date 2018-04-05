@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
+import eidolons.libgdx.anims.ActorMaster;
 import main.system.auxiliary.ClassMaster;
 
 import java.util.ArrayList;
@@ -80,5 +81,11 @@ public class GroupX extends Group {
                 addActions(list, sub, actionClass);
             }
         }
+    }
+
+    public void fadeIn() {
+        setVisible(true);
+        getColor().a=0;
+        ActorMaster.addFadeInAction(this);
     }
 }

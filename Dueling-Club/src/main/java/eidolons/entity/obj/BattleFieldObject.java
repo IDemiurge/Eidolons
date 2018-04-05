@@ -488,4 +488,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return maxVisionDistance;
     }
 
+    public boolean isSpotted() {
+        return checkStatus(UnitEnums.STATUS.SPOTTED);
+    }
 }

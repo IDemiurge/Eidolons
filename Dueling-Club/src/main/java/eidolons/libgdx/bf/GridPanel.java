@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -44,7 +45,6 @@ import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.mode.STD_MODES;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
@@ -504,6 +504,10 @@ public class GridPanel extends Group {
             } else {
                 ActorMaster.addFadeOutAction(view, 0.25f);
                 ActorMaster.addSetVisibleAfter(view, false);
+                if (view instanceof GridUnitView) {
+                    ((GridUnitView) view).getLastSeenView().fadeIn();
+
+                }
             }
         } else view.setVisible(b);
     }
@@ -660,22 +664,9 @@ public class GridPanel extends Group {
         addActor(wallMap);
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
-            Unit unit = (Unit) obj.get();
-            if (unit.isDead()) return;
-            UnitView view = (UnitView) viewMap.get(unit);
-            if (view != null) {
-                if (unit.getModeFinal() == null || unit.getModeFinal() == STD_MODES.NORMAL) {
-                    view.updateModeImage(null);
-                } else {
-                    if (unit.getModeFinal() != null)
-                        if (unit.getBuff(unit.getModeFinal().getBuffName()) != null)
-                            try {
-                                view.updateModeImage(unit.getBuff(unit.getModeFinal().getBuffName()).getImagePath());
-                            } catch (Exception e) {
-                                main.system.ExceptionMaster.printStackTrace(e);
-                            }
-                }
-            }
+            List list = (List) obj.get();
+            UnitView view = (UnitView) getViewMap().get(list.get(0));
+            view.updateModeImage((String) list.get(1));
         });
         if (DC_Engine.isAtbMode()) {
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
@@ -686,7 +677,7 @@ public class GridPanel extends Group {
                     uv = (GridUnitView) viewMap.get(p.getLeft());
                 }
                 if (uv != null) {
-                    uv.setTimeTillTurn(p.getRight().getRight());
+                    uv.getInitiativeQueueUnitView().setTimeTillTurn(p.getRight().getRight());
                     uv.updateInitiative(p.getRight().getLeft());
                 }
             });
@@ -745,7 +736,7 @@ public class GridPanel extends Group {
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
         GridUnitView view = UnitViewFactory.create(battleFieldObjectbj);
         viewMap.put(battleFieldObjectbj, view);
-        if (battleFieldObjectbj.isPlayerCharacter()){
+        if (battleFieldObjectbj.isPlayerCharacter()) {
             mainHeroView = view;
         }
         moveUnitView(battleFieldObjectbj);
@@ -859,17 +850,17 @@ public class GridPanel extends Group {
             resetZIndices();
             update();
         }
-        if (isAutoResetVisibleOn()){
-            if (resetTimer<=0){
-                resetTimer=0.5f;
-            for (BattleFieldObject sub: DC_Game.game.getVisionMaster().getVisibleList()){
-                setVisible(viewMap.get(sub), true);
+        if (isAutoResetVisibleOn()) {
+            if (resetTimer <= 0) {
+                resetTimer = 0.5f;
+                for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisibleList()) {
+                    setVisible(viewMap.get(sub), true);
+                }
+                for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisibleList()) {
+                    setVisible(viewMap.get(sub), false);
+                }
             }
-            for (BattleFieldObject sub: DC_Game.game.getVisionMaster().getInvisibleList()){
-                setVisible(viewMap.get(sub), false);
-            }
-            }
-            resetTimer-=delta;
+            resetTimer -= delta;
         }
     }
 
@@ -945,15 +936,23 @@ public class GridPanel extends Group {
             }
         }
         wallMap.setVisible(WallMap.isOn());
+        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
+        if (ctrl) {
+            if (ShadowMap.isOn())
+                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+                    shadowMap.setZtoMax(sub);
+                }
+        }
         wallMap.setZIndex(Integer.MAX_VALUE);
-//        if (ShadowMap.isOn())
-//            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-        if (ShadowMap.isOn())
-            for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-//            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
-                shadowMap.setZtoMax(sub);
-            }
+
+        if (!ctrl) {
+            if (ShadowMap.isOn())
+                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+                    shadowMap.setZtoMax(sub);
+                }
+        }
+
         overlayManager.setZIndex(Integer.MAX_VALUE);
 
         animMaster.setZIndex(Integer.MAX_VALUE);

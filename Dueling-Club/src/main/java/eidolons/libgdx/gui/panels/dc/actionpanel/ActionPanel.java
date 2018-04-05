@@ -11,6 +11,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
 import eidolons.libgdx.texture.TextureCache;
+import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -20,8 +21,7 @@ import static main.system.GuiEventType.BOTTOM_PANEL_UPDATE;
 
 public class ActionPanel extends Group {
     public final static int IMAGE_SIZE = 60;
-    private static final String BACKGROUND = StrPathBuilder.build(
-     "ui", "custom", "bottomPanelBackground.png");
+    private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
     private final boolean facingPanelOn =false;
     protected OrbsPanel leftOrbPanel;
     protected OrbsPanel rigthOrbPanel;

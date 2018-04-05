@@ -164,6 +164,10 @@ public class GearCluster extends GroupX {
         this.clockwise = clockwise;
     }
 
+    public void setDefaultSpeed(float defaultSpeed) {
+        this.defaultSpeed = defaultSpeed;
+    }
+
     public enum GEAR {
         GEAR_1, GEAR_2(125), GEAR_3(85);
 

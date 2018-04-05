@@ -336,4 +336,9 @@ public class PathFinder {
          "ui", "macro") + StringMaster.getPathSeparator();
 
     }
+
+    public static String getUiContentPath() {
+        return StrPathBuilder.build(
+         "ui", "content") + StringMaster.getPathSeparator();
+    }
 }

@@ -4,6 +4,8 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.launch.CoreEngine;
 
+import java.util.Arrays;
+
 /**
  * Created with IntelliJ IDEA.
  * Date: 04.11.2016
@@ -60,9 +62,17 @@ public class GuiEventManager {
         trigger(type, null);
     }
 
-    public static void trigger(final EventType type, Object obj) {
+    public static void trigger(final EventType type, Object... params) {
         if (CoreEngine.isGraphicsOff())
             return;
+        Object obj = null;
+        if (params != null) {
+            if (params.length == 1) {
+                obj = params[0];
+            } else {
+                obj =new EventCallbackParam( Arrays.asList(params));
+            }
+        }
         checkSoundEvent(type, obj);
         if (!vertx) {
             GuiEventManagerOld.trigger(type, obj);

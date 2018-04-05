@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
@@ -14,6 +15,7 @@ import eidolons.libgdx.bf.GridCellContainer;
 import eidolons.libgdx.bf.GridPanel;
 import eidolons.libgdx.bf.GridUnitView;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.data.filesys.PathFinder;
@@ -27,12 +29,6 @@ import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
  */
 public class OverlaysManager extends SuperActor {
 
-    private final static OVERLAY[] DEFAULT_VIEW_OVERLAYS = {
-
-    };
-    private static final OVERLAY[] SIGHT_INFO_OVERLAYS = {
-     BLOCKED, IN_PLAIN_SIGHT, IN_SIGHT,
-    };
     private final GridCellContainer[][] cells;
     GridPanel gridPanel;
     boolean sightInfoDisplayed;
@@ -70,7 +66,7 @@ public class OverlaysManager extends SuperActor {
     private void drawOverlays(Batch batch) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                drawOverlaysForCell(cells[i][j],  i, cells[i].length - j - 1, batch);
+                drawOverlaysForCell(cells[i][j], i, cells[i].length - j - 1, batch);
 
                 for (GridUnitView sub : cells[i][j].getUnitViewsVisible()) {
                     drawOverlaysForView(sub, batch);
@@ -87,6 +83,12 @@ public class OverlaysManager extends SuperActor {
         if (GridPanel.isHpBarsOnTop()) {
             drawOverlay(actor, HP_BAR, batch);
         }
+        BattleFieldObject obj = DungeonScreen.getInstance().getGridPanel().getObjectForView(actor);
+        if (checkOverlayForObj(STEALTH, obj)) {
+            drawOverlay(actor, STEALTH, batch);
+        } else if (checkOverlayForObj(SPOTTED, obj)) {
+            drawOverlay(actor, SPOTTED, batch);
+        }
     }
 
     private void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
@@ -95,20 +97,20 @@ public class OverlaysManager extends SuperActor {
 
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
-                return ;
+                return;
             }
             switch (vision) {
                 case IN_PLAIN_SIGHT:
-                    drawOverlay(container,IN_PLAIN_SIGHT, batch);
+                    drawOverlay(container, IN_PLAIN_SIGHT, batch);
                     break;
                 case IN_SIGHT:
-                    drawOverlay(container,IN_SIGHT, batch);
+                    drawOverlay(container, IN_SIGHT, batch);
                     break;
                 case BLOCKED:
-                    drawOverlay(container,BLOCKED, batch);
+                    drawOverlay(container, BLOCKED, batch);
                     break;
                 case CONCEALED:
-                   drawOverlay(container, FOG_OF_WAR, batch);
+                    drawOverlay(container, FOG_OF_WAR, batch);
                     break;
             }
         }
@@ -122,6 +124,14 @@ public class OverlaysManager extends SuperActor {
             batch.setColor(1, 1, 1, 1);
         }
         float x = 0, y = 0;
+        if (overlay.alignment != null) {
+            float w, h;
+            if (getRegion(overlay) != null) {
+
+            }
+//            GdxMaster.getAlignedPos(parent, overlay.alignment, w, h);
+
+        }
         switch (overlay) {
             case HP_BAR: {
                 y = -12;
@@ -187,17 +197,30 @@ public class OverlaysManager extends SuperActor {
          overlay.path);
     }
 
+    public boolean checkOverlayForCell(OVERLAY overlay, Coordinates coordinates) {
+        switch (overlay) {
+            case GRAVE:
+
+        }
+        return false;
+    }
+
     public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object) {
         switch (overlay) {
             case STEALTH:
                 return object.isSneaking();
+            case SPOTTED:
+                return object.isSpotted();
+            case GRAVE:
+
         }
 
 
         return false;
     }
+
     public enum OVERLAY {
-        SPOTTED,
+        SPOTTED(Align.bottomLeft),
         HP_BAR,
         WATCH,
         BLOCKED,
@@ -211,8 +234,22 @@ public class OverlaysManager extends SuperActor {
         FOG_OF_WAR,
         STEALTH;
 
+        public Integer alignment;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
          "2018", "overlays", toString() + ".png");
+
+        OVERLAY() {
+
+        }
+
+        OVERLAY(  int alignment) {
+            this(null, alignment);
+        }
+            OVERLAY(String path, int alignment) {
+            if (path != null)
+                this.path = path;
+            this.alignment = alignment;
+        }
     }
 
 }

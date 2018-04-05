@@ -117,7 +117,12 @@ public class SituationAnalyzer extends AiHandler {
     }
 
     public int getDangerFactor(Unit unit) {
-        return getMeleeDangerFactor(unit) + getRangedDangerFactor(unit);
+        try {
+            return getMeleeDangerFactor(unit) + getRangedDangerFactor(unit);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return 0;
     }
 
     public int getTimeModifier() {

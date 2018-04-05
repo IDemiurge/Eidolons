@@ -12,6 +12,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.images.ImageManager;
 
@@ -104,11 +105,14 @@ public class UnitViewOptions {
 
         } else if (obj instanceof Unit) {
             this.directionValue = obj.getFacing().getDirection().getDegrees();
-            this.directionPointerTexture = getOrCreateR("/UI/DIRECTION POINTER.png");
+            this.directionPointerTexture = getOrCreateR(
+             StrPathBuilder.build(PathFinder.getUiPath(),
+              "DIRECTION POINTER.png"));
 
             this.clockTexture = getOrCreateR(
-             "UI\\SPECIAL\\Data4_orc-0000001290.png"
-//             "/UI/value icons/actions.png"
+             StrPathBuilder.build(PathFinder.getComponentsPath(), "dc" ,
+              "queue" ,
+              "readiness bg.png")
             );
             String emblem = obj.getProperty(G_PROPS.EMBLEM, true);
 
