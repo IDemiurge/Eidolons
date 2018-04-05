@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.top;
 
+import eidolons.client.cc.HC_Master;
 import eidolons.client.cc.gui.MainViewPanel;
 import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.HC_Master;
 import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 

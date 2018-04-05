@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.rules.action;
 
 import eidolons.entity.active.DC_ActiveObj;
-import main.entity.obj.ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import main.entity.obj.ActiveObj;
 
 public interface ActionRule {
 

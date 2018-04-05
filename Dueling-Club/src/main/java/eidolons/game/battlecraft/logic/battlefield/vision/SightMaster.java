@@ -3,19 +3,14 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import main.content.C_OBJ_TYPE;
-import main.content.enums.entity.BfObjEnums;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
-import main.content.enums.rules.VisionEnums.VISION_MODE;
-import main.content.values.properties.G_PROPS;
-import main.entity.Ref;
-import main.entity.obj.BfObj;
-import main.entity.obj.Obj;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
+import main.content.enums.rules.VisionEnums.VISION_MODE;
+import main.entity.Ref;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -25,10 +20,7 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -44,7 +36,9 @@ public class SightMaster {
     }
 
     public DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
-                                                         Integer side_penalty, Integer back_bonus, DC_Obj source, boolean vision,
+                                                         Integer side_penalty,
+                                                         Integer back_bonus,
+                                                         BattleFieldObject source, boolean vision,
                                                          FACING_DIRECTION facing
     ) {
         return getSpectrumCoordinates(range,
@@ -53,7 +47,10 @@ public class SightMaster {
     }
 
     public DequeImpl<Coordinates> getSpectrumCoordinates(Integer range,
-                                                         Integer side_penalty, Integer back_bonus, DC_Obj source, boolean vision,
+                                                         Integer side_penalty,
+                                                         Integer back_bonus,
+                                                         BattleFieldObject source,
+                                                         boolean vision,
                                                          FACING_DIRECTION facing,
                                                          boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
@@ -89,10 +86,11 @@ public class SightMaster {
         }
         if (back_bonus == null) {
             back_bonus = source.getIntParam(PARAMS.BEHIND_SIGHT_BONUS);
-            if (extended) {
-                back_bonus = MathMaster.applyModIfNotZero(back_bonus, source
-                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_BACKWARD));
-            } else back_bonus--;
+            if (!extended)
+                back_bonus--;
+//                back_bonus = MathMaster.applyModIfNotZero(back_bonus, source
+//                 .getIntParam(PARAMS.SIGHT_RANGE_EXPANSION_BACKWARD));
+
         }
 
         addLine(orig.getAdjacentCoordinate(direction), range, list, direction, true);
@@ -107,51 +105,37 @@ public class SightMaster {
                 // side_penalty, false);
             }
         }
-
-        removeShadowed(list, source, facing);
-        if (vision) {
-            // removeConcealed(list, unit, facing);
-            // addIlluminated(list, unit, facing);
-            addSpecial(list, unit, facing);
-//            unit.setSightSpectrumCoordinates(list, extended);
-        }
+        Collection<Coordinates> blocked = getBlockedList(list, source, facing);
+        list.removeAll(blocked);
         list.add(source.getCoordinates());
         return list;
     }
 
-    private void addSpecial(DequeImpl<Coordinates> list, BattleFieldObject source,
-                            FACING_DIRECTION facing) {
-        for (Obj obj : source.getGame().getObjects(C_OBJ_TYPE.BF)) {
-            if (FacingMaster.getSingleFacing(source, (BfObj) obj) == UnitEnums.FACING_SINGLE.IN_FRONT) {
-                if (obj.getProperty(G_PROPS.BF_OBJECT_GROUP).equals(BfObjEnums.BF_OBJECT_GROUP.WALL)) {
-                    list.add(obj.getCoordinates());
-                }
-                // if (((DC_HeroObj ) obj).isHuge()
-
-            }
-        }
-    }
 
     // TODO
-    private void removeShadowed(DequeImpl<Coordinates> list, DC_Obj source,
-                                FACING_DIRECTION facing) {
-        // if (source.isFlying())
-        // return;
+    private Collection<Coordinates> getBlockedList(DequeImpl<Coordinates> list, BattleFieldObject source,
+                                                   FACING_DIRECTION facing) {
         Collection<Coordinates> removeList = new ArrayList<>();
         for (Coordinates c : list) {
-            Ref ref = new Ref(source);
-            try {
-                ref.setMatch(source.getGame().getCellByCoordinate(c).getId());
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-            boolean clearShot = getClearShotCondition().preCheck(ref);
+            DC_Cell cell = master.getGame().getMaster().getCellByCoordinate(c);
+            Boolean clearShot = !isBlocked(cell, source);
             if (!clearShot) {
                 removeList.add(c);
             }
-//            }
         }
-        list.removeAll(removeList);
+        return removeList;
+    }
+
+    private Boolean isBlocked(DC_Obj unit, BattleFieldObject source) {
+        Boolean clearShot = master.getVisionController().getClearshotMapper().get(source,
+         unit);
+        if (clearShot == null) {
+            Ref ref = new Ref(source);
+            ref.setMatch(unit.getId());
+            clearShot = getClearShotCondition().preCheck(ref);
+            master.getVisionController().getClearshotMapper().set(source, clearShot);
+        }
+        return !clearShot;
     }
 
     public ClearShotCondition getClearShotCondition() {
@@ -225,13 +209,13 @@ public class SightMaster {
         VISION_MODE mode = source.getVisionMode();
         switch (mode) {
             case INFRARED_VISION:
-                break; // see the living
+                break; // see the heat
             case NORMAL_VISION:
                 return getVisibleCoordinatesNormalSight(source, extended);
             case TRUE_SIGHT:
                 break; // see all
             case WARP_SIGHT:
-                break; // see magic
+                break; // see the living
             case X_RAY_VISION:
                 break; // see right thru
         }
@@ -250,7 +234,6 @@ public class SightMaster {
         }
         // if (objComp.getObj().isTransparent()) return false;
         DIRECTION direction;
-        FACING_DIRECTION facing = source.getFacing();
         Coordinates orig = source.getCoordinates();
         Coordinates c = obj.getCoordinates();
 
@@ -265,9 +248,6 @@ public class SightMaster {
             return direction;
         }
 
-        // if (facing.isVertical()) {
-
-        // if (facing == FACING_DIRECTION.NORTH)
 
         if (PositionMaster.isAbove(orig, c)) {
             if (PositionMaster.isToTheLeft(orig, c)) {
@@ -288,20 +268,6 @@ public class SightMaster {
 
     }
 
-    private boolean checkMinorDirectShadowing(FACING_DIRECTION facing, Coordinates orig,
-                                              Coordinates c) {
-        int horizontalDistance;
-        int verticalDistance;
-        if (facing.isVertical()) {
-            horizontalDistance = Math.abs(orig.x - c.x);
-            verticalDistance = Math.abs(orig.y - c.y);
-        } else {
-            horizontalDistance = Math.abs(orig.y - c.y);
-            verticalDistance = Math.abs(orig.x - c.x);
-        }
-        return horizontalDistance <= 1 && verticalDistance > 1;
-    }
-
     private boolean checkDirectHorizontalShadowing(Coordinates orig, Coordinates c) {
         int horizontalDistance = Math.abs(orig.y - c.y);
         return (horizontalDistance == 0);
@@ -314,35 +280,26 @@ public class SightMaster {
         return (verticalDistance == 0);
     }
 
-    private void removeLine(Coordinates c, int range, DequeImpl<Coordinates> list,
-                            DIRECTION direction, boolean sides) {
-        addLine(c, range, list, direction, sides, true);
-    }
-
-    public UNIT_TO_UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, Unit activeUnit) {
+    public UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, Unit activeUnit) {
         clearCacheForUnit(activeUnit);
         return getUnitVisionStatusPrivate(unit, activeUnit);
     }
 
 
-    protected UNIT_TO_UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, Unit activeUnit) {
-        UNIT_TO_UNIT_VISION status;
+    protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, Unit activeUnit) {
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
-            status = VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT;
+            if (isBlocked(unit, activeUnit)) {
+                return UNIT_VISION.BLOCKED;
+            }
+            return UNIT_VISION.BEYOND_SIGHT;
         } else {
-            status = (result) ? VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT : VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT;
+            return (result) ? UNIT_VISION.IN_PLAIN_SIGHT : UNIT_VISION.IN_SIGHT;
         }
 
-        // if (status == UNIT_TO_UNIT_VISION.IN_SIGHT)
-        // if (checkConcealed(activeUnit, unit)) // TODO preCheck visibility
-        // obstacles
-        // status = UNIT_TO_UNIT_VISION.CONCEALED;
-
-        return status;
-
     }
+
 
     protected Boolean checkInSightSector(Unit source, DC_Obj target) {
         if (VisionManager.isVisionHacked() && source.isMine()) {
@@ -376,5 +333,38 @@ public class SightMaster {
     public void clearCaches() {
         cache.clear();
         cacheSecondary.clear();
+    }
+
+    public void resetSightStatuses(BattleFieldObject observer) {
+
+        resetUnitVision(observer, master.getGame().getStructures());
+        resetUnitVision(observer, master.getGame().getUnits());
+//        master.getVisionController().getUnitVisionMapper().
+        Set<Obj> cells = isFastMode() ? master.getGame().getBattleFieldManager().
+         getCellsWithinRange(observer, observer.getMaxVisionDistance()
+          ) : master.getGame().getCells();
+        resetUnitVision(observer, cells);
+    }
+
+    private boolean isFastMode() {
+        return true;
+    }
+
+    private void resetUnitVision(BattleFieldObject observer, Collection<? extends Obj> units) {
+        int maxDistance = observer.getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1;
+        for (Obj obj : units) {
+            DC_Obj unit = (DC_Obj) obj;
+            if (PositionMaster.getDistance(observer, obj) > maxDistance) {
+                master.getVisionController().getUnitVisionMapper().set(observer, unit, null);
+                continue;
+            }
+            UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
+            master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
+        }
+    }
+    public void resetUnitVision(BattleFieldObject observer,DC_Obj unit) {
+        UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
+        master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
+
     }
 }

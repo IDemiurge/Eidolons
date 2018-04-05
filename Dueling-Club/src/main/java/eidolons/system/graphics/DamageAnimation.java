@@ -1,10 +1,10 @@
 package eidolons.system.graphics;
 
+import eidolons.system.graphics.AnimationManager.ANIM_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.system.graphics.ANIM;
-import eidolons.system.graphics.AnimationManager.ANIM_TYPE;
 
 import java.awt.*;
 

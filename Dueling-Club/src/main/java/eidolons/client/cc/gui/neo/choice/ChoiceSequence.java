@@ -1,15 +1,15 @@
 package eidolons.client.cc.gui.neo.choice;
 
-import eidolons.client.dc.SequenceManager;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.client.dc.HC_SequenceMaster;
 import eidolons.client.dc.Launcher;
 import eidolons.client.dc.Launcher.VIEWS;
+import eidolons.client.dc.SequenceManager;
+import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.hotkey.HC_KeyManager;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
-import eidolons.system.hotkey.HC_KeyManager;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;

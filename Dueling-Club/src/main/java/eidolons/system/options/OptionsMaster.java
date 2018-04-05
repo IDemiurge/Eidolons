@@ -1,25 +1,30 @@
 package eidolons.system.options;
 
 import com.badlogic.gdx.Gdx;
-import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.launch.GenericLauncher;
-import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
-import eidolons.system.options.SoundOptions.SOUND_OPTION;
-import main.data.XLinkedMap;
-import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.particles.ParticleManager;
-import eidolons.libgdx.bf.GridCell;
+import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
-import main.swing.generic.components.editors.lists.ListChooser;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
+import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.Options.OPTION;
+import eidolons.system.options.SoundOptions.SOUND_OPTION;
+import main.data.XLinkedMap;
+import main.data.filesys.PathFinder;
+import main.data.xml.XML_Converter;
+import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -27,9 +32,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
-import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.system.options.Options.OPTION;
 import main.system.sound.SoundMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -188,7 +190,7 @@ public class OptionsMaster {
 //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
-                applyOption(key, value, bool);
+                applyOption(key, value, bool  );
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -196,7 +198,7 @@ public class OptionsMaster {
         }
     }
 
-    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
+    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool ) {
         switch (key) {
             case FRAMERATE:
                 GenericLauncher launcher = Eidolons.getLauncher();
@@ -218,8 +220,6 @@ public class OptionsMaster {
             case RESOLUTION:
                 Eidolons.setResolution(value);
                 break;
-            case SPRITE_CACHE_ON:
-                GridCell.setSpriteCacheOn(bool);
             case ZOOM_STEP:
                 InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
                 break;
@@ -322,7 +322,14 @@ public class OptionsMaster {
         FontMaster.init();
         GuiManager.init();
         init();
-        tryOpenMenu();
+        openVisUiMenu(new Stage(new FitViewport(800, 800), new SpriteBatch()));
+
+    }
+   static OptionsWindow optionsWindow;
+
+    public static void openVisUiMenu(Stage stage) {
+        OptionsWindow.getInstance().open(optionsMap, stage);
+
     }
 
     public static void tryOpenMenu() {
@@ -338,6 +345,11 @@ public class OptionsMaster {
     }
 
     public static void openMenu() {
+        if (isVisUiMode()){
+            openVisUiMenu(Eidolons.getScreen().getGuiStage());
+            return;
+        }
+
         if (modalOptionsPanelFrame != null) {
 //            optionsPanelFrame.setVisible(false);
 //            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
@@ -351,7 +363,12 @@ public class OptionsMaster {
         modalOptionsPanelFrame.setAlwaysOnTop(true);
     }
 
+    private static boolean isVisUiMode() {
+        return true;
+    }
+
     public static boolean isMenuOpen() {
+
         if (modalOptionsPanelFrame != null)
             return modalOptionsPanelFrame.isVisible();
         return false;
@@ -388,6 +405,7 @@ public class OptionsMaster {
             optionsMap = readOptions(data);
             addMissingDefaults(optionsMap);
         }
+        OptionsMaster.cacheOptions();
         try {
             applyOptions();
             initialized = true;
@@ -539,6 +557,10 @@ public class OptionsMaster {
 
     public static SoundOptions getSoundOptions() {
         return (SoundOptions) getOptions(OPTIONS_GROUP.SOUND);
+    }
+
+    public static Map<OPTIONS_GROUP, Options> getOptionsMap() {
+        return optionsMap;
     }
 
 

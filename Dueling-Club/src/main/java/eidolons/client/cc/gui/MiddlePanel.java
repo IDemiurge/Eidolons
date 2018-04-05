@@ -1,19 +1,19 @@
 package eidolons.client.cc.gui;
 
-import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
-import eidolons.client.cc.gui.misc.AddRemoveComponent;
-import eidolons.client.cc.gui.neo.tabs.HC_StatsTab;
-import eidolons.client.cc.gui.neo.tooltip.ToolTipPanel;
-import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.gui.MainPanel.HERO_TABS;
+import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import eidolons.client.cc.gui.lists.ItemListManager;
+import eidolons.client.cc.gui.misc.AddRemoveComponent;
 import eidolons.client.cc.gui.neo.points.StatsControlComponent;
 import eidolons.client.cc.gui.neo.slide.MasterySlidePanel;
+import eidolons.client.cc.gui.neo.tabs.HC_StatsTab;
+import eidolons.client.cc.gui.neo.tooltip.ToolTipPanel;
 import eidolons.client.cc.gui.pages.HC_PagedInfoPanel;
 import eidolons.client.cc.gui.views.HeroItemView;
-import main.entity.Entity;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
+import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
 
 public class MiddlePanel extends G_Panel {

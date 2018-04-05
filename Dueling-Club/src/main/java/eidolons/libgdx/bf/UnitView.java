@@ -6,37 +6,38 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.libgdx.gui.tooltips.Tooltip;
+import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxImageTransformer;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import eidolons.system.options.OptionsMaster;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class UnitView extends BaseView {
     protected static AtomicInteger lastId = new AtomicInteger(1);
-    private static Boolean hpAlwaysVisible;
-    protected final int curId;
-    private final String name;
+    protected  int curId;
+    private  String name;
     protected int initiativeIntVal;
     protected TextureRegion clockTexture;
     protected HpBar hpBar;
     protected Label initiativeLabel;
     protected Label mainHeroLabel;
     protected Image clockImage;
-    protected Image emblemImage;
-    protected Image emblemBorder;
-    protected Image modeImage;
+    protected FadeImageContainer emblemImage;
+    protected FadeImageContainer emblemBorder;
+    protected FadeImageContainer modeImage;
     protected TextureRegion outline;
     protected Supplier<TextureRegion> outlineSupplier;
     protected boolean greyedOut;
@@ -49,6 +50,7 @@ public class UnitView extends BaseView {
     private Tooltip tooltip;
     private float timeTillTurn = 10;
     private float resetTimer;
+    private GridUnitView parentView;
 
     public UnitView(UnitViewOptions o) {
         this(o, lastId.getAndIncrement());
@@ -56,64 +58,25 @@ public class UnitView extends BaseView {
 
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
-        this.mainHero = o.isMainHero();
         this.curId = curId;
+    }
+
+    public void init(UnitViewOptions o) {
+        this.mainHero = o.isMainHero();
         setTeamColor(o.getTeamColor());
-        init(o.getClockTexture(), o.getClockValue());
         this.name = o.getName();
+        init(o.getPortraitTexture(), o.getPortraitPath());
+        init(o.getClockTexture(), o.getClockValue());
+
+        addActor(this.modeImage=new FadeImageContainer());
     }
 
-    public static Boolean getHpAlwaysVisible() {
-        if (hpAlwaysVisible == null) {
-            hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
-        }
-        return hpAlwaysVisible;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + " for " + name;
-    }
-
-    public HpBar getHpBar() {
-        return hpBar;
-    }
-
-    public void setHpBar(HpBar hpBar) {
-        if (this.hpBar != null) {
-            this.hpBar.remove();
-        }
-        this.hpBar = hpBar;
-        if (!GridPanel.isHpBarsOnTop() || !(this instanceof GridUnitView)) {
-            addActor(hpBar);
-            hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
-        }
-        if ((this instanceof GridUnitView))
-            hpBar.setVisible(false);
-        else
-            hpBar.setQueue(true);
-    }
-
-    @Override
-    public void setHovered(boolean hovered) {
-        super.setHovered(hovered);
-        getHpBar().setLabelsDisplayed(hovered);
-    }
-
-    public void setToolTip(Tooltip tooltip) {
-        addListener(tooltip.getController());
-        this.tooltip = tooltip;
-    }
-
-    public Tooltip getTooltip() {
-        return tooltip;
-    }
 
     public void reset() {
 
 
         if (isEmblemBorderOn()) {
-            emblemBorder = new Image(TextureCache.getOrCreateR(
+            emblemBorder = new FadeImageContainer( (
              CellBorderManager.teamcolorPath));
             emblemBorder.setBounds(emblemImage.getX() - 6, emblemImage.getY() - 6
              , this.emblemImage.getWidth() + 10, this.emblemImage.getHeight() + 10);
@@ -154,13 +117,15 @@ public class UnitView extends BaseView {
     }
 
     protected void updateModeImage(String pathToImage) {
-        removeActor(modeImage);
-        if (pathToImage == null)
+        if (StringMaster.isEmpty(  pathToImage))
+        {
+            ActorMaster.addFadeOutAction(modeImage, 0.5f);
             return;
-        modeImage = new Image(TextureCache.getOrCreateR(pathToImage));
-        addActor(this.modeImage);
+        }
         modeImage.setVisible(true);
-        modeImage.setPosition(0, 0);
+        modeImage .setImage(pathToImage);
+        ActorMaster.addFadeInAction(modeImage, 0.5f);
+        modeImage.setPosition(GdxMaster.top(modeImage), GdxMaster.right(modeImage));
     }
 
     @Override
@@ -184,7 +149,11 @@ public class UnitView extends BaseView {
     public void updateInitiative(Integer val) {
         if (clockTexture != null) {
             initiativeIntVal = val;
-            initiativeLabel.setText(String.valueOf(val));
+            if (outline==null )
+                initiativeLabel.setText(String.valueOf(val));
+            else
+                initiativeLabel.setText("?");
+
             initiativeLabel.setStyle(
              getInitiativeFontStyle());
             initiativeLabel.setPosition(
@@ -203,33 +172,46 @@ public class UnitView extends BaseView {
     }
 
     @Override
+    public void setVisible(boolean visible) {
+        if (!visible)
+            if (isVisible()){
+                setDefaultTexture();
+            }
+        super.setVisible(visible);
+    }
+
+    @Override
     public void act(float delta) {
 
         super.act(delta);
         updateVisible();
-        if (GdxMaster.isHpBarAttached()) {
+        if (GdxMaster.isHpBarAttached() && !GridPanel.isHpBarsOnTop()) {
             addActor(hpBar);
-//            hpBar.setPosition(1,1);
         }
         if (mainHeroLabel != null) {
             if (!isActive()) {
-//                new MapMaster<>()
-//                 .getKeyForValue(DungeonScreen.getInstance().getGridPanel().getUnitMap())
-//                getCurId()
-
                 mainHeroLabel.setVisible(false);
                 return;
             }
-//            if (!OptionsMaster.getGameplayOptions().
-//             getBooleanValue(GAMEPLAY_OPTION.MANUAL_CONTROL))
-//                return;
             mainHeroLabel.setVisible(true);
             alphaFluctuation(mainHeroLabel, delta);
         }
-//        alphaFluctuation(emblemBorder, delta);
+        if (flickering)
+            if (alphaFluctuationOn)
+                alphaFluctuation(this, delta/4); //TODO fix speed
+//                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
+            else if (getColor().a == 0)
+                getColor().a = 1;
+
+        if (!(this instanceof GridUnitView)) {
+            if (!getParentView().isVisible()){
+                setDefaultTexture();
+                return;
+            }
+        }
         if (!mainHero)
-            if (resetTimer <= 0) {
-                if (outlineSupplier != null)
+            if (resetTimer <= 0 || OutlineMaster.isAutoOutlinesOff()) {
+                if (outlineSupplier != null && !OutlineMaster.isAutoOutlinesOff())
                     outline = outlineSupplier.get();
                 if (outline != null) {
                     setPortraitTexture(outline);
@@ -237,9 +219,9 @@ public class UnitView extends BaseView {
                     if (originalTextureAlt != null) {
                         setPortraitTexture(originalTextureAlt);
                     } else {
-                        {
+
                             setPortraitTexture(originalTexture);
-                        }
+
                     }
                 }
                 resetTimer = 0.2f;
@@ -247,6 +229,24 @@ public class UnitView extends BaseView {
                 resetTimer = resetTimer - delta;
             }
 
+    }
+
+    protected void setDefaultTexture() {
+        outline= TextureCache.getSizedRegion(
+         InitiativePanel.imageSize,
+         OUTLINE_TYPE.UNKNOWN.getImagePath());
+        setPortraitTexture(outline);
+    }
+
+    protected FadeImageContainer initPortrait(TextureRegion portraitTexture, String path) {
+        originalTexture = processPortraitTexture(portraitTexture, path);
+        if (isMainHero()){
+            return new FadeImageContainer(new Image(originalTexture));
+        }
+        return   new FadeImageContainer(new Image(getInvisibleQueueTexture()));
+    }
+    private TextureRegion getInvisibleQueueTexture() {
+        return TextureCache.getOrCreateR(OUTLINE_TYPE.UNKNOWN.getImagePath());
     }
 
 
@@ -265,11 +265,7 @@ public class UnitView extends BaseView {
                 batch.setShader(GrayscaleShader.getGrayscaleShader());
             }
         }
-        if (flickering)
-            if (alphaFluctuationOn) //TODO fix
-                ActorMaster.addFadeInOrOutIfNoActions(this, 5);
-            else if (getColor().a == 0)
-                getColor().a = 1;
+
 
 
         super.draw(batch, parentAlpha);
@@ -277,14 +273,9 @@ public class UnitView extends BaseView {
         if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
             batch.setShader(shader);
 
-        if (!(this instanceof GridUnitView)) {
-//            getHpBar().drawAt(batch, 0, 0);
-            return;
-        }
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
-
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
     }
 
@@ -300,7 +291,6 @@ public class UnitView extends BaseView {
 
     public void setFlickering(boolean flickering) {
         this.flickering = flickering;
-//        if (!flickering) {
         getPortrait().getColor().a = 1;
         getColor().a = 1;
     }
@@ -308,7 +298,6 @@ public class UnitView extends BaseView {
     public void setGreyedOut(boolean greyedOut) {
         this.greyedOut = greyedOut;
         getPortrait().getColor().a = 1;
-//        if (getColor().a ==0)
         getColor().a = 1;
 
     }
@@ -382,11 +371,58 @@ public class UnitView extends BaseView {
 
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " for " + name;
+    }
+
+    public HpBar getHpBar() {
+        return hpBar;
+    }
+
+    public void setHpBar(HpBar hpBar) {
+        if (this.hpBar != null) {
+            this.hpBar.remove();
+        }
+        this.hpBar = hpBar;
+        if (!GridPanel.isHpBarsOnTop() || !(this instanceof GridUnitView)) {
+            addActor(hpBar);
+            hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
+        }
+        if ((this instanceof GridUnitView))
+            hpBar.setVisible(false);
+        else
+            hpBar.setQueue(true);
+    }
+
+    @Override
+    public void setHovered(boolean hovered) {
+        super.setHovered(hovered);
+        getHpBar().setLabelsDisplayed(hovered);
+    }
+
+    public void setToolTip(Tooltip tooltip) {
+        addListener(tooltip.getController());
+        this.tooltip = tooltip;
+    }
+
+    public Tooltip getTooltip() {
+        return tooltip;
+    }
+
     public boolean isMainHero() {
         return mainHero;
     }
 
     public void setMainHero(boolean mainHero) {
         this.mainHero = mainHero;
+    }
+
+    public void setParentView(GridUnitView parentView) {
+        this.parentView = parentView;
+    }
+
+    public GridUnitView getParentView() {
+        return parentView;
     }
 }

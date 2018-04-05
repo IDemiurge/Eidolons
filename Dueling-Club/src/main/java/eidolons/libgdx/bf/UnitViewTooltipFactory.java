@@ -38,7 +38,7 @@ public class UnitViewTooltipFactory {
     private static ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
         final Integer cv = StringMaster.getInteger(hero.getCachedValue(max));
         final Integer v = hero.getIntParam(cur);
-        final String name = max.getName();
+        final String name = max.getDisplayedName();
         final TextureRegion iconTexture =
 
          TextureCache.getOrCreateR(
@@ -218,7 +218,7 @@ public class UnitViewTooltipFactory {
         value = StringMaster.getWellFormattedString(value);
         value = value.replace(";", ", ");
         final ValueContainer valueContainer =
-         new ValueContainer(v.getName(), value);
+         new ValueContainer(v.getDisplayedName(), value);
         valueContainer.setNameAlignment(Align.left);
         valueContainer.setValueAlignment(Align.right);
         values.add(valueContainer);
@@ -229,7 +229,7 @@ public class UnitViewTooltipFactory {
                                                PARAMETER param) {
         if (hero.getIntParam(param) > 0) {
             String value = hero.getStrParam(param);
-            String key = param.getName();
+            String key = param.getDisplayedName();
             addKeyAndValue(key, value, values);
         }
     }

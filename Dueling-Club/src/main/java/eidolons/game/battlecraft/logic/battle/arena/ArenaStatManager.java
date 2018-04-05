@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.battle.arena;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 
 /**
  * Created by JustMe on 5/8/2017.

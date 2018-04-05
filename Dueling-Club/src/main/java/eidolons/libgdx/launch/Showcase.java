@@ -2,17 +2,17 @@ package eidolons.libgdx.launch;
 
 import eidolons.client.cc.logic.items.ItemGenerator;
 import eidolons.client.dc.Launcher;
-import main.data.filesys.PathFinder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.core.launch.PresetLauncher;
-import main.swing.generic.components.editors.FileChooser;
 import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.test.frontend.FAST_DC;
+import main.data.filesys.PathFinder;
+import main.swing.generic.components.editors.FileChooser;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
-import eidolons.test.frontend.FAST_DC;
 
 import java.util.List;
 

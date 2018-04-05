@@ -1,12 +1,12 @@
 package eidolons.entity.handlers.bf.structure;
 
 import eidolons.content.PROPS;
-import main.entity.Ref.KEYS;
-import main.entity.handlers.EntityMaster;
-import main.entity.handlers.EntityResetter;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import main.entity.Ref.KEYS;
+import main.entity.handlers.EntityMaster;
+import main.entity.handlers.EntityResetter;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 

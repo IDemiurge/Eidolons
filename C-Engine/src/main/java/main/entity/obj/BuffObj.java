@@ -45,6 +45,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private double timeInGame = 0;
     private double period;
     private List<PeriodicEffect> timeEffects;
+    private boolean immobilizing;
 
     public BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
                    double duration, Condition retainCondition) {
@@ -208,8 +209,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     @Override
-    public int getDuration() {
-        return getIntParam(G_PARAMS.C_DURATION);
+    public double getDuration() {
+        return duration;
     }
 
     public void setDuration(Number duration) {
@@ -409,5 +410,13 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
             if (getType().getType().getName().equals("Dummy Buff"))
                 return false;
         return true;
+    }
+
+    public void setImmobilizing(boolean immobilizing) {
+        this.immobilizing = immobilizing;
+    }
+
+    public boolean isImmobilizing() {
+        return immobilizing;
     }
 }

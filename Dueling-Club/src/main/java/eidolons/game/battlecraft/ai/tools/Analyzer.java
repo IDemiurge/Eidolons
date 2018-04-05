@@ -1,21 +1,13 @@
 package eidolons.game.battlecraft.ai.tools;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.ability.conditions.WaitingFilterCondition;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
-import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.DC_TYPE;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
-import main.content.enums.rules.VisionEnums;
-import main.content.enums.system.AiEnums.AI_TYPE;
-import main.data.XList;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -23,12 +15,20 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.rules.action.StackingRule;
+import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
+import main.content.DC_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE;
+import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.system.AiEnums.AI_TYPE;
+import main.data.XList;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import eidolons.game.core.Eidolons;
 import main.game.logic.battle.player.Player;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -439,7 +439,7 @@ public class Analyzer extends AiHandler {
             }
             if (detected) // TODO in sight etc
             {
-                if (cell.getActivePlayerVisionStatus() != VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
+                if (cell.getActivePlayerVisionStatus() != PLAYER_VISION.DETECTED) {
                     continue;
                 }
             }

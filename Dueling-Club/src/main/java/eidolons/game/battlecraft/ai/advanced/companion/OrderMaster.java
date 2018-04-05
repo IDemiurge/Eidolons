@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.ai.advanced.companion;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.content.PARAMS;
-import main.entity.obj.ActiveObj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
+import main.entity.obj.ActiveObj;
 import main.system.math.MathMaster;
 
 public class OrderMaster extends AiHandler {

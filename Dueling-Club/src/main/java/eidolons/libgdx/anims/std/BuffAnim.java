@@ -1,10 +1,6 @@
 package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import main.content.enums.system.MetaEnums.STD_BUFF_NAMES;
-import main.data.filesys.PathFinder;
-import main.entity.obj.BuffObj;
-import main.game.bf.Coordinates;
 import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.ANIM_MODS.CONTINUOUS_ANIM_MODS;
 import eidolons.libgdx.anims.AnimData;
@@ -12,6 +8,10 @@ import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.system.MetaEnums.STD_BUFF_NAMES;
+import main.data.filesys.PathFinder;
+import main.entity.obj.BuffObj;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
 

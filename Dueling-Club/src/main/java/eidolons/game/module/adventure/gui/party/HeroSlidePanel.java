@@ -1,11 +1,11 @@
 package eidolons.game.module.adventure.gui.party;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.content.PARAMS;
-import main.content.VALUE;
-import main.content.values.parameters.MACRO_PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.panels.DC_ItemPanel;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
+import main.content.VALUE;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.StringMaster;

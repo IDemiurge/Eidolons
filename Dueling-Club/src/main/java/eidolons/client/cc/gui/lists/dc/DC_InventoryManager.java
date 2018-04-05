@@ -1,19 +1,19 @@
 package eidolons.client.cc.gui.lists.dc;
 
 import eidolons.client.cc.CharacterCreator;
-import main.content.DC_TYPE;
-import main.content.OBJ_TYPE;
 import eidolons.content.PROPS;
-import main.content.values.properties.PROPERTY;
-import main.entity.Entity;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import eidolons.system.audio.DC_SoundMaster;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.values.properties.PROPERTY;
+import main.entity.Entity;
+import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;

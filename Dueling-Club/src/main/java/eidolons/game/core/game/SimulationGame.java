@@ -1,10 +1,10 @@
 package eidolons.game.core.game;
 
 import eidolons.entity.obj.BattleFieldObject;
-import main.content.values.properties.PROPERTY;
-import main.data.XLinkedMap;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
+import main.content.values.properties.PROPERTY;
+import main.data.XLinkedMap;
 import main.entity.type.ObjType;
 
 import java.util.Map;

@@ -5,11 +5,11 @@ import eidolons.client.cc.logic.items.ItemGenerator;
 import eidolons.libgdx.EngineEmulator;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.EventCallbackParam;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.system.options.OptionsMaster;
 import org.dizitart.no2.Nitrite;
 
 public class DemoLauncher extends GenericLauncher {

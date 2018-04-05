@@ -1,13 +1,13 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;

@@ -91,6 +91,11 @@ public class ModeImpl implements MODE {
     }
 
     @Override
+    public String getImagePath() {
+        return template.getImagePath();
+    }
+
+    @Override
     public String getPeriod() {
         return template.getPeriod();
     }

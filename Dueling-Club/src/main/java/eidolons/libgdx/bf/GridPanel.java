@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -12,49 +13,51 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.light.ShadowMap;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
-import eidolons.libgdx.bf.overlays.HpBar;
-import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.options.OptionsMaster;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.mode.STD_MODES;
-import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.battlefield.vision.LastSeenMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.EVENT_TYPE;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.light.ShadowMap;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
+import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
+import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.text.HelpMaster;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.entity.Ref;
+import main.entity.Ref.KEYS;
+import main.game.bf.Coordinates;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.EVENT_TYPE;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.system.text.HelpMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -81,7 +84,7 @@ public class GridPanel extends Group {
 
     protected TextureRegion emptyImage;
     protected GridCellContainer[][] cells;
-    private Map<BattleFieldObject, BaseView> unitMap;
+    private Map<BattleFieldObject, BaseView> viewMap;
     private int cols;
     private int rows;
     private AnimMaster animMaster;
@@ -96,6 +99,9 @@ public class GridPanel extends Group {
     private boolean updateRequired;
     private boolean firstUpdateDone;
     private boolean welcomeInfoShown;
+    private OverlaysManager overlayManager;
+    private GridUnitView mainHeroView;
+    private float resetTimer;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -103,17 +109,17 @@ public class GridPanel extends Group {
     }
 
     public static boolean isHpBarsOnTop() {
-        return !GdxMaster.isHpBarAttached();
+        return true;
     }
 
     public void updateOutlines() {
 
-        unitMap.keySet().forEach(obj -> {
+        viewMap.keySet().forEach(obj -> {
             if (!obj.isOverlaying())
                 if (!obj.isMine())
                     if (!obj.isWall()) {
                         OUTLINE_TYPE outline = obj.getOutlineType();
-                        GridUnitView uv = (GridUnitView) unitMap.get(obj);
+                        GridUnitView uv = (GridUnitView) viewMap.get(obj);
 
                         TextureRegion texture = null;
                         if (outline != null) {
@@ -201,7 +207,7 @@ public class GridPanel extends Group {
     }
 
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
-        this.unitMap = new HashMap<>();
+        this.viewMap = new HashMap<>();
         emptyImage = TextureCache.getOrCreateR(getCellImagePath());
         cornerRegion = TextureCache.getOrCreateR(gridCornerElementPath);
         cells = new GridCellContainer[cols][rows];
@@ -243,10 +249,9 @@ public class GridPanel extends Group {
                 return false;
             }
         });
-
-        animMaster = AnimMaster.getInstance();
+        addActor(overlayManager = new OverlaysManager(this));
+        addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
-        addActor(animMaster);
 
         if (AnimationConstructor.isPreconstructAllOnGameInit())
             units.forEach(unit ->
@@ -273,13 +278,26 @@ public class GridPanel extends Group {
     }
 
     private UnitView getUnitView(BattleFieldObject battleFieldObject) {
-        return (UnitView) unitMap.get(battleFieldObject);
+        return (UnitView) viewMap.get(battleFieldObject);
     }
 
     private void bindEvents() {
 
         GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
+        });
+        GuiEventManager.bind(GuiEventType.UPDATE_LAST_SEEN_VIEWS, p -> {
+            List<BattleFieldObject> list = (List<BattleFieldObject>) p.get();
+
+            for (BattleFieldObject sub : viewMap.keySet()) {
+                GridUnitView view = (GridUnitView) viewMap.get(sub);
+                if (list.contains(sub)) {
+                    setVisible(view.getLastSeenView(), true);
+                } else {
+                    setVisible(view.getLastSeenView(), false);
+                }
+            }
+
         });
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
@@ -342,7 +360,7 @@ public class GridPanel extends Group {
             Map<Borderable, Runnable> map = new HashMap<>();
 
             for (DC_Obj obj1 : p.getLeft()) {
-                Borderable b = unitMap.get(obj1);
+                Borderable b = viewMap.get(obj1);
                 if (b == null) {
                     b = cells[obj1.getX()][rows - 1 - obj1.getY()];
                 }
@@ -376,9 +394,9 @@ public class GridPanel extends Group {
             DungeonScreen.getInstance().activeUnitSelected(hero);
             if (hero instanceof Unit)
                 animMaster.getConstructor().tryPreconstruct((Unit) hero);
-            BaseView view = unitMap.get(hero);
+            BaseView view = viewMap.get(hero);
             if (view == null) {
-                System.out.println("unitMap not initiatilized at ACTIVE_UNIT_SELECTED!");
+                System.out.println("viewMap not initiatilized at ACTIVE_UNIT_SELECTED!");
                 return;
             }
 
@@ -386,7 +404,7 @@ public class GridPanel extends Group {
                 ((GridCellContainer) view.getParent()).popupUnitView((GridUnitView) view);
             }
 
-            unitMap.values().stream().forEach(v -> v.setActive(false));
+            viewMap.values().stream().forEach(v -> v.setActive(false));
             view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
@@ -412,7 +430,7 @@ public class GridPanel extends Group {
 
 //        GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
 //            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
-//            final BaseView baseView = unitMap.get(pair.getLeft());
+//            final BaseView baseView = viewMap.get(pair.getLeft());
 //            if (baseView instanceof GridUnitView) {
 //                final Boolean isVisible = pair.getRight();
 //                //TODO ???
@@ -439,7 +457,7 @@ public class GridPanel extends Group {
         });
         GuiEventManager.bind(UPDATE_UNIT_ACT_STATE, obj -> {
             final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
-            final BaseView baseView = unitMap.get(pair.getLeft());
+            final BaseView baseView = viewMap.get(pair.getLeft());
             if (baseView instanceof GridUnitView) {
                 final boolean mobilityState = pair.getRight();
                 ((GridUnitView) baseView).setMobilityState(mobilityState);
@@ -459,7 +477,7 @@ public class GridPanel extends Group {
     private void updateHpBar(Object o) {
         GridUnitView view = null;
         if (o instanceof BattleFieldObject)
-            view = (GridUnitView) unitMap.get(o);
+            view = (GridUnitView) viewMap.get(o);
         else if (o instanceof GridUnitView)
             view = (GridUnitView) (o);
         if (view != null)
@@ -467,7 +485,11 @@ public class GridPanel extends Group {
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
-        BaseView view = unitMap.get(sub);
+        setVisible(viewMap.get(sub), b);
+    }
+
+    private void setVisible(BaseView view, boolean b) {
+
         if (view == null)
             return;
         if (view.getParent() == null)
@@ -482,6 +504,10 @@ public class GridPanel extends Group {
             } else {
                 ActorMaster.addFadeOutAction(view, 0.25f);
                 ActorMaster.addSetVisibleAfter(view, false);
+                if (view instanceof GridUnitView) {
+                    ((GridUnitView) view).getLastSeenView().fadeIn();
+
+                }
             }
         } else view.setVisible(b);
     }
@@ -512,7 +538,7 @@ public class GridPanel extends Group {
 //                    if (hero.isMine()) {
 //                        turnField(event.getType());
 //                    }
-                BaseView view = unitMap.get(hero);
+                BaseView view = viewMap.get(hero);
                 if (view != null && view instanceof GridUnitView) {
                     GridUnitView unitView = ((GridUnitView) view);
                     unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
@@ -533,12 +559,12 @@ public class GridPanel extends Group {
                 }
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), unitMap.get(ref.getSourceObj())))
+                if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), viewMap.get(ref.getSourceObj())))
                     removeUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
                 if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(),
-                 unitMap.get(ref.getSourceObj())))
+                 viewMap.get(ref.getSourceObj())))
                     moveUnitView((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
@@ -551,7 +577,7 @@ public class GridPanel extends Group {
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
-                    UnitView view = (UnitView) getUnitMap().get(
+                    UnitView view = (UnitView) getViewMap().get(
                      event.getRef().getSourceObj());
                     if (view != null)
                         if (view.isVisible())
@@ -586,7 +612,7 @@ public class GridPanel extends Group {
 //                ActorMaster.addRotateByAction(view, view.getRotation(), view.getRotation() - i);
 //            }
 //        }
-        unitMap.values().forEach(view -> {
+        viewMap.values().forEach(view -> {
             ActorMaster.addRotateByAction(view, view.getRotation(), view.getRotation() - i);
         });
     }
@@ -621,7 +647,7 @@ public class GridPanel extends Group {
                     final OverlayView overlay = UnitViewFactory.createOverlay(object);
                     if (!isVisibleByDefault(object))
                         overlay.setVisible(false);
-                    unitMap.put(object, overlay);
+                    viewMap.put(object, overlay);
                     Vector2 v = GridMaster.getVectorForCoordinate(
                      object.getCoordinates(), false, false, this);
                     overlay.setPosition(v.x, v.y - GridConst.CELL_H);
@@ -638,43 +664,30 @@ public class GridPanel extends Group {
         addActor(wallMap);
 
         GuiEventManager.bind(SHOW_MODE_ICON, obj -> {
-            Unit unit = (Unit) obj.get();
-            if (unit.isDead()) return;
-            UnitView view = (UnitView) unitMap.get(unit);
-            if (view != null) {
-                if (unit.getModeFinal() == null || unit.getModeFinal() == STD_MODES.NORMAL) {
-                    view.updateModeImage(null);
-                } else {
-                    if (unit.getModeFinal() != null)
-                        if (unit.getBuff(unit.getModeFinal().getBuffName()) != null)
-                            try {
-                                view.updateModeImage(unit.getBuff(unit.getModeFinal().getBuffName()).getImagePath());
-                            } catch (Exception e) {
-                                main.system.ExceptionMaster.printStackTrace(e);
-                            }
-                }
-            }
+            List list = (List) obj.get();
+            UnitView view = (UnitView) getViewMap().get(list.get(0));
+            view.updateModeImage((String) list.get(1));
         });
         if (DC_Engine.isAtbMode()) {
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Pair<Integer, Float>> p = (Pair<Unit, Pair<Integer, Float>>) obj.get();
-                GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
+                GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
                 if (uv == null) {
                     addUnitView(p.getLeft());
-                    uv = (GridUnitView) unitMap.get(p.getLeft());
+                    uv = (GridUnitView) viewMap.get(p.getLeft());
                 }
                 if (uv != null) {
-                    uv.setTimeTillTurn(p.getRight().getRight());
+                    uv.getInitiativeQueueUnitView().setTimeTillTurn(p.getRight().getRight());
                     uv.updateInitiative(p.getRight().getLeft());
                 }
             });
         } else
             GuiEventManager.bind(INITIATIVE_CHANGED, obj -> {
                 Pair<Unit, Integer> p = (Pair<Unit, Integer>) obj.get();
-                GridUnitView uv = (GridUnitView) unitMap.get(p.getLeft());
+                GridUnitView uv = (GridUnitView) viewMap.get(p.getLeft());
                 if (uv == null) {
                     addUnitView(p.getLeft());
-                    uv = (GridUnitView) unitMap.get(p.getLeft());
+                    uv = (GridUnitView) viewMap.get(p.getLeft());
                 }
                 if (uv != null)
                     uv.updateInitiative(p.getRight());
@@ -698,17 +711,22 @@ public class GridPanel extends Group {
         return battleFieldObjectbj instanceof Entrance;
     }
 
-    private void moveUnitView(BattleFieldObject heroObj) {
+    private void moveUnitView(BattleFieldObject object) {
         int rows1 = rows - 1;
-        BaseView uv = unitMap.get(heroObj);
+        GridUnitView uv = (GridUnitView) viewMap.get(object);
         if (uv == null) {
             return;
         }
-        Coordinates c = heroObj.getCoordinates();
+        Coordinates c = object.getCoordinates();
 
 //        uv.setVisible(true);
+
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
+            if (uv.getLastSeenView() != null) {
+                if (LastSeenMaster.isUpdateRequired(object))
+                    cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
+            }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -716,12 +734,15 @@ public class GridPanel extends Group {
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
-        BaseView uv = UnitViewFactory.create(battleFieldObjectbj);
-        unitMap.put(battleFieldObjectbj, uv);
+        GridUnitView view = UnitViewFactory.create(battleFieldObjectbj);
+        viewMap.put(battleFieldObjectbj, view);
+        if (battleFieldObjectbj.isPlayerCharacter()) {
+            mainHeroView = view;
+        }
         moveUnitView(battleFieldObjectbj);
         if (!isVisibleByDefault(battleFieldObjectbj))
-            uv.setVisible(false);
-        return uv;
+            view.setVisible(false);
+        return view;
     }
 
     private void addUnitView(BattleFieldObject heroObj) {
@@ -732,7 +753,7 @@ public class GridPanel extends Group {
     }
 
     public boolean detachUnitView(BattleFieldObject heroObj) {
-        BaseView uv = unitMap.get(heroObj);
+        BaseView uv = viewMap.get(heroObj);
         if (!(uv.getParent() instanceof GridCellContainer))
             return false;
         if (!uv.isVisible())
@@ -748,7 +769,7 @@ public class GridPanel extends Group {
     }
 
     private BaseView removeUnitView(BattleFieldObject obj) {
-        BaseView uv = unitMap.get(obj);
+        BaseView uv = viewMap.get(obj);
         if (uv == null) {
             LogMaster.log(1, obj + " IS NOT ON UNIT MAP!");
             return null;
@@ -771,9 +792,9 @@ public class GridPanel extends Group {
 
         super.draw(batch, parentAlpha);
 
-        if (isHpBarsOnTop())
-            for (BattleFieldObject obj : unitMap.keySet()) {
-                BaseView sub = unitMap.get(obj);
+        if (isHpBarsOnTop() && !GdxMaster.isHpBarAttached())
+            for (BattleFieldObject obj : viewMap.keySet()) {
+                BaseView sub = viewMap.get(obj);
                 if (sub.isVisible())
                     if (sub instanceof GridUnitView) {
                         if (((GridUnitView) sub).getHpBar() != null)
@@ -829,6 +850,22 @@ public class GridPanel extends Group {
             resetZIndices();
             update();
         }
+        if (isAutoResetVisibleOn()) {
+            if (resetTimer <= 0) {
+                resetTimer = 0.5f;
+                for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisibleList()) {
+                    setVisible(viewMap.get(sub), true);
+                }
+                for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisibleList()) {
+                    setVisible(viewMap.get(sub), false);
+                }
+            }
+            resetTimer -= delta;
+        }
+    }
+
+    private boolean isAutoResetVisibleOn() {
+        return true;
     }
 
     private void update() {
@@ -838,8 +875,8 @@ public class GridPanel extends Group {
     }
 
     private void resetVisible() {
-        for (BattleFieldObject sub : unitMap.keySet()) {
-            BaseView view = unitMap.get(sub);
+        for (BattleFieldObject sub : viewMap.keySet()) {
+            BaseView view = viewMap.get(sub);
             //TODO STEALTH VISUALS
 //            Map<GridUnitView, Boolean> units = new HashMap<>();
 //            if (view instanceof GridUnitView) {
@@ -899,16 +936,24 @@ public class GridPanel extends Group {
             }
         }
         wallMap.setVisible(WallMap.isOn());
+        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
+        if (ctrl) {
+            if (ShadowMap.isOn())
+                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+                    shadowMap.setZtoMax(sub);
+                }
+        }
         wallMap.setZIndex(Integer.MAX_VALUE);
-//        if (ShadowMap.isOn())
-//            shadowMap.setZtoMax(SHADE_LIGHT.LIGHT_EMITTER);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-        if (ShadowMap.isOn())
-            for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-//            if (sub!=SHADE_LIGHT.LIGHT_EMITTER)
-                shadowMap.setZtoMax(sub);
-            }
 
+        if (!ctrl) {
+            if (ShadowMap.isOn())
+                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+                    shadowMap.setZtoMax(sub);
+                }
+        }
+
+        overlayManager.setZIndex(Integer.MAX_VALUE);
 
         animMaster.setZIndex(Integer.MAX_VALUE);
         if (fpsLabel != null)
@@ -929,8 +974,8 @@ public class GridPanel extends Group {
         overlays.add(view);
     }
 
-    public Map<BattleFieldObject, BaseView> getUnitMap() {
-        return unitMap;
+    public Map<BattleFieldObject, BaseView> getViewMap() {
+        return viewMap;
     }
 
     public int getCols() {
@@ -951,5 +996,14 @@ public class GridPanel extends Group {
 
     public void setFpsLabel(Label fpsLabel) {
         this.fpsLabel = fpsLabel;
+    }
+
+    public GridUnitView getMainHeroView() {
+        return mainHeroView;
+    }
+
+    public BattleFieldObject getObjectForView(GridUnitView source) {
+        return new MapMaster<BattleFieldObject, BaseView>()
+         .getKeyForValue(viewMap, source);
     }
 }

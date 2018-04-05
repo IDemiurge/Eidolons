@@ -2,15 +2,14 @@ package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 
 public class VisionManager {
 
     private static boolean visionHacked;
 
     public static boolean isVisionHacked() {
-
-
-        return visionHacked;
+        return visionHacked || DC_Game.game.isDebugMode();
     }
 
     public static void setVisionHacked(boolean visionHacked) {
@@ -18,11 +17,12 @@ public class VisionManager {
     }
 
     public static boolean checkVisible(DC_Obj obj) {
-        return getMaster().checkVisible(obj, true);
+        return !getMaster().checkInvisible(obj, true);
     }
 
     public static boolean checkVisible(DC_Obj obj, boolean active) {
-        return getMaster().checkVisible(obj, active);
+        return !getMaster()
+         .checkInvisible(obj, active);
     }
 
     public static void refresh() {

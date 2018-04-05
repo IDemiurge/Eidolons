@@ -3,8 +3,8 @@ package eidolons.libgdx.utils;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
-import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.stage.Closable;
 
 /**
  * Created by JustMe on 2/22/2018.

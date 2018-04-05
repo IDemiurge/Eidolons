@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.principles;
 
-import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.client.cc.gui.neo.points.HC_InfoTextPanel;
+import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;

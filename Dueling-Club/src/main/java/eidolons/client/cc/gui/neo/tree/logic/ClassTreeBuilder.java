@@ -2,10 +2,10 @@ package eidolons.client.cc.gui.neo.tree.logic;
 
 import eidolons.client.cc.gui.neo.tree.ClassNode;
 import eidolons.client.cc.gui.neo.tree.HT_Node;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import eidolons.client.cc.gui.neo.tree.logic.TreeMap.LINK_VARIANT;
 import eidolons.content.DC_ContentManager;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;

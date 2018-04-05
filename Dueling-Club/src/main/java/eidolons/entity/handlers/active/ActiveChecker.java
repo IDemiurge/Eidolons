@@ -2,8 +2,13 @@ package eidolons.entity.handlers.active;
 
 import eidolons.ability.effects.containers.customtarget.ShapeEffect;
 import eidolons.ability.effects.containers.customtarget.ZoneEffect;
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_QuickItemAction;
+import eidolons.game.battlecraft.ai.AI_Manager;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.ActionEnums;
@@ -14,13 +19,8 @@ import main.content.enums.entity.SpellEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_QuickItemAction;
 import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
-import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 
 /**
  * Created by JustMe on 2/23/2017.

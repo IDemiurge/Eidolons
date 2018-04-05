@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.content.PARAMS;
-import main.entity.obj.MicroObj;
-import main.game.bf.Coordinates;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.GridConst;
+import main.entity.obj.MicroObj;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 

@@ -1,8 +1,8 @@
 package eidolons.libgdx.screens.map.town;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.game.module.adventure.town.TownPlace;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 
 /**
  * Created by JustMe on 3/14/2018.

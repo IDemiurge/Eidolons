@@ -9,16 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.AnimData;
+import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
+import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.bf.BaseView;
+import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.texture.TextureCache;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
-import eidolons.libgdx.anims.AnimMaster;
-import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -105,7 +105,7 @@ public class DeathAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(unit);
         if (actor != null)
             return actor;

@@ -1,8 +1,8 @@
 package eidolons.entity.handlers.active.spell;
 
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Activator;
+import eidolons.entity.handlers.active.ActiveMaster;
 
 /**
  * Created by JustMe on 2/26/2017.

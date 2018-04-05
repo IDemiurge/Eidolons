@@ -1,9 +1,9 @@
 package eidolons.client.cc.gui.neo.principles;
 
+import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import main.entity.Entity;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.graphics.GuiManager;

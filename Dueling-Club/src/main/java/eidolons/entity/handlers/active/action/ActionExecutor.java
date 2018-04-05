@@ -1,12 +1,14 @@
 package eidolons.entity.handlers.active.action;
 
+import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.handlers.active.Activator;
 import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.handlers.active.Targeter;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
+import eidolons.game.battlecraft.rules.combat.attack.dual.CadenceRule;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Conditions;
@@ -16,10 +18,7 @@ import main.elements.targeting.SelectiveTargeting;
 import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.elements.targeting.Targeting;
 import main.entity.Ref;
-import eidolons.entity.handlers.active.Activator;
-import eidolons.game.battlecraft.rules.combat.attack.dual.CadenceRule;
 import main.system.entity.ConditionMaster;
-import main.system.math.Formula;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -145,7 +144,7 @@ public class ActionExecutor extends Executor {
                     conditions = ConditionMaster.getFilteredConditions(conditions, DistanceCondition.class);
                     conditions.add(new DistanceCondition("" + maxRange));
                     SelectiveTargeting selectiveTargeting = new SelectiveTargeting(
-                     SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions, new Formula("1"));
+                     SELECTIVE_TARGETING_TEMPLATES.ATTACK, conditions);
                     return selectiveTargeting;
 
                 }

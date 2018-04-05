@@ -2,9 +2,9 @@ package eidolons.client.cc.gui.neo.tabs;
 
 import eidolons.client.cc.gui.MainViewPanel;
 import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
-import eidolons.client.cc.gui.tabs.HeroPanelTab;
 import eidolons.client.cc.gui.neo.points.HC_PointView;
 import eidolons.client.cc.gui.neo.slide.MasterySlidePanel;
+import eidolons.client.cc.gui.tabs.HeroPanelTab;
 import eidolons.entity.obj.unit.Unit;
 
 public class HC_StatsTab extends HeroPanelTab {

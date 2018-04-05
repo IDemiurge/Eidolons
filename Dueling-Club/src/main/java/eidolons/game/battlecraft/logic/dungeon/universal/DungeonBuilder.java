@@ -1,8 +1,13 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
+import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
+import eidolons.system.text.NameMaster;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.values.parameters.G_PARAMS;
@@ -12,10 +17,6 @@ import main.data.xml.XML_Converter;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.logic.battle.player.Player;
@@ -23,7 +24,6 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.TypeBuilder;
-import eidolons.system.text.NameMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

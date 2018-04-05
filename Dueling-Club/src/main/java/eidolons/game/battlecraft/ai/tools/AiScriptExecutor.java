@@ -1,21 +1,21 @@
 package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.advanced.companion.Order;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiActionFactory;
+import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
+import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.elements.task.Task;
+import eidolons.game.battlecraft.ai.tools.path.ActionPath;
+import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
-import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
-import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
-import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 

@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.game.bf.Coordinates;
 
 /**

@@ -2,6 +2,7 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.libgdx.anims.AnimData;
@@ -9,13 +10,12 @@ import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.BaseView;
+import eidolons.libgdx.bf.GridConst;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.ability.effects.oneshot.move.MoveEffect;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
-import eidolons.libgdx.bf.GridConst;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
@@ -119,7 +119,7 @@ public class MoveAnimation extends ActionAnim {
         if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
          MoveEffect.class)))
             unit = (Unit) getRef().getTargetObj();
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(unit);
         if (!DungeonScreen.getInstance().getGridPanel().detachUnitView(unit)) {
             return;

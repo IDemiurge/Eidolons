@@ -1,9 +1,9 @@
 package eidolons.libgdx.gui.menu.selection.scenario;
 
-import main.content.values.properties.G_PROPS;
-import main.entity.Entity;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.system.text.HelpMaster;
+import main.content.values.properties.G_PROPS;
+import main.entity.Entity;
 
 import java.util.LinkedList;
 import java.util.List;

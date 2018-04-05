@@ -1,12 +1,12 @@
 package eidolons.ability.effects.oneshot.activation;
 
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.advanced.companion.OrderMaster;
 import eidolons.ability.effects.DC_Effect;
-import main.ability.effects.OneshotEffect;
-import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.battlecraft.ai.advanced.companion.OrderFactory;
+import eidolons.game.battlecraft.ai.advanced.companion.OrderMaster;
+import main.ability.effects.OneshotEffect;
+import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.util.Untested;

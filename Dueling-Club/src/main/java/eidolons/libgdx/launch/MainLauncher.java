@@ -1,10 +1,11 @@
 package eidolons.libgdx.launch;
 
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.game.battlecraft.DC_Engine;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -16,6 +17,8 @@ import java.util.Stack;
  */
 public class MainLauncher extends GenericLauncher {
     public static final Stack<Integer> presetNumbers = new Stack<>();
+    private static final String LAST_CHOICE_FILE ="xml\\last dc.xml" ;
+    private static Stack<String> lastChoiceStack;
 
     public static void main(String[] args) {
         new MainLauncher().start();
@@ -34,11 +37,25 @@ public class MainLauncher extends GenericLauncher {
                     MainMenu.getInstance().getHandler().handle(item);
                 else {
                     if (StringMaster.isInteger(command)) {
-                        presetNumbers.add(0, StringMaster.getInteger(command));
+                    int i =StringMaster.getInteger(command);
+                        if (i<0){
+                            i =getLast();
+                        }
+                        presetNumbers.add(0, i);
                     }
+
                 }
             }
         }
+    }
+
+    private static int getLast() {
+if (lastChoiceStack == null ){
+    lastChoiceStack = new Stack<>();
+    lastChoiceStack.addAll(StringMaster.openContainer(
+     FileManager.readFile(LAST_CHOICE_FILE)));
+}
+        return StringMaster.getInteger(lastChoiceStack.remove(0));
     }
 
     @Override

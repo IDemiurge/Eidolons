@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.mission.Mission;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
 
 /**

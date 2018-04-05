@@ -1,8 +1,9 @@
 package eidolons.game.battlecraft.rules.counter;
 
-import eidolons.entity.obj.unit.Unit;
-import main.ability.effects.Effect;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
+import main.ability.effects.Effect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -10,7 +11,6 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
-import eidolons.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 
 public class BleedingDamageRule extends DamageCounterRule {

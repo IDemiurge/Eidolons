@@ -1,9 +1,14 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.content.PROPS;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
+import eidolons.game.battlecraft.ai.advanced.companion.MetaGoal;
+import eidolons.game.battlecraft.ai.advanced.companion.Order;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
@@ -17,12 +22,7 @@ import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.data.DataManager;
 import main.data.XLinkedMap;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.ai.advanced.companion.MetaGoal;
-import eidolons.game.battlecraft.ai.advanced.companion.Order;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.tools.AiExecutor;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;

@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 

@@ -1,18 +1,18 @@
 package eidolons.ability.conditions;
 
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.attach.DC_HeroAttachedObj;
+import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_HeroSlotItem;
 import main.entity.obj.BfObj;
-import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.attach.DC_HeroAttachedObj;
-import eidolons.entity.obj.unit.DC_UnitModel;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;

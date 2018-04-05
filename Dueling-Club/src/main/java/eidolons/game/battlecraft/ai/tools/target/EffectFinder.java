@@ -1,7 +1,12 @@
 package eidolons.game.battlecraft.ai.tools.target;
 
+import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.common.ModifyPropertyEffect;
+import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.attack.AttackEffect;
+import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.ability.Abilities;
 import main.ability.Ability;
 import main.ability.AbilityType;
@@ -10,10 +15,6 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.attachment.AddBuffEffect;
-import eidolons.ability.effects.common.ModifyPropertyEffect;
-import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.ability.construct.VariableManager;
@@ -22,7 +23,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -276,7 +276,7 @@ public class EffectFinder {
                 }
                 if (amount.contains(StringMaster.SET)) {
                     code = MOD.SET;
-                    amount.replace(StringMaster.SET, "");
+                    amount = amount.replace(StringMaster.SET, "");
                 }
             }
             if (ref.getId(KEYS.INFO) == null) {

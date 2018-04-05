@@ -2,7 +2,9 @@ package eidolons.ability.effects.oneshot.rule;
 
 import eidolons.ability.conditions.WaitingRetainCondition;
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.continuous.SetCustomModeEffect;
+import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
 import main.ability.Ability;
@@ -11,8 +13,6 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
-import eidolons.ability.effects.attachment.AddTriggerEffect;
-import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.content.enums.entity.UnitEnums;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Condition;

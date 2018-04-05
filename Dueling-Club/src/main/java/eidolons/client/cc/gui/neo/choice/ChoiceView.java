@@ -2,12 +2,12 @@ package eidolons.client.cc.gui.neo.choice;
 
 import eidolons.client.cc.gui.neo.choice.PagedSelectionPanel.SelectionPage;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.components.buttons.CustomButton;
 import eidolons.swing.components.panels.page.info.DC_PagedInfoPanel;
+import eidolons.swing.components.panels.page.info.element.TextCompDC;
 import main.content.OBJ_TYPE;
 import main.entity.Entity;
 import main.swing.components.PagedOptionsComp;
-import eidolons.swing.components.buttons.CustomButton;
-import eidolons.swing.components.panels.page.info.element.TextCompDC;
 import main.swing.generic.components.G_Panel;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.data.ListMaster;

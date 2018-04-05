@@ -1,17 +1,17 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
-import main.game.logic.battle.player.Player;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_MOMENT;
-import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
-import main.system.auxiliary.log.SpecialLogger;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.entity.obj.Obj;
+import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 

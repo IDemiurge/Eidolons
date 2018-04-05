@@ -1,8 +1,7 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.DC_Obj;
-import main.content.enums.rules.VisionEnums;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -15,16 +14,16 @@ public class DetectionMaster {
     }
 
     public boolean checkKnown(DC_Obj obj) {
-        return obj.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.DETECTED;
+        return obj.getPlayerVisionStatus(true) == PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(true) == PLAYER_VISION.DETECTED;
     }
 
     public boolean checkKnownForPlayer(DC_Obj obj) {
-        return obj.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(false) == UNIT_TO_PLAYER_VISION.DETECTED;
+        return obj.getPlayerVisionStatus(false) == PLAYER_VISION.KNOWN || obj.getPlayerVisionStatus(false) == PLAYER_VISION.DETECTED;
     }
 
     public boolean checkDetectedForPlayer(DC_Obj obj) {
 
-        return obj.getPlayerVisionStatus(false) == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
+        return obj.getPlayerVisionStatus(false) == PLAYER_VISION.DETECTED;
     }
 
     public boolean checkDetectedEnemy(DC_Obj obj) {
@@ -46,7 +45,7 @@ public class DetectionMaster {
                 }
             }
         }
-        return obj.getPlayerVisionStatus(!enemy) == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED;
+        return obj.getPlayerVisionStatus(!enemy) == PLAYER_VISION.DETECTED;
     }
 
 }

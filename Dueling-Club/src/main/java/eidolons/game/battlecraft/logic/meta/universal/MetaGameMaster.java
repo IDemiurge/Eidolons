@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import main.entity.DataModel;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueManager;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
+import main.entity.DataModel;
+import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;

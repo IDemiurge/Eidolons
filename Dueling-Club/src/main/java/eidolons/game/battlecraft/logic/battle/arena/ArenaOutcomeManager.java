@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.battle.arena;
 
-import eidolons.game.battlecraft.logic.battle.universal.BattleOutcomeManager;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.logic.battle.universal.Battle;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
+import eidolons.game.battlecraft.logic.battle.universal.BattleOutcomeManager;
+import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 
 /**
  * Created by JustMe on 5/8/2017.

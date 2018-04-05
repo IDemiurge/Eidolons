@@ -1,10 +1,11 @@
 package eidolons.system.text;
 
 import eidolons.content.DC_ContentManager.ATTRIBUTE;
-import main.content.DC_TYPE;
-import main.content.OBJ_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.DC_Engine;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
@@ -14,7 +15,6 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.DC_Engine;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
@@ -417,5 +417,18 @@ public class TextMaster {
         list.add(0, PathFinder.getTextPath());
         return FileManager.readFile(StrPathBuilder.build(list));
 
+    }
+
+    public static String getDisplayedName(PARAMS params) {
+        switch (params) {
+            case N_OF_ACTIONS:
+                if (DC_Engine.isAtbMode()) return "Initiative";
+            case C_INITIATIVE:
+                if (DC_Engine.isAtbMode()) return "Readiness";
+            case C_N_OF_COUNTERS:
+            case N_OF_COUNTERS:
+                return "Extra Attacks";
+        }
+        return params.getName();
     }
 }

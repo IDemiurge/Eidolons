@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.battle.universal;
 
+import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import main.elements.triggers.Trigger;
-import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import main.system.auxiliary.StringMaster;
 
 /**

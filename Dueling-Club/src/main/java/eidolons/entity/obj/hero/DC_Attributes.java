@@ -1,12 +1,12 @@
 package eidolons.entity.obj.hero;
 
-import eidolons.system.DC_ConditionMaster;
-import eidolons.system.DC_Formulas;
-import main.content.ContentManager;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.DC_ContentManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.DC_ConditionMaster;
+import eidolons.system.DC_Formulas;
+import main.content.ContentManager;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 

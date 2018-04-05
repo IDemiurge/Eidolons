@@ -3,14 +3,14 @@ package eidolons.libgdx.gui.controls.radial;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.core.game.DC_Game;
-import main.game.core.game.Game;
 import eidolons.libgdx.texture.TextureCache;
-import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
-import main.system.auxiliary.EnumMaster;
 import eidolons.test.debug.DebugMaster;
 import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import eidolons.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
+import main.game.core.game.Game;
+import main.swing.generic.components.editors.lists.ListChooser;
+import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
+import main.system.auxiliary.EnumMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;

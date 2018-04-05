@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.ai.advanced.machine.profile;
 
-import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
-import main.content.enums.system.AiEnums.*;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
+import main.content.enums.system.AiEnums.*;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.List;

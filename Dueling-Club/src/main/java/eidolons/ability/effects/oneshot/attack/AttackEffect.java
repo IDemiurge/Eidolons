@@ -1,6 +1,10 @@
 package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.attack.Attack;
+import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
@@ -9,10 +13,6 @@ import main.content.values.properties.G_PROPS;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.combat.attack.Attack;
-import eidolons.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;

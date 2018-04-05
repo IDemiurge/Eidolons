@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.menu.old;
 
 import eidolons.libgdx.DialogScenario;
-import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenType;
 
 import java.util.List;
 import java.util.function.Supplier;

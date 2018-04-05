@@ -2,10 +2,10 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 
 import java.util.List;
 

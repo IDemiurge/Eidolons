@@ -1,10 +1,10 @@
 package eidolons.ability.effects.oneshot.rule;
 
+import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;

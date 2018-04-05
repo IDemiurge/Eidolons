@@ -1,6 +1,7 @@
 package eidolons.ability.effects.containers.customtarget;
 
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.math.DC_PositionMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.content.DC_TYPE;
@@ -15,7 +16,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
-import eidolons.system.math.DC_PositionMaster;
 import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;
 

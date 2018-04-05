@@ -1,7 +1,5 @@
 package eidolons.libgdx.gui.controls.radial;
 
-import main.content.enums.entity.SpellEnums;
-import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.DC_Obj;
@@ -10,6 +8,8 @@ import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.SpellEnums.SPELL_GROUP;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;

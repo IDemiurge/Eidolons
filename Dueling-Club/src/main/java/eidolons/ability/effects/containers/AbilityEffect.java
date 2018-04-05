@@ -1,10 +1,10 @@
 package eidolons.ability.effects.containers;
 
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.ability.Ability;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 
 public class AbilityEffect extends MicroEffect {
 

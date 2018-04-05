@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.scenario.script;
 
-import main.content.DC_TYPE;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.DC_Engine;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.DC_Engine;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import org.junit.Test;

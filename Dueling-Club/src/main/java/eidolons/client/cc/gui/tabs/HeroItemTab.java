@@ -1,17 +1,17 @@
 package eidolons.client.cc.gui.tabs;
 
+import eidolons.client.cc.gui.MainPanel;
 import eidolons.client.cc.gui.MainViewPanel;
 import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
-import eidolons.client.cc.gui.MainPanel;
 import eidolons.client.cc.gui.lists.ItemListManager;
 import eidolons.client.cc.gui.misc.BorderChecker;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import eidolons.client.cc.gui.views.HeroItemView;
+import eidolons.entity.obj.unit.Unit;
 import main.content.OBJ_TYPE;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 

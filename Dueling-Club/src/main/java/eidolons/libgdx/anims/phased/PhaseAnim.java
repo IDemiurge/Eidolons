@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.texture.Texture2D;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.texture.Texture2D;
 import eidolons.system.graphics.PhaseAnimation;
 
 import java.awt.*;

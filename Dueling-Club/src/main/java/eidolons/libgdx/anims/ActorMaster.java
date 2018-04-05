@@ -1,12 +1,13 @@
 package eidolons.libgdx.anims;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
-import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
+import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.gui.panels.dc.clock.GearCluster;
 import main.system.auxiliary.ClassMaster;
 
@@ -87,6 +88,9 @@ public class ActorMaster {
         return addFadeAction(actor, dur, true);
     }
 
+    public static AlphaAction addFadeInAction(Actor actor) {
+        return addFadeAction(actor, 0.5f, false);
+    }
     public static AlphaAction addFadeInAction(Actor actor, float dur) {
         return addFadeAction(actor, dur, false);
     }
@@ -121,6 +125,7 @@ public class ActorMaster {
         action.setDuration(dur);
         action.setTarget(actor);
         actor.addAction(action);
+        action.setInterpolation(Interpolation.fade);
         return action;
     }
 

@@ -7,20 +7,20 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.libgdx.anims.ActorMaster;
-import main.entity.Entity;
-import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
-import main.system.EventCallbackParam;
-import main.system.GuiEventManager;
 import eidolons.system.audio.SoundController;
 import eidolons.system.audio.SoundController.SOUND_EVENT;
+import main.entity.Entity;
+import main.system.EventCallbackParam;
+import main.system.GuiEventManager;
 import main.system.math.MathMaster;
 
 import java.util.Arrays;
@@ -180,7 +180,7 @@ public class RadialMenu extends Group implements Closable {
 //            coefficient = 2.5;
 //        }
         double coefficient = MathMaster.getMinMax((float) (currentNode.
-                 getChildNodes().size() / Math.PI), 1.25f, 3.5f);
+                 getChildNodes().size() / (Math.PI+1)), 1.4f, 3.25f);
         boolean makeSecondRing = false;
         if (currentNode.getChildNodes().size() > 15) {
             makeSecondRing = true;

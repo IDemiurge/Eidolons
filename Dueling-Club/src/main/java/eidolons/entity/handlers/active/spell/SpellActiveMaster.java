@@ -1,11 +1,11 @@
 package eidolons.entity.handlers.active.spell;
 
-import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.handlers.active.ActiveMaster;
+import eidolons.entity.handlers.active.Executor;
 import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityInitializer;
-import eidolons.entity.handlers.active.ActiveMaster;
 import main.system.launch.CoreEngine;
 
 /**

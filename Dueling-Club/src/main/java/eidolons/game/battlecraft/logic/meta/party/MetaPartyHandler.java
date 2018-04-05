@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.party;
 
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 
 /**
  * Created by JustMe on 7/23/2017.

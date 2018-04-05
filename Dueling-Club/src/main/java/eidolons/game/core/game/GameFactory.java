@@ -1,8 +1,8 @@
 package eidolons.game.core.game;
 
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 
 /**

@@ -2,13 +2,13 @@ package eidolons.game.battlecraft.logic.battle.universal.stats;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
+import eidolons.game.battlecraft.logic.battle.universal.Battle;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
+import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.logic.battle.universal.Battle;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.game.core.game.StatMaster;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;

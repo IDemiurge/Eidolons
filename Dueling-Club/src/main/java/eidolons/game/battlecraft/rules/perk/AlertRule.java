@@ -1,17 +1,17 @@
 package eidolons.game.battlecraft.rules.perk;
 
 import eidolons.ability.effects.DC_Effect;
-import main.ability.effects.Effect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.mechanic.DelayedEffect;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.action.WatchRule;
+import main.ability.effects.Effect;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.*;
 import main.elements.conditions.standard.GroupCondition;
 import main.elements.conditions.standard.ListSizeCondition;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref.KEYS;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.action.WatchRule;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
 

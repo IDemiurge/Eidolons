@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot.dialog;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.client.cc.CharacterCreator;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;

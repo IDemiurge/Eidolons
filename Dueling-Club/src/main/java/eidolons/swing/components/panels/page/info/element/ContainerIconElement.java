@@ -1,5 +1,6 @@
 package eidolons.swing.components.panels.page.info.element;
 
+import eidolons.swing.components.panels.page.small.IconListPanel;
 import eidolons.swing.components.panels.page.small.SmallItem;
 import main.ability.AbilityObj;
 import main.content.enums.entity.AbilityEnums;
@@ -8,7 +9,6 @@ import main.content.enums.entity.UnitEnums.STANDARD_PASSIVES;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import eidolons.swing.components.panels.page.small.IconListPanel;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;

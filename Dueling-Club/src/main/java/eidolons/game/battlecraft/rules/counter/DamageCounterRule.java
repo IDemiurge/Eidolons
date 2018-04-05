@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.rules.counter;
 
+import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.ability.effects.oneshot.DealDamageEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;

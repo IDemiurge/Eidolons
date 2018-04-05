@@ -1,10 +1,10 @@
 package eidolons.ability.effects.containers.customtarget;
 
+import eidolons.ability.effects.DC_Effect;
+import eidolons.ability.effects.attachment.AddTriggerEffect;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
-import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
-import eidolons.ability.effects.attachment.AddTriggerEffect;
 import main.content.C_OBJ_TYPE;
 import main.elements.conditions.*;
 import main.elements.targeting.AutoTargeting;

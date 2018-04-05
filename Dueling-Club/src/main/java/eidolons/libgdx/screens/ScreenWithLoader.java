@@ -14,8 +14,8 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
-import main.system.EventCallbackParam;
 import eidolons.system.audio.MusicMaster;
+import main.system.EventCallbackParam;
 import main.system.launch.CoreEngine;
 
 /**

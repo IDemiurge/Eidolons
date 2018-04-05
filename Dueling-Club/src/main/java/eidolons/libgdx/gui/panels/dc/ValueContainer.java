@@ -255,10 +255,10 @@ public class ValueContainer extends TablePanel {
                 imageScaleY = h / imageContainer.getActor().getHeight();
                 imageContainer.getActor().setScale(getImageScaleX(),
                  getImageScaleY());
-                imageContainer.setActorX(
-                 imageContainer.getActor().getWidth() * imageScaleX - w);
-                imageContainer.setActorY(
-                 imageContainer.getActor().getHeight() * imageScaleY - h);//*imageScaleY - h);
+//                imageContainer.setActorX(
+//                 imageContainer.getActor().getWidth() * imageScaleX - w);
+//                imageContainer.setActorY(
+//                 imageContainer.getActor().getHeight() * imageScaleY - h);//*imageScaleY - h);
 
 //                imageContainer.getActor().getContent(). setX(
 //                 imageContainer.getActor().getWidth() - w);

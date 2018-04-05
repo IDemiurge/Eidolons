@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
-import main.content.enums.entity.UnitEnums;
 import eidolons.entity.active.DC_ActiveObj;
-import main.entity.obj.ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
+import main.content.enums.entity.UnitEnums;
+import main.entity.obj.ActiveObj;
 
 /**
  * Created by JustMe on 3/16/2017.

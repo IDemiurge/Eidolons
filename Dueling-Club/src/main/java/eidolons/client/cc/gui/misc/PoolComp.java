@@ -1,8 +1,8 @@
 package eidolons.client.cc.gui.misc;
 
+import eidolons.swing.components.panels.page.info.element.TextCompDC;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import eidolons.swing.components.panels.page.info.element.TextCompDC;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.graphics.ColorManager;
 

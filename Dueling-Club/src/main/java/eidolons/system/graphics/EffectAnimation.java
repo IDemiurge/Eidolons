@@ -2,6 +2,7 @@ package eidolons.system.graphics;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.attach.DC_BuffObj;
+import eidolons.system.math.roll.Roll;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -14,7 +15,6 @@ import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.graphics.ColorManager;
 import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
-import eidolons.system.math.roll.Roll;
 
 import java.awt.*;
 import java.util.List;

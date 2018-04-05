@@ -5,14 +5,14 @@ import eidolons.client.cc.gui.neo.points.BuyButton;
 import eidolons.client.cc.gui.neo.tree.HC_Tree;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import eidolons.swing.components.buttons.CustomButton;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
+import eidolons.system.math.DC_MathManager;
+import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.system.math.DC_MathManager;
 
 import java.awt.*;
 

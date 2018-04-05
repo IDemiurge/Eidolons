@@ -1,19 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.ability.conditions.VisibilityCondition;
-import eidolons.game.battlecraft.rules.action.WatchRule;
-import eidolons.system.math.roll.RollMaster;
 import eidolons.content.PROPS;
-import main.content.enums.GenericEnums;
-import main.content.enums.entity.ActionEnums;
-import main.content.enums.entity.SpellEnums;
-import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
-import main.content.mode.STD_MODES;
-import main.content.values.properties.G_PROPS;
-import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
-import main.entity.Ref.KEYS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.active.DC_UnitAction;
@@ -23,7 +11,19 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
+import eidolons.system.math.roll.RollMaster;
+import main.content.enums.GenericEnums;
+import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.SpellEnums;
+import main.content.enums.entity.UnitEnums;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
+import main.content.mode.STD_MODES;
+import main.content.values.properties.G_PROPS;
+import main.elements.conditions.Condition;
+import main.elements.conditions.Conditions;
+import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -228,7 +228,7 @@ public class AttackOfOpportunityRule {
             conditions = new Conditions(ConditionMaster.getAliveAndConsciousFilterCondition(),
              ConditionMaster.getUnit_CharTypeCondition(), ConditionMaster
              .getEnemyCondition(), new VisibilityCondition(KEYS.MATCH, KEYS.SOURCE,
-             VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+             UNIT_VISION.IN_PLAIN_SIGHT));
         }
         return conditions;
     }
@@ -456,6 +456,7 @@ public class AttackOfOpportunityRule {
         // cases...
         List<Unit> list = new ArrayList<>();
         for (Unit unit : action.getGame().getUnits()) {
+            if (unit.canActNow())
             if (unit.isOwnedBy(action.getGame().getPlayer(!action.getOwner().isMe())))
             // if (!VisionManager.checkVisibileForUnit(unit,
             // action.getOwnerObj())) TODO

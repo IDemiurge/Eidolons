@@ -1,14 +1,14 @@
 package eidolons.client.cc.gui.neo.choice;
 
-import eidolons.client.cc.gui.neo.points.HC_CustomInfoPanel;
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.gui.neo.points.HC_CustomInfoPanel;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.components.panels.page.info.element.ListTextItem;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.properties.G_PROPS;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.swing.components.panels.page.info.element.ListTextItem;
 import main.system.auxiliary.secondary.InfoMaster;
 
 import javax.swing.*;

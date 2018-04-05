@@ -1,15 +1,15 @@
 package eidolons.game.module.adventure.entity;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.MacroRef;
+import eidolons.game.module.adventure.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.content.DC_TYPE;
 import main.data.ConcurrentMap;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.gui.map.MacroAP_Holder.MACRO_ACTION_GROUPS;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 

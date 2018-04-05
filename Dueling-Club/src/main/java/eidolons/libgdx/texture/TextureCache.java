@@ -192,6 +192,22 @@ public class TextureCache {
         return new TextureRegion(GdxImageTransformer.size(path, iconSize, true));
     }
 
+    public static TextureRegion getRegion(String path, Texture texture) {
+        TextureRegion region = regionCache.get(path);
+        if (region == null) {
+            region = new TextureRegion(texture);
+            regionCache.put(path, region);
+        }
+        return region;
+    }
+
+    public static TextureRegion getSizedRegion(int imageSize, String path) {
+        if (path == null)
+            return null;
+        String sized = StringMaster.getAppendedImageFile(path, " " + imageSize);
+        return         getRegion(sized, GdxImageTransformer.size(sized, imageSize, true));
+    }
+
     private String getAltTexturePath(String filePath) {
         return filePath.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
     }
@@ -273,15 +289,6 @@ public class TextureCache {
 
             }
         return t;
-    }
-
-    public static TextureRegion getRegion(String path, Texture texture) {
-        TextureRegion region = regionCache.get(path);
-        if (region==null ){
-            region = new TextureRegion(texture);
-            regionCache.put(path, region);
-        }
-        return region;
     }
 }
 

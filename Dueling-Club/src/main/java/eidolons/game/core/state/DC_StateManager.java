@@ -1,12 +1,14 @@
 package eidolons.game.core.state;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.battlecraft.rules.counter.DC_CounterRule;
@@ -22,8 +24,9 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.standard.PositionCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_SpellObj;
-import main.entity.obj.*;
+import main.entity.obj.Attachment;
+import main.entity.obj.BuffObj;
+import main.entity.obj.Obj;
 import main.game.core.game.GameManager;
 import main.game.core.state.StateManager;
 import main.game.logic.event.Event;
@@ -380,9 +383,10 @@ public class DC_StateManager extends StateManager {
 
             resetAllSynchronized();
             game.setStarted(true);
-            getGame().getRules().getIlluminationRule().resetIllumination();
-            getGame().getRules().getIlluminationRule().applyLightEmission();
-
+            if (!VisionMaster.isNewVision()) {
+                getGame().getRules().getIlluminationRule().resetIllumination();
+                getGame().getRules().getIlluminationRule().applyLightEmission();
+            }
             game.getTurnManager().newRound();
 //            getGameManager().refreshAll();
         }

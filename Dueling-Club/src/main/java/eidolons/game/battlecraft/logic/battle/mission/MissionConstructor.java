@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.logic.battle.mission;
 
+import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.universal.BattleConstructor;
+import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import main.content.DC_TYPE;
-import eidolons.content.PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import main.system.auxiliary.StringMaster;
 
 /**

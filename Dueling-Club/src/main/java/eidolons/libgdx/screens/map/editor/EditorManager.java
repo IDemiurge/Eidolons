@@ -2,19 +2,19 @@ package eidolons.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.entity.MacroObj;
-import eidolons.libgdx.screens.map.obj.MapActor;
-import main.content.DC_TYPE;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
+import eidolons.libgdx.screens.map.obj.MapActor;
+import main.content.DC_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 

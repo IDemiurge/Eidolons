@@ -1,9 +1,9 @@
 package eidolons.game.module.adventure.entity.party;
 
 import eidolons.content.PARAMS;
-import main.content.values.parameters.MACRO_PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.entity.MacroParty;
+import main.content.values.parameters.MACRO_PARAMS;
 import main.system.math.MathMaster;
 
 public class MacroPartyUtils {

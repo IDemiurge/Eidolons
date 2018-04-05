@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.choice;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.CharacterCreator;
+import eidolons.entity.obj.unit.Unit;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.system.auxiliary.secondary.InfoMaster;

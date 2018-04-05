@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.logic.dungeon.test;
 
+import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;

@@ -1,6 +1,9 @@
 package eidolons.game.battlecraft.rules.round;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.continuous.BehaviorModeEffect;
+import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
+import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -11,11 +14,9 @@ import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.UPKEEP_FAIL_ACTION;
 import main.ability.effects.common.OwnershipChangeEffect;
-import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import main.ability.effects.oneshot.InstantDeathEffect;
-import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
-import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
-import main.content.*;
+import main.content.ContentManager;
+import main.content.DC_TYPE;
 import main.content.enums.system.AiEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;

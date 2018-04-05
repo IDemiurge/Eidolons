@@ -2,8 +2,8 @@ package eidolons.game.module.adventure.rules;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.MacroManager;
-import main.content.values.parameters.MACRO_PARAMS;
 import eidolons.game.module.adventure.entity.MacroParty;
+import main.content.values.parameters.MACRO_PARAMS;
 
 public class HungerRule extends TurnRule {
     private static final float HEALTH_REDUCTION_FACTOR = 0.1f;

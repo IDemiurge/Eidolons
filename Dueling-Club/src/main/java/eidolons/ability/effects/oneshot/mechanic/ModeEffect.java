@@ -6,6 +6,7 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.SetCustomModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.spell.DivinationEffect;
+import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
@@ -158,7 +159,7 @@ divination?
 
     private void addInitiativeEffect() {
         addBuffEffect.addEffect(
-         new ModifyValueEffect(PARAMS.N_OF_ACTIONS, MOD.SET, "0"));
+         new ImmobilizeEffect( ));
     }
 
     private void addPeriodicEffect() {

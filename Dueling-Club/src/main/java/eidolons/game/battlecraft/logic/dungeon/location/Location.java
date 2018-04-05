@@ -1,20 +1,20 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
-import main.content.DC_TYPE;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
+import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
-import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
-import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.ai.tools;
 
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.core.game.DC_Game;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 
 public class AiExecutor {
 

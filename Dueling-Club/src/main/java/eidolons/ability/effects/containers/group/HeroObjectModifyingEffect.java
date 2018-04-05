@@ -1,10 +1,10 @@
 package eidolons.ability.effects.containers.group;
 
+import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.content.ContentManager;

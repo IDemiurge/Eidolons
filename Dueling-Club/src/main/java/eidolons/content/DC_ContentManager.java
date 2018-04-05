@@ -1,11 +1,15 @@
 package eidolons.content;
 
-import eidolons.client.cc.gui.neo.tree.view.SkillTreeView;
-import eidolons.entity.Deity;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.game.DC_Game;
 import eidolons.client.cc.gui.neo.tree.view.ClassTreeView;
+import eidolons.client.cc.gui.neo.tree.view.SkillTreeView;
 import eidolons.client.dc.Launcher;
+import eidolons.entity.Deity;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
+import eidolons.game.core.game.DC_Game;
+import eidolons.system.math.DC_MathManager;
 import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
@@ -24,17 +28,13 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
-import eidolons.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.attach.DC_FeatObj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import eidolons.system.math.DC_MathManager;
 
 import java.util.*;
 

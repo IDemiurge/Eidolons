@@ -1,12 +1,12 @@
 package eidolons.ability.effects.oneshot.trigger;
 
+import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
+import eidolons.ability.effects.oneshot.misc.AlteringEffect;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
-import eidolons.ability.effects.attachment.AddTriggerEffect;
 import main.ability.effects.continuous.CustomTargetEffect;
-import eidolons.ability.effects.oneshot.misc.AlteringEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.elements.conditions.Conditions;

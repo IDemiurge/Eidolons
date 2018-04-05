@@ -2,8 +2,8 @@ package eidolons.test.debug;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.system.controls.Controller;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.controls.Controller;
 import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 /**

@@ -2,18 +2,23 @@ package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.screens.ScreenType;
-import eidolons.system.options.OptionsMaster;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenType;
+import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import eidolons.system.text.HelpMaster;
 
 /**
  * Created by JustMe on 11/24/2017.
  */
 public class GameMenuHandler {
+    private final GameMenu menu;
+
+    public GameMenuHandler(GameMenu gameMenu) {
+        menu = gameMenu;
+    }
+
     public Boolean clicked(GAME_MENU_ITEM sub) {
         switch (sub) {
             case QUICK_HELP:
@@ -61,9 +66,10 @@ public class GameMenuHandler {
             case RESUME:
                 break;
             case OPTIONS:
-                OptionsMaster.openMenu();
-
-                return false;
+//                OptionsMaster.openMenu();
+                menu.openOptionsMenu();
+//                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
+                return null ;
             case INFO:
                 break;
             case WEBSITE:

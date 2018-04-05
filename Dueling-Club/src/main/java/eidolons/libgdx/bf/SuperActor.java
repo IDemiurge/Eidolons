@@ -3,12 +3,13 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.GroupX;
-import eidolons.libgdx.GdxColorMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.math.MathMaster;
 
@@ -143,6 +144,12 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     public InputController getController() {
         return Eidolons.getScreen().controller;
+    }
+
+    @Override
+    public void addAction(Action action) {
+        if (!getActions().contains(action, true))
+         super.addAction(action);
     }
 
     @Override
@@ -369,7 +376,9 @@ public abstract class SuperActor extends GroupX implements Borderable {
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
-        ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),;
+        ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
+        OVERLAYS(0.15f, 0, 1, 0.1f, 0.75f, 1f),
+        ;
         float alphaStep;
         float fluctuatingAlphaPauseDuration;
         float fluctuatingFullAlphaDuration;

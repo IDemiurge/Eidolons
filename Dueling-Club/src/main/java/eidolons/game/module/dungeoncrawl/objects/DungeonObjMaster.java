@@ -1,8 +1,12 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
+import eidolons.ability.conditions.FacingCondition;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import main.ability.AbilityType;
 import main.ability.ActiveAbilityObj;
-import eidolons.ability.conditions.FacingCondition;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -11,11 +15,7 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.DistanceCondition;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
 import main.entity.obj.ActiveObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 
 import java.util.ArrayList;
 import java.util.List;

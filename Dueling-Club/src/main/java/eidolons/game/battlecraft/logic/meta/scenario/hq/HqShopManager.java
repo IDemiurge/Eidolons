@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.scenario.hq;
 
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.ShopManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;

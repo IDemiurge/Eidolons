@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.ai.tools;
 
 import eidolons.content.PARAMS;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
+import eidolons.game.battlecraft.ai.logic.DC_AI;
+import eidolons.game.core.game.DC_Game;
+import main.entity.obj.Obj;
 import main.game.ai.AI;
 import main.game.ai.BfAnalyzer;
-import eidolons.game.battlecraft.ai.logic.DC_AI;
 import main.game.bf.pathing.Path;
-import eidolons.game.core.game.DC_Game;
 import main.game.core.game.MicroGame;
 import main.system.auxiliary.log.LogMaster;
 

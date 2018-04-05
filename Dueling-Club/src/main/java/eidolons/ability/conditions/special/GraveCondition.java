@@ -1,12 +1,12 @@
 package eidolons.ability.conditions.special;
 
+import eidolons.entity.obj.DC_Cell;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
 import main.entity.Ref;
-import eidolons.entity.obj.DC_Cell;
 import main.entity.obj.Obj;
 import main.system.auxiliary.data.ListMaster;
 import main.system.entity.ConditionMaster;

@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.bf.mouse.MapInputController;
+import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.screens.map.obj.MapActor;
 import eidolons.libgdx.screens.map.obj.PlaceActor;
-import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 

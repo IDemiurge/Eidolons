@@ -1,35 +1,35 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.DC_Formulas;
+import eidolons.system.graphics.AttackAnimation;
+import eidolons.system.graphics.DC_ImageMaster;
 import main.content.ContentManager;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import main.content.enums.entity.UnitEnums;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.item.DC_WeaponObj;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import eidolons.system.graphics.AttackAnimation;
-import eidolons.system.graphics.DC_ImageMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.launch.CoreEngine;
@@ -426,12 +426,12 @@ public class AttackCalculator {
 
     private int applyVisibilityPenalty(int atk_mod) {
         int penalty = 0;
-        if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT) {
+        if (attacked.getUnitVisionStatus() == UNIT_VISION.IN_SIGHT) {
             // as opposed to IN_PLAIN_SIGHT
             penalty = applyParamMod(-20, (PARAMS.RANGED_PENALTY_MOD));
-        } else if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.BEYOND_SIGHT) {
+        } else if (attacked.getUnitVisionStatus() == UNIT_VISION.BEYOND_SIGHT) {
             penalty = applyParamMod(-35, (PARAMS.RANGED_PENALTY_MOD));
-        } else if (attacked.getUnitVisionStatus() == VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED) {
+        } else if (attacked.getUnitVisionStatus() == UNIT_VISION.CONCEALED) {
             penalty = applyParamMod(-50, (PARAMS.RANGED_PENALTY_MOD));
         }
 

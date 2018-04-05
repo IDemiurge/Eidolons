@@ -1,14 +1,14 @@
 package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.screens.map.MapScreen;
-import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
-import main.data.filesys.PathFinder;
-import main.game.bf.Coordinates;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.data.filesys.PathFinder;
+import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;

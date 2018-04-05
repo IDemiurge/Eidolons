@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.ai.advanced.machine.profile;
 
-import main.data.filesys.PathFinder;
-import main.data.xml.XML_Writer;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CRITERIA_TYPE_NUMERIC;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingResult;
+import main.data.filesys.PathFinder;
+import main.data.xml.XML_Writer;
 import main.system.auxiliary.StringMaster;
 
 /**

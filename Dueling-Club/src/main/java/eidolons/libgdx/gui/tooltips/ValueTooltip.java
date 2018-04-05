@@ -3,8 +3,8 @@ package eidolons.libgdx.gui.tooltips;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;

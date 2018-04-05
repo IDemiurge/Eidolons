@@ -1,12 +1,12 @@
 package eidolons.client.cc.gui.neo.principles;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.gui.neo.points.HC_InfoTextPanel;
 import eidolons.content.PARAMS;
-import main.content.enums.entity.HeroEnums;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule.ALIGNMENT_LEVEL;
+import main.content.enums.entity.HeroEnums;
+import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;

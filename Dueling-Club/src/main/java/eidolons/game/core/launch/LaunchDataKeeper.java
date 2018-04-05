@@ -7,14 +7,14 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.test.Preset;
+import eidolons.test.Preset.PRESET_DATA;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnitFactory;
 import main.system.data.PlayerData;
 import main.system.util.Refactor;
-import eidolons.test.Preset;
-import eidolons.test.Preset.PRESET_DATA;
 
 /**
  * Created by JustMe on 5/10/2017.

@@ -1,25 +1,25 @@
 package eidolons.swing.components.obj;
 
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.components.obj.drawing.DrawMaster.INTERACTIVE_ELEMENT;
-import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.text.ToolTipMaster;
-import main.content.enums.rules.VisionEnums;
-import eidolons.entity.obj.DC_Cell;
-import main.entity.obj.Obj;
 import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.graphics.AnimationManager.MouseItem;
+import eidolons.system.graphics.PhaseAnimation;
+import eidolons.system.text.ToolTipMaster;
+import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
+import main.content.enums.rules.VisionEnums;
+import main.entity.obj.Obj;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.graphics.AnimPhase;
 import main.system.graphics.AnimPhase.PHASE_TYPE;
-import eidolons.system.graphics.AnimationManager.MouseItem;
 import main.system.graphics.GuiManager;
-import eidolons.system.graphics.PhaseAnimation;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.threading.WaitMaster;
-import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,5 +1,6 @@
 package eidolons.entity.active;
 
+import eidolons.entity.handlers.active.item.ItemActiveMaster;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.entity.ActionEnums;
@@ -8,7 +9,6 @@ import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
-import eidolons.entity.handlers.active.item.ItemActiveMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;

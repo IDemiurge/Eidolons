@@ -1,9 +1,9 @@
 package eidolons.test.debug;
 
-import eidolons.entity.obj.unit.DC_UnitModel;
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.DC_UnitModel;
+import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

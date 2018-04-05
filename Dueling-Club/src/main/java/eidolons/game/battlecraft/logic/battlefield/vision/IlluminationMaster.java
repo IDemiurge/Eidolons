@@ -1,13 +1,13 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.entity.Ref;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;

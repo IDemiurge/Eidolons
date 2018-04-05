@@ -4,16 +4,16 @@ import eidolons.client.cc.gui.MainViewPanel;
 import eidolons.client.cc.gui.MainViewPanel.HERO_VIEWS;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
 import eidolons.client.cc.gui.tabs.lists.DivinationPanel;
+import eidolons.client.cc.gui.tabs.lists.MemorizedList;
 import eidolons.client.cc.gui.tabs.lists.VerbatimList;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.client.cc.gui.tabs.lists.MemorizedList;
+import eidolons.system.DC_RequirementsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.system.DC_RequirementsManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.BORDER;
 

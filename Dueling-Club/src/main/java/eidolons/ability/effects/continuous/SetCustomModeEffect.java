@@ -1,8 +1,8 @@
 package eidolons.ability.effects.continuous;
 
+import eidolons.entity.obj.unit.Unit;
 import main.ability.effects.MicroEffect;
 import main.content.mode.MODE;
-import eidolons.entity.obj.unit.Unit;
 
 public class SetCustomModeEffect extends MicroEffect {
 

@@ -1,9 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import main.entity.Entity;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.texture.TextureCache;
+import main.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;

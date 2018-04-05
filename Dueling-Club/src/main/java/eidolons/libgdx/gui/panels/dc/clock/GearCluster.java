@@ -25,6 +25,7 @@ public class GearCluster extends GroupX {
     float defaultSpeed = 1;
     Float speed = defaultSpeed;
     float scale = 1;
+    AutoFloatAction speedAction;
     private boolean clockwise;
 
     public GearCluster(int gearCount, float scale) {
@@ -78,17 +79,17 @@ public class GearCluster extends GroupX {
         }
         return 0;
     }
-AutoFloatAction speedAction;
+
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (speedAction!=null ){
+        if (speedAction != null) {
             setSpeed(speedAction.getValue());
         }
         for (GearActor sub : gears) {
-            if (clockwise){
-                sub.setSpeed(-speed);}
-            else{
+            if (clockwise) {
+                sub.setSpeed(-speed);
+            } else {
                 sub.setSpeed(speed);
             }
         }
@@ -101,9 +102,9 @@ AutoFloatAction speedAction;
     public void applySpeedChange(float dur, float forTime, float to) {
         clearActions();
         Float cached = speed;
-       speedAction = ActorMaster.addFloatAction(this, speed, speed, to, dur);
+        speedAction = ActorMaster.addFloatAction(this, speed, speed, to, dur);
         if (forTime > 0) {
-            ActorMaster.addDelayedAction(this,  forTime+dur, new Action() {
+            ActorMaster.addDelayedAction(this, forTime + dur, new Action() {
                 @Override
                 public boolean act(float delta) {
                     ActorMaster.addFloatAction(GearCluster.this, speed, speed, cached, dur);
@@ -119,23 +120,24 @@ AutoFloatAction speedAction;
     }
 
     public void work(float dur, float forTime) {
-        applySpeedChange(dur, forTime, defaultSpeed  );
+        applySpeedChange(dur, forTime, defaultSpeed);
     }
 
     public void stop(float dur, float forTime) {
         applySpeedChange(dur, forTime, 0);
     }
+
     public void activeWork(float dur) {
         applySpeedChange(dur, 0, getActiveWorkSpeed());
 
     }
 
     private float getActiveWorkSpeed() {
-        return defaultSpeed*10;
+        return defaultSpeed * 10;
     }
 
     public void work(float dur) {
-        applySpeedChange(dur, 0, defaultSpeed  );
+        applySpeedChange(dur, 0, defaultSpeed);
     }
 
     public void stop(float dur) {
@@ -160,6 +162,10 @@ AutoFloatAction speedAction;
 
     public void setClockwise(boolean clockwise) {
         this.clockwise = clockwise;
+    }
+
+    public void setDefaultSpeed(float defaultSpeed) {
+        this.defaultSpeed = defaultSpeed;
     }
 
     public enum GEAR {

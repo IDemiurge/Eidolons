@@ -18,12 +18,18 @@ public class BaseView extends SuperActor {
     private Image altPortrait;
 
     public BaseView(UnitViewOptions o) {
-        this(o.getPortraitTexture(), o.getPortraitPath());
+        init(o);
 
     }
 
 
     public BaseView(TextureRegion portraitTexture, String path) {
+        init(portraitTexture, path);
+    }
+    public void init(UnitViewOptions o) {
+        init(o.getPortraitTexture(), o.getPortraitPath());
+    }
+        public void init(TextureRegion portraitTexture, String path) {
         portrait =initPortrait(portraitTexture, path);
         addActor(portrait);
 

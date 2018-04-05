@@ -1,9 +1,9 @@
 package eidolons.ability.effects.containers.group;
 
+import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 

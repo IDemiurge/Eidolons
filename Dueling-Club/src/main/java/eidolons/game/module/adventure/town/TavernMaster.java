@@ -2,13 +2,13 @@ package eidolons.game.module.adventure.town;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.MacroManager;
+import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.entity.party.MacroPartyUtils;
 import eidolons.game.module.adventure.global.TimeMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.enums.entity.HeroEnums;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
-import eidolons.game.module.adventure.entity.MacroParty;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 

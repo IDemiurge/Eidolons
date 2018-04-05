@@ -2,13 +2,13 @@ package eidolons.ability.conditions.req;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.math.DC_MathManager;
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
 import main.entity.Entity;
 import main.entity.Ref;
-import eidolons.system.math.DC_MathManager;
 
 public class SkillPointCondition extends MicroCondition {
 

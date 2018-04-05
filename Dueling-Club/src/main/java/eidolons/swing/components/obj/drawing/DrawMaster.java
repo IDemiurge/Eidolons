@@ -1,37 +1,39 @@
 package eidolons.swing.components.obj.drawing;
 
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.core.game.DC_Game;
 import eidolons.swing.components.obj.BfGridComp;
+import eidolons.swing.components.obj.CellComp;
 import eidolons.system.graphics.DC_ImageMaster;
 import eidolons.system.graphics.ImageTransformer;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.ContentManager;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import main.content.enums.entity.BfObjEnums;
-import main.content.enums.rules.VisionEnums;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.XLinkedMap;
-import eidolons.entity.obj.DC_Obj;
 import main.entity.obj.Obj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import eidolons.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.swing.XLine;
-import eidolons.swing.components.obj.CellComp;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.renderers.SmartTextManager;
 import main.swing.renderers.SmartTextManager.VALUE_CASES;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.*;
+import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.graphics.GuiManager;
+import main.system.graphics.MigMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -638,7 +640,7 @@ public class DrawMaster {
                 img = ImageManager.getHighlightedCellIcon().getImage();
             } else {
                 VISIBILITY_LEVEL vl = cellComp.getTerrainObj().getVisibilityLevel(false);
-                UNIT_TO_PLAYER_VISION ds = cellComp.getTerrainObj().getPlayerVisionStatus(false);
+                PLAYER_VISION ds = cellComp.getTerrainObj().getPlayerVisionStatus(false);
 
                 // if (vl==VISIBILITY_LEVEL.CONCEALED){
                 // VisibilityMaster.getDisplayImageForUnit(type,
@@ -652,7 +654,7 @@ public class DrawMaster {
                 // " for "
                 // + cellComp.getTerrainObj().getNameAndCoordinate());
                 if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(cellComp.getTerrainObj())) {
-                    if (ds == VisionEnums.UNIT_TO_PLAYER_VISION.KNOWN || ds == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
+                    if (ds == PLAYER_VISION.KNOWN || ds == PLAYER_VISION.DETECTED) {
                         img = (ImageManager.getHiddenCellIcon().getImage());
                     } else {
                         img = ImageManager.getUnknownCellIcon().getImage();
@@ -845,7 +847,7 @@ public class DrawMaster {
 
     private void drawWallOverlays(Unit obj, Graphics g, Coordinates coordinates) {
         if (cellComp.getGame().getVisionMaster().getVisibilityMaster().isZeroVisibility(obj)) {
-            if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
+            if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
                 return;
             }
         }
@@ -1449,7 +1451,7 @@ public class DrawMaster {
     }
 
     private void applyBeyondSight(BufferedImage image, Unit obj) {
-        if (obj.getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.DETECTED) {
+        if (obj.getActivePlayerVisionStatus() == PLAYER_VISION.DETECTED) {
             image.getGraphics().drawImage(BORDER.CONCEALED.getImage(), 0, 0, null);
         } else {
             image.getGraphics().drawImage(BORDER.HIDDEN.getImage(), 0, 0, null);

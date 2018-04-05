@@ -22,10 +22,10 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.video.VideoPlayer;
 import com.badlogic.gdx.video.VideoPlayerCreator;
-import eidolons.libgdx.GdxMaster;
-import eidolons.system.options.OptionsMaster;
 import eidolons.client.dc.Launcher;
+import eidolons.libgdx.GdxMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
 
 import java.io.File;
 import java.io.FileNotFoundException;

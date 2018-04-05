@@ -13,6 +13,8 @@ import eidolons.libgdx.gui.panels.dc.TablePanel;
 import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.OptionsWindow;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -27,6 +29,7 @@ import java.util.Map;
  */
 public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel implements Closable {
     protected Map<T, TextButton> cache = new HashMap<>();
+    OptionsWindow optionsWindow;
     private T currentItem;
     private T previousItem;
     private List<MenuItem<T>> defaultItems;
@@ -184,6 +187,11 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
                 return super.touchDown(event, x, y, pointer, button);
             }
         };
+    }
+
+    public void openOptionsMenu() {
+        OptionsWindow.getInstance().open(OptionsMaster.getOptionsMap(), getStage());
+
     }
 
     protected abstract Boolean clicked(MenuItem sub);

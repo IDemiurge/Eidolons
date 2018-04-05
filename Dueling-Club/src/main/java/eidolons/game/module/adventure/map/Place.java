@@ -3,6 +3,7 @@ package eidolons.game.module.adventure.map;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
+import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.entity.MapObj;
 import eidolons.game.module.adventure.gui.map.obj.PlaceComp;
 import eidolons.game.module.adventure.map.area.AreaManager;
@@ -13,7 +14,6 @@ import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import eidolons.game.module.adventure.entity.MacroParty;
 import main.system.datatypes.DequeImpl;
 
 public class Place extends MapObj {

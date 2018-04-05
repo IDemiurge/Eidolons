@@ -1,12 +1,12 @@
 package eidolons.ability.effects.oneshot.activation;
 
+import eidolons.entity.active.DC_SpellObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
-import eidolons.entity.active.DC_SpellObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 

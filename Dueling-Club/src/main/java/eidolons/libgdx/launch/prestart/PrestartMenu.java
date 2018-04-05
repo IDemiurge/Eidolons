@@ -30,7 +30,7 @@ public class PrestartMenu extends GameMenu {
 
     @Override
     protected GameMenuHandler initHandler() {
-        return new GameMenuHandler() {
+        return new GameMenuHandler(this) {
             @Override
             public Boolean clicked(GAME_MENU_ITEM sub) {
                 switch (sub) {

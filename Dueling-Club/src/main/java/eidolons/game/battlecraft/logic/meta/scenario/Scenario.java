@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import main.content.DC_TYPE;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.battle.mission.Mission;
+import eidolons.game.core.game.ScenarioGame;
+import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battle.mission.Mission;
-import eidolons.game.core.game.ScenarioGame;
 import main.system.auxiliary.StringMaster;
 
 import java.util.List;

@@ -24,7 +24,7 @@ import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
-import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.*;
@@ -81,9 +81,9 @@ public class DC_ConditionMaster extends ConditionMaster {
             case FACING:
                 return new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT);
             case VISION:
-                return new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT);
+                return new VisibilityCondition(UNIT_VISION.IN_SIGHT);
             case NO_VISION:
-                return new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT));
+                return new NotCondition(new VisibilityCondition(UNIT_VISION.IN_SIGHT));
             case SNEAKY:
                 return new SneakCondition();
             case ONLY_LIVING:
@@ -297,14 +297,14 @@ public class DC_ConditionMaster extends ConditionMaster {
                 c.add(new FacingCondition(UnitEnums.FACING_SINGLE.IN_FRONT));
                 c.add(getRangeCondition());
                 c.add(new OrConditions(new StdPassiveCondition(UnitEnums.STANDARD_PASSIVES.DARKVISION),
-                 new NotCondition(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.CONCEALED))));
+                 new NotCondition(new VisibilityCondition(UNIT_VISION.CONCEALED))));
                 c.add(getClearShotCondition(KEYS.MATCH.name())); //
                 // c.add(new NotCondition(new VisibilityCondition(
                 // UNIT_TO_PLAYER_VISION.UNKNOWN))); // ??? TODO PERHAPS MAKE
                 // ALL SHOT LIKE THIS!
                 break;
             case PRECISE_SHOT:
-                c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_PLAIN_SIGHT));
+                c.add(new VisibilityCondition(UNIT_VISION.IN_PLAIN_SIGHT));
                 break;
             case UNOBSTRUCTED_SHOT:
                 c.add(new NotCondition(ConditionMaster.getSelfFilterCondition()));
@@ -335,7 +335,7 @@ public class DC_ConditionMaster extends ConditionMaster {
                  new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LOCK.toString(), true),
                  new PropCondition(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.DOOR.toString(), true)));
             case ATTACK:
-                c.add(new VisibilityCondition(VisionEnums.UNIT_TO_UNIT_VISION.IN_SIGHT));
+                c.add(new VisibilityCondition(UNIT_VISION.IN_SIGHT));
 
                 List<FACING_SINGLE> list = new ArrayList<>();
                 list.add(UnitEnums.FACING_SINGLE.IN_FRONT);

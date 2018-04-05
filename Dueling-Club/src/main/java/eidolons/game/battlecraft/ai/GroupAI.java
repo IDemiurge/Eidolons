@@ -2,17 +2,17 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.client.cc.logic.party.Party;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
+import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
+import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
+import eidolons.game.module.dungeoncrawl.ai.Patrol;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
-import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
-import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import eidolons.game.module.dungeoncrawl.ai.Patrol;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 

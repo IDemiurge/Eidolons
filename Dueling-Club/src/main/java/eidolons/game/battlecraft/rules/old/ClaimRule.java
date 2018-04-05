@@ -1,18 +1,18 @@
 package eidolons.game.battlecraft.rules.old;
 
-import main.ability.effects.Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
+import eidolons.game.battlecraft.rules.DC_RuleImpl;
+import main.ability.effects.Effect;
 import main.ability.effects.common.OwnershipChangeEffect;
 import main.ability.effects.container.ConditionalEffect;
 import main.ability.effects.container.IfElseEffect;
-import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
 import main.elements.conditions.StringComparison;
 import main.elements.conditions.standard.OwnershipCondition;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import main.game.core.game.MicroGame;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 

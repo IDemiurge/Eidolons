@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
+import eidolons.game.core.game.DC_Game;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.obj.BfObj;
@@ -7,7 +8,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.GraveyardManager;
 import main.game.bf.ZCoordinates;
-import eidolons.game.core.game.DC_Game;
 import main.system.GuiEventManager;
 
 import java.util.*;

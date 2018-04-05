@@ -1,13 +1,14 @@
 package eidolons.game.core.atb;
 
-import main.entity.Ref;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
+import main.entity.Ref;
+import main.entity.obj.BuffObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
-import eidolons.system.options.OptionsMaster;
 import main.system.threading.WaitMaster;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class AtbController implements Comparator<Unit> {
         readiness is not lost!
          */
     }
+
     public void processTimeElapsed(Float time) {
         this.time += time;
 
@@ -105,7 +107,7 @@ public class AtbController implements Comparator<Unit> {
         GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
         if (this.time >= TIME_IN_ROUND) {
-            this.time = this.time-TIME_IN_ROUND;
+            this.time = this.time - TIME_IN_ROUND;
             manager.getGame().getStateManager().newRound();
             newRound();
         }
@@ -135,14 +137,36 @@ public class AtbController implements Comparator<Unit> {
 
     public void updateTimeTillTurn() {
         for (AtbUnit unit : this.unitsInAtb) {
-            if (unit.getInitiative() <= 0) {
-                unit.setTimeTillTurn(Float.MAX_VALUE);
-            } else {
-                unit.setTimeTillTurn((TIME_TO_READY - unit.getAtbReadiness()) / unit.getInitiative());
-
-            }
+//            if (unit.getInitiative() <= 0) {
+//                unit.setTimeTillTurn(Float.MAX_VALUE);
+//            } else {
+                unit.setTimeTillTurn(
+                 calculateTimeTillTurn(unit));
+//            }
 
         }
+    }
+
+    private float calculateTimeTillTurn(AtbUnit unit) {
+       float time = (TIME_TO_READY - unit.getAtbReadiness()) / unit.getInitiative();
+        if (unit.isImmobilized()) {
+            float duration = getImmobilizingBuffsMaxDuration(unit.getUnit());
+            if (duration==0)
+                return Float.MAX_VALUE;
+            return (time +duration);
+        }
+        return time ;
+    }
+
+    private float getImmobilizingBuffsMaxDuration(Unit unit) {
+        double max = 0;
+        for (BuffObj buff : unit.getBuffs()) {
+            if (buff.isImmobilizing()){
+                double duration = buff.getDuration();
+            if (duration>max)
+                max = duration;}
+        }
+        return (float) max;
     }
 
     public void processAtbRelevantEvent() {
@@ -209,6 +233,8 @@ public class AtbController implements Comparator<Unit> {
         float getAtbReadiness();
 
         void setAtbReadiness(float v);
+
+        boolean isImmobilized();
 
         float getInitiative();
 

@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.dc.inventory.container;
 
-import main.entity.Entity;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
@@ -9,6 +8,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
+import main.entity.Entity;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;

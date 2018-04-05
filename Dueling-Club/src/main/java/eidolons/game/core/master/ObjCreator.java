@@ -1,6 +1,12 @@
 package eidolons.game.core.master;
 
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.Structure;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
+import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -8,14 +14,8 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
-import eidolons.entity.obj.Structure;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
-import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.game.module.dungeoncrawl.objects.LockObj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;

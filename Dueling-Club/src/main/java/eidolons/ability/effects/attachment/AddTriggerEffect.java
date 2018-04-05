@@ -1,12 +1,12 @@
 package eidolons.ability.effects.attachment;
 
+import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
 import main.ability.effects.AttachmentEffect;
 import main.ability.effects.ContainerEffect;
 import main.ability.effects.Effect;
-import eidolons.client.dc.Launcher;
 import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;

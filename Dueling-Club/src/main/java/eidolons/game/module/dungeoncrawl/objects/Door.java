@@ -1,11 +1,11 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
-import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 
 /**
  * Created by JustMe on 9/23/2017.

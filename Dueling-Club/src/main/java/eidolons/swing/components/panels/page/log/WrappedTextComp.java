@@ -1,7 +1,7 @@
 package eidolons.swing.components.panels.page.log;
 
-import main.entity.Ref;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
+import main.entity.Ref;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster;
 import main.system.text.TextWrapper;

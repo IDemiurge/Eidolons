@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.rules.counter;
 
+import eidolons.ability.conditions.StatusCheckCondition;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.ability.conditions.StatusCheckCondition;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;

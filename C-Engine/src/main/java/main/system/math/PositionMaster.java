@@ -14,6 +14,8 @@ import java.util.List;
 
 public class PositionMaster {
 
+    private static Double distances[][][][] = new Double[50][50][50][50];
+
     public static Coordinates getMiddleCoordinate(FACING_DIRECTION side) {
         switch (side) {
             case EAST:
@@ -98,6 +100,11 @@ public class PositionMaster {
     }
 
     public static double getExactDistance(Coordinates coordinates1, Coordinates coordinates2) {
+        if (coordinates1.x<0||coordinates1.y<0||coordinates2.x<0||coordinates2.y<0)
+            return 0;
+        Double result = distances[coordinates1.x][coordinates1.y][coordinates2.x][coordinates2.y];
+        if (result != null)
+            return result;
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
         if (x == 0) {
@@ -107,7 +114,9 @@ public class PositionMaster {
             return x;
         }
 
-        return Math.sqrt(x * x + y * y);
+        result = Math.sqrt(x * x + y * y);
+        distances[coordinates1.x][coordinates1.y][coordinates2.x][coordinates2.y] = result;
+        return result;
     }
 
     public static double getExactDistance(Obj obj, Obj obj1) {
@@ -159,21 +168,8 @@ public class PositionMaster {
     }
 
     public static int getDistance(Obj obj1, Obj obj2, boolean roundMathematically) {
-        int x = getX_Diff(obj1, obj2);
-        int y = getY_Diff(obj1, obj2);
-        if (x == 0) {
-            return y;
-        }
-        if (y == 0) {
-            return x;
-        }
-
-        double sqrt = Math.sqrt(x * x + y * y);
-        int distance =
-
-         ((int) ((roundMathematically) ? Math.round(sqrt) : sqrt));
-
-        return distance;
+        double d = getExactDistance(obj1, obj2);
+        return  ((int) ((roundMathematically) ? Math.round(d) : d));
     }
 
     public static boolean isToTheLeft(Obj obj1, Obj obj2) {

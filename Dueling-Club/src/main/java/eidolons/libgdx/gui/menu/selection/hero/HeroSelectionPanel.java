@@ -1,10 +1,10 @@
 package eidolons.libgdx.gui.menu.selection.hero;
 
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
-import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import main.entity.Entity;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import main.entity.Entity;
 
 import java.util.List;
 import java.util.function.Supplier;

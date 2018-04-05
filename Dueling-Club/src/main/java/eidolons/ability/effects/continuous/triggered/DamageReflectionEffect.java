@@ -1,8 +1,8 @@
 package eidolons.ability.effects.continuous.triggered;
 
-import main.ability.effects.Effects;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
+import main.ability.effects.Effects;
 import main.elements.conditions.Condition;
 import main.elements.conditions.RefCondition;
 import main.elements.targeting.FixedTargeting;

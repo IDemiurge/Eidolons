@@ -1,13 +1,13 @@
 package eidolons.swing.components.obj;
 
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.system.graphics.ImageTransformer;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.entity.Entity;
-import eidolons.entity.active.DC_UnitAction;
 import main.entity.obj.ActiveObj;
 import main.swing.generic.components.list.ListItem;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;
-import eidolons.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;

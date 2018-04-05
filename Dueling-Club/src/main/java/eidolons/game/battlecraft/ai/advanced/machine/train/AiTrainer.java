@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.ai.advanced.machine.train;
 
-import eidolons.libgdx.launch.ScenarioLauncher;
-import main.content.DC_TYPE;
 import eidolons.content.PROPS;
-import main.data.DataManager;
-import main.entity.type.ObjType;
 import eidolons.game.battlecraft.ai.advanced.machine.PriorityProfile;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingParameters.TRAINING_ENVIRONMENT;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
 import eidolons.game.core.launch.GameLauncher;
 import eidolons.game.core.state.Loader;
+import eidolons.libgdx.launch.ScenarioLauncher;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;

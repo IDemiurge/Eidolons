@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import main.entity.Entity;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
 import eidolons.libgdx.stage.StageX;
+import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

@@ -1,20 +1,20 @@
 package eidolons.game.battlecraft.rules.magic;
 
+import eidolons.ability.DC_CostsFactory;
+import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.ability.DC_CostsFactory;
-import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import main.content.mode.STD_MODES;
 import main.data.filesys.PathFinder;
 import main.elements.costs.Cost;
 import main.elements.costs.CostRequirements;
 import main.elements.costs.Costs;
 import main.entity.Ref;
-import eidolons.entity.active.DC_SpellObj;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 

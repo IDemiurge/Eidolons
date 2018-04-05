@@ -5,6 +5,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.content.DC_TYPE;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -13,15 +14,12 @@ import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.MapMaster;
+import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Supposed to provide all Grid-relevant data and methods for changing it
@@ -241,4 +239,9 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         return diagonalJoints;
     }
 
+    public Set<Obj> getCellsWithinRange(BattleFieldObject observer, int i) {
+        HashSet<Obj> set = new HashSet<>(game.getCells());
+        set.removeIf(cell -> PositionMaster.getDistance(observer, cell) > i);
+        return set;
+    }
 }

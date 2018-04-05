@@ -6,12 +6,12 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
 import eidolons.swing.components.panels.page.log.WrappedTextComp;
+import eidolons.system.graphics.ImageTransformer;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
-import eidolons.system.graphics.ImageTransformer;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 

@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
+import eidolons.libgdx.gui.panels.dc.TablePanel;
 import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
 
 import java.util.List;
 

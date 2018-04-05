@@ -1,6 +1,7 @@
 package eidolons.system.graphics;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
@@ -9,7 +10,6 @@ import eidolons.system.math.roll.RollMaster;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_SpellObj;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;

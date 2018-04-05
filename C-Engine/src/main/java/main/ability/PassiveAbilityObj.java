@@ -65,7 +65,7 @@ public class PassiveAbilityObj extends AbilityObj implements Attachment {
     }
 
     @Override
-    public int getDuration() {
+    public double getDuration() {
         return dur;
     }
 

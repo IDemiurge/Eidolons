@@ -1,18 +1,18 @@
 package eidolons.swing.components.obj;
 
-import main.data.XLinkedMap;
-import main.entity.Ref;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import main.game.bf.Coordinates;
 import eidolons.game.core.game.DC_Game;
-import main.swing.XLine;
 import eidolons.swing.components.battlefield.DC_BattleFieldGrid;
 import eidolons.swing.components.obj.drawing.DrawHelper;
 import eidolons.swing.components.obj.drawing.DrawMasterStatic;
+import main.data.XLinkedMap;
+import main.entity.Ref;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
+import main.swing.XLine;
 import main.swing.generic.components.G_Panel;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;

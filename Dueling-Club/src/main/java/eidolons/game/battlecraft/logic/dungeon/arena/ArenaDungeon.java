@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.dungeon.arena;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
 
 /**
  * Created by JustMe on 5/8/2017.

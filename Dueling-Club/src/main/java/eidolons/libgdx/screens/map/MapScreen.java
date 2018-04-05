@@ -8,19 +8,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.MacroTimeMaster;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.bf.mouse.MapInputController;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.screens.GameScreen;
+import eidolons.libgdx.screens.map.editor.EditorMapView;
 import eidolons.libgdx.shaders.DarkShader;
 import main.data.xml.XML_Reader;
 import main.game.bf.Coordinates;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.mouse.MapInputController;
-import eidolons.libgdx.screens.GameScreen;
-import eidolons.libgdx.screens.map.editor.EditorMapView;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.launch.CoreEngine;
@@ -38,7 +38,6 @@ public class MapScreen extends GameScreen {
     public static final int defaultSize = 2988;
     protected static MapScreen instance;
     //    protected RealTimeGameLoop realTimeGameLoop;
-    protected MapGuiStage guiStage;
     protected MapObjStage objectStage;
     protected MapStage mapStage;
     private boolean loaded;
@@ -241,7 +240,7 @@ public class MapScreen extends GameScreen {
     }
 
     public MapGuiStage getGuiStage() {
-        return guiStage;
+        return (MapGuiStage) guiStage;
     }
 
     public InputController getController() {

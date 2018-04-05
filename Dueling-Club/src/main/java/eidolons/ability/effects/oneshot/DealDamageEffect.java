@@ -1,20 +1,20 @@
 package eidolons.ability.effects.oneshot;
 
+import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
+import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
-import eidolons.ability.effects.DC_Effect;
+import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import main.ability.effects.OneshotEffect;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_SpellObj;
-import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
-import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;

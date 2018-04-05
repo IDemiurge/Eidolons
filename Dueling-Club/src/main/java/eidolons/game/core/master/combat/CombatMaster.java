@@ -1,21 +1,21 @@
 package eidolons.game.core.master.combat;
 
 import eidolons.entity.active.DC_ActionManager;
-import eidolons.game.battlecraft.logic.battlefield.DC_GraveyardManager;
 import eidolons.entity.active.DC_ActiveObj;
-import main.game.ai.BfAnalyzer;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.battlefield.DC_GraveyardManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
-import main.game.bf.GraveyardManager;
-import main.game.bf.MovementManager;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.PtsTurnManager;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.game.ai.BfAnalyzer;
+import main.game.bf.GraveyardManager;
+import main.game.bf.MovementManager;
 
 /**
  * Created by JustMe on 6/2/2017.

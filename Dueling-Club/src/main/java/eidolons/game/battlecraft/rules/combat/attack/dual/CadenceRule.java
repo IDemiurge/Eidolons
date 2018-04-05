@@ -1,17 +1,18 @@
 package eidolons.game.battlecraft.rules.combat.attack.dual;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import eidolons.ability.effects.attachment.AddTriggerEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.system.DC_Formulas;
 import main.ability.ActiveAbility;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.attachment.AddTriggerEffect;
-import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.system.MetaEnums;
 import main.content.values.properties.G_PROPS;
@@ -24,7 +25,6 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;

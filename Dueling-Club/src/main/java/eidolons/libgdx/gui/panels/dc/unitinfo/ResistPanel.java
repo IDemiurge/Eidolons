@@ -14,9 +14,9 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.content.enums.GenericEnums.DAMAGE_TYPE;
 import static main.content.enums.GenericEnums.DAMAGE_TYPE.*;
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.images.ImageManager.getDamageTypeImagePath;
 
 public class ResistPanel extends TablePanel {

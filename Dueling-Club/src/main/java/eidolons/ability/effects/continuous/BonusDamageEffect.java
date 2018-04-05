@@ -3,10 +3,10 @@ package eidolons.ability.effects.continuous;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.elements.conditions.Condition;
-import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import main.system.auxiliary.EnumMaster;
 import main.system.math.Formula;
 

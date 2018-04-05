@@ -1,9 +1,9 @@
 package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.ability.effects.DC_Effect;
-import main.entity.Ref.KEYS;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
+import main.entity.Ref.KEYS;
 
 /**
  * Created by JustMe on 3/23/2017.

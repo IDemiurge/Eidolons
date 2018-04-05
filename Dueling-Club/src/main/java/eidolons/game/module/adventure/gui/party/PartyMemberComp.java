@@ -4,8 +4,8 @@ import eidolons.client.cc.gui.neo.header.PortraitComp;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.swing.components.panels.page.info.element.TextCompDC;
-import main.swing.generic.components.G_Panel;
 import eidolons.system.audio.DC_SoundMaster;
+import main.swing.generic.components.G_Panel;
 import main.system.sound.SoundMaster.SOUNDS;
 
 import java.awt.event.MouseEvent;

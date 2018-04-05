@@ -1,18 +1,18 @@
 package eidolons.entity.obj;
 
+import eidolons.entity.handlers.bf.BfObjInitializer;
+import eidolons.entity.handlers.bf.structure.StructureMaster;
 import eidolons.entity.handlers.bf.structure.StructureResetter;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
-import eidolons.entity.handlers.bf.BfObjInitializer;
-import eidolons.entity.handlers.bf.structure.StructureMaster;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import eidolons.game.core.game.DC_Game;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 

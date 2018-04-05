@@ -2,10 +2,10 @@ package eidolons.client.cc.gui.neo.bars;
 
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
+import eidolons.swing.components.panels.ValueComp;
 import eidolons.system.DC_Formulas;
 import main.content.ContentManager;
 import main.content.values.parameters.PARAMETER;
-import eidolons.swing.components.panels.ValueComp;
 import main.system.math.MathMaster;
 
 import java.awt.*;

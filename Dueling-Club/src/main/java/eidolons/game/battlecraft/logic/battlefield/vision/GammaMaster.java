@@ -1,18 +1,17 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
-import eidolons.content.PARAMS;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import main.entity.obj.Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
+import main.entity.obj.Obj;
+import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
 
 import java.util.HashMap;
@@ -52,37 +51,14 @@ public class GammaMaster {
         return 45;
     }
 
-    public int getGamma(boolean minusForVagueLight, Unit source, DC_Obj target) {
+    public int getGamma(Unit source, DC_Obj target) {
         if (target instanceof Entrance)
             return 200;
-        if (source == null) {
-            source = target.getGame().getManager().getActiveObj();
-        }
-        if (!dirty)
-            if (target.getGamma() != null)
-                if (source == target.getGame().getManager().getActiveObj())
-                    return target.getGamma();
-
-        Integer illumination = master.getIlluminationMaster().getIllumination(source, target);
-        Integer concealment = master.getIlluminationMaster().getConcealment(source, target);
-
-        Integer gamma = illumination - concealment;
-//        cache.put(target, gamma); TODO use or remove
-        if (source == master.getSeeingUnit()) {
-            target.setGamma(gamma);
-        }
-//        if (PositionMaster.getDistance(source, target) < 4) {
-//            main.system.auxiliary.log.LogMaster.log(1,target + " has illumination= "+illumination
-//             + " gamma= "+gamma );
-//        }
-
-        if (target.getIntParam(PARAMS.LIGHT_EMISSION) > 0) {
-
-        }
-//        if (i > 50 && c > 50) {
-//            return Integer.MIN_VALUE; TODO twilight
-//        }
-        return gamma;
+        Integer gamma = target.getGamma(source);
+        if (gamma !=null )
+            return gamma;
+        return master.getIlluminationMaster().getIllumination(source, target)
+         -master.getIlluminationMaster().getConcealment(source, target);
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_LIGHT type) {
@@ -122,10 +98,13 @@ public class GammaMaster {
                     alpha = 1;
                 else
                     alpha = 1 - gamma;
+                if (unit.getX()==x && unit.getY()==y){
+                    alpha = alpha/2;
+                }
                 break;
             case GAMMA_LIGHT:
-//                if (gamma < 2)
-//                    return 0;
+                if (gamma < 0)
+                    return 0;
                 alpha = (float) Math.min(Math.sqrt(gamma * 2), gamma / 3);
                 alpha = Math.min(alpha, 0.5f);
                 break;
@@ -136,7 +115,7 @@ public class GammaMaster {
                     if (sub.getCoordinates().x == x)
                         if (sub.getCoordinates().y == y)
                             if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
-                             UNIT_TO_PLAYER_VISION.DETECTED) {
+                             PLAYER_VISION.DETECTED) {
                                 alpha += LIGHT_EMITTER_ALPHA_FACTOR *
                                  master.getGame().getRules().getIlluminationRule()
                                  .getLightEmission((DC_Obj) sub);
@@ -198,20 +177,23 @@ public class GammaMaster {
             if (cell.getGamma() == 0) {
 //            if ( cell.getIntParam("illumination")!=0 )
                 try {
-                    return getGamma(true, master.getSeeingUnit(), cell);
+                    return getGamma(master.getSeeingUnit(), cell);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
 
             }
-        if (cell.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
+        if (cell.getUnitVisionStatus() == UNIT_VISION.BLOCKED)
             return 0;
-        if (cell.getOutlineType() == OUTLINE_TYPE.BLOCKED_OUTLINE)
-            return 0;
+
 
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
          cell.getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 }

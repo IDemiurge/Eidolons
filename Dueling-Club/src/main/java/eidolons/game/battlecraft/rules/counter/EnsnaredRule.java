@@ -1,23 +1,23 @@
 package eidolons.game.battlecraft.rules.counter;
 
+import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
+import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.content.PARAMS;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_WeaponObj;
 import main.entity.obj.ActiveObj;
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.game.DC_Game;
 import main.system.math.MathMaster;
 
 /*

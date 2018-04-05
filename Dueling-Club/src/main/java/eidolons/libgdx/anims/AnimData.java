@@ -3,9 +3,9 @@ package eidolons.libgdx.anims;
 import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import main.content.CONTENT_CONSTS2.SFX;
 import main.content.VALUE;
-import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 

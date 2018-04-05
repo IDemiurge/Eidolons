@@ -3,31 +3,31 @@ package eidolons.libgdx.anims.text;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import eidolons.ability.effects.common.ModifyStatusEffect;
+import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
+import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
+import eidolons.libgdx.anims.CompositeAnim;
 import eidolons.libgdx.bf.BaseView;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.config.ConfigKeys;
 import eidolons.system.config.ConfigMaster;
-import eidolons.ability.effects.common.ModifyStatusEffect;
-import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
-import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.screens.DungeonScreen;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.Producer;
@@ -347,14 +347,20 @@ public class FloatingTextMaster {
     public void createAndShowParamModText(Object o) {
         Pair<PARAMETER, Ref> pair = (Pair<PARAMETER, Ref>) o;
         Entity active = pair.getValue().getObj(KEYS.ACTIVE);
+        int amount = 0;
+        if (pair.getValue().getAmount() != null)
+            amount = pair.getValue().getAmount();
+        else {
+            return;
+        }
         FloatingText text = getFloatingText(active,
          TEXT_CASES.PARAM_MOD,
-         new ImmutablePair<>(pair.getKey(), pair.getValue().getAmount()));
+         new ImmutablePair<>(pair.getKey(), amount));
         Obj obj = active.getRef().getTargetObj();
         if (obj == null)
             obj = active.getRef().getSourceObj();
         if (obj != null) {
-            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(obj);
+            BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(obj);
             if (view != null) {
                 Vector2 v = view.localToStageCoordinates(new Vector2(view.getX(), view.getY()));
                 text.setPosition(v.x, v.y);

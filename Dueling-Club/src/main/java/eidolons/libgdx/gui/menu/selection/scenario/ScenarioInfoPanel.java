@@ -2,9 +2,9 @@ package eidolons.libgdx.gui.menu.selection.scenario;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.content.PROPS;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
 import main.system.graphics.FontMaster.FONT;

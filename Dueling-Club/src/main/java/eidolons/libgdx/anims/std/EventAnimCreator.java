@@ -2,11 +2,11 @@ package eidolons.libgdx.anims.std;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
 import eidolons.libgdx.anims.anim3d.Potion3dAnim;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 /**
  * Created by JustMe on 2/3/2017.

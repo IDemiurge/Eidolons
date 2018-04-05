@@ -1,9 +1,9 @@
 package eidolons.ability.effects.common;
 
+import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.elements.conditions.Condition;

@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.ai.advanced.machine;
 import eidolons.game.battlecraft.ai.advanced.machine.AiPriorityConstantMaster.AiConstant;
 import eidolons.game.battlecraft.ai.advanced.machine.evolution.Evolvable;
 import eidolons.game.battlecraft.ai.advanced.machine.evolution.Mutatable;
-import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingResult;
 import eidolons.game.battlecraft.ai.advanced.machine.profile.ProfileChooser.AI_PROFILE_GROUP;
+import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingResult;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 

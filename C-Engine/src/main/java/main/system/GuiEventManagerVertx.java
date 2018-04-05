@@ -34,10 +34,10 @@ public class GuiEventManagerVertx extends GuiEventManager {
     }
 
     public static void trigger(final GuiEventType type) {
-        trigger(type, null);
+        trigger_(type, null);
     }
 
-    public static void trigger(final GuiEventType type, Object obj) {
+    public static void trigger_(final GuiEventType type, Object obj) {
         if (CoreEngine.isGraphicsOff())
             return;
         DeliveryOptions options = new DeliveryOptions();

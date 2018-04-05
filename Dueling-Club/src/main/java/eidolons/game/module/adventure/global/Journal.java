@@ -1,10 +1,10 @@
 package eidolons.game.module.adventure.global;
 
-import main.entity.Ref;
-import main.game.core.game.Game;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Route;
+import main.entity.Ref;
+import main.game.core.game.Game;
 import main.system.text.LogManager;
 
 public class Journal extends LogManager {

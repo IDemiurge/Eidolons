@@ -1,9 +1,9 @@
 package eidolons.client.options;
 
-import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import eidolons.client.options.GameOptions.GAME_OPTION;
 import eidolons.client.options.GameOptions.GAME_WORLD;
 import eidolons.client.options.GameOptions.MAP_TYPE;
+import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import main.content.CONTENT_CONSTS.RANK;
 import main.system.auxiliary.EnumMaster;
 

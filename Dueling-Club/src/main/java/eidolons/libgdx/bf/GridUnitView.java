@@ -5,14 +5,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
-import eidolons.libgdx.gui.tooltips.Tooltip;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -22,14 +23,15 @@ import java.util.function.Supplier;
 import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
 
 public class GridUnitView extends UnitView {
-    private Image arrow;
-    private Image emblemLighting;
-    private Image icon;
-    private int arrowRotation;
-    private float alpha = 1f;
+    protected Image arrow;
+    protected Image emblemLighting;
+    protected Image icon;
+    protected int arrowRotation;
+    protected float alpha = 1f;
 
-    private UnitView initiativeQueueUnitView;
-    private boolean cellBackground;
+    protected UnitView initiativeQueueUnitView;
+    protected boolean cellBackground;
+    protected LastSeenView lastSeenView;
 
     public GridUnitView(UnitViewOptions o) {
         super(o);
@@ -52,9 +54,10 @@ public class GridUnitView extends UnitView {
         return initiativeQueueUnitView;
     }
 
-    private void initQueueView(UnitViewOptions o) {
+    protected void initQueueView(UnitViewOptions o) {
         setHoverResponsive(o.isHoverResponsive());
         initiativeQueueUnitView = new UnitView(o, curId);
+        initiativeQueueUnitView.setParentView(this);
         initiativeQueueUnitView.setSize(InitiativePanel.imageSize, InitiativePanel.imageSize);
         initiativeQueueUnitView.setHoverResponsive(isHoverResponsive());
     }
@@ -77,6 +80,13 @@ public class GridUnitView extends UnitView {
     }
 
     @Override
+    protected void updateModeImage(String pathToImage) {
+        super.updateModeImage(pathToImage);
+        initiativeQueueUnitView.updateModeImage(pathToImage);
+        modeImage.setPosition(0, 0);
+    }
+
+    @Override
     public void reset() {
         super.reset();
         if (emblemImage != null) {
@@ -94,7 +104,7 @@ public class GridUnitView extends UnitView {
 
     }
 
-    private void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
+    protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
 
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
@@ -120,7 +130,7 @@ public class GridUnitView extends UnitView {
                 emblemLighting.setColor(getTeamColor());
             addActor(emblemLighting);
 
-            emblemImage = new Image(emblem);
+            emblemImage = new FadeImageContainer(new Image(emblem));
             addActor(emblemImage);
             emblemImage.setSize(getEmblemSize(), getEmblemSize());
             emblemImage.setPosition(getWidth() - emblemImage.getWidth(), getHeight() - emblemImage.getHeight());
@@ -128,7 +138,7 @@ public class GridUnitView extends UnitView {
         setInitialized(true);
     }
 
-    private float getEmblemSize() {
+    protected float getEmblemSize() {
         if (mainHero)
             return 36;
         return 32;
@@ -165,8 +175,8 @@ public class GridUnitView extends UnitView {
 
     @Override
     public void act(float delta) {
-//        if (isIgnored())
-//            return; TODO make it work with actions
+        if (!isVisible())
+            return; //TODO make withinCamera()  work with actions
         if (getY() < 0)
             setY(0);
         if (getX() < 0)
@@ -198,7 +208,7 @@ public class GridUnitView extends UnitView {
     public boolean isHpBarVisible() {
         if (!getHpBar().getDataSource().canHpBarBeVisible())
             return false;
-        if (!isCellBackground() && getHpAlwaysVisible())
+        if (!isCellBackground() &&HpBar. getHpAlwaysVisible())
             return true;
         return getHpBar().getDataSource().isHpBarVisible();
     }
@@ -211,16 +221,10 @@ public class GridUnitView extends UnitView {
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
-        if (pathSupplier.get() == null) {
-            initiativeQueueUnitView.
-             setOutlineSupplier(() -> null);
-            return;
-        }
-        String sized = StringMaster.getAppendedImageFile(pathSupplier.get(), " " + InitiativePanel.imageSize);
 
         initiativeQueueUnitView.
          setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-          TextureCache.getRegion(sized, GdxImageTransformer.size(sized, InitiativePanel.imageSize, true)));
+          TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get())) ;
     }
 
     public void setMainHero(boolean mainHero) {
@@ -298,11 +302,8 @@ public class GridUnitView extends UnitView {
             image.setScaleX(getScaledWidth());
             image.setScaleY(getScaledHeight());
         }
-        image = emblemImage;
-        if (image != null) {
-            image.setScaleX(getScaledWidth());
-            image.setScaleY(getScaledHeight());
-        }
+        if (emblemImage!=null )
+            emblemImage.setScale(getScaledWidth(), getScaledHeight());
 //        image = arrow;
 //        if (image != null) {
 //            image.setScaleX(getScaledWidth());
@@ -343,6 +344,13 @@ public class GridUnitView extends UnitView {
              resourceSource);
     }
 
+    protected void setDefaultTexture() {
+        if (mainHero){
+            return;
+        }
+        setPortraitTexture(TextureCache.getOrCreateR(
+         OUTLINE_TYPE.UNKNOWN.getImagePath()));
+    }
     @Override
     public void setHpBar(HpBar hpBar) {
         super.setHpBar(hpBar);
@@ -381,5 +389,13 @@ public class GridUnitView extends UnitView {
         getHpBar().animateChange();
         if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.getHpBar().animateChange();
+    }
+
+    public LastSeenView getLastSeenView() {
+        return lastSeenView;
+    }
+
+    public void setLastSeenView(LastSeenView lastSeenView) {
+        this.lastSeenView = lastSeenView;
     }
 }

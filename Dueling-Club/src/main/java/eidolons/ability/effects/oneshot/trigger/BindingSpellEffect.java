@@ -1,11 +1,11 @@
 package eidolons.ability.effects.oneshot.trigger;
 
 import eidolons.ability.effects.DC_Effect;
+import eidolons.ability.effects.continuous.triggered.DuplicateEffect;
+import eidolons.ability.effects.continuous.triggered.DuplicateSpellEffect;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.continuous.CustomTargetEffect;
-import eidolons.ability.effects.continuous.triggered.DuplicateEffect;
-import eidolons.ability.effects.continuous.triggered.DuplicateSpellEffect;
 import main.ability.effects.triggered.InterruptEffect;
 import main.content.enums.entity.SpellEnums;
 import main.content.values.properties.G_PROPS;

@@ -1,24 +1,24 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import eidolons.client.cc.gui.neo.choice.ScenarioModeChoiceView;
-import eidolons.client.dc.SequenceManager;
 import eidolons.client.cc.gui.neo.choice.ChoiceSequence;
 import eidolons.client.cc.gui.neo.choice.ScenarioChoiceView;
+import eidolons.client.cc.gui.neo.choice.ScenarioModeChoiceView;
 import eidolons.client.dc.Launcher;
 import eidolons.client.dc.Launcher.VIEWS;
-import main.content.DC_TYPE;
+import eidolons.client.dc.SequenceManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
+import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
+import eidolons.game.module.dungeoncrawl.dungeon.Location;
+import main.content.DC_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.game.module.dungeoncrawl.dungeon.Location;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 

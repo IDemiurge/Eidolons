@@ -6,12 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
-import eidolons.game.core.Eidolons;
-import eidolons.libgdx.launch.Showcase;
 import eidolons.client.dc.Launcher;
-import main.data.filesys.PathFinder;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.JavaProcess;
+import eidolons.libgdx.launch.Showcase;
+import main.data.filesys.PathFinder;
 
 import java.io.IOException;
 

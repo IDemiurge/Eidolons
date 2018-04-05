@@ -1,12 +1,12 @@
 package eidolons.client.cc.logic.items;
 
+import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_QuickItemObj;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
 import main.content.enums.entity.ItemEnums.MATERIAL;
 import main.content.values.properties.G_PROPS;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 

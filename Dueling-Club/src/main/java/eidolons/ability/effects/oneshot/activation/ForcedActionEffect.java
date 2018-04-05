@@ -1,11 +1,11 @@
 package eidolons.ability.effects.oneshot.activation;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
 
 public class ForcedActionEffect extends MicroEffect implements OneshotEffect {
 

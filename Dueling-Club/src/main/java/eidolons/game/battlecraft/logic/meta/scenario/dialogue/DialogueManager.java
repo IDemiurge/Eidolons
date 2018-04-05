@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

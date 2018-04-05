@@ -1,5 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.ability.Abilities;
 import main.data.dialogue.DataString.SPEECH_VALUE;
@@ -7,8 +9,6 @@ import main.data.dialogue.SpeechData;
 import main.data.dialogue.SpeechInterface;
 import main.data.dialogue.Speeches;
 import main.elements.conditions.Condition;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActor;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 

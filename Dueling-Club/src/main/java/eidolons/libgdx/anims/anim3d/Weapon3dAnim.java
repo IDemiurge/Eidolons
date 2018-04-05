@@ -6,9 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
-import main.entity.Ref;
 import eidolons.entity.active.DC_ActiveObj;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimMaster3d;
@@ -16,6 +14,8 @@ import eidolons.libgdx.anims.AnimMaster3d.PROJECTION;
 import eidolons.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.std.ActionAnim;
+import main.entity.Ref;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.math.PositionMaster;
 
 import java.util.HashMap;

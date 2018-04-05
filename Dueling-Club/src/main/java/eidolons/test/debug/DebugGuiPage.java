@@ -2,9 +2,9 @@ package eidolons.test.debug;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.swing.components.buttons.CustomButton;
+import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.StringMaster;
-import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
 import java.util.List;
 

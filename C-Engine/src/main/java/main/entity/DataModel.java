@@ -79,8 +79,9 @@ public abstract class DataModel {
     protected boolean passivesReady = false;
     protected boolean activesReady = false;
     private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private Map<PARAMETER, Integer> integerMap;
+    private Map<PARAMETER, Integer> integerMap= new HashMap<>();
     private boolean beingReset;
+    public static final boolean integerCacheOn=true;
 
     public String getToolTip() {
         return getType().getDisplayedName();
@@ -318,8 +319,10 @@ public abstract class DataModel {
     public Integer getIntParam(PARAMETER param, boolean base) {
 
         Integer result = null;
-        if (isIntegerCacheOn()) {
-            getIntegerMap(base).get(param);
+        if (integerCacheOn) {
+            if (base)
+                result= type.getIntegerMap().get(param);
+            else result= integerMap.get(param);
             if (result != null)
                 return result;
         }
@@ -335,26 +338,29 @@ public abstract class DataModel {
         if (string.equals("")) {
             return 0;
         }
-        result = FormulaMaster.getInt(string, ref);
+        if (StringMaster.isInteger(string)) {
+            result= StringMaster.getInteger(string);
+        } else
+            result = FormulaMaster.getInt(string, ref);
 
-        if (isIntegerCacheOn()) {
+        if (integerCacheOn) {
             getIntegerMap(base).put(param, result);
         }
         return result;
     }
 
     private boolean isIntegerCacheOn() {
-        return false;
+        return integerCacheOn;
     }
 
-    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+    public Map<PARAMETER, Integer> getIntegerMap() {
+        return integerMap;
+    }
+        public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
         if (base) {
             return type.getIntegerMap(false);
         }
-        if (integerMap == null) {
-            integerMap = new HashMap<>();
-        }
-        return integerMap;
+            return getIntegerMap();
     }
 
     public ParamMap getParamMap() {
@@ -923,7 +929,6 @@ public abstract class DataModel {
         if (paramMap.get(param.getName()).equals(value))
             return false;
         putParameter(param, value);
-        getIntegerMap(false).remove(param);
         setDirty(true);
 
 
@@ -1120,6 +1125,8 @@ public abstract class DataModel {
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }
+        if (integerCacheOn)
+            integerMap.remove(param);
         paramMap.put(param, value);
     }
 
@@ -1461,7 +1468,7 @@ public abstract class DataModel {
 
     public void copyValue(VALUE param, Entity entity) {
         if (param instanceof PARAMETER) {
-            setParamDouble((PARAMETER) param, entity.getParamDouble((PARAMETER) param), false);
+            setParam((PARAMETER) param, entity.getParam((PARAMETER) param), false);
         } else {
             setProperty((PROPERTY) param, entity.getProperty(param.toString()));
         }

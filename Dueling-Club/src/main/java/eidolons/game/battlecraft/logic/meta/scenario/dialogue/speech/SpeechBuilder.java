@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech;
 
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueSyntax;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.line.DialogueLineFormatter;
 import main.ability.Abilities;
 import main.data.dialogue.DataString.SPEECH_VALUE;
@@ -7,7 +8,6 @@ import main.data.dialogue.SpeechData;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.elements.conditions.Condition;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueSyntax;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import org.w3c.dom.Document;

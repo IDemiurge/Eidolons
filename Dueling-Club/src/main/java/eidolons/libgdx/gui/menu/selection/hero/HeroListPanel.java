@@ -1,10 +1,10 @@
 package eidolons.libgdx.gui.menu.selection.hero;
 
+import eidolons.libgdx.gui.menu.selection.ItemListPanel;
+import eidolons.system.text.HelpMaster;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
-import eidolons.libgdx.gui.menu.selection.ItemListPanel;
-import eidolons.system.text.HelpMaster;
 
 import java.util.LinkedList;
 import java.util.List;

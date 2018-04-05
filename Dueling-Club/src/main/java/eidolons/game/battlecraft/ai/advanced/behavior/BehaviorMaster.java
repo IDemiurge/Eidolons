@@ -6,6 +6,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
+import eidolons.game.battlecraft.ai.elements.actions.Action;
+import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.path.ActionPath;
 import eidolons.game.module.dungeoncrawl.ai.AiBehavior;
@@ -15,8 +17,6 @@ import eidolons.game.module.dungeoncrawl.ai.WanderAi;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.entity.Ref;
-import eidolons.game.battlecraft.ai.elements.actions.Action;
-import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 

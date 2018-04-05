@@ -1,16 +1,16 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
+import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.system.graphics.AttackAnimation;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
-import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.system.graphics.AttackAnimation;
 
 import java.util.List;
 

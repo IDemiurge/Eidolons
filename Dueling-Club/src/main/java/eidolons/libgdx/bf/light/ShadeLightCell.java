@@ -42,6 +42,8 @@ public class ShadeLightCell extends SuperContainer {
     private float baseAlpha = 0;
     private Float originalX;
     private Float originalY;
+    private final Float width;
+    private final Float height;
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
         super(new Image(TextureCache.getOrCreateR(getTexturePath(type))));
@@ -54,7 +56,10 @@ public class ShadeLightCell extends SuperContainer {
         }
         this.x = x;
         this.y = y;
+        width = getContent().getWidth();
+        height = getContent().getHeight();
     }
+
 
     private static String getTexturePath(SHADE_LIGHT type) {
         switch (type) {
@@ -97,20 +102,22 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public float getWidth() {
-        if (type == SHADE_LIGHT.GAMMA_SHADOW)
-            return super.getWidth();
-        if (type == SHADE_LIGHT.HIGLIGHT)
-            return super.getWidth();
-        return GridConst.CELL_W;
+        return width;
+//        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+//            return super.getWidth();
+//        if (type == SHADE_LIGHT.HIGLIGHT)
+//            return super.getWidth();
+//        return GridConst.CELL_W;
     }
 
     @Override
     public float getHeight() {
-        if (type == SHADE_LIGHT.GAMMA_SHADOW)
-            return super.getHeight();
-        if (type == SHADE_LIGHT.HIGLIGHT)
-            return super.getHeight();
-        return GridConst.CELL_H;
+        return height;
+//        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+//            return super.getHeight();
+//        if (type == SHADE_LIGHT.HIGLIGHT)
+//            return super.getHeight();
+//        return GridConst.CELL_H;
     }
 
     public float getBaseAlpha() {
@@ -119,12 +126,13 @@ public class ShadeLightCell extends SuperContainer {
 
     public void setBaseAlpha(float baseAlpha) {
         if (isAnimated()) {
+//            removeAction(alphaAction);
             alphaAction.reset();
             alphaAction.setStart(this.baseAlpha);
             alphaAction.setEnd(baseAlpha);
             addAction(alphaAction);
             alphaAction.setTarget(this);
-            alphaAction.setDuration(0.25f + (Math.abs(this.baseAlpha - baseAlpha)) / 2);
+            alphaAction.setDuration(0.4f + (Math.abs(this.baseAlpha - baseAlpha)) / 2);
         } else
             this.baseAlpha = baseAlpha;
 
@@ -274,7 +282,7 @@ public class ShadeLightCell extends SuperContainer {
                             //so if 2+ overlays, will be centered between them...
                         } else {
 
-                            BaseView view = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(sub);
+                            BaseView view = DungeonScreen.getInstance().getGridPanel().getViewMap().get(sub);
                             offsetX += view.getX() * 3;
                             offsetY += view.getY() * 3;
                             if (view.getParent() instanceof GridCellContainer) {

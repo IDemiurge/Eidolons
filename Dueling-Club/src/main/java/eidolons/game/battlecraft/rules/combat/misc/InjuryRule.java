@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.rules.combat.misc;
 
+import eidolons.ability.effects.oneshot.rule.InjuryEffect;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.oneshot.rule.InjuryEffect;
 import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
-import eidolons.content.PROPS;
 import main.entity.Ref;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

@@ -1,8 +1,8 @@
 package eidolons.entity;
 
+import eidolons.content.DC_ContentManager;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.content.DC_ContentManager;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;

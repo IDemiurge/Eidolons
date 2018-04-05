@@ -1,11 +1,11 @@
 package eidolons.entity.handlers.bf.unit;
 
 import eidolons.entity.active.DC_SpellObj;
-import main.entity.handlers.EntityHandler;
-import main.entity.handlers.EntityMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.ActionInput;
+import main.entity.handlers.EntityHandler;
+import main.entity.handlers.EntityMaster;
 import main.game.logic.action.context.Context;
 
 /**

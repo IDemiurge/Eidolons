@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.screens.map.obj.PartyActorFactory.PartyActorParameters;
-import main.game.bf.Coordinates;
-import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.libgdx.screens.map.path.SteerableParty;
 import eidolons.libgdx.texture.TextureCache;
+import main.game.bf.Coordinates;
 import main.system.images.ImageManager.BORDER;
 
 /**

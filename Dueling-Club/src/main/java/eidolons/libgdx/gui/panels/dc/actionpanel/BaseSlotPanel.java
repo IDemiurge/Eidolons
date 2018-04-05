@@ -2,9 +2,9 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.libgdx.gui.panels.dc.TablePanel;
 import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.Collections;

@@ -4,9 +4,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
-import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
@@ -18,9 +15,14 @@ import eidolons.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
+import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
+import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.utils.TextInputPanel;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.OptionsWindow;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -46,11 +48,16 @@ public class GuiStage extends StageX implements StageWithClosable {
     private char lastTyped;
     private ToolTipManager tooltips;
 
+    OptionsWindow optionsWindow;
+
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
     }
+    public  void openOptionsMenu() {
+        OptionsWindow.getInstance().open(OptionsMaster.getOptionsMap(),this);
 
+    }
 
     protected void init() {
         gameMenu = createGameMenu();
@@ -121,6 +128,11 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void bindEvents() {
+        GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p->{
+            if (p.get()== this || p.get()==getClass()){
+                openOptionsMenu();
+            }
+        });
         GuiEventManager.bind(SHOW_TEXT_CENTERED, p -> {
             showText((String) p.get());
         });

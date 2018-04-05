@@ -1,19 +1,19 @@
 package eidolons.client.cc.gui.neo.points;
 
-import eidolons.client.cc.gui.MiddlePanel;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.gui.MiddlePanel;
 import eidolons.client.cc.gui.misc.PoolComp;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.swing.components.buttons.CustomButton;
+import eidolons.system.math.DC_MathManager;
 import main.content.VALUE;
 import main.entity.type.ObjType;
-import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.MigMaster;
-import eidolons.system.math.DC_MathManager;
 
 public class StatsControlComponent extends G_Panel {
 

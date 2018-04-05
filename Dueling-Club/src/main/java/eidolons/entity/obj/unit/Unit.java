@@ -1038,6 +1038,10 @@ public class Unit extends DC_UnitModel {
         return mainHero;
     }
 
+    public boolean isPlayerCharacter() {
+
+        return isMainHero()&& isMine();
+    }
     public void setMainHero(boolean mainHero) {
         this.mainHero = mainHero;
     }

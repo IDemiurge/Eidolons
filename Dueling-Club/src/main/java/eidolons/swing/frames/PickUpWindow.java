@@ -1,9 +1,9 @@
 package eidolons.swing.frames;
 
-import eidolons.client.cc.gui.tabs.HeroItemTab;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.client.cc.gui.tabs.HeroItemTab;
 import eidolons.client.cc.gui.tabs.operation.ItemSwapPanel;
+import eidolons.entity.obj.unit.Unit;
 import main.swing.generic.components.G_Panel.VISUALS;
 
 public class PickUpWindow extends OperationWindow {

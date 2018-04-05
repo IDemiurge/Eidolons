@@ -1,7 +1,11 @@
 package eidolons.client.cc;
 
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
+import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
 import eidolons.system.ObjUtilities;
 import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums;
@@ -9,11 +13,7 @@ import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_QuickItemObj;
-import eidolons.entity.item.DC_WeaponObj;
 import main.entity.obj.Obj;
-import eidolons.game.core.game.DC_Game;
 
 public class DC_HeroManager extends HeroManager {
 

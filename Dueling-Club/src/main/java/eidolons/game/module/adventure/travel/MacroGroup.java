@@ -2,13 +2,13 @@ package eidolons.game.module.adventure.travel;
 
 import eidolons.content.PROPS;
 import eidolons.game.module.adventure.map.Area;
+import eidolons.game.module.adventure.map.MacroCoordinates;
+import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.map.area.AreaManager;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.map.MacroCoordinates;
-import eidolons.game.module.adventure.map.Region;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

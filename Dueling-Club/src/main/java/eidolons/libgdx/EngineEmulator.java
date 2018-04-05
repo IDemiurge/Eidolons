@@ -1,8 +1,8 @@
 package eidolons.libgdx;
 
-import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.gui.menu.old.MainMenuScreenData;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenType;
 import main.system.EngineEventManager;
 import main.system.EngineEventType;
 import main.system.GuiEventManager;

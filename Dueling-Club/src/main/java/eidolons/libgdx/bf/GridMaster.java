@@ -1,11 +1,11 @@
 package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.CursorPosVector2;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.screens.DungeonScreen;
 import main.system.graphics.MigMaster;
 
 import java.awt.*;

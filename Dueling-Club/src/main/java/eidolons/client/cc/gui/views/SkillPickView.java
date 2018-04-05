@@ -1,12 +1,12 @@
 package eidolons.client.cc.gui.views;
 
-import main.content.DC_TYPE;
-import main.content.OBJ_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;

@@ -6,9 +6,9 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.DialogScenario;
+import eidolons.libgdx.texture.TextureCache;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;
 

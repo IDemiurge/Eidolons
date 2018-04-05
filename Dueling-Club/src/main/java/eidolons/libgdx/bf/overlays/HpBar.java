@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -19,11 +20,13 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridConst;
-import eidolons.libgdx.bf.GridUnitView;
+import eidolons.libgdx.bf.GridPanel;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
@@ -51,6 +54,7 @@ import main.system.math.MathMaster;
 public class HpBar extends SuperActor {
 
     private static final Integer FONT_SIZE = 18;
+    private static Boolean hpAlwaysVisible;
     private final Image barImage;
     private final Label label;
     private final Label label_t;
@@ -281,7 +285,8 @@ public class HpBar extends SuperActor {
         if (reverse) {
             x = x + region.getRegionWidth() * (fullLengthPerc - perc);
         }
-        batch.draw(region, x, getY());
+        batch.draw(region, x, getY(), getScaleX()*region.getRegionWidth(),
+         getScaleY()*region.getRegionHeight());
     }
 
     @Override
@@ -300,10 +305,15 @@ public class HpBar extends SuperActor {
     }
 
     private boolean isDisplayedAlways() {
-        return GridUnitView.getHpAlwaysVisible() == true;
+        return getHpAlwaysVisible() == true;
 
     }
-
+    public static Boolean getHpAlwaysVisible() {
+        if (hpAlwaysVisible == null) {
+            hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
+        }
+        return hpAlwaysVisible;
+    }
     public void drawAt(Batch batch, float x, float y) {
         setPosition(x, y);
         resetLabel();
@@ -324,7 +334,13 @@ public class HpBar extends SuperActor {
 //TODO ownership change? team colors reset...
 
         Rectangle scissors = new Rectangle();
-        Rectangle clipBounds = new Rectangle(getX(), getY(), innerWidth * fullLengthPerc, height);
+        Rectangle clipBounds = null ;
+        if (GridPanel.isHpBarsOnTop() && !queue)
+        {
+            Vector2 v = localToStageCoordinates(new Vector2(getX(), getY()));
+            clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
+        } else
+        clipBounds =        new Rectangle(getX(), getY(), innerWidth * fullLengthPerc, height);
         getStage().calculateScissors(clipBounds, scissors);
         ScissorStack.pushScissors(scissors);
 

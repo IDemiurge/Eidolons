@@ -1,8 +1,8 @@
 package eidolons.entity.handlers.active;
 
 import eidolons.entity.active.DC_ActiveObj;
-import main.entity.handlers.*;
 import eidolons.game.core.game.DC_Game;
+import main.entity.handlers.*;
 
 /**
  * Created by JustMe on 2/23/2017.

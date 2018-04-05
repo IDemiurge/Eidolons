@@ -1,11 +1,12 @@
 package eidolons.ability.effects.common;
 
+import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.ability.PassiveAbilityObj;
-import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
@@ -17,7 +18,6 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -377,7 +377,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             if (mod_type == MOD.MODIFY_BY_CONST || mod_type == MOD.MODIFY_BY_PERCENT) {
                 if (!isContinuousWrapped())
                     GuiEventManager.trigger(GuiEventType.VALUE_MOD,
-                     new ImmutablePair<>(param, ref));
+                     new ImmutablePair<>(param, ref.getCopy()));
             }
 
         if (amount > 0) {

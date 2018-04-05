@@ -1,15 +1,21 @@
 package eidolons.entity.active;
 
-import eidolons.entity.handlers.active.*;
-import eidolons.entity.obj.DC_Obj;
-import eidolons.system.audio.DC_SoundMaster;
-import main.ability.Abilities;
-import main.ability.Interruptable;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.handlers.active.*;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.graphics.PhaseAnimation;
+import eidolons.system.math.ModMaster;
+import main.ability.Abilities;
+import main.ability.Interruptable;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
@@ -17,8 +23,8 @@ import main.content.enums.entity.ActionEnums.ACTION_TAGS;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.enums.entity.SpellEnums.RESISTANCE_TYPE;
-import main.content.enums.rules.VisionEnums.UNIT_TO_PLAYER_VISION;
-import main.content.enums.rules.VisionEnums.UNIT_TO_UNIT_VISION;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.system.AiEnums.AI_LOGIC;
 import main.content.values.parameters.PARAMETER;
@@ -29,12 +35,11 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.handlers.EntityMaster;
-import eidolons.entity.item.DC_WeaponObj;
-import main.entity.obj.*;
-import eidolons.entity.obj.unit.Unit;
+import main.entity.obj.Active;
+import main.entity.obj.ActiveObj;
+import main.entity.obj.AttachedObj;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
-import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
 import main.game.logic.action.context.Context.IdKey;
@@ -42,10 +47,8 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.system.graphics.PhaseAnimation;
 import main.system.graphics.SpriteAnimated;
 import main.system.launch.CoreEngine;
-import eidolons.system.math.ModMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;
@@ -402,12 +405,12 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public UNIT_TO_UNIT_VISION getUnitVisionStatus() {
+    public UNIT_VISION getUnitVisionStatus() {
         return ownerObj.getUnitVisionStatus();
     }
 
     @Override
-    public UNIT_TO_PLAYER_VISION getActivePlayerVisionStatus() {
+    public PLAYER_VISION getActivePlayerVisionStatus() {
         return ownerObj.getActivePlayerVisionStatus();
     }
 

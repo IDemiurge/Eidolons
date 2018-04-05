@@ -7,13 +7,13 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
-import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.master.*;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -142,7 +142,6 @@ public class DC_GameManager extends GameManager {
             }
         }
         if (!result) {
-            // WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
             return false;
         }
 
@@ -152,7 +151,6 @@ public class DC_GameManager extends GameManager {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        // if (VisionManager.c)
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
@@ -206,19 +204,6 @@ public class DC_GameManager extends GameManager {
         checkForChanges(true);
 
         resetWallMap();
-
-//TODO shouldn't be necessary!
-        getGame().getRules().getIlluminationRule().resetIllumination();
-        getGame().getRules().getIlluminationRule().applyLightEmission();
-
-//        DrawMasterStatic.getObjImageCache().clear();
-        if (!OutlineMaster.isAutoOutlinesOff())
-            for (Unit u : getGame().getUnits()) {
-                u.setOutlineType(null);
-            }
-        for (Obj u : getGame().getCells()) {
-            ((DC_Obj) u).setOutlineType(null);
-        }
 
         VisionManager.refresh();
 
@@ -492,6 +477,8 @@ public class DC_GameManager extends GameManager {
     }
 
     public void previewMyAction(int index, ACTION_TYPE group) {
+        if ( ExplorationMaster.isExplorationOn())
+            return;
         DC_UnitAction action = getActiveObj().getActionMap().get(group).get(index);
         GuiEventManager.trigger(GuiEventType.ACTION_HOVERED, action);
     }

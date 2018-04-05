@@ -1,9 +1,6 @@
 package eidolons.game.battlecraft.ai.tools.prune;
 
-import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import eidolons.content.PARAMS;
-import main.content.enums.entity.UnitEnums.FACING_SINGLE;
-import main.content.enums.system.AiEnums.GOAL_TYPE;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.DC_Obj;
@@ -17,6 +14,9 @@ import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
+import main.content.enums.entity.UnitEnums.FACING_SINGLE;
+import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;

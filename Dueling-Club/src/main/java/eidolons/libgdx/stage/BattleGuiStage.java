@@ -7,14 +7,14 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryWithAction;
+import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

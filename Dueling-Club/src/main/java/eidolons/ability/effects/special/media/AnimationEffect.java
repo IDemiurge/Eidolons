@@ -1,11 +1,11 @@
 package eidolons.ability.effects.special.media;
 
 import eidolons.ability.effects.DC_Effect;
+import eidolons.entity.active.DC_ActiveObj;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
-import eidolons.entity.active.DC_ActiveObj;
 import main.entity.type.ObjType;
 import main.system.images.ImageManager;
 

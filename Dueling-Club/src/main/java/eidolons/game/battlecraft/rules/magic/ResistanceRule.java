@@ -2,11 +2,11 @@ package eidolons.game.battlecraft.rules.magic;
 
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_ActiveObj;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_ActiveObj;
 import main.entity.obj.Obj;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

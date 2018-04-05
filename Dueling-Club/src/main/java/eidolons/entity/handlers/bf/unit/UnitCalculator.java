@@ -2,19 +2,21 @@ package eidolons.entity.handlers.bf.unit;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import main.content.*;
+import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
+import eidolons.game.core.game.DC_Game;
+import eidolons.system.math.DC_MathManager;
+import main.content.C_OBJ_TYPE;
+import main.content.ContentManager;
+import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
 import main.entity.handlers.EntityCalculator;
 import main.entity.handlers.EntityMaster;
-import eidolons.entity.item.DC_HeroItemObj;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
-import eidolons.game.core.game.DC_Game;
 import main.system.auxiliary.StringMaster;
-import eidolons.system.math.DC_MathManager;
 import main.system.math.MathMaster;
 
 /**

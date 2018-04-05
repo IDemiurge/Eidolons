@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.tools.group;
 
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjAtCoordinate;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 
 import java.util.ArrayList;

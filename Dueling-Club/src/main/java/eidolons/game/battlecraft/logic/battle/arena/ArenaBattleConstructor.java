@@ -1,8 +1,13 @@
 package eidolons.game.battlecraft.logic.battle.arena;
 
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.game.battlecraft.logic.battle.universal.BattleConstructor;
+import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
+import eidolons.game.core.Eidolons;
+import main.content.DC_TYPE;
 import main.content.enums.EncounterEnums;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -16,13 +21,8 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.battle.universal.BattleConstructor;
-import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.battlecraft.logic.meta.skirmish.SkirmishMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import eidolons.game.core.Eidolons;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;

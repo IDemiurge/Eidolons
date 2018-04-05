@@ -1,18 +1,18 @@
 package eidolons.swing.components.panels.page.log;
 
+import eidolons.game.core.game.DC_Game;
+import eidolons.swing.components.buttons.CustomButton;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.graphics.PhaseAnimation;
 import main.content.values.properties.G_PROPS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import eidolons.game.core.game.DC_Game;
 import main.swing.components.ImageButton;
-import eidolons.swing.components.buttons.CustomButton;
 import main.swing.generic.components.G_Component;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ANIM;
 import main.system.graphics.FontMaster;
-import eidolons.system.graphics.PhaseAnimation;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster;
 import main.system.text.LogEntryNode;

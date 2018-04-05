@@ -1,9 +1,9 @@
 package eidolons.system.options;
 
+import eidolons.system.options.Options.OPTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
-import eidolons.system.options.Options.OPTION;
 
 public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataUnit<E> {
 

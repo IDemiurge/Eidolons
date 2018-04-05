@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.tooltip;
 
-import main.entity.Entity;
 import eidolons.entity.obj.unit.Unit;
+import main.entity.Entity;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.secondary.BooleanMaster;

@@ -5,13 +5,13 @@ import eidolons.content.DC_CONSTS.MAGICAL_ITEM_LEVEL;
 import eidolons.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_ENCHANTMENT;
 import eidolons.content.DC_CONSTS.MAGIC_ITEM_PASSIVE_TRAIT;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.core.game.DC_Game;
 import main.content.enums.rules.ArcadeEnums.ARCADE_LOOT_TYPE;
 import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
 import main.content.values.parameters.MACRO_PARAMS;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.core.game.DC_Game;
 
 public class LootManager {
 

@@ -1,6 +1,5 @@
 package eidolons.client.cc.gui.neo.slide;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.gui.neo.points.HC_PointView;
 import eidolons.client.cc.gui.neo.tabs.HC_TabPanel;
@@ -8,8 +7,9 @@ import eidolons.client.cc.gui.neo.tabs.TabChangeListener;
 import eidolons.client.cc.gui.views.HeroView;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
-import main.content.values.parameters.PARAMETER;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.system.math.DC_MathManager;
+import main.content.values.parameters.PARAMETER;
 
 import java.util.Arrays;
 import java.util.List;

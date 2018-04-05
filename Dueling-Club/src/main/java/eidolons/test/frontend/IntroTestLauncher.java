@@ -3,8 +3,8 @@ package eidolons.test.frontend;
 import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.launch.DemoLauncher;
-import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.ScreenData;
+import eidolons.libgdx.screens.ScreenType;
 import main.system.EventCallbackParam;
 
 import java.util.List;

@@ -1,14 +1,14 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.system.DC_Formulas;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
-import main.content.enums.entity.ItemEnums;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.DC_Formulas;
+import main.content.enums.entity.ItemEnums;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.AnimPhase;

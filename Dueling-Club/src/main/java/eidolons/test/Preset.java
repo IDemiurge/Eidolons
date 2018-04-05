@@ -1,9 +1,9 @@
 package eidolons.test;
 
+import eidolons.test.Preset.PRESET_DATA;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
-import eidolons.test.Preset.PRESET_DATA;
 
 public class Preset extends DataUnit<PRESET_DATA> {
 

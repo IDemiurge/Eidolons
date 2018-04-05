@@ -1,13 +1,13 @@
 package eidolons.game.module.adventure.global;
 
 import eidolons.content.PROPS;
+import eidolons.game.module.adventure.map.Place;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.map.Place;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;

@@ -3,9 +3,9 @@ package eidolons.game.battlecraft.ai.advanced.companion;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import main.content.enums.system.AiEnums.AI_TYPE;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
+import main.content.enums.system.AiEnums.AI_TYPE;
 import main.system.auxiliary.EnumMaster;
 
 public class CompanionMaster {

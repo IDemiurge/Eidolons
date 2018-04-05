@@ -131,7 +131,7 @@ public class BuffMaster extends Master {
     }
 
     public BuffObj createBuff(BuffType type, Obj active, Player player, Ref ref, Effect effect,
-                              int duration, Condition retainCondition) {
+                              double duration, Condition retainCondition) {
         ref = Ref.getCopy(ref);
         if (type.getName().equals(BuffObj.DUMMY_BUFF_TYPE)) {
             try {

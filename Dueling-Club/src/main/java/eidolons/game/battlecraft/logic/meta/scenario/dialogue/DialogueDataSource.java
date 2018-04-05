@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
-import main.content.values.properties.G_PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.speech.Speech;
+import main.content.values.properties.G_PROPS;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,9 +1,9 @@
 package eidolons.swing.components.panels;
 
+import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.game.core.game.DC_Game;
 import main.entity.obj.Attachment;
 import main.entity.obj.BuffObj;
-import eidolons.entity.obj.attach.DC_BuffObj;
 import main.game.core.state.MicroGameState;
 import main.game.logic.battle.player.Player;
 import main.swing.generic.components.panels.G_ListPanel;

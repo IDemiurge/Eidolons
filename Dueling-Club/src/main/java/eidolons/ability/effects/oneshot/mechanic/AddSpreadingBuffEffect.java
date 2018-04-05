@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
-import main.ability.effects.Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
+import main.ability.effects.Effect;
 import main.elements.conditions.Condition;
 import main.system.math.Formula;
 

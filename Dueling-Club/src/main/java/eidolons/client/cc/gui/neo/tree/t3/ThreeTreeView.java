@@ -1,7 +1,7 @@
 package eidolons.client.cc.gui.neo.tree.t3;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.gui.neo.tree.view.HT_View;
+import eidolons.entity.obj.unit.Unit;
 import main.entity.Entity;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;

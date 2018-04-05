@@ -1,11 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums.DUNGEON_MAP_MODIFIER;
-import main.content.enums.DungeonEnums.DUNGEON_MAP_TEMPLATE;
-import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
-import main.data.DataManager;
-import main.entity.type.ObjType;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.BuildParameters;
@@ -13,9 +7,15 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.DC_Map;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums.DUNGEON_MAP_MODIFIER;
+import main.content.enums.DungeonEnums.DUNGEON_MAP_TEMPLATE;
+import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;

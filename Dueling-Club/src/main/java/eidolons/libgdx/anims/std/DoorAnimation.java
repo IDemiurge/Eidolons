@@ -3,14 +3,14 @@ package eidolons.libgdx.anims.std;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.anims.Anim;
+import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.bf.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.texture.TextureCache;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -30,7 +30,7 @@ public class DoorAnimation extends Anim {
     public void start() {
         setDuration(1);
         Obj door = getRef().getTargetObj();
-        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap().get(
+        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap().get(
          door);
 //        ActorMaster.addFadeInOrOut(actor.getPortrait(), getDuration());
         if (open) {

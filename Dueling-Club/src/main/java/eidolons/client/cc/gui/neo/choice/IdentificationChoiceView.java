@@ -2,9 +2,9 @@ package eidolons.client.cc.gui.neo.choice;
 
 import eidolons.client.cc.gui.misc.PoolComp;
 import eidolons.client.cc.gui.neo.points.HC_PointComp;
+import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.content.DC_ContentManager;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.type.ObjType;
 

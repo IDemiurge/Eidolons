@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.rules.perk;
 
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.content.PARAMS;
-import main.entity.Ref;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import main.entity.Ref;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
 

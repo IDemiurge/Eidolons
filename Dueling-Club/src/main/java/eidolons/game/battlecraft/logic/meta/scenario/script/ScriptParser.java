@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.scenario.script;
 
+import eidolons.game.core.game.DC_Game;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.Ability;
 import main.ability.AbilityImpl;
@@ -8,7 +9,6 @@ import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
-import eidolons.game.core.game.DC_Game;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;

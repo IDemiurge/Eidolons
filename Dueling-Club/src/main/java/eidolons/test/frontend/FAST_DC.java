@@ -1,6 +1,7 @@
 package eidolons.test.frontend;
 
 import eidolons.client.cc.logic.items.ItemGenerator;
+import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.launch.PresetLauncher;
@@ -9,7 +10,6 @@ import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.core.state.Saver;
 import eidolons.libgdx.launch.DemoLauncher;
 import eidolons.system.hotkey.GlobalKeys;
-import eidolons.client.dc.Launcher;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;

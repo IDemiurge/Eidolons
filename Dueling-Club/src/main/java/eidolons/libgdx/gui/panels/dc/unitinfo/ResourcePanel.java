@@ -2,8 +2,8 @@ package eidolons.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.dc.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
 import eidolons.libgdx.texture.TextureCache;

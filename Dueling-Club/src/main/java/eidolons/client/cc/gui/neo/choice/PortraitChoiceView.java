@@ -1,11 +1,11 @@
 package eidolons.client.cc.gui.neo.choice;
 
 import eidolons.client.cc.CharacterCreator;
+import eidolons.entity.obj.unit.Unit;
 import main.content.CONTENT_CONSTS.SOUNDSET;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.properties.G_PROPS;
-import eidolons.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.graphics.MigMaster;

@@ -2,14 +2,14 @@ package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.particles.EmitterActor;
+import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.panels.GroupX;
-import main.content.CONTENT_CONSTS2.SFX;
-import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS2.SFX;
 import main.system.launch.CoreEngine;
 
 /**

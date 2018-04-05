@@ -2,14 +2,14 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.test.frontend.FAST_DC;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
-import eidolons.test.frontend.FAST_DC;
 
 import java.util.ArrayList;
 import java.util.List;

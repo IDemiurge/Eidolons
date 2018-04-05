@@ -4,9 +4,9 @@ import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import main.entity.Entity;
-import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 

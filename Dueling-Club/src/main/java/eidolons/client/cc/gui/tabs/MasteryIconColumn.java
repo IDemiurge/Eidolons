@@ -1,13 +1,13 @@
 package eidolons.client.cc.gui.tabs;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.client.cc.HC_Master;
 import eidolons.client.cc.gui.tabs.SkillTabNew.SKILL_DISPLAY_GROUPS;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.system.math.DC_MathManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.misc.GraphicComponent;
-import eidolons.system.math.DC_MathManager;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

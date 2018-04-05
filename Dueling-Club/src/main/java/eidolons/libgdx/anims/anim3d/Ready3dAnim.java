@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.anims.AnimMaster3d.PROJECTION;
 import eidolons.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import main.game.bf.Coordinates;
-import eidolons.libgdx.GdxMaster;
 
 /**
  * Created by JustMe on 9/18/2017.

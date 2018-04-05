@@ -1,11 +1,11 @@
 package eidolons.game.module.adventure.map;
 
+import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.entity.MacroObj;
+import eidolons.game.module.adventure.travel.MacroGroup;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.travel.MacroGroup;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;

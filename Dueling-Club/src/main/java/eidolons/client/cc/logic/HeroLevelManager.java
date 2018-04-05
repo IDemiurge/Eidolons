@@ -1,9 +1,9 @@
 package eidolons.client.cc.logic;
 
+import eidolons.client.cc.CharacterCreator;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
-import eidolons.client.cc.CharacterCreator;
 import main.content.ContentManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;

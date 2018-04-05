@@ -1,15 +1,15 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
+import eidolons.ability.effects.oneshot.DealDamageEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
+import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
-import eidolons.ability.effects.oneshot.DealDamageEffect;
 import main.content.enums.GenericEnums;
 import main.entity.Ref;
-import eidolons.game.battlecraft.logic.battlefield.vision.StealthRule;
-import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;

@@ -1,13 +1,13 @@
 package eidolons.game.module.adventure.town;
 
 import eidolons.client.cc.logic.party.Party;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.game.module.adventure.MacroRef;
 import eidolons.client.dc.HC_SequenceMaster;
-import main.entity.type.ObjType;
+import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.faction.FactionObj;
 import eidolons.game.module.adventure.map.Place;
+import main.entity.type.ObjType;
 import main.system.datatypes.DequeImpl;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

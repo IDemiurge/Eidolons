@@ -1,9 +1,9 @@
 package eidolons.swing.components.buttons;
 
-import eidolons.game.core.game.DC_Game;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.client.dc.Launcher;
+import eidolons.game.core.game.DC_Game;
 import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.system.audio.DC_SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class MenuButton extends CustomButton implements Runnable {

@@ -1,10 +1,11 @@
 package eidolons.client.cc.gui.tabs.lists;
 
 import eidolons.client.cc.CharacterCreator;
+import eidolons.client.cc.gui.MainPanel;
 import eidolons.client.cc.gui.lists.ItemListManager;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.client.cc.gui.MainPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums;
@@ -12,7 +13,6 @@ import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.ListItem;
 import main.system.auxiliary.StringMaster;

@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
-import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
 import eidolons.game.battlecraft.logic.battle.mission.Mission;
+import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 
 import java.util.List;

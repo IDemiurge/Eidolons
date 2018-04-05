@@ -1,13 +1,14 @@
 package eidolons.game.battlecraft.rules.buff;
 
-import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.content.PARAMS;
 import eidolons.ability.conditions.shortcut.StdPassiveCondition;
+import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.ability.effects.continuous.BehaviorModeEffect;
+import eidolons.content.PARAMS;
+import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
 import main.ability.effects.container.ConditionalEffect;
-import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import main.content.VALUE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
@@ -15,7 +16,6 @@ import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
 import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 

@@ -2,10 +2,10 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import eidolons.libgdx.anims.ActorMaster;
-import main.data.filesys.PathFinder;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import main.data.filesys.PathFinder;
 
 /**
  * Created by JustMe on 3/1/2018.

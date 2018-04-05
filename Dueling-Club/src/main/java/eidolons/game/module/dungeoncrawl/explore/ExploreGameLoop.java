@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.ActionInput;
-import main.elements.targeting.SelectiveTargeting;
-import main.game.bf.Coordinates;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
+import main.elements.targeting.SelectiveTargeting;
+import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.Loop;
 import main.system.launch.CoreEngine;
@@ -245,7 +245,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
               loop.continues() &&
               (
                DungeonScreen.getInstance().getGridPanel()
-                .getUnitMap().get(activeUnit).getActions().size > 0 ||
+                .getViewMap().get(activeUnit).getActions().size > 0 ||
                 AnimMaster.getInstance().isDrawingPlayer()
               )) {
                 WaitMaster.WAIT(100);

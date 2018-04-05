@@ -1,8 +1,8 @@
 package eidolons.client.cc.gui.neo.tabs;
 
 import eidolons.client.cc.CharacterCreator;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.client.dc.Launcher;
+import eidolons.system.audio.DC_SoundMaster;
 import main.swing.SwingMaster;
 import main.swing.generic.components.ComponentVisuals;
 import main.swing.generic.components.G_Component;

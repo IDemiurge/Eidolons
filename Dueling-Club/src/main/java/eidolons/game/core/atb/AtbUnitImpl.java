@@ -55,17 +55,25 @@ public class AtbUnitImpl implements AtbUnit {
         if (unit.getIntParam(PARAMS.C_INITIATIVE) == value)
             return;
         unit.setParam(PARAMS.C_INITIATIVE, value + "");
+        triggerQueueEvent();
+    }
+
+    private void triggerQueueEvent() {
         GuiEventManager.trigger(
          INITIATIVE_CHANGED,
-         new ImmutablePair<>(getUnit(), new ImmutablePair<>((int) Math.round(value * 10), getTimeTillTurn()))
+         new ImmutablePair<>(getUnit(), new ImmutablePair<>(
+          getDisplayedAtbReadiness(),
+          getTimeTillTurn()))
         );
     }
 
     @Override
-    public float getInitiative() {
-        if (unit.canActNow())
+    public boolean isImmobilized() {
+        return !unit.canActNow();
+    }
+        @Override
+        public float getInitiative() {
             return new Float(unit.getParamDouble(PARAMS.N_OF_ACTIONS));
-        return 0;
     }
 
     @Override
@@ -87,13 +95,7 @@ public class AtbUnitImpl implements AtbUnit {
                   i + " sec ");
             }
 
-
-            GuiEventManager.trigger(
-             INITIATIVE_CHANGED,
-             new ImmutablePair<>(getUnit(), new ImmutablePair<>(
-              getDisplayedAtbReadiness()
-              , getTimeTillTurn()))
-            );
+            triggerQueueEvent();
         }
     }
 

@@ -1,20 +1,31 @@
 package eidolons.entity.obj.unit;
 
-import eidolons.entity.active.DC_ActionManager;
-import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.handlers.bf.unit.UnitCalculator;
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.system.text.ToolTipMaster;
 import eidolons.content.DC_ContentManager;
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.Deity;
+import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.handlers.bf.unit.UnitCalculator;
+import eidolons.entity.handlers.bf.unit.UnitChecker;
+import eidolons.entity.handlers.bf.unit.UnitInitializer;
+import eidolons.entity.handlers.bf.unit.UnitResetter;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.bf.Rotatable;
+import eidolons.system.text.ToolTipMaster;
+import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.enums.entity.UnitEnums.IMMUNITIES;
 import main.content.enums.rules.VisionEnums;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.enums.system.AiEnums.BEHAVIOR_MODE;
@@ -23,23 +34,13 @@ import main.content.mode.ModeImpl;
 import main.content.mode.STD_MODES;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import eidolons.entity.Deity;
 import main.entity.Ref;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.handlers.bf.unit.UnitChecker;
-import eidolons.entity.handlers.bf.unit.UnitInitializer;
-import eidolons.entity.handlers.bf.unit.UnitResetter;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.ai.UnitAI;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import eidolons.game.core.game.DC_Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.Rotatable;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -94,7 +95,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         if (getVisibilityLevel() != VISIBILITY_LEVEL.CLEAR_SIGHT) //!VisionManager.checkVisible(this)) {
             return StringMaster.getWellFormattedString(getVisibilityLevel().toString()); //"Someone or something";
 
-        if (getActivePlayerVisionStatus() == VisionEnums.UNIT_TO_PLAYER_VISION.UNKNOWN) {
+        if (getActivePlayerVisionStatus() == PLAYER_VISION.UNKNOWN) {
             // if (isHuge())
             // return "Something huge";
             // if (isSmall())
@@ -302,7 +303,13 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         } else {
             setProperty(G_PROPS.MODE, StringMaster.getWellFormattedString(mode.toString()));
         }
-        GuiEventManager.trigger(SHOW_MODE_ICON, this);
+        if (mode == null || mode==STD_MODES.NORMAL)
+        {
+            GuiEventManager.trigger(SHOW_MODE_ICON, this, null);
+        }
+        else {
+            GuiEventManager.trigger(SHOW_MODE_ICON, this,mode.getImagePath());
+        }
     }
 
 

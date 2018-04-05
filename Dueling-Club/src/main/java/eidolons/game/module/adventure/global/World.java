@@ -3,9 +3,9 @@ package eidolons.game.module.adventure.global;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.entity.MacroObj;
+import eidolons.game.module.adventure.map.Region;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import eidolons.game.module.adventure.map.Region;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;

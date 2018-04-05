@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.logic.meta.scenario.dialogue;
 
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
-import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;
 
 import java.util.HashMap;
 import java.util.List;

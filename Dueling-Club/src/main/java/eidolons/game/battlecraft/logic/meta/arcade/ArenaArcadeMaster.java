@@ -2,17 +2,17 @@ package eidolons.game.battlecraft.logic.meta.arcade;
 
 import eidolons.client.cc.gui.neo.choice.ChoiceSequence;
 import eidolons.client.cc.logic.party.Party;
+import eidolons.client.dc.Launcher;
+import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
-import eidolons.client.dc.Launcher;
+import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
-import eidolons.content.PARAMS;
-import eidolons.content.PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
-import eidolons.game.core.game.DC_Game;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 

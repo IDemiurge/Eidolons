@@ -4,8 +4,17 @@ import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
+import eidolons.game.core.atb.AtbController;
+import eidolons.game.module.dungeoncrawl.objects.Door;
+import eidolons.system.DC_Formulas;
+import eidolons.system.math.DC_MathManager;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.*;
+import main.content.ContentManager;
+import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.parameters.G_PARAMS;
@@ -15,27 +24,19 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.active.DC_ActiveObj;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.Coordinates.FACING_DIRECTION;
-import eidolons.game.core.atb.AtbController;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.system.math.DC_MathManager;
 
 import java.util.Arrays;
 
@@ -47,6 +48,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     protected FACING_DIRECTION facing;
     private DIRECTION direction;
     private Coordinates bufferedCoordinates;
+    private boolean sneaking;
+    protected int maxVisionDistance;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -57,6 +60,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     }
 
+    @Override
+    public void toBase() {
+        maxVisionDistance=0;
+        super.toBase();
+    }
     public boolean isWall() {
         return false;
     }
@@ -108,14 +116,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             quietly = false;
 
         }
-        if (!ignoreInterrupt) {
-            if (!quietly) {
-                if (checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+        if ((game.isDebugMode()&&isMine())|| (!ignoreInterrupt&&!quietly)) {
+                if ((game.isDebugMode()&&isMine())|| checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
                     preventDeath();
                     return false;
                 }
             }
-        }
         ref.setID(KEYS.KILLER, killer.getId());
 
         Ref REF = Ref.getCopy(killer.getRef());
@@ -448,6 +454,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         return false;
     }
 
+    public boolean isPlayerCharacter() {
+        return false;
+    }
     public boolean isItemsInitialized() {
         return false;
     }
@@ -463,5 +472,23 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     public void setBufferedCoordinates(Coordinates bufferedCoordinates) {
         this.bufferedCoordinates = bufferedCoordinates;
+    }
+
+    public boolean isSneaking() {
+        return sneaking;
+    }
+
+    public void setSneaking(boolean sneaking) {
+        this.sneaking = sneaking;
+    }
+
+    public int getMaxVisionDistance() {
+        if (maxVisionDistance==0  )
+            maxVisionDistance = getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1;
+        return maxVisionDistance;
+    }
+
+    public boolean isSpotted() {
+        return checkStatus(UnitEnums.STATUS.SPOTTED);
     }
 }

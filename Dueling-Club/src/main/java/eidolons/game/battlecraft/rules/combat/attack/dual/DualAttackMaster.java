@@ -1,15 +1,17 @@
 package eidolons.game.battlecraft.rules.combat.attack.dual;
 
+import eidolons.ability.DC_CostsFactory;
+import eidolons.ability.effects.common.ModifyValueEffect;
+import eidolons.ability.effects.oneshot.activation.ActivateEffect;
+import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.obj.unit.Unit;
 import main.ability.Abilities;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
-import eidolons.ability.DC_CostsFactory;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;
-import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.ability.effects.oneshot.activation.ActivateEffect;
 import main.content.DC_TYPE;
-import eidolons.content.PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -20,8 +22,6 @@ import main.elements.costs.Costs;
 import main.elements.costs.Payment;
 import main.elements.targeting.AutoTargeting;
 import main.entity.Ref;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import main.system.math.MathMaster;
 

@@ -3,13 +3,13 @@ package eidolons.client.cc.gui.tabs.lists;
 import eidolons.client.cc.CharacterCreator;
 import eidolons.client.cc.gui.lists.ItemListManager;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
-import main.content.C_OBJ_TYPE;
-import main.content.OBJ_TYPE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
+import main.content.C_OBJ_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
-import eidolons.entity.obj.unit.Unit;
 
 public class QuickItemList extends SecondaryItemList {
 

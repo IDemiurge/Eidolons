@@ -1,7 +1,7 @@
 package eidolons.game.module.adventure.entity;
 
-import main.content.VALUE;
 import eidolons.content.ValuePageManager;
+import main.content.VALUE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.G_PROPS;

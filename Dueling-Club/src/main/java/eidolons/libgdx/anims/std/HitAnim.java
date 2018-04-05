@@ -13,11 +13,17 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.AnimData;
+import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
+import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
@@ -31,12 +37,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import eidolons.libgdx.GdxColorMaster;
-import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
-import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
@@ -226,7 +226,7 @@ public class HitAnim extends ActionAnim {
 
     @Override
     public Actor getActor() {
-        return DungeonScreen.getInstance().getGridPanel().getUnitMap()
+        return DungeonScreen.getInstance().getGridPanel().getViewMap()
          .get(getRef().getTargetObj());
     }
 
@@ -264,7 +264,7 @@ public class HitAnim extends ActionAnim {
 //        if (!ListMaster.isNotEmpty(EffectFinder.getEffectsOfClass(getActive(),
 //         MoveEffect.class)))
 //            BattleFieldObject = (BattleFieldObject) getRef().getTargetObj();
-//        BaseView actor = DungeonScreen.getInstance().getGridPanel().getUnitMap()
+//        BaseView actor = DungeonScreen.getInstance().getGridPanel().getViewMap()
 //         .get(BattleFieldObject);
 //        return actor;
         return getActor();
