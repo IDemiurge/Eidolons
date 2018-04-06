@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;

@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 
 import java.util.List;
 

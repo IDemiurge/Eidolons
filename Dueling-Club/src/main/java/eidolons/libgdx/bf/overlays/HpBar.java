@@ -19,8 +19,8 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
-import eidolons.libgdx.bf.GridConst;
-import eidolons.libgdx.bf.GridPanel;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -282,9 +282,9 @@ public class HpBar extends SuperActor {
         }
         batch.setColor(color);
         float x = getX() + offsetX;
-        if (reverse) {
-            x = x + region.getRegionWidth() * (fullLengthPerc - perc);
-        }
+//        if (reverse) {
+//            x = x + region.getRegionWidth() * (fullLengthPerc - perc);
+//        }
         batch.draw(region, x, getY(), getScaleX()*region.getRegionWidth(),
          getScaleY()*region.getRegionHeight());
     }
@@ -393,7 +393,7 @@ public class HpBar extends SuperActor {
 
     @Override
     public float getWidth() {
-        return GridConst.CELL_W;
+        return GridMaster.CELL_W;
     }
 
     @Override

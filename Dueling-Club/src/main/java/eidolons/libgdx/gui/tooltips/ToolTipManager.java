@@ -11,10 +11,10 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
-import eidolons.libgdx.bf.BaseView;
-import eidolons.libgdx.bf.GridUnitView;
-import eidolons.libgdx.bf.UnitViewTooltip;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.LastSeenView;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.GuiStage;
 import main.entity.Entity;
@@ -51,6 +51,8 @@ public class ToolTipManager extends TablePanel {
             if (DungeonScreen.getInstance().isBlocked())
                 return;
             BaseView object = (BaseView) event.get();
+            if (object instanceof  LastSeenView)
+                return;
 //            if (object.getScaleX()==getDefaultScale(object))
 //                if (object.getScaleX()==getDefaultScale(object))
 
@@ -80,6 +82,9 @@ public class ToolTipManager extends TablePanel {
         });
         GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
             BaseView object = (BaseView) event.get();
+            if (object instanceof LastSeenView) {
+                return;
+            }
 
             float scaleX;
             float scaleY;

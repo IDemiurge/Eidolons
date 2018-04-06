@@ -9,8 +9,7 @@ import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
-import eidolons.libgdx.bf.BaseView;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
@@ -66,11 +65,11 @@ public class MoveAnimation extends ActionAnim {
         setDuration(1);
         float x = getDestination().x - getOrigin().x;
         if (x > 160) {
-            x = GridConst.CELL_W;
+            x = GridMaster.CELL_W;
         }
         float y = getDestination().y - getOrigin().y;
         if (y > 160) {
-            y = GridConst.CELL_H;
+            y = GridMaster.CELL_H;
         }
         action.setAmount(x
          ,

@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
-import eidolons.libgdx.gui.panels.dc.TabbedPanel;
+import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.ShopPage;
 
 /**

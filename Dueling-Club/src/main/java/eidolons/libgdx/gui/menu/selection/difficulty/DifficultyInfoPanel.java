@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.menu.selection.difficulty;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 
 /**
  * Created by JustMe on 2/8/2018.

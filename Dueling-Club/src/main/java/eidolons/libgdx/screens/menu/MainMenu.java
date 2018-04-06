@@ -1,9 +1,7 @@
 package eidolons.libgdx.screens.menu;
 
-import eidolons.libgdx.gui.panels.dc.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.system.options.OptionsMaster;
-import eidolons.system.options.OptionsWindow;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import eidolons.libgdx.gui.SimpleClickListener;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 
 import static eidolons.libgdx.StyleHolder.getMainMenuButton;
 

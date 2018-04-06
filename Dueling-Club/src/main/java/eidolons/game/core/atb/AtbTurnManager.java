@@ -2,7 +2,6 @@ package eidolons.game.core.atb;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.GenericTurnManager;
-import eidolons.game.core.atb.AtbController.AtbUnit;
 import eidolons.game.core.game.DC_Game;
 
 import java.util.List;
@@ -20,6 +19,10 @@ public class AtbTurnManager extends GenericTurnManager {
         atbController = new AtbController(this);
     }
 
+    @Override
+    public Float getTotalTime() {
+        return atbController.getTotalTime();
+    }
     @Override
     protected void sort(List<Unit> list) {
         list.sort(atbController);
@@ -46,17 +49,13 @@ public class AtbTurnManager extends GenericTurnManager {
 
     protected boolean chooseUnit() {
         AtbUnit unit = atbController.step();
-        while (unit == null) {
-            //TODO integrate properly!
-            unit = atbController.step();
-        }
-        if (unit != null) {
+        if (unit == null) {
+            setActiveUnit(null);
+            return false;
+        } else  {
             setActiveUnit(unit.getUnit());
             return game.getManager().activeSelect(getActiveUnit());
-        } else {
-            return false;
         }
-
     }
 
     @Override

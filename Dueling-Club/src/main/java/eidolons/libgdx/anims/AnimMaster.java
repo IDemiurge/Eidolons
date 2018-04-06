@@ -15,7 +15,7 @@ import eidolons.libgdx.anims.std.BuffAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.bf.BaseView;
+import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;

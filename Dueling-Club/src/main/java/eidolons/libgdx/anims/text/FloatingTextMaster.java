@@ -15,7 +15,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
 import eidolons.libgdx.anims.CompositeAnim;
-import eidolons.libgdx.bf.BaseView;
+import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.config.ConfigKeys;

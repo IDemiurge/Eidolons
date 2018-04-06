@@ -12,7 +12,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.log.LogMaster;
@@ -53,7 +53,7 @@ public class LightMap {
 
     public LightMap(DequeImpl<BattleFieldObject> units, int rows, int cols) {
         World world = new World(new Vector2(0, 0), true);
-        init(units, world, new RayHandler(world), GridConst.CELL_W, GridConst.CELL_H, rows, cols);
+        init(units, world, new RayHandler(world), GridMaster.CELL_W, GridMaster.CELL_H, rows, cols);
     }
 
 

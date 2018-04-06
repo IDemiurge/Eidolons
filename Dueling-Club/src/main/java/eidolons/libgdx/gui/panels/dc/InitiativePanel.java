@@ -21,12 +21,14 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
-import eidolons.libgdx.bf.UnitView;
+import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.libgdx.bf.grid.QueueView;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
-import eidolons.libgdx.gui.panels.dc.clock.GearCluster;
+import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
@@ -52,7 +54,7 @@ public class InitiativePanel extends Group {
     private final int offset = -12;
     private final GearCluster gears;
     Label timeLabel;
-    private QueueView[] queue;
+    private QueueViewContainer[] queue;
     private WidgetGroup queueGroup;
     private ValueContainer panelImage;
     private Container<WidgetGroup> container;
@@ -85,7 +87,7 @@ public class InitiativePanel extends Group {
 
         GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
             if (!isRealTime()) {
-                UnitView p = (UnitView) obj.get();
+                QueueView p = (QueueView) obj.get();
                 addOrUpdate(p);
 
                 if (isCleanUpOn())
@@ -107,10 +109,10 @@ public class InitiativePanel extends Group {
         });
         GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_ON, obj -> {
             if (!isRealTime()) {
-                if (!(obj.get() instanceof UnitView))
+                if (!(obj.get() instanceof QueueView))
                     return;
-                UnitView p = (UnitView) obj.get();
-                QueueView view = getIfExists(p.getCurId());
+                QueueView p = (QueueView) obj.get();
+                QueueViewContainer view = getIfExists(p.getCurId());
                 if (view != null)
                     view.setZIndex(Integer.MAX_VALUE - 1);
             }
@@ -125,7 +127,7 @@ public class InitiativePanel extends Group {
         });
         GuiEventManager.bind(GuiEventType.REMOVE_FROM_INITIATIVE_PANEL, obj -> {
 //            if (!isRealTime()) {
-            UnitView p = (UnitView) obj.get();
+            QueueView p = (QueueView) obj.get();
             removeView(p);
             resetZIndices();
 //                checkPositionsRequired=true;
@@ -152,10 +154,10 @@ public class InitiativePanel extends Group {
     private void previewAtbReadiness(List<Integer> list) {
         int i = 0;
         for (int j = queue.length - 1; j > 0; j--) {
-            QueueView sub = queue[j];
+            QueueViewContainer sub = queue[j];
             if (sub == null)
                 break;
-            UnitView actor = (UnitView) sub.getActor();
+            QueueView actor = (QueueView) sub.getActor();
             String text = (list == null ? sub.initiative : list.get(i++)) + "";
             actor.setInitiativeLabelText(text);
         }
@@ -163,7 +165,7 @@ public class InitiativePanel extends Group {
 
     private void init() {
 
-        queue = new QueueView[maxSize];
+        queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
         queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         container = new Container<>(queueGroup);
@@ -249,7 +251,7 @@ public class InitiativePanel extends Group {
 
     private void resetZIndices() {
         panelImage.setZIndex(0);
-        for (QueueView view : queue) {
+        for (QueueViewContainer view : queue) {
             if (view != null) {
                 view.setZIndex(Integer.MAX_VALUE);
             }
@@ -258,7 +260,7 @@ public class InitiativePanel extends Group {
         clock.setZIndex(Integer.MAX_VALUE);
     }
 
-    private void removeView(UnitView p) {
+    private void removeView(QueueView p) {
         removeView(p.getCurId());
     }
 
@@ -281,7 +283,7 @@ public class InitiativePanel extends Group {
         int n = 0;
         boolean moveApplied = false;
         for (int i = queue.length - 1; i >= 0; i--) {
-            QueueView sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
+            QueueViewContainer sub = queue[isLeftToRight() ? i : queue.length - 1 - i];
             if (sub == null)
                 continue;
 //            if (sub.getActions().size != 0)
@@ -314,10 +316,14 @@ public class InitiativePanel extends Group {
     }
 
     private void cleanUp() {
-        Map<Integer, UnitView> views = new XLinkedMap<>();
+        Map<Integer, QueueView> views = new XLinkedMap<>();
         DC_Game.game.getTurnManager().getDisplayedUnitQueue().stream().forEach(unit -> {
-            UnitView view = (UnitView) DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
-            views.put(view.getCurId(), view);
+            Object o = DungeonScreen.getInstance().getGridPanel().getViewMap().get(unit);
+            if (o instanceof GridUnitView) {
+                GridUnitView view = ((GridUnitView) o);
+                views.put(view.getCurId(), view.getInitiativeQueueUnitView());
+            }
+
         });
         /*
         if unit is unknown/unseen?
@@ -326,11 +332,11 @@ public class InitiativePanel extends Group {
 
         proper cleanup is not done on death(), right?
          */
-        for (QueueView sub : queue) {
+        for (QueueViewContainer sub : queue) {
             if (sub == null)
                 continue;
             if (!views.containsKey(sub.id)) {
-                QueueView view = getIfExists(sub.id);
+                QueueViewContainer view = getIfExists(sub.id);
                 if (view == null)
                     continue;
                 if (view.getActor() == null)
@@ -342,11 +348,11 @@ public class InitiativePanel extends Group {
 
     }
 
-    private void addOrUpdate(UnitView unitView) {
+    private void addOrUpdate(QueueView unitView) {
         updateTime();
-        QueueView container = getIfExists(unitView.getCurId());
+        QueueViewContainer container = getIfExists(unitView.getCurId());
         if (container == null) {
-            container = new QueueView(unitView);
+            container = new QueueViewContainer(unitView);
             container.id = unitView.getCurId();
             container.size(imageSize, imageSize);
             container.left().bottom();
@@ -357,7 +363,7 @@ public class InitiativePanel extends Group {
 
         container.queuePriority = 1f/unitView.getTimeTillTurn();
         container.initiative = unitView.getInitiativeIntVal();
-        container.mobilityState = unitView.getMobilityState();
+        container.mobilityState = unitView.isQueueMoving();
         sort();
     }
 
@@ -372,7 +378,7 @@ public class InitiativePanel extends Group {
     }
 
     private void extendQueue() {
-        QueueView[] newc = new QueueView[queue.length + 3];
+        QueueViewContainer[] newc = new QueueViewContainer[queue.length + 3];
         System.arraycopy(queue, 0, newc, 3, queue.length);
         queue = newc;
     }
@@ -455,10 +461,10 @@ public class InitiativePanel extends Group {
     private void sort() {
         for (int i = 0; i < queue.length - 1; i++) {
             final int ip1 = i + 1;
-            QueueView cur = queue[i];
+            QueueViewContainer cur = queue[i];
 
             if (cur != null) {
-                QueueView next = queue[ip1];
+                QueueViewContainer next = queue[ip1];
                 if (next == null) {
                     queue[i] = null;
                     queue[ip1] = cur;
@@ -476,7 +482,7 @@ public class InitiativePanel extends Group {
                             if (queue[y].initiative >= queue[y - 1].initiative) {
                                 break;
                             }
-                            QueueView buff = queue[y - 1];
+                            QueueViewContainer buff = queue[y - 1];
                             queue[y - 1] = queue[y];
                             queue[y] = buff;
                         }
@@ -486,7 +492,7 @@ public class InitiativePanel extends Group {
         }
 
         for (int i = 0; i < queue.length; i++) {
-            QueueView cur = queue[i];
+            QueueViewContainer cur = queue[i];
             if (cur != null && !cur.mobilityState) {
                 for (int y = i; y > 0; y--) {
                     if (queue[y - 1] == null) {
@@ -495,7 +501,7 @@ public class InitiativePanel extends Group {
                     if (!queue[y - 1].mobilityState) {
                         break;
                     }
-                    QueueView buff = queue[y - 1];
+                    QueueViewContainer buff = queue[y - 1];
                     queue[y - 1] = queue[y];
                     queue[y] = buff;
                 }
@@ -543,7 +549,7 @@ public class InitiativePanel extends Group {
         return pos * imageSize + pos * offset;
     }
 
-    private QueueView getIfExists(int id) {
+    private QueueViewContainer getIfExists(int id) {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
                 return queue[i];
@@ -553,7 +559,7 @@ public class InitiativePanel extends Group {
     }
 
 
-    private class QueueView extends Container<UnitView> {
+    private class QueueViewContainer extends Container<QueueView> {
         public int initiative;
         public int precalcInitiative;
         public float queuePriority;
@@ -563,7 +569,7 @@ public class InitiativePanel extends Group {
         public boolean mainHero;
         public boolean immobilized;
 
-        public QueueView(UnitView actor) {
+        public QueueViewContainer(QueueView actor) {
             super(actor);
             mainHero = actor.isMainHero();
             if (actor == null) {

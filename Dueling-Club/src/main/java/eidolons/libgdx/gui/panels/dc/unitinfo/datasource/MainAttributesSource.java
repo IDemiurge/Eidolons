@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.datasource;
 
-import eidolons.libgdx.gui.panels.dc.VerticalValueContainer;
+import eidolons.libgdx.gui.generic.VerticalValueContainer;
 
 public interface MainAttributesSource {
     VerticalValueContainer getResistance();

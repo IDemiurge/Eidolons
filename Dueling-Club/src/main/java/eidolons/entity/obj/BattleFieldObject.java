@@ -17,6 +17,7 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
+import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -46,10 +47,14 @@ import java.util.Arrays;
 public class BattleFieldObject extends DC_Obj implements BfObj {
 
     protected FACING_DIRECTION facing;
+    protected int maxVisionDistance;
     private DIRECTION direction;
     private Coordinates bufferedCoordinates;
     private boolean sneaking;
-    protected int maxVisionDistance;
+    private Float lastSeenTime;
+    private FACING_DIRECTION lastSeenFacing;
+    private Coordinates lastCoordinates;
+    private OUTLINE_TYPE lastSeenOutline;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -62,9 +67,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     @Override
     public void toBase() {
-        maxVisionDistance=0;
+        maxVisionDistance = 0;
         super.toBase();
     }
+
     public boolean isWall() {
         return false;
     }
@@ -116,12 +122,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             quietly = false;
 
         }
-        if ((game.isDebugMode()&&isMine())|| (!ignoreInterrupt&&!quietly)) {
-                if ((game.isDebugMode()&&isMine())|| checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
-                    preventDeath();
-                    return false;
-                }
+        if ((game.isDebugMode() && isMine()) || (!ignoreInterrupt && !quietly)) {
+            if ((game.isDebugMode() && isMine()) || checkPassive(UnitEnums.STANDARD_PASSIVES.INDESTRUCTIBLE)) {
+                preventDeath();
+                return false;
             }
+        }
         ref.setID(KEYS.KILLER, killer.getId());
 
         Ref REF = Ref.getCopy(killer.getRef());
@@ -281,11 +287,11 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.C_TOUGHNESS) {
             if (StringMaster.getInteger(value) >
-             getIntParam(PARAMS.TOUGHNESS) ){
+             getIntParam(PARAMS.TOUGHNESS)) {
                 main.system.auxiliary.log.LogMaster.log(1, "gotcha dwarf " + this + value);
             }
         }
-            if (param == PARAMS.C_N_OF_ACTIONS) {
+        if (param == PARAMS.C_N_OF_ACTIONS) {
             Integer prev = getIntParam(param);
             int diff = StringMaster.getInteger(value) - prev;
             modifyParameter(PARAMS.C_INITIATIVE, AtbController.ATB_MOD * diff);
@@ -457,6 +463,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     public boolean isPlayerCharacter() {
         return false;
     }
+
     public boolean isItemsInitialized() {
         return false;
     }
@@ -474,6 +481,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         this.bufferedCoordinates = bufferedCoordinates;
     }
 
+    public void setCoordinates(Coordinates coordinates) {
+        if (coordinates.equals(this.coordinates)) {
+            lastCoordinates = (this.coordinates);
+        }
+        super.setCoordinates(coordinates);
+    }
+
     public boolean isSneaking() {
         return sneaking;
     }
@@ -483,12 +497,41 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public int getMaxVisionDistance() {
-        if (maxVisionDistance==0  )
+        if (maxVisionDistance == 0)
             maxVisionDistance = getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1;
         return maxVisionDistance;
     }
 
     public boolean isSpotted() {
         return checkStatus(UnitEnums.STATUS.SPOTTED);
+    }
+
+    public Float getLastSeenTime() {
+        return lastSeenTime;
+    }
+
+    public void setLastSeenTime(Float lastSeenTime) {
+        this.lastSeenTime = lastSeenTime;
+    }
+
+    public FACING_DIRECTION getLastSeenFacing() {
+        return lastSeenFacing;
+    }
+
+    public void setLastSeenFacing(FACING_DIRECTION lastSeenFacing) {
+        this.lastSeenFacing = lastSeenFacing;
+    }
+
+
+    public Coordinates getLastCoordinates() {
+        return lastCoordinates;
+    }
+
+    public OUTLINE_TYPE getLastSeenOutline() {
+        return lastSeenOutline;
+    }
+
+    public void setLastSeenOutline(OUTLINE_TYPE lastSeenOutline) {
+        this.lastSeenOutline = lastSeenOutline;
     }
 }

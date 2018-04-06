@@ -9,6 +9,8 @@ import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.system.images.ImageManager;
 
+import java.util.ArrayList;
+
 /**
  * Created by JustMe on 2/10/2018.
  */
@@ -60,6 +62,8 @@ public class ImageContainer extends SuperContainer {
 
     @Override
     public Array<Action> getActions() {
+        if (getContent()==null )
+            return      new Array<>() ;
         return getContent().getActions();
     }
 

@@ -41,6 +41,8 @@ public class VisionMaster implements GenericVisionManager {
     private boolean fastMode;
     private boolean firstResetDone;
     private VisionController visionController;
+    private BattleFieldObject[] visible;
+    private BattleFieldObject[] invisible;
 
     public VisionMaster(DC_Game game) {
         this.game = game;
@@ -166,7 +168,8 @@ public class VisionMaster implements GenericVisionManager {
              "" + string);
 
         }
-
+        visible = visibleList.toArray(new BattleFieldObject[visibleList.size()]);
+        invisible = invisibleList.toArray(new BattleFieldObject[invisibleList.size()]);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_OFF, invisibleList);
         GuiEventManager.trigger(GuiEventType.UNIT_VISIBLE_ON, visibleList);
     }
@@ -263,12 +266,11 @@ public class VisionMaster implements GenericVisionManager {
         return visionController;
     }
 
-    public ConcurrentLinkedDeque<BattleFieldObject> getVisibleList() {
-        return visibleList;
+    public BattleFieldObject[] getVisible() {
+        return visible;
     }
 
-    public ConcurrentLinkedDeque<BattleFieldObject> getInvisibleList() {
-        return invisibleList;
+    public BattleFieldObject[] getInvisible() {
+        return invisible;
     }
-
 }

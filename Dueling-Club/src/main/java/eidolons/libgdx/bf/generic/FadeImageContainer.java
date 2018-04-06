@@ -33,10 +33,11 @@ public class FadeImageContainer extends ImageContainer {
 
         this.content = contents;
         addActor(contents);
-
-        previousImage.getColor().a = 1;
-        getContent().getColor().a = 0;
-        fadePercentage = 1f;
+        if (previousImage != null) {
+            previousImage.getColor().a = 1;
+            getContent().getColor().a = 0;
+            fadePercentage = 1f;
+        }
     }
 
     @Override

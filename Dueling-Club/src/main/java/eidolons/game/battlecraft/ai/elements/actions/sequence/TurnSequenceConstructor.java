@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.ai.elements.actions.sequence;
 
 import eidolons.ability.conditions.FacingCondition;
-import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -41,10 +40,8 @@ public class TurnSequenceConstructor extends AiHandler {
             }
         }
 
-        return new Action(source.getAction(""
-         + ((clockwise) ? DC_ActionManager.STD_ACTIONS.Turn_Clockwise
-         : DC_ActionManager.STD_ACTIONS.Turn_Anticlockwise)), Ref
-         .getSelfTargetingRefCopy(source));
+        return new Action(source.getTurnAction(clockwise),
+         Ref.getSelfTargetingRefCopy(source));
 
     }
 

@@ -15,6 +15,7 @@ import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
 /**
@@ -44,10 +45,15 @@ import main.system.math.PositionMaster;
 public class VisionRule {
     VisionMaster master;
     VisionController controller;
+    private boolean playerUnseenMode= CoreEngine.isFastMode();
 
     public VisionRule(VisionMaster master) {
         this.master = master;
         this.controller = master.getVisionController();
+    }
+
+    public void setPlayerUnseenMode(boolean playerUnseenMode) {
+        this.playerUnseenMode = playerUnseenMode;
     }
 
     public static boolean isSightInfoAvailable(BattleFieldObject observer) {
@@ -114,6 +120,11 @@ public class VisionRule {
             return false;
         if (observer.isPlayerCharacter())
             return true;
+        else
+        if (playerUnseenMode){
+            return false;
+        }
+
         if (PositionMaster.getExactDistance(observer, cell) > observer.getMaxVisionDistance()) {
             return false;
         }
@@ -223,13 +234,13 @@ public class VisionRule {
     }
 
     private boolean isDetectionLogged(Unit source, BattleFieldObject object) {
-            if (object instanceof Structure)
-                return false;
+        if (object instanceof Structure)
+            return false;
 
         if (source != object)
-         if (source.isMine())
-            if (source.isHostileTo(object.getOwner()))
-                return true;
+            if (source.isMine())
+                if (source.isHostileTo(object.getOwner()))
+                    return true;
         return false;
     }
 
@@ -237,6 +248,9 @@ public class VisionRule {
         if (BooleanMaster.isFalse(controller.getDetectionMapper()
          .get(source.getOwner(), object)))
             return;
+        controller.getLastSeenMapper().set(source.getOwner(), object,
+         object.getLastCoordinates());
+
         controller.getDetectionMapper().set(source.getOwner(), object, false);
         if (isDetectionLogged(source, object))
             master.getGame().getLogManager().logHide(source, object);
@@ -260,15 +274,14 @@ public class VisionRule {
             OUTLINE_TYPE outline = master.getOutlineMaster().getOutline(object, source);
             if (outline == null) {
                 if (source.isMine())
-             //TODO QUICK FIX - NOW ENEMIES HAVE 100% CLEARSHOT AND WILL AGGRO IF THIS WORKS FOR THEM
+                    //TODO QUICK FIX - NOW ENEMIES HAVE 100% CLEARSHOT AND WILL AGGRO IF THIS WORKS FOR THEM
                     object.setVisibilityLevel(source, VISIBILITY_LEVEL.CLEAR_SIGHT);
             }
             return outline;
         }
 
-        if (
-         controller.getDetectionMapper().get(source.getOwner(), object) ||
-          visibility == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+        if (controller.getDetectionMapper().get(source.getOwner(), object) ||
+         visibility == VISIBILITY_LEVEL.CLEAR_SIGHT) {
             if (ConcealmentRule.isConcealed(source, object)) {
                 return OUTLINE_TYPE.DEEPER_DARKNESS;
             }
@@ -296,4 +309,7 @@ public class VisionRule {
     }
 
 
+    public void togglePlayerUnseenMode() {
+        playerUnseenMode = !playerUnseenMode;
+    }
 }

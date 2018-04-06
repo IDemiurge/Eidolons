@@ -6,7 +6,7 @@ import eidolons.content.PROPS;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.graphics.FontMaster.FONT;
 import main.system.text.TextWrapper;
 

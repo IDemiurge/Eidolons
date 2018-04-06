@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 
 /**
  * Created by JustMe on 6/2/2017.

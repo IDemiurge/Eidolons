@@ -3,8 +3,8 @@ package eidolons.libgdx.bf.light;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.bf.GridConst;
-import eidolons.libgdx.bf.GridPanel;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.grid.GridPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -44,8 +44,8 @@ public class ShadowMap {
                     ShadeLightCell cell = new ShadeLightCell(type, x, y);
                     getCells(type)[x][y] = cell;
                     grid.addActor(cell);
-                    float offsetX = (GridConst.CELL_W - cell.getWidth()) / 2;
-                    float offsetY = (GridConst.CELL_H - cell.getHeight()) / 2;
+                    float offsetX = (GridMaster.CELL_W - cell.getWidth()) / 2;
+                    float offsetY = (GridMaster.CELL_H - cell.getHeight()) / 2;
 
                     cell.setPosition(
                      grid.getCells()[x][grid.getRows() - 1 - y].getX() + offsetX,

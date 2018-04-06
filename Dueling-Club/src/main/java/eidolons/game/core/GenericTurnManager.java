@@ -16,7 +16,7 @@ import java.util.List;
  * rebuilds Queue and makes the top unit Active.
  */
 
-public class GenericTurnManager implements TurnManager {
+public abstract class GenericTurnManager implements TurnManager {
     private static boolean visionInitialized;
     protected DequeImpl<Unit> unitQueue;
     protected DequeImpl<Unit> displayedUnitQueue;
@@ -77,7 +77,8 @@ public class GenericTurnManager implements TurnManager {
         boolean result = chooseUnit();
 
         resetDisplayedQueue();
-        result &= activeUnit.turnStarted();
+        if (activeUnit!=null )
+            result &= activeUnit.turnStarted();
         return result;
     }
 
@@ -196,4 +197,6 @@ public class GenericTurnManager implements TurnManager {
     public String getTimeString() {
         return null;
     }
+
+    public abstract Float getTotalTime();
 }

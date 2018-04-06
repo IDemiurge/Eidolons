@@ -16,6 +16,8 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.*;
 import eidolons.libgdx.bf.generic.SuperContainer;
+import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
