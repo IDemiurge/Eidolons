@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.gui.panels.GroupX;
+import eidolons.libgdx.gui.generic.GroupX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;

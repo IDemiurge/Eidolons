@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.atb.AtbController;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import main.content.values.parameters.PARAMETER;
 import main.system.images.ImageManager;
 import main.system.math.MathMaster;

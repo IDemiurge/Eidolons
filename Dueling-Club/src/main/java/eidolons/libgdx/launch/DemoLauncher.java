@@ -2,7 +2,6 @@ package eidolons.libgdx.launch;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.libgdx.EngineEmulator;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -16,7 +15,6 @@ public class DemoLauncher extends GenericLauncher {
     protected static Nitrite db;
     protected static String quickTypes =
      "units;bf obj;terrain;missions;places;scenarios;party;";
-    protected EngineEmulator engine;
 
 
     public static void initQuickLaunch() {

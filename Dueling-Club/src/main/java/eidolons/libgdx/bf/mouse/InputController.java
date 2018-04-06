@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.screens.GameScreen;
@@ -223,8 +223,8 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected void centerAt(Coordinates coordinates) {
-        float x = coordinates.x * GridConst.CELL_W * camera.zoom;
-        float y = coordinates.x * GridConst.CELL_W * camera.zoom;
+        float x = coordinates.x * GridMaster.CELL_W * camera.zoom;
+        float y = coordinates.x * GridMaster.CELL_W * camera.zoom;
         camera.position.set(x, y, 0);
         cameraChanged();
     }

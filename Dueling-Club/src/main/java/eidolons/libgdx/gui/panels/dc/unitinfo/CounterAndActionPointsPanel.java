@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo;
 
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.CounterAndActionPointsSource;
 
 public class CounterAndActionPointsPanel extends TablePanel {

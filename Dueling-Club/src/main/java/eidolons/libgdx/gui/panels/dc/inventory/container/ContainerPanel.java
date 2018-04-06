@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.bf.GridConst;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.stage.Closable;
@@ -57,8 +57,8 @@ public class ContainerPanel extends TablePanel implements Closable {
         containerSlotsPanel = new InventorySlotsPanel();
 
         portrait = new Image();
-        portrait.setSize(GridConst.CELL_W, GridConst.CELL_H);
-        addElement(portrait).top().height(GridConst.CELL_H).width(GridConst.CELL_W);
+        portrait.setSize(GridMaster.CELL_W, GridMaster.CELL_H);
+        addElement(portrait).top().height(GridMaster.CELL_H).width(GridMaster.CELL_W);
         row();
 
         addElement(inventorySlotsPanel)

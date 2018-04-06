@@ -17,7 +17,6 @@ public class MicroObj extends Obj {
     protected int y;
     protected Coordinates coordinates;
     protected boolean overlaying;
-    private Coordinates lastKnownCoordinates;
     private int z;
     private Boolean overlayingInitialized; //for performance
 
@@ -50,13 +49,6 @@ public class MicroObj extends Obj {
 
     }
 
-    public Coordinates getLastKnownCoordinates() {
-        return lastKnownCoordinates;
-    }
-
-    public void setLastKnownCoordinates(Coordinates lastKnownCoordinates) {
-        this.lastKnownCoordinates = lastKnownCoordinates;
-    }
 
     public Coordinates getCoordinates() {
         if (coordinates == null) {

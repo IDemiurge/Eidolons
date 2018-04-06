@@ -1,8 +1,8 @@
 package eidolons.libgdx.bf.datasource;
 
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.libgdx.bf.BaseView;
-import eidolons.libgdx.bf.UnitViewFactory;
+import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.UnitViewFactory;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager.PLAYER_STATS;
 import eidolons.game.battlecraft.logic.battle.universal.stats.PlayerStats;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
 

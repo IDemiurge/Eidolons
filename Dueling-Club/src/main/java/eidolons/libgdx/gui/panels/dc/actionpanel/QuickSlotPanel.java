@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 
 import java.util.List;

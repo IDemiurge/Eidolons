@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 
 import java.util.ArrayList;
 import java.util.List;

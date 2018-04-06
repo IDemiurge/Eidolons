@@ -4,8 +4,9 @@ import com.badlogic.gdx.Input.Keys;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.bf.GridCellContainer;
-import eidolons.libgdx.bf.GridUnitView;
+import eidolons.libgdx.bf.grid.GenericGridView;
+import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.BattleGuiStage;
@@ -50,7 +51,7 @@ public class GlobalController implements Controller {
         GridUnitView hovered = DungeonScreen.getInstance().getGridPanel().getHoverObj();
         GridCellContainer cell = (GridCellContainer) hovered.getParent();
 
-        List<GridUnitView> list = new ArrayList<>(cell.getUnitViewsVisible());
+        List<GenericGridView> list = new ArrayList<>(cell.getUnitViewsVisible());
         if (list.size() == 1)
             return; // or do something else
         SortMaster.sortByExpression(list, view -> view.hashCode());
@@ -60,7 +61,7 @@ public class GlobalController implements Controller {
             index = 0;
 
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, hovered);
-        GridUnitView newFocus = list.get(index);
+        GenericGridView newFocus = list.get(index);
         cell.popupUnitView(newFocus);
         GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, newFocus);
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, newFocus.getTooltip());

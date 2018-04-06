@@ -2,7 +2,6 @@ package eidolons.game.core.atb;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.atb.AtbController.AtbUnit;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -45,26 +44,17 @@ public class AtbUnitImpl implements AtbUnit {
         if (i > 1.01f * AtbController.TIME_TO_READY) {
             main.system.auxiliary.log.LogMaster.log(1, " Bad ATB status:" +
              getUnit().getName() + " has " +
-             value + "%" + " readiness");
+             value + " readiness value");
             value = AtbController.TIME_TO_READY;
         } else {
             atbController.getManager().getGame().getLogManager().log(
              getUnit().getName() + " has " +
-              (value * 100 / AtbController.TIME_TO_READY) + "%" + " readiness");
+              (getDisplayedAtbReadiness()) + "%" + " readiness");
         }
         if (unit.getIntParam(PARAMS.C_INITIATIVE) == value)
             return;
         unit.setParam(PARAMS.C_INITIATIVE, value + "");
         triggerQueueEvent();
-    }
-
-    private void triggerQueueEvent() {
-        GuiEventManager.trigger(
-         INITIATIVE_CHANGED,
-         new ImmutablePair<>(getUnit(), new ImmutablePair<>(
-          getDisplayedAtbReadiness(),
-          getTimeTillTurn()))
-        );
     }
 
     @Override
@@ -98,9 +88,18 @@ public class AtbUnitImpl implements AtbUnit {
             triggerQueueEvent();
         }
     }
-
     @Override
     public int getDisplayedAtbReadiness() {
-        return Math.round(getAtbReadiness() * 10);
+        return Math.round(getAtbReadiness() * 100/ AtbController.TIME_TO_READY);
+    }
+
+
+    private void triggerQueueEvent() {
+        GuiEventManager.trigger(
+         INITIATIVE_CHANGED,
+         new ImmutablePair<>(getUnit(), new ImmutablePair<>(
+          getDisplayedAtbReadiness(),
+          getTimeTillTurn()))
+        );
     }
 }

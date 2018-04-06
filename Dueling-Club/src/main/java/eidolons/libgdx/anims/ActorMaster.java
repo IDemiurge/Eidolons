@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import eidolons.libgdx.anims.actions.AutoFloatAction;
+import eidolons.libgdx.anims.actions.FadeInAction;
+import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
 import eidolons.libgdx.anims.particles.EmitterActor;
-import eidolons.libgdx.gui.panels.dc.clock.GearCluster;
+import eidolons.libgdx.gui.generic.GearCluster;
 import main.system.auxiliary.ClassMaster;
 
 import java.util.*;
@@ -91,21 +93,24 @@ public class ActorMaster {
     public static AlphaAction addFadeInAction(Actor actor) {
         return addFadeAction(actor, 0.5f, false);
     }
+
     public static AlphaAction addFadeInAction(Actor actor, float dur) {
         return addFadeAction(actor, dur, false);
     }
 
     public static void addFadeInAndOutAction(Actor actor, float dur, boolean remove) {
         actor.setColor(actor.getColor().r, actor.getColor().g, actor.getColor().b, 0);
-        AlphaAction in = (AlphaAction) getAction(AlphaAction.class);
+        AlphaAction in = (AlphaAction) getAction(FadeInAction.class);
         in.setAlpha(1);
         in.setDuration(dur / 2);
         in.setTarget(actor);
+        in.setInterpolation(Interpolation.fade);
 
-        AlphaAction out = (AlphaAction) getAction(AlphaAction.class);
+        AlphaAction out = (AlphaAction) getAction(FadeOutAction.class);
         out.setAlpha(0);
         out.setDuration(dur / 2);
         out.setTarget(actor);
+        out.setInterpolation(Interpolation.fade);
         SequenceAction sequence;
         if (remove) {
 //            Actions.sequence(in, out, remove);
@@ -120,7 +125,8 @@ public class ActorMaster {
     }
 
     public static AlphaAction addFadeAction(Actor actor, float dur, boolean out) {
-        AlphaAction action = (AlphaAction) getAction(AlphaAction.class);// new AlphaAction();
+        AlphaAction action = (AlphaAction) getAction(
+         out? FadeOutAction.class : FadeInAction.class );// new AlphaAction();
         action.setAlpha(out ? 0 : 1);
         action.setDuration(dur);
         action.setTarget(actor);

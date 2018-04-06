@@ -2,6 +2,8 @@ package eidolons.libgdx.bf;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
@@ -14,6 +16,9 @@ import java.awt.*;
  * Created by JustMe on 1/29/2017.
  */
 public class GridMaster {
+
+    public static final int CELL_W = 128;
+    public static final int CELL_H = 128;
 
     public static float getDistance(Coordinates coordinates, Coordinates coordinates2) {
         Vector2 v1 = getCenteredPos(coordinates);
@@ -49,9 +54,9 @@ public class GridMaster {
                                                  boolean camera, boolean gdxY, GridPanel gridPanel) {
 
 //        InputController controller = DungeonScreen.getInstance().getController();
-        float x = sourceCoordinates.getX() * GridConst.CELL_W;
+        float x = sourceCoordinates.getX() * CELL_W;
         float y = (gridPanel.getRows()
-         - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * GridConst.CELL_H;
+         - (gdxY ? sourceCoordinates.getY() + 1 : sourceCoordinates.getY())) * CELL_H;
 
         if (camera) {
 //            x -= controller.getXCamPos();
@@ -60,8 +65,8 @@ public class GridMaster {
             y -= GdxMaster.getHeight() / 2;
         }
         if (center) {
-            x += GridConst.CELL_W / 2;
-            y -= GridConst.CELL_H / 2;
+            x += CELL_W / 2;
+            y -= CELL_H / 2;
         } else {
 
         }

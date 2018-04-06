@@ -354,5 +354,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master.getTimeMaster().act(delta);
     }
 
+    public Float getTime() {
+        return master.getTimeMaster().getTime();
+    }
 
 }

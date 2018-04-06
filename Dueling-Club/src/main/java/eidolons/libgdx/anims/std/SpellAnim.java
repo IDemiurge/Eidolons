@@ -3,7 +3,7 @@ package eidolons.libgdx.anims.std;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
@@ -49,9 +49,9 @@ public class SpellAnim extends ActionAnim {
             @Override
             public int getAdditionalDistance(DC_ActiveObj active) {
                 if (active.getOwnerObj().getFacing().isVertical()) {
-                    return GridConst.CELL_H;
+                    return GridMaster.CELL_H;
                 }
-                return GridConst.CELL_W;
+                return GridMaster.CELL_W;
             }
         },
         WAVE(active -> active.getIntParam(G_PARAMS.RADIUS)),

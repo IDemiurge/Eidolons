@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,8 +45,8 @@ public class TextureManager {
             for (int y = 0; y < rows; y++) {
                 getSpriteCache().beginCache();
                 getSpriteCache().add(TextureCache.createTexture(emptyCellPath, false),
-                 x * GridConst.CELL_W,
-                 y * GridConst.CELL_H);
+                 x * GridMaster.CELL_W,
+                 y * GridMaster.CELL_H);
                 cacheId++;
                 getSpriteCache().endCache();
 

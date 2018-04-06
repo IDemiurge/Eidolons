@@ -49,6 +49,7 @@ public class VisionController {
     ClearshotMapper clearshotMapper;
     WallObstructionMapper wallObstructionMapper;
     GammaMapper gammaMapper;
+    LastSeenMapper lastSeenMapper;
     List<GenericMapper> mappers ;
 
 
@@ -60,6 +61,7 @@ public class VisionController {
 
     public void init() {
         mappers = new ArrayList<>();
+        mappers.add(lastSeenMapper = new LastSeenMapper());
         mappers.add(gammaMapper = new GammaMapper());
         mappers.add(clearshotMapper = new ClearshotMapper());
         mappers.add(unitVisionMapper = new UnitVisionMapper());
@@ -69,6 +71,11 @@ public class VisionController {
         mappers.add(detectionMapper = new DetectionMapper());
         mappers.add(wallObstructionMapper= new WallObstructionMapper());
     }
+
+    public LastSeenMapper getLastSeenMapper() {
+        return lastSeenMapper;
+    }
+
     public WallObstructionMapper getWallObstructionMapper() {
         return wallObstructionMapper;
     }

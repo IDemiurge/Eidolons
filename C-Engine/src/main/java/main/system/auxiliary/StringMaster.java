@@ -849,7 +849,13 @@ public class StringMaster {
         return -1;
     }
 
-    public static String toStringForm(Object obj) {
+    public static String toStringOrNull(Object obj) {
+        if (obj == null) {
+            return null ;
+        }
+        return obj.toString();
+    }
+        public static String toStringForm(Object obj) {
         if (obj == null) {
             return "";
         }

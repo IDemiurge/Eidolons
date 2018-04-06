@@ -19,9 +19,8 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
-import eidolons.libgdx.bf.GridConst;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.GridPanel;
+import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
@@ -384,7 +383,7 @@ public class DungeonScreen extends GameScreen {
         if (isCameraAutoCenteringOn()) {
             Coordinates coordinatesActiveObj =
              hero.getCoordinates();
-            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridConst.CELL_W + GridConst.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridConst.CELL_H - GridConst.CELL_H / 2);
+            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
             cameraPan(unitPosition);
         }
     }

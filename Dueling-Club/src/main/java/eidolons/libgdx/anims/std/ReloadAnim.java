@@ -3,7 +3,7 @@ package eidolons.libgdx.anims.std;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.libgdx.anims.AnimData;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import main.entity.Entity;
 
 /**
@@ -37,7 +37,7 @@ public class ReloadAnim extends RangedAttackAnim {
         super.initPosition();
 //offsetX
         initialAngle = 0;
-        destination.set(destination.x - GridConst.CELL_W / 8, destination.y - GridConst.CELL_H / 2);
+        destination.set(destination.x - GridMaster.CELL_W / 8, destination.y - GridMaster.CELL_H / 2);
 
     }
 

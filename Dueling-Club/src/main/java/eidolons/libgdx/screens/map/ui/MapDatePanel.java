@@ -8,7 +8,7 @@ import eidolons.game.module.adventure.global.TimeMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.auxiliary.StringMaster;

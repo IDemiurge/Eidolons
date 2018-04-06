@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster.DOOR_STATE;
-import eidolons.libgdx.bf.GridConst;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -285,8 +284,8 @@ public class WallMap extends SuperActor {
                 continue;
             if (checkCoordinateIgnored(c))
                 continue;
-            int h = GridConst.CELL_H;
-            int w = GridConst.CELL_W;
+            int h = GridMaster.CELL_H;
+            int w = GridMaster.CELL_W;
             for (Coordinates.DIRECTION side : list) {
 
                 Vector2 v = GridMaster.getVectorForCoordinate(c, false, false);

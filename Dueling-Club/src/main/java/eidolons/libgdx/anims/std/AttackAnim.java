@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimData.ANIM_VALUES;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.system.test.TestMasterContent;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.values.properties.G_PROPS;
@@ -270,7 +270,7 @@ size - elongate
 //         getActive().getAnimator().getAnimRef().getTargetObj()
           getDestinationCoordinates()
            .getX();
-        x -= distanceX * GridConst.CELL_W;
+        x -= distanceX * GridMaster.CELL_W;
         int distanceY =
          getOriginCoordinates().
 //         active.getRef().getSourceObj().
@@ -278,7 +278,7 @@ size - elongate
 //         getActive().getAnimator().getAnimRef().getTargetObj()
           getDestinationCoordinates()
            .getY();
-        y += distanceY * GridConst.CELL_H;
+        y += distanceY * GridMaster.CELL_H;
 
         mainMove.setAmount(x, y);
         return mainMove;

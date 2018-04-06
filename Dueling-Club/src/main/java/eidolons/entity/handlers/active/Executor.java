@@ -380,6 +380,10 @@ public class Executor extends ActiveHandler {
          initiativeCost + "", 0, false);
         ((AtbTurnManager) getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
 
+        if (getAction().isExtraAttackMode()){
+            initiativeCost=0;
+        }
+
         log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
          -initiativeCost +
          "%, now at " + getOwnerObj().getIntParam(PARAMS.C_INITIATIVE) +

@@ -1,7 +1,7 @@
 package eidolons.libgdx.bf.mouse;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import eidolons.libgdx.bf.GridConst;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 
 /**
@@ -23,7 +23,7 @@ public class DungeonInputController extends InputController {
 
     protected float getHeight() {
         return getScreen().getGridPanel().getRows()
-         * GridConst.CELL_H;
+         * GridMaster.CELL_H;
     }
 
     @Override
@@ -34,6 +34,6 @@ public class DungeonInputController extends InputController {
     @Override
     protected float getWidth() {
         return getScreen().getGridPanel().getCols()
-         * GridConst.CELL_W;
+         * GridMaster.CELL_W;
     }
 }

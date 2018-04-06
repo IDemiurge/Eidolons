@@ -11,10 +11,11 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
-import eidolons.libgdx.bf.GridCellContainer;
-import eidolons.libgdx.bf.GridPanel;
-import eidolons.libgdx.bf.GridUnitView;
-import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.*;
+import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.GenericGridView;
+import eidolons.libgdx.bf.grid.LastSeenView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
@@ -42,7 +43,8 @@ public class OverlaysManager extends SuperActor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sightInfoDisplayed = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
+
+        setSightInfoDisplayed(Gdx.input.isKeyPressed(Keys.CONTROL_LEFT));
         if (sightInfoDisplayed) {
             observer = gridPanel.getObjectForView(gridPanel.getHoverObj());
             if (!(observer instanceof Unit)) {
@@ -63,12 +65,19 @@ public class OverlaysManager extends SuperActor {
 
     }
 
+    public void setSightInfoDisplayed(boolean sightInfoDisplayed) {
+        if (sightInfoDisplayed != this.sightInfoDisplayed) {
+            this.sightInfoDisplayed = sightInfoDisplayed;
+            ((GridPanel) getParent()).setUpdateRequired(true);
+        }
+    }
+
     private void drawOverlays(Batch batch) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 drawOverlaysForCell(cells[i][j], i, cells[i].length - j - 1, batch);
 
-                for (GridUnitView sub : cells[i][j].getUnitViewsVisible()) {
+                for (GenericGridView sub : cells[i][j].getUnitViewsVisible()) {
                     drawOverlaysForView(sub, batch);
                 }
 
@@ -76,14 +85,26 @@ public class OverlaysManager extends SuperActor {
         }
     }
 
-    private void drawOverlaysForView(GridUnitView actor, Batch batch) {
+    private void drawOverlaysForView(GenericGridView actor, Batch batch) {
         if (actor.isHovered()) {
             //emblem etc?
         }
         if (GridPanel.isHpBarsOnTop()) {
             drawOverlay(actor, HP_BAR, batch);
         }
-        BattleFieldObject obj = DungeonScreen.getInstance().getGridPanel().getObjectForView(actor);
+        BattleFieldObject obj = null ;
+        if (actor instanceof LastSeenView) {
+            obj =DungeonScreen.getInstance().getGridPanel().
+             getObjectForView(  ((LastSeenView) actor).getParentView());
+
+        } else
+        {
+            obj =DungeonScreen.getInstance().getGridPanel().getObjectForView(actor);
+        }
+        if (obj == null) {
+            return;
+        }
+
         if (checkOverlayForObj(STEALTH, obj)) {
             drawOverlay(actor, STEALTH, batch);
         } else if (checkOverlayForObj(SPOTTED, obj)) {
@@ -150,18 +171,19 @@ public class OverlaysManager extends SuperActor {
             batch.draw(region, v.x, v.y);
         } else {
             Actor actor = getOverlayActor(parent, overlay);
-            if (actor.isVisible()) {
-                actor.setPosition(v.x, v.y);
-                actor.setScale(parent.getScaleX(), parent.getScaleY());
-                actor.draw(batch, 1);
-            }
+            if (actor != null)
+                if (actor.isVisible()) {
+                    actor.setPosition(v.x, v.y);
+                    actor.setScale(parent.getScaleX(), parent.getScaleY());
+                    actor.draw(batch, 1);
+                }
         }
     }
 
     private Actor getOverlayActor(Actor parent, OVERLAY overlay) {
         switch (overlay) {
             case HP_BAR: {
-                GridUnitView view = (GridUnitView) parent;
+                GenericGridView view = (GenericGridView) parent;
                 return view.getHpBar();
             }
         }
@@ -242,10 +264,11 @@ public class OverlaysManager extends SuperActor {
 
         }
 
-        OVERLAY(  int alignment) {
+        OVERLAY(int alignment) {
             this(null, alignment);
         }
-            OVERLAY(String path, int alignment) {
+
+        OVERLAY(String path, int alignment) {
             if (path != null)
                 this.path = path;
             this.alignment = alignment;

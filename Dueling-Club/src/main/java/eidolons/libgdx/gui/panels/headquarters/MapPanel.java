@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters;
 
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.libgdx.gui.panels.UpdatableGroup;
+import eidolons.libgdx.gui.generic.UpdatableGroup;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 
 import java.util.List;

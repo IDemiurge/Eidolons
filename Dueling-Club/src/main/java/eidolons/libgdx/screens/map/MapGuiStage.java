@@ -16,7 +16,7 @@ import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.RollDecorator;
-import eidolons.libgdx.gui.panels.dc.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.screens.map.obj.PartyActor;
 import eidolons.libgdx.screens.map.ui.*;

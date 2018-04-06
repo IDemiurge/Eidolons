@@ -65,6 +65,11 @@ public class PtsTurnManager extends GenericTurnManager implements Comparator<Uni
         return getTimeModifier() + "";
     }
 
+    @Override
+    public Float getTotalTime() {
+        return getGame().getRules().getTimeRule().getTimeRemaining()/10f;
+    }
+
     public void newRound() {
         resetInitiative(true);
         super.newRound();

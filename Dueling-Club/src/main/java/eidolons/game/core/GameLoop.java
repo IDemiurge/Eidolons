@@ -2,6 +2,7 @@ package eidolons.game.core;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -55,8 +56,12 @@ public class GameLoop {
         }
         while (true) {
             if (!AiTrainingRunner.running) {
-                if (!roundLoop())
-                    break;
+                try {
+                    if (!roundLoop())
+                        break;
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             } else
                 try {
                     {
@@ -120,6 +125,9 @@ public class GameLoop {
                 break;
             }
             if (!result) {
+                if (DC_Engine.isAtbMode()) {
+                    getGame().getManager().reset();
+                }
                 continue;
             }
             if (!retainActiveUnit)
@@ -334,5 +342,9 @@ public class GameLoop {
 
     public void togglePaused() {
         setPaused(!isPaused());
+    }
+
+    public Float getTime() {
+        return getGame().getTurnManager().getTotalTime();
     }
 }

@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
-import eidolons.libgdx.gui.panels.UpdatableGroup;
+import eidolons.libgdx.gui.generic.UpdatableGroup;
 
 public class ShopPanel extends UpdatableGroup {
 }

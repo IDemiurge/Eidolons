@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
-import eidolons.libgdx.gui.panels.dc.ValueContainer;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.ShopTabbedPanel;
 import eidolons.libgdx.gui.panels.headquarters.ShopValueContainerList;
 

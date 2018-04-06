@@ -510,12 +510,16 @@ public class DC_Game extends MicroGame {
     public void setDebugMode(boolean debugMode) {
         if (getDebugMaster() != null)
             if (debugMode != this.debugMode) {
+                if (!debugMode){
+                    getVisionMaster().getVisionRule().togglePlayerUnseenMode();
+                }
                 try {
                     getDebugMaster().debugModeToggled(debugMode);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
             }
+
         super.setDebugMode(debugMode);
     }
 
