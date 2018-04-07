@@ -22,7 +22,7 @@ import static main.system.GuiEventType.BOTTOM_PANEL_UPDATE;
 public class ActionPanel extends Group {
     public final static int IMAGE_SIZE = 60;
     private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
-    private final boolean facingPanelOn =false;
+    private final boolean facingPanelOn =true;
     protected OrbsPanel leftOrbPanel;
     protected OrbsPanel rigthOrbPanel;
     protected QuickSlotPanel quickSlotPanel;
@@ -76,8 +76,9 @@ public class ActionPanel extends Group {
         offhand.setPosition(leftOrbPanel.getX() + 250,
          leftOrbPanel.getY());
         if (facingPanelOn)
-            facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 - 50,
-             leftOrbPanel.getY() + 40);
+            facingPanel.setPosition(
+             (mainHand.getX() + offhand.getX()) / 2 ,
+             leftOrbPanel.getY() + 20);
 
         setY(-IMAGE_SIZE);
         bindEvents();
@@ -139,6 +140,11 @@ public class ActionPanel extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        if (facingPanelOn)
+            facingPanel.setPosition(
+             (mainHand.getX() + offhand.getX()) / 2 +10,
+             leftOrbPanel.getY() + 26);
     }
 
     @Override

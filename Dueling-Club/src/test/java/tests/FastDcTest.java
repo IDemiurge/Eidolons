@@ -16,6 +16,8 @@ import org.junit.Before;
 public class FastDcTest {
 
     protected DC_Game game;
+    private DcHelper helper;
+    private CheckHelper checker;
 
 
     protected String getDungeonPath() {
@@ -42,7 +44,8 @@ public class FastDcTest {
          getDungeonPath()
         });
         game = Eidolons.game;
-        //        PathFinder.setJUnitMode(true); to find all test/resources
+        helper = new DcHelper(game);
+        checker = new CheckHelper(game);
 
 //        DC_Engine.systemInit();
 //        DC_Engine.gameInit(false);

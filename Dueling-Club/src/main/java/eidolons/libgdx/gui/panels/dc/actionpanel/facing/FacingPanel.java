@@ -1,7 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.facing;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
@@ -11,9 +13,10 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.mouse.HoverListener;
 import eidolons.libgdx.gui.datasource.FullUnitDataSource;
+import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.generic.GearCluster;
+import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.action.context.Context;
@@ -43,7 +46,6 @@ public class FacingPanel extends TablePanel {
     GroupX background;
     private FullUnitDataSource dataSource;
     private FACING_DIRECTION facing;
-    private float fadePercentage;
 
 
     public FacingPanel() {
@@ -52,15 +54,22 @@ public class FacingPanel extends TablePanel {
              setUserObject(new FullUnitDataSource((Unit) p.get()));
          });
         addActor(background  =new GroupX());
-        background.addActor(new ImageContainer(ROTATE_BACKGROUND));
+        TextureRegion texture = TextureCache.getOrCreateR(ROTATE_BACKGROUND);
+        background.addActor(new Image(texture));
+        background.setSize(
+         texture.getRegionWidth(),
+         texture.getRegionHeight());
+
+        background.setOrigin(background.getWidth() / 2, background.getHeight() / 2);
+
 //        background.addActor(arrow  =new ImageContainer(ARROW));
 //        addActor(faceBackground  =new ImageContainer(FACE_BACKGROUND));
 //        faceBackground.setPosition(20, 20);
         addActor(face  =new FadeImageContainer());
-        face.setPosition(40, 40);
+        face.setPosition(20, 10);
         face.setFadeDuration(getAnimationDuration());
-        background.addActor(gearsClockwise = new GearCluster(0.1f));
-        background. addActor(gearsAntiClockwise = new GearCluster(0.1f));
+        background.addActor(gearsClockwise = new GearCluster(0.35f));
+        background. addActor(gearsAntiClockwise = new GearCluster(0.35f));
         gearsClockwise.setPosition(0,
          GdxMaster.centerWidth(gearsClockwise));
         gearsClockwise.setPosition(GdxMaster.top(gearsClockwise),
@@ -120,6 +129,13 @@ public class FacingPanel extends TablePanel {
 
     @Override
     public void act(float delta) {
+        debugAll();
+        face.setPosition(20, 10);
+        gearsAntiClockwise.setPosition(background.getWidth()/2+10,
+         GdxMaster.centerWidth(gearsAntiClockwise));
+        gearsClockwise.setPosition(background.getWidth()/2-10,
+         background.getHeight()-30);
+
         super.act(delta);
     }
 

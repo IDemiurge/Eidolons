@@ -378,6 +378,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
         ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
         OVERLAYS(0.15f, 0, 1, 0.1f, 0.75f, 1f),
+        UNIT_VIEW(0.23f, 0, 1, 0.0f, 0.80f, 1f), //EMBLEM COLOR & UNCONSCIOUS
         ;
         float alphaStep;
         float fluctuatingAlphaPauseDuration;

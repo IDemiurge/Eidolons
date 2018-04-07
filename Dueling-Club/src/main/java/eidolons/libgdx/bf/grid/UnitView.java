@@ -29,16 +29,13 @@ public class UnitView extends BaseView {
     protected HpBar hpBar;
     protected Label mainHeroLabel;
     protected FadeImageContainer emblemImage;
-    protected FadeImageContainer emblemBorder;
     protected FadeImageContainer modeImage;
     protected TextureRegion outline;
     protected Supplier<TextureRegion> outlineSupplier;
     protected boolean greyedOut;
     private boolean mainHero;
-    protected boolean emblemBorderOn;
     protected boolean flickering;
     protected boolean initialized;
-    protected boolean stealth;
     protected Tooltip tooltip;
     protected float timeTillTurn = 10;
     protected float resetTimer;
@@ -50,6 +47,7 @@ public class UnitView extends BaseView {
     protected UnitView(UnitViewOptions o, int curId) {
         super(o);
         this.curId = curId;
+        setAlphaTemplate(ALPHA_TEMPLATE.UNIT_VIEW);
     }
 
     public void init(UnitViewOptions o) {
@@ -63,14 +61,6 @@ public class UnitView extends BaseView {
 
     public void reset() {
 
-
-        if (isEmblemBorderOn()) {
-            emblemBorder = new FadeImageContainer((
-             CellBorderManager.teamcolorPath));
-            emblemBorder.setBounds(emblemImage.getX() - 6, emblemImage.getY() - 6
-             , this.emblemImage.getWidth() + 10, this.emblemImage.getHeight() + 10);
-            addActor(emblemBorder);
-        }
     }
 
 
@@ -237,14 +227,6 @@ public class UnitView extends BaseView {
 
     public int getCurId() {
         return curId;
-    }
-
-    public boolean isEmblemBorderOn() {
-        return emblemBorderOn;
-    }
-
-    public void setEmblemBorderOn(boolean emblemBorderOn) {
-        this.emblemBorderOn = emblemBorderOn;
     }
 
     public boolean isInitialized() {
