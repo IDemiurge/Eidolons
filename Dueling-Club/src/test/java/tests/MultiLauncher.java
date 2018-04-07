@@ -21,12 +21,7 @@ public class MultiLauncher {
 
         IMMORTAL,
         INVISIBLE,
-
-
-
         CUSTOM_OPTIONS_PATH,
-
-
     }
 
 

@@ -16,8 +16,8 @@ import org.junit.Before;
 public class FastDcTest {
 
     protected DC_Game game;
-    private DcHelper helper;
-    private CheckHelper checker;
+    protected DcHelper helper;
+    protected CheckHelper checker;
 
 
     protected String getDungeonPath() {
