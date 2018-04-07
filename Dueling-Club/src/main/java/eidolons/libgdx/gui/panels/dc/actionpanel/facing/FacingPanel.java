@@ -70,6 +70,8 @@ public class FacingPanel extends TablePanel {
         face.setFadeDuration(getAnimationDuration());
         background.addActor(gearsClockwise = new GearCluster(0.35f));
         background. addActor(gearsAntiClockwise = new GearCluster(0.35f));
+        gearsAntiClockwise.remove();
+        gearsClockwise.remove();
         gearsClockwise.setPosition(0,
          GdxMaster.centerWidth(gearsClockwise));
         gearsClockwise.setPosition(GdxMaster.top(gearsClockwise),
@@ -129,7 +131,7 @@ public class FacingPanel extends TablePanel {
 
     @Override
     public void act(float delta) {
-        debugAll();
+//        debugAll();
         face.setPosition(20, 10);
         gearsAntiClockwise.setPosition(background.getWidth()/2+10,
          GdxMaster.centerWidth(gearsAntiClockwise));
