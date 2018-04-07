@@ -13,7 +13,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.game.core.game.DC_GameMaster;
+import eidolons.game.core.game.DC_GameObjMaster;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.libgdx.GdxMaster;
@@ -40,7 +40,7 @@ public class Eidolons {
     public static final boolean DEV_MODE = true;
     public static DC_Game game;
     public static DC_GameManager gameManager;
-    public static DC_GameMaster gameMaster;
+    public static DC_GameObjMaster gameMaster;
     public static DC_StateManager stateManager;
 
     public static EidolonsGame mainGame;

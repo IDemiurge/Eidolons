@@ -636,8 +636,8 @@ public class DC_GameManager extends GameManager {
     }
 
     @Override
-    public DC_GameMaster getGameMaster() {
-        return (DC_GameMaster) super.getGameMaster();
+    public DC_GameObjMaster getGameMaster() {
+        return (DC_GameObjMaster) super.getGameMaster();
     }
 
     public BuffMaster getBuffMaster() {

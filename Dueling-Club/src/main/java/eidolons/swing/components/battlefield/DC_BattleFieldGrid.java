@@ -541,7 +541,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     @Override
     public Set<Obj> getCells() {
         if (cells == null) {
-            cells = new HashSet<>();
+            cells = new LinkedHashSet<>();
             for (DC_Cell comp : gridComp.getCellEntityMap().values()) {
                 cells.add(comp);
             }

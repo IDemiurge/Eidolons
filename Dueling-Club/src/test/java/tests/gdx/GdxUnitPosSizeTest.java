@@ -33,7 +33,7 @@ public class GdxUnitPosSizeTest extends GdxJUnit {
         return "test\\empty.xml";
     }
 
-    protected String getHeroParty() {
+    protected String getPlayerParty() {
         return null;
     }
 

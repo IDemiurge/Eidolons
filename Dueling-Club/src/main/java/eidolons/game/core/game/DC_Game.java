@@ -154,7 +154,7 @@ public class DC_Game extends MicroGame {
 
     private void initMasters() {
 
-        master = new DC_GameMaster(this);
+        master = new DC_GameObjMaster(this);
 //        if (!CoreEngine.isArcaneVault()) {
         manager = new DC_GameManager(getState(), this);
         manager.init();
@@ -417,8 +417,8 @@ public class DC_Game extends MicroGame {
         return getMaster().getObjectVisibleByCoordinate(c);
     }
 
-    public DC_GameMaster getMaster() {
-        return (DC_GameMaster) master;
+    public DC_GameObjMaster getMaster() {
+        return (DC_GameObjMaster) master;
     }
 
     public Obj getObjectByCoordinate(Coordinates c, boolean cellsIncluded) {
@@ -803,7 +803,7 @@ public class DC_Game extends MicroGame {
     }
 
     public void reinit(boolean restart) {
-        master = new DC_GameMaster(this);
+        master = new DC_GameObjMaster(this);
         List<Obj> cachedObjects = new ArrayList<>();
         if (!restart)
             for (Obj sub : getState().getObjects().values()) {

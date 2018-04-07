@@ -6,7 +6,7 @@ import eidolons.entity.DC_IdManager;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import eidolons.game.core.game.DC_GameMaster;
+import eidolons.game.core.game.DC_GameObjMaster;
 import main.game.core.game.Game;
 import main.game.core.state.GameState;
 import main.session.Session;
@@ -28,7 +28,7 @@ public class AT_Simulation extends Game {
         game = this;
         idManager = new DC_IdManager();
         state = new AT_State(this);
-        master = new DC_GameMaster(null );
+        master = new DC_GameObjMaster(null );
     }
 
     @Override

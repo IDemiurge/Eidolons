@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class DC_GameMaster extends GameMaster {
+public class DC_GameObjMaster extends GameMaster {
 
     protected DequeImpl<Unit> units;
     protected DequeImpl<Structure> structures;
@@ -40,7 +40,7 @@ public class DC_GameMaster extends GameMaster {
     private BattleFieldObject[][][] objCells;
 
 
-    public DC_GameMaster(DC_Game game) {
+    public DC_GameObjMaster(DC_Game game) {
         super(game);
         structures = new DequeImpl<>();
 
@@ -270,7 +270,7 @@ public class DC_GameMaster extends GameMaster {
     }
 
     public Set<Obj> getCells() {
-        return new HashSet<>(getGame().getBattleField().getGrid().getCells());
+        return new LinkedHashSet<>(getGame().getBattleField().getGrid().getCells());
     }
 
     public DequeImpl<Unit> getUnits() {
