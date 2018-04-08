@@ -1,12 +1,15 @@
 package main.launch;
 
-import main.AV_DataManager;
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.gui.neo.tree.view.HT_View;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.dc.Simulation;
-import main.content.ContentManager;
 import eidolons.content.DC_ContentManager;
+import eidolons.game.Simulation;
+import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.system.content.ContentGenerator;
+import main.AV_DataManager;
+import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -14,9 +17,6 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
-import eidolons.game.core.game.DC_Game;
-import main.game.core.game.Game;
 import main.gui.builders.MainBuilder;
 import main.gui.builders.TabBuilder;
 import main.gui.components.controls.AV_ButtonPanel;
@@ -25,12 +25,10 @@ import main.gui.components.tree.AV_Tree;
 import main.simulation.SimulationManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.system.content.ContentGenerator;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -132,7 +130,6 @@ public class ArcaneVault {
             if (init == -1) {
                 return;
             }
-            HT_View.setWorkspaceLaunch(workspaceLaunch);
             WorkspaceManager.ADD_WORKSPACE_TAB_ON_INIT = workspaceLaunch;
 
             selectiveInit = !"Full".equals(LAUNCH_OPTIONS[init]);
@@ -289,7 +286,7 @@ if (macroMode)
         CharacterCreator.setAV(true);
     }
 
-    public static Game getGame() {
+    public static DC_Game getGame() {
         return microGame;
 
     }

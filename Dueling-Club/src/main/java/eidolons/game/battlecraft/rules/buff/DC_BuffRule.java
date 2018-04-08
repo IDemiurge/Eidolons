@@ -1,13 +1,11 @@
 package eidolons.game.battlecraft.rules.buff;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
-import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
 import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.graphics.EffectAnimation;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
 import main.content.VALUE;
@@ -25,8 +23,6 @@ import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -40,7 +36,6 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     protected Map<Integer, Conditions> conditionsMap = new HashMap<>();
     protected Unit target;
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
-    private boolean animationQueued;
     private Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
 
     public DC_BuffRule(MicroGame game) {
@@ -201,16 +196,13 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
             return;
         }
         target = (Unit) ref.getTargetObj();
-        getEffect().setAnimationActive(ref.getActive());
-        if (checkAnimationDisplayed(ref)) {
-            queueAnimation();
-        }
+
         // TODO only animate after Buff Level changes!!!
         super.apply(ref);
         if (CoreEngine.isPhaseAnimsOn())
-            if (animationQueued) {
-                playAnimation(ref);
-            }
+        {
+            //TODO
+        }
         Effect[] array = effectCache.get(ref.getTargetObj());
         if (array == null) {
             array = new Effect[getMaxLevel() + 1];
@@ -221,28 +213,6 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
         effectCache.put(ref.getTargetObj(), array);
     }
 
-    protected void playAnimation(Ref ref) {
-        DC_ActiveObj action = (DC_ActiveObj) ref.getObj(KEYS.ACTIVE);
-        if (action == null) {
-            action = target.getDummyAction();
-        }
-        EffectAnimation anim = new EffectAnimation(action);
-        anim.addPhase(new AnimPhase(PHASE_TYPE.BUFF, ref.getObj(KEYS.BUFF)));
-        getGame().getAnimationManager().newAnimation(anim);
-        animationQueued = false;
-    }
-
-    protected void queueAnimation() {
-        animationQueued = true;
-
-    }
-
-    protected boolean checkAnimationDisplayed(Ref ref) {
-        if (!checkLogged(ref.getSourceObj())) {
-            return false;
-        }
-        return ref.getGame().isStarted();
-    }
 
     public DC_Game getGame() {
         return (DC_Game) game;
@@ -257,9 +227,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
                 return;
             }
         }
-        Conditions conditions = null
-         // new Conditions(getConditions(level))
-         ;
+        Conditions conditions = null;
         Effect effect = getEffect();
         effect.setForceStaticParse(false);
         effect.setForcedLayer(Effect.BUFF_RULE);

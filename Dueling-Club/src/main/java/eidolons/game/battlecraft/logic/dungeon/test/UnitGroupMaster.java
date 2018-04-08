@@ -1,19 +1,11 @@
 package eidolons.game.battlecraft.logic.dungeon.test;
 
-import eidolons.client.cc.gui.neo.choice.ChoiceSequence;
-import eidolons.client.cc.gui.neo.choice.PositionChoiceView;
-import eidolons.client.cc.logic.UnitLevelManager;
-import eidolons.client.dc.Launcher;
-import eidolons.client.dc.Launcher.VIEWS;
-import eidolons.client.dc.MainManager.MAIN_MENU_ITEMS;
-import eidolons.client.dc.SequenceManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.arena.WaveAssembler;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
-import eidolons.game.core.game.DC_Game;
-import eidolons.swing.components.panels.page.log.WrappedTextComp;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS.DEITY;
@@ -47,8 +39,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import javax.swing.*;
 import java.awt.*;
@@ -260,7 +250,6 @@ public class UnitGroupMaster {
     }
 
     private static List<ObjAtCoordinate> mapPositions(List<ObjType> list, Entity hero) {
-        ChoiceSequence sequence = new ChoiceSequence();
         Unit unit = null;
 
         // posView.in
@@ -279,37 +268,7 @@ public class UnitGroupMaster {
                 units.add(new Unit(type));
             }
         }
-        PositionChoiceView posView = new PositionChoiceView(sequence, unit) {
-            @Override
-            protected boolean isReady() {
-                return false;
-            }
-        };
-        sequence.addView(posView);
-        Map<Unit, Coordinates> map = DC_Game.game.getDungeonMaster().getPositioner().getPartyCoordinates(units);
-        posView.setPartyCoordinates(map);
-        sequence.setManager(new SequenceManager() {
 
-            @Override
-            public void doneSelection() {
-                WaitMaster.receiveInput(WAIT_OPERATIONS.CUSTOM_SELECT, true);
-
-            }
-
-            @Override
-            public void cancelSelection() {
-                WaitMaster.receiveInput(WAIT_OPERATIONS.CUSTOM_SELECT, false);
-
-            }
-        });
-        sequence.start();
-        Launcher.setView(VIEWS.CHOICE);
-        boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CUSTOM_SELECT);
-        Launcher.initMenu(MAIN_MENU_ITEMS.FACTION);
-        Launcher.setView(VIEWS.MENU);
-        if (!result) {
-            return null;
-        }
         DC_SoundMaster.playStandardSound(STD_SOUNDS.OK);
         return ListMaster.toObjAtCoordinate(units);
     }
@@ -381,22 +340,7 @@ public class UnitGroupMaster {
                  };
                 list.setPanelSize(new Dimension(300, 120));
                 panel.add(list, "pos tp.x decor_info.y2");
-                WrappedTextComp textComp = new WrappedTextComp(null) {
-                    @Override
-                    protected Color getColor() {
-                        return Color.black;
-                    }
 
-                    @Override
-                    public synchronized List<String> getTextLines() {
-                        List<String> list = new ArrayList<>();
-                        list.add(UnitGroupMaster.getRemainingPower() + " points remaining");
-                        list.add("Size contraints: between " + min + " and " + max);
-                        return list;
-                    }
-                };
-                textComp.setDefaultSize(new Dimension(300, 120));
-                panel.add(textComp, "id decor_info, pos tp.x tp.y2");
 
             }
         });

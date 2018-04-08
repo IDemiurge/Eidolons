@@ -3,12 +3,10 @@ package eidolons.game.core.game;
 import eidolons.ability.ActionGenerator;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.DC_EffectManager;
-import eidolons.client.cc.gui.lists.dc.DC_InventoryManager;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.dc.Launcher;
 import eidolons.content.DC_ValueManager;
 import eidolons.entity.DC_IdManager;
 import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.Structure;
@@ -18,7 +16,6 @@ import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.logic.battle.test.TestBattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.DC_BattleField;
 import eidolons.game.battlecraft.logic.battlefield.DC_BattleFieldManager;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.DroppedItemManager;
@@ -42,11 +39,10 @@ import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
-import eidolons.swing.components.battlefield.DC_BattleFieldGrid;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
 import eidolons.system.audio.MusicMaster;
-import eidolons.system.graphics.AnimationManager;
 import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.test.TestMasterContent;
@@ -77,7 +73,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
-import main.system.entity.ValueHelper;
+import eidolons.content.ValueHelper;
 import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 
@@ -110,7 +106,6 @@ public class DC_Game extends MicroGame {
     private DebugMaster debugMaster;
     private TestMasterContent testMaster;
     private AI_Manager aiManager;
-    private AnimationManager animationManager; //heavy, but still just a trash!
     private DC_KeyManager keyManager; //where to move?
 
     private DC_Rules rules;
@@ -119,7 +114,6 @@ public class DC_Game extends MicroGame {
     private GAME_TYPE gameType;
     private boolean battleInit; //to Battle!
 
-    private boolean paused; //to game loop!
 
     private Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
     private HashMap<Coordinates, Map<BattleFieldObject, FLIP>> flipMap;
@@ -134,6 +128,7 @@ public class DC_Game extends MicroGame {
     @Refactor
     private Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
     private MusicMaster musicMaster;
+    private DC_BattleFieldGrid grid;
 
     public DC_Game() {
         this(false);
@@ -167,9 +162,7 @@ public class DC_Game extends MicroGame {
         visionMaster = new VisionMaster(this);
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
-        animationManager = new AnimationManager(this);
         droppedItemManager = new DroppedItemManager(this);
-        valueHelper = new ValueHelper(this);
         setTestMaster(new TestMasterContent(this));
         conditionMaster = new DC_ConditionMaster();
         logManager = new DC_LogManager(this);
@@ -246,13 +239,9 @@ public class DC_Game extends MicroGame {
 
         setOffline(true);
 
-
-        // if (battlefield == null) {
-
-        battlefield = new DC_BattleField(new DC_BattleFieldGrid(getDungeon()));
+        grid = new DC_BattleFieldGrid(getDungeon());
         battleFieldManager = new DC_BattleFieldManager(this);
-        getMovementManager().setGrid(battlefield.getGrid());
-        // }
+        getMovementManager().setGrid(grid);
 
 
         if (AI_ON) {
@@ -359,8 +348,6 @@ public class DC_Game extends MicroGame {
     public void exit(boolean mainMenu) throws InterruptedException {
         // TODO review this! only for arcade-game, btw!
         stop();
-//        dungeonMaster.setDungeon(null);
-        getManager().setSelectedInfoObj(null);
         WaitRule.reset();
         for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
             BuffObj buff = (BuffObj) obj;
@@ -394,7 +381,7 @@ public class DC_Game extends MicroGame {
     @Override
     public void initObjTypes() {
         super.initObjTypes();
-        if (Launcher.isMacroMode()) {
+        if (CoreEngine.isMacro()) {
             for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
                 if (TYPE.getCode() == -1) {
                     continue;
@@ -486,10 +473,6 @@ public class DC_Game extends MicroGame {
         return visionMaster;
     }
 
-    @Override
-    public DC_BattleField getBattleField() {
-        return (DC_BattleField) super.getBattleField();
-    }
 
     @Override
     public DC_GameState getState() {
@@ -498,9 +481,8 @@ public class DC_Game extends MicroGame {
 
     public synchronized DebugMaster getDebugMaster() {
         if (debugMaster == null) {
-            if (getBattleField() != null) {
+            if (started)
                 debugMaster = new DebugMaster(getState());
-            }
         }
         return debugMaster;
     }
@@ -510,7 +492,7 @@ public class DC_Game extends MicroGame {
     public void setDebugMode(boolean debugMode) {
         if (getDebugMaster() != null)
             if (debugMode != this.debugMode) {
-                if (!debugMode){
+                if (!debugMode) {
                     getVisionMaster().getVisionRule().togglePlayerUnseenMode();
                 }
                 try {
@@ -555,7 +537,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Set<Coordinates> getCoordinates() {
-        return getBattleField().getCoordinatesSet();
+        return grid.getCoordinatesSet();
     }
 
     public AI_Manager getAiManager() {
@@ -584,14 +566,9 @@ public class DC_Game extends MicroGame {
         this.gameLoopThread = gameLoopThread;
     }
 
-    public AnimationManager getAnimationManager() {
-        return animationManager;
-    }
-
     public DroppedItemManager getDroppedItemManager() {
         return droppedItemManager;
     }
-
 
     public DungeonMaster getDungeonMaster() {
         return dungeonMaster;
@@ -770,6 +747,15 @@ public class DC_Game extends MicroGame {
 
     }
 
+    public ValueHelper getValueHelper() {
+        return getValueManager().getValueHelper();
+    }
+
+    @Override
+    public DC_ValueManager getValueManager() {
+        return (DC_ValueManager) super.getValueManager();
+    }
+
     public Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> getSimulationCache() {
         if (simulationCache == null) {
             simulationCache = new XLinkedMap<>();
@@ -826,6 +812,10 @@ public class DC_Game extends MicroGame {
             getState().addObject(sub);
         }
         visionMaster.reinit();
+    }
+
+    public DC_BattleFieldGrid getGrid() {
+        return grid;
     }
 
     public enum GAME_MODES {

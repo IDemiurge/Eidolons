@@ -280,7 +280,6 @@ public class Executor extends ActiveHandler {
         getCalculator().calculateTimeCost();
         getInitializer().construct();
         getTargeter().initAutoTargeting();
-        getMaster().getAnimator().initAnimation();
         getMaster().getInitializer().initCosts(true);// for animation phase
 
     }
@@ -293,7 +292,6 @@ public class Executor extends ActiveHandler {
 //        setResistanceChecked(false); ??
 
         GuiEventManager.trigger(GuiEventType.ACTION_BEING_RESOLVED, getAction());
-        getMaster().getAnimator().addResolvesPhase();
 
         if (getAction().getAbilities() != null) {
             try {
@@ -303,7 +301,7 @@ public class Executor extends ActiveHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        } else
+        }
         // for Multi-targeting when single-wrapped Abilities cannot be used
         {
             for (Active active : getAction().getActives()) {
@@ -411,7 +409,6 @@ public class Executor extends ActiveHandler {
 
 
     public void actionComplete() {
-        getAnimator().initAnimData();
         getGame().getManager().setActivatingAction(null);
         if (isResult()) {
             log(getAction() + " done", false);

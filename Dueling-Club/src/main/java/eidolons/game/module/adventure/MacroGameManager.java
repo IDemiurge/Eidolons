@@ -77,15 +77,6 @@ public class MacroGameManager extends GameManager {
 
     }
 
-    public void dataChanged() {
-        if (MacroManager.isEditMode()) {
-            MacroManager.getEditorView().refresh();
-        } else {
-            MacroManager.refreshGui();
-        }
-    }
-
-
     public void objClicked(Obj obj) {
         if (isSelecting()) {
             Integer id = null;
@@ -97,8 +88,6 @@ public class MacroGameManager extends GameManager {
             }
             WaitMaster.receiveInput(WAIT_OPERATIONS.SELECT_MAP_OBJ, id);
             setSelecting(false);
-        } else {
-            infoSelect(obj);
         }
     }
 
@@ -199,6 +188,11 @@ public class MacroGameManager extends GameManager {
 
     @Override
     public Integer select(Set<Obj> selectingSet, Ref ref) {
+        return null;
+    }
+
+    @Override
+    public Obj getActiveObj() {
         return null;
     }
 

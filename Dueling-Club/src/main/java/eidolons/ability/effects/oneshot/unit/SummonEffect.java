@@ -1,12 +1,12 @@
 package eidolons.ability.effects.oneshot.unit;
 
 import eidolons.ability.UnitTrainingMaster;
-import eidolons.client.cc.logic.UnitLevelManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.SummoningSicknessRule;
 import eidolons.game.battlecraft.rules.round.UpkeepRule;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.system.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;

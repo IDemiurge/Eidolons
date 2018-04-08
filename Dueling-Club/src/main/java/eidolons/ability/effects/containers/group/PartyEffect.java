@@ -1,7 +1,7 @@
 package eidolons.ability.effects.containers.group;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.data.ability.AE_ConstrArgs;
 import main.elements.conditions.Condition;
 import main.elements.conditions.standard.EmptyCondition;

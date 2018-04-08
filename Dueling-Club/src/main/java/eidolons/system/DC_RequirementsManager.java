@@ -4,9 +4,6 @@ import eidolons.ability.conditions.req.ClassTreeCondition;
 import eidolons.ability.conditions.req.MultiClassCondition;
 import eidolons.ability.conditions.req.SkillPointCondition;
 import eidolons.ability.conditions.req.ValueGroupCondition;
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.HeroManager;
-import eidolons.client.cc.gui.views.ClassView;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.DC_ValueManager;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
@@ -14,6 +11,8 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.HeroManager;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
@@ -480,7 +479,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
         requirements.add(xpReq);
 
-        if (ClassView.isMulticlass(type)) {
+        if (HeroClassMaster.isMulticlass(type)) {
             // TODO changing to simpler form with baseType?
             requirements.add(getBaseTypeRequirement(type, type.getOBJ_TYPE_ENUM()));
             requirements.add(new Requirement(new PropCondition(PROPS.CLASSES, type

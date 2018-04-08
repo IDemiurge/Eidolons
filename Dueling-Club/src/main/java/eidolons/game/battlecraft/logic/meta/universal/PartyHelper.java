@@ -1,20 +1,20 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
 import eidolons.ability.InventoryTransactionManager;
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.logic.HeroCreator;
-import eidolons.client.cc.logic.HeroLevelManager;
-import eidolons.client.cc.logic.party.Party;
-import eidolons.client.dc.MetaManager;
-import eidolons.client.dc.Simulation;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.logic.HeroCreator;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.data.MetaManager;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;

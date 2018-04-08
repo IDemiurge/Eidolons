@@ -18,6 +18,7 @@ import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.mechanics.CollisionRule;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.game.DC_BattleFieldGrid;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.CustomValueManager;
 import main.content.enums.entity.ActionEnums;
@@ -29,9 +30,12 @@ import main.elements.Filter;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.game.bf.*;
+import main.game.bf.BattleFieldGrid;
+import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.DirectionMaster;
+import main.game.bf.MovementManager;
 import main.game.bf.pathing.Path;
 import main.game.bf.pathing.PathingManager;
 import main.game.logic.action.context.Context;
@@ -298,8 +302,8 @@ public class DC_MovementManager implements MovementManager {
     }
 
     @Override
-    public BattleFieldGrid getGrid() {
-        return game.getBattleField().getGrid();
+    public DC_BattleFieldGrid getGrid() {
+        return game.getGrid();
     }
 
     @Override
@@ -392,31 +396,6 @@ public class DC_MovementManager implements MovementManager {
         return game.fireEvent(event);
     }
 
-    private boolean checkCanMove(Unit obj, DC_Cell cell, MOVE_MODIFIER mod) {
-        if (pathingManager.isOccupied(cell.getCoordinates())) {
-            return false;
-        }
-
-        if (mod == MOVE_MODIFIER.TELEPORT) {
-            return true;
-        }
-        if (pathingManager.isAdjacent(obj, cell)) {
-            return true;
-        }
-
-        if (PositionMaster.inLine(obj, cell)) {
-            if (mod == MOVE_MODIFIER.FLYING) {
-                return true;
-            }
-            if (PositionMaster.checkNoObstaclesInLine(obj, cell)) {
-
-            }
-        } else {
-            // build path?
-        }
-
-        return false;
-    }
 
     @Override
     public int getIntegerCost(double cost) {
@@ -426,11 +405,6 @@ public class DC_MovementManager implements MovementManager {
 
         return (int) Math.round(cost);
 
-    }
-
-    @Override
-    public SwingBattleField getBf() {
-        return game.getBattleField();
     }
 
     @Override

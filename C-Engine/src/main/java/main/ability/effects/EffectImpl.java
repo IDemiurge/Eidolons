@@ -17,8 +17,6 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.ANIM;
-import main.system.graphics.SpriteAnimated;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
@@ -40,7 +38,7 @@ import java.util.stream.Collectors;
  * static effects bestowed on the target, prodives API for manipulating these
  * effects from the outside
  *
- * @author VonFinsterheim
+ * @author JustMe
  */
 
 // EFFECT ARE ABOUT WHAT
@@ -49,8 +47,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private static Map<UUID, Pair<Class, String>[]> constructorMap;
     private static boolean mappingOn;
     protected Formula formula;
-    // protected Obj target_obj;
-    // ?Ability ability;
     protected Integer target;
     protected Integer source;
     protected boolean altered = false;
@@ -72,8 +68,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
     private Formula originalFormula;
     private int amount;
     private boolean applied;
-    private ActiveObj animationActive;
-    private ANIM animation;
     private String xml;
     private UUID id;
     private String name;
@@ -136,33 +130,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
 
     public void setXml(String xml) {
         this.xml = xml;
-    }
-
-    @Override
-    public ActiveObj getAnimationActive() {
-        return animationActive;
-    }
-
-    @Override
-    public void setAnimationActive(ActiveObj animationActive) {
-        this.animationActive = animationActive;
-    }
-
-    @Override
-    public ANIM getAnimation() {
-        if (animation == null)
-            if (CoreEngine.isPhaseAnimsOn()) {
-                if (getAnimationActive() instanceof ActiveObj) {
-                    ActiveObj activeObj = getAnimationActive();
-                    animation = activeObj.getAnimation();
-                }
-            }
-        return animation;
-    }
-
-    @Override
-    public void setAnimation(ANIM animation) {
-        this.animation = animation;
     }
 
     @Override
@@ -375,22 +342,6 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         }
     }
 
-    @Deprecated
-    protected void animateSprite() {
-        if (!hasSprite()) {
-            return;
-        }
-        ((SpriteAnimated) getSpell()).getSprite().animate(ref);
-    }
-
-    protected boolean hasSprite() {
-        try {
-            return ((SpriteAnimated) getSpell()).hasSprite();
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
 
     @Override
     public Obj getSpell() {
@@ -422,12 +373,7 @@ public abstract class EffectImpl extends ReferredElement implements Effect {
         super.setRef(REF);
         this.source = REF.getSource();
         this.target = REF.getTarget();
-        if (CoreEngine.isPhaseAnimsOn())
-            if (getAnimationActive() == null) {
-                setAnimationActive(ref.getAnimationActive()); // TODO ??
-            } else {
-                this.ref.setAnimationActive(getAnimationActive());
-            }
+
     }
 
     public boolean isAltering() {

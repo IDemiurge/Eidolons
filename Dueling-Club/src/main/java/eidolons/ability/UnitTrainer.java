@@ -1,11 +1,11 @@
 package eidolons.ability;
 
-import eidolons.client.cc.HeroManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.HeroManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;

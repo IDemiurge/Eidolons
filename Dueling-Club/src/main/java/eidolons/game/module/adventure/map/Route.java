@@ -5,8 +5,6 @@ import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.entity.MacroParty;
-import eidolons.game.module.adventure.gui.MacroGuiManager;
-import eidolons.game.module.adventure.gui.map.obj.RouteComp;
 import eidolons.game.module.adventure.town.Town;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -152,7 +150,7 @@ public class Route extends Place {
                 }
             }
         }
-        perpendicularOffset = index * MacroGuiManager.getRouteOffset();
+        perpendicularOffset = index * 5;
         if (index % 2 == 0) {
             perpendicularOffset = -perpendicularOffset;
         }
@@ -218,7 +216,7 @@ public class Route extends Place {
 
     @Override
     public int getDefaultSize() {
-        return RouteComp.DEFAULT_SIZE;
+        return 96;
     }
 
     public String getRouteImage() {

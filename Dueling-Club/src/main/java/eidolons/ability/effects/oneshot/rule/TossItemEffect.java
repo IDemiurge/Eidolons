@@ -2,11 +2,11 @@ package eidolons.ability.effects.oneshot.rule;
 
 import eidolons.ability.conditions.special.CanActCondition;
 import eidolons.ability.effects.DC_Effect;
-import eidolons.client.cc.logic.items.ItemMaster;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.OneshotEffect;

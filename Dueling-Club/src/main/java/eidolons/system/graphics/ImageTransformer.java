@@ -2,7 +2,6 @@ package eidolons.system.graphics;
 
 import main.content.CONTENT_CONSTS.FLIP;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.AniMaster.IMAGE_ANIMATION;
 import main.system.images.ImageManager;
 
 import java.awt.*;
@@ -11,34 +10,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ImageTransformer {
 
     private static final int DEC = 255;
     static Map<Image, Map<Image, Map<Float, BufferedImage>>> blendedCache;
-
-    public static List<Image> getImages(Image img, IMAGE_ANIMATION anim) {
-        // sequence of borders to apply could produce nice effect
-        List<Image> images = new ArrayList<>();
-        switch (anim) {
-            case FADE_IN:
-                // from 100% transparent to default
-                break;
-            case FADE_OUT:
-                // from default to 100% transparent
-                break;
-            case FLASH:
-                // lighten/zoom, add gleam, then fade out (?)
-                break;
-
-        }
-        // spriteCaches.getOrCreate(anim).put(img, images);
-        return images;
-    }
 
     public static BufferedImage getGrayScale(BufferedImage img) {
         ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);

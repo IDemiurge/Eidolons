@@ -7,7 +7,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
@@ -15,9 +14,9 @@ import eidolons.game.module.adventure.MacroManager;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.test.frontend.RESOLUTION;
 import main.data.filesys.PathFinder;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
@@ -160,7 +159,7 @@ public class GenericLauncher extends Game {
     }
 
     protected String getTitle() {
-        return "Eidolons: Battlecraft v" + Launcher.VERSION;
+        return "Eidolons: Battlecraft v" + CoreEngine.VERSION;
     }
 
     protected void engineInit() {

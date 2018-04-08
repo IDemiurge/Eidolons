@@ -1,12 +1,12 @@
 package eidolons.game.battlecraft.logic.meta.scenario;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.NameMaster;

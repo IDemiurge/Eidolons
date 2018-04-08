@@ -4,10 +4,6 @@ import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.oneshot.unit.CreateObjectEffect;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.cc.logic.spells.LibraryManager;
-import eidolons.client.dc.Launcher;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
@@ -27,8 +23,10 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.state.*;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import eidolons.libgdx.anims.controls.EmitterController;
-import eidolons.swing.components.obj.drawing.DrawMasterStatic;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
@@ -544,14 +542,6 @@ public class DebugMaster {
                 case ADD_ALL_SPELLS:
                     TestMasterContent.addTestActives(true, infoObj.getType(), true);
                     break;
-                case TOGGLE_GRAPHICS_TEST:
-                    DrawMasterStatic.GRAPHICS_TEST_MODE = !DrawMasterStatic.GRAPHICS_TEST_MODE;
-                    if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
-                        DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = DialogMaster.confirm("Full test on?");
-                    } else {
-                        DrawMasterStatic.FULL_GRAPHICS_TEST_MODE = false;
-                    }
-                    break;
                 case TOGGLE_LOG: {
                     String e = ListChooser.chooseEnum(LOG_CHANNEL.class);
                     LogMaster.toggle(e);
@@ -660,7 +650,6 @@ public class DebugMaster {
 
                     // selectedTarget.addItemToInventory(item);
 
-                    game.getManager().refreshGUI();
                     break;
                 case ADD_SPELL:
                     if (!selectType(DC_TYPE.SPELLS)) {
@@ -677,7 +666,6 @@ public class DebugMaster {
 
                     selectedTarget.getSpells().add(
                      new DC_SpellObj(selectedType, selectedTarget.getOwner(), game, selectedTarget.getRef()));
-                    game.getManager().refreshGUI();
                     break;
                 case ADD_SKILL:
                 case ADD_ACTIVE:
@@ -820,7 +808,6 @@ public class DebugMaster {
                 }
                 case TOGGLE_DEBUG: {
                     game.setDebugMode(!game.isDebugMode());
-                    Launcher.setDEBUG_MODE(!Launcher.isDEBUG_MODE_DEFAULT());
                     break;
                 }
                 case WAITER_INPUT: {
@@ -1049,7 +1036,7 @@ public class DebugMaster {
         if (game.isSimulation()) {
             return CharacterCreator.getHero();
         }
-        return game.getManager().getInfoObj();
+        return game.getManager().getActiveObj();
     }
 
     public void executeDebugFunctionNewThread(final HIDDEN_DEBUG_FUNCTIONS func) {
@@ -1152,8 +1139,8 @@ public class DebugMaster {
             case DISPLAY_EVENT_LOG:
                 break;
             case DISPLAY_REF:
-                display(game.getManager().getInfoObj().getName() + "'s REF:", game.getManager()
-                 .getInfoObj().getRef()
+                display(game.getManager().getActiveObj().getName() + "'s REF:", game.getManager()
+                 .getActiveObj().getRef()
                  + "");
                 break;
             case DISPLAY_TRIGGERS:
@@ -1177,13 +1164,13 @@ public class DebugMaster {
 
                 break;
             case DISPLAY_UNIT_INFO:
-                display("INFO OBJ: ", getUnitInfo(game.getManager().getInfoObj()));
+                display("INFO OBJ: ", getUnitInfo(game.getManager().getActiveObj()));
 
                 break;
             case HERO_ADD_ALL_SPELLS:
 
                 for (ObjType type : DataManager.getTypes(DC_TYPE.SPELLS)) {
-                    Unit hero = (Unit) game.getManager().getInfoObj();
+                    Unit hero = (Unit) game.getManager().getMainHero();
                     if (LibraryManager.checkHeroHasSpell(hero, type)) {
                         continue;
                     }

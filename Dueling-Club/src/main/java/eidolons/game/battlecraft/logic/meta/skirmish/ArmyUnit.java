@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.skirmish;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.type.ObjType;
 
 /**

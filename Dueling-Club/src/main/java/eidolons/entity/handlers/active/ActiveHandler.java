@@ -36,11 +36,6 @@ public abstract class ActiveHandler extends EntityHandler<DC_ActiveObj> {
     }
 
     @Override
-    public ActiveAnimator getAnimator() {
-        return getMaster().getAnimator();
-    }
-
-    @Override
     public ActiveLogger getLogger() {
         return getMaster().getLogger();
     }

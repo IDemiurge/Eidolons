@@ -1,7 +1,6 @@
 package main.system.math;
 
 import com.badlogic.gdx.math.Vector2;
-import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
@@ -142,17 +141,6 @@ public class PositionMaster {
 
     public static boolean inXLine(Obj obj1, Obj obj2) {
         return obj1.getX() == obj2.getX();
-    }
-
-    public static boolean checkNoObstaclesInLine(MicroObj obj1, MicroObj obj2) {
-        return noObstaclesInLine(obj1.getCoordinates(), obj2.getCoordinates(), obj1.getGame()
-         .getBattleField().getGrid(), obj1);
-    }
-
-    public static int getMaxStraightDistance(Obj obj, Obj cell) {
-
-        int range = Math.max((getX_Diff(obj, cell)), (getY_Diff(obj, cell)));
-        return range;
     }
 
     public static int getX_Diff(Obj obj1, Obj obj2) {

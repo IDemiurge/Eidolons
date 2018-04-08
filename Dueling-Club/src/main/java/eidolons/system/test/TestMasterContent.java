@@ -5,7 +5,6 @@ import eidolons.content.PROPS;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.swing.components.obj.drawing.DrawMasterStatic;
 import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
 import main.content.ContentManager;
@@ -331,10 +330,6 @@ public class TestMasterContent {
     private static void addTestSpells(ObjType type, boolean last) {
         type.addProperty(PROPS.VERBATIM_SPELLS, "Blink;"
          + getTEST_LIST(), true);
-        if (DrawMasterStatic.GRAPHICS_TEST_MODE) {
-            type.addProperty(PROPS.VERBATIM_SPELLS, "Light", true);
-            type.addProperty(PROPS.VERBATIM_SPELLS, "Haze", true);
-        }
         if (!addSpells) {
             return;
         }

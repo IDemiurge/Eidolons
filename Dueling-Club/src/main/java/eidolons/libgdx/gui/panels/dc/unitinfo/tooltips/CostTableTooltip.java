@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.TablePanel;
 
 import java.util.List;
 

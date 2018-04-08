@@ -1,8 +1,8 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import eidolons.content.PARAMS;
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSource;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 

@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
@@ -14,6 +13,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.module.adventure.travel.EncounterMaster;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.test.PresetMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;

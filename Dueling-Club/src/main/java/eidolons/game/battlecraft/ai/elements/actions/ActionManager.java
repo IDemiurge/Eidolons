@@ -1,10 +1,10 @@
 package eidolons.game.battlecraft.ai.elements.actions;
 
-import eidolons.client.dc.Launcher;
 import eidolons.content.DC_ContentManager;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
@@ -154,7 +154,7 @@ public class ActionManager extends AiHandler {
 
         }
         if (getUnit().getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
-            if (Launcher.DEV_MODE)
+            if (AI_Manager.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
                  + " chooses task: " + chosenSequence.getTask().toShortString());
 

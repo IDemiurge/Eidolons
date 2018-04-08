@@ -21,7 +21,7 @@ public class SwapSelfEffect extends SelfMoveEffect {
         }
         boolean result = game.getMovementManager().move(ref.getSourceObj(), c,
          free, MOVE_MODIFIER.DISPLACEMENT, ref);
-        getGame().getBattleField().getGrid()
+        getGame() .getGrid()
          .addUnitObj(ref.getTargetObj());
         return result;
     }

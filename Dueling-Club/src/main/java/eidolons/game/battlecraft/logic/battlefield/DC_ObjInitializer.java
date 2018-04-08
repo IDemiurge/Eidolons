@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield;
 
 import eidolons.ability.UnitTrainingMaster;
-import eidolons.client.cc.logic.UnitLevelManager;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
@@ -14,6 +13,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.HungItemMaster;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.system.test.TestMasterContent;
 import eidolons.test.frontend.FAST_DC;
 import main.content.CONTENT_CONSTS.FLIP;

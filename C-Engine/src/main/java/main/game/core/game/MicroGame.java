@@ -7,33 +7,25 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
+import main.game.bf.BattleFieldGrid;
 import main.game.bf.BattleFieldManager;
 import main.game.bf.Coordinates;
 import main.game.bf.GraveyardManager;
-import main.game.bf.SwingBattleField;
-import main.game.bf.options.UIOptions;
 import main.game.core.state.MicroGameState;
 import main.game.logic.battle.player.Player;
-import main.system.net.socket.GenericConnection;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 public abstract class MicroGame extends Game {
 
-    protected GenericConnection connection;
     protected boolean host;
-    protected List<MicroGameState> states;
     protected Player player1;
     protected Player player2;
     protected String gameName;
     protected BattleFieldManager battleFieldManager;
     protected String unitData1;
     protected String unitData2;
-    protected SwingBattleField battlefield;
-    private boolean hotseatMode = false;
-    private UIOptions uiOptions;
 
     public MicroGame() {
         this.gameName = "Battlecraft Game";
@@ -47,10 +39,6 @@ public abstract class MicroGame extends Game {
         this.unitData1 = objData;
         this.unitData2 = objData2;
 
-    }
-
-    public SwingBattleField getBattleField() {
-        return battlefield;
     }
 
     @Override
@@ -72,24 +60,6 @@ public abstract class MicroGame extends Game {
 
     public String getName() {
         return gameName;
-    }
-
-    public int getBF_Height() {
-        return battlefield.getGrid().getHeight();
-
-    }
-
-    public int getBF_Width() {
-        return battlefield.getGrid().getWidth();
-
-    }
-
-    public GenericConnection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(GenericConnection connection) {
-        this.connection = connection;
     }
 
     public boolean isHost() {
@@ -143,22 +113,6 @@ public abstract class MicroGame extends Game {
         this.initialized = initialized;
     }
 
-    public boolean isHotseatMode() {
-        return hotseatMode;
-    }
-
-    public void setHotseatMode(boolean hotseatMode) {
-        this.hotseatMode = hotseatMode;
-    }
-
-    public UIOptions getUiOptions() {
-        return uiOptions;
-    }
-
-    public void setUiOptions(UIOptions uiOptions) {
-        this.uiOptions = uiOptions;
-    }
-
 
     public void remove(Obj obj) {
         state.removeObject(obj.getId());
@@ -170,4 +124,5 @@ public abstract class MicroGame extends Game {
     }
 
 
+    public abstract BattleFieldGrid getGrid();
 }

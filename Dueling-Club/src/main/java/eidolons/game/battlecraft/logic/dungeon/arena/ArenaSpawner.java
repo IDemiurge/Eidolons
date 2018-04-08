@@ -105,7 +105,7 @@ public class ArenaSpawner extends Spawner<ArenaDungeon> {
                 invalid = true;
             } else if (c.isInvalid()) {
                 invalid = true;
-            } else if (game.getBattleField().getGrid().isCoordinateObstructed(c)) {
+            } else if (game .getGrid().isCoordinateObstructed(c)) {
                 invalid = true;
             }
             if (invalid) {

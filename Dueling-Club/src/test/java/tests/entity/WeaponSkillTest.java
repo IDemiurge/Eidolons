@@ -1,11 +1,11 @@
 package tests.entity;
 
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
-import main.content.values.properties.G_PROPS;
-import main.data.DataManager;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import org.junit.Before;
 import org.junit.Test;
 

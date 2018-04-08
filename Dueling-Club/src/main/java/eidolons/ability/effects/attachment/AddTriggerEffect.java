@@ -1,6 +1,5 @@
 package eidolons.ability.effects.attachment;
 
-import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
@@ -60,7 +59,7 @@ public class AddTriggerEffect extends MultiEffect implements
         if (trigger == null) {
             trigger = new Trigger(event_type, conditions, ability);
 
-            if (!Launcher.DEV_MODE)
+            if (!CoreEngine.DEV_MODE)
                 if (!AiTrainingRunner.running)
                     if (conditions != null)
                         if (conditions.toXml() == null)

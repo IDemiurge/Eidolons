@@ -12,7 +12,6 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.graphics.ANIM;
 
 import java.util.List;
 
@@ -93,16 +92,6 @@ public class DummyAction implements ActiveObj {
     @Override
     public boolean isOffhand() {
         return false;
-    }
-
-    @Override
-    public ANIM getAnimation() {
-        return null;
-    }
-
-    @Override
-    public void initAnimation() {
-
     }
 
     @Override

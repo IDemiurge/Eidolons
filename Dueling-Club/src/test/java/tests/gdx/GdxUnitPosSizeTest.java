@@ -1,16 +1,16 @@
 package tests.gdx;
 
-import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.entity.Ref;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import eidolons.game.core.game.DC_Game;
-import main.game.logic.battle.player.Player;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.screens.DungeonScreen;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.Ref;
+import main.entity.type.ObjType;
+import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

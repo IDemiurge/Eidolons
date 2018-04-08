@@ -18,7 +18,6 @@ import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.List;
@@ -156,10 +155,6 @@ public class DC_UnitAction extends DC_ActiveObj {
     // TODO DEPRECATED METHODS!
 
 
-    @Override
-    public Sprite getSprite() {
-        return null;
-    }
 
 
 }

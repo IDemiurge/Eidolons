@@ -7,7 +7,6 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.test.debug.DebugMaster;
 import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import eidolons.test.debug.DebugMaster.HIDDEN_DEBUG_FUNCTIONS;
-import main.game.core.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.misc.GraphicComponent.STD_COMP_IMAGES;
 import main.system.auxiliary.EnumMaster;
@@ -119,7 +118,7 @@ public class DebugRadialManager {
         new Thread(() -> {
             switch (control) {
                 case SET_VALUE:
-                    Game.game.getValueHelper().promptSetValue();
+                    DC_Game.game.getValueHelper().promptSetValue();
                     break;
                 case PICK:
                     DC_Game.game.getDebugMaster().executeDebugFunction(new EnumMaster<DEBUG_FUNCTIONS>()

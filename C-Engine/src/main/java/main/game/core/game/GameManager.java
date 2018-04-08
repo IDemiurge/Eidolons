@@ -7,7 +7,6 @@ import main.ability.effects.EffectImpl;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
 import main.elements.triggers.Trigger;
-import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.*;
@@ -42,28 +41,19 @@ public abstract class GameManager implements GenericGameManager {
     protected Game game;
     protected StateManager stateManager;
     protected GameMaster gameMaster;
-    protected boolean myTurn;
     protected boolean selecting;
-    protected boolean infoObjSelected;
-    protected boolean activeObjSelected;
-    protected Obj infoObj;
-    protected Obj selectedActiveObj;
     protected AI ai;
     protected Set<Obj> selectingSet;
-    private boolean activatingPassives;
     private Path path;
     private Obj lastMovedUnit;
     private ActiveObj activatingAction;
-    private Entity infoEntity;
-    private boolean triggerBeingActivated;
     private boolean triggerBeingChecked;
+    private boolean triggerBeingActivated;
 
     public GameManager() {
 
     }
 
-
-    // +target
     public GameManager(MicroGameState state, MicroGame game) {
         this.setState(state);
         this.game = game;
@@ -83,12 +73,6 @@ public abstract class GameManager implements GenericGameManager {
 
         return false;
     }
-
-    public void infoSelect(Obj obj) {
-        setSelectedInfoObj(obj);
-
-    }
-
     public boolean activeSelect(Obj obj) {
         return false;
     }
@@ -97,35 +81,7 @@ public abstract class GameManager implements GenericGameManager {
 
     public abstract void win(Player winningPlayer);
 
-
-    public void setInfoObjSelected(boolean infoObjSelected) {
-        this.infoObjSelected = infoObjSelected;
-    }
-
-
-    public void setActiveObjSelected(boolean activeObjSelected) {
-        this.activeObjSelected = activeObjSelected;
-    }
-
-    public Obj getInfoObj() {
-        return infoObj;
-    }
-
-    public void setSelectedInfoObj(Obj selectedInfoObj) {
-        this.infoObj = selectedInfoObj;
-        setInfoObjSelected(selectedInfoObj != null);
-    }
-
-    public Obj getActiveObj() {
-        return selectedActiveObj;
-    }
-
     public abstract void buffCreated(BuffObj buff, Obj basis);
-
-    public void setSelectedActiveObj(Obj selectedActiveObj) {
-        this.selectedActiveObj = selectedActiveObj;
-        setActiveObjSelected(selectedActiveObj != null);
-    }
 
     public abstract boolean endRound();
 
@@ -190,10 +146,6 @@ public abstract class GameManager implements GenericGameManager {
     public void setAI(AI ai) {
         this.ai = ai;
 
-    }
-
-    public void setActivatingPassives(boolean b) {
-        this.activatingPassives = b;
     }
 
     public void resetValues() {
@@ -271,22 +223,6 @@ public abstract class GameManager implements GenericGameManager {
         this.state = state;
     }
 
-    public void deselectInfo() {
-
-    }
-
-    public void deselectActive() {
-
-    }
-
-    public void refreshGUI() {
-
-    }
-
-    public void rightClicked(Obj obj) {
-        infoSelect(obj);
-
-    }
 
     public MicroObj createUnit(ObjType type, int x, int y, Player owner) {
         return createUnit(type, x, y, owner, new Ref());
@@ -314,22 +250,6 @@ public abstract class GameManager implements GenericGameManager {
     }
 
     public void checkForChanges(boolean after) {
-    }
-
-    public void infoSelect(Entity entity) {
-        this.setInfoEntity(entity);
-    }
-
-    public Entity getInfoEntity() {
-        return infoEntity;
-    }
-
-    public void setInfoEntity(Entity infoEntity) {
-        this.infoEntity = infoEntity;
-    }
-
-    public void setTriggerBeingActivated(boolean b) {
-        this.triggerBeingActivated = b;
     }
 
     public boolean isTriggerBeingChecked() {
@@ -361,4 +281,14 @@ public abstract class GameManager implements GenericGameManager {
 
     public void addAttachment(PassiveAbilityObj abil, Obj obj) {
     }
+
+    public void setTriggerBeingActivated(boolean triggerBeingActivated) {
+        this.triggerBeingActivated = triggerBeingActivated;
+    }
+
+    public boolean isTriggerBeingActivated() {
+        return triggerBeingActivated;
+    }
+
+    public abstract Obj getActiveObj();
 }

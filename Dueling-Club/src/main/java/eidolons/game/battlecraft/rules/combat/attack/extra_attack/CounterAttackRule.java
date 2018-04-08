@@ -42,9 +42,6 @@ public class CounterAttackRule {
 
     public ActiveObj tryCounter(Attack attack, boolean checkAnimationFinished) {
         if (checkAnimationFinished) {
-            if (attack.getAnimation() != null) {
-//                waitForAttackAnimation(attack);
-            }
         }
 
         ActiveObj counter = null;

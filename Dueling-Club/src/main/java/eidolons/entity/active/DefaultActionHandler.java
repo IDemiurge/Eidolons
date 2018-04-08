@@ -15,8 +15,6 @@ import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.obj.Obj;
@@ -267,22 +265,6 @@ if (!isMoveToOn())
     private static boolean doDebugStuff(Unit source, BattleFieldObject target) {
         target.getGame().getVisionMaster().getVisionController().log(source, target);
         target.getGame().getVisionMaster().getVisionController().logFor(target);
-
-        OUTLINE_TYPE outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
-        VISIBILITY_LEVEL vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
-        target.getPlayerVisionStatus(true);
-        target.getGamma();
-        source.getGame().getVisionMaster().getIlluminationMaster().getIllumination(target);
-
-        target.getGame().getVisionMaster().getGammaMaster().clearCache();
-        target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
-        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
-        outlineType = source.getGame().getVisionMaster().getOutlineMaster().getOutlineType(target, source);
-        vl = source.getGame().getVisionMaster().getVisibilityLevel(source, target);
-        ClearShotCondition.clearCache();
-        Ref ref = new Ref(source);
-        ref.setMatch(target.getId());
-        source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         return false;
     }
 

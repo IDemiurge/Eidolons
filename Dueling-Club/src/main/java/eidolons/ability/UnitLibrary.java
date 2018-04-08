@@ -1,13 +1,13 @@
 package eidolons.ability;
 
-import eidolons.client.cc.HeroManager;
-import eidolons.client.cc.logic.spells.LibraryManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.HeroManager;
+import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;

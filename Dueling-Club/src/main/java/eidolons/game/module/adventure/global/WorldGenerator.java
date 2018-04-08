@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure.global;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
@@ -15,6 +14,7 @@ import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.map.Route;
 import eidolons.game.module.adventure.town.Town;
 import eidolons.game.module.adventure.travel.TravelMasterOld;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.MACRO_PARAMS;

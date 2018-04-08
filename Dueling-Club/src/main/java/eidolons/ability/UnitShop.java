@@ -1,8 +1,5 @@
 package eidolons.ability;
 
-import eidolons.client.cc.HeroManager;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.cc.logic.items.ItemMaster;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -12,6 +9,9 @@ import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.town.ShopMaster;
+import eidolons.game.module.herocreator.HeroManager;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.system.DC_Formulas;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.C_OBJ_TYPE;

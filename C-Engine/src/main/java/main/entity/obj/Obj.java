@@ -22,7 +22,6 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +33,6 @@ import java.util.List;
 public class Obj extends Entity {
     private DequeImpl<BuffObj> buffs;
     private List<String> passiveAbils;
-    private boolean infoSelected;
-    private boolean activeSelected;
-    private boolean targetHighlighted;
     private Boolean passable;
     private boolean annihilated;
 
@@ -91,33 +87,18 @@ public class Obj extends Entity {
 
     public void activatePassives() {
         if (passives == null) {
-            game.getManager().setActivatingPassives(false);
             return;
         }
-        // if (!getGame().isSimulation())
-        // if (isPassivesReady() || game.getManager().isActivatingPassives()) {
-        // return;
-        // } not necessary?
-        game.getManager().setActivatingPassives(true);
         for (Active abil : passives) {
             try {
                 if (abil != null) {
-//                    if () TODO currently, passives are just applied each time, no continuous effects...
-//                    if (abil instanceof PassiveAbilityObj){
-//                        getGame().getManager().addAttachment((PassiveAbilityObj)abil, this);
-//                    }
                     abil.setRef(getRef());
                     abil.activate();
                 }
             } catch (Exception e) {
-                // setPassivesReady(true);
-                // if (game.isSimulation())
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        game.getManager().setActivatingPassives(false);
-        // setPassivesReady(true);
-        // addDynamicValues();
     }
 
     public void applyType(ObjType type) {
@@ -207,23 +188,6 @@ public class Obj extends Entity {
         this.buffs = buffs;
     }
 
-    public void removePassive(String abilName) {
-        for (ActiveObj passive : passives) {
-            if (passive.getName().equals(abilName)) {
-                removePassive((PassiveAbilityObj) passive);
-            }
-
-        }
-
-    }
-
-    public void removeAllPassives() {
-        for (ActiveObj passive : passives) {
-            removePassive((PassiveAbilityObj) passive);
-        }
-        setProperty(G_PROPS.PASSIVES, "");
-    }
-
     public void removePassive(PassiveAbilityObj passive) {
         passive.kill();
         removeProperty(G_PROPS.PASSIVES, passive.getName());
@@ -252,10 +216,6 @@ public class Obj extends Entity {
             passable = getIntParam("GIRTH") <= 0;
         }
         return passable;
-        // if (checkProperty(G_PROPS.BF_OBJECT_TAGS, "" +
-        // BF_OBJECT_TAGS.PASSABLE))
-        // return true;
-        // return checkBool(STD_BOOLS.PASSABLE);
     }
 
     public List<String> getPassiveAbils() {
@@ -316,25 +276,6 @@ public class Obj extends Entity {
         }
     }
 
-    public void invokeHovered() {
-
-    }
-
-    public void invokeRightClicked() {
-        game.getManager().rightClicked(this);
-        if (!isToolTipDisabled()) {
-            initToolTip();
-        }
-        // game.getDialogManager().displayInfo(this);
-
-    }
-
-    public boolean isToolTipDisabled() {
-
-        return game.isSimulation() || CoreEngine.isGraphicTestMode();
-        // return false;
-    }
-
     public Coordinates getCoordinates() {
         return null;
     }
@@ -360,23 +301,6 @@ public class Obj extends Entity {
     public void setId(Integer id) {
         super.setId(id);
         setProperty(G_PROPS.ID, id + "");
-    }
-
-
-    public boolean isInfoSelected() {
-        return infoSelected;
-    }
-
-    public void setInfoSelected(boolean b) {
-        this.infoSelected = b;
-    }
-
-    public boolean isActiveSelected() {
-        return activeSelected;
-    }
-
-    public void setActiveSelected(boolean b) {
-        this.activeSelected = b;
     }
 
     @Override
@@ -405,19 +329,6 @@ public class Obj extends Entity {
 
     public int getZ() {
         return -100;
-    }
-
-    public boolean isTargetHighlighted() {
-        return targetHighlighted;
-    }
-
-    public void setTargetHighlighted(boolean targetHighlighted) {
-        this.targetHighlighted = targetHighlighted;
-    }
-
-    public void initToolTip() {
-        // TODO Auto-generated method stub
-
     }
 
     public boolean isAnnihilated() {

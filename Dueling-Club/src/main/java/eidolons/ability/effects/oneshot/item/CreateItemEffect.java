@@ -1,8 +1,8 @@
 package eidolons.ability.effects.oneshot.item;
 
-import eidolons.client.cc.logic.items.ItemGenerator;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 import main.content.DC_TYPE;

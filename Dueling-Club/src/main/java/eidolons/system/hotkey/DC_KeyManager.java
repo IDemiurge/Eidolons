@@ -20,7 +20,7 @@ import main.data.DataManager;
 import main.swing.generic.components.panels.G_PagePanel;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.entity.ValueHelper;
+import eidolons.content.ValueHelper;
 import main.system.launch.CoreEngine;
 
 import java.awt.event.KeyEvent;

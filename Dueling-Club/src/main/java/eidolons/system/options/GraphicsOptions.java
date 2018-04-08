@@ -1,7 +1,7 @@
 package eidolons.system.options;
 
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
-import eidolons.test.frontend.RESOLUTION;
+import eidolons.system.graphics.RESOLUTION;
 
 public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
     static {
@@ -33,7 +33,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 
         AUTO_CAMERA(true),
         FRAMERATE(60, 20, 80),
-        RESOLUTION(eidolons.test.frontend.RESOLUTION.values()),
+        RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
         ZOOM_STEP(5, 1, 20), SPRITE_CACHE_ON(false), VSYNC(true);
         private Boolean exclusive;
         private Integer min;

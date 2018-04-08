@@ -7,12 +7,10 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.DC_Formulas;
-import eidolons.system.graphics.AttackAnimation;
 import eidolons.system.graphics.DC_ImageMaster;
 import main.content.ContentManager;
 import main.content.enums.entity.UnitEnums;
@@ -28,8 +26,6 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 import main.system.launch.CoreEngine;
@@ -64,7 +60,6 @@ public class AttackCalculator {
     List<Integer> dieList = new ArrayList<>();
 
     // Map<PARAMETER, String> calcMap;
-    AttackAnimation animation;
     boolean precalc;
     DC_AttackMaster master;
     private DC_ActiveObj action;
@@ -80,7 +75,6 @@ public class AttackCalculator {
     private boolean AoO;
     private boolean instant;
     private boolean disengage;
-    private AttackAnimation anim;
     private boolean min;
     private boolean max;
 
@@ -102,12 +96,6 @@ public class AttackCalculator {
         amount = 0;
     }
 
-    public AttackCalculator(DC_ActiveObj t, AttackAnimation animation) {
-        this(EffectFinder.getAttackFromAction(t), true);
-        this.anim = animation;
-        attack.setAnimation(animation);
-    }
-
     public AttackCalculator initTarget(Unit target) {
         attacked = target;
         return this;
@@ -121,11 +109,9 @@ public class AttackCalculator {
         initAllModifiers();
         amount = applyDamageBonuses();
 
-        // TODO
         if (CoreEngine.isPhaseAnimsOn())
-            if (!precalc || anim != null) {
-                addMainPhase();
-                addSubPhase();
+            if (!precalc  ) {
+                 //TODO
             }
         attack.setDamage(amount);
         return amount;
@@ -194,11 +180,7 @@ public class AttackCalculator {
         int bonus = Math.round(amount * (mod * diff) / 100);
         if (CoreEngine.isPhaseAnimsOn())
             if (!precalc) {
-                if (bonus != 0) {
-                    attack.getAnimation().addPhase(
-                     new AnimPhase(PHASE_TYPE.ATTACK_DEFENSE, attackValue, defense, diff, mod,
-                      amount, bonus, atkMap)); // special...
-                }
+                 //TODO
             }
         // TODO atkMap - where are the atk mods from? - sneak, position, ...
         bonusMap.put(MOD_IDENTIFIER.ATK_DEF, bonus);
@@ -214,30 +196,23 @@ public class AttackCalculator {
          getCriticalDamagePercentage(action, attacked);
 
         int bonus = MathMaster.applyMod(amount, mod);
-        if (!precalc) {
-            if (attack.getAnimation() != null) {
-                attack.getAnimation().addPhase(
-                 new AnimPhase(PHASE_TYPE.ATTACK_CRITICAL, mod, bonus));
-            }
-        }
         bonusMap.put(MOD_IDENTIFIER.CRIT, bonus);
         return bonus;
     }
 
-    private int getAttributeDamageBonuses(Obj obj, Unit ownerObj, PHASE_TYPE type,
+    private int getAttributeDamageBonuses(Obj obj, Unit ownerObj,
                                           Map<PARAMETER, Integer> map) {
         int result = 0;
         subMap = map;
-        result += getDamageModifier(PARAMS.STR_DMG_MODIFIER, PARAMS.STRENGTH, ownerObj, obj, type);
-        result += getDamageModifier(PARAMS.AGI_DMG_MODIFIER, PARAMS.AGILITY, ownerObj, obj, type);
-        result += getDamageModifier(PARAMS.INT_DMG_MODIFIER, PARAMS.INTELLIGENCE, ownerObj, obj,
-         type);
-        result += getDamageModifier(PARAMS.SP_DMG_MODIFIER, PARAMS.SPELLPOWER, ownerObj, obj, type);
+        result += getDamageModifier(PARAMS.STR_DMG_MODIFIER, PARAMS.STRENGTH, ownerObj, obj);
+        result += getDamageModifier(PARAMS.AGI_DMG_MODIFIER, PARAMS.AGILITY, ownerObj, obj);
+        result += getDamageModifier(PARAMS.INT_DMG_MODIFIER, PARAMS.INTELLIGENCE, ownerObj, obj
+        );
+        result += getDamageModifier(PARAMS.SP_DMG_MODIFIER, PARAMS.SPELLPOWER, ownerObj, obj);
         return result;
     }
 
-    private int getDamageModifier(PARAMS dmgModifier, PARAMS value, Unit ownerObj, Obj obj,
-                                  PHASE_TYPE type) {
+    private int getDamageModifier(PARAMS dmgModifier, PARAMS value, Unit ownerObj, Obj obj) {
         int amount = obj.getIntParam(dmgModifier) * ownerObj.getIntParam(value) / 100;
         // map = animation.getPhase(type).getArgs()[0];
         if (amount != 0) {
@@ -265,7 +240,7 @@ public class AttackCalculator {
 //        totalBonus += bonus;
 
         bonus = action.getIntParam(PARAMS.DAMAGE_BONUS);
-        bonus += getAttributeDamageBonuses(action, attacker, PHASE_TYPE.ATTACK_WEAPON_MODS,
+        bonus += getAttributeDamageBonuses(action, attacker,
          actionMap);
         bonusMap.put(MOD_IDENTIFIER.ACTION, bonus);
         totalBonus += bonus;
@@ -288,7 +263,7 @@ public class AttackCalculator {
         totalMod += mod;
         bonus = weapon.getIntParam(PARAMS.DAMAGE_BONUS);
         bonus += getAttributeDamageBonuses(weapon, weapon.getOwnerObj(),
-         PHASE_TYPE.ATTACK_WEAPON_MODS, weaponMap);
+           weaponMap);
         weaponMap.put(PARAMS.DAMAGE_BONUS, weapon.getIntParam(PARAMS.DAMAGE_BONUS));
 
         bonusMap.put(MOD_IDENTIFIER.WEAPON, bonus);
@@ -373,7 +348,7 @@ public class AttackCalculator {
     }
 
     private void initializeActionModifiers() {
-        int dmg_bonus = getAttributeDamageBonuses(action, attacker, PHASE_TYPE.ATTACK_ACTION_MODS,
+        int dmg_bonus = getAttributeDamageBonuses(action, attacker,
          new XLinkedMap<>());
         Integer actionDmgMod = action.getIntParam(PARAMS.DAMAGE_MOD);
         int dmg_mod = offhand ? attacker.getIntParam(PARAMS.OFFHAND_DAMAGE_MOD) - 100
@@ -650,28 +625,6 @@ public class AttackCalculator {
         extraMap.put(MOD_IDENTIFIER.UNIT, attacker.getIntParam(param));
         mod -= 100;
         modMap.put(MOD_IDENTIFIER.EXTRA_ATTACK, mod);
-    }
-
-    public void addSubPhase() {
-        if (anim == null) {
-            anim = attack.getAnimation();
-        }
-        anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_EXTRA_MODS, extraMap));
-        anim.addPhase(new AnimPhase(PHASE_TYPE.DICE_ROLL, dieList, randomMap));
-        anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_WEAPON_MODS, weaponMap));
-        anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_ACTION_MODS, actionMap));
-        anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_POSITION_MODS, posMap));
-
-        anim.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_DEFENSE, atkModMap, atkMap, defModMap));
-    }
-
-    public void addMainPhase() {
-        if (anim == null) {
-            anim = attack.getAnimation();
-        }
-        anim.addSubPhase(new AnimPhase(PHASE_TYPE.DAMAGE_FORMULA, attack, modMap, bonusMap));
-        anim.addSubPhase(new AnimPhase(PHASE_TYPE.DAMAGE_FORMULA_MODS, attack, modMap));
-
     }
 
     private void initializeRandomModifiers() {

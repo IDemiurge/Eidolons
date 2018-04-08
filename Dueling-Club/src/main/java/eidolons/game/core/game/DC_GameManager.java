@@ -19,7 +19,6 @@ import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.launch.Showcase;
-import eidolons.swing.components.obj.drawing.DrawMasterStatic;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
@@ -47,7 +46,6 @@ import main.system.GuiEventType;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.ColorManager;
-import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
@@ -119,18 +117,6 @@ public class DC_GameManager extends GameManager {
         return (DC_Game) game;
     }
 
-    @Override
-    public DC_Obj getInfoObj() {
-        return (DC_Obj) super.getInfoObj();
-    }
-
-    public Unit getInfoUnit() {
-        if (getInfoObj() instanceof Unit) {
-            return (Unit) getInfoObj();
-        }
-        return null;
-    }
-
     public boolean activeSelect(final Obj obj) {
         boolean result = true;
         for (ActionRule ar : getGame().getRules().getActionRules()) {
@@ -144,13 +130,6 @@ public class DC_GameManager extends GameManager {
         if (!result) {
             return false;
         }
-
-        setSelectedActiveObj(obj);
-        try {
-            getGame().getBattleField().selectActiveObj(obj, true);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
         ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
@@ -160,20 +139,11 @@ public class DC_GameManager extends GameManager {
         return true;
     }
 
-    public void deselectActive() {
-        if (selectedActiveObj != null) {
-            getGame().getBattleField().deselectActiveObj(selectedActiveObj, true);
-//            setSelectedActiveObj(null); TODO null activeObj is source of many bugs!
-        }
+    @Override
+    public void objClicked(Obj obj) {
+//        TODO
     }
 
-    public void deselectInfo() {
-        if (infoObj != null) {
-            getGame().getBattleField().deselectInfoObj(infoObj, true);
-
-            setSelectedInfoObj(null);
-        }
-    }
 
     /**
      * @param action
@@ -222,11 +192,6 @@ public class DC_GameManager extends GameManager {
 
     }
 
-    @Override
-    public void refreshGUI() {
-        refresh(false);
-    }
-
     public void refreshAll() {
         refresh(true);
     }
@@ -244,7 +209,6 @@ public class DC_GameManager extends GameManager {
                 }
             }
 
-            getGame().getBattleField().refresh();
 
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -285,44 +249,6 @@ public class DC_GameManager extends GameManager {
 
     }
 
-    @Override
-    public void infoSelect(Obj obj) {
-        if (!CoreEngine.isSwingOn()) {
-            return;
-        }
-        DC_SoundMaster.playStandardSound(STD_SOUNDS.CLICK);
-        if (!(obj instanceof DC_Obj)) {
-            return;
-        }
-
-
-        if (getInfoObj() != null) {
-            getInfoObj().setInfoSelected(false);
-        }
-
-        super.infoSelect(obj);
-        if (
-         getGame().getBattleField() != null) {
-            getGame().getBattleField().selectInfoObj(obj, true);
-        }
-
-        if (game.isDebugMode()) {
-            try {
-                getGame().getDebugMaster().getDebugPanel().refresh();
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
-    public void objClicked(Obj obj) {
-        if (isSelecting()) {
-            checkSelectedObj(obj);
-            return;
-        }
-        infoSelect(obj);
-
-    }
 
     // a single-method spell, Warp Time: take another turn...
     public void resetValues(Player owner) {
@@ -383,9 +309,6 @@ public class DC_GameManager extends GameManager {
             return null;
         }
         setSelecting(true);
-        for (Obj obj : selectingSet) {
-            DrawMasterStatic.getObjImageCache().remove(obj);
-        }
 
         Integer id = selectAwait();
         if (id == null) {
@@ -447,16 +370,6 @@ public class DC_GameManager extends GameManager {
     }
 
     @Override
-    public void setSelectedActiveObj(Obj selectedActiveObj) {
-        super.setSelectedActiveObj(selectedActiveObj);
-        // if (selectedActiveObj == null) {
-        // getGame().getBattleField().highlightsOff();
-        // }
-        // getGame().getBattleField().highlightAvailableCells(selectedActiveObj);
-
-    }
-
-    @Override
     public void checkForChanges(boolean after) {
         if (after) {
             deathMaster.checkForDeaths();
@@ -465,7 +378,6 @@ public class DC_GameManager extends GameManager {
         }
 
     }
-
 
     public void activateMySpell(int index) {
         spellMaster.activateMySpell(index);
@@ -490,10 +402,6 @@ public class DC_GameManager extends GameManager {
     @Override
     public void win(Player winningPlayer) {
         if (winningPlayer.isMe()) {
-
-            // getGame().getDialogueManager().victorySequence(); // load
-            // dialogue
-            // MessageManager.gameWon();
         } else {
 
         }
@@ -538,11 +446,9 @@ public class DC_GameManager extends GameManager {
 
     public Unit getActiveObj() {
         if (game.isStarted()) {
-            if (selectedActiveObj == null) {
-                selectedActiveObj = getGame().getLoop().getActiveUnit();
-            }
+             return getGame().getLoop().getActiveUnit();
         }
-        return (Unit) selectedActiveObj;
+        return null ;
     }
 
     @Override
@@ -661,9 +567,6 @@ public class DC_GameManager extends GameManager {
     }
 
     public Unit getMainHero() {
-        if (Eidolons.getMainHero() == null) return (Unit) selectedActiveObj;
-//         getGame().getMetaMaster().getPartyManager().getParty().getLeader();
-//        return (Unit) getGame().getPlayer(true).getHeroObj();
         return Eidolons.getMainHero();
     }
 

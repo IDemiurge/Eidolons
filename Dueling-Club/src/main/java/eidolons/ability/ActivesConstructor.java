@@ -1,7 +1,6 @@
 package eidolons.ability;
 
 import eidolons.ability.conditions.special.GraveCondition;
-import eidolons.ability.effects.DC_Effect;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.containers.customtarget.RayEffect;
 import eidolons.ability.effects.containers.customtarget.WaveEffect;
@@ -15,7 +14,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.system.DC_ConditionMaster;
 import main.ability.*;
 import main.ability.effects.Effect;
-import main.ability.effects.EffectImpl;
 import main.ability.effects.Effects;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
@@ -90,19 +88,6 @@ public class ActivesConstructor {
 
     }
 
-    public static void setAnimForEffects(DC_ActiveObj entity) {
-        List<ActiveObj> list = new ArrayList<>(entity.getActives());
-        for (Active active : list) {
-            for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
-                for (Effect effect : abil.getEffects().getEffects()) {
-                    if (effect instanceof EffectImpl) {
-                        EffectImpl effect2 = (EffectImpl) effect;
-                        effect2.setAnimationActive(entity);
-                    }
-                }
-            }
-        }
-    }
 
     public static void constructActive(TARGETING_MODE mode, DC_ActiveObj entity) {
         if (mode == AbilityEnums.TARGETING_MODE.MULTI) {
@@ -120,20 +105,6 @@ public class ActivesConstructor {
 
         Effects effects = new Effects();
 
-        for (Active active : list) {
-            for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
-                for (Effect effect : abil.getEffects().getEffects()) {
-                    // effects.add(((Ability) abil).getEffectsStage()); does it
-                    // change
-                    // anything?
-                    if (effect instanceof DC_Effect) {
-                        DC_Effect effect2 = (DC_Effect) effect;
-                        effect2.setAnimationActive(entity);
-                    }
-                    effects.add(effect);
-                }
-            }
-        }
         // TODO what if the effects should have different targetings like in
         // damage+light?
 

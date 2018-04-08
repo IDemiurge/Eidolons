@@ -1,9 +1,9 @@
 package tests.entity;
 
+import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
 import org.junit.Before;
 

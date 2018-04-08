@@ -37,7 +37,6 @@ public class DC_GameObjMaster extends GameMaster {
     private Map<Coordinates, List<BattleFieldObject>> overlayingCache = new HashMap<>();
     private Unit[] unitsArray;
     private Structure[] structuresArray;
-    private BattleFieldObject[][][] objCells;
 
 
     public DC_GameObjMaster(DC_Game game) {
@@ -190,7 +189,7 @@ public class DC_GameObjMaster extends GameMaster {
     }
 
     public DC_Cell getCellByCoordinate(Coordinates coordinates) {
-        return (DC_Cell) getGame().getBattleField().getCell(coordinates);
+        return getGame().getGrid().getCell(coordinates);
     }
 
     public List<DC_Cell> getCellsForCoordinates(List<Coordinates> coordinates) {
@@ -249,20 +248,9 @@ public class DC_GameObjMaster extends GameMaster {
         getCache(null).clear();
         unitsArray = null;
         structuresArray = null;
-        objCells = null;
+        getGame().getGrid().resetObjCells( );
     }
 
-    private void initObjCells() {
-        objCells = new BattleFieldObject
-         [getGame().getDungeon().getCellsX()]
-         [getGame().getDungeon().getCellsY()][];
-//        for (int i = 0; i < getGame().getDungeon().getCellsX(); i++) {
-//            for (int j = 0; j < getGame().getDungeon().getCellsY(); j++) {
-//                objCells[i][j] =  new BattleFieldObject[0];
-//            }
-//        }
-
-    }
 
     public void clear() {
         getUnits().clear();
@@ -270,7 +258,7 @@ public class DC_GameObjMaster extends GameMaster {
     }
 
     public Set<Obj> getCells() {
-        return new LinkedHashSet<>(getGame().getBattleField().getGrid().getCells());
+        return new LinkedHashSet<>(getGame().getGrid().getCellsSet());
     }
 
     public DequeImpl<Unit> getUnits() {
@@ -398,24 +386,12 @@ public class DC_GameObjMaster extends GameMaster {
     }
 
     public BattleFieldObject[][][] getObjCells() {
-        if (objCells == null)
-            initObjCells();
-        return objCells;
+        return getGame().getGrid().getObjCells();
     }
 
 
     public BattleFieldObject[] getObjects(int x_, int y_) {
-        BattleFieldObject[] array = getObjCells()[x_][y_];
-        if (array == null) {
-            List<BattleFieldObject> list = getObjectsOnCoordinate(
-             new Coordinates(x_, y_), false);
-            if (list.isEmpty())
-                array = new BattleFieldObject[0];
-            else
-                array = list.toArray(new BattleFieldObject[list.size()]);
-            objCells[x_][y_] = array;
-        }
-        return array;
+        return getGame().getGrid().getObjects(x_, y_);
     }
 
     public List<Structure> getWalls() {

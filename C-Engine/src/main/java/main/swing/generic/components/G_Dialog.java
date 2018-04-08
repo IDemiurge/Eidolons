@@ -1,7 +1,6 @@
 package main.swing.generic.components;
 
 import main.game.core.game.Game;
-import main.swing.generic.services.ComponentResizer;
 import main.system.graphics.ColorManager;
 import main.system.graphics.GuiManager;
 
@@ -42,7 +41,6 @@ public abstract class G_Dialog {
         dialog.add(p);
         dialog.setSize(getSize());
         dialog.setLocation(getLocation());
-        new ComponentResizer(dialog).registerComponent(dialog);
         // if (isBlackBackground())
         // dialog.setOpacity(opacity);
         // dialog.setShape(opacity);

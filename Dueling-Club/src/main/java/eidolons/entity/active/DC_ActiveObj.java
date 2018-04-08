@@ -12,7 +12,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.graphics.PhaseAnimation;
 import eidolons.system.math.ModMaster;
 import main.ability.Abilities;
 import main.ability.Interruptable;
@@ -47,7 +46,6 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.SpriteAnimated;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -55,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interruptable,
- SpriteAnimated, AttachedObj {
+  AttachedObj {
 
     protected Unit ownerObj;
     protected Targeting targeting;
@@ -188,15 +186,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     @Override
-    public boolean hasSprite() {
-        return hasImpactSprite();
-    }
-
-    public boolean hasImpactSprite() {
-        return !StringMaster.isEmpty(getProperty(G_PROPS.IMPACT_SPRITE));
-    }
-
-    @Override
     public boolean isInterrupted() {
         if (interrupted) {
             interrupted = false;
@@ -232,14 +221,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return canBeActivated(ref, false);
     }
 
-
-    @Override
-    public PhaseAnimation getAnimation() {
-        if (getModeAction() != null) {
-            return getModeAction().getAnimation();
-        }
-        return super.getAnimation();
-    }
 
 
     public String getSpecialRequirements() {
@@ -393,6 +374,9 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void setAbilities(Abilities abilities) {
+        if (abilities.getEffects().size()<1){
+            return ;
+        }
         this.abilities = abilities;
     }
 
@@ -787,10 +771,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
         return getMaster().getHandler();
     }
 
-    @Override
-    public ActiveAnimator getAnimator() {
-        return getMaster().getAnimator();
-    }
 
     @Override
     public ActiveLogger getLogger() {
@@ -832,10 +812,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     public void setResistanceChecked(boolean resistanceChecked) {
         this.resistanceChecked = resistanceChecked;
-    }
-
-    public Object getAnimationKey() {
-        return getAnimator().getAnimationKey();
     }
 
     @Override

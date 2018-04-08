@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.test;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
@@ -12,6 +11,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.data.XList;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;

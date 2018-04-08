@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.party.autocombat;
 
-import eidolons.client.cc.logic.party.Party;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.Entity;
 
 /**

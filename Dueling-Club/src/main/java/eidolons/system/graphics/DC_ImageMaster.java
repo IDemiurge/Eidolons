@@ -65,9 +65,6 @@ public class DC_ImageMaster {
             unitEmblem = ImageManager.getSizedVersion(ImageManager.getEmptyEmblem().getImage(),
              new Dimension(size, size));
         }
-        if (obj.isSelected()) {
-            return unitEmblem;
-        }
         Image glow = ImageManager.getSizedVersion(ImageManager.getGlowFrame(obj.getOwner()
          .getFlagColor(), 132), new Dimension(32, 32));
         BufferedImage glowAlpha = ImageManager.getBufferedImage(glow, 50);
@@ -129,8 +126,8 @@ public class DC_ImageMaster {
     }
 
     public static Image getProcessedImage(Image image) {
-        image = ImageManager.getSizedVersion(image, new Dimension(PhaseAnimation.MAX_MINI_ICON_SIZE,
-         PhaseAnimation.MAX_MINI_ICON_SIZE));
+//        image = ImageManager.getSizedVersion(image, new Dimension(PhaseAnimation.MAX_MINI_ICON_SIZE,
+//         PhaseAnimation.MAX_MINI_ICON_SIZE));
         // image = ImageTransformer.getCircleCroppedImage(image);
         // image = ImageManager.applyBorder(image, BORDER.CIRCLE_GLOW_40);
         return image;

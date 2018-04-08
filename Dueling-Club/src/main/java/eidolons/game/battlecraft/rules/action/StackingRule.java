@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.rules.action;
 
-import eidolons.client.cc.logic.HeroCreator;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
@@ -10,6 +9,7 @@ import eidolons.game.battlecraft.rules.RuleMaster;
 import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.HeroCreator;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.Entity;

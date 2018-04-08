@@ -38,6 +38,9 @@ public class DC_Cell extends DC_Obj implements Cell {
         this(getEMPTY_CELL_TYPE(), i, j, game, ref, dungeon);
     }
 
+    public DC_Cell(int x, int y, DC_Game game) {
+        this(x, y, game, new Ref(game), game.getDungeon());
+    }
     public DC_Cell(Coordinates c, DC_Game game) {
         this(c.x, c.y, game, new Ref(game), game.getDungeon());
     }

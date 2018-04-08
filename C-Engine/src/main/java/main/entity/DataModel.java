@@ -215,9 +215,6 @@ public abstract class DataModel {
         return true;
     }
 
-    public String find(String p) {
-        return getValue(game.getValueHelper().getValue(p));
-    }
 
     public String getParam(String p) {
         return getParam(ContentManager.getPARAM(p));
@@ -228,13 +225,6 @@ public abstract class DataModel {
     }
 
     public String getParamRounded(PARAMETER param, boolean base) {
-        // Number n = new Formula(getDoubleParam(param, base)).evaluate();
-        // if (n instanceof Integer)
-        // return n + "";
-        // if (n instanceof Double)
-        // return Math.round((Double) n) + "";
-        // if (n instanceof Float)
-        // return Math.round((Float) n) + "";
         if (base) {
             return type.getIntParam(param) + "";
         }

@@ -28,8 +28,6 @@ public interface MovementManager {
 
     int getDistance(Obj obj1, Obj obj2);
 
-    SwingBattleField getBf();
-
     Obj getCell(Coordinates c1);
 
     List<Obj> getAdjacentEnemies(Obj unit);
