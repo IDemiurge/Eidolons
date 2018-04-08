@@ -1,5 +1,6 @@
 package eidolons.game.core.atb;
 
+import com.badlogic.gdx.utils.Array;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
@@ -9,7 +10,6 @@ import main.system.GuiEventType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by JustMe on 3/26/2018.
@@ -23,7 +23,7 @@ public class AtbCalculator {
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
             if ( ExplorationMaster.isExplorationOn())
                 return;
-            Stack<AtbUnit> units = controller.getUnits();
+            Array<AtbUnit> units = controller.getUnits();
             int index = getIndexAfterAction((DC_ActiveObj) p.get());
             GuiEventManager.trigger(GuiEventType.
              ATB_POS_PREVIEW, index);
@@ -47,15 +47,15 @@ public class AtbCalculator {
             clone.step();
             break;
         }
-        return clone.getUnits().indexOf(atbUnit);
+        return clone.getUnits().indexOf(atbUnit,true);
     }
 
     public AtbController getClone() {
         return new FauxAtbController(controller, this);
     }
 
-    public Stack<AtbUnit> cloneUnits(AtbController original) {
-        Stack<AtbUnit> atbUnitStack = new Stack<>();
+    public Array<AtbUnit> cloneUnits(AtbController original) {
+        Array<AtbUnit> atbUnitStack = new Array<>();
         for (AtbUnit sub : controller.getUnits()) {
             AtbUnit clone = new AtbPrecalcUnit(original, sub.getUnit());
             clone.setTimeTillTurn(sub.getTimeTillTurn());

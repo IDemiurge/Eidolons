@@ -1,6 +1,5 @@
 package eidolons.system.hotkey;
 
-import com.melloware.jintellitype.JIntellitype;
 import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
@@ -33,8 +32,8 @@ public class DC_KeyManager
 // extends KeyboardFocusManager
  implements KeyListener {
 
-    public static final int DEFAULT_MODE = JIntellitype.MOD_CONTROL;
-    public static final int ALT_MODE = JIntellitype.MOD_ALT;
+    public static final int DEFAULT_MODE = 2;
+    public static final int ALT_MODE = 1;
     public static final String numberChars = "1234567890";
     private static final int SPELL_MASK = KeyEvent.CTRL_DOWN_MASK;
     private static final int ACTION_MASK = KeyEvent.ALT_DOWN_MASK;
@@ -135,9 +134,7 @@ public class DC_KeyManager
     }
 
     private boolean checkFunctionHelper(KeyEvent e) {
-        if (GlobalKeys.isGlobalKeysOn()) {
-            return false;
-        }
+
         if (e.getKeyChar() != DebugMaster.FUNCTION_HOTKEY_CHAR) {
             return false;
         }

@@ -66,7 +66,7 @@ public class LastSeenView extends  GenericGridView{
     @Override
     public void addAction(Action action) {
         super.addAction(action);
-        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
+//        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
     }
 
     public void setParentView(GridUnitView parentView) {

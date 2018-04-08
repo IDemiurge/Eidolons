@@ -121,6 +121,12 @@ public class DcHelper implements JUnitHelper {
             source.setFacing(FacingMaster.rotate(source.getFacing(), clockwise));
         }
     }
+    public void endCombat() {
+
+    }
+    public void aggroClosest() {
+
+    }
 
 
     @Override

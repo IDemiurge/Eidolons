@@ -5,15 +5,11 @@ import eidolons.client.cc.gui.neo.tabs.HC_TabPanel;
 import eidolons.client.cc.gui.neo.tabs.TabChangeListener;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel;
 import eidolons.client.cc.gui.pages.HC_PagedListPanel.HC_LISTS;
-import eidolons.client.dc.Launcher;
-import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
-import main.content.enums.system.MetaEnums;
-import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
@@ -22,7 +18,6 @@ import main.elements.Filter;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.auxiliary.log.Chronos;
-import main.system.entity.FilterMaster;
 
 import java.awt.*;
 import java.util.*;
@@ -215,19 +210,7 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             }
 
             List<String> types = DataManager.getTypesSubGroupNames(TYPE, listName);
-            if (Launcher.ILYA_MODE) {
-                if (TYPE == DC_TYPE.SPELLS || TYPE == DC_TYPE.SKILLS) {
-                    FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                     + MetaEnums.WORKSPACE_GROUP.DESIGN, TYPE, true);
-                    FilterMaster.filterByProp(types, G_PROPS.WORKSPACE_GROUP.getName(), ""
-                     + MetaEnums.WORKSPACE_GROUP.IMPLEMENT, TYPE, true);
 
-                    FilterMaster.filterByProp(types, PROPS.ITEM_SHOP_CATEGORY.getName(), ""
-                     + ItemEnums.ITEM_SHOP_CATEGORY.SPECIAL, TYPE, true);
-                    // so you see, it wouldn't be hard to filter the items for
-                    // each shop in macro
-                }
-            }
             if (types == null) {
                 // types = DataManager.getTypeGroupNames(TYPE, tabName); another
                 // shot in the leg!
@@ -238,9 +221,6 @@ public class VendorListsPanel extends G_Panel implements TabChangeListener {
             }
             List<ObjType> data;
 
-            // if (checkSpecial(listName))
-            // data = getSpecialData();
-            // else {
 
             OBJ_TYPE T = TYPE;
             if (T instanceof C_OBJ_TYPE) {

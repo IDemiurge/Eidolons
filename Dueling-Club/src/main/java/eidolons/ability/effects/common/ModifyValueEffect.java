@@ -45,6 +45,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     private boolean base;
     private String modString;
     private String lastModValue;
+    private boolean broken;
 
     public ModifyValueEffect(PARAMETER param, MOD code, String formula) {
         if (param == null) {
@@ -292,13 +293,14 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     private boolean modify(Obj obj, Map<PARAMETER, String> map) {
         Double amount;
 
-        if (staticAmount == null) {
+        if (staticAmount == null && !broken) {
             try {
                 if (checkStaticallyParsed()) {
                     staticAmount = formula.getDouble(ref);
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+                broken = true;
             }
 
         }

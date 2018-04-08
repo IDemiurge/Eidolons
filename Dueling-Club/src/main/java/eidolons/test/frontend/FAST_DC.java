@@ -9,7 +9,6 @@ import eidolons.game.core.launch.TestLauncher;
 import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.core.state.Saver;
 import eidolons.libgdx.launch.DemoLauncher;
-import eidolons.system.hotkey.GlobalKeys;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -207,9 +206,7 @@ public class FAST_DC {
 
 
     private static void initKeyManager() {
-        if (GLOBAL_HOTKEYS_ON) {
-            new GlobalKeys().initDC_GlobalKeys();
-        }
+
     }
 
     public static TestLauncher getLauncher() {

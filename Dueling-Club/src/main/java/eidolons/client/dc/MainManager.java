@@ -17,7 +17,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.core.game.DC_Game.GAME_TYPE;
 import eidolons.game.module.adventure.MacroManager;
-import eidolons.system.hotkey.GlobalKeys;
 import eidolons.system.hotkey.HC_KeyManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -53,7 +52,6 @@ public class MainManager implements SequenceManager {
     private Unit hero;
     private ChoiceSequence sequence;
     private HC_SequenceMaster sequenceMaster;
-    private GlobalKeys globalKeys;
     private boolean macroMode;
     private DC_Game game;
 
@@ -62,10 +60,6 @@ public class MainManager implements SequenceManager {
         this.menuComp = menuComp;
         sequenceMaster = new HC_SequenceMaster();
         keyManager = new HC_KeyManager();
-        this.globalKeys = new GlobalKeys();
-        if (Launcher.ITS_ME) {
-            globalKeys.initMenuGlobalKeys();
-        }
 
     }
 
@@ -374,12 +368,6 @@ public class MainManager implements SequenceManager {
 
     public void exitToMainMenu() {
 
-        try {
-            globalKeys.disable();
-            globalKeys.initMenuGlobalKeys();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
         Launcher.resetView(VIEWS.MENU);
         currentItem = MAIN_MENU_ITEMS.MAIN;
         refresh();
@@ -393,7 +381,6 @@ public class MainManager implements SequenceManager {
 
     private void launchDC(String value) {
         // TODO
-        globalKeys.initDC_GlobalKeys();
         Launcher.launchDC(value);
     }
 

@@ -30,6 +30,7 @@ import java.util.Map;
 public class StackingRule implements ActionRule {
 
     private static final int MAX_OVERLAYING_ON_CELL = 4;
+    private static final Integer CORPSE_GIRTH_FACTOR = 3;
     private static StackingRule instance;
     private DC_Game game;
     private HashMap<Entity, HashMap<Coordinates, Boolean>> cache = new HashMap();
@@ -39,18 +40,6 @@ public class StackingRule implements ActionRule {
         instance = this;
     }
 
-    public static void applyStackingModifiers(List<Unit> units) {
-        for (Unit unit : units) {
-            for (Unit otherUnit : units) {
-                if (unit == otherUnit) {
-                    continue;
-                }
-
-            }
-        }
-        // friend or foe? grapple
-
-    }
 
     public static boolean checkCanPlace(Coordinates c, Entity unit,
                                         List<? extends Entity> otherUnits) {
@@ -97,8 +86,6 @@ public class StackingRule implements ActionRule {
         }
         BattleFieldObject randomTarget = new RandomWizard<BattleFieldObject>().getObjectByWeight(map);
         ref.setTarget(randomTarget.getId());
-        // action.addProperty(G_PROPS.DYNAMIC_BOOLS,
-        // DYNAMIC_BOOLS.MISSED_ALREADY); //NO RESTRAINTS! :)
         action.activatedOn(ref);
 
     }
@@ -186,29 +173,14 @@ public class StackingRule implements ActionRule {
             if (u == unit) {
                 continue;
             }
-//            if (DoorMaster.isDoor((BattleFieldObject) u)) {
-//                Door door = (Door) u;
-//                if (!DoorMaster.isOpen(door))
-////                if (!u.checkProperty(G_PROPS.STATUS, "" + UnitEnums.STATUS.UNLOCKED)) {
-//                    return false;
-////                }
-//            }
             if (UnitAnalyzer.isWall(u)) {
-                // not flying
-//                if (!UnitAnalyzer.isFlying(unit)) {
                 return false;
-//                }
             }
             if (u.isDead())
-                girth += u.getIntParam(PARAMS.GIRTH) / 3;
+                girth += u.getIntParam(PARAMS.GIRTH) / CORPSE_GIRTH_FACTOR;
             else
                 girth += u.getIntParam(PARAMS.GIRTH);
 //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
-//
-//            }
-            // main.system.auxiliary.LogMaster.log(1, "****************** " +
-            // u.getName()
-            // + "'s Girth " + u.getIntParam(PARAMS.GIRTH));
         }
         // [QUICK FIX]
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {
@@ -216,9 +188,6 @@ public class StackingRule implements ActionRule {
         } else {
             girth += unit.getIntParam(PARAMS.GIRTH);
         }
-        // main.system.auxiliary.LogMaster.log(1, "****************** " + space
-        // + " Space vs " + girth
-        // + " Girth on " + c + " for " + unit);
         space = space * maxSpaceTakenPercentage / 100;
         if (space >= girth) {
             result = true;
@@ -255,31 +224,4 @@ public class StackingRule implements ActionRule {
         return true;
     }
 
-    // TODO
-    // doors
-    // would
-    // set
-    // this
-    // for
-    // the
-    // underlying
-    // cell?
-    // Perhaps
-    // some
-    // walls
-    // would
-    // reduce
-    // it
-    // to
-    // all
-    // adjacent
-    // ones
-    // too...
-    // unless
-    // we
-    // do
-    // terrain
-    // types
-    // like
-    // 'corridor'
 }

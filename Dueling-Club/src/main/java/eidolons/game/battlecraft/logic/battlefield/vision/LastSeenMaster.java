@@ -40,7 +40,7 @@ public class LastSeenMaster {
         obj.setLastSeenTime(time);
         obj.setLastSeenFacing(obj.getFacing());
         obj.setLastSeenOutline(obj.getOutlineTypeForPlayer());
-        main.system.auxiliary.log.LogMaster.log(1, obj.getOutlineTypeForPlayer()+ "LSV RESET FOR " + obj +
-         time);
+//        main.system.auxiliary.log.LogMaster.log(1, obj.getOutlineTypeForPlayer()+ "LSV RESET FOR " + obj +
+//         time);
     }
 }

@@ -1405,6 +1405,6 @@ public class Unit extends DC_UnitModel {
         return getAction(
          clockwise
          ?  STD_ACTIONS.Turn_Clockwise.toString()
-         :  STD_ACTIONS.Turn_Clockwise.toString());
+         :  STD_ACTIONS.Turn_Anticlockwise.toString());
     }
 }
