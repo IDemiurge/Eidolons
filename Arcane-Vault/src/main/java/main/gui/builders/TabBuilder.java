@@ -18,7 +18,6 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.swing.generic.components.G_TabbedPanel;
 import eidolons.swing.generic.services.dialog.DialogMaster;
-import main.swing.generic.services.layout.LayoutInfo;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.CollectionsMaster;
 import main.system.auxiliary.data.FileManager;

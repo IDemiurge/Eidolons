@@ -4,14 +4,12 @@ import main.content.ContentManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.game.logic.dungeon.editor.LevelEditor;
 import main.gui.builders.EditViewPanel;
 import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
 import main.swing.SwingMaster;
 import main.swing.generic.components.G_Panel;
-import main.system.launch.CoreEngine;
 import main.utilities.workspace.Workspace;
 
 import javax.swing.*;
@@ -28,11 +26,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
     private JTree tree;
 
     public AV_TreeSelectionListener(JTree tree) {
-        if (CoreEngine.isLevelEditor()) {
-            panel = LevelEditor.getMainPanel().getInfoPanel();
-        } else {
             panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-        }
         this.tree = tree;
         // tree.setSelectionPath(path);
         // DefaultMutableTreeNode node = ArcaneVault.getMainBuilder()
@@ -60,11 +54,8 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
 
         String name = (String) node.getUserObject();
         String tab;
-        if (panel.isLevelEditor()) {
-            tab = LevelEditor.getSimulation().getSelectedEntity().getOBJ_TYPE();
-        } else {
+
             tab = ArcaneVault.getMainBuilder().getSelectedTabName();
-        }
         if (tab == null) {
             Workspace workspace = ArcaneVault.getWorkspaceManager().getWorkspaceByTab(
                     (G_Panel) SwingMaster.getParentOfClass(tree, G_Panel.class));
