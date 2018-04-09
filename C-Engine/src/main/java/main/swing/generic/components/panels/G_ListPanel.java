@@ -2,13 +2,10 @@ package main.swing.generic.components.panels;
 
 import main.content.OBJ_TYPE;
 import main.entity.obj.Obj;
-import main.game.bf.SwingBattleField;
-import main.game.core.game.Game;
 import main.game.core.state.GameState;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.list.CustomList;
 import main.swing.generic.components.list.G_List;
-import main.swing.generic.services.listener.ObjListMouseListener;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
 
@@ -30,7 +27,6 @@ public abstract class G_ListPanel<E> extends G_Panel {
     protected Collection<E> data;
     protected GameState state;
     protected Obj obj;
-    protected SwingBattleField bf;
     protected int hpolicy = JScrollPane.HORIZONTAL_SCROLLBAR_NEVER;
     protected int vpolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER;
     protected int layoutOrientation = JList.HORIZONTAL_WRAP;
@@ -41,30 +37,10 @@ public abstract class G_ListPanel<E> extends G_Panel {
     private boolean permanent;
     private MouseListener customMouseListener;
 
-    // private BorderChecker borderChecker;
-    // private BORDER getBorder(ObjType value) {
-    // // TODO preCheck hero
-    // if (borderChecker == null)
-    // return DEFAULT_BORDER;
-    // return borderChecker.getBorder(value);
-    // }
-    // public BorderChecker getBorderChecker() {
-    // return borderChecker;
-    // }
-    //
-    // public void setBorderChecker(BorderChecker borderChecker) {
-    // this.borderChecker = borderChecker;
-    // }
-    // abstract protected E getEmptyItem();
-
     public G_ListPanel(List<E> list) {
         this(list, GuiManager.getSmallObjSize(), null);
         permanent = true;
 
-    }
-
-    public G_ListPanel() {
-        this(Game.game.getState());
     }
 
     public G_ListPanel(List<E> list, int obj_size, GameState state) {
@@ -217,7 +193,7 @@ public abstract class G_ListPanel<E> extends G_Panel {
         if (customMouseListener != null) {
             return customMouseListener;
         }
-        return new ObjListMouseListener<>(getList());
+        return null ;
     }
 
     protected boolean isScrollable() {

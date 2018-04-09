@@ -26,7 +26,6 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.Log;
 import main.system.entity.ConditionMaster;
 import main.system.entity.IdManager;
-import main.system.entity.ValueHelper;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.text.LogManager;
@@ -51,8 +50,6 @@ public abstract class Game implements Serializable {
     protected ConditionMaster conditionMaster;
     protected RequirementsManager requirementsManager;
     protected ValueManager valueManager;
-    protected ValueHelper valueHelper;
-    // private Obj hero;
     protected LogManager logManager;
     protected Log log;
 
@@ -300,9 +297,6 @@ public abstract class Game implements Serializable {
         return null;
     }
 
-    public ValueHelper getValueHelper() {
-        return valueHelper;
-    }
 
     public ValueManager getValueManager() {
         return valueManager;

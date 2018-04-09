@@ -1,8 +1,5 @@
 package eidolons.content;
 
-import eidolons.client.cc.gui.neo.tree.view.ClassTreeView;
-import eidolons.client.cc.gui.neo.tree.view.SkillTreeView;
-import eidolons.client.dc.Launcher;
 import eidolons.entity.Deity;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -19,7 +16,6 @@ import main.content.enums.entity.HeroEnums.CLASS_TYPE;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
-import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.values.parameters.*;
 import main.content.values.properties.G_PROPS;
@@ -886,26 +882,26 @@ public class DC_ContentManager extends ContentManager {
     public static DC_WeaponObj getDefaultWeapon(Unit heroObj) {
         return new DC_WeaponObj(DataManager.getType(DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
     }
-
+@Deprecated
     public static String getFocusMasteries() {
         if (focusMasteries != null) {
             return focusMasteries;
         }
         focusMasteries = "";
-        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
-            focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
-        }
+//        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
+//            focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
+//        }
         return focusMasteries;
     }
-
+@Deprecated
     public static String getFocusClassGroups() {
         if (focusClassGroups != null) {
             return focusClassGroups;
         }
         focusClassGroups = "";
-        for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
-            focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
-        }
+//        for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
+//            focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
+//        }
         return focusClassGroups;
     }
 
@@ -987,14 +983,14 @@ public class DC_ContentManager extends ContentManager {
         ArrayList<PARAMETER> params = new ArrayList<>();
         params.addAll(Arrays.asList(G_PARAMS.values()));
         params.addAll(Arrays.asList(PARAMS.values()));
-        if (Launcher.isMacroMode() || CoreEngine.isArcaneVault()) {
+        if (CoreEngine.isMacro() || CoreEngine.isArcaneVault()) {
             params.addAll(Arrays.asList(MACRO_PARAMS.values()));
         }
 
         ArrayList<PROPERTY> props = new ArrayList<>();
         props.addAll(Arrays.asList(G_PROPS.values()));
         props.addAll(Arrays.asList(PROPS.values()));
-        if (Launcher.isMacroMode() || CoreEngine.isArcaneVault()) {
+        if (CoreEngine.isMacro() || CoreEngine.isArcaneVault()) {
             props.addAll(Arrays.asList(MACRO_PROPS.values()));
         }
 

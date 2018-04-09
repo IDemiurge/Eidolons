@@ -1,13 +1,11 @@
 package eidolons.game.module.adventure.town;
 
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.gui.lists.ShopListsPanel;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.cc.logic.items.ItemMaster;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.utils.SaveMaster;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
 import main.content.CONTENT_CONSTS2.SHOP_MODIFIER;
 import main.content.CONTENT_CONSTS2.SHOP_TYPE;
@@ -42,7 +40,6 @@ import java.util.List;
 public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
     List<ObjType> items;
-    private ShopListsPanel shopListsPanel;
     private SHOP_TYPE shopType;
     private SHOP_LEVEL shopLevel;
     private SHOP_MODIFIER shopModifier;
@@ -206,11 +203,6 @@ public class Shop extends TownPlace implements ShopInterface {
     }
 
     private void refreshGui() {
-        if (shopListsPanel == null) {
-            return;
-        }
-        shopListsPanel.resetTab(getName());
-        CharacterCreator.refreshGUI();
     }
 
 
@@ -300,8 +292,4 @@ public class Shop extends TownPlace implements ShopInterface {
 
     }
 
-    public void setVendorPanel(ShopListsPanel shopListsPanel) {
-        this.shopListsPanel = shopListsPanel;
-
-    }
 }

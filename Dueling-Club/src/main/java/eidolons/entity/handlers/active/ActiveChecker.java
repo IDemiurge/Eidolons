@@ -74,12 +74,6 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
             }
         }
         if (!getGame().isOffline()) {
-//            if (getGame().isHost()) {
-//                if (getGame().getConnector().isWaiting()) {
-//                    getEntity().setCustomTooltip("Wait for the other players to join!");
-//                    return true;
-//                }
-//            }
         }
         return false;
     }

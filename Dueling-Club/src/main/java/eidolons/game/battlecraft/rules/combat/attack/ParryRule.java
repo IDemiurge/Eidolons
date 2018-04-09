@@ -11,8 +11,7 @@ import eidolons.system.DC_Formulas;
 import main.content.enums.entity.ItemEnums;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
+import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -79,14 +78,11 @@ public class ParryRule {
         if (dual) {
             mod /= 2;
         }
-        AnimPhase animPhase = new AnimPhase(PHASE_TYPE.PARRY, chanceRounded);
         int durabilityLost = attacked.getWeapon(false).reduceDurabilityForDamage(damage, damage,
          mod, false);
-        animPhase.addArg(durabilityLost);
         if (dual) {
             durabilityLost += attacked.getWeapon(true).reduceDurabilityForDamage(damage, damage,
              mod, false);
-            animPhase.addArg(durabilityLost);
         }
 
         // if (BROKEN)
@@ -94,9 +90,10 @@ public class ParryRule {
         mod = DC_Formulas.DEFAULT_PARRY_DURABILITY_DAMAGE_MOD;
         durabilityLost = durabilityLost * mod / 100;
         attacker.getActiveWeapon(attack.isOffhand()).reduceDurability(durabilityLost);
-        animPhase.addArg(durabilityLost);
 
-        attack.getAnimation().addPhase(animPhase);
+        if (CoreEngine.isPhaseAnimsOn()) {
+            //TODO
+        }
 
         // game.getLogManager().doneLogEntryNode(); ???
         return true;

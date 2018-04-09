@@ -27,7 +27,6 @@ import main.entity.type.BuffType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import main.system.text.TextParser;
@@ -149,9 +148,6 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
         buffType.setTransient(isTransient());
         buff = (BuffObj) game.createBuff(buffType, active, ref.getSourceObj().getOwner(), ref,
          effect, duration, getRetainConditions());
-        if (getAnimation() != null) {
-            getAnimation().addPhaseArgs(PHASE_TYPE.BUFF, buff);
-        }
 
         getBuffCache().put(target, buff);
             if (EffectFinder.check(effect, ImmobilizeEffect.class)){

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
-import eidolons.libgdx.anims.phased.PhaseAnim;
 import eidolons.libgdx.anims.std.EffectAnimCreator;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -39,7 +38,6 @@ public class CompositeAnim implements Animation {
     Map<ANIM_PART, List<Animation>> timeAttachedAnims;
     ANIM_PART part;
     int index;
-    PhaseAnim phaseAnim;
     private boolean finished;
     private boolean running;
     private Anim currentAnim;

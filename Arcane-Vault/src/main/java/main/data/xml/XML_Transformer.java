@@ -2,7 +2,12 @@ package main.data.xml;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import main.content.*;
+import eidolons.content.ValueHelper;
+import eidolons.game.core.game.DC_Game;
+import main.content.ContentManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -10,17 +15,15 @@ import main.data.DataManager;
 import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.game.core.game.Game;
 import main.gui.components.controls.ModelManager;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.entity.ValueHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +65,7 @@ public class XML_Transformer {
 
     public static void renameValue() {
         String valueName = JOptionPane.showInputDialog(null, "Enter value to be renamed ", null);
-        VALUE val = new ValueHelper(Game.game).getValue(valueName);
+        VALUE val = new ValueHelper(DC_Game.game).getValue(valueName);
         String newName = JOptionPane.showInputDialog(null, "Enter value to be renamed ", null);
         renameValue(val, newName);
     }

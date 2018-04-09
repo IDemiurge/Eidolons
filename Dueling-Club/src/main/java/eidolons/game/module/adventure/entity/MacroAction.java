@@ -14,7 +14,6 @@ import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.graphics.ANIM;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class MacroAction extends MacroObj implements ActiveObj {
@@ -80,7 +79,6 @@ public class MacroAction extends MacroObj implements ActiveObj {
 
     @Override
     public void invokeRightClicked() {
-        game.getManager().infoSelect(this);
 
     }
 
@@ -161,15 +159,6 @@ public class MacroAction extends MacroObj implements ActiveObj {
         return false;
     }
 
-    @Override
-    public ANIM getAnimation() {
-        return null;
-    }
-
-    @Override
-    public void initAnimation() {
-
-    }
 
     @Override
     public boolean isAttackGeneric() {

@@ -5,7 +5,6 @@ import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.entity.MapObj;
-import eidolons.game.module.adventure.gui.map.obj.PlaceComp;
 import eidolons.game.module.adventure.map.area.AreaManager;
 import eidolons.game.module.adventure.travel.TravelMasterOld;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -93,13 +92,8 @@ public class Place extends MapObj {
         setProperty(MACRO_PROPS.PLACE_VISIBILITY_STATUS, visibilityStatus.toString());
     }
 
-    public void setComp(PlaceComp comp) {
-        this.comp = comp;
-    }
-
-
     public int getDefaultSize() {
-        return PlaceComp.DEFAULT_SIZE;
+        return 96;
     }
 
     public Dungeon getTopDungeon() {

@@ -6,7 +6,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.IlluminationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.dungeon.minimap.Minimap;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
@@ -34,7 +33,6 @@ public class Dungeon extends LightweightEntity {
     private COLOR_THEME colorTheme;
     private DUNGEON_TYPE dungeonType;
     private DUNGEON_TEMPLATES template;
-    private Minimap minimap;
     private String levelFilePath;
 
     /*

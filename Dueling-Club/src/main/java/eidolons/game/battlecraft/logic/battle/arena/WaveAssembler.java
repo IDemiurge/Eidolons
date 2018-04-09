@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.battle.arena;
 
-import eidolons.client.cc.logic.UnitLevelManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
@@ -9,6 +8,7 @@ import eidolons.game.battlecraft.logic.battle.universal.BattleOptions;
 import eidolons.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.EncounterEnums;

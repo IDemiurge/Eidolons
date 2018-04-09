@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure.entity;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -15,6 +14,7 @@ import eidolons.game.module.adventure.map.Route;
 import eidolons.game.module.adventure.town.Town;
 import eidolons.game.module.adventure.travel.RestMasterOld;
 import eidolons.game.module.adventure.travel.TravelMasterOld;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.parameters.PARAMETER;

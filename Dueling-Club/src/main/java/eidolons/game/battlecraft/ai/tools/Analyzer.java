@@ -353,7 +353,7 @@ public class Analyzer extends AiHandler {
         // TODO performance dicatates adjacent only...
         return getCells(ai, true, false, true);
 
-        // List<DC_Cell> cells = getCells(ai, false, false, true);
+        // List<DC_Cell> cells = getCellsSet(ai, false, false, true);
         // List<DC_Cell> list = new ArrayList<>();
         // int max_distance = -1;
         // loop: for (DC_Cell c : cells) {
@@ -454,7 +454,7 @@ public class Analyzer extends AiHandler {
         // getOrCreate closest enemy?
 //        DC_HeroObj enemy = getClosestEnemy(ai);
 //        List<DC_Obj> list = new ArrayList<>();
-//        for (DC_Cell cell : getCells(ai, false, false, true)) {
+//        for (DC_Cell cell : getCellsSet(ai, false, false, true)) {
 //            if (PositionMaster.getDistance(cell, enemy) <= HearingRule
 //                    .getSafeDistance(ai.getUnit(), enemy))
 //                list.add(cell);
@@ -557,7 +557,7 @@ public class Analyzer extends AiHandler {
         //
         // DC_HeroObj unit = ai.getUnit();
         // Coordinates originalCoordinates = unit.getCoordinates();
-        // for (DC_Cell cell : getCells(ai, true)) {
+        // for (DC_Cell cell : getCellsSet(ai, true)) {
         // unit.setCoordinates(cell.getCoordinates());
         // for (DC_Cell target_cell : cells) {
         // if (!list.contains(cell))

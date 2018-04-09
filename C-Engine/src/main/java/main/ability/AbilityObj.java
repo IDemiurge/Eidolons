@@ -15,7 +15,6 @@ import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.ANIM;
 import main.system.text.TextParser;
 import org.w3c.dom.Node;
 
@@ -319,15 +318,6 @@ public class AbilityObj extends Obj implements Ability, ActiveObj, Interruptable
         return false;
     }
 
-    @Override
-    public ANIM getAnimation() {
-        return null;
-    }
-
-    @Override
-    public void initAnimation() {
-
-    }
 
     @Override
     public boolean isAttackGeneric() {

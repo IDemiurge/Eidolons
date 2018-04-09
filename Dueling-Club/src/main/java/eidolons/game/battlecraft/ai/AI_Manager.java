@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.ai;
 
-import eidolons.client.dc.Launcher;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AI_Manager extends AiMaster {
+    public static final boolean BRUTE_AI_MODE = false;
+    public static final boolean DEV_MODE =false ;
     private static boolean running;
     private static boolean off;
     private static List<DC_ActiveObj> brokenActions = new ArrayList<>();
@@ -149,7 +150,7 @@ public class AI_Manager extends AiMaster {
             try {
                 getMessageBuilder().append("Task: " + action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
-                    if (game.isDebugMode() || Launcher.DEV_MODE)
+                    if (game.isDebugMode()  )
                         FloatingTextMaster.getInstance().
                          createFloatingText(TEXT_CASES.BATTLE_COMMENT,
                           getMessageBuilder().toString(), getUnit());

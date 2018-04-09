@@ -1,7 +1,6 @@
 package eidolons.game.core.launch;
 
 import eidolons.ability.UnitTrainingMaster;
-import eidolons.client.cc.logic.items.ItemGenerator;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
@@ -15,6 +14,7 @@ import eidolons.game.core.state.Loader;
 import eidolons.game.core.state.Saver;
 import eidolons.game.module.adventure.faction.FactionMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.anims.controls.EmitterController;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.anims.particles.lighting.LightingManager;

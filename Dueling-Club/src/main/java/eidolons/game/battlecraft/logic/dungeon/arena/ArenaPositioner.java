@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.dungeon.arena;
 
-import eidolons.client.cc.logic.UnitLevelManager;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
@@ -10,6 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;

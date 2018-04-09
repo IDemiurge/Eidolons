@@ -133,7 +133,7 @@ public class ToolTipManager extends TablePanel {
         guiStage.getRadial().hover(entity);
         //differentiate radial from bottom panel? no matter really ... sync :)
 
-//        guiStage.getBottomPanel().getSpellPanel().getCells();
+//        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
 
     }
 

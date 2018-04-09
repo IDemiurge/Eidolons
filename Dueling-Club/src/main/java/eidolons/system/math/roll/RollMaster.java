@@ -6,8 +6,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
-import eidolons.system.graphics.EffectAnimation;
-import eidolons.system.graphics.PhaseAnimation;
 import main.content.ContentManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ROLL_TYPES;
@@ -21,9 +19,6 @@ import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.graphics.ANIM;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -226,15 +221,9 @@ public class RollMaster {
         ref.getGame().getLogManager().log(RollMaster.logString);
         ref.getGame().getLogManager().doneLogEntryNode();
         if (CoreEngine.isPhaseAnimsOn())
-            if (ref.getActive() != null) {
-                ANIM anim = new EffectAnimation((DC_ActiveObj) ref.getActive());
-                anim.addPhase(new AnimPhase(PHASE_TYPE.ROLL, roll));
-                entry.setLinkedAnimation(anim);
-            }
-
-        // if (ref.getActive().getAnimation() != null)
-        // entry.setLinkedAnimation(ref.getActive().getAnimation().getFilteredClone(
-        // PHASE_TYPE.ROLL));
+        {
+            //TODO
+        }
         if (ref.getGame().isDummyMode()) {
             return true;
         }
@@ -323,14 +312,7 @@ public class RollMaster {
         ref.getGame().getLogManager();
         ref.getGame().getLogManager();
         if (!ref.isAnimationDisabled()) {
-            PhaseAnimation anim = null;
-            if (ref.getActive() != null) {
-                // else ?
-                anim = ((DC_ActiveObj) ref.getActive()).getAnimation();
-            }
-            if (anim != null) {
-                anim.addPhaseArgs(PHASE_TYPE.ROLL, roll);
-            }
+             //TODO
         }
         roll.setResult(result);
         roll.setLogAppendix(logAppendix);

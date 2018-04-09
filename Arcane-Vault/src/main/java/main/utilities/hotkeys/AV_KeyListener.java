@@ -1,10 +1,10 @@
 package main.utilities.hotkeys;
 
-import main.game.core.game.Game;
+import eidolons.content.ValueHelper;
+import eidolons.game.core.game.DC_Game;
 import main.gui.components.controls.AV_ButtonPanel;
 import main.gui.components.controls.ModelManager;
 import main.launch.ArcaneVault;
-import main.system.entity.ValueHelper;
 import main.utilities.filter.FilterMaster;
 import main.utilities.search.SearchMaster;
 import main.utilities.search.TypeFinder;
@@ -16,9 +16,9 @@ public class AV_KeyListener implements KeyListener {
 
     private static final char DELETE_HOTKEY_CHAR = 'w';
     private static final char COPY_VALUES_HOTKEY_CHAR = 'c';
-    private Game game;
+    private DC_Game game;
 
-    public AV_KeyListener(Game game) {
+    public AV_KeyListener(DC_Game game) {
         this.game = game;
     }
 
@@ -42,8 +42,6 @@ public class AV_KeyListener implements KeyListener {
                 // case 'v':
                 break;
             case 'y':
-                ArcaneVault.getMainBuilder().getEditViewPanel().getTreeViewComp().adjustOffset(
-                        e.isAltDown(), false);
                 return true;
             // case 'x':
             // ArcaneVault.getMainBuilder().getEditViewPanel().getTreeViewComp().adjustOffset(

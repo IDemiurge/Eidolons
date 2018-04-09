@@ -33,12 +33,10 @@ public abstract class DialogEffect extends DC_Effect implements OneshotEffect {
         return true;
     }
 
-    protected abstract String getOperationsData();
 
     protected abstract boolean showDialog();
 
     protected abstract void automaticDialogResolve();
 
-    protected abstract void processOperationCommand(String string);
 
 }

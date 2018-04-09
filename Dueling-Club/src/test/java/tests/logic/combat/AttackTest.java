@@ -1,16 +1,16 @@
 package tests.logic.combat;
 
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
-import main.data.DataManager;
-import main.entity.Ref;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import main.entity.type.ObjType;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.Ref;
+import main.entity.type.ObjType;
 import main.game.logic.action.context.Context;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;

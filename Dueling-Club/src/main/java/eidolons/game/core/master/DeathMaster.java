@@ -22,12 +22,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
-import main.system.graphics.ANIM;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.sound.SoundMaster.SOUNDS;
-import main.system.text.EntryNodeMaster.ENTRY_TYPE;
-import main.system.text.LogEntryNode;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -77,8 +72,6 @@ public class DeathMaster extends Master {
         ref.setSource(killer.getId());
         ref.setTarget(killed.getId());
 
-        // List<Attachment> attachments = getState().getAttachmentsMap()
-        // .getOrCreate(killed);
 
         for (AbilityObj abil : killed.getPassives()) {
             abil.kill();
@@ -110,9 +103,6 @@ public class DeathMaster extends Master {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-
-//        getGame().getMaster().remove(killed); TODO why was it ever here?! killed doesn't mean removed...
-        // getGame().getBattleField().remove(killed); // TODO GRAVEYARD
         if (!quietly) {
             Ref REF = Ref.getCopy(killer.getRef());
             REF.setTarget(killed.getId());
@@ -124,16 +114,6 @@ public class DeathMaster extends Master {
                  killer.getRef().getAnimationActive());
             }
 
-            LogEntryNode node = game.getLogManager().newLogEntryNode(ENTRY_TYPE.DEATH, killed);
-
-            if (killer.getRef().getAnimationActive() != null) {
-                ANIM animation = killer.getRef().getAnimationActive().getAnimation();
-                if (animation != null) {
-                    animation.addPhase(new AnimPhase(PHASE_TYPE.DEATH, killer, killed));
-                    node.setLinkedAnimation(animation);
-                }
-            }
-
             DC_SoundMaster.playEffectSound(SOUNDS.DEATH, killed);
 
             game.getLogManager().logDeath(killed, killer);
@@ -142,7 +122,6 @@ public class DeathMaster extends Master {
         } else {
             GuiEventManager.trigger(GuiEventType.DESTROY_UNIT_MODEL, killed);
         }
-        // refreshAll();
     }
 
 
@@ -156,8 +135,6 @@ public class DeathMaster extends Master {
                 }
             }
         }
-
-
     }
 
 
@@ -181,32 +158,21 @@ public class DeathMaster extends Master {
                         continue;
                     }
                 }
-//                if (unit.isMine())
-//                    continue;
             }
             unit.kill(unit, false, quiet);
             toRemove.add(unit);
 
         }
-        //if (remove)
         for (BattleFieldObject unit : toRemove) {
             getGame().remove(unit);
         }
-        // reset();
-        // refreshAll();
-        // WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_COMPLETE, true);
     }
 
     public void killAll(boolean retainSelected) {
         for (Unit unit : getGame().getUnits()) {
             if (retainSelected) {
-                if (unit.isActiveSelected()) {
+                if (unit.equals(getGame().getManager().getActiveObj())) {
                     continue;
-                }
-                if (unit.getOwner().isMe()) {
-                    if (getGameManager().getInfoObj().getOwner().isMe()) {
-                        continue;
-                    }
                 }
             }
             killUnitQuietly(unit);

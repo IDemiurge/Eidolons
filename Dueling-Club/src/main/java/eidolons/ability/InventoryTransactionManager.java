@@ -1,18 +1,15 @@
 package eidolons.ability;
 
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.DC_HeroManager;
-import eidolons.client.cc.HeroManager;
-import eidolons.client.cc.gui.lists.dc.DC_InventoryManager;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.swing.frames.InventoryWindow;
-import eidolons.swing.frames.OperationWindow;
-import eidolons.swing.frames.PickUpWindow;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.DC_HeroManager;
+import eidolons.game.module.herocreator.HeroManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
@@ -21,7 +18,6 @@ import main.content.values.properties.PROPERTY;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 public class InventoryTransactionManager {
@@ -30,8 +26,8 @@ public class InventoryTransactionManager {
     public static final PROPERTY[] INV_PROPS = {PROPS.QUICK_ITEMS, PROPS.INVENTORY,
      G_PROPS.MAIN_HAND_ITEM, G_PROPS.ARMOR_ITEM, G_PROPS.OFF_HAND_ITEM, PROPS.JEWELRY,};
     private DC_Game game;
-    private OperationWindow window;
     private HeroManager heroManager;
+    private boolean active;
 
     public InventoryTransactionManager(DC_Game game) {
         heroManager = new DC_HeroManager(game);
@@ -110,57 +106,17 @@ public class InventoryTransactionManager {
         }
     }
 
-    public boolean showInvWindow(Unit hero, Integer nOfOperations) {
-        return showInvWindow(hero, nOfOperations, false);
-
-    }
-
-    public boolean showInvWindow(Unit hero, Integer nOfOperations, boolean pickUp) {
-        // if (window == null)
-        window = (pickUp) ? new PickUpWindow(this, hero, nOfOperations) : new InventoryWindow(this,
-         hero, nOfOperations);
-        window.open();
-
-
-        // else {
-        // window.setHero(hero);
-        // window.setOperationsLeft(nOfOperations);
-        // window.refresh();
-        // }
-//        SwingUtilities.invokeLater(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                window.open();
-//            }
-//        });
-
-        return (boolean) WaitMaster.waitForInput(OPERATION);
-    }
 
     public DC_InventoryManager getInvListManager() {
         return game.getInventoryManager();
     }
 
 
-    public void resetHero(Unit hero, ObjType bufferedType) {
-
-        hero.resetObjectContainers(true);
-
-    }
-
-    public OperationWindow getWindow() {
-        return window;
-    }
-
     public boolean isActive() {
-        if (getWindow() == null) {
-            return false;
-        }
-        if (getWindow().getFrame() == null) {
-            return false;
-        }
-        return window.getFrame().isVisible();
+        return active;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

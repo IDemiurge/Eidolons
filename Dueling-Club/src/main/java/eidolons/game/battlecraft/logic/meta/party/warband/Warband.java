@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.party.warband;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.game.battlecraft.logic.meta.party.FormationMaster.FORMATION;
+import eidolons.game.module.herocreator.logic.party.Party;
 
 import java.util.Map;
 

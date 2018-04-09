@@ -3,7 +3,6 @@ package eidolons.game.module.adventure.entity;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.MacroRef.MACRO_KEYS;
-import eidolons.game.module.adventure.gui.map.obj.MapObjComp;
 import eidolons.game.module.adventure.map.Area;
 import eidolons.game.module.adventure.map.MacroCoordinates;
 import eidolons.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
@@ -20,7 +19,6 @@ public abstract class MapObj extends MacroObj {
     protected Coordinates coordinates;
     protected Coordinates mapRenderPoint;
     protected PLACE_VISIBILITY_STATUS visibilityStatus;
-    protected MapObjComp comp;
     protected Area area;
     private boolean detected;
     private boolean hidden;

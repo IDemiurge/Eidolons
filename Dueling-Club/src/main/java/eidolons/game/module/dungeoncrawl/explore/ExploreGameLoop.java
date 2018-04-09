@@ -180,6 +180,9 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                     }
 
                     if (master.getResetter().isAggroCheckNeeded(input)) {
+                        game.getVisionMaster().getVisionRule().
+                         fullReset(input.getAction().getOwnerObj());
+
                         getGame().getDungeonMaster().getExplorationMaster()
                          .getCrawler().checkStatusUpdate();
                         if (!ExplorationMaster.isExplorationOn()) {
@@ -316,7 +319,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         while (true) {
             if (activeUnit != game.getPlayer(true).getHeroObj()) {
                 activeUnit = (Unit) game.getPlayer(true).getHeroObj();
-                game.getManager().setSelectedActiveObj(activeUnit);
                 GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
             }
 

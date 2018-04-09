@@ -1,16 +1,12 @@
 package eidolons.game.module.adventure.town;
 
-import eidolons.client.cc.logic.party.Party;
-import eidolons.client.dc.HC_SequenceMaster;
-import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroRef;
 import eidolons.game.module.adventure.faction.FactionObj;
 import eidolons.game.module.adventure.map.Place;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.type.ObjType;
 import main.system.datatypes.DequeImpl;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 public class Town extends Place {
 
@@ -46,31 +42,6 @@ public class Town extends Place {
         super.init();
         TownInitializer.initTownPlaces(this);
 
-        // ++ factions
-
-        // ObjType type =
-        // DataManager.getType(getProperty(MACRO_PROPS.TOWN_HALL),
-        // MACRO_OBJ_TYPES.SHOP);
-        // townHall = new TownHall(getGame(), type, ref);
-        // ownerFaction = FactionMaster
-        // .getFaction(getProperty(MACRO_PROPS.FACTION));
-
-    }
-
-    public Tavern selectTavern() {
-        if (taverns.isEmpty()) {
-            return null;
-        }
-        if (taverns.size() == 1) {
-            return taverns.get(0);
-        }
-        HC_SequenceMaster sequenceMaster = new HC_SequenceMaster();
-        sequenceMaster.launchEntitySelection(taverns, PartyHelper.getParty()
-         .getLeader(), "Select Tavern");
-        if (WaitMaster.waitForInput(WAIT_OPERATIONS.SELECTION) == null) {
-            return null;
-        }
-        return getTavern(sequenceMaster.getSequence().getValue());
     }
 
     public Tavern getTavern(String tabName) {

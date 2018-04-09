@@ -3,13 +3,13 @@ package eidolons.game.module.adventure.map.area;
 import eidolons.content.PARAMS;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.global.TimeMaster;
-import eidolons.game.module.adventure.gui.MacroGuiManager;
 import eidolons.game.module.adventure.map.Area;
 import eidolons.game.module.adventure.map.MacroCoordinates;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.travel.EncounterMaster;
 import eidolons.game.module.adventure.travel.MacroGroup;
+import eidolons.libgdx.screens.map.MapScreen;
 import main.content.DC_TYPE;
 import main.content.enums.EncounterEnums.ENCOUNTER_SUBGROUP;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -187,8 +187,8 @@ public class AreaManager {
     }
 
     public static MacroCoordinates getRandomCoordinateWithinArea(Area area) {
-        double x = MacroGuiManager.getMapHeight();
-        double y = MacroGuiManager.getMapWidth();
+        double x = MapScreen.defaultSize;
+        double y =MapScreen.defaultSize;
         Loop.startLoop(10000);
         while (!Loop.loopEnded()) {
             MacroCoordinates c = new MacroCoordinates(

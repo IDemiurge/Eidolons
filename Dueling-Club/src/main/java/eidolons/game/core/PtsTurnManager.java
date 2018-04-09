@@ -7,7 +7,6 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.Comparator;
 
@@ -43,11 +42,6 @@ public class PtsTurnManager extends GenericTurnManager implements Comparator<Uni
         setActiveUnit(unitQueue.peek());
         if (!game.getManager().activeSelect(getActiveUnit())) {
             return false;
-        }
-        if (CoreEngine.isSwingOn()) {
-            if (game.getManager().getInfoObj() == null) {
-                game.getManager().infoSelect(activeUnit);
-            }
         }
         LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
          + "Active unit: " + getActiveUnit());

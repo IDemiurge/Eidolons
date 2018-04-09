@@ -1,15 +1,13 @@
 package eidolons.test.frontend;
 
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.launch.PresetLauncher;
 import eidolons.game.core.launch.TestLauncher;
 import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.core.state.Saver;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.launch.DemoLauncher;
-import eidolons.system.hotkey.GlobalKeys;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -48,7 +46,6 @@ public class FAST_DC {
     private static boolean running;
     private static int unitGroupLevel;
     private static TestLauncher launcher;
-    private static GdxLauncher guiLauncher;
 
     public static boolean isRunning() {
         return running;
@@ -69,13 +66,12 @@ public class FAST_DC {
         CoreEngine.setExceptionTypes(exceptions);
         running = true;
         DC_Engine.systemInit();
-        Launcher.DEV_MODE = true;
         // CoreEngine.setWritingLogFilesOn(true);
         boolean skipChoice = false;
 
 
         List<String> arglist = new ArrayList<>(Arrays.asList(args));
-        if (args != null) {
+        if (args .length>0) {
             if (args[0].contains(PRESET_OPTION_ARG) || args == SKIP_CHOICE_ARGS || (arglist.contains(PRESET_OPTION_ARG) ||
              (arglist.contains(PRESET_ARG)))) {
                 skipChoice = true;
@@ -207,9 +203,7 @@ public class FAST_DC {
 
 
     private static void initKeyManager() {
-        if (GLOBAL_HOTKEYS_ON) {
-            new GlobalKeys().initDC_GlobalKeys();
-        }
+
     }
 
     public static TestLauncher getLauncher() {

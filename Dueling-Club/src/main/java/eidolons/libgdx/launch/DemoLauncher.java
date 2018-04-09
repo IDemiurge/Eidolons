@@ -1,7 +1,7 @@
 package eidolons.libgdx.launch;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import eidolons.client.cc.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;

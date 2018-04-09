@@ -1,8 +1,5 @@
 package eidolons.test.debug;
 
-import eidolons.client.cc.CharacterCreator;
-import eidolons.game.core.game.DC_Game;
-import eidolons.swing.components.panels.DC_InfoPanel;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.windows.G_Frame;
 import main.swing.panels.misc.G_InputPanel;
@@ -13,7 +10,7 @@ import main.system.graphics.GuiManager;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
+@Deprecated
 public class DebugPanel {
 
     G_LogPanel logPanel;
@@ -22,7 +19,6 @@ public class DebugPanel {
     private G_Frame frame;
     private DebugMaster master;
 
-    private DC_InfoPanel ip;
 
     public DebugPanel(DebugMaster master) {
         frame = new G_Frame("Debug Panel");
@@ -47,12 +43,12 @@ public class DebugPanel {
         buttonPanel = new FunctionPanel(master);
         inputPanel = new G_InputPanel();
 
-        ip = new DC_InfoPanel(null, null, DC_Game.game.getState());
+//        ip = new DC_InfoPanel(null, null, DC_Game.game.getState());
 
         G_Panel panel = new G_Panel();
         panel.setBackground(ColorManager.getTranslucent());
         panel.setOpaque(false);
-        panel.add(ip, "id ip, pos 0 0");
+//        panel.add(ip, "id ip, pos 0 0");
 
         panel.add(buttonPanel, "id btns, pos ip.x2 0");
 
@@ -113,12 +109,12 @@ public class DebugPanel {
         if (!frame.isVisible()) {
             return;
         }
-        if (master.getGame().isSimulation()) {
-            ip.setInfoObj(CharacterCreator.getHero());
-        } else {
-            ip.setInfoObj(master.getGame().getManager().getInfoObj());
-        }
-        ip.refresh();
+//        if (master.getGame().isSimulation()) {
+//            ip.setInfoObj(CharacterCreator.getHero());
+//        } else {
+//            ip.setInfoObj(master.getGame().getManager().getInfoObj());
+//        }
+//        ip.refresh();
 
     }
 

@@ -22,10 +22,7 @@ import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.XMap;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 3/3/2017.
@@ -153,9 +150,9 @@ public class PathSequenceConstructor extends AiHandler {
                 }
             }
             if (list.isEmpty()) {
-                List<Coordinates> coordinatesList = null;// TODO prioritizedCells;
+                Set<Coordinates> coordinatesList = null;// TODO prioritizedCells;
                 if (!ListMaster.isNotEmpty(coordinatesList)) {
-                    coordinatesList = getUnit().getGame().getBattleField().getGrid()
+                    coordinatesList = getUnit().getGame().getGrid()
                      .getCoordinatesList();
                 }
                 // TODO FILTER THESE!!!

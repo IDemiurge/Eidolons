@@ -2,8 +2,8 @@ package eidolons.libgdx.gui.panels.dc.unitinfo;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.TablePanel;
 
 import java.util.Iterator;
 import java.util.List;

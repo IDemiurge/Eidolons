@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure.travel;
 
-import eidolons.client.dc.Launcher;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.MacroGame;
@@ -213,7 +212,7 @@ public class TravelMasterOld {
         }
 //        DC_Game.game.getDungeonMaster().setDungeon(destination.getTopDungeon());
         // other setups? battlemanager...
-        Launcher.launchDC(party.getName());
+//    TODO     Launcher.launchDC(party.getName());
 
     }
 

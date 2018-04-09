@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure;
 
-import eidolons.client.dc.Launcher;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.macro.MacroPartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
@@ -9,8 +8,6 @@ import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.global.Campaign;
 import eidolons.game.module.adventure.global.TimeMaster;
-import eidolons.game.module.adventure.gui.WorldEditorInterface;
-import eidolons.game.module.adventure.gui.map.MapView;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.libgdx.screens.map.editor.MapPointMaster;
@@ -30,7 +27,6 @@ import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +43,10 @@ public class MacroManager {
      * Influence should act on their own - buy stuff, sell stuff, play with AI
      * in battle
      */
-    private static MapView mapView;
-    private static JComponent mapComponent;
     private static MacroGame game;
     private static String campaignName;
     private static String worldName;
     private static Unit selectedPartyMember;
-    private static boolean editMode;
-    private static WorldEditorInterface editorView;
     private static DequeImpl<OBJ_TYPE> custom_OBJ_TYPES;
     private static DequeImpl<ObjType> customTypes;
 
@@ -298,21 +290,6 @@ public class MacroManager {
         return campaignName;
     }
 
-    public static void setCampaignName(String campaignName) {
-        MacroManager.campaignName = campaignName;
-    }
-
-    public static boolean isMacroGame() {
-        // return game!=null;
-        if (Launcher.getMainManager() == null) {
-            return false;
-        }
-        return Launcher.getMainManager().isMacroMode();
-    }
-
-    public static JComponent getMapComponent() {
-        return mapComponent;
-    }
 
     public static MacroGame getGame() {
         return game;
@@ -322,22 +299,6 @@ public class MacroManager {
         return CoreEngine.isMapEditor();
     }
 
-
-    public static String getDefaultworldname() {
-        return defaultWorldName;
-    }
-
-    public static String getDefaultcampaignname() {
-        return defaultCampaignName;
-    }
-
-    public static WorldEditorInterface getEditorView() {
-        return editorView;
-    }
-
-    public static void setEditorView(WorldEditorInterface view) {
-        editorView = view;
-    }
 
     public static void initTypes() {
         initCustomTypes();

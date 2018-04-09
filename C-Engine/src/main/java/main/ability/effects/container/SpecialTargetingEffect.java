@@ -82,14 +82,7 @@ public abstract class SpecialTargetingEffect extends MicroEffect implements Cont
                     coordinates = new LinkedHashSet();
                 ref.getGroup().getObjects().forEach(o -> coordinates.add(o.getCoordinates()));
             }
-        } else {
-            getActiveObj().initAnimation();
         }
-//        }
-        getActiveObj().initAnimation();
-        // if (ref.getObj(KEYS.ACTIVE) != null) {
-        // ref.getObj(KEYS.ACTIVE).getRef().setGroup(ref.getGroup());
-        // } //a sideeffect!
         boolean result;
 
         result = effects.apply(ref);

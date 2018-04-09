@@ -6,7 +6,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.InstantAttackRule.INSTANT_ATTACK_TYPE;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.system.graphics.AttackAnimation;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class Attack {
     public static final Integer DAMAGE_NOT_SET = -1;
-    AttackAnimation animation;
     private boolean sneak;
     private boolean offhand;
     private boolean free;
@@ -83,11 +81,6 @@ public class Attack {
                 this.canCounter = false;
             }
         }
-    }
-
-    public static Object getAnimationKey(DC_ActiveObj action) {
-        return "Attack anim for "
-         + action.getAnimator().getAnimationKey();
     }
 
     @Override
@@ -307,16 +300,6 @@ public class Attack {
     public Integer getRemainingDamage() {
         remainingDamage = damage - damageDealt;
         return remainingDamage;
-    }
-
-    public AttackAnimation getAnimation() {
-        return animation;
-    }
-
-    public void setAnimation(AttackAnimation animation) {
-        this.animation = animation;
-        action.setAnimation(animation);
-        animation.setAttack(this);
     }
 
     public DC_WeaponObj getShield() {

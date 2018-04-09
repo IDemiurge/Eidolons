@@ -16,7 +16,6 @@ import eidolons.game.battlecraft.rules.combat.misc.InjuryRule;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
-import eidolons.libgdx.anims.phased.PhaseAnimator;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -33,8 +32,6 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.game.logic.event.EventMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -225,7 +222,7 @@ public class DC_AttackMaster {
             }
         }
         if (attacker.isDead()) {
-            attack.getAnimation().addPhase(new AnimPhase(PHASE_TYPE.INTERRUPTED, ref));
+            //TODO interrupted!
             return false;
         }
         DC_SoundMaster.playEffectSound(SOUNDS.ATTACK, attacker); // TODO revamp
@@ -238,7 +235,7 @@ public class DC_AttackMaster {
         ref.setAmount(amount);
         Event event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_BEING_ATTACKED, ref);
         if (!event.fire()) {
-            attack.getAnimation().addPhase(new AnimPhase(PHASE_TYPE.INTERRUPTED, ref));
+            //TODO interrupted!
             return false;
         }
         // initializeFullModifiers(attack.isSneak(), offhand, action, ref);
@@ -322,7 +319,9 @@ public class DC_AttackMaster {
         }
         // TODO different for multiDamageType
         if (CoreEngine.isPhaseAnimsOn())
-            PhaseAnimator.getInstance().initAttackAnimRawDamage(attack);
+        {
+//         TODO    PhaseAnimator.getInstance().initAttackAnimRawDamage(attack);
+        }
 
         ref.setAmount(final_amount);
 

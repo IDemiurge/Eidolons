@@ -24,11 +24,11 @@ public class FleeCondition extends MicroCondition {
         }
         Unit obj = (Unit) ref.getObj(key);
 
-        if (!(obj.getX() == obj.getGame().getBattleField().getGrid().getWidth() - 1 || obj
+        if (!(obj.getX() == obj.getGame() .getGrid().getWidth() - 1 || obj
          .getX() == 0)) {
             return false;
         }
-        if (!(obj.getY() == obj.getGame().getBattleField().getGrid()
+        if (!(obj.getY() == obj.getGame() .getGrid()
          .getHeight() - 1 || obj.getY() == 0)) {
             return false;
         }

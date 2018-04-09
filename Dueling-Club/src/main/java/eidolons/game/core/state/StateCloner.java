@@ -1,6 +1,5 @@
 package eidolons.game.core.state;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.DC_ContentManager;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_SpellObj;
@@ -17,6 +16,7 @@ import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.ability.Ability;
 import main.ability.ActiveAbility;
 import main.ability.PassiveAbility;

@@ -2,7 +2,6 @@ package main.system.text;
 
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.ANIM;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
@@ -15,7 +14,6 @@ public class LogEntryNode {
     List<LogEntryNode> children;
     String header;
     List<String> entries = new ArrayList<>();
-    List<PHASE_TYPE> animPhasesToPlay;
     private ENTRY_TYPE type;
     private int lineIndex;
     private Object[] args;
@@ -131,10 +129,6 @@ public class LogEntryNode {
         this.linkedAnimation = linkedAnimationKey;
     }
 
-    public void setAnimPhasesToPlay(PHASE_TYPE... animPhasesToPlay) {
-        // Arrays.asList(a)
-        // setAnimPhasesToPlay();
-    }
 
     public void addLinkedAnimations(ANIM... anims) {
         // addLinkedAnimations(Arrays.asList(anims));
@@ -154,14 +148,6 @@ public class LogEntryNode {
             }
         }
         return linkedAnimations;
-    }
-
-    public List<PHASE_TYPE> getAnimPhasesToPlay() {
-        return animPhasesToPlay;
-    }
-
-    public void setAnimPhasesToPlay(List<PHASE_TYPE> animPhasesToPlay) {
-        this.animPhasesToPlay = animPhasesToPlay;
     }
 
 }

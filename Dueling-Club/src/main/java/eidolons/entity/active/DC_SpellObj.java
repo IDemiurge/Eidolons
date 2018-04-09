@@ -20,7 +20,6 @@ import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
-import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_SpellObj extends DC_ActiveObj {
@@ -231,12 +230,6 @@ public class DC_SpellObj extends DC_ActiveObj {
     public boolean isSummoning() {
 
         return checkSingleProp(G_PROPS.SPELL_TYPE, SpellEnums.SPELL_TYPE.SUMMONING.name());
-    }
-
-
-    @Override
-    public Sprite getSprite() {
-        return null;
     }
 
     @Override

@@ -5,7 +5,6 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
-import eidolons.test.debug.DebugMaster;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -23,9 +22,6 @@ public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
 
-    // private DequeImpl<DC_HeroItemObj> droppedItems;
-    // private DequeImpl<DC_HeroObj> corpses;
-
     public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
         super(t, Player.NEUTRAL, game, ref);
         this.x = i;
@@ -42,6 +38,9 @@ public class DC_Cell extends DC_Obj implements Cell {
         this(getEMPTY_CELL_TYPE(), i, j, game, ref, dungeon);
     }
 
+    public DC_Cell(int x, int y, DC_Game game) {
+        this(x, y, game, new Ref(game), game.getDungeon());
+    }
     public DC_Cell(Coordinates c, DC_Game game) {
         this(c.x, c.y, game, new Ref(game), game.getDungeon());
     }
@@ -51,10 +50,6 @@ public class DC_Cell extends DC_Obj implements Cell {
             EMPTY_CELL_TYPE = DataManager.getType(StringMaster.STD_TYPE_NAMES.Cell.toString(),
              "terrain");
         return EMPTY_CELL_TYPE;
-    }
-
-    public static void setEMPTY_CELL_TYPE(ObjType type) {
-        EMPTY_CELL_TYPE = type;
     }
 
     @Override
@@ -139,15 +134,6 @@ public class DC_Cell extends DC_Obj implements Cell {
              + getParam(PARAMS.CONCEALMENT);
         }
 
-        if (DebugMaster.isMapDebugOn()) {
-//            MapBlock block = getGame().getDungeonMaster().getDungeonWrapper().getPlan()
-//                    .getBlockByCoordinate(getCoordinates());
-//            if (block != null) {
-//                return getCoordinates() + " (" + block.getShortName() + "); " + text;
-//            }
-//            return getCoordinates() + " " + super.getToolTip()
-//                    + StringMaster.wrapInParenthesis(text);
-        }
         if (!VisionManager.checkDetected(this)) {
             return "?";
         }
@@ -171,44 +157,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     }
 
     public String getName() {
-
-        // TODO
-        // String visibilityPrefix = "";
-        // switch (unitVisionStatus) {
-        // case BEYOND_SIGHT:
-        // if (playerVisionStatus == UNIT_TO_PLAYER_VISION.DETECTED) {
-        //
-        // }
-        // break;
-        // case CONCEALED:
-        // break;
-        // case IN_SIGHT:
-        // break;
-        //
-        // }
-        return
-         // visibilityPrefix + " " +
-         name;
-    }
-
-    //
-    // public void clicked() {
-    // // game.getState().cellClicked(x, y);
-    // final DC_Cell cell = this;
-    // new Thread(new Runnable() {
-    //
-    //
-    // public void run() {
-    //
-    // getGame().getManager().cellClicked(cell);
-    // }
-    // }).start();
-    //
-    // }
-
-    public void newRound() {
-        // TODO Auto-generated method stub
-
+        return name;
     }
 
     @Override

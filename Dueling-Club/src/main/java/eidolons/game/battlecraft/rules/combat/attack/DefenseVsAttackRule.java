@@ -9,14 +9,11 @@ import eidolons.game.battlecraft.rules.RuleMaster.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.FlyingRule;
 import eidolons.system.DC_Formulas;
-import eidolons.system.graphics.PhaseAnimation;
 import eidolons.system.math.roll.RollMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.UnitEnums;
 import main.entity.Ref;
 import main.system.auxiliary.RandomWizard;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.MathMaster;
 
 /**
@@ -95,23 +92,23 @@ public class DefenseVsAttackRule {
     // returns true if dodged, false if critical, otherwise null
     public static Boolean checkDodgedOrCrit(Attack attack) {
         return checkDodgedOrCrit(attack.getAttacker(), attack.getAttacked(), attack.getAction(),
-         attack.getRef(), attack.isOffhand(), attack.getAnimation());
+         attack.getRef(), attack.isOffhand() );
     }
 
     public static Boolean checkDodgedOrCrit(Unit attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
-     , PhaseAnimation animation
+
 
     ) {
         return checkDodgedOrCrit(attacker, attacked, action, ref,
-         offhand, animation, true);
+         offhand,   true);
     }
 
     public static Boolean checkDodgedOrCrit(Unit attacker, BattleFieldObject attacked,
                                             DC_ActiveObj action, Ref ref,
                                             boolean offhand
-     , PhaseAnimation animation
+
      , boolean logged
     ) {
         if (attacked.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
@@ -142,14 +139,10 @@ public class DefenseVsAttackRule {
         }
         if (result) {
             if (crit) {
-                if (animation != null) {
-                    animation.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_CRITICAL, chance));
-                }
+
                 return false;
             } else {
-                if (animation != null) {
-                    animation.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_DODGED, chance));
-                }
+
                 return true;
             }
         }
@@ -158,7 +151,6 @@ public class DefenseVsAttackRule {
             if (!RandomWizard.chance(chance)) {
                 return null;
             }
-            animation.addPhase(new AnimPhase(PHASE_TYPE.ATTACK_CRITICAL, chance, true));
             return false;
         }
         return null;

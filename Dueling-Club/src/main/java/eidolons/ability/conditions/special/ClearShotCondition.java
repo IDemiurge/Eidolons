@@ -128,14 +128,14 @@ public class ClearShotCondition extends MicroCondition {
         boolean toCheck = true;
         boolean result = true;
         if (PositionMaster.inLine(c1, c2)) {
-            result = PositionMaster.noObstaclesInLine(source, target, game.getBattleField()
+            result = PositionMaster.noObstaclesInLine(source, target, game
              .getGrid());
             toCheck = false;
             if (!result)
                 return cacheResult(source, target, result);
         } else { // TODO TRANSPARENT FOR VISION!
             if (PositionMaster.inLineDiagonally(c1, c2)) {
-                result = PositionMaster.noObstaclesInDiagonal(c1, c2, game.getBattleField()
+                result = PositionMaster.noObstaclesInDiagonal(c1, c2, game
                  .getGrid(), source);
                 if (!result)
                     return cacheResult(source, target, result);
@@ -324,18 +324,6 @@ public class ClearShotCondition extends MicroCondition {
                     if (!BooleanMaster.areOpposite(d.growX, direction.growX)) {
                         continue; // TODO does X/Y interchange?
                     }
-                }
-                if (target.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
-                    if (target.isInfoSelected()) {
-                        LogMaster.log(1, target + " vs " + coordinates
-                         + " distance: " + distance);
-                    }
-                    if (target.isInfoSelected()) {
-                        LogMaster.log(1, angle + " vs "
-                         + (float) Math.abs(source.getX() - c.x)
-                         / Math.abs(source.getX() - c.y));
-                    }
-
                 }
                 wallObstruction=true;
                 return true;

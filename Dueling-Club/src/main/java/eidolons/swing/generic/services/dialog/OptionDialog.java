@@ -1,13 +1,10 @@
 package eidolons.swing.generic.services.dialog;
 
-import eidolons.swing.components.buttons.CustomButton;
-import eidolons.swing.components.panels.page.log.WrappedTextComp;
 import main.swing.generic.components.G_Dialog;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import net.miginfocom.swing.MigLayout;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -48,42 +45,42 @@ public class OptionDialog extends G_Dialog {
 
     @Override
     public Component createComponent() {
-        panel = new G_Panel(getVisuals());
-        if (vertical) {
-            panel.setLayout(new MigLayout("fillx, flowy"));
-        } else {
-            panel.setLayout(new MigLayout("fillx"));
-        }
-        // panel.add(new TextComp(null, title), "");
-        for (Object o : options) {
-            addButton(o);
-        }
-        WrappedTextComp comp = new WrappedTextComp(null, true) {
-            protected int getDefaultFontSize() {
-                return 16;
-            }
-
-            public void wrapTextLines() {
-                super.wrapTextLines();
-            }
-
-            protected Dimension initDefaultSize() {
-                return getPanelSize();
-            }
-
-            public Dimension getPanelSize() {
-                return new Dimension(OptionDialog.this.getVisuals().getWidth() - 42,
-                 OptionDialog.this.getVisuals().getHeight() - VISUALS.BUTTON.getHeight()
-                  - 32);
-            }
-        };
-        comp.setPanelSize(new Dimension(getVisuals().getWidth() - 42, getVisuals().getHeight()
-         - VISUALS.BUTTON.getHeight() - 32));
-        comp.setText(title);
-        comp.refresh();
-        panel.add(comp, "@pos center_x 75"
-         // + "button1.y2"
-        );
+//        panel = new G_Panel(getVisuals());
+//        if (vertical) {
+//            panel.setLayout(new MigLayout("fillx, flowy"));
+//        } else {
+//            panel.setLayout(new MigLayout("fillx"));
+//        }
+//        // panel.add(new TextComp(null, title), "");
+//        for (Object o : options) {
+//            addButton(o);
+//        }
+//        WrappedTextComp comp = new WrappedTextComp(null, true) {
+//            protected int getDefaultFontSize() {
+//                return 16;
+//            }
+//
+//            public void wrapTextLines() {
+//                super.wrapTextLines();
+//            }
+//
+//            protected Dimension initDefaultSize() {
+//                return getPanelSize();
+//            }
+//
+//            public Dimension getPanelSize() {
+//                return new Dimension(OptionDialog.this.getVisuals().getWidth() - 42,
+//                 OptionDialog.this.getVisuals().getHeight() - VISUALS.BUTTON.getHeight()
+//                  - 32);
+//            }
+//        };
+//        comp.setPanelSize(new Dimension(getVisuals().getWidth() - 42, getVisuals().getHeight()
+//         - VISUALS.BUTTON.getHeight() - 32));
+//        comp.setText(title);
+//        comp.refresh();
+//        panel.add(comp, "@pos center_x 75"
+//         // + "button1.y2"
+//        );
         return panel;
     }
 
@@ -126,14 +123,15 @@ public class OptionDialog extends G_Dialog {
     }
 
     protected Component getButton(final Object result, String text) {
-        return new CustomButton(text) {
-            @Override
-            public void handleClick() {
-                playClickSound();
-                OptionDialog.this.handleClick(result);
-            }
-
-        };
+//        return new CustomButton(text) {
+//            @Override
+//            public void handleClick() {
+//                playClickSound();
+//                OptionDialog.this.handleClick(result);
+//            }
+//
+//        };
+        return null;
     }
 
     @Override

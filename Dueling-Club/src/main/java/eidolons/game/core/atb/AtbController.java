@@ -1,5 +1,6 @@
 package eidolons.game.core.atb;
 
+import com.badlogic.gdx.utils.Array;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -10,9 +11,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Stack;
 
 /**
  * Created by JustMe on 3/24/2018.
@@ -23,14 +22,14 @@ public class AtbController implements Comparator<Unit> {
     public static final float TIME_TO_READY = 10;
     private static final Float TIME_LOGIC_MODIFIER = 10f;
     private AtbTurnManager manager;
-    private Stack<AtbUnit> unitsInAtb;
+    private Array<AtbUnit> unitsInAtb;
     private float time = 0f; //passed in this round
     private float totalTime=0f;
     private int step;   //during this round
 
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
-        unitsInAtb = new Stack<>();
+        unitsInAtb = new Array<>();
         new AtbCalculator(this);
     }
 
@@ -169,9 +168,9 @@ public class AtbController implements Comparator<Unit> {
     }
 
     private void removeUnit(AtbUnit unit) {
-        int index = this.unitsInAtb.indexOf(unit);
+        int index = this.unitsInAtb.indexOf(unit, true);
         if (index > -1) {
-            this.unitsInAtb.remove(unit);
+            this.unitsInAtb.removeValue(unit, true);
         }
         this.processAtbRelevantEvent();
     }
@@ -179,7 +178,7 @@ public class AtbController implements Comparator<Unit> {
     private void addUnit(AtbUnit unit) {
         if (unit.getInitiative() > 0) {
             unit.setAtbReadiness(unit.getInitialInitiative());
-            this.unitsInAtb.push(unit);
+            this.unitsInAtb.add(unit);
         }
     }
 
@@ -191,6 +190,14 @@ public class AtbController implements Comparator<Unit> {
         return null;
     }
 
+    public Array<AtbUnit> getUnitsInAtb() {
+        return unitsInAtb;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
     public void addUnit(Unit unit) {
         for (AtbUnit sub : unitsInAtb) {
             if (sub.getUnit() == unit)
@@ -200,13 +207,14 @@ public class AtbController implements Comparator<Unit> {
     }
 
     public void removeUnit(Unit unit) {
-        for (AtbUnit sub : new ArrayList<>(unitsInAtb)) {
+
+        for (AtbUnit sub : new Array<>(unitsInAtb)) {
             if (sub.getUnit() == unit)
                 removeUnit(sub);
         }
     }
 
-    Stack<AtbUnit> getUnits() {
+    Array<AtbUnit> getUnits() {
         return unitsInAtb;
     }
 

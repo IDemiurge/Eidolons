@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.inventory.container;
 
-import eidolons.client.cc.gui.lists.dc.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.libgdx.anims.text.FloatingTextMaster;

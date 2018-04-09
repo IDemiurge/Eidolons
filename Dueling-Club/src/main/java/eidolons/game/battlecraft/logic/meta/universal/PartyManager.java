@@ -1,9 +1,9 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.TargetRunnable;

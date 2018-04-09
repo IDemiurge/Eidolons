@@ -13,7 +13,6 @@ import main.entity.Ref.KEYS;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.entity.CounterMaster;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
@@ -85,15 +84,9 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
 
         }
         if (CoreEngine.isPhaseAnimsOn())
-            if (result) {
-                try {
-                    getAnimation().addPhaseArgs(PHASE_TYPE.COUNTER, counterName, modtype, modValue);
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            } else {
-                return false;
-            }
+        {
+            //TODO
+        }
         REF.setAmount(ref.getTargetObj().getCounter(counterName));
 
         return new Event(STANDARD_EVENT_TYPE.COUNTER_MODIFIED, REF).fire();

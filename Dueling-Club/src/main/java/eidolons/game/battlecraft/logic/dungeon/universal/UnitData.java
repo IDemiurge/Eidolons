@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
