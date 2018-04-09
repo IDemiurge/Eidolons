@@ -141,7 +141,10 @@ public class DC_GameManager extends GameManager {
 
     @Override
     public void objClicked(Obj obj) {
-//        TODO
+        if (isSelecting()) {
+            checkSelectedObj(obj);
+            return;
+        }
     }
 
 

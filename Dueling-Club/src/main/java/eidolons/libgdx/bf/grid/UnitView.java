@@ -18,6 +18,7 @@ import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
@@ -72,6 +73,9 @@ public class UnitView extends BaseView {
         if (StringMaster.isEmpty(pathToImage)) {
             if (modeImage.getContent() != null)
                 ActorMaster.addFadeOutAction(modeImage, 0.5f);
+            return;
+        }
+        if (!ImageManager.isImage(pathToImage)) {
             return;
         }
         modeImage.setVisible(true);

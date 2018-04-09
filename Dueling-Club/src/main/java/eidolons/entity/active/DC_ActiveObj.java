@@ -374,9 +374,6 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public void setAbilities(Abilities abilities) {
-        if (abilities.getEffects().size()<1){
-            return ;
-        }
         this.abilities = abilities;
     }
 

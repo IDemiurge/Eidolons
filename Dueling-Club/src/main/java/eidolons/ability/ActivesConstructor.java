@@ -104,7 +104,13 @@ public class ActivesConstructor {
         List<ActiveObj> list = new ArrayList<>(entity.getActives());
 
         Effects effects = new Effects();
-
+        for (Active active : list) {
+            for (Ability abil : ((AbilityObj) active).getAbilities().getAbils()) {
+                for (Effect effect : abil.getEffects().getEffects()) {
+                    effects.add(effect);
+                }
+            }
+        }
         // TODO what if the effects should have different targetings like in
         // damage+light?
 

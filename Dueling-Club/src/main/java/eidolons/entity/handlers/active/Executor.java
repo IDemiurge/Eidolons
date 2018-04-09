@@ -301,7 +301,7 @@ public class Executor extends ActiveHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
-        }
+        } else
         // for Multi-targeting when single-wrapped Abilities cannot be used
         {
             for (Active active : getAction().getActives()) {
