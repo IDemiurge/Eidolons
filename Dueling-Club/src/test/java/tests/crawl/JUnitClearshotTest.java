@@ -1,11 +1,11 @@
 package tests.crawl;
 
-import eidolons.ability.conditions.special.ClearShotCondition;
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.DC_Obj;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import main.ability.conditions.special.ClearShotCondition;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
+import main.entity.obj.BattleFieldObject;
+import main.entity.obj.DC_Obj;
+import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.log.LogMaster;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Created by JustMe on 10/26/2017.
@@ -26,7 +27,19 @@ public class JUnitClearshotTest extends FastDcTest {
 
     protected List<Coordinates> insideCoords;
     protected List<Coordinates> outsideCoords;
-    protected boolean diagonal;
+    protected boolean diagonal = false;
+
+
+    @Test
+    public void makeChecks() {
+
+
+        checkClearshots(false);
+        checkClearshots(true);
+        diagonal = true;
+        checkClearshots(false);
+        checkClearshots(true);
+    }
 
     @Override
     public String getDungeonPath() {
@@ -56,36 +69,39 @@ public class JUnitClearshotTest extends FastDcTest {
         boolean blocked = hero_inside != inside;
         LogMaster.setOff(false);
         if (blocked)
-            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline) {
+            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline)
+            {
                 boolean result = game.getVisionMaster().getSightMaster().
                  getClearShotCondition().check(getHero(), sub);
                 if (!result) {
-                    main.system.auxiliary.log.LogMaster.log(1, "Failed ClearShotCondition:" +
-                     " " + sub +
+                    main.system.auxiliary.log.LogMaster.log(1,"Failed ClearShotCondition:" +
+                     " "+sub +
                      "; hero_inside= " +
                      hero_inside +
-                     "; inside=" + inside);
-
-                    assertTrue(false);
+                     "; inside="+ inside );
+                    fail();
                 }
-            } else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline) {
-                main.system.auxiliary.log.LogMaster.log(1, "Failed BLOCKED_OUTLINE:" +
-                 " " + sub +
+            }
+        else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline)
+            {
+                main.system.auxiliary.log.LogMaster.log(1,"Failed BLOCKED_OUTLINE:" +
+                 " "+sub +
                  "; hero_inside= " +
                  hero_inside +
-                 "; inside=" + inside);
-                assertTrue(false);
+                 "; inside="+ inside );
+                fail();
             }
 
         if (sub instanceof BattleFieldObject)
             if (!sub.isMine())
-                if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN) {
-                    main.system.auxiliary.log.LogMaster.log(1, "Failed UNSEEN:" +
-                     " " + sub +
+                if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN)
+                {
+                    main.system.auxiliary.log.LogMaster.log(1,"Failed UNSEEN:" +
+                     " "+sub +
                      "; hero_inside= " +
                      hero_inside +
-                     "; inside=" + inside);
-                    assertTrue(false);
+                     "; inside="+ inside );
+                    fail();
                 }
     }
 
@@ -190,19 +206,12 @@ public class JUnitClearshotTest extends FastDcTest {
     }
 
     protected boolean checkCoordinate(Coordinates c) {
-        return game.getObjectByCoordinate(c) == null;
+        if (game.getObjectByCoordinate(c) != null)
+            return false;
+        return true;
     }
 
-    @Test
-    public void makeChecks() {
 
-
-        checkClearshots(false);
-        checkClearshots(true);
-        diagonal = true;
-        checkClearshots(false);
-        checkClearshots(true);
-    }
 
     public void checkClearshots(boolean breakMode) {
         ClearShotCondition.setUnitTestBreakMode(breakMode);
@@ -231,4 +240,3 @@ public class JUnitClearshotTest extends FastDcTest {
 
 
 }
-
