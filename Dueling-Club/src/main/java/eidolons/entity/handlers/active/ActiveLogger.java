@@ -51,7 +51,6 @@ public class ActiveLogger extends EntityLogger<DC_ActiveObj> {
         } else {
             game.getLogManager().doneLogEntryNode();
             if (getEntry() != null) {
-                getEntry().setLinkedAnimation(getMaster().getAnimator().getAnimation());
             }
         }
     }

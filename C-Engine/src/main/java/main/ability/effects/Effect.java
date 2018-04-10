@@ -9,7 +9,6 @@ import main.entity.Referred;
 import main.entity.group.GroupImpl;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.system.graphics.ANIM;
 import main.system.math.Formula;
 
 public interface Effect extends Interruptable, Referred, XmlConvertable,
@@ -84,14 +83,6 @@ public interface Effect extends Interruptable, Referred, XmlConvertable,
     Trigger getTrigger();
 
     void setTrigger(Trigger trigger);
-
-    ActiveObj getAnimationActive();
-
-    void setAnimationActive(ActiveObj animationActive);
-
-    ANIM getAnimation();
-
-    void setAnimation(ANIM animation);
 
     ActiveObj getActiveObj();
 

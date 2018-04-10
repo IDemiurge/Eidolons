@@ -29,7 +29,6 @@ public class SpellIlluminationRule {
         caster.getGame().getManager().reset();
         WaitMaster.WAIT(delay);
         caster.getGame().getVisionMaster().refresh();
-        caster.getGame().getBattleField().getGrid().refresh();
 
         // reduce for distance
     }

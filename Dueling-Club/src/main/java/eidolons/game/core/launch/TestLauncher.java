@@ -1,8 +1,6 @@
 package eidolons.game.core.launch;
 
 import eidolons.ability.UnitTrainingMaster;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.dc.Launcher;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.test.TestSpawner;
@@ -18,6 +16,7 @@ import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
 import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import eidolons.game.core.state.Loader;
 import eidolons.game.module.adventure.travel.EncounterMaster;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.launch.Showcase;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.hotkey.DC_KeyManager;
@@ -153,10 +152,6 @@ public class TestLauncher //extends MetaGameMaster
             game.setDebugMode(DEBUG_MODE);
         }
         if (PresetMaster.getPreset() == null) {
-
-            if (DEBUG_MODE == null) {
-                game.setDebugMode(Launcher.isDEBUG_MODE_DEFAULT());
-            }
             initPlayerParties();
         }
         game.init();

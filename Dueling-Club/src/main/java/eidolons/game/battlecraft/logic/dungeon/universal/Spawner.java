@@ -1,9 +1,6 @@
 package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.ability.UnitTrainingMaster;
-import eidolons.client.cc.logic.UnitLevelManager;
-import eidolons.client.cc.logic.party.Party;
-import eidolons.client.dc.Launcher;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -15,6 +12,8 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.core.launch.LaunchDataKeeper;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.test.TestMasterContent;
@@ -237,9 +236,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 TestMasterContent.addTestItems(hero.getType(), last);
             }
             last = false;
-            if (!Launcher.isRunning()) {
-                continue;
-            }
+
             hero.setSpells(null);
             hero.initSpells(false);
             hero.fullReset(game);

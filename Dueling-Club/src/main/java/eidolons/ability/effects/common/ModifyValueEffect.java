@@ -14,7 +14,6 @@ import main.content.ContentManager;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
-import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
@@ -22,7 +21,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -45,6 +43,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     private boolean base;
     private String modString;
     private String lastModValue;
+    private boolean broken;
 
     public ModifyValueEffect(PARAMETER param, MOD code, String formula) {
         if (param == null) {
@@ -268,23 +267,6 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         // what if some part of the formula depends on the target instead?
 
         boolean result = modify(obj, map);
-        if (result) {
-            if (!isAnimationDisabled()) {
-                if (map != null) {
-                    if (!map.isEmpty()) {
-                        if (getAnimation() != null) {
-                            if (!isContinuousWrapped()) {
-                                getAnimation().addPhaseArgs(PHASE_TYPE.PARAM_MODS, map);
-
-                                // getAnimation().start(); // TODO sync?
-                            } else {
-                                wrapInBuffPhase(map);
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         return result;
     }
@@ -292,13 +274,14 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
     private boolean modify(Obj obj, Map<PARAMETER, String> map) {
         Double amount;
 
-        if (staticAmount == null) {
+        if (staticAmount == null && !broken) {
             try {
                 if (checkStaticallyParsed()) {
                     staticAmount = formula.getDouble(ref);
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+                broken = true;
             }
 
         }
@@ -415,7 +398,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
         obj.setParamDouble(param, final_amount, false);
 
         if (mod_type != MOD.SET && !checkPassive()) {
-            getGame().getAnimationManager().valueModified(Ref.getCopy(ref));
+//          TODO   getGame().getAnimationManager().valueModified(Ref.getCopy(ref));
         }
 
         lastModValue = String.valueOf(amount_modified);

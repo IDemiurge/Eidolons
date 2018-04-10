@@ -1,6 +1,6 @@
 package eidolons.swing.builders;
 
-import eidolons.swing.components.battlefield.DC_BattleFieldGrid;
+import eidolons.game.core.game.DC_BattleFieldGrid;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.graphics.GuiManager;
 

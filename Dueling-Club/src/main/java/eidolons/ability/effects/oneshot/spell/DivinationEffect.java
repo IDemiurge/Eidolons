@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.spell;
 
-import eidolons.client.cc.logic.spells.DivinationMaster;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.spells.DivinationMaster;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
 

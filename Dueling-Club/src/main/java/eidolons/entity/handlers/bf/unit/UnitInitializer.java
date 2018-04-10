@@ -1,9 +1,6 @@
 package eidolons.entity.handlers.bf.unit;
 
 import com.graphbuilder.math.ExpressionParseException;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.cc.logic.spells.LibraryManager;
-import eidolons.client.cc.logic.spells.SpellUpgradeMaster;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -15,6 +12,9 @@ import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.spells.LibraryManager;
+import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.UnitEnums;

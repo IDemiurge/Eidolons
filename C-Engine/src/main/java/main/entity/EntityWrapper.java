@@ -83,9 +83,6 @@ public class EntityWrapper<E extends DataModel> {
         return entity.modifyCounter(name, modValue, strict);
     }
 
-    public String find(String p) {
-        return entity.find(p);
-    }
 
 
     public String getParam(String p) {

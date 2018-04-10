@@ -9,10 +9,10 @@ import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
-import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.prestart.PreLauncher;
+import main.system.launch.CoreEngine;
 
 import static com.sun.jna.platform.win32.WinUser.*;
 
@@ -35,7 +35,7 @@ public class TransparentLauncher extends PreLauncher {
 
         WinDef.HWND hwnd;
         while ((hwnd = User32.INSTANCE.FindWindow(null,
-         "Eidolons: Battlecraft v" + Launcher.VERSION
+         "Eidolons: Battlecraft v" + CoreEngine.VERSION
 //        "TransparentLauncher"
         )) == null) {
             try {

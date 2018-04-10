@@ -4,13 +4,12 @@ import eidolons.ability.AddSpecialEffects;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.containers.EnergyCostEffect;
-import eidolons.ability.effects.special.media.AnimationEffect;
 import eidolons.ability.effects.special.media.SoundEffect;
 import eidolons.ability.targeting.TemplateSelectiveTargeting;
-import eidolons.client.cc.logic.items.Enchanter;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
+import eidolons.game.module.herocreator.logic.items.Enchanter;
 import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
@@ -74,7 +73,6 @@ public class EnchantItemEffect extends MicroEffect implements OneshotEffect {
         spell = (DC_SpellObj) ref.getTargetObj();
 
         Effects effects = EffectFinder.getEffectsFromSpell(spell);
-        effects.add(new AnimationEffect(spell));
         effects.add(new SoundEffect(SOUNDS.IMPACT, ref.getTargetObj()));
         // TODO fail sound on energy lapse?
         // ++ energy bar for items!

@@ -11,6 +11,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.game.DC_Game;
 import main.content.DC_TYPE;
 import main.data.DataManager;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -71,8 +72,22 @@ public class DcHelper implements JUnitHelper {
     }
 
     @Override
-    public void kill(Obj... objects) {
+    public void kill(Entity killer, boolean corpse, Boolean quiet, Obj... objects) {
+        for (Obj sub : objects) {
+            sub.kill(killer, corpse, quiet);
+        }
+    }
 
+    public void kill(Entity killer, Obj... objects) {
+        for (Obj sub : objects) {
+            sub.kill(killer, true, false);
+        }
+    }
+
+    public void kill(Obj... objects) {
+        for (Obj sub : objects) {
+            sub.kill(sub, true, false);
+        }
     }
 
     public BattleFieldObject object(String name, int x, int y, DC_Player owner,
@@ -105,6 +120,12 @@ public class DcHelper implements JUnitHelper {
         } else {
             source.setFacing(FacingMaster.rotate(source.getFacing(), clockwise));
         }
+    }
+    public void endCombat() {
+
+    }
+    public void aggroClosest() {
+
     }
 
 

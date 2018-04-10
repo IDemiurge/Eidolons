@@ -9,8 +9,6 @@ import main.data.XLinkedMap;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 
 import java.util.List;
 import java.util.Map;
@@ -76,17 +74,7 @@ public class ModifyPropertyEffect extends DC_Effect implements ResistibleEffect 
                 break;
 
         }
-        if (result) {
-            if (!isAnimationDisabled()) {
-                if (getAnimation() != null) {
-                    map.put(prop, ListMaster.toList(modtype, value));
-                    // if (!isContinuousWrapped()) {
-                    getAnimation().addPhaseArgs(PHASE_TYPE.PROP_MODS, map);
-                    // } else
-                    // wrapInBuffPhase(map);
-                }
-            }
-        }
+
         return true;
     }
 

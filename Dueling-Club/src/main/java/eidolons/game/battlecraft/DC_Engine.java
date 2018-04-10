@@ -3,7 +3,6 @@ package eidolons.game.battlecraft;
 import eidolons.content.DC_ContentManager;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.swing.DC_GuiManager;
-import eidolons.swing.components.obj.drawing.DrawHelper;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.log.Chronos;
@@ -63,7 +62,6 @@ public class DC_Engine extends CoreEngine {
         Chronos.mark("GAME INIT");
         ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
-        DrawHelper.init();
         Chronos.logTimeElapsedForMark("GAME INIT");
     }
 

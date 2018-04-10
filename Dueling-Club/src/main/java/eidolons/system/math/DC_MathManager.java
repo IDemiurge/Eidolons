@@ -1,6 +1,5 @@
 package eidolons.system.math;
 
-import eidolons.client.cc.logic.PointMaster;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -8,6 +7,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.system.DC_Formulas;
 import main.content.ContentManager;
 import main.content.DC_TYPE;

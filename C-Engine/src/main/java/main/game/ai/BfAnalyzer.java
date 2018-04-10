@@ -27,19 +27,6 @@ public abstract class BfAnalyzer {
         setPlayer(game.getPlayer(!ai.getPlayer().isMe()));
         setEnemy(ai.getPlayer());
     }
-//    public abstract  int getMeleeDangerFactor(Unit unit);
-//
-//    public abstract  int getMeleeDangerFactor(Unit unit, boolean adjacentOnly, boolean now);
-//
-//    public abstract  int getMeleeThreat(Unit enemy);
-//
-//    public abstract   int getMeleeThreat(Unit enemy, boolean now);
-//
-//    public abstract  int getCostFactor(Costs cost, Unit unit);
-//
-//    public abstract  int getCastingPriority(Unit unit);
-
-
     public abstract boolean checkFreeHits();
 
     public abstract boolean checkFreeKill();
@@ -105,8 +92,8 @@ public abstract class BfAnalyzer {
 
     public int getMaxDistance() {
         return PositionMaster
-         .getDistance(new Coordinates(0, 0), new Coordinates(game
-          .getBF_Width(), game.getBF_Height()));
+         .getDistance(new Coordinates(0, 0), new Coordinates(
+          game.getGrid().getWidth(), game.getGrid().getHeight()));
     }
 
     public Obj checkCells(Obj targetUnit, Collection<Obj> set, boolean canMove) {

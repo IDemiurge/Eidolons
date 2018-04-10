@@ -17,8 +17,6 @@ public class ScenarioInitializer extends MetaInitializer<ScenarioMeta> {
 
     @Override
     public ScenarioMeta initMetaGame(String data) {
-        main.system.auxiliary.log.LogMaster.log(1, "KALJSDJFL:KSDJF initMetaGame " + data);
-
         ObjType type = DataManager.getType(data, DC_TYPE.SCENARIOS);
         if (type == null) {
             type = DataManager.getType(data, DC_TYPE.SCENARIOS);

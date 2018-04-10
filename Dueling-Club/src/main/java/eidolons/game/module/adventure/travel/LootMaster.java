@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure.travel;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
@@ -8,6 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.ContentManager;
 import main.content.DC_TYPE;

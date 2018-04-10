@@ -1,13 +1,13 @@
 package eidolons.game.module.adventure.travel;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.client.cc.logic.spells.DivinationMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.global.TimeMaster;
 import eidolons.game.module.adventure.town.Tavern;
 import eidolons.game.module.adventure.town.Town;
+import eidolons.game.module.herocreator.logic.spells.DivinationMaster;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.ability.effects.Effect.MOD;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;

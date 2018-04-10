@@ -8,12 +8,11 @@ import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionController;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.graphics.PhaseAnimation;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
@@ -71,7 +70,6 @@ public abstract class DC_Obj extends MicroObj {
     protected DIRECTION blockingWallDirection;
     protected boolean blockingDiagonalSide;
     protected Coordinates blockingWallCoordinate;
-    protected PhaseAnimation animation;
     Coordinates blockingCoordinate;
     VisionController visionController;
 
@@ -683,50 +681,6 @@ public abstract class DC_Obj extends MicroObj {
 
     public void setGamma(Integer gamma) {
         this.gamma = gamma;
-    }
-
-    public Coordinates getBlockingCoordinate() {
-        return blockingCoordinate;
-    }
-
-    public void setBlockingCoordinate(Coordinates blockingCoordinate) {
-        this.blockingCoordinate = blockingCoordinate;
-    }
-
-    public DIRECTION getBlockingWallDirection() {
-        return blockingWallDirection;
-    }
-
-    public void setBlockingWallDirection(DIRECTION d) {
-        blockingWallDirection = d;
-    }
-
-    public boolean isBlockingDiagonalSide() {
-        return blockingDiagonalSide;
-    }
-
-    public void setBlockingDiagonalSide(boolean left) {
-        blockingDiagonalSide = left;
-
-    }
-
-    public Coordinates getBlockingWallCoordinate() {
-        return blockingWallCoordinate;
-    }
-
-    public void setBlockingWallCoordinate(Coordinates c) {
-        blockingWallCoordinate = c;
-    }
-
-    public void initAnimation() {
-    }
-
-    public PhaseAnimation getAnimation() {
-        return animation;
-    }
-
-    public void setAnimation(PhaseAnimation animation) {
-        this.animation = animation;
     }
 
 

@@ -4,11 +4,12 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.launch.PresetLauncher.LAUNCH;
+import eidolons.test.frontend.FAST_DC;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
-import eidolons.test.frontend.FAST_DC;
 import org.junit.Before;
+import res.JUnitResources;
 
 /**
  * Created by JustMe on 3/27/2017.
@@ -16,13 +17,15 @@ import org.junit.Before;
 public class FastDcTest {
 
     protected DC_Game game;
+    protected DcHelper helper;
+    protected CheckHelper checker;
 
 
     protected String getDungeonPath() {
-        return null;
+        return JUnitResources.EMPTY_DUNGEON;
     }
 
-    protected String getHeroParty() {
+    protected String getPlayerParty() {
         return null;
     }
 
@@ -37,12 +40,13 @@ public class FastDcTest {
 
         FAST_DC.main(new String[]{
          FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
-         getHeroParty(),
+         getPlayerParty(),
          getEnemyParty(),
          getDungeonPath()
         });
         game = Eidolons.game;
-        //        PathFinder.setJUnitMode(true); to find all test/resources
+        helper = new DcHelper(game);
+        checker = new CheckHelper(game);
 
 //        DC_Engine.systemInit();
 //        DC_Engine.gameInit(false);

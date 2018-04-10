@@ -1,9 +1,8 @@
 package eidolons.libgdx.launch;
 
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.core.launch.PresetLauncher;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.test.frontend.FAST_DC;
 import main.data.filesys.PathFinder;
@@ -60,7 +59,7 @@ public class Showcase {
              "Choose the type of Eidolons game you want to launch...");
 
         if (index == 5) {
-            Launcher.main(null);
+             //TODO HC!
             return;
         }
         if (index == 1) {

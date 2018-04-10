@@ -1,7 +1,5 @@
 package eidolons.content;
 
-import eidolons.client.dc.Launcher;
-import eidolons.client.dc.Launcher.VIEWS;
 import eidolons.content.ValuePages.PAGE_NAMES;
 import main.content.ContentManager;
 import main.content.DC_TYPE;
@@ -121,16 +119,8 @@ public class ValuePageManager {
             pages = HC_ValuePages.DEITY_PAGES;
         }
         if (TYPE == DC_TYPE.CHARS) {
-            if (Launcher.getMainManager().getSequence() == null) {
+//                pages = HC_ValuePages.BACKGROUND_CHAR_PAGES;
                 pages = HC_ValuePages.CHAR_PAGES;
-            } else if (Launcher.getView() == VIEWS.CHOICE
-             && Launcher.getMainManager().getSequence().isActive())
-            // Launcher.getMainManager().getSequenceMaster()
-            {
-                pages = HC_ValuePages.BACKGROUND_CHAR_PAGES;
-            } else {
-                pages = HC_ValuePages.CHAR_PAGES;
-            }
         }
         if (TYPE == DC_TYPE.ACTIONS) {
             pages = HC_ValuePages.ACTION_PAGES;

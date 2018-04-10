@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.logic.meta.tutorial;
 
-import eidolons.client.cc.logic.party.Party;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;

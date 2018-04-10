@@ -1,9 +1,6 @@
 package eidolons.game.module.dungeoncrawl.objects;
 
 import eidolons.ability.InventoryTransactionManager;
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.logic.items.ItemGenerator;
-import eidolons.client.cc.logic.items.ItemMaster;
 import eidolons.content.DC_CONSTS.JEWELRY_ITEM_TRAIT;
 import eidolons.content.DC_CONSTS.MAGICAL_ITEM_LEVEL;
 import eidolons.content.PARAMS;
@@ -13,6 +10,9 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.content.C_OBJ_TYPE;

@@ -1,11 +1,5 @@
 package eidolons.game.module.adventure.town;
 
-import eidolons.client.cc.gui.neo.choice.ChoiceSequence;
-import eidolons.client.cc.gui.neo.choice.TavernView;
-import eidolons.client.cc.logic.party.Party;
-import eidolons.client.dc.HC_SequenceMaster;
-import eidolons.client.dc.Launcher;
-import eidolons.client.dc.Launcher.VIEWS;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
@@ -14,6 +8,7 @@ import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.adventure.global.TimeMaster;
 import eidolons.game.module.adventure.utils.HeroGenerator;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.parameters.MACRO_PARAMS;
@@ -269,45 +264,6 @@ public class Tavern extends TownPlace {
         hero.setOwner(party.getOwner());
         hero.setHidden(false);
         // party.addMember(hero);
-    }
-
-    public ChoiceSequence openView() {
-        generateHeroes();
-        HC_SequenceMaster sm = new HC_SequenceMaster() {
-            public void doneSelection() {
-                getSequence().getValue();
-                Unit hero = (Unit) getSequence().getResults()
-                 .get(0);
-                hired(hero);
-                Launcher.resetView(VIEWS.HC);
-            }
-
-            @Override
-            public void cancelSelection() {
-                Launcher.resetView(VIEWS.HC);
-            }
-        };
-        // toggle between heroes and mercs?
-        // mini-dialogue upon selection or 'approach'?
-        ChoiceSequence cs = new ChoiceSequence();
-        cs.setManager(sm);
-        cs.addView(new TavernView(this, cs));
-        cs.start();
-        return cs;
-
-    }
-
-    public void rentRooms(Boolean waitForInput) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public enum HERO_GROUPS {
-        // per class, per faction, per race
-    }
-
-    public enum PRESET_HEROES {
-        // or should there be some group tag for ObjTypes?
     }
 
     public enum TAVERN_MODIFIER {

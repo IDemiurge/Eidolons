@@ -1,8 +1,5 @@
 package eidolons.entity.obj.unit;
 
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.logic.party.Party;
-import eidolons.client.dc.Launcher;
 import eidolons.content.DC_ContentManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
@@ -28,6 +25,8 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.system.DC_Constants;
@@ -927,7 +926,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public boolean checkAiMod(AI_MODIFIERS trueBrute) {
-        if (Launcher.BRUTE_AI_MODE) {
+        if (AI_Manager.BRUTE_AI_MODE) {
             if (trueBrute == AI_MODIFIERS.TRUE_BRUTE) {
                 if (getUnitAI() == null) {
                     return true;
@@ -1064,13 +1063,6 @@ public class Unit extends DC_UnitModel {
         return getActionModeMap().get(activeObj);
     }
 
-    public boolean isAnimated() {
-        if (animation == null) {
-            return false;
-        }
-        return animation.isDrawReady();
-    }
-
     @Deprecated
     public void initToolTip() {
 
@@ -1140,9 +1132,6 @@ public class Unit extends DC_UnitModel {
         engagementTarget = engaged;
     }
 
-    public boolean isSelected() {
-        return isInfoSelected() || isActiveSelected();
-    }
 
     public ObjType getBackgroundType() {
         return backgroundType;
@@ -1405,6 +1394,6 @@ public class Unit extends DC_UnitModel {
         return getAction(
          clockwise
          ?  STD_ACTIONS.Turn_Clockwise.toString()
-         :  STD_ACTIONS.Turn_Clockwise.toString());
+         :  STD_ACTIONS.Turn_Anticlockwise.toString());
     }
 }

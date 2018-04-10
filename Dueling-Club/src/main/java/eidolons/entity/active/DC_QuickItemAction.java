@@ -12,7 +12,6 @@ import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
-import main.system.graphics.Sprite;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 public class DC_QuickItemAction extends DC_ActiveObj {
@@ -69,11 +68,6 @@ public class DC_QuickItemAction extends DC_ActiveObj {
 
     public void setItem(DC_QuickItemObj dc_QuickItemObj) {
         this.item = dc_QuickItemObj;
-    }
-
-    @Override
-    public Sprite getSprite() {
-        return null;
     }
 
     @Override

@@ -30,7 +30,9 @@ import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.*;
+import eidolons.libgdx.bf.Borderable;
+import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -326,14 +328,6 @@ public class GridPanel extends Group {
         GuiEventManager.bind(UNIT_STARTS_MOVING, obj -> {
             detachUnitView((BattleFieldObject) obj.get());
         });
-
-
-//        GuiEventManager.bind(GRID_OBJ_HOVER_ON, (event) -> {
-//            resetZIndices();
-//        });
-//        GuiEventManager.bind(GRID_OBJ_HOVER_OFF, (event) -> {
-//            resetZIndices();
-//        });
         GuiEventManager.bind(UNIT_MOVED, obj -> {
             moveUnitView((BattleFieldObject) obj.get());
         });
@@ -431,15 +425,6 @@ public class GridPanel extends Group {
                 }
         });
 
-//        GuiEventManager.bind(UPDATE_UNIT_VISIBLE, obj -> {
-//            final Pair<Unit, Boolean> pair = (Pair<Unit, Boolean>) obj.get();
-//            final BaseView baseView = viewMap.get(pair.getLeft());
-//            if (baseView instanceof GridUnitView) {
-//                final Boolean isVisible = pair.getRight();
-//                //TODO ???
-//                ((GridUnitView) baseView).setVisibleVal(isVisible ? 100 : 50);
-//            }
-//        });
         GuiEventManager.bind(UNIT_VISIBLE_ON, p -> {
             if (p.get() instanceof Collection) {
                 for (Object sub : ((Collection) p.get())) {

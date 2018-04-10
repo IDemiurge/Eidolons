@@ -47,8 +47,6 @@ public class MoraleKillingRule extends DC_RuleImpl {
         if (unit.getOwner() == Player.NEUTRAL) {
             return;
         }
-        boostEffect.setAnimationActive(animationActive);
-        reductionEffect.setAnimationActive(animationActive);
         for (Unit u : unit.getGame().getUnits()) {
             if (u.getOwner() == Player.NEUTRAL) {
                 continue;

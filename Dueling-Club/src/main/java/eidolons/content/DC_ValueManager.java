@@ -12,8 +12,10 @@ import java.util.List;
 
 public class DC_ValueManager implements ValueManager {
 
-    public DC_ValueManager(DC_Game game) {
+    private ValueHelper valueHelper;
 
+    public DC_ValueManager(DC_Game game) {
+        valueHelper = new ValueHelper(game);
     }
 
     public static VALUE_GROUP getValueGroup(String string) {
@@ -80,6 +82,14 @@ public class DC_ValueManager implements ValueManager {
     @Override
     public boolean isRolledRoundind(PARAMETER valueToPay) {
         return valueToPay == PARAMS.C_N_OF_ACTIONS;
+    }
+
+    public ValueHelper getValueHelper() {
+        return valueHelper;
+    }
+
+    public void setValueHelper(ValueHelper valueHelper) {
+        this.valueHelper = valueHelper;
     }
 
     public enum VALUE_GROUP {

@@ -168,22 +168,22 @@ public class JUnitClearshotTest extends FastDcTest {
 
     protected List<Coordinates> createDiagonalCoordinatesList() {
         List<Coordinates> list = new ArrayList<>();
-        int yGap = game.getBF_Height() / 2 - (getInnerHeight() - 1) / 2;
+        int yGap = game.getGrid().getHeight()  / 2 - (getInnerHeight() - 1) / 2;
         int i = -1;
         for (int y = yGap;
-             y < game.getBF_Height() - y; y++) {
+             y < game.getGrid().getHeight()  - y; y++) {
             i++;
-            for (int x = game.getBF_Width() / 2 - i;
-                 x <= game.getBF_Width() / 2 + i; x++) {
+            for (int x =game. getGrid().getWidth()  / 2 - i;
+                 x <=game. getGrid().getWidth()  / 2 + i; x++) {
                 list.add(new Coordinates(x, y));
             }
         }
         i = -1;
-        for (int y = game.getBF_Height() - yGap - 1;
-             y > game.getBF_Height() / 2; y--) {
+        for (int y = game.getGrid().getHeight()  - yGap - 1;
+             y > game.getGrid().getHeight()  / 2; y--) {
             i++;
-            for (int x = game.getBF_Width() / 2 - i;
-                 x <= game.getBF_Width() / 2 + i; x++) {
+            for (int x = game.getGrid().getWidth()  / 2 - i;
+                 x <= game.getGrid().getWidth()  / 2 + i; x++) {
                 list.add(new Coordinates(x, y));
             }
         }
@@ -192,12 +192,12 @@ public class JUnitClearshotTest extends FastDcTest {
 
     protected boolean isInside(Coordinates c) {
         return getCoordinatesList(true).contains(c);
-//        int y = (game.getBF_Height() - getInnerHeight()) / 2;
+//        int y = (game.getGrid().getHeight()  - getInnerHeight()) / 2;
 //        if (c.y < y)
 //            return false;
 //        if (c.y >= getInnerHeight() + y)
 //            return false;
-//        int x = (game.getBF_Width() - getInnerWidth()) / 2;
+//        int x = (getGrid().getWidth()  - getInnerWidth()) / 2;
 //        if (c.x < x)
 //            return false;
 //        if (c.x >= getInnerWidth() + x)
@@ -215,8 +215,8 @@ public class JUnitClearshotTest extends FastDcTest {
 
     public void checkClearshots(boolean breakMode) {
         ClearShotCondition.setUnitTestBreakMode(breakMode);
-        for (int x = 0; x < game.getBF_Width(); x++)
-            for (int y = 0; y < game.getBF_Height(); y++) {
+        for (int x = 0; x < game.getGrid().getWidth() ; x++)
+            for (int y = 0; y < game.getGrid().getHeight() ; y++) {
                 Coordinates c = new Coordinates((x), y);
                 if (!checkCoordinate(c))
                     continue;

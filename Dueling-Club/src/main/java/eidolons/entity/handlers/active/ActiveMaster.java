@@ -44,17 +44,12 @@ public class ActiveMaster extends EntityMaster<DC_ActiveObj> {
 
     @Override
     protected EntityAnimator<DC_ActiveObj> createEntityAnimator() {
-        return new ActiveAnimator(getEntity(), this);
+        return new EntityAnimator<>(getEntity(), this);
     }
 
     @Override
     protected EntityLogger<DC_ActiveObj> createEntityLogger() {
         return new ActiveLogger(getEntity(), this);
-    }
-
-    @Override
-    public ActiveAnimator getAnimator() {
-        return (ActiveAnimator) super.getAnimator();
     }
 
     @Override

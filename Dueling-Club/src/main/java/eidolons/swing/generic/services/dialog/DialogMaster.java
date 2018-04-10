@@ -2,7 +2,6 @@ package eidolons.swing.generic.services.dialog;
 
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.swing.generic.components.G_Dialog;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -90,13 +89,7 @@ public class DialogMaster {
      * @param NULL
      */
     public static void ask(String string, boolean wide, String TRUE, String FALSE, String NULL) {
-        final G_Dialog dialog = new ConfirmDialog(string, wide, TRUE, FALSE, NULL);
-
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                dialog.show();
-            }
-        });
+        JOptionPane.showConfirmDialog(null, string+" !!!??? - IMPLEMENT LIBGDX!");
     }
 
     public static Integer askOptionsAndWait(String string, boolean vertical, Object... options) {

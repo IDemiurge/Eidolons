@@ -6,12 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
-import eidolons.client.dc.Launcher;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.JavaProcess;
 import eidolons.libgdx.launch.Showcase;
 import main.data.filesys.PathFinder;
+import main.system.launch.CoreEngine;
 
 import java.io.IOException;
 
@@ -56,7 +56,7 @@ public class PreLauncher extends Game {
         LwjglApplicationConfiguration conf = new LwjglApplicationConfiguration();
 
         LwjglApplicationConfiguration.disableAudio = true;
-        conf.title = "Eidolons: Battlecraft v" + Launcher.VERSION;
+        conf.title = "Eidolons: Battlecraft v" + CoreEngine.VERSION ;
         conf.forceExit = false;
         conf.resizable = false;
         conf.width = 600;

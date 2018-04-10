@@ -1,10 +1,10 @@
 package eidolons.ability;
 
-import eidolons.client.cc.logic.UnitLevelManager;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.test.frontend.FAST_DC;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;

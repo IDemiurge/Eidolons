@@ -11,19 +11,15 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.system.graphics.PhaseAnimation;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster.LOG;
-import main.system.graphics.AnimPhase;
-import main.system.graphics.AnimPhase.PHASE_TYPE;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
@@ -162,17 +158,10 @@ public class ArmorMaster {
             } else {
                 DC_SoundMaster.playAttackImpactSound(attacker.getActiveWeapon(offhand), attacker,
                  attacked, damage, blocked);
-                int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
-                 .getActiveWeapon(offhand), damage);
-                if (CoreEngine.isPhaseAnimsOn())
-                    if (!simulation) {
-                        if (!shield) {
-                            PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
-                             Attack.getAnimationKey(action));
-                            animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_ARMOR, blockedPercentage,
-                             blocked, durabilityLost, damage, dmg_type, armorObj));
-                        }
-                    }
+                if (CoreEngine.isPhaseAnimsOn()) {
+//                int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
+//                 .getActiveWeapon(offhand), damage);
+                }
 
             }
             if (!simulation) {
@@ -284,10 +273,10 @@ public class ArmorMaster {
             // shield.reduceDurabilityForDamage(damage, blockValue,
             // durabilityMod);
             if (CoreEngine.isPhaseAnimsOn()) {
-                PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
-                 Attack.getAnimationKey(action));
-                animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
-                 durabilityLost, damage, damage_type, shield));
+//                PhaseAnimation animation = action.getGame().getAnimationManager().getAnimation(
+//                 Attack.getAnimationKey(action));
+//                animation.addPhase(new AnimPhase(PHASE_TYPE.REDUCTION_SHIELD, chance, blockValue,
+//                 durabilityLost, damage, damage_type, shield));
             }
             message = attacked.getName() + " uses " + shield.getName() + " to block" + "" + " "
              + blockValue + " out of " + damage + " " + damage_type + " damage from " +

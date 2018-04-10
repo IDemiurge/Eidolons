@@ -4,7 +4,6 @@ import main.ability.Abilities;
 import main.elements.targeting.Targeting;
 import main.entity.OBJ;
 import main.entity.group.GroupImpl;
-import main.system.graphics.ANIM;
 
 /**
  *
@@ -36,10 +35,6 @@ public interface ActiveObj extends Cancellable, Active, OBJ {
     boolean isMissile();
 
     boolean isOffhand();
-
-    ANIM getAnimation();
-
-    void initAnimation();
 
     boolean isAttackGeneric();
 

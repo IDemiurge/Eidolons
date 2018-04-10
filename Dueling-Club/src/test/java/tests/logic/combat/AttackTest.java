@@ -1,27 +1,22 @@
 package tests.logic.combat;
 
+import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_UnitAction;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
 import main.content.DC_TYPE;
-import main.content.PARAMS;
 import main.data.DataManager;
 import main.entity.Ref;
-import main.entity.active.DC_UnitAction;
-import main.entity.item.DC_WeaponObj;
-import main.entity.obj.attach.DC_FeatObj;
-import main.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import main.game.core.ActionInput;
-import main.game.core.Eidolons;
-import main.game.core.game.DC_Game;
 import main.game.logic.action.context.Context;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import tests.init.JUnitDcInitializer;
-
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -46,16 +41,8 @@ public class AttackTest {
 
 
 
-        @Mock
-        DC_Game my_gam;
-
-
-
         @Before
         public void createEntity() {
-
-
-
             judi = new JUnitDcInitializer();
             ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
             source =judi.game.getUnits().get(0);

@@ -93,8 +93,8 @@ public class AnimMultiplicator implements Runnable {
     }
 
     public void applyTemplate() {
-        Set<Coordinates> coordinates =
-         getActive().getAnimator().getZoneAnimCoordinates();
+        Set<Coordinates> coordinates = null;
+//       TODO   getActive().getAnimator().getZoneAnimCoordinates();
 //         CoordinatesMaster.getZoneCoordinates(getActive());
 
 //        if (coordinates == null) { TODO GROUP MUST NOT BE COPIED FROM OTHER SPELLS!

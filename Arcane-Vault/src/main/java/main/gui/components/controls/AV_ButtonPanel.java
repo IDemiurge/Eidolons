@@ -1,11 +1,18 @@
 package main.gui.components.controls;
 
-import eidolons.client.cc.CharacterCreator;
-import eidolons.client.cc.HC_Master;
-import eidolons.client.cc.logic.items.ItemGenerator;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import main.content.*;
+import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import eidolons.game.module.herocreator.CharacterCreator;
+import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.libgdx.anims.AnimationConstructor;
+import eidolons.libgdx.screens.map.editor.MapEditor;
+import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.system.audio.DC_SoundMaster;
+import main.content.ContentManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
+import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -14,24 +21,14 @@ import main.data.xml.XML_Reader;
 import main.data.xml.XML_Transformer;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import main.gui.builders.EditViewPanel;
-import main.gui.builders.TabBuilder;
 import main.gui.components.table.TableMouseListener;
-import main.gui.tree.AV_T3View;
 import main.launch.ArcaneVault;
-import eidolons.libgdx.anims.AnimationConstructor;
-import eidolons.libgdx.screens.map.editor.MapEditor;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
-import eidolons.swing.generic.services.dialog.DialogMaster;
-import eidolons.system.audio.DC_SoundMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.graphics.GuiManager;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import main.system.threading.Weaver;
 
 import javax.swing.*;
@@ -51,8 +48,8 @@ public class AV_ButtonPanel extends G_ButtonPanel {
     public static final String NEW_TREE = "New Tree";
     public static final String WS_TOGGLE = "WS Add";
     public static final String DEFAULTS = "Defaults";
-    static String[] commands = new String[]{"Add", "Remove", "Upgrade", "Undo", "Save all",
-     NEW_TREE
+    static String[] commands = new String[]{"Add", "Remove", "Upgrade",
+     "Undo", "Save all"
      // "Reload", doesn't work yet!
      // "New Hero",
      // "Edit",
@@ -225,56 +222,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 }, "Clone thread").start();
                 break;
             }
-            case NEW_TREE: {
-                OBJ_TYPE TYPE = ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM();
-                if (TYPE == DC_TYPE.SKILLS || (TYPE == DC_TYPE.CLASSES)) {
-                    if (!alt) {
-                        HC_Master.initTreeArg(ArcaneVault.getSelectedType());
-                        HC_Master.initTreeView();
-
-                        EditViewPanel panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-                        if (TYPE == DC_TYPE.SKILLS) {
-                            panel.setSkillTreeViewComp(HC_Master.getAvTreeView());
-                        } else {
-                            panel.setClassTreeViewComp(HC_Master.getAvTreeView());
-                        }
-
-                        panel.setTreeView(true);
-                        panel.refresh();
-                        launchSelectionListeningThread(TYPE, null);
-                    } else {
-                        JFrame window = AV_T3View.showInNewWindow(true, TYPE == DC_TYPE.SKILLS);
-                        // HC_Master.showHeroTreeInWindow(ArcaneVault
-                        // .getSelectedType());
-
-                        launchSelectionListeningThread(TYPE, window);
-
-                    }
-                    if (TYPE == DC_TYPE.SKILLS) {
-                        if (skillSelectionListeningThreadRunning) {
-                            return;
-                        }
-                    } else {
-                        if (classSelectionListeningThreadRunning) {
-                            return;
-                        }
-                    }
-                    return;
-                }
-                if (!alt) {
-                    ArcaneVault.getMainBuilder().getEditViewPanel().setTreeView(false);
-                    ArcaneVault.getMainBuilder().getEditViewPanel().refresh();
-                    return;
-                }
-                TabBuilder tabBuilder = new TabBuilder(null);
-                JComponent comp = tabBuilder.build();
-
-                ArcaneVault.addTree(tabBuilder);
-                JFrame window = GuiManager.inNewWindow(comp, "Arcane Vault", new Dimension(
-                 ArcaneVault.TREE_WIDTH, ArcaneVault.TREE_HEIGHT));
-                // window.isActive()
-                break;
-            }
             case "WS Add": {
 
                 ModelManager.addToWorkspace(alt);
@@ -289,12 +236,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                     break;
                 }
                 EditViewPanel panel = ArcaneVault.getMainBuilder().getEditViewPanel();
-                if (panel.getTreeViewComp() != null) {
-                    panel.setTreeView(!panel.isTreeView());
-                    panel.refresh();
-                }
-
-                ModelManager.toggle();
+              ModelManager.toggle();
                 break;
             }
 
@@ -447,51 +389,6 @@ public class AV_ButtonPanel extends G_ButtonPanel {
 
     }
 
-    private void launchSelectionListeningThread(final OBJ_TYPE TYPE, final JFrame window) {
-        new Thread(new Runnable() {
-            public void run() {
-                boolean skill = TYPE == DC_TYPE.SKILLS;
-                WAIT_OPERATIONS operation = skill ? WAIT_OPERATIONS.SELECTION
-                 : WAIT_OPERATIONS.CUSTOM_SELECT;
-                if (skill) {
-                    skillSelectionListeningThreadRunning = true;
-                } else {
-                    classSelectionListeningThreadRunning = true;
-                }
-                String selectedTypeName = "";
-                try {
-                    while (selectedTypeName != null) {
-                        selectedTypeName = (String) WaitMaster.waitForInput(operation);
-                        if (selectedTypeName != null) {
-                            final String name = selectedTypeName;
-                            SwingUtilities.invokeAndWait(() ->
-                             ArcaneVault.getMainBuilder().getEditViewPanel().selectType(true,
-                              DataManager.getType(name, TYPE))
-                            );
-                        }
-                        if (window != null) {
-                            if (!window.isVisible()) {
-                                break;
-                            }
-                            final String name = selectedTypeName;
-                            SwingUtilities.invokeAndWait(() ->
-                             AV_T3View.selected(name, TYPE));
-                        }
-                    }
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                } finally {
-                    WaitMaster.receiveInput(operation, null, true);
-                    if (skill) {
-                        skillSelectionListeningThreadRunning = false;
-                    } else {
-                        classSelectionListeningThreadRunning = false;
-                    }
-                }
-            }
-        }, TYPE + "Tree Selection Listening Thread").start();
-
-    }
 
     @Override
     public void refresh() {

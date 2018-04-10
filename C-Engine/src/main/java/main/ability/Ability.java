@@ -11,7 +11,8 @@ import main.entity.obj.Active;
 /**
  * @author JustMe
  */
-public interface Ability extends Referred, Interruptable, Active, XmlConvertable {
+public interface Ability extends Referred, Interruptable,
+ Active, XmlConvertable {
 
     boolean resolve();
 

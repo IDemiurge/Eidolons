@@ -2,10 +2,6 @@ package main.gui.builders;
 
 import main.ability.AE_Manager;
 import main.ability.gui.AE_MainPanel;
-import eidolons.client.cc.HC_Master;
-import eidolons.client.cc.gui.neo.tree.HT_Node;
-import eidolons.client.cc.gui.neo.tree.view.HT_View;
-import eidolons.client.cc.gui.neo.tree.view.TreeControlPanel;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
@@ -56,15 +52,11 @@ public class EditViewPanel implements TableModelListener {
     protected G_Panel panel;
     protected boolean heroView = false;
     protected boolean treeView = false;
-    protected HT_View treeViewComp;
-    protected HT_View classTreeViewComp;
-    protected HT_View skillTreeViewComp;
     protected boolean menuHidden;
     protected AV_Menu menu;
     protected JScrollPane scrollPane;
     Map<String, JTable> tableMap = new HashMap<>();
     Vector<String> names = new Vector<>();
-    private TreeControlPanel treeControlPanel;
     private boolean dirty = true;
 
     // protected HeroTabs heroTabs;
@@ -178,38 +170,7 @@ public class EditViewPanel implements TableModelListener {
 
             LogMaster.log(1, "AE added!");
         } else {
-            if (isTreeView()) {
-
-                treeViewComp = ArcaneVault.getSelectedOBJ_TYPE() == DC_TYPE.SKILLS ? skillTreeViewComp
-                        : classTreeViewComp;
-                if (treeViewComp == null) {
-                    treeViewComp = skillTreeViewComp;
-                }
-                if (treeViewComp != null) {
-                    treeViewComp.refresh();
-                    getPanel().add(treeViewComp, "id secondTable, pos table.x2 menu.y2");
-
-                    if (treeControlPanel == null) {
-                        treeControlPanel = new TreeControlPanel() {
-                            @Override
-                            protected void workspaceCycle(boolean alt) {
-                                if (alt) {
-                                    ModelManager.addToWorkspace(true);
-                                    return;
-                                }
-                                super.workspaceCycle(alt);
-                            }
-                        };
-                    }
-                    treeViewComp.setBottomPanel(treeControlPanel);
-                    treeControlPanel.setView(treeViewComp);
-                    // getPanel().add(
-                    // treeControlPanel,
-                    // "id controls, pos table.x2+70 menu.y2+"
-                    // + (HT_MapBuilder.defTreeHeight + 100));
-                    // getPanel().setComponentZOrder(treeControlPanel, 0);
-                }
-            } else if (secondTable != null) {
+            if (secondTable != null) {
                 secondTable.setName(ArcaneVault.getMainBuilder().getPreviousSelectedTabName());
                 getPanel().add(new JScrollPane(secondTable),
                         "id secondTable, pos table.x2 menu.y2, w  " + width + ", h " + height);
@@ -525,12 +486,10 @@ public class EditViewPanel implements TableModelListener {
         if (ArcaneVault.getSelectedType() != null) {
             if (type.getOBJ_TYPE_ENUM().isHeroTreeType()) {
                 if (type.getOBJ_TYPE_ENUM() != ArcaneVault.getSelectedType().getOBJ_TYPE_ENUM()) {
-                    if (getSkillTreeViewComp() == null || getClassTreeViewComp() == null) {
+
                         setTreeView(false);
-                    } else {
                         setDirty(true);
                     }
-                }
             }
         }
 
@@ -542,43 +501,9 @@ public class EditViewPanel implements TableModelListener {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         } else {
-            if (isTreeView()) {
-                if (getTreeViewComp() != null) {
-                    HT_Node node = null;
-                    try {
-                        node = getTreeViewComp().getTree().getMap().getNodeForType(type);
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                        setTreeView(false);
-                        selectType(fromHT, type);
-                    }
-                    if (node != null) {
-                        HC_Master.setSelectedTreeNode(node);
-                        getTreeViewComp().getTree().getPanel().repaint();
-                    }
-                }
-            }
-        }
-        if (isTreeView()) {
-
-            HT_View viewComp = type.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS ? getSkillTreeViewComp()
-                    : getClassTreeViewComp();
-            if (viewComp != null) {
-                String key = type.getSubGroupingKey();
-                if (!key.equalsIgnoreCase(viewComp.getDisplayedTabPanel().getSelectedTabName())) {
-                    if (!key.equalsIgnoreCase("Multiclass")) {
-                        try {
-                            viewComp.tabSelected(key);
-                            viewComp.repaint();
-                            setDirty(true);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
-                    }
-                }
-            }
 
         }
+
 
         try {
             resetData(type);
@@ -620,31 +545,5 @@ public class EditViewPanel implements TableModelListener {
 
     }
 
-    public HT_View getTreeViewComp() {
-        return treeViewComp;
-    }
-
-    public void setTreeViewComp(HT_View treeViewComp) {
-        this.treeViewComp = treeViewComp;
-        setDirty(true);
-    }
-
-    public HT_View getClassTreeViewComp() {
-        return classTreeViewComp;
-    }
-
-    public void setClassTreeViewComp(HT_View classTreeViewComp) {
-        this.classTreeViewComp = classTreeViewComp;
-        setDirty(true);
-    }
-
-    public HT_View getSkillTreeViewComp() {
-        return skillTreeViewComp;
-    }
-
-    public void setSkillTreeViewComp(HT_View skillTreeViewComp) {
-        this.skillTreeViewComp = skillTreeViewComp;
-        setDirty(true);
-    }
 
 }

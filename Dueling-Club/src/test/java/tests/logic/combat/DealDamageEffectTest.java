@@ -1,27 +1,27 @@
 package tests.logic.combat;
 
 
-import tests.FastDcTest;
-import tests.init.JUnitDcInitializer;
-import main.ability.effects.Effect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import main.content.DC_TYPE;
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
+import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
+import main.ability.effects.Effect;
+import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.rules.combat.damage.Damage;
-import eidolons.game.battlecraft.rules.combat.damage.DamageDealer;
-import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;
+import tests.FastDcTest;
+import tests.init.JUnitDcInitializer;
 
 import static org.junit.Assert.assertTrue;
 

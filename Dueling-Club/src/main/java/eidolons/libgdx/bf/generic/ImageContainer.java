@@ -9,8 +9,6 @@ import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.system.images.ImageManager;
 
-import java.util.ArrayList;
-
 /**
  * Created by JustMe on 2/10/2018.
  */

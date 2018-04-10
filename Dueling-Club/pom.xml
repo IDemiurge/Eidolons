@@ -127,13 +127,6 @@
             <version>1.2.5</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.melloware/jintellitype -->
-        <dependency>
-            <groupId>com.melloware</groupId>
-            <artifactId>jintellitype</artifactId>
-            <version>1.1</version>
-        </dependency>
-
         <!-- key-value storage http://www.dizitart.org/nitrite-database.html-->
         <dependency>
             <groupId>org.dizitart</groupId>

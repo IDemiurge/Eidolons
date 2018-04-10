@@ -1,9 +1,9 @@
 package eidolons.entity.handlers.active.spell;
 
-import eidolons.client.cc.logic.spells.SpellUpgradeMaster;
 import eidolons.content.DC_ContentManager;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.handlers.active.ActiveResetter;
+import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import main.content.enums.system.MetaEnums;
 import main.content.values.parameters.PARAMETER;
 

@@ -12,7 +12,6 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
-import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -52,11 +51,6 @@ public class QueueView extends UnitView {
             addActor(initiativeLabel);
         }
 
-        if (super.isMainHero()) {
-            mainHeroLabel = new Label("Your Turn!", StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, 20));
-            addActor(clockImage);
-            mainHeroLabel.setPosition(0, GdxMaster.top(mainHeroLabel));
-        }
         setInitialized(true);
     }
 
@@ -182,18 +176,6 @@ public class QueueView extends UnitView {
         this.outlineSupplier = outlineSupplier;
     }
 
-    public void setFlickering(boolean flickering) {
-        this.flickering = flickering;
-        getPortrait().getColor().a = 1;
-        getColor().a = 1;
-    }
-
-    public void setGreyedOut(boolean greyedOut) {
-        this.greyedOut = greyedOut;
-        getPortrait().getColor().a = 1;
-        getColor().a = 1;
-
-    }
 
     public void resetHpBar(ResourceSourceImpl resourceSource) {
         if (getHpBar() == null)
@@ -220,45 +202,10 @@ public class QueueView extends UnitView {
             getHpBar().setZIndex(Integer.MAX_VALUE);
     }
 
-    public Float getTimeTillTurn() {
-        return timeTillTurn;
-    }
-
-    public void setTimeTillTurn(Float timeTillTurn) {
-        this.timeTillTurn = timeTillTurn;
-    }
-
-    public int getCurId() {
-        return curId;
-    }
-
-    public boolean isEmblemBorderOn() {
-        return emblemBorderOn;
-    }
-
-    public void setEmblemBorderOn(boolean emblemBorderOn) {
-        this.emblemBorderOn = emblemBorderOn;
-    }
-
-    public boolean isInitialized() {
-        return initialized;
-    }
-
-    public void setInitialized(boolean initialized) {
-        this.initialized = initialized;
-    }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + " for " + name;
-    }
-
-    public HpBar getHpBar() {
-        return hpBar;
-    }
-
-    public boolean getQueueMoving() {
-        return queueMoving;
     }
 
     public void setQueueMoving(boolean queueMoving) {
@@ -266,47 +213,16 @@ public class QueueView extends UnitView {
         GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, this);
     }
 
-    @Override
-    public void setHovered(boolean hovered) {
-        super.setHovered(hovered);
-        getHpBar().setLabelsDisplayed(hovered);
-    }
-
-    public void setToolTip(Tooltip tooltip) {
-        addListener(tooltip.getController());
-        this.tooltip = tooltip;
-    }
-
-    public Tooltip getTooltip() {
-        return tooltip;
-    }
-
-    public boolean isMainHero() {
-        return super.isMainHero();
-    }
-
-    public void setMainHero(boolean mainHero) {
-        super.setMainHero(mainHero);
-    }
-
     public GridUnitView getParentView() {
         return parentView;
     }
 
-    public void setParentView(GridUnitView parentView) {
-        this.parentView = parentView;
-    }
-
-    public TextureRegion getOutline() {
-        return outline;
-    }
-
-    public void setOutline(TextureRegion outline) {
-        this.outline = outline;
-    }
-
     public void setInitiativeLabelText(String text) {
         initiativeLabel.setText(text);
+    }
+
+    public void setParentView(GridUnitView parentView) {
+        this.parentView = parentView;
     }
 }
 

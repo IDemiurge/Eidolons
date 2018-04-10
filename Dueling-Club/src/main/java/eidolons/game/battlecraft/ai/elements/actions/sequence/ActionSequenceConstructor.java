@@ -454,7 +454,7 @@ public class ActionSequenceConstructor extends AiHandler {
     // new DistanceCondition(distance, KEYS.MATCH.toString(),
     // KEYS.TARGET.toString()));
     // List<Obj> viableCoordinates = new Filter<Obj>(action.getRef(),
-    // cellConditions).filter(DC_Game.game.getCells());
+    // cellConditions).filter(DC_Game.game.getCellsSet());
     // target_coordinates = PositionMaster
     // .getClosestCoordinate(source_coordinates, viableCoordinates);
     // // List<ActionSequence> sequences = new ArrayList<>();

@@ -45,21 +45,21 @@ import main.system.math.PositionMaster;
 public class VisionRule {
     VisionMaster master;
     VisionController controller;
-    private boolean playerUnseenMode= CoreEngine.isFastMode();
+    private boolean playerUnseenMode = CoreEngine.isFastMode();
 
     public VisionRule(VisionMaster master) {
         this.master = master;
         this.controller = master.getVisionController();
     }
 
-    public void setPlayerUnseenMode(boolean playerUnseenMode) {
-        this.playerUnseenMode = playerUnseenMode;
-    }
-
     public static boolean isSightInfoAvailable(BattleFieldObject observer) {
         if (observer.isMine())
             return true;
         return observer.getPlayerVisionStatus() == PLAYER_VISION.DETECTED;
+    }
+
+    public void setPlayerUnseenMode(boolean playerUnseenMode) {
+        this.playerUnseenMode = playerUnseenMode;
     }
 
     public void fullReset(Unit... observers) {
@@ -120,8 +120,7 @@ public class VisionRule {
             return false;
         if (observer.isPlayerCharacter())
             return true;
-        else
-        if (playerUnseenMode){
+        else if (playerUnseenMode) {
             return false;
         }
 
@@ -248,6 +247,9 @@ public class VisionRule {
         if (BooleanMaster.isFalse(controller.getDetectionMapper()
          .get(source.getOwner(), object)))
             return;
+        if (object.isWall()) {
+            return;
+        }
         controller.getLastSeenMapper().set(source.getOwner(), object,
          object.getLastCoordinates());
 

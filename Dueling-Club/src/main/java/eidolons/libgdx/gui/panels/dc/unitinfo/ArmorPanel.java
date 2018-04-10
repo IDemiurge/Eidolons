@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo;
 
-import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.generic.ValueContainer;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ArmorDataSource;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;

@@ -7,7 +7,6 @@ import main.swing.generic.Decorator;
 import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.list.G_List;
-import main.swing.generic.services.listener.ObjListMouseListener;
 import main.system.graphics.GuiManager;
 
 import javax.swing.*;

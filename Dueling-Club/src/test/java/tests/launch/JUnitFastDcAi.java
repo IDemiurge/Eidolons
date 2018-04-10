@@ -4,10 +4,10 @@ import eidolons.content.PARAMS;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import eidolons.system.DC_Formulas;
+import eidolons.test.frontend.FAST_DC;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import eidolons.test.frontend.FAST_DC;
 import org.junit.Test;
 
 import java.util.Arrays;

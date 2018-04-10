@@ -1,5 +1,6 @@
 package eidolons.ability.conditions;
 
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
@@ -61,11 +62,7 @@ public class VisibilityCondition extends ConditionImpl {
                     return true;
                 }
             }
-            UNIT_VISION visionStatus = match.getUnitVisionStatus();
-            if (!ref.getSourceObj().isActiveSelected()) {
-                visionStatus = match.getGame().getVisionMaster().getSightMaster().
-                 getUnitVisibilityStatus(match, (Unit) ref.getSourceObj());
-            }
+            UNIT_VISION visionStatus = match.getUnitVisionStatus((BattleFieldObject) ref.getSourceObj());
             return visionStatus.isSufficient(u_vision);
         }
 

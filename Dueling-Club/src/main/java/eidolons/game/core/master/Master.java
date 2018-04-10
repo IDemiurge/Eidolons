@@ -2,7 +2,7 @@ package eidolons.game.core.master;
 
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
-import eidolons.game.core.game.DC_GameMaster;
+import eidolons.game.core.game.DC_GameObjMaster;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 
@@ -13,7 +13,7 @@ public abstract class Master {
 
     protected DC_Game game;
     protected DC_GameManager gameManager;
-    protected DC_GameMaster gameMaster;
+    protected DC_GameObjMaster gameMaster;
     protected DC_GameState state;
     protected DC_StateManager stateManager;
 
@@ -33,7 +33,7 @@ public abstract class Master {
         return gameManager;
     }
 
-    public DC_GameMaster getGameMaster() {
+    public DC_GameObjMaster getGameMaster() {
         return gameMaster;
     }
 

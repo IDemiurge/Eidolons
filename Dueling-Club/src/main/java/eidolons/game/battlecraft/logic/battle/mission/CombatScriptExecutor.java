@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.battle.mission;
 
-import eidolons.client.cc.logic.UnitLevelManager;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.mission.CombatScriptExecutor.COMBAT_SCRIPT_FUNCTION;
@@ -19,6 +18,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptGenerator;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
