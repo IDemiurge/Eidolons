@@ -1,6 +1,6 @@
 package main.data.xml;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
@@ -72,7 +72,7 @@ public class XML_Writer {
 
     public static void saveAll() {
         for (String typeName : XML_Reader.getTypeMaps().keySet()) {
-            OBJ_TYPE type = ContentManager.getOBJ_TYPE(typeName);
+            OBJ_TYPE type = ContentValsManager.getOBJ_TYPE(typeName);
             if (isWritingBlocked(type)) {
                 continue;
             }
@@ -324,7 +324,7 @@ public class XML_Writer {
     }
 
     private static boolean checkWriteValue(VALUE val, String value, OBJ_TYPE TYPE) {
-        if (!(ContentManager.isValueForOBJ_TYPE(TYPE, val))) {
+        if (!(ContentValsManager.isValueForOBJ_TYPE(TYPE, val))) {
             return false;
         }
         if (TYPE == DC_TYPE.SKILLS || TYPE == DC_TYPE.CHARS || TYPE == DC_TYPE.UNITS

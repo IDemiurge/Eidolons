@@ -1,6 +1,6 @@
 package eidolons.content;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.QUALITY_LEVEL;
 import main.content.enums.entity.SkillEnums;
@@ -74,7 +74,7 @@ public class DC_CONSTS {
     }
 
     public enum JEWELRY_ITEM_TRAIT {
-        ATTRIBUTE_BONUS(5, "", 2, 4, 8, 15, 25, "Amulet;Power Ring", ContentManager
+        ATTRIBUTE_BONUS(5, "", 2, 4, 8, 15, 25, "Amulet;Power Ring", ContentValsManager
          .getFinalAttributes().toArray(
           new PARAMETER[SkillEnums.ATTRIBUTE.values().length])),
         // TODO names!

@@ -1,6 +1,6 @@
 package main.launch;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.core.game.DC_Game;
@@ -9,7 +9,7 @@ import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.content.ContentGenerator;
 import main.AV_DataManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
@@ -96,7 +96,7 @@ public class ArcaneVault {
     private static boolean worldEditAutoInit;
     private static WORKSPACE_TEMPLATE template;
     private static String types;
-    private static ContentManager contentManager;
+    private static ContentValsManager contentValsManager;
     private static boolean artGen = false;
     private static boolean workspaceLaunch = false;
     private static boolean imgPathUpdate = false;
@@ -265,7 +265,7 @@ if (macroMode)
         // MacroContentManager.init();
         // MacroEngine.init();
         // } else
-        getContentManager().init();
+        getContentValsManager().init();
         AV_DataManager.init();
 
         CoreEngine.systemInit();
@@ -354,7 +354,7 @@ if (macroMode)
         if (macroMode) {
             MACRO_OBJ_TYPES.getType(getMainBuilder().getSelectedTabName());
         }
-        return ContentManager.getOBJ_TYPE(getMainBuilder().getSelectedTabName());
+        return ContentValsManager.getOBJ_TYPE(getMainBuilder().getSelectedTabName());
     }
 
     public static boolean isDirty() {
@@ -454,15 +454,15 @@ if (macroMode)
         return types;
     }
 
-    public static ContentManager getContentManager() {
-        if (contentManager == null) {
-            contentManager = new DC_ContentManager();
+    public static ContentValsManager getContentValsManager() {
+        if (contentValsManager == null) {
+            contentValsManager = new DC_ContentValsManager();
         }
-        return contentManager;
+        return contentValsManager;
     }
 
-    public static void setContentManager(ContentManager contentManager) {
-        ArcaneVault.contentManager = contentManager;
+    public static void setContentValsManager(ContentValsManager contentValsManager) {
+        ArcaneVault.contentValsManager = contentValsManager;
     }
 
     public static JFrame getWindow() {

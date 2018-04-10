@@ -17,7 +17,7 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -62,7 +62,7 @@ public class EditorPalette extends TabbedPanel {
         setSize(GdxMaster.getWidth() / 3 * 2, 256);
         int columns = (int) (getWidth() / 64);
         for (EDITOR_PALETTE sub : EDITOR_PALETTE.values()) {
-            OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(sub.name());
+            OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(sub.name());
             if (TYPE == null) {
                 addCustomTab(sub);
                 continue;

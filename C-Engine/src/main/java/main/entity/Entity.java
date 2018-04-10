@@ -1,7 +1,7 @@
 package main.entity;
 
 import main.ability.AbilityObj;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
@@ -349,14 +349,14 @@ public abstract class Entity extends DataModel implements OBJ {
         if (TYPE_ENUM != null) {
             return TYPE_ENUM.getName();
         } else {
-            TYPE_ENUM = ContentManager.getOBJ_TYPE(getProperty(G_PROPS.TYPE));
+            TYPE_ENUM = ContentValsManager.getOBJ_TYPE(getProperty(G_PROPS.TYPE));
         }
         return getProperty(G_PROPS.TYPE);
     }
 
     public OBJ_TYPE getOBJ_TYPE_ENUM() {
         if (TYPE_ENUM == null) {
-            TYPE_ENUM = ContentManager.getOBJ_TYPE(getOBJ_TYPE());
+            TYPE_ENUM = ContentValsManager.getOBJ_TYPE(getOBJ_TYPE());
         }
         return TYPE_ENUM;
     }
@@ -485,7 +485,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public void resetRawValues() {
         if (isRawValuesOn())
-            for (PARAMETER param : ContentManager.getParamsForType(getOBJ_TYPE(), false)) {
+            for (PARAMETER param : ContentValsManager.getParamsForType(getOBJ_TYPE(), false)) {
                 // get values from ValueIcons?
                 getRawValues().put(param, String.valueOf(getIntParam(param)));
             }

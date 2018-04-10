@@ -1,6 +1,6 @@
 package eidolons.entity.item;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -18,8 +18,8 @@ public class DC_JewelryObj extends DC_HeroItemObj {
 
     private static PARAMETER[] getJewelryParams() {
         String entity = DC_TYPE.CHARS.getName();
-        return ContentManager.getParamsForType(entity, false).toArray(
-         new PARAMETER[ContentManager.getParamsForType("chars", false)
+        return ContentValsManager.getParamsForType(entity, false).toArray(
+         new PARAMETER[ContentValsManager.getParamsForType("chars", false)
           .size()]);
 
     }

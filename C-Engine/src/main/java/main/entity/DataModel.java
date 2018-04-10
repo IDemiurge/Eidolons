@@ -2,7 +2,7 @@ package main.entity;
 
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums.STD_BOOLS;
@@ -217,7 +217,7 @@ public abstract class DataModel {
 
 
     public String getParam(String p) {
-        return getParam(ContentManager.getPARAM(p));
+        return getParam(ContentValsManager.getPARAM(p));
     }
 
     public String getParam(PARAMETER param) {
@@ -287,7 +287,7 @@ public abstract class DataModel {
     }
 
     public Integer getIntParam(String param) {
-        PARAMETER p = ContentManager.getPARAM(param);
+        PARAMETER p = ContentValsManager.getPARAM(param);
         if (p == null) {
             return 0;
         }
@@ -370,7 +370,7 @@ public abstract class DataModel {
     }
 
     public String getProperty(String prop) {
-        PROPERTY property = ContentManager.getPROP(prop);
+        PROPERTY property = ContentValsManager.getPROP(prop);
         if (property == null) {
             return null;
         } else {
@@ -379,7 +379,7 @@ public abstract class DataModel {
     }
 
     public String getProp(String prop) {
-        return getProperty(ContentManager.getPROP(prop));
+        return getProperty(ContentValsManager.getPROP(prop));
     }
 
     public String getGroup() {
@@ -464,7 +464,7 @@ public abstract class DataModel {
     }
 
     public boolean checkSingleProp(String PROP, String value) {
-        return checkSingleProp(ContentManager.getPROP(PROP), value);
+        return checkSingleProp(ContentValsManager.getPROP(PROP), value);
     }
 
     public boolean checkSingleProp(PROPERTY PROP, String value) {
@@ -559,7 +559,7 @@ public abstract class DataModel {
     }
 
     public String getValue(String valName) {
-        return getValue(ContentManager.getValue(valName));
+        return getValue(ContentValsManager.getValue(valName));
     }
 
     public String getValue(VALUE valName) {
@@ -831,7 +831,7 @@ public abstract class DataModel {
      * @param param - c_ parameter to reset
      */
     public void resetDynamicParam(PARAMETER param) {
-        setParam(param, getParam(ContentManager.getBaseParameterFromCurrent(param)));
+        setParam(param, getParam(ContentValsManager.getBaseParameterFromCurrent(param)));
     }
 
     public void setParam(PARAMETER param, int i, boolean quietly, boolean base) {
@@ -859,7 +859,7 @@ public abstract class DataModel {
     }
 
     public void setParam(String param, int i) {
-        setParam(ContentManager.getPARAM(param), i);
+        setParam(ContentValsManager.getPARAM(param), i);
 
     }
 
@@ -889,13 +889,13 @@ public abstract class DataModel {
     }
 
     public void modifyParameter(String param, String string) {
-        PARAMETER p = ContentManager.getPARAM(param);
+        PARAMETER p = ContentValsManager.getPARAM(param);
         int perc = StringMaster.getInteger(string);
         modifyParameter(p, perc);
     }
 
     public void modifyParamByPercent(String param, String string) {
-        PARAMETER p = ContentManager.getPARAM(param);
+        PARAMETER p = ContentValsManager.getPARAM(param);
         int perc = StringMaster.getInteger(string);
         modifyParamByPercent(p, perc);
     }
@@ -935,9 +935,9 @@ public abstract class DataModel {
 
     protected void resetCurrentValue(PARAMETER base_p) {
 
-        base_p = ContentManager.getBaseParameterFromCurrent(base_p);
-        PARAMETER c_p = ContentManager.getCurrentParam(base_p);
-        PARAMETER c_perc = ContentManager.getPercentageParam(base_p);
+        base_p = ContentValsManager.getBaseParameterFromCurrent(base_p);
+        PARAMETER c_p = ContentValsManager.getCurrentParam(base_p);
+        PARAMETER c_perc = ContentValsManager.getPercentageParam(base_p);
         int percentage = getIntParam(c_perc);
         int base_value = getIntParam(base_p);
         int c_value = MathMaster.getFractionValue(base_value, percentage);
@@ -949,9 +949,9 @@ public abstract class DataModel {
     }
 
     public void resetPercentage(PARAMETER p) {
-        p = ContentManager.getBaseParameterFromCurrent(p);
-        PARAMETER c_p = ContentManager.getCurrentParam(p);
-        PARAMETER c_perc = ContentManager.getPercentageParam(p);
+        p = ContentValsManager.getBaseParameterFromCurrent(p);
+        PARAMETER c_p = ContentValsManager.getCurrentParam(p);
+        PARAMETER c_perc = ContentValsManager.getPercentageParam(p);
         if (c_perc == null || c_perc == p) {
             return;
         }
@@ -987,7 +987,7 @@ public abstract class DataModel {
     }
 
     public void setProperty(String prop, String value) {
-        PROPERTY p = ContentManager.getPROP(prop);
+        PROPERTY p = ContentValsManager.getPROP(prop);
 
         setProperty(p, value);
     }
@@ -1125,7 +1125,7 @@ public abstract class DataModel {
     }
 
     public void addProperty(String prop, String value) {
-        addProperty(ContentManager.getPROP(prop), value);
+        addProperty(ContentValsManager.getPROP(prop), value);
     }
 
     public boolean clearProperty(PROPERTY prop) {
@@ -1234,7 +1234,7 @@ public abstract class DataModel {
         if (name.equalsIgnoreCase(G_PROPS.NAME.getName())) {
             setName(value);
         } else {
-            setValue(ContentManager.getValue(name), value, base);
+            setValue(ContentValsManager.getValue(name), value, base);
         }
 
     }
@@ -1622,12 +1622,12 @@ public abstract class DataModel {
     }
 
     public boolean isFull(PARAMETER p) {
-        return getIntParam(ContentManager.getCurrentParam(p)) >= getIntParam(p);
+        return getIntParam(ContentValsManager.getCurrentParam(p)) >= getIntParam(p);
     }
 
 
     public int getParamPercentage(PARAMETER parameter) {
-        return getIntParam(ContentManager.getPercentageParam(parameter)) / MathMaster.MULTIPLIER;
+        return getIntParam(ContentValsManager.getPercentageParam(parameter)) / MathMaster.MULTIPLIER;
     }
 
     public boolean isBeingReset() {

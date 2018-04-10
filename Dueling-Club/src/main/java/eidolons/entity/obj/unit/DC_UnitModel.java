@@ -1,6 +1,6 @@
 package eidolons.entity.obj.unit;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.Deity;
@@ -335,7 +335,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void initDeity() {
         if (DataManager.isTypeName(getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES)) {
-            this.setDeity(DC_ContentManager.getDeity(this));
+            this.setDeity(DC_ContentValsManager.getDeity(this));
         }
 
     }

@@ -10,7 +10,7 @@ import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.ability.effects.oneshot.mechanic.RollEffect;
 import eidolons.ability.effects.oneshot.unit.RaiseEffect;
 import eidolons.ability.effects.oneshot.unit.SummonEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
@@ -54,7 +54,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.common.OwnershipChangeEffect;
 import main.ability.effects.oneshot.InstantDeathEffect;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
@@ -833,7 +833,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         for (Effect e : effects) {
             ModifyValueEffect valueEffect = (ModifyValueEffect) e;
             for (String sparam : StringMaster.open(valueEffect.getParamString())) {
-                for (PARAMETER param : DC_ContentManager.getParams(sparam)) {
+                for (PARAMETER param : DC_ContentValsManager.getParams(sparam)) {
                     //TODO apply generic fix!
                     if (param == PARAMS.C_INITIATIVE_BONUS)
                         param = PARAMS.C_INITIATIVE;
@@ -1455,12 +1455,12 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
     @Override
     public int getModePriority(Unit unit, STD_MODES mode) {
-        PARAMETER p = ContentManager.getPARAM(mode.getParameter());
+        PARAMETER p = ContentValsManager.getPARAM(mode.getParameter());
         if (p == null) {
             return 0;
         }
-        Integer percentage = unit.getIntParam(ContentManager.getPercentageParam(new Param(
-         ContentManager.getBaseParameterFromCurrent(p))))
+        Integer percentage = unit.getIntParam(ContentValsManager.getPercentageParam(new Param(
+         ContentValsManager.getBaseParameterFromCurrent(p))))
          / MathMaster.MULTIPLIER;
         int base = 100 - percentage; // how important/good it is for
         // this unit

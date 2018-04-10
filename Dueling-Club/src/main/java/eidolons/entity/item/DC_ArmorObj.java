@@ -1,6 +1,6 @@
 package eidolons.entity.item;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
@@ -19,7 +19,7 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
     private ARMOR_TYPE armorType;
 
     public DC_ArmorObj(ObjType armor_type, Player originalOwner, MicroGame game, Ref ref) {
-        super(armor_type, originalOwner, game, ref, DC_ContentManager.getArmorModifyingParams());
+        super(armor_type, originalOwner, game, ref, DC_ContentValsManager.getArmorModifyingParams());
     }
 
     @Override

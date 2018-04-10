@@ -1,6 +1,6 @@
 package main.system.auxiliary;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
@@ -579,13 +579,13 @@ public class StringMaster {
             return true;
         }
         string = string.trim();
-        if (string.equals(ContentManager.DEFAULT_EMPTY_VALUE)) {
+        if (string.equals(ContentValsManager.DEFAULT_EMPTY_VALUE)) {
             return true;
         }
-        if (string.equals(ContentManager.NEW_EMPTY_VALUE)) {
+        if (string.equals(ContentValsManager.NEW_EMPTY_VALUE)) {
             return true;
         }
-        return string.equals(ContentManager.OLD_EMPTY_VALUE);
+        return string.equals(ContentValsManager.OLD_EMPTY_VALUE);
     }
 
     public static void formatList(List<String> listData) {

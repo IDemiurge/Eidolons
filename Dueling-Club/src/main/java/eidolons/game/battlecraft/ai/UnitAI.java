@@ -14,7 +14,7 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
 import main.content.CONTENT_CONSTS2.ORDER_TYPE;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -116,7 +116,7 @@ public class UnitAI {
 
         for (ObjType spell : DataManager.toTypeList(unit.getProperty(PROPS.VERBATIM_SPELLS),
          DC_TYPE.SPELLS)) {
-            Integer mastery = unit.getIntParam(ContentManager.getSpellMasteryForSpell(spell));
+            Integer mastery = unit.getIntParam(ContentValsManager.getSpellMasteryForSpell(spell));
 
             // WHY VERBATIM? MAYBE FROM *TYPE*, YES...
 

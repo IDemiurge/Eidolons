@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.bf.unit;
 
 import com.graphbuilder.math.ExpressionParseException;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.bf.BfObjInitializer;
@@ -396,7 +396,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
             if (amount == 0) {
                 continue;
             }
-            PARAMETER alignmentParam = DC_ContentManager.getAlignmentForPrinciple(principle);
+            PARAMETER alignmentParam = DC_ContentValsManager.getAlignmentForPrinciple(principle);
             getEntity().modifyParameter(alignmentParam, amount);
 
         }

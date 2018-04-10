@@ -17,7 +17,7 @@ import eidolons.game.battlecraft.rules.perk.AlertRule;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.ability.effects.*;
 import main.ability.effects.periodic.PeriodicEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.mode.ModeImpl;
 import main.content.mode.STD_MODES;
@@ -141,7 +141,7 @@ divination?
             addBuffEffect.addEffect(AlertRule.getWakeUpTriggerEffect());
         if (addBuffEffect.getDuration() == null) {
             if (mode.isContinuous()) {
-                addBuffEffect.setDuration(ContentManager.INFINITE_VALUE);
+                addBuffEffect.setDuration(ContentValsManager.INFINITE_VALUE);
             } else {
                 addBuffEffect.setDuration(
                  (!ExplorationMaster.isExplorationOn() && DC_Engine.isAtbMode()) ? mode.getDuration()
@@ -311,9 +311,9 @@ divination?
         }
         ModifyValueEffect effect = new ModifyValueEffect(mode.getParameter(), MOD.MODIFY_BY_CONST,
          new Formula("min(0, " + formula + ")"));
-        PARAMETER param = ContentManager.getPARAM(mode.getParameter());
+        PARAMETER param = ContentValsManager.getPARAM(mode.getParameter());
         effect.setParam(param);
-        effect.setMaxParam(ContentManager.getBaseParameterFromCurrent(param));
+        effect.setMaxParam(ContentValsManager.getBaseParameterFromCurrent(param));
         Formula appendedByModifier = new Formula(formula).getAppendedByModifier(timeModifier);
         effect.setFormula(appendedByModifier);
         addBuffEffect.addEffect(new DelayedEffect(effect, condition));

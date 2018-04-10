@@ -7,8 +7,8 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.FEATURE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.FEATURE;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.combat.attack.dual.DualAttackMaster;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
@@ -20,7 +20,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.Trap;
 import eidolons.game.module.dungeoncrawl.objects.TrapMaster;
 import main.content.CONTENT_CONSTS2.STD_ACTION_MODES;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ActionEnums;
@@ -476,7 +476,7 @@ public class DC_ActionManager implements ActionManager {
         }
         if (mode.getParamModMap() != null) {
             for (String s : mode.getParamModMap().keySet()) {
-                PARAMETER param = ContentManager.getPARAM(s);
+                PARAMETER param = ContentValsManager.getPARAM(s);
                 if (type.getIntParam(param) == 0) {
                     type.setParam(param, param.getDefaultValue());
                 }
@@ -664,7 +664,7 @@ public class DC_ActionManager implements ActionManager {
         }
 
         actives.addAll(getStandardActionsForGroup(ActionEnums.ACTION_TYPE.STANDARD_ATTACK, unit));
-        if (RuleMaster.checkFeature(FEATURE.DUAL_ATTACKS))
+        if (RuleKeeper.checkFeature(FEATURE.DUAL_ATTACKS))
             if (UnitAnalyzer.checkDualWielding(unit)) {
                 actives.addAll(DualAttackMaster.getDualAttacks(unit));
                 // good idea! :) dual thrust, dual
@@ -673,23 +673,23 @@ public class DC_ActionManager implements ActionManager {
             }
         actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
 
-        if (RuleMaster.checkFeature(FEATURE.USE_INVENTORY)) {
+        if (RuleKeeper.checkFeature(FEATURE.USE_INVENTORY)) {
             if (unit.canUseItems()) {
                 actives.add(getOrCreateAction(USE_INVENTORY, unit));
             }
         }
 
-        if (RuleMaster.checkFeature(FEATURE.WATCH)) {
+        if (RuleKeeper.checkFeature(FEATURE.WATCH)) {
             actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Watch.name(), unit));
         }
 
 
-        if (RuleMaster.checkFeature(FEATURE.FLEE)) {
+        if (RuleKeeper.checkFeature(FEATURE.FLEE)) {
             if (FleeRule.isFleeAllowed()) {
                 actives.add(getOrCreateAction(FLEE, unit));
             }
         }
-        if (RuleMaster.checkFeature(FEATURE.PICK_UP)) {
+        if (RuleKeeper.checkFeature(FEATURE.PICK_UP)) {
             try {
                 if (unit.getGame().getDroppedItemManager().checkHasItemsBeneath(unit)) {
                     actives.add(getOrCreateAction(PICK_UP, unit));
@@ -698,18 +698,18 @@ public class DC_ActionManager implements ActionManager {
                 // main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        if (RuleMaster.checkFeature(FEATURE.DIVINATION)) {
+        if (RuleKeeper.checkFeature(FEATURE.DIVINATION)) {
             if (unit.canDivine()) {
                 actives.add(getOrCreateAction(DIVINATION, unit));
             }
         }
-        if (RuleMaster.checkFeature(FEATURE.TOSS_ITEM)) {
+        if (RuleKeeper.checkFeature(FEATURE.TOSS_ITEM)) {
             if (ListMaster.isNotEmpty(unit.getQuickItems())) {
                 actives.add(getOrCreateAction(TOSS_ITEM, unit));
             }
         }
 
-        if (RuleMaster.checkFeature(FEATURE.ENTER)) {
+        if (RuleKeeper.checkFeature(FEATURE.ENTER)) {
             for (Entrance e : DungeonLevelMaster.getAvailableDungeonEntrances(unit)) {
                 actives.add(getEnterAction(unit, e));
             }
@@ -718,7 +718,7 @@ public class DC_ActionManager implements ActionManager {
         actives.add(getOrCreateAction(SEARCH_MODE, unit));
 //  TODO condition?      if (unit.isHero())
 
-        if (RuleMaster.checkFeature(FEATURE.GUARD_MODE))
+        if (RuleKeeper.checkFeature(FEATURE.GUARD_MODE))
             actives.add(getOrCreateAction(StringMaster.getWellFormattedString(
              STD_SPEC_ACTIONS.Guard_Mode.name()), unit));
 
@@ -862,7 +862,7 @@ public class DC_ActionManager implements ActionManager {
             }
         }
 
-        if (RuleMaster.checkFeature(FEATURE.ORDERS))
+        if (RuleKeeper.checkFeature(FEATURE.ORDERS))
             actives.addAll(getOrderActions(unit));
         // checkDual(unit);
         // checkInv(unit);

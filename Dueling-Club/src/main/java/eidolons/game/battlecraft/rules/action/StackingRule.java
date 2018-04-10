@@ -5,8 +5,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.HeroCreator;
@@ -67,7 +67,7 @@ public class StackingRule implements ActionRule {
     }
 
     public static void actionMissed(DC_ActiveObj action) {
-        if (RuleMaster.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
+        if (RuleKeeper.isRuleOn(RULE.MISSED_ATTACK_REDIRECTION))
             return;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();

@@ -1,6 +1,8 @@
 package eidolons.game.battlecraft.rules.counter;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -10,7 +12,7 @@ import main.content.enums.entity.UnitEnums.STATUS;
 /**
  * Created by JustMe on 4/22/2017.
  */
-public class SuffocationRule extends DamageCounterRule {
+public class SuffocationRule extends DamageCounterRule implements TimedRule{
     private static final Integer DISCOMBOBULATED_THRESHOLD = 25;
     private static final String PERCENT_LOST_PER_ROUND = "0.5";
 
@@ -40,7 +42,7 @@ public class SuffocationRule extends DamageCounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return 3;
     }
 
@@ -56,7 +58,7 @@ public class SuffocationRule extends DamageCounterRule {
 
     @Override
     public STATUS getStatus() {
-        if (getNumberOfCounters(unit) > DISCOMBOBULATED_THRESHOLD)
+        if (getNumberOfCounters(object) > DISCOMBOBULATED_THRESHOLD)
             return STATUS.DISCOMBOBULATED;
         return null;
     }

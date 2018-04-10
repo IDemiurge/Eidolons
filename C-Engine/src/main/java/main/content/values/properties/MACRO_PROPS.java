@@ -1,6 +1,6 @@
 package main.content.values.properties;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -148,13 +148,13 @@ public enum MACRO_PROPS implements PROPERTY {
     }
 
     MACRO_PROPS(String shortName, boolean container, String... entityTypes) {
-        this(entityTypes[0], shortName, "", false, ContentManager.getDefaultEmptyValue(), 0);
+        this(entityTypes[0], shortName, "", false, ContentValsManager.getDefaultEmptyValue(), 0);
         this.entityTypes = entityTypes;
         this.container = container;
     }
 
     MACRO_PROPS(String entityType, String shortName) {
-        this(entityType, shortName, "", false, ContentManager.getDefaultEmptyValue(), 0);
+        this(entityType, shortName, "", false, ContentValsManager.getDefaultEmptyValue(), 0);
     }
 
     MACRO_PROPS(String entityType, String shortName, String descr, boolean dynamic,

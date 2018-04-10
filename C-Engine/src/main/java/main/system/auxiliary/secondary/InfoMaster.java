@@ -1,6 +1,6 @@
 package main.system.auxiliary.secondary;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.enums.entity.SkillEnums.MASTERY_RANK;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
@@ -119,7 +119,7 @@ public class InfoMaster {
     }
 
     public static String getModifiedParamReasonString(String comparedValue, String value) {
-        PARAMETER p = ContentManager.getPARAM(new Parameter(comparedValue).getValue_string());
+        PARAMETER p = ContentValsManager.getPARAM(new Parameter(comparedValue).getValue_string());
         return getParamReasonString(value, p);
 
     }

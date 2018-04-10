@@ -8,8 +8,8 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_GROUP;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE_GROUP;
 import eidolons.game.battlecraft.rules.action.StackingRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.AttackOfOpportunityRule;
 import eidolons.game.battlecraft.rules.combat.attack.extra_attack.ExtraAttacksRule;
@@ -195,11 +195,12 @@ public class Executor extends ActiveHandler {
 
     @Override
     protected void log(String string, boolean gameLog) {
-        super.log(string, gameLog);
-        if (!gameLog)
-            if (!ExplorationMaster.isExplorationOn())
+        if (!ExplorationMaster.isExplorationOn()){
+            super.log(string, gameLog);
+            if (!gameLog)
                 SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.COMBAT, string);
-    }
+        }
+         }
 
     private void syncActionRefWithSource() {
         if (getAction() instanceof DC_QuickItemAction) {
@@ -493,7 +494,7 @@ public class Executor extends ActiveHandler {
     }
 
     protected boolean checkExtraAttacksDoNotInterrupt(ENTRY_TYPE entryType) {
-        if (RuleMaster.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS)) {
+        if (RuleKeeper.checkRuleGroupIsOn(RULE_GROUP.EXTRA_ATTACKS)) {
             try {
                 return !ExtraAttacksRule.checkInterrupted(getAction(), entryType);
             } catch (Exception e) {

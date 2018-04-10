@@ -6,7 +6,7 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.combat.mechanics.ForceRule;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.content.enums.entity.UnitEnums;
@@ -360,7 +360,7 @@ public class RollMaster {
         // .getAppended("+(" + bonus + ")")
         // .getAppendedByFactor(mod).toString();
 
-        PARAMETER param = ContentManager.getPARAM(roll_type.name() + "_ROLL_SAVE_BONUS");
+        PARAMETER param = ContentValsManager.getPARAM(roll_type.name() + "_ROLL_SAVE_BONUS");
         if (param == null) {
             return "0";
         }
@@ -403,7 +403,7 @@ public class RollMaster {
     }
 
     private static String getFailFactor(ROLL_TYPES roll_type) {
-        PARAMETER param = ContentManager.getPARAM(roll_type.name() + "_ROLL_BEAT_BONUS");
+        PARAMETER param = ContentValsManager.getPARAM(roll_type.name() + "_ROLL_BEAT_BONUS");
         if (param == null) {
             return "0";
         }

@@ -1,7 +1,7 @@
 package main.data.ability.construct;
 
 import main.ability.AbilityType;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -325,11 +325,11 @@ public class VariableManager {
     }
 
     private static String promptPropInput(String var) {
-        return ListChooser.chooseEnum(ContentManager.getPropEnumClasses());
+        return ListChooser.chooseEnum(ContentValsManager.getPropEnumClasses());
     }
 
     private static String promptParamInput(String var) {
-        return ListChooser.chooseEnum(ContentManager.getParamEnumClasses());
+        return ListChooser.chooseEnum(ContentValsManager.getParamEnumClasses());
     }
 
     private static String promptEnumInput(Object value, String var) {
@@ -463,13 +463,13 @@ public class VariableManager {
                 if (entity == null)
                     return 0;
                 if (entity.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
-                    param = ContentManager.findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
+                    param = ContentValsManager.findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                 } else {
 
-                    param = ContentManager
+                    param = ContentValsManager
                      .findMasteryScore(entity.getProperty(G_PROPS.SPELL_GROUP));
                     if (param == null) {
-                        param = ContentManager
+                        param = ContentValsManager
                          .findMasteryScore(entity.getProperty(G_PROPS.MASTERY));
                     }
                 }
@@ -478,29 +478,29 @@ public class VariableManager {
         },
         RANDOM_ATTRIBUTE {
             public Object evaluate(Entity obj, String s) {
-                int index = RandomWizard.getRandomListIndex(ContentManager.getAttributes());
-                return ContentManager.getAttributes().get(index).getName();
+                int index = RandomWizard.getRandomListIndex(ContentValsManager.getAttributes());
+                return ContentValsManager.getAttributes().get(index).getName();
             }
         },
         RANDOM_PARAMETER {
             public Object evaluate(Entity obj, String s) {
                 if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.CHARS) {
-                    return ContentManager.getRandomCharParameter().getName();
+                    return ContentValsManager.getRandomCharParameter().getName();
                 } else {
-                    return ContentManager.getRandomUnitParameter().getName();
+                    return ContentValsManager.getRandomUnitParameter().getName();
                 }
 
             }
         },
         RANDOM_UNIT_PARAMETER {
             public Object evaluate(Entity obj, String s) {
-                return obj.getIntParam(ContentManager.getRandomUnitParameter());
+                return obj.getIntParam(ContentValsManager.getRandomUnitParameter());
 
             }
         },
         RANDOM_CHAR_PARAMETER {
             public Object evaluate(Entity obj, String s) {
-                return obj.getIntParam(ContentManager.getRandomCharParameter());
+                return obj.getIntParam(ContentValsManager.getRandomCharParameter());
 
             }
         },

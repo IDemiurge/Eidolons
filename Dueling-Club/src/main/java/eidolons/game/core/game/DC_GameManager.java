@@ -574,7 +574,7 @@ public class DC_GameManager extends GameManager {
     }
 
     public void atbTimeElapsed(Float time) {
-
+        getGame().getRules().timePassed(time);
         buffMaster.atbTimeElapsed(time);
 
 

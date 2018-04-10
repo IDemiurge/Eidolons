@@ -1,7 +1,7 @@
 package eidolons.content;
 
 import eidolons.content.ValuePages.PAGE_NAMES;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
@@ -231,9 +231,9 @@ public class ValuePageManager {
         List<VALUE> page = getAdditionalPages(av, prop).get(TYPE);
         if (page == null) {
             page = new ArrayList<>();
-            for (VALUE p : (!prop) ? ContentManager.getParamsForType(TYPE.getName(), !av)
-             : ContentManager.getPropsForType(TYPE.getName(), !av)) {
-                if (!ContentManager.isValueForOBJ_TYPE(TYPE, p)) {
+            for (VALUE p : (!prop) ? ContentValsManager.getParamsForType(TYPE.getName(), !av)
+             : ContentValsManager.getPropsForType(TYPE.getName(), !av)) {
+                if (!ContentValsManager.isValueForOBJ_TYPE(TYPE, p)) {
                     continue;
                 }
                 if (checkValueInPages(list, p)) {
@@ -292,7 +292,7 @@ public class ValuePageManager {
                 }
             }
 
-            if (ContentManager.isValueForOBJ_TYPE(TYPE, v)) {
+            if (ContentValsManager.isValueForOBJ_TYPE(TYPE, v)) {
                 list.add(v);
             }
         }

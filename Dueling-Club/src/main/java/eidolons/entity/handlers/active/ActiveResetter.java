@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
@@ -94,7 +94,7 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         if (getOwnerObj().getCustomParamMap() == null) {
             return;
         }
-        for (PARAMETER param : DC_ContentManager.getCostParams()) {
+        for (PARAMETER param : DC_ContentValsManager.getCostParams()) {
             addCustomMod(
              COST_REDUCTION_ACTIVE_NAME,
              getName(), param, false);

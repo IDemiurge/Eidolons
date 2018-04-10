@@ -1,6 +1,6 @@
 package main.swing.generic.components.list;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -113,7 +113,7 @@ public class ListItem<E> extends JLabel {
 
     private boolean isTextShownAlways() {
         if (getValue() instanceof Entity) {
-            return ContentManager.getInstance().isTextAlwaysShownInListItems(
+            return ContentValsManager.getInstance().isTextAlwaysShownInListItems(
              getObj().getOBJ_TYPE_ENUM());
         }
         return false;

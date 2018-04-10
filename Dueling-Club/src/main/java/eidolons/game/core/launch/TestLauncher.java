@@ -8,8 +8,8 @@ import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.GameFactory;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
@@ -163,7 +163,7 @@ public class TestLauncher //extends MetaGameMaster
             game.setDummyPlus(DUMMY_PP);
 
             if (DUMMY_PP) {
-                RuleMaster.setScope(RULE_SCOPE.TEST);
+                RuleKeeper.setScope(RULE_SCOPE.TEST);
             }
         }
         try {
@@ -243,7 +243,7 @@ public class TestLauncher //extends MetaGameMaster
         TestMasterContent.test_on = FAST_MODE;
 
         if (launch.ruleScope != null) {
-            RuleMaster.setScope(launch.ruleScope);
+            RuleKeeper.setScope(launch.ruleScope);
         }
         CoreEngine.setLogicTest(launch.logicTest);
         if (launch.logicTest) {

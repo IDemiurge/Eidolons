@@ -7,7 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import eidolons.test.frontend.FAST_DC;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.system.MetaEnums;
@@ -167,7 +167,7 @@ public class TestMasterContent {
             return false;
         }
         boolean result = false;
-        if (type.getIntParam(ContentManager.getSpellMasteryForSpell(spellType)) > 0) {
+        if (type.getIntParam(ContentValsManager.getSpellMasteryForSpell(spellType)) > 0) {
             result = true;
         }
         if (type.getAspect() == spellType.getAspect()) {

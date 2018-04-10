@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
@@ -100,7 +100,7 @@ public class OptionsMaster {
             if (!StringMaster.isInteger(value)) {
                 switch (key) {
                     case RULES_SCOPE:
-                        RuleMaster.setScope(
+                        RuleKeeper.setScope(
                          new EnumMaster<RULE_SCOPE>().
                           retrieveEnumConst(RULE_SCOPE.class,
                            gameplayOptions.getValues().get(sub).toString()

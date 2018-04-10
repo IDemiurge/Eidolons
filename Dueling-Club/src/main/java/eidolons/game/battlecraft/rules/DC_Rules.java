@@ -13,6 +13,10 @@ import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
 import eidolons.game.battlecraft.rules.combat.misc.KnockdownRule;
 import eidolons.game.battlecraft.rules.combat.misc.TrampleRule;
 import eidolons.game.battlecraft.rules.counter.*;
+import eidolons.game.battlecraft.rules.counter.generic.CounterMasterAdvanced;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.battlecraft.rules.mechanics.AshAnnihilationRule;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
@@ -21,6 +25,9 @@ import eidolons.game.battlecraft.rules.round.*;
 import eidolons.game.core.game.DC_Game;
 import main.game.core.game.GameRules;
 import main.system.datatypes.DequeImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DC_Rules implements GameRules {
 
@@ -71,10 +78,13 @@ public class DC_Rules implements GameRules {
     private SuffocationRule suffocationRule;
     private AshAnnihilationRule ashAnnihilationRule;
     private IlluminationRule illuminationRule;
+    private DC_RuleMaster master;
+    private Map<DamageCounterRule, TimedRule> timedRules;
 
 
     public DC_Rules(DC_Game game) {
         this.setGame(game);
+        master = new DC_RuleMaster(game, this);
         init();
     }
 
@@ -83,7 +93,7 @@ public class DC_Rules implements GameRules {
     }
 
     private void init() {
-        RuleMaster.init();
+        RuleKeeper.init();
         WaitRule.reset();
         illuminationRule = new IlluminationRule(game);
         unconsciousRule = new UnconsciousRule(game);
@@ -171,6 +181,17 @@ public class DC_Rules implements GameRules {
         getTriggerRules().add(ashAnnihilationRule = new AshAnnihilationRule(game));
 
         CounterMasterAdvanced.defineInteractions();
+
+        timedRules =     new HashMap<>();
+//        for (DamageCounterRule sub : damageRules) {
+//        }
+        timedRules.put(poisonRule,poisonRule);
+        timedRules.put(diseaseRule,diseaseRule);
+        timedRules.put(blazeRule,blazeRule);
+        timedRules.put(bleedingRule,bleedingRule);
+        timedRules.put(suffocationRule,suffocationRule);
+        timedRules.put(lavaRule,lavaRule);
+
 
         // this.rules.add(rule);
         // rule = new TreasonRule(getGame());
@@ -367,5 +388,13 @@ public class DC_Rules implements GameRules {
 
     public void setIlluminationRule(IlluminationRule illuminationRule) {
         this.illuminationRule = illuminationRule;
+    }
+
+    public void timePassed(Float time) {
+        master.timePassed(time);
+    }
+
+    public Map<DamageCounterRule, TimedRule> getTimedRules() {
+        return timedRules;
     }
 }

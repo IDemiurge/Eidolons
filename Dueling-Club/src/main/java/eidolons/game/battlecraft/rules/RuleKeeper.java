@@ -12,15 +12,15 @@ import main.system.auxiliary.secondary.BooleanMaster;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RuleMaster implements Controller {
+public class RuleKeeper implements Controller {
 
     static Map<Object, Boolean> overrideMap = new HashMap<>();
     private static Map<RULE, Boolean> map = new XLinkedMap<>();
     private static Map<RULE, Boolean> mapTest = new XLinkedMap<>();
     private static RULE_SCOPE scope = RULE_SCOPE.BASIC;
-    private static RuleMaster instance;
+    private static RuleKeeper instance;
 
-    private RuleMaster() {
+    private RuleKeeper() {
         instance = this;
     }
 
@@ -296,18 +296,18 @@ public class RuleMaster implements Controller {
     }
 
     public static void setScope(RULE_SCOPE scope) {
-        RuleMaster.scope = scope;
+        RuleKeeper.scope = scope;
     }
 
-    public static RuleMaster getInstance() {
+    public static RuleKeeper getInstance() {
         if (instance == null) {
-            instance = new RuleMaster();
+            instance = new RuleKeeper();
         }
         return instance;
     }
 
-    public static void setInstance(RuleMaster instance) {
-        RuleMaster.instance = instance;
+    public static void setInstance(RuleKeeper instance) {
+        RuleKeeper.instance = instance;
     }
 
     @Override

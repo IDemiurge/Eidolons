@@ -1,6 +1,6 @@
 package main.system.math;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.VariableManager.AUTOVAR;
 import main.entity.Ref;
@@ -69,10 +69,10 @@ public class Parameter extends DynamicValue {
             return (int) AUTOVAR.MASTERY.evaluate(entity, null);
             // return FunctionManager.FUNCTIONS.AV.evaluate(ref, value_ref, );
         } else {
-            param = (ContentManager.getPARAM(value_string));
+            param = (ContentValsManager.getPARAM(value_string));
 
             if (getParam() == null) {
-                param = (ContentManager.getPARAM(value_string + " Mastery"));
+                param = (ContentValsManager.getPARAM(value_string + " Mastery"));
             }
             if (getParam() == null) {
                 return entity.getCounter(value_string);

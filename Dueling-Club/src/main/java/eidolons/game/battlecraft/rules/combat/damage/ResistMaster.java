@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -19,11 +19,11 @@ public class ResistMaster {
     public static void initUnitResistances(Unit unit) {
         int resist = unit.getIntParam(PARAMS.RESISTANCE);
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
-            PARAMETER resistForDmgType = DC_ContentManager.getResistForDmgType(dmg_type);
+            PARAMETER resistForDmgType = DC_ContentValsManager.getResistForDmgType(dmg_type);
             if (resistForDmgType != null) {
                 if (dmg_type.isMagical()) {
                     RESIST_GRADE grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(
-                     RESIST_GRADE.class, unit.getProperty(DC_ContentManager
+                     RESIST_GRADE.class, unit.getProperty(DC_ContentValsManager
                       .getResistGradeForDmgType(dmg_type)));
                     if (grade == null) {
                         grade = GenericEnums.RESIST_GRADE.Normal;

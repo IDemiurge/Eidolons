@@ -1,6 +1,6 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.item.DC_HeroItemObj;
 import main.ability.effects.MicroEffect;
 import main.ability.effects.OneshotEffect;
@@ -58,7 +58,7 @@ public class ModifyCounterEffect extends MicroEffect implements OneshotEffect, R
         if (ref.getTargetObj() instanceof DC_HeroItemObj) {
             try {
                 mod = ref.getSourceObj().getIntParam(
-                 DC_ContentManager.getCoatingAppliedModParam(CounterMaster
+                 DC_ContentValsManager.getCoatingAppliedModParam(CounterMaster
                   .findCounterConst(counterName)));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

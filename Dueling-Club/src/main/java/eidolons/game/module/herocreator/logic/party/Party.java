@@ -1,6 +1,6 @@
 package eidolons.game.module.herocreator.logic.party;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
@@ -8,7 +8,7 @@ import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.herocreator.logic.HeroCreator;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
@@ -334,13 +334,13 @@ public class Party extends Obj {
             ref.setMatch(hero.getId());
 
             for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
-                Integer hero_identity = hero.getIntParam(DC_ContentManager
+                Integer hero_identity = hero.getIntParam(DC_ContentValsManager
                  .getIdentityParamForPrinciple(principle));
                 for (Unit m : members) {
                     if (m == hero || m.isDead()) {
                         continue;
                     }
-                    Integer member_identity = m.getIntParam(DC_ContentManager
+                    Integer member_identity = m.getIntParam(DC_ContentValsManager
                      .getIdentityParamForPrinciple(principle));
                     if (hero_identity > 0) {
                         if (member_identity < 0) {
@@ -379,7 +379,7 @@ public class Party extends Obj {
             dc_mod = Math.max(dc_mod, 1);
             sd_mod = Math.max(sd_mod, 1);
 
-            int maxLeadership = getMaxParam(ContentManager
+            int maxLeadership = getMaxParam(ContentValsManager
              .getMasteryScore(PARAMS.LEADERSHIP_MASTERY));
             // if (!leader.getOwner().isMe()) {
             // // mod /= 2; ???

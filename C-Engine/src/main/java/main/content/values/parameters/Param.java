@@ -1,6 +1,6 @@
 package main.content.values.parameters;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.Metainfo;
 import main.content.OBJ_TYPE;
 
@@ -14,7 +14,7 @@ public class Param implements PARAMETER {
     }
 
     public Param(String parameter) {
-        this(ContentManager.getPARAM(parameter));
+        this(ContentValsManager.getPARAM(parameter));
     }
 
     public boolean isDynamic() {

@@ -165,7 +165,10 @@ public class ActorMaster {
         action.setTarget(actor);
     }
 
-    public static void addMoveToAction(Actor actor, float x, float y, float v) {
+    public static void addMoveByAction(Actor actor, float x, float y, float v) {
+        addMoveToAction(actor, actor.getX()+x, actor.getY()+y, v);
+    }
+        public static void addMoveToAction(Actor actor, float x, float y, float v) {
         MoveToAction action = (MoveToAction) getAction(MoveToAction.class);// new MoveToAction();
         action.setPosition(x, y);
         action.setDuration(v);

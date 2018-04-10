@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.rules.rpg;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.values.parameters.PARAMETER;
@@ -25,8 +25,8 @@ public class IntegrityRule {
     private static PARAMETER[] getIntegrityModifiedParameters() {
         if (INTEGRITY_MODIFIED_VALUES == null) {
             INTEGRITY_MODIFIED_VALUES = new PARAMETER[]{
-             ContentManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
-             ContentManager.getMasteryScore(PARAMS.DIVINATION_MASTERY), PARAMS.XP_LEVEL_MOD,
+             ContentValsManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
+             ContentValsManager.getMasteryScore(PARAMS.DIVINATION_MASTERY), PARAMS.XP_LEVEL_MOD,
              PARAMS.GOLD_COST_REDUCTION, PARAMS.SPIRIT, PARAMS.FOCUS_RESTORATION,
              PARAMS.FOCUS_RETAINMENT, PARAMS.STARTING_FOCUS,
              // + Organization
@@ -126,8 +126,8 @@ public class IntegrityRule {
     }
 
     public static int getIntegrityMod(Entity hero, PRINCIPLES principle) {
-        PARAMETER alignment_param = DC_ContentManager.getAlignmentForPrinciple(principle);
-        PARAMETER identity_param = DC_ContentManager.getIdentityParamForPrinciple(principle);
+        PARAMETER alignment_param = DC_ContentValsManager.getAlignmentForPrinciple(principle);
+        PARAMETER identity_param = DC_ContentValsManager.getIdentityParamForPrinciple(principle);
         Integer degree = hero.getIntParam(identity_param);
         Integer amount = hero.getIntParam(alignment_param);
         int product = getIntegrityProduct(degree, amount);
@@ -174,8 +174,8 @@ public class IntegrityRule {
     }
 
     public static Integer[] getValues(PRINCIPLES principle, Entity item, Entity hero) {
-        PARAMETER alignment_param = DC_ContentManager.getAlignmentForPrinciple(principle);
-        PARAMETER identity_param = DC_ContentManager.getIdentityParamForPrinciple(principle);
+        PARAMETER alignment_param = DC_ContentValsManager.getAlignmentForPrinciple(principle);
+        PARAMETER identity_param = DC_ContentValsManager.getIdentityParamForPrinciple(principle);
         Integer alignment = hero.getIntParam(alignment_param);
         Integer identity = hero.getIntParam(identity_param);
         if (item != null) {
@@ -314,7 +314,7 @@ public class IntegrityRule {
         VALUE_LEVEL lowestLevel = null;
         for (PRINCIPLES principle : HeroEnums.PRINCIPLES.values()) {
             Integer amount = hero
-             .getIntParam(DC_ContentManager.getAlignmentForPrinciple(principle));
+             .getIntParam(DC_ContentValsManager.getAlignmentForPrinciple(principle));
             VALUE_LEVEL level = alignment ? getAlignmentLevel(amount) : getIdentityLevel(amount);
             if (highestAmount < amount) {
                 highestPrinciple = principle;
@@ -331,13 +331,13 @@ public class IntegrityRule {
     }
 
     public static ALIGNMENT_LEVEL getAlignmentLevel(PRINCIPLES principle, Entity hero) {
-        Integer amount = hero.getIntParam(DC_ContentManager.getAlignmentForPrinciple(principle));
+        Integer amount = hero.getIntParam(DC_ContentValsManager.getAlignmentForPrinciple(principle));
         ALIGNMENT_LEVEL alignmentLevel = getAlignmentLevel(amount);
         return alignmentLevel;
     }
 
     public static IDENTITY_LEVEL getIdentityLevel(PRINCIPLES principle, Entity hero) {
-        Integer amount = hero.getIntParam(DC_ContentManager.getAlignmentForPrinciple(principle));
+        Integer amount = hero.getIntParam(DC_ContentValsManager.getAlignmentForPrinciple(principle));
         IDENTITY_LEVEL identityLevel = getIdentityLevel(amount);
         return identityLevel;
     }

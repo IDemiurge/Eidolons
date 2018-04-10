@@ -1,6 +1,6 @@
 package main.swing.generic.components.editors.lists;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.swing.generic.components.panels.G_InfoPanel;
@@ -22,7 +22,7 @@ public class ListInfoPanel extends G_InfoPanel implements ListSelectionListener 
     @Override
     protected Vector<Vector<String>> initData() {
         if (infoObj != null) {
-            this.displayedValues = ContentManager.getFullValueList(infoObj.getOBJ_TYPE(), true);
+            this.displayedValues = ContentValsManager.getFullValueList(infoObj.getOBJ_TYPE(), true);
             // try {
             // displayedValues = null;
             // List<VALUE> values = ValuePageManager

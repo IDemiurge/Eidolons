@@ -221,9 +221,9 @@ public class EnumMaster<T> {
 
         if (!enumClass.isEnum()) {
             if (enumClass == Param.class || enumClass == PARAMETER.class) {
-                index = ContentManager.getParamList().indexOf(ContentManager.getPARAM(constName));
+                index = ContentValsManager.getParamList().indexOf(ContentValsManager.getPARAM(constName));
             } else if (enumClass == Prop.class || enumClass == PROPERTY.class) {
-                index = ContentManager.getPropList().indexOf(ContentManager.getPROP(constName));
+                index = ContentValsManager.getPropList().indexOf(ContentValsManager.getPROP(constName));
             } else {
                 return 0;
             }
@@ -251,22 +251,22 @@ public class EnumMaster<T> {
 
     public static Object[] getParamEnumConstants() {
 
-        return ContentManager.getParamList().toArray();
+        return ContentValsManager.getParamList().toArray();
     }
 
     public static List<String> getParamEnumConstantList() {
 
-        return StringMaster.convertToStringList(ContentManager.getParamList());
+        return StringMaster.convertToStringList(ContentValsManager.getParamList());
     }
 
     public static List<String> getPropEnumConstantList() {
 
-        return StringMaster.convertToStringList(ContentManager.getPropList());
+        return StringMaster.convertToStringList(ContentValsManager.getPropList());
     }
 
     public static Object[] getPropEnumConstants() {
 
-        return ContentManager.getPropList().toArray();
+        return ContentValsManager.getPropList().toArray();
     }
 
     public static List<String> findEnumConstantNames(String subgroup) {
@@ -325,14 +325,14 @@ public class EnumMaster<T> {
         if (array == null) {
             list = new ArrayList<>();
             if (clazz == VALUE.class) {
-                list = ContentManager.getPropList();
-                list.addAll(ContentManager.getParamList());
+                list = ContentValsManager.getPropList();
+                list.addAll(ContentValsManager.getParamList());
             }
             if (clazz == PROPERTY.class) {
-                list = ContentManager.getPropList();
+                list = ContentValsManager.getPropList();
             }
             if (clazz == PARAMETER.class) {
-                list = ContentManager.getParamList();
+                list = ContentValsManager.getParamList();
             }
         } else {
             list = Arrays.asList(array);
@@ -530,7 +530,7 @@ public class EnumMaster<T> {
     // }
 
     public T retrieveEnumFromEntityProp(Class<T> CLASS, Entity entity) {
-        String string = entity.getProperty(ContentManager.findPROP(CLASS.getSimpleName()));
+        String string = entity.getProperty(ContentValsManager.findPROP(CLASS.getSimpleName()));
         return retrieveEnumConst(CLASS, string);
     }
 

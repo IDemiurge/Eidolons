@@ -345,6 +345,6 @@ public class GameLoop {
     }
 
     public Float getTime() {
-        return getGame().getTurnManager().getTotalTime();
+        return game.getDungeonMaster().getExplorationMaster().getTimeMaster().getTime();
     }
 }

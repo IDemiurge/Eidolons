@@ -4,7 +4,8 @@ import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -78,13 +79,13 @@ public class RageRule extends DC_CounterRule {
     }
 
     @Override
-    public int getMaxNumberOfCounters(Unit unit) {
+    public int getMaxNumberOfCounters(BattleFieldObject unit) {
         return (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.BERSERKER)) ? MAX_BERSERK
          : MAX;
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return 1;
     }
 

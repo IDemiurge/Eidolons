@@ -2,7 +2,8 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -24,7 +25,7 @@ public class MoistRule extends DC_CounterRule {
     }
 
     @Override
-    public boolean check(Unit unit) {
+    public boolean check(BattleFieldObject unit) {
         if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return false;
         }
@@ -34,21 +35,21 @@ public class MoistRule extends DC_CounterRule {
     @Override
     protected Effect getEffect() {
         return new Effects(new ModifyValueEffect(PARAMS.LIGHTNING_RESISTANCE,
-         MOD.MODIFY_BY_CONST, getNumberOfCounters(unit) + "* "
+         MOD.MODIFY_BY_CONST, getNumberOfCounters(object) + "* "
          + LIGHTNING_RES_PER_COUNTER), new ModifyValueEffect(
          PARAMS.COLD_RESISTANCE, MOD.MODIFY_BY_CONST,
-         getNumberOfCounters(unit) + "* " + COLD_RES_PER_COUNTER),
+         getNumberOfCounters(object) + "* " + COLD_RES_PER_COUNTER),
          new ModifyValueEffect(PARAMS.FIRE_RESISTANCE,
-          MOD.MODIFY_BY_CONST, getNumberOfCounters(unit)
+          MOD.MODIFY_BY_CONST, getNumberOfCounters(object)
           + "* " + FIRE_RES_PER_COUNTER),
          new ModifyValueEffect(PARAMS.WEIGHT,
-          MOD.MODIFY_BY_CONST, getNumberOfCounters(unit)
+          MOD.MODIFY_BY_CONST, getNumberOfCounters(object)
           + "* " + WEIGHT_PER_COUNTER));
 
     }
 
     @Override
-    public int getMaxNumberOfCounters(Unit unit) {
+    public int getMaxNumberOfCounters(BattleFieldObject unit) {
         if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
             return 25;
         }
@@ -71,7 +72,7 @@ public class MoistRule extends DC_CounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
             return 1;
         }

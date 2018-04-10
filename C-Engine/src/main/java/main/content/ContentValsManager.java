@@ -29,7 +29,7 @@ import java.util.*;
  * @author JustMe
  */
 
-public class ContentManager {
+public class ContentValsManager {
 
     public static final int INFINITE_VALUE = 999;
     public static final String NEW_EMPTY_VALUE = "-";
@@ -37,6 +37,8 @@ public class ContentManager {
     public static final String OLD_EMPTY_VALUE = "[...]";
     private static final String MASTERY = "_MASTERY";
     private static final boolean LOWER_CASE_CACHED = true;
+    public static final String RETAINMENT = "_RETAINMENT";
+    public static final String RESTORATION = "_RESTORATION";
 
 
     private static Map<String, List<String>> valueNamesMap = new ConcurrentMap<>();
@@ -86,14 +88,14 @@ public class ContentManager {
     private static List<VALUE> values;
     private static Set<VALUE> excludedValueSet;
     private static TypeMaster typeMaster;
-    private static ContentManager instance;
+    private static ContentValsManager instance;
     private static Map<PARAMETER, PARAMETER> currentCache = new HashMap<>();
     private static Map<PARAMETER, PARAMETER> regenCache = new HashMap<>();
     private static Map<PARAMETER, PARAMETER> percCache = new HashMap<>();
     private Map<String, VALUE> commons;
     private Map<String, Map<String, VALUE>> maps;
 
-    public ContentManager() {
+    public ContentValsManager() {
         instance = this;
     }
 
@@ -198,7 +200,7 @@ public class ContentManager {
     }
 
     public static PARAMETER getFinalAttrFromBase(PARAMETER param) {
-        return ContentManager.getPARAM(param.name().replace(StringMaster.BASE, ""));
+        return ContentValsManager.getPARAM(param.name().replace(StringMaster.BASE, ""));
     }
 
     public static PARAMETER getMasteryScore(PARAMETER mastery) {
@@ -828,7 +830,7 @@ public class ContentManager {
     }
 
     public static void setTypeMaster(TypeMaster typeMaster) {
-        ContentManager.typeMaster = typeMaster;
+        ContentValsManager.typeMaster = typeMaster;
     }
 
     public static int getTypeCode(String typeName) {
@@ -845,7 +847,7 @@ public class ContentManager {
     }
 
     public static void setValueNamesMap(Map<String, List<String>> valueNamesMap) {
-        ContentManager.valueNamesMap = valueNamesMap;
+        ContentValsManager.valueNamesMap = valueNamesMap;
     }
 
     public static Map<String, List<String>> getValueNamesMapAV() {
@@ -853,7 +855,7 @@ public class ContentManager {
     }
 
     public static void setValueNamesMapAV(Map<String, List<String>> valueNamesMapAV) {
-        ContentManager.valueNamesMapAV = valueNamesMapAV;
+        ContentValsManager.valueNamesMapAV = valueNamesMapAV;
     }
 
     public static PARAMETER getPerLevelValue(String string) {
@@ -920,7 +922,7 @@ public class ContentManager {
     }
 
     public static void setPerLevelParams(ArrayList<PARAMETER> perLevelParams) {
-        ContentManager.perLevelParams = perLevelParams;
+        ContentValsManager.perLevelParams = perLevelParams;
     }
 
     public static List<PARAMETER> getAttributes() {
@@ -962,7 +964,7 @@ public class ContentManager {
     }
 
     public static void setPropEnumClasses(Class<?>[] propEnumClasses) {
-        ContentManager.propEnumClasses = propEnumClasses;
+        ContentValsManager.propEnumClasses = propEnumClasses;
     }
 
     public static Class<?>[] getParamEnumClasses() {
@@ -970,7 +972,7 @@ public class ContentManager {
     }
 
     public static void setParamEnumClasses(Class<?>[] paramEnumClasses) {
-        ContentManager.paramEnumClasses = paramEnumClasses;
+        ContentValsManager.paramEnumClasses = paramEnumClasses;
     }
 
     public static void setExcludedValueSet(Set<VALUE> set) {
@@ -1056,12 +1058,12 @@ public class ContentManager {
         return masteryGroup;
     }
 
-    public static ContentManager getInstance() {
+    public static ContentValsManager getInstance() {
         return instance;
     }
 
-    public static void setInstance(ContentManager instance) {
-        ContentManager.instance = instance;
+    public static void setInstance(ContentValsManager instance) {
+        ContentValsManager.instance = instance;
     }
 
     public static String getCurrentOutOfTotal(PARAMETER value, Entity obj) {

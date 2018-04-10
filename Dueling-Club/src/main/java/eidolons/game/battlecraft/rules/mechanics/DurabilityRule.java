@@ -2,12 +2,12 @@ package eidolons.game.battlecraft.rules.mechanics;
 
 import eidolons.ability.conditions.req.ItemCondition;
 import eidolons.ability.effects.oneshot.rule.DurabilityReductionEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import main.ability.effects.Effects;
 import main.ability.effects.container.ConditionalEffect;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -32,9 +32,9 @@ public class DurabilityRule extends DC_RuleImpl {
 
     public static int physicalDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
                                      DC_HeroSlotItem armor, DC_WeaponObj weapon, boolean simulation) {
-        int self_damage_mod = armor.getIntParam(DC_ContentManager
+        int self_damage_mod = armor.getIntParam(DC_ContentValsManager
          .getArmorSelfDamageParamForDmgType(damage_type));
-        if (!RuleMaster.isRuleOn(RULE.DURABILITY))
+        if (!RuleKeeper.isRuleOn(RULE.DURABILITY))
             self_damage_mod = 0;
         else if (self_damage_mod == 0)
             self_damage_mod = 100;
@@ -54,7 +54,7 @@ public class DurabilityRule extends DC_RuleImpl {
         if (armor_amount > 0)
             durabilityReductionEffect.apply(ref);
 
-        self_damage_mod = weapon.getIntParam(DC_ContentManager
+        self_damage_mod = weapon.getIntParam(DC_ContentValsManager
          .getArmorSelfDamageParamForDmgType(damage_type));
         int weapon_amount = blocked * self_damage_mod / 100;
         weapon_amount = MathMaster.addFactor(weapon_amount, armor_vs_weapon);
@@ -66,7 +66,7 @@ public class DurabilityRule extends DC_RuleImpl {
 
     public static int spellDamage(int damage, int blocked, DAMAGE_TYPE damage_type,
                                   DC_HeroSlotItem armor, boolean simulation) {
-        int self_damage_mod = armor.getIntParam(DC_ContentManager
+        int self_damage_mod = armor.getIntParam(DC_ContentValsManager
          .getArmorSelfDamageParamForDmgType(damage_type));
         // special cases may apply for Damage
         int amount = blocked * self_damage_mod / 100;

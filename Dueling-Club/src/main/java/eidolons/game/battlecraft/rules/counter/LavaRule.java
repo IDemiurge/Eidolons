@@ -2,7 +2,9 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -18,7 +20,7 @@ import main.entity.Ref.KEYS;
 /**
  * Created by JustMe on 4/22/2017.
  */
-public class LavaRule extends DamageCounterRule {
+public class LavaRule extends DamageCounterRule  implements TimedRule {
 
     private static final int REDUCTION = -1;
     private static final String DAMAGE_PER_COUNTER = "5";
@@ -76,7 +78,7 @@ public class LavaRule extends DamageCounterRule {
 
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return REDUCTION;
     }
 

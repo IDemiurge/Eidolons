@@ -10,7 +10,7 @@ import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
 import main.ability.effects.ReducedEffect;
 import main.ability.effects.ResistibleEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.OmittedConstructor;
@@ -127,7 +127,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             if (param.isWriteToType()) {
                 return null; // xp, gold, points...
             }
-            return ContentManager.getBaseParameterFromCurrent(param);
+            return ContentValsManager.getBaseParameterFromCurrent(param);
         }
         return null;
     }
@@ -222,10 +222,10 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             return EffectFinder.initParamModEffects(modString, ref).apply(ref);
         }
         if (param == null) {
-            this.param = ContentManager.getPARAM(sparam);
+            this.param = ContentValsManager.getPARAM(sparam);
             if (param == null) {
                 if (param == null) {
-                    this.param = ContentManager.getMastery(sparam);
+                    this.param = ContentValsManager.getMastery(sparam);
                 }
             }
 
@@ -314,7 +314,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
                  // = obj.getParams(param, ref.isBase()) + "*(" + amount
                  // + "/100)";
                  MathMaster.getFractionValueCentimalDouble(obj.getParamDouble(
-                  mod_type == MOD.SET_TO_PERCENTAGE ? ContentManager.getBaseParameterFromCurrent(param)
+                  mod_type == MOD.SET_TO_PERCENTAGE ? ContentValsManager.getBaseParameterFromCurrent(param)
                    : param, base), amount);
                 ref.setAmount(mod + "");
 
@@ -485,14 +485,14 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
 
     public PARAMETER getParam() {
         if (param == null) {
-            this.param = ContentManager.getPARAM(sparam);
+            this.param = ContentValsManager.getPARAM(sparam);
         }
         return param;
     }
 
     public void setParam(PARAMETER param) {
         if (param.isMastery()) {
-            param = ContentManager.getMasteryScore(param);
+            param = ContentValsManager.getMasteryScore(param);
         }
         this.param = param;
     }

@@ -30,11 +30,10 @@ import main.swing.generic.components.editors.EDITOR;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.*;
 
-public class DC_ContentManager extends ContentManager {
+public class DC_ContentValsManager extends ContentValsManager {
     public static final PARAMETER[] DYNAMIC_PARAMETERS = {
      PARAMS.C_TOUGHNESS,
      PARAMS.C_ENDURANCE,
@@ -196,7 +195,7 @@ public class DC_ContentManager extends ContentManager {
         FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);
     }
 
-    public DC_ContentManager() {
+    public DC_ContentValsManager() {
         super();
     }
 
@@ -237,12 +236,12 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static PARAMETER getCoatingMaxPerHitModParam(COUNTER c) {
-        return ContentManager.getPARAM(PARAMS.COATING_COUNTERS_APPLIED_PER_HIT_MOD.getName()
+        return ContentValsManager.getPARAM(PARAMS.COATING_COUNTERS_APPLIED_PER_HIT_MOD.getName()
          .replace("Coating Counters", c.getName()));
     }
 
     public static PARAMETER getCoatingAppliedModParam(COUNTER c) {
-        return ContentManager.getPARAM(PARAMS.COATING_COUNTERS_APPLIED_TO_ITEM_MOD.getName()
+        return ContentValsManager.getPARAM(PARAMS.COATING_COUNTERS_APPLIED_TO_ITEM_MOD.getName()
          .replace("Coating Counters", c.getName()));
     }
 
@@ -300,7 +299,7 @@ public class DC_ContentManager extends ContentManager {
         if (param != null) {
             return param;
         }
-        param = ContentManager.getPARAM(principle.toString() + StringMaster.ALIGNMENT);
+        param = ContentValsManager.getPARAM(principle.toString() + StringMaster.ALIGNMENT);
         alignmentMap.put(principle, param);
         return param;
     }
@@ -312,7 +311,7 @@ public class DC_ContentManager extends ContentManager {
         if (param != null) {
             return param;
         }
-        param = ContentManager.getPARAM(principle.toString() + StringMaster.IDENTITY);
+        param = ContentValsManager.getPARAM(principle.toString() + StringMaster.IDENTITY);
         identityMap.put(principle, param);
         return param;
     }
@@ -322,7 +321,7 @@ public class DC_ContentManager extends ContentManager {
             return masteries;
         }
         masteries = new ArrayList<>();
-        for (PARAMETER m : ContentManager.getMasteries()) {
+        for (PARAMETER m : ContentValsManager.getMasteries()) {
             masteries.add((PARAMS) m);
         }
         return masteries;
@@ -336,10 +335,10 @@ public class DC_ContentManager extends ContentManager {
         if (objType == null) {
             return Collections.EMPTY_LIST;
         }
-        List<String> valueNames = ContentManager.getValueNamesMap().get(objType);
+        List<String> valueNames = ContentValsManager.getValueNamesMap().get(objType);
         if (valueNames != null)
             return valueNames;
-        valueNames = ContentManager.getFullValueList(objType);
+        valueNames = ContentValsManager.getFullValueList(objType);
 
         // for (VALUE v : excludedValuesFromAll) {
         // valueNames.remove(v.getName());
@@ -353,7 +352,7 @@ public class DC_ContentManager extends ContentManager {
         } catch (Exception e) {
 
         }
-        ContentManager.getValueNamesMap().put(objType, valueNames);
+        ContentValsManager.getValueNamesMap().put(objType, valueNames);
         return valueNames;
 
     }
@@ -376,7 +375,7 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static PARAMETER getDamageTypeResistance(DAMAGE_TYPE type) {
-        return ContentManager.getPARAM(type.getResistanceName());
+        return ContentValsManager.getPARAM(type.getResistanceName());
 
     }
 
@@ -385,11 +384,11 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static PARAMETER getDefaultAttr(PARAMETER param) {
-        return ContentManager.getPARAM(StringMaster.DEFAULT + param.toString());
+        return ContentValsManager.getPARAM(StringMaster.DEFAULT + param.toString());
     }
 
     public static PARAMETER getBaseAttr(PARAMETER param) {
-        return ContentManager.getPARAM(StringMaster.BASE + param.toString());
+        return ContentValsManager.getPARAM(StringMaster.BASE + param.toString());
     }
 
     public static Object getHeaderValues(OBJ_TYPE obj_TYPE_ENUM) {
@@ -416,12 +415,12 @@ public class DC_ContentManager extends ContentManager {
         if (p == PROPS.LEARNED_SPELLS) {
             valueName = costParam.getName() + StringMaster.REDUCTION + "_" + p.getName();
         }
-        return ContentManager.getPARAM(valueName);
+        return ContentValsManager.getPARAM(valueName);
     }
 
     public static PARAMETER getCostReductionParam(PARAMETER costParam, PROPERTY p) {
         String valueName = costParam.getName() + StringMaster.REDUCTION;
-        return ContentManager.getPARAM(valueName);
+        return ContentValsManager.getPARAM(valueName);
     }
 
     public static boolean isShowValueName(VALUE value) {
@@ -474,14 +473,14 @@ public class DC_ContentManager extends ContentManager {
     public static void addDefaultValues(Entity entity, boolean dynamic) {
         addDefaultValues(entity, dynamic,
 
-         ContentManager.getValueList()
+         ContentValsManager.getValueList()
         );
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic,
                                         Collection<VALUE> vals) {
         for (VALUE VAL : vals) {
-            if (!ContentManager.isValueForOBJ_TYPE(entity.getOBJ_TYPE_ENUM(), VAL)) {
+            if (!ContentValsManager.isValueForOBJ_TYPE(entity.getOBJ_TYPE_ENUM(), VAL)) {
                 continue;
             }
             String value = getDefaultValueSpecial(entity, VAL);
@@ -536,8 +535,8 @@ public class DC_ContentManager extends ContentManager {
 
     public static void addDefaultValues(Entity entity) {
 //this should be done in AV!!!
-        for (String value : DC_ContentManager.getInfoPanelValueList(entity.getOBJ_TYPE())) {
-            VALUE VAL = ContentManager.getValue(value);
+        for (String value : DC_ContentValsManager.getInfoPanelValueList(entity.getOBJ_TYPE())) {
+            VALUE VAL = ContentValsManager.getValue(value);
             if (VAL == null) {
                 continue;
             }
@@ -623,10 +622,10 @@ public class DC_ContentManager extends ContentManager {
     }
 
     private static PARAMETER[] getParameters(String sparam) {
-        if (ContentManager.isParameter(sparam)) {
-            return new PARAMETER[]{ContentManager.getPARAM(sparam)};
+        if (ContentValsManager.isParameter(sparam)) {
+            return new PARAMETER[]{ContentValsManager.getPARAM(sparam)};
         }
-        PARAMETER param = ContentManager.getMastery(sparam);
+        PARAMETER param = ContentValsManager.getMastery(sparam);
 
         if (param != null) {
             return new PARAMETER[]{param};
@@ -772,9 +771,9 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static List<String> getBonusParamList() {
-        ContentManager.getParamsForType("chars", false);
+        ContentValsManager.getParamsForType("chars", false);
         List<String> list = new ArrayList<>();
-        for (PARAMETER p : ContentManager.getParamsForType("chars", false)) {
+        for (PARAMETER p : ContentValsManager.getParamsForType("chars", false)) {
             if (p.isAttribute()) {
                 continue;
             }
@@ -920,25 +919,25 @@ public class DC_ContentManager extends ContentManager {
     }
 
     public static PROPERTY getResistGradeForDmgType(DAMAGE_TYPE dmg_type) {
-        return ContentManager.getPROP("RESIST_GRADE_" + dmg_type.name());
+        return ContentValsManager.getPROP("RESIST_GRADE_" + dmg_type.name());
     }
 
     public static PROPERTY getSelfDamageGradeForDmgType(DAMAGE_TYPE dmg_type) {
-        return ContentManager.getPROP("DURABILITY_GRADE_" + dmg_type.name());
+        return ContentValsManager.getPROP("DURABILITY_GRADE_" + dmg_type.name());
     }
 
     public static PARAMETER getResistForDmgType(DAMAGE_TYPE dmg_type) {
-        return ContentManager.getPARAM(dmg_type.name() + "_RESISTANCE");
+        return ContentValsManager.getPARAM(dmg_type.name() + "_RESISTANCE");
     }
 
     public static PARAMETER getArmorSelfDamageParamForDmgType(DAMAGE_TYPE dmg_type) {
         // cache!
-        return ContentManager.getPARAM(dmg_type.name() + "_DURABILITY_MOD");
+        return ContentValsManager.getPARAM(dmg_type.name() + "_DURABILITY_MOD");
     }
 
     public static PARAMETER getArmorParamForDmgType(DAMAGE_TYPE dmg_type) {
         // cache!
-        return ContentManager.getPARAM(dmg_type.name() + "_ARMOR");
+        return ContentValsManager.getPARAM(dmg_type.name() + "_ARMOR");
     }
 
     public static ArrayList<PARAMETER> getDynamicParams() {
@@ -983,22 +982,18 @@ public class DC_ContentManager extends ContentManager {
         ArrayList<PARAMETER> params = new ArrayList<>();
         params.addAll(Arrays.asList(G_PARAMS.values()));
         params.addAll(Arrays.asList(PARAMS.values()));
-        if (CoreEngine.isMacro() || CoreEngine.isArcaneVault()) {
             params.addAll(Arrays.asList(MACRO_PARAMS.values()));
-        }
 
         ArrayList<PROPERTY> props = new ArrayList<>();
         props.addAll(Arrays.asList(G_PROPS.values()));
         props.addAll(Arrays.asList(PROPS.values()));
-        if (CoreEngine.isMacro() || CoreEngine.isArcaneVault()) {
             props.addAll(Arrays.asList(MACRO_PROPS.values()));
-        }
 
         params.addAll(generateDerivedParams());
 
-        ContentManager.init(props, params);
-        ContentManager.setParamEnumClasses(PARAM_ENUM_CLASSES);
-        ContentManager.setPropEnumClasses(PROP_ENUM_CLASSES);
+        ContentValsManager.init(props, params);
+        ContentValsManager.setParamEnumClasses(PARAM_ENUM_CLASSES);
+        ContentValsManager.setPropEnumClasses(PROP_ENUM_CLASSES);
 
         ValuePageManager.init();
 

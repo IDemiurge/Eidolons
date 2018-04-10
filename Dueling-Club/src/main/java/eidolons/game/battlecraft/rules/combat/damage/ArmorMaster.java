@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
@@ -41,7 +41,7 @@ public class ArmorMaster {
             return obj.getIntParam(PARAMS.ARMOR);
         }
 
-        return obj.getIntParam(DC_ContentManager.getArmorParamForDmgType(dmg_type));
+        return obj.getIntParam(DC_ContentValsManager.getArmorParamForDmgType(dmg_type));
     }
 
     public static int getShieldReducedAmountForDealDamageEffect(

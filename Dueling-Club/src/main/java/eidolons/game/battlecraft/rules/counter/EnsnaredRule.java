@@ -4,8 +4,10 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.action.ActionRule;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.roll.RollMaster;
 import main.ability.effects.Effect;
@@ -66,7 +68,7 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         // unit spends all of his AP to reduce the counter count?
         // this can be dynamic i suppose
         return 0;
@@ -81,13 +83,13 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
     }
 
     private boolean checkEnsnared() {
-        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
-            return getNumberOfCounters(unit) > 10;
+        if (object.checkClassification(UnitEnums.CLASSIFICATIONS.SMALL)) {
+            return getNumberOfCounters(object) > 10;
         }
-        if (unit.checkClassification(UnitEnums.CLASSIFICATIONS.HUGE)) {
-            return getNumberOfCounters(unit) > 50;
+        if (object.checkClassification(UnitEnums.CLASSIFICATIONS.HUGE)) {
+            return getNumberOfCounters(object) > 50;
         }
-        return getNumberOfCounters(unit) > 20;
+        return getNumberOfCounters(object) > 20;
     }
 
     @Override
@@ -106,13 +108,13 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
         // so this must act as *action rule*... I can add it to such!
 
         return new Effects(new ModifyValueEffect(PARAMS.AGILITY,
-         MOD.MODIFY_BY_PERCENT, getNumberOfCounters(unit)
+         MOD.MODIFY_BY_PERCENT, getNumberOfCounters(object)
          + " * " + AGI_REDUCTION_PER_COUNTER),
          // TODO square root maybe? so that there is some chance at least for big
          // values and some harm from small ones!
          new ModifyValueEffect(PARAMS.DEXTERITY,
           MOD.MODIFY_BY_PERCENT,
-          getNumberOfCounters(unit) + " * "
+          getNumberOfCounters(object) + " * "
            + DEX_REDUCTION_PER_COUNTER));
     }
 
@@ -161,6 +163,8 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
 
     private boolean checkCutAway(boolean offhand) {
         int amount = 0;
+        if (object instanceof Unit) {
+            Unit unit = ((Unit) object);
         DC_WeaponObj weapon = unit.getWeapon(offhand);
         if (weapon == null) {
             weapon = unit.getNaturalWeapon(offhand);
@@ -183,27 +187,28 @@ public class EnsnaredRule extends DC_CounterRule implements ActionRule {
             amount += unit.calculateDamage(offhand);
         }
 
-        amount = MathMaster.applyMod(amount, unit
+        amount = MathMaster.applyMod(amount, object
          .getIntParam(offhand ? PARAMS.OFF_HAND_ATTACK : PARAMS.ATTACK));
         amount = MathMaster.applyMod(amount, CUT_AWAY_MOD);
-        amount = Math.min(getNumberOfCounters(unit), amount);
-        unit.modifyCounter(getCounterName(), -amount);
+        amount = Math.min(getNumberOfCounters(object), amount);
+            unit.modifyCounter(getCounterName(), -amount);
 
         attack_action.payCosts();
 
         // unit.modifyParameter(PARAMS.C_STAMINA, -sta_cost);
         // unit.modifyParameter(PARAMS.C_N_OF_ACTIONS, -1);
-        String string = ((offhand) ? "...Then " : unit.getName())
+        String string = ((offhand) ? "...Then " : object.getName())
          + " cuts away "
          + ((offhand) ? " another " + amount : amount
          + " Ensnare counters") + " with " + weapon.getName();
 
-        if (getNumberOfCounters(unit) <= 0) {
+        if (getNumberOfCounters(object) <= 0) {
             string += " and breaks free!";
             game.getLogManager().log(string);
             return true;
         } else {
             game.getLogManager().log(string);
+        }
         }
         return false;
     }

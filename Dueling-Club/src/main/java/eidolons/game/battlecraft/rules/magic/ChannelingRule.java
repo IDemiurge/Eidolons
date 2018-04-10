@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.magic;
 
 import eidolons.ability.DC_CostsFactory;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
@@ -52,7 +52,7 @@ public class ChannelingRule {
     public static Costs getChannelingCosts(DC_SpellObj action, boolean activateOrResolve) {
         List<Cost> list = new ArrayList<>();
         for (PARAMS costParam : activateOrResolve ? costParamsActivate : costParamsResolve) {
-            PARAMS payParam = DC_ContentManager.getPayParameterForCost(costParam);
+            PARAMS payParam = DC_ContentValsManager.getPayParameterForCost(costParam);
             Cost cost = DC_CostsFactory.getCost(action, costParam, payParam);
 //            int mod = 100;
 //            cost.getPayment().getAmountFormula().applyModifier(mod);

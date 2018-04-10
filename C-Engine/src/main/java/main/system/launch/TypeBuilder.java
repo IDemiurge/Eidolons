@@ -1,6 +1,6 @@
 package main.system.launch;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -28,7 +28,7 @@ public class TypeBuilder {
         if (typeInitializer == null) {
             typeInitializer = new TypeInitializer();
         }
-        OBJ_TYPE objType = ContentManager.getOBJ_TYPE(typeType);
+        OBJ_TYPE objType = ContentValsManager.getOBJ_TYPE(typeType);
         ObjType type = null;
         if (objType != null) {
             type = getTypeInitializer().getNewType(objType);
@@ -101,17 +101,17 @@ public class TypeBuilder {
 
                     child = XML_Converter.getAbilitiesDoc(child);
 
-                    type.setProperty(ContentManager.getPROP(child.getNodeName()), XML_Converter
+                    type.setProperty(ContentValsManager.getPROP(child.getNodeName()), XML_Converter
                      .getStringFromXML(child, false));
 
                     ((XmlDocHolder) type).setDoc(child);
                     continue;
                 }
             }
-            PROPERTY prop = ContentManager.getPROP(child.getNodeName());
+            PROPERTY prop = ContentValsManager.getPROP(child.getNodeName());
             if (prop == null) {
                 LogMaster.log(1, "no such prop: " + child.getNodeName());
-                prop = ContentManager.getPROP(child.getNodeName());
+                prop = ContentValsManager.getPROP(child.getNodeName());
                 continue;
             }
             type.setProperty(prop, getTextFromXml(child));
@@ -134,7 +134,7 @@ public class TypeBuilder {
             if (child.getTextContent().startsWith("\n")) {
                 continue;
             }
-            PARAMETER param = ContentManager.getPARAM(child.getNodeName());
+            PARAMETER param = ContentValsManager.getPARAM(child.getNodeName());
             if (param == null) {
 //                LogMaster.log(1, "no such param: " + child.getNodeName());
                 continue;

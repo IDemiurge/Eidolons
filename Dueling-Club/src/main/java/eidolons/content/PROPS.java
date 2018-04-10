@@ -530,7 +530,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
 
     PROPS(String shortName, boolean container, String... entityTypes) {
         this(null, shortName, "", false,
-         ContentManager.getDefaultEmptyValue(), 0);
+         ContentValsManager.getDefaultEmptyValue(), 0);
         this.entityTypes = entityTypes;
         this.container = container;
         if (entityTypes.length > 0)
@@ -540,7 +540,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     }
 
     PROPS(String entityType, String shortName) {
-        this(entityType, shortName, "", false, ContentManager.getDefaultEmptyValue(), 0);
+        this(entityType, shortName, "", false, ContentValsManager.getDefaultEmptyValue(), 0);
     }
 
     PROPS(String entityType, String shortName, String descr, boolean dynamic, String defaultValue,

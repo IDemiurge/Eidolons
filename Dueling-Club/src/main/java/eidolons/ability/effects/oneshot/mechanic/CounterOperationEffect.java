@@ -1,7 +1,7 @@
 package eidolons.ability.effects.oneshot.mechanic;
 
 import eidolons.ability.effects.DC_Effect;
-import eidolons.game.battlecraft.rules.counter.CounterMasterAdvanced;
+import eidolons.game.battlecraft.rules.counter.generic.CounterMasterAdvanced;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
 import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;

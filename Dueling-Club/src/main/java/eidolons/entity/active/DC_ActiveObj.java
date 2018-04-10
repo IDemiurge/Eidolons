@@ -2,7 +2,7 @@ package eidolons.entity.active;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.active.*;
@@ -148,7 +148,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
              getProperty(PROPS.DAMAGE_TYPE)));
         }
         if (energyType == null) {
-            energyType = DC_ContentManager.getDamageForAspect(getAspect());
+            energyType = DC_ContentValsManager.getDamageForAspect(getAspect());
             if (energyType == null) {
                 return GenericEnums.DAMAGE_TYPE.MAGICAL;
             }

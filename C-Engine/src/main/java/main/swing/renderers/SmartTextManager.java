@@ -1,6 +1,6 @@
 package main.swing.renderers;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
@@ -80,7 +80,7 @@ public class SmartTextManager {
 
     private static VALUE_CASES getDynamicValueCase(PARAMETER param, int amount, Entity obj) {
         // preCheck special cases - morale, etc
-        PARAMETER base_value = ContentManager.getBaseParameterFromCurrent(param);
+        PARAMETER base_value = ContentValsManager.getBaseParameterFromCurrent(param);
         if (base_value == null) {
             return VALUE_CASES.VALUE_NORMAL;
         }

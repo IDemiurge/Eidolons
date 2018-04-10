@@ -51,9 +51,12 @@ public class ImageContainer extends SuperContainer {
         getContent().removeAction(action);
     }
 
-    public void setImage(String path) {
+    public void setImage(Image image) {
+        setContents(image);
+    }
+        public void setImage(String path) {
         if (ImageManager.isImage(path))
-            setContents(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
+            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
         else
             return;
     }

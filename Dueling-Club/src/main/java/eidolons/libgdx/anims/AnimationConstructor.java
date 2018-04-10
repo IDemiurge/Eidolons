@@ -23,7 +23,7 @@ import eidolons.libgdx.anims.std.SpellAnim.SPELL_ANIMS;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.ability.effects.Effect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
@@ -132,7 +132,7 @@ public class AnimationConstructor {
                             continue;
                         value = value.replace(PathFinder.getImagePath().toLowerCase(), "");
                         i++;
-                        PROPERTY prop = ContentManager.findPROP("anim" +
+                        PROPERTY prop = ContentValsManager.findPROP("anim" +
                          "_" + identifier + "_" + part);
                         if (prop == null)
                             continue;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
@@ -22,7 +23,9 @@ import static main.system.GuiEventType.BOTTOM_PANEL_UPDATE;
 public class ActionPanel extends Group {
     public final static int IMAGE_SIZE = 60;
     private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
-    private final boolean facingPanelOn =true;
+    private static final float SPELL_OFFSET_Y = -12;
+    private static final String ORB_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "overlay.png");;
+    private final ImageContainer orbOverlay;
     protected OrbsPanel leftOrbPanel;
     protected OrbsPanel rigthOrbPanel;
     protected QuickSlotPanel quickSlotPanel;
@@ -39,21 +42,21 @@ public class ActionPanel extends Group {
         addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
         final int quickSlotOffset = 70;
-        quickSlotPanel.setPosition(quickSlotOffset, 0);
+        quickSlotPanel.setPosition(quickSlotOffset, SPELL_OFFSET_Y);
         addActor(quickSlotPanel);
 
         final int actionOffset = quickSlotOffset + (IMAGE_SIZE * 6) + 5;
-        modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE);
-        modeActionsPanel.setPosition(actionOffset, 0);
-        addActor(modeActionsPanel);
+        addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
+        modeActionsPanel.setPosition(actionOffset,  0);
+
 
         spellPanel = new SpellPanel(IMAGE_SIZE);
         final int spellOffset = actionOffset + (IMAGE_SIZE * 6) + 5;
-        spellPanel.setPosition(spellOffset, 0);
+        spellPanel.setPosition(spellOffset,  SPELL_OFFSET_Y);
         addActor(spellPanel);
 
         effectsPanel = new EffectsPanel();
-        effectsPanel.setPosition(actionOffset, IMAGE_SIZE);
+        effectsPanel.setPosition(actionOffset+88, IMAGE_SIZE+12);
         addActor(effectsPanel);
 
         leftOrbPanel = new OrbsPanel(PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA);
@@ -67,18 +70,19 @@ public class ActionPanel extends Group {
 
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
-        if (facingPanelOn)
-            addActor(facingPanel = new FacingPanel());
+        addActor(facingPanel = new FacingPanel());
 
 
-        mainHand.setPosition(rigthOrbPanel.getX() - 150,
-         leftOrbPanel.getY());
-        offhand.setPosition(leftOrbPanel.getX() + 250,
-         leftOrbPanel.getY());
-        if (facingPanelOn)
-            facingPanel.setPosition(
-             (mainHand.getX() + offhand.getX()) / 2 ,
-             leftOrbPanel.getY() + 20);
+        mainHand.setPosition(rigthOrbPanel.getX() - 146,
+         leftOrbPanel.getY()+12);
+        offhand.setPosition(leftOrbPanel.getX() + 272,
+         leftOrbPanel.getY()+12);
+
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
+         leftOrbPanel.getY() + 32);
+
+        addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
+        orbOverlay.setPosition(136, 56);
 
         setY(-IMAGE_SIZE);
         bindEvents();
@@ -141,10 +145,13 @@ public class ActionPanel extends Group {
     public void act(float delta) {
         super.act(delta);
 
-        if (facingPanelOn)
-            facingPanel.setPosition(
-             (mainHand.getX() + offhand.getX()) / 2 +10,
-             leftOrbPanel.getY() + 26);
+        mainHand.setPosition(rigthOrbPanel.getX() - 146,
+         leftOrbPanel.getY()+12);
+        offhand.setPosition(leftOrbPanel.getX() + 272,
+         leftOrbPanel.getY()+12);
+
+        facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
+         leftOrbPanel.getY() + 32);
     }
 
     @Override

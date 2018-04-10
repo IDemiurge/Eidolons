@@ -4,7 +4,7 @@ import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.continuous.BehaviorModeEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
@@ -15,7 +15,7 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effect.UPKEEP_FAIL_ACTION;
 import main.ability.effects.common.OwnershipChangeEffect;
 import main.ability.effects.oneshot.InstantDeathEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.system.AiEnums;
 import main.content.values.parameters.PARAMETER;
@@ -70,7 +70,7 @@ public class UpkeepRule extends RoundRule {
     }
 
     @Override
-    public void apply(Unit unit) {
+    public void apply(Unit unit, float delta) {
         // TODO getOrCreate all buffs/units with this SOURCE /summoner
         List<Obj> payObjects = new ArrayList<>();
         List<Obj> destroyObjects = new ArrayList<>();
@@ -138,7 +138,7 @@ public class UpkeepRule extends RoundRule {
             return false;
         }
         for (PARAMETER p : ValuePages.UPKEEP_PARAMETERS) {
-            PARAMETER payParamFromUpkeep = DC_ContentManager
+            PARAMETER payParamFromUpkeep = DC_ContentValsManager
              .getPayParamFromUpkeep(p);
             Integer amount = new Formula(payObj.getParam(p))
              .getAppendedByModifier(
@@ -157,7 +157,7 @@ public class UpkeepRule extends RoundRule {
 
     public void subtractUpkeep(Unit unit, Obj payObj) {
         for (PARAMETER p : ValuePages.UPKEEP_PARAMETERS) {
-            PARAMETER payParam = DC_ContentManager.getPayParamFromUpkeep(p);
+            PARAMETER payParam = DC_ContentValsManager.getPayParamFromUpkeep(p);
             int amount = new Formula(payObj.getParam(p)).getAppendedByModifier(
              StringMaster.getValueRef(KEYS.SOURCE, PARAMS.UPKEEP_MOD))
              .getInt(unit.getRef());
@@ -170,7 +170,7 @@ public class UpkeepRule extends RoundRule {
              .getLogManager()
              .log(payObj.getName()
               + "'s "
-              + ContentManager.getBaseParameterFromCurrent(p)
+              + ContentValsManager.getBaseParameterFromCurrent(p)
               .getName() + " upkeep paid: " + amount);
 
         }

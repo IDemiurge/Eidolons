@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.mechanics;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.obj.BattleFieldObject;
@@ -123,7 +123,7 @@ public class CoatingRule {
             return;
         }
         Integer max = getMaxNumberOfCountersPerAttack(item, c);
-        max = MathMaster.addFactor(max, source.getIntParam(DC_ContentManager
+        max = MathMaster.addFactor(max, source.getIntParam(DC_ContentValsManager
          .getCoatingMaxPerHitModParam(c)));
         if (throwing) {
             max *= THROWING_MOD;

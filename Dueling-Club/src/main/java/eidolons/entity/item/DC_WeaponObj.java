@@ -1,7 +1,7 @@
 package eidolons.entity.item;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_QuickItemAction;
@@ -12,7 +12,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.system.DC_Formulas;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
@@ -27,6 +27,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
@@ -45,7 +46,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     public DC_WeaponObj(ObjType type, Player owner, MicroGame game, Ref ref, boolean main_hand) {
-        super(type, owner, game, ref, DC_ContentManager.getWeaponModifyingParams());
+        super(type, owner, game, ref, DC_ContentValsManager.getWeaponModifyingParams());
         this.setMainHand(main_hand);
     }
 
@@ -214,7 +215,7 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     private PARAMETER getMastery() {
-        return ContentManager.getPARAM(getProperty(G_PROPS.MASTERY));
+        return ContentValsManager.getPARAM(getProperty(G_PROPS.MASTERY));
     }
 
     private void checkApplyOffhandPenalties() {
@@ -443,6 +444,13 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     public String getSpriteImagePath() {
+        if (!checkProperty(PROPS.SPRITE_PATH)){
+            setProperty(PROPS.SPRITE_PATH,
+             StrPathBuilder.build("main" ,
+              "item" ,
+              "weapon" ,
+              "sprites", getProperty(G_PROPS.BASE_TYPE)+".png"));
+        }
         return getProperty(PROPS.SPRITE_PATH);
     }
 }

@@ -3,7 +3,8 @@ package eidolons.game.battlecraft.rules.counter;
 import eidolons.ability.conditions.StatusCheckCondition;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -94,17 +95,17 @@ public class FreezeRule extends DC_CounterRule {
 
     @Override
     public STATUS getStatus() {
-        return !checkIsFrozen(unit) ? UnitEnums.STATUS.FREEZING : UnitEnums.STATUS.FROZEN;
+        return !checkIsFrozen(object) ? UnitEnums.STATUS.FREEZING : UnitEnums.STATUS.FROZEN;
     }
 
-    private boolean checkIsFrozen(Unit unit) {
+    private boolean checkIsFrozen(BattleFieldObject unit) {
         return unit.getIntParam(PARAMS.INITIATIVE_MODIFIER) <= StringMaster
          .getInteger(INITIATIVE_PER_COUNTER)
          * -getNumberOfCounters(unit);
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         if (checkIsFrozen(unit)) {
             return FROZEN_PER_TURN_REDUCTION;
         }

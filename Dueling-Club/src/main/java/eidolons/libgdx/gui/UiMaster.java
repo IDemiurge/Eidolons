@@ -35,12 +35,25 @@ public class UiMaster {
     }
 
     public static int getIconSize() {
-        return (int) (64 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+        return getIconSize(false);
     }
 
     // use  String.format("%.1f", x);?
     public static int getSpellIconSize() {
         return (int) (80 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+    }
+
+    public static int getIconSize(boolean smaller) {
+        if (smaller)
+            return (int) (42 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+        return (int) (64 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+    }
+
+    public static int getBottomQuickItemIconSize() {
+        return getIconSize(true);
+    }
+    public static int getBottomSpellIconSize() {
+        return getIconSize(true);
     }
 
     public enum UI_ACTIONS {

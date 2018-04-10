@@ -1,6 +1,6 @@
 package main.content.values.parameters;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.ValueMap;
 import main.data.XLinkedMap;
@@ -32,13 +32,13 @@ public class ParamMap implements ValueMap {
 
     @Override
     public String get(String valueName) {
-        PARAMETER param = ContentManager.getPARAM(valueName);
+        PARAMETER param = ContentValsManager.getPARAM(valueName);
         return get(param);
     }
 
     @Override
     public String put(String valueName, String value) {
-        PARAMETER p = ContentManager.getPARAM(valueName);
+        PARAMETER p = ContentValsManager.getPARAM(valueName);
         return put(p, value);
     }
 

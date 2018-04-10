@@ -37,7 +37,7 @@ import eidolons.test.auto.AutoTestMaster;
 import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.common.OwnershipChangeEffect;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
@@ -1237,8 +1237,8 @@ public class DebugMaster {
             str += infoObj.getValue(param);
             str += "\n";
         }
-        for (PROPERTY p : ContentManager.getPropList()) {
-            if (!(ContentManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, p) || ContentManager
+        for (PROPERTY p : ContentValsManager.getPropList()) {
+            if (!(ContentValsManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, p) || ContentValsManager
              .isValueForOBJ_TYPE(DC_TYPE.UNITS, p))) {
                 continue;
             }

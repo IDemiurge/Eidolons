@@ -4,7 +4,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.ability.AbilityObj;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.parameters.PARAMETER;
@@ -111,7 +111,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     protected void modifyHeroParameters() {
         for (PARAMETER p : paramMap.getMap().keySet()) {
-            if (ContentManager.isValueForOBJ_TYPE(getHero().getOBJ_TYPE_ENUM(), p)) {
+            if (ContentValsManager.isValueForOBJ_TYPE(getHero().getOBJ_TYPE_ENUM(), p)) {
                 Integer amount = getIntParam(p);
                 if (amount != 0) {
                     getHero().modifyParameter(p, amount);
@@ -185,7 +185,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         Integer amount = getIntParam(param);
         if (amount != 0) {
             if (param.isMastery()) {
-                param = ContentManager.getMasteryScore(param);
+                param = ContentValsManager.getMasteryScore(param);
             }
             getHero().modifyParameter(param, amount);
         }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import main.content.CONTENT_CONSTS.SOUNDSET;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.HERO_SOUNDSET;
 import main.content.values.parameters.PARAMETER;
@@ -402,7 +402,7 @@ public class Player {
 
     public void playSkillAddSound(ObjType type, PARAMETER mastery, String masteryGroup, String rank) {
 
-        masteryGroup = ContentManager.getMasteryGroup(mastery, masteryGroup);
+        masteryGroup = ContentValsManager.getMasteryGroup(mastery, masteryGroup);
 
         String soundPath = SoundMaster.getPath() + "std\\skills\\" + "NEW_SKILL_" + masteryGroup
          + FORMAT;

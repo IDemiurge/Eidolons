@@ -2,7 +2,7 @@ package eidolons.system;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.system.MetaEnums.CUSTOM_VALUE_TEMPLATE;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
@@ -53,7 +53,7 @@ public class CustomValueManager {
             }
             String prop = getVariablefromCV(key, 0);
             String propValue = getVariablefromCV(key, 1);
-            PARAMETER param = ContentManager
+            PARAMETER param = ContentValsManager
              .getPARAM(getVariablefromCV(key, 2));
             Integer value = unit.getCounter(key);
             //List<DC_ActiveObj> activeList = unit.getActiveList(prop, propValue);

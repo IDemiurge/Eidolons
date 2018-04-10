@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.active.spell;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.handlers.active.ActiveResetter;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
@@ -44,7 +44,7 @@ public class SpellResetter extends ActiveResetter {
         }
         super.addCustomMods();
 
-        for (PARAMETER param : DC_ContentManager.getCostParams()) {
+        for (PARAMETER param : DC_ContentValsManager.getCostParams()) {
             addCustomMod(
              MetaEnums.CUSTOM_VALUE_TEMPLATE.COST_REDUCTION_SPELL_GROUP,
              getEntity().getSpellGroup().toString(), param, false);

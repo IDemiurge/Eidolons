@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValueHelper;
 import eidolons.game.core.game.DC_Game;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
@@ -198,8 +198,8 @@ public class XML_Transformer {
         // XML_Writer.createBackUpReserve();
         DequeImpl<XML_File> xmlFiles = getXmlFiles();
         for (XML_File file : xmlFiles) {
-            for (VALUE v : ContentManager.getValueList()) {
-                if (!ContentManager.isValueForOBJ_TYPE(file.getType(), v)) {
+            for (VALUE v : ContentValsManager.getValueList()) {
+                if (!ContentValsManager.isValueForOBJ_TYPE(file.getType(), v)) {
                     removeValue(v, file, false, false);
                 }
             }
@@ -276,7 +276,7 @@ public class XML_Transformer {
             if (dynamic) {
 
             }
-            for (OBJ_TYPE key : ContentManager.getOBJ_TYPEsForValue(prop)) {
+            for (OBJ_TYPE key : ContentValsManager.getOBJ_TYPEsForValue(prop)) {
                 for (ObjType objType : DataManager.getTypes(key)) {
                     String value = objType.getProperty(prop);
                     value = value.replaceAll(type.getName(), newName);

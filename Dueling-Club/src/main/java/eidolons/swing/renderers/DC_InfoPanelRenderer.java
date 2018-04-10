@@ -1,6 +1,6 @@
 package eidolons.swing.renderers;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -64,10 +64,10 @@ public class DC_InfoPanelRenderer implements TableCellRenderer {
             return getDefaultComp(table, value, isSelected, hasFocus, row, column);
         }
 
-        PARAMETER p = ContentManager.getPARAM(VALUE.toString());
+        PARAMETER p = ContentValsManager.getPARAM(VALUE.toString());
         if (p == null) {
 
-            PROPERTY prop = ContentManager.getPROP(VALUE.toString());
+            PROPERTY prop = ContentValsManager.getPROP(VALUE.toString());
             if (prop != null) {
                 return getPropertyValueComp(prop, value.toString(), VALUE);
             }

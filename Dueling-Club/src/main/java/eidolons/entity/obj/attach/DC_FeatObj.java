@@ -1,14 +1,14 @@
 package eidolons.entity.obj.attach;
 
-import eidolons.content.DC_ContentManager;
-import eidolons.content.DC_ContentManager.ATTRIBUTE;
+import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import main.ability.Ability;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -82,11 +82,11 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
         applyRank();
 
         initHero();
-        for (ATTRIBUTE attr : DC_ContentManager.getAttributeEnums()) {
+        for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
             initAttr(attr);
         }
         // modifyHeroParameters();
-        for (PARAMETER param : DC_ContentManager.getFeatModifyingParams()) {
+        for (PARAMETER param : DC_ContentValsManager.getFeatModifyingParams()) {
             modifyHeroParam(param);
         }
         try {
@@ -140,15 +140,15 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             }
             String paramName = VariableManager.removeVarPart(substring);
             // substring.replace(bonus, "");
-            PARAMETER param = ContentManager.getPARAM(paramName);
+            PARAMETER param = ContentValsManager.getPARAM(paramName);
             if (param == null) {
-                param = ContentManager.getMastery(paramName);
+                param = ContentValsManager.getMastery(paramName);
             }
             if (param == null) {
-                param = ContentManager.findPARAM(paramName);
+                param = ContentValsManager.findPARAM(paramName);
             }
             if (param == null) {
-                param = ContentManager.findMastery(paramName);
+                param = ContentValsManager.findMastery(paramName);
             }
             if (param == null) {
                 continue;
@@ -187,7 +187,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             String paramName;
 
             if (getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
-                paramName = DC_ContentManager.getMainAttributeForClass(this);
+                paramName = DC_ContentValsManager.getMainAttributeForClass(this);
                 if (paramName.contains(StringMaster.AND)) {
                     quotientSum = quotientSum / paramName.split(StringMaster.AND).length;
                 }
@@ -253,7 +253,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             }
         }
 
-        for (PARAMETER attr : ContentManager.getAttributes()) {
+        for (PARAMETER attr : ContentValsManager.getAttributes()) {
             PARAMS param = (PARAMS) attr;
             Integer value = getIntParam(param, true);
             if (value <= 0) {
@@ -263,7 +263,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             setParam(param, value);
         }
         // modifyHeroParameters();
-        for (PARAMETER param : DC_ContentManager.getFeatModifyingParams()) {
+        for (PARAMETER param : DC_ContentValsManager.getFeatModifyingParams()) {
             Integer value = getIntParam(param, true);
             if (value == 0) {
                 continue;
@@ -316,7 +316,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     }
 
     private void initAttr(ATTRIBUTE attr) {
-        modifyHeroParam(DC_ContentManager.getBaseAttr(attr));
+        modifyHeroParam(DC_ContentValsManager.getBaseAttr(attr));
         modifyHeroParam(attr.getParameter());
     }
 

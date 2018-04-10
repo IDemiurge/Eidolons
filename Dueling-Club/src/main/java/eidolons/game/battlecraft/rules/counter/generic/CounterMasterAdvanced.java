@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.rules.counter;
+package eidolons.game.battlecraft.rules.counter.generic;
 
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.UnitEnums.COUNTER;

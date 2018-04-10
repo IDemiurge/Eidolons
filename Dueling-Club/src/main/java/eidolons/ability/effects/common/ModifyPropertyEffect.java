@@ -3,7 +3,7 @@ package eidolons.ability.effects.common;
 import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.Effect;
 import main.ability.effects.ResistibleEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.entity.Ref.KEYS;
@@ -20,7 +20,7 @@ public class ModifyPropertyEffect extends DC_Effect implements ResistibleEffect 
     private String value;
 
     public ModifyPropertyEffect(String prop, MOD_PROP_TYPE modtype, String value) {
-        this(ContentManager.getPROP(prop), modtype, value);
+        this(ContentValsManager.getPROP(prop), modtype, value);
     }
 
     public ModifyPropertyEffect(PROPERTY prop, MOD_PROP_TYPE modtype, String value) {

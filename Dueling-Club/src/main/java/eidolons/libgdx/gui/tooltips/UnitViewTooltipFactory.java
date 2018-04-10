@@ -6,8 +6,8 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -172,7 +172,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
             }
 
             //            if (VisionManager.isVisibilityOn()){
-            if (RuleMaster.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
+            if (RuleKeeper.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
                 addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
                 addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
                 addParamStringToValues(hero, values, PARAMS.CONCEALMENT);

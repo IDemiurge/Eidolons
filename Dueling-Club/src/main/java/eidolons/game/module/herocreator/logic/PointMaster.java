@@ -1,7 +1,7 @@
 package eidolons.game.module.herocreator.logic;
 
-import eidolons.content.DC_ContentManager;
-import main.content.ContentManager;
+import eidolons.content.DC_ContentValsManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 
@@ -17,8 +17,8 @@ public class PointMaster {
         value--;
         if (param.isAttribute()) {
             Integer defParam = hero
-             .getIntParam(DC_ContentManager
-              .getDefaultAttr(ContentManager
+             .getIntParam(DC_ContentValsManager
+              .getDefaultAttr(ContentValsManager
                .getFinalAttrFromBase(param)));
             defParam += 5;
             MOD_FACTOR = defParam * 2;

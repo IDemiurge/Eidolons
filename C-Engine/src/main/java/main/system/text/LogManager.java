@@ -1,6 +1,6 @@
 package main.system.text;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.ROLL_TYPES;
@@ -390,7 +390,7 @@ public abstract class LogManager {
             return;
         }
 
-        PARAMETER baseParameter = ContentManager.getBaseParameterFromCurrent(param);
+        PARAMETER baseParameter = ContentValsManager.getBaseParameterFromCurrent(param);
         if (baseParameter == null) {
             return;
         }

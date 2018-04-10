@@ -12,7 +12,7 @@ import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.perk.RangeRule;
 import eidolons.system.DC_Formulas;
 import eidolons.system.graphics.DC_ImageMaster;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.PARAMETER;
@@ -548,7 +548,7 @@ public class AttackCalculator {
             addModifier(atkModMap, MOD_IDENTIFIER.COUNTER_ATTACK, PARAMS.ATTACK, integer);
         }
         if (attack.getInstantAttackType() != null) {
-            PARAMETER param = ContentManager.getPARAM(attack.getInstantAttackType().toString()
+            PARAMETER param = ContentValsManager.getPARAM(attack.getInstantAttackType().toString()
              + "_ATTACK_MOD");
             integer = attacked.getIntParam(param);
             addModifier(atkModMap, MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.ATTACK, integer);
@@ -571,7 +571,7 @@ public class AttackCalculator {
         }
 
         if (disengage) {
-            PARAMETER param = ContentManager.getPARAM(attack.getInstantAttackType().toString()
+            PARAMETER param = ContentValsManager.getPARAM(attack.getInstantAttackType().toString()
              + "_DEFENSE_MOD");
             integer = attacked.getIntParam(param);
             addModifier(attacked, defModMap, MOD_IDENTIFIER.INSTANT_ATTACK, PARAMS.DEFENSE, integer);

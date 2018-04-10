@@ -2,7 +2,9 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -17,7 +19,7 @@ import main.content.enums.system.MetaEnums;
 import main.elements.targeting.FixedTargeting;
 import main.entity.Ref.KEYS;
 
-public class BlazeRule extends DamageCounterRule {
+public class BlazeRule extends DamageCounterRule implements TimedRule{
 
     private static final Integer THRESHOLD = 10;
     private static final int REDUCTION = -2;
@@ -70,14 +72,14 @@ public class BlazeRule extends DamageCounterRule {
 
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         if (checkAblaze(unit)) {
             return INCREASE;
         }
         return REDUCTION;
     }
 
-    private boolean checkAblaze(Unit unit) {
+    private boolean checkAblaze(BattleFieldObject unit) {
         return getNumberOfCounters(unit) >= THRESHOLD;
     }
 
@@ -88,7 +90,7 @@ public class BlazeRule extends DamageCounterRule {
 
     @Override
     public STATUS getStatus() {
-        if (checkAblaze(unit)) {
+        if (checkAblaze(object)) {
             return UnitEnums.STATUS.ABLAZE; // panic? spreading?
         }
         return null;

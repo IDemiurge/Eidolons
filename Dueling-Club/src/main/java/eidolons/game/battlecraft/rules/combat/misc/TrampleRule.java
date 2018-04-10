@@ -5,7 +5,7 @@ import eidolons.ability.conditions.special.AttackCondition;
 import eidolons.ability.conditions.special.RollCondition;
 import eidolons.ability.effects.oneshot.move.SelfMoveEffect;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import main.ability.effects.Effects;
 import main.ability.effects.oneshot.InstantDeathEffect;
 import main.content.enums.GenericEnums;

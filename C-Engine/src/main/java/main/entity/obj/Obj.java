@@ -2,7 +2,7 @@ package main.entity.obj;
 
 import main.ability.AbilityObj;
 import main.ability.PassiveAbilityObj;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
@@ -153,7 +153,7 @@ public class Obj extends Entity {
             fireParamEvent(param, value, CONSTRUCTED_EVENT_TYPE.PARAM_MODIFIED);
 
             if (param.isDynamic()) {
-                PARAMETER base_param = ContentManager.getBaseParameterFromCurrent(param);
+                PARAMETER base_param = ContentValsManager.getBaseParameterFromCurrent(param);
                 if (base_param != null && base_param != param) {
                     resetPercentage(base_param);
 

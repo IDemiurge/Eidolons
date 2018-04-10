@@ -1,6 +1,6 @@
 package main.data.ability.construct;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.Param;
 import main.content.values.properties.PROPERTY;
@@ -116,10 +116,10 @@ public class Construct {
         if (!CLASS.isEnum()) {
             if (CLASS == PARAMETER.class || CLASS == Param.class) {
 
-                return ContentManager.getPARAM(content);
+                return ContentValsManager.getPARAM(content);
             }
             if (CLASS == PROPERTY.class || CLASS == Prop.class) {
-                return ContentManager.getPROP(content);
+                return ContentValsManager.getPROP(content);
             }
 
             throw new RuntimeException();

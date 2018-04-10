@@ -7,6 +7,7 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class JUnitResources {
    public static final String EMPTY_DUNGEON=StrPathBuilder.build("TEST", "empty.xml");
+    public static final String DEFAULT_UNIT ="Thief" ;
 
     public static void init() {
 //        XML_Reader.loadXml(/* path */);

@@ -1,6 +1,6 @@
 package eidolons.game.module.herocreator.logic;
 
-import eidolons.content.DC_ContentManager.ATTRIBUTE;
+import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import main.system.auxiliary.StringMaster;

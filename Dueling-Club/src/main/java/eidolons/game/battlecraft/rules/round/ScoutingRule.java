@@ -76,7 +76,7 @@ public class ScoutingRule extends RoundRule {
     }
 
     @Override
-    public void apply(Unit hero) {
+    public void apply(Unit hero, float delta) {
         // checkEnemiesDetected(hero); TODO
     }
 

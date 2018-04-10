@@ -1,6 +1,6 @@
 package eidolons.entity.handlers.bf;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.ItemFactory;
@@ -80,7 +80,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
             List<String> idList = new ArrayList<>();
             Collection<DC_HeroItemObj> items = new ArrayList<>();
             for (String subString : StringMaster.open(getProperty(prop))) {
-                ObjType type = DataManager.getType(subString, DC_ContentManager.getTypeForProperty(prop));
+                ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProperty(prop));
 //|| !StringMaster.isInteger(subString)
                 DC_HeroItemObj item = null;
                 if (game.isSimulation()) {

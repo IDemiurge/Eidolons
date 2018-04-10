@@ -14,7 +14,7 @@ public class SpecialValuePages {
         if (TYPE instanceof DC_TYPE) {
             switch ((DC_TYPE) TYPE) {
                 case ARMOR:
-                    list.add(DC_ContentManager.getArmorGradeMultiParams());
+                    list.add(DC_ContentValsManager.getArmorGradeMultiParams());
                     break;
             }
         }

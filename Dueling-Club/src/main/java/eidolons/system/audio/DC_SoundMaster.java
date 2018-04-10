@@ -17,7 +17,7 @@ import eidolons.libgdx.audio.SoundPlayer;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.content.ContentGenerator;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.ItemEnums;
@@ -330,7 +330,7 @@ public class DC_SoundMaster extends SoundMaster {
     }
 
     private static PROPERTY getProp(ANIM_PART part) {
-        return ContentManager.findPROP("SOUND_" + part);
+        return ContentValsManager.findPROP("SOUND_" + part);
     }
 
     private static String getActionEffectSoundPath(DC_SpellObj spell, ANIM_PART part) {

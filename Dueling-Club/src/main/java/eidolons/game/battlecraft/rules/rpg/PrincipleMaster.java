@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.rpg;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import main.content.DC_TYPE;
@@ -99,8 +99,8 @@ public class PrincipleMaster {
             // if (amount == 0)
             // continue;
             result = true;
-            PARAMETER param = alignmentOrIdentity ? DC_ContentManager
-             .getAlignmentForPrinciple(principle) : DC_ContentManager
+            PARAMETER param = alignmentOrIdentity ? DC_ContentValsManager
+             .getAlignmentForPrinciple(principle) : DC_ContentValsManager
              .getIdentityParamForPrinciple(principle);
             type.setParam(param, map.get(principle));
         }

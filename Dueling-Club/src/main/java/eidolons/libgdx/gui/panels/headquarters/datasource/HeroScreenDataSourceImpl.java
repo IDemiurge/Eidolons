@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -24,7 +24,7 @@ public class HeroScreenDataSourceImpl implements HeroScreenDataSource {
     @Override
     public List<ValueContainer> getUnlockedMasteries() {
         List<ValueContainer> list = new ArrayList<>();
-        for (PARAMS params : DC_ContentManager.getMasteryParams()) {
+        for (PARAMS params : DC_ContentValsManager.getMasteryParams()) {
             Integer v = hero.getIntParam(params);
             if (v > 0) {
                 TextureRegion texture = TextureCache.getOrCreateR(ImageManager.getValueIconPath(params));

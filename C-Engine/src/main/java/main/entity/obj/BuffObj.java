@@ -3,7 +3,7 @@ package main.entity.obj;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.periodic.PeriodicEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.BUFF_TYPE;
 import main.content.values.parameters.G_PARAMS;
@@ -54,7 +54,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
         this.effect = effect;
         initTimeEffect();
         setDuration(duration);
-        if (duration == 0 || duration == ContentManager.INFINITE_VALUE) {
+        if (duration == 0 || duration == ContentValsManager.INFINITE_VALUE) {
             // this.duration = ContentManager.INFINITE_VALUE;
             this.permanent = true;
         }

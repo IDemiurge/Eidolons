@@ -35,7 +35,7 @@ public class AV_DataManager {
             list.addAll(Arrays.asList(IGNORED_VALUES[code]));
             IGNORE_MAP.put(DC_TYPE.getTypeByCode(code).getName(), list);
         }
-        ContentManager.setAV_IgnoredValues(IGNORE_MAP);
+        ContentValsManager.setAV_IgnoredValues(IGNORE_MAP);
     }
 
     public static List<String> getValueNames(String key) {
@@ -43,13 +43,13 @@ public class AV_DataManager {
         try {
             values = ValuePageManager.getValuesForAV(DC_TYPE.getType(key));
             if (values == null) {
-                return ContentManager.getArcaneVaultValueNames(key);
+                return ContentValsManager.getArcaneVaultValueNames(key);
             }
             List<String> list = StringMaster.convertToStringList(values);
             return list;
         } catch (Exception e) {
             // main.system.ExceptionMaster.printStackTrace(e);
-            return ContentManager.getArcaneVaultValueNames(key);
+            return ContentValsManager.getArcaneVaultValueNames(key);
         }
 
     }

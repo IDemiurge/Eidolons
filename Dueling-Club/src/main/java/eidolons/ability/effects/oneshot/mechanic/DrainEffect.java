@@ -3,7 +3,7 @@ package eidolons.ability.effects.oneshot.mechanic;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import main.ability.effects.OneshotEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.math.Formula;
 
@@ -14,7 +14,7 @@ public class DrainEffect extends ModifyValueEffect implements OneshotEffect {
     private Formula buffer;
 
     public DrainEffect(String sparam, Formula formula) {
-        this(ContentManager.getPARAM(sparam), formula);
+        this(ContentValsManager.getPARAM(sparam), formula);
     }
 
     public DrainEffect(PARAMETER param, Formula formula) {

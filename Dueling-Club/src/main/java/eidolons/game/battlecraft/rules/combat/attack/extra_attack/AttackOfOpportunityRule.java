@@ -9,8 +9,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.WatchRule;
 import eidolons.game.battlecraft.rules.mechanics.InterruptRule;
 import eidolons.system.math.roll.RollMaster;
@@ -47,7 +47,7 @@ public class AttackOfOpportunityRule {
     }
 
     public static boolean checkActionNotInterrupted(DC_ActiveObj active, boolean simulation) {
-        if (!RuleMaster.isRuleOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+        if (!RuleKeeper.isRuleOn(RULE.ATTACK_OF_OPPORTUNITY)) {
             return false;
         }
         sim = simulation;
@@ -157,12 +157,12 @@ public class AttackOfOpportunityRule {
         boolean result = false;
 
         if (!checkAction(active)) {
-            if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+            if (!RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
                 return true;
             }
         }
 
-        if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+        if (!RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
             if (!stealthAoO) {
                 if (!VisionManager.checkVisible(unit)) {
                     if (!unit.checkBool(GenericEnums.STD_BOOLS.STEALTHY_AOOS)) {
@@ -202,7 +202,7 @@ public class AttackOfOpportunityRule {
         }
 
         if (!result) {
-            if (!RuleMaster.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+            if (!RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
                 return null;
             }
         }

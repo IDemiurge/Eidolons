@@ -1,6 +1,6 @@
 package main.system.math;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.properties.PROPERTY;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
@@ -75,8 +75,8 @@ public class Property extends DynamicValue {
             return ref.getValue(value_string);
         }
         String str = (strict) ? entity.getProperty(
-         ContentManager.getPROP(value_string), base) : entity
-         .getProperty(ContentManager.getPROP(value_string), base);
+         ContentValsManager.getPROP(value_string), base) : entity
+         .getProperty(ContentValsManager.getPROP(value_string), base);
 
         return str;
     }

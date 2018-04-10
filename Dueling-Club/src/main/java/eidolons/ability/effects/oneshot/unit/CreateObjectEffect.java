@@ -3,7 +3,7 @@ package eidolons.ability.effects.oneshot.unit;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.game.core.master.BuffMaster;
 import main.ability.effects.Effects;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.ability.construct.VariableManager;
@@ -47,7 +47,7 @@ public class CreateObjectEffect extends SummonEffect {
              MOD.MODIFY_BY_CONST, formula));
         }
         BuffMaster.applyBuff(getBuffName(), param_effects, unit,
-         ContentManager.INFINITE_VALUE); // retain only
+         ContentValsManager.INFINITE_VALUE); // retain only
         // while
         // summoner
         // alive?

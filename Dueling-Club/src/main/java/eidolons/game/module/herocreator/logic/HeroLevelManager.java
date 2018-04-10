@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.system.DC_Formulas;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
@@ -105,9 +105,9 @@ public class HeroLevelManager {
     }
 
     private static void upMasteries(Entity hero) {
-        for (PARAMETER p : ContentManager.getMasteries()) {
+        for (PARAMETER p : ContentValsManager.getMasteries()) {
             if (hero.getIntParam(p) > 0) {
-                int amount = hero.getIntParam(ContentManager.getPerLevelValue(p.toString()));
+                int amount = hero.getIntParam(ContentValsManager.getPerLevelValue(p.toString()));
                 if (amount > 0) {
                     hero.modifyParameter(p, amount);
                 }

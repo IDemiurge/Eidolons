@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;

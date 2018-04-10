@@ -1,7 +1,7 @@
 package main.system.entity;
 
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.UnitEnums;
@@ -443,11 +443,11 @@ public class ConditionMaster {
 
     public static String checkAddRef(String prop) {
         boolean result = false;
-        if (ContentManager.getPROP(prop) != null) {
+        if (ContentValsManager.getPROP(prop) != null) {
             result = true;
         }
         if (!result) {
-            if (ContentManager.getPARAM(prop) != null) {
+            if (ContentValsManager.getPARAM(prop) != null) {
                 result = true;
             }
         }

@@ -1,6 +1,6 @@
 package eidolons.entity.obj.unit;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
@@ -36,7 +36,7 @@ import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.CONTENT_CONSTS2.AI_MODIFIERS;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
@@ -348,14 +348,14 @@ public class Unit extends DC_UnitModel {
 
     public void setInfiniteValue(PARAMS param, float mod) {
         setParam(param, (int) (DC_Formulas.INFINITE_VALUE * mod));
-        setParam(ContentManager.getCurrentParam(param), getIntParam(param));
+        setParam(ContentValsManager.getCurrentParam(param), getIntParam(param));
     }
 
     @Override
     public String getParamRounded(PARAMETER param, boolean base) {
         if (base) {
             if (param.isAttribute()) {
-                return getParam(DC_ContentManager.getBaseAttr(param));
+                return getParam(DC_ContentValsManager.getBaseAttr(param));
             }
         }
         return super.getParamRounded(param, base);
@@ -625,7 +625,7 @@ public class Unit extends DC_UnitModel {
         }
         if (weapon == null) {
             if (!offhand) {
-                weapon = DC_ContentManager.getDefaultWeapon(this);
+                weapon = DC_ContentValsManager.getDefaultWeapon(this);
             }
         }
         return weapon;
@@ -663,7 +663,7 @@ public class Unit extends DC_UnitModel {
         // or implement a real buffer copy
         type.copyValues(this,
          Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT).map(
-          (PARAMETER p) -> ContentManager.getPercentageParam(p)).
+          (PARAMETER p) -> ContentValsManager.getPercentageParam(p)).
           collect(Collectors.toList()));
         type.copyValues(this, Arrays.asList(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE_CURRENT));
         super.applyType(type);

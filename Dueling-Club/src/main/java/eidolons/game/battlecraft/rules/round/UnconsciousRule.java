@@ -253,7 +253,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     }
 
     @Override
-    public void apply(Unit unit) {
+    public void apply(Unit unit, float delta) {
         unitRecovers(unit);
     }
 }

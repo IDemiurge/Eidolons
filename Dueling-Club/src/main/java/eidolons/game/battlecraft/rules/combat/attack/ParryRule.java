@@ -1,11 +1,11 @@
 package eidolons.game.battlecraft.rules.combat.attack;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.DC_Formulas;
 import main.content.enums.entity.ItemEnums;
@@ -28,7 +28,7 @@ public class ParryRule {
     protected boolean tryParry(Attack attack) {
         // TODO could return and Integer for dmg reduction or -1 if all
         // absorbed!
-        if (!RuleMaster.isRuleTestOn(RULE.PARRYING)) {
+        if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
             if (!canParry(attack)) {
                 return false;
             }
@@ -57,7 +57,7 @@ public class ParryRule {
              + " from " + attack.getAttacker().getNameIfKnown()
              + StringMaster.wrapInParenthesis(chanceRounded + "%"));
             game.getLogManager().doneLogEntryNode();
-            if (!RuleMaster.isRuleTestOn(RULE.PARRYING)) {
+            if (!RuleKeeper.isRuleTestOn(RULE.PARRYING)) {
                 return false;
             }
         }
@@ -128,7 +128,7 @@ public class ParryRule {
         // {
         // TODO
         DC_WeaponObj parryWeapon = attackedUnit.getActiveWeapon(false);
-        if (Math.abs(DC_ContentManager.compareSize(parryWeapon.getWeaponSize(), attack.getWeapon()
+        if (Math.abs(DC_ContentValsManager.compareSize(parryWeapon.getWeaponSize(), attack.getWeapon()
          .getWeaponSize())) > 2) {
             if (attackedUnit.checkDualWielding()) {
 
