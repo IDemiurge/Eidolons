@@ -1,6 +1,6 @@
 package eidolons.entity;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
@@ -66,7 +66,7 @@ public class Deity extends Entity {
             enemyDeities = new ArrayList<>();
         }
         for (String type : StringMaster.open(getProperty(PROPS.ENEMY_DEITIES))) {
-            Deity deity = DC_ContentManager.getDeity(ref, type);
+            Deity deity = DC_ContentValsManager.getDeity(ref, type);
             if (deity != null) {
                 enemyDeities.add(deity);
             }
@@ -100,7 +100,7 @@ public class Deity extends Entity {
             friendDeities = new ArrayList<>();
         }
         for (String type : StringMaster.open(getProperty(PROPS.FRIEND_DEITIES))) {
-            Deity deity = DC_ContentManager.getDeity(ref, type);
+            Deity deity = DC_ContentValsManager.getDeity(ref, type);
             if (deity != null) {
                 friendDeities.add(deity);
             }
@@ -113,7 +113,7 @@ public class Deity extends Entity {
             alliedDeities = new ArrayList<>();
         }
         for (String type : StringMaster.open(getProperty(PROPS.ALLIED_DEITIES))) {
-            Deity deity = DC_ContentManager.getDeity(ref, type);
+            Deity deity = DC_ContentValsManager.getDeity(ref, type);
             if (deity != null) {
                 alliedDeities.add(deity);
             }

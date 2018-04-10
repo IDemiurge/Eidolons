@@ -1,10 +1,15 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.ActionInput;
+import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -14,7 +19,6 @@ import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
@@ -27,7 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class QuickWeaponPanel extends TablePanel {
 
     ImageContainer border;
-    ImageContainer weapon;
+    FadeImageContainer weapon;
     ImageContainer background;
     WeaponDataSource dataSource;
     WeaponDataSource dataSourceAlt;
@@ -41,10 +45,12 @@ public class QuickWeaponPanel extends TablePanel {
         addActor(background = new ImageContainer(
          StrPathBuilder.build(PathFinder.getComponentsPath(),
           "2018", "quick weapon", "background.png")));
-        addActor(weapon = new ImageContainer());
+        addActor(weapon = new FadeImageContainer());
+        String suffix = offhand ? " offhand" : "";
         addActor(border = new ImageContainer(
          StrPathBuilder.build(PathFinder.getComponentsPath(),
-          "2018", "quick weapon", "border.png")));
+          "2018", "quick weapon", "border" +
+           suffix + ".png")));
         addActor(radial = new QuickAttackRadial(this, offhand));
 //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
         addListener(getListener());
@@ -101,11 +107,22 @@ public class QuickWeaponPanel extends TablePanel {
     }
 
     private void initWeapon(WeaponDataSource dataSource) {
-        weapon.setImage(
-         StringMaster.getAppendedImageFile(
-          dataSource.getSpriteImagePath(), " small"));
+        Texture texture = GdxImageTransformer.size(dataSource.getSpriteImagePath(),
+         128, true);
+        if (texture == null)
+            return;
+        Image image = new Image(texture);
+        weapon.setImage(image);
+        //to init previous image
 
-//        new Image(sprite = new Sprite(TextureCache.getOrCreateR(path)))
+        texture = GdxImageTransformer.size(dataSource.getSpriteImagePath(),
+         getWeaponSpriteSize(), true);
+        image = new Image(texture);
+        weapon.setImage(image);
+    }
+
+    private int getWeaponSpriteSize() {
+        return 96;
     }
 
     private EventListener getListener() {
@@ -121,7 +138,7 @@ public class QuickWeaponPanel extends TablePanel {
                 } else {
                     WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
                      new ActionInput(getDataSource().getOwnerObj().getAttackAction(offhand)
-                    , new Context(getDataSource().getOwnerObj(), null ))
+                      , new Context(getDataSource().getOwnerObj(), null))
                     );
                 }
                 return false;
@@ -137,12 +154,17 @@ public class QuickWeaponPanel extends TablePanel {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 super.enter(event, x, y, pointer, fromActor);
                 weapon.setZIndex(getChildren().size - 2);
+                weapon.resetPreviousImage();
+                int i = offhand ? -1 : 1;
+                ActorMaster.addMoveByAction(weapon, 20 * i, 20, 0.75f);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 super.exit(event, x, y, pointer, toActor);
                 weapon.setZIndex(1);
+                int i = offhand ? -1 : 1;
+                ActorMaster.addMoveByAction(weapon, -20 * i, -20, 0.75f);
             }
         };
     }

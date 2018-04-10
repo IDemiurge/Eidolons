@@ -1,6 +1,6 @@
 package main.gui.components.controls;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import main.AV_DataManager;
@@ -283,7 +283,7 @@ public class ModelManager {
 
             if (obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.UNITS) {
                 for (ObjType type : DataManager.getTypes(obj_type)) {
-                    DC_ContentManager.addDefaultValues(type, false);
+                    DC_ContentValsManager.addDefaultValues(type, false);
                 }
             }
 
@@ -339,7 +339,7 @@ public class ModelManager {
         if (obj_type == DC_TYPE.ACTIONS) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
                 if (type.checkProperty(G_PROPS.ACTION_TYPE, ActionEnums.ACTION_TYPE.STANDARD_ATTACK.toString())) {
-                    DC_ContentManager.addDefaultValues(type, false);
+                    DC_ContentValsManager.addDefaultValues(type, false);
                 }
             }
         }
@@ -359,7 +359,7 @@ public class ModelManager {
 
         if (obj_type == DC_TYPE.WEAPONS || obj_type == DC_TYPE.ARMOR) {
             for (ObjType type : DataManager.getTypes(obj_type)) {
-                DC_ContentManager.addDefaultValues(type, false);
+                DC_ContentValsManager.addDefaultValues(type, false);
             }
         }
         if (obj_type == DC_TYPE.BF_OBJ) {
@@ -791,12 +791,12 @@ public class ModelManager {
             if (ArcaneVault.isMacroMode()) {
 
                 for (String type : XML_Reader.getTypeMaps().keySet()) {
-                    save(ContentManager.getOBJ_TYPE(type));
+                    save(ContentValsManager.getOBJ_TYPE(type));
 
                 }
             } else {
                 for (String type : XML_Reader.getTypeMaps().keySet()) {
-                    OBJ_TYPE objType = ContentManager.getOBJ_TYPE(type);
+                    OBJ_TYPE objType = ContentValsManager.getOBJ_TYPE(type);
                     if (auto) {
                         if (objType == DC_TYPE.PARTY) {
                             continue;
@@ -907,7 +907,7 @@ public class ModelManager {
 
     public static void addDefaultValues(boolean alt) {
         for (ObjType sub : DataManager.getTypes()) {
-            DC_ContentManager.addDefaultValues(sub);
+            DC_ContentValsManager.addDefaultValues(sub);
         }
         if (!alt)
             saveAll();

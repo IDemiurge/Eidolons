@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,6 +20,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
@@ -29,10 +29,9 @@ import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.gui.tooltips.DynamicTooltip;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
-import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -41,7 +40,6 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +67,7 @@ public class InitiativePanel extends Group {
 
     public InitiativePanel() {
         init();
-        registerCallback();
+        bindEvents();
         resetZIndices();
         addActor(gears = new GearCluster(3, 0.8f));
         gears.setPosition(80, -25);
@@ -83,7 +81,7 @@ public class InitiativePanel extends Group {
         return new ClockActor();
     }
 
-    private void registerCallback() {
+    private void bindEvents() {
 
         GuiEventManager.bind(GuiEventType.ADD_OR_UPDATE_INITIATIVE, obj -> {
             if (!isRealTime()) {
@@ -150,85 +148,29 @@ public class InitiativePanel extends Group {
             });
         }
     }
-
-    private void previewAtbReadiness(List<Integer> list) {
-        int i = 0;
-        for (int j = queue.length - 1; j > 0; j--) {
-            QueueViewContainer sub = queue[j];
-            if (sub == null)
-                break;
-            QueueView actor = (QueueView) sub.getActor();
-            String text = (list == null ? sub.initiative : list.get(i++)) + "";
-            actor.setInitiativeLabelText(text);
-        }
-    }
-
     private void init() {
 
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
-        queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        container = new Container<>(queueGroup);
-        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize +
-         (offset - 1) * visualSize, imageSize);
-        container.left().bottom();
-        if (ExplorationMaster.isExplorationOn()) {
-            container.setY(imageSize);
-            container.setVisible(false);
-        }
-
-        addActor(container);
+        addActor( container = new Container<>(queueGroup));
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
          "components", "2017", "panels", "initiativepanel",
          "initiativePanel plain.png"));
-        panelImage = new ValueContainer(textureRegion);
-//
-        panelImage.setPosition(50, 25 + queueOffsetY);
-//        image.align(Align.bottomLeft);
-//        image.overrideImageSize(imageSize, imageSize);
-//        image.setSize(imageSize, imageSize);
-        ValueTooltip tooltip = new ValueTooltip();
-        tooltip.setUserObject(Arrays.asList(new ValueContainer("Good time to die!", "")));
+        DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
+        addActor(panelImage = new ValueContainer(textureRegion));
         panelImage.addListener(tooltip.getController());
-        addActor(panelImage);
-//        panelImage.setPosition(0, -textureRegion.getRegionHeight());
 
-        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
-//         textureRegion.getRegionHeight()
-         imageSize + queueOffsetY);
+        addActor(light = new FadeImageContainer(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
 
-        light = new SuperContainer(
-         new Image(TextureCache.getOrCreateR(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath())), true);
-        clock =
-         animatedClock
-          ? createAnimatedClock()
-          :
-          new SuperContainer(
-           new Image(TextureCache.getOrCreateR(StrPathBuilder.build("UI",
-            "components", "2017", "panels", "initiativepanel",
-            "clock.png"))), true) {
-              @Override
-              protected float getAlphaFluctuationMin() {
-                  return 0.6f;
-              }
-
-              @Override
-              protected float getAlphaFluctuationPerDelta() {
-                  return super.getAlphaFluctuationPerDelta() / 3;
-              }
-          };
+        addActor(clock =  createAnimatedClock());
         clock.addListener(getClockListener());
-
-        addActor(light);
-        light.setPosition(-15, -14);
-        addActor(clock);
-        clock.setPosition(-23, -31);
-
 
         timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
         addActor(timeLabel);
-        timeLabel.setPosition(15, 100);
+
+        resetPositions();
+
     }
 
     private EventListener getClockListener() {
@@ -244,9 +186,33 @@ public class InitiativePanel extends Group {
     }
 
     private void resetPositions() {
-        container.setBounds(imageSize + offset, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
-        panelImage.setPosition(0, -panelImage.getHeight());
-        timeLabel.setPosition(50, 0);
+        if (ExplorationMaster.isExplorationOn()) {
+            container.setY(imageSize);
+            container.setVisible(false);
+        }
+        setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
+         imageSize + queueOffsetY);
+        queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        timeLabel.setPosition(15, 100);
+        light.setPosition(-2, -14);
+        clock.setPosition(-5, -31);
+        panelImage.setPosition(50, 25 + queueOffsetY);
+        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize +
+         (offset - 1) * visualSize, imageSize);
+        container.left().bottom();
+    }
+
+
+    private void previewAtbReadiness(List<Integer> list) {
+        int i = 0;
+        for (int j = queue.length - 1; j > 0; j--) {
+            QueueViewContainer sub = queue[j];
+            if (sub == null)
+                break;
+            QueueView actor = (QueueView) sub.getActor();
+            String text = (list == null ? sub.initiative : list.get(i++)) + "";
+            actor.setInitiativeLabelText(text);
+        }
     }
 
     private void resetZIndices() {
@@ -325,13 +291,7 @@ public class InitiativePanel extends Group {
             }
 
         });
-        /*
-        if unit is unknown/unseen?
-        >>
-        if unit is unable to act?
 
-        proper cleanup is not done on death(), right?
-         */
         for (QueueViewContainer sub : queue) {
             if (sub == null)
                 continue;

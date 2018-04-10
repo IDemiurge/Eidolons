@@ -1,6 +1,6 @@
 package main.swing.generic.components.panels;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel;
 import main.system.images.ImageManager;
@@ -38,7 +38,7 @@ public abstract class G_InfoPanel extends G_Panel {
         for (String v : displayedValues) {
             Vector<String> vector = new Vector<>();
             vector.add(v);
-            vector.add(infoObj.getValue(ContentManager.getValue(v)));
+            vector.add(infoObj.getValue(ContentValsManager.getValue(v)));
             data.add(vector);
         }
 

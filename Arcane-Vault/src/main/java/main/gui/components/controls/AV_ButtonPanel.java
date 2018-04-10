@@ -9,7 +9,7 @@ import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.screens.map.editor.MapEditor;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.DC_SoundMaster;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
@@ -276,7 +276,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 for (String typeName : StringMaster.open(input)) {
                     DC_TYPE TYPE = DC_TYPE.getType(typeName);
                     for (String valName : StringMaster.open(values)) {
-                        VALUE val = ContentManager.getValue(valName);
+                        VALUE val = ContentValsManager.getValue(valName);
                         boolean emptyOnly = JOptionPane.showConfirmDialog(null, "Empty only?") == JOptionPane.YES_OPTION;
                         XML_Transformer.removeValue(val, XML_Reader.getFile(TYPE), true, emptyOnly);
                     }

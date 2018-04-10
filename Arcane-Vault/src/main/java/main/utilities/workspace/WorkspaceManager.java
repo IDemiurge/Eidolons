@@ -1,6 +1,6 @@
 package main.utilities.workspace;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import main.content.*;
@@ -195,14 +195,14 @@ public class WorkspaceManager {
                 }
             case SKILLS:
                 if (type.getIntParam(PARAMS.CIRCLE) < 2) {
-                    if (StringMaster.contains(DC_ContentManager.getFocusMasteries(), type
+                    if (StringMaster.contains(DC_ContentValsManager.getFocusMasteries(), type
                             .getSubGroupingKey())) {
                         return true;
                     }
                 }
             case CLASSES:
                 if (type.getIntParam(PARAMS.CIRCLE) < 2) {
-                    if (StringMaster.contains(DC_ContentManager.getFocusClassGroups(), type
+                    if (StringMaster.contains(DC_ContentValsManager.getFocusClassGroups(), type
                             .getSubGroupingKey())) {
                         return true;
                     }

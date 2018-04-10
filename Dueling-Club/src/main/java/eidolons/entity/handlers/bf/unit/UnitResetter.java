@@ -1,7 +1,7 @@
 package eidolons.entity.handlers.bf.unit;
 
-import eidolons.content.DC_ContentManager;
-import eidolons.content.DC_ContentManager.ATTRIBUTE;
+import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
@@ -12,8 +12,8 @@ import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.EngagedRule;
 import eidolons.game.battlecraft.rules.combat.damage.ResistMaster;
 import eidolons.game.battlecraft.rules.rpg.IntegrityRule;
@@ -22,7 +22,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
 import eidolons.system.test.TestMasterContent;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -378,7 +378,7 @@ public class UnitResetter extends EntityResetter<Unit> {
         if (getEntity().getBackgroundType() == null) {
             return;
         }
-        for (PARAMETER param : DC_ContentManager.getBackgroundDynamicParams()) {
+        for (PARAMETER param : DC_ContentValsManager.getBackgroundDynamicParams()) {
             Integer amount = getEntity().getBackgroundType().getIntParam(param);
             getEntity().modifyParameter(param, amount);
         }
@@ -387,36 +387,36 @@ public class UnitResetter extends EntityResetter<Unit> {
 
 
     public void resetMasteryScores() {
-        for (PARAMS mastery : DC_ContentManager.getMasteryParams()) {
-            PARAMETER score = ContentManager.getMasteryScore(mastery);
+        for (PARAMS mastery : DC_ContentValsManager.getMasteryParams()) {
+            PARAMETER score = ContentValsManager.getMasteryScore(mastery);
             getEntity().getType().setParam(score, getIntParam(mastery));
             getEntity().setParam(score, getIntParam(mastery));
         }
     }
 
     public void resetAttributes() {
-        for (ATTRIBUTE attr : DC_ContentManager.getAttributeEnums()) {
+        for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
             resetAttr(attr);
         }
 
     }
 
     public void resetDefaultAttr(ATTRIBUTE attr) {
-        getEntity().getType().setParam(DC_ContentManager.getDefaultAttr(attr.getParameter()),
-         getIntParam(DC_ContentManager.getBaseAttr(attr.getParameter())));
+        getEntity().getType().setParam(DC_ContentValsManager.getDefaultAttr(attr.getParameter()),
+         getIntParam(DC_ContentValsManager.getBaseAttr(attr.getParameter())));
     }
 
     /**
      * only from Arcane Vault!
      */
     public void resetDefaultAttrs() {
-        for (ATTRIBUTE attr : DC_ContentManager.getAttributeEnums()) {
+        for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
             resetDefaultAttr(attr);
         }
     }
 
     public void resetAttr(ATTRIBUTE attr) {
-        PARAMETER baseAttr = DC_ContentManager.getBaseAttr(attr);
+        PARAMETER baseAttr = DC_ContentValsManager.getBaseAttr(attr);
         getEntity().getType().setParam(attr.getParameter(), getIntParam(baseAttr));
         getEntity().setParam(attr.getParameter(), getIntParam(baseAttr));
 
@@ -448,8 +448,12 @@ public class UnitResetter extends EntityResetter<Unit> {
     }
 
     public void regenerateToughness() {
-        Integer amount = getIntParam(PARAMS.TOUGHNESS_RECOVERY) * getIntParam(PARAMS.TOUGHNESS)
-         / 100;
+        regenerateToughness(1f);
+    }
+    public void regenerateToughness(float delta) {
+        Integer amount = Math.round(getIntParam(PARAMS.TOUGHNESS_RECOVERY)
+         * getIntParam(PARAMS.TOUGHNESS)
+         / 100*delta);
         // setParam(PARAMS.C_TOUGHNESS, amount);
         if (amount > 0) {
             getEntity().modifyParameter(PARAMS.C_TOUGHNESS, amount, getIntParam(PARAMS.TOUGHNESS));
@@ -488,7 +492,7 @@ public class UnitResetter extends EntityResetter<Unit> {
             if (!getGame().getRules().getWeightRule().apply(getEntity())) {
                 getEntity().setInfiniteValue(PARAMS.CARRYING_CAPACITY, 2);
             }
-            if (RuleMaster.isRuleOn(RULE.WATCH))
+            if (RuleKeeper.isRuleOn(RULE.WATCH))
                 getGame().getRules().getWatchRule().updateWatchStatus(getEntity());
             getGame().getRules().getWoundsRule().apply(getEntity());
 
@@ -531,4 +535,5 @@ public class UnitResetter extends EntityResetter<Unit> {
         getCalculator().calculateAndSetDamage(false);
         applyMods();
     }
+
 }

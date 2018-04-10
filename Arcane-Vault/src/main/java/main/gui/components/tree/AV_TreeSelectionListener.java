@@ -1,6 +1,6 @@
 package main.gui.components.tree;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
@@ -133,7 +133,7 @@ public class AV_TreeSelectionListener implements TreeSelectionListener {
 
     public boolean isTreeEditType(String selected) {
         if (ArcaneVault.isMacroMode()) {
-            return ContentManager.getOBJ_TYPE(selected).isTreeEditType();
+            return ContentValsManager.getOBJ_TYPE(selected).isTreeEditType();
         }
         return selected.equals(DC_TYPE.ABILS.getName());
     }

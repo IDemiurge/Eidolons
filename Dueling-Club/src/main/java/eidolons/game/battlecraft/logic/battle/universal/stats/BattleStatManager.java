@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.battle.universal.Battle;
 import eidolons.game.battlecraft.logic.battle.universal.BattleHandler;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.obj.Obj;
 import main.game.core.game.StatMaster;
@@ -100,7 +100,7 @@ public class BattleStatManager<E extends Battle> extends BattleHandler<E> implem
     }
 
     private void modifyUnitModStat(boolean hostile, String stat, Unit sourceObj, int mod) {
-        PARAMETER p = ContentManager.getPARAM(stat);
+        PARAMETER p = ContentValsManager.getPARAM(stat);
         Map<PARAMETER, Integer> map = hostile ? stats.getUnitStats(sourceObj).getEnemyModMap()
          : stats.getUnitStats(sourceObj).getAllyModMap();
         MapMaster.addToIntegerMap(

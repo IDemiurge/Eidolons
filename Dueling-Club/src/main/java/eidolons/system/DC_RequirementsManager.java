@@ -4,7 +4,7 @@ import eidolons.ability.conditions.req.ClassTreeCondition;
 import eidolons.ability.conditions.req.MultiClassCondition;
 import eidolons.ability.conditions.req.SkillPointCondition;
 import eidolons.ability.conditions.req.ValueGroupCondition;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ValueManager;
 import eidolons.content.DC_ValueManager.VALUE_GROUP;
 import eidolons.content.PARAMS;
@@ -13,7 +13,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.HeroManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.SkillEnums;
@@ -355,9 +355,9 @@ public class DC_RequirementsManager implements RequirementsManager {
             params = new ArrayList<>();
             for (String s : StringMaster.open(valRef, StringMaster.VAR_SEPARATOR)) {
 
-                PARAMETER p = ContentManager.getPARAM(s);
+                PARAMETER p = ContentValsManager.getPARAM(s);
                 if (p == null) {
-                    p = ContentManager.getMastery(s);
+                    p = ContentValsManager.getMastery(s);
                 }
                 if (p != null) {
                     params.add(p);
@@ -386,8 +386,8 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private boolean checkSimpleValRef(String valRef) {
-        return ContentManager.isParameterExtendedSearch(valRef)
-         || ContentManager.isProperty(valRef);
+        return ContentValsManager.isParameterExtendedSearch(valRef)
+         || ContentValsManager.isProperty(valRef);
     }
 
     // TODO preCheck upgrade
@@ -405,7 +405,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
         req.add(xpReq);
 
-        PARAMETER spellMastery = ContentManager.getSpellMasteryForSpell(type);
+        PARAMETER spellMastery = ContentValsManager.getSpellMasteryForSpell(type);
 
         if (mode != NORMAL_MODE) {
             req.add(new Requirement(ConditionMaster.getParamCondition(spellMastery.getName(), "1",
@@ -460,8 +460,8 @@ public class DC_RequirementsManager implements RequirementsManager {
         }
         Requirements requirements = new Requirements();
 
-        for (PARAMS mastery : DC_ContentManager.getMasteryParams()) {
-            PARAMETER req = ContentManager.getReqParam(mastery);
+        for (PARAMS mastery : DC_ContentValsManager.getMasteryParams()) {
+            PARAMETER req = ContentValsManager.getReqParam(mastery);
             int param = type.getIntParam(req);
             if (param <= 0) {
                 continue;

@@ -1,7 +1,7 @@
 package main.ability.effects.continuous;
 
 import main.ability.effects.*;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.entity.Ref;
 import main.entity.obj.Attachment;
 import main.system.auxiliary.log.LogMaster;
@@ -161,7 +161,7 @@ public class ContinuousEffect extends MicroEffect {
     }
 
     public int getDuration() {
-        return ContentManager.INFINITE_VALUE;
+        return ContentValsManager.INFINITE_VALUE;
     }
 
     public boolean isRetainAfterDeath() {

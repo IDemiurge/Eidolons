@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.magic;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -48,7 +48,7 @@ public class ResistanceRule {
         Obj source = ref.getSourceObj();
         DAMAGE_TYPE type = spell.getEnergyType();
         int specResist = 0;
-        PARAMETER typeResistance = DC_ContentManager.getDamageTypeResistance(type);
+        PARAMETER typeResistance = DC_ContentValsManager.getDamageTypeResistance(type);
         if (typeResistance != null) {
             specResist = target.getIntParam(typeResistance);
         }

@@ -24,7 +24,7 @@ public class AtbController implements Comparator<Unit> {
     private AtbTurnManager manager;
     private Array<AtbUnit> unitsInAtb;
     private float time = 0f; //passed in this round
-    private float totalTime=0f;
+    private float totalTime = 0f;
     private int step;   //during this round
 
     public AtbController(AtbTurnManager manager) {
@@ -64,7 +64,7 @@ public class AtbController implements Comparator<Unit> {
                 timeElapsed = getDefaultTimePeriod();
             int n = 100 * OptionsMaster.getGameplayOptions().getIntValue(
              (GAMEPLAY_OPTION.ATB_WAIT_TIME));
-            if (step>0) //initial step may be 0
+            if (step > 0) //initial step may be 0
                 WaitMaster.WAIT(n);
         }
         this.processTimeElapsed(timeElapsed + 0.0001f);
@@ -91,7 +91,7 @@ public class AtbController implements Comparator<Unit> {
 
     public void newRound() {
         processAtbRelevantEvent();
-        step=0;
+        step = 0;
         /*
         readiness is not lost!
          */
@@ -101,6 +101,15 @@ public class AtbController implements Comparator<Unit> {
     public void processAtbRelevantEvent() {
         this.updateTimeTillTurn();
         this.updateTurnOrder();
+    }
+
+    public void passTime(Float time) {
+        while (time>0){
+            float timeToPass = Math.min(time, TIME_IN_ROUND);
+            time -= timeToPass;
+            processTimeElapsed(timeToPass);
+            processAtbRelevantEvent();
+        }
     }
 
     private void processTimeElapsed(Float time) {

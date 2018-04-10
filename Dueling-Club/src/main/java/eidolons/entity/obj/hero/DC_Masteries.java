@@ -1,12 +1,12 @@
 package eidolons.entity.obj.hero;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
 import main.ability.effects.Effect.MOD;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
 import main.data.XLinkedMap;
@@ -27,7 +27,7 @@ public class DC_Masteries {
 
     public List<PARAMETER> getHighest(int i) {
         List<PARAMETER> list = new ArrayList<>(
-         DC_ContentManager.getMasteryParams());
+         DC_ContentValsManager.getMasteryParams());
 //        SortMaster.sortByParameter(hero, list, true);
         return list.subList(0, i);
     }
@@ -44,7 +44,7 @@ public class DC_Masteries {
     }
 
     private void initMastery(PARAMS mastery) {
-        int amount = hero.getIntParam(ContentManager.getMasteryScore(mastery));
+        int amount = hero.getIntParam(ContentValsManager.getMasteryScore(mastery));
         if (amount <= 0) {
             return;
         }
@@ -133,7 +133,7 @@ public class DC_Masteries {
     }
 
     public void apply() {
-        for (PARAMS mastery : DC_ContentManager.getMasteryParams()) {
+        for (PARAMS mastery : DC_ContentValsManager.getMasteryParams()) {
             initMastery(mastery);
         }
 

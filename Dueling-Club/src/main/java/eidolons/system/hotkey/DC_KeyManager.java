@@ -3,7 +3,7 @@ package eidolons.system.hotkey;
 import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
-import eidolons.game.battlecraft.rules.RuleMaster;
+import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.libgdx.anims.controls.EmitterController;
@@ -205,7 +205,7 @@ public class DC_KeyManager
                 return DebugController.getInstance();
 
             case RULES:
-                return RuleMaster.getInstance();
+                return RuleKeeper.getInstance();
 
             case EMITTER:
                 return EmitterController.getInstance();

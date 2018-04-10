@@ -1,7 +1,7 @@
 package main.gui.builders;
 
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
@@ -126,7 +126,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                 }
             }
             for (String sub : tabNames) {
-                List<String> types = DataManager.getFilteredTypeNameList(sub, ContentManager
+                List<String> types = DataManager.getFilteredTypeNameList(sub, ContentValsManager
                  .getOBJ_TYPE(type), groupingKey);
                 list.add(new TreeViewBuilder(types, sub, type));
 
@@ -172,7 +172,7 @@ public class TabBuilder extends Builder implements ChangeListener {
 
                 int code = -1;
                 try {
-                    code = ContentManager.getTypeCode(infoArray[i]);
+                    code = ContentValsManager.getTypeCode(infoArray[i]);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
@@ -184,7 +184,7 @@ public class TabBuilder extends Builder implements ChangeListener {
                 component = builder.build();
 
                 tabmap.put(infoArray[i], component);
-                if (!ContentManager.getOBJ_TYPE(infoArray[i]).isHidden()) {
+                if (!ContentValsManager.getOBJ_TYPE(infoArray[i]).isHidden()) {
                     getTabbedPane().addTab(infoArray[i], component);
                 }
 
@@ -218,7 +218,7 @@ public class TabBuilder extends Builder implements ChangeListener {
             // }
         }
         for (String tabName : tabmap.keySet()) {
-            if (ContentManager.getOBJ_TYPE(tabName).isHidden()) {
+            if (ContentValsManager.getOBJ_TYPE(tabName).isHidden()) {
                 continue;
             }
             Component component = tabmap.get(tabName);
@@ -230,7 +230,7 @@ public class TabBuilder extends Builder implements ChangeListener {
     private void addTypeTab(String tabName, Component component) {
         int code = getTabbedPane().getTabCount();//ContentManager.getTypeCode(tabName);
 
-        ImageIcon icon = ImageManager.getIcon(ContentManager.getTypeImage(tabName));
+        ImageIcon icon = ImageManager.getIcon(ContentValsManager.getTypeImage(tabName));
 
         String text = "";
         if (!ImageManager.isValidIcon(icon)) {

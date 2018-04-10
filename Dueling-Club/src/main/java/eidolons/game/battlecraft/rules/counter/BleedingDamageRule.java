@@ -1,7 +1,9 @@
 package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.enums.GenericEnums;
@@ -13,7 +15,7 @@ import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StringMaster;
 
-public class BleedingDamageRule extends DamageCounterRule {
+public class BleedingDamageRule extends DamageCounterRule  implements TimedRule {
 
     private static final String PERC_PER_COUNTER = "1";
 
@@ -39,7 +41,7 @@ public class BleedingDamageRule extends DamageCounterRule {
     }
 
     @Override
-    public int getMaxNumberOfCounters(Unit unit) {
+    public int getMaxNumberOfCounters(BattleFieldObject unit) {
         return 50;
     }
 
@@ -59,7 +61,7 @@ public class BleedingDamageRule extends DamageCounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return unit.getIntParam(PARAMS.FORTITUDE);
     }
 

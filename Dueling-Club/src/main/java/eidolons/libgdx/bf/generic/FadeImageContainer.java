@@ -25,6 +25,9 @@ public class FadeImageContainer extends ImageContainer {
 
     }
 
+    public void resetPreviousImage() {
+        setContents(previousImage);
+    }
     @Override
     public void setContents(Actor contents) {
         if (previousImage != null)
@@ -66,4 +69,5 @@ public class FadeImageContainer extends ImageContainer {
                 setContents(new Image(drawable));
         }
     }
+
 }

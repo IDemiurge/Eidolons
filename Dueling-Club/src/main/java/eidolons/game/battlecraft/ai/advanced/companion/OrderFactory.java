@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.ai.advanced.companion;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.content.enums.system.AiEnums.ORDER_PRIORITY_MODS;
@@ -38,6 +38,6 @@ public class OrderFactory {
     }
 
     private static PARAMETER getParam(ORDER_PRIORITY_MODS mod) {
-        return ContentManager.getPARAM(PREFIX + mod);
+        return ContentValsManager.getPARAM(PREFIX + mod);
     }
 }

@@ -1,7 +1,7 @@
 package eidolons.content;
 
 import eidolons.game.core.game.DC_Game;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.ValueManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.EnumMaster;
@@ -65,11 +65,11 @@ public class DC_ValueManager implements ValueManager {
         List<String> container = StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR);
         ArrayList<PARAMETER> params = new ArrayList<>();
         for (String s : container) {
-            PARAMETER param = ContentManager.getPARAM(s);
+            PARAMETER param = ContentValsManager.getPARAM(s);
             if (param != null) {
                 params.add(param);
             } else {
-                param = ContentManager.getMastery(s);
+                param = ContentValsManager.getMastery(s);
                 if (param != null) {
                     params.add(param);
                 }
@@ -201,7 +201,7 @@ public class DC_ValueManager implements ValueManager {
             if (score) {
                 List<PARAMETER> list = new ArrayList<>();
                 for (PARAMETER p : params) {
-                    list.add(ContentManager.getMasteryScore(p));
+                    list.add(ContentValsManager.getMasteryScore(p));
                 }
                 params = list.toArray(new PARAMETER[params.length]);
                 score = false;

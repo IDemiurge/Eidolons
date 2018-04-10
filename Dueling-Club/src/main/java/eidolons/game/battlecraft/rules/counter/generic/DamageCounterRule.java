@@ -1,7 +1,7 @@
-package eidolons.game.battlecraft.rules.counter;
+package eidolons.game.battlecraft.rules.counter.generic;
 
 import eidolons.ability.effects.oneshot.DealDamageEffect;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
@@ -33,7 +33,7 @@ public abstract class DamageCounterRule extends DC_CounterRule {
     }
 
 
-    public boolean apply(Unit unit) {
+    public boolean apply(BattleFieldObject unit) {
         if (!check(unit)) {
             return false;
         }

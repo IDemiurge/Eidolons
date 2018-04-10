@@ -1,7 +1,7 @@
 package main.gui.components.table;
 
 import eidolons.content.DC_CONSTS;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import main.content.CONTENT_CONSTS.SPECIAL_REQUIREMENTS;
@@ -269,7 +269,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
     // TODO rework into functional/lazy style
     public static void configureEditors() {
-        DC_ContentManager.setEditorMap(editorMap);
+        DC_ContentValsManager.setEditorMap(editorMap);
 
         editorMap.put(soundsetIdentifier, soundChooser);
         editorMap.put(G_PROPS.FULLSIZE_IMAGE.getName(), imageChooser);
@@ -298,7 +298,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             } else {
                 if (id.equalsIgnoreCase(PROPS.PARAMETER_BONUSES.getName())) {
                     enumClass = PARAMS.class;
-                    multiEnumListEditor.setListData(DC_ContentManager.getBonusParamList());
+                    multiEnumListEditor.setListData(DC_ContentValsManager.getBonusParamList());
                 }
                 if (id.equalsIgnoreCase(PROPS.ATTRIBUTE_BONUSES.getName())) {
                     enumClass = ATTRIBUTE.class;
@@ -497,7 +497,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
         int column = table.getColumn(EditViewPanel.NAME).getModelIndex();
 
         Object valueAt = table.getValueAt(row, column);
-        VALUE val = ContentManager.getValue(valueAt.toString());
+        VALUE val = ContentValsManager.getValue(valueAt.toString());
         String value;
         ObjType selectedType = (second) ? ArcaneVault.getPreviousSelectedType() : ArcaneVault
          .getSelectedType();

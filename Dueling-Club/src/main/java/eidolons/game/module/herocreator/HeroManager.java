@@ -1,6 +1,6 @@
 package eidolons.game.module.herocreator;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
@@ -17,7 +17,7 @@ import eidolons.system.DC_Formulas;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
@@ -77,8 +77,8 @@ public class HeroManager {
         if (TYPE.getParam() == null) {
             return "";
         }
-        PARAMETER costParam = ContentManager.getCostParam(TYPE.getParam());
-        PARAMETER discountParam = DC_ContentManager.getCostReductionParam(costParam, PROP);
+        PARAMETER costParam = ContentValsManager.getCostParam(TYPE.getParam());
+        PARAMETER discountParam = DC_ContentValsManager.getCostReductionParam(costParam, PROP);
         Integer value = type.getIntParam(costParam);
         Integer mod = hero.getIntParam(discountParam);
         Formula costFormula = new Formula("" + value);
@@ -90,7 +90,7 @@ public class HeroManager {
             costFormula.applyFactor(-DC_Formulas.getSellingPriceReduction());
         }
 
-        discountParam = DC_ContentManager.getSpecialCostReductionParam(costParam, PROP);
+        discountParam = DC_ContentValsManager.getSpecialCostReductionParam(costParam, PROP);
         if (discountParam == null) {
             return "" + costFormula;
         }

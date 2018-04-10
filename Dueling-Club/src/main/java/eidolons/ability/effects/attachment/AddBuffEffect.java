@@ -9,7 +9,7 @@ import eidolons.system.DC_ConditionMaster;
 import main.ability.effects.*;
 import main.ability.effects.continuous.ContinuousEffect;
 import main.content.CONTENT_CONSTS.RETAIN_CONDITIONS;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.G_PARAMS;
@@ -258,10 +258,10 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
             }
         }
         if (duration == null) {
-            duration = ContentManager.INFINITE_VALUE;
+            duration = ContentValsManager.INFINITE_VALUE;
         }
         // TODO if (checkSpellBuff()) ++
-        if (duration != ContentManager.INFINITE_VALUE) {
+        if (duration != ContentValsManager.INFINITE_VALUE) {
             if (getResistanceMod() != null) {
                 duration = MathMaster.applyMod(duration, getResistanceMod());
             }

@@ -2,8 +2,8 @@ package eidolons.game.battlecraft.rules.combat.attack.extra_attack;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.UnitEnums;
@@ -47,7 +47,7 @@ public class CounterAttackRule {
         ActiveObj counter = null;
         if (attack.getAttackedUnit() != null)
             if (!attack.isCounter() &&
-             (RuleMaster.isRuleTestOn(RULE.COUNTER_ATTACK) ||
+             (RuleKeeper.isRuleTestOn(RULE.COUNTER_ATTACK) ||
               (attack.isCanCounter() &&
 //           attack.getAttackedUnit().
                canCounter((Unit) attack.getAttackedUnit(), attack.getAction())))

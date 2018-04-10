@@ -5,7 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_Formulas;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -158,13 +158,13 @@ public class LibraryManager {
         return (hero.checkParam(PARAMS.KNOWLEDGE, ""
          + Math.round(type.getIntParam(PARAMS.SPELL_DIFFICULTY)
          * DC_Formulas.KNOWLEDGE_ANY_SPELL_FACTOR)))
-         && hero.checkParam(ContentManager
+         && hero.checkParam(ContentValsManager
          .findMastery(type.getProperty(G_PROPS.SPELL_GROUP)));
     }
 
     public static boolean checkMastery(Unit hero, ObjType type) {
 
-        return hero.checkParam(ContentManager.findMastery(type.getProperty(G_PROPS.SPELL_GROUP)),
+        return hero.checkParam(ContentValsManager.findMastery(type.getProperty(G_PROPS.SPELL_GROUP)),
          type.getParam(PARAMS.SPELL_DIFFICULTY));
     }
 

@@ -1,6 +1,6 @@
 package main.content.values.properties;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.ValueMap;
 
@@ -40,13 +40,13 @@ public class PropMap implements ValueMap {
 
     @Override
     public String get(String valueName) {
-        PROPERTY p = ContentManager.getPROP(valueName);
+        PROPERTY p = ContentValsManager.getPROP(valueName);
         return get(p);
     }
 
     @Override
     public String put(String valueName, String value) {
-        PROPERTY p = ContentManager.getPROP(valueName);
+        PROPERTY p = ContentValsManager.getPROP(valueName);
 
         String previous = map.get(p);
         map.put(p, value);

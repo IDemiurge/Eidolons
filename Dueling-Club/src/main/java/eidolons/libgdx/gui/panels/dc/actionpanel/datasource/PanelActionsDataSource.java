@@ -41,9 +41,10 @@ public class PanelActionsDataSource implements
         unitDataSource = new UnitDataSource(unit);
     }
 
-    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el, boolean spell) {
+    public static ActionValueContainer getActionValueContainer(DC_ActiveObj el, int size) {
         boolean valid = el.canBeManuallyActivated();
         final ActionValueContainer container = new ActionValueContainer(
+         size,
          valid,
          TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), getImage(el))
          ,
@@ -93,6 +94,7 @@ public class PanelActionsDataSource implements
          .map((DC_QuickItemObj key) -> {
              boolean valid = key.getActive().canBeManuallyActivated();
              final ActionValueContainer valueContainer = new ActionValueContainer(
+              UiMaster.getBottomQuickItemIconSize(),
               valid,
               getOrCreateR(key.getImagePath()),
               key::invokeClicked
@@ -134,21 +136,21 @@ public class PanelActionsDataSource implements
             return new ArrayList<>();
         }
         return unit.getActionMap().get(type).stream()
-         .map(getActiveObjValueContainerFunction(false))
+         .map(getActiveObjValueContainerFunction(UiMaster.getIconSize()))
          .collect(Collectors.toList());
     }
 
     @Override
     public List<ActionValueContainer> getSpells() {
         return unit.getSpells().stream()
-         .map(getActiveObjValueContainerFunction(true))
+         .map(getActiveObjValueContainerFunction(UiMaster.getBottomSpellIconSize()))
          .collect(Collectors.toList());
     }
 
     private Function<DC_ActiveObj, ActionValueContainer> getActiveObjValueContainerFunction(
-     boolean spell) {
+     int size) {
         return el -> {
-            return getActionValueContainer(el, spell);
+            return getActionValueContainer(el, size);
         };
     }
 

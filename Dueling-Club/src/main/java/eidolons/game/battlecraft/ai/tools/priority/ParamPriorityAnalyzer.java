@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiHandler;
 import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.ai.tools.ParamAnalyzer;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
@@ -32,7 +32,7 @@ public class ParamPriorityAnalyzer extends AiHandler {
         }
         // depending on AI_TYPE
         if (param.isDynamic()) {
-            param = (PARAMS) ContentManager.getCurrentParam(param);
+            param = (PARAMS) ContentValsManager.getCurrentParam(param);
         }
         switch (param) {
             case ATTACK:

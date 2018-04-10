@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.rules.counter;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -22,7 +23,7 @@ public class ChargeCounterRule extends DC_CounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return 0;
     }
 

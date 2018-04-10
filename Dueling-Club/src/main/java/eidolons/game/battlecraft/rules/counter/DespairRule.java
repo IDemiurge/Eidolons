@@ -2,7 +2,8 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -29,7 +30,7 @@ public class DespairRule extends DC_CounterRule {
 
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return unit.getIntParam(PARAMS.SPIRIT) / 2;
     }
 

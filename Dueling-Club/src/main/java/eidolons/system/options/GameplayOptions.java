@@ -1,7 +1,7 @@
 package eidolons.system.options;
 
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import main.content.enums.GenericEnums;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
@@ -20,7 +20,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
     }
 
     public enum GAMEPLAY_OPTION implements Options.OPTION {
-        RULES_SCOPE(RuleMaster.RULE_SCOPE.values()),
+        RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
 
         //        AI_SPEED,

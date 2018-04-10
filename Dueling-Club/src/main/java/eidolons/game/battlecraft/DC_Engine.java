@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.swing.DC_GuiManager;
 import eidolons.system.DC_ConditionMaster;
@@ -49,10 +49,10 @@ public class DC_Engine extends CoreEngine {
 
     public static void dataInit() {
         Chronos.mark("DATA INIT");
-        new DC_ContentManager().init();
+        new DC_ContentValsManager().init();
         CoreEngine.dataInit(false);
         //read save game?
-        DC_ContentManager.initTypeDynamicValues();
+        DC_ContentValsManager.initTypeDynamicValues();
         Chronos.logTimeElapsedForMark("DATA INIT");
     }
 

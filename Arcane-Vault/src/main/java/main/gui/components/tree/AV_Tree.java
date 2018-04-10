@@ -1,6 +1,6 @@
 package main.gui.components.tree;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import eidolons.content.PARAMS;
@@ -68,7 +68,7 @@ public class AV_Tree extends G_Panel {
     }
 
     public AV_Tree(List<String> typesDoc, String group, String type, boolean colorsInverted) {
-        this.type = ContentManager.getOBJ_TYPE(type);
+        this.type = ContentValsManager.getOBJ_TYPE(type);
         this.tree = buildTree(typesDoc, group);
         this.colorsInverted = colorsInverted;
         addTree();

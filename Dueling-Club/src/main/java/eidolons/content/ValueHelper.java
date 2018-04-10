@@ -1,7 +1,7 @@
 package eidolons.content;
 
 import eidolons.game.core.game.DC_Game;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.data.xml.XML_Writer;
 import main.entity.Entity;
@@ -153,16 +153,16 @@ public class ValueHelper {
                 return value;
             }
         }
-        ContentManager.setExcludedValueSet(rejectedValues.get(valueName));
+        ContentValsManager.setExcludedValueSet(rejectedValues.get(valueName));
         try {
-            value = ContentManager.getValue(valueName);
+            value = ContentValsManager.getValue(valueName);
             if (value == null) {
-                value = ContentManager.getValue(valueName, true);
+                value = ContentValsManager.getValue(valueName, true);
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
-            ContentManager.setExcludedValueSet(null);
+            ContentValsManager.setExcludedValueSet(null);
         }
         return value;
     }

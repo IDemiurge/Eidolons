@@ -43,6 +43,9 @@ public class GdxImageTransformer extends LwjglApplication {
                 return texture;
             }
         }
+        if (texture.equals(TextureCache.getEmptyTexture())){
+            return null;
+        }
         path = StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
         FileHandle handle = new FileHandle(
          PathFinder.getImagePath() +

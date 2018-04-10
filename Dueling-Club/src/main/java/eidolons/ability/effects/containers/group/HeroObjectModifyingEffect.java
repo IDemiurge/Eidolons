@@ -7,7 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
@@ -163,7 +163,7 @@ public abstract class HeroObjectModifyingEffect extends DC_Effect {
                 modEffects.setForcedLayer(getModEffectLayer());
 
                 if (isPermanent()) {
-                    buffEffect.setDuration(ContentManager.INFINITE_VALUE);
+                    buffEffect.setDuration(ContentValsManager.INFINITE_VALUE);
                 }
                 if (!game.isSimulation()) {
                     effects.put(obj, buffEffect);

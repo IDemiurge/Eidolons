@@ -2,7 +2,7 @@ package eidolons.game.module.adventure.utils;
 
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
@@ -33,7 +33,7 @@ public class SaveMaster {
 		 */
         String content = FileManager.readFile(new File(getSavePath() + fileName + ".xml"));
         for (Node node : XML_Converter.getNodeList(XML_Converter.getDoc(content))) {
-            OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(node.getNodeName());
+            OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(node.getNodeName());
             XML_Reader.createCustomTypeList(XML_Converter.getStringFromXML(node), TYPE, MacroGame
              .getGame(), true, true);
         }

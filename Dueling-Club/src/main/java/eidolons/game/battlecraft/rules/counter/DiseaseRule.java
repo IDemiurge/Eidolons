@@ -2,7 +2,9 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -23,7 +25,7 @@ import main.system.math.Formula;
  * 
  * 
  */
-public class DiseaseRule extends DamageCounterRule {
+public class DiseaseRule extends DamageCounterRule  implements TimedRule {
 
     private static final String ENDURANCE_DAMAGE_PERC = "0.5";
     private static final int REDUCTION = 0;
@@ -35,7 +37,7 @@ public class DiseaseRule extends DamageCounterRule {
     }
 
     @Override
-    public boolean check(Unit unit) {
+    public boolean check(BattleFieldObject unit) {
         // TODO Auto-generated method stub
         return super.check(unit);
     }
@@ -84,7 +86,7 @@ public class DiseaseRule extends DamageCounterRule {
     // return REDUCTION;
     // }
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         int n = 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
          / 100;
         if (checkVirulent(unit)) {
@@ -98,7 +100,7 @@ public class DiseaseRule extends DamageCounterRule {
         return COUNTER.Disease;
     }
 
-    private boolean checkVirulent(Unit unit) {
+    private boolean checkVirulent(BattleFieldObject unit) {
         return unit.checkStatus(UnitEnums.STATUS.VIRULENT);
     }
 

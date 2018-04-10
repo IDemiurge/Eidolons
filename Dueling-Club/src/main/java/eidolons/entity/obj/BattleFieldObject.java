@@ -1,6 +1,6 @@
 package eidolons.entity.obj;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
@@ -13,7 +13,7 @@ import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
@@ -353,7 +353,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     public void regen() {
 
-        Arrays.stream(DC_ContentManager.REGEN_PARAMS).forEach(parameter -> {
+        Arrays.stream(DC_ContentValsManager.REGEN_PARAMS).forEach(parameter -> {
             regen(parameter);
         });
 
@@ -363,9 +363,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if (isFull(p)) {
             return;
         }
-        Integer regen = getIntParam(ContentManager.getRegenParam(p));
+        Integer regen = getIntParam(ContentValsManager.getRegenParam(p));
         if (regen != 0) {
-            modifyParameter(ContentManager.getCurrentParam(p), regen, getIntParam(p));
+            modifyParameter(ContentValsManager.getCurrentParam(p), regen, getIntParam(p));
         }
 
     }

@@ -1,6 +1,6 @@
 package eidolons.system.content;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
@@ -396,31 +396,31 @@ public class ContentGenerator {
         for (DAMAGE_TYPE dmg_type : GenericEnums.DAMAGE_TYPE.values()) {
             RESIST_GRADE grade = (material == null) ? getGradeForUnitType(t, dmg_type) : material
              .getResistGrade(dmg_type);
-            PROPERTY prop = DC_ContentManager.getResistGradeForDmgType(dmg_type);
+            PROPERTY prop = DC_ContentValsManager.getResistGradeForDmgType(dmg_type);
             if (prop == null) {
                 continue;
             }
 
             t.setProperty(prop, grade.toString());
-            t.setParam(DC_ContentManager.getArmorParamForDmgType(dmg_type), Math.round(armor
+            t.setParam(DC_ContentValsManager.getArmorParamForDmgType(dmg_type), Math.round(armor
              * grade.getPercent() / 100));
             if (material == null) {
                 grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
-                 .getProperty(DC_ContentManager.getResistGradeForDmgType(dmg_type)));
+                 .getProperty(DC_ContentValsManager.getResistGradeForDmgType(dmg_type)));
             } else {
                 grade = material.getSelfDamageGrade(dmg_type);
             }
-            t.setProperty(DC_ContentManager.getSelfDamageGradeForDmgType(dmg_type), grade
+            t.setProperty(DC_ContentValsManager.getSelfDamageGradeForDmgType(dmg_type), grade
              .toString());
 
-            prop = DC_ContentManager.getSelfDamageGradeForDmgType(dmg_type);
+            prop = DC_ContentValsManager.getSelfDamageGradeForDmgType(dmg_type);
             if (prop == null) {
                 continue;
             }
             grade = new EnumMaster<RESIST_GRADE>().retrieveEnumConst(RESIST_GRADE.class, t
              .getProperty(prop));
 
-            t.setParam(DC_ContentManager.getArmorSelfDamageParamForDmgType(dmg_type), Math
+            t.setParam(DC_ContentValsManager.getArmorSelfDamageParamForDmgType(dmg_type), Math
              .round(grade.getPercent()));
 
         }

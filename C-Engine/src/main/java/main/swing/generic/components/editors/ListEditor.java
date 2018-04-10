@@ -1,6 +1,6 @@
 package main.swing.generic.components.editors;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS;
@@ -156,7 +156,7 @@ public class ListEditor implements EDITOR {
 
             secondListData = new ArrayList<>();
             if (value != null) {
-                if (!value.equals(ContentManager.getDefaultEmptyValue())) {
+                if (!value.equals(ContentValsManager.getDefaultEmptyValue())) {
                     secondListData = ListMaster.toList(value.toString(), ENUM);
                 }
             }

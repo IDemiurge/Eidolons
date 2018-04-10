@@ -4,7 +4,7 @@ import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
-import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.content.VALUE;

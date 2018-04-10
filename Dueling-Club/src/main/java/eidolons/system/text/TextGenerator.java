@@ -1,7 +1,7 @@
 package eidolons.system.text;
 
 import eidolons.content.ValuePageManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
@@ -26,7 +26,7 @@ public class TextGenerator {
             boolean prop = false;
             for (VALUE v : list) {
                 if (v instanceof PARAMETER) {
-                    if (!ContentManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, v)) {
+                    if (!ContentValsManager.isValueForOBJ_TYPE(DC_TYPE.CHARS, v)) {
                         continue;
                     }
                     String amount = e.getValue(v);

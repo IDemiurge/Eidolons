@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.math.DC_MathManager;
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.PARAMETER;
 import main.data.DataManager;
@@ -178,7 +178,7 @@ public class UnitCalculator extends EntityCalculator<Unit> {
     public int calculateInitiative(boolean current) {
         PARAMETER param = PARAMS.N_OF_ACTIONS;
         if (current) {
-            param = ContentManager.getCurrentParam(param);
+            param = ContentValsManager.getCurrentParam(param);
         }
         int initiative =
          getIntParam(param)

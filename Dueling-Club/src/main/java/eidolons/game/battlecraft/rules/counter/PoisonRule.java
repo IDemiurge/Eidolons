@@ -2,7 +2,10 @@ package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.counter.generic.DamageCounterRule;
+import eidolons.game.battlecraft.rules.counter.timed.TimedRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
@@ -15,7 +18,7 @@ import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
 
-public class PoisonRule extends DamageCounterRule {
+public class PoisonRule extends DamageCounterRule implements TimedRule{
 
     private static final String DAMAGE_PER_COUNTER = "1";
     private static final String HALLUNICATE = MetaEnums.STD_BUFF_NAMES.Hallucinogetic_Poison.getName();
@@ -30,24 +33,27 @@ public class PoisonRule extends DamageCounterRule {
         super(game);
     }
 
-    public boolean checkApplies(Unit unit) {
-        return unit.isLiving();
+    public boolean checkApplies(BattleFieldObject unit) {
+        if (unit instanceof Unit) {
+            ((Unit) unit).isLiving();
+        }
+        return false;
     }
 
     @Override
     protected Effect getSpecialRoundEffects() {
         Effects specialRoundEffects = new Effects();
-        if (unit.getBuff(HALLUNICATE) != null) {
+        if (object.getBuff(HALLUNICATE) != null) {
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_FOCUS, MOD.MODIFY_BY_CONST,
-             getNumberOfCounters(unit) + " * " + HALLUNICATE_FOCUS_PER_COUNTER));
+             getNumberOfCounters(object) + " * " + HALLUNICATE_FOCUS_PER_COUNTER));
         }
-        if (unit.getBuff(WEAKEN) != null) {
+        if (object.getBuff(WEAKEN) != null) {
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_STAMINA, MOD.MODIFY_BY_CONST,
-             getNumberOfCounters(unit) + " * " + WEAKEN_STAMINA_PER_COUNTER));
+             getNumberOfCounters(object) + " * " + WEAKEN_STAMINA_PER_COUNTER));
         }
-        if (unit.getBuff(PARALYZING) != null) {
+        if (object.getBuff(PARALYZING) != null) {
             specialRoundEffects.add(new ModifyValueEffect(PARAMS.C_INITIATIVE_BONUS,
-             MOD.MODIFY_BY_CONST, getNumberOfCounters(unit) + " * "
+             MOD.MODIFY_BY_CONST, getNumberOfCounters(object) + " * "
              + PARALYZING_INITIATIVE_PER_COUNTER));
         }
         return specialRoundEffects;
@@ -76,10 +82,10 @@ public class PoisonRule extends DamageCounterRule {
 
     @Override
     public String getBuffName() {
-        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.WEAKENING_POISON)) {
+        if (object.checkPassive(UnitEnums.STANDARD_PASSIVES.WEAKENING_POISON)) {
             return MetaEnums.STD_BUFF_NAMES.Weakening_Poison.toString();
         }
-        if (unit.checkPassive(UnitEnums.STANDARD_PASSIVES.HALLUCINOGETIC_POISON)) {
+        if (object.checkPassive(UnitEnums.STANDARD_PASSIVES.HALLUCINOGETIC_POISON)) {
             return MetaEnums.STD_BUFF_NAMES.Hallucinogetic_Poison.toString();
         }
         return MetaEnums.STD_BUFF_NAMES.Poison.toString();
@@ -97,10 +103,9 @@ public class PoisonRule extends DamageCounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         return 1 + unit.getIntParam(PARAMS.FORTITUDE) * unit.getIntParam(PARAMS.POISON_RESISTANCE)
          / 100;
     }
-
-
+ 
 }

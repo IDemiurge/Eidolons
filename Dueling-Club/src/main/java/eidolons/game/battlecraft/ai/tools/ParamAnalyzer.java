@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.battlecraft.rules.buff.DC_BuffRule;
 import eidolons.system.math.DC_MathManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
 import main.elements.costs.Costs;
@@ -91,10 +91,10 @@ public class ParamAnalyzer extends AiHandler {
         if (p == PARAMS.C_ESSENCE) {
             if (low_critical) {
                 return MathMaster.getCentimalPercent(
-                 unit.getIntParam(ContentManager.getPercentageParam(p))) < 30;
+                 unit.getIntParam(ContentValsManager.getPercentageParam(p))) < 30;
             } else {
                 return MathMaster.getCentimalPercent(
-                 unit.getIntParam(ContentManager.getPercentageParam(p))) < 10;
+                 unit.getIntParam(ContentValsManager.getPercentageParam(p))) < 10;
             }
 
         }

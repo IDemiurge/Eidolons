@@ -1,10 +1,9 @@
-package eidolons.game.battlecraft.rules.counter;
+package eidolons.game.battlecraft.rules.counter.generic;
 
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModifyCounterEffect;
 import eidolons.ability.targeting.TemplateAutoTargeting;
 import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.magic.ImmunityRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -36,8 +35,8 @@ public abstract class DC_CounterRule {
     protected DC_Game game;
     // protected Map<Entity, BuffObj> buffCache = new HashMap<Entity,
     // BuffObj>();
-    protected Unit unit;
-    protected Map<Unit, AddBuffEffect> effectCache;
+    protected BattleFieldObject object;
+    protected Map<BattleFieldObject, AddBuffEffect> effectCache;
     protected Map<BattleFieldObject, Effects> effectsCache = new HashMap<>();
     protected COUNTER counter;
 
@@ -51,9 +50,9 @@ public abstract class DC_CounterRule {
 
     public abstract COUNTER getCounter();
 
-    public abstract int getCounterNumberReductionPerTurn(Unit unit);
+    public abstract int getCounterNumberReductionPerTurn(BattleFieldObject unit);
 
-    public int getMaxNumberOfCounters(Unit unit) {
+    public int getMaxNumberOfCounters(BattleFieldObject unit) {
         return Integer.MAX_VALUE;
     }
 
@@ -103,11 +102,11 @@ public abstract class DC_CounterRule {
 
     // only first time
     protected String getAppliedLogString() {
-        return getName() + " applied on " + unit.getName();
+        return getName() + " applied on " + object.getName();
     }
 
     protected String getLiftedLogString() {
-        return getName() + " lifted from " + unit.getName();
+        return getName() + " lifted from " + object.getName();
     }
 
     protected String getName() {
@@ -115,12 +114,12 @@ public abstract class DC_CounterRule {
     }
 
     protected String getCounterModifiedLogString(int counterMod) {
-        return unit.getName() + "'s " + getCounterName()
+        return object.getName() + "'s " + getCounterName()
          + " number modified by " + counterMod;
     }
 
     public void newTurn() {
-        for (Unit unit : game.getUnits()) {
+        for (BattleFieldObject unit : game.getUnits()) {
             if (unit.isDead()) continue;
             if (!ExplorationMaster.isExplorationOn())
                 if (isOutsideCombatIgnored())
@@ -149,15 +148,15 @@ public abstract class DC_CounterRule {
         return true;
     }
 
-    public boolean checkApplies(Unit unit) {
+    public boolean checkApplies(BattleFieldObject unit) {
         return true;
     }
 
-    public boolean check(Unit unit) {
+    public boolean check(BattleFieldObject unit) {
         if (!checkApplies(unit)) {
             return false;
         }
-        this.unit = unit;
+        this.object = unit;
         if (getNumberOfCounters(unit) <= 0) {
             if (!isAppliedAlways()) {
                 // if (checkAlreadyApplied(unit)) TODO that's bullshit!
@@ -198,7 +197,7 @@ public abstract class DC_CounterRule {
 
     }
 
-    protected boolean checkAlreadyApplied(Unit unit) {
+    protected boolean checkAlreadyApplied(BattleFieldObject unit) {
         return unit.getBuff(getBuffName()) != null;
     }
 
@@ -211,13 +210,13 @@ public abstract class DC_CounterRule {
         return null;
     }
 
-    protected void applyCountersTranfers(Unit unit) {
+    protected void applyCountersTranfers(BattleFieldObject unit) {
     }
 
-    protected void applyCountersConversions(Unit unit) {
+    protected void applyCountersConversions(BattleFieldObject unit) {
     }
 
-    protected void applyCountersInteractions(Unit unit) {
+    protected void applyCountersInteractions(BattleFieldObject unit) {
 
 //        if (getClashingCounter() != null) {
 //            int c = unit.getCounter(getClashingCounter());
@@ -228,17 +227,17 @@ public abstract class DC_CounterRule {
 
     public abstract STATUS getStatus();
 
-    protected Integer getNumberOfCounters(Unit unit) {
+    protected Integer getNumberOfCounters(BattleFieldObject unit) {
         return Math.min(getMaxNumberOfCounters(unit),
          unit.getCounter(getCounterName()));
         // return unit.getCounter(getCounterName());
     }
 
-    protected void removeBuff(Unit unit) {
+    protected void removeBuff(BattleFieldObject unit) {
         unit.removeBuff(getBuffName());
     }
 
-    protected void removeEffects(Unit unit) {
+    protected void removeEffects(BattleFieldObject unit) {
         Effects effects = effectsCache.get(unit);
         if (effects == null) {
             return;
@@ -246,7 +245,7 @@ public abstract class DC_CounterRule {
         effects.remove();
     }
 
-    protected void applyEffects(Unit unit) {
+    protected void applyEffects(BattleFieldObject unit) {
         Effect effects = getWrappedEffects(unit);
         effects.apply(Ref.getSelfTargetingRefCopy(unit));
         if (effects instanceof AddBuffEffect) {
@@ -259,7 +258,7 @@ public abstract class DC_CounterRule {
 //        playTickAnimation();
     }
 
-    private Effect getWrappedEffects(Unit unit) {
+    private Effect getWrappedEffects(BattleFieldObject unit) {
         if (getEffect() == null)
             return new Effects();
         if (getBuffName() != null) {
@@ -274,17 +273,17 @@ public abstract class DC_CounterRule {
     }
 
     private Effect getBuffEffect() {
-        AddBuffEffect effect = getEffectCache().get(unit);
+        AddBuffEffect effect = getEffectCache().get(object);
         if (effect == null) {
             effect = new AddBuffEffect(getBuffName(), effects);
             if (isUseBuffCache()) {
-                getEffectCache().put(unit, effect);
+                getEffectCache().put(object, effect);
             }
         }
         return effect;
     }
 
-    protected void addBuff(Unit unit) {
+    protected void addBuff(BattleFieldObject unit) {
         applyEffects(unit);
 //        if (unit.hasBuff(getBuffName())) {
 //            unit.removeBuff(getBuffName());
@@ -322,7 +321,7 @@ public abstract class DC_CounterRule {
         return true;
     }
 
-    public Map<Unit, AddBuffEffect> getEffectCache() {
+    public Map<BattleFieldObject, AddBuffEffect> getEffectCache() {
         if (effectCache == null) {
             effectCache = new HashMap<>();
         }

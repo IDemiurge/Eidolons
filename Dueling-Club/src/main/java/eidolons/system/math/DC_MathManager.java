@@ -1,6 +1,6 @@
 package eidolons.system.math;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -9,7 +9,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.system.DC_Formulas;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.GenericEnums;
@@ -110,7 +110,7 @@ public class DC_MathManager extends MathMaster {
         if (type == GenericEnums.DAMAGE_TYPE.MAGICAL) {
             return attacked.getIntParam(PARAMS.RESISTANCE);
         }
-        return attacked.getIntParam(DC_ContentManager.getDamageTypeResistance(type));
+        return attacked.getIntParam(DC_ContentValsManager.getDamageTypeResistance(type));
     }
 
     public static int getBuyAttributeXpCost(Entity hero) {
@@ -139,7 +139,7 @@ public class DC_MathManager extends MathMaster {
 
     public static List<PARAMETER> getUnlockedMasteries(Entity entity) {
         List<PARAMETER> list = new ArrayList<>();
-        for (PARAMS p : DC_ContentManager.getMasteryParams()) {
+        for (PARAMS p : DC_ContentValsManager.getMasteryParams()) {
             if (isMasteryUnlocked(entity, p)) {
                 list.add(p);
             }
@@ -219,7 +219,7 @@ public class DC_MathManager extends MathMaster {
     }
 
     public static int getParamPercentage(Unit unit, PARAMETER p) {
-        return unit.getIntParam(ContentManager.getPercentageParam(p));
+        return unit.getIntParam(ContentValsManager.getPercentageParam(p));
     }
 
     public static String getSpellXpCost(ObjType type) {
@@ -289,7 +289,7 @@ public class DC_MathManager extends MathMaster {
 
         Ref ref = new Ref(game, obj.getId());
         int i = new Filter<>(ref, conditions).getObjects().size();
-        PARAMETER param = ContentManager.getPARAM("CLAIMED_" + BF_OBJECT_TYPE + "S");
+        PARAMETER param = ContentValsManager.getPARAM("CLAIMED_" + BF_OBJECT_TYPE + "S");
         obj.setParam(param, i);
         return i;
 

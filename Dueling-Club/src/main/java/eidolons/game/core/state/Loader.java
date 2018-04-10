@@ -21,7 +21,7 @@ import eidolons.game.core.game.GameFactory;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
 import main.ability.effects.Effect;
 import main.ability.effects.continuous.ContinuousEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
@@ -244,7 +244,7 @@ public class Loader {
         Node node = XML_Converter.findNode(sub, TypeBuilder.PROPS_NODE);
         Map<PARAMETER, String> map = new XLinkedMap<>();
         XML_Converter.getNodeList(node).forEach(subNode -> {
-            PARAMETER parameter = ContentManager.getPARAM(subNode.getNodeName());
+            PARAMETER parameter = ContentValsManager.getPARAM(subNode.getNodeName());
             String value = subNode.getTextContent();
             map.put(parameter, value);
         });
@@ -255,7 +255,7 @@ public class Loader {
         Node node = XML_Converter.findNode(sub, TypeBuilder.PROPS_NODE);
         Map<PROPERTY, String> map = new XLinkedMap<>();
         XML_Converter.getNodeList(node).forEach(subNode -> {
-            PROPERTY prop = ContentManager.getPROP(subNode.getNodeName());
+            PROPERTY prop = ContentValsManager.getPROP(subNode.getNodeName());
             String value = subNode.getTextContent();
             map.put(prop, value);
         });

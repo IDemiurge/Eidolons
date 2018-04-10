@@ -1,7 +1,7 @@
 package main.system.entity;
 
 import main.content.C_OBJ_TYPE;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -42,7 +42,7 @@ public class FilterMaster {
     public static Collection<? extends Entity> filterByPropJ8
      (Collection<? extends Entity> list,
       String prop, String value) {
-        list.removeIf(getPredicateProperty(ContentManager.getPROP(prop), value, true));
+        list.removeIf(getPredicateProperty(ContentValsManager.getPROP(prop), value, true));
         return list;
     }
 
@@ -107,7 +107,7 @@ public class FilterMaster {
             boolean result;
 
             if (prop) {
-                PROPERTY property = ContentManager.getPROP(valueName);
+                PROPERTY property = ContentValsManager.getPROP(valueName);
                 if (property.isContainer())
                 // if (!BooleanMaster.isFalse(strict_or_greater_less_equal))
                 {
@@ -119,7 +119,7 @@ public class FilterMaster {
                 }
                 // entity.checkProperty();
             } else {
-                PARAMETER param = ContentManager.getPARAM(valueName);
+                PARAMETER param = ContentValsManager.getPARAM(valueName);
                 int amount = new Formula(value).getInt(new Ref(entity));
                 if (strict_or_greater_less_equal == null) {
                     result = entity.getIntParam(param) == amount;

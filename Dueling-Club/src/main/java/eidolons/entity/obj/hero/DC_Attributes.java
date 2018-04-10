@@ -1,12 +1,12 @@
 package eidolons.entity.obj.hero;
 
-import eidolons.content.DC_ContentManager;
-import eidolons.content.DC_ContentManager.ATTRIBUTE;
+import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_Formulas;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.system.auxiliary.StringMaster;
 import main.system.math.MathMaster;
 
@@ -149,7 +149,7 @@ public class DC_Attributes {
                 break;
             case CHARISMA:
                 hero.modifyParameter(PARAMS.DIVINATION_CAP, (amount), modifierKey);
-                hero.modifyParameter(ContentManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
+                hero.modifyParameter(ContentValsManager.getMasteryScore(PARAMS.LEADERSHIP_MASTERY),
                  (amount), modifierKey);
 
                 hero.modifyParameter(PARAMS.GOLD_COST_REDUCTION, 2 * (amount), modifierKey);
@@ -165,7 +165,7 @@ public class DC_Attributes {
     public void apply() {
         // main.system.auxiliary.LogMaster.log(1, "before: " +
         // hero.getModifierMaps());
-        for (ATTRIBUTE attr : DC_ContentManager.getAttributeEnums()) {
+        for (ATTRIBUTE attr : DC_ContentValsManager.getAttributeEnums()) {
             applyAttr(attr);
         }
         // main.system.auxiliary.LogMaster.log(1, "after: " +

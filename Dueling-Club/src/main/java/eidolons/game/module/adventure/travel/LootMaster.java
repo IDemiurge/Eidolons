@@ -9,7 +9,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.entity.MacroParty;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.swing.generic.services.dialog.DialogMaster;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.ItemEnums;
@@ -183,7 +183,7 @@ public class LootMaster {
         Object[] filterValues = getFilteringValues(group);
         List<ObjType> list = DataManager.getTypes(getTYPE(group));
         for (Object val : filterValues) {
-            PROPERTY prop = ContentManager.findPROP(val.getClass()
+            PROPERTY prop = ContentValsManager.findPROP(val.getClass()
              .getSimpleName());
             FilterMaster.filterByProp(list, prop.getName(), val.toString());
         }

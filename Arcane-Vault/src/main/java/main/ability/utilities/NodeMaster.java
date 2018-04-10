@@ -1,7 +1,7 @@
 package main.ability.utilities;
 
 import main.ability.gui.AE_Element;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.Param;
@@ -59,10 +59,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
         if (!arg.getCoreClass().isEnum()) {
             if (arg.getCoreClass() == Param.class || arg.getCoreClass() == PARAMETER.class) {
-                string = ContentManager.getPARAM(string).getName();
+                string = ContentValsManager.getPARAM(string).getName();
             }
             if (arg.getCoreClass() == Prop.class || arg.getCoreClass() == PROPERTY.class) {
-                string = ContentManager.getPROP(string).getName();
+                string = ContentValsManager.getPROP(string).getName();
             }
         }
         if (Mapper.getItem(string) != null) {
@@ -79,10 +79,10 @@ public class NodeMaster implements ActionListener, ItemListener, MouseListener {
 
         if (!arg.getCoreClass().isEnum()) {
             if (arg.getCoreClass() == Param.class || arg.getCoreClass() == PARAMETER.class) {
-                name = ContentManager.getParamList().get(index).getName();
+                name = ContentValsManager.getParamList().get(index).getName();
             }
             if (arg.getCoreClass() == Prop.class || arg.getCoreClass() == PROPERTY.class) {
-                name = ContentManager.getPropList().get(index).getName();
+                name = ContentValsManager.getPropList().get(index).getName();
             }
         } else {
             name = Arrays.asList(arg.getCoreClass().getEnumConstants()).get(index).toString();

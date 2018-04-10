@@ -180,15 +180,15 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                     }
 
                     if (master.getResetter().isAggroCheckNeeded(input)) {
-                        game.getVisionMaster().getVisionRule().
-                         fullReset(input.getAction().getOwnerObj());
+//                        game.getVisionMaster().getVisionRule().
+//                         fullReset(input.getAction().getOwnerObj());
+                        game.getManager().reset();
 
                         getGame().getDungeonMaster().getExplorationMaster()
                          .getCrawler().checkStatusUpdate();
                         if (!ExplorationMaster.isExplorationOn()) {
                             return true;
                         }
-                        game.getManager().reset();
                     }
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
@@ -353,7 +353,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     public void act(float delta) {
         if (isPaused())
             return;
-        master.getTimeMaster().act(delta);
+        master.getTimeMaster().timePassed(delta);
     }
 
     public Float getTime() {

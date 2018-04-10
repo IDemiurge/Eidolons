@@ -1,12 +1,12 @@
 package eidolons.game.module.herocreator.logic;
 
-import eidolons.content.DC_ContentManager.ATTRIBUTE;
+import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -86,9 +86,9 @@ public class UnitLevelManager {
     }
 
     private void upParams(ObjType newType, int i) {
-        for (PARAMETER p : ContentManager.getPerLevelParams()) {
+        for (PARAMETER p : ContentValsManager.getPerLevelParams()) {
             if (newType.getIntParam(p) > 0) {
-                PARAMETER param = ContentManager.getPARAM(p.toString().replace(
+                PARAMETER param = ContentValsManager.getPARAM(p.toString().replace(
                  StringMaster.PER_LEVEL, ""));
                 newType.modifyParameter(param, newType.getIntParam(p));
             }
@@ -180,7 +180,7 @@ public class UnitLevelManager {
             ATTRIBUTE a = new RandomWizard<ATTRIBUTE>().getObjectByWeight(
              newType.getProperty(PROPS.ATTRIBUTE_PROGRESSION),
              ATTRIBUTE.class);
-            param = ContentManager.getBaseAttribute(ContentManager.getPARAM(a
+            param = ContentValsManager.getBaseAttribute(ContentValsManager.getPARAM(a
              .toString()));
         } else {
             MASTERY mstr = new RandomWizard<MASTERY>().getObjectByWeight(
@@ -190,10 +190,10 @@ public class UnitLevelManager {
                 return null;
             }
             // TODO complete the ENUM!!!
-            param = ContentManager.getPARAM(mstr.toString());
+            param = ContentValsManager.getPARAM(mstr.toString());
 
             if (param == null) {
-                param = ContentManager.findPARAM(mstr.toString());
+                param = ContentValsManager.findPARAM(mstr.toString());
             }
         }
         return param;

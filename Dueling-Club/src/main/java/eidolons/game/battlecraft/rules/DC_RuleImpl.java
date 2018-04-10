@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules;
 
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.elements.conditions.Conditions;
@@ -94,7 +94,7 @@ public abstract class DC_RuleImpl implements Rule {
         if (getRuleEnum() == null) {
             return on;
         }
-        return RuleMaster.isRuleOn(getRuleEnum());
+        return RuleKeeper.isRuleOn(getRuleEnum());
 
     }
 

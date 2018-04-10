@@ -3,8 +3,8 @@ package eidolons.game.battlecraft.rules.buff;
 import eidolons.ability.effects.attachment.AddBuffEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.DC_RuleImpl;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.DC_TYPE;
@@ -152,7 +152,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     }
 
     protected String getLogText(Obj obj, Integer level) {
-        return obj.getNameIfKnown() + RuleMaster.getRuleLogText(getCombatRuleEnum(), level);
+        return obj.getNameIfKnown() + RuleKeeper.getRuleLogText(getCombatRuleEnum(), level);
         // return getBuffTypeName() + " applied to " + obj.getName();
     }
 

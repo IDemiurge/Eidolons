@@ -1,7 +1,7 @@
 package eidolons.game.module.herocreator.logic.items;
 
 import eidolons.content.DC_CONSTS.*;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_ArmorObj;
@@ -387,8 +387,8 @@ public class ItemGenerator implements GenericItemGenerator {
         // ++ apply durability from quality?
         int w = type.getIntParam(PARAMS.WEIGHT);
 
-        for (PARAMETER p : (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS ? DC_ContentManager
-         .getWeaponWeightPenaltyParams() : DC_ContentManager.getArmorWeightPenaltyParams())) {
+        for (PARAMETER p : (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS ? DC_ContentValsManager
+         .getWeaponWeightPenaltyParams() : DC_ContentValsManager.getArmorWeightPenaltyParams())) {
             if (type.getGroupingKey().equalsIgnoreCase("" + ItemEnums.WEAPON_TYPE.MAGICAL)) {
                 if (!p.getName().contains("move") && !p.getName().contains("attack")) {
                     continue;

@@ -8,8 +8,8 @@ import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.action.ActionRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.BuffMaster;
@@ -204,7 +204,7 @@ public class StealthRule implements ActionRule {
 //    }
 
     private boolean isOn() {
-        return RuleMaster.isRuleOn(RULE.STEALTH);
+        return RuleKeeper.isRuleOn(RULE.STEALTH);
     }
 
     // ++ SEARCH ACTION!

@@ -1,6 +1,6 @@
 package main.swing.generic.components.editors.abilities;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.swing.generic.components.G_Panel;
@@ -121,7 +121,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
     }
 
     private void initPropTab() {
-        List<PROPERTY> data = ContentManager.getPropList();
+        List<PROPERTY> data = ContentValsManager.getPropList();
 
         // TODO use pages? or enum consts?
 
@@ -131,7 +131,7 @@ public class FormulaBuilder implements ActionListener, ChangeListener {
     }
 
     private void initParamTab() {
-        Collection<PARAMETER> data = ContentManager.getParamList();
+        Collection<PARAMETER> data = ContentValsManager.getParamList();
         G_List<PARAMETER> c = new G_List<>(data);
         G_Panel panel = new G_Panel();
         panel.add(c, "pos 0 0");

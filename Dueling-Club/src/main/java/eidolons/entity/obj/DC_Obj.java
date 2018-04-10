@@ -2,7 +2,7 @@ package eidolons.entity.obj;
 
 import eidolons.ability.AddSpecialEffects;
 import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.DC_ObjMaster;
@@ -146,7 +146,7 @@ public abstract class DC_Obj extends MicroObj {
 
     protected void addDefaultValues() {
         if (CoreEngine.isDefaultValuesAddedDynamically())
-            DC_ContentManager.addDefaultValues(this);
+            DC_ContentValsManager.addDefaultValues(this);
         // for (String value : DC_ContentManager
         // .getInfoPanelValueList(getOBJ_TYPE())) {
         // VALUE VAL = ContentManager.getValue(value);

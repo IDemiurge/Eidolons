@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.rules.buff;
 import eidolons.ability.conditions.shortcut.StdPassiveCondition;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.content.PARAMS;
-import eidolons.game.battlecraft.rules.RuleMaster.COMBAT_RULES;
+import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
 import main.ability.effects.Effects;

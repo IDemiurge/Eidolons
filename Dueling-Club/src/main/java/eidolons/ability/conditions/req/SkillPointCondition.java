@@ -3,7 +3,7 @@ package eidolons.ability.conditions.req;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.math.DC_MathManager;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.elements.conditions.MicroCondition;
@@ -32,9 +32,9 @@ public class SkillPointCondition extends MicroCondition {
         if (match == null) {
             return false;
         }
-        PARAMETER masteryParam = ContentManager.getPARAM(match.getProperty(G_PROPS.MASTERY));
+        PARAMETER masteryParam = ContentValsManager.getPARAM(match.getProperty(G_PROPS.MASTERY));
         if (masteryParam == null) {
-            masteryParam = ContentManager.getMastery(match.getProperty(G_PROPS.MASTERY));
+            masteryParam = ContentValsManager.getMastery(match.getProperty(G_PROPS.MASTERY));
         }
         Integer amount = match.getIntParam(PARAMS.SKILL_DIFFICULTY);
         if (rank) {

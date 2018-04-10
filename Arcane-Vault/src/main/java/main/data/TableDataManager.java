@@ -94,7 +94,7 @@ public class TableDataManager {
                 vector1 = new Vector<>();
             }
             vector1.add(name);
-            VALUE val = ContentManager.getValue(name);
+            VALUE val = ContentValsManager.getValue(name);
             String value;
             if (val instanceof PROPERTY) {
                 value = entity.getProperty((PROPERTY) val);
@@ -116,7 +116,7 @@ public class TableDataManager {
             }
 
             if (value == null || StringMaster.isEmpty(value)) {
-                value = ContentManager.getValue(name).getDefaultValue();
+                value = ContentValsManager.getValue(name).getDefaultValue();
             }
             vector1.add(value);
             data.add(vector1);

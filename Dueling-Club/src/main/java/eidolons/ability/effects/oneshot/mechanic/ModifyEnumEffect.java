@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.mechanic;
 
 import eidolons.ability.effects.DC_Effect;
 import main.ability.effects.OneshotEffect;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -16,7 +16,7 @@ public class ModifyEnumEffect extends DC_Effect implements OneshotEffect {
     public ModifyEnumEffect(String name, int mod) {
         this.name = name;
         this.mod = mod;
-        prop = ContentManager.getPROP(name).getName();
+        prop = ContentValsManager.getPROP(name).getName();
     }
 
     @Override

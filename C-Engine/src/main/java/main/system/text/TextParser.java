@@ -2,7 +2,7 @@ package main.system.text;
 
 import main.ability.AbilityObj;
 import main.ability.AbilityType;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -274,7 +274,7 @@ public class TextParser {
             if (openContainer.size() > index) {
                 VALUE val = null;
                 if (!containerFormula && !isBuffParsing()) {
-                    val = ContentManager.getValue(openContainer.get(index));
+                    val = ContentValsManager.getValue(openContainer.get(index));
                     replacement = entity.getValue(val);
                 } else {
                     replacement = openContainer.get(index);

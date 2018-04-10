@@ -1,6 +1,6 @@
 package eidolons.game.core.state;
 
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.active.DC_UnitAction;
@@ -213,7 +213,7 @@ public class StateCloner {
 
     private void copyDynamicValues(Obj e, Obj clone) {
 //        DC_ContentManager.getBackgroundDynamicParams()
-        ArrayList<PARAMETER> dynamicParams = DC_ContentManager.getDynamicParams();
+        ArrayList<PARAMETER> dynamicParams = DC_ContentValsManager.getDynamicParams();
         for (PARAMETER p : dynamicParams) {
             clone.setParam(p, e.getParam(p));
         }

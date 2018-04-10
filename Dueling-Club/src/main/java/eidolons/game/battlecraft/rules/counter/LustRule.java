@@ -1,7 +1,8 @@
 package eidolons.game.battlecraft.rules.counter;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -24,7 +25,7 @@ public class LustRule extends DC_CounterRule {
     }
 
     @Override
-    public int getCounterNumberReductionPerTurn(Unit unit) {
+    public int getCounterNumberReductionPerTurn(BattleFieldObject unit) {
         // TODO Auto-generated method stub
         return unit.getIntParam(PARAMS.SPIRIT);
     }

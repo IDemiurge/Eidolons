@@ -1,6 +1,6 @@
 package main.elements.targeting;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.enums.entity.AbilityEnums;
 import main.content.enums.entity.AbilityEnums.TARGETING_MODE;
@@ -99,7 +99,7 @@ public class AutoTargeting extends TargetingImpl {
         if (TYPES != null) {
             ArrayList<OBJ_TYPE> types = new ArrayList<>();
             for (String s : StringMaster.open(TYPES)) {
-                types.add(ContentManager.getOBJ_TYPE(s));
+                types.add(ContentValsManager.getOBJ_TYPE(s));
             }
             filter.setTYPES(types);
         }

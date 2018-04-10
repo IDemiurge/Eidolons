@@ -1,6 +1,6 @@
 package main.swing.generic.misc;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.obj.Obj;
@@ -25,13 +25,13 @@ public class ValueBar extends G_Panel {
 
     public ValueBar(PARAMETER param, Color color) {
         this.param = param;
-        this.c_param = ContentManager.getCurrentParam(param);
+        this.c_param = ContentValsManager.getCurrentParam(param);
         this.perc_param = getPercentageParameter(param);
         this.color = color;
     }
 
     protected PARAMETER getPercentageParameter(PARAMETER param) {
-        return ContentManager.getPercentageParam(param);
+        return ContentValsManager.getPercentageParam(param);
     }
 
     @Override

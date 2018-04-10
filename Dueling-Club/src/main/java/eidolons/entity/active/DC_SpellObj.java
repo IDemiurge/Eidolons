@@ -3,8 +3,8 @@ package eidolons.entity.active;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.handlers.active.spell.SpellActiveMaster;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
@@ -172,9 +172,9 @@ public class DC_SpellObj extends DC_ActiveObj {
     public boolean isChanneling() {
         if (ChannelingRule.isTestMode())
             return true;
-        if (RuleMaster.isRuleOn(RULE.CHANNELING))
+        if (RuleKeeper.isRuleOn(RULE.CHANNELING))
             return false;
-        if (RuleMaster.isRuleTestOn(RULE.CHANNELING))
+        if (RuleKeeper.isRuleTestOn(RULE.CHANNELING))
             return true;
         return checkProperty(G_PROPS.SPELL_TAGS, SpellEnums.SPELL_TAGS.CHANNELING.toString());
         // fix

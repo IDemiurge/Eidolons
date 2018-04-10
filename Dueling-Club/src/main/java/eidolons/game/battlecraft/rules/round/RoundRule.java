@@ -17,7 +17,7 @@ public abstract class RoundRule {
                 if (game.getState().getManager().checkUnitIgnoresReset(hero))
                     continue;
             if (check(hero)) {
-                apply(hero);
+                apply(hero, 1f);
             }
         }
     }
@@ -28,6 +28,6 @@ public abstract class RoundRule {
 
     public abstract boolean check(Unit unit);
 
-    public abstract void apply(Unit unit);
+    public abstract void apply(Unit unit, float delta);
 
 }

@@ -9,8 +9,8 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
@@ -96,7 +96,7 @@ public class ForceRule {
 
     public static void applyForceEffects(DC_ActiveObj action) {
         // or spell
-        if (!RuleMaster.isRuleOn(RULE.FORCE)) {
+        if (!RuleKeeper.isRuleOn(RULE.FORCE)) {
             return;
         }
         int force = getForce(action, true);
@@ -140,7 +140,7 @@ public class ForceRule {
     }
 
     private static boolean isTestMode() {
-        return RuleMaster.isRuleTestOn(RULE.FORCE);
+        return RuleKeeper.isRuleTestOn(RULE.FORCE);
         // return true;
     }
 
@@ -248,7 +248,7 @@ public class ForceRule {
 
 
     public static int getDamage(DC_ActiveObj action, BattleFieldObject attacker, BattleFieldObject attacked) {
-        if (!RuleMaster.isRuleOn(RULE.FORCE)) {
+        if (!RuleKeeper.isRuleOn(RULE.FORCE)) {
             return 0;
         }
         int force = getForceFromAttack(action);

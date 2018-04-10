@@ -1,17 +1,19 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.ability.conditions.special.RestCondition;
-import eidolons.content.DC_ContentManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.rules.counter.DC_CounterRule;
+import eidolons.game.battlecraft.rules.counter.generic.DC_CounterRule;
 import eidolons.game.battlecraft.rules.round.RoundRule;
+import eidolons.game.core.atb.AtbController;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.mode.MODE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
@@ -37,6 +39,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
     public ExplorationTimeMaster(ExplorationMaster master) {
         super(master);
+        GuiEventManager.bind(GuiEventType.TIME_PASSED, t -> {
+            time += (float) t.get();
+        });
     }
 
     public void aiActionActivated(UnitAI ai, DC_ActiveObj activeObj) {
@@ -63,7 +68,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 //        return ai.getExplorationTimePassed();
     }
 
-    public void act(float delta) {
+    public void timePassed(float delta) {
         time += delta;
     }
 
@@ -177,13 +182,21 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getRoundEffectPeriod() {
-        return 10;//* OptionsMaster.get
+        if (DC_Engine.isAtbMode()) {
+            return 1;
+        }
+        return 10;
     }
 
     private void processEndOfRoundEffects() {
 //        processCounterRules();
         master.getGame().getStateManager().applyEndOfTurnRules();
-        master.getGame().getStateManager().applyEndOfTurnDamage();
+        if (DC_Engine.isAtbMode()) {
+            master.getGame().getRules().timePassed(getRoundEffectPeriod());
+        } else {
+            master.getGame().getStateManager().applyEndOfTurnDamage();
+        }
+
         processCustomRules();
 
     }
@@ -192,13 +205,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 // List<RoundRule> list = new ArrayList<>();
 
         master.getGame().getUnits().forEach(unit -> {
-            unit.getResetter().regenerateToughness();
+            float delta = getRoundEffectPeriod() / AtbController.TIME_IN_ROUND;
+            unit.getResetter().regenerateToughness(delta);
             for (RoundRule sub : master.getGame().getRules().getRoundRules()) {
-
-
 //                if (master.getGame().getRules().getUnconsciousRule().checkStatusUpdate(unit)) {
                 if (sub.check(unit)) {
-                    sub.apply(unit);
+                    sub.apply(unit, delta);
                     if (sub == master.getGame().getRules().getUnconsciousRule())
                         if (!unit.isAnnihilated())
                             master.getGame().getStateManager().reset(unit);
@@ -243,12 +255,12 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //TODO
         float last = unit.getAI().getExplorationTimeOfRegenEffects();
         float delta = time - last;
-        for (PARAMETER param : DC_ContentManager.REGEN_PARAMS) {
+        for (PARAMETER param : DC_ContentValsManager.REGEN_PARAMS) {
             int value = getParamRestoration(delta, param,
-             unit.getParamFloat(ContentManager.getRegenParam(param))
+             unit.getParamFloat(ContentValsManager.getRegenParam(param))
             );
             if (value > 0) {
-                unit.modifyParameter(ContentManager.getCurrentParam(param), value,
+                unit.modifyParameter(ContentValsManager.getCurrentParam(param), value,
                  unit.getIntParam(param), true);
                 unit.getAI().setExplorationTimeOfRegenEffects(time);
             }
@@ -263,8 +275,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         float delta = time - last;
         if (delta < 2)
             return;
-        PARAMETER param = (ContentManager.getPARAM(mode.getParameter()));
-        PARAMETER base = ContentManager.getBaseParameterFromCurrent(param);
+        PARAMETER param = (ContentValsManager.getPARAM(mode.getParameter()));
+        PARAMETER base = ContentValsManager.getBaseParameterFromCurrent(param);
         int value = getParamRestoration(delta,
          base, 1);
         int max =

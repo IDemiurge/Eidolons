@@ -44,6 +44,7 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public ActionValueContainer(TextureRegion texture, Runnable action) {
+
         this(texture, null, action);
     }
 
@@ -51,6 +52,12 @@ public class ActionValueContainer extends ValueContainer {
         super(texture, value);
         bindAction(action);
 
+    }
+
+    public ActionValueContainer(int size, boolean valid, TextureRegion region,
+                                 Runnable runnable) {
+        this(valid, region, runnable);
+        this.size=size;
     }
 
     public static boolean isDarkened() {

@@ -2,8 +2,8 @@ package eidolons.test.auto;
 
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.rules.RuleMaster;
-import eidolons.game.battlecraft.rules.RuleMaster.RULE_SCOPE;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.test.auto.AutoTest.TEST_ARGS;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
@@ -23,9 +23,9 @@ public class AutoTestRunner {
 
     public void run() {
         Unit unit = master.getSource();
-        RuleMaster.setScope(RULE_SCOPE.TEST);
+        RuleKeeper.setScope(RULE_SCOPE.TEST);
         if (test.getArg(TEST_ARGS.RULE_SCOPE) != null) {
-            RuleMaster.setScope(new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
+            RuleKeeper.setScope(new EnumMaster<RULE_SCOPE>().retrieveEnumConst(RULE_SCOPE.class,
              test.getArg(TEST_ARGS.RULE_SCOPE)));
         }
         switch (test.getType()) {

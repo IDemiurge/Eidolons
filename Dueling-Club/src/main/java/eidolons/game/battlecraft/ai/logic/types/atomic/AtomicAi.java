@@ -267,8 +267,8 @@ public class AtomicAi extends AiHandler {
         if (action == null) {
             try {
                 action = DC_MovementManager.getFirstAction(unit, pick);
-                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
-                 "  CHOSEN TO GET TO " + pick);
+//                main.system.auxiliary.log.LogMaster.log(1, " ATOMIC ACTION " + action +
+//                 "  CHOSEN TO GET TO " + pick);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 //TODO what to return???

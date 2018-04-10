@@ -1,6 +1,6 @@
 package main.utilities.filter;
 
-import main.content.ContentManager;
+import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.elements.conditions.Conditions;
@@ -50,7 +50,7 @@ public class FilterMaster {
             if (StringMaster.isEmpty(value)) {
                 break;
             }
-            VALUE val = ContentManager.findValue(value);
+            VALUE val = ContentValsManager.findValue(value);
             value = DialogMaster.inputText("Enter filtering value");
             if (StringMaster.isEmpty(value)) {
                 break;

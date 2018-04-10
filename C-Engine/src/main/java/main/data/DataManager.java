@@ -66,7 +66,7 @@ public class DataManager {
             if (criterion == null) {
                 continue;
             }
-            lists.add(getFilteredTypeNameList(criterion, ContentManager.getOBJ_TYPE(type),
+            lists.add(getFilteredTypeNameList(criterion, ContentValsManager.getOBJ_TYPE(type),
              filterValue));
         }
 
@@ -80,7 +80,7 @@ public class DataManager {
     public static ObjType getType(String typeName, boolean recursion) {
         for (String group : XML_Reader.getTypeMaps().keySet()) {
             ObjType type;
-            OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(group);
+            OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(group);
             try {
                 type = getType(typeName, TYPE, recursion);
             } catch (Exception e) {
@@ -347,7 +347,7 @@ public class DataManager {
             }
         }
         if (map == null) {
-            if (ContentManager.getOBJ_TYPE(type) == null) {
+            if (ContentValsManager.getOBJ_TYPE(type) == null) {
                 return null;
             }
             if (!CoreEngine.checkReadNecessary(type)) {
@@ -404,7 +404,7 @@ public class DataManager {
     }
 
     public static PROPERTY getGroupingKey(String typeName) {
-        OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(typeName);
+        OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(typeName);
 
         if (TYPE == null) {
             return null;
@@ -413,7 +413,7 @@ public class DataManager {
     }
 
     public static PROPERTY getSubGroupingKey(String typeName) {
-        OBJ_TYPE TYPE = ContentManager.getOBJ_TYPE(typeName);
+        OBJ_TYPE TYPE = ContentValsManager.getOBJ_TYPE(typeName);
         if (TYPE == null) {
             return null;
         }
@@ -424,7 +424,7 @@ public class DataManager {
         if (group == null) {
             return getType(key);
         }
-        return getType(key, ContentManager.getOBJ_TYPE(group));
+        return getType(key, ContentValsManager.getOBJ_TYPE(group));
     }
 
     public static PROPERTY getGroupingKey(OBJ_TYPE TYPE) {
@@ -667,7 +667,7 @@ public class DataManager {
                 list.add(name);
                 continue;
             }
-            if (StringMaster.compare(type.getProperty(ContentManager.getPROP(RES_LEVEL_PROP)),
+            if (StringMaster.compare(type.getProperty(ContentValsManager.getPROP(RES_LEVEL_PROP)),
              res_level)) {
                 list.add(name);
             }
@@ -739,7 +739,7 @@ public class DataManager {
         if (typesSubGroups == null) {
             typesSubGroups = new HashMap<>();
             for (String sub : XML_Reader.getXmlMap().keySet()) {
-                typesSubGroups.put(ContentManager.getOBJ_TYPE(sub),
+                typesSubGroups.put(ContentValsManager.getOBJ_TYPE(sub),
                  new HashMap<>());
             }
         }
