@@ -1,11 +1,11 @@
 package tests.crawl;
 
-import main.ability.conditions.special.ClearShotCondition;
+import eidolons.ability.conditions.special.ClearShotCondition;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
-import main.entity.obj.BattleFieldObject;
-import main.entity.obj.DC_Obj;
-import main.game.battlecraft.logic.battlefield.FacingMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.log.LogMaster;
@@ -17,7 +17,6 @@ import tests.FastDcTest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**

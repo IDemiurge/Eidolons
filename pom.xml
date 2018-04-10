@@ -43,7 +43,6 @@
 
 
     <modules>
-        <module>Arcane-Tower</module>
         <module>Arcane-Vault</module>
         <module>C-Engine</module>
         <module>Dueling-Club</module>
