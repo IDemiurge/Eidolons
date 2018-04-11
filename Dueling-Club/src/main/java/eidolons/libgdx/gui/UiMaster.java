@@ -50,10 +50,10 @@ public class UiMaster {
     }
 
     public static int getBottomQuickItemIconSize() {
-        return getIconSize(true);
+        return getIconSize(false);
     }
     public static int getBottomSpellIconSize() {
-        return getIconSize(true);
+        return getIconSize(false);
     }
 
     public enum UI_ACTIONS {

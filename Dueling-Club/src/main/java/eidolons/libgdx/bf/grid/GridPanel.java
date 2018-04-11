@@ -405,10 +405,10 @@ public class GridPanel extends Group {
             view.setActive(true);
             if (hero.isMine()) {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
-                GuiEventManager.trigger(BOTTOM_PANEL_UPDATE, new PanelActionsDataSource((Unit) hero));
+                GuiEventManager.trigger(ACTION_PANEL_UPDATE, new PanelActionsDataSource((Unit) hero));
             } else {
                 GuiEventManager.trigger(SHOW_TEAM_COLOR_BORDER, view);
-                GuiEventManager.trigger(BOTTOM_PANEL_UPDATE, null);
+                GuiEventManager.trigger(ACTION_PANEL_UPDATE, null);
             }
             if (!firstUpdateDone) {
                 DC_Game.game.getVisionMaster().triggerGuiEvents();

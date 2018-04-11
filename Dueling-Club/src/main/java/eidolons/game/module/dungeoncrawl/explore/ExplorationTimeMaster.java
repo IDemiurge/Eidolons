@@ -255,7 +255,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         //TODO
         float last = unit.getAI().getExplorationTimeOfRegenEffects();
         float delta = time - last;
-        for (PARAMETER param : DC_ContentValsManager.REGEN_PARAMS) {
+        for (PARAMETER param : DC_ContentValsManager.REGENERATED_PARAMS) {
             int value = getParamRestoration(delta, param,
              unit.getParamFloat(ContentValsManager.getRegenParam(param))
             );

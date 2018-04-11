@@ -21,6 +21,14 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
         super(weapon);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof WeaponDataSource) {
+            return ((WeaponDataSource) obj).getWeapon().equals(getWeapon());
+        }
+        return super.equals(obj);
+    }
+
     public List<DC_UnitAction> getActions() {
         return new ArrayList<>(entity.getAttackActions());
     }

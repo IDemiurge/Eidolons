@@ -88,13 +88,14 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 WaitMaster.waitForInput(getOperationToWaitFor());//, 2000);
             getGdxScreen().setRealTimeGameLoop(this);
         }
-        if (realTimeThread == null) {
-            realTimeThread = new Thread(() -> {
-                startRealTimeLogic();
-            }, "RT Thread");
-            realTimeThread.start();
+        if (!CoreEngine.isJUnit()) {
+            if (realTimeThread == null) {
+                realTimeThread = new Thread(() -> {
+                    startRealTimeLogic();
+                }, "RT Thread");
+                realTimeThread.start();
+            }
         }
-
         return super.startInNewThread();
     }
 

@@ -130,9 +130,9 @@ public class GameLoop {
                 }
                 continue;
             }
-            if (!retainActiveUnit)
-                activeUnit = game.getTurnManager().getActiveUnit();
-            retainActiveUnit = false;
+//            if (!retainActiveUnit)
+//                activeUnit = game.getTurnManager().getActiveUnit();
+//            retainActiveUnit = false;
             if (activeUnit == null) {
                 break;
             }
@@ -346,5 +346,9 @@ public class GameLoop {
 
     public Float getTime() {
         return game.getDungeonMaster().getExplorationMaster().getTimeMaster().getTime();
+    }
+
+    public void setActiveUnit(Unit activeUnit) {
+        this.activeUnit = activeUnit;
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.540";
+    public static final String VERSION = "0.541";
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -53,6 +53,7 @@ public class CoreEngine {
     private static boolean macro;
     private static boolean jarlike;
     private static boolean fastMode;
+    private static boolean jUnit;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -359,5 +360,17 @@ public class CoreEngine {
 
     public static void setFastMode(boolean fastMode) {
         CoreEngine.fastMode = fastMode;
+    }
+
+    public static boolean isJUnit() {
+        return jUnit;
+    }
+
+    public static boolean isjUnit() {
+        return jUnit;
+    }
+
+    public static void setjUnit(boolean jUnit) {
+        CoreEngine.jUnit = jUnit;
     }
 }

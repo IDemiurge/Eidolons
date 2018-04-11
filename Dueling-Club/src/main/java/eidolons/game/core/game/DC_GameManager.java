@@ -45,7 +45,6 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Manager;
 import main.system.auxiliary.log.LogMaster;
-import main.system.graphics.ColorManager;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
@@ -56,8 +55,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Set;
 
-import static main.system.GuiEventType.INGAME_EVENT_TRIGGERED;
-import static main.system.GuiEventType.SELECT_MULTI_OBJECTS;
+import static main.system.GuiEventType.*;
 
 /**
  * *
@@ -132,9 +130,7 @@ public class DC_GameManager extends GameManager {
         }
         // DC_SoundMaster.playEffectSound(SOUNDS.WHAT, obj);
 
-        ColorManager.setCurrentColor(ColorManager.getDarkerColor(ColorManager.getAltAspectColor(obj
-         .getType()), 80));
-
+        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, getActiveObj());
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED, getActiveObj());
         return true;
     }

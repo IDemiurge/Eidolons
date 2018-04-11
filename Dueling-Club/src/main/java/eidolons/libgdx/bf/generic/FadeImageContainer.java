@@ -11,7 +11,7 @@ public class FadeImageContainer extends ImageContainer {
 
     private float fadePercentage;
     private Image previousImage;
-    private float fadeDuration = 0.5f;
+    private float fadeDuration = 2f;
 
     public FadeImageContainer(Image image) {
         super(image);
@@ -26,7 +26,10 @@ public class FadeImageContainer extends ImageContainer {
     }
 
     public void resetPreviousImage() {
+        if (previousImage==null )
+            return;
         setContents(previousImage);
+        main.system.auxiliary.log.LogMaster.log(1,this+ " resetPreviousImage to " +previousImage);
     }
     @Override
     public void setContents(Actor contents) {
@@ -46,7 +49,7 @@ public class FadeImageContainer extends ImageContainer {
     @Override
     public void act(float delta) {
         if (fadePercentage > 0) {
-            fadePercentage = Math.max(0, fadePercentage - delta * getFadeDuration());
+            fadePercentage = Math.max(0, fadePercentage - delta / getFadeDuration());
             previousImage.getColor().a = fadePercentage;
             getContent().getColor().a = 1 - fadePercentage;
         }

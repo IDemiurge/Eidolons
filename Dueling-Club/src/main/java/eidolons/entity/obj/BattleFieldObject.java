@@ -353,7 +353,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     public void regen() {
 
-        Arrays.stream(DC_ContentValsManager.REGEN_PARAMS).forEach(parameter -> {
+        Arrays.stream(DC_ContentValsManager.REGENERATED_PARAMS).forEach(parameter -> {
             regen(parameter);
         });
 

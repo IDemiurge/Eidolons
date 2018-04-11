@@ -92,6 +92,46 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         entered();
     }
 
+    protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+        if (checkGuiStageBlocking()) {
+            return;
+        }
+        entered();
+    }
+
+    protected void entered() {
+        showing = true;
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
+    }
+
+    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+        if (event != null) {
+            if (!checkActorExitRemoves(toActor))
+                return;
+        }
+
+        exited();
+
+        if (getEntity() != null)
+            if (manager != null) {
+                manager.entityHoverOff(getEntity());
+            }
+    }
+
+    protected void exited() {
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
+        showing = false;
+    }
+
+    protected boolean checkActorExitRemoves(Actor toActor) {
+        if (actor == null)
+            return true;
+        if (toActor == actor)
+            return false;
+        return !GdxMaster.getAncestors(toActor).contains(actor);
+    }
+
+
     protected boolean checkGuiStageBlocking() {
         if (this.actor != null && getManager() != null)
             if (this.actor.getStage() != getManager().getStage()) {
@@ -119,60 +159,6 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         }
         return true;
     }
-
-    protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-//        updateRequired = true;
-        if (checkGuiStageBlocking()) {
-            return;
-        }
-        entered();
-    }
-
-    protected void entered() {
-        showing = true;
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
-    }
-
-    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-//        if (checkGuiStageBlocking())
-//            return;
-        if (event != null) {
-            if (!checkActorExitRemoves(toActor))
-                return;
-//            if (toActor == this) {
-//                addListener(new InputListener() {
-//                    @Override
-//                    public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-//                        if (toActor != actor)
-//                            onMouseExit(event, x, y, pointer, toActor);
-//                        super.exit(event, x, y, pointer, toActor);
-//                    }
-//                });
-//                return;
-//            }
-        }
-
-        exited();
-
-        if (getEntity() != null)
-            if (manager != null) {
-                manager.entityHoverOff(getEntity());
-            }
-    }
-
-    protected void exited() {
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
-        showing = false;
-    }
-
-    protected boolean checkActorExitRemoves(Actor toActor) {
-        if (actor == null)
-            return true;
-        if (toActor == actor)
-            return false;
-        return !GdxMaster.getAncestors(toActor).contains(actor);
-    }
-
     public Entity getEntity() {
         return null;
     }
@@ -189,28 +175,4 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         actor = container;
         container.addListener(getController());
     }
-//
-//    @Override
-//    protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-//        updateRequired = true;
-//        if (view.getTeamColor()!= null ) //TODO quick fix to ignore bf obj
-//            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
-//        super.onMouseEnter(event, x, y, pointer, fromActor);
-//    }
-//    protected void onMouseMoved(InputEvent event, float x, float y) {
-//        if (showing) {
-//            return;
-//        }
-//        super.onMouseMoved(event, x, y);
-//        if (view.getTeamColor()!= null) //TODO quick fix to ignore bf obj
-//            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_ON, view);
-//        showing = true;
-//    }
-//
-//
-//    protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-//        super.onMouseExit(event, x, y, pointer, toActor);
-//        if (view.getTeamColor()!= null) //TODO quick fix to ignore bf obj
-//            GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
-//    }
 }

@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -125,7 +126,15 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         unit.multiplyParamByPercent(PARAMS.SPELLPOWER, mod / 3, false);
         unit.multiplyParamByPercent(PARAMS.OFFHAND_ATTACK_MOD, mod / 2, false);
         if (unit.isMine())
+        {
             unit.multiplyParamByPercent(PARAMS.STAMINA, mod / 2, false);
+            if (mod>100)
+                if (ExplorationMaster.isExplorationOn())
+                {
+                    int amount = unit.getIntParam(PARAMS.STAMINA) * mod / 1000;
+                    unit.modifyParameter(PARAMS.STAMINA_REGEN,             amount, false);
+                }
+        }
         else {
             unit.multiplyParamByPercent(PARAMS.STEALTH, mod / 2, false);
         }

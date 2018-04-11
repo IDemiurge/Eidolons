@@ -29,7 +29,10 @@ public class StrPathBuilder {
 
     public String build_(String... strings) {
         for (String s : strings) {
-            builder.append(s + StringMaster.getPathSeparator());
+            if (s.endsWith(StringMaster.getPathSeparator()))
+                builder.append(s);
+            else
+                builder.append(s + StringMaster.getPathSeparator());
         }
         String result = builder.toString();
         result = result.substring(0, result.length() - 1);

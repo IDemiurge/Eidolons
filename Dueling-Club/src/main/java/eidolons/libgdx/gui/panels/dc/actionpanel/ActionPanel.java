@@ -18,14 +18,16 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import static main.system.GuiEventType.BOTTOM_PANEL_UPDATE;
+import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
 public class ActionPanel extends Group {
     public final static int IMAGE_SIZE = 60;
     private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
-    private static final float SPELL_OFFSET_Y = -12;
-    private static final String ORB_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "overlay.png");;
+    private static final float SPELL_OFFSET_Y = -6;
+    private static final String ORB_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "overlay.png");
+    private static final String BOTTOM_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "bottom overlay.png");
     private final ImageContainer orbOverlay;
+    private final ImageContainer bottomOverlay;
     protected OrbsPanel leftOrbPanel;
     protected OrbsPanel rigthOrbPanel;
     protected QuickSlotPanel quickSlotPanel;
@@ -47,16 +49,16 @@ public class ActionPanel extends Group {
 
         final int actionOffset = quickSlotOffset + (IMAGE_SIZE * 6) + 5;
         addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
-        modeActionsPanel.setPosition(actionOffset,  0);
+        modeActionsPanel.setPosition(actionOffset, 0);
 
 
         spellPanel = new SpellPanel(IMAGE_SIZE);
         final int spellOffset = actionOffset + (IMAGE_SIZE * 6) + 5;
-        spellPanel.setPosition(spellOffset,  SPELL_OFFSET_Y);
+        spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
         addActor(spellPanel);
 
         effectsPanel = new EffectsPanel();
-        effectsPanel.setPosition(actionOffset+88, IMAGE_SIZE+12);
+        effectsPanel.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
         addActor(effectsPanel);
 
         leftOrbPanel = new OrbsPanel(PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA);
@@ -68,21 +70,24 @@ public class ActionPanel extends Group {
          , IMAGE_SIZE);
         addActor(rigthOrbPanel);
 
+        addActor(facingPanel = new FacingPanel());
         addActor(mainHand = new QuickWeaponPanel(false));
         addActor(offhand = new QuickWeaponPanel(true));
-        addActor(facingPanel = new FacingPanel());
 
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
-         leftOrbPanel.getY()+12);
+         leftOrbPanel.getY() + 12);
         offhand.setPosition(leftOrbPanel.getX() + 272,
-         leftOrbPanel.getY()+12);
+         leftOrbPanel.getY() + 12);
 
         facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
          leftOrbPanel.getY() + 32);
 
         addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
         orbOverlay.setPosition(136, 56);
+
+        addActor(bottomOverlay = new ImageContainer(BOTTOM_OVERLAY));
+        bottomOverlay.setPosition(80, -12);
 
         setY(-IMAGE_SIZE);
         bindEvents();
@@ -95,6 +100,18 @@ public class ActionPanel extends Group {
     }
 
     private void bindEvents() {
+        GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {
+            ActorMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
+//            spellPanel.setZIndex(1);
+//            quickSlotPanel.setZIndex(1);
+//            modeActionsPanel.setZIndex(1);
+        });
+        GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
+            ActorMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -15, 0.4f);
+//            spellPanel.setZIndex(Integer.MAX_VALUE);
+//            quickSlotPanel.setZIndex(Integer.MAX_VALUE);
+//            modeActionsPanel.setZIndex(Integer.MAX_VALUE);
+        });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
             mainHand.setUserObject(new ImmutablePair<>(
@@ -109,7 +126,7 @@ public class ActionPanel extends Group {
     }
 
     protected void initListeners() {
-        GuiEventManager.bind(BOTTOM_PANEL_UPDATE, obj -> {
+        GuiEventManager.bind(ACTION_PANEL_UPDATE, obj -> {
             final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) obj.get();
             if (source != null) {
                 ActionValueContainer.setDarkened(false);
@@ -146,9 +163,9 @@ public class ActionPanel extends Group {
         super.act(delta);
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
-         leftOrbPanel.getY()+12);
+         leftOrbPanel.getY() + 12);
         offhand.setPosition(leftOrbPanel.getX() + 272,
-         leftOrbPanel.getY()+12);
+         leftOrbPanel.getY() + 12);
 
         facingPanel.setPosition((mainHand.getX() + offhand.getX()) / 2 + 12,
          leftOrbPanel.getY() + 32);

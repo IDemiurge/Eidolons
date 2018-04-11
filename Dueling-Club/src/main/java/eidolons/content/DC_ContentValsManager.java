@@ -76,7 +76,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     private static final Class<?>[] PROP_ENUM_CLASSES = {G_PROPS.class, PROPS.class};
     private static final String DEFAULT_DEITY = "Faithless";
     private static final String DEFAULT_WEAPON = "Petty Fist";
-    public static PARAMETER[] REGEN_PARAMS = {
+    public static PARAMETER[] REGENERATED_PARAMS = {
      PARAMS.ENDURANCE, PARAMS.FOCUS,
      PARAMS.ESSENCE, PARAMS.STAMINA
 //   ,PARAMS.ENERGY

@@ -63,6 +63,7 @@ public class ButtonStyled extends Image implements EventListener {
         UNDO("UI/components/small/back2.png"),
         NEXT("UI/components/small/forward.png"),
         GAME_MENU("UI/components/2017/generic/button.png"),
+        UNARMED("UI/components/dc/quick weapon/unarmed.png"),
 
         HELP(VISUALS.QUESTION.getImgPath()) {
             @Override

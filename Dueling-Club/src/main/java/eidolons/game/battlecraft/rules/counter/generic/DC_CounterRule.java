@@ -118,6 +118,10 @@ public abstract class DC_CounterRule {
          + " number modified by " + counterMod;
     }
 
+    private void setObject(BattleFieldObject object) {
+        this.object = object;
+    }
+
     public void newTurn() {
         for (BattleFieldObject unit : game.getUnits()) {
             if (unit.isDead()) continue;
@@ -128,6 +132,7 @@ public abstract class DC_CounterRule {
             if (getNumberOfCounters(unit) <= 0) {
                 continue;
             }
+            setObject(unit);
             applyCountersInteractions(unit);
             applyCountersConversions(unit);
             applyCountersTranfers(unit);

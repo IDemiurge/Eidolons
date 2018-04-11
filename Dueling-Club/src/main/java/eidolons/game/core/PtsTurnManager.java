@@ -3,14 +3,11 @@ package eidolons.game.core;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.Comparator;
-
-import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 /**
  * After each Action, recalculates Initiative for each unit,
@@ -45,7 +42,7 @@ public class PtsTurnManager extends GenericTurnManager implements Comparator<Uni
         }
         LogMaster.gameInfo(StringMaster.getStringXTimes(50 - getActiveUnit().toString().length(), ">")
          + "Active unit: " + getActiveUnit());
-        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+//        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
         return true;
     }
 

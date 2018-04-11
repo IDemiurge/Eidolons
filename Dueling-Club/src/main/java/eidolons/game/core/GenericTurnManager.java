@@ -21,7 +21,6 @@ public abstract class GenericTurnManager implements TurnManager {
     protected DequeImpl<Unit> unitQueue;
     protected DequeImpl<Unit> displayedUnitQueue;
     protected DC_Game game;
-    protected Unit activeUnit;
     protected DequeImpl<Unit> unitGroup;
     protected boolean retainActiveUnit;
 
@@ -40,13 +39,12 @@ public abstract class GenericTurnManager implements TurnManager {
     public void init() {
         setUnitQueue(new DequeImpl<>());
         setDisplayedUnitQueue(new DequeImpl<>());
-        setActiveUnit(unitQueue.peek());
     }
 
 
     public Unit getActiveUnit(boolean vision) {
         if (!vision) {
-            return activeUnit;
+            return getActiveUnit();
         }
 
         for (Unit unit : getUnitQueue()) {
@@ -54,7 +52,7 @@ public abstract class GenericTurnManager implements TurnManager {
                 return unit;
             }
         }
-        return activeUnit;
+        return getActiveUnit();
     }
 
     protected boolean playerHasActiveUnits() {
@@ -77,8 +75,8 @@ public abstract class GenericTurnManager implements TurnManager {
         boolean result = chooseUnit();
 
         resetDisplayedQueue();
-        if (activeUnit!=null )
-            result &= activeUnit.turnStarted();
+        if (getActiveUnit() !=null )
+            result &= getActiveUnit().turnStarted();
         return result;
     }
 
@@ -95,9 +93,9 @@ public abstract class GenericTurnManager implements TurnManager {
     protected void resetDisplayedQueue() {
         displayedUnitQueue.clear();
         if (retainActiveUnit) {
-            if (game.getVisionMaster().checkDetectedEnemy(activeUnit)) {
-                unitQueue.remove(activeUnit);
-                unitQueue.addFirst(activeUnit);
+            if (game.getVisionMaster().checkDetectedEnemy(getActiveUnit())) {
+                unitQueue.remove(getActiveUnit());
+                unitQueue.addFirst(getActiveUnit());
             }
         }
 
@@ -168,13 +166,7 @@ public abstract class GenericTurnManager implements TurnManager {
         return game;
     }
 
-    public Unit getActiveUnit() {
-        return activeUnit;
-    }
 
-    public void setActiveUnit(Unit activeUnit) {
-        this.activeUnit = activeUnit;
-    }
 
     @Override
     public DequeImpl<Unit> getUnitQueue() {
@@ -199,4 +191,12 @@ public abstract class GenericTurnManager implements TurnManager {
     }
 
     public abstract Float getTotalTime();
+
+    @Override
+    public Unit getActiveUnit() {
+        return game.getLoop().getActiveUnit();
+    }
+    public void setActiveUnit(Unit activeUnit) {
+          game.getLoop().setActiveUnit(activeUnit);
+    }
 }

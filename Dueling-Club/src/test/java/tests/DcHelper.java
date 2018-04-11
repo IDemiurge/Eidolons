@@ -8,8 +8,12 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataModelSnapshot;
 import main.content.DC_TYPE;
+import main.content.enums.entity.UnitEnums.COUNTER;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -20,6 +24,7 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.action.context.Context;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+import tests.utils.JUnitUtils;
 
 import static org.junit.Assert.assertTrue;
 
@@ -128,6 +133,29 @@ public class DcHelper implements JUnitHelper {
 
     }
 
+    public UnitDataModelSnapshot makeSnapshot(Unit unit) {
+        return new UnitDataModelSnapshot(unit);
+    }
+
+    public void passTime(Float time) {
+        JUnitUtils.log_("Time = " + game.getDungeonMaster().getExplorationMaster().getTimeMaster().getTime());
+        JUnitUtils.log_("Passing " + time + " seconds");
+        if (ExplorationMaster.isExplorationOn()) {
+            if (game.getTurnManager() instanceof AtbTurnManager) {
+                game.getDungeonMaster().getExplorationMaster().getTimeMaster().timePassed(time);
+// TODO ???                game.getDungeonMaster().getExplorationMaster().getTimeMaster().checkTimedEvents();
+            }
+        } else {
+            ((AtbTurnManager) game.getTurnManager()).getAtbController().passTime(time);
+        }
+
+        JUnitUtils.log_("Time = " + game.getDungeonMaster().getExplorationMaster().getTimeMaster().getTime());
+    }
+
+    public void addCounters(Unit unit, COUNTER counter, int i) {
+        unit.addCounter(counter.getName(), i + "");
+    }
+
 
     @Override
     public void reset() {
@@ -138,5 +166,10 @@ public class DcHelper implements JUnitHelper {
     @Override
     public void newRound() {
         game.getManager().getStateManager().newRound();
+    }
+
+    public void resetUnit(Unit unit) {
+        unit.fullReset(game);
+
     }
 }

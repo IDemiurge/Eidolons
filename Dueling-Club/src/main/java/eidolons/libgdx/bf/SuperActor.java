@@ -2,6 +2,7 @@ package eidolons.libgdx.bf;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -150,6 +151,14 @@ public abstract class SuperActor extends GroupX implements Borderable {
     public void addAction(Action action) {
         if (!getActions().contains(action, true))
          super.addAction(action);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+//        batch.setBlendFunctionSeparate();
+        super.draw(batch, parentAlpha);
+//        batch.setBlendFunction();
+//    cleanUpBlending();
     }
 
     @Override

@@ -52,7 +52,7 @@ public class FacingPanel extends TablePanel {
 
         addActor(face = new FadeImageContainer());
         face.setPosition(35, 8);
-        face.setFadeDuration(getAnimationDuration());
+        face.setFadeDuration(getAnimationDuration()/1.5f);
 //        background.addActor(gearsClockwise = new GearCluster(0.35f));
 //        background. addActor(gearsAntiClockwise = new GearCluster(0.35f));
 //        gearsClockwise.addListener(getGearListener(true));

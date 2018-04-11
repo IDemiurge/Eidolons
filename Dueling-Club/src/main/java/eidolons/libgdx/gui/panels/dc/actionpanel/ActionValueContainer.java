@@ -35,7 +35,7 @@ public class ActionValueContainer extends ValueContainer {
     protected TextureRegion underlay;
     protected float underlayOffsetX;
     protected float underlayOffsetY;
-    private float size=UiMaster.getIconSize();
+    private float size = UiMaster.getIconSize();
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -55,9 +55,9 @@ public class ActionValueContainer extends ValueContainer {
     }
 
     public ActionValueContainer(int size, boolean valid, TextureRegion region,
-                                 Runnable runnable) {
+                                Runnable runnable) {
         this(valid, region, runnable);
-        this.size=size;
+        this.size = size;
     }
 
     public static boolean isDarkened() {
@@ -133,8 +133,7 @@ public class ActionValueContainer extends ValueContainer {
                 hover = true;
                 setZIndex(Integer.MAX_VALUE);
                 if (isScaledOnHover())
-                    ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
-                     UiMaster.getDuration(SCALE_ACTION_ICON));
+                    scaleUp();
 
                 return super.mouseMoved(event, x, y);
             }
@@ -145,8 +144,7 @@ public class ActionValueContainer extends ValueContainer {
                 if (!hover) {
                     hover = true;
                     if (isScaledOnHover())
-                        ActorMaster.addScaleAction(imageContainer.getActor(),
-                         getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover, UiMaster.getDuration(SCALE_ACTION_ICON));
+                        scaleUp();
                     if (getLastPressed() != ActionValueContainer.this)
                         setLastPressed(null);
                 }
@@ -157,14 +155,35 @@ public class ActionValueContainer extends ValueContainer {
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 hover = false;
                 super.exit(event, x, y, pointer, toActor);
-                if (isScaledOnHover())
-                    ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
-                     getImageScaleY(),
-                     UiMaster.getDuration(SCALE_ACTION_ICON));
+
+                if (isScaledOnHover()) {
+                    scaleDown();
+                }
                 if (getLastPressed() != ActionValueContainer.this)
                     setLastPressed(null);
             }
         });
+    }
+
+    public void scaleUp() {
+        imageContainer.getActor().clearActions();
+        ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX() + scaleByOnHover, getImageScaleY() + scaleByOnHover,
+         UiMaster.getDuration(SCALE_ACTION_ICON));
+
+        ActorMaster.addMoveToAction(imageContainer.getActor(),
+         imageContainer.getActor().getX(),
+           6, 0.25f);
+    }
+
+    public void scaleDown() {
+        imageContainer.getActor().clearActions();
+        ActorMaster.addScaleAction(imageContainer.getActor(), getImageScaleX(),
+         getImageScaleY(),
+         UiMaster.getDuration(SCALE_ACTION_ICON));
+
+        ActorMaster.addMoveToAction(imageContainer.getActor(),
+         imageContainer.getActor().getX(),
+           0, 0.25f);
     }
 
     protected boolean isScaledOnHover() {

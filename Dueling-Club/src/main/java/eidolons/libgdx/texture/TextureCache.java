@@ -189,7 +189,10 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
-        return new TextureRegion(GdxImageTransformer.size(path, iconSize, true));
+        Texture sized = GdxImageTransformer.size(path, iconSize, true);
+        if (sized==null)
+            return new TextureRegion(getEmptyTexture());
+        return new TextureRegion(sized);
     }
 
     public static TextureRegion getRegion(String path, Texture texture) {
@@ -279,7 +282,7 @@ public class TextureCache {
                     cache.put(path, t);
                 }
             } catch (Exception e) {
-//                main.system.ExceptionMaster.printStackTrace(e);
+                main.system.ExceptionMaster.printStackTrace(e);
                 if (!cache.containsKey(getEmptyPath())) {
                     if (putIntoCache)
                         cache.put(getEmptyPath(), getEmptyTexture());

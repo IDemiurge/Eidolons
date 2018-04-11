@@ -46,7 +46,7 @@ public class PanelActionsDataSource implements
         final ActionValueContainer container = new ActionValueContainer(
          size,
          valid,
-         TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), getImage(el))
+         TextureCache.getOrCreateSizedRegion(size, getImage(el))
          ,
          el::invokeClicked
         );

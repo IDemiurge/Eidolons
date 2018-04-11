@@ -121,7 +121,6 @@ public class ToolTipManager extends TablePanel {
 
     public void entityHover(Entity entity) {
         if (entity instanceof DC_ActiveObj) {
-            if (!ExplorationMaster.isExplorationOn())
             GuiEventManager.trigger(ACTION_HOVERED, entity);
         }
         if (entity instanceof DC_UnitAction) {
@@ -138,9 +137,10 @@ public class ToolTipManager extends TablePanel {
     }
 
     public void entityHoverOff(Entity entity) {
+        if (entity instanceof DC_ActiveObj) {
+            GuiEventManager.trigger(ACTION_HOVERED_OFF, entity);
         if (DC_Engine.isAtbMode())
             if (!ExplorationMaster.isExplorationOn())
-            if (entity instanceof DC_ActiveObj) {
                 GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
             }
         if (entity instanceof DC_UnitAction) {

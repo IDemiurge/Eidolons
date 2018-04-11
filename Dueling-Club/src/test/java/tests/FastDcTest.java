@@ -10,6 +10,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import org.junit.Before;
 import res.JUnitResources;
+import tests.utils.JUnitUtils;
 
 /**
  * Created by JustMe on 3/27/2017.
@@ -19,6 +20,7 @@ public class FastDcTest {
     protected DC_Game game;
     protected DcHelper helper;
     protected CheckHelper checker;
+    protected JUnitUtils utils;
 
 
     protected String getDungeonPath() {
@@ -37,6 +39,7 @@ public class FastDcTest {
     public void init() {
         LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(isGraphicsOff());
+        CoreEngine.setjUnit(true);
 
         FAST_DC.main(new String[]{
          FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
@@ -47,7 +50,7 @@ public class FastDcTest {
         game = Eidolons.game;
         helper = new DcHelper(game);
         checker = new CheckHelper(game);
-
+        utils = new JUnitUtils(game);
 //        DC_Engine.systemInit();
 //        DC_Engine.gameInit(false);
 //        JUnitResources.init();

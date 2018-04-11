@@ -1,19 +1,22 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.controls.Clicker;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
+import eidolons.libgdx.gui.tooltips.ScaleAndTextTooltip;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.data.filesys.PathFinder;
 import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
@@ -30,6 +33,7 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class QuickWeaponPanel extends TablePanel {
 
+    private static final float WEAPON_POS_X = 15;
     ImageContainer border;
     FadeImageContainer weapon;
     ImageContainer background;
@@ -57,7 +61,31 @@ public class QuickWeaponPanel extends TablePanel {
         weapon.addListener(new DynamicTooltip(() -> dataSource.getName()).getController());
 //        weapon.addListener(new WeaponTooltip().getController());
         background.setPosition(10, 10);
-        weapon.setPosition(15, 0);
+        weapon.setPosition(WEAPON_POS_X, 0);
+        weapon.setFadeDuration(0.2f);
+        addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.UNARMED));
+        pack();
+        if (offhand)
+            weapon.setPosition(0, GdxMaster.top(toggleUnarmed));
+        else
+            weapon.setPosition(GdxMaster.right(toggleUnarmed), GdxMaster.top(toggleUnarmed));
+
+    }
+
+    public void setDataSource(WeaponDataSource source, boolean alt) {
+        if (source != null)
+            if (source.equals(alt ? this.dataSourceAlt : this.dataSource)) {
+                return;
+            } else {
+                if (alt) {
+                    setDataSourceAlt(source);
+                } else {
+                    setDataSource(source);
+                    initWeapon(source);
+                    unarmed = false;
+                }
+
+            }
     }
 
     @Override
@@ -66,34 +94,20 @@ public class QuickWeaponPanel extends TablePanel {
         Pair<WeaponDataSource, WeaponDataSource> pair =
          (Pair<WeaponDataSource, WeaponDataSource>) getUserObject();
 
-        this.dataSource = pair.getKey();
-        this.dataSourceAlt = pair.getValue();
+        setDataSource(pair.getKey(), false);
+        setDataSource(pair.getValue(), true);
 
-        if (dataSource != null) {
-            if (unarmed)
-                toggleUnarmed();
-            else
-                initWeapon(dataSource);
+        toggleUnarmed.clearListeners();
+        if (dataSourceAlt != null) {
+            toggleUnarmed.addListener(new Clicker(() -> toggleUnarmed()));
+            toggleUnarmed.addListener(
+             new ScaleAndTextTooltip(toggleUnarmed, () -> (unarmed
+              ? dataSource.getName() : dataSourceAlt.getName()))
+              .getController());
+            toggleUnarmed.setDisabled(false);
         } else {
-            return;
+            toggleUnarmed.setDisabled(true);
         }
-//        toggleUnarmed.clearListeners();
-//        if (dataSourceAlt != null) {
-//            toggleUnarmed.addListener(new Clicker(() -> toggleUnarmed()));
-//            toggleUnarmed.addListener(
-//             new ScaleAndTextTooltip(toggleUnarmed, () -> (unarmed
-//              ? dataSource.getName() : dataSourceAlt.getName()))
-//              .getController());
-//            toggleUnarmed.setDisabled(false);
-//        } else {
-//            toggleUnarmed.setDisabled(true);
-//        }
-//        toggleUnarmed.addListener(new ClickListener() {
-//            @Override
-//            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                return super.touchDown(event, x, y, pointer, button);
-//            }
-//        });
 
     }
 
@@ -107,18 +121,17 @@ public class QuickWeaponPanel extends TablePanel {
     }
 
     private void initWeapon(WeaponDataSource dataSource) {
-        Texture texture = GdxImageTransformer.size(dataSource.getSpriteImagePath(),
-         128, true);
-        if (texture == null)
-            return;
-        Image image = new Image(texture);
-        weapon.setImage(image);
-        //to init previous image
+        weapon.setImage(getNormalImage(dataSource));
+    }
 
-        texture = GdxImageTransformer.size(dataSource.getSpriteImagePath(),
-         getWeaponSpriteSize(), true);
-        image = new Image(texture);
-        weapon.setImage(image);
+    private Image getLargeImage(WeaponDataSource dataSource) {
+        return new Image(GdxImageTransformer.size(dataSource.getSpriteImagePath(),
+         128, true));
+    }
+
+    private Image getNormalImage(WeaponDataSource dataSource) {
+        return new Image(GdxImageTransformer.size(dataSource.getSpriteImagePath(),
+         getWeaponSpriteSize(), true));
     }
 
     private int getWeaponSpriteSize() {
@@ -126,7 +139,16 @@ public class QuickWeaponPanel extends TablePanel {
     }
 
     private EventListener getListener() {
-        return new ClickListener() {
+        return new SmartClickListener(this) {
+            @Override
+            protected boolean checkActorExitRemoves(Actor toActor) {
+                if (toActor == border)
+                    return false;
+                if (toActor == background)
+                    return false;
+                return super.checkActorExitRemoves(toActor);
+            }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == 1) {
@@ -146,25 +168,23 @@ public class QuickWeaponPanel extends TablePanel {
             }
 
             @Override
-            public boolean mouseMoved(InputEvent event, float x, float y) {
-                return super.mouseMoved(event, x, y);
-            }
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
+            public void entered() {
+                super.entered();
                 weapon.setZIndex(getChildren().size - 2);
-                weapon.resetPreviousImage();
+                weapon.setFadeDuration(0.25f);
+                weapon.setImage(getLargeImage(getActiveWeaponDataSource()));
                 int i = offhand ? -1 : 1;
-                ActorMaster.addMoveByAction(weapon, 20 * i, 20, 0.75f);
+                ActorMaster.addMoveToAction(weapon, WEAPON_POS_X + 20 * i, 20, 0.75f);
             }
 
             @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
+            protected void exited() {
+                super.exited();
                 weapon.setZIndex(1);
+                weapon.setFadeDuration(0.5f);
+                weapon.setImage(getNormalImage(getActiveWeaponDataSource()));
                 int i = offhand ? -1 : 1;
-                ActorMaster.addMoveByAction(weapon, -20 * i, -20, 0.75f);
+                ActorMaster.addMoveToAction(weapon, WEAPON_POS_X - 20 * i, 0, 0.75f);
             }
         };
     }
@@ -173,8 +193,16 @@ public class QuickWeaponPanel extends TablePanel {
         return dataSource;
     }
 
+    public void setDataSource(WeaponDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public WeaponDataSource getDataSourceAlt() {
         return dataSourceAlt;
+    }
+
+    public void setDataSourceAlt(WeaponDataSource dataSourceAlt) {
+        this.dataSourceAlt = dataSourceAlt;
     }
 
     public boolean isUnarmed() {

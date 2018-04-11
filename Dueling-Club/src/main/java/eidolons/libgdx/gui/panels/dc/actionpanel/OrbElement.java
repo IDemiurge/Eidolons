@@ -141,6 +141,9 @@ public class OrbElement extends SuperActor {
             final int cur = Integer.valueOf(split[0]);
             final int max = Integer.valueOf(split[1]);
             orbFullness = Math.min(Math.round(cur / (max / 62f)), 62);
+            if (cur<=0){
+                orbFullness=0;
+            }
         } else {
             orbFullness = 62;
         }
@@ -161,7 +164,7 @@ public class OrbElement extends SuperActor {
         if (fluctuatingAlpha != 1)
             batch.setColor(new Color(1, 1, 1, 1));
         Rectangle scissors = new Rectangle();
-        Rectangle clipBounds = new Rectangle(getX(), getY(), 62, orbFullness);
+        Rectangle clipBounds = new Rectangle(getX(), getY(), 62, Math.max(1, orbFullness));
         getStage().calculateScissors(clipBounds, scissors);
         ScissorStack.pushScissors(scissors);
         batch.draw(orbRegion, getX(), getY());
