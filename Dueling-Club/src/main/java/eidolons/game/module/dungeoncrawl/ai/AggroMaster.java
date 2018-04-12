@@ -41,9 +41,6 @@ public class AggroMaster extends ExplorationHandler {
 //                    if (!master.getAiMaster().getAllies().contains(sub))
                         sub.getAI().setOutsideCombat(true);
             }
-//            aggroGroup.forEach(unit -> unit.getAI().setEngaged(true));
-//            master.getGame().getTurnManager().setUnitGroup(
-//             new DequeImpl<>(aggroGroup, allies));
             return true;
         }
 //        for (Unit ally :allies) {

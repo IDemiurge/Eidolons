@@ -12,7 +12,7 @@ public class MoveCondition extends ConditionImpl {
     public boolean check(Ref ref) {
         DC_UnitModel obj = (DC_UnitModel) ref.getSourceObj();
         DC_Cell cell = (DC_Cell) ref.getObj(KEYS.MATCH);
-        return (game.getMovementManager().canMove(obj, cell));
+        return (game.getMovementManager().canMove(obj, cell.getCoordinates()));
     }
 
 }

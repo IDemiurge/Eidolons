@@ -6,6 +6,7 @@ import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -288,6 +289,10 @@ public abstract class Entity extends DataModel implements OBJ {
         setRef(ref);
     }
 
+
+    public void addStatus(STATUS value) {
+        addProperty(G_PROPS.STATUS, value.toString());
+    }
 
     public void addStatus(String value) {
         addProperty(G_PROPS.STATUS, value);

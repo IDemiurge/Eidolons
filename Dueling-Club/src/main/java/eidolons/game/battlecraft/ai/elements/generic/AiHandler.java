@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstr
 import eidolons.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
-import eidolons.game.battlecraft.ai.logic.types.atomic.AtomicAi;
+import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
@@ -25,7 +25,6 @@ import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;
-import main.game.ai.AI_Logic;
 
 import java.util.List;
 
@@ -62,10 +61,6 @@ public abstract class AiHandler {
 
     public void initialize() {
         master.getHandlers().add(this);
-    }
-
-    public AI_Logic getLogic() {
-        return master.getLogic();
     }
 
     public SituationAnalyzer getSituationAnalyzer() {

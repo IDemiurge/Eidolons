@@ -26,18 +26,14 @@ import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
-import main.elements.Filter;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
-import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;
 import main.game.bf.DirectionMaster;
 import main.game.bf.MovementManager;
-import main.game.bf.pathing.Path;
-import main.game.bf.pathing.PathingManager;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -45,8 +41,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
-import main.system.entity.ConditionMaster;
-import main.system.entity.FilterMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
@@ -56,11 +50,9 @@ public class DC_MovementManager implements MovementManager {
     private static DC_MovementManager instance;
     Map<Unit, List<ActionPath>> pathCache = new HashMap<>();
     private DC_Game game;
-    private PathingManager pathingManager;
 
     public DC_MovementManager(DC_Game game) {
         this.game = game;
-        setPathingManager(new PathingManager());
         instance = this;
     }
 
@@ -97,19 +89,6 @@ public class DC_MovementManager implements MovementManager {
         if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
             return null;
         return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
-//        List<ActionPath> paths = instance.buildPath(unit, coordinates);
-//            if (!ListMaster.isNotEmpty(paths)) {
-//            return  null ;
-//            }
-//        ActionPath path =paths.get(0);
-//        for (ActionPath portrait : paths){
-//            if (portrait.getActions().get(0).getActive().isTurn())
-//            {
-//                path = portrait;
-//                break;
-//            }
-//        }
-//        return path.getActions().get(0);
     }
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {
@@ -195,14 +174,6 @@ public class DC_MovementManager implements MovementManager {
         List<ActionPath> paths = pathCache.get(unit);
         if (paths == null) {
             paths = buildPath(unit, coordinates);
-//            Coordinates adjacentCoordinate = coordinates.getAdjacentCoordinate(DirectionMaster
-//                    .getRelativeDirection(unit.getCoordinates(), coordinates));
-//            if (DialogMaster.confirm("No path could be built to " + coordinates
-//                    + "; proceed to the closest cell? - " + adjacentCoordinate)) {
-//                moveTo(adjacentCoordinate);
-//            } else {
-//                return;
-//            }
             pathCache.put(unit, paths);
         }
         if (paths == null) {
@@ -210,13 +181,6 @@ public class DC_MovementManager implements MovementManager {
         }
         Action action = null;
         for (ActionPath path : paths) {
-//            if (DialogMaster.confirm("Path built to : " + path + "\nExecute "
-//                    + path.getActions().get(0).toString() + "?")) {
-//                action = path.getActions().get(0);
-//                break;
-//            }
-            //just check if still passible
-//            if (path.getActions().get(0))
             action = path.getActions().get(0);
             break;
         }
@@ -235,70 +199,9 @@ public class DC_MovementManager implements MovementManager {
          actionInput(new ActionInput(action.getActive(), context));
     }
 
-    @Deprecated
-    public boolean canMove(Obj obj, Obj cell) {
-        Unit unit = (Unit) obj;
-        int moves = 0;
-        int actions = unit.getIntParam(PARAMS.C_N_OF_ACTIONS);
-        if (moves == 0 || actions == 0) {
-            return false;
-        }
 
-        Path path = getPath(unit, cell);
-        if (path == null) {
-            return false;
-        }
-        double cost = path.getCost();
-        if (cost == PathingManager.NO_PATH) {
-            return false;
-        }
-
-        return Math.min(moves, actions) >= getIntegerCost(cost);
-        // return cost
-
-        // Coordinates objP = new Coordinates(unit.getX(), unit.getY());
-        // Coordinates cellP = new Coordinates(cell.getX(), cell.getY());
-        //
-        // // straight line only
-        // if (!PositionMaster.inLine(unit, cell))
-        // if (!unit.isAgile())
-        // return false;
-        //
-        // if (PositionMaster.inLine(unit, cell))
-        // if (!noObstacles(objP, cellP))
-        // if (!unit.isFlying())
-        // return false;
-        //
-        // if (Math.min(moves, actions) < PositionMaster.getDistance(unit,
-        // cell))
-        // return false;
-        // return true;
-    }
-
-    @Override
-    public Path getPath(Obj unit, Obj cell) {
-        return getPath((Unit) unit, cell);
-    }
-
-    public Path getPath(Unit unit, Obj cell) {
-        if (getPathingManager().isOccupied(cell.getCoordinates())) {
-            return null;
-        }
-        Coordinates c1 = new Coordinates(unit.getX(), unit.getY());
-        Coordinates c2 = new Coordinates(cell.getX(), cell.getY());
-
-        return getPathingManager().getPath(unit.isFlying(), unit.isAgile(), c1, c2);
-    }
-
-    @Override
-    public boolean noObstacles(Coordinates objCoordinates, Coordinates cellCoordinates) {
-        if (objCoordinates.x == cellCoordinates.x) {
-            return getGrid().noObstaclesX(objCoordinates.x, objCoordinates.y, cellCoordinates.y);
-        }
-        if (objCoordinates.y == cellCoordinates.y) {
-            return getGrid().noObstaclesY(objCoordinates.y, objCoordinates.x, cellCoordinates.x);
-        }
-        return true;
+    public boolean canMove(Obj obj, Coordinates c) {
+        return game.getRules().getStackingRule().canBeMovedOnto(obj,c);
     }
 
     @Override
@@ -306,41 +209,18 @@ public class DC_MovementManager implements MovementManager {
         return game.getGrid();
     }
 
-    @Override
-    public void setGrid(BattleFieldGrid grid) {
-        getPathingManager().setGrid(grid);
-    }
 
     @Override
-    public boolean move(Obj obj, Coordinates c, boolean free, Path path) {
-        return free;
-        // return move((DC_HeroObj) obj,
-        // (DC_Cell) getGrid().getCellCompMap().getOrCreate(c).getObj(), free,
-        // path, null, null);
+    public boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref) {
+        return move((Unit) obj,   getGrid().getCell(c), free,  mod, ref);
     }
 
     @Override
     public boolean move(Obj obj, Coordinates c) {
-        return false;
-        // return move((DC_HeroObj) obj,
-        // (DC_Cell) getGrid().getCellCompMap().getOrCreate(c).getObj(), false,
-        // null, null, null);
+        return move((Unit) obj,   getGrid().getCell(c), false,  MOVE_MODIFIER.NONE, obj.getRef());
     }
-
-    @Override
-    public boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref) {
-        return move((Unit) obj, (DC_Cell) getGrid().getCell(c), free, null, mod, ref);
-    }
-
-    public boolean move(Unit obj, DC_Cell cell, boolean free, Path path, MOVE_MODIFIER mod,
+    public boolean move(Unit obj, DC_Cell cell, boolean free,   MOVE_MODIFIER mod,
                         Ref ref) {
-        // if (path == null) {
-        // if (!free)
-        // path = getPath(obj, cell); // TODO just preCheck if it's blocked
-        // }
-        // if (!free)
-        // if (!canMove(obj, cell))
-        // return false;
         Ref REF = new Ref(obj.getGame());
         REF.setTarget(cell.getId());
         REF.setSource(obj.getId());
@@ -349,13 +229,6 @@ public class DC_MovementManager implements MovementManager {
         if (!game.fireEvent(event)) {
             return false;
         }
-
-        // double cost = (!free) ? path.traverse(obj) : 0;
-        // int _cost = getIntegerCost(cost);
-
-        // for AI simulation only!
-        // obj.modifyParameter(PARAMS.C_N_OF_MOVES, -_cost, 0);
-        // obj.modifyParameter(PARAMS.C_N_OF_ACTIONS, -_cost, 0);
 
         Coordinates c = cell.getCoordinates();
         if (mod != MOVE_MODIFIER.TELEPORT) { // TODO UPDATE!
@@ -396,66 +269,10 @@ public class DC_MovementManager implements MovementManager {
         return game.fireEvent(event);
     }
 
-
-    @Override
-    public int getIntegerCost(double cost) {
-        if (cost > 1 && cost < 2) {
-            return 2;
-        }
-
-        return (int) Math.round(cost);
-
-    }
-
     @Override
     public int getDistance(Obj obj1, Obj obj2) {
 
         return PositionMaster.getDistance(obj1, obj2);
-    }
-
-    @Override
-    public List<Obj> getAdjacentObjs(Obj unit, boolean cell) {
-        return getPathingManager().getAdjacentObjs(unit.getCoordinates(), cell);
-    }
-
-    @Override
-    public List<Obj> getAdjacentObjs(Coordinates coordinates, boolean cell) {
-
-        return getPathingManager().getAdjacentObjs(coordinates, cell);
-    }
-
-    @Override
-    public Set<Obj> getCellsInRadius(Obj targetUnit, int i) {
-        return FilterMaster.getCellsInRadius(targetUnit, i);
-    }
-
-    @Override
-    public List<Obj> getAdjacentEnemies(Obj unit) {
-
-        return new Filter<Obj>(unit.getRef(), ConditionMaster.getEnemyCondition())
-         .filter(getAdjacentObjs(unit, false));
-
-    }
-
-    public boolean isAdjacent(Coordinates c1, Coordinates c2) {
-        return getPathingManager().isAdjacent(c1, c2);
-    }
-
-    public boolean isAdjacent(Obj obj1, Obj obj2) {
-        return getPathingManager().isAdjacent(obj1, obj2);
-    }
-
-    public Obj getCell(Coordinates c1) {
-        return getPathingManager().getCell(c1);
-    }
-
-    @Override
-    public PathingManager getPathingManager() {
-        return pathingManager;
-    }
-
-    public void setPathingManager(PathingManager pathingManager) {
-        this.pathingManager = pathingManager;
     }
 
     @Override

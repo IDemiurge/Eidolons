@@ -388,7 +388,7 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
-            DungeonScreen.getInstance().activeUnitSelected(hero);
+            DungeonScreen.getInstance().centerCameraOn(hero);
             if (hero instanceof Unit)
                 animMaster.getConstructor().tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);

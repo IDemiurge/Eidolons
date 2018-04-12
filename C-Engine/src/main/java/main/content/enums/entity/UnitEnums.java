@@ -334,6 +334,7 @@ public class UnitEnums {
 
     public enum STATUS {
         // UNIT
+        SNEAKING,
         AIRBORNE,
         DEAD,
         LATE,

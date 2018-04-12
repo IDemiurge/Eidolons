@@ -9,6 +9,10 @@ public class SpellPanel extends BaseSlotPanel {
         super(0);
     }
 
+    protected int getPageSize() {
+        return 5;
+    }
+
     public SpellPanel(int imageSize) {
         super(imageSize);
     }

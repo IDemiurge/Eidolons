@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.ai.logic.types.atomic;
+package eidolons.game.battlecraft.ai.logic.atomic;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;

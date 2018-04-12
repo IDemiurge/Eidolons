@@ -4,6 +4,7 @@ import eidolons.ability.ActionGenerator;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.ability.effects.DC_EffectManager;
 import eidolons.content.DC_ValueManager;
+import eidolons.content.ValueHelper;
 import eidolons.entity.DC_IdManager;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.item.DC_InventoryManager;
@@ -32,6 +33,8 @@ import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
 import eidolons.game.battlecraft.rules.mechanics.WaitRule;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.GenericTurnManager;
+import eidolons.game.core.atb.AtbController;
+import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.launch.LaunchDataKeeper;
 import eidolons.game.core.launch.PresetLauncher;
 import eidolons.game.core.master.combat.CombatMaster;
@@ -62,7 +65,6 @@ import main.entity.obj.BuffObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.ai.BfAnalyzer;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.GraveyardManager;
@@ -73,7 +75,6 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
-import eidolons.content.ValueHelper;
 import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 
@@ -241,8 +242,6 @@ public class DC_Game extends MicroGame {
 
         grid = new DC_BattleFieldGrid(getDungeon());
         battleFieldManager = new DC_BattleFieldManager(this);
-        getMovementManager().setGrid(grid);
-
 
         if (AI_ON) {
             aiManager = new AI_Manager(this);
@@ -528,9 +527,6 @@ public class DC_Game extends MicroGame {
         return inventoryTransactionManager;
     }
 
-    public BfAnalyzer getAnalyzer() {
-        return getCombatMaster().getBfAnalyzer();
-    }
 
     public CombatMaster getCombatMaster() {
         return combatMaster;
@@ -586,6 +582,9 @@ public class DC_Game extends MicroGame {
     public GenericTurnManager getTurnManager() {
         return combatMaster.getTurnManager();
     }
+    public AtbController getAtbController() {
+        return ((AtbTurnManager) combatMaster.getTurnManager()).getAtbController();
+    }
 
     @Override
     public DC_MovementManager getMovementManager() {
@@ -595,10 +594,6 @@ public class DC_Game extends MicroGame {
     @Override
     public GraveyardManager getGraveyardManager() {
         return combatMaster.getGraveyardManager();
-    }
-
-    public BfAnalyzer getBfAnalyzer() {
-        return combatMaster.getBfAnalyzer();
     }
 
     public boolean isBattleInit() {

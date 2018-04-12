@@ -14,7 +14,7 @@ import eidolons.game.battlecraft.ai.elements.actions.sequence.PathSequenceConstr
 import eidolons.game.battlecraft.ai.elements.actions.sequence.TurnSequenceConstructor;
 import eidolons.game.battlecraft.ai.elements.goal.GoalManager;
 import eidolons.game.battlecraft.ai.elements.task.TaskManager;
-import eidolons.game.battlecraft.ai.logic.types.atomic.AtomicAi;
+import eidolons.game.battlecraft.ai.logic.atomic.AtomicAi;
 import eidolons.game.battlecraft.ai.tools.*;
 import eidolons.game.battlecraft.ai.tools.path.CellPrioritizer;
 import eidolons.game.battlecraft.ai.tools.path.PathBuilder;
@@ -25,7 +25,6 @@ import eidolons.game.battlecraft.ai.tools.prune.PruneMaster;
 import eidolons.game.battlecraft.ai.tools.target.TargetingMaster;
 import eidolons.game.core.game.DC_Game;
 import main.content.values.parameters.PARAMETER;
-import main.game.ai.AI_Logic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +33,6 @@ import java.util.List;
  * Created by JustMe on 3/3/2017.
  */
 public class AiMaster {
-    protected AI_Logic logic;
-
     protected DC_Game game;
     protected Unit unit;
     protected StringBuffer messageBuilder;
@@ -143,10 +140,6 @@ public class AiMaster {
 
     public AtomicAi getAtomicAi() {
         return atomicAi;
-    }
-
-    public AI_Logic getLogic() {
-        return logic;
     }
 
     public StringBuffer getMessageBuilder() {

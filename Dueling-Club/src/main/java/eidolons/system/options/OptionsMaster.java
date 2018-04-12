@@ -44,7 +44,7 @@ import java.util.Map;
 public class OptionsMaster {
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
     private static Map<OPTIONS_GROUP, Options> cachedMap;
-    private static OptionsPanel optionsPanel;
+    private static OptionsPanelSwing optionsPanel;
     private static boolean initialized;
     private static JFrame optionsPanelFrame;
     private static JDialog modalOptionsPanelFrame;
@@ -355,7 +355,7 @@ public class OptionsMaster {
 //            optionsPanelFrame.dispatchEvent(new WindowEvent(optionsPanelFrame, WindowEvent.WINDOW_CLOSING));
             modalOptionsPanelFrame.setVisible(false);
         }
-        optionsPanel = new OptionsPanel(optionsMap);
+        optionsPanel = new OptionsPanelSwing(optionsMap);
 //        optionsPanelFrame = GuiManager.inNewWindow(optionsPanel,
 //         "Options", new Dimension(800, 600));
         modalOptionsPanelFrame = GuiManager.inModalWindow(optionsPanel,

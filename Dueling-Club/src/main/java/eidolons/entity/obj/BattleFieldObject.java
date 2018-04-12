@@ -493,6 +493,10 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     }
 
     public void setSneaking(boolean sneaking) {
+        if (sneaking)
+            addStatus(STATUS.SNEAKING);
+        else
+            removeStatus(STATUS.SNEAKING);
         this.sneaking = sneaking;
     }
 

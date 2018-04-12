@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.GdxImageTransformer;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -33,7 +32,7 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class QuickWeaponPanel extends TablePanel {
 
-    private static final float WEAPON_POS_X = 15;
+    private static final float WEAPON_POS_X = 12;
     ImageContainer border;
     FadeImageContainer weapon;
     ImageContainer background;
@@ -66,9 +65,11 @@ public class QuickWeaponPanel extends TablePanel {
         addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.UNARMED));
         pack();
         if (offhand)
-            toggleUnarmed.setPosition(0, GdxMaster.top(toggleUnarmed));
+            toggleUnarmed.setPosition(0, background.getHeight() - toggleUnarmed.getHeight()/2);
         else
-            toggleUnarmed.setPosition(GdxMaster.right(toggleUnarmed), GdxMaster.top(toggleUnarmed));
+            toggleUnarmed.setPosition(
+             background.getWidth() - toggleUnarmed.getWidth()/2,
+             background.getHeight() - toggleUnarmed.getHeight()/2);
 
     }
 
@@ -183,8 +184,7 @@ public class QuickWeaponPanel extends TablePanel {
                 weapon.setZIndex(1);
                 weapon.setFadeDuration(0.5f);
                 weapon.setImage(getNormalImage(getActiveWeaponDataSource()));
-                int i = offhand ? -1 : 1;
-                ActorMaster.addMoveToAction(weapon, WEAPON_POS_X - 20 * i, 0, 0.75f);
+                ActorMaster.addMoveToAction(weapon, WEAPON_POS_X , 0, 0.75f);
             }
         };
     }

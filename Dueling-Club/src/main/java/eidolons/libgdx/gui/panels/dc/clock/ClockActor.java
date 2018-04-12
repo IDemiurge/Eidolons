@@ -34,7 +34,10 @@ public class ClockActor extends GroupX {
     private float displayedTime=0;
 
     public ClockActor() {
-        addActor(underGears = new GearCluster(5, 1f));
+//        addActor(
+ underGears = new GearCluster(5, 1f)
+//        )
+        ;
         addActor(new GearCluster(5, 1f));
         addActor(background = new ImageContainer(BACKGROUND));
         addActor(centerGears = new GearCluster(3, 0.5f));

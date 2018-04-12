@@ -18,6 +18,7 @@ import main.entity.handlers.EntityChecker;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.Obj;
 import main.game.logic.battle.player.Player;
+import main.system.math.PositionMaster;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -245,9 +246,9 @@ public class UnitChecker extends EntityChecker<Unit> {
         // ConditionMaster.getAdjacent().preCheck(ref);
         int range = getIntParam(PARAMS.RANGE);
         if (range == 1) {
-            return getGame().getMovementManager().isAdjacent(getEntity(), attacked);
+            return attacked.getCoordinates().isAdjacent(getEntity().getCoordinates());
         }
-        return (range >= getGame().getMovementManager().getDistance(getEntity(), attacked));
+        return (range >= PositionMaster.getDistance(getEntity(), attacked));
 
     }
 

@@ -155,7 +155,7 @@ public class ShadeLightCell extends SuperContainer {
         if (isIgnored())
             return;
         storeBlendingFuncData(batch);
-        initBlending(batch);
+//        initBlending(batch);
         super.draw(batch, parentAlpha);
         restoreBlendingFuncData(batch);
     }

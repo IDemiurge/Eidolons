@@ -6,22 +6,32 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
+import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.LastSeenView;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.images.ImageManager;
 
 import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
 
@@ -39,6 +49,75 @@ public class OverlaysManager extends SuperActor {
         this.gridPanel = gridPanel;
         cells = gridPanel.getCells();
         setAlphaTemplate(ALPHA_TEMPLATE.OVERLAYS);
+    }
+    public ClickListener getOverlayListener(OVERLAY overlay, Actor parent, int xPos, int yPos){
+//cache for easy remove?
+
+        int width = getOverlayWidth(overlay, parent);
+        int height = getOverlayHeight(overlay, parent);
+        return new SmartClickListener(parent){
+            private boolean checkPos(float x, float y) {
+                if (Math.abs(xPos-x )>width)
+                    return false;
+                if (Math.abs(yPos-y )>height)
+                    return false;
+                return true;
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (!checkPos(x, y))
+                    return ;
+                super.enter(event, x, y, pointer, fromActor);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                if (!checkPos(x, y))
+                    return ;
+                super.exit(event, x, y, pointer, toActor);
+            }
+
+            @Override
+            protected void exited() {
+                overlayExited(overlay, parent);
+            }
+
+            @Override
+            protected void entered() {
+                overlayEntered(overlay, parent);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (!checkPos(x, y))
+                    return false;
+                return overlayTouchDown(overlay,parent,  pointer, button);
+            }
+        };
+    }
+
+    private void overlayEntered(OVERLAY overlay, Actor parent) {
+        switch (overlay) {
+            case HP_BAR:
+                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new ValueTooltip("!"));
+                break;
+        }
+    }
+    private void overlayExited(OVERLAY overlay, Actor parent) {
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null );
+    }
+
+
+    private boolean overlayTouchDown(OVERLAY overlay, Actor parent,    int pointer, int button) {
+        switch (overlay) {
+            case HP_BAR:
+                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
+                 "!!!!", null);
+
+        }
+
+        return true;
     }
 
     @Override
@@ -104,11 +183,11 @@ public class OverlaysManager extends SuperActor {
         if (obj == null) {
             return;
         }
-
+        if (checkOverlayForObj(SPOTTED, obj)) {
+            drawOverlay(actor, SPOTTED, batch);
+        }   else
         if (checkOverlayForObj(STEALTH, obj)) {
             drawOverlay(actor, STEALTH, batch);
-        } else if (checkOverlayForObj(SPOTTED, obj)) {
-            drawOverlay(actor, SPOTTED, batch);
         }
     }
 
@@ -158,6 +237,10 @@ public class OverlaysManager extends SuperActor {
                 y = -12;
                 break;
             }
+            case STEALTH:
+            case SPOTTED:
+                y = parent.getHeight() - getOverlayHeight(overlay, parent);
+                break;
             //init offsets
         }
         Vector2 v = parent.localToStageCoordinates(new Vector2(x, y));
@@ -210,9 +293,15 @@ public class OverlaysManager extends SuperActor {
 
     private TextureRegion getRegion(OVERLAY overlay) {
         switch (overlay) {
+            case STEALTH:
+                return TextureCache.getOrCreateR(ImageManager.getValueIconPath(PARAMS.STEALTH));
+            case SPOTTED:
+                return TextureCache.getOrCreateR(ImageManager.getValueIconPath(PARAMS.DETECTION));
+
             case HP_BAR:
             case ITEM:
             case CORPSE:
+
                 return null;
         }
         return TextureCache.getOrCreateR(
@@ -275,4 +364,18 @@ public class OverlaysManager extends SuperActor {
         }
     }
 
+    private int getOverlayWidth(OVERLAY overlay, Actor parent) {
+        TextureRegion region = getRegion(overlay);
+        if (region!=null )
+            return region.getRegionWidth();
+        return (int) getOverlayActor(parent, overlay).getWidth();
+
+    }
+    private int getOverlayHeight(OVERLAY overlay, Actor parent) {
+        TextureRegion region = getRegion(overlay);
+        if (region!=null )
+            return region.getRegionHeight();
+        return (int) getOverlayActor(parent, overlay).getHeight();
+
+    }
 }

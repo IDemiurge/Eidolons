@@ -24,6 +24,10 @@ public class ActionPanel extends Group {
     public final static int IMAGE_SIZE = 60;
     private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
     private static final float SPELL_OFFSET_Y = -6;
+    private static final float OFFSET_X = 70;
+    private static final float QUICK_SLOTS_OFFSET_X = 20;
+    private static final float SPELL_OFFSET_X = 40;
+    private static final float ORB_OFFSET_X = OFFSET_X+76;
     private static final String ORB_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "overlay.png");
     private static final String BOTTOM_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "bottom overlay.png");
     private final ImageContainer orbOverlay;
@@ -43,30 +47,27 @@ public class ActionPanel extends Group {
         background = new Image(TextureCache.getOrCreateR(BACKGROUND));
         addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
-        final int quickSlotOffset = 70;
-        quickSlotPanel.setPosition(quickSlotOffset, SPELL_OFFSET_Y);
+
+        quickSlotPanel.setPosition(OFFSET_X+QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
         addActor(quickSlotPanel);
 
-        final int actionOffset = quickSlotOffset + (IMAGE_SIZE * 6) + 5;
+        final float actionOffset = OFFSET_X + (IMAGE_SIZE * 6) + 5;
         addActor(modeActionsPanel = new ModeActionsPanel(IMAGE_SIZE));
         modeActionsPanel.setPosition(actionOffset, 0);
 
 
         spellPanel = new SpellPanel(IMAGE_SIZE);
-        final int spellOffset = actionOffset + (IMAGE_SIZE * 6) + 5;
+        final float spellOffset =SPELL_OFFSET_X+ actionOffset + (IMAGE_SIZE * 6) + 5;
         spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
         addActor(spellPanel);
 
-        effectsPanel = new EffectsPanel();
-        effectsPanel.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
-        addActor(effectsPanel);
 
         leftOrbPanel = new OrbsPanel(PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.STAMINA);
-        leftOrbPanel.setPosition(quickSlotOffset + 76, IMAGE_SIZE);
+        leftOrbPanel.setPosition(ORB_OFFSET_X, IMAGE_SIZE);
         addActor(leftOrbPanel);
 
         rigthOrbPanel = new OrbsPanel(PARAMS.MORALE, PARAMS.ESSENCE, PARAMS.FOCUS);
-        rigthOrbPanel.setPosition(spellOffset + 29
+        rigthOrbPanel.setPosition(spellOffset -11
          , IMAGE_SIZE);
         addActor(rigthOrbPanel);
 
@@ -88,6 +89,10 @@ public class ActionPanel extends Group {
 
         addActor(bottomOverlay = new ImageContainer(BOTTOM_OVERLAY));
         bottomOverlay.setPosition(80, -12);
+
+        effectsPanel = new EffectsPanel();
+        effectsPanel.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
+        addActor(effectsPanel);
 
         setY(-IMAGE_SIZE);
         bindEvents();

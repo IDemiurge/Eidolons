@@ -13,7 +13,6 @@ import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.game.ai.BfAnalyzer;
 import main.game.bf.GraveyardManager;
 import main.game.bf.MovementManager;
 
@@ -29,7 +28,6 @@ public class CombatMaster {
     protected MovementManager movementManager;
     protected GraveyardManager graveyardManager;
     private DC_ActionManager actionManager;
-    private BfAnalyzer bfAnalyzer;
     private boolean chancesOff;
     private boolean diceAverage;
     private boolean rollsAverage;
@@ -74,13 +72,7 @@ public class CombatMaster {
         return graveyardManager;
     }
 
-    public BfAnalyzer getBfAnalyzer() {
-        return bfAnalyzer;
-    }
 
-    public void setBfAnalyzer(BfAnalyzer bfAnalyzer) {
-        this.bfAnalyzer = bfAnalyzer;
-    }
 
     public boolean isChancesOff() {
         return chancesOff;

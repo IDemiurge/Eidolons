@@ -133,9 +133,9 @@ public class AutoTargeting extends TargetingImpl {
     }
 
     private Obj selectObj(Set<Obj> objects) {
-
-        return lastTarget.getGame().getAnalyzer()
-         .getClosestUnit(lastTarget, friendlyFire);
+        return objects.iterator().next();
+//    TODO     return lastTarget.getGame().getAnalyzer()
+//         .getClosestUnit(lastTarget, friendlyFire);
     }
 
     public Obj getLastTarget() {

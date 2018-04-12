@@ -22,7 +22,6 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
-import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.QueueView;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
@@ -50,36 +49,33 @@ public class InitiativePanel extends Group {
     private final int maxSize = 25;
     private final int visualSize = 10;
     private final int offset = -12;
-    private final GearCluster gears;
     Label timeLabel;
     private QueueViewContainer[] queue;
     private WidgetGroup queueGroup;
     private ValueContainer panelImage;
     private Container<WidgetGroup> container;
     private float queueOffsetY = 15;
-    private SuperContainer light;
-    private Actor clock;
     private boolean checkPositionsRequired;
     private float maxMoveAnimDuration = 0;
     private float timePassedSincePosCheck = Integer.MAX_VALUE;
     private ImageContainer previewActor;
-    private boolean animatedClock = true;
 
+    private   GearCluster gears;
+    private ClockActor clock;
+    private FadeImageContainer light;
     public InitiativePanel() {
         init();
         bindEvents();
         resetZIndices();
-        addActor(gears = new GearCluster(3, 0.8f));
-        gears.setPosition(80, -25);
+        gears.setPosition(80, -33);
+
+
     }
 
     public static boolean isLeftToRight() {
         return true;
     }
 
-    private Actor createAnimatedClock() {
-        return new ClockActor();
-    }
 
     private void bindEvents() {
 
@@ -150,6 +146,7 @@ public class InitiativePanel extends Group {
     }
     private void init() {
 
+        addActor(gears = new GearCluster(3, 0.8f));
         queue = new QueueViewContainer[maxSize];
         queueGroup = new WidgetGroup();
         addActor( container = new Container<>(queueGroup));
@@ -163,7 +160,7 @@ public class InitiativePanel extends Group {
 
         addActor(light = new FadeImageContainer(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
 
-        addActor(clock =  createAnimatedClock());
+        addActor(clock =  new ClockActor());
         clock.addListener(getClockListener());
 
         timeLabel = new Label("Time", StyleHolder.getSizedLabelStyle(FONT.NYALA, 22));
@@ -197,7 +194,8 @@ public class InitiativePanel extends Group {
         light.setPosition(-2, -14);
         clock.setPosition(-5, -31);
         panelImage.setPosition(50, 25 + queueOffsetY);
-        container.setBounds(imageSize - offset, queueOffsetY, imageSize * visualSize +
+        container.setBounds(0 //imageSize - offset
+         , queueOffsetY, imageSize * visualSize +
          (offset - 1) * visualSize, imageSize);
         container.left().bottom();
     }
@@ -233,7 +231,8 @@ public class InitiativePanel extends Group {
     private void removeView(int id) {
         for (int i = 0; i < queue.length; i++) {
             if (queue[i] != null && queue[i].id == id) {
-                queueGroup.removeActor(queue[i]);
+                ActorMaster.addFadeInAndOutAction(queue[i], 0.35f, true);
+//                queueGroup.removeActor(queue[i]);
                 queue[i] = null;
                 sort();
                 break;

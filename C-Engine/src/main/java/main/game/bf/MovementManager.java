@@ -6,47 +6,16 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.bf.Coordinates.UNIT_DIRECTION;
-import main.game.bf.pathing.Path;
-import main.game.bf.pathing.PathingManager;
-
-import java.util.List;
-import java.util.Set;
 
 public interface MovementManager {
 
     boolean move(Obj obj, Coordinates c);
 
-    boolean canMove(Obj obj, Obj cell);
-
-    boolean noObstacles(Coordinates objCoordinates, Coordinates cellCoordinates);
+    boolean canMove(Obj obj, Coordinates c);
 
     BattleFieldGrid getGrid();
 
-    void setGrid(BattleFieldGrid grid);
-
-    boolean isAdjacent(Obj obj1, Obj obj2);
-
     int getDistance(Obj obj1, Obj obj2);
-
-    Obj getCell(Coordinates c1);
-
-    List<Obj> getAdjacentEnemies(Obj unit);
-
-    List<Obj> getAdjacentObjs(Obj unit, boolean cell);
-
-    List<Obj> getAdjacentObjs(Coordinates coordinates, boolean cell);
-
-    boolean isAdjacent(Coordinates c1, Coordinates c2);
-
-    boolean move(Obj obj, Coordinates c, boolean free, Path path);
-
-    int getIntegerCost(double cost);
-
-    Set<Obj> getCellsInRadius(Obj targetUnit, int i);
-
-    PathingManager getPathingManager();
-
-    Path getPath(Obj unit, Obj cell);
 
     boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref);
 

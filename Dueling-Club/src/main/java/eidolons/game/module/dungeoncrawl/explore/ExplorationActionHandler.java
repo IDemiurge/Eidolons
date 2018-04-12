@@ -18,7 +18,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
     private static List<PARAMETER> ignoredCosts = Arrays.asList(new PARAMETER[]{
      PARAMS.AP_COST,
     });
-    private static String STA_MODIFIER = "0.33";
+    private static String STA_MODIFIER = "0.5";
 
     public ExplorationActionHandler(ExplorationMaster master) {
         super(master);

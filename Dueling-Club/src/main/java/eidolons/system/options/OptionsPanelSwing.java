@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class OptionsPanel<T extends Enum<T>> extends G_Panel implements ActionListener {
+public class OptionsPanelSwing<T extends Enum<T>> extends G_Panel implements ActionListener {
     OptionsMaster master;
     private Map<OPTION, Component> map = new HashMap<>();
     private G_TabbedPanel tabs;
 
-    public OptionsPanel(Map<OPTIONS_GROUP, Options> optionsMap) {
+    public OptionsPanelSwing(Map<OPTIONS_GROUP, Options> optionsMap) {
         super(("flowy "));
         tabs = new G_TabbedPanel(new Dimension(600, 400));
         for (OPTIONS_GROUP group : optionsMap.keySet()) {

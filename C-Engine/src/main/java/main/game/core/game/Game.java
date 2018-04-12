@@ -13,7 +13,6 @@ import main.elements.conditions.RequirementsManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.ai.BfAnalyzer;
 import main.game.bf.Coordinates;
 import main.game.bf.GenericVisionManager;
 import main.game.bf.GraveyardManager;
@@ -154,10 +153,6 @@ public abstract class Game implements Serializable {
 
     public MathMaster getMathManager() {
         return mathManager;
-    }
-
-    public BfAnalyzer getAnalyzer() {
-        return null;
     }
 
 

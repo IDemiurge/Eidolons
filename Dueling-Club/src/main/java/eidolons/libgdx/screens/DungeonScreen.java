@@ -379,7 +379,7 @@ public class DungeonScreen extends GameScreen {
         this.speed = speed;
     }
 
-    public void activeUnitSelected(BattleFieldObject hero) {
+    public void centerCameraOn(BattleFieldObject hero) {
         if (isCameraAutoCenteringOn()) {
             Coordinates coordinatesActiveObj =
              hero.getCoordinates();

@@ -10,8 +10,6 @@ import main.game.bf.Coordinates;
 
 public class OccupiedCondition extends ConditionImpl {
     protected String obj_ref;
-    boolean permitInvisCollision = true;
-    boolean permitCollision = true;
 
     public OccupiedCondition(String obj_ref) {
         this.obj_ref = obj_ref;
@@ -23,26 +21,15 @@ public class OccupiedCondition extends ConditionImpl {
         if (c == null) {
             return true;
         }
-        boolean result;
-        if (permitCollision) {
-            result =
-             !game.getMovementManager().getPathingManager().isGroundPassable(
-              ref.getSourceObj(), c);
-        } else {
-            result = game.getMovementManager().getPathingManager().isOccupied(c);
-        }
-        // ObjComponent objComponent =
-        // game.getMovementManager().getPathingManager().getGrid()
-        // .getObjCompMap().get(c);
+        boolean result = !game.getMovementManager().canMove(
+         ref.getSourceObj(), c);
+
         if (result) {
             for (Obj obj : game.getObjectsOnCoordinate(c)) {
                 if (game.getVisionMaster().checkInvisible(obj)) {
-                    if (permitInvisCollision) {
-                        result = false;
-                        continue;
-                    }
+                    result = false;
+                    continue;
                 }
-                try {
                     if (ref.getSourceObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
                      "" + UnitEnums.STANDARD_PASSIVES.FLYING)) {
                         if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
@@ -53,9 +40,6 @@ public class OccupiedCondition extends ConditionImpl {
                             continue;
                         }
                     }
-                } catch (Exception e) {
-
-                }
 
                 return true;
 

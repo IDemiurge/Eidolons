@@ -1,13 +1,17 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.facing;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.datasource.FullUnitDataSource;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -51,8 +55,15 @@ public class FacingPanel extends TablePanel {
         background.setOrigin(background.getWidth() / 2, background.getHeight() / 2);
 
         addActor(face = new FadeImageContainer());
-        face.setPosition(35, 8);
+        face.setPosition(28, 8);
         face.setFadeDuration(getAnimationDuration()/1.5f);
+        addListener(new SmartClickListener(this){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                DungeonScreen.getInstance().centerCameraOn(DC_Game.game.getManager().getMainHero());
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
 //        background.addActor(gearsClockwise = new GearCluster(0.35f));
 //        background. addActor(gearsAntiClockwise = new GearCluster(0.35f));
 //        gearsClockwise.addListener(getGearListener(true));
@@ -106,17 +117,11 @@ public class FacingPanel extends TablePanel {
 
     @Override
     public void act(float delta) {
-        face.setPosition(35, 8);
-//        gearsAntiClockwise.setPosition(background.getWidth()/2+10,
-//         GdxMaster.centerWidth(gearsAntiClockwise));
-//        gearsClockwise.setPosition(background.getWidth()/2-10,
-//         background.getHeight()-30);
-
         super.act(delta);
     }
 
     private float getAnimationDuration() {
-        return 0.5f;
+        return 0.85f;
     }
 
     private String getImage(FACING_DIRECTION facing) {

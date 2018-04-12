@@ -12,9 +12,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.*;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
-import main.game.ai.AI;
 import main.game.bf.Coordinates;
-import main.game.bf.pathing.Path;
 import main.game.core.state.GameState;
 import main.game.core.state.MicroGameState;
 import main.game.core.state.StateManager;
@@ -42,10 +40,7 @@ public abstract class GameManager implements GenericGameManager {
     protected StateManager stateManager;
     protected GameMaster gameMaster;
     protected boolean selecting;
-    protected AI ai;
     protected Set<Obj> selectingSet;
-    private Path path;
-    private Obj lastMovedUnit;
     private ActiveObj activatingAction;
     private boolean triggerBeingChecked;
     private boolean triggerBeingActivated;
@@ -139,14 +134,6 @@ public abstract class GameManager implements GenericGameManager {
 
     public abstract void reset();
 
-    public AI getAI() {
-        return ai;
-    }
-
-    public void setAI(AI ai) {
-        this.ai = ai;
-
-    }
 
     public void resetValues() {
         // TODO Auto-generated method stub
@@ -158,17 +145,6 @@ public abstract class GameManager implements GenericGameManager {
         ref.setEffect(effect);
         return (!getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.EFFECT_IS_BEING_APPLIED, ref)));
 
-    }
-
-    public void setLastTraversedPath(Path path) {
-        this.path = path;
-        LogMaster.log(LogMaster.COMBAT_DEBUG, "Path traversed " + path);
-    }
-
-    public void clearLastTraversedPath() {
-        if (path != null) {
-            path.clearGraphics();
-        }
     }
 
 

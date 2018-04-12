@@ -5,6 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import main.content.enums.entity.UnitEnums;
+import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.MicroCondition;
@@ -52,10 +53,10 @@ public class SneakCondition extends MicroCondition {
             return false;
         }
 
-        if (attacked.checkStatus(UnitEnums.STATUS.IMMOBILE)) {
+        if (attacked.checkStatus(STATUS.UNCONSCIOUS)) {
             return true;
         }
-        if (attacked.checkStatus(UnitEnums.STATUS.CHARMED)) {
+        if (attacked.checkStatus(STATUS.CHARMED)) {
             return true;
         }
 
