@@ -99,7 +99,7 @@ public class DC_StateManager extends StateManager {
     private void resetAll() {
         if (getGame().getDungeonMaster().getExplorationMaster() != null) {
             getGame().getDungeonMaster().getExplorationMaster()
-             .getCrawler().checkStatusUpdate();
+             .getAggroMaster().checkStatusUpdate();
         }
         if (getGame().isStarted() && ExplorationMaster.isExplorationOn()) {
             // we will need full reset: after traps or other spec. effects; for Cells/Illumination

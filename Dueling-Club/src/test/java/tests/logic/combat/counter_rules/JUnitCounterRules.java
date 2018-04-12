@@ -33,6 +33,8 @@ public class JUnitCounterRules extends JUnitSingleUnit {
             helper.passTime(10f);
 //            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED);
 
+//            Unit mock = Mockito.mock(Unit.class);
+//            Mockito.verify(mock, Mockito.times(10)).de;
             Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
             game.getDungeonMaster().getExplorationMaster().getTimeMaster().checkTimedEvents();
 
@@ -69,6 +71,6 @@ public class JUnitCounterRules extends JUnitSingleUnit {
     }
 
     protected int getDefaultCounterNumber() {
-        return 10;
+        return 40;
     }
 }

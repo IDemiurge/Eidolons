@@ -1,5 +1,7 @@
 package eidolons.libgdx.bf.light;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -38,6 +40,8 @@ public class ShadeLightCell extends SuperContainer {
 
     private static final Color DEFAULT_COLOR = new Color(1, 0.9f, 0.7f, 1);
     private static boolean alphaFluctuation = true;
+    private final Float width;
+    private final Float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     private int x;
     private int y;
@@ -45,8 +49,7 @@ public class ShadeLightCell extends SuperContainer {
     private float baseAlpha = 0;
     private Float originalX;
     private Float originalY;
-    private final Float width;
-    private final Float height;
+
 
     public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
         super(new Image(TextureCache.getOrCreateR(getTexturePath(type))));
@@ -62,7 +65,6 @@ public class ShadeLightCell extends SuperContainer {
         width = getContent().getWidth();
         height = getContent().getHeight();
     }
-
 
     private static String getTexturePath(SHADE_LIGHT type) {
         switch (type) {
@@ -152,9 +154,36 @@ public class ShadeLightCell extends SuperContainer {
     public void draw(Batch batch, float parentAlpha) {
         if (isIgnored())
             return;
-
+        storeBlendingFuncData(batch);
+        initBlending(batch);
         super.draw(batch, parentAlpha);
+        restoreBlendingFuncData(batch);
     }
+
+    private void initBlending(Batch batch) {
+        BLENDING mode = null;
+        switch (type) {
+            case GAMMA_LIGHT:
+            case LIGHT_EMITTER:
+
+                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
+                 ? BLENDING.OVERLAY
+                 : BLENDING.SATURATE;
+                break;
+            case CONCEALMENT:
+            case GAMMA_SHADOW:
+                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
+                 ? BLENDING.OVERLAY
+                 : BLENDING.MULTIPLY;
+            case BLACKOUT:
+                break;
+            case HIGLIGHT:
+                break;
+        }
+        if (mode != null)
+            batch.setBlendFunction(mode.blendSrcFunc, mode.blendDstFunc);
+    }
+
 
     @Override
     public boolean isIgnored() {

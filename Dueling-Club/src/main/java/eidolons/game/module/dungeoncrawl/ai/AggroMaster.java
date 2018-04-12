@@ -3,19 +3,19 @@ package eidolons.game.module.dungeoncrawl.ai;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationHandler;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import io.vertx.core.impl.ConcurrentHashSet;
 import main.entity.obj.Obj;
-import main.game.logic.battle.player.Player;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class AggroMaster {
+public class AggroMaster extends ExplorationHandler {
+    private int minDistance = 4;
     public static final float AGGRO_RANGE = 2.5f;
     public static final float AGGRO_GROUP_RANGE = 1.5f;
     private static final int DEFAULT_ENGAGEMENT_DURATION = 3;
@@ -23,7 +23,75 @@ public class AggroMaster {
     private static boolean sightRequiredForAggro = true;
     private static List<Unit> lastAggroGroup;
 
+    public AggroMaster(ExplorationMaster master) {
+        super(master);
+    }
 
+    private boolean checkEngaged() {
+        List<Unit> aggroGroup = AggroMaster.getAggroGroup();
+
+        if (!aggroGroup.isEmpty()) {
+            for (Unit sub : aggroGroup) {
+                sub.getAI().setStandingOrders(null);
+            }
+            for (Unit sub : master.getGame().getUnits()) {
+                sub.getAI().setOutsideCombat(false);
+                if (!aggroGroup.contains(sub))
+                    if (!sub.isMine())
+//                    if (!master.getAiMaster().getAllies().contains(sub))
+                        sub.getAI().setOutsideCombat(true);
+            }
+//            aggroGroup.forEach(unit -> unit.getAI().setEngaged(true));
+//            master.getGame().getTurnManager().setUnitGroup(
+//             new DequeImpl<>(aggroGroup, allies));
+            return true;
+        }
+//        for (Unit ally :allies) {
+        // check block if (unit.getCoordinates())
+//         TODO    if (master. getGame().getVisionMaster().getDetectionMaster().checkDetected(ally))
+//                return true;
+//        }
+        return false;
+    }
+
+    public boolean checkExplorationDefault() {
+        return !checkEngaged();
+    }
+
+    public void checkStatusUpdate() {
+        if (checkEngaged()) {
+            master.switchExplorationMode(false);
+        } else {
+            if (checkDanger()) {
+                //?
+            } else {
+                master.switchExplorationMode(true);
+            }
+        }
+
+    }
+
+
+
+    public enum CRAWL_STATUS {
+        EXPLORE,
+        DANGER, //rounds on? behaviors ?
+        ENGAGED,
+        TIME_RUN
+    }
+
+
+
+    private boolean checkDanger() {
+        //range? potential vision?
+//        for (Unit unit : allies) {
+//            if (master. getGame().getAiManager().getAnalyzer().getClosestEnemyDistance(unit)
+//                > minDistance)
+//                return true;
+//        }
+        return false;
+
+    }
     public static List<Unit> getAggroGroup() {
 //        Unit hero = (Unit) DC_Game.game.getPlayer(true).getHeroObj();
         List<Unit> list = new ArrayList<>();
@@ -129,7 +197,8 @@ public class AggroMaster {
     }
 
     public static boolean checkEngaged(UnitAI ai) {
-        Unit unit = ai.getUnit();
+        return false;
+//        Unit unit = ai.getUnit();
         // PERCEPTION_STATUS_PLAYER status =
         // ai.getGroup().getPerceptionStatus();
 
@@ -138,56 +207,22 @@ public class AggroMaster {
         // don't see you
         // HEARING would be an important factor...
         // for (DC_HeroObj unit : getCreeps()) {
-        List<Unit> relevantEnemies = getRelevantEnemies(unit);
-        for (Unit hero : relevantEnemies) {
+//        List<Unit> relevantEnemies = getRelevantEnemies(unit);
+//        for (Unit hero : relevantEnemies) {
             // preCheck detections - perhaps it's really just about making a preCheck
             // before AS-constr.
-
             // sometimes creeps may be engaged but not know what hit them...
-
             // different aggro levels?
             // if (status == PERCEPTION_STATUS_PLAYER.KNOWN_TO_BE_THERE)
             // return true;
-
-            if (VisionManager.checkVisible(hero)) {
-                return true;
-            }
-        }
+//            if (VisionManager.checkVisible(hero)) {
+//                return true;
+//            }
+//        }
         // }
-
-        return false;
-
-    }
-
-    private static List<Unit> getRelevantEnemies(Unit unit) {
-        List<Unit> list = new ArrayList<>();
-        for (Unit enemy : unit.getGame().getUnits()) {
-            if (enemy.getOwner().equals(Player.NEUTRAL) || enemy.getOwner().equals(unit.getOwner())) {
-                continue;
-            }
-            if (unit.getZ() != enemy.getZ()) {
-                continue;
-            }
-            list.add(enemy);
-        }
-        return list;
-
-    }
-
-    private static List<Unit> getCreeps() {
-        List<Unit> list = new ArrayList<>();
-        for (Unit unit : DC_Game.game.getUnits()) {
-
-        }
-
-        return list;
     }
 
     public static void unitAttacked(DC_ActiveObj action, Obj targetObj) {
-//        if (!ExplorationMaster.isExplorationOn()) {
-//
-//
-//        } else {
 
         if (targetObj.isMine()) {
             action.getOwnerObj().
@@ -218,32 +253,5 @@ public class AggroMaster {
         AGGRO // will engage and make combat-actions
     }
 
-	/*
-     * Extended Battlefield - don't limit coordinates, don't add if outside vision
-	 * Ray effects
-	 * Global BF effects 
-	 * 
-	 * Grid coordinate offset
-	 * 
-	 * just add the same x/y for centering; although some may want additional offset to accomodate targeting or sight range (vertical)
-	 * 
-	 * borders of the battlefield 
-	 *
-	 * generic-dungeons - changing (caching) battlefield, filtering bf-obj add by sublevel
-	 * >> enter/leave for each hero? 
-	 * 
-	 * entrance-based spawning 
-	 * 
-	 * wandering creeps - tweaked AI  
-	 * 
-	 * hidden treasures 
-	 * 
-	 * doors: next to indestructible impassible walls 
-	 * 
-	 *  Will a minimap really be necessary? 
-	 * 
-	 * 
-	 * 
-	 */
 
 }

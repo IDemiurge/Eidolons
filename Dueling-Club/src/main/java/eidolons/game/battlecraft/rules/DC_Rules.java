@@ -26,7 +26,7 @@ import eidolons.game.core.game.DC_Game;
 import main.game.core.game.GameRules;
 import main.system.datatypes.DequeImpl;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DC_Rules implements GameRules {
@@ -182,7 +182,7 @@ public class DC_Rules implements GameRules {
 
         CounterMasterAdvanced.defineInteractions();
 
-        timedRules =     new HashMap<>();
+        timedRules =     new LinkedHashMap<>();
 //        for (DamageCounterRule sub : damageRules) {
 //        }
         timedRules.put(poisonRule,poisonRule);

@@ -2,6 +2,7 @@ package eidolons.libgdx.bf;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -33,6 +34,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     protected float scaledHeight = 1;
     protected boolean hovered;
     protected boolean active;
+    protected int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
     ALPHA_TEMPLATE alphaTemplate;
     private float alphaPause;
     private boolean hoverResponsive;
@@ -42,6 +44,28 @@ public abstract class SuperActor extends GroupX implements Borderable {
     private float fluctuatingAlphaRandomness, fluctuatingAlphaMin, fluctuatingAlphaMax;
     private Boolean withinCamera;
 
+    public enum BLENDING{
+        OVERLAY(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
+        MULTIPLY(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SATURATE(GL20.GL_DST_COLOR, GL20.GL_ONE),
+        DARKEN(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SUBTRACT(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
+;
+
+       public   int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
+
+        BLENDING(int blendDstFunc, int blendSrcFunc) {
+            this.blendDstFunc = blendDstFunc;
+            this.blendSrcFunc = blendSrcFunc;
+        }
+
+        BLENDING(int blendDstFunc, int blendSrcFunc, int blendDstFuncAlpha, int blendSrcFuncAlpha) {
+            this.blendDstFunc = blendDstFunc;
+            this.blendSrcFunc = blendSrcFunc;
+            this.blendDstFuncAlpha = blendDstFuncAlpha;
+            this.blendSrcFuncAlpha = blendSrcFuncAlpha;
+        }
+    }
     public SuperActor() {
     }
 
@@ -150,15 +174,22 @@ public abstract class SuperActor extends GroupX implements Borderable {
     @Override
     public void addAction(Action action) {
         if (!getActions().contains(action, true))
-         super.addAction(action);
+            super.addAction(action);
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-//        batch.setBlendFunctionSeparate();
-        super.draw(batch, parentAlpha);
-//        batch.setBlendFunction();
-//    cleanUpBlending();
+    protected void restoreBlendingFuncData(Batch batch) {
+        batch.setBlendFunctionSeparate(
+         blendSrcFunc,
+         blendDstFunc,
+         blendSrcFuncAlpha,
+         blendDstFuncAlpha);
+    }
+
+    protected void storeBlendingFuncData(Batch batch) {
+        blendDstFunc = batch.getBlendDstFunc();
+        blendSrcFunc = batch.getBlendSrcFunc();
+        blendDstFuncAlpha = batch.getBlendDstFuncAlpha();
+        blendSrcFuncAlpha = batch.getBlendSrcFuncAlpha();
     }
 
     @Override

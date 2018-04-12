@@ -66,9 +66,9 @@ public class QuickWeaponPanel extends TablePanel {
         addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.UNARMED));
         pack();
         if (offhand)
-            weapon.setPosition(0, GdxMaster.top(toggleUnarmed));
+            toggleUnarmed.setPosition(0, GdxMaster.top(toggleUnarmed));
         else
-            weapon.setPosition(GdxMaster.right(toggleUnarmed), GdxMaster.top(toggleUnarmed));
+            toggleUnarmed.setPosition(GdxMaster.right(toggleUnarmed), GdxMaster.top(toggleUnarmed));
 
     }
 

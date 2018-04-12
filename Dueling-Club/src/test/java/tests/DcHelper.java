@@ -5,6 +5,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
@@ -80,19 +81,20 @@ public class DcHelper implements JUnitHelper {
     public void kill(Entity killer, boolean corpse, Boolean quiet, Obj... objects) {
         for (Obj sub : objects) {
             sub.kill(killer, corpse, quiet);
+            if (!corpse)
+                assertTrue(sub.isAnnihilated());
+            else
+                assertTrue(sub.isDead());
         }
     }
 
     public void kill(Entity killer, Obj... objects) {
-        for (Obj sub : objects) {
-            sub.kill(killer, true, false);
-        }
+        kill(killer, true, false, objects);
     }
 
     public void kill(Obj... objects) {
-        for (Obj sub : objects) {
-            sub.kill(sub, true, false);
-        }
+        kill(null, objects);
+
     }
 
     public BattleFieldObject object(String name, int x, int y, DC_Player owner,
@@ -105,9 +107,10 @@ public class DcHelper implements JUnitHelper {
 
     @Override
     public void move(Obj source, int x, int y) {
+        Coordinates c = new Coordinates(x, y);
         game.getCombatMaster().getMovementManager().move(source,
-         new Coordinates(x, y));
-
+         c);
+        assertTrue(source.getCoordinates().equals(c));
 
     }
 
@@ -126,9 +129,11 @@ public class DcHelper implements JUnitHelper {
             source.setFacing(FacingMaster.rotate(source.getFacing(), clockwise));
         }
     }
+
     public void endCombat() {
 
     }
+
     public void aggroClosest() {
 
     }
@@ -156,6 +161,32 @@ public class DcHelper implements JUnitHelper {
         unit.addCounter(counter.getName(), i + "");
     }
 
+
+    public void startCombatNaturally(boolean all_or_closest_group) {
+
+    }
+
+    public void startCombat() {
+        startCombat(true);
+    }
+
+    public void startCombat(boolean all_or_closest_group) {
+
+        for (GroupAI sub : game.getAiManager().getGroups()) {
+            if (all_or_closest_group)
+                for (Unit ignored : sub.getMembers()) {
+                    ignored.getAI().setEngaged(true);
+                }
+            else {
+                //TODO
+            }
+        }
+//        AggroMaster.unitAttacked();
+        game.getDungeonMaster().getExplorationMaster()
+         .getAggroMaster().checkStatusUpdate();
+
+        assertTrue(!ExplorationMaster.isExplorationOn());
+    }
 
     @Override
     public void reset() {

@@ -140,9 +140,9 @@ public class DamageDealer {
         DC_ActiveObj active = (DC_ActiveObj) ref.getActive();
         int damageDealt = 0;
         if (damage_type == DAMAGE_TYPE.PURE) {
-            damageDealt = dealPureDamage(targetObj, attacker, amount,
+            damageDealt = dealPureDamage(targetObj, attacker,
              (DamageCalculator.isEnduranceOnly(ref) ? 0
-              : amount), ref);
+              : amount),  amount, ref);
         } else {
             damageDealt = dealDamage(ref, !isAttack(ref), damage_type);
         }
@@ -296,8 +296,8 @@ public class DamageDealer {
         return (event.fire());
     }
 
-    private static int dealPureDamage(BattleFieldObject attacked, Unit attacker, Integer endurance_dmg,
-                                      Integer toughness_dmg, Ref ref) {
+    private static int dealPureDamage(BattleFieldObject attacked, Unit attacker,
+                                      Integer toughness_dmg, Integer endurance_dmg,Ref ref) {
         // apply Absorption here?
 
         boolean enduranceOnly = false;
@@ -370,6 +370,8 @@ public class DamageDealer {
             event = new Event(STANDARD_EVENT_TYPE.UNIT_IS_DEALT_ENDURANCE_DAMAGE, ref);
             result = event.fire();
 
+        } else {
+            return 1;
         }
         int damageDealt = Math.max(actual_e_damage, actual_t_damage);
 

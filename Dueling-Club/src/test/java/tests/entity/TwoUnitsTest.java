@@ -10,7 +10,7 @@ import org.junit.Before;
 /**
  * Created by JustMe on 3/28/2017.
  */
-public class TwoUnitsTest extends CreateUnitTest {
+public class TwoUnitsTest extends JUnitPartyCreated {
     protected Unit entity2;
     protected String typeName2 = "Thief";
 

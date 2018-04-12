@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by JustMe on 3/28/2017.
  */
-public class WeaponSkillTest extends CreateUnitTest {
+public class WeaponSkillTest extends JUnitPartyCreated {
 
     protected String skillName = "Greater Strength";
     protected String itemName = "inferior bronze dagger";

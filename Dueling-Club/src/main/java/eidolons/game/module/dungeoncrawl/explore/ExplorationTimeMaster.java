@@ -119,7 +119,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
                                 break;
                             }
                         }
-                        master.getCrawler().checkStatusUpdate();
+                        master.getAggroMaster().checkStatusUpdate();
                         if (!ExplorationMaster.isExplorationOn()) {
                             result = false;
                             break;

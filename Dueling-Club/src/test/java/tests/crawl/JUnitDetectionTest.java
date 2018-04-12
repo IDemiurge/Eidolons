@@ -19,7 +19,7 @@ public class JUnitDetectionTest extends JUnitClearshotTest {
         if (VisionManager.checkDetected(sub)) {
             assertTrue(false);
         }
-//    game.getDungeonMaster().getExplorationMaster().getCrawler().checkStatusUpdate();
+//    game.getDungeonMaster().getExplorationMaster().getAggroMaster().checkStatusUpdate();
 //        List<Unit> group = AggroMaster.getAggroGroup();
     }
 

@@ -7,7 +7,7 @@ import main.entity.Ref;
 import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;
-import tests.entity.CreateUnitTest;
+import tests.entity.JUnitPartyCreated;
 
 /**
  * Created by JustMe on 3/26/2017.
@@ -17,7 +17,7 @@ import tests.entity.CreateUnitTest;
  * //TODO but what exactly does it test?
  * // which buff rules?
  */
-public class BuffRulesTest extends CreateUnitTest {
+public class BuffRulesTest extends JUnitPartyCreated {
 
     PARAMS[] root_params = {
      PARAMS.C_FOCUS,

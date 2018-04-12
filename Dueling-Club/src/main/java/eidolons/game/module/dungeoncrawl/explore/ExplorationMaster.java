@@ -23,15 +23,15 @@ public class ExplorationMaster {
     private ExplorePartyMaster partyMaster;
     private ExploreCleaner cleaner;
     private ExplorationResetHandler resetter;
-    private DungeonCrawler crawler;
     private ExplorationActionHandler actionHandler;
+    private AggroMaster aggroMaster;
 
     public ExplorationMaster(DC_Game game) {
         this.game = game;
+        aggroMaster = new AggroMaster(this);
         aiMaster = new ExplorationAiMaster(this);
         timeMaster = new ExplorationTimeMaster(this);
         resetter = new ExplorationResetHandler(this);
-        crawler = new DungeonCrawler(this);
         cleaner = new ExploreCleaner(this);
         actionHandler = new ExplorationActionHandler(this);
         partyMaster = new ExplorePartyMaster(this);
@@ -145,8 +145,8 @@ public class ExplorationMaster {
         return resetter;
     }
 
-    public DungeonCrawler getCrawler() {
-        return crawler;
+    public AggroMaster getAggroMaster() {
+        return aggroMaster;
     }
 
     public ExploreCleaner getCleaner() {
@@ -158,7 +158,7 @@ public class ExplorationMaster {
     }
 
     public void init() {
-        explorationOn = getCrawler().checkExplorationDefault();
+        explorationOn = getAggroMaster().checkExplorationDefault();
     }
 
     public ExploreGameLoop getLoop() {
