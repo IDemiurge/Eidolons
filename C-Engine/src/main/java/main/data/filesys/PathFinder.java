@@ -341,4 +341,10 @@ public class PathFinder {
         return StrPathBuilder.build(
          "ui", "content") + StringMaster.getPathSeparator();
     }
+
+    public static String getSkinPath() {
+        return
+         getImagePath()+
+         "UI\\components\\skin\\neutralizer-ui.json";
+    }
 }

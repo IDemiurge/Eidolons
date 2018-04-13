@@ -14,7 +14,6 @@ import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.system.options.Options.OPTION;
@@ -28,11 +27,11 @@ import java.util.Map;
  * Created by JustMe on 4/2/2018.
  */
 public class OptionsWindow extends VisWindow {
+    private static OptionsWindow instance;
     Stage stage;
     Table root;
     Array<OptionsTab> tabs = new Array<>();
     private Map<OPTIONS_GROUP, Options> optionsMap;
-    private static OptionsWindow instance;
 
     private OptionsWindow(
     ) {
@@ -40,16 +39,16 @@ public class OptionsWindow extends VisWindow {
          , StyleHolder.getDefaultLabelStyle().fontColor,
          new NinePatchDrawable(NinePatchFactory.getTooltip())
         ));
-         setVisible(false);
+        setVisible(false);
         setSize(800, 600);
         closeOnEscape();
 
     }
 
     public static OptionsWindow getInstance() {
-        if (instance == null) {
-            instance = new OptionsWindow();
-        }
+//        if (instance == null) {
+        instance = new OptionsWindow();
+//        }
         return instance;
     }
 
@@ -62,19 +61,17 @@ public class OptionsWindow extends VisWindow {
         this.optionsMap = optionsMap;
         this.stage = stage;
         setVisible(true);
-
         clearChildren();
-        root = new Table();
-        root.setFillParent(true);
-        add(root);
-        Table content = init();
-        root.add(content).expand().fill().row();
+        Actor content = init();
+        add(content).expand().fill().left().top().row();
+        Table bottomMenu = createBottomPanel();
+        add(bottomMenu).expandX().left().bottom();
+
         stage.addActor(this);
-        root.setPosition(GdxMaster.centerWidth(root),
-         GdxMaster.centerHeight(root));
         centerWindow();
         center();
         fadeIn();
+        debugAll();
     }
 
     @Override
@@ -85,15 +82,13 @@ public class OptionsWindow extends VisWindow {
     private Table init() {
         tabs = new Array<>();
         TabbedPane optionsPane = new TabbedPane();
-        // tabs
-        add(optionsPane.getTable()).expandX().fillX().row();
-        // tab content
         final Table content = new Table();
 
+        add(optionsPane.getTable()).expandX().fillX().row();
         optionsPane.addListener(new TabbedPaneAdapter() {
             @Override
             public void switchedTab(Tab tab) {
-                content.clear();
+                content.clearChildren();
                 content.add(tab.getContentTable()).expand().top().left();
             }
         });
@@ -106,9 +101,12 @@ public class OptionsWindow extends VisWindow {
 
         optionsPane.switchTab(0);
 
+        return content;
+    }
+
+    private Table createBottomPanel() {
         Table bottomMenu = new Table();
         bottomMenu.defaults().pad(4);
-        add(bottomMenu).expandX().left();
         {
             VisTextButton button = new VisTextButton("Ok");
             addClickListener(button, this::ok);
@@ -134,9 +132,9 @@ public class OptionsWindow extends VisWindow {
             addClickListener(button, this::toDefaults);
             bottomMenu.add(button);
         }
-
-        return content;
+        return bottomMenu;
     }
+
 
     private void toDefaults() {
         OptionsMaster.resetToDefaults();

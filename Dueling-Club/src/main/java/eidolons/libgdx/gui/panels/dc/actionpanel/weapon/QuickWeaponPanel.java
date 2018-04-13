@@ -174,7 +174,7 @@ public class QuickWeaponPanel extends TablePanel {
                 weapon.setZIndex(getChildren().size - 2);
                 weapon.setFadeDuration(0.25f);
                 weapon.setImage(getLargeImage(getActiveWeaponDataSource()));
-                int i = offhand ? -1 : 1;
+                int i = !offhand ? -1 : 1;
                 ActorMaster.addMoveToAction(weapon, WEAPON_POS_X + 20 * i, 20, 0.75f);
             }
 

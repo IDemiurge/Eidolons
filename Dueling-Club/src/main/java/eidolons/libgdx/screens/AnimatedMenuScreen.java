@@ -1,11 +1,13 @@
 package eidolons.libgdx.screens;
 
 
+import com.badlogic.gdx.files.FileHandle;
 import com.kotcrab.vis.ui.VisUI;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
+import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.system.EventCallbackParam;
 
@@ -19,7 +21,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     MainMenu mainMenu;
 
     public AnimatedMenuScreen() {
-        VisUI.load();
+        VisUI.load(new FileHandle(PathFinder.getSkinPath()));
         mainMenu = MainMenu.getInstance();
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(

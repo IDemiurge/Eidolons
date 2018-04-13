@@ -130,12 +130,16 @@ public class VisionRule {
         return true;
     }
 
-    public VISIBILITY_LEVEL visibility(Unit source, DC_Obj object) {
+    public VISIBILITY_LEVEL visibility(Unit source, BattleFieldObject object) {
         UNIT_VISION sight = controller.getUnitVisionMapper().get(source, object);
         boolean landmark = object instanceof Structure;
 //        if (object instanceof BattleFieldObject) {
 //            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
 //        }
+
+        if (master.getGame().getRules().getStealthRule().
+         checkInvisible(source.getOwner(), object))
+            return VISIBILITY_LEVEL.UNSEEN;
 
         switch (sight) {
             case IN_PLAIN_SIGHT:
@@ -171,11 +175,11 @@ public class VisionRule {
 
             }
         }
-        if (object instanceof Unit) {
-            if (StealthRule.checkInvisible(object)) {
-                return (PLAYER_VISION.INVISIBLE);
-            }
-        }
+//        if (object instanceof Unit) { TODO now in visibility!
+//            if (StealthRule.checkInvisible(object)) {
+//                return (PLAYER_VISION.INVISIBLE);
+//            }
+//        }
 
         VISIBILITY_LEVEL visibilityLevel = controller.getVisibilityLevelMapper().
          get(source, object);

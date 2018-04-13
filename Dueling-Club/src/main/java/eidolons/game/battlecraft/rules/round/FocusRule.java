@@ -21,5 +21,8 @@ public class FocusRule extends RetainRestoreRule {
         return !ParamAnalyzer.isFocusIgnore(unit);
     }
 
-
+    @Override
+    public PARAMETER getMaxParam() {
+        return PARAMS.STARTING_FOCUS;
+    }
 }

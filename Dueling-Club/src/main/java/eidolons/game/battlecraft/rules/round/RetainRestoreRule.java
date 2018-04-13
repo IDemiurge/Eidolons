@@ -20,7 +20,7 @@ public abstract class RetainRestoreRule extends RoundRule {
     @Override
     public void apply(Unit unit, float delta) {
         int diff = unit.getIntParam(getCurrentParam())
-         - unit.getIntParam(getBaseParameter());
+         - unit.getIntParam(getMaxParam());
         if (diff == 0) {
             return;
         }
@@ -42,7 +42,7 @@ public abstract class RetainRestoreRule extends RoundRule {
         }
         if (restore) {
             unit.modifyParameter(getCurrentParam(), amount, unit
-             .getIntParam(getBaseParameter()));
+             .getIntParam(getMaxParam()));
         } else {
             unit.modifyParameter(getCurrentParam(), -amount);
         }
@@ -51,6 +51,9 @@ public abstract class RetainRestoreRule extends RoundRule {
 
     protected abstract PARAMETER getBaseParameter();
 
+    public PARAMETER getMaxParam() {
+        return getBaseParameter();
+    }
     public PARAMETER getCurrentParam() {
         if (currentParam == null) {
             currentParam = ContentValsManager.getCurrentParam(getBaseParameter());

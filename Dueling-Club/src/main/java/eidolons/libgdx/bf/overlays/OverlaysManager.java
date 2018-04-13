@@ -33,6 +33,9 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.images.ImageManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
 
 /**
@@ -43,23 +46,31 @@ public class OverlaysManager extends SuperActor {
     private final GridCellContainer[][] cells;
     GridPanel gridPanel;
     boolean sightInfoDisplayed;
+    Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
     private BattleFieldObject observer;
 
     public OverlaysManager(GridPanel gridPanel) {
         this.gridPanel = gridPanel;
         cells = gridPanel.getCells();
         setAlphaTemplate(ALPHA_TEMPLATE.OVERLAYS);
+        for (OVERLAY sub : OVERLAY.values()) {
+            if (isListenerRequired(sub)) {
+                listenerCaches.put(sub, new HashMap<>());
+            }
+        }
     }
-    public ClickListener getOverlayListener(OVERLAY overlay, Actor parent, int xPos, int yPos){
-//cache for easy remove?
 
+    public ClickListener getOverlayListener(OVERLAY overlay, Actor parent,
+                                            float xPos, float yPos) {
+//cache for easy remove?
+        Vector2 pos = parent.stageToLocalCoordinates(new Vector2(xPos, yPos));
         int width = getOverlayWidth(overlay, parent);
         int height = getOverlayHeight(overlay, parent);
-        return new SmartClickListener(parent){
+        return new SmartClickListener(parent) {
             private boolean checkPos(float x, float y) {
-                if (Math.abs(xPos-x )>width)
+                if (Math.abs(pos.x - x) > width)
                     return false;
-                if (Math.abs(yPos-y )>height)
+                if (Math.abs(pos.y - y) > height)
                     return false;
                 return true;
             }
@@ -67,14 +78,14 @@ public class OverlaysManager extends SuperActor {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (!checkPos(x, y))
-                    return ;
+                    return;
                 super.enter(event, x, y, pointer, fromActor);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 if (!checkPos(x, y))
-                    return ;
+                    return;
                 super.exit(event, x, y, pointer, toActor);
             }
 
@@ -92,7 +103,7 @@ public class OverlaysManager extends SuperActor {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (!checkPos(x, y))
                     return false;
-                return overlayTouchDown(overlay,parent,  pointer, button);
+                return overlayTouchDown(overlay, parent, pointer, button);
             }
         };
     }
@@ -104,12 +115,12 @@ public class OverlaysManager extends SuperActor {
                 break;
         }
     }
+
     private void overlayExited(OVERLAY overlay, Actor parent) {
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null );
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
     }
 
-
-    private boolean overlayTouchDown(OVERLAY overlay, Actor parent,    int pointer, int button) {
+    private boolean overlayTouchDown(OVERLAY overlay, Actor parent, int pointer, int button) {
         switch (overlay) {
             case HP_BAR:
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
@@ -171,22 +182,20 @@ public class OverlaysManager extends SuperActor {
         if (GridPanel.isHpBarsOnTop()) {
             drawOverlay(actor, HP_BAR, batch);
         }
-        BattleFieldObject obj = null ;
+        BattleFieldObject obj = null;
         if (actor instanceof LastSeenView) {
-            obj =DungeonScreen.getInstance().getGridPanel().
-             getObjectForView(  ((LastSeenView) actor).getParentView());
+            obj = DungeonScreen.getInstance().getGridPanel().
+             getObjectForView(((LastSeenView) actor).getParentView());
 
-        } else
-        {
-            obj =DungeonScreen.getInstance().getGridPanel().getObjectForView(actor);
+        } else {
+            obj = DungeonScreen.getInstance().getGridPanel().getObjectForView(actor);
         }
         if (obj == null) {
             return;
         }
         if (checkOverlayForObj(SPOTTED, obj)) {
             drawOverlay(actor, SPOTTED, batch);
-        }   else
-        if (checkOverlayForObj(STEALTH, obj)) {
+        } else if (checkOverlayForObj(STEALTH, obj)) {
             drawOverlay(actor, STEALTH, batch);
         }
     }
@@ -261,6 +270,24 @@ public class OverlaysManager extends SuperActor {
                     actor.draw(batch, 1);
                 }
         }
+        if (!isListenerRequired(overlay))
+            return;
+        ClickListener listener = listenerCaches.get(overlay).get(parent);
+        if (listener == null) {
+            listener = getOverlayListener(overlay, parent, v.x, v.y);
+            listenerCaches.get(overlay).put(parent, listener);
+        }
+        if (!parent.getListeners().contains(listener, true)) {
+            parent.addListener(listener);
+        }
+    }
+
+    private boolean isListenerRequired(OVERLAY overlay) {
+        switch (overlay) {
+            case HP_BAR:
+                return true;
+        }
+        return false;
     }
 
     private Actor getOverlayActor(Actor parent, OVERLAY overlay) {
@@ -330,6 +357,22 @@ public class OverlaysManager extends SuperActor {
         return false;
     }
 
+    private int getOverlayWidth(OVERLAY overlay, Actor parent) {
+        TextureRegion region = getRegion(overlay);
+        if (region != null)
+            return region.getRegionWidth();
+        return (int) getOverlayActor(parent, overlay).getWidth();
+
+    }
+
+    private int getOverlayHeight(OVERLAY overlay, Actor parent) {
+        TextureRegion region = getRegion(overlay);
+        if (region != null)
+            return region.getRegionHeight();
+        return (int) getOverlayActor(parent, overlay).getHeight();
+
+    }
+
     public enum OVERLAY {
         SPOTTED(Align.bottomLeft),
         HP_BAR,
@@ -362,20 +405,5 @@ public class OverlaysManager extends SuperActor {
                 this.path = path;
             this.alignment = alignment;
         }
-    }
-
-    private int getOverlayWidth(OVERLAY overlay, Actor parent) {
-        TextureRegion region = getRegion(overlay);
-        if (region!=null )
-            return region.getRegionWidth();
-        return (int) getOverlayActor(parent, overlay).getWidth();
-
-    }
-    private int getOverlayHeight(OVERLAY overlay, Actor parent) {
-        TextureRegion region = getRegion(overlay);
-        if (region!=null )
-            return region.getRegionHeight();
-        return (int) getOverlayActor(parent, overlay).getHeight();
-
     }
 }

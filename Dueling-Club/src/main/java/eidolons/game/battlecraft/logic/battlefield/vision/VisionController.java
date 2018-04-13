@@ -51,6 +51,7 @@ public class VisionController {
     GammaMapper gammaMapper;
     LastSeenMapper lastSeenMapper;
     List<GenericMapper> mappers ;
+    private StealthMapper stealthMapper;
 
 
     public VisionController(VisionMaster visionMaster) {
@@ -61,6 +62,7 @@ public class VisionController {
 
     public void init() {
         mappers = new ArrayList<>();
+        mappers.add(stealthMapper= new StealthMapper());
         mappers.add(lastSeenMapper = new LastSeenMapper());
         mappers.add(gammaMapper = new GammaMapper());
         mappers.add(clearshotMapper = new ClearshotMapper());
@@ -177,6 +179,10 @@ public class VisionController {
                 sub.log(unit.getOwner(), objs);
             else sub.log(unit, objs);
         }
+    }
+
+    public StealthMapper getStealthMapper() {
+        return stealthMapper;
     }
 
 

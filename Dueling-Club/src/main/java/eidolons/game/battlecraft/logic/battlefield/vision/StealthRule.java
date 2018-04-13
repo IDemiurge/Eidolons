@@ -7,6 +7,7 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.DC_UnitModel;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
@@ -54,7 +55,7 @@ public class StealthRule implements ActionRule {
         // or perhaps upon moving beyond vision range TODO
     }
 
-    public static boolean checkInvisible(BattleFieldObject unit) {
+    public   boolean checkInvisible(DC_Player player,  BattleFieldObject unit) {
         if (VisionManager.isVisionHacked()) {
             if (!unit.isMine())
             return false;
@@ -79,11 +80,18 @@ public class StealthRule implements ActionRule {
         // if (unit.getPlayerVisionStatus() == UNIT_TO_PLAYER_VISION.DETECTED)
         // return false; // TODO ???
 
-        if (unit.getIntParam(PARAMS.STEALTH) <= 0) {
+        boolean result = game.getVisionMaster().getVisionController()
+         .getDetectionMapper().get(player, unit);
+        if (result) {
+            game.getVisionMaster().getVisionController()
+             .getStealthMapper().set(player, unit, false);
             return false;
-        } else {
-
-            boolean result = true;
+        }
+        result = game.getVisionMaster().getVisionController()
+         .getStealthMapper().get(player, unit);
+        if (!result)
+        if (unit.getIntParam(PARAMS.STEALTH) > 0) {
+              result = true;
             int stealth = unit.getIntParam(PARAMS.STEALTH);
 
             for (Unit obj : unit.getGame().getPlayer(!unit.getOwner().isMe()).getControlledUnits_()) {
@@ -100,12 +108,15 @@ public class StealthRule implements ActionRule {
                     break;
                 }
             }
-            if (result) {
-                unit.setSneaking(true);
-            }
-            return result;
+
+        }
+        if (result) {
+            unit.setSneaking(true);
+        game.getVisionMaster().getVisionController()
+         .getStealthMapper().set(player, unit, result);
         }
 
+        return result;
     }
 
     private static int getDetection(DC_Obj target, Obj source) {
