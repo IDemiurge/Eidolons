@@ -183,7 +183,7 @@ public class GearCluster extends GroupX {
 
         public String getImagePath() {
             return StrPathBuilder.build(PathFinder.getComponentsPath(),
-             "2018", "clock", StringMaster.getWellFormattedString(toString()) + ".png");
+             "dc", "clock", StringMaster.getWellFormattedString(toString()) + ".png");
         }
 
         public float getSpeedBasis() {

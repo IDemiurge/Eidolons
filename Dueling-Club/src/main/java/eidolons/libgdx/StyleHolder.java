@@ -293,4 +293,7 @@ public class StyleHolder {
         return defaultTabStyle;
     }
 
+    public static LabelStyle getHqLabelStyle(int fontSize) {
+        return getSizedLabelStyle(FONT.METAMORPH,fontSize );
+    }
 }

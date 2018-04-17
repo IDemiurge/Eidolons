@@ -43,11 +43,20 @@ public class DC_ContentValsManager extends ContentValsManager {
      PARAMS.C_ESSENCE,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
-     PARAMS.C_ESSENCE,
+     PARAMS.ATTACK,PARAMS.DEFENSE,PARAMS.ARMOR,PARAMS.FORTITUDE,PARAMS.RESISTANCE,PARAMS.SPIRIT,
     };
     public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
      PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
      PARAMS.KNOWLEDGE, PARAMS.WISDOM, PARAMS.CHARISMA,};
+
+    public static final PARAMS[] ATTRIBUTES_WRAPPED = {
+     PARAMS.STRENGTH, PARAMS.INTELLIGENCE,PARAMS.VITALITY,
+     PARAMS.SPELLPOWER,  PARAMS.AGILITY, PARAMS.KNOWLEDGE,    PARAMS.DEXTERITY,
+     PARAMS.WISDOM,  PARAMS.WILLPOWER,  PARAMS.CHARISMA,
+
+    };
+
+
     public static final PARAMS[] COST_PARAMS = {PARAMS.ESS_COST, PARAMS.ENDURANCE_COST,
      PARAMS.FOC_COST, PARAMS.STA_COST, PARAMS.AP_COST,};
     public static final PARAMS[] PAY_PARAMS = {PARAMS.C_ESSENCE, PARAMS.C_ENDURANCE,
@@ -92,15 +101,6 @@ public class DC_ContentValsManager extends ContentValsManager {
     private static PROPERTY[] headerUnitProps = {G_PROPS.ASPECT, G_PROPS.DEITY, G_PROPS.STATUS,
      G_PROPS.MODE};
     private static PROPERTY[] headerCharProps = {G_PROPS.RACE, G_PROPS.RANK,};
-    // takes
-    // weapon
-    // and
-    // armor
-    // params
-    // as
-    // well
-    // as
-    // masteries
     public final static PROPERTY[][] headerProps = {headerUnitProps, headerCharProps,};
     private static PARAMETER[] headerUnitParams = {PARAMS.BASE_DAMAGE, PARAMS.ARMOR,
      PARAMS.DEFENSE, PARAMS.ATTACK, PARAMS.C_MORALE, PARAMS.RESISTANCE, PARAMS.SPELL_ARMOR,
@@ -109,13 +109,10 @@ public class DC_ContentValsManager extends ContentValsManager {
     };
     private static PARAMETER[] headerUnitParams2 = {PARAMS.C_N_OF_COUNTERS, PARAMS.C_N_OF_ACTIONS,
      PARAMS.C_INITIATIVE, PARAMS.C_ENDURANCE,
-
      PARAMS.STEALTH, PARAMS.CONCEALMENT, PARAMS.DETECTION, PARAMS.BEHIND_SIGHT_BONUS,
      PARAMS.SIDE_SIGHT_PENALTY,
-
      PARAMS.ENDURANCE_REGEN, PARAMS.C_CARRYING_WEIGHT, PARAMS.INITIATIVE_MODIFIER,
      PARAMS.INITIATIVE_BONUS,
-
     };
 
     // next page => Masteries
@@ -137,20 +134,13 @@ public class DC_ContentValsManager extends ContentValsManager {
      G_PROPS.BF_OBJECT_TYPE, G_PROPS.IMAGE, G_PROPS.TYPE, G_PROPS.LORE, G_PROPS.DEITY,
      G_PROPS.DESCRIPTION, G_PROPS.GROUP, G_PROPS.SOUNDSET, PARAMS.QUANTITY};
     private static VALUE[][] excludedValues = {
-     //
      {PROPS.DAMAGE_TYPE,},
-     //
      {},
-     //
      {PROPS.DAMAGE_TYPE,}, // CHARS
      {}, {}};
     private static String[] unknownValues = {G_PROPS.TYPE.name(), PROPS.VISIBILITY_STATUS.name(),
      PROPS.DETECTION_STATUS.name(), PROPS.FACING_DIRECTION.name(),
-     // size
-     // type
-
      PARAMS.C_INITIATIVE.name(), PARAMS.C_N_OF_ACTIONS.name(),
-
     };
     private static List<VALUE> NO_SHOW_NAME_VALUES = new ArrayList<>();
 
@@ -194,6 +184,7 @@ public class DC_ContentValsManager extends ContentValsManager {
 
         FEAT_MODIFYING_PARAMS = list.toArray(new PARAMETER[list.size()]);
     }
+
 
     public DC_ContentValsManager() {
         super();
@@ -940,7 +931,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         return ContentValsManager.getPARAM(dmg_type.name() + "_ARMOR");
     }
 
-    public static ArrayList<PARAMETER> getDynamicParams() {
+    public static List<PARAMETER> getDynamicParams() {
         return dynamicParams;
     }
 

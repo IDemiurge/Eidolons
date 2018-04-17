@@ -87,13 +87,13 @@ public class HpBar extends SuperActor {
     public HpBar(ResourceSourceImpl dataSource) {
         this.dataSource = dataSource;
         barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "2017", "grid", "unit", "hp bar empty.png"));
+         "dc",  "unit", "hp bar empty.png"));
         height = barRegion.getRegionHeight();
 
         toughnessBarRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "2017", "grid", "unit", "hp bar.png"));
+         "dc",  "unit", "hp bar.png"));
         enduranceBarRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "2017", "grid", "unit", "hp bar.png"));
+         "dc",  "unit", "hp bar.png"));
         innerWidth = enduranceBarRegion.getRegionWidth();
         barImage = new Image(barRegion);
         addActor(barImage);

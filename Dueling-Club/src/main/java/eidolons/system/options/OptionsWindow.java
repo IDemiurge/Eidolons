@@ -46,9 +46,9 @@ public class OptionsWindow extends VisWindow {
     }
 
     public static OptionsWindow getInstance() {
-//        if (instance == null) {
+        if (instance == null) {
         instance = new OptionsWindow();
-//        }
+        }
         return instance;
     }
 

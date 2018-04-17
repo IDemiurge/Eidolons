@@ -16,7 +16,7 @@ public class DescriptionPanel extends ScrollTextPanel {
         return StrPathBuilder.build(
          "UI",
          "components",
-         "2017",
+         "dc",
          "dialog",
          "log",
          "background.png");

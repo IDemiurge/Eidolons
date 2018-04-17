@@ -51,7 +51,9 @@ public class GenericLauncher extends Game {
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         Eidolons.setMainViewport(viewport);
-        engineInit();
+//        if (!CoreEngine.isInitializing() && !CoreEngine.isInitialized()) {
+//            engineInit();
+//        }
         screenInit();
     }
 

@@ -236,11 +236,11 @@ public class RadialValueContainer extends ActionValueContainer {
 
     public enum RADIAL_UNDERLAYS {
         BLACK_BEVEL(StrPathBuilder.build(
-         "ui", "components", "2017", "radial", "underlay bevel.png")),
+         "ui", "components", "dc", "radial", "underlay bevel.png")),
         BLACK_BEVEL_GLOW(StrPathBuilder.build(
-         "ui", "components", "2017", "radial", "underlay bevel glow.png")),
+         "ui", "components", "dc", "radial", "underlay bevel glow.png")),
         BLACK_BEVEL_DISABLED(StrPathBuilder.build(
-         "ui", "components", "2017", "radial", "underlay bevel disabled.png")),;
+         "ui", "components", "dc", "radial", "underlay bevel disabled.png")),;
         String texturePath;
         TextureRegion textureRegion;
 

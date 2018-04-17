@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,6 +23,7 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.LastSeenView;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
@@ -47,6 +49,7 @@ public class OverlaysManager extends SuperActor {
     GridPanel gridPanel;
     boolean sightInfoDisplayed;
     Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
+    Map<Rectangle, Tooltip> tooltipMap = new HashMap<>();
     private BattleFieldObject observer;
 
     public OverlaysManager(GridPanel gridPanel) {
@@ -58,6 +61,43 @@ public class OverlaysManager extends SuperActor {
                 listenerCaches.put(sub, new HashMap<>());
             }
         }
+        gridPanel.addListener(getGlobalOverlayListener(gridPanel));
+    }
+
+
+    public ClickListener getGlobalOverlayListener(GridPanel panel) {
+        return new SmartClickListener(panel) {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                checkShowTooltip(x, y);
+                super.enter(event, x, y, pointer, fromActor);
+            }
+
+            private void checkShowTooltip(float x, float y) {
+                Tooltip tooltip = getTooltip(x, y);
+                if (tooltip != null)
+                    GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
+                     tooltip);
+            }
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                checkShowTooltip(x, y);
+                return super.mouseMoved(event, x, y);
+            }
+
+            private Tooltip getTooltip(float x, float y) {
+
+                Tooltip tooltip = null;
+                for (Rectangle sub : tooltipMap.keySet()) {
+                    if (sub.contains(x, y)) {
+                        tooltip = tooltipMap.get(sub);
+                        break;
+                    }
+                }
+                return tooltip;
+            }
+        };
     }
 
     public ClickListener getOverlayListener(OVERLAY overlay, Actor parent,
@@ -91,11 +131,13 @@ public class OverlaysManager extends SuperActor {
 
             @Override
             protected void exited() {
+                super.exited();
                 overlayExited(overlay, parent);
             }
 
             @Override
             protected void entered() {
+                super.entered();
                 overlayEntered(overlay, parent);
             }
 
@@ -111,7 +153,7 @@ public class OverlaysManager extends SuperActor {
     private void overlayEntered(OVERLAY overlay, Actor parent) {
         switch (overlay) {
             case HP_BAR:
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new ValueTooltip("!"));
+                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new ValueTooltip("This is a tooltip!!"));
                 break;
         }
     }
@@ -179,9 +221,10 @@ public class OverlaysManager extends SuperActor {
         if (actor.isHovered()) {
             //emblem etc?
         }
-        if (GridPanel.isHpBarsOnTop()) {
-            drawOverlay(actor, HP_BAR, batch);
-        }
+        if (actor.getHpBar() != null)
+            if (GridPanel.isHpBarsOnTop()) {
+                drawOverlay(actor, HP_BAR, batch);
+            }
         BattleFieldObject obj = null;
         if (actor instanceof LastSeenView) {
             obj = DungeonScreen.getInstance().getGridPanel().
@@ -272,14 +315,24 @@ public class OverlaysManager extends SuperActor {
         }
         if (!isListenerRequired(overlay))
             return;
-        ClickListener listener = listenerCaches.get(overlay).get(parent);
-        if (listener == null) {
-            listener = getOverlayListener(overlay, parent, v.x, v.y);
-            listenerCaches.get(overlay).put(parent, listener);
-        }
-        if (!parent.getListeners().contains(listener, true)) {
-            parent.addListener(listener);
-        }
+
+        Tooltip tooltip = getTooltip(overlay, parent);
+        tooltipMap.put(new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
+         , getOverlayHeight(overlay, parent)), tooltip);
+
+
+//        ClickListener listener = listenerCaches.get(overlay).get(parent);
+//        if (listener == null) {
+//            listener = getOverlayListener(overlay, parent, v.x, v.y);
+//            listenerCaches.get(overlay).put(parent, listener);
+//        }
+//        if (!parent.getListeners().contains(listener, true)) {
+//            parent.addListener(listener);
+//        }
+    }
+
+    private Tooltip getTooltip(OVERLAY overlay, Actor parent) {
+        return new ValueTooltip("!!!!!");
     }
 
     private boolean isListenerRequired(OVERLAY overlay) {
@@ -361,7 +414,9 @@ public class OverlaysManager extends SuperActor {
         TextureRegion region = getRegion(overlay);
         if (region != null)
             return region.getRegionWidth();
-        return (int) getOverlayActor(parent, overlay).getWidth();
+        if (getOverlayActor(parent, overlay) != null)
+            return (int) getOverlayActor(parent, overlay).getWidth();
+        return 0;
 
     }
 
@@ -390,7 +445,7 @@ public class OverlaysManager extends SuperActor {
 
         public Integer alignment;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
-         "2018", "overlays", toString() + ".png");
+         "dc", "overlays", toString() + ".png");
 
         OVERLAY() {
 

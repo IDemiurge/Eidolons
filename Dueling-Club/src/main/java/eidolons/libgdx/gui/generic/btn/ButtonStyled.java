@@ -62,7 +62,7 @@ public class ButtonStyled extends Image implements EventListener {
         CANCEL("UI/components/small/no.png"),
         UNDO("UI/components/small/back2.png"),
         NEXT("UI/components/small/forward.png"),
-        GAME_MENU("UI/components/2017/generic/button.png"),
+        GAME_MENU("UI/components/generic/buttons/button.png"),
         UNARMED("UI/components/dc/quick weapon/unarmed.png"),
 
         HELP(VISUALS.QUESTION.getImgPath()) {
@@ -80,7 +80,8 @@ public class ButtonStyled extends Image implements EventListener {
         //        NEXT, LEVEL_UP,
         PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "pause.png")),
         SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED UP.png")),
-        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED DOWN.png")),;
+        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED DOWN.png")),
+        STAT("UI\\components\\small\\cross tiny.png");
         String path;
         private Drawable texture;
 

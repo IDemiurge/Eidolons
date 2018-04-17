@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.bf.GridMaster;
+import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -208,6 +210,10 @@ public class TextureManager {
 
     public static int getCellSpriteCacheId(int gridX, int gridY) {
         return cellIdStart + gridX * gridHeight + gridY;
+    }
+
+    public static TextureRegion getParamTexture(PARAMETER sub) {
+        return TextureCache.getOrCreateR(ImageManager.getValueIconPath(sub));
     }
 
 

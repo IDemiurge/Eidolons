@@ -51,7 +51,10 @@ public class GdxMaster {
          + (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
     }
 
-    public static float adjustSize(float size) {
+    public static int adjustFontSize(float size) {
+        return (int) adjustSize(size);
+    }
+        public static float adjustSize(float size) {
         return size
          + size
          * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef;
@@ -182,5 +185,9 @@ public class GdxMaster {
 
     public static boolean isHpBarAttached() {
         return true;
+    }
+
+    public static void adjustAndSetSize(Actor actor, int w, int h) {
+        actor.setSize(adjustSize(w), adjustSize(h));
     }
 }

@@ -679,7 +679,7 @@ public class ImageManager {
     }
 
     public static Image getValueIcon(VALUE value) {
-        return getValueIcon(value, true);
+        return getValueIcon(value, false);
     }
 
 

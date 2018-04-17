@@ -8,6 +8,7 @@ import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.system.options.OptionsMaster;
@@ -34,6 +35,9 @@ public class GlobalController implements Controller {
     @Override
     public void keyDown(int keyCode) {
         switch (keyCode) {
+            case Keys.F1:
+                HqMaster.toggleHqPanel();
+                break;
             case Keys.ESCAPE:
                 escape();
                 break;

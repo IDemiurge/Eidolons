@@ -17,10 +17,26 @@ import main.system.graphics.FontMaster.FONT;
 public class TextButtonX extends TextButton implements EventListener {
 
     private Runnable runnable;
+    private boolean fixedSize;
 
     public TextButtonX(String text, TextButtonStyle style) {
         this(text, style, null);
 
+    }
+
+
+    @Override
+    public float getPrefWidth() {
+        if (isFixedSize())
+            return getWidth();
+        return super.getPrefWidth();
+    }
+
+    @Override
+    public float getPrefHeight() {
+        if (isFixedSize())
+            return getHeight();
+        return super.getPrefHeight();
     }
 
     public TextButtonX(String text, STD_BUTTON button, Runnable runnable,
@@ -56,4 +72,11 @@ public class TextButtonX extends TextButton implements EventListener {
         return true;
     }
 
+    public boolean isFixedSize() {
+        return fixedSize;
+    }
+
+    public void setFixedSize(boolean fixedSize) {
+        this.fixedSize = fixedSize;
+    }
 }

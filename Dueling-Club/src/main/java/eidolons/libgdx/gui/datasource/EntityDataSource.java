@@ -25,6 +25,9 @@ public class EntityDataSource<T extends Entity> {
     public String getParam(PARAMETER param) {
         return entity.getParam(param);
     }
+    public String getParamRounded(PARAMETER param) {
+        return "" + getIntParam(param);
+    }
 
     public Double getParamDouble(PARAMETER param) {
         return entity.getParamDouble(param);
@@ -56,5 +59,9 @@ public class EntityDataSource<T extends Entity> {
 
     public T getEntity() {
         return entity;
+    }
+
+    public int getIntParam(PARAMETER p) {
+        return entity.getIntParam(p);
     }
 }

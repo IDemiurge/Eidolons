@@ -16,11 +16,11 @@ import main.system.auxiliary.StrPathBuilder;
  */
 public class ClockActor extends GroupX {
     private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(),
-     "2018", "clock", "background.png");
+     "dc", "clock", "background.png");
     private static final String SMALL_HAND = StrPathBuilder.build(PathFinder.getComponentsPath(),
-     "2018", "clock", "SMALL HAND.png");
+     "dc", "clock", "SMALL HAND.png");
     private static final String HAND = StrPathBuilder.build(PathFinder.getComponentsPath(),
-     "2018", "clock", "HAND.png");
+     "dc", "clock", "HAND.png");
     private final ImageContainer background;
 
     GearCluster centerGears;

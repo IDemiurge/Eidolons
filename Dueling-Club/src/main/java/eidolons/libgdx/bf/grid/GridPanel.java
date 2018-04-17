@@ -291,19 +291,6 @@ public class GridPanel extends Group {
         GuiEventManager.bind(GuiEventType.ANIMATION_QUEUE_FINISHED, (p) -> {
             resetVisible();
         });
-        GuiEventManager.bind(GuiEventType.UPDATE_LAST_SEEN_VIEWS, p -> {
-            List<BattleFieldObject> list = (List<BattleFieldObject>) p.get();
-
-            for (BattleFieldObject sub : viewMap.keySet()) {
-                GridUnitView view = (GridUnitView) viewMap.get(sub);
-                if (list.contains(sub)) {
-                    setVisible(view.getLastSeenView(), true);
-                } else {
-                    setVisible(view.getLastSeenView(), false);
-                }
-            }
-
-        });
         GuiEventManager.bind(UNIT_GREYED_OUT_ON, obj -> {
             BattleFieldObject bfObj = (BattleFieldObject) obj.get();
             if (bfObj.isOverlaying())
@@ -500,8 +487,10 @@ public class GridPanel extends Group {
                 ActorMaster.addFadeOutAction(view, 0.25f);
                 ActorMaster.addSetVisibleAfter(view, false);
             }
-            if (view instanceof GridUnitView) {
+            if (view instanceof GridUnitView)
+                if (((GridUnitView) view).getLastSeenView() != null) {
                 BattleFieldObject obj = getObjectForView(view);
+
                 LastSeenMaster.resetLastSeen((GridUnitView) view,
                  obj, !visible);
 
@@ -510,7 +499,8 @@ public class GridPanel extends Group {
                 );
 
             }
-        } else view.setVisible(visible);
+        } else
+            view.setVisible(visible);
     }
 
     private boolean isFadeAnimForUnitsOn() {
@@ -691,7 +681,7 @@ public class GridPanel extends Group {
                     uv = (GridUnitView) viewMap.get(p.getLeft());
                 }
                 if (uv != null)
-                    uv.getInitiativeQueueUnitView(). updateInitiative(p.getRight());
+                    uv.getInitiativeQueueUnitView().updateInitiative(p.getRight());
             });
         GuiEventManager.bind(UNIT_CREATED, p -> {
             addUnitView((BattleFieldObject) p.get());
@@ -927,7 +917,7 @@ public class GridPanel extends Group {
                     cell.setZIndex(y);
 
                     for (GenericGridView sub : views) {
-                        if (sub.isHovered() && sub instanceof  GridUnitView) {
+                        if (sub.isHovered() && sub instanceof GridUnitView) {
                             setHoverObj((GridUnitView) sub);
                             cell.setZIndex(Integer.MAX_VALUE);
                             cell.setTopUnitView(sub);

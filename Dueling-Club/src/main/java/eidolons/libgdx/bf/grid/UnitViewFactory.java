@@ -38,9 +38,11 @@ public class UnitViewFactory {
         GridUnitView view = new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
+            if (!bfObj.isWall()){
             LastSeenView lsv = new LastSeenView(options, view);
             view.setLastSeenView(lsv);
             new LastSeenTooltipFactory().add(lsv, bfObj);
+            }
         }
         view.setOutlinePathSupplier(() -> {
             OUTLINE_TYPE type = null;

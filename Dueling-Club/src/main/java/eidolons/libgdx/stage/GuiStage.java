@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
@@ -17,6 +19,7 @@ import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.utils.TextInputPanel;
@@ -43,19 +46,20 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected GameMenu gameMenu;
     protected OutcomePanel outcomePanel;
     protected Blackout blackout;
+    OptionsWindow optionsWindow;
     private TextInputPanel tf;
     private List<String> charsUp = new ArrayList<>();
     private char lastTyped;
     private ToolTipManager tooltips;
-
-    OptionsWindow optionsWindow;
+    private HqPanel hqPanel;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
 
     }
-    public  void openOptionsMenu() {
-        OptionsWindow.getInstance().open(OptionsMaster.getOptionsMap(),this);
+
+    public void openOptionsMenu() {
+        OptionsWindow.getInstance().open(OptionsMaster.getOptionsMap(), this);
 
     }
 
@@ -102,7 +106,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         bindEvents();
 
         gameMenu.setZIndex(Integer.MAX_VALUE);
-
+        addActor(hqPanel = new HqPanel());
+        hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
+         GdxMaster.centerHeight(hqPanel));
+        hqPanel.setVisible(false);
         setDebugAll(false);
     }
 
@@ -128,8 +135,8 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void bindEvents() {
-        GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p->{
-            if (p.get()== this || p.get()==getClass()){
+        GuiEventManager.bind(GuiEventType.OPEN_OPTIONS, p -> {
+            if (p.get() == this || p.get() == getClass()) {
                 openOptionsMenu();
             }
         });
@@ -145,6 +152,20 @@ public class GuiStage extends StageX implements StageWithClosable {
         });
         GuiEventManager.bind(GuiEventType.FADE_OUT_AND_BACK, p -> {
             blackout.fadeOutAndBack((Float) p.get());
+        });
+
+        GuiEventManager.bind(GuiEventType.SHOW_HQ_SCREEN, p -> {
+            if (p.get() == null) {
+                ActorMaster.addFadeOutAction(hqPanel, 0.3f );
+                ActorMaster.addHideAfter(hqPanel );
+                HqPanel.setActiveInstance(null );
+                return;
+            }
+            hqPanel.setEditable(ExplorationMaster.isExplorationOn());
+            hqPanel.setVisible(true);
+            ActorMaster.addFadeInAction(hqPanel, 0.3f  );
+            hqPanel.setUserObject(p.get());
+            HqPanel.setActiveInstance(hqPanel);
         });
     }
 
@@ -180,7 +201,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     @Override
     public boolean keyTyped(char character) {
-        if ((int)character==0)
+        if ((int) character == 0)
             return false;
         String str = String.valueOf(character).toUpperCase();
         if (Character.isAlphabetic(character)) {

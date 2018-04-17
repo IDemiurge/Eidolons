@@ -47,12 +47,12 @@ public class QuickWeaponPanel extends TablePanel {
         this.offhand = offhand;
         addActor(background = new ImageContainer(
          StrPathBuilder.build(PathFinder.getComponentsPath(),
-          "2018", "quick weapon", "background.png")));
+          "dc", "quick weapon", "background.png")));
         addActor(weapon = new FadeImageContainer());
         String suffix = offhand ? " offhand" : "";
         addActor(border = new ImageContainer(
          StrPathBuilder.build(PathFinder.getComponentsPath(),
-          "2018", "quick weapon", "border" +
+          "dc", "quick weapon", "border" +
            suffix + ".png")));
         addActor(radial = new QuickAttackRadial(this, offhand));
 //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));

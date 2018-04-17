@@ -51,7 +51,7 @@ public class LogPanel extends ScrollTextPanel {
     protected String getBgPath() {
         return new StrPathBuilder().build_("UI",
          "components",
-         "2017",
+         "dc",
          "dialog",
          "log"
 

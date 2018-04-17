@@ -227,9 +227,9 @@ public class RadialMenu extends Group implements Closable {
     }
 
     protected String getEmptyNodePath() {
-        return "UI\\components\\2017\\radial\\empty.png";
-//        return "UI\\components\\2017\\radial\\empty dark.png";
-//        return "UI\\components\\2017\\radial\\empty dark.png";
+        return "UI\\components\\dc\\radial\\empty.png";
+//        return "UI\\components\\dc\\radial\\empty dark.png";
+//        return "UI\\components\\dc\\radial\\empty dark.png";
     }
 
     protected boolean isAnimated() {

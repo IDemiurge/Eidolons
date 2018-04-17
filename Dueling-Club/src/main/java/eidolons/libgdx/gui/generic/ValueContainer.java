@@ -126,7 +126,7 @@ public class ValueContainer extends TablePanel {
             row();
         }
 
-        if (StringUtils.isNotEmpty(value)) {
+        if (value!=null ) {
             valueLabel = new Label(value, style);
         }
         valueContainer.setActor(
@@ -203,6 +203,16 @@ public class ValueContainer extends TablePanel {
         } else {
             valueContainer.getActor().setText(val);
         }
+    }
+
+    public void setNameText(CharSequence newText) {
+        nameLabel.setText(newText);
+    }
+    public void setValueText(CharSequence newText) {
+        valueLabel.setText(newText);
+    }
+    public void setImage(String newPic) {
+        imageContainer.getActor().setImage(newPic);
     }
 
     protected boolean isVertical() {

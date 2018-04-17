@@ -12,7 +12,11 @@ public class PointMaster {
     public static final int MASTERY_MAXIMUM = 50;
     public static final int ATTRIBUTE_MAXIMUM = 100;
 
-    public static int getPointCost(int value, Entity hero, PARAMETER param) {
+    public static int getCost(  Entity hero, PARAMETER param) {
+        return getPointCost( hero.getIntParam(ContentValsManager
+         .getFinalAttrFromBase(param)),hero,param);
+    }
+        public static int getPointCost(int value, Entity hero, PARAMETER param) {
         int MOD_FACTOR = 10;
         value--;
         if (param.isAttribute()) {
@@ -37,4 +41,5 @@ public class PointMaster {
         }
         return cost;
     }
+
 }

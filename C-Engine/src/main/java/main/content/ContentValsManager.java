@@ -207,6 +207,11 @@ public class ContentValsManager {
         PARAMETER param = getPARAM(mastery.getName() + (StringMaster.SCORE));
         return param;
     }
+    public static PARAMETER getMasteryFromScore(PARAMETER mastery) {
+        PARAMETER param = getPARAM(mastery.getName()
+         .replace (StringMaster.SCORE, ""));
+        return param;
+    }
 
 
     public static PARAMETER getRegenParam(PARAMETER param) {
@@ -1085,6 +1090,10 @@ public class ContentValsManager {
 
     public boolean isTextAlwaysShownInListItems(OBJ_TYPE TYPE) {
         return false;
+    }
+
+    public static PARAMETER getDefaultAttribute(PARAMETER sub) {
+        return getPARAM(StringMaster.DEFAULT + sub.getName());
     }
 
     public enum AV_EDITOR_TYPES {

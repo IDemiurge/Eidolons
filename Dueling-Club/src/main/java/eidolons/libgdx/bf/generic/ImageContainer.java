@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.generic;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -54,17 +55,24 @@ public class ImageContainer extends SuperContainer {
     public void setImage(Image image) {
         setContents(image);
     }
-        public void setImage(String path) {
+
+    public void setImage(String path) {
         if (ImageManager.isImage(path))
-            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreateR(path))));
+        {
+            Texture r = TextureCache.getOrCreate(path);
+            if (sprite!=null )
+                if (sprite.getTexture().equals(r) )
+                     return;
+            setImage(new Image(sprite = new Sprite(TextureCache.getOrCreate(path))));
+        }
         else
             return;
     }
 
     @Override
     public Array<Action> getActions() {
-        if (getContent()==null )
-            return      new Array<>() ;
+        if (getContent() == null)
+            return new Array<>();
         return getContent().getActions();
     }
 

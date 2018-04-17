@@ -25,7 +25,7 @@ import main.system.auxiliary.StrPathBuilder;
 public class FacingPanel extends TablePanel {
 
     private static final String ROTATE_BACKGROUND = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "2018", "facing",
+     PathFinder.getComponentsPath(), "dc", "facing",
      "BACKGROUND.png");
     boolean sneaking;
     FadeImageContainer face;
@@ -33,7 +33,7 @@ public class FacingPanel extends TablePanel {
     private FullUnitDataSource dataSource;
     private FACING_DIRECTION facing;
 //    private static final String FACE_BACKGROUND = StrPathBuilder.build(
-//     PathFinder.getComponentsPath(),  "2018", "facing",
+//     PathFinder.getComponentsPath(),  "dc", "facing",
 //     "FACE_BACKGROUND.png");
 //    private final ImageContainer faceBackground;
 //    private  GearCluster gearsClockwise;
@@ -126,6 +126,6 @@ public class FacingPanel extends TablePanel {
 
     private String getImage(FACING_DIRECTION facing) {
         return StrPathBuilder.build(PathFinder.getComponentsPath(),
-         "2018", "facing", "face " + facing.toString() + ".png");
+         "dc", "facing", "face " + facing.toString() + ".png");
     }
 }

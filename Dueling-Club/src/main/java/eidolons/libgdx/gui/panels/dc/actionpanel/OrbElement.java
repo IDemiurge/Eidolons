@@ -30,7 +30,7 @@ public class OrbElement extends SuperActor {
     private static final String EMPTY_PATH = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "new", "orb 64.png");
     private static final String OVERLAY_PATH = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "2018","orbs", "overlay.png");
+     PathFinder.getComponentsPath(), "dc","orbs", "overlay.png");
     private Label label;
     private Image background;
     private Image gem;
@@ -71,7 +71,7 @@ public class OrbElement extends SuperActor {
     }
     private String getGemPath(String value) {
         return StrPathBuilder.build(
-         PathFinder.getComponentsPath(), "2018","orbs", "gem",
+         PathFinder.getComponentsPath(), "dc","orbs", "gem",
          value+ ".png ");
     }
 

@@ -106,7 +106,7 @@ public class ItemInfoPanel extends TablePanel {
         return StrPathBuilder.build(
          "UI",
          "components",
-         "2017",
+         "dc",
          "dialog",
          "log",
          "background.png");

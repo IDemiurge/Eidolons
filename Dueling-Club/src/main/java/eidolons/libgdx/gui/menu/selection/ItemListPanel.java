@@ -8,6 +8,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
@@ -62,14 +63,17 @@ public abstract class ItemListPanel extends TablePanel {
         TextButton button = getCache().get(sub);
 
         if (button == null || sub == null) {
-            button = new TextButton((sub.name),
+            button = new TextButtonX((sub.name),
              StyleHolder.getTextButtonStyle(getButtonStyle(),
               getFontStyle(), getFontColor(), getFontSize())) {
+
                 @Override
-                public boolean isChecked() {
-                    return super.isChecked();
+                public boolean isFixedSize() {
+                    return true;
                 }
             };
+            button.setSize(STD_BUTTON.GAME_MENU.getTexture().getMinWidth(),
+             STD_BUTTON.GAME_MENU.getTexture().getMinHeight());
             getCache().put(sub, button);
             TextButton finalButton = button;
             button.addListener(new ClickListener() {

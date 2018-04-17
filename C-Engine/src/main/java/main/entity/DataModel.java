@@ -711,7 +711,7 @@ public abstract class DataModel {
     }
 
     public void modifyParameter(PARAMETER param, int amount, boolean base) {
-        modifyParameter(param, amount, null, false, null);
+        modifyParameter(param, amount, base, null);
     }
 
     public void modifyParameter(PARAMETER param, int amount, boolean base, String modifierKey) {
@@ -1304,6 +1304,19 @@ public abstract class DataModel {
         innerMap.putAll(map);
 
         clone.setMap(innerMap);
+
+        // so the problem is that it doesn't seem to carry over c_ and perc_
+        // values?
+//        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
+//            if (!p.isDynamic()) {
+//                paramMap.remove(p);
+//            }
+//        }
+//        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
+//            paramMap.put(p, type.getParamMap().getMap().get(p));
+//        }
+
+
         return clone;
     }
 

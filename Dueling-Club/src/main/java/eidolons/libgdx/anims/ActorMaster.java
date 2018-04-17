@@ -90,6 +90,11 @@ public class ActorMaster {
         return addFadeAction(actor, dur, true);
     }
 
+    public static void addFadeOutAction( Actor actor, float dur, boolean remove) {
+        addFadeAction(actor, dur, true);
+        if (remove)
+            addRemoveAfter(actor);
+    }
     public static AlphaAction addFadeInAction(Actor actor) {
         return addFadeAction(actor, 0.5f, false);
     }

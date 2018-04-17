@@ -36,7 +36,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
 
     public GenericMenu() {
         Drawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
-         "UI", "components", "2017", "game menu", "background.png"));
+         "UI", "components", "generic", "game menu", "background.png"));
         setBackground(texture);
         addButtons();
 

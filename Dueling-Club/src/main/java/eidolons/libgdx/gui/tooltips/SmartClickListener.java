@@ -19,7 +19,7 @@ public class SmartClickListener extends ClickListener {
     @Override
     public boolean mouseMoved(InputEvent event, float x, float y) {
         onMouseMoved(event, x, y);
-        return true;
+        return !showing;
     }
 
     @Override

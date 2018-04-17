@@ -6,7 +6,9 @@ import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.ParamMap;
 import main.content.values.properties.G_PROPS;
+import main.content.values.properties.PropMap;
 import main.data.ability.construct.AbilityConstructor;
 import main.entity.DataModel;
 import main.entity.Entity;
@@ -114,20 +116,16 @@ public class Obj extends Entity {
 
     @Override
     public void cloneMaps(DataModel type) {
-        this.propMap = clonePropMap(type.getPropMap().getMap());
-        // so the problem is that it doesn't seem to carry over c_ and perc_
-        // values?
-        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-            if (!p.isDynamic()) {
-                paramMap.remove(p);
-            }
-        }
-        for (PARAMETER p : type.getParamMap().getMap().keySet()) {
-            paramMap.put(p, type.getParamMap().getMap().get(p));
-        }
-        setDirty(true);
+        cloneMaps(type.getPropMap(), type.getParamMap());
     }
 
+    public void cloneMaps(PropMap propMap, ParamMap paramMap) {
+        this.propMap = clonePropMap(propMap.getMap());
+
+        this.paramMap= cloneParamMap(paramMap.getMap());
+
+        setDirty(true);
+    }
     public void setDead(boolean dead) {
         this.dead = dead;
         if (dead) {

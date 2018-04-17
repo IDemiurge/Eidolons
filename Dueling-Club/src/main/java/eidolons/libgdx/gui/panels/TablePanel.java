@@ -15,8 +15,23 @@ import java.util.function.Supplier;
 public class TablePanel<T extends Actor> extends Table {
 
     protected boolean updateRequired;
+    private boolean fixedSize;
 
     public TablePanel() {
+    }
+
+    @Override
+    public float getPrefWidth() {
+        if (isFixedSize())
+            return getWidth();
+        return super.getPrefWidth();
+    }
+
+    @Override
+    public float getPrefHeight() {
+        if (isFixedSize())
+            return getHeight();
+        return super.getPrefHeight();
     }
 
     public Cell<T> addNormalSize(T el) {
@@ -100,5 +115,13 @@ public class TablePanel<T extends Actor> extends Table {
     public TablePanel<T> initDefaultBackground() {
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         return this;
+    }
+
+    public boolean isFixedSize() {
+        return fixedSize;
+    }
+
+    public void setFixedSize(boolean fixedSize) {
+        this.fixedSize = fixedSize;
     }
 }

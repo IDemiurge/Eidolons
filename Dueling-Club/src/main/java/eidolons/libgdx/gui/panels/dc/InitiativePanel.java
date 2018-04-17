@@ -152,7 +152,7 @@ public class InitiativePanel extends Group {
         addActor( container = new Container<>(queueGroup));
 
         final TextureRegion textureRegion = getOrCreateR(StrPathBuilder.build("UI",
-         "components", "2017", "panels", "initiativepanel",
+         "components", "dc", "panels", "initiativepanel",
          "initiativePanel plain.png"));
         DynamicTooltip tooltip = new DynamicTooltip(()-> "Time:" + DC_Game.game.getLoop().getTime());
         addActor(panelImage = new ValueContainer(textureRegion));
@@ -189,7 +189,7 @@ public class InitiativePanel extends Group {
         }
         setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize,
          imageSize + queueOffsetY);
-        queueGroup.setBounds(0, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
+        queueGroup.setBounds(imageSize*2, 0, imageSize * visualSize + (offset - 1) * visualSize, imageSize);
         timeLabel.setPosition(15, 100);
         light.setPosition(-2, -14);
         clock.setPosition(-5, -31);
@@ -500,7 +500,7 @@ public class InitiativePanel extends Group {
 
     private String getPreviewPath() {
         return StrPathBuilder.build(PathFinder.getComponentsPath()
-         , "2018", "atb pos preview.png"
+         , "dc", "atb pos preview.png"
         ) + StringMaster.getPathSeparator();
     }
 
@@ -536,7 +536,7 @@ public class InitiativePanel extends Group {
             }
 //            Image shadow = new Image(TextureCache.getOrCreateR(
 //             StrPathBuilder.build("UI",
-//              "components", "2017", "panels",
+//              "components", "dc", "panels",
 //              "initiativepanel",
 //              "initiativepanel unitview shadow.png")));
 //            shadow.setY(-48);
