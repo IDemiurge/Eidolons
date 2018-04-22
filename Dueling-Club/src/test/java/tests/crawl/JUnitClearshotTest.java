@@ -1,10 +1,9 @@
 package tests.crawl;
 
 import eidolons.ability.conditions.special.ClearShotCondition;
-import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
@@ -32,7 +31,8 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
     @Test
     public void makeChecks() {
 
-
+        helper.resetAll();
+        
         checkClearshots(false);
         checkClearshots(true);
         diagonal = true;
@@ -64,53 +64,35 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
     }
 
     protected void checkObj(DC_Obj sub, boolean hero_inside, boolean inside) {
-        OUTLINE_TYPE outline = sub.getOutlineType();
+
         boolean blocked = hero_inside != inside;
+
         LogMaster.setOff(false);
 
-        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
+        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper()
+         .get(unit, sub);
 
-//        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
-//
-//        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
-//
-//        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
+        Boolean clearshot = game.getVisionMaster().getVisionController().getClearshotMapper()
+         .get(unit, sub);
 
-        if (blocked) {
-            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline) {
-                boolean result = game.getVisionMaster().getSightMaster().
-                 getClearShotCondition().check(getHero(), sub);
-                if (!result) {
-                    main.system.auxiliary.log.LogMaster.log(1, "Failed ClearShotCondition:" +
-                     " " + sub +
-                     "; hero_inside= " +
-                     hero_inside +
-                     "; inside=" + inside);
-                    fail();
+        PLAYER_VISION playerVision = game.getVisionMaster().getVisionController().getPlayerVisionMapper()
+         .get(unit.getOwner(), sub);
+
+
+            if (blocked) {
+                if (clearshot) {
+                    fail("Fail: " + sub + "'s clearshot = " + clearshot);
                 }
-            } else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline) {
-                main.system.auxiliary.log.LogMaster.log(1, "Failed BLOCKED_OUTLINE:" +
-                 " " + sub +
-                 "; hero_inside= " +
-                 hero_inside +
-                 "; inside=" + inside);
-                fail();
+                if (playerVision == PLAYER_VISION.DETECTED) {
+                    fail("Fail: " + sub + "'s playerVision = " + playerVision);
+                }
+                if (visibility !=   VISIBILITY_LEVEL.BLOCKED) {
+                    fail("Fail: " + sub + "'s visibility = " + visibility);
+                }
+
             }
-        }
 
-        if (sub instanceof BattleFieldObject)
-            if (!sub.isMine())
-                if (sub.getVisibilityLevelForPlayer() != VISIBILITY_LEVEL.UNSEEN)
-                {
-                    main.system.auxiliary.log.LogMaster.log(1,"Failed UNSEEN:" +
-                     " "+sub +
-                     "; hero_inside= " +
-                     hero_inside +
-                     "; inside="+ inside );
-                    fail();
-                }
     }
-
 
     protected DequeImpl<? extends DC_Obj> getObjects(boolean inside, boolean cellsOrObjects) {
         DequeImpl<? extends DC_Obj> list = new DequeImpl<>();
@@ -174,22 +156,22 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
 
     protected List<Coordinates> createDiagonalCoordinatesList() {
         List<Coordinates> list = new ArrayList<>();
-        int yGap = game.getGrid().getHeight()  / 2 - (getInnerHeight() - 1) / 2;
+        int yGap = game.getGrid().getHeight() / 2 - (getInnerHeight() - 1) / 2;
         int i = -1;
         for (int y = yGap;
-             y < game.getGrid().getHeight()  - y; y++) {
+             y < game.getGrid().getHeight() - y; y++) {
             i++;
-            for (int x =game. getGrid().getWidth()  / 2 - i;
-                 x <=game. getGrid().getWidth()  / 2 + i; x++) {
+            for (int x = game.getGrid().getWidth() / 2 - i;
+                 x <= game.getGrid().getWidth() / 2 + i; x++) {
                 list.add(new Coordinates(x, y));
             }
         }
         i = -1;
-        for (int y = game.getGrid().getHeight()  - yGap - 1;
-             y > game.getGrid().getHeight()  / 2; y--) {
+        for (int y = game.getGrid().getHeight() - yGap - 1;
+             y > game.getGrid().getHeight() / 2; y--) {
             i++;
-            for (int x = game.getGrid().getWidth()  / 2 - i;
-                 x <= game.getGrid().getWidth()  / 2 + i; x++) {
+            for (int x = game.getGrid().getWidth() / 2 - i;
+                 x <= game.getGrid().getWidth() / 2 + i; x++) {
                 list.add(new Coordinates(x, y));
             }
         }
@@ -218,11 +200,10 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
     }
 
 
-
     public void checkClearshots(boolean breakMode) {
         ClearShotCondition.setUnitTestBreakMode(breakMode);
-        for (int x = 0; x < game.getGrid().getWidth() ; x++)
-            for (int y = 0; y < game.getGrid().getHeight() ; y++) {
+        for (int x = 0; x < game.getGrid().getWidth(); x++)
+            for (int y = 0; y < game.getGrid().getHeight(); y++) {
                 Coordinates c = new Coordinates((x), y);
                 if (!checkCoordinate(c))
                     continue;
