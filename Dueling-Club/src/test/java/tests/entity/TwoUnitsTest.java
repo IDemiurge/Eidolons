@@ -18,8 +18,8 @@ public class TwoUnitsTest extends JUnitPartyCreated {
     }
     @Test
     public void testUnitCreatedWithRightName() {
-
-        super.testUnitCreatedWithRightName();
+        assertTrue(!game.getUnits().isEmpty());
+        assertTrue(unit != null);
         unit2 = (Unit) game.getPlayer(false).getControlledUnits().iterator().next();
         assertTrue(unit2 != null);
 

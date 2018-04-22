@@ -12,8 +12,9 @@ import org.junit.Before;
  * Created by JustMe on 4/7/2018.
  */
 public class MultiLauncher {
-    String playerParty,  enemyParty,  dungeonPath;
-Runnable afterEngineInit;
+    String playerParty, enemyParty, dungeonPath;
+    Runnable afterEngineInit;
+
     public MultiLauncher(String playerParty, String enemyParty, String dungeonPath) {
         this.playerParty = playerParty;
         this.enemyParty = enemyParty;
@@ -32,31 +33,27 @@ Runnable afterEngineInit;
         }
         TestLauncher launcher = new TestLauncher(GAME_SUBCLASS.TEST);
         launcher.setFAST_MODE(false);
-        launcher.setSUPER_FAST_MODE( false);
-        launcher.PARTY_CODE= CODE.PRESET;
-        launcher.ENEMY_CODE= CODE.PRESET;
-        launcher.PLAYER_PARTY= playerParty;
-        launcher.ENEMY_PARTY= enemyParty;
+        launcher.setSUPER_FAST_MODE(false);
+        launcher.PARTY_CODE = CODE.PRESET;
+        launcher.ENEMY_CODE = CODE.PRESET;
+        launcher.PLAYER_PARTY = playerParty;
+        launcher.ENEMY_PARTY = enemyParty;
         launcher.setDungeon(dungeonPath);
         FAST_DC.setLauncher(launcher);
         DC_Game game = launcher.initDC_Game();
-        game .start(true);
+        game.start(true);
     }
 
     public void setAfterEngineInit(Runnable afterEngineInit) {
         this.afterEngineInit = afterEngineInit;
     }
 
-    public enum LAUNCH_TYPE{
-        JUNIT,
-        AI_TRAIN,
-        MANUAL_TEST,
-        COMBAT,
-        NORMAL,
-        MAP,
+    @Before
+    public void init() {
+
     }
 
-    public enum LAUNCH_OPTION{
+    public enum LAUNCH_OPTION {
         FAST_MODE,
 
         IMMORTAL,
@@ -65,26 +62,14 @@ Runnable afterEngineInit;
     }
 
 
-    @Before
-    public  void init(){
-
+    public enum LAUNCH_TYPE {
+        JUNIT,
+        AI_TRAIN,
+        MANUAL_TEST,
+        COMBAT,
+        NORMAL,
+        MAP,
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

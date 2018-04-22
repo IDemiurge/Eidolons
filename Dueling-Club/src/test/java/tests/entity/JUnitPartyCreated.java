@@ -1,6 +1,5 @@
 package tests.entity;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,14 +44,14 @@ public class JUnitPartyCreated extends FastDcTest {
     /**
      * Tests that a modified parameter will return to its basic value upon calling entity.toBase()
      */
-    @Test
-    public void testToBase() {
-
-        unit.setParam(PARAMS.ACID_ARMOR, unit.getType().getParam(PARAMS.ACID_ARMOR) + 5);
-        unit.toBase();
-        assertTrue(unit.getParam(PARAMS.ACID_ARMOR) == unit.getType().getParam(PARAMS.ACID_ARMOR));
-
-    }
+//    @Test
+//    public void testToBase() {
+//
+//        unit.setParam(PARAMS.ACID_ARMOR, unit.getType().getParam(PARAMS.ACID_ARMOR) + 5);
+//        unit.toBase();
+//        assertTrue(unit.getParam(PARAMS.ACID_ARMOR) == unit.getType().getParam(PARAMS.ACID_ARMOR));
+//
+//    }
 
 
 }
