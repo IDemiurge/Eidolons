@@ -126,14 +126,14 @@ public class SightMaster {
         return removeList;
     }
 
-    private Boolean isBlocked(DC_Obj unit, BattleFieldObject source) {
+    private Boolean isBlocked(DC_Obj target, BattleFieldObject source) {
         Boolean clearShot = master.getVisionController().getClearshotMapper().get(source,
-         unit);
+         target);
         if (clearShot == null) {
             Ref ref = new Ref(source);
-            ref.setMatch(unit.getId());
+            ref.setMatch(target.getId());
             clearShot = getClearShotCondition().preCheck(ref);
-            master.getVisionController().getClearshotMapper().set(source, clearShot);
+            master.getVisionController().getClearshotMapper().set(source,target, clearShot);
         }
         return !clearShot;
     }

@@ -8,6 +8,7 @@ import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
     public void makeChecks() {
 
         helper.resetAll();
-        
+
         checkClearshots(false);
         checkClearshots(true);
         diagonal = true;
@@ -78,19 +79,19 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
         PLAYER_VISION playerVision = game.getVisionMaster().getVisionController().getPlayerVisionMapper()
          .get(unit.getOwner(), sub);
 
-
-            if (blocked) {
-                if (clearshot) {
-                    fail("Fail: " + sub + "'s clearshot = " + clearshot);
-                }
-                if (playerVision == PLAYER_VISION.DETECTED) {
-                    fail("Fail: " + sub + "'s playerVision = " + playerVision);
-                }
-                if (visibility !=   VISIBILITY_LEVEL.BLOCKED) {
-                    fail("Fail: " + sub + "'s visibility = " + visibility);
-                }
-
+//check distance !
+        if (blocked) {
+            if (BooleanMaster.isTrue(clearshot)) {
+                fail("Fail: " + sub + "'s clearshot = " + clearshot);
             }
+            if (playerVision == PLAYER_VISION.DETECTED) {
+                fail("Fail: " + sub + "'s playerVision = " + playerVision);
+            }
+            if (visibility == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+                fail("Fail: " + sub + "'s visibility = " + visibility);
+            }
+
+        }
 
     }
 
@@ -212,7 +213,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
                 game.getManager().getMainHero().setCoordinates(c);
                 for (FACING_DIRECTION sub : FacingMaster.FACING_DIRECTIONS) {
                     game.getManager().getMainHero().setFacing(sub);
-                    game.getManager().reset();
+                    helper.refreshVisibility();
                     //game.getMaster().clearCaches(); TODO optimized version?
 //                    VisionManager.refresh();
                     check(heroInside, checkInside, true);

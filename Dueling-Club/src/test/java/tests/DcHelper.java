@@ -203,4 +203,8 @@ public class DcHelper implements JUnitHelper {
         unit.fullReset(game);
 
     }
+
+    public void refreshVisibility() {
+        game.getVisionMaster().refresh();
+    }
 }
