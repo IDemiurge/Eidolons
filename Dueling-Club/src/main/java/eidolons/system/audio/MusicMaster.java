@@ -18,6 +18,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import main.system.threading.WaitMaster;
 
@@ -136,6 +137,8 @@ public class MusicMaster {
     }
 
     public void scopeChanged(MUSIC_SCOPE scope) {
+        if (!isRunning())
+            return;
         trackCache.put(this.scope, playedMusic);
         playList.clear();
         setScope(scope);
@@ -418,6 +421,10 @@ public class MusicMaster {
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public static boolean isOn() {
+        return !CoreEngine.isjUnit();
     }
 
 

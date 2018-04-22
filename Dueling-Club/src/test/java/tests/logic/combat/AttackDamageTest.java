@@ -16,9 +16,9 @@ public class AttackDamageTest extends TwoUnitsTest {
     @Test
     public void testDamageCalc() {
 
-        DC_ActiveObj action = entity.getAttack().getSubActions().get(0);
+        DC_ActiveObj action = unit.getAttack().getSubActions().get(0);
         //setAveraged(true);
-        action.activateOn(entity2);
+        action.activateOn(unit2);
         Attack attack = DC_AttackMaster.getAttackFromAction(action);
         int precalc = DamageCalculator.precalculateDamage(attack);
 //        DamageFactory.getDamageFromAttack(attack);

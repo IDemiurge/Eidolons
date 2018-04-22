@@ -2,6 +2,7 @@ package eidolons.libgdx.anims.text;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
@@ -11,6 +12,7 @@ import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
@@ -324,6 +326,11 @@ public class FloatingTextMaster {
     }
 
     public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity) {
+        createFloatingText(CASE, arg, entity, null);
+    }
+
+    public void createFloatingText(TEXT_CASES CASE, String arg, Entity entity,
+                                   Stage atCursorStage) {
         FloatingText text;
         try {
             text = getFloatingText(entity, CASE, arg);
@@ -331,16 +338,20 @@ public class FloatingTextMaster {
             main.system.ExceptionMaster.printStackTrace(e);
             return;
         }
-        if (entity instanceof BattleFieldObject) {
-            Vector2 v = GridMaster.getCenteredPos(((BattleFieldObject) entity).getCoordinates());
+        Vector2 v = null;
+        if (atCursorStage != null)
+            v = GdxMaster.getCursorPosition(atCursorStage);
+        else if (entity instanceof BattleFieldObject) {
+            v = GridMaster.getCenteredPos(((BattleFieldObject) entity).getCoordinates());
             text.setPosition(v);
         } else {
             if (entity instanceof DC_ActiveObj) {
-                Vector2 v = GridMaster.getCenteredPos(
+                v = GridMaster.getCenteredPos(
                  ((DC_ActiveObj) entity).getOwnerObj().getCoordinates());
-                text.setPosition(v);
+
             }
         }
+        text.setPosition(v);
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, text);
     }
 

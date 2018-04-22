@@ -15,12 +15,17 @@ import java.util.List;
  */
 public class HqMaster {
 
-    public static void closeHqPanel(){
-        GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, null );
-    }
-        public static void openHqPanel(){
+    public static final float TAB_WIDTH = 440;
+    public static final float TAB_HEIGHT = 732;
 
-         List<Unit> members= new ArrayList<>();
+    public static void closeHqPanel() {
+        GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, null);
+        GuiEventManager.trigger(GuiEventType.GAME_RESUMED, null);
+    }
+
+    public static void openHqPanel() {
+
+        List<Unit> members = new ArrayList<>();
         members.add(DC_Game.game.getManager().getMainHero());
         List<HqHeroDataSource> list = new ArrayList<>();
 
@@ -30,6 +35,7 @@ public class HqMaster {
 
         }
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, list);
+        GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
 
 
     }

@@ -3,6 +3,7 @@ package eidolons.ability;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.test.frontend.FAST_DC;
@@ -30,6 +31,8 @@ public class UnitTrainingMaster {
         if (FAST_DC.isRunning())
             return;
         if (CoreEngine.isFastMode())
+            return;
+        if (DC_Engine.isTrainingOff())
             return;
 //        if (!FAST_DC.getLauncher().getFAST_MODE()) {
 //            if (CoreEngine.isGraphicTestMode()) {

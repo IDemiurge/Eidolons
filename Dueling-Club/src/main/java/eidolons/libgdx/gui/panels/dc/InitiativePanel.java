@@ -194,7 +194,7 @@ public class InitiativePanel extends Group {
         light.setPosition(-2, -14);
         clock.setPosition(-5, -31);
         panelImage.setPosition(50, 25 + queueOffsetY);
-        container.setBounds(0 //imageSize - offset
+        container.setBounds(imageSize*2 //imageSize - offset
          , queueOffsetY, imageSize * visualSize +
          (offset - 1) * visualSize, imageSize);
         container.left().bottom();

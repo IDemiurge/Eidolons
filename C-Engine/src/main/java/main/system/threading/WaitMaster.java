@@ -49,25 +49,19 @@ public class WaitMaster {
         LogMaster.log(LOG_CHANNEL.WAIT_DEBUG,
          " waiting for " + operation.toString());
         Waiter waiter = waiters.get(operation);
-        boolean remove = true;
         if (waiter == null) {
-            remove = false;
             waiter = new Waiter(operation);
             waiters.put(operation, waiter);
         } else
             waiter.setInterrupted(false);
-
-        Object result = waiter.startWaiting(maxTime == null ? null : (long) maxTime);
-
-        LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
-
-        if (remove) {
+        if (waiter.getInput() != null) {
             waiters.remove(operation);
-        } else {
-            LogMaster.log(LogMaster.WAIT_DEBUG, "WAITER RETAINED: "
-             + operation.toString());
+            return waiter.getInput();
         }
 
+        Object result = waiter.startWaiting(maxTime == null ? null : (long) maxTime);
+        LogMaster.log(LogMaster.WAIT_DEBUG, "INPUT RETURNED: " + result);
+        waiters.remove(operation);
         return result;
     }
 
@@ -139,7 +133,7 @@ public class WaitMaster {
         AUTO_TEST_INPUT,
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
-        WAIT_COMPLETE
+        GAME_LOOP_STARTED, WAIT_COMPLETE
     }
 
 }

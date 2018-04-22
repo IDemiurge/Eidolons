@@ -257,7 +257,8 @@ public class VisionMaster implements GenericVisionManager {
             unit = Eidolons.game.getManager().getActiveObj();
         }
         if (unit == null) {
-            unit = (Unit) Eidolons.game.getPlayer(true).getControlledUnits().iterator().next();
+            if (!Eidolons.game.getPlayer(true).getControlledUnits().isEmpty())
+                unit = (Unit) Eidolons.game.getPlayer(true).getControlledUnits().iterator().next();
         }
         return unit;
     }

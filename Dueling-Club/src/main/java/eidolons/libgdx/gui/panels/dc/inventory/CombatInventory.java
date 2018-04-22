@@ -11,8 +11,8 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.stage.Closable;
@@ -22,15 +22,15 @@ import main.system.threading.WaitMaster;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_INVENTORY;
 
-public class InventoryWithAction extends TablePanel implements Closable {
+public class CombatInventory extends TablePanel implements Closable {
     private InventoryPanel inventoryPanel;
 
     private Cell<Actor> actionPointsText;
-    private Cell<Actor> doneButton;
-    private Cell<Actor> cancelButton;
-    private Cell<Actor> undoButton;
+    private SymbolButton doneButton;
+    private SymbolButton cancelButton;
+    private SymbolButton undoButton;
 
-    public InventoryWithAction() {
+    public CombatInventory() {
         TextureRegion textureRegion = new TextureRegion(getOrCreateR("UI/components/inventory_background.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
@@ -45,15 +45,15 @@ public class InventoryWithAction extends TablePanel implements Closable {
 
         actionPointsText = lower.addElement(null).left();
 
-//        undoButton = lower.addElement(new ButtonStyled(STD_BUTTON.UNDO))
-//                .fill(false).expand(0, 0).right()
-//                .pad(20, 0, 20, 0).size(50, 50);
+        lower.addElement(undoButton = new SymbolButton(STD_BUTTON.UNDO))
+                .fill(false).expand(0, 0).right()
+                .pad(20, 0, 20, 0).size(50, 50);
 
-//        cancelButton = lower.addElement(new ButtonStyled(STD_BUTTON.CANCEL))
-//                .fill(false).expand(0, 0).right()
-//                .pad(20, 10, 20, 0).size(50, 50);
+        lower.addElement(cancelButton = new SymbolButton(STD_BUTTON.CANCEL))
+                .fill(false).expand(0, 0).right()
+                .pad(20, 10, 20, 0).size(50, 50);
 
-        doneButton = lower.addElement(new ButtonStyled(STD_BUTTON.OK))
+        lower.add(doneButton = new SymbolButton(STD_BUTTON.OK))
          .fill(false).expand(0, 0).right()
          .pad(20, 10, 20, 10).size(50, 50);
 
@@ -93,27 +93,14 @@ public class InventoryWithAction extends TablePanel implements Closable {
 
     private void initButtonListeners() {
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
-        ButtonStyled button = (ButtonStyled) doneButton.getActor();
-        button.clearListeners();
-        button.addListener(source.getDoneHandler());
-//        button.setDisabled(source.isDoneDisabled());
-
-//        button = (ButtonStyled) cancelButton.getActor();
-//        button.addListener(source.getCancelHandler());
-//        button.setDisabled(source.isCancelDisabled());
-
-//        button = (ButtonStyled) undoButton.getActor();
-//        button.addListener(source.getUndoHandler());
-//        button.setDisabled(source.isUndoDisabled());
+       doneButton.setRunnable(source.getDoneHandler());
+        cancelButton.setRunnable(source.getCancelHandler());
+        undoButton.setRunnable(source.getUndoHandler());
     }
 
     @Override
     public void clear() {
         super.clear();
-
-        doneButton.getActor().clearListeners();
-        cancelButton.getActor().clearListeners();
-        undoButton.getActor().clearListeners();
         close();
     }
 
@@ -141,7 +128,7 @@ public class InventoryWithAction extends TablePanel implements Closable {
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
         CharacterCreator.getHeroManager().removeHero(source.getUnit());
         if (!ExplorationMaster.isExplorationOn()) {
-            source.getCancelHandler().cancel();
+            source.getCancelHandler().run();
         } else {
 
         }
@@ -151,11 +138,4 @@ public class InventoryWithAction extends TablePanel implements Closable {
     public void close() {
         close(null);
     }
-//    public void open() {
-//        if (getStage() instanceof StageWithClosable) {
-//            ((StageWithClosable) getStage()).closeDisplayed();
-//            ((StageWithClosable) getStage()).setDisplayedClosable(this);
-//        }
-//        setVisible(true);
-//    }
 }

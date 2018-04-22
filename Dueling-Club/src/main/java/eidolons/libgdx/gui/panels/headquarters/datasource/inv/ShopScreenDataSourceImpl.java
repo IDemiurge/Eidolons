@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource.inv;
 
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -75,17 +74,6 @@ public class ShopScreenDataSourceImpl implements
         return dataSource.getHandler();
     }
 
-    public ClickListener getDoneHandler() {
-        return dataSource.getDoneHandler();
-    }
-
-    public ClickListener getUndoHandler() {
-        return dataSource.getUndoHandler();
-    }
-
-    public ClickListener getCancelHandler() {
-        return dataSource.getCancelHandler();
-    }
 
     public boolean isDoneDisabled() {
         return dataSource.isDoneDisabled();

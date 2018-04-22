@@ -21,9 +21,9 @@ import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.stage.BattleGuiStage;
@@ -33,6 +33,7 @@ import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.OptionsWindow;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -342,7 +343,8 @@ public class DungeonScreen extends GameScreen {
     }
 
     public boolean isBlocked() {
-        return OptionsMaster.isMenuOpen() || GameMenu.menuOpen;
+        return
+         HqPanel.getActiveInstance()!=null || OptionsWindow.isActive();
     }
 
     @Override

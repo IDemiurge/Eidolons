@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 
 import java.util.function.Supplier;
@@ -116,7 +117,16 @@ public class TablePanel<T extends Actor> extends Table {
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
         return this;
     }
-
+    public void fadeOut() {
+        clearActions();
+        ActorMaster.addFadeOutAction(this, 0.25f);
+        ActorMaster.addHideAfter(this);
+    }
+    public void fadeIn() {
+        clearActions();
+        setVisible(true);
+        ActorMaster.addFadeInAction(this, 0.25f);
+    }
     public boolean isFixedSize() {
         return fixedSize;
     }

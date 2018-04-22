@@ -21,4 +21,7 @@ public class NinePatchFactory {
     public static NinePatch getInfoPanel() {
         return new NinePatch(getOrCreateR("UI/components/panel ninepatch.png"), 50, 50, 50, 50);
     }
+    public static NinePatch getLightPanel() {
+        return new NinePatch(getOrCreateR("light ninepatch.png"), 10, 10, 10, 10);
+    }
 }

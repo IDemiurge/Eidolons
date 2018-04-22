@@ -20,7 +20,7 @@ public class HqHeroXp extends HqElement {
     private final ValueContainer next;
 
     public HqHeroXp() {
-        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
         GdxMaster.adjustAndSetSize(this, 380, 96);
 
        add( cur = new ValueContainer("", "" )).left();

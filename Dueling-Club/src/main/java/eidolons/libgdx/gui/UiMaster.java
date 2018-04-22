@@ -56,6 +56,10 @@ public class UiMaster {
         return getIconSize(false);
     }
 
+    public static int getHqSpellIconSize() {
+        return 64;
+    }
+
     public enum UI_ACTIONS {
         SCALE_ACTION_ICON(0),
         SCALE_UNIT_VIEW(0),

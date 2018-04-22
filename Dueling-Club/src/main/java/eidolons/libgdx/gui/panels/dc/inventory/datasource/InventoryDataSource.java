@@ -1,7 +1,5 @@
 package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
@@ -78,31 +76,16 @@ public class InventoryDataSource implements QuickSlotDataSource,
         return list;
     }
 
-    public ClickListener getDoneHandler() {
-        return new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                handler.doneClicked();
-            }
-        };
+    public Runnable getDoneHandler() {
+        return  ()-> handler.doneClicked();
     }
 
-    public ClickListener getUndoHandler() {
-        return new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                handler.undoClicked();
-            }
-        };
+    public Runnable getUndoHandler() {
+        return  ()-> handler.undoClicked();
     }
 
-    public ClickListener getCancelHandler() {
-        return new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                handler.cancelClicked();
-            }
-        };
+    public Runnable getCancelHandler() {
+        return  ()-> handler.cancelClicked();
     }
 
     public boolean isDoneDisabled() {

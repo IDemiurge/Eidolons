@@ -71,11 +71,11 @@ public class BuffRulesTest extends JUnitPartyCreated {
         for (PARAMS root_param : root_params) {
 //also test rule's state?
 
-            Integer initial = entity.getIntParam(reduced_params[i]);
-            entity.setParam(root_param,
-             new Formula(value_low[i]).getInt(new Ref(entity)));
-            game.getStateManager().reset(entity);
-            Integer reduced = entity.getIntParam(reduced_params[i]);
+            Integer initial = unit.getIntParam(reduced_params[i]);
+            unit.setParam(root_param,
+             new Formula(value_low[i]).getInt(new Ref(unit)));
+            game.getStateManager().reset(unit);
+            Integer reduced = unit.getIntParam(reduced_params[i]);
 
             if (isReductionOn(root_param)) {
                 printingAsserts.assertGreaterThanAndLog(initial, reduced, root_param + " rule");
@@ -86,12 +86,12 @@ public class BuffRulesTest extends JUnitPartyCreated {
                 continue;
             }
             if (reduced_params[i] != increased_params[i]) {
-                initial = entity.getIntParam(increased_params[i]);
+                initial = unit.getIntParam(increased_params[i]);
             }
-            entity.setParam(root_param, new Formula(value_high[i]).getInt(new Ref(entity))
+            unit.setParam(root_param, new Formula(value_high[i]).getInt(new Ref(unit))
             );
-            game.getStateManager().reset(entity);
-            Integer increased = entity.getIntParam(increased_params[i]);
+            game.getStateManager().reset(unit);
+            Integer increased = unit.getIntParam(increased_params[i]);
             printingAsserts.assertGreaterThanAndLog(increased, initial, root_param + " rule");
             i++;
         }

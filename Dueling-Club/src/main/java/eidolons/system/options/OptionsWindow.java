@@ -28,6 +28,7 @@ import java.util.Map;
  */
 public class OptionsWindow extends VisWindow {
     private static OptionsWindow instance;
+    private static boolean active;
     Stage stage;
     Table root;
     Array<OptionsTab> tabs = new Array<>();
@@ -45,9 +46,13 @@ public class OptionsWindow extends VisWindow {
 
     }
 
+    public static boolean isActive() {
+        return active;
+    }
+
     public static OptionsWindow getInstance() {
         if (instance == null) {
-        instance = new OptionsWindow();
+            instance = new OptionsWindow();
         }
         return instance;
     }
@@ -71,12 +76,13 @@ public class OptionsWindow extends VisWindow {
         centerWindow();
         center();
         fadeIn();
-        debugAll();
+        active = true;
     }
 
     @Override
     protected void close() {
         super.close();
+        active = false;
     }
 
     private Table init() {

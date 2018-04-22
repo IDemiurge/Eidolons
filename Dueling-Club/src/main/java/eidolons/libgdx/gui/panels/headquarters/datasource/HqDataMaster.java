@@ -37,8 +37,14 @@ public class HqDataMaster {
         return         new HqHeroDataSource(map.get(hero).getHeroModel());
     }
 
-    public void save() {
+    public static void saveHero(HeroDataModel model) {
+        map.get(model.getHero()).save();
+    }
+        public void save() {
         hero.cloneMaps(heroModel);
+
+    }
+        public void modified() {
         stack.push(new ImmutablePair<>(hero.getParamMap(), hero.getPropMap()));
     }
 
@@ -49,7 +55,7 @@ public class HqDataMaster {
 
     public   void modify(HeroDataModel model,
                          PARAMETER param, int i) {
-        save();
+        modified();
         model.modifyParameter(param, i, true);
         reset();
 
@@ -69,5 +75,9 @@ public class HqDataMaster {
 
     public HeroDataModel getHeroModel() {
         return heroModel;
+    }
+
+    public static void modelChanged(HeroDataModel entity) {
+        map.get(entity.getHero()).reset();
     }
 }

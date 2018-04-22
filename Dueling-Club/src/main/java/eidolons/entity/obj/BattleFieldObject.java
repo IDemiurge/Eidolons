@@ -128,6 +128,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                 return false;
             }
         }
+        if (killer==null )
+            killer= this;
         ref.setID(KEYS.KILLER, killer.getId());
 
         Ref REF = Ref.getCopy(killer.getRef());

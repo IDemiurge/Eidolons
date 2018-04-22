@@ -1,8 +1,10 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.GdxImageTransformer;
 import eidolons.libgdx.gui.datasource.EntityDataSource;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
@@ -87,5 +89,14 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
 
     public DC_WeaponObj getWeapon() {
         return entity;
+    }
+
+    public Image getNormalImage() {
+        return new Image(GdxImageTransformer.size(getSpriteImagePath(),
+         96, true));
+    }
+    public Image getLargeImage() {
+        return new Image(GdxImageTransformer.size(getSpriteImagePath(),
+         128, true));
     }
 }

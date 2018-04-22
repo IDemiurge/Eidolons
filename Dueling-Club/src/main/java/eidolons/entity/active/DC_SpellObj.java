@@ -96,7 +96,12 @@ public class DC_SpellObj extends DC_ActiveObj {
         return spellPool;
 
     }
-
+    public boolean isMemorized(){
+        return getSpellPool() == SPELL_POOL.MEMORIZED;
+    }
+    public boolean isVerbatim(){
+        return getSpellPool() == SPELL_POOL.VERBATIM;
+    }
     public SPELL_GROUP getSpellGroup() {
         if (spellGroup == null) {
             spellGroup = new EnumMaster<SPELL_GROUP>().retrieveEnumConst(SPELL_GROUP.class,

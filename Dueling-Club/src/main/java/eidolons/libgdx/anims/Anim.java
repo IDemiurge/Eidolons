@@ -798,8 +798,10 @@ public class Anim extends Group implements Animation {
     public void checkAddFloatingText() {
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
-                floatingText1.setX(getX());
-                floatingText1.setY(getY());
+                Vector2 floatTextPos = //localToSctageCoordinates
+                 (defaultPosition);
+                floatingText1.setX(floatTextPos.x);
+                floatingText1.setY(floatTextPos.y);
                 GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);
             }
         });

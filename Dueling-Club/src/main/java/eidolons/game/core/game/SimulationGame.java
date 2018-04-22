@@ -3,6 +3,7 @@ package eidolons.game.core.game;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.entity.type.ObjType;
@@ -15,7 +16,11 @@ import java.util.Map;
 public class SimulationGame extends DC_Game {
 
     private Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
+    private DC_Game realGame;
 
+    public SimulationGame() {
+        super(true);
+    }
 
     //how should these be called properly?
     public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
@@ -43,5 +48,18 @@ public class SimulationGame extends DC_Game {
             simulationCache = new XLinkedMap<>();
         }
         return simulationCache;
+    }
+
+    public void setRealGame(DC_Game realGame) {
+        this.realGame = realGame;
+    }
+
+    public DC_Game getRealGame() {
+        return realGame;
+    }
+
+    @Override
+    public DC_Player getPlayer(boolean me) {
+        return realGame.getPlayer(me);
     }
 }

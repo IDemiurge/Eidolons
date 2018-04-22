@@ -18,11 +18,8 @@ import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class StyleHolder {
     public static final FONT DEFAULT_FONT = FONT.MAIN;
@@ -180,101 +177,56 @@ public class StyleHolder {
     public static TextButton.TextButtonStyle getTextButtonStyle(
      STD_BUTTON button, FONT FONT, Color color, int size) {
         Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
-        LabelStyle style = getSizedColoredLabelStyle(FONT, size, color);
-        TextButtonStyle textButtonStyle = null;
+        LabelStyle labelStyle = getSizedColoredLabelStyle(FONT, size, color);
+        TextButtonStyle style = null;
         if (map != null) {
-            textButtonStyle = map.get(style);
+            style = map.get(style);
         } else {
             map = new HashMap<>();
             textButtonStyleMap.put(button, map);
         }
-        if (textButtonStyle != null)
-            return textButtonStyle;
+        if (style != null)
+            return style;
 
-        textButtonStyle = new TextButtonStyle();
+        style = new TextButtonStyle();
         if (button != null) {
-            textButtonStyle.up = button.getTexture();
+            style.up = button.getTexture();
             if (button.isVersioned()) {
-                textButtonStyle.down = button.getTextureDown();
-                textButtonStyle.over = button.getTextureOver();
-                textButtonStyle.disabled = button.getTextureDisabled();
-                textButtonStyle.checked = button.getTextureChecked();
+                style.down = button.getTextureDown();
+                style.over = button.getTextureOver();
+                style.disabled = button.getTextureDisabled();
+                style.checked = button.getTextureChecked();
             } else {
-                textButtonStyle.down = button.getTexture();
-                textButtonStyle.over = button.getTexture();
-                textButtonStyle.disabled = button.getTexture();
+                style.down = button.getTexture();
+                style.over = button.getTexture();
+                style.disabled = button.getTexture();
             }
         }
 
-        textButtonStyle.font = getFont(FONT, color, size);// new BitmapFont();
-        textButtonStyle.fontColor = DEFAULT_COLOR;
-        textButtonStyle.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
-        textButtonStyle.checkedFontColor = new Color(0xFF_00_00_FF);
+        style.font = getFont(FONT, color, size);
+        style.fontColor=new Color(color);
+        style.disabledFontColor= new Color(color);
+        style.checkedFontColor= new Color(color);
+        style.overFontColor = new Color(color);
+        style.downFontColor= new Color(color);
 
-        map.put(style, textButtonStyle);
-        return textButtonStyle;
-    }
+        style.fontColor.mul(0.95f);
+        style.disabledFontColor.mul(0.65f);
+        style.checkedFontColor.mul(1.05f);
+        style.overFontColor.mul(1.11f);
+        style.downFontColor.mul(1.15f);
 
-    public static TextButton getMainMenuButton(String text) {
-        final TextButton.TextButtonStyle customButtonStyle = StyleHolder.getCustomButtonStyle("UI/red_button.png");
-        customButtonStyle.checkedFontColor = Color.WHITE;
-        return new TextButton(text, customButtonStyle);
-    }
+        style.fontColor.a=1 ;
+        style.disabledFontColor.a=1;
+        style.checkedFontColor.a=1;
+        style.overFontColor.a=1 ;
+        style.downFontColor.a=1 ;
 
-    public static TextButton.TextButtonStyle getCustomButtonStyle(String baseImagePath) {
-        final int jpgEnd = baseImagePath.indexOf(".jpg");
-        final int pngEnd = baseImagePath.indexOf(".png");
-        String endString = null;
-        String baseString = null;
+//        style.fontColor = DEFAULT_COLOR;
+//        style.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
+//        style.checkedFontColor = new Color(0xFF_00_00_FF);
 
-        if (jpgEnd > 0) {
-            endString = ".jpg";
-            baseString = baseImagePath.replace(endString, "");
-        }
-        if (pngEnd > 0) {
-            endString = ".png";
-            baseString = baseImagePath.replace(endString, "");
-        }
-
-        final String disabledPath = baseString + DISABLED + endString;
-        final String overPath = baseString + OVER + endString;
-        final String downPath = baseString + DOWN + endString;
-        final String upPath = baseString + UP + endString;
-        final String checkedPath = baseString + CHECKED + endString;
-
-        TextButton.TextButtonStyle style = getTextButtonStyle(DEFAULT_FONT, DEFAULT_COLOR, 18);
-
-        File f = new File(disabledPath);
-        boolean isExists = false;
-        if (f.exists()) {
-            isExists = true;
-            style.disabled = new TextureRegionDrawable(getOrCreateR(disabledPath));
-        }
-        f = new File(overPath);
-        if (f.exists()) {
-            isExists = true;
-            style.over = new TextureRegionDrawable(getOrCreateR(overPath));
-        }
-        f = new File(downPath);
-        if (f.exists()) {
-            isExists = true;
-            style.down = new TextureRegionDrawable(getOrCreateR(downPath));
-        }
-        f = new File(upPath);
-        if (f.exists()) {
-            isExists = true;
-            style.up = new TextureRegionDrawable(getOrCreateR(upPath));
-        }
-        f = new File(checkedPath);
-        if (f.exists()) {
-            isExists = true;
-            style.checked = new TextureRegionDrawable(getOrCreateR(checkedPath));
-        }
-
-        if (!isExists) {
-            style.up = new TextureRegionDrawable(getOrCreateR(baseImagePath));
-        }
-
+        map.put(labelStyle, style);
         return style;
     }
 
@@ -285,6 +237,12 @@ public class StyleHolder {
         style.checked = style.down = new TextureRegionDrawable(pressed);
         style.up = new TextureRegionDrawable(released);
         return style;
+    }
+
+    public static TextButtonStyle getHqTabStyle( ) {
+        TextButtonStyle  style = getTextButtonStyle(STD_BUTTON.HIGHLIGHT,
+         FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
+       return style;
     }
 
     public static TextButtonStyle getDefaultTabStyle() {

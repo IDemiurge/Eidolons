@@ -3,9 +3,7 @@ package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.ActionInput;
-import eidolons.libgdx.GdxImageTransformer;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -118,26 +116,20 @@ public class QuickWeaponPanel extends TablePanel {
     }
 
     public WeaponDataSource getActiveWeaponDataSource() {
+        if (dataSource==null )
+            return dataSourceAlt;
+        if (dataSourceAlt==null )
+            return dataSource;
         return unarmed ? dataSourceAlt : dataSource;
     }
 
     private void initWeapon(WeaponDataSource dataSource) {
-        weapon.setImage(getNormalImage(dataSource));
+        weapon.setImage(
+         dataSource. getNormalImage());
     }
 
-    private Image getLargeImage(WeaponDataSource dataSource) {
-        return new Image(GdxImageTransformer.size(dataSource.getSpriteImagePath(),
-         128, true));
-    }
 
-    private Image getNormalImage(WeaponDataSource dataSource) {
-        return new Image(GdxImageTransformer.size(dataSource.getSpriteImagePath(),
-         getWeaponSpriteSize(), true));
-    }
 
-    private int getWeaponSpriteSize() {
-        return 96;
-    }
 
     private EventListener getListener() {
         return new SmartClickListener(this) {
@@ -173,7 +165,7 @@ public class QuickWeaponPanel extends TablePanel {
                 super.entered();
                 weapon.setZIndex(getChildren().size - 2);
                 weapon.setFadeDuration(0.25f);
-                weapon.setImage(getLargeImage(getActiveWeaponDataSource()));
+                weapon.setImage(getActiveWeaponDataSource(). getLargeImage());
                 int i = !offhand ? -1 : 1;
                 ActorMaster.addMoveToAction(weapon, WEAPON_POS_X + 20 * i, 20, 0.75f);
             }
@@ -183,7 +175,7 @@ public class QuickWeaponPanel extends TablePanel {
                 super.exited();
                 weapon.setZIndex(1);
                 weapon.setFadeDuration(0.5f);
-                weapon.setImage(getNormalImage(getActiveWeaponDataSource()));
+                weapon.setImage(getActiveWeaponDataSource().getNormalImage());
                 ActorMaster.addMoveToAction(weapon, WEAPON_POS_X , 0, 0.75f);
             }
         };

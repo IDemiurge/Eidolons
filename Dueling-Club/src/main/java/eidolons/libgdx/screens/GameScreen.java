@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.GdxMaster;
@@ -16,6 +17,7 @@ import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -36,12 +38,20 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected ShaderProgram bufferedShader;
     protected Float speed;
     protected TextureRegion backTexture;
-    private RealTimeGameLoop realTimeGameLoop;
-
     protected GuiStage guiStage;
+    private RealTimeGameLoop realTimeGameLoop;
 
     public TextureRegion getBackTexture() {
         return backTexture;
+    }
+
+    public GameScreen() {
+        GuiEventManager.bind(GuiEventType.GAME_PAUSED, d->{
+            DC_Game.game.getLoop().setPaused(true);
+        });
+        GuiEventManager.bind(GuiEventType.GAME_RESUMED, d->{
+            DC_Game.game.getLoop().setPaused(false);
+        });
     }
 
     protected void cameraPan(Vector2 unitPosition) {

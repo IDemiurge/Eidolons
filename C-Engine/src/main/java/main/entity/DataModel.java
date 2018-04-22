@@ -41,6 +41,7 @@ import main.system.math.MathMaster;
 import main.system.text.TextParser;
 
 import javax.swing.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1649,5 +1650,18 @@ public abstract class DataModel {
 
     public void setBeingReset(boolean beingReset) {
         this.beingReset = beingReset;
+    }
+
+    public void shuffleContainerProperty(PROPERTY property) {
+        String value = getProperty(property);
+        List<String> list = StringMaster.openContainer(value);
+        Collections.shuffle(list);
+        setProperty(property, StringMaster.constructContainer(list));
+    }
+    public void reverseContainerProperty(PROPERTY property) {
+        String value = getProperty(property);
+        List<String> list = StringMaster.openContainer(value);
+        Collections.reverse(list);
+        setProperty(property, StringMaster.constructContainer(list));
     }
 }

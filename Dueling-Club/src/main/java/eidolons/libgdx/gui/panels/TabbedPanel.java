@@ -61,7 +61,7 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     }
 
     public void addTab(T actor, String tabName) {
-        TextButton b = new TextButton(tabName, getButtonStyle());
+        TextButton b = new TextButton(tabName, getTabStyle());
 
         if (buttonLayout == null) {
             initContainer();
@@ -98,7 +98,7 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         }
     }
 
-    protected TextButton.TextButtonStyle getButtonStyle() {
+    protected TextButton.TextButtonStyle getTabStyle() {
         return
          StyleHolder.getDefaultTabStyle();
     }

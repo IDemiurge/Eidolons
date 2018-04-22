@@ -59,6 +59,8 @@ public class GenericLauncher extends Game {
 
     public void start() {
         engineInit();
+        if (CoreEngine.isGraphicsOff())
+            return;
         Eidolons.setApplication(new LwjglApplication(this,
          getConf()));
         Eidolons.setLauncher(this);
@@ -246,9 +248,8 @@ public class GenericLauncher extends Game {
                         if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
                             return;
                         DC_Engine.gameStartInit();
-                        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
-                        Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-                        Eidolons.mainGame.getMetaMaster().getGame().start(true);
+
+                        Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                         firstInitDone = true;
                     }
                 }, " thread").start();

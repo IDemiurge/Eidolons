@@ -88,6 +88,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                 }
                 if (item == null) {
                     if (type == null) {
+                        if (StringMaster.isInteger(subString))
                         item = (DC_HeroItemObj) game.getObjectById(StringMaster
                          .getInteger(subString));
                     } else {

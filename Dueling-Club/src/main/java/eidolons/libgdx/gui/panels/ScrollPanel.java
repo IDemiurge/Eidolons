@@ -11,11 +11,19 @@ import com.badlogic.gdx.utils.Align;
 public class ScrollPanel<T extends Actor> extends Container<Container> {
 
 
-    private Table table;
+    private TablePanel table;
     private InnerScrollContainer<Table> innerScrollContainer;
     private int instantOffsetY;
     private int offsetY;
     private boolean widgetPosChanged;
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        table.setSize(width, height);
+        innerScrollContainer.setSize(width, height);
+        table.setFixedSize(true);
+    }
 
     public ScrollPanel() {
         init();
@@ -38,7 +46,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     }
 
     public void addElement(T obj) {
-        table.add(obj).fill();
+        table.addNormalSize(obj).fill();
         table.row();
         table.pack();
         offsetY = 200;
@@ -57,7 +65,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         left().bottom();
         setClip(true);
 
-        table = new Table();
+        table = new TablePanel();
         table.setFillParent(true);
         table.align(Align.left);
 

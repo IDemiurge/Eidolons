@@ -23,7 +23,7 @@ public class HqParamPanel extends HqElement{
 
     public HqParamPanel(boolean dynamic) {
         this.dynamic = dynamic;
-        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
         setSize(GDX.size(300), GDX.size(75));
         add(group = new HorizontalGroup()).center();
         group.setSize(getWidth()-60, getHeight());

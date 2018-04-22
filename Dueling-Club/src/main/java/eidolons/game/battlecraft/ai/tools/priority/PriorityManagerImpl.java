@@ -1704,7 +1704,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
     public Unit getUnit() {
         if (unit != null)
             return unit;
-        return unit;
+        return super.getUnit();
     }
 
     public void setUnit(Unit unit) {

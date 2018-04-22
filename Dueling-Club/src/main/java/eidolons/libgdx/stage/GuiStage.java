@@ -161,6 +161,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 HqPanel.setActiveInstance(null );
                 return;
             }
+
             hqPanel.setEditable(ExplorationMaster.isExplorationOn());
             hqPanel.setVisible(true);
             ActorMaster.addFadeInAction(hqPanel, 0.3f  );

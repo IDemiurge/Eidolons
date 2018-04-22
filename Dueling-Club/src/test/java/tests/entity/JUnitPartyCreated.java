@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
+import res.JUnitResources;
 import tests.FastDcTest;
 
 import static org.junit.Assert.assertTrue;
@@ -14,15 +15,19 @@ import static org.junit.Assert.assertTrue;
 public class JUnitPartyCreated extends FastDcTest {
 
 
-    protected Unit entity;
+    protected Unit unit;
 
+    @Override
+    protected String getPlayerParty() {
+        return JUnitResources.DEFAULT_UNIT;
+    }
 
     /**
      * Creates a unit with standard name.
      */
     @Before
     public void createEntity() {
-        entity = game.getUnits().get(0);
+        unit = game.getUnits().get(0);
     }
 
     /**
@@ -32,7 +37,7 @@ public class JUnitPartyCreated extends FastDcTest {
     public void testUnitCreatedWithRightName() {
 
         assertTrue(!game.getUnits().isEmpty());
-        assertTrue(entity != null);
+        assertTrue(unit != null);
 
     }
 
@@ -43,9 +48,9 @@ public class JUnitPartyCreated extends FastDcTest {
     @Test
     public void testToBase() {
 
-        entity.setParam(PARAMS.ACID_ARMOR, entity.getType().getParam(PARAMS.ACID_ARMOR) + 5);
-        entity.toBase();
-        assertTrue(entity.getParam(PARAMS.ACID_ARMOR) == entity.getType().getParam(PARAMS.ACID_ARMOR));
+        unit.setParam(PARAMS.ACID_ARMOR, unit.getType().getParam(PARAMS.ACID_ARMOR) + 5);
+        unit.toBase();
+        assertTrue(unit.getParam(PARAMS.ACID_ARMOR) == unit.getType().getParam(PARAMS.ACID_ARMOR));
 
     }
 

@@ -12,7 +12,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 import org.junit.Test;
-import tests.FastDcTest;
+import tests.entity.JUnitSingleUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 /**
  * Created by JustMe on 10/26/2017.
  */
-public class JUnitClearshotTest extends FastDcTest {
+public class JUnitClearshotTest extends JUnitSingleUnit {
 
     protected List<Coordinates> insideCoords;
     protected List<Coordinates> outsideCoords;
@@ -67,29 +67,36 @@ public class JUnitClearshotTest extends FastDcTest {
         OUTLINE_TYPE outline = sub.getOutlineType();
         boolean blocked = hero_inside != inside;
         LogMaster.setOff(false);
-        if (blocked)
-            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline)
-            {
+
+        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
+
+//        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
+//
+//        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
+//
+//        VISIBILITY_LEVEL visibility = game.getVisionMaster().getVisionController().getVisibilityLevelMapper().get(unit, sub);
+
+        if (blocked) {
+            if (OUTLINE_TYPE.BLOCKED_OUTLINE != outline) {
                 boolean result = game.getVisionMaster().getSightMaster().
                  getClearShotCondition().check(getHero(), sub);
                 if (!result) {
-                    main.system.auxiliary.log.LogMaster.log(1,"Failed ClearShotCondition:" +
-                     " "+sub +
+                    main.system.auxiliary.log.LogMaster.log(1, "Failed ClearShotCondition:" +
+                     " " + sub +
                      "; hero_inside= " +
                      hero_inside +
-                     "; inside="+ inside );
+                     "; inside=" + inside);
                     fail();
                 }
-            }
-        else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline)
-            {
-                main.system.auxiliary.log.LogMaster.log(1,"Failed BLOCKED_OUTLINE:" +
-                 " "+sub +
+            } else if (OUTLINE_TYPE.BLOCKED_OUTLINE == outline) {
+                main.system.auxiliary.log.LogMaster.log(1, "Failed BLOCKED_OUTLINE:" +
+                 " " + sub +
                  "; hero_inside= " +
                  hero_inside +
-                 "; inside="+ inside );
+                 "; inside=" + inside);
                 fail();
             }
+        }
 
         if (sub instanceof BattleFieldObject)
             if (!sub.isMine())

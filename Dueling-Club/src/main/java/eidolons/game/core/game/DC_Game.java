@@ -175,6 +175,7 @@ public class DC_Game extends MicroGame {
         if (!CoreEngine.isCombatGame())
             return;
         musicMaster = MusicMaster.getInstance();
+        if (MusicMaster.isOn())
         if (musicMaster.isRunning()) {
             musicMaster.resume();
         } else {
@@ -281,7 +282,8 @@ public class DC_Game extends MicroGame {
     }
 
     public void startGameLoop(boolean first) {
-        GuiEventManager.trigger(MUSIC_START, null);
+        if (MusicMaster.isOn())
+            GuiEventManager.trigger(MUSIC_START, null);
         getState().gameStarted(first);
         if (first) if (getMetaMaster() != null)
             getMetaMaster().gameStarted();
@@ -582,6 +584,7 @@ public class DC_Game extends MicroGame {
     public GenericTurnManager getTurnManager() {
         return combatMaster.getTurnManager();
     }
+
     public AtbController getAtbController() {
         return ((AtbTurnManager) combatMaster.getTurnManager()).getAtbController();
     }
@@ -811,6 +814,12 @@ public class DC_Game extends MicroGame {
 
     public DC_BattleFieldGrid getGrid() {
         return grid;
+    }
+
+    public void initAndStart() {
+        dungeonInit();
+        battleInit();
+        start(true);
     }
 
     public enum GAME_MODES {

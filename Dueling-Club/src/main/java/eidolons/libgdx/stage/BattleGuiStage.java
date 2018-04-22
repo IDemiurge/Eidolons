@@ -11,7 +11,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryWithAction;
+import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
@@ -43,7 +43,7 @@ public class BattleGuiStage extends GuiStage {
 
         addActor(new UnitInfoPanel(0, 0));
         init();
-        InventoryWithAction inventoryForm = new InventoryWithAction();
+        CombatInventory inventoryForm = new CombatInventory();
         inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
         this.addActor(inventoryForm);
 

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import main.content.values.parameters.PARAMETER;
@@ -15,8 +16,21 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
     LabelX pointsLeft;
     private boolean editable;
 
+    @Override
+    public void init() {
+        pointsLeft = new LabelX("", 14);
+        TablePanel pointTable = new TablePanel();
+        pointTable.setFixedSize(true);
+        pointTable.setSize(50, 40);
+        pointTable.initDefaultBackground();
+        pointTable.add(pointsLeft);
+        add(pointTable).right().top(). colspan(2). row();
+        super.init();
+    }
+
     public HqStatTable() {
         super(2, 10);
+
         top();
         if (isMastery()) {
             right();
@@ -25,7 +39,6 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
         }
         setFixedSize(true);
         setSize(GDX.size(225), GDX.size(100));
-        debug();
     }
 
     @Override
@@ -36,16 +49,18 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);
+        pointsLeft.setText(getPointsLeft()+"");
         int i = 0;
-        for (PARAMS sub : data) {
-            if (sub != null) {
-                HqStatElement actor = actors[i++];
-                if (actor == null)
-                    continue;
-                actor.setDisabled(getPointsLeft() > getCost(sub));
+        for (HqStatElement actor :actors) {
+            if (actor != null) {
+                PARAMS sub  = data [i++];
                 actor.setDisplayedParam(sub);
-                actor.setModifyParam(getModifyParam(sub));
                 actor.setUserObject(getUserObject());
+                if (sub != null)
+                {
+                    actor.setDisabled(getPointsLeft() > getCost(sub));
+                    actor.setModifyParam(getModifyParam(sub));
+                }
                 actor.updateAct(delta);
             }
         }

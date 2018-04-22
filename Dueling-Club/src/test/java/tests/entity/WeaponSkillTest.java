@@ -25,22 +25,22 @@ public class WeaponSkillTest extends JUnitPartyCreated {
     public void createEntity() {
 //        ObjType type = DataManager.getType(typeName, DC_TYPE.UNITS);
 //        entity = (Unit) game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
-        skill = new DC_FeatObj(DataManager.getType(skillName, DC_TYPE.SKILLS), entity.getRef());
-        dagger = new DC_WeaponObj(DataManager.getType(itemName, DC_TYPE.WEAPONS), entity);
+        skill = new DC_FeatObj(DataManager.getType(skillName, DC_TYPE.SKILLS), unit.getRef());
+        dagger = new DC_WeaponObj(DataManager.getType(itemName, DC_TYPE.WEAPONS), unit);
 
     }
 
     @Test
     public void testAssignSkill() {
 
-        int temp = entity.getIntParam(PARAMS.TOUGHNESS);
-        assert (!entity.getSkills().contains(skill));
-        entity.getSkills().add(skill);
-        entity.fullReset(game);
-        assertTrue(entity.getSkills().contains(skill));
+        int temp = unit.getIntParam(PARAMS.TOUGHNESS);
+        assert (!unit.getSkills().contains(skill));
+        unit.getSkills().add(skill);
+        unit.fullReset(game);
+        assertTrue(unit.getSkills().contains(skill));
         System.out.println(temp);
-        System.out.println(entity.getIntParam(PARAMS.TOUGHNESS));
-        assertTrue(temp < entity.getIntParam(PARAMS.TOUGHNESS));
+        System.out.println(unit.getIntParam(PARAMS.TOUGHNESS));
+        assertTrue(temp < unit.getIntParam(PARAMS.TOUGHNESS));
 
     }
 
@@ -52,17 +52,17 @@ public class WeaponSkillTest extends JUnitPartyCreated {
         assert (dagger.getName().equalsIgnoreCase(itemName));
 
 
-        entity.setProperty(G_PROPS.MAIN_HAND_ITEM, itemName);
-        int temp = entity.getCalculator().calculateDamage(false);
+        unit.setProperty(G_PROPS.MAIN_HAND_ITEM, itemName);
+        int temp = unit.getCalculator().calculateDamage(false);
 
-        entity.toBase();
-        entity.getResetter().resetObjects();
-        entity.afterEffects();
+        unit.toBase();
+        unit.getResetter().resetObjects();
+        unit.afterEffects();
 
         System.out.println(temp);
-        System.out.println(entity.getCalculator().calculateDamage(false));
+        System.out.println(unit.getCalculator().calculateDamage(false));
 
-        assertTrue(temp < entity.getCalculator().calculateDamage(false));
+        assertTrue(temp < unit.getCalculator().calculateDamage(false));
 
 
     }

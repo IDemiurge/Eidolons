@@ -245,6 +245,6 @@ public class AiMaster {
     }
 
     public UnitAI getUnitAI() {
-        return unit.getAI();
+        return getUnit().getAI();
     }
 }

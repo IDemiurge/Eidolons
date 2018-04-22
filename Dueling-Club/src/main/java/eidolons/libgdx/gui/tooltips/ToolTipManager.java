@@ -170,8 +170,7 @@ public class ToolTipManager extends TablePanel {
         tooltip.invalidate();
         actorCell.setActor(tooltip);
 
-        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        v2 = getStage().screenToStageCoordinates(v2);
+        Vector2 v2 = GdxMaster.getCursorPosition(this);
         setPosition(v2.x + 10, v2.y);
 
         if (isRemoveImmediately(tooltip)) {

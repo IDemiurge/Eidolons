@@ -16,7 +16,6 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.logic.action.context.Context;
-import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
@@ -54,7 +53,15 @@ public class GameLoop {
         if (!CoreEngine.isGraphicsOff()) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         }
+
+        WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_STARTED, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
+
         while (true) {
+            //for JUnit
+            if (game.getUnits().isEmpty()){
+                continue;
+            }
             if (!AiTrainingRunner.running) {
                 try {
                     if (!roundLoop())
@@ -96,6 +103,7 @@ public class GameLoop {
         }
 
 
+        WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
         main.system.auxiliary.log.LogMaster.log(1, this + " exited!");
         setExited(false);
     }
@@ -140,7 +148,6 @@ public class GameLoop {
                 VisionManager.refresh();
                 started = true;
             }
-
             result = makeAction();
             if (exited || ExplorationMaster.isExplorationOn())
                 return false;
@@ -193,9 +200,9 @@ public class GameLoop {
             } catch (Exception e) {
                 AI_Manager.setOff(true);
                 if (!aiFailNotified) {
-                    Err.error("Sorry, AI failed, but you can control their units now...");
+                    main.system.auxiliary.log.LogMaster.log(1, ("AI failed!!!!"));
                     aiFailNotified = true;
-                    action = (waitForPlayerInput());
+                    return false;
                 }
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -291,7 +298,9 @@ public class GameLoop {
     }
 
     protected ActionInput waitForPlayerInput() {
-        return (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
+        ActionInput input=(ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
+         System.out.println("Player action input: " +input );
+        return input;
     }
 
     public DC_ActiveObj getActivatingAction() {
@@ -332,12 +341,14 @@ public class GameLoop {
 
     public void setExited(boolean exited) {
         this.exited = exited;
-        if (exited)
+        if (exited) {
+            WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
             try {
                 game.getGameLoopThread().interrupt();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
+        }
     }
 
     public void togglePaused() {

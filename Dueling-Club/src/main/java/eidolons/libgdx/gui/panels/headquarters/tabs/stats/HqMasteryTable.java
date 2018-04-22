@@ -6,7 +6,9 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.system.math.DC_MathManager;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
+import main.system.auxiliary.data.ListMaster;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,8 +43,10 @@ public class HqMasteryTable extends HqStatTable {
     @Override
     protected PARAMS[] initDataArray() {
         HqHeroDataSource hero = getUserObject();
-        List<PARAMETER> list = DC_MathManager.getUnlockedMasteries(hero.getEntity());
-        list =list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).collect(Collectors.toList());
+        List<PARAMETER> list = new ArrayList<>(DC_MathManager.getUnlockedMasteries(hero.getEntity()));
+        list =list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).
+         collect(Collectors.toList());
+        ListMaster.fillWithNullElements(list, size);
         return   list.toArray(new PARAMS[list.size()]);
     }
 }

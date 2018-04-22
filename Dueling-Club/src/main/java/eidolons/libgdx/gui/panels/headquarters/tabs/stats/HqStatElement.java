@@ -15,6 +15,8 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.parameters.PARAMETER;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.images.ImageManager;
 
 /**
@@ -37,7 +39,7 @@ public class HqStatElement extends HqElement {
         this.displayedParam = param;
         this.mastery = mastery;
         this.editable = editable;
-        leftToRight = mastery;
+//   TODO      leftToRight = mastery;
         setSize(GDX.size(80), GDX.size(50));
 
         container = new ValueContainer(TextureCache.getOrCreateR(
@@ -59,6 +61,9 @@ public class HqStatElement extends HqElement {
         } else {
             add(container).left();
             add(button).right();
+        }
+        if (mastery) {
+            container. addListener(getNewMasteryListener());
         }
     }
 
@@ -93,8 +98,18 @@ public class HqStatElement extends HqElement {
             container.getValueContainer().padLeft(5);
             container.getValueContainer().padRight(5);
         }
-        else
-            updateRequired = true;
+    }
+
+    private EventListener getNewMasteryListener() {
+        return new SmartClickListener(container){
+            @Override
+            protected void onTouchDown(InputEvent event, float x, float y) {
+                if (displayedParam!=null )
+                    return;
+                GuiEventManager.trigger(GuiEventType.SHOW_MASTERY_LEARN ,
+                 getUserObject());
+            }
+        };
     }
 
     @Override

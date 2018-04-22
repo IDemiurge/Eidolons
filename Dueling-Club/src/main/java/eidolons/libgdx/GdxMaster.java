@@ -6,13 +6,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.data.filesys.PathFinder;
 
@@ -108,6 +109,14 @@ public class GdxMaster {
          unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
+    public static Vector2 getCursorPosition(Actor actor) {
+        return getCursorPosition(actor.getStage());
+    }
+    public static Vector2 getCursorPosition(Stage stage) {
+        Vector2 v2 =new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 =stage .screenToStageCoordinates(v2);
+        return v2;
+    }
     public static boolean isLwjglThread() {
         return Thread.currentThread().getName().equalsIgnoreCase("LWJGL Application");
     }
@@ -175,7 +184,10 @@ public class GdxMaster {
         Gdx.input.setInputProcessor(inputController);
     }
 
-    public static void centerAndAdjust(ImageContainer actor) {
+    public static void center(Actor actor) {
+        actor.setPosition(  centerWidth(actor) , centerHeight(actor ));
+    }
+    public static void centerAndAdjust(Actor actor) {
         actor.setPosition(adjustPos(true, centerWidth(actor)), adjustPos(false, centerHeight(actor)));
     }
 

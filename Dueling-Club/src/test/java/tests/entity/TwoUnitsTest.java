@@ -1,23 +1,27 @@
 package tests.entity;
 
 import eidolons.entity.obj.unit.Unit;
-import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.entity.Ref;
-import main.entity.type.ObjType;
-import org.junit.Before;
+import org.junit.Test;
+import res.JUnitResources;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/28/2017.
  */
 public class TwoUnitsTest extends JUnitPartyCreated {
-    protected Unit entity2;
-    protected String typeName2 = "Thief";
+  protected   Unit unit2;
 
-    @Before
-    public void createSecondEntity() {
-        ObjType type = DataManager.getType(typeName2, DC_TYPE.UNITS);
-        entity2 = (Unit) game.getManager().getObjCreator().createUnit(type, 0, 0, game.getPlayer(true), new Ref(game));
+    @Override
+    protected String getEnemyParty() {
+        return JUnitResources.DEFAULT_UNIT;
+    }
+    @Test
+    public void testUnitCreatedWithRightName() {
+
+        super.testUnitCreatedWithRightName();
+        unit2 = (Unit) game.getPlayer(false).getControlledUnits().iterator().next();
+        assertTrue(unit2 != null);
 
     }
 }

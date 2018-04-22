@@ -75,7 +75,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
         CRAWL(), STANDOFF(true), SKIRMISH(true),
         ADVENTURE,
-        NEW_GAME(CRAWL, ADVENTURE, STANDOFF, SKIRMISH),
+        NEW_GAME(CRAWL, ADVENTURE),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),

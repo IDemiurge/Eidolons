@@ -19,6 +19,8 @@ public class DC_Engine extends CoreEngine {
         jarInit();
     }
 
+    private static boolean trainingOff;
+
     public static void fullInit() {
         Chronos.mark("DC INIT");
         systemInit();
@@ -58,11 +60,8 @@ public class DC_Engine extends CoreEngine {
 
 
     public static void gameInit() {
-        // DC_CostsFactory.createCostsForTypes();
-        Chronos.mark("GAME INIT");
         ConditionMaster.setInstance(new DC_ConditionMaster());
         DC_ActionManager.init();
-        Chronos.logTimeElapsedForMark("GAME INIT");
     }
 
     public static boolean isAtbMode() {
@@ -71,5 +70,13 @@ public class DC_Engine extends CoreEngine {
 
     public static void setAtbMode(boolean atbMode) {
         DC_Engine.atbMode = atbMode;
+    }
+
+    public static boolean isTrainingOff() {
+        return trainingOff;
+    }
+
+    public static void setTrainingOff(boolean trainingOff) {
+        DC_Engine.trainingOff = trainingOff;
     }
 }

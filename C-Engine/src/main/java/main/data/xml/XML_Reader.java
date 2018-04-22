@@ -218,6 +218,7 @@ public class XML_Reader {
         for (Node node : nodes) {
             // typeName = node.getNodeName();
             ObjType type = TypeBuilder.buildType(node, TYPE.toString());
+            if (game!=null )
             game.initType(type);
 
             if (incompleteTypes) {

@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
+import eidolons.libgdx.texture.Images;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class QuickSlotPanel extends BaseSlotPanel {
         clear();
         final ActiveQuickSlotsDataSource source = (ActiveQuickSlotsDataSource) getUserObject();
         final List<ActionValueContainer> sources = source.getQuickSlotActions();
-        initContainer(sources, "UI/EMPTY_LIST_ITEM.jpg");
+        initContainer(sources, Images.EMPTY_QUICK_ITEM);
     }
 
     @Override

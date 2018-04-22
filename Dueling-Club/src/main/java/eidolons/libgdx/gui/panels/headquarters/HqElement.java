@@ -6,7 +6,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 /**
  * Created by JustMe on 4/16/2018.
  */
-public abstract class HqElement extends TablePanel {
+public abstract class HqElement extends TablePanel implements HqActor{
 
     protected HqHeroDataSource dataSource;
 
@@ -16,6 +16,8 @@ public abstract class HqElement extends TablePanel {
         update(delta);
     }
 
+    protected abstract void update(float delta);
+
     @Override
     public float getPrefWidth() {
         return getWidth();
@@ -24,8 +26,6 @@ public abstract class HqElement extends TablePanel {
     public float getPrefHeight() {
         return getHeight();
     }
-
-    protected abstract void update(float delta);
 
     @Override
     public HqHeroDataSource getUserObject() {

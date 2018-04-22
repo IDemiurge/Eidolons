@@ -544,6 +544,7 @@ public class DC_ActionManager implements ActionManager {
         if (!unit.isBfObj()) {
             actives.addAll(getStandardActions(unit));
         }
+        addSpecialActions(unit, actives);
 
         String activesProp = entity.getProperty(ACTIVES);
         for (String typeName : StringMaster.open(activesProp)) {
@@ -563,11 +564,8 @@ public class DC_ActionManager implements ActionManager {
         }
         // list = new DequeImpl<>(items);
         actives.removeIf(activeObj -> !isActionAvailable(activeObj, ExplorationMaster.isExplorationOn()));
-        try {
-            addSpecialActions(unit, actives);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
+
         if (ExplorationMaster.isExplorationOn())
             try {
                 actives.removeIf(activeObj -> unit.getGame().getDungeonMaster().
@@ -656,6 +654,7 @@ public class DC_ActionManager implements ActionManager {
             actives.add(getOrCreateAction(CLUMSY_LEAP, unit));
 
         }
+        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
         if (UnitAnalyzer.checkOffhand(unit)) {
             actives.add(getOrCreateAction(OFFHAND_ATTACK, unit));
 
@@ -671,7 +670,6 @@ public class DC_ActionManager implements ActionManager {
                 // stunning blow, many possibilities! :) but it will be tricky...
                 // TODO should add all dual actions
             }
-        actives.add(getOrCreateAction(STD_SPEC_ACTIONS.Wait.name(), unit));
 
         if (RuleKeeper.checkFeature(FEATURE.USE_INVENTORY)) {
             if (unit.canUseItems()) {

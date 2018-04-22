@@ -6,8 +6,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.DC_Engine;
-import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
@@ -15,7 +13,6 @@ import eidolons.game.core.atb.AtbMaster;
 import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataModelSnapshot;
 import main.content.DC_TYPE;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -69,21 +66,28 @@ public class DcHelper implements JUnitHelper {
                           Context context, boolean waitForCompletion) {
 
         float readiness = 0;
-        if (DC_Engine.isAtbMode()) readiness = game.getAtbController().getAtbUnit((Unit) context.getSourceObj())
-         .getAtbReadiness();
-        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
-         new ActionInput(action, context));
+        if (isCheckAtbReadiness())
+
+            readiness = game.getAtbController().getAtbUnit(
+             (Unit) context.getSourceObj()).getAtbReadiness();
+        game.getLoop().actionInput(new ActionInput(action, context));
         if (waitForCompletion) {
             Object result = WaitMaster.waitForInput(
              WAIT_OPERATIONS.ACTION_COMPLETE);
-            if (DC_Engine.isAtbMode()) {
+            if (isCheckAtbReadiness()) {
                 float newReadiness = game.getAtbController().getAtbUnit((Unit) context.getSourceObj())
                  .getAtbReadiness();
                 float cost = AtbMaster.getReadinessCost(action);
                 assertTrue(readiness - newReadiness == cost);
             }
-            assertTrue(result == new Boolean(true));
+            assertTrue((boolean)result);
         }
+    }
+
+    private boolean isCheckAtbReadiness() {
+//        DC_Engine.isAtbMode())
+//        if (!ExplorationMaster.isExplorationOn())
+        return false;
     }
 
     @Override
@@ -176,43 +180,16 @@ public class DcHelper implements JUnitHelper {
     }
 
 
-    public void startCombatNaturally(boolean all_or_closest_group) {
-
-    }
-
-    public void startCombat() {
-        startCombat(true);
-    }
-
-    public void startCombat(boolean all_or_closest_group) {
-
-        for (GroupAI sub : game.getAiManager().getGroups()) {
-            if (all_or_closest_group)
-                for (Unit ignored : sub.getMembers()) {
-                    ignored.getAI().setEngaged(true);
-                }
-            else {
-                //TODO
-            }
-        }
-//        AggroMaster.unitAttacked();
-        game.getDungeonMaster().getExplorationMaster()
-         .getAggroMaster().checkStatusUpdate();
-
-        assertTrue(!ExplorationMaster.isExplorationOn());
-        assertTrue(!(game.getLoop() instanceof ExploreGameLoop));
-    }
-
     public DC_ActiveObj defaultAttack(Unit unit, BattleFieldObject enemy) {
         DC_ActiveObj action = DefaultActionHandler.getPreferredAttackAction(unit, enemy);
         doAction(action, new Context(unit, enemy), true);
-       return action;
+        return action;
 
 
     }
 
     @Override
-    public void reset() {
+    public void resetAll() {
         game.getManager().reset();
 
     }

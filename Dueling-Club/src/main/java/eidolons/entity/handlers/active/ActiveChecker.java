@@ -6,7 +6,6 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
-import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
@@ -58,22 +57,18 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
 
     public boolean isBlocked() {
         getEntity().setCustomTooltip(null);
-        if (!AI_Manager.isOff())
-            if (getEntity().getOwnerObj().isAiControlled()) {
-                getEntity().getCosts().setReason("This unit is AI controlled!");
-                return true;
-            }
-        if (!getEntity().getOwnerObj().isMine()) {
-            getEntity().setCustomTooltip("You do not control this unit!");
+
+        if (getEntity().getOwnerObj().isAiControlled()) {
+            getEntity().getCosts().setReason("This unit is AI controlled!");
             return true;
-        }
-        if (getGame().getManager().getActiveObj() != null) {
-            if (!getGame().getManager().getActiveObj().isMine()) {
-                getEntity().setCustomTooltip("Wait for the enemy's turn!");
-                return true;
+        } else {
+            if (!getGame().isOffline()) {
+                if (!getEntity().getOwnerObj().isMine()) {
+                    getEntity().getCosts().setReason("You do not control this unit!");
+                    return true;
+                }
             }
-        }
-        if (!getGame().isOffline()) {
+
         }
         return false;
     }

@@ -75,7 +75,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     public void resetWallMap() {
 
-        main.system.auxiliary.log.LogMaster.log(1,"START resetWallMap" +wallMap.size());
+//        main.system.auxiliary.log.LogMaster.log(1,"START resetWallMap" +wallMap.size());
 //        if (wallResetRequired) {
             main.system.auxiliary.log.LogMaster.log(1,"invoked resetWalls!" );
             resetWalls();
@@ -88,7 +88,7 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_DIAGONAL_WALL_MAP!"+visibleDiagonalJoints.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, this.visibleDiagonalJoints);
         wallResetRequired = true;
-        main.system.auxiliary.log.LogMaster.log(1,"END resetWallMap" +wallMap.size());
+//        main.system.auxiliary.log.LogMaster.log(1,"END resetWallMap" +wallMap.size());
     }
 
 

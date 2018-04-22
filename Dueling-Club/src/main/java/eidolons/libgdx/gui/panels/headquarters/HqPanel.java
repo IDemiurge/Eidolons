@@ -12,6 +12,7 @@ import eidolons.libgdx.gui.panels.headquarters.party.HqPartyMembers;
 import eidolons.libgdx.gui.panels.headquarters.tabs.HqTabs;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
+import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class HqPanel extends TablePanel {
 
     public HqPanel() {
 
-        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
         partyMembers = createPartyMembers();
         hqTabs = createTabs();
         heroViewPanel = new HqHeroViewPanel();
@@ -50,7 +51,7 @@ public class HqPanel extends TablePanel {
         traits = new HqHeroTraits();
         controlPanel = new HqControlPanel();
         infoTable = createInfoTable();
-setSize(GDX.size(1600), GDX.size(900) );
+        setSize(GDX.size(1600), GDX.size(900) );
         addElements();
 //        debugAll();
     }
@@ -75,29 +76,34 @@ setSize(GDX.size(1600), GDX.size(900) );
         row();
         add(heroViewPanel).left();
         add(infoTable).left();
-//        add(hqTabs);
+        add(hqTabs);
 
         row();
-//        add(controlPanel);
+        add(controlPanel).colspan(3);
     }
 
 
     private TablePanel createInfoTable() {
         infoTable = new TablePanel<>();
-//        HqClassLine classLine = new HqMasteryTable();
+        infoTable.top();
 //        infoTable.addActor(traits);
         infoTable.add(heroXp).left(). row();
-        infoTable.add(dynamicParams).center(). row();
-        infoTable.add(staticParams).center().row();
+        infoTable.add(dynamicParams).center().colspan(2) . row();
+        infoTable.add(staticParams).center().colspan(2).row();
 
           masteryTable = new HqMasteryTable();
           attributeTable = new HqAttributeTable();
 
-        infoTable.add(attributeTable).left();
+        infoTable.add(attributeTable).left().top();
         //separator
-        infoTable.add(masteryTable).right();
+        infoTable.add(masteryTable).right().top();
         masteryTable.setEditable(isEditable());
         attributeTable.setEditable(isEditable());
+
+        HqNewMasteryPanel newMastery = new HqNewMasteryPanel();
+//        newMastery.setPosition();
+        infoTable.addActor(newMastery);
+
         infoTable.setFixedSize(true);
         infoTable.setSize(400, 800);
         return infoTable;
@@ -129,8 +135,6 @@ setSize(GDX.size(1600), GDX.size(900) );
     public void setUserObject(Object userObject) {
 //        clear();
 //        addElements();
-        infoTable.debug();
-        debug();
         boolean first=false;
         List<HqHeroDataSource> heroes = partyMembers.getUserObject();
             if (userObject instanceof List) {

@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
+import eidolons.game.Simulation;
 import eidolons.game.battlecraft.logic.battle.universal.BattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueActorMaster;
@@ -84,9 +85,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 //        metaDataManager.init();
         game = Eidolons.game;
         if (game == null || CoreEngine.isMacro())
+        {
+            Simulation.init();
             game = createGame();
+            Simulation.setRealGame(game);
+        }
         else
             game.setMetaMaster(this);
+
+
         metaGame = initializer.initMetaGame(data);
         preStart();
         if (partyManager.initPlayerParty() != null) {

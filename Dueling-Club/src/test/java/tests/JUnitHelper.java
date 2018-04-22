@@ -25,7 +25,7 @@ public interface JUnitHelper {
        void turn(Unit source, FACING_DIRECTION newDirection);
        void turn(Unit source, boolean clockwise, boolean asAction);
 
-       void reset();
+       void resetAll();
        void newRound();
 //       void event();
 //       void check();

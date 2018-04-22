@@ -1,5 +1,6 @@
 package eidolons.libgdx.anims.std;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.entity.active.DC_ActiveObj;
@@ -11,6 +12,8 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.ability.Ability;
 import main.entity.Entity;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.function.Supplier;
@@ -91,6 +94,20 @@ public class ActionAnim extends Anim {
     public void addAbilityAnims(Ability ability) {
 
     }
+@Override
+    public void checkAddFloatingText() {
+        getFloatingText().forEach(floatingText1 -> {
+            if (time >= floatingText1.getDelay()) {
+                Vector2 floatTextPos = //localToSctageCoordinates
+                new Vector2 (
+                 getActor().getX()+getActor().getWidth()/2,
+                 getActor().getY()+getActor().getHeight());
 
+                floatingText1.setX(floatTextPos.x);
+                floatingText1.setY(floatTextPos.y);
+                GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);
+            }
+        });
+    }
 
 }
