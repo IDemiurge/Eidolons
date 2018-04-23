@@ -12,9 +12,10 @@ public class AtbMaster {
     public static float getReadinessCost(DC_ActiveObj action) {
         return (float) (
          action.getParamDouble(PARAMS.AP_COST)
-          * AtbController.ATB_MOD * AtbController.TIME_TO_READY / 100);
+          * AtbController.ATB_READINESS_PER_AP);
     }
-    public static  float getImmobilizingBuffsMaxDuration(Unit unit) {
+
+    public static float getImmobilizingBuffsMaxDuration(Unit unit) {
         double max = 0;
         for (BuffObj buff : unit.getBuffs()) {
             if (buff.isImmobilizing()) {
@@ -24,5 +25,19 @@ public class AtbMaster {
             }
         }
         return (float) max;
+    }
+
+    public static double reduceReadiness(DC_ActiveObj action) {
+        float initiativeCost = getReadinessCost(action);
+
+        action.getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
+         initiativeCost + "", 0, false);
+
+        ((AtbTurnManager) action.getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
+
+        if (action.isExtraAttackMode()) {
+            initiativeCost = 0;
+        }
+        return initiativeCost;
     }
 }

@@ -38,6 +38,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.math.MathMaster;
 
 import java.util.Arrays;
 
@@ -296,7 +297,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         if (param == PARAMS.C_N_OF_ACTIONS) {
             Integer prev = getIntParam(param);
             int diff = StringMaster.getInteger(value) - prev;
-            modifyParameter(PARAMS.C_INITIATIVE, AtbController.ATB_MOD * diff);
+            if (diff==0)
+                return;
+            int mod = AtbController.ATB_READINESS_PER_AP * diff;
+//            main.system.auxiliary.log.LogMaster.log
+//             (1,this+"'s INITIATIVE modified by " +mod);
+            modifyParameter(PARAMS.C_INITIATIVE, mod);
         } else if (param == PARAMS.INITIATIVE_MODIFIER) {
             Integer prev = getIntParam(param);
             int diff = StringMaster.getInteger(value) - prev;
@@ -308,10 +314,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
         } else if (param == PARAMS.INITIATIVE_BONUS) {
             super.putParameter(param, value);
         } else if (param == PARAMS.C_INITIATIVE) {
-            if (StringMaster.getInteger(value) > 105) {
-                return;
-            }
-            super.putParameter(param, value);
+            Integer val = StringMaster.getInteger(value);
+            val = MathMaster.getMinMax(val, 0, 100);
+            super.putParameter(param, val+"");
         } else
             super.putParameter(param, value);
     }
@@ -328,7 +333,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> resetCurrentValue(p));
+        Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> {
+            if (p==PARAMS.N_OF_ACTIONS)
+                if (DC_Engine.isAtbMode())
+                    return;
+            resetCurrentValue(p);
+        });
     }
 
 

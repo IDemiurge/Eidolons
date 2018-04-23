@@ -1,13 +1,15 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
+import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.item.DC_JewelryObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.HeroManager;
-import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.entity.Entity;
-import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -15,27 +17,16 @@ import main.system.GuiEventType;
  * Created by JustMe on 3/30/2017.
  */
 public class InventoryClickHandlerImpl implements InventoryClickHandler {
+    protected final HqDataMaster dataMaster;
+    protected final DC_InventoryManager manager;
     //IDEA: FOR NON-COMBAT, DROP == SELL!
-
-    protected Unit unit;
-    protected ObjType buffer;
+    protected HeroDataModel sim;
     protected boolean dirty;
 
-    public InventoryClickHandlerImpl(Unit unit) {
-        this.unit = unit;
-        buffer = new ObjType(unit.getType());
-//        buffer = unit.getGame().getState().getManager()
-//         .getKeeper().getCloner().clone()
-
-//        InventoryTransactionManager.updateType(hero);
-//        bufferedType = hero.getType();
-//        heroModel = hero;
-//        inventoryManager.getInvListManager().setHero(heroModel);
-//        CharacterCreator.getHeroManager().addHero(heroModel);
-
-
-//        operationsData = "";
-//        cachedValue = cell.getProperty(PROPS.DROPPED_ITEMS);
+    public InventoryClickHandlerImpl(HqDataMaster dataMaster, HeroDataModel sim) {
+        this.dataMaster = dataMaster;
+        this.sim = sim;
+        manager = Eidolons.game.getInventoryManager();
     }
 
     @Override
@@ -48,23 +39,58 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (operation == null) {
             result = false;
         } else {
-            //        String arg = getArg(cell_type, clickCount, rightClick,
-//         altClick, cellContents);
-//        if (arg == null) return false;
-            if (Eidolons.game.getInventoryManager().tryExecuteOperation
-             (operation, cellContents)) {
-                dirty = true;
-                result = true;
-            }
+
+            if (manager.hasOperations())
+                if (manager.canDoOperation(operation, cellContents)) {
+
+                    execute(operation, cellContents);
+                    manager.operationDone(operation);
+                    dirty = true;
+                    result = true;
+                }
         }
 
         if (result) {
-            GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-             new InventoryDataSource(unit));
+            refreshPanel();
         }
 
         return result;
 
+    }
+
+    private void execute(OPERATIONS operation, Entity type) {
+      Object  secondArg = getSecondArg(operation, type);
+        HqDataMaster.operation(sim, getHqOperation(operation), type, secondArg);
+//         new EnumMaster<HQ_OPERATION>().retrieveEnumConst(HQ_OPERATION.class, operation.name()),
+//         item);
+    }
+
+    private Object getSecondArg(OPERATIONS operation, Entity type) {
+        if (operation == OPERATIONS.EQUIP) {
+            if (type instanceof DC_JewelryObj){
+                return null;
+            }
+            return HeroManager.getItemSlot(dataMaster.getHeroModel(), type);
+        }
+        return null;
+    }
+
+    private HQ_OPERATION getHqOperation(OPERATIONS operation) {
+        switch (operation) {
+            case PICK_UP:
+                return HQ_OPERATION.PICK_UP;
+            case DROP:
+                return HQ_OPERATION.DROP;
+            case UNEQUIP:
+                return HQ_OPERATION.UNEQUIP;
+            case UNEQUIP_QUICK_SLOT:
+                return HQ_OPERATION.UNEQUIP_QUICK_SLOT;
+            case EQUIP:
+                return HQ_OPERATION.EQUIP;
+            case EQUIP_QUICK_SLOT:
+                return HQ_OPERATION.EQUIP_QUICK_SLOT;
+        }
+        return null;
     }
 
 
@@ -137,12 +163,14 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (!isUndoEnabled()) {
             return;
         }
+        dataMaster.undo();
+
 //        inventoryManager.getInvListManager().setOperationsLeft(getOperationsLeft());
-        if (CharacterCreator.getHeroManager().undo(unit)) {
+        if (CharacterCreator.getHeroManager().undo(sim)) {
 //         modifications --;
-            Integer op = unit.getGame().getInventoryManager().getOperationsLeft();
+            Integer op = sim.getGame().getInventoryManager().getOperationsLeft();
             op--;
-            if (op == unit.getGame().getInventoryManager().getOperationsPool()) {
+            if (op == sim.getGame().getInventoryManager().getOperationsPool()) {
                 dirty = false;
             }
             refreshPanel();
@@ -150,7 +178,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     public void refreshPanel() {
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, unit);
+        GuiEventManager.trigger(GuiEventType.UPDATE_INVENTORY_PANEL );
+//        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, sim.getHero());
     }
 
     @Override
@@ -158,13 +187,15 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (!isDoneEnabled()) {
             return;
         }
-//        InventoryTransactionManager.updateType(unit); ???
+        apply();
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, true);
     }
 
     @Override
-    public void cancel() {
-        unit.applyType(buffer);
+    public void apply() {
+        dataMaster.applyModifications();
+        GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO,
+         dataMaster.getHeroModel().getHero());
     }
 
     @Override
@@ -172,7 +203,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (!isCancelEnabled()) {
             return;
         }
-        cancel();
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, false);
 
     }

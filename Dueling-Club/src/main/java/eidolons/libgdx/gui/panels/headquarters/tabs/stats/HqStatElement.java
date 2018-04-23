@@ -11,6 +11,7 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.TextureCache;
@@ -72,7 +73,10 @@ public class HqStatElement extends HqElement {
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
                 super.onTouchDown(event, x, y);
-                 HqDataMaster.modify(dataSource, modifyParam, 1);
+                 HqDataMaster.operation(dataSource,
+                  mastery
+                   ? HQ_OPERATION.MASTERY_INCREMENT
+                   : HQ_OPERATION.ATTRIBUTE_INCREMENT, modifyParam);
             }
         };
     }

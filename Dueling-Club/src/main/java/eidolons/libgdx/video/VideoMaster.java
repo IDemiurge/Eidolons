@@ -31,7 +31,14 @@ public class VideoMaster {
     }
 
     public void stop() {
-        player.stop();
+        if (player.isPlaying())
+            try {
+                player.stop();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                player.dispose();
+            }
+
     }
 
     public VideoPlayer play(String path, int w, int h) {

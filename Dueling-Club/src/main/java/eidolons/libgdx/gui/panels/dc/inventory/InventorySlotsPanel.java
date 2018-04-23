@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.inventory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
+import eidolons.libgdx.texture.Images;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class InventorySlotsPanel extends TablePanel {
     public static final int SIZE = ROWS * COLUMNS;
 
     public InventorySlotsPanel() {
+        setFixedSize(true);
+        setSize(COLUMNS * 64, ROWS * 64);
+        defaults().space(0);
 
     }
 
@@ -29,9 +33,10 @@ public class InventorySlotsPanel extends TablePanel {
         for (int i = 0; i < SIZE; i++) {
             ValueContainer valueContainer = inventorySlots.get(i);
             if (valueContainer == null) {
-                valueContainer = new ValueContainer(getOrCreateR("UI/empty_pack.jpg"));
+                valueContainer = new ValueContainer(getOrCreateR(Images.EMPTY_ITEM));
             }
-            add(valueContainer).expand(0, 0);
+            add(valueContainer).size(64,64);
+//             .expand(0, 0) ;
             if ((i + 1) % COLUMNS == 0) {
                 row();
             }

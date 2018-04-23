@@ -17,7 +17,7 @@ import tests.utils.JUnitUtils;
 /**
  * Created by JustMe on 3/27/2017.
  */
-public class FastDcTest {
+public class JUnitDcTest {
 
     protected DC_Game game;
     protected DcHelper helper;

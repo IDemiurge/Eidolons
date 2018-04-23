@@ -10,11 +10,13 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.game.SimulationGame;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.UnitEnums;
@@ -298,6 +300,8 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                     game.getState().removeObject(item.getId());
                     return true;
                 }
+            } else {
+                return true;
             }
 
         }
@@ -316,40 +320,49 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         if (game.isSimulation() || !getEntity().isItemsInitialized()) {
             if (checkItemChanged(item, prop, TYPE)) {
                 String property = getProperty(prop);
-                if (StringMaster.isEmpty(property)) {
-                    return null;
-                }
-                ObjType type = DataManager.getType(property, TYPE);
+                if (game.isSimulation()) {
+                    if (initialized)
+                        if (item == null)
+                            return null;
 
-                if (type != null) {
+
                     if (game.isSimulation()) {
-                        item = (DC_HeroItemObj) getGame().getSimulationObj(getEntity(), type, prop);
-                    }
-                    if (item == null) {
-
-                        item = (prop != G_PROPS.ARMOR_ITEM) ? (new DC_WeaponObj(type,
-                         getEntity().getOriginalOwner(), getGame(), getRef(),
-
-                         prop == G_PROPS.MAIN_HAND_ITEM)) : (new DC_ArmorObj(type,
-                         getEntity().getOriginalOwner(), getGame(), getRef()));
-                        if (game.isSimulation()) {
-                            getGame().addSimulationObj(getEntity(), type, item, prop);
+                        if (item == null || !item.isSimulation()) {
+                            if (item == null)
+                                item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(StringMaster.toInt(property));
+                            if (item != null)
+                                HqMaster.getSimCache().addSim(item, item = createItem(prop, item.getType()));
                         }
                     }
-                    if (!game.isSimulation()) {
-                        setProperty(prop, item.getId() + "");
-                    }
-                } else if (!game.isSimulation()) {
+                } else if (initialized) {
                     int itemId = StringMaster.toInt(property);
                     if (itemId != -1) {
                         item = ((DC_HeroItemObj) game.getObjectById(itemId));
                     }
-
+                } else {
+                    if (StringMaster.isEmpty(property)) {
+                        return null;
+                    }
+                    ObjType type = DataManager.getType(property, TYPE);
+                    if (type != null) {
+                        item = createItem(prop, type);
+                    }
+                    setProperty(prop, item.getId() + "");
                 }
+
+
             }
         }
 
         return item;
+    }
+
+    private DC_HeroItemObj createItem(PROPERTY prop, ObjType type) {
+        return (prop != G_PROPS.ARMOR_ITEM) ? (new DC_WeaponObj(type,
+         getEntity().getOriginalOwner(), getGame(), getRef(),
+
+         prop == G_PROPS.MAIN_HAND_ITEM)) : (new DC_ArmorObj(type,
+         getEntity().getOriginalOwner(), getGame(), getRef()));
     }
 
 

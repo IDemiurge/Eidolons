@@ -82,37 +82,37 @@ import java.util.stream.Collectors;
 public class Unit extends DC_UnitModel {
     protected DC_WeaponObj offhandNaturalWeapon;
     protected DC_WeaponObj naturalWeapon;
-    private DC_WeaponObj weapon;
-    private DC_WeaponObj secondWeapon;
-    // private Footwear boots;
-    // private Helmet helmet;
-    // private Gloves gloves;
-    // private Cloak cloak;]
-    private DC_ArmorObj armor;
-    private DequeImpl<DC_FeatObj> skills;
-    private DequeImpl<DC_FeatObj> classes;
-    private DequeImpl<DC_QuickItemObj> quickItems;
-    private DequeImpl<DC_JewelryObj> jewelry;
-    private DequeImpl<DC_HeroItemObj> inventory;
+    protected DC_WeaponObj weapon;
+    protected DC_WeaponObj secondWeapon;
+    // protected Footwear boots;
+    // protected Helmet helmet;
+    // protected Gloves gloves;
+    // protected Cloak cloak;]
+    protected DC_ArmorObj armor;
+    protected DequeImpl<DC_FeatObj> skills;
+    protected DequeImpl<DC_FeatObj> classes;
+    protected DequeImpl<DC_QuickItemObj> quickItems;
+    protected DequeImpl<DC_JewelryObj> jewelry;
+    protected DequeImpl<DC_HeroItemObj> inventory;
 
-    private DC_Masteries masteries;
-    private DC_Attributes attrs;
+    protected DC_Masteries masteries;
+    protected DC_Attributes attrs;
 
-    private List<DC_SpellObj> spells;
-    private boolean initialized;
-    private List<DC_SpellObj> spellbook;
-    private boolean itemsInitialized;
-    private boolean aiControlled;
-    private MACRO_MODES macroMode;
-    private GENDER gender;
-    private Boolean mainHero;
-    private FLIP flip;
-    private ObjType backgroundType;
-    private Map<DC_ActiveObj, String> actionModeMap;
-    private Unit engagementTarget;
-    private DC_WeaponObj rangedWeapon;
-    private boolean leader;
-    private boolean usingStealth;
+    protected List<DC_SpellObj> spells;
+    protected boolean initialized;
+    protected List<DC_SpellObj> spellbook;
+    protected boolean itemsInitialized;
+    protected boolean aiControlled;
+    protected MACRO_MODES macroMode;
+    protected GENDER gender;
+    protected Boolean mainHero;
+    protected FLIP flip;
+    protected ObjType backgroundType;
+    protected Map<DC_ActiveObj, String> actionModeMap;
+    protected Unit engagementTarget;
+    protected DC_WeaponObj rangedWeapon;
+    protected boolean leader;
+    protected boolean usingStealth;
 
     public Unit(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
@@ -600,11 +600,11 @@ public class Unit extends DC_UnitModel {
         return getBaseClassNumber() >= DC_Constants.MAX_BASE_CLASSES;
     }
 
-    private int getBaseClassNumber() {
+    protected int getBaseClassNumber() {
         return getContainerSize(PROPS.CLASSES);
     }
 
-    private int getContainerSize(PROPS prop) { // class-upgrade logic
+    protected int getContainerSize(PROPS prop) { // class-upgrade logic
         // deprecated?
         return StringMaster.openContainer(getProperty(prop)).size();
     }
@@ -714,8 +714,8 @@ public class Unit extends DC_UnitModel {
     public boolean dropItemFromInventory(DC_HeroItemObj item) {
         removeFromInventory(item);
         // add to some container in the gamestate!
-
-        getGame().getDroppedItemManager().drop(item, this);
+        if (!isSimulation()) //sim just remembers for real hero to drop
+            getGame().getDroppedItemManager().drop(item, this);
 
         return true;
     }
@@ -1037,12 +1037,13 @@ public class Unit extends DC_UnitModel {
         return mainHero;
     }
 
-    public boolean isPlayerCharacter() {
-
-        return isMainHero()&& isMine();
-    }
     public void setMainHero(boolean mainHero) {
         this.mainHero = mainHero;
+    }
+
+    public boolean isPlayerCharacter() {
+
+        return isMainHero() && isMine();
     }
 
     public boolean toggleActionMode(DC_ActiveObj action, String mode) {
@@ -1170,7 +1171,8 @@ public class Unit extends DC_UnitModel {
     }
 
     public void resetObjectContainers(boolean fromValues) {
-        getResetter().resetObjectContainers(fromValues);
+//        if (!fromValues)
+        setItemsInitialized(false);
     }
 
 
@@ -1393,7 +1395,7 @@ public class Unit extends DC_UnitModel {
     public DC_ActiveObj getTurnAction(boolean clockwise) {
         return getAction(
          clockwise
-         ?  STD_ACTIONS.Turn_Clockwise.toString()
-         :  STD_ACTIONS.Turn_Anticlockwise.toString());
+          ? STD_ACTIONS.Turn_Clockwise.toString()
+          : STD_ACTIONS.Turn_Anticlockwise.toString());
     }
 }

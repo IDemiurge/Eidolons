@@ -6,7 +6,7 @@ import main.game.core.game.Game;
 
 import java.io.*;
 
-public class CloneMaster<T> {
+public class CloneMaster  {
     //this used to work for ObjTypes too until 'somefilename' was deleted....
     // now it only works for tree nodes
     public static Object deepCopy(Object object) {

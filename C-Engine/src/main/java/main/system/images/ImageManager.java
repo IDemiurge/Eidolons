@@ -46,35 +46,22 @@ public class ImageManager {
     public final static String[] STD_FORMATS = {"jpg", "png",};
     public static final String DEFAULT_EMBLEM = "UI\\deities.png";
     public static final String DEFAULT_ENTITY_IMAGE_FORMAT = ".jpg";
-    public static final String DEFAULT_BACKGROUND = "big\\dungeon.jpg";
-    public static final BORDER BORDER_BEYOND_SIGHT = BORDER.CONCEALED;
-    public static final BORDER BORDER_UNKNOWN = BORDER.HIDDEN;
-    public static final BORDER BORDER_TARGET_SELECTION_HIGHLIGHT = BORDER.HIGHLIGHTED;
-    public static final BORDER BORDER_INFO_SELECTION_HIGHLIGHT = BORDER.HIGHLIGHTED;
-    public static final BORDER BORDER_ALLY_HIGHLIGHT = BORDER.HIGHLIGHTED_BLUE;
-    public static final BORDER BORDER_ENEMY_HIGHLIGHT = BORDER.HIGHLIGHTED_RED;
     public static final int CENTERED = -999;
     public static final String VALUE_ICONS_PATH = "UI\\value icons\\";
     public static final String DEAD_ICON = "UI\\dead.png";
     private static final String EMPTY_LIST_ITEM = "UI\\EMPTY_ITEM.jpg";
     private static final String EMPTY_LIST_ITEM_ALT = "UI\\EMPTY_ITEM_ALT.jpg";
     private static final String EMPTY_LIST_ITEM_SMALL = "UI\\EMPTY_ITEM_SMALL.jpg";
-    private final static String SPRITE_PATH = "mini\\sprites\\impact";
-    private static final BORDER INFO = BORDER.HIGHLIGHTED_96;
-    private static final BORDER ACTIVE = BORDER.HIGHLIGHTED_GREEN;
-    private static final BORDER ENEMY_TARGET = BORDER.HIGHLIGHTED_RED;
     private static final String HL_CELL = "UI\\HIGHLIGHTED_CELL.png";
     private static final String CONCEALED_CELL = "UI\\HIDDEN_CELL.png";
     private static final String UNSEEN_CELL = "UI\\UNDETECTED_CELL.png";
     private static final String CELL = "UI\\EMPTY CELL2.png";
-    private static final BORDER ALLY_TARGET = BORDER.HIGHLIGHTED_BLUE;
     private static final String DEFAULT_IMAGE_PATH = "UI\\Empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;
     public static final int LARGE_ICON = MAX_TYPE_ICON_SIZE;
     private static final String DEFAULT_CURSOR = "UI\\cursor.png";
     private static final String PORTRAIT_ROOT_PATH = "\\mini\\char\\std\\";
     private static final String EMBLEM_PATH = "UI\\emblems\\std\\";
-    private static final BORDER ACTIVE_ENEMY = BORDER.HIGHLIGHTED_RED;
     private static String PATH;
     private static String DEFAULT;
     private static ImageObserver observer = new ImageObserver() {
@@ -85,7 +72,6 @@ public class ImageManager {
     private static Map<String, CustomImageIcon> iconCache = new HashMap<>();
     private static Map<String, ImageIcon> sizedImageStringCache = new HashMap<>();
     private static Map<String, Image> sizedImageCache = new HashMap<>();
-    private static Map<String, Image[]> sprites = new HashMap<>();
     private static Image DEFAULT_IMG;
     private static HashMap<BACKGROUND, List<String>> portraitMap;
     private static Map<COLOR_THEME, Map<String, String>> colorImgCache;
@@ -93,10 +79,6 @@ public class ImageManager {
     private static HashMap<BACKGROUND, List<String>> extendedPortraitMap;
     private static Map<Obj, Map<String, ImageIcon>> customIconCache;
     private static Map<String, JLabel> labelCache = new HashMap<>();
-    private static Map<Object, Image> valueImgCache = new HashMap<>();
-    private static Map<Object, Image> valueImgCacheLockedSelected = new HashMap<>();
-    private static Map<Object, Image> valueImgCacheLocked = new HashMap<>();
-    private static Map<Object, Image> valueImgCacheSelected = new HashMap<>();
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
@@ -154,45 +136,10 @@ public class ImageManager {
         return img;
     }
 
-    public static ImageIcon getSelectedVersion(ImageIcon pic) {
-        return new ImageIcon(applyBorder(pic.getImage(), BORDER.HIGHLIGHTED));
-
-    }
-
-    public static ImageIcon getActiveSelectedVersion(ImageIcon pic) {
-        return new ImageIcon(applyBorder(pic.getImage(), ACTIVE));
-
-    }
-
-    public static ImageIcon getEnemyActiveSelectedVersion(ImageIcon pic) {
-        return new ImageIcon(applyBorder(pic.getImage(), ACTIVE_ENEMY));
-    }
-
-    public static ImageIcon getInfoSelectedVersion(ImageIcon pic) {
-        return new ImageIcon(applyBorder(pic.getImage(), INFO));
-
-    }
-
-    public static ImageIcon getEnemyTargetHighlightedVersion(Image pic) {
-        return new ImageIcon(applyBorder(pic, ENEMY_TARGET));
-
-    }
-
-    public static ImageIcon getAllyTargetHighlightedVersion(Image pic) {
-        return new ImageIcon(applyBorder(pic, ALLY_TARGET));
-
-    }
-
     public static ImageIcon getEmptyIcon(int obj_size) {
-        // if (obj_size==128)
-        // return getEmptyUnitIcon();
         return new ImageIcon(getImageFolderPath() + "UI\\empty" + obj_size + ".jpg");
     }
 
-    public static String getGraveyardEmptyItemIconPath() {
-
-        return "UI\\EMPTY_LIST_ITEM.jpg";
-    }
 
     public static String getEmptyItemIconPath(boolean alt) {
         if (alt) {
@@ -200,13 +147,6 @@ public class ImageManager {
         }
         return "UI\\EMPTY_ITEM.jpg";
 
-    }
-
-    public static ImageIcon getEmptyItemIcon(boolean alt) {
-        if (alt) {
-            return new ImageIcon(getImageFolderPath() + "UI\\EMPTY_ITEM_ALT.jpg");
-        }
-        return new ImageIcon(getImageFolderPath() + "UI\\EMPTY_ITEM.jpg");
     }
 
     public static String getEmptyUnitIconPath() {

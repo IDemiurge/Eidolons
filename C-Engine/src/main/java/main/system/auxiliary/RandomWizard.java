@@ -218,7 +218,7 @@ public class RandomWizard<E> {
         return list.get(getRandomListIndex(list));
     }
 
-    public static float getRandomFloatBetween() {
+    public static float getRandomFloat() {
         return getRandomFloatBetween(0, 1f);
     }
 

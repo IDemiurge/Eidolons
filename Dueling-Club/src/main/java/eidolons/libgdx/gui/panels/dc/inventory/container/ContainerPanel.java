@@ -39,7 +39,6 @@ public class ContainerPanel extends TablePanel implements Closable {
 
     public ContainerPanel() {
         initListeners();
-
     }
 
     @Override
@@ -49,7 +48,8 @@ public class ContainerPanel extends TablePanel implements Closable {
 
     private void initListeners() {
         clear();
-        TextureRegion textureRegion = new TextureRegion(getOrCreateR("UI/components/inventory_background.png"));
+        TextureRegion textureRegion = new TextureRegion(getOrCreateR(
+         "UI/components/inventory_background.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 

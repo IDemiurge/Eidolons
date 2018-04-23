@@ -10,6 +10,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
@@ -261,7 +262,7 @@ public class HeroManager {
     protected void refreshInvWindow() {
     }
 
-    protected ITEM_SLOT getItemSlot(Unit hero, Entity type) {
+    public static ITEM_SLOT getItemSlot(Unit hero, Entity type) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             return null;
         }
@@ -269,7 +270,7 @@ public class HeroManager {
             WEAPON_CLASS CLASS = getWeaponClass(type);
             switch (CLASS) {
                 case OFF_HAND:
-                    if (StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
+                    if (hero.getMainWeapon() == null) {
                         return ItemEnums.ITEM_SLOT.MAIN_HAND;
                     }
                     if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.MAIN_HAND_ITEM),
@@ -280,7 +281,7 @@ public class HeroManager {
                      || getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == ItemEnums.WEAPON_CLASS.DOUBLE) {
                         return null;
                     }
-                    if (StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM))) {
+                    if (hero.getOffhandWeapon()==null ) {
                         return ItemEnums.ITEM_SLOT.OFF_HAND;
                     }
                     if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.OFF_HAND_ITEM),
@@ -289,7 +290,7 @@ public class HeroManager {
                     }
                     return null;
                 case MAIN_HAND_ONLY:
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
+                    if (hero.getMainWeapon()!=null ) {
                         if (!MessageManager.promptItemSwap(
                          hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
                             return null;
@@ -298,21 +299,21 @@ public class HeroManager {
                     return ItemEnums.ITEM_SLOT.MAIN_HAND;
 
                 case OFF_HAND_ONLY:
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM))) {
+                    if (hero.getOffhandWeapon()!=null) {
                         return null;
                     }
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
-                        if (getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == ItemEnums.WEAPON_CLASS.TWO_HANDED) {
+                    if (hero.getMainWeapon()!=null) {
+                        if (hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED) {
                             return null;
                         }
                     }
                     return ItemEnums.ITEM_SLOT.OFF_HAND;
                 case DOUBLE:
                 case TWO_HANDED:
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM))) {
+                    if (hero.getOffhandWeapon()!=null) {
                         return null;
                     }
-                    if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.MAIN_HAND_ITEM))) {
+                    if (hero.getMainWeapon()!=null) {
                         if (!MessageManager.promptItemSwap(
                          hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
                             return null;
@@ -365,15 +366,15 @@ public class HeroManager {
         return ItemEnums.ITEM_SLOT.ARMOR;
     }
 
-    protected WEAPON_CLASS getWeaponClass(String type) {
+    public static WEAPON_CLASS getWeaponClass(String type) {
         ObjType objType = DataManager.getType(type, DC_TYPE.WEAPONS);
         if (objType == null) {
-            objType = game.getObjectById(StringMaster.getInteger(type)).getType();
+            objType = Eidolons.game.getObjectById(StringMaster.getInteger(type)).getType();
         }
         return getWeaponClass(objType);
     }
 
-    protected WEAPON_CLASS getWeaponClass(Entity type) {
+    public static WEAPON_CLASS getWeaponClass(Entity type) {
         return new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class, type
          .getProperty(G_PROPS.WEAPON_CLASS));
     }

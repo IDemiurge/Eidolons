@@ -10,7 +10,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerDataSource;
@@ -436,9 +435,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         /*
         pickUpAction
          */
-        unit.getGame().getInventoryManager().setHero(unit);
         unit.getGame().getInventoryManager().setOperationsPool(5);
-        CharacterCreator.getHeroManager().addHero(unit);
 
         Pair<InventoryDataSource, ContainerDataSource> param =
          new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));

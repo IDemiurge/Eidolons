@@ -228,11 +228,6 @@ public class UnitResetter extends EntityResetter<Unit> {
         setParam(PARAMS.C_QUICK_SLOTS, slotsRemaining);
     }
 
-    public void resetObjectContainers(boolean fromValues) {
-        if (fromValues) {
-            getEntity().setItemsInitialized(false);
-        }
-    }
 
     public void resetObjects() {
         if (ExplorationMaster.isExplorationOn()) {

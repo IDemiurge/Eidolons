@@ -1,86 +1,67 @@
 package tests.logic.combat;
 
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_UnitAction;
-import eidolons.entity.item.DC_WeaponObj;
-import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
-import main.content.DC_TYPE;
-import main.data.DataManager;
-import main.entity.Ref;
-import main.entity.type.ObjType;
-import main.game.logic.action.context.Context;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import org.junit.Before;
+import main.elements.conditions.Condition;
+import main.game.bf.Coordinates.FACING_DIRECTION;
 import org.junit.Test;
-import tests.init.JUnitDcInitializer;
+import res.JUnitResources;
+import tests.JUnitDcTest;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * Created by Nyx on 3/16/2017.
  */
-public class AttackTest {
-
-    /**
-     * Created by JustMe on 3/6/2017.
-     */
+public class AttackTest extends JUnitDcTest {
 
 
+    private Unit source;
+    private Unit target;
 
-        private String typeName = "Pirate";
-        private String skillName = "Greater Strength";
-        private String itemName = "inferior bronze dagger";
-        private JUnitDcInitializer judi;
-        private Unit source;
-        private Unit target;
-        private DC_FeatObj skill;
-        private DC_WeaponObj dagger;
+    @Override
+    protected String getPlayerParty() {
+        return "";
+    }
 
+    @Test
+    public void attackTest() {
+        for (int i = 0; i < 121; i++) {
 
-
-        @Before
-        public void createEntity() {
-            judi = new JUnitDcInitializer();
-            ObjType type= DataManager.getType(typeName, DC_TYPE.UNITS);
-            source =judi.game.getUnits().get(0);
-//             (Unit) judi.game.getManager().getObjCreator().createUnit(type, 0, 0, judi.game.getPlayer(true), new Ref(judi.game));
-            target = (Unit) judi.game.getManager().getObjCreator().createUnit(type,
-             source.getX(),
-             source.getY(), judi.game.getPlayer(true), new Ref(judi.game));
-
-
-        }
-
-        @Test
-        public void attackTest() {
-
-            assertTrue (source !=null );
-            assertTrue (target !=null );
+            source = helper.unit(JUnitResources.DEFAULT_UNIT, 1, 0, true);
+            target = helper.unit(JUnitResources.DEFAULT_UNIT, 0, 0, false);
 
             int origToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
             int origEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
 
+            assertTrue(source.getNaturalWeapon() != null);
 
-            assertTrue(source.getNaturalWeapon()!=null);
+            helper.turn(source, FACING_DIRECTION.WEST);
 
-            DC_UnitAction attackAction = source.getAction("punch");
-            assertTrue (attackAction !=null );
-            Eidolons.getGame().getGameLoop().actionInput(
-             new ActionInput(attackAction, new Context(source, target)));
-//            old! attackAction.activateOn(target);
-           Boolean result = (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
-            assertTrue (result);
-             Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
+            atbHelper.startCombat();
+            atbHelper.waitForGameLoopStart();
+
+            DC_ActiveObj action = source.getAction("Punch");
+            assertTrue(action != null);
+            boolean result = action.canBeTargeted(target.getId());
+            Condition condition = action.getTargeting().getConditions().getLastCheckedCondition();
+            if (!result) {
+                fail(source.getFacing()+" facing, failed condition: " + condition );
+            }
+
+
+            helper.defaultAttack(source, target);
+
+            Integer newToughness = target.getIntParam(PARAMS.C_TOUGHNESS);
             Integer newEndurance = target.getIntParam(PARAMS.C_ENDURANCE);
             assertTrue(newToughness < origToughness);
             assertTrue(newEndurance < origEndurance);
 
-
         }
 
+    }
 
 
 }

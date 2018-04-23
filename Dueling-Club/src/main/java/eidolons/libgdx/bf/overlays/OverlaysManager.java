@@ -9,12 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.SuperActor;
@@ -241,6 +242,9 @@ public class OverlaysManager extends SuperActor {
         } else if (checkOverlayForObj(STEALTH, obj)) {
             drawOverlay(actor, STEALTH, batch);
         }
+        if (checkOverlayForObj(BAG, obj)) {
+            drawOverlay(actor, BAG, batch);
+        }
     }
 
     private void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
@@ -270,6 +274,7 @@ public class OverlaysManager extends SuperActor {
     }
 
     public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch) {
+        //TODO SCALING
         if (isOverlayAlphaOn(overlay)) {
             batch.setColor(1, 1, 1, fluctuatingAlpha);
         } else {
@@ -277,23 +282,16 @@ public class OverlaysManager extends SuperActor {
         }
         float x = 0, y = 0;
         if (overlay.alignment != null) {
-            float w, h;
-            if (getRegion(overlay) != null) {
-
-            }
-//            GdxMaster.getAlignedPos(parent, overlay.alignment, w, h);
-
-        }
+            Vector2 v = GdxMaster.getAlignedPos(parent, overlay.alignment,
+             getOverlayWidth(overlay, parent), getOverlayHeight(overlay, parent));
+            x = v.x;
+            y = v.y;
+        } else
         switch (overlay) {
             case HP_BAR: {
                 y = -12;
                 break;
             }
-            case STEALTH:
-            case SPOTTED:
-                y = parent.getHeight() - getOverlayHeight(overlay, parent);
-                break;
-            //init offsets
         }
         Vector2 v = parent.localToStageCoordinates(new Vector2(x, y));
         drawOverlay(parent, overlay, batch, v);
@@ -402,7 +400,9 @@ public class OverlaysManager extends SuperActor {
                 return object.isSneaking();
             case SPOTTED:
                 return object.isSpotted();
-            case GRAVE:
+            case BAG:
+                return !object.getGame().getDroppedItemManager().
+                 getDroppedItems(object.getCoordinates()).isEmpty();
 
         }
 
@@ -429,21 +429,21 @@ public class OverlaysManager extends SuperActor {
     }
 
     public enum OVERLAY {
-        SPOTTED(Align.bottomLeft),
+        SPOTTED(Alignment.TOP_LEFT),
+        STEALTH(Alignment.TOP_LEFT),
+        BAG(Alignment.BOTTOM_RIGHT),
         HP_BAR,
-        WATCH,
-        BLOCKED,
         GRAVE,
         CORPSE,
         ITEM,
-        BAG,
         TRAP,
         IN_PLAIN_SIGHT,
         IN_SIGHT,
         FOG_OF_WAR,
-        STEALTH;
+        WATCH,
+        BLOCKED,;
 
-        public Integer alignment;
+        public Alignment alignment;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),
          "dc", "overlays", toString() + ".png");
 
@@ -451,11 +451,11 @@ public class OverlaysManager extends SuperActor {
 
         }
 
-        OVERLAY(int alignment) {
+        OVERLAY(Alignment alignment) {
             this(null, alignment);
         }
 
-        OVERLAY(String path, int alignment) {
+        OVERLAY(String path, Alignment alignment) {
             if (path != null)
                 this.path = path;
             this.alignment = alignment;

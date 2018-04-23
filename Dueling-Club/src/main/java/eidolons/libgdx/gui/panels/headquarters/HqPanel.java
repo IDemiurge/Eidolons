@@ -133,8 +133,7 @@ public class HqPanel extends TablePanel {
 
     @Override
     public void setUserObject(Object userObject) {
-//        clear();
-//        addElements();
+
         boolean first=false;
         List<HqHeroDataSource> heroes = partyMembers.getUserObject();
             if (userObject instanceof List) {

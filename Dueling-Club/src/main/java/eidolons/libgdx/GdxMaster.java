@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.data.filesys.PathFinder;
@@ -55,7 +56,8 @@ public class GdxMaster {
     public static int adjustFontSize(float size) {
         return (int) adjustSize(size);
     }
-        public static float adjustSize(float size) {
+
+    public static float adjustSize(float size) {
         return size
          + size
          * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef;
@@ -112,11 +114,13 @@ public class GdxMaster {
     public static Vector2 getCursorPosition(Actor actor) {
         return getCursorPosition(actor.getStage());
     }
+
     public static Vector2 getCursorPosition(Stage stage) {
-        Vector2 v2 =new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        v2 =stage .screenToStageCoordinates(v2);
+        Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        v2 = stage.screenToStageCoordinates(v2);
         return v2;
     }
+
     public static boolean isLwjglThread() {
         return Thread.currentThread().getName().equalsIgnoreCase("LWJGL Application");
     }
@@ -185,8 +189,9 @@ public class GdxMaster {
     }
 
     public static void center(Actor actor) {
-        actor.setPosition(  centerWidth(actor) , centerHeight(actor ));
+        actor.setPosition(centerWidth(actor), centerHeight(actor));
     }
+
     public static void centerAndAdjust(Actor actor) {
         actor.setPosition(adjustPos(true, centerWidth(actor)), adjustPos(false, centerHeight(actor)));
     }
@@ -201,5 +206,21 @@ public class GdxMaster {
 
     public static void adjustAndSetSize(Actor actor, int w, int h) {
         actor.setSize(adjustSize(w), adjustSize(h));
+    }
+
+    public static Vector2 getAlignedPos(Actor parent, Alignment alignment,
+                                        int w, int h) {
+        float x = (parent.getWidth() - w) / 2;
+        float y = (parent.getHeight() - h) / 2;
+        if (alignment.isAlignedWithBottom())
+            y = 0;
+        if (alignment.isAlignedWithTop())
+            y = parent.getHeight() - h;
+
+        if (alignment.isAlignedWithRight())
+            x = 0;
+        if (alignment.isAlignedWithLeft())
+            x = parent.getWidth() - w;
+        return new Vector2(x, y);
     }
 }

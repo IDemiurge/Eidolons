@@ -13,6 +13,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
@@ -85,6 +86,7 @@ public abstract class DC_Obj extends MicroObj {
             }
         }
         visionController=getGame().getVisionMaster().getVisionController();
+
     }
 
     public OutlineMapper getOutlineMapper() {

@@ -1,11 +1,11 @@
 package tests.gdx;
 
-import tests.FastDcTest;
+import tests.JUnitDcTest;
 
 /**
  * Created by JustMe on 2/12/2018.
  */
-public class GdxJUnit extends FastDcTest {
+public class GdxJUnit extends JUnitDcTest {
 
     protected boolean isLoggingOff() {
         return false;

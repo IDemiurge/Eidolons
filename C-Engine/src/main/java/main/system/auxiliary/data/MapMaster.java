@@ -85,6 +85,16 @@ public class MapMaster<E, T> {
         values.put(name, val);
     }
 
+    public static Object getKeyForValue_(Map itemMap, Object value) {
+        for (Object o : itemMap.entrySet()) {
+            Entry e = (Entry) o;
+            if (value.equals(itemMap.get(e.getKey()))) {
+                return e.getKey();
+            }
+        }
+        return null;
+    }
+
     public HashMap<E, T> cloneHashMap(Map<E, T> map) {
         HashMap<E, T> clone = new HashMap<E, T>();
         clone.putAll(map);

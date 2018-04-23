@@ -17,10 +17,12 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.stage.Closable;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_INVENTORY;
+import static main.system.GuiEventType.UPDATE_INVENTORY_PANEL;
 
 public class CombatInventory extends TablePanel implements Closable {
     private InventoryPanel inventoryPanel;
@@ -47,15 +49,15 @@ public class CombatInventory extends TablePanel implements Closable {
 
         lower.addElement(undoButton = new SymbolButton(STD_BUTTON.UNDO))
                 .fill(false).expand(0, 0).right()
-                .pad(20, 0, 20, 0).size(50, 50);
+                .pad(20, 0, 20, 0);
 
         lower.addElement(cancelButton = new SymbolButton(STD_BUTTON.CANCEL))
                 .fill(false).expand(0, 0).right()
-                .pad(20, 10, 20, 0).size(50, 50);
+                .pad(20, 10, 20, 0);
 
         lower.add(doneButton = new SymbolButton(STD_BUTTON.OK))
          .fill(false).expand(0, 0).right()
-         .pad(20, 10, 20, 10).size(50, 50);
+         .pad(20, 10, 20, 10);
 
         bindListeners();
 
@@ -82,11 +84,15 @@ public class CombatInventory extends TablePanel implements Closable {
             if (param instanceof Boolean) {
                 close((Boolean) param);
             } else {
+                GuiEventManager.trigger(GuiEventType.GAME_PAUSED );
                 if (!isVisible())
                     open();
                 setUserObject(param);
                 initButtonListeners();
             }
+        });
+        GuiEventManager.bind(UPDATE_INVENTORY_PANEL, (obj) -> {
+            setUserObject(getUserObject());
         });
     }
 
@@ -133,6 +139,7 @@ public class CombatInventory extends TablePanel implements Closable {
 
         }
         setVisible(false);
+        GuiEventManager.trigger(GuiEventType.GAME_RESUMED );
     }
 
     public void close() {

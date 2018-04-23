@@ -13,6 +13,7 @@ import eidolons.libgdx.screens.GameScreen;
 import main.elements.targeting.SelectiveTargeting;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.Loop;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -208,7 +209,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             return null;
         }
 
-
+        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!

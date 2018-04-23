@@ -9,6 +9,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
+import eidolons.game.battlecraft.ai.elements.generic.AiMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
@@ -133,6 +134,8 @@ public interface PriorityManager {
     int getDefendPriority(UnitAI unit_ai);
 
     int getModePriority(Unit unit, STD_MODES mode);
+
+    AiMaster getMaster();
 
 
     enum AI_EFFECT_PRIORITIZING {

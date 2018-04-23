@@ -17,6 +17,7 @@ public class HqMaster {
 
     public static final float TAB_WIDTH = 440;
     public static final float TAB_HEIGHT = 732;
+    private static SimCache simCache = new SimCache();
 
     public static void closeHqPanel() {
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, null);
@@ -47,5 +48,13 @@ public class HqMaster {
             openHqPanel();
         }
 
+    }
+
+    public static SimCache getSimCache() {
+        return simCache;
+    }
+
+    public static void setSimCache(SimCache simCache) {
+        HqMaster.simCache = simCache;
     }
 }

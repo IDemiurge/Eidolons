@@ -17,10 +17,10 @@ import java.util.Comparator;
  * Created by JustMe on 3/24/2018.
  */
 public class AtbController implements Comparator<Unit> {
-    public static final int ATB_MOD = 20; //20% readiness per Action Point
+    public static final int ATB_READINESS_PER_AP = 20; //20% readiness per Action Point
     public static final float TIME_IN_ROUND = 12; //seconds; to sync with clock
     public static final float TIME_TO_READY = 10;
-    private static final Float TIME_LOGIC_MODIFIER = 10f;
+    public static final Float TIME_LOGIC_MODIFIER = 10f;
     private AtbTurnManager manager;
     private Array<AtbUnit> unitsInAtb;
     private float time = 0f; //passed in this round

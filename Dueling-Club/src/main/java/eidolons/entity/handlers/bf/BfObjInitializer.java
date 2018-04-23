@@ -8,6 +8,8 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.game.SimulationGame;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.data.DataManager;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
@@ -69,54 +71,49 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
             if (list == null) {
                 return new DequeImpl<>();
             }
-            if (list.isEmpty() || game.isSimulation()) {
+            if (list.isEmpty()  ) {
                 return new DequeImpl<>();
             }
         }
-        if (list == null || (!game.isSimulation() && getEntity().isItemsInitialized())) {
+        if (list == null || (getEntity().isItemsInitialized())) {
             setProperty(prop, StringMaster.constructContainer(StringMaster.convertToIdList(list)));
-
         } else {
+
             List<String> idList = new ArrayList<>();
             Collection<DC_HeroItemObj> items = new ArrayList<>();
             for (String subString : StringMaster.open(getProperty(prop))) {
-                ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProperty(prop));
-//|| !StringMaster.isInteger(subString)
                 DC_HeroItemObj item = null;
-                if (game.isSimulation()) {
-                    item = (DC_HeroItemObj) getGame().getSimulationObj(getEntity(), type, prop);
-                }
-                if (item == null) {
-                    if (type == null) {
-                        if (StringMaster.isInteger(subString))
-                        item = (DC_HeroItemObj) game.getObjectById(StringMaster
-                         .getInteger(subString));
-                    } else {
-                        item = ItemFactory.createItemObj(type, getEntity().getOriginalOwner(), getGame(), getRef(),
-                         quick);
-                    }
-                    if (item != null) {
-                        if (!game.isSimulation()) {
-                            idList.add(item.getId() + "");
-                        } else {
-                            getGame().addSimulationObj(getEntity(), type, item, prop);
+                if (StringMaster.isInteger(subString)) {
+                    Integer id = StringMaster
+                     .getInteger(subString);
+                    item = (DC_HeroItemObj) game.getObjectById(id);
+                    if (game.isSimulation()) {
+                        item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(id);
+                        if (HqMaster.getSimCache().getSim(item) ==null )
+                         {
+                            HqMaster.getSimCache().addSim(item, ItemFactory.createItemObj(item.getType(), getEntity().getOriginalOwner(), getGame(), getRef(),
+                             quick));
                         }
+                        item = (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
                     }
-                }
-                if (item == null) {
-                    LogMaster.log(1, getName()
-                     + " has null items in item container " + prop);
                 } else {
+                    ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProperty(prop));
+
+                    item = ItemFactory.createItemObj(type, getEntity().getOriginalOwner(), getGame(), getRef(),
+                     quick);
+                }
+
+                if (item != null) {
+                    idList.add(item.getId() + "");
                     items.add(item);
+                } else {
+                    LogMaster.log(1, getName()
+                     + " has null item in item container " + prop);
                 }
 
             }
             list = new DequeImpl<>(items);
-            if (!game.isSimulation())
-
-            {
-                setProperty(prop, StringMaster.constructContainer(idList));
-            }
+            setProperty(prop, StringMaster.constructContainer(idList));
         }
         if (list == null) {
             return new DequeImpl<>();

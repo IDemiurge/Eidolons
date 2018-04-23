@@ -1299,6 +1299,13 @@ public abstract class DataModel {
         setDirty(true);
     }
 
+    protected void copyDynamicParams(Entity from) {
+        for (PARAMETER sub : from.getParamMap().keySet()) {
+            if (sub.isDynamic())
+                paramMap.put(sub, from.getParamMap().get(sub));
+        }
+
+    }
     protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
         Map<PARAMETER, String> innerMap = new HashMap<>();
@@ -1663,5 +1670,9 @@ public abstract class DataModel {
         List<String> list = StringMaster.openContainer(value);
         Collections.reverse(list);
         setProperty(property, StringMaster.constructContainer(list));
+    }
+
+    public boolean isSimulation() {
+        return getGame().isSimulation();
     }
 }

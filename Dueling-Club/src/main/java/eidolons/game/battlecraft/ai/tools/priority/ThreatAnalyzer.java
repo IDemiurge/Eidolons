@@ -118,18 +118,11 @@ public class ThreatAnalyzer extends AiHandler {
          }
 //         FutureBuilder.precalculateDamage(attack, getUnit(), true)
         );
-        DC_PriorityManager.toggleImplementation(new PriorityManagerImpl(getMaster()) {
-            @Override
-            public Unit getUnit() {
-                return enemy;
-            }
-        });
+
         try {
             threat = DC_PriorityManager.getAttackPriority(subAttack, getUnit()) * factor;
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            DC_PriorityManager.toggleImplementation(null);
         }
 
         // special attacks? dual wielding?

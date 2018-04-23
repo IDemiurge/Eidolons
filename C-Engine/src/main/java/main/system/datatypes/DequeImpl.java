@@ -104,6 +104,8 @@ public class DequeImpl<E> extends ConcurrentLinkedDeque<E>
 
     public E get(int index) {
         size = size();
+        if (index>size)
+            throw new IndexOutOfBoundsException(index+" index > size "+size);
         int i = 0;
         for (E e : this) {
             if (i == index) {

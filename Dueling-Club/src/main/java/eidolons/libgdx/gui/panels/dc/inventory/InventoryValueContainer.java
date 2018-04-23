@@ -46,7 +46,11 @@ public class InventoryValueContainer extends ValueContainer {
                 final int tapCount = this.getTapCount();
                 final boolean isRightClicked = event.getButton() == Input.Buttons.RIGHT;
                 final boolean isAltPressed = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
-                handler.cellClicked(cellType, tapCount, isRightClicked, isAltPressed, entity);
+                try {
+                    handler.cellClicked(cellType, tapCount, isRightClicked, isAltPressed, entity);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
                 event.stop();
             }
         });

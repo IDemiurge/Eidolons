@@ -8,6 +8,8 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -23,55 +25,59 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     private final ContainerObj container;
 
     public ContainerClickHandler(ContainerObj obj, Unit unit) {
-        super(unit);
+        super(new HqDataMaster(unit), HqDataMaster.getHeroModel(unit));
         this.container = obj;
     }
 
     @Override
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
-        boolean result = false;
-//        if (Eidolons.game.getInventoryManager().tryExecuteOperation
-//         (OPERATIONS.PICK_UP, cellContents)) {
-//            dirty = true;
-//            result = true;
-//        }
         if (cellContents == null) {
-            GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
-             null);
+            close();
             return false;
         }
-        if (unit.isInventoryFull()) {
+        if (sim.isInventoryFull()) {
             FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-             "Inventory is full!", unit);
+             "Inventory is full!", sim);
             return false;
         }
         DC_HeroItemObj item = (DC_HeroItemObj) cellContents;
-        container.getItems().remove(item);
-        unit.addItemToInventory(item);
-        result = true;
+        pickUp(item);
 
-        if (result) {
-            Pair<InventoryDataSource, ContainerDataSource> param =
-             new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(container, unit));
-            GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
-            GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
-             param);
-        }
-        return result;
+
+        return true;
+    }
+
+    private void update() {
+        dataMaster.applyModifications();
+        Pair<InventoryDataSource, ContainerDataSource> param =
+         new ImmutablePair<>(new InventoryDataSource(sim.getHero()),
+          new ContainerDataSource(container, sim.getHero()));
+        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
+
     }
 
     public void takeAllClicked() {
         for (DC_HeroItemObj item : new ArrayList<>(container.getItems())) {
-            if (unit.isInventoryFull()) {
+            if (sim.isInventoryFull()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
-                 "Inventory is full!", unit);
+                 "Inventory is full!", sim);
                 return;
             }
-            container.getItems().remove(item);
-            unit.addItemToInventory(item);
+            pickUp(item);
         }
+        close();
+    }
+
+    private void pickUp(DC_HeroItemObj item) {
+        container.getItems().remove(item);
+        dataMaster.operation(sim, HQ_OPERATION.PICK_UP, item);
+        update();
+    }
+
+    private void close() {
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
          null);
+        dataMaster.applyModifications();
     }
 
     @Override

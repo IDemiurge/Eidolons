@@ -1,11 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
+import eidolons.libgdx.gui.panels.dc.inventory.*;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -15,13 +13,16 @@ public class InventoryDataSource implements QuickSlotDataSource,
  InventoryTableDataSource,
  EquipDataSource {
 
+    private final HqDataMaster dataMaster;
     private InventoryValueContainerFactory factory;
     private Unit unit;
     private InventoryClickHandler handler;
 
     public InventoryDataSource(Unit unit) {
-        this.unit = unit;
-        handler = unit.getGame().getInventoryManager().getClickHandler();
+        dataMaster =HqDataMaster.getInstance(unit);
+        this.unit = dataMaster.getHeroModel();
+        handler = new InventoryClickHandlerImpl(
+         dataMaster, dataMaster.getHeroModel());
         factory = new InventoryValueContainerFactory(handler);
     }
 

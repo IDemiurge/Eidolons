@@ -2,7 +2,6 @@ package eidolons.ability.effects.oneshot.dialog;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -26,10 +25,13 @@ public class InventoryDialogEffect extends DialogEffect {
     public boolean applyThis() {
         getGame().getInventoryTransactionManager().setActive(true);
         Integer operations = numberOfOperations.getInt(ref);
-        getGame().getInventoryManager().setHero(getSource());
+//        getGame().getInventoryManager().setHero(getSource());
         getGame().getInventoryManager().setOperationsPool(operations);
-        CharacterCreator.getHeroManager().addHero(getSource());
-        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, new InventoryDataSource((Unit) ref.getSourceObj()));
+//        CharacterCreator.getHeroManager().addHero(getSource());
+
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
+         new InventoryDataSource((Unit) ref.getSourceObj()));
+
         boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
         getGame().getInventoryTransactionManager().setActive(false);
         return result;

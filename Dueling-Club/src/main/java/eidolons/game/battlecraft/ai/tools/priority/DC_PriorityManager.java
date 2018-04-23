@@ -35,6 +35,7 @@ public class DC_PriorityManager {
     public static PriorityManager
     init(AiMaster handler) {
         impl = new PriorityManagerImpl(handler);
+        mainImpl = impl;
         aiHandler = handler;
         return impl;
     }
@@ -49,7 +50,15 @@ public class DC_PriorityManager {
     }
 
     public static int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
-        return impl.getAttackPriority(active, targetObj);
+        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {
+            @Override
+            public Unit getUnit() {
+                return active.getOwnerObj();
+            }
+        });
+        int p = impl.getAttackPriority(active, targetObj);
+        toggleImplementation(mainImpl);
+        return p;
     }
 
     public static void toggleImplementation(PriorityManager newImpl) {

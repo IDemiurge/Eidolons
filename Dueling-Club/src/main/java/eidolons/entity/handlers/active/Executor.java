@@ -376,14 +376,9 @@ public class Executor extends ActiveHandler {
     private void reduceAtbReadiness() {
 
         double initiativeCost =
-         -AtbMaster.getReadinessCost(getAction());
-        getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
-         initiativeCost + "", 0, false);
-        ((AtbTurnManager) getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
+         -AtbMaster.reduceReadiness(getAction());
 
-        if (getAction().isExtraAttackMode()){
-            initiativeCost=0;
-        }
+
 
         log(StringMaster.getPossessive(getOwnerObj().getName()) + " readiness is reduced by " +
          -initiativeCost +

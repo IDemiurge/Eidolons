@@ -4,14 +4,14 @@ import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
 import res.JUnitResources;
-import tests.FastDcTest;
+import tests.JUnitDcTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class JUnitPartyCreated extends FastDcTest {
+public class JUnitPartyCreated extends JUnitDcTest {
 
 
     protected Unit unit;
@@ -41,17 +41,6 @@ public class JUnitPartyCreated extends FastDcTest {
     }
 
 
-    /**
-     * Tests that a modified parameter will return to its basic value upon calling entity.toBase()
-     */
-//    @Test
-//    public void testToBase() {
-//
-//        unit.setParam(PARAMS.ACID_ARMOR, unit.getType().getParam(PARAMS.ACID_ARMOR) + 5);
-//        unit.toBase();
-//        assertTrue(unit.getParam(PARAMS.ACID_ARMOR) == unit.getType().getParam(PARAMS.ACID_ARMOR));
-//
-//    }
 
 
 }

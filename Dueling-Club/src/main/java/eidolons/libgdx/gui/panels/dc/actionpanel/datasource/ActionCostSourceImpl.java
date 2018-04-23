@@ -35,7 +35,7 @@ public class ActionCostSourceImpl implements ActionCostSource {
             String text = String.format(Locale.US, "%.1f", param);
             if (cost == PARAMS.AP_COST) {
                 if (DC_Engine.isAtbMode()) {
-                    text =   MathMaster.round((float) (param * AtbController.ATB_MOD))  + "%";
+                    text =   MathMaster.round((float) (param * AtbController.ATB_READINESS_PER_AP))  + "%";
                 }
             }
             if (param > 0) {

@@ -8,6 +8,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
+import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
@@ -127,6 +128,9 @@ public class ActionPanel extends Group {
              new WeaponDataSource(hero.getActiveWeapon(true)),
              new WeaponDataSource(hero.getOffhandNaturalWeapon())
             ));
+            GuiEventManager.trigger(ACTION_PANEL_UPDATE,
+             new PanelActionsDataSource( hero));
+
         });
     }
 

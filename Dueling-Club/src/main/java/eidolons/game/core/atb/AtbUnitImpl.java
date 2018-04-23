@@ -29,28 +29,34 @@ public class AtbUnitImpl implements AtbUnit {
 
     @Override
     public float getInitialInitiative() {
-        return RandomWizard.getRandomFloatBetween() * AtbController.TIME_TO_READY * 0.25f;
+        return RandomWizard.getRandomFloat()
+
+         * AtbController.TIME_TO_READY * 0.25f;
     }
 
     @Override
     public float getAtbReadiness() {
-        return StringMaster.getFloat(unit.getParam(PARAMS.C_INITIATIVE));
+
+        return StringMaster.getFloat(unit.getParam(PARAMS.C_INITIATIVE))
+         /AtbController.TIME_LOGIC_MODIFIER;
     }
 
     @Override
     public void setAtbReadiness(float i) {
-        double value = (i);
 
         if (i > 1.01f * AtbController.TIME_TO_READY) {
             main.system.auxiliary.log.LogMaster.log(1, " Bad ATB status:" +
              getUnit().getName() + " has " +
-             value + " readiness value");
-            value = AtbController.TIME_TO_READY;
-        } else {
-            atbController.getManager().getGame().getLogManager().log(
-             getUnit().getName() + " has " +
-              (getDisplayedAtbReadiness()) + "%" + " readiness");
+             i + " readiness value");
+            i = AtbController.TIME_TO_READY;
         }
+
+        double value = (i) * AtbController.TIME_LOGIC_MODIFIER;
+
+        atbController.getManager().getGame().getLogManager().log(
+         getUnit().getName() + " has " +
+          (getDisplayedAtbReadiness()) + "%" + " readiness");
+
         if (unit.getIntParam(PARAMS.C_INITIATIVE) == value)
             return;
         unit.setParam(PARAMS.C_INITIATIVE, value + "");
@@ -61,9 +67,10 @@ public class AtbUnitImpl implements AtbUnit {
     public boolean isImmobilized() {
         return !unit.canActNow();
     }
-        @Override
-        public float getInitiative() {
-            return new Float(unit.getParamDouble(PARAMS.N_OF_ACTIONS));
+
+    @Override
+    public float getInitiative() {
+        return new Float(unit.getParamDouble(PARAMS.N_OF_ACTIONS));
     }
 
     @Override
@@ -88,9 +95,10 @@ public class AtbUnitImpl implements AtbUnit {
             triggerQueueEvent();
         }
     }
+
     @Override
     public int getDisplayedAtbReadiness() {
-        return Math.round(getAtbReadiness() * 100/ AtbController.TIME_TO_READY);
+        return Math.round(getAtbReadiness() * 100 / AtbController.TIME_TO_READY);
     }
 
 

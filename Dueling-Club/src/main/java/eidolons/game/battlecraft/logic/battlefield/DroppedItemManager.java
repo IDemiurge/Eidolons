@@ -94,6 +94,9 @@ public class DroppedItemManager {
          .findType(typeName, new ArrayList<>(getDroppedItems(cell)));
         return (DC_HeroItemObj) item;
     }
+    public Collection<? extends Obj> getDroppedItems(Coordinates coordinates) {
+        return getDroppedItems(game.getCellByCoordinate(coordinates));
+    }
 
     public Collection<? extends Obj> getDroppedItems(Obj cell) {
         Collection<Obj> list = new ArrayList<>();

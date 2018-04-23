@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
+import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 
 public interface InventoryClickHandler {
@@ -15,7 +16,7 @@ public interface InventoryClickHandler {
 
     void doneClicked();
 
-    void cancel();
+    void apply();
 
     void cancelClicked();
 
@@ -26,13 +27,13 @@ public interface InventoryClickHandler {
     boolean isCancelEnabled();
 
     enum CELL_TYPE {
-        WEAPON_MAIN("UI/components/2017/dialog/inv/empty slots/empty weapon main.png"),
-        WEAPON_OFFHAND("UI/components/2017/dialog/inv/empty slots/empty weapon off.png"),
-        ARMOR("UI/components/2017/dialog/inv/empty slots/empty armor.png"),
-        AMULET("UI/components/2017/dialog/inv/empty slots/empty amulet.jpg"),
-        RING("UI/components/2017/dialog/inv/empty slots/ring_empty_slot.png"),
-        QUICK_SLOT("UI/components/2017/dialog/inv/empty slots/empty_pack.jpg"),
-        INVENTORY("UI/components/2017/dialog/inv/empty slots/empty_pack.jpg");
+        WEAPON_MAIN("UI/components/dc/dialog/inv/empty slots/empty weapon main.png"),
+        WEAPON_OFFHAND("UI/components/dc/dialog/inv/empty slots/empty weapon off.png"),
+        ARMOR("UI/components/dc/dialog/inv/empty slots/empty armor.png"),
+        AMULET("UI/components/dc/dialog/inv/empty slots/empty amulet.jpg"),
+        RING("UI/components/dc/dialog/inv/empty slots/ring_empty_slot.png"),
+        QUICK_SLOT(Images.EMPTY_QUICK_ITEM),
+        INVENTORY(Images.EMPTY_ITEM);
 
 
         private String slotImagePath;
