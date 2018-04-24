@@ -247,6 +247,10 @@ public class DC_SpellObj extends DC_ActiveObj {
         return null;
     }
 
+    public void setSpellPool(SPELL_POOL spellPool) {
+        this.spellPool = spellPool;
+    }
+
 
     public enum CHANNELING_SOUND {
         ARCANE, ELDRITCH, DARK, CHAOS, HOLY, EVIL, SUMMON, BUFF, DAMAGE, MISC

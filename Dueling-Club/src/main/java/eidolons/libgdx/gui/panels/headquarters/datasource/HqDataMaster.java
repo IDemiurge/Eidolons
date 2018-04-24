@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
@@ -9,6 +10,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HqOperation;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
@@ -28,6 +30,7 @@ public class HqDataMaster {
     Unit hero;
     HeroDataModel heroModel;
     Stack<Pair<ParamMap, PropMap>> stack;
+    private boolean dirty;
 
     public HqDataMaster(Unit hero) {
         this.hero = hero;
@@ -90,9 +93,9 @@ public class HqDataMaster {
 
     public static HqDataMaster getInstance(Unit unit) {
         HqDataMaster instance = map.get(unit);
-//        if (instance == null) {
-        instance = new HqDataMaster(unit);
-//        }
+        if (instance == null) {
+            instance = new HqDataMaster(unit);
+        }
         return instance;
     }
 
@@ -133,8 +136,9 @@ public class HqDataMaster {
             }
             if (!self) {
                 heroModel.getModificationList().clear();
-//                this.hero.resetObjectContainers(false);
+//           TODO why?     this.hero.resetObjectContainers(false);
                 this.hero.reset();
+                dirty =false;
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -197,10 +201,40 @@ public class HqDataMaster {
                 break;
             case SKILL_RANK:
                 break;
+            case NEW_CLASS:
+                break;
+            case CLASS_RANK:
+                break;
+            case SPELL_LEARNED:
+            case SPELL_MEMORIZED:
+            case SPELL_EN_VERBATIM:
+            case SPELL_UNMEMORIZED:
+                applySpellOperation(hero, operation, args);
+                break;
+        }
+    }
+
+    private void applySpellOperation(Unit hero, HQ_OPERATION operation, Object... args) {
+        DC_SpellObj spell = (DC_SpellObj) args[0];
+        switch (operation) {
+            case SPELL_LEARNED:
+               HqSpellMaster.learnSpell(hero, spell);
+                break;
+            case SPELL_MEMORIZED:
+                HqSpellMaster.memorizeSpell(hero,spell);
+                break;
+            case SPELL_EN_VERBATIM:
+                HqSpellMaster.learnSpellEnVerbatim(hero, spell);
+                break;
+            case SPELL_UNMEMORIZED:
+                HqSpellMaster.unmemorizeSpell(hero, spell);
+//                CharacterCreator.getHeroManager().removeContainerItem(hero, spell);
+                break;
         }
     }
 
     private void reset() {
+        dirty =true;
         heroModel.reset();
         if (HqPanel.getActiveInstance() != null) {
             HqPanel.getActiveInstance().modelChanged();
@@ -209,5 +243,13 @@ public class HqDataMaster {
 
     public HeroDataModel getHeroModel() {
         return heroModel;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 }

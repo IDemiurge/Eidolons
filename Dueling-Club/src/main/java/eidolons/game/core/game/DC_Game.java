@@ -234,7 +234,7 @@ public class DC_Game extends MicroGame {
 
         getRules().getIlluminationRule().clearCache();
         inventoryTransactionManager = new InventoryTransactionManager(this);
-        inventoryManager = new DC_InventoryManager(this);
+        inventoryManager = new DC_InventoryManager( );
 
         battleMaster.init();
         dungeonMaster.init();

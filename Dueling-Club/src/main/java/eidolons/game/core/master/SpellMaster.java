@@ -30,7 +30,7 @@ public class SpellMaster extends Master {
 
     private static final PROPERTY VERBATIM = PROPS.VERBATIM_SPELLS;
     private static final PROPERTY MEMORIZED = PROPS.MEMORIZED_SPELLS;
-    HashMap<MicroObj, Map<ObjType, MicroObj>> spellCache = new HashMap<>();
+    HashMap<MicroObj, Map<ObjType, DC_SpellObj>> spellCache = new HashMap<>();
 
     public SpellMaster(DC_Game game) {
         super(game);
@@ -42,7 +42,7 @@ public class SpellMaster extends Master {
     }
 
 
-    private List<DC_SpellObj> initSpellpool(MicroObj obj, PROPERTY PROP) {
+    public List<DC_SpellObj> initSpellpool(MicroObj obj, PROPERTY PROP) {
         List<DC_SpellObj> spells = new ArrayList<>();
         String spellList = obj.getProperty(PROP);
         List<String> spellpool;
@@ -55,27 +55,28 @@ public class SpellMaster extends Master {
             if (type == null) {
                 continue;
             }
-            Map<ObjType, MicroObj> cache = spellCache.get(obj);
+            Map<ObjType, DC_SpellObj> cache = spellCache.get(obj);
             if (cache == null) {
                 cache = new HashMap<>();
                 spellCache.put(obj, cache);
             }
-            MicroObj spell = cache.get(type);
+            DC_SpellObj spell = cache.get(type);
             if (spell == null) {
-                spell = getGame().createSpell(type, obj, ref);
+                spell = (DC_SpellObj) getGame().createSpell(type, obj, ref);
                 cache.put(type, spell);
             }
 
             SPELL_POOL spellPool = new EnumMaster<SPELL_POOL>().retrieveEnumConst(SPELL_POOL.class,
              PROP.getName());
             if (spellPool != null) {
+                spell.setSpellPool(spellPool);
                 spell.setProperty(G_PROPS.SPELL_POOL, spellPool.toString());
             } else {
-                LogMaster.log(1, PROP.getName()
-                 + " spell pool not found for " + typeName);
+                spell.setSpellPool(null  );
+                spell.setProperty(G_PROPS.SPELL_POOL, "");
             }
 
-            spells.add((DC_SpellObj) spell);
+            spells.add(spell);
         }
         return spells;
     }

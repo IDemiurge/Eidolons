@@ -15,6 +15,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -270,7 +271,9 @@ public class OverlaysManager extends SuperActor {
                     break;
             }
         }
-
+        if (checkOverlayForCell(BAG, new Coordinates(x, y))) {
+            drawOverlay(container, BAG, batch);
+        }
     }
 
     public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch) {
@@ -388,8 +391,9 @@ public class OverlaysManager extends SuperActor {
 
     public boolean checkOverlayForCell(OVERLAY overlay, Coordinates coordinates) {
         switch (overlay) {
-            case GRAVE:
-
+            case BAG:
+                return !Eidolons.game.getDroppedItemManager().
+                 getDroppedItems(coordinates).isEmpty();
         }
         return false;
     }

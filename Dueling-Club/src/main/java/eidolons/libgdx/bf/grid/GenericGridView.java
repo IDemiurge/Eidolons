@@ -11,6 +11,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
 
 import java.util.function.Supplier;
@@ -141,6 +142,10 @@ public class GenericGridView extends UnitView {
 
 
     public void setOutlinePathSupplier(Supplier<String> pathSupplier) {
+        if (pathSupplier.get()!=null )
+        if (!ImageManager.isImage(pathSupplier.get())) {
+            return;
+        }
         this.outlineSupplier = () -> StringMaster.isEmpty(pathSupplier.get()) ? null : TextureCache.getOrCreateR(pathSupplier.get());
     }
 

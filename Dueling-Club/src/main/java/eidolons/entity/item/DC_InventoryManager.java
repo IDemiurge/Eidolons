@@ -1,9 +1,6 @@
 package eidolons.entity.item;
 
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import main.entity.Entity;
 
 /**
@@ -15,15 +12,15 @@ public class DC_InventoryManager {
 
     protected Integer operationsLeft = 0;
     protected Integer operationsPool = 0;
-    private DC_Game game;
-    private Unit hero;
-    private InventoryClickHandler clickHandler;
+    private boolean freeMode ;
 
-    public DC_InventoryManager(DC_Game game) {
-        this.game = game;
+    public DC_InventoryManager( ) {
+
     }
 
     public boolean hasOperations() {
+        if (isFreeMode())
+            return true;
         return getOperationsLeft() > 0;
     }
 
@@ -44,6 +41,7 @@ public class DC_InventoryManager {
     public void setOperationsPool(Integer operationsPool) {
         this.operationsPool = operationsPool;
         setOperationsLeft(operationsPool);
+        setFreeMode(false);
     }
 
 
@@ -64,6 +62,9 @@ public class DC_InventoryManager {
 
 
     public boolean operationDone(OPERATIONS operation ) {
+        if (ExplorationMaster.isExplorationOn()) {
+            return true;
+        }
         return operationDone(1, operation );
     }
 
@@ -75,11 +76,12 @@ public class DC_InventoryManager {
     }
 
 
-    public Unit getHero() {
-        if (hero == null) {
-            return game.getManager().getActiveObj();
-        }
-        return hero;
+    public boolean isFreeMode() {
+        return freeMode;
+    }
+
+    public void setFreeMode(boolean freeMode) {
+        this.freeMode = freeMode;
     }
 
     public enum OPERATIONS {

@@ -258,18 +258,25 @@ public class Unit extends DC_UnitModel {
     public void removeQuickItem(DC_QuickItemObj itemObj) {
         if (getQuickItems().remove(itemObj)) {
             getResetter().resetQuickSlotsNumber();
-        }
-        // if (game.isArcade()
         if (CharacterCreator.isArcadeMode()) {
             type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), true);
-            removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
-            // setProperty(PROPS.QUICK_ITEMS, value, true);
         }
+        removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
+
         if (getQuickItems().isEmpty()) {
             setQuickItems(null);
         }
+        }
     }
 
+    @Override
+    public void reset() {
+        if (isPlayerCharacter())
+            main.system.auxiliary.log.LogMaster.log(1,"QuickItems= " +getQuickItems());
+        super.reset();
+        if (isPlayerCharacter())
+            main.system.auxiliary.log.LogMaster.log(1,"QuickItems after = " +getQuickItems());
+    }
 
     public String getDynamicInfo() {
         String info = "";

@@ -63,7 +63,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
                  "Inventory is full!", sim);
                 return;
             }
-            pickUp(item);
+            container.getItems().remove(item);
+            dataMaster.operation(sim, HQ_OPERATION.PICK_UP, item);
         }
         close();
     }

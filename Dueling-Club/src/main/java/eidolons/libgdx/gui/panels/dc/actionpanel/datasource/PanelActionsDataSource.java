@@ -51,7 +51,6 @@ public class PanelActionsDataSource implements
          el::invokeClicked
         );
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
-        tooltip.setUserObject(new ActionCostSourceImpl(el));
 
         tooltip.addTo(container);
         return container;
@@ -100,7 +99,6 @@ public class PanelActionsDataSource implements
               key::invokeClicked
              );
              ActionCostTooltip tooltip = new ActionCostTooltip(key.getActive());
-             tooltip.setUserObject(new ActionCostSourceImpl(key.getActive()));
              valueContainer.addListener(tooltip.getController());
              return valueContainer;
          })

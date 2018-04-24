@@ -31,7 +31,7 @@ public class LibraryManager {
          + "MASTERY})", SD);
     }
 
-    public static synchronized String initSpellbook(Unit hero) {
+    public static String initSpellbook(Unit hero) {
         if (hero.getGame().isSimulation()) {
             checkNewAutoVerbatim(hero);
         }

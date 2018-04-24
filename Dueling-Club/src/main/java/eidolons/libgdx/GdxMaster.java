@@ -217,9 +217,9 @@ public class GdxMaster {
         if (alignment.isAlignedWithTop())
             y = parent.getHeight() - h;
 
-        if (alignment.isAlignedWithRight())
-            x = 0;
         if (alignment.isAlignedWithLeft())
+            x = 0;
+        if (alignment.isAlignedWithRight())
             x = parent.getWidth() - w;
         return new Vector2(x, y);
     }

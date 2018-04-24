@@ -1,10 +1,16 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_SpellObj;
+import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.headquarters.HqActor;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
@@ -18,6 +24,7 @@ implements HqActor {
 
     public HqSpellContainer(int wrap, int size) {
         super(wrap, size);
+        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
     }
 
     @Override
@@ -28,7 +35,43 @@ implements HqActor {
 
     @Override
     protected SpellActor createElement(DC_SpellObj datum) {
-        return new SpellActor(datum);
+        SpellActor actor = new SpellActor(datum);
+        if (datum != null) {
+            actor.addListener(createSpellListener(datum, actor));
+            actor.addListener(new ActionCostTooltip(datum).getController());
+        }
+        return actor;
+    }
+
+    private EventListener createSpellListener(DC_SpellObj spell, SpellActor  actor) {
+       return  new SmartClickListener(actor){
+           @Override
+           protected void onTouchDown(InputEvent event, float x, float y) {
+               click(event.getButton(), spell);
+           }
+
+           @Override
+           protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+              doubleClick(event.getButton(), spell);
+           }
+
+           @Override
+           protected void entered() {
+               HqSpellContainer.this.enter (spell, actor);
+           }
+
+           @Override
+           protected void exited() {
+               super.exited();
+           }
+       };
+    }
+
+    protected abstract void click(int button, DC_SpellObj spell);
+
+    protected abstract void doubleClick(int button, DC_SpellObj spell);
+
+    protected void enter(DC_SpellObj spell, SpellActor actor) {
     }
 
     @Override

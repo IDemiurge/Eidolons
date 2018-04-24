@@ -100,40 +100,6 @@ public class EmitterMap extends Group {
                 hideSmoke(c1);
             } else addSmoke(c1);
         }
-
-//        cc:
-//        for (Coordinates c : DC_Game.game.getCoordinates()) {
-//            boolean add = true;
-//            boolean remove = false;
-//            //TODO IDEA: based on Gamma?
-//            //
-////         if (!GameScreen.getInstance().getGridPanel().isCoordinateVisible(c))
-////             continue ;  если апдейт был бы быстрый, можно было бы не пре-создавать там где не видно
-////            for (Unit unit : DC_Game.game.getUnits()) {
-////                if ((unit.isActiveSelected() ||
-////                 unit.checkParam(PARAMS.LIGHT_EMISSION)) &&
-////                 PositionMaster.getDistance(unit.getCoordinates(), c) <
-////                  MIN_DISTANCE_FROM_LIGHT
-////                   + unit.getIntParam(PARAMS.LIGHT_EMISSION) / 25
-////                 ) {
-////                    add = false;
-////                    remove = true;
-////                }
-////            }
-//            for (Coordinates c1 : fogMap.keySet()) {
-//                if (PositionMaster.getDistance(c1, c) < MIN_DISTANCE_BETWEEN_FOG) {
-//                    add = false;
-//                    remove = true;
-//                }
-//            }
-//
-//            if (add) {
-//                addSmoke(c);
-//            }
-//            if (remove) {
-//                removeSmoke(c);
-//            }
-//        }
     }
 
     private void removeSmoke(Coordinates c) {

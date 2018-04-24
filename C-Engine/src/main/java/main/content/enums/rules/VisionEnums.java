@@ -72,9 +72,6 @@ public class VisionEnums {
             return StringMaster.getWellFormattedString(toString());
         }
 
-        // hasSelectImage(){
-        //
-        // }
         public Image getImage() {
             if (image == null) {
                 image = ImageManager.getImage(outlinePath + ".jpg");

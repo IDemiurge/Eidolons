@@ -10,6 +10,7 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSource;
+import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.ActionTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.CostTableTooltip;
 
@@ -26,6 +27,8 @@ public class ActionCostTooltip extends ActionTooltip {
         addElement(new CostTableTooltip());
 
         setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+
+         setUserObject(new ActionCostSourceImpl(el));
     }
 
 

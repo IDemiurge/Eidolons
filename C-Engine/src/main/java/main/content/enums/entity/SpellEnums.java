@@ -47,7 +47,7 @@ public class SpellEnums {
     }
 
     public enum SPELL_POOL {
-        MEMORIZED, DIVINED, VERBATIM,;
+        MEMORIZED, DIVINED, VERBATIM, SPELLBOOK;
     }
 
     public enum SPELL_SUBGROUP {

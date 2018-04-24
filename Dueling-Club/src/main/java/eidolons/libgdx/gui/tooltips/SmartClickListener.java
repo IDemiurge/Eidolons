@@ -14,6 +14,7 @@ public class SmartClickListener extends ClickListener {
 
     public SmartClickListener(Actor actor) {
         this.actor = actor;
+        setTapCountInterval(0.6f);
     }
 
     @Override
@@ -23,12 +24,17 @@ public class SmartClickListener extends ClickListener {
     }
 
     @Override
-    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        if (getTapCount() > 1) {
+    public void clicked(InputEvent event, float x, float y) {
+        if (getTapCount() > 1)
             onDoubleTouchDown(event, x, y);
-        } else
-            onTouchDown(event, x, y);
-        return true;
+
+        super.clicked(event, x, y);
+    }
+
+    @Override
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        onTouchDown(event, x, y);
+        return  super.touchDown(event, x, y, pointer, button);
     }
 
     @Override

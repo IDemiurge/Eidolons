@@ -20,6 +20,7 @@ import eidolons.libgdx.stage.Closable;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
@@ -127,11 +128,13 @@ public class ContainerPanel extends TablePanel implements Closable {
     }
 
     public void close() {
+        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
         setVisible(false);
     }
 
     public void open() {
+        GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
         if (getStage() instanceof StageWithClosable) {
             ((StageWithClosable) getStage()).closeDisplayed();
             ((StageWithClosable) getStage()).setDisplayedClosable(this);

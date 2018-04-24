@@ -13,6 +13,16 @@ public class VerbatimContainer extends HqSpellContainer {
         super(2, 10);
     }
 
+    @Override
+    protected void click(int button, DC_SpellObj spell) {
+
+    }
+
+    @Override
+    protected void doubleClick(int button, DC_SpellObj spell) {
+
+    }
+
     protected List<DC_SpellObj> getSpells() {
         return
          getUserObject().getEntity().getSpells().stream()

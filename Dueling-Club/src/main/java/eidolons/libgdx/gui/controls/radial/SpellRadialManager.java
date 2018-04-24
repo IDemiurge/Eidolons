@@ -5,7 +5,6 @@ import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
-import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.entity.SpellEnums;
@@ -87,7 +86,6 @@ public class SpellRadialManager {
              RadialManager.configureActionNode(target, action);
             ActionCostTooltip tooltip = new ActionCostTooltip(action);
             tooltip.setRadial(true);
-            tooltip.setUserObject(new ActionCostSourceImpl(action));
             valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new SpellRadialContainer(

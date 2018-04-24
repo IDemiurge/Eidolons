@@ -59,7 +59,6 @@ import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -489,16 +488,19 @@ public class GridPanel extends Group {
             }
             if (view instanceof GridUnitView)
                 if (((GridUnitView) view).getLastSeenView() != null) {
-                BattleFieldObject obj = getObjectForView(view);
+                    BattleFieldObject obj = getObjectForView(view);
 
-                LastSeenMaster.resetLastSeen((GridUnitView) view,
-                 obj, !visible);
+                    LastSeenMaster.resetLastSeen((GridUnitView) view,
+                     obj, !visible);
+                    if (obj.getLastSeenOutline() == null)
+                        (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
+                         () -> null);
+                    else
+                        (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
+                         () -> (obj.getLastSeenOutline().getImagePath())
+                        );
 
-                (((GridUnitView) view).getLastSeenView()).setOutlinePathSupplier(
-                 () -> StringMaster.toStringOrNull(obj.getLastSeenOutline())
-                );
-
-            }
+                }
         } else
             view.setVisible(visible);
     }

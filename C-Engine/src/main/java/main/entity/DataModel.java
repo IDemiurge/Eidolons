@@ -51,6 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by JustMe on 1/28/2017.
  */
 public abstract class DataModel {
+    public static final boolean integerCacheOn = true;
     protected PropMap propMap = new PropMap();
     protected ParamMap paramMap = new ParamMap();
     protected Map<PARAMETER, Map<String, Double>> modifierMaps;
@@ -80,9 +81,8 @@ public abstract class DataModel {
     protected boolean passivesReady = false;
     protected boolean activesReady = false;
     private HashMap<PROPERTY, Map<String, Boolean>> propCache;
-    private Map<PARAMETER, Integer> integerMap= new HashMap<>();
+    private Map<PARAMETER, Integer> integerMap = new HashMap<>();
     private boolean beingReset;
-    public static final boolean integerCacheOn=true;
 
     public String getToolTip() {
         return getType().getDisplayedName();
@@ -312,8 +312,8 @@ public abstract class DataModel {
         Integer result = null;
         if (integerCacheOn) {
             if (base)
-                result= type.getIntegerMap().get(param);
-            else result= integerMap.get(param);
+                result = type.getIntegerMap().get(param);
+            else result = integerMap.get(param);
             if (result != null)
                 return result;
         }
@@ -330,7 +330,7 @@ public abstract class DataModel {
             return 0;
         }
         if (StringMaster.isInteger(string)) {
-            result= StringMaster.getInteger(string);
+            result = StringMaster.getInteger(string);
         } else
             result = FormulaMaster.getInt(string, ref);
 
@@ -347,11 +347,12 @@ public abstract class DataModel {
     public Map<PARAMETER, Integer> getIntegerMap() {
         return integerMap;
     }
-        public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
+
+    public Map<PARAMETER, Integer> getIntegerMap(boolean base) {
         if (base) {
             return type.getIntegerMap(false);
         }
-            return getIntegerMap();
+        return getIntegerMap();
     }
 
     public ParamMap getParamMap() {
@@ -1141,6 +1142,18 @@ public abstract class DataModel {
         return removeProperty(prop, "", false);
     }
 
+    public boolean addProperty(boolean base, PROPERTY prop, String value) {
+        if (base)
+            return type.addProperty(prop, value, false) || addProperty(prop, value, false);
+        return addProperty(prop, value, true);
+    }
+
+    public boolean removeProperty(boolean base, PROPERTY prop, String value) {
+        if (base)
+            return type.removeProperty(prop, value, false) || removeProperty(prop, value, false);
+        return removeProperty(prop, value, false);
+    }
+
     public boolean removeProperty(PROPERTY prop, String value) {
         return removeProperty(prop, value, false);
     }
@@ -1306,6 +1319,7 @@ public abstract class DataModel {
         }
 
     }
+
     protected ParamMap cloneParamMap(Map<PARAMETER, String> map) {
         ParamMap clone = new ParamMap();
         Map<PARAMETER, String> innerMap = new HashMap<>();
@@ -1665,6 +1679,7 @@ public abstract class DataModel {
         Collections.shuffle(list);
         setProperty(property, StringMaster.constructContainer(list));
     }
+
     public void reverseContainerProperty(PROPERTY property) {
         String value = getProperty(property);
         List<String> list = StringMaster.openContainer(value);

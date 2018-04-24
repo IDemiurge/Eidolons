@@ -4,6 +4,7 @@ import com.graphbuilder.math.ExpressionParseException;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.item.*;
 import eidolons.entity.obj.attach.DC_FeatObj;
@@ -40,6 +41,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -132,15 +134,19 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
         getEntity().setSpells(
          getGame().getManager().getSpellMaster().getSpells(getEntity(), reset));
-        // TODO support spellbook changes!
+
         if (initUpgrades) {
             SpellUpgradeMaster.initSpellUpgrades(getEntity());
         }
     }
 
-
     public void initSpellbook() {
         LibraryManager.initSpellbook(getEntity());
+        List<DC_SpellObj> spellbook =
+         new ArrayList<>(getEntity().getSpells());
+        spellbook.addAll( getGame().getManager().getSpellMaster().
+         initSpellpool(getEntity(), PROPS.SPELLBOOK));
+        getEntity().setSpellbook(spellbook);
         // init objects for all the known spells as well!
     }
 

@@ -132,7 +132,6 @@ public class CombatInventory extends TablePanel implements Closable {
             result = false;
         InventoryDataSource source = (InventoryDataSource) getUserObject();
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
-        CharacterCreator.getHeroManager().removeHero(source.getUnit());
         if (!ExplorationMaster.isExplorationOn()) {
             source.getCancelHandler().run();
         } else {

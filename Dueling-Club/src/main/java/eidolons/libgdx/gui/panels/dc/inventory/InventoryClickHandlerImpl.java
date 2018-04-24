@@ -4,7 +4,6 @@ import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
@@ -40,7 +39,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             result = false;
         } else {
 
-            if (manager.hasOperations())
                 if (manager.canDoOperation(operation, cellContents)) {
 
                     execute(operation, cellContents);
@@ -59,7 +57,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
     private void execute(OPERATIONS operation, Entity type) {
-      Object  secondArg = getSecondArg(operation, type);
+        Object secondArg = getSecondArg(operation, type);
         HqDataMaster.operation(sim, getHqOperation(operation), type, secondArg);
 //         new EnumMaster<HQ_OPERATION>().retrieveEnumConst(HQ_OPERATION.class, operation.name()),
 //         item);
@@ -67,7 +65,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     private Object getSecondArg(OPERATIONS operation, Entity type) {
         if (operation == OPERATIONS.EQUIP) {
-            if (type instanceof DC_JewelryObj){
+            if (type instanceof DC_JewelryObj) {
                 return null;
             }
             return HeroManager.getItemSlot(dataMaster.getHeroModel(), type);
@@ -165,20 +163,17 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         }
         dataMaster.undo();
 
-//        inventoryManager.getInvListManager().setOperationsLeft(getOperationsLeft());
-        if (CharacterCreator.getHeroManager().undo(sim)) {
-//         modifications --;
-            Integer op = sim.getGame().getInventoryManager().getOperationsLeft();
-            op--;
-            if (op == sim.getGame().getInventoryManager().getOperationsPool()) {
-                dirty = false;
-            }
-            refreshPanel();
+        Integer op = sim.getGame().getInventoryManager().getOperationsLeft();
+        op--;
+        if (op == sim.getGame().getInventoryManager().getOperationsPool()) {
+            dirty = false;
         }
+        refreshPanel();
+
     }
 
     public void refreshPanel() {
-        GuiEventManager.trigger(GuiEventType.UPDATE_INVENTORY_PANEL );
+        GuiEventManager.trigger(GuiEventType.UPDATE_INVENTORY_PANEL);
 //        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, sim.getHero());
     }
 

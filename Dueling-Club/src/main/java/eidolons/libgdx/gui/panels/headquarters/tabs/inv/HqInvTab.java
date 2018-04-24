@@ -14,6 +14,8 @@ public class HqInvTab extends HqElement{
 
 
     public HqInvTab() {
+        add(inventory = new HqInvPanel());
+
         setFixedSize(true);
         setSize(GDX.size(HqMaster.TAB_WIDTH) ,
          GDX.size(HqMaster.TAB_HEIGHT) );

@@ -106,7 +106,6 @@ public class RadialManager {
     public static void addCostTooltip(DC_ActiveObj el, ValueContainer valueContainer) {
         ActionCostTooltip tooltip = new ActionCostTooltip(el);
         tooltip.setRadial(true);
-        tooltip.setUserObject(new ActionCostSourceImpl(el));
         valueContainer.addListener(tooltip.getController());
     }
 
