@@ -2,7 +2,6 @@ package eidolons.test.debug;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.controls.Controller;
 import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 
@@ -37,12 +36,12 @@ public class DebugController implements Controller {
             case 'D':
                 getDebugMaster().showDebugWindow();
                 return true;
-            case ' ':
-                if (DungeonScreen.getInstance() == null)
-                    return false;
-                if (!DungeonScreen.getInstance().isWaitingForInput())
-                    getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
-                return true;
+//            case ' ':
+//                if (DungeonScreen.getInstance() == null)
+//                    return false;
+//                if (!DungeonScreen.getInstance().isWaitingForInput())
+//                    getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+//                return true;
             case 'A':
                 getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.TOGGLE_ALT_AI);
                 return true;

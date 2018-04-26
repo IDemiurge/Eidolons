@@ -66,6 +66,8 @@ public class AtbHelper {
         assertTrue(
          (Boolean)
           WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_STARTED, 1500));
-
+        if (!ExplorationMaster.isExplorationOn()) {
+            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED);
+        }
     }
 }

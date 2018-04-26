@@ -18,10 +18,18 @@ import java.util.List;
 
 public class DroppedItemManager {
 
+    List<DC_HeroItemObj>[][] itemMap;
     private DC_Game game;
 
     public DroppedItemManager(DC_Game game) {
         this.game = game;
+    }
+
+    public void init() {
+        itemMap = new List
+         [game.getDungeon().getCellsX()]
+         [game.getDungeon().getCellsY()];
+
     }
 
     public boolean checkHasItemsBeneath(Unit unit) {
@@ -54,8 +62,40 @@ public class DroppedItemManager {
 
     public void itemFalls(Coordinates coordinates, DC_HeroItemObj item) {
         game.getCellByCoordinate(coordinates).addProperty(PROPS.DROPPED_ITEMS, "" + item.getId());
-
     }
+
+    public void reset() {
+        for (int i = 0; i < itemMap.length; i++) {
+            for (int j = 0; j < itemMap[0].length; j++) {
+                itemMap[i][j] =
+                 getItems(new Coordinates(i, j));
+            }
+        }
+    }
+
+    public List<DC_HeroItemObj> getDroppedItems(Obj cell) {
+        return getDroppedItems(cell.getCoordinates());
+    }
+    public List<DC_HeroItemObj> getDroppedItems(Coordinates coordinates) {
+        return itemMap[coordinates.getX()][coordinates.getY()];
+    }
+
+
+    private List<DC_HeroItemObj> getItems(Coordinates coordinates) {
+        return getItems(game.getCellByCoordinate(coordinates));
+    }
+
+    private List<DC_HeroItemObj> getItems(Obj cell) {
+        List<DC_HeroItemObj> list = new ArrayList<>();
+        for (String id : StringMaster.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
+            Obj item = game.getObjectById(StringMaster.getInteger(id));
+            if (item != null) {
+                list.add((DC_HeroItemObj) item);
+            }
+        }
+        return list;
+    }
+
 
     public void remove(DC_HeroItemObj item, Unit heroObj) {
         game.getCellByCoordinate(heroObj.getCoordinates()).removeProperty(PROPS.DROPPED_ITEMS,
@@ -76,6 +116,23 @@ public class DroppedItemManager {
         cell.removeProperty(PROPS.DROPPED_ITEMS, "" + item.getId());
         return true;
     }
+    public void pickedUp(Obj item) {
+        if (!(item instanceof DC_HeroItemObj)) {
+            return;
+        }
+        Coordinates coordinates = item.getCoordinates();
+        Obj cell = game.getCellByCoordinate(coordinates);
+        pickUp(cell, (DC_HeroItemObj) item);
+
+    }
+
+    public Collection<? extends Obj> getAllDroppedItems() {
+        List<Obj> list = new ArrayList<>();
+        for (Obj cell : game.getCells()) {
+            list.addAll(getDroppedItems(cell));
+        }
+        return list;
+    }
 
     public boolean pickUp(Unit hero, Entity type) {
         Obj cell = game.getCellByCoordinate(hero.getCoordinates());
@@ -93,38 +150,6 @@ public class DroppedItemManager {
         Obj item = new ListMaster<Obj>()
          .findType(typeName, new ArrayList<>(getDroppedItems(cell)));
         return (DC_HeroItemObj) item;
-    }
-    public Collection<? extends Obj> getDroppedItems(Coordinates coordinates) {
-        return getDroppedItems(game.getCellByCoordinate(coordinates));
-    }
-
-    public Collection<? extends Obj> getDroppedItems(Obj cell) {
-        Collection<Obj> list = new ArrayList<>();
-        for (String id : StringMaster.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
-            Obj item = game.getObjectById(StringMaster.getInteger(id));
-            if (item != null) {
-                list.add(item);
-            }
-        }
-        return list;
-    }
-
-    public void pickedUp(Obj item) {
-        if (!(item instanceof DC_HeroItemObj)) {
-            return;
-        }
-        Coordinates coordinates = item.getCoordinates();
-        Obj cell = game.getCellByCoordinate(coordinates);
-        pickUp(cell, (DC_HeroItemObj) item);
-
-    }
-
-    public Collection<? extends Obj> getAllDroppedItems() {
-        List<Obj> list = new ArrayList<>();
-        for (Obj cell : game.getCells()) {
-            list.addAll(getDroppedItems(cell));
-        }
-        return list;
     }
 
 }

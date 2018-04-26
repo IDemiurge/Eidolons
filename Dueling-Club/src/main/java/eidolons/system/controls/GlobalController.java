@@ -42,7 +42,7 @@ public class GlobalController implements Controller {
             case Keys.ESCAPE:
                 escape();
                 break;
-            case ' ':
+            case Keys.SPACE:
                 if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
                  instanceof Blocking)
                     return;

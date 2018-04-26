@@ -45,7 +45,7 @@ public class MoveByActionLimited extends MoveByAction {
         float x = startPointX + getAmountX() - target.getX();
         float y = startPointY + getAmountY() - target.getY();
         if (x != 0 || y != 0) {
-            target.moveBy(x, y);
+//            target.moveBy(x, y);
         }
     }
 

@@ -63,7 +63,7 @@ public class OverlaysManager extends SuperActor {
                 listenerCaches.put(sub, new HashMap<>());
             }
         }
-        gridPanel.addListener(getGlobalOverlayListener(gridPanel));
+//        gridPanel.addListener(getGlobalOverlayListener(gridPanel));
     }
 
 
@@ -190,11 +190,9 @@ public class OverlaysManager extends SuperActor {
         }
         super.draw(batch, parentAlpha);
         batch.setColor(1, 1, 1, 1);
-        try {
+
             drawOverlays(batch);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
 
 
     }
@@ -211,8 +209,13 @@ public class OverlaysManager extends SuperActor {
             for (int j = 0; j < cells[i].length; j++) {
                 drawOverlaysForCell(cells[i][j], i, cells[i].length - j - 1, batch);
 
-                for (GenericGridView sub : cells[i][j].getUnitViewsVisible()) {
-                    drawOverlaysForView(sub, batch);
+                for (Actor c : cells[i][j].getChildren()) {
+                    if (c instanceof GenericGridView )
+                    {
+                        if (c.isVisible())
+                            drawOverlaysForView(((GenericGridView) c), batch);
+                    }
+
                 }
 
             }
@@ -220,9 +223,9 @@ public class OverlaysManager extends SuperActor {
     }
 
     private void drawOverlaysForView(GenericGridView actor, Batch batch) {
-        if (actor.isHovered()) {
-            //emblem etc?
-        }
+//        TODO  if (actor.isHovered()) {
+           //emblem etc?
+//        }
         if (actor.getHpBar() != null)
             if (GridPanel.isHpBarsOnTop()) {
                 drawOverlay(actor, HP_BAR, batch);

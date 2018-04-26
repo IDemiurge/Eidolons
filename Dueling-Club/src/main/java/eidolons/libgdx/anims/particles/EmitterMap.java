@@ -137,18 +137,18 @@ public class EmitterMap extends Group {
             return;
          }
          addActor(ambience);
-        ambience.reset();
-//        ActorMaster.addFadeInAction(ambience, 0.5f );
+        if (ambience.getEffect().isComplete())
+        {
+            ambience.reset();
+        }
     }
+
         private void hide(Coordinates c) {
         Ambience ambience = map.get(c);
         if (ambience == null) {
             return;
         }
-//        ambience.remove();
-//        ambience.setVisible(false);
         ambience.clearActions();
-//        ActorMaster.addFadeOutAction(ambience, 0.5f, true);
         ambience.hide();
     }
 

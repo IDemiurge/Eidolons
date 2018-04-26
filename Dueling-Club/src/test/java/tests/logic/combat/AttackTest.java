@@ -28,7 +28,6 @@ public class AttackTest extends JUnitDcTest {
 
     @Test
     public void attackTest() {
-        for (int i = 0; i < 121; i++) {
 
             source = helper.unit(JUnitResources.DEFAULT_UNIT, 1, 0, true);
             target = helper.unit(JUnitResources.DEFAULT_UNIT, 0, 0, false);
@@ -42,13 +41,13 @@ public class AttackTest extends JUnitDcTest {
 
             atbHelper.startCombat();
             atbHelper.waitForGameLoopStart();
-
             DC_ActiveObj action = source.getAction("Punch");
             assertTrue(action != null);
             boolean result = action.canBeTargeted(target.getId());
             Condition condition = action.getTargeting().getConditions().getLastCheckedCondition();
             if (!result) {
-                fail(source.getFacing()+" facing, failed condition: " + condition );
+                fail(source.getFacing()+" facing, failed condition: " + condition
+                );
             }
 
 
@@ -59,9 +58,11 @@ public class AttackTest extends JUnitDcTest {
             assertTrue(newToughness < origToughness);
             assertTrue(newEndurance < origEndurance);
 
-        }
 
     }
 
-
+    @Override
+    protected boolean isLoggingOff() {
+        return false;
+    }
 }

@@ -50,14 +50,18 @@ public class DC_PriorityManager {
     }
 
     public static int getAttackPriority(DC_ActiveObj active, BattleFieldObject targetObj) {
-        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {
-            @Override
-            public Unit getUnit() {
-                return active.getOwnerObj();
-            }
-        });
-        int p = impl.getAttackPriority(active, targetObj);
-        toggleImplementation(mainImpl);
+        Unit unit = mainImpl.getMaster().getUnit();
+        mainImpl.getMaster().setUnit(active.getOwnerObj());
+//        toggleImplementation(new PriorityManagerImpl(mainImpl.getMaster()) {
+//        });
+        int p = 0;
+        try {
+            p = impl.getAttackPriority(active, targetObj);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        } finally{
+            mainImpl.getMaster().setUnit(unit);
+        }
         return p;
     }
 

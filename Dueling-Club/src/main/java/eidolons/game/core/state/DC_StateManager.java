@@ -101,6 +101,9 @@ public class DC_StateManager extends StateManager {
             getGame().getDungeonMaster().getExplorationMaster()
              .getAggroMaster().checkStatusUpdate();
         }
+
+        getGame().getDroppedItemManager().reset();
+
         if (getGame().isStarted() && ExplorationMaster.isExplorationOn()) {
             // we will need full reset: after traps or other spec. effects; for Cells/Illumination
 
@@ -115,11 +118,7 @@ public class DC_StateManager extends StateManager {
         }
         super.resetAllSynchronized();
         if (getGame().isStarted()) {
-            try {
-                checkCellBuffs();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            checkCellBuffs();
         }
 
         triggerOnResetGuiEvents();

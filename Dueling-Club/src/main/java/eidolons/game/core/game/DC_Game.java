@@ -238,11 +238,12 @@ public class DC_Game extends MicroGame {
 
         battleMaster.init();
         dungeonMaster.init();
-
         setOffline(true);
 
         grid = new DC_BattleFieldGrid(getDungeon());
         battleFieldManager = new DC_BattleFieldManager(this);
+
+        droppedItemManager.init();
 
         if (AI_ON) {
             aiManager = new AI_Manager(this);

@@ -843,19 +843,21 @@ public class GridPanel extends Group {
             resetZIndices();
             update();
         }
-        if (isAutoResetVisibleOn()) {
-            if (resetTimer <= 0) {
-                resetTimer = 0.5f;
-                for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
-                    setVisible(viewMap.get(sub), true);
-                }
-                for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
-                    setVisible(viewMap.get(sub), false);
-                }
+        if (isAutoResetVisibleOn())
+            if (DC_Game.game != null)
+                if (DC_Game.game.getVisionMaster().getVisible() != null) {
+                if (resetTimer <= 0) {
+                    resetTimer = 0.5f;
+                    for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
+                        setVisible(viewMap.get(sub), true);
+                    }
+                    for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
+                        setVisible(viewMap.get(sub), false);
+                    }
 
+                }
+                resetTimer -= delta;
             }
-            resetTimer -= delta;
-        }
     }
 
     private boolean isAutoResetVisibleOn() {

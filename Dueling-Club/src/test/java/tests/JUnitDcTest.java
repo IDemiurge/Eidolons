@@ -44,6 +44,7 @@ public class JUnitDcTest {
         LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(isGraphicsOff());
         CoreEngine.setjUnit(true);
+        CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
         AI_Manager.setOff(isAiOff());
         DC_Engine.setTrainingOff(isTrainingOff());
         if (isOldLauncher()) {
@@ -67,6 +68,10 @@ public class JUnitDcTest {
         atbHelper = new AtbHelper(game);
         checker = new CheckHelper(game);
         utils = new JUnitUtils(game);
+    }
+
+    protected String getXmlTypesToRead() {
+        return "bf obj;buffs;weapons;armor;terrain;dungeons;units;actions;abils;";
     }
 
     protected boolean isTrainingOff() {
