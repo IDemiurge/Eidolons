@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.MacroTimeMaster;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
+import main.system.GuiEventManager;
+import main.system.MapEvent;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
@@ -28,13 +31,16 @@ public abstract class MapTimedLayer<T extends Actor> extends Group {
             map.put(time, new ArrayList<>());
         map.put(null, new ArrayList<>());
         setSize(MapScreen.defaultSize, MapScreen.defaultSize);
+        GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, param -> {
+                update();
+        });
     }
 
 
     protected abstract void init();
 
     protected DAY_TIME getTime() {
-        return MacroGame.game.getTime();
+        return MacroTimeMaster.getInstance().getDayTime();
     }
 
     public void applyTint() {

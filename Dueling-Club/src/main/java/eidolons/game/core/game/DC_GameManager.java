@@ -182,7 +182,7 @@ public class DC_GameManager extends GameManager {
     private void updateGraphics() {
         //set dirty flag?
         GuiEventManager.trigger(GuiEventType.UPDATE_GUI, null);
-        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
+//        GuiEventManager.trigger(GuiEventType.UPDATE_AMBIENCE, null);
         GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO, getMainHero());
     }
 
@@ -515,9 +515,6 @@ public class DC_GameManager extends GameManager {
             GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         else {
             if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
-                if (event.getType() != STANDARD_EVENT_TYPE.COSTS_HAVE_BEEN_PAID)
-                    GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
-                else
                     GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
             } else if (EventAnimCreator.isEventAnimated(event))
                 GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);

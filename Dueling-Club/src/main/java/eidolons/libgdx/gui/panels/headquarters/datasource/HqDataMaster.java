@@ -99,12 +99,19 @@ public class HqDataMaster {
         return instance;
     }
 
+    public static void exit() {
+        map.clear();
+    }
+
     public void save() {
         applyModifications();
 
     }
 
-    public void undo() {
+    public static void undo() {
+        map.get(HqMaster.getActiveHero()).undo_();
+    }
+        public void undo_() {
         if (heroModel.getModificationList().isEmpty())
             return;
         List<HqOperation> list = heroModel.getModificationList();
@@ -112,6 +119,7 @@ public class HqDataMaster {
         list.remove(list.size() - 1);
         heroModel.setModificationList(list);
         applyModifications(true);
+       reset();
     }
 
     private HeroDataModel createHeroDataModel(Unit hero) {
@@ -138,7 +146,7 @@ public class HqDataMaster {
                 heroModel.getModificationList().clear();
 //           TODO why?     this.hero.resetObjectContainers(false);
                 this.hero.reset();
-                dirty =false;
+                dirty = false;
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -218,10 +226,10 @@ public class HqDataMaster {
         DC_SpellObj spell = (DC_SpellObj) args[0];
         switch (operation) {
             case SPELL_LEARNED:
-               HqSpellMaster.learnSpell(hero, spell);
+                HqSpellMaster.learnSpell(hero, spell);
                 break;
             case SPELL_MEMORIZED:
-                HqSpellMaster.memorizeSpell(hero,spell);
+                HqSpellMaster.memorizeSpell(hero, spell);
                 break;
             case SPELL_EN_VERBATIM:
                 HqSpellMaster.learnSpellEnVerbatim(hero, spell);
@@ -234,7 +242,7 @@ public class HqDataMaster {
     }
 
     private void reset() {
-        dirty =true;
+        dirty = true;
         heroModel.reset();
         if (HqPanel.getActiveInstance() != null) {
             HqPanel.getActiveInstance().modelChanged();

@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GDX;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -13,13 +14,17 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.HqTabs;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
+import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.StageWithClosable;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 
 import java.util.List;
 
 /**
  * Created by JustMe on 4/13/2018.
  */
-public class HqPanel extends TablePanel {
+public class HqPanel extends TablePanel implements Blocking {
 
     HqPartyMembers partyMembers;
     HqHeroViewPanel heroViewPanel;
@@ -30,6 +35,7 @@ public class HqPanel extends TablePanel {
     HqControlPanel controlPanel;
     private TablePanel infoTable;
     private boolean editable;
+    HqButtonPanel buttonPanel;
     private HqMasteryTable masteryTable;
     private HqAttributeTable attributeTable;
     private static HqPanel activeInstance;
@@ -50,6 +56,7 @@ public class HqPanel extends TablePanel {
         staticParams = new HqParamPanel(false);
         traits = new HqHeroTraits();
         controlPanel = new HqControlPanel();
+        buttonPanel = new HqButtonPanel();
         infoTable = createInfoTable();
         setSize(GDX.size(1600), GDX.size(900) );
         addElements();
@@ -79,7 +86,7 @@ public class HqPanel extends TablePanel {
         add(hqTabs);
 
         row();
-        add(controlPanel).colspan(3);
+        add(buttonPanel).colspan(3);
     }
 
 
@@ -103,6 +110,8 @@ public class HqPanel extends TablePanel {
         HqNewMasteryPanel newMastery = new HqNewMasteryPanel();
 //        newMastery.setPosition();
         infoTable.addActor(newMastery);
+        infoTable.row();
+        infoTable.add(controlPanel).padTop(100).bottom().center().colspan(2).row();
 
         infoTable.setFixedSize(true);
         infoTable.setSize(400, 800);
@@ -132,7 +141,28 @@ public class HqPanel extends TablePanel {
     }
 
     @Override
+    public void close() {
+        ActorMaster.addFadeOutAction(this, 0.3f );
+        ActorMaster.addHideAfter(this );
+        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
+        HqPanel.setActiveInstance(null  );
+        HqDataMaster.exit();
+    }
+
+    @Override
+    public void open() {
+        if ( ((StageWithClosable) this.getStage()).getDisplayedClosable()!=this)
+            ((StageWithClosable) this.getStage()).closeDisplayed();
+        ((StageWithClosable) this.getStage()).setDisplayedClosable(this);
+
+        GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
+        HqPanel.setActiveInstance(this);
+        fadeIn();
+    }
+
+    @Override
     public void setUserObject(Object userObject) {
+
 
         boolean first=false;
         List<HqHeroDataSource> heroes = partyMembers.getUserObject();
@@ -144,6 +174,11 @@ public class HqPanel extends TablePanel {
                 userObject=((List) userObject).get(0);
         }
         super.setUserObject(userObject);
+        if (userObject instanceof HqHeroDataSource) {
+            HqHeroDataSource source = (HqHeroDataSource) userObject;
+            HqMaster.setActiveHero(source.getEntity().getHero());
+        }
+
         partyMembers.setUserObject(heroes);
         partyMembers.setUpdateRequired(first);
     }

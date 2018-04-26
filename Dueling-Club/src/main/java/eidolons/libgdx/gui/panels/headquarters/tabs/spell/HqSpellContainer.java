@@ -14,6 +14,8 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -82,8 +84,26 @@ implements HqActor {
     @Override
     protected DC_SpellObj[] initDataArray() {
         List<DC_SpellObj> list =    new ArrayList<>( getSpells()) ;
+        Collections.sort(list, getSorter());
         ListMaster.fillWithNullElements(list, size);
         return list.toArray(new DC_SpellObj[list.size()]);
+    }
+
+    protected Comparator<DC_SpellObj> getSorter() {
+        return new Comparator<DC_SpellObj>() {
+            @Override
+            public int compare(DC_SpellObj o1, DC_SpellObj o2) {
+                if (o1==null  && o2==null )
+                    return 0;
+                if (o1==null)
+                    return -1;
+                if ( o2==null )
+                    return 1;
+                if (o1.getId()< o2.getId())
+                    return 1;
+                return -1;
+            }
+        };
     }
 
     protected abstract List<DC_SpellObj> getSpells();

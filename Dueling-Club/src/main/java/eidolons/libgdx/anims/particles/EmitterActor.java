@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
-import main.content.CONTENT_CONSTS2.SFX;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.game.bf.Coordinates;
 
 /**
@@ -19,7 +19,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     public String path;
     protected ParticleEffect effect;
     protected ParticleEffectPool pool;
-    protected SFX sfx;
+    protected EMITTER_PRESET sfx;
     boolean flipX;
     boolean flipY;
     private Sprite sprite;
@@ -29,7 +29,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private boolean test;
     private float speed = 1;
 
-    public EmitterActor(SFX fx) {
+    public EmitterActor(EMITTER_PRESET fx) {
         this(fx.path);
         this.sfx = fx;
     }
@@ -93,14 +93,29 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     }
 
     @Override
-    public SFX getTemplate() {
+    public EMITTER_PRESET getTemplate() {
         return sfx;
     }
 
-
+public void hide(){
+    effect.getEmitters().forEach(e ->
+    {
+        e.allowCompletion();
+    });
+}
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        super.draw(batch, parentAlpha); if (parentAlpha!=1)
+//        effect.getEmitters().forEach(e ->
+//        {
+//            e.getTransparency().set(new ScaledNumericValue());
+//            float a = e.getTransparency().getScale(e.getPercentComplete());
+//             e.getTransparency().set(new RangedNumericValue());
+//            e.getSprites().forEach(
+//             s-> s.getColor().a= a*parentAlpha
+//            );
+//        }
+//        );
 
         effect.setPosition(getX(), getY());
 //        sprite = effect.getEmitters().first().getSprite();
@@ -132,11 +147,11 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         effect.start();
     }
 
-    public SFX getSfx() {
+    public EMITTER_PRESET getSfx() {
         return sfx;
     }
 
-    public void setSfx(SFX sfx) {
+    public void setSfx(EMITTER_PRESET sfx) {
         this.sfx = sfx;
     }
 

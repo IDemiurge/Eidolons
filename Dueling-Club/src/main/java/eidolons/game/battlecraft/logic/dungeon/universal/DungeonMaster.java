@@ -9,6 +9,7 @@ import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObjMaster;
 import eidolons.game.module.dungeoncrawl.objects.LockMaster;
+import eidolons.libgdx.anims.particles.AmbienceDataSource;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
@@ -56,6 +57,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     }
 
     public void gameStarted() {
+        AmbienceDataSource.init(dungeonWrapper.getDungeon());
         GuiEventManager.trigger(UPDATE_DUNGEON_BACKGROUND, dungeonWrapper.getMapBackground());
         spawner.spawn();
     }

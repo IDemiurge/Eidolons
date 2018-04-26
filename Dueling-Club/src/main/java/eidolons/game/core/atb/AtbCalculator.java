@@ -15,10 +15,11 @@ import java.util.List;
  * Created by JustMe on 3/26/2018.
  */
 public class AtbCalculator {
+    private static AtbCalculator instance;
     AtbController controller;
     private AtbController clone;
 
-    public AtbCalculator(AtbController controller) {
+    private AtbCalculator(AtbController controller) {
         this.controller = controller;
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
             if ( ExplorationMaster.isExplorationOn())
@@ -54,6 +55,10 @@ public class AtbCalculator {
         return new FauxAtbController(controller, this);
     }
 
+    public static AtbCalculator getInstance() {
+        return instance;
+    }
+
     public Array<AtbUnit> cloneUnits(AtbController original) {
         Array<AtbUnit> atbUnitStack = new Array<>();
         for (AtbUnit sub : controller.getUnits()) {
@@ -63,6 +68,16 @@ public class AtbCalculator {
             atbUnitStack.add(clone);
         }
         return atbUnitStack;
+    }
+
+    public static void init(AtbController atbController) {
+        if (instance == null)
+            instance = new AtbCalculator(atbController);
+        else instance.setController(atbController);
+    }
+
+    public void setController(AtbController controller) {
+        this.controller = controller;
     }
 
     public class AtbPrecalcUnit extends AtbUnitImpl {

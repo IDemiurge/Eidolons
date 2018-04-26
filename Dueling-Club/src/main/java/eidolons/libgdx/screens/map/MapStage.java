@@ -54,9 +54,6 @@ public class MapStage extends Stage {
             addActor(moveLayerMaster);
         }
         GuiEventManager.bind(MapEvent.TIME_CHANGED, param -> {
-            for (MapTimedLayer sub : layers) {
-                sub.update();
-            }
             DAY_TIME time = (DAY_TIME) param.get();
             String path = getBackgroundPath(time);
             updateBackground(path, false);

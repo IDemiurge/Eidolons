@@ -1,7 +1,7 @@
 package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.utils.Pool;
-import main.content.CONTENT_CONSTS2.SFX;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -22,7 +22,7 @@ public class EmitterPools {
     private static boolean effectPoolingOn = true;
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
 
-    public static EmitterActor getEmitterActor(SFX sfx) {
+    public static EmitterActor getEmitterActor(EMITTER_PRESET sfx) {
         return getEmitterActor(sfx.path);
     }
 
@@ -97,8 +97,8 @@ public class EmitterPools {
 
             Chronos.mark("emitter " + path);
             EmitterActor emitter = null;
-            SFX sfx = new EnumMaster<SFX>().
-             retrieveEnumConst(SFX.class, path);
+            EMITTER_PRESET sfx = new EnumMaster<EMITTER_PRESET>().
+             retrieveEnumConst(EMITTER_PRESET.class, path);
             if (sfx == null) {
                 emitter = EmitterPools.getEmitterActor(path);
             } else {

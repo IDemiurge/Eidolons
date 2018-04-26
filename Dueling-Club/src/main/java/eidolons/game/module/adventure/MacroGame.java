@@ -25,8 +25,6 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.Game;
-import main.system.GuiEventManager;
-import main.system.MapEvent;
 import main.system.auxiliary.SearchMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -223,10 +221,7 @@ public class MacroGame extends Game {
         this.time = time;
     }
 
-    public void prepareSetTime(DAY_TIME time) {
-        GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED, time);
-        setTime(time);
-    }
+
 
     public MapPointMaster getPointMaster() {
         return pointMaster;

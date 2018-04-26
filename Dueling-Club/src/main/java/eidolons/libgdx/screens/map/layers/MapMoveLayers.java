@@ -9,7 +9,7 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.screens.map.MapScreen;
-import main.content.CONTENT_CONSTS2.SFX;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
@@ -41,10 +41,10 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 //        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
 //         DAY_TIME.MIDDAY, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
 //        };
-        CLOUD_HEAVY.setEmitterPaths(SFX.SNOW_TIGHT2.path);
-        CLOUD_LARGE.setEmitterPaths(SFX.SNOW.path);
-        CLOUD_LIGHT.setEmitterPaths(SFX.SNOW.path);
-        CLOUD.setEmitterPaths(SFX.SNOW_TIGHT2.path);
+        CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.path);
+        CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.path);
+        CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.path);
+        CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.path);
 
 
         LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;

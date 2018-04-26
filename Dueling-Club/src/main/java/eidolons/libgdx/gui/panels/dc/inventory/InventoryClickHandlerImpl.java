@@ -163,9 +163,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         }
         dataMaster.undo();
 
-        Integer op = sim.getGame().getInventoryManager().getOperationsLeft();
+        Integer op = manager.getOperationsLeft();
         op--;
-        if (op == sim.getGame().getInventoryManager().getOperationsPool()) {
+        if (op == manager.getOperationsPool()) {
             dirty = false;
         }
         refreshPanel();

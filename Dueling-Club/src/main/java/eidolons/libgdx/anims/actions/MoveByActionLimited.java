@@ -1,7 +1,9 @@
 package eidolons.libgdx.anims.actions;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import eidolons.libgdx.bf.grid.GridCellContainer;
 
 /**
  * Created by JustMe on 9/10/2017.
@@ -37,10 +39,13 @@ public class MoveByActionLimited extends MoveByAction {
 
     private void applyLeftover() {
         if (target.getX() == 0) if (target.getY() == 0) return;
+        Actor actor=target;
+        if (target.getParent() instanceof GridCellContainer)
+            actor = target.getParent();
         float x = startPointX + getAmountX() - target.getX();
         float y = startPointY + getAmountY() - target.getY();
         if (x != 0 || y != 0) {
-//            target.moveBy(x, y);
+            target.moveBy(x, y);
         }
     }
 

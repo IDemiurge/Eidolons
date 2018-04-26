@@ -11,6 +11,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -167,7 +168,14 @@ public class FloatingTextMaster {
 
 
                 case COSTS_HAVE_BEEN_PAID:
-                    return TEXT_CASES.COSTS;
+                    if (ExplorationMaster.isExplorationOn())
+                        if (e.getRef().getActive() !=null ){
+                            if (e.getRef().getActive().isMove())
+                                return null ;
+                            if (e.getRef().getActive().isTurn())
+                                return null ;
+                        }
+                        return TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
                     return TEXT_CASES.ATTACK_CRITICAL;
                 case ATTACK_DODGED:

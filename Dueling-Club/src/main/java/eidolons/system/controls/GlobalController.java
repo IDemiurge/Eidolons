@@ -11,6 +11,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.BattleGuiStage;
+import eidolons.libgdx.stage.Blocking;
 import eidolons.system.options.OptionsMaster;
 import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.system.GuiEventManager;
@@ -41,6 +42,13 @@ public class GlobalController implements Controller {
             case Keys.ESCAPE:
                 escape();
                 break;
+            case ' ':
+                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
+                 instanceof Blocking)
+                    return;
+                Eidolons.game.getLoop().togglePaused();
+                break;
+//                GuiEventManager.trigger(GuiEventType.GAME_PAUSE_TOGGLE);
             case Keys.TAB:
                 try {
                     tab();

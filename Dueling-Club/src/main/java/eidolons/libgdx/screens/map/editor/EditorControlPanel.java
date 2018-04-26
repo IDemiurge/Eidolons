@@ -14,6 +14,8 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.system.GuiEventManager;
+import main.system.MapEvent;
 import main.system.auxiliary.EnumMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -75,7 +77,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 //data into World/Campaign type?
                 break;
             case ALL_TIMES:
-                MacroGame.getGame().prepareSetTime(null);
+                GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED,null );
                 break;
             case NEXT_TIME:
                 int i = EnumMaster.getEnumConstIndex(DAY_TIME.class, MacroGame.getGame().getTime());
@@ -83,7 +85,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 if (DAY_TIME.values().length <= i)
                     i = 0;
                 DAY_TIME time = DAY_TIME.values()[i];
-                MacroGame.getGame().prepareSetTime(time);
+                GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED,time);
                 break;
             case UNDO:
                 EditorManager.undo();

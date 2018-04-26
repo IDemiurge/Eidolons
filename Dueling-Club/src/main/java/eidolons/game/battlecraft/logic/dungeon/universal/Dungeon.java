@@ -11,6 +11,7 @@ import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
+import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
@@ -34,6 +35,7 @@ public class Dungeon extends LightweightEntity {
     private DUNGEON_TYPE dungeonType;
     private DUNGEON_TEMPLATES template;
     private String levelFilePath;
+    private SUBDUNGEON_TYPE dungeonSubtype;
 
     /*
      * Encounters Levels Rewards Loot
@@ -99,6 +101,13 @@ public class Dungeon extends LightweightEntity {
         return dungeonType;
     }
 
+    public SUBDUNGEON_TYPE getDungeonSubtype() {
+        if (dungeonSubtype == null) {
+            dungeonSubtype = new EnumMaster<SUBDUNGEON_TYPE>().retrieveEnumConst(SUBDUNGEON_TYPE.class,
+             getProperty(PROPS.SUBDUNGEON_TYPE));
+        }
+        return dungeonSubtype;
+    }
     public boolean isBoss() {
         return getDungeonType() == DungeonEnums.DUNGEON_TYPE.BOSS;
     }

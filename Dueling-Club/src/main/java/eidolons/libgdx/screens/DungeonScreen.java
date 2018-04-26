@@ -28,6 +28,7 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.ChainedStage;
+import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.audio.DC_SoundMaster;
@@ -57,7 +58,7 @@ public class DungeonScreen extends GameScreen {
 
 
     protected ParticleManager particleManager;
-    protected Stage gridStage;
+    protected StageX gridStage;
     protected GridPanel gridPanel;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
@@ -81,7 +82,7 @@ public class DungeonScreen extends GameScreen {
         instance = this;
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GUI_READY);
         super.preLoad();
-        gridStage = new Stage(viewPort, getBatch());
+        gridStage = new StageX(viewPort, getBatch());
 
         guiStage = new BattleGuiStage(null, getBatch());
 
@@ -169,7 +170,7 @@ public class DungeonScreen extends GameScreen {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         gridStage.addActor(gridPanel);
-        gridStage.addActor(particleManager.getEmitterMap());
+        gridStage.addActor(particleManager);
         try {
             controller.setDefaultPos();
         } catch (Exception e) {

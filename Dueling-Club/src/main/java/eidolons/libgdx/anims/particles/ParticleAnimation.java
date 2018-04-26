@@ -1,14 +1,14 @@
 package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import main.content.CONTENT_CONSTS2.SFX;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 
 /**
  * Created by JustMe on 1/8/2017.
  */
 public class ParticleAnimation implements ParticleInterface {
     @Override
-    public SFX getTemplate() {
+    public EMITTER_PRESET getTemplate() {
         return null;
     }
 

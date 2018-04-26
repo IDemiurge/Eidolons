@@ -382,8 +382,9 @@ public class CONTENT_CONSTS2 {
         PATROL, PURSUIT, MOVE, ATTACK, KILL, SPECIAL, HEAL, SUPPORT, PROTECT, HOLD, WANDER
     }
 
-    public enum SFX {
+    public enum EMITTER_PRESET {
         DARK_MIST("mist\\dark mist"),
+        DARK_MIST_LITE("mist\\dark mist2 light"),
         SMOKE_TEST("Smoke_Test1.pt"),
         DARK_SOULS("dark souls"),
         DARK_SOULS2("dark souls2"),
@@ -402,10 +403,13 @@ public class CONTENT_CONSTS2 {
         SNOWFALL_THICK("snow\\snowfall thick"),
         WISPS("woods\\wisps"),
         LEAVES("woods\\leaves"),
-        STARS("woods\\stars"),;
+        STARS("woods\\stars"),
+
+        MIST_WHITE("mist\\conceal west wind3"),
+        MIST_BLACK("black mist\\clouds wind light2");
         public String path;
 
-        SFX(String path) {
+        EMITTER_PRESET(String path) {
             this.path = path;
         }
 

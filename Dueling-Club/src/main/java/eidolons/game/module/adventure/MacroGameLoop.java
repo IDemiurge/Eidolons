@@ -32,7 +32,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public MacroGameLoop(MacroGame game) {
         super();
         this.game = game;
-        timeMaster = new MacroTimeMaster();
+        timeMaster =MacroTimeMaster.getInstance();
     }
 
     @Override

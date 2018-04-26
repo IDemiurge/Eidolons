@@ -20,7 +20,6 @@ public class LastSeenView extends  GenericGridView{
         super(o);
         greyedOut = true;
         setParentView(view);
-        debug();
     }
 
     @Override

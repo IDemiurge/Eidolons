@@ -26,7 +26,7 @@ public class GuiEventManagerOld {
     private Lock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
 
-    private Map<EventType, OnDemandCallback> onDemand = new ConcurrentHashMap<>();
+    private Map<EventType, EventCallbackParam> onDemand = new ConcurrentHashMap<>();
 
     public static void cleanUp() {
         getInstance()._cleanUp();
@@ -103,17 +103,6 @@ public class GuiEventManagerOld {
 
     public void bind_(EventType type, final EventCallback event) {
         if (event != null) {
-            if (onDemand.containsKey(type)) {
-                lock.lock();
-                OnDemandCallback r = onDemand.remove(type);
-                try {
-                    eventQueue.add(() -> r.call(event));
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                } finally {
-                    lock.unlock();
-                }
-            }
             if (eventMap.containsKey(type)) {
                 final EventCallback old = eventMap.remove(type);
                 eventMap.put(type, (obj) -> {
@@ -122,6 +111,23 @@ public class GuiEventManagerOld {
                 });
             } else {
                 eventMap.put(type, event);
+            }
+            if (onDemand.containsKey(type)) {
+                EventCallbackParam r = onDemand.remove(type);
+                eventQueue.add(() -> event.call(r));
+                main.system.auxiliary.log.LogMaster.log(1,
+                 "onDemand triggered for " + type);
+//                r.call(null);
+
+//                lock.lock();
+//                EventCallback r = onDemand.remove(type);
+//                try {
+//                    eventQueue.add(() -> r.call(event));
+//                } catch (Exception e) {
+//                    main.system.ExceptionMaster.printStackTrace(e);
+//                } finally {
+//                    lock.unlock();
+//                }
             }
         } else {
             if (eventMap.containsKey(type)) {
@@ -143,9 +149,9 @@ public class GuiEventManagerOld {
 
             }
         } else {
-            if (obj instanceof OnDemandCallback) {
-                onDemand.put(type, (callback) -> callback.call(obj));
-            }
+//            if (obj instanceof OnDemandCallback) {
+            onDemand.put(type, obj);
+//            }
         }
     }
 

@@ -74,6 +74,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public void gameStarted() {
+        if (Eidolons.getMainHero()!=null )
+            return;
         Unit hero = getGame().getMaster().getUnitByName(
          PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
          null);

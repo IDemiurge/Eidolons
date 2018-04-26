@@ -125,6 +125,12 @@ public class GuiStage extends StageX implements StageWithClosable {
         return true;
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        resetZIndices();
+    }
+
     public Closable getDisplayedClosable() {
         return displayedClosable;
     }
@@ -156,17 +162,13 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         GuiEventManager.bind(GuiEventType.SHOW_HQ_SCREEN, p -> {
             if (p.get() == null) {
-                ActorMaster.addFadeOutAction(hqPanel, 0.3f );
-                ActorMaster.addHideAfter(hqPanel );
-                HqPanel.setActiveInstance(null );
+                hqPanel.close();
                 return;
             }
 
             hqPanel.setEditable(ExplorationMaster.isExplorationOn());
-            hqPanel.setVisible(true);
-            ActorMaster.addFadeInAction(hqPanel, 0.3f  );
+            hqPanel.open();
             hqPanel.setUserObject(p.get());
-            HqPanel.setActiveInstance(hqPanel);
         });
     }
 

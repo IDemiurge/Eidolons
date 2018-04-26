@@ -55,6 +55,7 @@ public class TimeMaster {
         if (date == null) {
             date = new GameDate();
             date.setHour(1);
+            if (MacroGame.getGame() != null) {
             date.setEra(MacroGame.getGame().getCampaign()
              .getIntParam(MACRO_PARAMS.ERA));
             date.setYear(MacroGame.getGame().getCampaign()
@@ -63,6 +64,7 @@ public class TimeMaster {
              .getIntParam(MACRO_PARAMS.MONTH));
             date.setDay(MacroGame.getGame().getCampaign()
              .getIntParam(MACRO_PARAMS.DAY));
+            }
             date.setDayTime(DAY_TIME.values[0]);
         }
         return date;

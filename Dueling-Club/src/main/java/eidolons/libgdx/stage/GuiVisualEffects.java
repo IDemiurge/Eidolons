@@ -9,7 +9,7 @@ import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.CONTENT_CONSTS2.SFX;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.launch.CoreEngine;
 
 /**
@@ -43,6 +43,7 @@ public class GuiVisualEffects extends GroupX {
             addActor(vignette);
             vignette.setTouchable(Touchable.disabled);
         }
+        addActor(lightLayer = new LightLayer(true));
     }
 
     @Override
@@ -51,7 +52,7 @@ public class GuiVisualEffects extends GroupX {
     }
 
     private void initEmitters() {
-        EmitterActor wisps = new EmitterActor(SFX.WISPS);
+        EmitterActor wisps = new EmitterActor(EMITTER_PRESET.WISPS);
 
     }
 

@@ -10,10 +10,8 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
-import main.content.CONTENT_CONSTS2.SFX;
 import main.game.bf.Coordinates;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedHashMap;
@@ -30,25 +28,27 @@ public class EmitterMap extends Group {
     private static float MIN_DISTANCE_BETWEEN_FOG = 2;
     private static int xDistanceFog = 3;
     private static int yDistanceFog = 2;
+
     private static Boolean on;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
         protected Ambience newObject() {
-            return new Ambience(getFogSfx());
+            return new Ambience(presetPath);
         }
     };
-    Map<Coordinates, Ambience> fogMap = new LinkedHashMap<>();
+    private   AmbienceDataSource dataSource;
+    Map<Coordinates, Ambience> map = new LinkedHashMap<>();
     private Color color;
+    private boolean hideAroundPC=HIDE_SMOKE_AROUND_MAIN_HERO;
+    private float minDistance=MIN_DISTANCE_BETWEEN_FOG;
+    private float distanceX=xDistanceFog;
+    private float distanceY=yDistanceFog;
+    String presetPath;
+    private float timer;
 
-    public EmitterMap() {
-        GuiEventManager.bind(GuiEventType.UPDATE_AMBIENCE, p -> {
-            try {
-                update();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-
-        });
+    public EmitterMap(String presetPath, AmbienceDataSource dataSource) {
+        this.presetPath = presetPath;
+        this.dataSource = dataSource;
         if (Eidolons.game instanceof DC_Game) {
             COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
             if (colorTheme != null)
@@ -64,19 +64,19 @@ public class EmitterMap extends Group {
         EmitterMap.on = on;
     }
 
-    private SFX getFogSfx() {
-        return SFX.SMOKE_TEST;
-    }
+
 
 //    public boolean contains(ParticleInterface actor) {
 //        return emitters.contains(actor);
 //    }
 
-    public void initFog() {
-        for (int x = 0; x + xDistanceFog <= DungeonScreen.getInstance().getGridPanel().getRows(); x += xDistanceFog)
-            for (int y = 0; y + yDistanceFog <= DungeonScreen.getInstance().getGridPanel().getCols(); y += yDistanceFog) {
+    public void init() {
+        for (int x = 0; x + getDistanceX() <=
+         DungeonScreen.getInstance().getGridPanel().getRows(); x += getDistanceX())
+            for (int y = 0; y + getDistanceY() <=
+             DungeonScreen.getInstance().getGridPanel().getCols(); y += getDistanceY()) {
 
-                addSmoke(new Coordinates(x, y));
+                add(new Coordinates(x, y));
 
             }
 
@@ -89,21 +89,26 @@ public class EmitterMap extends Group {
         if (DC_Game.game.getPlayer(true).getHeroObj() == null) {
             return;
         }
-        if (fogMap.isEmpty())
-            initFog();
-        for (Coordinates c1 : fogMap.keySet()) {
+        if (map.isEmpty())
+            init();
+        for (Coordinates c1 : map.keySet()) {
+            if (!RandomWizard.chance(dataSource.getShowChance())){
+                hide(c1);
+                continue;
+            }
             Coordinates mainHeroCoordinates =
-             DC_Game.game.getPlayer(true).getHeroObj().getCoordinates();
-            if (HIDE_SMOKE_AROUND_MAIN_HERO &&
+             Eidolons.getMainHero().getCoordinates();
+            if (isHideAroundPC() &&
              PositionMaster.getDistance(c1, mainHeroCoordinates)
-              < MIN_DISTANCE_BETWEEN_FOG) {
-                hideSmoke(c1);
-            } else addSmoke(c1);
+              < getMinDistance()) {
+                hide(c1);
+            } else
+                show(c1);
         }
     }
 
-    private void removeSmoke(Coordinates c) {
-        Ambience fog = fogMap.remove(c);
+    private void remove (Coordinates c) {
+        Ambience fog = map.remove(c);
         if (fog == null) {
             return;
         }
@@ -112,36 +117,60 @@ public class EmitterMap extends Group {
         ambiencePool.free(fog);
     }
 
-    private void hideSmoke(Coordinates c) {
-        Ambience fog = fogMap.get(c);
-        if (fog == null) {
-            return;
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        timer+=delta;
+        if (timer>=getUpdatePeriod()){
+            timer = 0;
+            update();
         }
-        fog.remove();
-
-        fog.setVisible(false);
-        ambiencePool.free(fog);
     }
 
-    private void addSmoke(Coordinates c) {
-        if (fogMap.containsKey(c)) {
+    private float getUpdatePeriod() {
+        return 10;
+    }
+
+    private void show(Coordinates c) {
+        Ambience ambience = map.get(c);
+        if (ambience == null) {
+            return;
+         }
+         addActor(ambience);
+        ambience.reset();
+//        ActorMaster.addFadeInAction(ambience, 0.5f );
+    }
+        private void hide(Coordinates c) {
+        Ambience ambience = map.get(c);
+        if (ambience == null) {
+            return;
+        }
+//        ambience.remove();
+//        ambience.setVisible(false);
+        ambience.clearActions();
+//        ActorMaster.addFadeOutAction(ambience, 0.5f, true);
+        ambience.hide();
+    }
+
+    private void add(Coordinates c) {
+        if (map.containsKey(c)) {
             return;
         }
 
         Vector2 v = GridMaster.
          getCenteredPos(c);
-        Ambience fog = ambiencePool.obtain();
+        Ambience ambience = ambiencePool.obtain();
         if (color != null)
-            fog.setColor(color);
-        fog.setTarget(c);
-        fogMap.put(c, fog);
-        fog.setPosition(v.x, v.y);
-        fog.added();
-        if (!getChildren().contains(fog, true))
-            addActor(fog);
+            ambience.setColor(color);
+        ambience.setTarget(c);
+        map.put(c, ambience);
+        ambience.setPosition(v.x, v.y);
+        ambience.added();
+        if (!getChildren().contains(ambience, true))
+            addActor(ambience);
         //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
-        fog.setVisible(true);
-        fog.getEffect().start();
+        ambience.setVisible(true);
+        ambience.getEffect().start();
     }
 
 
@@ -149,4 +178,19 @@ public class EmitterMap extends Group {
         return ParticleManager.isAmbienceOn();
     }
 
+    public boolean isHideAroundPC() {
+        return hideAroundPC;
+    }
+
+    public float getDistanceX() {
+        return distanceX;
+    }
+
+    public float getDistanceY() {
+        return distanceY;
+    }
+
+    public float getMinDistance() {
+        return minDistance;
+    }
 }

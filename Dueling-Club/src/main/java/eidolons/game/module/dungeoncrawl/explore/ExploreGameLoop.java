@@ -7,6 +7,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.adventure.MacroTimeMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
@@ -31,6 +32,7 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
     private static Thread realTimeThread;
+    private  MacroTimeMaster macroTimeMaster;
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
     private ExplorationMaster master;
@@ -38,7 +40,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     public ExploreGameLoop(DC_Game game) {
         super(game);
         master = game.getDungeonMaster().getExplorationMaster();
-
+        macroTimeMaster = MacroTimeMaster.getInstance();
     }
 
     public ExploreGameLoop() {
@@ -72,6 +74,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             try {
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().
                  getTimeMaster().checkTimedEvents();
+
+                MacroTimeMaster.getInstance().timedCheck();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -356,6 +360,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         if (isPaused())
             return;
         master.getTimeMaster().timePassed(delta);
+//        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
+        macroTimeMaster.act(delta*5);
     }
 
     public Float getTime() {

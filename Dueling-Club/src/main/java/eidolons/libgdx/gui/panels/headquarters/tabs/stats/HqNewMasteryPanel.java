@@ -12,8 +12,6 @@ import eidolons.libgdx.gui.panels.headquarters.HqActor;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
-import eidolons.libgdx.stage.Closable;
-import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.system.math.DC_MathManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
@@ -28,22 +26,22 @@ import java.util.List;
  */
 public class HqNewMasteryPanel extends ValueTable<PARAMETER,
  GroupX>
- implements HqActor, Closable {
+ implements HqActor  {
     private final TextButtonX cancelButton;
 
     public HqNewMasteryPanel() {
         super(4, DC_ContentValsManager.getMasteries().size());
         setVisible(false);
         cancelButton = new TextButtonX(STD_BUTTON.CANCEL, ()->{
-            close();
+            fadeOut();
         });
         initDefaultBackground();
         GuiEventManager.bind(GuiEventType.SHOW_MASTERY_LEARN, p -> {
             if (p.get() == null) {
-                close();
+                fadeOut();
                 return;
             }
-            open();
+            fadeIn();
             setUserObject(p.get());
         });
     }
@@ -51,18 +49,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     protected Vector2 getElementSize() {
         return new Vector2(40, 40);
     }
-    @Override
-    public void open() {
-        ((StageWithClosable) getStage()).closeDisplayed();
-        ((StageWithClosable)   getStage()) .setDisplayedClosable(this);
-//        fadeIn();
-        setVisible(true);
-    }
 
-    public void close() {
-//        fadeOut();
-        setVisible(false);
-    }
 
     @Override
     public void init() {
@@ -95,7 +82,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
             protected void onTouchDown(InputEvent event, float x, float y) {
                 if (HqStatMaster.learnMastery(getUserObject().getEntity(), datum)) {
                     modelChanged();
-                    close();
+                    fadeOut();
                 }
             }
         };

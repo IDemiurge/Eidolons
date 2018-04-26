@@ -30,7 +30,8 @@ public class AtbController implements Comparator<Unit> {
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
         unitsInAtb = new Array<>();
-        new AtbCalculator(this);
+        AtbCalculator.init(this);
+
     }
 
     public AtbController(AtbController original, AtbCalculator calculator) {

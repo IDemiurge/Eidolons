@@ -53,7 +53,7 @@ public class HqSpellMaster {
 
     public static boolean canMemorize(DC_SpellObj spell) {
 
-        if (spell.getOwnerObj().calculateRemainingMemory() >= spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
+        if (spell.getOwnerObj().calculateRemainingMemory() < spell.getIntParam(PARAMS.SPELL_DIFFICULTY))
             return false;
         if (spell.isUpgrade()) {
             if (LibraryManager.hasSpellVersion(spell.getOwnerObj(), spell, PROPS.MEMORIZED_SPELLS)) {

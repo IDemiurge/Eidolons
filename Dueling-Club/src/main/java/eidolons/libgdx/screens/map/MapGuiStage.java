@@ -94,6 +94,7 @@ public class MapGuiStage extends GuiStage {
         resetZIndices();
     }
 
+
     public void resetZIndices() {
         if (CoreEngine.isMapEditor())
             return;
@@ -165,7 +166,6 @@ public class MapGuiStage extends GuiStage {
             );
             dirty = false;
         }
-        resetZIndices();
 //        Coordinates c = mainPartyMarker.getParty().getCoordinates();
 //        Vector3 pos = MapScreen.getInstance().getCamera().position;
 //if (        MapScreen.getInstance().getController().isWithinCamera(c.x, c.y, 128, 128))

@@ -3,7 +3,7 @@ package eidolons.libgdx.anims.particles;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.screens.DungeonScreen;
-import main.content.CONTENT_CONSTS2.SFX;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.auxiliary.RandomWizard;
 
 /**
@@ -17,7 +17,11 @@ public class Ambience extends EmitterActor {
     Vector2 acceleration;
     Vector2 originPos;
 
-    public Ambience(SFX fx) {
+    public Ambience(String path) {
+        super(path);
+    }
+
+    public Ambience(EMITTER_PRESET fx) {
         super(fx);
     }
 
@@ -31,9 +35,6 @@ public class Ambience extends EmitterActor {
             return;
         if (!isVisible())
             return;
-        if (!ParticleManager.isAmbienceMoveOn()) {
-            return;
-        }
         if (isCullingOn())
             if (DungeonScreen.getInstance().controller != null)
                 if (!DungeonScreen.getInstance().controller.
@@ -42,6 +43,9 @@ public class Ambience extends EmitterActor {
                 }
 
         super.act(delta);
+        if (!ParticleManager.isAmbienceMoveOn()) {
+            return;
+        }
         float angle = acceleration.angle();
         float dst = originPos.dst(new Vector2(getX(), getY()));
         if (dst > moveRadius) {
@@ -68,8 +72,6 @@ public class Ambience extends EmitterActor {
 
     @Override
     public float getHeight() {
-        switch (sfx) {
-        }
         return 400;
     }
 

@@ -22,6 +22,16 @@ public class StageX extends Stage {
         super(viewport, batch);
     }
 
+    @Override
+    public void setDebugAll(boolean debugAll) {
+        super.setDebugAll(debugAll);
+        setDebugInvisible(debugAll);
+        setDebugParentUnderMouse(debugAll);
+        setDebugTableUnderMouse(debugAll);
+        setDebugParentUnderMouse(debugAll);
+        setDebugUnderMouse(debugAll);
+    }
+
     public Actor getMouseOverActor() {
         return new ReflectionMaster<Actor>().getFieldValue("mouseOverActor", this, Stage.class);
     }

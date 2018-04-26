@@ -33,6 +33,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
     Map<LIGHT_LAYER, Float> triggerMap = new HashMap<>();
 
     public LightLayer(boolean uiStage) {
+        super();
         this.uiStage = uiStage;
     }
 

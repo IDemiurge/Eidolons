@@ -24,8 +24,8 @@ import main.system.launch.CoreEngine;
  */
 public class MacroTimeMaster {
     private static final int DEFAULT_DAY_TIME = 0;
-//public static final float
-
+    //public static final float
+    private static MacroTimeMaster instance;
     int period = 24 / DAY_TIME.values().length;
     private float speed = 1;
     private float time = 0;
@@ -44,11 +44,19 @@ public class MacroTimeMaster {
     private DIRECTION windDirection;
     private float timer;
 
-    public MacroTimeMaster() {
+    private MacroTimeMaster() {
         defaultSpeed = new Float(OptionsMaster.getGameplayOptions().
          getIntValue(GAMEPLAY_OPTION.GAME_SPEED)) / 100;
         setSpeed(defaultSpeed);
     }
+
+    public static MacroTimeMaster getInstance() {
+        if (instance == null) {
+            instance = new MacroTimeMaster();
+        }
+        return instance;
+    }
+
 
     private void processTimedEffects() {
         processParameters();
@@ -103,6 +111,7 @@ public class MacroTimeMaster {
         //recalc from start? or accrue?
     }
 
+
     public void nextPeriod() {
         hoursPassed(4);
 
@@ -110,8 +119,7 @@ public class MacroTimeMaster {
 
     public void newMonth() {
         date.nextMonth();
-        MacroGame.getGame().prepareSetTime(DAY_TIME.DAWN);
-//        GuiEventManager.trigger(MapEvent.DATE_CHANGED, date);
+        GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED,DAY_TIME. DAWN);
     }
 
     private void newDayTime(int newPeriod) {
@@ -123,8 +131,8 @@ public class MacroTimeMaster {
             if (RandomWizard.random())
                 windDirection = DIRECTION.UP_RIGHT;
 
-        MacroGame.getGame().prepareSetTime(dayTime);
         getDate().setDayTime(dayTime);
+        GuiEventManager.trigger(MapEvent.PREPARE_TIME_CHANGED, dayTime);
         GuiEventManager.trigger(GuiEventType.LOG_ENTRY_ADDED, dayTime.getLogEntry());
     }
 
@@ -185,7 +193,8 @@ public class MacroTimeMaster {
     }
 
     private void processMapObjects() {
-
+        if (MacroGame.getGame() == null)
+            return;
         Coordinates c = MacroGame.getGame().getPlayerParty().getCoordinates();
         for (Place place : MacroGame.getGame().getState().getPlaces()) {
             MAP_OBJ_INFO_LEVEL infoLevel = MAP_OBJ_INFO_LEVEL.UNKNOWN;
@@ -270,5 +279,9 @@ public class MacroTimeMaster {
         if (CoreEngine.isFastMode())
             return 100f;
         return 10f;
+    }
+
+    public DAY_TIME getDayTime() {
+        return dayTime;
     }
 }

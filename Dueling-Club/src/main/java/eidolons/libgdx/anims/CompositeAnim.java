@@ -75,16 +75,8 @@ public class CompositeAnim implements Animation {
         }
         return false;
     }
-
+List<Anim> parallelAnims;
     public boolean draw(Batch batch) {
-//        if (currentAnim != null)
-//            try{ //TODO attached phaseAnims?
-//            DC_Game.game.getAnimationManager().getAnimations().forEach(a -> {
-//                PhaseAnim phaseAnim= a.getPhaseAnim();
-////                main.system.auxiliary.LogMaster.log(1,"drawing " +a + " at " + currentAnim.getPosition());
-//                phaseAnim.setPosition(currentAnim.getX(),currentAnim.getY() );
-//                phaseAnim.draw(batch, 1f);
-//            });        }catch(Exception e){                main.system.ExceptionMaster.printStackTrace(e);            }
         time += Gdx.graphics.getDeltaTime();
         boolean result = false;
         if (currentAnim != null) {
@@ -94,6 +86,7 @@ public class CompositeAnim implements Animation {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
+
         checkTimeAttachedAnims();
         if (!result) {
             time = 0;
@@ -113,6 +106,14 @@ public class CompositeAnim implements Animation {
             triggerStartEvents();
         }
         drawAttached(batch);
+
+//     TODO    if (parallelAnims.isEmpty()){
+//            for (Anim sub : new ArrayList<>(parallelAnims)) {
+//                if (!sub.draw(batch)) {
+//                    parallelAnims.remove(sub);
+//                }
+//            }
+//        }
         return true;
     }
 

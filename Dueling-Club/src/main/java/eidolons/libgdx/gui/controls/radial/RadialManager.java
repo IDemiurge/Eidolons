@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.entity.active.*;
 import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
@@ -16,14 +17,15 @@ import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActionCostSourceImpl;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
+import main.content.values.properties.G_PROPS;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
@@ -31,6 +33,7 @@ import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
@@ -47,9 +50,16 @@ public class RadialManager {
     protected static boolean processingShortcuts;
 
     public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
-//        Ref ref = obj.getOwnerObj().getRef().getTargetingRef(target);
-//        return !obj.canBeActivated(ref) ?
-//         getOrCreateGrayscaleR(obj.getImagePath()):
+        if (obj.isAttackAny()) {
+            DC_WeaponObj weapon = obj.getActiveWeapon();
+            String path = StrPathBuilder.build("main", "action", "attack",
+             weapon.getProperty(G_PROPS.WEAPON_GROUP),
+             weapon.getProperty(G_PROPS.BASE_TYPE),
+             obj.getName() + ".png");
+            return
+             TextureCache.getOrCreateR(path);
+        }
+
         return getOrCreateRoundedRegion(obj.getImagePath());
     }
 

@@ -112,12 +112,28 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
-
-
         if (currentFrame == null) {
             dispose();
             return false;
         }
+        float alpha = this.alpha;
+        drawTextureRegion(batch, currentFrame, alpha);
+//        for (int i = 1; i < getFrameNumber()-1; i++) {
+//
+//            TextureRegion frame = getOffsetFrame(stateTime, -i);
+//            if (frame==null ) {
+//                return true;
+//            }
+//            alpha =i/ getKeyFrames().length;
+//            if (alpha>0)
+//            drawTextureRegion(batch, currentFrame, alpha);
+//            else return true;
+//        }
+
+        return true;
+    }
+
+    private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha) {
 
         if (getLifecycleDuration() != 0) {
             checkReverse();
@@ -144,7 +160,6 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         if (color != null)
             sprite.setColor(color);
         sprite.draw(batch);
-        return true;
     }
 
 
@@ -237,15 +252,36 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         return getOffset(texture, 1);
     }
 
+    public TextureRegion getOffsetFrame(
+     float time, int offset) {
+        int index = getKeyFrameIndex(time);
+        index += offset;
+
+        if (index < 0 || index > getKeyFrames().length) {
+            return null;
+        }
+        return getKeyFrames()[index];
+    }
+
+
     public TextureRegion getOffset(TextureRegion texture, int offset) {
+        return getOffset(texture, offset, false);
+    }
+
+    public TextureRegion getOffset(TextureRegion texture, int offset, boolean exceptLastFrame) {
         int index =
          Arrays.asList(getKeyFrames()).indexOf(texture);
         index += offset;
+
         while (index < 0) {
+            if (exceptLastFrame)
+                return null;
             index = getKeyFrames().length - offset;
             offset--;
         }
         while (index >= getKeyFrames().length) {
+            if (exceptLastFrame)
+                return null;
             index = offset;
             offset--;
         }

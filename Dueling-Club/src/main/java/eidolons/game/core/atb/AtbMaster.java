@@ -10,6 +10,9 @@ import main.entity.obj.BuffObj;
  */
 public class AtbMaster {
     public static float getReadinessCost(DC_ActiveObj action) {
+        if (action.isExtraAttackMode()) {
+           return  0;
+        }
         return (float) (
          action.getParamDouble(PARAMS.AP_COST)
           * AtbController.ATB_READINESS_PER_AP);
@@ -29,15 +32,14 @@ public class AtbMaster {
 
     public static double reduceReadiness(DC_ActiveObj action) {
         float initiativeCost = getReadinessCost(action);
-
+if (initiativeCost<=0)
+    return 0;
         action.getOwnerObj().modifyParameter(PARAMS.C_INITIATIVE,
-         initiativeCost + "", 0, false);
+         -initiativeCost + "", 0, false);
 
         ((AtbTurnManager) action.getGame().getTurnManager()).getAtbController().processAtbRelevantEvent();
 
-        if (action.isExtraAttackMode()) {
-            initiativeCost = 0;
-        }
+
         return initiativeCost;
     }
 }

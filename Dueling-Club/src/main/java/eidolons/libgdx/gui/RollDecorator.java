@@ -114,7 +114,7 @@ public class RollDecorator {
         @Override
         public void draw(Batch batch, float parentAlpha) {
             super.draw(batch, parentAlpha);
-            setDebug(false, true);
+//            setDebug(false, true);
         }
 
         private ImageContainer initArrow() {
