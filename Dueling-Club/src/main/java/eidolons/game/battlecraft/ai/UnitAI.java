@@ -54,7 +54,7 @@ public class UnitAI {
     private GroupAI groupAI;
     private ORDER_TYPE orderType;
     private boolean ordered;
-    private Boolean pathBlocked;
+    private boolean pathBlocked;
     private int logLevel = LOG_LEVEL_RESULTS;
     private Order currentOrder;
     private Map<GOAL_TYPE, Object> argMap;
@@ -406,11 +406,11 @@ public class UnitAI {
         return getGroupAI();
     }
 
-    public Boolean isPathBlocked() {
+    public boolean isPathBlocked() {
         return pathBlocked;
     }
 
-    public void setPathBlocked(Boolean pathBlocked) {
+    public void setPathBlocked(boolean pathBlocked) {
         this.pathBlocked = pathBlocked;
     }
 

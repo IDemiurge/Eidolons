@@ -138,13 +138,16 @@ public class ExplorationAiMaster extends ExplorationHandler {
     private void aiMoves(UnitAI ai) {
 
 
+        ActionSequence orders = ai.getStandingOrders();
         ActionInput input = new ActionInput(
-         ai.getStandingOrders().getCurrentAction().getActive(),
-         new Context(ai.getStandingOrders().getCurrentAction().getRef()));
+         orders.getCurrentAction().getActive(),
+         new Context(orders.getCurrentAction().getRef()));
         queueAiAction(input);
         ai.setExplorationTimeOfLastAction(master.getTimeMaster().getTime());
-        if (ai.getStandingOrders().getCurrentAction() == ai.getStandingOrders().getLastAction())
-            ai.setStandingOrders(null);
+        if (orders.getLastAction() != null)
+            if (orders.getCurrentAction().getActive() ==
+             orders.getLastAction().getActive())
+                ai.setStandingOrders(null);
 
     }
 

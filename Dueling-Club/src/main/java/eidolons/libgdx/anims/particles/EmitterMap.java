@@ -36,7 +36,7 @@ public class EmitterMap extends Group {
             return new Ambience(presetPath);
         }
     };
-    private   AmbienceDataSource dataSource;
+    private   int showChance;
     Map<Coordinates, Ambience> map = new LinkedHashMap<>();
     private Color color;
     private boolean hideAroundPC=HIDE_SMOKE_AROUND_MAIN_HERO;
@@ -46,9 +46,9 @@ public class EmitterMap extends Group {
     String presetPath;
     private float timer;
 
-    public EmitterMap(String presetPath, AmbienceDataSource dataSource) {
+    public EmitterMap(String presetPath,   int showChance) {
         this.presetPath = presetPath;
-        this.dataSource = dataSource;
+        this.showChance = showChance;
         if (Eidolons.game instanceof DC_Game) {
             COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
             if (colorTheme != null)
@@ -92,7 +92,7 @@ public class EmitterMap extends Group {
         if (map.isEmpty())
             init();
         for (Coordinates c1 : map.keySet()) {
-            if (!RandomWizard.chance(dataSource.getShowChance())){
+            if (!RandomWizard.chance(showChance )){
                 hide(c1);
                 continue;
             }
@@ -108,13 +108,13 @@ public class EmitterMap extends Group {
     }
 
     private void remove (Coordinates c) {
-        Ambience fog = map.remove(c);
-        if (fog == null) {
+        Ambience ambience = map.remove(c);
+        if (ambience == null) {
             return;
         }
-        fog.remove();
-        fog.setVisible(false);
-        ambiencePool.free(fog);
+        ambience.remove();
+        ambience.setVisible(false);
+        ambiencePool.free(ambience);
     }
 
     @Override
@@ -192,5 +192,9 @@ public class EmitterMap extends Group {
 
     public float getMinDistance() {
         return minDistance;
+    }
+
+    public void setShowChance(int showChance) {
+        this.showChance = showChance;
     }
 }

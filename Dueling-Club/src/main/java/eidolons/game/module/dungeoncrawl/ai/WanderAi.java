@@ -9,8 +9,6 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.sequence.ActionSequence;
 import eidolons.game.battlecraft.ai.elements.task.Task;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
-import eidolons.game.battlecraft.ai.tools.path.ActionPath;
-import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.BLOCK_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
@@ -82,21 +80,21 @@ public class WanderAi extends AiBehavior {
     }
 
     private static boolean checkUnitArrived(UnitAI ai, GOAL_TYPE type) {
-
-        GroupAI group = ai.getGroup();
-        Coordinates c = group.getOriginCoordinates();
-        int maxTotal = getMaxWanderTotalDistance(group, type);
-        Coordinates c2 = group.getWanderStepCoordinateStack().peek();
-        int maxStep = getMaxWanderStepDistance(group, type);
-        if (PositionMaster.getDistance(c, ai.getUnit().getCoordinates()) > maxTotal) {
-            return true;
-        }
-        if (c2 != null) {
-            if (PositionMaster.getDistance(c2, ai.getUnit().getCoordinates()) > maxStep) {
-                return true;
-            }
-        }
-        return false;
+        return ai.isPathBlocked();
+//        GroupAI group = ai.getGroup();
+//        Coordinates c = group.getOriginCoordinates();
+//        int maxTotal = getMaxWanderTotalDistance(group, type);
+//        Coordinates c2 = group.getWanderStepCoordinateStack().peek();
+//        int maxStep = getMaxWanderStepDistance(group, type);
+//        if (PositionMaster.getDistance(c, ai.getUnit().getCoordinates()) > maxTotal) {
+//            return true;
+//        }
+//        if (c2 != null) {
+//            if (PositionMaster.getDistance(c2, ai.getUnit().getCoordinates()) > maxStep) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     private static int getMaxWanderStepDistance(GroupAI group, GOAL_TYPE type) {
@@ -131,24 +129,25 @@ public class WanderAi extends AiBehavior {
     }
 
     private static boolean isProgressObstructed(DIRECTION direction,
-                                                   UnitAI ai, GOAL_TYPE type) {
+                                                UnitAI ai, GOAL_TYPE type) {
 //      TODO cache needed? if (ai.isPathBlocked()!=null )
 //           return ai.isPathBlocked();
         boolean blocked = checkProgressObstructed(direction, ai, type);
         ai.setPathBlocked(blocked);
         return blocked;
     }
-        private static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai, GOAL_TYPE type) {
-         Coordinates c =
+
+    private static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai, GOAL_TYPE type) {
+        Coordinates c =
          ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
-         if (c == null)
-         return true;
-         if (c.isInvalid())
-         return true;
-         // what's the point of such a preCheck? blocked() should be passed
-         return
+        if (c == null)
+            return true;
+        if (c.isInvalid())
+            return true;
+        // what's the point of such a preCheck? blocked() should be passed
+        return
          !ai.getUnit().getGame().getBattleFieldManager().canMoveOnto(ai.getUnit(),
-         c);
+          c);
 
     }
 
@@ -156,38 +155,40 @@ public class WanderAi extends AiBehavior {
 
         boolean change = false;
 
-        if (checkUnitArrived(group.getLeader().getUnitAI(), type)) {
-            change = true;
-        } else {
-            List<UnitAI> forwards = new ArrayList<>();
-            for (Unit unit : group.getMembers()) {
-                UnitAI ai = unit.getUnitAI();
-                boolean done = checkUnitArrived(ai, type);
-                if (!done) {
-                    done = isProgressObstructed(group.getWanderDirection(), ai, type);
-                }
-                if (done)
-                // if (PositionMaster.getDistance(c,
-                // m.getUnit().getCoordinates()) > max)
-                {
-                    forwards.add(ai);
-                    if (forwards.size() > Math.round(group.getMembers().size()
-                     * getCatchUpFactor(group, type))) {
+//        if (checkUnitArrived(group.getLeader().getUnitAI(), type)) {
+//            change = true;
+//        } else {
+        List<UnitAI> forwards = new ArrayList<>();
+        for (Unit unit : group.getMembers()) {
+            UnitAI ai = unit.getUnitAI();
+            boolean done = checkUnitArrived(ai, type);
+            if (!done) {
+                done = isProgressObstructed(group.getWanderDirection(), ai, type);
+            }
+            if (done)
+            // if (PositionMaster.getDistance(c,
+            // m.getUnit().getCoordinates()) > max)
+            {
+                forwards.add(ai);
+                if (
+                 group.getMembers().size() == 1 ||
+                  forwards.size() > Math.round(group.getMembers().size()
+                   * getCatchUpFactor(group, type))) {
 
-                        // if (group.isCatchUp())
-                        // change = null;
-                        // if units are too far
-                        // laggers.add(ai);
-                        // cannot be a lagger if obstructed?
-                        change = true;
-                        break;
-                    }
+                    // if (group.isCatchUp())
+                    // change = null;
+                    // if units are too far
+                    // laggers.add(ai);
+                    // cannot be a lagger if obstructed?
+                    change = true;
+                    break;
                 }
             }
-            // need to have most units far enough?
-            // distance from each other? don't forget the leader... he is
-            // special
         }
+        // need to have most units far enough?
+        // distance from each other? don't forget the leader... he is
+        // special
+//        }
         return change;
     }
 
@@ -250,7 +251,7 @@ public class WanderAi extends AiBehavior {
 //            if (RandomWizard.random() || RandomWizard.random()) {
 //                wanderDirection = DirectionMaster.rotate45(wanderDirection, RandomWizard.random());
 //            } else {
-                wanderDirection = DirectionMaster.rotate90(wanderDirection, RandomWizard.random());
+            wanderDirection = DirectionMaster.rotate90(wanderDirection, RandomWizard.random());
 //            }
         }
         // if () //TODO change of opposite!
@@ -258,6 +259,7 @@ public class WanderAi extends AiBehavior {
         // getOrCreate direction by Leader's facing at the time, and make him
         // turn and turn while waiting!
         group.setWanderDirection(wanderDirection);
+        group.getMembers().forEach(unit -> unit.getAI().setPathBlocked(false));
     }
 
     public static Coordinates getCoordinates(GOAL_TYPE type, UnitAI ai) {
@@ -294,27 +296,18 @@ public class WanderAi extends AiBehavior {
     @Override
     public ActionSequence getOrders(UnitAI ai) {
         Coordinates c1 = null;
-        try {
-            while (new Loop(5).continues()){
-                if (checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER)){
-                    changeGroupMoveDirection(ai.getGroup(), GOAL_TYPE.WANDER);
-                } else
-                    break;
+        Loop loop = new Loop(5);
+        while (loop.continues()) {
+            if (checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER)) {
+                changeGroupMoveDirection(ai.getGroup(), GOAL_TYPE.WANDER);
+            } else {
+                main.system.auxiliary.log.LogMaster.log(1, "fdsfsd  " + ai.getGroupAI());
+                break;
             }
+        }
 
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        if (ai.isPathBlocked())
-            return null;
-        try {
-            c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
-        } catch (Exception e) {
-            c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-//        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing()
-//         , getWanderPredicate(ai.getUnit(), ai.getUnit().getFacing(), c1));
+        c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
+//            c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
 
         Task task = new Task(ai, GOAL_TYPE.WANDER, null);
 
@@ -323,32 +316,26 @@ public class WanderAi extends AiBehavior {
         if (ListMaster.isNotEmpty(turnSequence)) {
             return new ActionSequence(turnSequence, task, ai);
         }
+        if (ai.isPathBlocked())
+            return null;
 
         List<Coordinates> c = new ArrayList<>();
         c.add(c1);
         getMaster(ai).setUnit(ai.getUnit());
-//        getMaster(ai).getPathBuilder().init(null, null);
-//        TimeLimitMaster.markTimeForAI(ai);
-        List<ActionPath> paths = new ArrayList<>();
-//         getMaster(ai).getPathBuilder().build(c);
 
         Action action = null;
-        if (paths.isEmpty()) {
-            if (c.get(0) != null)
-                action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
-            else
-                action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
-            if (action != null)
-                return new ActionSequence(GOAL_TYPE.WANDER, action);
-        } else
-            action = paths.get(0).getActions().get(0);
-        if (action == null)
-            return null;
-        List<ActionSequence> sequences = getMaster(ai).getActionSequenceConstructor().
-         getSequencesFromPaths(paths, task, action);
-        if (sequences.isEmpty())
-            return null;
-        return sequences.get(0);
+        if (c.get(0) != null)
+            action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
+        else
+            action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
+
+        return new ActionSequence(GOAL_TYPE.WANDER, action);
+
+//        List<ActionSequence> sequences = getMaster(ai).getActionSequenceConstructor().
+//         getSequencesFromPaths(paths, task, action);
+//        if (sequences.isEmpty())
+//            return null;
+//        return sequences.get(0);
     }
 
     private Predicate<Coordinates> getWanderPredicate(Unit unit,
@@ -364,7 +351,7 @@ public class WanderAi extends AiBehavior {
                     }
                 }
                 main.system.auxiliary.log.LogMaster.log(1,
-                 coordinates+" has " +wallCount + " walls adjacent");
+                 coordinates + " has " + wallCount + " walls adjacent");
 
                 if (unit.getAI().getType().isRanged()) {
                     return wallCount >= 4;

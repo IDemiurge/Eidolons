@@ -4,12 +4,16 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.data.ability.construct.VariableManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JustMe on 1/8/2017.
@@ -20,7 +24,7 @@ public class ParticleManager extends GroupX {
     private static boolean ambienceMoveOn;
     public boolean debugMode;
     List<EmitterMap> emitterMaps = new ArrayList<>();
-
+    Map<String, EmitterMap> cache = new HashMap<>();
 
     public ParticleManager() {
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
@@ -33,7 +37,18 @@ public class ParticleManager extends GroupX {
             clearChildren();
             emitterMaps.clear();
             for (String sub : dataSource.getEmitters()) {
-                EmitterMap emitterMap = new EmitterMap(sub, dataSource);
+                int showChance = dataSource.getShowChance();
+                if (!VariableManager.getVarPart(sub).isEmpty()) {
+                    sub = VariableManager.removeVarPart(sub);
+                    showChance = StringMaster.getInteger(VariableManager.getVarPart(sub));
+                }
+                EmitterMap emitterMap = cache.get(sub);
+                if (emitterMap == null) {
+                    emitterMap = new EmitterMap(sub,   showChance);
+                    cache.put(sub, emitterMap);
+                } else
+                    emitterMap.setShowChance(showChance);
+
                 emitterMap.update();
                 emitterMaps.add(emitterMap);
                 addActor(emitterMap);

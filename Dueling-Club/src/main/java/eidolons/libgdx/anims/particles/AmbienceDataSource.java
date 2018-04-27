@@ -3,6 +3,7 @@ package eidolons.libgdx.anims.particles;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,22 +51,29 @@ public class AmbienceDataSource {
                 emitters.add(EMITTER_PRESET.DARK_MIST_LITE.path);
                 break;
         }
-        switch (time) {
-            case MORNING:
-                emitters.add(EMITTER_PRESET.MIST_WHITE3.path);
-            case DUSK:
-                emitters.add(EMITTER_PRESET.MIST_SAND_WIND.path);
-            case MIDNIGHT:
-                emitters.add(EMITTER_PRESET.MIST_WIND.path);
-
-        }
         showChance = 80 - 10 * emitters.size();
 
 
+        switch (time) {
+            case MORNING:
+                emitters.add(string(EMITTER_PRESET.MIST_WHITE3, showChance / 3));
+                break;
+            case DUSK:
+                emitters.add(string(EMITTER_PRESET.MIST_SAND_WIND, showChance / 3));
+                break;
+            case MIDNIGHT:
+                emitters.add(string(EMITTER_PRESET.MIST_WIND, showChance / 3));
+
+        }
     }
 
     public static void init(Dungeon dungeon) {
         dungeon_ = dungeon;
+    }
+
+    private String string(EMITTER_PRESET emitterPreset, int i) {
+        return emitterPreset.path
+         + StringMaster.wrapInParenthesis("" + i / 3);
     }
 
     public List<String> getEmitters() {
