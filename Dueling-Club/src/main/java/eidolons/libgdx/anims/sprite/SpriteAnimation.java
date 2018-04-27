@@ -118,17 +118,18 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
         float alpha = this.alpha;
         drawTextureRegion(batch, currentFrame, alpha);
-//        for (int i = 1; i < getFrameNumber()-1; i++) {
-//
-//            TextureRegion frame = getOffsetFrame(stateTime, -i);
-//            if (frame==null ) {
-//                return true;
-//            }
-//            alpha =i/ getKeyFrames().length;
-//            if (alpha>0)
-//            drawTextureRegion(batch, currentFrame, alpha);
-//            else return true;
-//        }
+        for (int i = 1; i < getFrameNumber()-1; ) {
+
+            TextureRegion frame = getOffsetFrame(stateTime, -i);
+            if (frame==null ) {
+                return true;
+            }
+            i++;
+            alpha =3/(i*i);
+            if (alpha>0.1f)
+            drawTextureRegion(batch, currentFrame, alpha);
+            else return true;
+        }
 
         return true;
     }

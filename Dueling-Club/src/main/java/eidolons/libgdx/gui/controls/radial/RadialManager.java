@@ -49,7 +49,10 @@ public class RadialManager {
     protected static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
     protected static boolean processingShortcuts;
 
-    public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
+    public static TextureRegion getTextureForActive(DC_ActiveObj obj ) {
+        return getTextureForActive(obj, null);
+    }
+        public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         if (obj.isAttackAny()) {
             DC_WeaponObj weapon = obj.getActiveWeapon();
             String path = StrPathBuilder.build("main", "action", "attack",
@@ -458,21 +461,11 @@ public class RadialManager {
     protected static RadialValueContainer configureSelectiveTargetedNode(
      DC_ActiveObj active, DC_Obj target) {
         boolean wasValid;
-//        if (target == null|| target.equals(active.getOwnerObj())){
-//            Set<Obj> objSet = CoreEngine.isActionTargetingFiltersOff() ?
-//             DC_Game.game.getUnits().parallelStream().distinct().collect(Collectors.toSet())
-//             : getFilter(active).getObjects();
-//            wasValid = objSet.size() > 0 &&
-//             active.canBeManuallyActivated();
-//        } else
         wasValid = active.canBeManuallyActivated();
         final boolean valid = wasValid;
 
-        TextureRegion textureRegion =
-         getOrCreateR(active.getImagePath());
-//         valid ? now via Shader!
-//         getOrCreateR(active.getImagePath()) :
-//         getOrCreateGrayscaleR(active.getImagePath());
+        TextureRegion textureRegion = getTextureForActive(active);
+
         Runnable runnable = () -> {
             if (valid) {
                 Context context = new Context(active.getOwnerObj().getRef());

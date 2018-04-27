@@ -2,6 +2,8 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
@@ -85,6 +87,12 @@ public class GridCellContainer extends GridCell {
                 i++;
                 hasBackground = true;
                 continue;
+            }
+            if (actor.getActionsOfClass(MoveToAction.class).size > 0) {
+                return;
+            }
+            if (actor.getActionsOfClass(MoveByAction.class).size > 0) {
+                return;
             }
             int offset = getUnitViewOffset();
             float scaleX = getObjScale();

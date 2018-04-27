@@ -22,9 +22,9 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
+import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.system.graphics.RESOLUTION;
 import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -135,6 +135,10 @@ public class Eidolons {
             GdxMaster.setWidth(width);
             GdxMaster.setHeight(LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getGraphics().setUndecorated(true);
+//            getApplication().getGraphics().setFullscreenMode(
+//             new LwjglDisplayMode(width, height,
+//              60, 256, null));
+
             Gdx.graphics.setWindowedMode(width,
              LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getApplicationListener().resize(width, height);

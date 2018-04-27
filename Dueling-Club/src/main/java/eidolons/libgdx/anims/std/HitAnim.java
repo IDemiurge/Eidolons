@@ -153,9 +153,9 @@ public class HitAnim extends ActionAnim {
 
     @Override
     protected Action getAction() {
-        if (!OptionsMaster.getAnimOptions().getBooleanValue(
-         ANIMATION_OPTION.HIT_ANIM_DISPLACEMENT))
-            return null;
+//        if (!OptionsMaster.getAnimOptions().getBooleanValue(
+//         ANIMATION_OPTION.HIT_ANIM_DISPLACEMENT))
+//            return null;
         if (getRef() == null)
             return null;
         if (getRef().getSourceObj() == null)
@@ -172,7 +172,7 @@ public class HitAnim extends ActionAnim {
         if (BooleanMaster.isTrue(d.growY)) {
             dy = -dy;
         }
-
+//DungeonScreen.getInstance().getGridPanel().detachUnitView()
         originalActorX = getActor().getX();
         originalActorY = getActor().getY();
         float x = originalActorX;
@@ -341,7 +341,7 @@ public class HitAnim extends ActionAnim {
             return;
         }
         getActionTarget().setX(originalActorX);
-        getActionTarget().setX(originalActorY);
+        getActionTarget().setY(originalActorY);
         GuiEventManager.trigger(HP_BAR_UPDATE, getActionTarget());
         getParentAnim().setHpUpdate(false);
     }

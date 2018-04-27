@@ -405,7 +405,14 @@ public class CONTENT_CONSTS2 {
         LEAVES("woods\\leaves"),
         STARS("woods\\stars"),
 
-        MIST_WHITE("mist\\conceal west wind3"),
+        MIST_WHITE("mist\\conceal west wind"),
+        MIST_WHITE2("mist\\conceal west wind2"),
+        MIST_WHITE3("mist\\conceal west wind3"),
+        MIST_WIND("mist\\white mist wind"),
+        MIST_COLD("mist\\cold wind"),
+        MIST_CYAN("mist\\cyan mist2"),
+        MIST_SAND_WIND("mist\\sand wind"),
+
         MIST_BLACK("black mist\\clouds wind light2");
         public String path;
 

@@ -130,18 +130,25 @@ public class WanderAi extends AiBehavior {
         return 0.3f;
     }
 
-    private static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai, GOAL_TYPE type) {
-        return ai.isPathBlocked();
-        // Coordinates c =
-        // ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
-        // if (c == null)
-        // return true;
-        // if (c.isInvalid())
-        // return true;
-        // // what's the point of such a preCheck? blocked() should be passed
-        // return
-        // ai.getUnit().getGame().getBattleFieldManager().canMoveOnto(ai.getUnit(),
-        // c);
+    private static boolean isProgressObstructed(DIRECTION direction,
+                                                   UnitAI ai, GOAL_TYPE type) {
+//      TODO cache needed? if (ai.isPathBlocked()!=null )
+//           return ai.isPathBlocked();
+        boolean blocked = checkProgressObstructed(direction, ai, type);
+        ai.setPathBlocked(blocked);
+        return blocked;
+    }
+        private static boolean checkProgressObstructed(DIRECTION direction, UnitAI ai, GOAL_TYPE type) {
+         Coordinates c =
+         ai.getUnit().getCoordinates().getAdjacentCoordinate(direction);
+         if (c == null)
+         return true;
+         if (c.isInvalid())
+         return true;
+         // what's the point of such a preCheck? blocked() should be passed
+         return
+         !ai.getUnit().getGame().getBattleFieldManager().canMoveOnto(ai.getUnit(),
+         c);
 
     }
 
@@ -157,7 +164,7 @@ public class WanderAi extends AiBehavior {
                 UnitAI ai = unit.getUnitAI();
                 boolean done = checkUnitArrived(ai, type);
                 if (!done) {
-                    done = checkProgressObstructed(group.getWanderDirection(), ai, type);
+                    done = isProgressObstructed(group.getWanderDirection(), ai, type);
                 }
                 if (done)
                 // if (PositionMaster.getDistance(c,
@@ -240,11 +247,11 @@ public class WanderAi extends AiBehavior {
 
         }
         if (wanderDirection == group.getWanderDirection()) {
-            if (RandomWizard.random() || RandomWizard.random()) {
-                wanderDirection = DirectionMaster.rotate45(wanderDirection, RandomWizard.random());
-            } else {
+//            if (RandomWizard.random() || RandomWizard.random()) {
+//                wanderDirection = DirectionMaster.rotate45(wanderDirection, RandomWizard.random());
+//            } else {
                 wanderDirection = DirectionMaster.rotate90(wanderDirection, RandomWizard.random());
-            }
+//            }
         }
         // if () //TODO change of opposite!
         // DirectionMaster.getDirectionByDegree(degrees);
@@ -288,18 +295,26 @@ public class WanderAi extends AiBehavior {
     public ActionSequence getOrders(UnitAI ai) {
         Coordinates c1 = null;
         try {
-            WanderAi.checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER);
+            while (new Loop(5).continues()){
+                if (checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER)){
+                    changeGroupMoveDirection(ai.getGroup(), GOAL_TYPE.WANDER);
+                } else
+                    break;
+            }
+
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        if (ai.isPathBlocked())
+            return null;
         try {
             c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
         } catch (Exception e) {
             c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing()
-         , getWanderPredicate(ai.getUnit(), ai.getUnit().getFacing(), c1));
+//        c1 = Positioner.adjustCoordinate(ai.getUnit(), c1, ai.getUnit().getFacing()
+//         , getWanderPredicate(ai.getUnit(), ai.getUnit().getFacing(), c1));
 
         Task task = new Task(ai, GOAL_TYPE.WANDER, null);
 
@@ -343,11 +358,14 @@ public class WanderAi extends AiBehavior {
             @Override
             public boolean test(Coordinates coordinates) {
                 int wallCount = 0;
-                for (Coordinates sub : c1.getAdjacentCoordinates()) {
+                for (Coordinates sub : coordinates.getAdjacentCoordinates()) {
                     if (unit.getGame().getBattleFieldManager().getWallMap().get(sub) != null) {
                         wallCount++;
                     }
                 }
+                main.system.auxiliary.log.LogMaster.log(1,
+                 coordinates+" has " +wallCount + " walls adjacent");
+
                 if (unit.getAI().getType().isRanged()) {
                     return wallCount >= 4;
                 }

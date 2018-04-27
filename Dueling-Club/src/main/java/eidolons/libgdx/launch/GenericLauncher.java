@@ -134,6 +134,7 @@ public class GenericLauncher extends Game {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
             conf.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
             conf.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+//            conf.fullscreen=true;
             System.out.println("resolution width " + conf.width);
             System.out.println("resolution height " + conf.height);
         } else {

@@ -13,7 +13,6 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.system.options.OptionsMaster;
-import eidolons.test.debug.DebugMaster.DEBUG_FUNCTIONS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
@@ -42,13 +41,7 @@ public class GlobalController implements Controller {
             case Keys.ESCAPE:
                 escape();
                 break;
-            case Keys.SPACE:
-                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
-                 instanceof Blocking)
-                    return;
-                Eidolons.game.getLoop().togglePaused();
-                break;
-//                GuiEventManager.trigger(GuiEventType.GAME_PAUSE_TOGGLE);
+
             case Keys.TAB:
                 try {
                     tab();
@@ -108,8 +101,13 @@ public class GlobalController implements Controller {
             case ' ':
                 if (DungeonScreen.getInstance() == null)
                     return false;
-                if (!DungeonScreen.getInstance().isWaitingForInput())
-                    Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+                if ( DungeonScreen.getInstance().isWaitingForInput())
+                    return true;
+                if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
+                 instanceof Blocking)
+                    return false;
+                Eidolons.game.getLoop().togglePaused();
+//                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
                 return true;
             case 'D':
                 Eidolons.game.getDebugMaster().showDebugWindow();

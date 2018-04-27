@@ -413,9 +413,19 @@ public class AtomicAi extends AiHandler {
                     return true;
             }
         }
+//        if (ai.isMinion())
+//            return false;
+
+        if (!Analyzer.getAdjacentEnemies(getUnit(), false).isEmpty())
+            return false;
+        boolean criticalOnly=ai.getType() == AI_TYPE.BRUTE;
+
         List<PARAMS> params = getParamAnalyzer().getRelevantParams(ai.getUnit());
         for (PARAMS p : params) { //only if critical
-            if (getParamAnalyzer().checkStatus(false, ai.getUnit(), p)) {
+
+            if (getParamAnalyzer().checkStatus(
+             criticalOnly
+             , ai.getUnit(), p)) {
                 if (getSituationAnalyzer().getDangerFactor(ai.getUnit()) < 50)
                     return true;
             }

@@ -23,6 +23,7 @@ public class AmbienceDataSource {
         emitters = new ArrayList<>();
         switch (time) {
             case DAWN:
+                emitters.add(EMITTER_PRESET.MIST_WHITE2.path);
             case MORNING:
                 emitters.add(EMITTER_PRESET.SMOKE_TEST.path);
                 emitters.add(EMITTER_PRESET.MIST_WHITE.path);
@@ -31,6 +32,7 @@ public class AmbienceDataSource {
 
                 break;
             case MIDDAY:
+                emitters.add(EMITTER_PRESET.MIST_WHITE3.path);
             case DUSK:
                 emitters.add(EMITTER_PRESET.MIST_WHITE.path);
                 emitters.add(EMITTER_PRESET.MIST_BLACK.path);
@@ -39,6 +41,7 @@ public class AmbienceDataSource {
                 break;
 
             case NIGHTFALL:
+                emitters.add(EMITTER_PRESET.MIST_COLD.path);
             case MIDNIGHT:
                 emitters.add(EMITTER_PRESET.WISPS.path);
                 emitters.add(EMITTER_PRESET.STARS.path);
@@ -46,6 +49,15 @@ public class AmbienceDataSource {
 
                 emitters.add(EMITTER_PRESET.DARK_MIST_LITE.path);
                 break;
+        }
+        switch (time) {
+            case MORNING:
+                emitters.add(EMITTER_PRESET.MIST_WHITE3.path);
+            case DUSK:
+                emitters.add(EMITTER_PRESET.MIST_SAND_WIND.path);
+            case MIDNIGHT:
+                emitters.add(EMITTER_PRESET.MIST_WIND.path);
+
         }
         showChance = 80 - 10 * emitters.size();
 

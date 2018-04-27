@@ -246,7 +246,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>main.test.frontend.FAST_DC</mainClass>
+                            <mainClass>eidolons.test.frontend.FAST_DC</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -259,9 +259,9 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.libgdx.launch.MainLauncher</mainClass>
-                            <!--<mainClass>main.test.frontend.ScenarioLauncher</mainClass>-->
-                            <!--<mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
+                            <mainClass>eidolons.libgdx.launch.MainLauncher</mainClass>
+                            <!--<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>-->
+                            <!--<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -283,10 +283,10 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>main.libgdx.launch.MainLauncher</mainClass>
-                                    <!--<mainClass>main.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
-                                    <!--<mainClass>main.test.frontend.ScenarioLauncher</mainClass>-->
-                                    <!--<mainClass>main.test.frontend.FAST_DC</mainClass>-->
+                                    <mainClass>eidolons.libgdx.launch.MainLauncher</mainClass>
+                                    <!--<mainClass>eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner</mainClass>-->
+                                    <!--<mainClass>eidolons.test.frontend.ScenarioLauncher</mainClass>-->
+                                    <!--<mainClass>eidolons.test.frontend.FAST_DC</mainClass>-->
                                 </transformer>
                             </transformers>
                         </configuration>
