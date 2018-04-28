@@ -7,6 +7,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.LockObj;
+import eidolons.system.test.TestMasterContent;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -41,6 +42,7 @@ public class ObjCreator extends Master {
             if (!CoreEngine.isLevelEditor()) {
                 if (!type.isGenerated()) {
                     type = new ObjType(type);
+
                     game.initType(type);
                 }
             }

@@ -1,5 +1,6 @@
 package eidolons.content;
 
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.system.DC_Formulas;
 import eidolons.system.math.DC_MathManager;
@@ -119,9 +120,33 @@ public enum PARAMS implements PARAMETER {
     ESSENCE(null, "ESSENCE", false, 0, "chars", "units"),
     C_ESSENCE(null, "ESSENCE", true, 0, "chars", "units"),
     N_OF_COUNTERS("Counter pts", "", false, 0, "units", "chars", "skills"),
-    N_OF_ACTIONS("Action pts", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "bf obj", "skills"),
+    N_OF_ACTIONS("Action pts", "Maximum number of attacks unit can make per turn", false, 0, "units", "chars", "bf obj", "skills"){
+        @Override
+        public String getDisplayedName() {
+            if (DC_Engine.isAtbMode())
+                return "Initiative";
+            return "Action pts";
+        }
+    },
     C_N_OF_ACTIONS(null, "", true, 0, "units", "chars", "bf obj"),
     C_N_OF_COUNTERS("Number of Attacks", "", true, 2, "units", "chars"),
+
+
+    INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars", "bf obj"),
+    INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "bf obj"),
+    C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "bf obj"),
+    C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "bf obj"),
+    C_INITIATIVE("C Initiative", "", true, 0, "units", "chars", "bf obj"){
+        @Override
+        public String getDisplayedName() {
+            if (DC_Engine.isAtbMode())
+                return "Readiness";
+            return "Initiative";
+        }
+    },
+    INITIATIVE("Initiative", "", false, 0, "units", "chars", "bf obj"),
+    // INITIATIVE("Initiative", "", false, 30, "units", "chars", "bf obj"),
+
 
     STRENGTH(null, Descriptions.Strength, false, 0, "chars", "units", "jewelry", "classes"),
     VITALITY(null, Descriptions.Vitality, false, 0, "chars", "units", "jewelry", "skills", "classes"),
@@ -245,14 +270,6 @@ public enum PARAMS implements PARAMETER {
     MEMORY_REMAINING(null, "", false, 4, "chars"),
 
     ENCHANTMENT_CAPACITY(null, "MAGIC_AFFINITY", false, 0, "weapons", "jewelry", "armor"),
-
-    INITIATIVE_MODIFIER("Initiative mod", "", false, 10, "units", "chars", "bf obj"),
-    INITIATIVE_BONUS("Initiative bonus", "", false, 5, "units", "chars", "bf obj"),
-    C_INITIATIVE_BONUS("Initiative", "", true, 0, "units", "chars", "bf obj"),
-    C_INITIATIVE_TRANSFER("Initiative", "", true, 0, "units", "chars", "bf obj"),
-    C_INITIATIVE("C Initiative", "", true, 0, "units", "chars", "bf obj"),
-    INITIATIVE("Initiative", "", false, 0, "units", "chars", "bf obj"),
-    // INITIATIVE("Initiative", "", false, 30, "units", "chars", "bf obj"),
 
     DETECTION(null, "DETECTION", false, 10, "bf obj", "units", "chars", "armor"),
     STEALTH(null, "STEALTH", false, 0, "bf obj", "units", "chars", "armor"),

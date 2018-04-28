@@ -30,8 +30,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.secondary.BooleanMaster;
-import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -123,7 +121,8 @@ public class AnimMaster3d {
 //            if (weapon.getWeaponGroup() != WEAPON_GROUP.FISTS)
 //                return false;
 
-        return !CoreEngine.isFastMode();
+//        return !CoreEngine.isFastMode();
+        return true;
     }
 
 
@@ -168,9 +167,10 @@ public class AnimMaster3d {
           actionName, ANIM, projection
          ));
 
-        if (BooleanMaster.isTrue(offhand))
-            s.append(SEPARATOR + "l");
-        if (BooleanMaster.isFalse(offhand))
+//       TODO  if (BooleanMaster.isTrue(offhand))
+//            s.append(SEPARATOR + "l");
+//        if (BooleanMaster.isFalse(offhand))
+        if (offhand != null)
             s.append(SEPARATOR + "r");
         String string = s.toString();
         string = string.toLowerCase().replace("offhand ", "").replace("off hand ", "").replace(" ", SEPARATOR);
@@ -318,30 +318,10 @@ public class AnimMaster3d {
 //        float angle = PositionMaster.getAngle(activeObj.getOwnerObj(), targetObj);
 //float baseAngle =
 //        float rotation = angle * 2 / 3;
-        String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
 
-        TextureAtlas atlas = getAtlas(activeObj, aCase);
-        Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
-        if (regions.size == 0) {
-            if (isSearchAtlasRegions(activeObj))
-                regions = findAtlasRegions(atlas, projection, activeObj, true);
-        }
-        if (regions.size == 0) {
-            if (activeObj.getParentAction() != null)
-                if (isSearchAtlasRegions(activeObj))
-                    regions = findAtlasRegions(atlas, projection, activeObj, false);
-        }
-        if (regions.size == 0)
-            main.system.auxiliary.log.LogMaster.log(
-             1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
-//        if (TexturePackerLaunch.TRIM) {
-//            regions.forEach(region -> {
-//                region.setRegionHeight(getHeight(activeObj));
-//                region.setRegionWidth(getWidth(activeObj));
-//                region.setRegionWidth(region.originalWidth);
-//                region.setRegionHeight(region.originalHeight);
-//            });
-//        }
+        Array<AtlasRegion> regions = getRegions(aCase, activeObj, projection);
+
+
         float frameDuration = duration / regions.size;
         int loops = 0;
         if (aCase.isMissile()) {
@@ -354,6 +334,31 @@ public class AnimMaster3d {
          getSpriteAnimation(regions, frameDuration, loops);
 //        sprite.setRotation(rotation);
         return sprite;
+    }
+
+    public static Array<AtlasRegion> getRegions(WEAPON_ANIM_CASE aCase, DC_ActiveObj activeObj, Boolean projection) {
+        String name = getAtlasFileKeyForAction(projection, activeObj, aCase);
+
+        TextureAtlas atlas = getAtlas(activeObj, aCase);
+
+        Array<AtlasRegion> regions = atlas.findRegions(name.toLowerCase());
+        if (regions.size == 0) {
+            regions = atlas.findRegions(name.toLowerCase()
+             .replace(ANIM + SEPARATOR, ""));
+        }
+        if (regions.size == 0) {
+            if (isSearchAtlasRegions(activeObj))
+                regions = findAtlasRegions(atlas, projection, activeObj, true);
+        }
+        if (regions.size == 0) {
+            if (activeObj.getParentAction() != null)
+                if (isSearchAtlasRegions(activeObj))
+                    regions = findAtlasRegions(atlas, projection, activeObj, false);
+        }
+        if (regions.size == 0)
+            main.system.auxiliary.log.LogMaster.log(
+             1, activeObj + ": " + aCase + " no 3d sprites: " + name + atlas);
+        return regions;
     }
 
     private static boolean isSearchAtlasRegions(DC_ActiveObj activeObj) {

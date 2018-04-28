@@ -162,7 +162,8 @@ public class ClassFinder {
                     continue;
                 }
 
-                if (!je.getName().startsWith("main")) {
+                if (!je.getName().startsWith("main")
+                 && !je.getName().startsWith("eidolons")) {
                     continue;
                 }
                 String className = je.getName().replace('/', '.');

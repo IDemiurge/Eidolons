@@ -301,12 +301,14 @@ public class WanderAi extends AiBehavior {
             if (checkWanderDirectionChange(ai.getGroup(), GOAL_TYPE.WANDER)) {
                 changeGroupMoveDirection(ai.getGroup(), GOAL_TYPE.WANDER);
             } else {
-                main.system.auxiliary.log.LogMaster.log(1, "fdsfsd  " + ai.getGroupAI());
-                break;
+                c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
+                if (c1 == null)
+                    changeGroupMoveDirection(ai.getGroup(), GOAL_TYPE.WANDER);
+                else
+                    break;
             }
         }
 
-        c1 = (getWanderTargetCoordinatesCell(ai, GOAL_TYPE.WANDER));
 //            c1 = (CoordinatesMaster.getRandomAdjacentCoordinate(ai.getUnit().getCoordinates()));
 
         Task task = new Task(ai, GOAL_TYPE.WANDER, null);
@@ -328,7 +330,8 @@ public class WanderAi extends AiBehavior {
             action = getMaster(ai).getAtomicAi().getAtomicMove(c.get(0), ai.getUnit());
         else
             action = getMaster(ai).getAtomicAi().getAtomicActionApproach(ai);
-
+        if (action == null)
+            return null;
         return new ActionSequence(GOAL_TYPE.WANDER, action);
 
 //        List<ActionSequence> sequences = getMaster(ai).getActionSequenceConstructor().

@@ -194,7 +194,10 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public boolean isAlphaFluctuationOn() {
         if (!alphaFluctuationOn)
-            return false;
+        {
+            if (type==SHADE_LIGHT.LIGHT_EMITTER|| type == SHADE_LIGHT.GAMMA_LIGHT)
+                return false;
+        }
         return alphaFluctuation;
     }
 
@@ -269,8 +272,17 @@ public class ShadeLightCell extends SuperContainer {
                 return;
             }
         if (isAnimated())
+        {
             baseAlpha = alphaAction.getValue();
+            rotate(delta);
+        }
         super.act(delta);
+    }
+
+    private void rotate(float delta) {
+        if (type == SHADE_LIGHT.LIGHT_EMITTER) {
+            setRotation(getRotation()+delta*0.5f);
+        }
     }
 
     private boolean isAnimated() {

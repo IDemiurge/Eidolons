@@ -692,7 +692,13 @@ public class ItemGenerator implements GenericItemGenerator {
         DataManager.setBaseArmorTypes(baseArmorTypes.toArray(new ObjType[baseArmorTypes.size()]));
         DataManager.setBaseJewelryTypes(baseJewelryTypes.toArray(new ObjType[baseJewelryTypes.size()]));
         DataManager.setBaseItemTypes(baseItemTypes.toArray(new ObjType[baseItemTypes.size()]));
-
+//Arrays.
+         List<ObjType> list = new ArrayList<>();
+        list.addAll(baseWeaponTypes);
+        list.addAll(baseArmorTypes);
+        list.addAll(baseJewelryTypes);
+        list.addAll(baseItemTypes);
+        DataManager.setBaseAllItemTypes(list.toArray(new ObjType[list.size()]));
 //        defaultGenerator = new ItemGenerator(false);
 //        basicGenerator = new ItemGenerator(true);
         try {

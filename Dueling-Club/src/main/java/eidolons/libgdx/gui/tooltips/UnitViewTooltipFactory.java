@@ -18,6 +18,7 @@ import eidolons.system.text.ToolTipMaster;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.properties.G_PROPS;
+import main.entity.Ref.KEYS;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -52,6 +53,19 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     protected Supplier<List<ValueContainer>> supplier(BattleFieldObject hero) {
         return () -> {
             List<ValueContainer> values = new ArrayList<>();
+            if (hero.isDead()) {
+//                addKeyAndValue();
+                values.add(new ValueContainer("Corpse of ", hero.getName()));
+                if (hero.getRef().getValue(KEYS.KILLER) != null)
+                    if (hero.getRef().getId(KEYS.KILLER) != hero.getId()) {
+                        values.add(new ValueContainer("Slain by ",
+                         hero.getGame().getObjectById(hero.getRef().
+                          getId(KEYS.KILLER)).getNameIfKnown()
+                        ));
+                    }
+
+                return values;
+            }
             if (hero.checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
                 DC_ActiveObj action = (DC_ActiveObj) hero.getGame().getManager().getActivatingAction();
@@ -126,7 +140,9 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
 
             if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
-                values.add(getValueContainer(hero, PARAMS.C_N_OF_ACTIONS, PARAMS.N_OF_ACTIONS));
+                addParamStringToValues(hero, values, PARAMS.N_OF_ACTIONS);
+            } else {
+                //immobile
             }
             if (hero.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
                 values.add(getValueContainer(hero, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));

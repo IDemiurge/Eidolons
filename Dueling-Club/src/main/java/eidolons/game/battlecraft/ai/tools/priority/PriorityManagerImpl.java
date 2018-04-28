@@ -1313,7 +1313,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
             if (unit_ai.getBehaviorMode() == AiEnums.BEHAVIOR_MODE.BERSERK) {
                 basePriority = 100;
             } else if (targetObj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
-                if (!Analyzer.isBlockingMovement(unit_ai.getUnit(), (Unit) targetObj)) {
+                if (!Analyzer.isBlockingMovement(unit_ai.getUnit(),  target_unit)) {
                     return 0;
                 }
                 basePriority = 20;

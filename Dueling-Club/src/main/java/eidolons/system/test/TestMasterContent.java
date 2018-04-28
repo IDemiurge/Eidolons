@@ -59,7 +59,7 @@ public class TestMasterContent {
      + "Ancient Dark Steel Bolts;";
     public static boolean addSpells = true;
     public static boolean addAllSpells = true;
-    public static boolean test_on = true;
+    public static boolean test_on = false;
     static boolean auto_test_list = false;
     static boolean full_test = false;
     static boolean char_test_active_filtering = true;
@@ -112,6 +112,7 @@ public class TestMasterContent {
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
+    private static boolean weaponTest=true;
     String MAGIC_SCHOOLS = "";
     int circle;
     // TODO also give them for free to all units!
@@ -393,6 +394,27 @@ public class TestMasterContent {
             first = true;
             last = false;
         }
+        if (weaponTest ){
+            type.addProperty(PROPS.INVENTORY, "inferior iron long sword", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron short sword", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron dirk", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron dagger", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron knife", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron war axe", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron great axe", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron hand axe", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron mace", true);
+            type.addProperty(PROPS.INVENTORY, "inferior iron battle hammer", true);
+            type.addProperty(PROPS.INVENTORY, "inferior redwood battle staff", true);
+            type.addProperty(PROPS.INVENTORY, "inferior redwood longbow", true);
+            type.addProperty(PROPS.INVENTORY, "inferior redwood staff", true);
+
+        }
+//            for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
+//                if (s.getProperty(G_PROPS.MATERIAL).equalsIgnoreCase("iron"))
+//                    if (s.getProperty(G_PROPS.QUALITY_LEVEL).equalsIgnoreCase("inferior"))
+//                        type.addProperty(PROPS.INVENTORY, s.getName(), true);
+//            }
         if (!test_on) {
             return;
         }
@@ -423,6 +445,7 @@ public class TestMasterContent {
 
     private static void addTestItems(boolean full_test, ObjType type, boolean last) {
         // TODO poisons and the like
+
         if (!addItems) {
             return;
         }

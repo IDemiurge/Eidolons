@@ -107,7 +107,7 @@ public class ContainerPanel extends TablePanel implements Closable {
                 );
                 portrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
                  StringMaster.getAppendedImageFile(
-                  source.getHandler().getContainer().getImagePath(), ContainerMaster.OPEN)));
+                  source.getHandler().getContainerImagePath(), ContainerMaster.OPEN)));
 
             }
         });

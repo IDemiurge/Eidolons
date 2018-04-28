@@ -306,7 +306,6 @@ public class DC_ObjInitializer {
 //                    data.addType(type, owner.isMe());
             }
 
-            if (game.isDebugMode()) {
                 if (owner.isMe()) {
                     try {
                         TestMasterContent.addTestItems(type, last);
@@ -314,7 +313,6 @@ public class DC_ObjInitializer {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
-            }
             last = false;
             //todo optimize create unit func it too slow
             BattleFieldObject unit = (BattleFieldObject) game.createUnit(type, c, owner);

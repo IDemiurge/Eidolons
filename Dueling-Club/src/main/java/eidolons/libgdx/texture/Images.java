@@ -15,4 +15,6 @@ public class Images {
      "hq", "inv", "empty.png");
     public static final String EMPTY_QUICK_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "inv", "empty QUICK.png");
+    public static final String LOGO32 = "ui/arcane tower/logo32.png";
+    public static final String LOGO64 = "ui/arcane tower/logo64.png";
 }

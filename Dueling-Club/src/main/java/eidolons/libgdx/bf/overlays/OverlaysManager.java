@@ -20,10 +20,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.bf.grid.GenericGridView;
-import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.grid.LastSeenView;
+import eidolons.libgdx.bf.grid.*;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -210,7 +207,7 @@ public class OverlaysManager extends SuperActor {
                 drawOverlaysForCell(cells[i][j], i, cells[i].length - j - 1, batch);
 
                 for (Actor c : cells[i][j].getChildren()) {
-                    if (c instanceof GenericGridView )
+                    if (c instanceof GridUnitView)
                     {
                         if (c.isVisible())
                             drawOverlaysForView(((GenericGridView) c), batch);

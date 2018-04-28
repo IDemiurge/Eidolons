@@ -55,7 +55,9 @@ public class RadialManager {
         public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         if (obj.isAttackAny()) {
             DC_WeaponObj weapon = obj.getActiveWeapon();
-            String path = StrPathBuilder.build("main", "action", "attack",
+            String path =
+             (!obj.isStandardAttack()) ?  weapon.getImagePath()
+                :   StrPathBuilder.build("main", "actions", "standard attack",
              weapon.getProperty(G_PROPS.WEAPON_GROUP),
              weapon.getProperty(G_PROPS.BASE_TYPE),
              obj.getName() + ".png");
@@ -624,7 +626,8 @@ public class RadialManager {
         MOVES("UI\\components\\dc\\radial\\moves.png"),
         MAIN_HAND_ATTACKS,
         SPECIAL("UI\\components\\dc\\radial\\special actions.png"),
-        QUICK_ITEMS("UI\\components\\dc\\radial\\restoration modes.png"), MODES("UI\\components\\dc\\radial\\additional actions.png"),
+        QUICK_ITEMS("UI\\components\\dc\\radial\\quick items.png"),
+        MODES("UI\\components\\dc\\radial\\additional actions.png"),
         ORDERS("UI\\components\\dc\\radial\\orders.png"),
         DUAL_ATTACKS("UI\\components\\dc\\radial\\DUAL_ATTACKS.png");
 

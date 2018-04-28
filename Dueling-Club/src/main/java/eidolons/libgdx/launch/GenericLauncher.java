@@ -14,6 +14,7 @@ import eidolons.game.module.adventure.MacroManager;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -120,8 +121,8 @@ public class GenericLauncher extends Game {
 
     protected void initIcon(LwjglApplicationConfiguration conf) {
         try {
-            conf.addIcon(PathFinder.getImagePath() + "mini/new/logo32.png", FileType.Absolute);
-            conf.addIcon(PathFinder.getImagePath() + "mini/new/logo64.png", FileType.Absolute);
+            conf.addIcon(PathFinder.getImagePath() + Images.LOGO32, FileType.Absolute);
+            conf.addIcon(PathFinder.getImagePath() + Images.LOGO64, FileType.Absolute);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

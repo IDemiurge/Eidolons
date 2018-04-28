@@ -187,7 +187,7 @@ public class Analyzer extends AiHandler {
 
     }
 
-    public static boolean isBlockingMovement(Unit unit, Unit target) {
+    public static boolean isBlockingMovement(Unit unit, BattleFieldObject target) {
         if (!unit.getCoordinates().isAdjacent(target.getCoordinates())) {
             return false;
         }

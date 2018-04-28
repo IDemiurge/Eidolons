@@ -49,6 +49,7 @@ public class DataManager {
     private static ObjType[] baseItemTypes;
     private static ObjType[] baseArmorTypes;
     private static ObjType[] baseGarmentTypes;
+    private static ObjType[] baseAllItemTypes;
     private static Map<QUALITY_LEVEL, Map<MATERIAL, Map<ObjType, ObjType>>> itemMaps = new ConcurrentMap();
     private static int log = 0;
 
@@ -102,7 +103,8 @@ public class DataManager {
         if (type == null) {
             if (C_OBJ_TYPE.ITEMS.equals(obj_type))
                 try {
-                    return Game.game.getItemGenerator().generateItemType(typeName, obj_type);
+                    return Game.game.getItemGenerator().generateItemType( StringMaster.getWellFormattedString(
+                     typeName), obj_type);
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                     return null;
@@ -289,6 +291,7 @@ public class DataManager {
             m = new EnumMaster<MATERIAL>().retrieveEnumConst(MATERIAL.class, materialName);
         }
 
+        i++;
         String baseTypeName = "";
         for (int a = i; a <= parts.size() - 1; a++) {
             baseTypeName += parts.get(a) + " ";
@@ -315,21 +318,24 @@ public class DataManager {
 
     private static ObjType getBaseItemType(String string, OBJ_TYPE obj_type) {
         ObjType[] list = null;
+        if (obj_type.equals(C_OBJ_TYPE.ITEMS)) {
+            list = (baseAllItemTypes);
+        } else
         if (obj_type.equals(DC_TYPE.ARMOR)) {
             list = (baseArmorTypes);
-        }
+        } else
         if (obj_type.equals(DC_TYPE.WEAPONS)) {
             list = (baseWeaponTypes);
-        }
+        } else
         if (obj_type.equals(DC_TYPE.ITEMS)) {
             list = (baseItemTypes);
-        }
+        } else
         if (obj_type.equals(DC_TYPE.JEWELRY)) {
             list = (baseJewelryTypes);
         }
 
         for (ObjType t : list) {
-            if (StringMaster.compareByChar(string, t.getName(), true)) {
+            if (StringMaster.compareByChar(string.toLowerCase().trim(), t.getName().toLowerCase(), true)) {
                 return t;
             }
         }
@@ -987,5 +993,13 @@ public class DataManager {
 
     public static void setBaseWeaponTypes(ObjType[] baseWeaponTypes) {
         DataManager.baseWeaponTypes = baseWeaponTypes;
+    }
+
+    public static void setBaseAllItemTypes(ObjType[] baseAllItemTypes) {
+        DataManager.baseAllItemTypes = baseAllItemTypes;
+    }
+
+    public static ObjType[] getBaseAllItemTypes() {
+        return baseAllItemTypes;
     }
 }

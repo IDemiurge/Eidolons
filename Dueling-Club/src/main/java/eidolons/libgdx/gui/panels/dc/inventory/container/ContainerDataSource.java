@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.inventory.container;
 
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
@@ -8,11 +9,9 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
-import main.entity.Entity;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,13 +19,20 @@ import java.util.List;
  */
 public class ContainerDataSource implements InventoryTableDataSource {
 
+    private List<DC_HeroItemObj> items;
     private InventoryValueContainerFactory factory;
     private DC_Obj obj;
     private ContainerClickHandler handler;
 
     public ContainerDataSource(DC_Obj obj, Unit unit) {
         this.obj = obj;
-        handler = new ContainerClickHandler((ContainerObj) obj, unit);// obj.getGame().getInventoryManager().getClickHandler();
+        items = null;
+        if (obj instanceof ContainerObj) {
+            items = new ArrayList<>(((ContainerObj) obj).getItems());
+        } else {
+            items = obj.getGame().getDroppedItemManager().getDroppedItems(obj);
+        }
+        handler = new ContainerClickHandler(obj.getImagePath(), items, unit, obj);// obj.getGame().getInventoryManager().getClickHandler();
         factory = new InventoryValueContainerFactory(handler);
     }
 
@@ -36,14 +42,8 @@ public class ContainerDataSource implements InventoryTableDataSource {
 
     @Override
     public List<InventoryValueContainer> getInventorySlots() {
-        Collection<? extends Entity> list = null;
-        if (obj instanceof ContainerObj) {
-            list = new ArrayList<>(((ContainerObj) obj).getItems());
-        } else {
-            list = obj.getGame().getDroppedItemManager().getDroppedItems(obj);
-        }
-        ListMaster.fillWithNullElements(list
+        ListMaster.fillWithNullElements(items
          , InventorySlotsPanel.SIZE);
-        return factory.getList(list, CELL_TYPE.INVENTORY);
+        return factory.getList(items, CELL_TYPE.INVENTORY);
     }
 }

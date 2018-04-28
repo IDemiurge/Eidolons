@@ -7,6 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster.CONTAINER_ACTION;
@@ -432,18 +433,18 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
     @Override
     protected boolean actionActivated(CONTAINER_ACTION sub, Unit unit, DungeonObj obj) {
-        /*
-        pickUpAction
-         */
+        return loot(unit, obj);
+    }
+
+    public static boolean loot(Unit unit, DC_Obj obj) {
         unit.getGame().getInventoryManager().setOperationsPool(5);
 
         Pair<InventoryDataSource, ContainerDataSource> param =
          new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
-//        return true;
         return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
-    }
 
+    }
     @Override
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {
         List<DC_ActiveObj> list = new ArrayList<>();

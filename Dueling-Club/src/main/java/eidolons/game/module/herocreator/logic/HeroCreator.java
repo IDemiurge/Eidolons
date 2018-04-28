@@ -4,6 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.test.TestMasterContent;
 import main.content.CONTENT_CONSTS.RANK;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -37,7 +38,7 @@ public class HeroCreator {
 
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.CHARS));
         Eidolons.getGame().initType(type);
-
+            TestMasterContent.addTestItems(type, false);
         return createHeroObj(type);
     }
 

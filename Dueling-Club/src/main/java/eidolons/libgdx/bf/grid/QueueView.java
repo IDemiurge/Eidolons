@@ -188,10 +188,10 @@ public class QueueView extends UnitView {
             this.hpBar.remove();
         }
         this.hpBar = hpBar;
-        if (!GridPanel.isHpBarsOnTop()) {
+//        if (!GridPanel.isHpBarsOnTop()) {
             addActor(hpBar);
             hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
-        }
+//        }
         hpBar.setQueue(true);
     }
 

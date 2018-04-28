@@ -109,6 +109,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         stateTime += Gdx.graphics.getDeltaTime();
         if (frameNumber == 0)
             return false;
+        if (getLifecycleDuration() != 0) {
+            checkReverse();
+            cycles = (int) (stateTime / getLifecycleDuration());
+            lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
+        }
         updateSpeed();
         boolean looping = this.looping || loops > cycles || loops == 0;
         TextureRegion currentFrame = getKeyFrame(stateTime, looping);
@@ -117,30 +122,33 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             return false;
         }
         float alpha = this.alpha;
-        drawTextureRegion(batch, currentFrame, alpha);
-        for (int i = 1; i < getFrameNumber()-1; ) {
+        drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
+//        offsets.add
+        try {
+            for (int i = 1; i < getFrameNumber() - 1; ) {
 
-            TextureRegion frame = getOffsetFrame(stateTime, -i);
-            if (frame==null ) {
-                return true;
+                TextureRegion frame = getOffsetFrame(stateTime, -i);
+                if (frame == null) {
+                    main.system.auxiliary.log.LogMaster.log(1, stateTime+" null" );
+                    return true;
+                }
+                i++;
+                alpha = 3f / (i * i);
+                if (alpha > 0.1f)
+                    drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
+                else
+                    return true;
             }
-            i++;
-            alpha =3/(i*i);
-            if (alpha>0.1f)
-            drawTextureRegion(batch, currentFrame, alpha);
-            else return true;
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
-
         return true;
     }
 
-    private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha) {
+    private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha
+    , float offsetX, float offsetY
+    ) {
 
-        if (getLifecycleDuration() != 0) {
-            checkReverse();
-            cycles = (int) (stateTime / getLifecycleDuration());
-            lifecycle = stateTime % getLifecycleDuration() / getLifecycleDuration();
-        }
 
         if (sprite == null) {
             sprite = new Sprite(currentFrame);
@@ -258,10 +266,13 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         int index = getKeyFrameIndex(time);
         index += offset;
 
-        if (index < 0 || index > getKeyFrames().length) {
+        if (index < 0 || index >  getFrameNumber()) {
             return null;
         }
-        return getKeyFrames()[index];
+//        Object region = getKeyFrames()[index];
+//        if (region instanceof TextureRegion)
+//            return (TextureRegion) region;
+        return regions.get(index);
     }
 
 

@@ -92,6 +92,11 @@ public class Structure extends BattleFieldObject {
         return super.getFacing();
     }
 
+    @Override
+    public boolean isNeutral() {
+        return true;
+    }
+
     public boolean isLightEmitter() {
         return checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.LIGHT_EMITTER.toString());
     }
