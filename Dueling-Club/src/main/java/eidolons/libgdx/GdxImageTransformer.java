@@ -65,6 +65,10 @@ public class GdxImageTransformer extends LwjglApplication {
         return new Texture(pixmap2);
     }
 
+    public static void writeImage(FileHandle handle, Pixmap pixmap){
+        PixmapIO.writePNG(handle, pixmap );
+    }
+
     public static TextureRegion round(String path, boolean write) {
         if (GdxMaster.isLwjglThread()) {
             Pixmap rounded = roundTexture(TextureCache.getOrCreateR(path));

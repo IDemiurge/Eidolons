@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.generic.GearCluster.GEAR;
  * speed should be inverse of the size... 2pi *r
  */
 public class GearActor extends ImageContainer {
+    static boolean paused;
     GEAR gear;
     float speed;
     boolean clockwise;
@@ -17,20 +18,31 @@ public class GearActor extends ImageContainer {
         super(gear.getImagePath());
         this.gear = gear;
         setScale(scale);
-        speed = (float) (speed*Math.PI*2/getHeight());
+        speed = (float) (speed * Math.PI * 2 / getHeight());
         this.speed = speed;
         this.clockwise = clockwise;
         setOrigin(getWidth() / 2, getHeight() / 2);
     }
 
+    public static boolean isPaused() {
+        return paused;
+    }
+
+    public static void setPaused(boolean paused) {
+        GearActor.paused = paused;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
-        setRotation(getRotation() +getDegreesPerSecond()*delta);
+        if (isPaused())
+            return;
+        setRotation(getRotation() + getDegreesPerSecond() * delta);
     }
 
+
     private float getDegreesPerSecond() {
-        return (clockwise ? -speed : speed)*gear.getSpeedBasis() / getWidth()*10;
+        return (clockwise ? -speed : speed) * gear.getSpeedBasis() / getWidth() * 10;
     }
 
     public void setSpeed(float speed) {

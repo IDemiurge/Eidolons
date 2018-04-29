@@ -43,7 +43,7 @@ public class Ambience extends EmitterActor {
                 }
 
         super.act(delta);
-        if (!ParticleManager.isAmbienceMoveOn()) {
+        if (! isMoveOn()) {
             return;
         }
         float angle = acceleration.angle();
@@ -53,7 +53,13 @@ public class Ambience extends EmitterActor {
             acceleration.setAngle(angle);
         }
         velocity.add(acceleration);
-        velocity = velocity.limit(moveSpeedMax);
+        velocity = velocity.limit(3);
+
+        setPosition(getX()+velocity.x*delta, getY()+velocity.y*delta);
+    }
+
+    protected boolean isMoveOn() {
+        return true;
     }
 
     public void added() {

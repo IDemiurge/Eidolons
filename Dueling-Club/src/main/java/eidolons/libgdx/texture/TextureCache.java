@@ -39,6 +39,7 @@ public class TextureCache {
     private String imagePath;
     private TextureAtlas textureAtlas;
     private Pattern pattern;
+    private static boolean returnEmptyOnFail;
 
 
     private TextureCache() {
@@ -283,6 +284,8 @@ public class TextureCache {
                 }
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+                if (!isReturnEmptyOnFail())
+                    return null;
                 if (!cache.containsKey(getEmptyPath())) {
                     if (putIntoCache)
                         cache.put(getEmptyPath(), getEmptyTexture());
@@ -292,6 +295,14 @@ public class TextureCache {
 
             }
         return t;
+    }
+
+    public static boolean isReturnEmptyOnFail() {
+        return returnEmptyOnFail;
+    }
+
+    public static void setReturnEmptyOnFail(boolean returnEmptyOnFail) {
+        TextureCache.returnEmptyOnFail = returnEmptyOnFail;
     }
 }
 

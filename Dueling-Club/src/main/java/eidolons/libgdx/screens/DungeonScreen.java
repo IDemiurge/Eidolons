@@ -21,6 +21,7 @@ import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -345,7 +346,8 @@ public class DungeonScreen extends GameScreen {
 
     public boolean isBlocked() {
         return
-         HqPanel.getActiveInstance()!=null || OptionsWindow.isActive();
+         HqPanel.getActiveInstance()!=null || OptionsWindow.isActive()
+         || GameMenu.menuOpen;
     }
 
     @Override

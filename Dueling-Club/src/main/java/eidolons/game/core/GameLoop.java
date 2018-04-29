@@ -13,6 +13,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.logic.action.context.Context;
@@ -313,6 +314,7 @@ public class GameLoop {
 
     public void setPaused(boolean paused) {
         game.getLogManager().log(paused ? "Game paused" : "Game resumed");
+        GearActor.setPaused(paused);
         this.paused = paused;
         SuperActor.setAlphaFluctuationOn(!paused);
         if (!paused)

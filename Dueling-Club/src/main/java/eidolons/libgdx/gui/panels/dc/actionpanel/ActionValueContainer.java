@@ -202,7 +202,7 @@ public class ActionValueContainer extends ValueContainer {
                 batch.draw(underlay, getX() + underlayOffsetX, getY() + underlayOffsetY);
             }
 
-        ShaderProgram shader = null;
+        ShaderProgram shader = batch.getShader();
         if (isDarkened()) {
             shader = batch.getShader();
             batch.setShader(DarkShader.getShader());

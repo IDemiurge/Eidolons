@@ -64,6 +64,7 @@ public class ShadeLightCell extends SuperContainer {
         this.y = y;
         width = getContent().getWidth();
         height = getContent().getHeight();
+        getContent().setOrigin( getContent().getWidth()/2,getContent().getHeight()/2);
     }
 
     private static String getTexturePath(SHADE_LIGHT type) {
@@ -193,9 +194,8 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public boolean isAlphaFluctuationOn() {
-        if (!alphaFluctuationOn)
-        {
-            if (type==SHADE_LIGHT.LIGHT_EMITTER|| type == SHADE_LIGHT.GAMMA_LIGHT)
+        if (!alphaFluctuationOn) {
+            if (type == SHADE_LIGHT.LIGHT_EMITTER || type == SHADE_LIGHT.GAMMA_LIGHT)
                 return false;
         }
         return alphaFluctuation;
@@ -271,8 +271,7 @@ public class ShadeLightCell extends SuperContainer {
              )) {
                 return;
             }
-        if (isAnimated())
-        {
+        if (isAnimated()) {
             baseAlpha = alphaAction.getValue();
             rotate(delta);
         }
@@ -281,8 +280,7 @@ public class ShadeLightCell extends SuperContainer {
 
     private void rotate(float delta) {
         if (type == SHADE_LIGHT.LIGHT_EMITTER) {
-            getContent().setOrigin( getContent().getWidth()/2,getContent().getHeight()/2);
-           getContent(). setRotation(getContent().getRotation()+delta*  0.5f);
+            getContent().setRotation(getContent().getRotation() + delta * 2.5f);
         }
     }
 
