@@ -17,7 +17,7 @@ import tests.utils.JUnitUtils;
 /**
  * Created by JustMe on 3/27/2017.
  */
-public class JUnitDcTest {
+public class DcTest {
 
     protected DC_Game game;
     protected DcHelper helper;
@@ -44,6 +44,7 @@ public class JUnitDcTest {
         LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
         CoreEngine.setGraphicsOff(isGraphicsOff());
         CoreEngine.setjUnit(true);
+        if (isSelectiveXml())
         CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
         AI_Manager.setOff(isAiOff());
         DC_Engine.setTrainingOff(isTrainingOff());
@@ -70,6 +71,9 @@ public class JUnitDcTest {
         utils = new JUnitUtils(game);
     }
 
+    protected boolean isSelectiveXml() {
+        return true;}
+
     protected String getXmlTypesToRead() {
         return "bf obj;buffs;weapons;armor;terrain;dungeons;units;actions;abils;";
     }
@@ -81,7 +85,7 @@ public class JUnitDcTest {
         return true;
     }
 
-    private boolean isOldLauncher() {
+    protected boolean isOldLauncher() {
         return false;
     }
 

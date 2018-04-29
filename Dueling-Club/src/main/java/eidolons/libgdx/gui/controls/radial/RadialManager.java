@@ -49,18 +49,19 @@ public class RadialManager {
     protected static Map<DC_Obj, List<RadialValueContainer>> cache = new HashMap<>();
     protected static boolean processingShortcuts;
 
-    public static TextureRegion getTextureForActive(DC_ActiveObj obj ) {
+    public static TextureRegion getTextureForActive(DC_ActiveObj obj) {
         return getTextureForActive(obj, null);
     }
-        public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
+
+    public static TextureRegion getTextureForActive(DC_ActiveObj obj, DC_Obj target) {
         if (obj.isAttackAny()) {
             DC_WeaponObj weapon = obj.getActiveWeapon();
             String path =
-             (!obj.isStandardAttack()) ?  weapon.getImagePath()
-                :   StrPathBuilder.build("main", "actions", "standard attack",
-             weapon.getProperty(G_PROPS.WEAPON_GROUP),
-             weapon.getProperty(G_PROPS.BASE_TYPE),
-             obj.getName() + ".png");
+             (!obj.isStandardAttack()) ? weapon.getImagePath()
+              : StrPathBuilder.build("main", "actions", "standard attack",
+              weapon.getProperty(G_PROPS.WEAPON_GROUP),
+              weapon.getProperty(G_PROPS.BASE_TYPE),
+              obj.getName() + ".png");
             return
              TextureCache.getOrCreateR(path);
         }
@@ -114,7 +115,8 @@ public class RadialManager {
         if (action.getTargeting() == null) {
             return false;
         }
-
+        if (target == null)
+            return true;
         return action.canBeTargeted(target.getId(), false);
     }
 
@@ -156,7 +158,7 @@ public class RadialManager {
 
     public static List<RadialValueContainer> createNodes(
      Unit sourceUnit, DC_Obj target, List<? extends ActiveObj> actives,
-    boolean groupedAttacks
+     boolean groupedAttacks
     ) {
 
         List<RadialValueContainer> list = new ArrayList<>();
@@ -240,8 +242,8 @@ public class RadialManager {
 
         if (!attacks.isEmpty()) {
             if (groupedAttacks)
-            list.add(configureAttackParentNode(attacks,
-             RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, sourceUnit.getAttackAction(false)));
+                list.add(configureAttackParentNode(attacks,
+                 RADIAL_PARENT_NODE.MAIN_HAND_ATTACKS, target, sourceUnit.getAttackAction(false)));
             else {
                 for (RadialValueContainer sub : attacks) {
                     list.add(sub);
@@ -269,11 +271,12 @@ public class RadialManager {
 
         list.add(getParentNode(RADIAL_PARENT_NODE.SPECIAL, specialActions));
 
-        if (!sourceUnit.getSpells().isEmpty()) {
-            final List<RadialValueContainer> spellNodes =
-             SpellRadialManager.getSpellNodes(sourceUnit, target);
-            list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spellNodes));
-        }
+        if (target != null) //TODO REFACTOR
+            if (!sourceUnit.getSpells().isEmpty()) {
+                final List<RadialValueContainer> spellNodes =
+                 SpellRadialManager.getSpellNodes(sourceUnit, target);
+                list.add(getParentNode(RADIAL_PARENT_NODE.SPELLS, spellNodes));
+            }
 
         topActions.forEach(activeObj -> {
             list.add(configureActionNode(target, activeObj));

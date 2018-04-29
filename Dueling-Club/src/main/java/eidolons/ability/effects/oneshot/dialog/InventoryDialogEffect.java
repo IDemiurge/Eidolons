@@ -32,8 +32,10 @@ public class InventoryDialogEffect extends DialogEffect {
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
          new InventoryDataSource((Unit) ref.getSourceObj()));
 
-        boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
+        boolean result = (boolean) WaitMaster.waitForInput(
+         InventoryTransactionManager.OPERATION);
         getGame().getInventoryTransactionManager().setActive(false);
+
         return result;
     }
 

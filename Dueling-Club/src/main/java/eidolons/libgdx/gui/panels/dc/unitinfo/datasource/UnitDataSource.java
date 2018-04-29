@@ -291,7 +291,6 @@ public class UnitDataSource implements
     public ValueContainer getArmorObj() {
         final DC_ArmorObj armor = unit.getArmor();
 
-
         final ValueContainer container;
 
         if (armor != null) {
@@ -299,7 +298,7 @@ public class UnitDataSource implements
 
             WeaponTooltip tooltip = new WeaponTooltip();
 
-            tooltip.setUserObject(new WeaponToolTipDataSource() {
+            tooltip.setUserObject(new WeaponToolTipDataSource(null ) {
                 @Override
                 public List<ValueContainer> getMainParams() {
                     return Arrays.stream(ARMOR_TOOLTIP)
@@ -486,20 +485,7 @@ public class UnitDataSource implements
             }
 
             Tooltip tooltip = new WeaponTooltip();
-            tooltip.setUserObject(new WeaponToolTipDataSource() {
-                @Override
-                public List<ValueContainer> getMainParams() {
-                    return list;
-                }
-
-                @Override
-                public List<ValueContainer> getBuffs() {
-                    return weapon.getBuffs().stream()
-                     .filter(obj -> StringUtils.isNoneEmpty(obj.getType().getProperty(G_PROPS.IMAGE)))
-                     .map(AttackTooltipFactory.getObjValueContainerMapper())
-                     .collect(Collectors.toList());
-                }
-            });
+            tooltip.setUserObject(new WeaponToolTipDataSource(weapon)  );
             valueContainer.addListener(tooltip.getController());
         }
         return valueContainer;

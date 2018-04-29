@@ -17,6 +17,7 @@ import java.util.List;
 public class QuickAttackRadial extends RadialMenu {
     private final boolean offhand;
     QuickWeaponPanel quickWeaponPanel;
+
     public QuickAttackRadial(QuickWeaponPanel quickWeaponPanel, boolean offhand) {
         this.offhand = offhand;
         this.quickWeaponPanel = quickWeaponPanel;
@@ -33,15 +34,25 @@ public class QuickAttackRadial extends RadialMenu {
         openMenu();
     }
 
+    @Override
+    public void close() {
+        super.close();
+    }
+
     public void openMenu() {
         Unit source = quickWeaponPanel.getDataSource().getOwnerObj();
         List<? extends ActiveObj> attacks = quickWeaponPanel.
          getActiveWeaponDataSource().getActions();
-        List<RadialValueContainer> nodes =
-         RadialManager.createNodes(source, source, attacks, false);
+        List<RadialValueContainer> nodes = null;
+        try {
+            nodes =RadialManager.createNodes(source, null, attacks, false);
 //        getDualNode();
 //        getSpecialActionNodes();
-        init(nodes);
+            init(nodes);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+
     }
 
     @Override

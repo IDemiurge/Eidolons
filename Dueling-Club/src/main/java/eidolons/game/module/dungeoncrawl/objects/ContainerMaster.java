@@ -442,8 +442,9 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         Pair<InventoryDataSource, ContainerDataSource> param =
          new ImmutablePair<>(new InventoryDataSource(unit), new ContainerDataSource(obj, unit));
         GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
-        return (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
-
+        boolean result = (boolean) WaitMaster.waitForInput(InventoryTransactionManager.OPERATION);
+        unit.getGame().getManager().reset();
+        return result;
     }
     @Override
     public List<DC_ActiveObj> getActions(DungeonObj obj, Unit unit) {

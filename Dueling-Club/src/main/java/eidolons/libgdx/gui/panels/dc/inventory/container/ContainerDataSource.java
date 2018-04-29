@@ -30,6 +30,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
         if (obj instanceof ContainerObj) {
             items = new ArrayList<>(((ContainerObj) obj).getItems());
         } else {
+            obj.getGame().getDroppedItemManager().reset(obj.getX(), obj.getY());
             items = obj.getGame().getDroppedItemManager().getDroppedItems(obj);
         }
         handler = new ContainerClickHandler(obj.getImagePath(), items, unit, obj);// obj.getGame().getInventoryManager().getClickHandler();

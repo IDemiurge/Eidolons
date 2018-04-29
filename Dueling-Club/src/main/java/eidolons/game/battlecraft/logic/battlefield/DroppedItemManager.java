@@ -67,12 +67,15 @@ public class DroppedItemManager {
     public void reset() {
         for (int i = 0; i < itemMap.length; i++) {
             for (int j = 0; j < itemMap[0].length; j++) {
-                itemMap[i][j] =
-                 getItems(new Coordinates(i, j));
+                reset(i, j);
             }
         }
     }
 
+    public void reset(int i, int j) {
+        itemMap[i][j] =
+         getItems(new Coordinates(i, j));
+    }
     public List<DC_HeroItemObj> getDroppedItems(Obj cell) {
         return getDroppedItems(cell.getCoordinates());
     }

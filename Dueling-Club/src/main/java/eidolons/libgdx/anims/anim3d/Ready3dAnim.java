@@ -38,7 +38,7 @@ public class Ready3dAnim extends Weapon3dAnim {
         sprite = projectionsMap.get(projection);
         if (sprite == null)
             sprite = AnimMaster3d.getSpriteForAction(getDuration(),
-             getActive(), ref.getTargetObj(), WEAPON_ANIM_CASE.READY, projection);
+             getActive(),  WEAPON_ANIM_CASE.READY, projection);
 
         if (sprite == null)
             main.system.auxiliary.log.LogMaster.log(1, this + " null sprite  ");

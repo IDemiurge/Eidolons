@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
@@ -135,7 +134,7 @@ public class CombatInventory extends TablePanel implements Closable {
         if (!ExplorationMaster.isExplorationOn()) {
             source.getCancelHandler().run();
         } else {
-
+            GuiEventManager.trigger(GuiEventType.GAME_RESET );
         }
         setVisible(false);
         GuiEventManager.trigger(GuiEventType.GAME_RESUMED );

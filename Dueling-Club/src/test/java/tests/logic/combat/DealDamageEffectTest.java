@@ -20,7 +20,7 @@ import main.entity.type.ObjType;
 import main.system.math.Formula;
 import org.junit.Before;
 import org.junit.Test;
-import tests.JUnitDcTest;
+import tests.DcTest;
 import tests.init.JUnitDcInitializer;
 
 import static org.junit.Assert.assertTrue;
@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class DealDamageEffectTest extends JUnitDcTest {
+public class DealDamageEffectTest extends DcTest {
 
 
     private String typeName = "Pirate";

@@ -31,6 +31,7 @@ public class MultiLauncher {
         if (afterEngineInit != null) {
             afterEngineInit.run();
         }
+
         TestLauncher launcher = new TestLauncher(GAME_SUBCLASS.TEST);
         launcher.setFAST_MODE(false);
         launcher.setSUPER_FAST_MODE(false);

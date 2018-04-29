@@ -118,12 +118,16 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
-                if (!u.isAnnihilated())
-//                    continue; TODO why was Type necessary?
-                    units.addCast(!u.isDead() ? u.getType() : u);
                 if (u.isWall())
                     if (!u.isDead())
                         return false;
+                if (!u.isNeutral() && !u.isMine())
+                    if (game.getVisionMaster().checkInvisible(u)) {
+                        continue;
+                    }
+                if (!u.isAnnihilated())
+//                    continue; TODO why was Type necessary?
+                    units.addCast(!u.isDead() ? u.getType() : u);
             }
         }
         //check if '1 unit per cell' is on

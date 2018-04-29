@@ -1,11 +1,7 @@
 package main.elements.conditions.standard;
 
-import main.content.DC_TYPE;
-import main.content.enums.entity.UnitEnums;
-import main.content.values.properties.G_PROPS;
 import main.elements.conditions.ConditionImpl;
 import main.entity.Ref;
-import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 
 public class OccupiedCondition extends ConditionImpl {
@@ -23,29 +19,29 @@ public class OccupiedCondition extends ConditionImpl {
         }
         boolean result = !game.getMovementManager().canMove(
          ref.getSourceObj(), c);
-
-        if (result) {
-            for (Obj obj : game.getObjectsOnCoordinate(c)) {
-                if (game.getVisionMaster().checkInvisible(obj)) {
-                    result = false;
-                    continue;
-                }
-                    if (ref.getSourceObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
-                     "" + UnitEnums.STANDARD_PASSIVES.FLYING)) {
-                        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
-                            if (obj.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
-                             + UnitEnums.STANDARD_PASSIVES.TALL)) {
-                                result = false;
-                            }
-                            continue;
-                        }
-                    }
-
-                return true;
-
-            }
-        }
-        return result;
+        return  result;
+//        if (result) {
+//            for (Obj obj : game.getObjectsOnCoordinate(c)) {
+//                if (game.getVisionMaster().checkInvisible(obj)) {
+//                    result = false;
+//                    continue;
+//                }
+//                    if (ref.getSourceObj().checkProperty(G_PROPS.STANDARD_PASSIVES,
+//                     "" + UnitEnums.STANDARD_PASSIVES.FLYING)) {
+//                        if (obj.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
+//                            if (obj.checkProperty(G_PROPS.STANDARD_PASSIVES, ""
+//                             + UnitEnums.STANDARD_PASSIVES.TALL)) {
+//                                result = false;
+//                            }
+//                            continue;
+//                        }
+//                    }
+//
+//                return true;
+//
+//            }
+//        }
+//        return result;
     }
 
     protected Coordinates getCoordinates(Ref ref) {

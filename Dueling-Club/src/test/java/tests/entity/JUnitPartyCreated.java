@@ -4,14 +4,14 @@ import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import org.junit.Test;
 import res.JUnitResources;
-import tests.JUnitDcTest;
+import tests.DcTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class JUnitPartyCreated extends JUnitDcTest {
+public class JUnitPartyCreated extends DcTest {
 
 
     protected Unit unit;

@@ -25,7 +25,6 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
-import main.entity.obj.Obj;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -287,8 +286,9 @@ public class AnimMaster3d {
 
     public static SpriteAnimation getSpriteForAction(float duration,
                                                      DC_ActiveObj activeObj,
-                                                     Obj targetObj, WEAPON_ANIM_CASE aCase, PROJECTION projection) {
-        return getSpriteForAction(duration, activeObj, targetObj, aCase, projection.bool);
+                                                     WEAPON_ANIM_CASE aCase, PROJECTION projection) {
+        return getSpriteForAction(duration, activeObj,
+         aCase, projection.bool);
     }
 
     private static String getPotionKey(DC_ActiveObj activeObj) {
@@ -310,7 +310,8 @@ public class AnimMaster3d {
 
     public static SpriteAnimation getSpriteForAction(float duration,
                                                      DC_ActiveObj activeObj,
-                                                     Obj targetObj, WEAPON_ANIM_CASE aCase, Boolean projection) {
+                                                     WEAPON_ANIM_CASE aCase,
+                                                     Boolean projection) {
         // loops,
 
         //TODO who is displayed above on the cell?

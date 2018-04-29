@@ -89,6 +89,11 @@ public class HeroDataModel extends Unit {
         resetting = false;
     }
 
+    @Override
+    public boolean isDirty() {
+        return true;
+    }
+
     public HeroDataModel(ObjType type, Pair<ParamMap, PropMap> pair) {
         super(type);
         cloneMaps(pair.getRight(), pair.getLeft());

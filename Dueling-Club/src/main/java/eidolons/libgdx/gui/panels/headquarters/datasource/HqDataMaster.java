@@ -60,7 +60,7 @@ public class HqDataMaster {
     public static void operation(HeroDataModel model,
                                  HQ_OPERATION operation,
                                  Object... args) {
-        HqDataMaster master = map.get(model.getHero());
+        HqDataMaster master = getInstance(model.getHero());
 
         master.applyOperation(model,
          operation, args);

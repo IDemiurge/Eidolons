@@ -37,6 +37,7 @@ public class HqMaster {
 
         }
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, list);
+        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
 
 
     }

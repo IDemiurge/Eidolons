@@ -271,12 +271,8 @@ public class Unit extends DC_UnitModel {
 
     @Override
     public void reset() {
-        if (isPlayerCharacter())
-            main.system.auxiliary.log.LogMaster.log(1,"QuickItems= " +getQuickItems());
-        super.reset();
-        if (isPlayerCharacter())
-            main.system.auxiliary.log.LogMaster.log(1,"QuickItems after = " +getQuickItems());
-    }
+          super.reset();
+        }
 
     public String getDynamicInfo() {
         String info = "";

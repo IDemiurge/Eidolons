@@ -16,6 +16,8 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
@@ -38,10 +40,10 @@ public class UnitViewFactory {
         GridUnitView view = new GridUnitView(options);
 
         if (VisionMaster.isLastSeenOn()) {
-            if (!bfObj.isWall()){
-            LastSeenView lsv = new LastSeenView(options, view);
-            view.setLastSeenView(lsv);
-            new LastSeenTooltipFactory().add(lsv, bfObj);
+            if (!bfObj.isWall()) {
+                LastSeenView lsv = new LastSeenView(options, view);
+                view.setLastSeenView(lsv);
+                new LastSeenTooltipFactory().add(lsv, bfObj);
             }
         }
         view.setOutlinePathSupplier(() -> {
@@ -90,11 +92,29 @@ public class UnitViewFactory {
         return new BattleClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;//event.getButton() == Input.Buttons.RIGHT;
+                if (button == 1)
+                    return true;
+                return super.touchDown(event, x, y, pointer, button);
             }
 
             @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (getTapCount() > 1)
+                    if (event.getButton() == 0)
+                        if (bfObj.isPlayerCharacter()) {
+                            HqMaster.openHqPanel();
+                        } else if (bfObj instanceof Unit) {
+                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+                             new UnitDataSource((Unit) bfObj));
+                        }
+                super.clicked(event, x, y);
+            }
+//
+
+            @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
+
                 if (IntroTestLauncher.running) {
                     ScenarioMetaMaster m = new ScenarioMetaMaster("Pride and Treachery");
                     GameDialogue dialogue = null;//new LinearDialogue();
@@ -119,7 +139,9 @@ public class UnitViewFactory {
 
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
+                super.touchUp(event, x, y, pointer, button);
             }
+
         };
     }
 

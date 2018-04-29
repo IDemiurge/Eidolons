@@ -25,6 +25,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestMasterContent {
+    public static final String TEST_WEAPONS = "inferior iron long sword;"
+     + "inferior iron long sword;"
+     + "inferior iron short sword;"
+     + "inferior iron dirk;"
+     + "inferior iron dagger;"
+     + "inferior iron knife;"
+     + "inferior iron war axe;"
+     + "inferior iron great axe;"
+     + "inferior iron hand axe;"
+     + "inferior iron mace;"
+     + "inferior iron battle hammer;"
+     + "inferior redwood battle staff;"
+     + "inferior redwood longbow;"
+     + "inferior redwood staff;";
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
     private static final String testGroups = "Fire;Water;Air;Earth;";
     private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
@@ -112,7 +126,7 @@ public class TestMasterContent {
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
-    private static boolean weaponTest=true;
+    private static boolean weaponTest = true;
     String MAGIC_SCHOOLS = "";
     int circle;
     // TODO also give them for free to all units!
@@ -394,20 +408,10 @@ public class TestMasterContent {
             first = true;
             last = false;
         }
-        if (weaponTest ){
-            type.addProperty(PROPS.INVENTORY, "inferior iron long sword", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron short sword", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron dirk", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron dagger", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron knife", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron war axe", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron great axe", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron hand axe", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron mace", true);
-            type.addProperty(PROPS.INVENTORY, "inferior iron battle hammer", true);
-            type.addProperty(PROPS.INVENTORY, "inferior redwood battle staff", true);
-            type.addProperty(PROPS.INVENTORY, "inferior redwood longbow", true);
-            type.addProperty(PROPS.INVENTORY, "inferior redwood staff", true);
+        if (weaponTest) {
+            for (String substring : StringMaster.openContainer(TEST_WEAPONS)) {
+                type.addProperty(PROPS.INVENTORY, substring, true);
+            }
 
         }
 //            for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
@@ -488,6 +492,10 @@ public class TestMasterContent {
         if (weapon.getOwnerObj().getLevel() < 4)
             return false;
         return weapon.isMelee();
+    }
+
+    public static void setWeaponTest(boolean weaponTest) {
+        TestMasterContent.weaponTest = weaponTest;
     }
 
     private void initTestConfig() {

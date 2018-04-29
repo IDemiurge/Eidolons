@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GDX;
@@ -61,6 +62,16 @@ public class HqPanel extends TablePanel implements Blocking {
         setSize(GDX.size(1600), GDX.size(900) );
         addElements();
 //        debugAll();
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+
+        Actor actor=super.hit(x, y, touchable);
+            if (actor==null )
+                if (isVisible())
+                    return this;
+        return actor;
     }
 
     public static void setActiveInstance(HqPanel activeInstance) {

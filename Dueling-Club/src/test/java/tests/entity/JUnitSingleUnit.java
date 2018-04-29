@@ -3,12 +3,12 @@ package tests.entity;
 import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
 import res.JUnitResources;
-import tests.JUnitDcTest;
+import tests.DcTest;
 
 /**
  * Created by JustMe on 4/9/2018.
  */
-public class JUnitSingleUnit extends JUnitDcTest {
+public class JUnitSingleUnit extends DcTest {
 
     protected Unit unit;
 

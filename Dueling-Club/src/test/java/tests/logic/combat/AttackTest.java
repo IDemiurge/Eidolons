@@ -7,7 +7,7 @@ import main.elements.conditions.Condition;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import org.junit.Test;
 import res.JUnitResources;
-import tests.JUnitDcTest;
+import tests.DcTest;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 /**
  * Created by Nyx on 3/16/2017.
  */
-public class AttackTest extends JUnitDcTest {
+public class AttackTest extends DcTest {
 
 
     private Unit source;

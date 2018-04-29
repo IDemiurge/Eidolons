@@ -1,10 +1,10 @@
 package tests.entity;
 
-import tests.JUnitDcTest;
+import tests.DcTest;
 
 /**
  * Created by JustMe on 4/12/2018.
  */
-public class CreateUnitTest extends JUnitDcTest {
+public class CreateUnitTest extends DcTest {
 
 }

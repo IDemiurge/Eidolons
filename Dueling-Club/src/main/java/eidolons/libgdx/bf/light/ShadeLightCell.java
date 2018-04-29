@@ -281,7 +281,8 @@ public class ShadeLightCell extends SuperContainer {
 
     private void rotate(float delta) {
         if (type == SHADE_LIGHT.LIGHT_EMITTER) {
-            setRotation(getRotation()+delta*0.5f);
+            getContent().setOrigin( getContent().getWidth()/2,getContent().getHeight()/2);
+           getContent(). setRotation(getContent().getRotation()+delta*  0.5f);
         }
     }
 

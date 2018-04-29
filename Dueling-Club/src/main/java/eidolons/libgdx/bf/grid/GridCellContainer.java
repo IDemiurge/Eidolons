@@ -245,7 +245,7 @@ public class GridCellContainer extends GridCell {
             unitViewCount = getUnitViewsVisible().size();
 //            main.system.auxiliary.log.LogMaster.log(1, actor + " added to " + this);
             dirty = true;
-//            recalcUnitViewBounds();
+            recalcUnitViewBounds();
         }
     }
 

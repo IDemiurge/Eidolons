@@ -36,16 +36,19 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
     private ExplorationMaster master;
+    private boolean resetRequired;
 
     public ExploreGameLoop(DC_Game game) {
         super(game);
         master = game.getDungeonMaster().getExplorationMaster();
         macroTimeMaster = MacroTimeMaster.getInstance();
+        GuiEventManager.bind(GuiEventType.GAME_RESET,
+         d-> {
+            resetRequired=true;
+            signal();
+         });
     }
 
-    public ExploreGameLoop() {
-        super();
-    }
 
     protected static void startRealTimeLogic() {
         Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
@@ -168,7 +171,11 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 }
             }
         }
-
+if (resetRequired)
+{
+    game.getManager().reset();
+    resetRequired=false;
+}
         if (master.getAiMaster().isAiActs()) {
 
             while (!master.getAiMaster().getAiActionQueue().isEmpty()) {

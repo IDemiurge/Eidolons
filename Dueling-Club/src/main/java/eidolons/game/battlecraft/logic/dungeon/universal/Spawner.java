@@ -107,6 +107,8 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (owner == null)
             owner = getPlayerManager().getPlayer(data.getContainerValue(PARTY_VALUE.PLAYER_NAME, i));
         List<String> types = data.getContainerValues(PARTY_VALUE.MEMBERS);
+        if (types.isEmpty())
+            return new ArrayList<>();
         List<String> coordinates = data.getContainerValues(PARTY_VALUE.COORDINATES);
         if (coordinates.isEmpty()) {
             coordinates = getPositioner().getCoordinates(types, owner, mode);

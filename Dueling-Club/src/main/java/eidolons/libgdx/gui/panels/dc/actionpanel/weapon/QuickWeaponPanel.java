@@ -11,7 +11,7 @@ import eidolons.libgdx.gui.controls.Clicker;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.tooltips.DynamicTooltip;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.tooltips.ScaleAndTextTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.data.filesys.PathFinder;
@@ -19,8 +19,6 @@ import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
@@ -55,8 +53,9 @@ public class QuickWeaponPanel extends TablePanel {
         addActor(radial = new QuickAttackRadial(this, offhand));
 //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
         addListener(getListener());
-        weapon.addListener(new DynamicTooltip(() -> dataSource.getName()).getController());
-//        weapon.addListener(new WeaponTooltip().getController());
+
+        initTooltip();
+
         background.setPosition(10, 10);
         weapon.setPosition(WEAPON_POS_X, 0);
         weapon.setFadeDuration(0.2f);
@@ -69,6 +68,14 @@ public class QuickWeaponPanel extends TablePanel {
              background.getWidth() - toggleUnarmed.getWidth()/2,
              background.getHeight() - toggleUnarmed.getHeight()/2);
 
+    }
+
+    private void initTooltip() {
+        if (getActiveWeaponDataSource()==null )
+            return;
+        weapon.clearListeners();
+        WeaponTooltip t = new WeaponTooltip(getActiveWeaponDataSource().getWeapon());
+        weapon.addListener(t.getController());
     }
 
     public void setDataSource(WeaponDataSource source, boolean alt) {
@@ -107,7 +114,7 @@ public class QuickWeaponPanel extends TablePanel {
         } else {
             toggleUnarmed.setDisabled(true);
         }
-
+        initTooltip();
     }
 
     private void toggleUnarmed() {
@@ -151,7 +158,7 @@ public class QuickWeaponPanel extends TablePanel {
                      dataSource.getWeapon());
 
                 } else {
-                    WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
+                    getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(
                      new ActionInput(getDataSource().getOwnerObj().getAttackAction(offhand)
                       , new Context(getDataSource().getOwnerObj(), null))
                     );
@@ -164,6 +171,7 @@ public class QuickWeaponPanel extends TablePanel {
             public void entered() {
                 super.entered();
                 weapon.setZIndex(getChildren().size - 2);
+                radial.setZIndex(Integer.MAX_VALUE);
                 weapon.setFadeDuration(0.25f);
                 weapon.setImage(getActiveWeaponDataSource(). getLargeImage());
                 int i = !offhand ? -1 : 1;
@@ -174,6 +182,7 @@ public class QuickWeaponPanel extends TablePanel {
             protected void exited() {
                 super.exited();
                 weapon.setZIndex(1);
+                radial.setZIndex(Integer.MAX_VALUE);
                 weapon.setFadeDuration(0.5f);
                 weapon.setImage(getActiveWeaponDataSource().getNormalImage());
                 ActorMaster.addMoveToAction(weapon, WEAPON_POS_X , 0, 0.75f);

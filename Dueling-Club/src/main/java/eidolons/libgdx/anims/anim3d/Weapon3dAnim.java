@@ -143,7 +143,7 @@ public class Weapon3dAnim extends ActionAnim {
             return sprite;
         }
         sprite = AnimMaster3d.getSpriteForAction(getDuration(),
-         getActive(), ref.getTargetObj(), getCase(), projection);
+         getActive(),   getCase(), projection);
         projectionsMap.put(projection, sprite);
         return sprite;
     }

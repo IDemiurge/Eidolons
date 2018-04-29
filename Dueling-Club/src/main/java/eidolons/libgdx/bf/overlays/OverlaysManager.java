@@ -243,9 +243,9 @@ public class OverlaysManager extends SuperActor {
         } else if (checkOverlayForObj(STEALTH, obj)) {
             drawOverlay(actor, STEALTH, batch);
         }
-        if (checkOverlayForObj(BAG, obj)) {
-            drawOverlay(actor, BAG, batch);
-        }
+//        if (checkOverlayForObj(BAG, obj)) {
+//            drawOverlay(actor, BAG, batch);
+//        }
     }
 
     private void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
