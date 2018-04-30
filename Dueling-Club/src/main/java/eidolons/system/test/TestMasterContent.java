@@ -36,7 +36,7 @@ public class TestMasterContent {
      + "inferior iron hand axe;"
      + "inferior iron mace;"
      + "inferior iron battle hammer;"
-     + "inferior redwood battle staff;"
+     + "inferior redwood battlestaff;"
      + "inferior redwood longbow;"
      + "inferior redwood staff;";
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";

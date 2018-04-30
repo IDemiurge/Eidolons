@@ -1,6 +1,7 @@
 package tests.entity;
 
 import eidolons.entity.obj.unit.Unit;
+import org.junit.Ignore;
 import org.junit.Test;
 import res.JUnitResources;
 
@@ -17,6 +18,7 @@ public class TwoUnitsTest extends JUnitPartyCreated {
         return JUnitResources.DEFAULT_UNIT;
     }
     @Test
+    @Ignore
     public void testUnitCreatedWithRightName() {
         assertTrue(!game.getUnits().isEmpty());
         assertTrue(unit != null);

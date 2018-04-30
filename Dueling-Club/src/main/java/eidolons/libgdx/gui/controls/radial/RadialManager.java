@@ -485,6 +485,9 @@ public class RadialManager {
             }
 
         };
+        if (active instanceof DC_SpellObj) {
+            return new SpellRadialContainer(textureRegion, runnable,valid, active, target);
+        }
         return new RadialValueContainer(textureRegion, runnable, valid, active, target);
     }
 

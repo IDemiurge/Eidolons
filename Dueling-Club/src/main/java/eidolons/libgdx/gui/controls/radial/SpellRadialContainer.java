@@ -19,7 +19,7 @@ public class SpellRadialContainer extends RadialValueContainer {
 
     @Override
     protected boolean isScaledOnHover() {
-        return super.isScaledOnHover();
+        return false;
     }
 
     @Override

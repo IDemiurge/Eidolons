@@ -311,11 +311,8 @@ public class GridPanel extends Group {
 //            unitView.setVisible(true);
         });
 
-        GuiEventManager.bind(UNIT_STARTS_MOVING, obj -> {
-            detachUnitView((BattleFieldObject) obj.get());
-        });
         GuiEventManager.bind(UNIT_MOVED, obj -> {
-            moveUnitView((BattleFieldObject) obj.get());
+            unitMoved((BattleFieldObject) obj.get());
         });
         GuiEventManager.bind(UPDATE_GUI, obj -> {
             if (!VisionManager.isVisionHacked())
@@ -558,7 +555,7 @@ public class GridPanel extends Group {
             } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
                 if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(),
                  viewMap.get(ref.getSourceObj())))
-                    moveUnitView((BattleFieldObject) ref.getSourceObj());
+                    unitMoved((BattleFieldObject) ref.getSourceObj());
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
                 caught = true;
@@ -704,7 +701,10 @@ public class GridPanel extends Group {
         return battleFieldObjectbj instanceof Entrance;
     }
 
-    private void moveUnitView(BattleFieldObject object) {
+    public void unitViewMoved(BaseView view) {
+        unitMoved(getObjectForView(view));
+    }
+        public void unitMoved(BattleFieldObject object) {
         int rows1 = rows - 1;
         GridUnitView uv = (GridUnitView) viewMap.get(object);
         if (uv == null) {
@@ -732,7 +732,7 @@ public class GridPanel extends Group {
         if (battleFieldObjectbj.isPlayerCharacter()) {
             mainHeroView = view;
         }
-        moveUnitView(battleFieldObjectbj);
+        unitMoved(battleFieldObjectbj);
         if (!isVisibleByDefault(battleFieldObjectbj))
             view.setVisible(false);
         return view;
@@ -740,7 +740,7 @@ public class GridPanel extends Group {
 
     private void addUnitView(BattleFieldObject heroObj) {
         BaseView uv = createUnitView(heroObj);
-        moveUnitView(heroObj);
+        unitMoved(heroObj);
         if (!isVisibleByDefault(heroObj))
             uv.setVisible(false);
     }

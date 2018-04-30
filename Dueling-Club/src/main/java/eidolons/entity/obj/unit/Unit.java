@@ -1166,7 +1166,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public List<DC_ActiveObj> getAttacks(boolean offhand) {
-        return getAction(offhand ? DC_ActionManager.ATTACK : DC_ActionManager.OFFHAND_ATTACK).getSubActions();
+        return getAction(offhand ? DC_ActionManager.OFFHAND_ATTACK : DC_ActionManager.ATTACK).getSubActions();
     }
 
     public void resetQuickSlotsNumber() {

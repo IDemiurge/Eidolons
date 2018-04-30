@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.controls.radial;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.obj.DC_Obj;
@@ -84,12 +85,19 @@ public class SpellRadialManager {
             final DC_ActiveObj action = (DC_ActiveObj) object.getContents();
             valueContainer =
              RadialManager.configureActionNode(target, action);
+
+            valueContainer.getImageContainer().getActor().setImage(new Image(
+             TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(),
+             object.getTexturePath())));
+
+            valueContainer.overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
             ActionCostTooltip tooltip = new ActionCostTooltip(action);
             tooltip.setRadial(true);
             valueContainer.addListener(tooltip.getController());
         } else {
             valueContainer = new SpellRadialContainer(
-             TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(), object.getTexturePath()),
+             TextureCache.getOrCreateSizedRegion(UiMaster.getIconSize(),
+              object.getTexturePath()),
              null
             );
 

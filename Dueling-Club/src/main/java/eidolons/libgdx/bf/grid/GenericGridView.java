@@ -120,6 +120,8 @@ public class GenericGridView extends UnitView {
         if (emblemLighting != null)
             alphaFluctuation(emblemLighting, delta);
         super.act(delta);
+        if (hpBar!=null )
+            hpBar.act(delta);
     }
 
 

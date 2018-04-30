@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.obj.unit.Unit;
@@ -44,6 +45,12 @@ public class HqPanel extends TablePanel implements Blocking {
     HqParamPanel staticParams;
 
 //    PartyDataSource partyDataSource;
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setShader(null);
+        super.draw(batch, parentAlpha);
+    }
 
     public HqPanel() {
 

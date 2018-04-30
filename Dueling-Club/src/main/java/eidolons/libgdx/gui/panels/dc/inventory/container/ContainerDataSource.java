@@ -10,8 +10,8 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ContainerDataSource implements InventoryTableDataSource {
 
-    private List<DC_HeroItemObj> items;
+    private DequeImpl<DC_HeroItemObj> items;
     private InventoryValueContainerFactory factory;
     private DC_Obj obj;
     private ContainerClickHandler handler;
@@ -28,7 +28,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
         this.obj = obj;
         items = null;
         if (obj instanceof ContainerObj) {
-            items = new ArrayList<>(((ContainerObj) obj).getItems());
+            items =  ((ContainerObj) obj).getItems();
         } else {
             obj.getGame().getDroppedItemManager().reset(obj.getX(), obj.getY());
             items = obj.getGame().getDroppedItemManager().getDroppedItems(obj);

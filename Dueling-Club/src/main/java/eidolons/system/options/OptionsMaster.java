@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
@@ -99,6 +100,9 @@ public class OptionsMaster {
             String value = gameplayOptions.getValue(key);
             if (!StringMaster.isInteger(value)) {
                 switch (key) {
+                    case GHOST_MODE:
+                        VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
+                        break;
                     case RULES_SCOPE:
                         RuleKeeper.setScope(
                          new EnumMaster<RULE_SCOPE>().

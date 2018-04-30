@@ -77,7 +77,7 @@ public class AnimMaster extends Group {
 
         constructor = new AnimationConstructor();
         controller = new AnimController();
-        AnimMaster3d.init();
+//        AnimMaster3d.init();
 //        bindEvents(); now in GridPanel.bindEvents()
 
     }

@@ -139,6 +139,8 @@ public class MusicMaster {
     public void scopeChanged(MUSIC_SCOPE scope) {
         if (!isRunning())
             return;
+        if (!isOn())
+            return;
         trackCache.put(this.scope, playedMusic);
         playList.clear();
         setScope(scope);

@@ -20,6 +20,19 @@ public class GridUnitView extends GenericGridView {
         initQueueView(o);
     }
 
+//    @Override
+//    public void draw(Batch batch, float parentAlpha) {
+//        Vector2 v = new Vector2(getX(), getY());
+//        v =localToStageCoordinates(v);
+//
+//        super.draw(batch, parentAlpha);
+//    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
     @Override
     public void setToolTip(Tooltip tooltip) {
         super.setToolTip(tooltip);

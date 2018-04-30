@@ -2,6 +2,7 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
@@ -18,14 +19,10 @@ import main.game.bf.Coordinates;
 import main.system.EventCallbackParam;
 import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static main.system.GuiEventType.UNIT_MOVED;
 
 /**
  * Created by JustMe on 1/14/2017.
@@ -179,7 +176,24 @@ public class MoveAnimation extends ActionAnim {
 
     @Override
     public List<Pair<GuiEventType, EventCallbackParam>> getEventsOnFinish() {
-        return Arrays.asList(new ImmutablePair<>(UNIT_MOVED, new EventCallbackParam(unit)));
+        return     new ArrayList<>() ;
+//         Arrays.asList(new ImmutablePair<>(UNIT_MOVED, new EventCallbackParam(unit)));
+    }
+
+    @Override
+    public void finished() {
+        super.finished();
+        Vector2 v = new Vector2(getActor().getX(), getActor().getY());
+        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after move " +v);
+        v =getActor(). localToStageCoordinates(v);
+        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after move abs " +v);
+
+        DungeonScreen.getInstance().getGridPanel(). unitViewMoved((BaseView) getActor());
+        v = new Vector2(getActor().getX(), getActor().getY());
+        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after attach " +v);
+        v =getActor(). localToStageCoordinates(v);
+        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after attach abs " +v);
+
     }
 
     @Override

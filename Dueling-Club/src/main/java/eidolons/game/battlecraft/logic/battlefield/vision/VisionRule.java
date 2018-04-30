@@ -8,6 +8,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 import eidolons.test.debug.DebugMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
@@ -43,13 +45,32 @@ import main.system.math.PositionMaster;
  * Aggro
  */
 public class VisionRule {
+    private static Boolean playerUnseenMode;
     VisionMaster master;
     VisionController controller;
-    private boolean playerUnseenMode = CoreEngine.isFastMode();
 
     public VisionRule(VisionMaster master) {
         this.master = master;
         this.controller = master.getVisionController();
+        if (!getPlayerUnseenMode()) {
+            playerUnseenMode = OptionsMaster.getGameplayOptions().
+             getBooleanValue(GAMEPLAY_OPTION.GHOST_MODE);
+        }
+    }
+
+    public static Boolean getPlayerUnseenMode() {
+        if (playerUnseenMode == null) {
+            if (CoreEngine.isFastMode())
+                playerUnseenMode = true;
+            else
+                playerUnseenMode = OptionsMaster.getGameplayOptions().
+                 getBooleanValue(GAMEPLAY_OPTION.GHOST_MODE);
+        }
+        return playerUnseenMode;
+    }
+
+    public static void setPlayerUnseenMode(Boolean playerUnseenMode) {
+        VisionRule.playerUnseenMode = playerUnseenMode;
     }
 
     public static boolean isSightInfoAvailable(BattleFieldObject observer) {
@@ -58,9 +79,6 @@ public class VisionRule {
         return observer.getPlayerVisionStatus() == PLAYER_VISION.DETECTED;
     }
 
-    public void setPlayerUnseenMode(boolean playerUnseenMode) {
-        this.playerUnseenMode = playerUnseenMode;
-    }
 
     public void fullReset(Unit... observers) {
         BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
@@ -120,7 +138,7 @@ public class VisionRule {
             return false;
         if (observer.isPlayerCharacter())
             return true;
-        else if (playerUnseenMode) {
+        else if (getPlayerUnseenMode()) {
             return false;
         }
 
@@ -316,6 +334,6 @@ public class VisionRule {
 
 
     public void togglePlayerUnseenMode() {
-        playerUnseenMode = !playerUnseenMode;
+        playerUnseenMode = !getPlayerUnseenMode();
     }
 }

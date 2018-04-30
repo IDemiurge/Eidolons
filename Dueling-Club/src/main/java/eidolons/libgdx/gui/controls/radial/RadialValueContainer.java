@@ -98,6 +98,11 @@ public class RadialValueContainer extends ActionValueContainer {
 
     }
 
+    @Override
+    protected boolean isScaledOnHover() {
+        return false;
+    }
+
     protected void initSize() {
         overrideImageSize(UiMaster.getIconSize(), UiMaster.getIconSize());
     }
@@ -107,10 +112,9 @@ public class RadialValueContainer extends ActionValueContainer {
             return;
         if (underlay == null)
             return;
-        setUnderlayOffsetX((imageContainer.getActorX() +
-         (imageContainer.getActorWidth() - underlay.getRegionWidth())) / 3 * 2 + 3);
-        setUnderlayOffsetY((imageContainer.getActorY() +
-         (imageContainer.getActorHeight() - underlay.getRegionHeight())) / 3 * 2 - 2);
+        setUnderlayOffsetX(
+         (getWidth() - underlay.getRegionWidth())  / 3 * 2 + 3);
+        setUnderlayOffsetY( (getHeight() - underlay.getRegionHeight())  / 3 * 2 + 7);
         if (getRadial() != null)
             if (getRadial().getActions().size > 0)
                 return;
@@ -199,7 +203,7 @@ public class RadialValueContainer extends ActionValueContainer {
                 infoLabel.setColor(valid ? new Color(1, 1, 1, 1) : new Color(1, 0.2f, 0.3f, 1));
 
                 infoLabel.setPosition((64 - infoLabel.getWidth()) / 2,
-                 (imageContainer.getActor().getContent().getImageHeight() + infoLabel.getHeight()) / 2);
+                 (getHeight() + infoLabel.getHeight()) / 2);
             }
 
             if (tooltip == null)

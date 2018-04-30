@@ -24,7 +24,7 @@ public class AtbCalculator {
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
             if ( ExplorationMaster.isExplorationOn())
                 return;
-            Array<AtbUnit> units = controller.getUnits();
+            Array<AtbUnit> units = this.controller.getUnits();
             int index = getIndexAfterAction((DC_ActiveObj) p.get());
             GuiEventManager.trigger(GuiEventType.
              ATB_POS_PREVIEW, index);

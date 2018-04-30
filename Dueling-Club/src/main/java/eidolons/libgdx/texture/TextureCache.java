@@ -39,7 +39,7 @@ public class TextureCache {
     private String imagePath;
     private TextureAtlas textureAtlas;
     private Pattern pattern;
-    private static boolean returnEmptyOnFail;
+    private static boolean returnEmptyOnFail=true;
 
 
     private TextureCache() {

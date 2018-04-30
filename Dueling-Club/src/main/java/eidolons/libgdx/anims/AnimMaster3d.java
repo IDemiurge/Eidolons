@@ -90,7 +90,9 @@ public class AnimMaster3d {
             substituteMap.put(sub[0], sub[1]);
         }
     }
-
+static{
+        init();
+}
     public static boolean is3dAnim(DC_ActiveObj active) {
         if (!active.isAttackAny()) return false;
         DC_WeaponObj weapon = active.getActiveWeapon();

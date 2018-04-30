@@ -262,38 +262,39 @@ public class ValueContainer extends TablePanel {
 //        imageContainer.maxSize(w, h);
         if (imageContainer.getActor() != null) {
             if (isScaledOnHover()) {
+                imageContainer.setActorX(
+                 imageContainer.getActor().getWidth()/2 - w/2);
+                imageContainer.setActorY(
+                 imageContainer.getActor().getHeight()/2  - h/2);
                 imageScaleX = w / imageContainer.getActor().getWidth();
                 imageScaleY = h / imageContainer.getActor().getHeight();
                 imageContainer.getActor().setScale(getImageScaleX(),
                  getImageScaleY());
-//                imageContainer.setActorX(
-//                 imageContainer.getActor().getWidth() * imageScaleX - w);
-//                imageContainer.setActorY(
-//                 imageContainer.getActor().getHeight() * imageScaleY - h);//*imageScaleY - h);
-
-//                imageContainer.getActor().getContent(). setX(
-//                 imageContainer.getActor().getWidth() - w);
-//                imageContainer.getActor().getContent(). setY(
-//                 imageContainer.getActor().getHeight() - h);
-
-//                table.add(button).width(Value.percentWidth(.75F, table));
+                setFixedSize(true);
+                setSize(w, h);
             } else
-//                imageContainer.maxSize(w, h);
+            {
                 imageContainer.size(w, h);
+//                defaults().size(w, h);
+                setFixedSize(true);
+                setSize(w, h);
+//                imageContainer.getActor().    setSize(w, h);
+                imageContainer.setActorX(
+                 imageContainer.getActor().getWidth()/2 - w/2);
+                imageContainer.setActorY(
+                 imageContainer.getActor().getHeight()/2  - h/2);
+            }
         }
     }
 
     @Override
     public float getWidth() {
-        if (imageScaleX != 0)
-            return super.getWidth() * imageScaleX;
         return super.getWidth();
     }
 
+
     @Override
     public float getHeight() {
-        if (imageScaleY != 0)
-            return super.getHeight() * imageScaleY;
         return super.getHeight();
     }
 

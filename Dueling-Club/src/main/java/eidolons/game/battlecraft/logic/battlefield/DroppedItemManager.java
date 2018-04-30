@@ -11,6 +11,7 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.datatypes.DequeImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class DroppedItemManager {
 
-    List<DC_HeroItemObj>[][] itemMap;
+    DequeImpl<DC_HeroItemObj>[][] itemMap;
     private DC_Game game;
 
     public DroppedItemManager(DC_Game game) {
@@ -26,7 +27,7 @@ public class DroppedItemManager {
     }
 
     public void init() {
-        itemMap = new List
+        itemMap = new DequeImpl
          [game.getDungeon().getCellsX()]
          [game.getDungeon().getCellsY()];
 
@@ -76,20 +77,20 @@ public class DroppedItemManager {
         itemMap[i][j] =
          getItems(new Coordinates(i, j));
     }
-    public List<DC_HeroItemObj> getDroppedItems(Obj cell) {
+    public DequeImpl<DC_HeroItemObj> getDroppedItems(Obj cell) {
         return getDroppedItems(cell.getCoordinates());
     }
-    public List<DC_HeroItemObj> getDroppedItems(Coordinates coordinates) {
+    public DequeImpl<DC_HeroItemObj> getDroppedItems(Coordinates coordinates) {
         return itemMap[coordinates.getX()][coordinates.getY()];
     }
 
 
-    private List<DC_HeroItemObj> getItems(Coordinates coordinates) {
+    private DequeImpl<DC_HeroItemObj> getItems(Coordinates coordinates) {
         return getItems(game.getCellByCoordinate(coordinates));
     }
 
-    private List<DC_HeroItemObj> getItems(Obj cell) {
-        List<DC_HeroItemObj> list = new ArrayList<>();
+    private DequeImpl<DC_HeroItemObj> getItems(Obj cell) {
+        DequeImpl<DC_HeroItemObj> list = new DequeImpl<>();
         for (String id : StringMaster.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
             Obj item = game.getObjectById(StringMaster.getInteger(id));
             if (item != null) {

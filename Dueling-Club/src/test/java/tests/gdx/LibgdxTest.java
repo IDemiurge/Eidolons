@@ -1,5 +1,6 @@
 package tests.gdx;
 
+import eidolons.libgdx.screens.ScreenWithVideoLoader;
 import tests.DcTest;
 
 /**
@@ -34,7 +35,7 @@ public class LibgdxTest extends DcTest {
 
     @Override
     public void init() {
+        ScreenWithVideoLoader.setVideoEnabled(false);
         super.init();
-
     }
 }

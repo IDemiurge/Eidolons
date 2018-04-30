@@ -19,10 +19,11 @@ public class AtbHelper {
 
     DC_Game game;
     AtbController controller;
+
     public AtbHelper(DC_Game game) {
         this.game = game;
         if (game.getTurnManager() instanceof AtbTurnManager) {
-              controller = ((AtbTurnManager) game.getTurnManager())
+            controller = ((AtbTurnManager) game.getTurnManager())
              .getAtbController();
 
         }
@@ -42,6 +43,12 @@ public class AtbHelper {
 
     public void startCombat(boolean all_or_closest_group) {
 
+        if (game.getPlayer(false).getControlledUnits().isEmpty()) {
+            game.getDungeonMaster().getExplorationMaster().switchExplorationMode(false);
+            return;
+        }
+
+
         for (GroupAI sub : game.getAiManager().getGroups()) {
             if (all_or_closest_group)
                 for (Unit ignored : sub.getMembers()) {
@@ -58,6 +65,7 @@ public class AtbHelper {
         assertTrue(!ExplorationMaster.isExplorationOn());
         assertTrue(!(game.getLoop() instanceof ExploreGameLoop));
     }
+
     public void logInfo() {
 
     }
@@ -69,5 +77,12 @@ public class AtbHelper {
         if (!ExplorationMaster.isExplorationOn()) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED);
         }
+    }
+
+    public void pause() {
+        game.getLoop().setPaused(true);
+    }
+    public void resume() {
+        game.getLoop().setPaused(false);
     }
 }

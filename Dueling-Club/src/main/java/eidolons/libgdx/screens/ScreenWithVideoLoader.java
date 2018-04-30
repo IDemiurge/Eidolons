@@ -29,6 +29,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     protected boolean looped;
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
+    private static Boolean videoEnabled;
 
 
     public ScreenWithVideoLoader() {
@@ -42,8 +43,14 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     }
 
-    protected boolean isVideoEnabled() {
-        return OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
+    public static void setVideoEnabled(Boolean videoEnabled) {
+        ScreenWithVideoLoader.videoEnabled = videoEnabled;
+    }
+
+    public static Boolean isVideoEnabled() {
+        if (videoEnabled==null )
+            videoEnabled =OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
+        return videoEnabled;
     }
 
     @Override

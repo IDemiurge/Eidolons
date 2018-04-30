@@ -2,6 +2,7 @@ package tests.entity;
 
 import eidolons.entity.obj.unit.Unit;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import res.JUnitResources;
 import tests.DcTest;
@@ -33,6 +34,7 @@ public class JUnitPartyCreated extends DcTest {
      * Tests that an entity object was created in @Before and it received expected name.
      */
     @Test
+    @Ignore
     public void testUnitCreatedWithRightName() {
 
         assertTrue(!game.getUnits().isEmpty());

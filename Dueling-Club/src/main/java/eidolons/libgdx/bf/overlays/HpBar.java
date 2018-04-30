@@ -337,8 +337,13 @@ public class HpBar extends SuperActor {
         Rectangle clipBounds = null ;
         if (GridPanel.isHpBarsOnTop() && !queue)
         {
-            Vector2 v = localToStageCoordinates(new Vector2(getX(), getY()));
+            Vector2 v = //localToStageCoordinates
+             (new Vector2(getX(), getY()));
             clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
+            if (fullLengthPerc!=1f && fullLengthPerc!=0f){
+                main.system.auxiliary.log.LogMaster.log(1,this+ "hp bar " +fullLengthPerc
+                + " bounds: " + clipBounds);
+            }
         } else
         clipBounds =        new Rectangle(getX(), getY(), innerWidth * fullLengthPerc, height);
         getStage().calculateScissors(clipBounds, scissors);
