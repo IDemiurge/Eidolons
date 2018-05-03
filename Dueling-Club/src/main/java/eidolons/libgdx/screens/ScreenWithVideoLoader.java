@@ -17,6 +17,7 @@ import main.entity.Entity;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 
 import java.util.List;
 
@@ -24,12 +25,12 @@ import static main.system.GuiEventType.SHOW_SELECTION_PANEL;
 
 public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
+    private static Boolean videoEnabled;
     protected UiStage overlayStage;
     protected VideoMaster video;
     protected boolean looped;
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
-    private static Boolean videoEnabled;
 
 
     public ScreenWithVideoLoader() {
@@ -48,8 +49,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     public static Boolean isVideoEnabled() {
-        if (videoEnabled==null )
-            videoEnabled =OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
+        if (videoEnabled == null)
+            videoEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VIDEO);
         return videoEnabled;
     }
 
@@ -148,7 +149,16 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+        if (CoreEngine.isJar()) {
+            super.render(delta);
+        } else
+            try {
+                super.render(delta);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+
     }
 
     protected void renderLoader(float delta) {
@@ -161,6 +171,13 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         }
         super.renderLoader(delta);
 
+    }
+
+    @Override
+    public void backToLoader() {
+        super.backToLoader();
+        overlayStage.setActive(true);
+        initVideo();
     }
 
     @Override

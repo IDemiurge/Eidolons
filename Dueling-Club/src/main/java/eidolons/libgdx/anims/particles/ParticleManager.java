@@ -1,6 +1,8 @@
 package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.math.Vector2;
+import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.libgdx.anims.particles.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
@@ -22,6 +24,7 @@ public class ParticleManager extends GroupX {
     private static final EMITTER_PRESET FOG_SFX = EMITTER_PRESET.SMOKE_TEST;
     private static boolean ambienceOn = true;
     private static boolean ambienceMoveOn;
+    private static Dungeon dungeon_;
     public boolean debugMode;
     List<EmitterMap> emitterMaps = new ArrayList<>();
     Map<String, EmitterMap> cache = new HashMap<>();
@@ -29,7 +32,7 @@ public class ParticleManager extends GroupX {
     public ParticleManager() {
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             GuiEventManager.trigger(GuiEventType.INIT_AMBIENCE,
-             new AmbienceDataSource((DAY_TIME) p.get()));
+             new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
         });
 
         GuiEventManager.bind(GuiEventType.INIT_AMBIENCE, p -> {
@@ -44,7 +47,7 @@ public class ParticleManager extends GroupX {
                 }
                 EmitterMap emitterMap = cache.get(sub);
                 if (emitterMap == null) {
-                    emitterMap = new EmitterMap(sub,   showChance);
+                    emitterMap = new EmitterMap(sub,   showChance, dataSource.getColorHue());
                     cache.put(sub, emitterMap);
                 } else
                     emitterMap.setShowChance(showChance);
@@ -65,6 +68,29 @@ public class ParticleManager extends GroupX {
             });
 
         });
+    }
+
+    public static AMBIENCE_TEMPLATE getTemplate(Dungeon dungeon_) {
+        if (dungeon_.getDungeonSubtype()!=null )
+        switch (dungeon_.getDungeonSubtype()) {
+            case CAVE:
+            case HIVE:
+                return AMBIENCE_TEMPLATE.CAVE;
+            case DUNGEON:
+            case SEWER:
+            case ARCANE:
+            case CASTLE:
+            case DEN:
+            case HOUSE:
+                return AMBIENCE_TEMPLATE.DUNGEON;
+
+            case HELL:
+                return AMBIENCE_TEMPLATE.CAVE;
+            case CRYPT:
+            case BARROW:
+                return AMBIENCE_TEMPLATE.CRYPT;
+        }
+        return AMBIENCE_TEMPLATE.SURFACE;
     }
 
     public static boolean isAmbienceOn() {
@@ -101,4 +127,7 @@ public class ParticleManager extends GroupX {
         ParticleManager.ambienceMoveOn = ambienceMoveOn;
     }
 
+    public static void init(Dungeon dungeon) {
+        dungeon_ = dungeon;
+    }
 }

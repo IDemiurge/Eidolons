@@ -12,12 +12,14 @@ import main.system.data.PlayerData.ALLEGIENCE;
 import main.system.data.PlayerData.PLAYER_VALUE;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
+    private static final DC_Player DEFAULT_PLAYER = new DC_Player("Default Player", Color.red, true) ;
     public final FLAG_COLOR[] playerColors = {FLAG_COLOR.BLUE, FLAG_COLOR.RED,
      FLAG_COLOR.CYAN, FLAG_COLOR.PURPLE};
     public final FLAG_COLOR[] enemyColors = {FLAG_COLOR.RED, FLAG_COLOR.ORANGE, FLAG_COLOR.CRIMSON,};
@@ -33,6 +35,9 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     }
 
+    public static DC_Player getDefaultPlayer() {
+        return DEFAULT_PLAYER;
+    }
     public void gameStarted() {
 //        DC_Player player = getPlayer(true);
 //        player.getControlledUnits()

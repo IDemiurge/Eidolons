@@ -13,7 +13,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.ability.effects.Effects;
@@ -720,6 +719,8 @@ public abstract class DC_Obj extends MicroObj {
     }
     public void setGamma(Unit source, Integer i) {
           getGammaMapper().set(source, this, i);
+          if (source.isPlayerCharacter())
+        main.system.auxiliary.log.LogMaster.log(1,this + " gamma = " +i);
         if (source.isPlayerCharacter()) {
             setGamma(i);
         }

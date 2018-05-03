@@ -58,7 +58,6 @@ public class ScenarioMeta extends MetaGame {
         if (getMissionIndex() == 0)
             return true;
         if (isRestarted()) {
-            setRestarted(false);
             return true;
         }
         return false;

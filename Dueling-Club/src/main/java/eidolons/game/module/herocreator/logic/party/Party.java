@@ -52,18 +52,8 @@ public class Party extends Obj {
 
     public Party(ObjType type, Unit hero) {
         super(type, hero.getOwner(), type.getGame(), new Ref(type.getGame()));
-        this.leader = hero;
         addMember(leader);
-        setProperty(G_PROPS.IMAGE, leader.getImagePath(), true);
-        setProperty(PROPS.MEMBERS, leader.getProperty(G_PROPS.NAME), true);
-        setProperty(PROPS.LEADER, leader.getProperty(G_PROPS.NAME), true);
-        this.type.setParam(PARAMS.LEVEL, leader.getParam(PARAMS.LEVEL), true);
-        setParam(PARAMS.LEVEL, leader.getIntParam(PARAMS.LEVEL), true);
-        setOBJ_TYPE_ENUM(DC_TYPE.PARTY);
-        if (leader.isHero()) {
-            leader.setMainHero(true);
-        }
-        leader.setLeader(true);
+        setLeader(hero);
     }
 
     /**
@@ -72,7 +62,6 @@ public class Party extends Obj {
     public Party(ObjType type) {
         super(type, Player.NEUTRAL, type.getGame(), new Ref(type.getGame()));
         initMembers();
-
         // HeroCreator.initHero(type.getProperty(PROPS.LEADER));
     }
 
@@ -92,7 +81,7 @@ public class Party extends Obj {
             }
         }
         if (!getMembers().isEmpty()) {
-            this.leader = getMembers().get(0); // how safe is that?
+            setLeader(getMembers().get(0)); // how safe is that?
         }
     }
 
@@ -181,6 +170,16 @@ public class Party extends Obj {
 
     public void setLeader(Unit leader) {
         this.leader = leader;
+        setProperty(G_PROPS.IMAGE, leader.getImagePath(), true);
+        setProperty(PROPS.MEMBERS, leader.getProperty(G_PROPS.NAME), true);
+        setProperty(PROPS.LEADER, leader.getProperty(G_PROPS.NAME), true);
+        this.type.setParam(PARAMS.LEVEL, leader.getParam(PARAMS.LEVEL), true);
+        setParam(PARAMS.LEVEL, leader.getIntParam(PARAMS.LEVEL), true);
+        setOBJ_TYPE_ENUM(DC_TYPE.PARTY);
+        if (leader.isHero()) {
+            leader.setMainHero(true);
+        }
+        leader.setLeader(true);
     }
 
     @Override

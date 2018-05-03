@@ -14,11 +14,11 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.datatypes.DequeImpl;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 11/16/2017.
@@ -26,11 +26,11 @@ import java.util.ArrayList;
 public class ContainerClickHandler extends InventoryClickHandlerImpl {
     private final DC_Obj container;
     private String containerImagePath;
-    private DequeImpl<DC_HeroItemObj> items;
+    private List<DC_HeroItemObj> items;
 
     public ContainerClickHandler(
      String containerImagePath,
-     DequeImpl<DC_HeroItemObj> items, Unit unit, DC_Obj container) {
+     List<DC_HeroItemObj> items, Unit unit, DC_Obj container) {
         super(new HqDataMaster(unit), HqDataMaster.getHeroModel(unit));
         this.containerImagePath = containerImagePath;
         this.items = items;

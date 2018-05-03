@@ -1,5 +1,7 @@
 package eidolons.libgdx.bf.menu;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
@@ -33,7 +35,10 @@ public class GameMenuHandler {
                 GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
                  HelpMaster.getWelcomeText());
                 break;
-            case EXIT:
+            case OUTER_WORLD:
+                //TODO save and send log!
+                Gdx.app.exit();
+            case MAIN_MENU:
 //                DC_Game.game.getBattleMaster().getOutcomeManager().next();
 //                DC_Game.game.exit(true);
                 try {
@@ -41,15 +46,17 @@ public class GameMenuHandler {
                 } catch (Exception e) {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
-//                Gdx.input.setInputProcessor(new InputAdapter());
-                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                 new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
+                Eidolons.getScreen().reset();
                 Eidolons.gameExited();
                 GameMenu.menuOpen = false;
+                Gdx.input.setInputProcessor(new InputAdapter());
+                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
+                 new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
                 return false;
             case RESTART:
+                new Thread(() -> {
                 Eidolons.getGame().getMetaMaster().getBattleMaster().
-                 getOutcomeManager().restart();
+                 getOutcomeManager().restart();                    }, " thread").start();
                 break;
             case PASS_TIME:
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster()

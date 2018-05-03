@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
@@ -19,6 +20,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.*;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -35,6 +37,7 @@ import main.system.auxiliary.StrPathBuilder;
 import main.system.images.ImageManager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static eidolons.libgdx.bf.overlays.OverlaysManager.OVERLAY.*;
@@ -188,8 +191,7 @@ public class OverlaysManager extends SuperActor {
         super.draw(batch, parentAlpha);
         batch.setColor(1, 1, 1, 1);
 
-            drawOverlays(batch);
-
+        drawOverlays(batch);
 
 
     }
@@ -207,8 +209,7 @@ public class OverlaysManager extends SuperActor {
                 drawOverlaysForCell(cells[i][j], i, cells[i].length - j - 1, batch);
 
                 for (Actor c : cells[i][j].getChildren()) {
-                    if (c instanceof GridUnitView)
-                    {
+                    if (c instanceof GridUnitView) {
                         if (c.isVisible())
                             drawOverlaysForView(((GenericGridView) c), batch);
                     }
@@ -221,10 +222,10 @@ public class OverlaysManager extends SuperActor {
 
     private void drawOverlaysForView(GenericGridView actor, Batch batch) {
 //        TODO  if (actor.isHovered()) {
-           //emblem etc?
+        //emblem etc?
 //        }
         if (actor.getHpBar() != null)
-            if (GridPanel.isHpBarsOnTop()) {
+            if (GridMaster.isHpBarsOnTop()) {
                 drawOverlay(actor, HP_BAR, batch);
             }
         BattleFieldObject obj = null;
@@ -271,8 +272,10 @@ public class OverlaysManager extends SuperActor {
                     break;
             }
         }
-        if (checkOverlayForCell(BAG, new Coordinates(x, y))) {
+        Object data = getOverlayDataForCell(BAG, new Coordinates(x, y));
+        if (data!=null ) {
             drawOverlay(container, BAG, batch);
+
         }
     }
 
@@ -290,12 +293,12 @@ public class OverlaysManager extends SuperActor {
             x = v.x;
             y = v.y;
         } else
-        switch (overlay) {
-            case HP_BAR: {
-                y = -12;
-                break;
+            switch (overlay) {
+                case HP_BAR: {
+                    y = -12;
+                    break;
+                }
             }
-        }
         Vector2 v = parent.localToStageCoordinates(new Vector2(x, y));
         drawOverlay(parent, overlay, batch, v);
 
@@ -389,13 +392,22 @@ public class OverlaysManager extends SuperActor {
          overlay.path);
     }
 
-    public boolean checkOverlayForCell(OVERLAY overlay, Coordinates coordinates) {
+    public Object getOverlayDataForCell(OVERLAY overlay, Coordinates coordinates) {
         switch (overlay) {
             case BAG:
-                return !Eidolons.game.getDroppedItemManager().
-                 getDroppedItems(coordinates).isEmpty();
+                //TODO kill this shit
+                List<DC_HeroItemObj> items = Eidolons.game.getDroppedItemManager().
+                 getDroppedItems(coordinates);
+                if (items == null) {
+                    Eidolons.game.getDroppedItemManager().reset(coordinates.x, coordinates.y);
+                    main.system.auxiliary.log.LogMaster.log(1, "dropped item forced reset " + coordinates);
+                    items = Eidolons.game.getDroppedItemManager().
+                     getDroppedItems(coordinates);
+                }
+                if (!items.isEmpty())
+                    return  items;
         }
-        return false;
+        return null ;
     }
 
     public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object) {

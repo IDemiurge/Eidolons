@@ -5,11 +5,14 @@ import eidolons.entity.item.DC_HeroItemObj;
 import main.entity.type.ObjType;
 import main.system.datatypes.DequeImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by JustMe on 11/16/2017.
  */
 public class ContainerObj extends DungeonObj {
-    private DequeImpl<DC_HeroItemObj> items;
+    private List<DC_HeroItemObj> items;
     private boolean itemsInitialized;
 
     public ContainerObj(ObjType type, int x, int y) {
@@ -20,7 +23,9 @@ public class ContainerObj extends DungeonObj {
     private void initInventory() {
         if (ContainerMaster.isGenerateItemsForContainers())
             getDM().initContents(this);
-        items = getInitializer().initContainedItems(PROPS.INVENTORY, new DequeImpl<>(), false);
+        items = new ArrayList<>(
+         getInitializer().initContainedItems(PROPS.INVENTORY,
+          new DequeImpl<>(), false));
         itemsInitialized = true;
 
 
@@ -46,7 +51,7 @@ public class ContainerObj extends DungeonObj {
         return itemsInitialized;
     }
 
-    public DequeImpl<DC_HeroItemObj> getItems() {
+    public List<DC_HeroItemObj> getItems() {
         if (!itemsInitialized) {
             initInventory();
         }

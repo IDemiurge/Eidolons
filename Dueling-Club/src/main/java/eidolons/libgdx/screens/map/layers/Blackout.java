@@ -39,7 +39,10 @@ public class Blackout extends Group {
             ActorMaster.addFadeOutAction(image.getContent(), dur);
     }
 
-    public void fadeOutAndBack(Float dur) {
+    public void fadeOutAndBack( ) {
+        fadeOutAndBack(null );
+    }
+        public void fadeOutAndBack(Float dur) {
         if (dur == null)
             dur = 3f;
         image.setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
@@ -59,5 +62,9 @@ public class Blackout extends Group {
             setZIndex(Integer.MAX_VALUE);
             image.setTouchable(Touchable.enabled);
         }
+    }
+
+    public static boolean isOnNewScreen() {
+        return false;
     }
 }

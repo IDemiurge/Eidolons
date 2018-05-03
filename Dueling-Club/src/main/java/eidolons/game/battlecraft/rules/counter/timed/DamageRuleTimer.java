@@ -29,6 +29,7 @@ public class DamageRuleTimer   {
         while (timer>=getTimePeriod()){
             timer -= getTimePeriod();
             damageCounterRule.apply(unit);
+            damageCounterRule.processPeriod(unit);
         }
     }
 

@@ -325,6 +325,8 @@ public class DC_GameObjMaster extends GameMaster {
             //TODO
         }
 
+        if (matched.size() == 0)
+            return null ;
         if (matched.size() == 1)
             return matched.get(0);
         if (distanceSort != null)
@@ -340,7 +342,7 @@ public class DC_GameObjMaster extends GameMaster {
                 return matched.get(0);
             }
 
-        return new RandomWizard<Unit>().getRandomListItem(matched);
+            return new RandomWizard<Unit>().getRandomListItem(matched);
 
     }
 

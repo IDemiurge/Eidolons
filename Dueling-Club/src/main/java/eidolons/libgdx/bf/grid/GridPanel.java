@@ -8,8 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
@@ -21,13 +19,10 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.anims.actions.FadeOutAction;
-import eidolons.libgdx.anims.std.DeathAnim;
-import eidolons.libgdx.anims.std.MoveAnimation;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.Borderable;
@@ -40,22 +35,14 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
-import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
-import main.entity.Ref;
-import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
-import main.game.logic.event.Event;
-import main.game.logic.event.Event.EVENT_TYPE;
-import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
-import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -79,13 +66,6 @@ import static main.system.GuiEventType.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GridPanel extends Group {
-    private static final String emptyCellPath = StrPathBuilder.build(
-     "UI", "cells", "Empty Cell v3.png");
-    private static final String emptyCellPathFloor = StrPathBuilder.build(
-     "UI", "cells", "Floor.png");
-    private static final String gridCornerElementPath = StrPathBuilder.build(
-     "UI", "bf", "gridCorner.png");
-
     protected TextureRegion emptyImage;
     protected GridCellContainer[][] cells;
     private Map<BattleFieldObject, BaseView> viewMap;
@@ -93,8 +73,6 @@ public class GridPanel extends Group {
     private int rows;
     private AnimMaster animMaster;
     private ShadowMap shadowMap;
-    private Label fpsLabel;
-    private boolean fpsDebug = false;
     private TextureRegion cornerRegion;
     private WallMap wallMap;
     private List<OverlayView> overlays = new ArrayList<>();
@@ -112,8 +90,143 @@ public class GridPanel extends Group {
         this.rows = rows;
     }
 
-    public static boolean isHpBarsOnTop() {
-        return true;
+    public GridPanel init(DequeImpl<BattleFieldObject> units) {
+        this.viewMap = new HashMap<>();
+        new GridManager(this);
+        emptyImage = TextureCache.getOrCreateR(getCellImagePath());
+        cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
+        cells = new GridCellContainer[cols][rows];
+
+
+        int rows1 = rows - 1;
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
+                cells[x][y].setX(x * GridMaster.CELL_W);
+                cells[x][y].setY(y * GridMaster.CELL_H);
+                addActor(cells[x][y].init());
+                checkAddBorder(x, y);
+
+            }
+        }
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON))
+            TextureManager.addCellsToCache(cols, rows);
+
+        addActor(new CellBorderManager());
+
+        bindEvents();
+
+        createUnitsViews(units);
+
+        setHeight(cells[0][0].getHeight() * rows);
+        setWidth(cells[0][0].getWidth() * cols);
+
+        addListener(new BattleClickListener() {
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                GridPanel.this.getStage().setScrollFocus(GridPanel.this);
+                return false;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
+//                return PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button);
+                return false;
+            }
+        });
+        addActor(overlayManager = new OverlaysManager(this));
+        addActor(animMaster = AnimMaster.getInstance());
+        animMaster.bindEvents();
+
+        if (AnimationConstructor.isPreconstructAllOnGameInit())
+            units.forEach(unit ->
+            {
+                if (unit instanceof Unit)
+                    animMaster.getConstructor().preconstructAll((Unit) unit);
+            });
+
+
+        return this;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+
+        super.draw(batch, parentAlpha);
+
+        if (GridMaster.isHpBarsOnTop() && !GdxMaster.isHpBarAttached())
+            for (BattleFieldObject obj : viewMap.keySet()) {
+                BaseView sub = viewMap.get(obj);
+                if (sub.isVisible())
+                    if (sub instanceof GridUnitView) {
+                        if (((GridUnitView) sub).getHpBar() != null)
+                            if (((UnitView) sub).isHpBarVisible()) {
+                                float x = sub.getX();
+                                float y = sub.getY();
+
+//                                if (x == 0 && y == 0  )
+                                float scale = 1f;
+                                if (sub.getParent() != this) //detached and moving!
+                                {
+                                    if (sub.getParent() instanceof GridCellContainer) {
+                                        GridCellContainer parent = (GridCellContainer) sub.getParent();
+                                        if (parent.
+                                         getUnitViewCount() > 1) {
+                                            if (parent.
+                                             getUnitViewCountEffective() == 1) {
+                                                scale = parent.getObjScale();
+                                            } else if (!sub.isHovered()) {
+                                                if (parent.getTopUnitView() != sub)
+                                                    continue;
+                                            } else {
+                                                //offset? scale?
+                                            }
+                                        }
+
+                                    }
+                                    Vector2 v = GridMaster.getVectorForCoordinate(obj.getBufferedCoordinates(),
+                                     false, false, true, this);
+
+                                    x = v.x;
+                                    y = v.y;
+                                }
+                                HpBar hpBar = ((UnitView) sub).getHpBar();
+                                hpBar.setScale(scale, (1 + scale) / 2);
+                                hpBar.act(Gdx.graphics.getDeltaTime());
+                                hpBar.drawAt(batch, x, y);
+
+
+                            }
+
+                    }
+            }
+    }
+
+    @Override
+    public void act(float delta) {
+        if (resetVisibleRequired) {
+            resetVisible();
+        }
+        super.act(delta);
+        if (updateRequired) {
+            resetZIndices();
+            update();
+        }
+        if (isAutoResetVisibleOn())
+            if (DC_Game.game != null)
+                if (DC_Game.game.getVisionMaster().getVisible() != null) {
+                    if (resetTimer <= 0) {
+                        resetTimer = 0.5f;
+                        for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
+                            setVisible(viewMap.get(sub), true);
+                        }
+                        for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
+                            setVisible(viewMap.get(sub), false);
+                        }
+
+                    }
+                    resetTimer -= delta;
+                }
     }
 
     public void updateOutlines() {
@@ -210,75 +323,13 @@ public class GridPanel extends Group {
             }
     }
 
-    public GridPanel init(DequeImpl<BattleFieldObject> units) {
-        this.viewMap = new HashMap<>();
-        emptyImage = TextureCache.getOrCreateR(getCellImagePath());
-        cornerRegion = TextureCache.getOrCreateR(gridCornerElementPath);
-        cells = new GridCellContainer[cols][rows];
-
-
-        int rows1 = rows - 1;
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
-                cells[x][y].setX(x * GridMaster.CELL_W);
-                cells[x][y].setY(y * GridMaster.CELL_H);
-                addActor(cells[x][y].init());
-                checkAddBorder(x, y);
-
-            }
-        }
-        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON))
-            TextureManager.addCellsToCache(cols, rows);
-
-        addActor(new CellBorderManager());
-
-        bindEvents();
-
-        createUnitsViews(units);
-
-        setHeight(cells[0][0].getHeight() * rows);
-        setWidth(cells[0][0].getWidth() * cols);
-
-        addListener(new BattleClickListener() {
-            @Override
-            public boolean mouseMoved(InputEvent event, float x, float y) {
-                GridPanel.this.getStage().setScrollFocus(GridPanel.this);
-                return false;
-            }
-
-            @Override
-            public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
-//                return PhaseAnimator.getInstance().checkAnimClicked(x, y, pointer, button);
-                return false;
-            }
-        });
-        addActor(overlayManager = new OverlaysManager(this));
-        addActor(animMaster = AnimMaster.getInstance());
-        animMaster.bindEvents();
-
-        if (AnimationConstructor.isPreconstructAllOnGameInit())
-            units.forEach(unit ->
-            {
-                if (unit instanceof Unit)
-                    animMaster.getConstructor().preconstructAll((Unit) unit);
-            });
-
-        if (fpsDebug) {
-            fpsLabel = new Label("0", StyleHolder.getDefaultLabelStyle());
-            addActor(fpsLabel);
-            fpsLabel.setAlignment(Align.topLeft);
-        }
-
-        return this;
-    }
 
     private String getCellImagePath() {
         if (Eidolons.getGame().getDungeon() != null) {
             if (Eidolons.getGame().getDungeon().isSurface())
-                return emptyCellPath;
+                return GridMaster.emptyCellPath;
         }
-        return emptyCellPathFloor;
+        return GridMaster.emptyCellPathFloor;
     }
 
     private UnitView getUnitView(BattleFieldObject battleFieldObject) {
@@ -361,7 +412,6 @@ public class GridPanel extends Group {
             removeUnitView(unit);
         });
 
-        GuiEventManager.bind(INGAME_EVENT_TRIGGERED, onIngameEvent());
 
         GuiEventManager.bind(UPDATE_GRAVEYARD, obj -> {
             final Coordinates coordinates = (Coordinates) obj.get();
@@ -510,105 +560,8 @@ public class GridPanel extends Group {
         this.updateRequired = updateRequired;
     }
 
-    private EventCallback onIngameEvent() {
-        return param -> {
-            Event event = (Event) param.get();
-            Ref ref = event.getRef();
-
-            boolean caught = false;
-
-            if (event.getType() == STANDARD_EVENT_TYPE.EFFECT_HAS_BEEN_APPLIED) {
-                GuiEventManager.trigger(GuiEventType.EFFECT_APPLIED, event.getRef());
-                caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_CHANGED_FACING
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE
-             || event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
-                BattleFieldObject hero = (BattleFieldObject) ref.getObj(KEYS.TARGET);
-//                if (hero.isMainHero()) TODO this is an experiment (insane) feature...
-//                    if (hero.isMine()) {
-//                        turnField(event.getType());
-//                    }
-                BaseView view = viewMap.get(hero);
-                if (view != null && view instanceof GridUnitView) {
-                    GridUnitView unitView = ((GridUnitView) view);
-                    unitView.updateRotation(hero.getFacing().getDirection().getDegrees());
-//                    SoundController.getCustomEventSound(SOUND_EVENT.UNIT_TURNS, );
-                    if (hero instanceof Unit)
-                        DC_SoundMaster.playTurnSound((Unit) hero);
-                }
-                caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_FALLEN_UNCONSCIOUS
-             ) {
-                GuiEventManager.trigger(UNIT_GREYED_OUT_ON, ref.getSourceObj());
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_RECOVERED_FROM_UNCONSCIOUSNESS) {
-                GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED) {
-                GuiEventManager.trigger(UNIT_GREYED_OUT_OFF, ref.getSourceObj());
-                if (!DeathAnim.isOn() || ref.isDebug()) {
-                    GuiEventManager.trigger(DESTROY_UNIT_MODEL, ref.getTargetObj());
-                }
-                caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_BEING_MOVED) {
-                if (!MoveAnimation.isOn()) //|| AnimMaster.isAnimationOffFor(ref.getSourceObj(), viewMap.get(ref.getSourceObj())))
-                    removeUnitView((BattleFieldObject) ref.getSourceObj());
-                caught = true;
-            } else if (event.getType() == STANDARD_EVENT_TYPE.UNIT_FINISHED_MOVING) {
-                if (!MoveAnimation.isOn() || AnimMaster.isAnimationOffFor(ref.getSourceObj(),
-                 viewMap.get(ref.getSourceObj())))
-                    unitMoved((BattleFieldObject) ref.getSourceObj());
-                caught = true;
-            } else if (event.getType().name().startsWith("PARAM_BEING_MODIFIED")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("PROP_")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("ABILITY_")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("EFFECT_")) {
-                caught = true;
-            } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
-                if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
-                    UnitView view = (UnitView) getViewMap().get(
-                     event.getRef().getSourceObj());
-                    if (view != null)
-                        if (view.isVisible())
-                            if (view.getHpBar() != null)
-//                                if (view.getHpBar( ).getDataSource().canHpBarBeVisible())
-                                view.resetHpBar(new ResourceSourceImpl((BattleFieldObject) event.getRef().getSourceObj()));
-                }
-                caught = true;
-            }
-
-            if (!caught) {
-             /*      System.out.println("catch ingame event: " + event.getType() + " in " + event.getRef());
-           */
-            }
-        };
-    }
-
-    private void turnField(EVENT_TYPE type) {
-        if (type == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_CLOCKWISE) {
-            turnField(90);
-        } else if (type == STANDARD_EVENT_TYPE.UNIT_HAS_TURNED_ANTICLOCKWISE) {
-            turnField(-90);
-        }
-    }
-
-    //Maybe as a disorienting effect from a spell?..
-    private void turnField(int i) {
-        ActorMaster.addRotateByAction(this, getRotation(), getRotation() + i);
-//        for (int x = 0; x < cols; x++) {
-//            for (int y = 0; y < rows; y++) {
-//                GridCellContainer view = cells[x][y];
-//                ActorMaster.addRotateByAction(view, view.getRotation(), view.getRotation() - i);
-//            }
-//        }
-        viewMap.values().forEach(view -> {
-            ActorMaster.addRotateByAction(view, view.getRotation(), view.getRotation() - i);
-        });
-    }
 
     private void createUnitsViews(DequeImpl<BattleFieldObject> units) {
-//        lightingManager = new LightingManager(units, rows, cols);
 
         Map<Coordinates, List<BattleFieldObject>> map = new HashMap<>();
         for (BattleFieldObject object : units) {
@@ -704,7 +657,8 @@ public class GridPanel extends Group {
     public void unitViewMoved(BaseView view) {
         unitMoved(getObjectForView(view));
     }
-        public void unitMoved(BattleFieldObject object) {
+
+    public void unitMoved(BattleFieldObject object) {
         int rows1 = rows - 1;
         GridUnitView uv = (GridUnitView) viewMap.get(object);
         if (uv == null) {
@@ -761,7 +715,7 @@ public class GridPanel extends Group {
         return true;
     }
 
-    private BaseView removeUnitView(BattleFieldObject obj) {
+    protected BaseView removeUnitView(BattleFieldObject obj) {
         BaseView uv = viewMap.get(obj);
         if (uv == null) {
             LogMaster.log(1, obj + " IS NOT ON UNIT MAP!");
@@ -780,85 +734,6 @@ public class GridPanel extends Group {
         return uv;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-
-        super.draw(batch, parentAlpha);
-
-        if (isHpBarsOnTop() && !GdxMaster.isHpBarAttached())
-            for (BattleFieldObject obj : viewMap.keySet()) {
-                BaseView sub = viewMap.get(obj);
-                if (sub.isVisible())
-                    if (sub instanceof GridUnitView) {
-                        if (((GridUnitView) sub).getHpBar() != null)
-                            if (((UnitView) sub).isHpBarVisible()) {
-                                float x = sub.getX();
-                                float y = sub.getY();
-
-//                                if (x == 0 && y == 0  )
-                                float scale = 1f;
-                                if (sub.getParent() != this) //detached and moving!
-                                {
-                                    if (sub.getParent() instanceof GridCellContainer) {
-                                        GridCellContainer parent = (GridCellContainer) sub.getParent();
-                                        if (parent.
-                                         getUnitViewCount() > 1) {
-                                            if (parent.
-                                             getUnitViewCountEffective() == 1) {
-                                                scale = parent.getObjScale();
-                                            } else if (!sub.isHovered()) {
-                                                if (parent.getTopUnitView() != sub)
-                                                    continue;
-                                            } else {
-                                                //offset? scale?
-                                            }
-                                        }
-
-                                    }
-                                    Vector2 v = GridMaster.getVectorForCoordinate(obj.getBufferedCoordinates(),
-                                     false, false, true, this);
-
-                                    x = v.x;
-                                    y = v.y;
-                                }
-                                HpBar hpBar = ((UnitView) sub).getHpBar();
-                                hpBar.setScale(scale, (1 + scale) / 2);
-                                hpBar.act(Gdx.graphics.getDeltaTime());
-                                hpBar.drawAt(batch, x, y);
-
-
-                            }
-
-                    }
-            }
-    }
-
-    @Override
-    public void act(float delta) {
-        if (resetVisibleRequired) {
-            resetVisible();
-        }
-        super.act(delta);
-        if (updateRequired) {
-            resetZIndices();
-            update();
-        }
-        if (isAutoResetVisibleOn())
-            if (DC_Game.game != null)
-                if (DC_Game.game.getVisionMaster().getVisible() != null) {
-                if (resetTimer <= 0) {
-                    resetTimer = 0.5f;
-                    for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
-                        setVisible(viewMap.get(sub), true);
-                    }
-                    for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
-                        setVisible(viewMap.get(sub), false);
-                    }
-
-                }
-                resetTimer -= delta;
-            }
-    }
 
     private boolean isAutoResetVisibleOn() {
         return true;
@@ -873,24 +748,6 @@ public class GridPanel extends Group {
     private void resetVisible() {
         for (BattleFieldObject sub : viewMap.keySet()) {
             BaseView view = viewMap.get(sub);
-            //TODO STEALTH VISUALS
-//            Map<GridUnitView, Boolean> units = new HashMap<>();
-//            if (view instanceof GridUnitView) {
-//                boolean stealth = false;
-//                if (sub.isMine()) {
-//                    if (sub.getPlayerVisionStatus(true) == UNIT_TO_PLAYER_VISION.INVISIBLE) {
-//                        if (sub instanceof Unit) {
-//                            if (((Unit) sub).isUsingStealth()) {
-//                                stealth = true;
-////                            ((UnitView) view).getmsetmFlickering(true);
-//                            }
-//                        }
-//                    }
-//                }
-//                units.put(((GridUnitView) view), stealth);
-//            }
-//            for (GridUnitView v : units.keySet())
-//                ((UnitView) view).setFlickering(units.get(v));
             if (view.getActions().size == 0) {
                 if (sub.isDead()) {
                     view.setVisible(false);
@@ -925,7 +782,6 @@ public class GridPanel extends Group {
                             setHoverObj((GridUnitView) sub);
                             cell.setZIndex(Integer.MAX_VALUE);
                             cell.setTopUnitView(sub);
-
                         }
                     }
                 }
@@ -952,8 +808,6 @@ public class GridPanel extends Group {
         overlayManager.setZIndex(Integer.MAX_VALUE);
 
         animMaster.setZIndex(Integer.MAX_VALUE);
-        if (fpsLabel != null)
-            fpsLabel.setZIndex(Integer.MAX_VALUE);
     }
 
     public void addOverlay(OverlayView view) {
@@ -984,14 +838,6 @@ public class GridPanel extends Group {
 
     public int getRows() {
         return rows;
-    }
-
-    public Label getFpsLabel() {
-        return fpsLabel;
-    }
-
-    public void setFpsLabel(Label fpsLabel) {
-        this.fpsLabel = fpsLabel;
     }
 
     public GridUnitView getMainHeroView() {

@@ -980,6 +980,10 @@ public class DC_ActionManager implements ActionManager {
         });
     }
 
+    public void clearCache() {
+        actionsCache.clear();
+    }
+
     public enum ADDITIONAL_MOVE_ACTIONS {
         MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;
 

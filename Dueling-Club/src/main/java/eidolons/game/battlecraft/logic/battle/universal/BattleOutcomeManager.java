@@ -11,6 +11,7 @@ import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -29,8 +30,13 @@ public class BattleOutcomeManager<E extends Battle> extends BattleHandler<E> {
     }
 
     public void restart() {
-
+//        LOG_CHANNEL.CORE_DEBUG.setOn(true);
+//        LOG_CHANNEL.CORE_DEBUG_1.setOn(true);
         getGame().getMetaMaster().next(null);
+        getGame().getVisionMaster().getVisionController().logAll();
+        LOG_CHANNEL.CORE_DEBUG.setOn(false);
+        LOG_CHANNEL.CORE_DEBUG_1.setOn(false);
+
     }
 
     public void end() {

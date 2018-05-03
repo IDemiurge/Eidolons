@@ -323,8 +323,13 @@ public class VisionRule {
 
     public boolean isAggro(Unit hero, Unit unit) {
 
-        if (controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT)
-            return true;
+        if (controller.getVisibilityLevelMapper().get(unit, hero) == VISIBILITY_LEVEL.CLEAR_SIGHT) {
+            if (isResetRequired(unit, hero))
+                return true;
+            else {
+                main.system.auxiliary.log.LogMaster.log(1,"  TODO beta quick fix..." );
+            }
+        }
 
 //        if (isDisplayedOnGrid(unit, hero))
 //            return true;

@@ -74,7 +74,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
-import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -872,19 +871,19 @@ public class Unit extends DC_UnitModel {
     @Override
     public boolean kill(Entity killer, boolean leaveCorpse, Boolean quietly) {
         boolean result = super.kill(killer, leaveCorpse, quietly);
-        if (!CoreEngine.isLevelEditor()) {
-            if (result) {
-                for (DC_FeatObj s : getSkills()) {
-                    s.apply();
-                }
-                for (AbilityObj p : passives) {
-                    p.activate();
-                }
+//        if (!CoreEngine.isLevelEditor()) {
+//            if (result) {
+//                for (DC_FeatObj s : getSkills()) {
+//                    s.apply();
+//                }
+//                for (AbilityObj p : passives) {
+//                    p.activate();
+//                }
                 // TODO could filter by some boolean set via GOME itself! so
                 // much
                 // for a small thing...
-            }
-        }
+//            }
+//        }
         return result;
     }
 

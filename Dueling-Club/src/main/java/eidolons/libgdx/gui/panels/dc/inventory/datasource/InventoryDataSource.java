@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.inventory.*;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
@@ -15,7 +16,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     private final HqDataMaster dataMaster;
     private InventoryValueContainerFactory factory;
-    private Unit unit;
+    private HeroDataModel unit;
     private InventoryClickHandler handler;
 
     public InventoryDataSource(Unit unit) {
@@ -102,8 +103,8 @@ public class InventoryDataSource implements QuickSlotDataSource,
     }
 
     public String getOperationsString() {
-        return unit.getGame().getInventoryManager().getOperationsLeft() + "/" +
-         unit.getGame().getInventoryManager().getOperationsPool();
+        return unit.getHero() .getGame ().getInventoryManager().getOperationsLeft() + "/" +
+         unit.getHero().getGame().getInventoryManager().getOperationsPool();
     }
 
     public Unit getUnit() {

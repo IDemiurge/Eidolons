@@ -33,6 +33,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
+import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -101,7 +102,8 @@ public class OptionsMaster {
             if (!StringMaster.isInteger(value)) {
                 switch (key) {
                     case GHOST_MODE:
-                        VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
+                        if (!CoreEngine.isFastMode())
+                            VisionRule.setPlayerUnseenMode(gameplayOptions.getBooleanValue(key));
                         break;
                     case RULES_SCOPE:
                         RuleKeeper.setScope(

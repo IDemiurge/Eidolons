@@ -124,28 +124,33 @@ public abstract class DC_CounterRule {
 
     public void newTurn() {
         for (BattleFieldObject unit : game.getUnits()) {
-            if (unit.isDead()) continue;
-            if (!ExplorationMaster.isExplorationOn())
-                if (isOutsideCombatIgnored())
-                    if (game.getState().getManager().checkUnitIgnoresReset(unit))
-                        continue;
-            if (getNumberOfCounters(unit) <= 0) {
-                continue;
-            }
-            setObject(unit);
-            applyCountersInteractions(unit);
-            applyCountersConversions(unit);
-            applyCountersTranfers(unit);
-            // log TODO spread
-            int counterMod = getCounterNumberReductionPerTurn(unit);
-            if (counterMod != 0) {
-                log(getCounterModifiedLogString(counterMod));
-                unit.modifyCounter(getCounterName(), -counterMod);
-            }
-            Effect oneshotEffects = getSpecialRoundEffects();
-            if (oneshotEffects != null) {
-                oneshotEffects.apply(Ref.getSelfTargetingRefCopy(unit));
-            }
+            processPeriod(unit);
+
+        }
+    }
+
+    public void processPeriod(BattleFieldObject unit) {
+        if (unit.isDead()) return;
+        if (!ExplorationMaster.isExplorationOn())
+            if (isOutsideCombatIgnored())
+                if (game.getState().getManager().checkUnitIgnoresReset(unit))
+                    return;
+        if (getNumberOfCounters(unit) <= 0) {
+            return;
+        }
+        setObject(unit);
+        applyCountersInteractions(unit);
+        applyCountersConversions(unit);
+        applyCountersTranfers(unit);
+        // log TODO spread
+        int counterMod = getCounterNumberReductionPerTurn(unit);
+        if (counterMod != 0) {
+            log(getCounterModifiedLogString(counterMod));
+            unit.modifyCounter(getCounterName(), -counterMod);
+        }
+        Effect oneshotEffects = getSpecialRoundEffects();
+        if (oneshotEffects != null) {
+            oneshotEffects.apply(Ref.getSelfTargetingRefCopy(unit));
         }
     }
 

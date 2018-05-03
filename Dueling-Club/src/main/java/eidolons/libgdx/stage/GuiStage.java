@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
@@ -52,6 +51,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     private char lastTyped;
     private ToolTipManager tooltips;
     private HqPanel hqPanel;
+    private boolean blackoutIn;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -111,6 +111,8 @@ public class GuiStage extends StageX implements StageWithClosable {
          GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
         setDebugAll(false);
+
+        setBlackoutIn(true);
     }
 
     protected GameMenu createGameMenu() {
@@ -127,6 +129,12 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     @Override
     public void act(float delta) {
+        if (!Blackout.isOnNewScreen())
+        if (isBlackoutIn())
+        {
+            blackout.fadeOutAndBack( );
+            setBlackoutIn(false);
+        }
         super.act(delta);
         resetZIndices();
     }
@@ -281,5 +289,13 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     public Blackout getBlackout() {
         return blackout;
+    }
+
+    public boolean isBlackoutIn() {
+        return blackoutIn;
+    }
+
+    public void setBlackoutIn(boolean blackoutIn) {
+        this.blackoutIn = blackoutIn;
     }
 }

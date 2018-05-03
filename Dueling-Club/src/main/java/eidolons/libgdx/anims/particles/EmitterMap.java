@@ -1,6 +1,8 @@
 package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Pool;
@@ -30,26 +32,28 @@ public class EmitterMap extends Group {
     private static int yDistanceFog = 2;
 
     private static Boolean on;
+    Map<Coordinates, Ambience> map = new LinkedHashMap<>();
+    String presetPath;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
         @Override
         protected Ambience newObject() {
             return new Ambience(presetPath);
         }
     };
-    private   int showChance;
-    Map<Coordinates, Ambience> map = new LinkedHashMap<>();
+    private int showChance;
     private Color color;
-    private boolean hideAroundPC=HIDE_SMOKE_AROUND_MAIN_HERO;
-    private float minDistance=MIN_DISTANCE_BETWEEN_FOG;
-    private float distanceX=xDistanceFog;
-    private float distanceY=yDistanceFog;
-    String presetPath;
+    private boolean hideAroundPC = HIDE_SMOKE_AROUND_MAIN_HERO;
+    private float minDistance = MIN_DISTANCE_BETWEEN_FOG;
+    private float distanceX = xDistanceFog;
+    private float distanceY = yDistanceFog;
     private float timer;
 
-    public EmitterMap(String presetPath,   int showChance) {
+    public EmitterMap(String presetPath, int showChance, Color colorHue) {
         this.presetPath = presetPath;
         this.showChance = showChance;
-        if (Eidolons.game instanceof DC_Game) {
+        if (colorHue != null)
+            color = colorHue;
+        else if (Eidolons.game instanceof DC_Game) {
             COLOR_THEME colorTheme = Eidolons.game.getDungeon().getColorTheme();
             if (colorTheme != null)
                 color = GdxColorMaster.getColorForTheme(colorTheme);
@@ -63,7 +67,6 @@ public class EmitterMap extends Group {
     public static void setOn(Boolean on) {
         EmitterMap.on = on;
     }
-
 
 
 //    public boolean contains(ParticleInterface actor) {
@@ -92,7 +95,7 @@ public class EmitterMap extends Group {
         if (map.isEmpty())
             init();
         for (Coordinates c1 : map.keySet()) {
-            if (!RandomWizard.chance(showChance )){
+            if (!RandomWizard.chance(showChance)) {
                 hide(c1);
                 continue;
             }
@@ -107,7 +110,7 @@ public class EmitterMap extends Group {
         }
     }
 
-    private void remove (Coordinates c) {
+    private void remove(Coordinates c) {
         Ambience ambience = map.remove(c);
         if (ambience == null) {
             return;
@@ -120,8 +123,8 @@ public class EmitterMap extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        timer+=delta;
-        if (timer>=getUpdatePeriod()){
+        timer += delta;
+        if (timer >= getUpdatePeriod()) {
             timer = 0;
             update();
         }
@@ -135,15 +138,14 @@ public class EmitterMap extends Group {
         Ambience ambience = map.get(c);
         if (ambience == null) {
             return;
-         }
-         addActor(ambience);
-        if (ambience.getEffect().isComplete())
-        {
+        }
+        addActor(ambience);
+        if (ambience.getEffect().isComplete()) {
             ambience.reset();
         }
     }
 
-        private void hide(Coordinates c) {
+    private void hide(Coordinates c) {
         Ambience ambience = map.get(c);
         if (ambience == null) {
             return;
@@ -166,11 +168,38 @@ public class EmitterMap extends Group {
         map.put(c, ambience);
         ambience.setPosition(v.x, v.y);
         ambience.added();
+
+        ambience.getEffect().getEmitters().forEach(emitter -> {
+            try {
+                tint(emitter, color, 0.85f);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+        });
         if (!getChildren().contains(ambience, true))
             addActor(ambience);
         //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
         ambience.setVisible(true);
         ambience.getEffect().start();
+    }
+
+    private void tint(ParticleEmitter emitter, Color color, float v) {
+        float[] colors1 = emitter.getTint().getColors();
+        float[] colors = new float[colors1.length];
+        for (int j = 0; j < colors.length; j += 3) {
+            colors[j] =
+             MathUtils.lerp(colors1[j],
+              color.r, v);
+            colors[j + 1] =
+             MathUtils.lerp(colors1[j + 1],
+              color.g, v);
+            colors[j + 2] =
+             MathUtils.lerp(colors1[j + 2],
+              color.b, v);
+        }
+
+        emitter.getTint().setColors(colors);
     }
 
 

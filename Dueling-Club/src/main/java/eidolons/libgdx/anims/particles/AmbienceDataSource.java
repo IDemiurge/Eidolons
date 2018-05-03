@@ -1,6 +1,6 @@
 package eidolons.libgdx.anims.particles;
 
-import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import com.badlogic.gdx.graphics.Color;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.StringMaster;
@@ -16,12 +16,14 @@ public class AmbienceDataSource {
     static boolean underground;
     static boolean dark;
     static boolean snow;
-    private static Dungeon dungeon_;
+    private final AMBIENCE_TEMPLATE template;
+    Color colorHue;
     private List<String> emitters;
     private int showChance;
 
-    public AmbienceDataSource(DAY_TIME time) {
+    public AmbienceDataSource(AMBIENCE_TEMPLATE template, DAY_TIME time) {
         emitters = new ArrayList<>();
+        this.template = template;
         switch (time) {
             case DAWN:
                 emitters.add(EMITTER_PRESET.MIST_WHITE2.path);
@@ -67,8 +69,8 @@ public class AmbienceDataSource {
         }
     }
 
-    public static void init(Dungeon dungeon) {
-        dungeon_ = dungeon;
+    public Color getColorHue() {
+        return colorHue;
     }
 
     private String string(EMITTER_PRESET emitterPreset, int i) {
@@ -90,5 +92,13 @@ public class AmbienceDataSource {
 
     public void setShowChance(int showChance) {
         this.showChance = showChance;
+    }
+
+    public enum AMBIENCE_TEMPLATE {
+        CAVE,
+        DUNGEON,
+        CRYPT,
+        HELL,
+        HALL, SURFACE,
     }
 }

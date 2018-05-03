@@ -295,6 +295,8 @@ public class WanderAi extends AiBehavior {
 
     @Override
     public ActionSequence getOrders(UnitAI ai) {
+        if (ai.getGroupAI()==null )
+            return null ;
         Coordinates c1 = null;
         Loop loop = new Loop(5);
         while (loop.continues()) {

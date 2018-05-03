@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -113,7 +114,7 @@ public class UnitView extends BaseView {
 
         super.act(delta);
         updateVisible();
-        if (GdxMaster.isHpBarAttached() && !GridPanel.isHpBarsOnTop()) {
+        if (GdxMaster.isHpBarAttached() && !GridMaster.isHpBarsOnTop()) {
             addActor(hpBar);
         }
         if (mainHeroLabel != null) {

@@ -142,9 +142,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
         checkShader();
         renderLoader(delta);
-        if (isWaitingForInput()) {
-            waited(delta);
-        }
+        waited(delta);
         checkShaderReset();
     }
 
@@ -158,12 +156,19 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     protected void waited(float delta) {
         timeWaited += delta;
-        batch.begin();
-        float alpha = (timeWaited / 3) % 1;
-        alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
-         : alpha * 2 + 0.15f;
-        waitingLabel.draw(batch, alpha % 1);
-        batch.end();
+
+//        batch.begin();
+
+//    TODO     tooltipLabel.draw(batch, 1f);
+
+        if (isWaitingForInput()) {
+            float alpha = (timeWaited / 3) % 1;
+            alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
+             : alpha * 2 + 0.15f;
+            waitingLabel.draw(batch, alpha % 1);
+        }
+
+//        batch.end();
     }
 
     protected void renderLoader(float delta) {
@@ -182,6 +187,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     }
 
+    public void backToLoader() {
+        hideLoader = false;
+    }
 
     public boolean isWaitingForInput() {
         return waitingForInput;
@@ -238,5 +246,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public boolean isLoadingDone() {
         return hideLoader;
+    }
+
+    public void reset() {
+
     }
 }

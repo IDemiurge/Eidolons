@@ -38,7 +38,16 @@ public class TestMasterContent {
      + "inferior iron battle hammer;"
      + "inferior redwood battlestaff;"
      + "inferior redwood longbow;"
+     + "inferior redwood staff;"
+     + "inferior iron spear;"
+     + "inferior iron lance;"
+     + "inferior iron trident;"
+     + "inferior iron halbert;"
+     + "inferior iron halbert;"
+     + "inferior redwood staff;"
+     + "inferior redwood staff;"
      + "inferior redwood staff;";
+    public static final boolean ALL_WEAPONS_TEST =true;
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
     private static final String testGroups = "Fire;Water;Air;Earth;";
     private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
@@ -409,16 +418,18 @@ public class TestMasterContent {
             last = false;
         }
         if (weaponTest) {
+            if (ALL_WEAPONS_TEST)
+            {
+                for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
+                            type.addProperty(PROPS.INVENTORY,
+                             s.getName(), true);
+                }
+            }else
             for (String substring : StringMaster.openContainer(TEST_WEAPONS)) {
                 type.addProperty(PROPS.INVENTORY, substring, true);
             }
 
         }
-//            for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
-//                if (s.getProperty(G_PROPS.MATERIAL).equalsIgnoreCase("iron"))
-//                    if (s.getProperty(G_PROPS.QUALITY_LEVEL).equalsIgnoreCase("inferior"))
-//                        type.addProperty(PROPS.INVENTORY, s.getName(), true);
-//            }
         if (!test_on) {
             return;
         }

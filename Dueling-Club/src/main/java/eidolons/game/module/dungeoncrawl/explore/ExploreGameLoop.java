@@ -24,8 +24,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
-
 /**
  * Created by JustMe on 9/9/2017.
  */
@@ -220,7 +218,7 @@ if (resetRequired)
             return null;
         }
 
-        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
+            GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
@@ -331,8 +329,7 @@ if (resetRequired)
     protected boolean roundLoop() {
         while (true) {
             if (activeUnit != game.getPlayer(true).getHeroObj()) {
-                activeUnit = (Unit) game.getPlayer(true).getHeroObj();
-                GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+                setActiveUnit((Unit) game.getPlayer(true).getHeroObj() );
             }
 
             Boolean result = makeAction();

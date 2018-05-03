@@ -21,7 +21,6 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
@@ -335,15 +334,11 @@ public class HpBar extends SuperActor {
 
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = null ;
-        if (GridPanel.isHpBarsOnTop() && !queue)
+        if (GridMaster.isHpBarsOnTop() && !queue)
         {
             Vector2 v = //localToStageCoordinates
              (new Vector2(getX(), getY()));
             clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
-            if (fullLengthPerc!=1f && fullLengthPerc!=0f){
-                main.system.auxiliary.log.LogMaster.log(1,this+ "hp bar " +fullLengthPerc
-                + " bounds: " + clipBounds);
-            }
         } else
         clipBounds =        new Rectangle(getX(), getY(), innerWidth * fullLengthPerc, height);
         getStage().calculateScissors(clipBounds, scissors);

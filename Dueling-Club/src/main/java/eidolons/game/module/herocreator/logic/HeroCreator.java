@@ -1,7 +1,7 @@
 package eidolons.game.module.herocreator.logic;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.system.test.TestMasterContent;
@@ -13,7 +13,6 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 
-import java.awt.*;
 import java.util.List;
 
 public class HeroCreator {
@@ -43,7 +42,7 @@ public class HeroCreator {
     }
 
     public static Unit createHeroObj(ObjType type) {
-        Unit hero = new Unit(type, 0, 0, getDefaultPlayer(), Eidolons.getGame(),
+        Unit hero = new Unit(type, 0, 0, PlayerManager.getDefaultPlayer(), Eidolons.getGame(),
          new Ref(Eidolons.getGame()));
         newId(type);
         Eidolons.getGame().getState().addObject(hero);
@@ -52,11 +51,6 @@ public class HeroCreator {
         return hero;
     }
 
-    private static DC_Player getDefaultPlayer() {
-        if (DC_Player.NEUTRAL == null)
-            DC_Player.NEUTRAL = new DC_Player("Simulation", Color.red, true);
-        return DC_Player.NEUTRAL;
-    }
 
     private static void newId(ObjType type) {
         int id = type.getTypeId();

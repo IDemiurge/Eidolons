@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -43,6 +44,9 @@ public class FacingPanel extends TablePanel {
     public FacingPanel() {
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO,
          p -> {
+            if (p.get()==null )
+                setUserObject(new FullUnitDataSource(Eidolons.getMainHero()));
+                else
              setUserObject(new FullUnitDataSource((Unit) p.get()));
          });
         addActor(background = new GroupX());

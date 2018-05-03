@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ContainerDataSource implements InventoryTableDataSource {
 
-    private DequeImpl<DC_HeroItemObj> items;
+    private List<DC_HeroItemObj> items;
     private InventoryValueContainerFactory factory;
     private DC_Obj obj;
     private ContainerClickHandler handler;

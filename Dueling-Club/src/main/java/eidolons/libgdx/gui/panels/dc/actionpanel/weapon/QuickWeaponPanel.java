@@ -124,6 +124,10 @@ public class QuickWeaponPanel extends TablePanel {
 
     public WeaponDataSource getActiveWeaponDataSource() {
         if (dataSource==null )
+        if (dataSourceAlt==null )
+            return null ;
+
+        if (dataSource==null )
             return dataSourceAlt;
         if (dataSourceAlt==null )
             return dataSource;

@@ -6,6 +6,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
 import eidolons.game.battlecraft.logic.meta.universal.*;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
@@ -85,14 +86,19 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
          new ScenarioMetaMaster(getData()))) {
             return;
         }
-
-//        if (restart){
-//            Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);
-//             Eidolons.mainGame.getMetaMaster(). init();
-//        }
+        //TODO should not be necessary!
+        Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(restart);
+//        ?  Eidolons.mainGame.getMetaMaster(). init();
         Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
         Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-        Eidolons.mainGame.getMetaMaster().getGame().start(true);
+        Eidolons.mainGame.getMetaMaster().getGame().start(restart);
+
+
+        GuiEventManager.trigger(GuiEventType.UPDATE_MAIN_HERO);
+        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, Eidolons.getMainHero());
+        GuiEventManager.trigger(GuiEventType.UPDATE_GUI);
+
+        HeroLevelManager.levelUp(Eidolons.getMainHero());
     }
 
     @Override

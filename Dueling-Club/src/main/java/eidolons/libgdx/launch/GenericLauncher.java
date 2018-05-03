@@ -14,6 +14,7 @@ import eidolons.game.module.adventure.MacroManager;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -43,7 +44,11 @@ public class GenericLauncher extends Game {
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
-    private boolean firstInitDone;
+    private static boolean firstInitDone;
+
+    public static void setFirstInitDone(boolean firstInitDone) {
+        GenericLauncher.firstInitDone = firstInitDone;
+    }
 
     @Override
     public void create() {
@@ -239,7 +244,8 @@ public class GenericLauncher extends Game {
     }
 
     protected void triggerLoaded(ScreenData meta) {
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+        if (Blackout.isOnNewScreen())
+         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         switch (meta.getType()) {
             case BATTLE:
                 if (!CoreEngine.isMacro())
@@ -267,7 +273,8 @@ public class GenericLauncher extends Game {
     }
 
     protected void screenSwitcher(EventCallbackParam param) {
-        GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+        if (Blackout.isOnNewScreen())
+            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         ScreenData newMeta = (ScreenData) param.get();
         if (newMeta != null) {
             switch (newMeta.getType()) {

@@ -17,12 +17,15 @@ import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.logic.action.context.Context;
+import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+
+import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
 
 /**
@@ -142,6 +145,8 @@ public class GameLoop {
 //            if (!retainActiveUnit)
 //                activeUnit = game.getTurnManager().getActiveUnit();
 //            retainActiveUnit = false;
+            if (exited || ExplorationMaster.isExplorationOn())
+                return false;
             if (activeUnit == null) {
                 break;
             }
@@ -150,8 +155,6 @@ public class GameLoop {
                 started = true;
             }
             result = makeAction();
-            if (exited || ExplorationMaster.isExplorationOn())
-                return false;
             if (!aftermath)
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
                     return false;
@@ -344,9 +347,11 @@ public class GameLoop {
     public void setExited(boolean exited) {
         this.exited = exited;
         if (exited) {
+            main.system.auxiliary.log.LogMaster.log(1,this+" interrupting thread... " );
             WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
             try {
                 game.getGameLoopThread().interrupt();
+                main.system.auxiliary.log.LogMaster.log(1,this+" interrupted thread!" );
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -363,5 +368,6 @@ public class GameLoop {
 
     public void setActiveUnit(Unit activeUnit) {
         this.activeUnit = activeUnit;
+        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
     }
 }

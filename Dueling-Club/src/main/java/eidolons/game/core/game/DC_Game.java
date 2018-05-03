@@ -264,6 +264,10 @@ public class DC_Game extends MicroGame {
         keyManager.init();
         getGraveyardManager().init();//TODO in init?
         battleMaster.startGame();
+
+
+            if (getMetaMaster() != null)
+                getMetaMaster().gameStarted();
         dungeonMaster.gameStarted();
 
         if (dungeonMaster.getExplorationMaster() != null) {
@@ -279,27 +283,29 @@ public class DC_Game extends MicroGame {
     }
 
     public void startGameLoop() {
-        startGameLoop(false);
+        startGameLoop(true);
+        getVisionMaster().refresh();
     }
 
     public void startGameLoop(boolean first) {
         if (MusicMaster.isOn())
             GuiEventManager.trigger(MUSIC_START, null);
         getState().gameStarted(first);
-        if (first) if (getMetaMaster() != null)
-            getMetaMaster().gameStarted();
 
-        if (loop != null)
-            loop.setExited(true);
-        loop = createGameLoop();
-        if (ExplorationMaster.isExplorationOn()) {
-            getStateManager().newRound(); //for reset
-            if (!first)
-                getVisionMaster().refresh();
+        if (first) {
+            if (loop != null)
+                loop.setExited(true);
+            loop = createGameLoop();
+            if (ExplorationMaster.isExplorationOn()) {
+                getStateManager().newRound(); //for reset
+//                if (!first)
+//
+            }
+            setGameLoopThread(loop.startInNewThread());
         }
-        setGameLoopThread(loop.startInNewThread());
         setRunning(true);
         setStarted(true);
+
     }
 
     private GameLoop createGameLoop() {
@@ -807,10 +813,18 @@ public class DC_Game extends MicroGame {
         this.setState(new DC_GameState(this));
         this.setManager(new DC_GameManager(this.getState(), this));
         this.getManager().init();
+        clearCaches();
         for (Obj sub : cachedObjects) {
             getState().addObject(sub);
         }
+        dungeonMaster.getExplorationMaster().
+         getResetter().setFirstResetDone(false);
         visionMaster.reinit();
+
+    }
+
+    private void clearCaches() {
+        combatMaster.getActionManager().clearCache();
     }
 
     public DC_BattleFieldGrid getGrid() {

@@ -102,6 +102,11 @@ public class DungeonScreen extends GameScreen {
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        getOverlayStage().setActive(true);
+    }
 
     protected void bindEvents() {
 
@@ -287,10 +292,6 @@ public class DungeonScreen extends GameScreen {
                 }
             }
 
-            if (gridPanel.getFpsLabel() != null)
-                if (gridPanel != null)
-                    gridPanel.getFpsLabel().setText(new Float(1 / delta) + "");
-
             try {
                 soundMaster.doPlayback(delta);
             } catch (Exception e) {
@@ -324,9 +325,9 @@ public class DungeonScreen extends GameScreen {
                     GuiEventManager.trigger(UPDATE_GUI);
                 }
             }
-            super.render(delta);
 
         }
+        super.render(delta);
     }
 
     protected void checkShaderReset() {

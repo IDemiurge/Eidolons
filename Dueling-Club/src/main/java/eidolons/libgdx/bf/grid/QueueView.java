@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.libgdx.GdxImageTransformer;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -75,7 +76,7 @@ public class QueueView extends UnitView {
              clockImage.getX() + (clockTexture.getRegionWidth() / 2 - initiativeLabel.getWidth()),
              clockImage.getY() + (clockTexture.getRegionHeight() / 2 - initiativeLabel.getHeight() / 2));
         }
-        if (!GridPanel.isHpBarsOnTop())
+        if (!GridMaster.isHpBarsOnTop())
             if (hpBar != null)
                 hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
         if (isInitialized())

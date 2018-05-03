@@ -58,7 +58,9 @@ public class VideoMaster {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
+        if (player != null) {
+            player.dispose();
+        }
         player = VideoPlayerCreator.createVideoPlayer();
         player.resize(w, h);
         FileHandle file = new FileHandle(FileManager.getFile(path));

@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.rules.buff;
 
 import eidolons.ability.effects.common.ModifyValueEffect;
-import eidolons.ability.effects.oneshot.status.ImmobilizeEffect;
 import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.game.battlecraft.rules.RuleKeeper.COMBAT_RULES;
@@ -53,7 +52,7 @@ public class WeightBuffRule extends DC_BuffRule {
     protected Effect getEffect() {
         switch (level) {
             case 0: {
-                return new ImmobilizeEffect();
+//               TODO  return new ImmobilizeEffect();
             }
             case 1: {
                 return
