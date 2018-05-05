@@ -141,9 +141,10 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod / 4);
     }
 
-    public boolean chooseDifficulty() {
-        if (difficulty != null) {
-            return true;
+    public boolean chooseDifficulty(boolean forced) {
+        if (!forced)
+            if (difficulty != null) {
+                return true;
         }
         GuiEventManager.trigger(
          GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL);

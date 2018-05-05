@@ -30,6 +30,8 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 
 import java.awt.*;
 
@@ -204,8 +206,13 @@ public class Eidolons {
 
     public static void gameExited() {
 //        DC_Game toFinilize = game;
+        GenericLauncher.setFirstInitDone(false);
         PartyManager.setSelectedHero(null);
         game.getMetaMaster().gameExited();
+
+        SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,
+         "GAME EXIT TO MAIN MENU");
+        game.exit(true);
         game = null;
         mainHero = null;
         DC_Game.game = null;
@@ -243,5 +250,20 @@ public class Eidolons {
 
     public static MacroGame getMacroGame() {
         return MacroGame.game;
+    }
+
+    public static void restart() {
+        new Thread(() -> {
+            getGame().getMetaMaster().getBattleMaster().
+             getOutcomeManager().restart();
+        }, "restart thread").start();
+    }
+
+    public static void nextLevel() {
+        new Thread(() -> {
+            getGame().getMetaMaster().getBattleMaster().
+             getOutcomeManager().next();
+        }, "next level thread").start();
+
     }
 }

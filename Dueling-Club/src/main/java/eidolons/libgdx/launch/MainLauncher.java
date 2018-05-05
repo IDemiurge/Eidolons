@@ -21,6 +21,7 @@ public class MainLauncher extends GenericLauncher {
     private static Stack<String> lastChoiceStack;
 
     public static void main(String[] args) {
+        CoreEngine.setFastMode(args.length > 2);
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         if (args.length > 0) {
@@ -29,7 +30,6 @@ public class MainLauncher extends GenericLauncher {
                 CoreEngine.setJarlike(true);
                 return;
             }
-            CoreEngine.setFastMode(true);
             for (String command : commands) {
                 MAIN_MENU_ITEM item =
                  new EnumMaster<MAIN_MENU_ITEM>().retrieveEnumConst(MAIN_MENU_ITEM.class, command);

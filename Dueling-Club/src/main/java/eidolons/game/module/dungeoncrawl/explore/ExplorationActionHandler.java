@@ -19,6 +19,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
      PARAMS.AP_COST,
     });
     private static String STA_MODIFIER = "0.5";
+    private static String FOC_MODIFIER = "0.5";
 
     public ExplorationActionHandler(ExplorationMaster master) {
         super(master);
@@ -48,7 +49,7 @@ public class ExplorationActionHandler extends ExplorationHandler {
             sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
         sub = costs.getCost(PARAMS.FOC_COST);
         if (sub != null)
-            sub.getPayment().getAmountFormula().append("*" + STA_MODIFIER);
+            sub.getPayment().getAmountFormula().append("*" + FOC_MODIFIER);
     }
 
     public void playerActionActivated(DC_ActiveObj activeObj) {

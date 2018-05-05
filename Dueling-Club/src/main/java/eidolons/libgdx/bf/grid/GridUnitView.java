@@ -20,7 +20,20 @@ public class GridUnitView extends GenericGridView {
         initQueueView(o);
     }
 
-//    @Override
+    @Override
+    public void setFlickering(boolean flickering) {
+        super.setFlickering(flickering);
+        if (initiativeQueueUnitView!=null )
+            initiativeQueueUnitView.setFlickering(flickering);
+    }
+
+    @Override
+    public void setGreyedOut(boolean greyedOut) {
+        super.setGreyedOut(greyedOut);
+        if (initiativeQueueUnitView!=null )
+            initiativeQueueUnitView.setGreyedOut(greyedOut);
+    }
+    //    @Override
 //    public void draw(Batch batch, float parentAlpha) {
 //        Vector2 v = new Vector2(getX(), getY());
 //        v =localToStageCoordinates(v);

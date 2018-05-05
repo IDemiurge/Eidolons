@@ -1,7 +1,10 @@
 package eidolons.libgdx.screens.menu;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.kotcrab.vis.ui.VisUI;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import main.data.filesys.PathFinder;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
     public static MainMenu getInstance() {
         if (instance != null) return instance;
+
         instance = new MainMenu();
         return instance;
     }

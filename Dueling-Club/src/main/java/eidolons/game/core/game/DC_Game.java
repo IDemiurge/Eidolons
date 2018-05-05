@@ -30,7 +30,6 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
-import eidolons.game.battlecraft.rules.mechanics.WaitRule;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.atb.AtbController;
@@ -54,14 +53,12 @@ import eidolons.test.PresetMaster;
 import eidolons.test.debug.DebugMaster;
 import eidolons.test.frontend.FAST_DC;
 import main.content.CONTENT_CONSTS.FLIP;
-import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.PROPERTY;
 import main.data.XLinkedMap;
 import main.data.xml.XML_Reader;
 import main.entity.Ref;
-import main.entity.obj.BuffObj;
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
@@ -98,38 +95,38 @@ public class DC_Game extends MicroGame {
     protected BattleMaster battleMaster;
     protected CombatMaster combatMaster;
 
-    private DroppedItemManager droppedItemManager;
-    private InventoryTransactionManager inventoryTransactionManager;
-    private DC_InventoryManager inventoryManager;
-    private DC_GameManager manager;
+    protected DroppedItemManager droppedItemManager;
+    protected InventoryTransactionManager inventoryTransactionManager;
+    protected DC_InventoryManager inventoryManager;
+    protected DC_GameManager manager;
 
-    private VisionMaster visionMaster;
-    private DebugMaster debugMaster;
-    private TestMasterContent testMaster;
-    private AI_Manager aiManager;
-    private DC_KeyManager keyManager; //where to move?
+    protected VisionMaster visionMaster;
+    protected DebugMaster debugMaster;
+    protected TestMasterContent testMaster;
+    protected AI_Manager aiManager;
+    protected DC_KeyManager keyManager; //where to move?
 
-    private DC_Rules rules;
+    protected DC_Rules rules;
 
-    private GAME_MODES gameMode;
-    private GAME_TYPE gameType;
-    private boolean battleInit; //to Battle!
+    protected GAME_MODES gameMode;
+    protected GAME_TYPE gameType;
+    protected boolean battleInit; //to Battle!
 
 
-    private Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
-    private HashMap<Coordinates, Map<BattleFieldObject, FLIP>> flipMap;
+    protected Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap; // ?!
+    protected HashMap<Coordinates, Map<BattleFieldObject, FLIP>> flipMap;
 
-    private boolean testMode;
-    private boolean dummyPlus;
-    private boolean AI_ON = true;
+    protected boolean testMode;
+    protected boolean dummyPlus;
+    protected boolean AI_ON = true;
 
-    private Thread gameLoopThread;
-    private GameLoop loop;
-    private LaunchDataKeeper dataKeeper;
+    protected Thread gameLoopThread;
+    protected GameLoop loop;
+    protected LaunchDataKeeper dataKeeper;
     @Refactor
-    private Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
-    private MusicMaster musicMaster;
-    private DC_BattleFieldGrid grid;
+    protected Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
+    protected MusicMaster musicMaster;
+    protected DC_BattleFieldGrid grid;
 
     public DC_Game() {
         this(false);
@@ -148,19 +145,19 @@ public class DC_Game extends MicroGame {
         init();
     }
 
-    private void initMasters() {
+    protected void initMasters() {
 
         master = new DC_GameObjMaster(this);
-//        if (!CoreEngine.isArcaneVault()) {
         manager = new DC_GameManager(getState(), this);
         manager.init();
-//        } //TODO FIX classdefnotfound!
+
         this.setIdManager(new DC_IdManager(this));
         combatMaster = createCombatMaster();
 
         requirementsManager = new DC_RequirementsManager(this);
         valueManager = new DC_ValueManager(this);
-        visionMaster = new VisionMaster(this);
+        if (!isSimulation())
+            visionMaster = new VisionMaster(this);
         mathManager = new DC_MathManager(this);
         effectManager = new DC_EffectManager(this);
         droppedItemManager = new DroppedItemManager(this);
@@ -212,7 +209,7 @@ public class DC_Game extends MicroGame {
         return new TestBattleMaster(this);
     }
 
-    private boolean isLocation() {
+    protected boolean isLocation() {
         return !FAST_DC.TEST_MODE;
     }
 
@@ -308,7 +305,7 @@ public class DC_Game extends MicroGame {
 
     }
 
-    private GameLoop createGameLoop() {
+    protected GameLoop createGameLoop() {
         if (ExplorationMaster.isExplorationOn())
             return new ExploreGameLoop(this);
         return new GameLoop(this);
@@ -351,39 +348,6 @@ public class DC_Game extends MicroGame {
         getUnits().clear();
         getStructures().clear();
         getCells().clear();
-    }
-
-    public void exit(boolean mainMenu) throws InterruptedException {
-        // TODO review this! only for arcade-game, btw!
-        stop();
-        WaitRule.reset();
-        for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
-            BuffObj buff = (BuffObj) obj;
-            if (buff.isDispelable() || !buff.isPermanent()) {
-                buff.kill();
-            }
-        }
-        state.reset();
-        logManager.clear();
-        for (Obj obj : getUnits()) {
-            if (!obj.getOriginalOwner().isMe()) {
-                obj.kill(obj, false, true);
-            }
-            if (!mainMenu && obj.getOwner().isMe()) {
-                continue;
-            }
-
-            state.removeObject(obj.getId());
-        }
-        if (mainMenu) {
-            getMaster().clear();
-        }
-
-        for (Obj obj : getCells()) {
-            obj.kill(obj, false, true);
-            state.removeObject(obj.getId());
-        }
-
     }
 
     @Override
@@ -823,7 +787,7 @@ public class DC_Game extends MicroGame {
 
     }
 
-    private void clearCaches() {
+    protected void clearCaches() {
         combatMaster.getActionManager().clearCache();
     }
 
@@ -846,5 +810,43 @@ public class DC_Game extends MicroGame {
 
     }
 
+    public void exit(boolean mainMenu)  {
+        loop.setExited(true);
+
+    }
+
+
+//    public void exit(boolean mainMenu) throws InterruptedException {
+//        // TODO review this! only for arcade-game, btw!
+//        stop();
+//        WaitRule.reset();
+//        for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
+//            BuffObj buff = (BuffObj) obj;
+//            if (buff.isDispelable() || !buff.isPermanent()) {
+//                buff.kill();
+//            }
+//        }
+//        state.reset();
+//        logManager.clear();
+//        for (Obj obj : getUnits()) {
+//            if (!obj.getOriginalOwner().isMe()) {
+//                obj.kill(obj, false, true);
+//            }
+//            if (!mainMenu && obj.getOwner().isMe()) {
+//                continue;
+//            }
+//
+//            state.removeObject(obj.getId());
+//        }
+//        if (mainMenu) {
+//            getMaster().clear();
+//        }
+//
+//        for (Obj obj : getCells()) {
+//            obj.kill(obj, false, true);
+//            state.removeObject(obj.getId());
+//        }
+//
+//    }
 
 }

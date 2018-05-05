@@ -22,6 +22,16 @@ public class SimulationGame extends DC_Game {
         super(true);
     }
 
+    @Override
+    public void init() {
+        super.init();
+    }
+
+    @Override
+    protected void initMasters() {
+        super.initMasters();
+    }
+
     //how should these be called properly?
     public DC_HeroAttachedObj getSimulationObj(Unit dc_HeroObj, ObjType type, PROPERTY prop) {
         try {

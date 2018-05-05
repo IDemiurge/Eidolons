@@ -1,10 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
-import com.badlogic.gdx.Gdx;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.MacroTimeMaster;
@@ -12,7 +9,6 @@ import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;
 import main.elements.targeting.SelectiveTargeting;
-import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Loop;
@@ -28,11 +24,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by JustMe on 9/9/2017.
  */
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
-    private static final int REAL_TIME_LOGIC_PERIOD = 350;
-    private static Thread realTimeThread;
-    private  MacroTimeMaster macroTimeMaster;
     Lock lock = new ReentrantLock();
     Condition waiting = lock.newCondition();
+    private Thread realTimeThread;
+    private MacroTimeMaster macroTimeMaster;
     private ExplorationMaster master;
     private boolean resetRequired;
 
@@ -41,47 +36,13 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         master = game.getDungeonMaster().getExplorationMaster();
         macroTimeMaster = MacroTimeMaster.getInstance();
         GuiEventManager.bind(GuiEventType.GAME_RESET,
-         d-> {
-            resetRequired=true;
-            signal();
+         d -> {
+             resetRequired = true;
+             signal();
          });
     }
 
 
-    protected static void startRealTimeLogic() {
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
-        if (!CoreEngine.isGraphicsOff())
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
-                Gdx.app.postRunnable(() ->
-                 {
-                     try {
-                         AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                     } catch (Exception e) {
-                         main.system.ExceptionMaster.printStackTrace(e);
-                     }
-                 }
-                );
-            });
-
-        while (true) {
-
-            WaitMaster.WAIT(REAL_TIME_LOGIC_PERIOD);
-            if (Eidolons.getGame() == null)
-                return;
-            if (Eidolons.getGame().isPaused()) continue;
-            if (!ExplorationMaster.isExplorationOn()) continue;
-            if (ExplorationMaster.isRealTimePaused()) continue;
-            try {
-                Eidolons.getGame().getDungeonMaster().getExplorationMaster().
-                 getTimeMaster().checkTimedEvents();
-
-                MacroTimeMaster.getInstance().timedCheck();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
-    }
 
     protected GameScreen getGdxScreen() {
         return DungeonScreen.getInstance();
@@ -96,9 +57,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         }
         if (!CoreEngine.isJUnit()) {
             if (realTimeThread == null) {
-                realTimeThread = new Thread(() -> {
-                    startRealTimeLogic();
-                }, "RT Thread");
+                realTimeThread = new RealTimeThread(this);
                 realTimeThread.start();
             }
         }
@@ -130,22 +89,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return false;
     }
 
-    private boolean checkNextLevel() {
-        Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
-        Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
-        if (location.getMainExit() != null)
-            if (location.getMainExit().getCoordinates().equals(c)) {
-                //check party
-                return true;
-            }
-        if (game.isDebugMode())
-            if (location.getMainEntrance() != null)
-                if (location.getMainEntrance().getCoordinates().equals(c)) {
-//test
-                    return true;
-                }
-        return false;
-    }
 
     @Override
     public void setExited(boolean exited) {
@@ -162,18 +105,20 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 lock.lock();
                 try {
                     waiting.await();
-                } catch (Exception e1) {
+                } catch (InterruptedException ie){
+                //ignored
+                }
+                catch (Exception e1) {
                     e1.printStackTrace();
                 } finally {
                     lock.unlock();
                 }
             }
         }
-if (resetRequired)
-{
-    game.getManager().reset();
-    resetRequired=false;
-}
+        if (resetRequired) {
+            game.getManager().reset();
+            resetRequired = false;
+        }
         if (master.getAiMaster().isAiActs()) {
 
             while (!master.getAiMaster().getAiActionQueue().isEmpty()) {
@@ -218,7 +163,7 @@ if (resetRequired)
             return null;
         }
 
-            GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
+        GuiEventManager.trigger(GuiEventType.ACTIVE_UNIT_SELECTED, getActiveUnit());
         master.getAiMaster().reset();
         master.getResetter().setResetNeeded(true);
         //recheck?!
@@ -329,7 +274,7 @@ if (resetRequired)
     protected boolean roundLoop() {
         while (true) {
             if (activeUnit != game.getPlayer(true).getHeroObj()) {
-                setActiveUnit((Unit) game.getPlayer(true).getHeroObj() );
+                setActiveUnit((Unit) game.getPlayer(true).getHeroObj());
             }
 
             Boolean result = makeAction();
@@ -365,7 +310,7 @@ if (resetRequired)
             return;
         master.getTimeMaster().timePassed(delta);
 //        macroTimeMaster.setSpeed(master.getTimeMaster().getTime());
-        macroTimeMaster.act(delta*5);
+        macroTimeMaster.act(delta * 5);
     }
 
     public Float getTime() {

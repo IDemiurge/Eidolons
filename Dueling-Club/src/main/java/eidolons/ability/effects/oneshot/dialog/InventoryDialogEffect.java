@@ -31,11 +31,11 @@ public class InventoryDialogEffect extends DialogEffect {
 
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
          new InventoryDataSource((Unit) ref.getSourceObj()));
-
-        boolean result = (boolean) WaitMaster.waitForInput(
+        boolean result = (boolean) WaitMaster.waitForInputAnew(
          InventoryTransactionManager.OPERATION);
         getGame().getInventoryTransactionManager().setActive(false);
-
+        if (!result)
+            ref.getActive().setCancelled(true);
         return result;
     }
 

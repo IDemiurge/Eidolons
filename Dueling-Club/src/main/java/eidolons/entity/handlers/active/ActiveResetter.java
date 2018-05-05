@@ -193,7 +193,9 @@ public class ActiveResetter extends EntityResetter<DC_ActiveObj> {
         getEntity().modifyParamByPercent(PARAMS.STA_COST, sta, true);
         getEntity().modifyParamByPercent(PARAMS.AP_COST, ap, true);
         getEntity().modifyParamByPercent(PARAMS.ESS_COST, ess, true);
+        if (foc!=0)
         getEntity().modifyParamByPercent(PARAMS.FOC_COST, foc, true);
+        if (foc!=0)
         getEntity().modifyParamByPercent(PARAMS.FOC_REQ, foc, false);
     }
 

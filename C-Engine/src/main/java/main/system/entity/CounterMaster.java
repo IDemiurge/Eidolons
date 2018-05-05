@@ -27,14 +27,14 @@ public class CounterMaster {
     public static String findCounter(String valueName, boolean strict) {
         COUNTER c = getCounter(valueName, strict);
         if (c != null)
-            return c.getName();
+            return c.getName().toUpperCase();
         valueName = StringMaster.getWellFormattedString(valueName);
         if (!valueName.contains(StringMaster.COUNTER)) {
             valueName = StringMaster.getWellFormattedString(valueName.trim())
              + StringMaster.COUNTER;
         }
 
-        return valueName;
+        return valueName.toUpperCase();
     }
 
     public static COUNTER getCounter(String valueName, boolean strict) {

@@ -109,7 +109,10 @@ public class HqDataMaster {
     }
 
     public static void undo() {
-        map.get(HqMaster.getActiveHero()).undo_();
+        undo(HqMaster.getActiveHero());
+    }
+        public static void undo(Unit hero) {
+        map.get(hero).undo_();
     }
         public void undo_() {
         if (heroModel.getModificationList().isEmpty())

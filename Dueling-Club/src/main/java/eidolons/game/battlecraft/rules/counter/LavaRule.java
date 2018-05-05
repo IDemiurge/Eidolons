@@ -22,7 +22,7 @@ import main.entity.Ref.KEYS;
  */
 public class LavaRule extends DamageCounterRule  implements TimedRule {
 
-    private static final int REDUCTION = -1;
+    private static final int REDUCTION = 1;
     private static final String DAMAGE_PER_COUNTER = "5";
     private static final String DURABILITY_PER_COUNTER = "(-0.5)";
     private static final String WEIGHT_PER_COUNTER = "1";

@@ -25,7 +25,6 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
@@ -257,9 +256,9 @@ public class Unit extends DC_UnitModel {
     public void removeQuickItem(DC_QuickItemObj itemObj) {
         if (getQuickItems().remove(itemObj)) {
             getResetter().resetQuickSlotsNumber();
-        if (CharacterCreator.isArcadeMode()) {
-            type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), true);
-        }
+
+        type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
+
         removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
 
         if (getQuickItems().isEmpty()) {
@@ -713,15 +712,17 @@ public class Unit extends DC_UnitModel {
         this.itemsInitialized = itemsInitialized;
     }
 
-    public boolean dropItemFromInventory(DC_HeroItemObj item) {
+    public boolean dropItemFromInventory(DC_HeroItemObj item, Coordinates c) {
         removeFromInventory(item);
-        // add to some container in the gamestate!
         if (!isSimulation()) //sim just remembers for real hero to drop
-            getGame().getDroppedItemManager().drop(item, this);
+            getGame().getDroppedItemManager().drop(item, c);
 
         return true;
     }
 
+    public boolean dropItemFromInventory(DC_HeroItemObj item) {
+        return dropItemFromInventory(item, getCoordinates());
+    }
     public boolean removeFromInventory(DC_HeroItemObj item) {
         if (!getInventory().remove(item))
             return false;

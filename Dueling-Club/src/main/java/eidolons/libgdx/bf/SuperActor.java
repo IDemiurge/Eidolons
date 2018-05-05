@@ -45,6 +45,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     private Boolean withinCamera;
 
     public enum BLENDING{
+        SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
         OVERLAY(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
         MULTIPLY(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
         SATURATE(GL20.GL_DST_COLOR, GL20.GL_ONE),

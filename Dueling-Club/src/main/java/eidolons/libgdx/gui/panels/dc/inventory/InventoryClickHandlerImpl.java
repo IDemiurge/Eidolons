@@ -161,7 +161,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (!isUndoEnabled()) {
             return;
         }
-        dataMaster.undo();
+        dataMaster.undo_();
 
         Integer op = manager.getOperationsLeft();
         op--;

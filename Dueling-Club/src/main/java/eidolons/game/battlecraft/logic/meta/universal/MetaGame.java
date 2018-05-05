@@ -7,6 +7,7 @@ public abstract class MetaGame<E extends MetaGame> {
 
     protected boolean restarted;
     MetaGameMaster<E> master;
+    private boolean difficultyReset;
 
     public MetaGame(MetaGameMaster<E> master) {
         this.master = master;
@@ -23,5 +24,13 @@ public abstract class MetaGame<E extends MetaGame> {
 
     public void setRestarted(boolean restarted) {
         this.restarted = restarted;
+    }
+
+    public boolean isDifficultyReset() {
+        return restarted;
+    }
+
+    public void setDifficultyReset(boolean difficultyReset) {
+        this.difficultyReset = difficultyReset;
     }
 }

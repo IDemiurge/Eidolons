@@ -308,7 +308,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     private static void generateItemTypes(boolean weapon, QUALITY_LEVEL[] qualityLevels,
                                           MATERIAL[] materials, ITEM_MATERIAL_GROUP group) {
-        List<ObjType> types = DataManager.getTypes((weapon) ? DC_TYPE.WEAPONS : DC_TYPE.ARMOR);
+        List<ObjType> types = DataManager.getBaseTypes((weapon) ? DC_TYPE.WEAPONS : DC_TYPE.ARMOR);
         for (ObjType type : types) {
             if (ItemMaster.checkSpecialType(type)) {
                 initSpecialItem(type);
@@ -681,11 +681,11 @@ public class ItemGenerator implements GenericItemGenerator {
                 qMap.put(m, new ConcurrentMap<>());
             }
         }
-        baseWeaponTypes.addAll(DataManager.getTypes(DC_TYPE.WEAPONS));
-        baseArmorTypes.addAll(DataManager.getTypes(DC_TYPE.ARMOR));
-        baseJewelryTypes.addAll(DataManager.getTypes(DC_TYPE.JEWELRY));
-        baseItemTypes.addAll(DataManager.getTypes(DC_TYPE.ITEMS));
-        // baseGarmentTypes.addAll(DataManager.getTypes(OBJ_TYPES.GARMENT));
+        baseWeaponTypes.addAll(DataManager.getBaseTypes(DC_TYPE.WEAPONS));
+        baseArmorTypes.addAll(DataManager.getBaseTypes(DC_TYPE.ARMOR));
+        baseJewelryTypes.addAll(DataManager.getBaseTypes(DC_TYPE.JEWELRY));
+        baseItemTypes.addAll(DataManager.getBaseTypes(DC_TYPE.ITEMS));
+        // baseGarmentTypes.addAll(DataManager.getBaseTypes(OBJ_TYPES.GARMENT));
 
         DataManager.setBaseGarmentTypes(baseGarmentTypes.toArray(new ObjType[baseGarmentTypes.size()]));
         DataManager.setBaseWeaponTypes(baseWeaponTypes.toArray(new ObjType[baseWeaponTypes.size()]));
@@ -859,7 +859,7 @@ public class ItemGenerator implements GenericItemGenerator {
 
     public void generateUsableItems() {
 
-        for (ObjType type : DataManager.getTypes(DC_TYPE.ITEMS)) {
+        for (ObjType type : DataManager.getBaseTypes(DC_TYPE.ITEMS)) {
 
             if (type.getProperty(G_PROPS.ITEM_TYPE).equalsIgnoreCase(ItemEnums.ITEM_TYPE.ALCHEMY + "")) {
                 if (type.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase(
@@ -879,7 +879,7 @@ public class ItemGenerator implements GenericItemGenerator {
     }
 
     public void generateJewelry() {
-        for (ObjType type : DataManager.getTypes(DC_TYPE.JEWELRY)) {
+        for (ObjType type : DataManager.getBaseTypes(DC_TYPE.JEWELRY)) {
             boolean ring = ItemMaster.isRing(type);
             for (MATERIAL material : getJewelryMaterials(type
              .getProperty(G_PROPS.ITEM_MATERIAL_GROUP))) {

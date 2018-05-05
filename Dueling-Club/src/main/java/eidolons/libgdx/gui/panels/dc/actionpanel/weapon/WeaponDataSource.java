@@ -10,6 +10,7 @@ import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
+import main.system.images.ImageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,13 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     public String getSpriteImagePath() {
-        return entity.getSpriteImagePath();
+        if (ImageManager.isImage(entity.getSpriteImagePath()))
+             return entity.getSpriteImagePath();
+        return getDefaultSpriteImage();
+    }
+
+    private String getDefaultSpriteImage() {
+        return "main\\item\\weapon\\sprites\\battle axe.png";
     }
 
     public Unit getOwnerObj() {

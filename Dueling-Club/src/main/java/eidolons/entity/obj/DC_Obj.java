@@ -75,16 +75,8 @@ public abstract class DC_Obj extends MicroObj {
 
     public DC_Obj(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
-        // [QUICK FIX] - ought to have "NO_OUTLINE" const
-        if (!CoreEngine.isLevelEditor()) {
-            if ((this instanceof DC_Cell) || (this instanceof Unit)) {
-//                playerVisionStatus = VisionEnums.UNIT_TO_PLAYER_VISION.CONCEALED;
-//                outlineTypeForPlayer = (this instanceof DC_Cell) ? VisionEnums.OUTLINE_TYPE.DEEPER_DARKNESS
-//                 : VisionEnums.OUTLINE_TYPE.DARK_OUTLINE;
-//                visibilityLevelForPlayer = VISIBILITY_LEVEL.CONCEALED;
-            }
-        }
-        visionController=getGame().getVisionMaster().getVisionController();
+        if (!isSimulation())
+            visionController=getGame().getVisionMaster().getVisionController();
 
     }
 
@@ -719,10 +711,12 @@ public abstract class DC_Obj extends MicroObj {
     }
     public void setGamma(Unit source, Integer i) {
           getGammaMapper().set(source, this, i);
-          if (source.isPlayerCharacter())
-        main.system.auxiliary.log.LogMaster.log(1,this + " gamma = " +i);
         if (source.isPlayerCharacter()) {
-            setGamma(i);
+            {
+                setGamma(i);
+                if (game.isDebugMode())
+                    main.system.auxiliary.log.LogMaster.log(1,this + " gamma = " +i);
+            }
         }
     }
 

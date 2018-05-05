@@ -38,7 +38,6 @@ public class JUnitHelperTest extends DcTest {
 
         Unit enemy = helper.unit(JUnitResources.DEFAULT_UNIT, 0, 0, false);
         atbHelper.startCombat();
-        atbHelper.waitForGameLoopStart();
 
 //      wait for player input
         helper.turn(unit, true, true);

@@ -19,7 +19,6 @@ import eidolons.game.battlecraft.rules.perk.EvasionRule;
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.atb.AtbMaster;
-import eidolons.game.core.atb.AtbTurnManager;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimContext;
@@ -421,7 +420,7 @@ public class Executor extends ActiveHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        getGame().getManager().applyActionRules(getAction());
+        getGame().getManager().applyActionRules(getAction()); if (isResult())
         try {
             checkPendingAttacksOfOpportunity();
         } catch (Exception e) {

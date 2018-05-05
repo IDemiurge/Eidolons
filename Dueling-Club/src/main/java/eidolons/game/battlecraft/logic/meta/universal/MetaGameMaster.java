@@ -97,7 +97,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         metaGame = initializer.initMetaGame(data);
         preStart();
         if (partyManager.initPlayerParty() != null) {
-            if (getBattleMaster().getOptionManager().chooseDifficulty())
+            if (getBattleMaster().getOptionManager().chooseDifficulty(getMetaGame().isDifficultyReset()))
                 return;
         }
         Eidolons.getMainGame().setAborted(true);

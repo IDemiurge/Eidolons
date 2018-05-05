@@ -129,11 +129,8 @@ public class CombatInventory extends TablePanel implements Closable {
     public void close(Boolean result) {
         if (result == null)
             result = false;
-        InventoryDataSource source = (InventoryDataSource) getUserObject();
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
-        if (!ExplorationMaster.isExplorationOn()) {
-            source.getCancelHandler().run();
-        } else {
+        if (ExplorationMaster.isExplorationOn()) {
             GuiEventManager.trigger(GuiEventType.GAME_RESET );
         }
         setVisible(false);

@@ -104,7 +104,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (isRemoveBase(c, type))
             pool.removeIf(item -> !item.isGenerated());
         else {
-            pool.size();
+//            pool.size(); debug
         }
         if (pool.isEmpty())
             return null;
@@ -309,7 +309,10 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
 
         if (c == CONTAINER_CONTENTS.POTIONS ||
          group.get(0).getGroup().equalsIgnoreCase("Alchemy")) {
-            return DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy");
+            return
+             ContainerFilter.filter(
+              DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy"),
+             c, rarity);
 //            return DataManager.gettype;
         }
         if (c == CONTAINER_CONTENTS.JEWELRY ||

@@ -44,13 +44,13 @@ public class DroppedItemManager {
         // drop natural weapons?
 
         for (DC_HeroItemObj item : unit.getInventory()) {
-            drop(item, unit);
+            drop(item, unit.getCoordinates());
         }
         for (DC_HeroItemObj item : unit.getQuickItems()) {
-            drop(item, unit);
+            drop(item, unit.getCoordinates());
         }
         for (DC_HeroItemObj item : unit.getJewelry()) {
-            drop(item, unit);
+            drop(item, unit.getCoordinates());
         }
 
     }
@@ -110,9 +110,10 @@ public class DroppedItemManager {
          "" + item.getId());
     }
 
-    public void drop(DC_HeroItemObj item, Unit heroObj) {
-        game.getCellByCoordinate(heroObj.getCoordinates()).addProperty(PROPS.DROPPED_ITEMS,
+    public void drop(DC_HeroItemObj item, Coordinates c) {
+        game.getCellByCoordinate(c).addProperty(PROPS.DROPPED_ITEMS,
          "" + item.getId());
+        item.setCoordinates(c);
     }
 
     public boolean pickUp(Obj cell, DC_HeroItemObj item) {

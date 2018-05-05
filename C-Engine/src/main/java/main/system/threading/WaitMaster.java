@@ -37,10 +37,14 @@ public class WaitMaster {
         return waitForInput(operation);
     }
 
-    public static Object waitForInput(WAIT_OPERATIONS animationFinished) {
-        return waitForInput(animationFinished, null);
+    public static Object waitForInput(WAIT_OPERATIONS operation) {
+        return waitForInput(operation, null);
     }
 
+    public static Object waitForInputAnew(WAIT_OPERATIONS operation) {
+        WaitMaster.getWaiters().remove(operation);
+        return waitForInput(operation, null);
+    }
     public static Object waitForInput(WAIT_OPERATIONS operation,
                                       Integer maxTime) {
         if (getCompleteOperations().contains(operation)) {

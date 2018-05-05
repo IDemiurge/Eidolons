@@ -54,9 +54,7 @@ public class GameMenuHandler {
                  new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
                 return false;
             case RESTART:
-                new Thread(() -> {
-                Eidolons.getGame().getMetaMaster().getBattleMaster().
-                 getOutcomeManager().restart();                    }, " thread").start();
+                Eidolons.restart();
                 break;
             case PASS_TIME:
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster()

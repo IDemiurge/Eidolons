@@ -851,11 +851,12 @@ public class StringMaster {
 
     public static String toStringOrNull(Object obj) {
         if (obj == null) {
-            return null ;
+            return null;
         }
         return obj.toString();
     }
-        public static String toStringForm(Object obj) {
+
+    public static String toStringForm(Object obj) {
         if (obj == null) {
             return "";
         }
@@ -1719,6 +1720,20 @@ public class StringMaster {
             return newFile;
         }
         return file;
+    }
+
+    public static String getRoman(int level) {
+        int x = level / 10;
+        int v = level / 5;
+        int i = level % 5;
+        String result = "";
+        result += getStringXTimes(x, "X");
+        result += getStringXTimes(v, "V");
+        if (i == 4)
+            result += "IV";
+        else
+            result += getStringXTimes(i, "I");
+        return result;
     }
 
 

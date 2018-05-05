@@ -42,4 +42,8 @@ if (initiativeCost<=0)
 
         return initiativeCost;
     }
+
+    public static Integer getReadiness(Unit unit) {
+        return unit.getIntParam(PARAMS.C_INITIATIVE);
+    }
 }

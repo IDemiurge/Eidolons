@@ -28,6 +28,10 @@ public class CostRequirements extends Requirements {
         this.paymentList = toPay;
     }
 
+    public CostRequirements() {
+
+    }
+
     @Override
     public void add(Requirement r) {
         additionalReqList.put(r.getText(), r.getCondition());

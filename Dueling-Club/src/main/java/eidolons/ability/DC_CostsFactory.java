@@ -74,8 +74,10 @@ public class DC_CostsFactory {
         String s = ""
          + Math.max(spell.getIntParam(PARAMS.FOC_REQ),
          spell.getIntParam(PARAMS.FOC_COST));
-        CostRequirements requirements = new CostRequirements(new Payment(
-         PARAMS.C_FOCUS, new Formula(s)));
+        CostRequirements requirements = new CostRequirements();
+        if (!StringMaster.isEmptyOrZero(s))
+            requirements = new CostRequirements(new Payment(
+                PARAMS.C_FOCUS, new Formula(s)));
 
         if (!DC_Engine.isAtbMode())
             requirements.add(new Requirement(

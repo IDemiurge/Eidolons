@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.particles.ParticleManager;
@@ -442,11 +443,23 @@ public class OptionsMaster {
 
     }
 
+    private static void autoAdjustOptions(OPTIONS_GROUP group,  Options options) {
+        switch (group){
+            case GRAPHICS:
+                options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolution());
+                break;
+        }
+    }
     private static Map<OPTIONS_GROUP, Options> initDefaults() {
+        return initDefaults(false);
+    }
+        private static Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {
         XLinkedMap optionsMap = new XLinkedMap<>();
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
 
             Options options = generateDefaultOptions(group);
+            if (adjust)
+                autoAdjustOptions(group, options);
             if (options != null)
                 optionsMap.put(group, options);
         }

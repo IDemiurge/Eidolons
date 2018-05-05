@@ -8,7 +8,7 @@ import eidolons.entity.handlers.active.ActiveMaster;
 import eidolons.entity.handlers.active.Executor;
 import eidolons.entity.handlers.active.Targeter;
 import eidolons.game.battlecraft.ai.AI_Manager;
-import eidolons.game.battlecraft.rules.combat.attack.dual.CadenceRule;
+import eidolons.game.battlecraft.rules.combat.attack.dual.DualWieldingRule;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.mode.STD_MODES;
 import main.elements.conditions.Conditions;
@@ -107,7 +107,7 @@ public class ActionExecutor extends Executor {
     public void actionComplete() {
         super.actionComplete();
         try {
-            CadenceRule.checkDualAttackCadence(getAction(), getAction().getOwnerObj());
+            DualWieldingRule.checkDualAttackCadence(getAction(), getAction().getOwnerObj());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

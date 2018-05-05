@@ -67,7 +67,18 @@ public class JUnitCounterRules extends JUnitSingleUnit {
         utils.log(rule.getCounter().getName() + " check, " + n1 +
          p.getName() + " before, " + n +
          " after ");
-        return n < n1;
+        if ((n >= n1)) {
+            return false;
+        }
+        n = unit.getCounter(rule.getCounterName());
+          n1 = getDefaultCounterNumber();
+        utils.log(rule.getCounter().getName() + " counters check, " + n1 +
+         rule.getCounterName() + " before, " + n +
+         " after ");
+        if ((n >= n1)) {
+            return false;
+        }
+        return true;
     }
 
     protected int getDefaultCounterNumber() {

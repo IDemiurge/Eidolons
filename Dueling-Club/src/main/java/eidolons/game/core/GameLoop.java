@@ -7,15 +7,18 @@ import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
+import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.rules.combat.misc.ChargeRule;
 import eidolons.game.battlecraft.rules.magic.ChannelingRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.dungeoncrawl.explore.ExploreGameLoop;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.gui.generic.GearActor;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
@@ -40,6 +43,7 @@ public class GameLoop {
     protected boolean aiFailNotified;
     protected boolean aftermath;
     protected boolean skippingToNext;
+    protected boolean nextLevel;
     protected boolean exited;
     protected DequeImpl<ActionInput> actionQueue = new DequeImpl<>();
     private Thread thread;
@@ -113,14 +117,15 @@ public class GameLoop {
     }
 
     public Thread startInNewThread() {
-        if (thread == null)
+        if (thread == null) {
             thread = new Thread(() -> {
                 start();
             }, getThreadName());
 
-        thread.start();
-
-        LogMaster.log(1, "Game Loop started " + this);
+            thread.start();
+            LogMaster.log(1, "Game Loop started " + this);
+        }
+        LogMaster.log(1, "Game Loop ALREADY started " + this);
         return thread;
     }
 
@@ -130,8 +135,10 @@ public class GameLoop {
 
     protected boolean roundLoop() {
         game.getStateManager().newRound();
-        boolean retainActiveUnit = false;
         while (true) {
+
+            if (exited || ExplorationMaster.isExplorationOn())
+                return false;
             Boolean result = game.getTurnManager().nextAction();
             if (result == null) {
                 break;
@@ -145,8 +152,7 @@ public class GameLoop {
 //            if (!retainActiveUnit)
 //                activeUnit = game.getTurnManager().getActiveUnit();
 //            retainActiveUnit = false;
-            if (exited || ExplorationMaster.isExplorationOn())
-                return false;
+
             if (activeUnit == null) {
                 break;
             }
@@ -160,7 +166,6 @@ public class GameLoop {
                     return false;
                 }
             if (result == null) {
-                retainActiveUnit = true;
                 continue;
             }
             if (result) {
@@ -220,9 +225,9 @@ public class GameLoop {
 
         result =
          activateAction(action);
-        waitForPause();
         if (exited)
             return true;
+        waitForPause();
         return result;
     }
 
@@ -349,15 +354,47 @@ public class GameLoop {
         if (exited) {
             main.system.auxiliary.log.LogMaster.log(1,this+" interrupting thread... " );
             WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-            try {
-                game.getGameLoopThread().interrupt();
-                main.system.auxiliary.log.LogMaster.log(1,this+" interrupted thread!" );
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+
+//            if (Thread.currentThread() == thread)
+                try {
+                    game.getGameLoopThread().interrupt();
+                    main.system.auxiliary.log.LogMaster.log(1,this+" interrupted thread!" );
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+
+            if (this instanceof ExploreGameLoop){
+
+            }
+            else  {
+                actionInput(null);
             }
         }
     }
 
+    protected boolean checkNextLevel() {
+        if (nextLevel) {
+            nextLevel = false;
+            return true;
+        }
+        if (!(this instanceof ExploreGameLoop)) {
+            if (!game.isDebugMode())
+                return  false;
+        }
+        Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
+        Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
+        if (location.getMainExit() != null)
+            if (location.getMainExit().getCoordinates().equals(c)) {
+                //check party
+                return true;
+            }
+        if (game.isDebugMode())
+            if (location.getMainEntrance() != null)
+                if (location.getMainEntrance().getCoordinates().equals(c)) {
+                    return true;
+                }
+        return false;
+    }
     public void togglePaused() {
         setPaused(!isPaused());
     }
@@ -369,5 +406,9 @@ public class GameLoop {
     public void setActiveUnit(Unit activeUnit) {
         this.activeUnit = activeUnit;
         GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+    }
+
+    public boolean isExited() {
+        return exited;
     }
 }

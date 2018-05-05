@@ -112,9 +112,7 @@ public class DungeonScreen extends GameScreen {
 
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
             DC_Game.game.getLoop().setExited(true); //cleanup on real exit
-            if (!ExplorationMaster.isExplorationOn()) {
-                DC_Game.game.getLoop().actionInput(null);
-            }
+
 
             if (MacroGame.getGame() != null) {
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,

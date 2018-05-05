@@ -39,6 +39,7 @@ public class AtbHelper {
 
     public void startCombat() {
         startCombat(true);
+        waitForGameLoopStart();
     }
 
     public void startCombat(boolean all_or_closest_group) {

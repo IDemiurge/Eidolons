@@ -631,13 +631,16 @@ public class DC_ActionManager implements ActionManager {
         if (checkAddThrowAction(weapon.getOwnerObj(), !weapon.isMainHand())) {
             DC_ActiveObj throwAction = getOrCreateAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
              obj);
-            throwAction.setName("Throw " + weapon.getName());
+            throwAction.setName(getThrowName(weapon.getName()));
             list.add((DC_UnitAction) throwAction);
         }
         weapon.setAttackActions(new ArrayList<>(list));
         return list;
     }
 
+    public static String getThrowName(String itemName) {
+       return  "Throw " + itemName;
+    }
     private void addSpecialActions(Unit unit, DequeImpl<ActiveObj> actives) {
         // should be another passive to deny unit even those commodities...
 
@@ -983,6 +986,7 @@ public class DC_ActionManager implements ActionManager {
     public void clearCache() {
         actionsCache.clear();
     }
+
 
     public enum ADDITIONAL_MOVE_ACTIONS {
         MOVE_LEFT, MOVE_RIGHT, MOVE_BACK, CLUMSY_LEAP;

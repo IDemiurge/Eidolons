@@ -298,6 +298,7 @@ public class GenericEnums {
     }
 
     public enum STD_BOOLS {
+        PERCENT_MOD,
         DISPELABLE,
         STACKING,
         NON_REPLACING,

@@ -2,6 +2,7 @@ package tests;
 
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DefaultActionHandler;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
@@ -15,6 +16,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataModelSnapshot;
 import main.content.DC_TYPE;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.data.DataManager;
 import main.entity.Entity;
@@ -80,7 +82,7 @@ public class DcHelper implements JUnitHelper {
                 float cost = AtbMaster.getReadinessCost(action);
                 assertTrue(readiness - newReadiness == cost);
             }
-            assertTrue((boolean)result);
+            assertTrue((boolean) result);
         }
     }
 
@@ -206,5 +208,25 @@ public class DcHelper implements JUnitHelper {
 
     public void refreshVisibility() {
         game.getVisionMaster().refresh();
+    }
+
+    public DC_WeaponObj equipWeapon(String itemName) {
+       return equipWeapon(itemName, ITEM_SLOT.MAIN_HAND);
+    }
+        public DC_WeaponObj equipWeapon(String itemName, ITEM_SLOT slot) {
+        ObjType sub = DataManager.getType(itemName, DC_TYPE.WEAPONS);
+        if (sub == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "No weapon " + itemName);
+            return null ;
+        }
+
+        DC_WeaponObj weapon = new DC_WeaponObj(sub, getHero());
+        getHero().equip(weapon, slot);
+
+        return weapon;
+    }
+
+    public Unit getHero() {
+        return game.getManager().getMainHero();
     }
 }

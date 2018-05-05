@@ -116,6 +116,7 @@ public class SpecialLogger implements FileLogger {
     public void appendSpecialLog(SPECIAL_LOG log, String string) {
         string = TimeMaster.getFormattedTime(true) + ": " + string;
         getBuilder(log).append(string + "\n");
+        main.system.auxiliary.log.LogMaster.log(1,log + ": " + string );
     }
 
 

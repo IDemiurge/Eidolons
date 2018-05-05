@@ -1,6 +1,5 @@
 package tests;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.Eidolons;
@@ -71,6 +70,9 @@ public class DcTest {
         utils = new JUnitUtils(game);
     }
 
+    protected void log(String s) {
+        System.out.println(s);
+    }
     protected boolean isSelectiveXml() {
         return true;}
 
@@ -97,7 +99,4 @@ public class DcTest {
         return true;
     }
 
-    protected Unit getHero() {
-        return game.getManager().getMainHero();
-    }
 }

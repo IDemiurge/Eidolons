@@ -445,7 +445,12 @@ public class DataManager {
         return list;
     }
 
-    public static List<ObjType> getTypes(OBJ_TYPE key) {
+    public static List<ObjType> getBaseTypes(OBJ_TYPE key) {
+        List<ObjType> types = new ArrayList<>(getTypes(key));
+        types.removeIf(t -> t.isGenerated());
+        return types;
+    }
+        public static List<ObjType> getTypes(OBJ_TYPE key) {
         return getTypes(key, false);
     }
 

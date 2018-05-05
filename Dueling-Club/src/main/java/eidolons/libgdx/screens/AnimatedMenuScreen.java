@@ -21,15 +21,26 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     MainMenu mainMenu;
 
     public AnimatedMenuScreen() {
-        VisUI.load(new FileHandle(PathFinder.getSkinPath()));
+        initMenu();
+        bindEvents();
+    }
+
+    protected void initMenu() {
+        getOverlayStage().clear();
         mainMenu = MainMenu.getInstance();
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(
          GdxMaster.centerWidth(mainMenu)
          , GdxMaster.centerHeight(mainMenu));
-        bindEvents();
     }
 
+    @Override
+    public void backToLoader() {
+        initMenu();
+        super.backToLoader();
+        getOverlayStage().setActive(true);
+
+    }
     protected void bindEvents() {
 
     }

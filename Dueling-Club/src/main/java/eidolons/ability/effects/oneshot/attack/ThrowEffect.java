@@ -4,6 +4,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import main.content.enums.entity.ActionEnums;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref.KEYS;
@@ -83,9 +84,11 @@ public class ThrowEffect extends AttackEffect {
         if (fromHand) {
             Unit hero = (Unit) ref.getSourceObj();
             if (offhand) {
-                hero.setSecondWeapon(null);
+                hero.unequip(ITEM_SLOT.OFF_HAND);
+                hero.dropItemFromInventory(weapon, ref.getTargetObj().getCoordinates());
             } else {
-                hero.setWeapon(null);
+                hero.unequip(ITEM_SLOT.MAIN_HAND);
+                hero.dropItemFromInventory(weapon, ref.getTargetObj().getCoordinates());
                 if (hero.getOffhandWeapon() != null) {
                     if (!hero.getOffhandWeapon().isRanged()) {
                         if (hero.getOffhandWeapon().isWeapon()) {
@@ -96,7 +99,8 @@ public class ThrowEffect extends AttackEffect {
                 }
             }
         }
-        weapon.getGame().getDroppedItemManager().itemFalls(ref.getTargetObj().getCoordinates(),
+        weapon.getGame().getDroppedItemManager().itemFalls(
+         ref.getTargetObj().getCoordinates(),
          weapon);
 
         getActiveObj().getRef().setID(offhand ? KEYS.OFFHAND : KEYS.WEAPON, null);

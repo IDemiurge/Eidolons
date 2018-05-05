@@ -1,6 +1,9 @@
 package eidolons.system.options;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
@@ -18,6 +22,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
@@ -52,9 +57,18 @@ public class OptionsWindow extends VisWindow {
 
     public static OptionsWindow getInstance() {
         if (instance == null) {
+            VisUI.load(new FileHandle(PathFinder.getSkinPath()));
             instance = new OptionsWindow();
         }
         return instance;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        ShaderProgram shader = batch.getShader();
+        batch.setShader(null);
+        super.draw(batch, parentAlpha);
+        batch.setShader(shader);
     }
 
     public static void setInstance(OptionsWindow instance) {

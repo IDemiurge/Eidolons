@@ -158,11 +158,9 @@ public class OutcomePanel extends TablePanel implements EventListener {
                         Eidolons.getGame().getMaster().nextLevel();
 
                     if (!BooleanMaster.isTrue(outcome))
-                        Eidolons.getGame().getMetaMaster().getBattleMaster().
-                         getOutcomeManager().restart();
+                        Eidolons.restart();
                     else
-                        Eidolons.getGame().getMetaMaster().getBattleMaster().
-                         getOutcomeManager().next();
+                        Eidolons.nextLevel();
 
                 } else if (exit_continue_next) {
 //                        if (DialogMaster.confirm("Must you really go?.."))
