@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.rules.round;
 
+import eidolons.ability.effects.common.ModifyPropertyEffect;
 import eidolons.ability.effects.common.ModifyValueEffect;
 import eidolons.ability.effects.oneshot.buff.RemoveBuffEffect;
 import eidolons.ability.effects.oneshot.rule.UnconsciousBuffEffect;
@@ -14,8 +15,10 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;
 import main.ability.effects.Effect.MOD;
+import main.ability.effects.Effect.MOD_PROP_TYPE;
 import main.ability.effects.Effects;
 import main.content.enums.entity.UnitEnums;
+import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
@@ -90,6 +93,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
           PARAMS.C_INITIATIVE_BONUS, MOD.MODIFY_BY_CONST, "-"
          + INITIATIVE_PENALTY));
         e.add(new RemoveBuffEffect("Unconscious"));
+        e.add(new ModifyPropertyEffect(G_PROPS.STATUS, MOD_PROP_TYPE.REMOVE, "Unconscious"));
         e.setRef(Ref.getSelfTargetingRefCopy(unit));
         return e;
     }

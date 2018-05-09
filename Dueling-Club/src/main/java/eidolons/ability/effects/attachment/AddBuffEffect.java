@@ -38,7 +38,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
  ReducedEffect,
  ContainerEffect {
 
-    public static final String dummyBuffType = BuffObj.DUMMY_BUFF_TYPE;
+    public static final String DUMMY_BUFF_NAME = BuffObj.DUMMY_BUFF_TYPE;
     public static final String EMPTY_BUFF_NAME = "@";
     protected BuffType buffType;
     protected Integer duration;
@@ -188,7 +188,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
                  TextParser.BUFF_PARSING_CODE);
                 setBuffTypeName(parsedName);
             }
-            buffType = new BuffType(DataManager.getType(dummyBuffType, DC_TYPE.BUFFS));
+            buffType = new BuffType(DataManager.getType(DUMMY_BUFF_NAME, DC_TYPE.BUFFS));
             boolean empty = StringMaster.isEmpty(getBuffTypeName());
             if (!empty) {
                 empty = StringMaster.isEmpty(getBuffTypeName().trim());

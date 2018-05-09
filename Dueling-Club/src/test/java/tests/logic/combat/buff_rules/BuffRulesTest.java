@@ -1,11 +1,10 @@
 package tests.logic.combat.buff_rules;
 
-import TestUtils.printingAsserts;
+import TestUtils.JUnitUtils;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.rules.buff.*;
 import main.entity.Ref;
 import main.system.math.Formula;
-import org.junit.Before;
 import org.junit.Test;
 import tests.entity.JUnitPartyCreated;
 
@@ -54,16 +53,12 @@ public class BuffRulesTest extends JUnitPartyCreated {
     PARAMS[] reduced_params = {
      PARAMS.DEFENSE,
      PARAMS.DAMAGE,
-     PARAMS.RESISTANCE,
+     MoraleBuffRule.PARAMETERS[0],
      PARAMS.N_OF_ACTIONS,
      null,
     };
 
 
-    @Before
-    public void createEntity() {
-        super.createEntity();
-    }
 
     @Test
     public void buffRuleTest() {
@@ -74,11 +69,13 @@ public class BuffRulesTest extends JUnitPartyCreated {
             Integer initial = unit.getIntParam(reduced_params[i]);
             unit.setParam(root_param,
              new Formula(value_low[i]).getInt(new Ref(unit)));
-            game.getStateManager().reset(unit);
+           atbHelper.startCombat();
+           helper.resetAll();
             Integer reduced = unit.getIntParam(reduced_params[i]);
 
             if (isReductionOn(root_param)) {
-                printingAsserts.assertGreaterThanAndLog(initial, reduced, root_param + " rule");
+                JUnitUtils.assertGreaterThanAndLog(initial, reduced,
+                 root_param + " rule's Reduction effect on " + reduced_params[i]);
             }
 
             if (!isIncreaseOn(root_param)) {
@@ -90,9 +87,11 @@ public class BuffRulesTest extends JUnitPartyCreated {
             }
             unit.setParam(root_param, new Formula(value_high[i]).getInt(new Ref(unit))
             );
-            game.getStateManager().reset(unit);
+            atbHelper.startCombat();
+            helper.resetAll();
             Integer increased = unit.getIntParam(increased_params[i]);
-            printingAsserts.assertGreaterThanAndLog(increased, initial, root_param + " rule");
+            JUnitUtils.assertGreaterThanAndLog(increased, initial, root_param
+             + " rule's Increase effect on " + increased_params[i]);
             i++;
         }
 

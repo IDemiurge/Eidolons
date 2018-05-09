@@ -15,6 +15,7 @@ import eidolons.game.core.game.SimulationGame;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
@@ -44,6 +45,8 @@ import main.system.launch.CoreEngine;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static main.content.DC_TYPE.PERKS;
 
 /**
  * Created by JustMe on 2/26/2017.
@@ -105,6 +108,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         if (!initialized) {
             initClasses();
             initSkills();
+            initPerks();
 
             initAttributes();
             initMasteries();
@@ -150,6 +154,11 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         // init objects for all the known spells as well!
     }
 
+    public void initPerks() {
+        getEntity().setPerks(new DequeImpl<>());
+        initFeatContainer(PROPS.PERKS, PERKS,
+         (DequeImpl<? extends DC_FeatObj>) getEntity().getPerks());
+    }
     public void initClasses() {
         getEntity().setClasses(new DequeImpl<>());
         initFeatContainer(PROPS.CLASSES, DC_TYPE.CLASSES,
@@ -261,8 +270,11 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
 
     }
 
+
+
     // TODO reqs: save() ; modify() ; resetSkillRanks() for (s s : skills)
-    public void initFeatContainer(PROPERTY PROP, DC_TYPE TYPE, DequeImpl<DC_FeatObj> list) {
+    public void initFeatContainer(PROPERTY PROP, DC_TYPE TYPE,
+                                  DequeImpl<? extends DC_FeatObj> list) {
         // TODO make it dynamic and clean!
         List<String> feats = StringMaster.openContainer(getProperty(PROP));
         for (String feat : feats) {
@@ -276,26 +288,19 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                 feat = VariableManager.removeVarPart(feat);
             }
             ObjType featType = DataManager.getType(feat, TYPE);
-            if (game.isSimulation()) {
-                featObj = (DC_FeatObj) getGame().getSimulationObj(getEntity(), featType, PROP);
-            }
-            if (featObj == null) {
-                try {
-                    featObj = new DC_FeatObj(featType, getEntity().getOriginalOwner(), getGame(), getRef());
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    continue;
-                }
-                if (game.isSimulation()) {
-                    getGame().addSimulationObj(getEntity(), featType, featObj, PROP);
-                }
 
+            if (featObj == null) {
+                    featObj =createFeatObj(featType );
             }
             if (rank != 0) {
                 featObj.setParam(PARAMS.RANK, rank);
             }
-            list.add(featObj);
+            list.addCast(featObj);
         }
+    }
+
+    private DC_FeatObj createFeatObj(ObjType featType ) {
+       return SkillMaster.createFeatObj(featType, getRef());
     }
 
     public boolean checkItemChanged(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {

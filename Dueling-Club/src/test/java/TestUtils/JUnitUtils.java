@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Nyx on 5/1/2017.
  */
-public class printingAsserts {
+public class JUnitUtils {
 
     public static void assertEqualAndLog(int v1, int v2, String comment1, String comment2) {
         System.out.println(

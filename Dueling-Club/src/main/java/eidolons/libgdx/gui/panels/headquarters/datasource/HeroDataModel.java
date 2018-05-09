@@ -148,7 +148,7 @@ public class HeroDataModel extends Unit {
         SPELL_LEARNED,
         SPELL_MEMORIZED,
         SPELL_EN_VERBATIM,
-        SPELL_UNMEMORIZED,
+        SPELL_UNMEMORIZED, NEW_PERK,
 
 
     }

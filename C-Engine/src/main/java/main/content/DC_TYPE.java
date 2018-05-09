@@ -47,6 +47,7 @@ public enum DC_TYPE implements OBJ_TYPE {
             return true;
         }
     },
+    PERKS("perks", G_PROPS.GROUP, 14),
 
     DEITIES("deities", G_PROPS.GROUP, 14, G_PROPS.ASPECT),
     ENCOUNTERS("encounters", G_PROPS.GROUP, 15, G_PROPS.ENCOUNTER_GROUP),
@@ -75,7 +76,7 @@ public enum DC_TYPE implements OBJ_TYPE {
 //    MERCENARY(DC_TYPE.CHARACTER, "mercenary", G_PROPS.GROUP, 31),
     //    TRAP("traps", G_PROPS.GROUP, 24),
     META("meta", G_PROPS.GROUP, -1, true),
-    ALL("all"),;
+    ALL("all");
 
     private static Map<String, DC_TYPE> searchMap;
 

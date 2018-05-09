@@ -10,8 +10,12 @@ public class CombatTest extends TwoUnitsTest{
 
     @Test
     public void test(){
-        testUnitCreatedWithRightName();
         atbHelper.startCombat();
 
+    }
+
+    @Override
+    protected boolean isGraphicsOff() {
+        return super.isGraphicsOff();
     }
 }

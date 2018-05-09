@@ -1,11 +1,13 @@
 package main.system.auxiliary.data;
 
 import main.data.XLinkedMap;
+import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 public class MapMaster<E, T> {
 
@@ -211,4 +213,15 @@ public class MapMaster<E, T> {
 
     }
 
+    public Map<E,Integer> getSortedMap(Map<E, Integer> map,
+                                       Function<Object, Integer> function) {
+        ArrayList<E> list = new ArrayList<>(map.keySet());
+        SortMaster.sortByExpression(list, function);
+
+        Map<E, Integer> sortedMap = new XLinkedMap<>();
+        for (E sub : list) {
+            sortedMap.put(sub, map.get(sub));
+        }
+        return sortedMap;
+    }
 }

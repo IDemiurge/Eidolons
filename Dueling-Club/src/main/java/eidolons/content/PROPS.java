@@ -448,7 +448,14 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
      ("", true, "spells", "actions"), ANIM_MODS_SFX
      ("", true, "spells", "actions"),
 
-    SPRITE_PATH("weapons", null), UNLOCKED_MASTERIES(null,true ,"chars", "units" );
+    SPRITE_PATH("weapons", null), UNLOCKED_MASTERIES(null,true ,"chars", "units" ),
+    MASTERY_RANKS_1(null,true ,"chars" ),
+    MASTERY_RANKS_2(null,true ,"chars" ),
+    MASTERY_RANKS_3(null,true ,"chars" ),
+    MASTERY_RANKS_4(null,true ,"chars" ),
+    MASTERY_RANKS_5(null,true ,"chars" ),
+
+    PERK_GROUP(null,false ,"classes" ), PERK_PARAM(null,false ,"perks");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

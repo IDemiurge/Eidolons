@@ -1,4 +1,4 @@
-package tests.init;
+package tests.metagame.scenario.init;
 
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.threading.WaitMaster;

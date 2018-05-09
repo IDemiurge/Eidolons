@@ -1,28 +1,37 @@
 package tests.entity;
 
 import eidolons.entity.obj.unit.Unit;
-import org.junit.Ignore;
-import org.junit.Test;
+import eidolons.game.core.Eidolons;
 import res.JUnitResources;
+import tests.DcTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/28/2017.
  */
-public class TwoUnitsTest extends JUnitPartyCreated {
-  protected   Unit unit2;
+public class TwoUnitsTest extends DcTest {
+    protected   Unit unit;
+    protected   Unit unit2;
 
     @Override
     protected String getEnemyParty() {
-        return JUnitResources.DEFAULT_UNIT;
+        return "";
     }
-    @Test
-    @Ignore
-    public void testUnitCreatedWithRightName() {
-        assertTrue(!game.getUnits().isEmpty());
+
+    @Override
+    protected String getPlayerParty() {
+        return "";
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        unit= helper.unit(JUnitResources.DEFAULT_UNIT, 0, 0, true);
+        Eidolons.setMainHero(unit);
+        unit2= helper.unit(JUnitResources.DEFAULT_UNIT, 0, 0, false);
+
         assertTrue(unit != null);
-        unit2 = (Unit) game.getPlayer(false).getControlledUnits().iterator().next();
         assertTrue(unit2 != null);
 
     }

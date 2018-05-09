@@ -6,13 +6,20 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.libgdx.anims.text.FloatingText;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
+import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
@@ -77,19 +84,27 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     public void gameStarted() {
         Unit hero = Eidolons.getMainHero();
 
-        if (hero==null || getMetaGame().isRestarted()){
+        if (hero == null || getMetaGame().isRestarted()) {
             hero = getGame().getMaster().getUnitByName(
              PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
              null);
-            if (hero==null){
-            List<Unit> list = getGame().getUnits().stream().
-             filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
-            hero = list.get(0);
+            if (hero == null) {
+                List<Unit> list = getGame().getUnits().stream().
+                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
+                hero = list.get(0);
             }
         }
         //will find 1st if name==null
         mainHeroSelected(party, hero);
+
+
         getMetaGame().setRestarted(false);
+        try {
+            SkillMaster.initMasteryRanks(hero);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+
     }
 
 

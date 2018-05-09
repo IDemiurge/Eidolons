@@ -71,24 +71,21 @@ public class TiledNinePatchGenerator implements ApplicationListener {
 
     }
 
-    public static void generate(NINE_PATCH ninePatch, BACKGROUND_NINE_PATCH backgroundNinePatch,
+    public static Texture generate(NINE_PATCH ninePatch, BACKGROUND_NINE_PATCH backgroundNinePatch,
                                 int maxWidth, int maxHeight) {
-        generate(ninePatch, backgroundNinePatch, maxWidth, maxHeight, null);
+       return generate(ninePatch, backgroundNinePatch, maxWidth, maxHeight, null);
     }
 
-    public static void generate(NINE_PATCH ninePatch, BACKGROUND_NINE_PATCH backgroundNinePatch,
+    public static Texture generate(NINE_PATCH ninePatch, BACKGROUND_NINE_PATCH backgroundNinePatch,
                                 int maxWidth, int maxHeight, String path) {
         if (path == null)
-            path = ninePatch.path +
-             StringMaster.getPathSeparator() +
-             backgroundNinePatch.name().toLowerCase() + " " +
-             maxWidth + " " + maxHeight + ".png";
+            path = getPath(ninePatch, backgroundNinePatch, maxWidth, maxHeight);
 
         String partPath = StrPathBuilder.build(ninePatch.path,
          "parts") + StringMaster.getPathSeparator();
 
 
-        generate(
+      return   generate(
          TextureCache.getOrCreate(partPath + "top.png"),
          TextureCache.getOrCreate(partPath + "bottom.png"),
          TextureCache.getOrCreate(partPath + "right.png"),
@@ -116,7 +113,15 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         );
     }
 
-    public static void generate(
+    private static String getPath(NINE_PATCH ninePatch, BACKGROUND_NINE_PATCH
+     backgroundNinePatch, int maxWidth, int maxHeight) {
+     return    ninePatch.path +
+         StringMaster.getPathSeparator() +
+         backgroundNinePatch.name().toLowerCase() + " " +
+         maxWidth + " " + maxHeight + ".png";
+    }
+
+    public static Texture generate(
 
      Texture top,
      Texture bottom,
@@ -191,8 +196,8 @@ public class TiledNinePatchGenerator implements ApplicationListener {
          h - corner4.getHeight(),
          0, 0, corner4, 1, pixmap);
 
-
-        GdxImageTransformer.writeImage(handle, pixmap);
+        GdxImageMaster.writeImage(handle, pixmap);
+        return TextureCache.getOrCreate(path);
     }
 
     @Override
@@ -225,6 +230,15 @@ public class TiledNinePatchGenerator implements ApplicationListener {
     @Override
     public void dispose() {
 
+    }
+
+    public static Texture getOrCreateNinePatch(NINE_PATCH ninePatch,
+                                               BACKGROUND_NINE_PATCH background,
+                                               int w, int h) {
+        Texture texture = TextureCache.getOrCreate(getPath(ninePatch, background, w, h));
+        if (texture!=null )
+            return texture;
+        return generate(ninePatch, background, w, h);
     }
 
     public enum BACKGROUND_NINE_PATCH {

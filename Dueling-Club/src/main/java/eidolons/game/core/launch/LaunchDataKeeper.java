@@ -84,17 +84,17 @@ public class LaunchDataKeeper {
         String units = "";
         String coordinates = "";
         String data = "";
-
-        for (String substring : StringMaster.open(dataString)) {
-            if (dataString.contains("=")) {
-                coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
-                units += substring.split("=")[1] + StringMaster.SEPARATOR;
-            } else if (dataString.contains("(") && dataString.contains(")")) {
-                units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
-                coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
-            } else
-                units += substring + StringMaster.SEPARATOR;
-        }
+        if (dataString != null)
+            for (String substring : StringMaster.open(dataString)) {
+                if (dataString.contains("=")) {
+                    coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
+                    units += substring.split("=")[1] + StringMaster.SEPARATOR;
+                } else if (dataString.contains("(") && dataString.contains(")")) {
+                    units += VariableManager.removeVarPart(substring) + StringMaster.SEPARATOR;
+                    coordinates += VariableManager.getVar(substring) + StringMaster.SEPARATOR;
+                } else
+                    units += substring + StringMaster.SEPARATOR;
+            }
 
         if (positioner != null)
             if (coordinates.isEmpty()) {

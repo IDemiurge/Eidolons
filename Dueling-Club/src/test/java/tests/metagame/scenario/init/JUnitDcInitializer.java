@@ -1,4 +1,4 @@
-package tests.init;
+package tests.metagame.scenario.init;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;

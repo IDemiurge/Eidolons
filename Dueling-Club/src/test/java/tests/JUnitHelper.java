@@ -1,5 +1,6 @@
 package tests;
 
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
@@ -17,8 +18,8 @@ public interface JUnitHelper {
        Unit unit(String name, int x, int y, boolean mine);
        Unit hero(String name, int x, int y, boolean mine);
        Structure object(String name, int x, int y);
-       void doAction(Unit source, String name, Context context, boolean waitForFinish);
-       DC_BuffObj buff(BattleFieldObject basis, String name);
+       DC_ActiveObj doAction(Unit source, String name, Context context, boolean waitForFinish);
+       DC_BuffObj buff(BattleFieldObject basis, String name, float defaultDuration);
 
        void kill(Entity killer, boolean leaveCorpse, Boolean quiet, Obj... objects);
        void move(Obj source, int x, int y);

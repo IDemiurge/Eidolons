@@ -352,6 +352,10 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         this.scale = scale;
     }
 
+    public boolean isAnimationFinished() {
+        return isAnimationFinished(getStateTime());
+    }
+
 
     public enum SPRITE_BEHAVIOR {
         FREEZE_WHEN_LOOPS_DONE,

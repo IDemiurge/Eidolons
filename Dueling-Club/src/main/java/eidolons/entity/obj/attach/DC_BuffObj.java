@@ -2,9 +2,12 @@ package eidolons.entity.obj.attach;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.handlers.DC_ObjMaster;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.BuffMaster;
 import main.ability.effects.Effect;
+import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
@@ -30,6 +33,20 @@ public class DC_BuffObj extends BuffObj {
          buff.getGame(), buff.ref, buff.effect,
          buff.duration, buff.getRetainConditions());
 
+    }
+
+    public DC_BuffObj(String name, BattleFieldObject basis,
+                      float duration) {
+        this(
+         DataManager.getType(name, DC_TYPE.BUFFS)==null ?
+          DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS)
+        : DataManager.getType(name, DC_TYPE.BUFFS), basis, duration);
+
+    }
+    public DC_BuffObj(ObjType type, BattleFieldObject basis, float duration) {
+        super(type, basis.getOwner(), basis.getGame(),
+         Ref.getBasisRefCopy(basis), null ,
+         duration, null);
     }
 
     @Override

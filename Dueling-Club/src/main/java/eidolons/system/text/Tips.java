@@ -1,4 +1,4 @@
-package main.system.text;
+package eidolons.system.text;
 
 /**
  * Created by JustMe on 8/30/2017.
@@ -228,6 +228,10 @@ public class Tips {
     }
 
     public interface TIP {
+
+       default Boolean isAdvancedOrPro(){
+           return null ;
+       }
 
         String getText();
     }

@@ -2,7 +2,6 @@ package eidolons.system;
 
 import eidolons.ability.conditions.req.ClassTreeCondition;
 import eidolons.ability.conditions.req.MultiClassCondition;
-import eidolons.ability.conditions.req.SkillPointCondition;
 import eidolons.ability.conditions.req.ValueGroupCondition;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ValueManager;
@@ -541,7 +540,6 @@ public class DC_RequirementsManager implements RequirementsManager {
 
         reqs.add(new Requirement(getCondition(PARAMS.XP + "", xpCost + ""), InfoMaster
          .getParamReasonString(PARAMS.XP + "", xpCost + "")));
-        reqs.add(new Requirement(new SkillPointCondition(), InfoMaster.NOT_ENOUGH_MASTERY));
         return reqs;
 
     }
@@ -557,14 +555,12 @@ public class DC_RequirementsManager implements RequirementsManager {
 
         Condition rankReq = ConditionMaster.getParamCondition(mastery, rank.getMasteryReq() + "");
         ((NumericCondition) xpReq).setComparingValue(new Formula("" + cost));
-        return new Requirements(new Conditions(new SkillPointCondition(), ConditionMaster
+        return new Requirements(new Conditions(ConditionMaster
          .getPropCondition(PROPS.SKILLS, PROPS.SKILL_REQUIREMENTS, KEYS.SOURCE.toString(),
           KEYS.MATCH.toString()), rankReq, xpReq
          // TODO OR CONDITION!
          , ConditionMaster.getPropCondition(PROPS.SKILLS, PROPS.SKILL_OR_REQUIREMENTS,
          KEYS.SOURCE.toString(), KEYS.MATCH.toString())),
-
-         InfoMaster.NOT_ENOUGH_MASTERY,
 
          InfoMaster.getPropReasonString(type, PROPS.SKILL_REQUIREMENTS), InfoMaster
          .getSkillRankReqString(mastery, type, rank), InfoMaster.getParamReasonString(type,

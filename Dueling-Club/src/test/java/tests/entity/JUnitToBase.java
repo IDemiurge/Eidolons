@@ -15,7 +15,6 @@ public class JUnitToBase extends JUnitPartyCreated {
      */
     @Test
     public void testToBase() {
-
         unit.setParam(PARAMS.ACID_ARMOR, unit.getType().getParam(PARAMS.ACID_ARMOR) + 5);
         unit.toBase();
         assertTrue(unit.getParam(PARAMS.ACID_ARMOR) == unit.getType().getParam(PARAMS.ACID_ARMOR));

@@ -119,10 +119,10 @@ public class Conditions extends Vector<Condition> implements Condition {
     public boolean check(Entity source, Entity match) {
         for (int i = 0; i < this.size(); i++) {
             isTrue &= this.get(i).check(source, match);
+            this.setLastCheckedCondition(get(i));
             if (isFastFailOnCheck()) {
                 break;
             }
-            this.setLastCheckedCondition(get(i));
         }
         if (negative) {
             return !isTrue;
@@ -137,10 +137,10 @@ public class Conditions extends Vector<Condition> implements Condition {
 
             isTrue &= this.get(i).preCheck(ref);
             if (!isTrue) {
+                this.setLastCheckedCondition(get(i));
                 if (isFastFailOnCheck()) {
                     break;
                 }
-                this.setLastCheckedCondition(get(i));
                 // break;
             }
         }
@@ -151,7 +151,7 @@ public class Conditions extends Vector<Condition> implements Condition {
     }
 
     protected boolean isFastFailOnCheck() {
-        return false;// fastFailOnCheck;
+        return CoreEngine.isjUnit();// fastFailOnCheck;
     }
 
     public void setFastFailOnCheck(boolean fastFailOnCheck) {
@@ -171,10 +171,10 @@ public class Conditions extends Vector<Condition> implements Condition {
 
             isTrue |= this.get(i).preCheck(ref);
             if (isTrue) {
+                this.setLastCheckedCondition(get(i));
                 if (isFastFailOnCheck()) {
                     break;
                 }
-                this.setLastCheckedCondition(get(i));
 
             }
         }

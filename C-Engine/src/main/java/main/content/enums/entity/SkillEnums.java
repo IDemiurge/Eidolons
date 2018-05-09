@@ -73,6 +73,9 @@ public class SkillEnums {
         DISCIPLINE_MASTERY,
         MARKSMANSHIP_MASTERY,
         ITEM_MASTERY,
+
+    LEADERSHIP_MASTERY,
+    TACTICS_MASTERY,
         WARCRY_MASTERY;
 
         MASTERY() {

@@ -81,6 +81,10 @@ public class AnimMaster3d {
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
 
+    static {
+        init();
+    }
+
     public static void init() {
         substituteMap = new HashMap<>();
         for (String[] sub : substitutesWeapons) {
@@ -90,9 +94,7 @@ public class AnimMaster3d {
             substituteMap.put(sub[0], sub[1]);
         }
     }
-static{
-        init();
-}
+
     public static boolean is3dAnim(DC_ActiveObj active) {
         if (!active.isAttackAny()) return false;
         DC_WeaponObj weapon = active.getActiveWeapon();
@@ -262,6 +264,11 @@ static{
     }
 
     public static String getAtlasPath(DC_WeaponObj weapon, String name) {
+        if (weapon.getWeaponGroup()==null )
+        {
+            main.system.auxiliary.log.LogMaster.log(1,"Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP) );
+            return "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP);
+        }
         String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
 
         StrPathBuilder s = new StrPathBuilder(
@@ -491,9 +498,13 @@ static{
     }
 
     private static String getFullAtlasPath(DC_WeaponObj weapon) {
-        return
-         TextureCache.formatTexturePath(PathFinder.getImagePath()
-          + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
+        try {
+            return TextureCache.formatTexturePath(PathFinder.getImagePath()
+              + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return null;
     }
 
 

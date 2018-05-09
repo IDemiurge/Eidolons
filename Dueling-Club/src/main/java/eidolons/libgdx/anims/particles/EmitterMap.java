@@ -169,6 +169,7 @@ public class EmitterMap extends Group {
         ambience.setPosition(v.x, v.y);
         ambience.added();
 
+        if (color!=null )
         ambience.getEffect().getEmitters().forEach(emitter -> {
             try {
                 tint(emitter, color, 0.85f);

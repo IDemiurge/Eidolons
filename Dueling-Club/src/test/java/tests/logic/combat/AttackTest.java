@@ -13,34 +13,48 @@ import static org.junit.Assert.fail;
  */
 public class AttackTest extends CombatTest {
 
+    protected int difT;
+    protected int difE;
+
     @Override
     public void test() {
         super.test();
+        testAttack();
 
-            int origToughness = unit2.getIntParam(PARAMS.C_TOUGHNESS);
-            int origEndurance = unit2.getIntParam(PARAMS.C_ENDURANCE);
+    }
 
-            assertTrue(unit.getNaturalWeapon() != null);
+    protected void testAttack() {
 
-            helper.turn(unit, FACING_DIRECTION.WEST);
+        int origToughness = unit2.getIntParam(PARAMS.C_TOUGHNESS);
+        int origEndurance = unit2.getIntParam(PARAMS.C_ENDURANCE);
 
-            atbHelper.startCombat();
-            DC_ActiveObj action = unit.getAction("Punch");
-            assertTrue(action != null);
-            boolean result = action.canBeTargeted(unit2.getId());
-            Condition condition = action.getTargeting().getConditions().getLastCheckedCondition();
-            if (!result) {
-                fail(unit.getFacing()+" facing, failed condition: " + condition
-                );
-            }
+        assertTrue(unit.getNaturalWeapon() != null);
 
-            helper.defaultAttack(unit, unit2);
+        helper.turn(unit, FACING_DIRECTION.WEST);
 
-            Integer newToughness = unit2.getIntParam(PARAMS.C_TOUGHNESS);
-            Integer newEndurance = unit2.getIntParam(PARAMS.C_ENDURANCE);
-            assertTrue(newToughness < origToughness);
-            assertTrue(newEndurance < origEndurance);
+        atbHelper.startCombat();
+        helper.resetAll();
+        DC_ActiveObj action =getAction();;
+        assertTrue(action != null);
+        boolean result = action.canBeTargeted(unit2.getId());
+        Condition condition = action.getTargeting().getConditions().getLastCheckedCondition();
+        if (!result) {
+            fail(unit.getFacing()+" facing, failed condition: " + condition);
+        }
 
+        helper.defaultAttack(unit, unit2);
+
+        Integer newToughness = unit2.getIntParam(PARAMS.C_TOUGHNESS);
+        Integer newEndurance = unit2.getIntParam(PARAMS.C_ENDURANCE);
+
+          difT = newToughness - origToughness;
+          difE = newEndurance - origEndurance;
+        assertTrue(newToughness < origToughness);
+        assertTrue(newEndurance < origEndurance);
+    }
+
+    protected DC_ActiveObj getAction() {
+        return unit.getAction("Punch");
     }
 
     @Override

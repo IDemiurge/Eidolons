@@ -12,8 +12,11 @@ public class JUnitDualWielding extends AttackTest {
 
     @Override
     public void test() {
+
+        helper.equipWeapon("Iron Dagger", ITEM_SLOT.MAIN_HAND);
         helper.equipWeapon("Iron Dagger", ITEM_SLOT.OFF_HAND);
-        super.test();
+        atbHelper.startCombat();
+        super.testAttack();
         assertTrue(unit.getBuff(DualWieldingRule.buffTypeNameMainHand)!=null );
 //        unit.getAttacks(false).get(0).getCosts().getCost(PARAMS.N_OF_ACTIONS);
 

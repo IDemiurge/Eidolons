@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by JustMe on 2/12/2018.
  */
-public class GdxUnitPosSizeTest extends GdxJUnit {
+public class GdxUnitPosSizeTest extends LibgdxTest {
 
     private static final int X = 0;
     private static final int Y = 0;

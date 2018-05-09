@@ -31,6 +31,14 @@ public class FadeImageContainer extends ImageContainer {
         setContents(previousImage);
         main.system.auxiliary.log.LogMaster.log(1,this+ " resetPreviousImage to " +previousImage);
     }
+
+
+    @Override
+    public void setEmpty() {
+        if (getContent()!=null )
+         fadeOut();
+    }
+
     @Override
     public void setContents(Actor contents) {
         if (previousImage != null)

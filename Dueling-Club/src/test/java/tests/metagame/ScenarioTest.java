@@ -1,23 +1,24 @@
 package tests.metagame;
 
-import eidolons.libgdx.launch.ScenarioLauncher;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-import org.junit.Test;
-import tests.GenericJUnitTest;
+import tests.DcTest;
 
 /**
  * Created by JustMe on 5/16/2017.
  */
-public class ScenarioTest extends GenericJUnitTest {
+public class ScenarioTest extends DcTest {
 
-    public static String typeName = "Pride and Treachery";
+    @Override
+    protected boolean isScenario() {
+        return true;
+    }
 
-    @Test
-    public void test() {
-//        CoreEngine.setItemGenerationOff(true);
-        ScenarioLauncher.launch(typeName);
+    @Override
+    protected Integer getScenarioIndex() {
+        return 0;
+    }
 
-        WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_COMPLETE);
+    @Override
+    protected Integer getHeroIndex() {
+        return 0;
     }
 }

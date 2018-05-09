@@ -20,20 +20,23 @@ import main.game.core.game.MicroGame;
 import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {
-    public static final String[] buffNames = {MetaEnums.STD_BUFF_NAMES.Panic.getName(),
-     // STD_TYPE_NAMES.Terrified.getName(), // panic -> auto-run away,
-     // disable
-     // counters
-     MetaEnums.STD_BUFF_NAMES.Fearful.getName(), MetaEnums.STD_BUFF_NAMES.Inspired.getName()};
-    public static final String[] formulas = {"1", "10", "100",}; // make
-    // fearful
-    // and
-    // treason
-    // stack?
-    public static final String parameterString = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
-     + PARAMS.INITIATIVE_MODIFIER.getName() + StringMaster.AND_SEPARATOR
+    public static final String[] buffNames = {
+     MetaEnums.STD_BUFF_NAMES.Panic.getName(),
+     MetaEnums.STD_BUFF_NAMES.Fearful.getName(),
+     MetaEnums.STD_BUFF_NAMES.Inspired.getName()
+    };
+    public static final String[] formulas = {"1", "10", "100",};
+
+    public static final PARAMS[] PARAMETERS = {PARAMS.SPIRIT, PARAMS.RESISTANCE, PARAMS.N_OF_ACTIONS,};
+
+
+    public static final String parameterString = PARAMS.SPIRIT.getName()
+     + StringMaster.AND_SEPARATOR
+     + PARAMS.N_OF_ACTIONS.getName() + StringMaster.AND_SEPARATOR
      + PARAMS.RESISTANCE.getName();
-    public static final String parameterStringPanic = PARAMS.SPIRIT.getName() + StringMaster.AND_SEPARATOR
+
+    public static final String parameterStringPanic = PARAMS.SPIRIT.getName() +
+     StringMaster.AND_SEPARATOR
      + PARAMS.RESISTANCE.getName();
 
     // reverse means MORE THAN {THIS} and

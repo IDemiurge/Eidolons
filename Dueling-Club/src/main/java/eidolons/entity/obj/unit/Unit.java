@@ -15,6 +15,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.KeyResolver;
 import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.game.battlecraft.ai.AI_Manager;
@@ -73,6 +74,7 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -89,6 +91,7 @@ public class Unit extends DC_UnitModel {
     protected DC_ArmorObj armor;
     protected DequeImpl<DC_FeatObj> skills;
     protected DequeImpl<DC_FeatObj> classes;
+    protected DequeImpl<Perk> perks;
     protected DequeImpl<DC_QuickItemObj> quickItems;
     protected DequeImpl<DC_JewelryObj> jewelry;
     protected DequeImpl<DC_HeroItemObj> inventory;
@@ -644,6 +647,7 @@ public class Unit extends DC_UnitModel {
             addItemToInventory(prevItem);
         }
         if (game.isStarted())
+            if (!CoreEngine.isGraphicsOff())
             if (!ExplorationMaster.isExplorationOn()) //only in combat!
                 if (item instanceof DC_WeaponObj)
                     AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
@@ -1400,5 +1404,13 @@ public class Unit extends DC_UnitModel {
          clockwise
           ? STD_ACTIONS.Turn_Clockwise.toString()
           : STD_ACTIONS.Turn_Anticlockwise.toString());
+    }
+
+    public DequeImpl<Perk> getPerks() {
+        return perks;
+    }
+
+    public  void setPerks(DequeImpl<Perk>  perks) {
+        this.perks = perks;
     }
 }

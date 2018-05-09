@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
@@ -170,7 +170,7 @@ public class QueueView extends UnitView {
     }
 
     protected TextureRegion processPortraitTexture(TextureRegion texture, String path) {
-        return new TextureRegion(GdxImageTransformer.size(path, InitiativePanel.imageSize, true));
+        return new TextureRegion(GdxImageMaster.size(path, InitiativePanel.imageSize, true));
     }
 
     public void setOutlineSupplier(Supplier<TextureRegion> outlineSupplier) {

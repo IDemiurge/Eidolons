@@ -10,7 +10,8 @@ import eidolons.libgdx.anims.AnimMaster3d.PROJECTION;
 import eidolons.libgdx.anims.AnimMaster3d.WEAPON_ANIM_CASE;
 import eidolons.system.test.TestMasterContent;
 import main.content.values.properties.G_PROPS;
-import main.system.auxiliary.StringMaster;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Test;
@@ -36,9 +37,15 @@ public class JUnitResValidator extends LibgdxTest {
     }
 
     @Test
+    @org.junit.Ignore
     public void validateAtlases() {
-        for (String name : StringMaster.openContainer(TestMasterContent.TEST_WEAPONS)) {
+        for (ObjType type : DataManager.getBaseWeaponTypes()) {
+            String name=type.getName();
             DC_WeaponObj weapon = helper.equipWeapon(name);
+            if (weapon == null ){
+                log(name + " ==null ");
+                continue;
+            }
             atbHelper.startCombat();
             game.getLoop().setExited(true);
             helper.resetAll();
@@ -49,35 +56,49 @@ public class JUnitResValidator extends LibgdxTest {
             }
             for (DC_ActiveObj action : weapon.getAttackActions())
                 proj:for (PROJECTION projection : PROJECTION.values()) {
+
+
                     Gdx.app.postRunnable(() -> {
                         try {
+
                             Array<AtlasRegion> regions = AnimMaster3d.getRegions
                              (WEAPON_ANIM_CASE.NORMAL, action, projection.bool);
                             WaitMaster.receiveInput(
                              WAIT_OPERATIONS.SELECTION, regions);
+                            if (regions.size<1){
+                                missing.add(weapon.getProperty(G_PROPS.BASE_TYPE) +
+                                 "  " + action.getName()
+                                + " = "+ AnimMaster3d.getAtlasFileKeyForAction(projection.bool,
+                                 action, WEAPON_ANIM_CASE.NORMAL) );
+                                WaitMaster.receiveInput(
+                                 WAIT_OPERATIONS.SELECTION, null );
+                            }
                         } catch (Exception e) {
-                            missingAtlas.add(weapon + "  " + action);
-                            main.system.ExceptionMaster.printStackTrace(e);
+                            e.printStackTrace();
+                            missingAtlas.add(weapon.getProperty(G_PROPS.BASE_TYPE)
+                             + "  " + action.getName()+" = "
+                            + AnimMaster3d.getAtlasPath(weapon, action.getName())
+                            );
+
+                            WaitMaster.receiveInput(
+                             WAIT_OPERATIONS.SELECTION, null );
                         }
                     });
                     Array<AtlasRegion> regions = (Array<AtlasRegion>) WaitMaster.
                      waitForInput(WAIT_OPERATIONS.SELECTION, 3000);
                     if (regions == null)
-                    {
-                        missingAtlas.add(weapon.getProperty(G_PROPS.BASE_TYPE) + "  " + action.getName());
                         break proj;
-                    }else
-
-                        if (regions.size > 0)
-                            System.out.println(projection + " Regions for " + action + weapon +
-                             ": " + regions);
-                        else {
-                            if (isCheckAll()) {
-                                missing.add(weapon.getProperty(G_PROPS.BASE_TYPE) + "  " + action.getName());
-                                break proj;
-                            } else
-                                fail(projection + " no regions for " + action.getName() + weapon);
-                        }
+//                    else
+//                        if (regions.size > 0)
+//                            System.out.println(projection + " Regions for " + action + weapon +
+//                             ": " + regions);
+//                        else {
+//                            if (isCheckAll()) {
+//                                missing.add(weapon.getProperty(G_PROPS.BASE_TYPE) + "  " + action.getName());
+//                                break proj;
+//                            } else
+//                                fail(projection + " no regions for " + action.getName() + weapon);
+//                        }
 
                 }
         }

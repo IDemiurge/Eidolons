@@ -1,14 +1,20 @@
-package main.system.text;
+package eidolons.system.text;
 
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import eidolons.system.text.TextMaster.LOCALE;
+import eidolons.system.text.Tips.*;
+import main.data.filesys.PathFinder;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.text.Tips.*;
+import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +25,17 @@ import java.util.List;
  * 
  */
 public class TipMaster {
+    private static final Class<?>[] TIP_ENUMS = {
+     COMBAT_TIP_CATEGORY.class,
+     COMBAT_TIPS.class,
+     ADVANCED_COMBAT_TIPS.class,
+     ADVANCED_HERO_TIPS.class,
+     BASIC_ARCADE_TIPS.class,
+    BASIC_COMBAT_TIPS.class,
+     BASIC_HERO_TIPS.class,
+     BASIC_USABILITY_TIPS.class,
+
+    };
     static boolean no_repeat;
     static Boolean basicOrAdvanced = true;
     private static List displayedTips = new ArrayList<>();
@@ -64,10 +81,71 @@ public class TipMaster {
         displayedTips.clear();
         return getTip();
     }
+public static void main(String[] args){
+    CoreEngine.systemInit();
+        generateDefaultTooltipText();
+}
+    //overwrites!
+    public static void generateDefaultTooltipText() {
+        for (Class<?> clazz : TIP_ENUMS) {
+            String path = getPath(clazz);
+            String contents = "\n" + clazz.getSimpleName();
+            for (Object sub : clazz.getEnumConstants()) {
+                TIP tip = (TIP) sub;
+                contents += "\n" + tip.getText();
+            }
+
+            FileManager.write(contents, path);
+        }
+    }
+
+    private static String getPath(Class<?> clazz) {
+        return StrPathBuilder.build(getPath(), clazz.getSimpleName() + ".txt");
+    }
+
+    public static String getPath() {
+        return StrPathBuilder.build(PathFinder.getTextPath(),
+         LOCALE.english.name(), "tips");
+    }
+
+    public static void initTooltips(String tooltipType, String locale) {
+        for (File sub : FileManager.getFilesFromDirectory(getPath(), false)) {
+
+        }
+        for (Class<?> clazz : TIP_ENUMS) {
+            List<Tip> list = new ArrayList<>();
+            String path = getPath(clazz);
+            String contents = "\n" + clazz.getSimpleName();
+            for (Object sub : clazz.getEnumConstants()) {
+                TIP tip = (TIP) sub;
+                contents += "\n" + tip.getText();
+            }
+        }
+        String text = FileManager.readFile(StrPathBuilder.build(PathFinder.getTextPath(),
+         locale, "tips", tooltipType + ".txt"));
+
+
+    }
 
     public static String getText(TIP tip) {
+//        text = FileManager.readFile(StrPathBuilder.build(
+//         PathFinder.getTextPath(),
+//         CoreEngine.getLocale(), "tips", tip.toString()));
         return "No text for tip: " + tip.toString();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static String getText(BASIC_COMBAT_TIPS tip) {
         switch (tip) {
@@ -232,6 +310,36 @@ public class TipMaster {
                 return true;
             }
         };
+    }
+
+    public class Tip implements TIP {
+        public final TIP type;
+        String text;
+        int displayedTimes;
+        Boolean advancedOrPro;
+
+        public Tip(String text, TIP type) {
+            this.text = text;
+            this.type = type;
+            advancedOrPro = type.isAdvancedOrPro();
+        }
+
+        public void displayed() {
+            displayedTimes++;
+        }
+
+        @Override
+        public Boolean isAdvancedOrPro() {
+            return advancedOrPro;
+        }
+
+        public int getDisplayedTimes() {
+            return displayedTimes;
+        }
+
+        public String getText() {
+            return text;
+        }
     }
 
 

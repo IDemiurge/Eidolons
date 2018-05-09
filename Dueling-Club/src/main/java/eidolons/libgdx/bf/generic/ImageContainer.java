@@ -66,7 +66,12 @@ public class ImageContainer extends SuperContainer {
             setImage(new Image(sprite = new Sprite(TextureCache.getOrCreate(path))));
         }
         else
-            return;
+        {
+            setEmpty();
+        }
+    }
+
+    public void setEmpty() {
     }
 
     @Override

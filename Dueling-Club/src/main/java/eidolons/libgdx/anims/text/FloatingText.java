@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.texture.TextureCache;
+import main.game.bf.Coordinates;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
@@ -39,6 +41,7 @@ public class FloatingText extends Group {
     private LabelStyle fontStyle;
     private Image image;
     private Label label;
+    Coordinates coordinates;
 
     public FloatingText(String text, Color c) {
         this.text = text;
@@ -75,8 +78,12 @@ public class FloatingText extends Group {
 
 
     public FloatingText init() {
+        Vector2 v = new Vector2(getX(), getY());
+        if (coordinates!=null ){
+           v= GridMaster.getCenteredPos(coordinates);
+        }
         return
-         init(new Vector2(getX(), getY()), displacementX, displacementY, getDuration());
+         init(v, displacementX, displacementY, getDuration());
     }
 
     public FloatingText init(Vector2 origin, float x, float y, float duration) {
@@ -235,5 +242,9 @@ public class FloatingText extends Group {
 
     public void setImageSupplier(Supplier<String> imageSupplier) {
         this.imageSupplier = imageSupplier;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

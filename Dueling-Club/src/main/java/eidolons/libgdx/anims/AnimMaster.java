@@ -145,6 +145,7 @@ public class AnimMaster extends Group {
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
 //            if (!floatingText.isInitialized())
+
             floatingText.init();
             addActor(floatingText);
 

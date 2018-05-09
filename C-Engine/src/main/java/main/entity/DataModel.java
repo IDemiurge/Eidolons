@@ -1114,6 +1114,11 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
+        if (param.getName().equalsIgnoreCase("Foc Req")){
+            main.system.auxiliary.log.LogMaster.log(1,
+             this+
+             " Foc Req set to" +value+ " from "  + getParam(param));
+        }
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);
         }

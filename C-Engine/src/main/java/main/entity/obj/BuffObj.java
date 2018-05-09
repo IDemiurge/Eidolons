@@ -4,10 +4,12 @@ import main.ability.effects.Effect;
 import main.ability.effects.Effects;
 import main.ability.effects.periodic.PeriodicEffect;
 import main.content.ContentValsManager;
+import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.BUFF_TYPE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -49,7 +51,10 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
 
     public BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
                    double duration, Condition retainCondition) {
-        super(type, owner, game, ref);
+        super(
+         type==null ?          DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS)
+          : type
+         , owner, game, ref);
         this.retainConditions = retainCondition;
         this.effect = effect;
         initTimeEffect();
@@ -99,6 +104,8 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     }
 
     public Effects getEffects() {
+        if (effect==null )
+            effect= new Effects();
         if (!(effect instanceof Effects)) {
             effect = new Effects(effect);
         }

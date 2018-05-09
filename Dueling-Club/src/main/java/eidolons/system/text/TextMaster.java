@@ -28,9 +28,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class TextMaster {
+    public enum LOCALE{
+        english, russian,
+    }
     private static final String descrHeaderSeparator = "<>";
     public static String[] props = {"Lore", "Description",};
-    private static String locale = "english";
+    private static String locale = LOCALE.english.name();
     private static Map<OBJ_TYPE, List<String>> extractedTypesMap = new XLinkedMap<>();
     private static PROPERTY[] extract_props = {G_PROPS.DESCRIPTION, G_PROPS.LORE, G_PROPS.TOOLTIP,};
     private static OBJ_TYPE[] extractedTypes = {DC_TYPE.CHARS, DC_TYPE.UNITS,

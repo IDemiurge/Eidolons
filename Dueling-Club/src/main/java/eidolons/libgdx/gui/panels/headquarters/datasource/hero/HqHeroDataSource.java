@@ -14,6 +14,8 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
 implements AttributesDataSource
 {
 
+    private boolean editable;
+
     public HqHeroDataSource(HeroDataModel entity) {
         super(entity);
     }
@@ -89,5 +91,13 @@ implements AttributesDataSource
 
     public boolean isDead() {
         return entity.isDead();
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 }

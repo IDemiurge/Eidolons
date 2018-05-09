@@ -19,7 +19,7 @@ import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.ScreenData;
 import main.system.graphics.FontMaster.FONT;
-import main.system.text.TipMaster;
+import eidolons.system.text.TipMaster;
 
 import java.util.ArrayList;
 import java.util.List;

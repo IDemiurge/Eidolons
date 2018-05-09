@@ -38,6 +38,8 @@ public class AtbHelper {
     }
 
     public void startCombat() {
+        if (!ExplorationMaster.isExplorationOn())
+            return;
         startCombat(true);
         waitForGameLoopStart();
     }
@@ -76,7 +78,7 @@ public class AtbHelper {
          (Boolean)
           WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_STARTED, 1500));
         if (!ExplorationMaster.isExplorationOn()) {
-            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED);
+            WaitMaster.waitForInput(WAIT_OPERATIONS.ACTIVE_UNIT_SELECTED, 1000);
         }
     }
 
@@ -85,5 +87,9 @@ public class AtbHelper {
     }
     public void resume() {
         game.getLoop().setPaused(false);
+    }
+
+    public void passTime(float v) {
+        controller.passTime(v);
     }
 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
@@ -82,15 +82,11 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateRoundedRegion(String path) {
-        TextureRegion region = getOrCreateR(getRoundedPath(path));
+        TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPath(path));
         if (!region.getTexture().equals(emptyTexture)) {
             return region;
         }
-        return GdxImageTransformer.round(path, true);
-    }
-
-    public static String getRoundedPath(String path) {
-        return StringMaster.cropFormat(path) + " rounded.png";
+        return GdxImageMaster.round(path, true);
     }
 
     public static TextureRegion getOrCreateR(String path) {
@@ -190,7 +186,7 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
-        Texture sized = GdxImageTransformer.size(path, iconSize, true);
+        Texture sized = GdxImageMaster.size(path, iconSize, true);
         if (sized==null)
             return new TextureRegion(getEmptyTexture());
         return new TextureRegion(sized);
@@ -209,7 +205,7 @@ public class TextureCache {
         if (path == null)
             return null;
         String sized = StringMaster.getAppendedImageFile(path, " " + imageSize);
-        return         getRegion(sized, GdxImageTransformer.size(sized, imageSize, true));
+        return         getRegion(sized, GdxImageMaster.size(sized, imageSize, true));
     }
 
     private String getAltTexturePath(String filePath) {

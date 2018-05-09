@@ -58,14 +58,14 @@ public class DcHelper implements JUnitHelper {
     }
 
     @Override
-    public void doAction(Unit source, String name, Context context, boolean waitForCompletion) {
+    public DC_ActiveObj doAction(Unit source, String name, Context context, boolean waitForCompletion) {
         DC_ActiveObj action = source.getAction(name);
         assertTrue(action != null);
-        doAction(action, context, waitForCompletion);
+       return  doAction(action, context, waitForCompletion);
     }
 
-    private void doAction(DC_ActiveObj action,
-                          Context context, boolean waitForCompletion) {
+    public DC_ActiveObj doAction(DC_ActiveObj action,
+                                  Context context, boolean waitForCompletion) {
 
         float readiness = 0;
         if (isCheckAtbReadiness())
@@ -84,6 +84,7 @@ public class DcHelper implements JUnitHelper {
             }
             assertTrue((boolean) result);
         }
+        return action;
     }
 
     private boolean isCheckAtbReadiness() {
@@ -93,8 +94,11 @@ public class DcHelper implements JUnitHelper {
     }
 
     @Override
-    public DC_BuffObj buff(BattleFieldObject basis, String name) {
-        return null;
+    public DC_BuffObj buff(BattleFieldObject basis, String name,
+                           float duration) {
+        DC_BuffObj buff= new DC_BuffObj(name, basis, duration);
+        game.getManager().getBuffMaster().buffCreated(buff, basis);
+        return buff;
     }
 
     @Override

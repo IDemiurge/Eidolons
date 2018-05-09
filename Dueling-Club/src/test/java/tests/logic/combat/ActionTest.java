@@ -13,7 +13,6 @@ public abstract class ActionTest extends TwoUnitsTest{
     @Test
     @Ignore
     public void test (){
-        testUnitCreatedWithRightName();
         testAction(getActionName());
     }
     public void testAction(String actionName){

@@ -8,6 +8,8 @@ import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.inv.HqInvTab;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellTab;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes.ClassTreeTab;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill.SkillTreeTab;
 
 /**
  * Created by JustMe on 4/13/2018.
@@ -15,8 +17,10 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellTab;
 public class HqTabs extends TabbedPanel<HqElement> implements HqActor{
 
     public HqTabs() {
+        addTab(new SkillTreeTab() , HQ_TAB.Skills.name());
+        addTab(new ClassTreeTab() , HQ_TAB.Class.name());
+        addTab(new HqInvTab() , HQ_TAB.Items.name());
         addTab(new HqSpellTab() , HQ_TAB.Spells.name());
-        addTab(new HqInvTab() , HQ_TAB.Inventory.name());
         setFixedSize(true);
         setSize(460, 832);
         resetCheckedTab();
@@ -41,10 +45,10 @@ public class HqTabs extends TabbedPanel<HqElement> implements HqActor{
     }
 
     public enum HQ_TAB{
-        Inventory,
+        Items,
         Spells,
         Skills,
-        Classes,
+        Class,
         //PRINCIPLES
     }
 }

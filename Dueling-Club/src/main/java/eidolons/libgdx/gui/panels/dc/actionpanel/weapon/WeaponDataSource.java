@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.libgdx.GdxImageTransformer;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.datasource.EntityDataSource;
 import main.content.enums.entity.ItemEnums.WEAPON_CLASS;
 import main.content.enums.entity.ItemEnums.WEAPON_GROUP;
@@ -99,11 +99,21 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     public Image getNormalImage() {
-        return new Image(GdxImageTransformer.size(getSpriteImagePath(),
+        if (!isMainHand()){
+            return new Image(GdxImageMaster.flip(
+             GdxImageMaster.getSizedImagePath(getSpriteImagePath(), 96),
+             true, false, true));
+        }
+        return new Image(GdxImageMaster.size(getSpriteImagePath(),
          96, true));
     }
     public Image getLargeImage() {
-        return new Image(GdxImageTransformer.size(getSpriteImagePath(),
+        if (!isMainHand()){
+            return new Image(GdxImageMaster.flip(
+             GdxImageMaster.getSizedImagePath(getSpriteImagePath(), 128),
+             true, false, true));
+        }
+        return new Image(GdxImageMaster.size(getSpriteImagePath(),
          128, true));
     }
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StringMaster;
@@ -17,11 +19,11 @@ import main.system.launch.CoreEngine;
 /**
  * Created by JustMe on 2/9/2018.
  */
-public class GdxImageTransformer extends LwjglApplication {
+public class GdxImageMaster extends LwjglApplication {
 
     private static final String PATH = "gen\\round\\";
 
-    public GdxImageTransformer() {
+    public GdxImageMaster() {
         super(new ApplicationAdapter() {
             @Override
             public void create() {
@@ -31,10 +33,56 @@ public class GdxImageTransformer extends LwjglApplication {
         });
     }
 
+    public static Texture getPanelBackground(NINE_PATCH ninePatch,
+                                             BACKGROUND_NINE_PATCH background,
+                                             int w, int h) {
+
+        return TiledNinePatchGenerator.getOrCreateNinePatch(ninePatch, background, w, h);
+    }
 
     public static void main(String[] args) {
-        new GdxImageTransformer();
+        new GdxImageMaster();
     }
+
+    public static Texture flip(String path, boolean x, boolean y, boolean write) {
+        Texture texture = TextureCache.getOrCreate(path);
+        String suffix = "";
+        if (x)
+            suffix += " flip x";
+        if (y)
+            suffix += " flip y";
+        path = StringMaster.cropFormat(path) + " " + suffix + StringMaster.getFormat(path);
+        FileHandle handle = new FileHandle(
+         PathFinder.getImagePath() +
+          path);
+        if (handle.exists())
+            return TextureCache.getOrCreate(path);
+
+        texture.getTextureData().prepare();
+        Pixmap pixmap = getFlippedPixmap(texture.getTextureData().consumePixmap(), x, y);
+
+        if (write) {
+            writeImage(handle, pixmap);
+        }
+        texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
+    }
+
+    public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
+            final int width = src.getWidth();
+            final int height = src.getHeight();
+            Pixmap flipped = new Pixmap(width, height, src.getFormat());
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    int x1 = flipX ? width - x - 1 : x;
+                    int y1 = flipY ? height - y - 1 : y;
+                    flipped.drawPixel(x, y, src.getPixel(x1, y1));
+                }
+            }
+            return flipped;
+        }
 
     public static Texture size(String path, int size, boolean write) {
         Texture texture = TextureCache.getOrCreate(path);
@@ -46,7 +94,8 @@ public class GdxImageTransformer extends LwjglApplication {
         if (texture.equals(TextureCache.getEmptyTexture())){
             return null;
         }
-        path = StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
+        path =getSizedImagePath(path, size);
+
         FileHandle handle = new FileHandle(
          PathFinder.getImagePath() +
           path);
@@ -60,9 +109,16 @@ public class GdxImageTransformer extends LwjglApplication {
          0, 0, pixmap2.getWidth(), pixmap2.getHeight()
         );
         if (write) {
-            PixmapIO.writePNG(handle, pixmap2);
+            writeImage(handle, pixmap2);
         }
-        return new Texture(pixmap2);
+        texture = new Texture(pixmap2);
+        pixmap.dispose();
+        pixmap2.dispose();
+        return texture;
+    }
+
+    public static String getSizedImagePath(String path, int size) {
+        return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
     }
 
     public static void writeImage(FileHandle handle, Pixmap pixmap){
@@ -70,17 +126,23 @@ public class GdxImageTransformer extends LwjglApplication {
     }
 
     public static TextureRegion round(String path, boolean write) {
-        if (GdxMaster.isLwjglThread()) {
-            Pixmap rounded = roundTexture(TextureCache.getOrCreateR(path));
-            path = TextureCache.getRoundedPath(path);
+        if (!GdxMaster.isLwjglThread())
+            return null ;
+        TextureRegion textureRegion=TextureCache.getOrCreateR(path);
+        if (textureRegion.getTexture()==TextureCache.getEmptyTexture())
+            return textureRegion;
+
+        path = getRoundedPath(path);
+        TextureRegion roundedRegion=TextureCache.getOrCreateR(path);
+        if (roundedRegion.getTexture()!=TextureCache.getEmptyTexture())
+            return roundedRegion;
+
+            Pixmap rounded = roundTexture(textureRegion);
             FileHandle handle = new FileHandle(
              PathFinder.getImagePath() + path);
             if (write) {
                 PixmapIO.writePNG(handle, rounded);
             }
-        } else {
-            return null;
-        }
         return TextureCache.getOrCreateR(path);
     }
 
@@ -128,4 +190,7 @@ public class GdxImageTransformer extends LwjglApplication {
         return round;
     }
 
+    public static String getRoundedPath(String path) {
+        return StringMaster.cropFormat(path) + " rounded.png";
+    }
 }

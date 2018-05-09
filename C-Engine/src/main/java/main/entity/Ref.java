@@ -104,6 +104,11 @@ public class Ref implements Cloneable, Serializable {
         REF.setTarget(obj.getId());
         return REF;
     }
+    public static Ref getBasisRefCopy(Obj obj) {
+        Ref REF = obj.getRef().getCopy();
+        REF.setBasis(obj.getId());
+        return REF;
+    }
 
     public String getValue(KEYS key) {
         return values.get(key);

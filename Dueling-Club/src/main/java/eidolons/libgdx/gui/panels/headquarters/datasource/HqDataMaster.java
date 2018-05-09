@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
@@ -15,6 +16,7 @@ import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PropMap;
+import main.entity.type.ObjType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
@@ -203,16 +205,24 @@ public class HqDataMaster {
                 applyItemOperation(hero, operation, args);
                 break;
             case ATTRIBUTE_INCREMENT:
+                hero.modifyParameter((PARAMETER) args[0], 1, true);
+                break;
             case MASTERY_INCREMENT:
                 hero.modifyParameter((PARAMETER) args[0], 1, true);
+                SkillMaster.masteryIncreased(hero, (PARAMETER) args[0]);
                 break;
             case NEW_MASTERY:
                 break;
+            case NEW_CLASS:
+                SkillMaster.newClass(hero,(ObjType) args[0]);
+                break;
+            case NEW_PERK:
+                SkillMaster.newPerk(hero,(ObjType) args[0]);
+                break;
             case NEW_SKILL:
+                SkillMaster.newSkill(hero,(ObjType) args[0]);
                 break;
             case SKILL_RANK:
-                break;
-            case NEW_CLASS:
                 break;
             case CLASS_RANK:
                 break;

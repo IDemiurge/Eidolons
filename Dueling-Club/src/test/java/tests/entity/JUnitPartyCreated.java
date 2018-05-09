@@ -1,7 +1,6 @@
 package tests.entity;
 
 import eidolons.entity.obj.unit.Unit;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import res.JUnitResources;
@@ -22,11 +21,9 @@ public class JUnitPartyCreated extends DcTest {
         return JUnitResources.DEFAULT_UNIT;
     }
 
-    /**
-     * Creates a unit with standard name.
-     */
-    @Before
-    public void createEntity() {
+    @Override
+    public void init() {
+        super.init();
         unit = game.getUnits().get(0);
     }
 

@@ -21,11 +21,15 @@ public class MainLauncher extends GenericLauncher {
     private static Stack<String> lastChoiceStack;
 
     public static void main(String[] args) {
-        CoreEngine.setFastMode(args.length > 2);
+        if (args.length > 0) {
+            args =args[0].split(",");
+        }
+        CoreEngine.setFastMode(args.length > 1);
+
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         if (args.length > 0) {
-            String[] commands = args[0].split(",");
+            String[] commands = args;
             if (commands.length == 1) {
                 CoreEngine.setJarlike(true);
                 return;

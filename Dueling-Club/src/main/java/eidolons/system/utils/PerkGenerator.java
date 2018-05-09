@@ -71,9 +71,13 @@ public class PerkGenerator {
 
 
         MULTICLASS,;
+        PERK_PARAM[] paramPerks;
+        PERK_GROUP(PERK_PARAM... paramPerks) {
+            this.paramPerks = paramPerks;
+        }
 
-        PERK_GROUP(PERK_PARAM... perks) {
-
+        public PERK_PARAM[] getParamPerks() {
+            return paramPerks;
         }
     }
 

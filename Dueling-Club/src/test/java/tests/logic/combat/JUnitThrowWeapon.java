@@ -16,7 +16,6 @@ public class JUnitThrowWeapon extends ActionTest {
     @Override
     @Test
     public void test( ) {
-        testUnitCreatedWithRightName();
         DC_WeaponObj weapon = helper.equipWeapon(itemName);
         helper.resetAll();
         super.testAction(getActionName());

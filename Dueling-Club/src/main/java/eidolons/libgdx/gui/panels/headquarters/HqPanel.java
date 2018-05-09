@@ -191,11 +191,12 @@ public class HqPanel extends TablePanel implements Blocking {
                 }
                 userObject=((List) userObject).get(0);
         }
-        super.setUserObject(userObject);
         if (userObject instanceof HqHeroDataSource) {
             HqHeroDataSource source = (HqHeroDataSource) userObject;
+            source.setEditable(editable);
             HqMaster.setActiveHero(source.getEntity().getHero());
         }
+        super.setUserObject(userObject);
 
         partyMembers.setUserObject(heroes);
         partyMembers.setUpdateRequired(first);

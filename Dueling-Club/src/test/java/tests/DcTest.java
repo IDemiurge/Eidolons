@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.launch.PresetLauncher.LAUNCH;
+import eidolons.libgdx.launch.MainLauncher;
 import eidolons.test.frontend.FAST_DC;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -47,6 +48,12 @@ public class DcTest {
         CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
         AI_Manager.setOff(isAiOff());
         DC_Engine.setTrainingOff(isTrainingOff());
+        if (isScenario()){
+           new  MainLauncher().start();
+            MainLauncher. presetNumbers.add(0, getScenarioIndex());
+            MainLauncher. presetNumbers.add(0, getHeroIndex());
+        }
+        else
         if (isOldLauncher()) {
             FAST_DC.main(new String[]{
              FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
@@ -68,6 +75,17 @@ public class DcTest {
         atbHelper = new AtbHelper(game);
         checker = new CheckHelper(game);
         utils = new JUnitUtils(game);
+    }
+
+    protected Integer getScenarioIndex() {
+        return null;
+    }
+    protected Integer getHeroIndex() {
+        return null;
+    }
+
+    protected boolean isScenario() {
+        return false;
     }
 
     protected void log(String s) {

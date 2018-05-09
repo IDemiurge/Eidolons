@@ -37,9 +37,11 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     private boolean paramStringParsed;
     private Map<PARAMETER, String> modMap;
     private Map<PARAMETER, String> bonusMap;
+    private int tier;
 
     public DC_FeatObj(ObjType featType, Player originalOwner, MicroGame game, Ref ref) {
         super(featType, originalOwner, game, ref);
+        tier = getIntParam(PARAMS.CIRCLE);
     }
 
     public DC_FeatObj(ObjType type, Ref ref) {
@@ -371,6 +373,10 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
     public void setBonusMap(Map<PARAMETER, String> bonusMap) {
         this.bonusMap = bonusMap;
+    }
+
+    public int getTier() {
+        return tier;
     }
 
 }
