@@ -171,6 +171,12 @@ public class RadialMenu extends Group implements Closable {
         ActorMaster.addRotateByAction(closeButton, -90);
     }
 
+    protected float getMinCoef() {
+        return 1.4f;
+    }
+    protected float getMaxCoef() {
+        return 3.25f;
+    }
     protected void updatePosition() {
         int step = getSpectrumDegrees() / currentNode.getChildNodes().size();
         int initial = getStartDegree();
@@ -180,10 +186,9 @@ public class RadialMenu extends Group implements Closable {
 //            coefficient = 2.5;
 //        }
         double coefficient = MathMaster.getMinMax((float) (currentNode.
-                 getChildNodes().size() / (Math.PI+1)), 1.4f, 3.25f);
-        boolean makeSecondRing = false;
-        if (currentNode.getChildNodes().size() > 15) {
-            makeSecondRing = true;
+                 getChildNodes().size() / (Math.PI+1)), getMinCoef(), getMaxCoef());
+        boolean makeSecondRing = isMakeSecondRing(currentNode.getChildNodes().size());
+        if (makeSecondRing ) {
             coefficient = 3.5;
         }
 
@@ -209,6 +214,11 @@ public class RadialMenu extends Group implements Closable {
                 valueContainer.setPosition(v.x, v.y);
         }
     }
+
+    protected boolean isMakeSecondRing(int size) {
+        return size > 15;
+    }
+
 
     protected boolean isClockwise() {
         return false;

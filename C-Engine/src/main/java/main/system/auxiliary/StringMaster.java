@@ -1714,11 +1714,16 @@ public class StringMaster {
     }
 
     public static String getAppendedImageFile(String file, String suffix) {
+        return getAppendedImageFile(file, suffix, false);
+    }
+        public static String getAppendedImageFile(String file, String suffix, boolean returnNull) {
         String format = getFormat(file);
         String newFile = cropFormat(file) + suffix + format;
         if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {
             return newFile;
         }
+        if (returnNull)
+            return null;
         return file;
     }
 

@@ -1,18 +1,23 @@
 package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GridCellContainer extends GridCell {
     private int unitViewCount = 0;
@@ -22,10 +27,9 @@ public class GridCellContainer extends GridCell {
     private boolean hasBackground;
     private GenericGridView topUnitView;
     private boolean dirty;
-//    private List<GenericGridView> unitViews=new ArrayList<>(); //for cache and cycling
-/*
-
- */
+    private boolean secondCheck;
+    Map<Integer, GenericGridView> indexMap = new HashMap<>();
+    private int Z=2;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -38,7 +42,6 @@ public class GridCellContainer extends GridCell {
     @Override
     public GridCellContainer init() {
         super.init();
-
 
         graveyard = new GraveyardView();
         addActor(graveyard);
@@ -61,13 +64,11 @@ public class GridCellContainer extends GridCell {
             if (visibleOnly)
                 if (!actor.isVisible())
                     continue;
-            if (actor instanceof LastSeenView)
-            {
+            if (actor instanceof LastSeenView) {
                 if (((LastSeenView) actor).getParentView().isVisible())
                     continue;
             }
-            if (actor instanceof GenericGridView)
-            {
+            if (actor instanceof GenericGridView) {
                 list.add((GenericGridView) actor);
             }
         }
@@ -88,23 +89,30 @@ public class GridCellContainer extends GridCell {
                 hasBackground = true;
                 continue;
             }
-            if (actor.getActionsOfClass(MoveToAction.class).size > 0) {
-                return;
-            }
-            if (actor.getActionsOfClass(MoveByAction.class).size > 0) {
-                return;
+            for (Action a : actor.getActions()) {
+                if (a instanceof MoveByAction|| a instanceof MoveToAction)
+                    actor.removeAction(a);
             }
             int offset = getUnitViewOffset();
             float scaleX = getObjScale();
             float scaleY = getObjScale();
+            float y = getViewY(offset, i,
+             getUnitViewCountEffective());
+            float x = getViewX(offset, i);
+            if (isAnimated()) {
 
-            actor.setPosition(getViewX(offset, i), getViewY(offset, i, getUnitViewCountEffective()));
-//             offset * ((getUnitViewCountEffective() - 1) - i));
+                actor.setPosition(x, y);
+                ActorMaster.addScaleAction(actor,
+                 scaleX, scaleY, 0.25f);
+                actor.sizeChanged();
+            } else {
+                actor.setPosition(x, y);
 
-            actor.setScale(scaleX, scaleY);
-            actor.setScaledHeight(scaleY);
-            actor.setScaledWidth(scaleX);
-            actor.sizeChanged();
+                actor.setScale(scaleX, scaleY);
+                actor.setScaledHeight(scaleY);
+                actor.setScaledWidth(scaleX);
+                actor.sizeChanged();
+            }
 
             recalcImagesPos(actor, offset, offset, i++);
         }
@@ -117,12 +125,13 @@ public class GridCellContainer extends GridCell {
     private void recalcImagesPos(GenericGridView actor,
                                  float perImageOffsetX
      , float perImageOffsetY, int i) {
-        perImageOffsetX = perImageOffsetX;// * getPosDiffFactorX();
-        perImageOffsetY = perImageOffsetY;// * getPosDiffFactorY();
-        actor.setX(getViewX(perImageOffsetX, i));
-        actor.setY(getViewY(perImageOffsetY, i++, getUnitViewCountEffective())); //
-        // (getUnitViewCountEffective() - 1) - i++));
-//         perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
+
+            actor.setX(getViewX(perImageOffsetX, i));
+            actor.setY(getViewY(perImageOffsetY, i++, getUnitViewCountEffective()));
+    }
+
+    private boolean isAnimated() {
+        return true;
     }
 
     public final float getViewX(float perImageOffsetX, int i) {
@@ -145,19 +154,6 @@ public class GridCellContainer extends GridCell {
         }
     }
 
-    //    private void recalcImagesPos() {
-//        int i = 0;
-//        final float perImageOffsetX = getUnitViewOffset() * getPosDiffFactorX();
-//        final float perImageOffsetY = getUnitViewOffset() * getPosDiffFactorY();
-//        for (GenericGridView actor : getUnitViews()) {
-//            if (actor.isCellBackground()){
-//                continue;
-//            }
-//            actor.setX(perImageOffsetX * i);
-//            actor.setY(perImageOffsetY * ((getUnitViewCountEffective() - 1) - i++));
-//
-//        }
-//    }
     public float getUnitViewSize() {
         return GridMaster.CELL_W - getUnitViewOffset() * (getUnitViewCount() - 1);
     }
@@ -187,6 +183,14 @@ public class GridCellContainer extends GridCell {
         );
     }
 
+    private Integer getZIndexForView(GenericGridView actor) {
+        if (actor.isCellBackground())
+            return 1;
+       if (!actor.isHpBarVisible()) {
+            return Z++;
+        } else
+           return Z++ +1;
+    }
     @Override
     public void act(float delta) {
         if (checkIgnored())
@@ -204,27 +208,39 @@ public class GridCellContainer extends GridCell {
                 hovered = actor;
             else if (actor.isActive()) {
                 if (hovered == null) hovered = actor;
-            } else if (!actor.isHpBarVisible()) {
-                actor.setZIndex(n + 1);
-            } else
-                actor.setZIndex(n + 2);
+            } else {
+                if (isStaticZindex()) {
+                    Integer z = (Integer) MapMaster.getKeyForValue_(indexMap, actor);
+                    if (z!=null ){
+                        actor.setZIndex(z);
+                        n++;
+                        continue;
+                    }
+                }
+                    if (!actor.isHpBarVisible()) {
+                        actor.setZIndex(n + 1);
+                    } else
+                        actor.setZIndex(n + 2);
+
+            }
             n++;
         }
         if (hovered != null)
             hovered.setZIndex(Integer.MAX_VALUE);
         graveyard.setZIndex(Integer.MAX_VALUE);
-        if (dirty) {
-            recalcUnitViewBounds();
-        }
-        if (n != unitViewCount) {
-//            main.system.auxiliary.log.LogMaster.log(1, this + "*** unitviews reset to " + n);
+        if (n != unitViewCount || secondCheck) {
             dirty = true;
-//            recalcImagesPos();
-        }
+        } 
+        
+        
         if (dirty) {
             unitViewCount = n;
             recalcUnitViewBounds();
         }
+    }
+
+    private boolean isStaticZindex() {
+        return true;
     }
 
 
@@ -242,11 +258,21 @@ public class GridCellContainer extends GridCell {
     public void addActor(Actor actor) {
         super.addActor(actor);
         if (actor instanceof GenericGridView) {
+            GenericGridView view = (GenericGridView) actor;
             unitViewCount = getUnitViewsVisible().size();
-//            main.system.auxiliary.log.LogMaster.log(1, actor + " added to " + this);
-            dirty = true;
+
+            if (isAnimated())
+            {
+                ActorMaster.addFadeInAction(actor, getFadeDuration());
+            }
+            indexMap.put(getZIndexForView( view), view);
             recalcUnitViewBounds();
+
         }
+    }
+
+    protected float getFadeDuration() {
+        return 0.3f;
     }
 
     @Override
@@ -268,8 +294,10 @@ public class GridCellContainer extends GridCell {
             unitViewCount = getUnitViewsVisible().size();
             main.system.auxiliary.log.LogMaster.log(1, actor + " removed from " + this);
             dirty = true;
+            if (isAnimated())
+                ActorMaster.addFadeOutAction(actor, getFadeDuration());
 //            recalcUnitViewBounds();
-//            ((GenericGridView) actor).sizeChanged();
+            ((GenericGridView) actor).sizeChanged();
         }
 
         return result;
@@ -285,12 +313,34 @@ public class GridCellContainer extends GridCell {
     }
 
     public void popupUnitView(GenericGridView uv) {
+      uv.remove();
+      addActor(uv);
         uv.setZIndex(getChildren().size);
         recalcImagesPos();
         graveyard.setZIndex(Integer.MAX_VALUE);
         setTopUnitView(uv);
     }
 
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+    }
+
+    @Override
+    public void setX(float x) {
+        if (getX()!=x)
+            super.setX(x);
+    }
+
+    @Override
+    public void setPosition(float x, float y, int alignment) {
+        super.setPosition(x, y, alignment);
+    }
+
+    @Override
+    public void setX(float x, int alignment) {
+        super.setX(x, alignment);
+    }
 
     public void updateGraveyard() {
         graveyard.updateGraveyard();
@@ -313,5 +363,9 @@ public class GridCellContainer extends GridCell {
     public void setTopUnitView(GenericGridView topUnitView) {
         this.topUnitView = topUnitView;
 
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
     }
 }

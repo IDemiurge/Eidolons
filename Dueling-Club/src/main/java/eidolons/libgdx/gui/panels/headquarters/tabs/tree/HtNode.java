@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.headquarters.tabs.tree.nodes;
+package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.unit.Unit;

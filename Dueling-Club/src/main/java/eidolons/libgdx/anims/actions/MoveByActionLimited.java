@@ -2,6 +2,7 @@ package eidolons.libgdx.anims.actions;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 
@@ -11,6 +12,7 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 public class MoveByActionLimited extends MoveByAction {
     private Float startPointX;
     private Float startPointY;
+    private Group parent;
 
     public MoveByActionLimited() {
     }
@@ -35,6 +37,7 @@ public class MoveByActionLimited extends MoveByAction {
             startPointX = target.getX();
         if (startPointY == null)
             startPointY = target.getY();
+        parent = target.getParent();
     }
 
     private void applyLeftover() {
@@ -56,11 +59,13 @@ public class MoveByActionLimited extends MoveByAction {
 
     @Override
     protected void updateRelative(float percentDelta) {
-//        if (getAmountX() != 0)
-//            if (Math.abs(startPointX - target.getX()) >= Math.abs(getAmountX()))
-//                return;
-//        if (getAmountY() != 0) if (Math.abs(startPointY - target.getY()) >= Math.abs(getAmountY()))
-//            return;
+        if (parent!=target.getParent())
+            return;
+        if (getAmountX() != 0)
+            if (Math.abs(startPointX - target.getX()) >= Math.abs(getAmountX()))
+                return;
+        if (getAmountY() != 0) if (Math.abs(startPointY - target.getY()) >= Math.abs(getAmountY()))
+            return;
         super.updateRelative(percentDelta);
     }
 }

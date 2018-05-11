@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.content.PARAMS;
+import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -73,10 +74,12 @@ public class HqStatElement extends HqElement {
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
                 super.onTouchDown(event, x, y);
-                 HqDataMaster.operation(dataSource,
-                  mastery
-                   ? HQ_OPERATION.MASTERY_INCREMENT
-                   : HQ_OPERATION.ATTRIBUTE_INCREMENT, modifyParam);
+                if (PointMaster.canIncrease(dataSource.getEntity(), modifyParam)) {
+                    HqDataMaster.operation(dataSource,
+                     mastery
+                      ? HQ_OPERATION.MASTERY_INCREMENT
+                      : HQ_OPERATION.ATTRIBUTE_INCREMENT, modifyParam);
+                }
             }
         };
     }

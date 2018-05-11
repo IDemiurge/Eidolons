@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
-import eidolons.libgdx.gui.panels.headquarters.tabs.tree.nodes.HtNode;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 
@@ -10,7 +10,7 @@ import eidolons.libgdx.texture.Images;
 public class PerkSlot extends HtNode {
 
     public PerkSlot( int tier ) {
-        super(  tier, Images.EMPTY_RANK_SLOT);
+        super(  tier, Images.EMPTY_PERK_SLOT);
     }
 
     @Override

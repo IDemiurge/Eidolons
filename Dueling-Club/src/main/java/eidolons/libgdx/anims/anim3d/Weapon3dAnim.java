@@ -100,7 +100,7 @@ public class Weapon3dAnim extends ActionAnim {
         subactions.remove(getActive());
         subactions.removeIf(a ->
          a.isThrow() ||
-         a.getActiveWeapon() != getActive().getActiveWeapon());
+          a.getActiveWeapon() != getActive().getActiveWeapon());
         Array<AtlasRegion> newRegions = AnimMaster3d.getRegions(
          WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomListIndex(subactions))
          , getProjection().bool);
@@ -142,8 +142,12 @@ public class Weapon3dAnim extends ActionAnim {
         if (sprite != null) {
             return sprite;
         }
-        sprite = AnimMaster3d.getSpriteForAction(getDuration(),
-         getActive(),   getCase(), projection);
+        try {
+            sprite = AnimMaster3d.getSpriteForAction(getDuration(),
+             getActive(), getCase(), projection);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         projectionsMap.put(projection, sprite);
         return sprite;
     }

@@ -29,6 +29,7 @@ public class HqTabs extends TabbedPanel<HqElement> implements HqActor{
 
     @Override
     public void setUserObject(Object userObject) {
+        setSize(460, 832);
         super.setUserObject(userObject);
         tabsToNamesMap.values().forEach(tab-> tab.setUserObject(userObject));
     }

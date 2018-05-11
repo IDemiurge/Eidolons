@@ -5,9 +5,6 @@ package eidolons.libgdx.bf;
  */
 public class DynamicLayeredActor extends LayeredActor {
 
-    private static final String DISABLED = " disabled";
-    private static final String ACTIVE = " active";
-    private static final String HOVER = " hover";
 
     protected ACTOR_STATUS status;
 
@@ -19,17 +16,16 @@ public class DynamicLayeredActor extends LayeredActor {
         this.status = status;
         setOverlayImage(getImageVariant(" " + status));
         setUnderlayImage(getImageVariant(" " + status));
-        setImage(getImageVariant(" " + status));
     }
-
+    public void clearImage() {
+        image.setEmpty();
+    }
     public void disable() {
         setStatus(ACTOR_STATUS.DISABLED);
-        setImage(getImageVariant(DISABLED));
     }
 
     public void enable() {
         setStatus(ACTOR_STATUS.NORMAL);
-        setImage(getImageVariant(DISABLED));
     }
 
     public enum ACTOR_STATUS {

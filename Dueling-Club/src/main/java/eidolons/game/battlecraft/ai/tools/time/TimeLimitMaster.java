@@ -2,14 +2,18 @@ package eidolons.game.battlecraft.ai.tools.time;
 
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
+import main.system.math.MathMaster;
 
 public class TimeLimitMaster {
     public static final long CRITICAL_FAIL_FACTOR = 10;
     private static double TIME_LIMIT_FACTOR = 5;
-    private static int AI_TIME_LIMIT_MIN = 5000;
+    private static int AI_TIME_LIMIT_MIN = 3000;
+    private static final int AI_TIME_LIMIT_MAX = 7000;
     private static int AI_TIME_LIMIT_PER_POWER = 150;
     private static int AI_TIME_LIMIT_MIN_EXPLORE = 500;
     private static int AI_TIME_LIMIT_PER_POWER_EXPLORE = 15;
@@ -17,6 +21,7 @@ public class TimeLimitMaster {
     private static int PATH_TIME_LIMIT = 2000;
     private static int CELL_PATH_TIME_LIMIT = 500;
     private static int PATH_STEP_TIME_LIMIT = 250;
+    private static Float timeLimitMod;
 
     public TimeLimitMaster(UnitAI ai) {
         // init factors!
@@ -104,14 +109,28 @@ public class TimeLimitMaster {
 
     public static long getTimeLimitForAi(UnitAI ai) {
         if (ExplorationMaster.isExplorationOn()) {
-            return Math.max(AI_TIME_LIMIT_MIN_EXPLORE, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER_EXPLORE);
+            return (long) (Math.max(AI_TIME_LIMIT_MIN_EXPLORE, ai.getUnit().calculatePower() *
+                         AI_TIME_LIMIT_PER_POWER_EXPLORE) * getTimeLimitMod());
         }
-        return Math.max(AI_TIME_LIMIT_MIN, ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER);
+        return (long) (MathMaster.getMinMax(  ai.getUnit().calculatePower() * AI_TIME_LIMIT_PER_POWER,
+         AI_TIME_LIMIT_MIN, AI_TIME_LIMIT_MAX)
+                 * getTimeLimitMod())
+         ;
     }
 
     public static void markTimeForAI(UnitAI ai) {
         Chronos.mark(
          "ai limit for " + ai.getUnit().getName());
+    }
+
+    public static float getTimeLimitMod() {
+        if (timeLimitMod==null )
+            timeLimitMod =new Float( OptionsMaster.getGameplayOptions().getIntValue(GAMEPLAY_OPTION.AI_TIME_LIMIT_MOD))/100;
+        return timeLimitMod;
+    }
+
+    public static void setTimeLimitMod(float timeLimitMod) {
+        TimeLimitMaster.timeLimitMod = timeLimitMod;
     }
 
     public enum METRIC {

@@ -1,0 +1,137 @@
+package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import eidolons.libgdx.gui.controls.radial.RadialMenu;
+import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.texture.TextureCache;
+import main.entity.type.ObjType;
+import main.system.EventCallbackParam;
+import main.system.EventType;
+import main.system.GuiEventManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
+
+/**
+ * Created by JustMe on 5/9/2018.
+ */
+public abstract class SlotSelectionRadialMenu extends RadialMenu {
+    protected Map<List, List> cache = new HashMap<>();
+    protected HqHeroDataSource dataSource;
+
+    public SlotSelectionRadialMenu() {
+        super();
+        GuiEventManager.bind(getEvent(), p -> {
+            triggered(p);
+        });
+    }
+
+    protected abstract EventType getEvent();
+
+
+    @Override
+    protected void bindEvents() {
+        addListener(new InputListener() {
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                return event.getTarget() == SlotSelectionRadialMenu.this
+                 || super.mouseMoved(event, x, y);
+            }
+        });
+        GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
+            close();
+        });
+    }
+
+    public void selected(ObjType type) {
+        HqDataMaster.operation(dataSource,
+         getOperation(), type);
+    }
+
+    protected abstract HQ_OPERATION getOperation();
+
+    @Override
+    protected Vector2 getInitialPosition() {
+        Vector2 pos = super.getInitialPosition();
+        setPosition(0, 0);
+        return stageToLocalCoordinates(pos);
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        cache.clear();
+        dataSource = (HqHeroDataSource) getUserObject();
+    }
+
+    @Override
+    protected void triggered(EventCallbackParam obj) {
+        List<ObjType> available = (List<ObjType>) obj.get();
+        List<RadialValueContainer> nodes = getNodes(available);
+        init(nodes);
+        open();
+    }
+
+    protected List<RadialValueContainer> getNodes(List<ObjType> available) {
+        List<RadialValueContainer> list = cache.get(available);
+        if (list == null) {
+            list = createNodes(available);
+        }
+        return list;
+    }
+
+    @Override
+    protected void updatePosition() {
+        super.updatePosition();
+    }
+
+    @Override
+    protected boolean isMakeSecondRing(int size) {
+        return super.isMakeSecondRing(size);
+    }
+
+    @Override
+    protected float getMinCoef() {
+        return super.getMinCoef();
+    }
+
+    @Override
+    protected float getMaxCoef() {
+        return super.getMaxCoef();
+    }
+
+    protected List<RadialValueContainer> createNodes(List<ObjType> available) {
+        List<RadialValueContainer> list = new ArrayList<>();
+        for (ObjType type : available) {
+            String reason =getReqReason(type);
+            boolean valid = reason == null;
+            TextureRegion region = !valid
+             ? TextureCache.getOrCreateGrayscaleR(type.getImagePath())
+             : TextureCache.getOrCreateR(type.getImagePath());
+            RadialValueContainer node = new RadialValueContainer(region, () -> {
+
+                if (valid)
+                    selected(type);
+                else {
+                    //floating text?
+                }
+            });
+            list.add(node);
+        }
+        return list;
+    }
+
+    protected abstract String getReqReason(ObjType type);
+
+}
+

@@ -37,6 +37,6 @@ public class LayeredActor extends GroupX {
     }
 
     protected String getImageVariant(String suffix) {
-        return StringMaster.getAppendedImageFile(rootPath, suffix);
+        return StringMaster.getAppendedImageFile(rootPath, suffix, true);
     }
 }

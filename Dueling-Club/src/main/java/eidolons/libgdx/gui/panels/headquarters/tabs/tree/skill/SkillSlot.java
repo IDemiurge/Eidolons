@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.gui.panels.headquarters.tabs.tree.nodes.HtNode;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.entity.SkillEnums.MASTERY;
@@ -13,6 +13,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,9 +30,11 @@ public class SkillSlot extends HtNode {
 
     public void update(float delta) {
         if (data == null) {
+            clearImage();
             disable();
         } else {
             enable();
+            available = new ArrayList<>();
             if (data.getLeft() != null) {
                 GdxImageMaster.round(data.getLeft().getImagePath() , true);
                 setRootPath(GdxImageMaster.getRoundedPath(data.getLeft().getImagePath()));
@@ -43,6 +46,8 @@ public class SkillSlot extends HtNode {
             }
         }
     }
+
+
 
     @Override
     public void setUserObject(Object userObject) {

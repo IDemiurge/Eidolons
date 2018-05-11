@@ -2,6 +2,7 @@ package eidolons.game.core;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -17,11 +18,13 @@ import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
+import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -265,5 +268,21 @@ public class Eidolons {
              getOutcomeManager().next();
         }, "next level thread").start();
 
+    }
+
+    public static void exitToMenu() {
+        try {
+            DC_Game.game.getMetaMaster().gameExited();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+//            DialogMaster.confirm("Game exit failed!");
+            Gdx.app.exit();
+        }
+        getScreen().reset();
+        gameExited();
+        GameMenu.menuOpen = false;
+        Gdx.input.setInputProcessor(new InputAdapter());
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
+         new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
     }
 }

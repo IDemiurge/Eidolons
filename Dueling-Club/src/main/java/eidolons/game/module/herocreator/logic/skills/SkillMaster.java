@@ -136,12 +136,13 @@ public class SkillMaster {
     public static void newFeat(PROPERTY prop, Unit hero, ObjType arg) {
         DC_FeatObj featObj = createFeatObj(arg, hero.getRef());
         hero.addProperty(prop, arg.getName());
+        hero.getType().addProperty(prop, arg.getName());
         DequeImpl<? extends DC_FeatObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {
             container = hero.getClasses();
         } else if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.PERKS) {
-            container = (DequeImpl<? extends DC_FeatObj>) hero.getPerks();
+            container = hero.getPerks();
         }
         container.addCast(featObj);
     }

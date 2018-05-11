@@ -14,6 +14,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.graphics.ColorManager;
+import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -174,8 +175,12 @@ public class StyleHolder {
         return getTextButtonStyle(null, FONT, color, size);
     }
 
-    public static TextButton.TextButtonStyle getTextButtonStyle(
-     STD_BUTTON button, FONT FONT, Color color, int size) {
+    public static TextButton.TextButtonStyle getMenuTextButtonStyle(
+      int size) {
+        return getTextButtonStyle(STD_BUTTON.GAME_MENU, FontMaster.FONT.METAMORPH, DEFAULT_COLOR, size);
+    }
+        public static TextButton.TextButtonStyle getTextButtonStyle(
+         STD_BUTTON button, FONT FONT, Color color, int size) {
         Map<LabelStyle, TextButtonStyle> map = textButtonStyleMap.get(button);
         LabelStyle labelStyle = getSizedColoredLabelStyle(FONT, size, color);
         TextButtonStyle style = null;

@@ -1,5 +1,6 @@
 package eidolons.game.core;
 
+import eidolons.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -300,8 +301,10 @@ public class GameLoop {
             if (!aiAction.canBeTargeted()) {
                 {
                     AI_Manager.getBrokenActions().add(aiAction.getActive());
-                    return null;
+                    return new ActionInput(getActiveUnit().getAction(STD_SPEC_ACTIONS.Wait.name())
+                     , getActiveUnit());
                 }
+
             }
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }

@@ -54,7 +54,6 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
         if (outcome == null) {
             restart = true;
         }
-        super.next(outcome);
         if (outcome != null)
             if (outcome) {
                 if (getMetaGame().isFinalLevel()) {
@@ -62,6 +61,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
                     return;
                 }
 
+                super.next(outcome);
                 ScenarioLauncher.missionIndex++;
 
             }

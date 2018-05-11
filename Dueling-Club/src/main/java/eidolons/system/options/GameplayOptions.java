@@ -37,7 +37,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         ATB_WAIT_TIME(5, 0, 10)
         , SHUFFLE_LEVELS(false)
         , REVERSE_LEVELS(false),
-        GHOST_MODE(false);
+        GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

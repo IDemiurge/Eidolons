@@ -1,5 +1,6 @@
 package eidolons.game.core.game;
 
+import eidolons.entity.DC_IdManager;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.entity.obj.unit.Unit;
@@ -20,6 +21,13 @@ public class SimulationGame extends DC_Game {
 
     public SimulationGame() {
         super(true);
+        idManager = new DC_IdManager(){
+            @Override
+            public Integer getNewId() {
+                ID--;
+                return ID;
+            }
+        };
     }
 
     @Override

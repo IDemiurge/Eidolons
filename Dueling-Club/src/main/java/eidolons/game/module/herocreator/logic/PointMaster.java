@@ -1,6 +1,8 @@
 package eidolons.game.module.herocreator.logic;
 
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
+import eidolons.entity.obj.unit.Unit;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
@@ -42,4 +44,11 @@ public class PointMaster {
         return cost;
     }
 
+    public static boolean canIncrease(Unit entity, PARAMETER modifyParam) {
+        boolean mastery = modifyParam.isMastery();
+        int pool = mastery ? entity.getIntParam(PARAMS.MASTERY_POINTS)
+         :  entity.getIntParam(PARAMS.ATTR_POINTS);
+
+        return pool> getCost(entity, modifyParam);
+    }
 }

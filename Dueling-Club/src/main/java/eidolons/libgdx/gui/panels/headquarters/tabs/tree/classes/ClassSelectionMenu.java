@@ -1,6 +1,5 @@
-package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
+package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
 import main.entity.type.ObjType;
@@ -8,22 +7,21 @@ import main.system.EventType;
 import main.system.GuiEventType;
 
 /**
- * Created by JustMe on 5/8/2018.
+ * Created by JustMe on 5/9/2018.
  */
-public class SkillSelectionMenu extends SlotSelectionRadialMenu {
-
+public class ClassSelectionMenu extends SlotSelectionRadialMenu {
     protected EventType getEvent() {
-        return   GuiEventType.SHOW_SKILL_CHOICE;
+        return   GuiEventType.SHOW_CLASS_CHOICE;
     }
 
     @Override
     protected HQ_OPERATION getOperation() {
-        return HQ_OPERATION.NEW_SKILL;
+        return HQ_OPERATION.NEW_CLASS;
     }
 
     @Override
     protected String getReqReason(ObjType type) {
-        return  SkillMaster.getReqReasonForSkill(dataSource.getEntity(), type);
+        return  dataSource.getEntity() .getGame().getRequirementsManager()
+         .check(dataSource.getEntity() , type);
     }
-
 }

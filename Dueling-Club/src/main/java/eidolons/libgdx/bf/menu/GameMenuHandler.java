@@ -1,12 +1,8 @@
 package eidolons.libgdx.bf.menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import eidolons.game.core.Eidolons;
-import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -41,17 +37,7 @@ public class GameMenuHandler {
             case MAIN_MENU:
 //                DC_Game.game.getBattleMaster().getOutcomeManager().next();
 //                DC_Game.game.exit(true);
-                try {
-                    DC_Game.game.getMetaMaster().gameExited();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-                Eidolons.getScreen().reset();
-                Eidolons.gameExited();
-                GameMenu.menuOpen = false;
-                Gdx.input.setInputProcessor(new InputAdapter());
-                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                 new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
+                Eidolons.  exitToMenu();
                 return false;
             case RESTART:
                 Eidolons.restart();

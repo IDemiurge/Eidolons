@@ -35,7 +35,7 @@ public class UnitView extends BaseView {
     protected TextureRegion outline;
     protected Supplier<TextureRegion> outlineSupplier;
     protected boolean greyedOut;
-    private boolean mainHero;
+    protected boolean mainHero;
     protected boolean flickering;
     protected boolean initialized;
     protected Tooltip tooltip;

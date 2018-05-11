@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill;
 
-import eidolons.libgdx.gui.panels.headquarters.tabs.tree.nodes.HtNode;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 import main.content.ContentValsManager;

@@ -58,11 +58,14 @@ public class ImageContainer extends SuperContainer {
 
     public void setImage(String path) {
         if (ImageManager.isImage(path))
-        {
+        { this.path =path;
             Texture r = TextureCache.getOrCreate(path);
             if (sprite!=null )
                 if (sprite.getTexture().equals(r) )
-                     return;
+                {
+                    setImage(new Image(sprite));
+                    return;
+                }
             setImage(new Image(sprite = new Sprite(TextureCache.getOrCreate(path))));
         }
         else

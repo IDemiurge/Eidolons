@@ -8,6 +8,7 @@ import eidolons.libgdx.anims.ANIM_MODS.ANIM_MOD;
 import eidolons.libgdx.anims.Anim;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.ability.Ability;
@@ -94,15 +95,17 @@ public class ActionAnim extends Anim {
     public void addAbilityAnims(Ability ability) {
 
     }
-@Override
+
+    @Override
     public void checkAddFloatingText() {
         getFloatingText().forEach(floatingText1 -> {
             if (time >= floatingText1.getDelay()) {
                 Vector2 floatTextPos = //localToSctageCoordinates
-                new Vector2 (
-                 getActor().getX()+getActor().getWidth()/2,
-                 getActor().getY()+getActor().getHeight());
-
+                 new Vector2(
+                  getActor().getX() + getActor().getWidth() / 2,
+                  getActor().getY() + getActor().getHeight());
+                if (getActor().getParent() instanceof GridCellContainer)
+                    floatTextPos = getActor().localToStageCoordinates(floatTextPos);
                 floatingText1.setX(floatTextPos.x);
                 floatingText1.setY(floatTextPos.y);
                 GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText1);

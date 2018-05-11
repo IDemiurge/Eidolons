@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.GdxImageMaster;
-import eidolons.libgdx.gui.panels.headquarters.tabs.tree.nodes.HtNode;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 import main.entity.type.ObjType;

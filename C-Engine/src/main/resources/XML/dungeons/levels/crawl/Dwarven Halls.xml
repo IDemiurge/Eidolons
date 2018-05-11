@@ -1,6 +1,6 @@
 <Level><Custom_Props><Workspace_Group>IMPLEMENT</Workspace_Group>
 <Dungeon_Subfolder>crawl</Dungeon_Subfolder>
-<Dungeon_Main_Entrances>Upward Stairs(12-0);Downward Stairs(12-20)</Dungeon_Main_Entrances>
+<Dungeon_Main_Entrances>Downward Stairs(12-20);Upward Stairs(12-0)</Dungeon_Main_Entrances>
 </Custom_Props><Custom_Params><Bf_Width>25</Bf_Width>
 <Bf_Height>21</Bf_Height>
 </Custom_Params><Wall_Objects></Wall_Objects>

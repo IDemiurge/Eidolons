@@ -36,7 +36,7 @@ public class FadeImageContainer extends ImageContainer {
     @Override
     public void setEmpty() {
         if (getContent()!=null )
-         fadeOut();
+            fadeOut();
     }
 
     @Override

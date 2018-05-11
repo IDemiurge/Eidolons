@@ -28,14 +28,14 @@ import main.system.GuiEventManager;
 import static main.system.GuiEventType.*;
 
 public class GridCell extends Group implements Borderable {
-    private static boolean spriteCacheOn;
+    protected static boolean spriteCacheOn;
     protected Image backImage;
     protected TextureRegion backTexture;
     protected Image border = null;
-    private int gridX;
-    private int gridY;
-    private TextureRegion borderTexture;
-    private Label cordsText;
+    protected int gridX;
+    protected int gridY;
+    protected TextureRegion borderTexture;
+    protected Label cordsText;
 
     public GridCell(TextureRegion backTexture, int gridX, int gridY) {
         this.backTexture = backTexture;
@@ -43,6 +43,7 @@ public class GridCell extends Group implements Borderable {
         this.gridY = gridY;
         setTransform(false);
     }
+
 
     public static void setSpriteCacheOn(boolean spriteCacheOn) {
         GridCell.spriteCacheOn = spriteCacheOn;
@@ -188,7 +189,7 @@ public class GridCell extends Group implements Borderable {
         }
     }
 
-    private void updateBorderSize() {
+    protected void updateBorderSize() {
         border.setX(-4);
         border.setY(-4);
         border.setHeight(getWidth() - 8);

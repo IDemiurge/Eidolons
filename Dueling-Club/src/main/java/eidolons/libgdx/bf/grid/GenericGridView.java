@@ -57,9 +57,10 @@ public class GenericGridView extends UnitView {
         if (arrowTexture != null) {
             arrow = new Image(arrowTexture);
             addActor(arrow);
-            arrow.setOrigin(getWidth() / 2 + arrow.getWidth(), getHeight() / 2 + arrow.getHeight());
-            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
+//            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
+            arrow.setOrigin(getWidth() / 2  , getHeight() / 2 );
             this.arrowRotation = arrowRotation + 90;
+            arrow.setRotation(this.arrowRotation);
         }
 
         if (iconTexture != null) {
@@ -127,7 +128,9 @@ public class GenericGridView extends UnitView {
 
     public void updateRotation(int val) {
         if (arrow != null) {
-
+//            arrow.setOrigin(0  , getHeight()/2  );
+//            arrow.setOrigin(getWidth()/2-arrow.getWidth()  , getHeight()/2  );
+//            arrow.setOrigin(0  , 0  );
             ActorMaster.addRotateByAction(arrow, arrowRotation, val % 360 + 90);
             arrowRotation = val + 90;
 //            arrow.setRotation(arrowRotation);

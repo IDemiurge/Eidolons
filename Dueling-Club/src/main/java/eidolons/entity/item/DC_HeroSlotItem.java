@@ -97,4 +97,10 @@ public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
     public void setRef(Ref ref) {
         super.setRef(ref);
     }
+
+    public String getBaseTypeName() {
+        if (!type.isGenerated())
+            return getName();
+        return getProperty(G_PROPS.BASE_TYPE);
+    }
 }

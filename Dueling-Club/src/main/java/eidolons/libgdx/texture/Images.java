@@ -19,17 +19,17 @@ public class Images {
     public static final String LOGO64 = "ui/arcane tower/logo64.png";
     public static final String EMPTY_SKILL_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
-     "hq", "skill", "empty skill slot.png");
+     "hq", "trees", "empty skill slot.png");
     public static final String EMPTY_RANK_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
-     "hq", "skill", "empty rank slot.png");
+     "hq", "trees", "empty rank slot.png");
 
     public static final String EMPTY_CLASS_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
-     "hq", "class", "empty class slot.png");
+     "hq", "trees", "empty class slot.png");
     public static final String EMPTY_PERK_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
-     "hq", "class", "empty perk slot.png");
+     "hq", "trees", "empty perk slot.png");
 
 
 }

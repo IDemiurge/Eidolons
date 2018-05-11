@@ -9,10 +9,10 @@ import main.system.entity.IdManager;
 public class DC_IdManager implements IdManager {
 
     public static final int TIME_ID = Integer.MAX_VALUE;
-    private Game game;
-    private boolean host;
-    private Integer ID = 0;
-    private Integer typeID = 0;
+    protected Game game;
+    protected boolean host;
+    protected Integer ID = 0;
+    protected Integer typeID = 0;
 
     public DC_IdManager() {
 
@@ -24,7 +24,7 @@ public class DC_IdManager implements IdManager {
         this.setHost(game.isHost());
     }
 
-    public synchronized Integer getNewId() {
+    public   Integer getNewId() {
         ID++;
         return ID;
         // initial party?

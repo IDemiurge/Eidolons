@@ -52,16 +52,16 @@ public class AnimMaster3d {
 //     {"halbert", "axe"},
 
      {"golem fist", "armored fist"},
-     {"lance", "spear"},
-     {"pike", "spear"},
-     {"staff", "spear"},
-     {"battle staff", "spear"},
-     {"scythe", "spear"},
+//     {"lance", "spear"},
+//     {"pike", "spear"},
+//     {"staff", "spear"},
+//     {"battle staff", "spear"},
+//     {"scythe", "spear"},
      {"sickle", "hand axe"},
 
 
-     {"broad sword", "long sword"},
-     {"falchion", "scimitar"},
+//     {"broad sword", "long sword"},
+//     {"falchion", "scimitar"},
      {"orcish arrows", "arrows"},
      {"elven arrows", "arrows"},
 
@@ -69,7 +69,7 @@ public class AnimMaster3d {
      {"heavy crossbow", "crossbow"},
      {"hand crossbow", "crossbow"},
      {"longbow", "short bow"},
-     {"kriss", "stiletto"},
+//     {"kriss", "stiletto"},
 
 
     };
@@ -223,7 +223,7 @@ public class AnimMaster3d {
             }
         Boolean offhand = null;
         if (projection != null)
-            if (isAssymetric(weapon.getProperty(G_PROPS.BASE_TYPE)))
+            if (isAssymetric(weapon.getBaseTypeName()))
                 offhand = (activeObj.isOffhand());
 
         return getAtlasFileKeyForAction(projectionString,
@@ -246,7 +246,7 @@ public class AnimMaster3d {
     }
 
     private static String getWeaponAtlasKey(DC_WeaponObj weapon) {
-        String name = weapon.getProperty(G_PROPS.BASE_TYPE);
+        String name = weapon.getBaseTypeName();
         String substitute = substituteMap.get(name.toLowerCase());
         if (substitute != null) {
             return substitute;

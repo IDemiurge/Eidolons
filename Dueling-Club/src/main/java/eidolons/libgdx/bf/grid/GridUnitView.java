@@ -23,23 +23,16 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void setFlickering(boolean flickering) {
         super.setFlickering(flickering);
-        if (initiativeQueueUnitView!=null )
+        if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setFlickering(flickering);
     }
 
     @Override
     public void setGreyedOut(boolean greyedOut) {
         super.setGreyedOut(greyedOut);
-        if (initiativeQueueUnitView!=null )
+        if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setGreyedOut(greyedOut);
     }
-    //    @Override
-//    public void draw(Batch batch, float parentAlpha) {
-//        Vector2 v = new Vector2(getX(), getY());
-//        v =localToStageCoordinates(v);
-//
-//        super.draw(batch, parentAlpha);
-//    }
 
     @Override
     public void act(float delta) {
@@ -102,7 +95,7 @@ public class GridUnitView extends GenericGridView {
 
         initiativeQueueUnitView.
          setOutlineSupplier(() -> StringMaster.isEmpty(pathSupplier.get()) ? null :
-          TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get())) ;
+          TextureCache.getSizedRegion(InitiativePanel.imageSize, pathSupplier.get()));
     }
 
 
@@ -142,5 +135,19 @@ public class GridUnitView extends GenericGridView {
         getHpBar().animateChange();
         if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.getHpBar().animateChange();
+    }
+
+    @Override
+    public void setX(float x) {
+        super.setX(x);
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        if (x == 0 && y == 0)
+            if (getParent() instanceof GridPanel) {
+                return;
+            }
+        super.setPosition(x, y);
     }
 }

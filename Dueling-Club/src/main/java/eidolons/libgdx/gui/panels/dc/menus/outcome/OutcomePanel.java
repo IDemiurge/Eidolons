@@ -100,14 +100,14 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
         doneButton = buttonTable.addElement(
          new TextButton(outcome ? "Next" : "Restart",
-          StyleHolder.getDefaultTextButtonStyle())
+          StyleHolder.getMenuTextButtonStyle(16))
         ).fill(false).expand(0, 0).right()
          .pad(20, 10, 20, 10).size(50, 30);
         doneButton.getActor().addListener(this);
 
         exitButton = buttonTable.addElement(
          new TextButton("Exit",
-          StyleHolder.getDefaultTextButtonStyle())
+          StyleHolder.getMenuTextButtonStyle(16))
         ).fill(false).expand(0, 0).right()
 //         .pad(20, 10, 20, 10)
          .size(50, 30);
@@ -115,7 +115,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
         continueButton = buttonTable.addElement(
          new TextButton("Explore",
-          StyleHolder.getDefaultTextButtonStyle())
+          StyleHolder.getMenuTextButtonStyle(16))
         ).fill(false).expand(0, 0).right()
          .pad(20, 10, 20, 10);
 //         .size(50, 30);

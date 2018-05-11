@@ -18,7 +18,6 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimationConstructor;
@@ -31,7 +30,6 @@ import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
@@ -151,55 +149,7 @@ public class GridPanel extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
         super.draw(batch, parentAlpha);
-
-        if (GridMaster.isHpBarsOnTop() && !GdxMaster.isHpBarAttached())
-            for (BattleFieldObject obj : viewMap.keySet()) {
-                BaseView sub = viewMap.get(obj);
-                if (sub.isVisible())
-                    if (sub instanceof GridUnitView) {
-                        if (((GridUnitView) sub).getHpBar() != null)
-                            if (((UnitView) sub).isHpBarVisible()) {
-                                float x = sub.getX();
-                                float y = sub.getY();
-
-//                                if (x == 0 && y == 0  )
-                                float scale = 1f;
-                                if (sub.getParent() != this) //detached and moving!
-                                {
-                                    if (sub.getParent() instanceof GridCellContainer) {
-                                        GridCellContainer parent = (GridCellContainer) sub.getParent();
-                                        if (parent.
-                                         getUnitViewCount() > 1) {
-                                            if (parent.
-                                             getUnitViewCountEffective() == 1) {
-                                                scale = parent.getObjScale();
-                                            } else if (!sub.isHovered()) {
-                                                if (parent.getTopUnitView() != sub)
-                                                    continue;
-                                            } else {
-                                                //offset? scale?
-                                            }
-                                        }
-
-                                    }
-                                    Vector2 v = GridMaster.getVectorForCoordinate(obj.getBufferedCoordinates(),
-                                     false, false, true, this);
-
-                                    x = v.x;
-                                    y = v.y;
-                                }
-                                HpBar hpBar = ((UnitView) sub).getHpBar();
-                                hpBar.setScale(scale, (1 + scale) / 2);
-                                hpBar.act(Gdx.graphics.getDeltaTime());
-                                hpBar.drawAt(batch, x, y);
-
-
-                            }
-
-                    }
-            }
     }
 
     @Override
@@ -223,7 +173,9 @@ public class GridPanel extends Group {
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
                             setVisible(viewMap.get(sub), false);
                         }
-
+//                        for (int x = 0; x < cols; x++) {
+//                            for (int y = 0; y < rows; y++) {
+//                                GridCellContainer cell = cells[x][y];
                     }
                     resetTimer -= delta;
                 }
@@ -431,7 +383,7 @@ public class GridPanel extends Group {
             }
 
             if (view.getParent() instanceof GridCellContainer) {
-                ((GridCellContainer) view.getParent()).popupUnitView((GridUnitView) view);
+//                ((GridCellContainer) view.getParent()).popupUnitView((GridUnitView) view);
             }
 
             viewMap.values().stream().forEach(v -> v.setActive(false));
@@ -667,9 +619,13 @@ public class GridPanel extends Group {
         Coordinates c = object.getCoordinates();
 
 //        uv.setVisible(true);
-
+        if (object.isPlayerCharacter())
+            main.system.auxiliary.log.LogMaster.log(1, object + " moving; pos= " + uv.getX() + ":" + uv.getY());
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
+            if (object.isPlayerCharacter())
+                main.system.auxiliary.log.LogMaster.log(1, object + " moved; pos= " + uv.getX() + ":" + uv.getY());
+
             if (uv.getLastSeenView() != null) {
                 if (LastSeenMaster.isUpdateRequired(object))
                     cells[c.x][rows1 - c.y].addActor(uv.getLastSeenView());
@@ -712,6 +668,9 @@ public class GridPanel extends Group {
         gridCellContainer.removeActor(uv);
         addActor(uv);
         uv.setPosition(x, y);
+        if (heroObj.isPlayerCharacter())
+            main.system.auxiliary.log.LogMaster.log(1, heroObj + " detached; pos= " + uv.getX() + ":" + uv.getY());
+
         return true;
     }
 
@@ -776,7 +735,7 @@ public class GridPanel extends Group {
                     cell.setZIndex(0);
                 } else {
                     cell.setZIndex(y);
-
+//                TODO     cell.recalcUnitViewBounds();
                     for (GenericGridView sub : views) {
                         if (sub.isHovered() && sub instanceof GridUnitView) {
                             setHoverObj((GridUnitView) sub);

@@ -209,10 +209,13 @@ public abstract class SuperActor extends GroupX implements Borderable {
     }
 
     protected boolean isTransformDisabled() {
-        if (getScaleX() != 1) {
+        if (getScaleX() != 1f) {
             return false;
         }
-        return !(getScaleY() != 1);
+        if (getScaleY() != 1f) {
+            return false;
+        }
+        return true;
     }
 
     protected void alphaFluctuation(float delta) {

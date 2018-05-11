@@ -12,7 +12,6 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
-import eidolons.libgdx.gui.panels.headquarters.tabs.tree.nodes.HtNode;
 
 /**
  * Created by JustMe on 5/6/2018.
