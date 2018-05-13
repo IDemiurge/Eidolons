@@ -47,11 +47,12 @@ public class SkillsDataSource extends HeroTreeDataSource {
         List<Triple<DC_FeatObj, MASTERY, MASTERY>> list = new ArrayList<>();
         List<MASTERY> ranks = getMasteryRanks(tier);
         int i = 0;
+        List<DC_FeatObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
         while (true) {
             if (ranks.size() <= i) break;
 
             DC_FeatObj skill = null;
-            List<DC_FeatObj> skills = SkillMaster.getSkillsOfTier(hero, tier);
+
             if (skills.size() > i)
                 skill = skills.get(i);
             MASTERY mastery1 = ranks.get(i++);

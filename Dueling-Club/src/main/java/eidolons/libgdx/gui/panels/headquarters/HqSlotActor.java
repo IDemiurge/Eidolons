@@ -25,16 +25,22 @@ public abstract class HqSlotActor<T extends DataModel> extends GroupX{
             this.model = model;
             addActor(image = new FadeImageContainer(model.getImagePath()));
             addActor(border = new FadeImageContainer());
-            addActor(overlay = new FadeImageContainer());
-
-            overlayPath =  getOverlay(model);
-            if (overlayPath!=null )
-                overlay.setImage(overlayPath );
+            if (isOverlayOn()){
+                addActor(overlay = new FadeImageContainer());
+                overlayPath =  getOverlay(model);
+                if (overlayPath!=null ) {
+                    overlay.setImage(overlayPath );
+                }
+            }
             addListener(getListener());
         }
 
         image.setSize(64, 64);
         setSize(64, 64);
+    }
+
+    public boolean isOverlayOn() {
+        return true;
     }
 
     public void setOverlayPath(String overlayPath) {

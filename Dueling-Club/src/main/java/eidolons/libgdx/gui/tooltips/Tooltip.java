@@ -1,13 +1,11 @@
 package eidolons.libgdx.gui.tooltips;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.stage.StageX;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -36,7 +34,18 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     //refactor - why not implement?
     public InputListener getController() {
-        return new ClickListener() {
+        return new  ClickListener() {
+
+            public boolean handle(Event e) {
+                if (isBattlefield()) {
+                    if (HqPanel.getActiveInstance() != null) {
+                        return true;
+                    }
+                }
+
+                return super.handle(e);
+            }
+
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 onMouseMoved(event, x, y);
@@ -69,6 +78,10 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
                 onMouseExit(event, x, y, pointer, toActor);
             }
         };
+    }
+
+    protected boolean isBattlefield() {
+        return false;
     }
 
     protected void onTouchUp(InputEvent event, float x, float y) {
@@ -105,10 +118,14 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     }
 
     protected void onMouseExit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+        if (!showing)
+            return;
         if (event != null) {
             if (!checkActorExitRemoves(toActor))
                 return;
         }
+        if (checkGuiStageBlocking())
+            return;
 
         exited();
 
@@ -159,6 +176,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         }
         return true;
     }
+
     public Entity getEntity() {
         return null;
     }

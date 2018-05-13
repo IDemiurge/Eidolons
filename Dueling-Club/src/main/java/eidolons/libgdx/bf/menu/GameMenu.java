@@ -121,7 +121,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
 //        QUICK_RATE(), //WILL BE HIGHLIGHTED, OR SENT TO MY MAIN ADDRESS...
 //        FEEDBACK(QUICK_RATE, SEND_FEEDBACK, SEND_LOG),
         OPTIONS,
-        RESTART,
+        RESTART(true),
         PASS_TIME,
         RUN,
         RESUME,

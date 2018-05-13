@@ -4,14 +4,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
+import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.gui.panels.dc.actionpanel.facing.FacingPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickWeaponPanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.WeaponDataSource;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -28,7 +33,7 @@ public class ActionPanel extends Group {
     private static final float OFFSET_X = 70;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
     private static final float SPELL_OFFSET_X = 40;
-    private static final float ORB_OFFSET_X = OFFSET_X+76;
+    private static final float ORB_OFFSET_X = OFFSET_X + 76;
     private static final String ORB_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "overlay.png");
     private static final String BOTTOM_OVERLAY = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "bottom overlay.png");
     private final ImageContainer orbOverlay;
@@ -44,12 +49,16 @@ public class ActionPanel extends Group {
     QuickWeaponPanel offhand;
     FacingPanel facingPanel;
 
+
+    SymbolButton spellbookBtn = new SymbolButton(STD_BUTTON.SPELLBOOK, () -> showSpellbook());
+    SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, () -> showInventory());
+
     public ActionPanel() {
         background = new Image(TextureCache.getOrCreateR(BACKGROUND));
         addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
 
-        quickSlotPanel.setPosition(OFFSET_X+QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
+        quickSlotPanel.setPosition(OFFSET_X + QUICK_SLOTS_OFFSET_X, SPELL_OFFSET_Y);
         addActor(quickSlotPanel);
 
         final float actionOffset = OFFSET_X + (IMAGE_SIZE * 6) + 5;
@@ -58,7 +67,7 @@ public class ActionPanel extends Group {
 
 
         spellPanel = new SpellPanel(IMAGE_SIZE);
-        final float spellOffset =SPELL_OFFSET_X+ actionOffset + (IMAGE_SIZE * 6) + 5;
+        final float spellOffset = SPELL_OFFSET_X + actionOffset + (IMAGE_SIZE * 6) + 5;
         spellPanel.setPosition(spellOffset, SPELL_OFFSET_Y);
         addActor(spellPanel);
 
@@ -68,7 +77,7 @@ public class ActionPanel extends Group {
         addActor(leftOrbPanel);
 
         rigthOrbPanel = new OrbsPanel(PARAMS.MORALE, PARAMS.ESSENCE, PARAMS.FOCUS);
-        rigthOrbPanel.setPosition(spellOffset -11
+        rigthOrbPanel.setPosition(spellOffset - 11
          , IMAGE_SIZE);
         addActor(rigthOrbPanel);
 
@@ -95,6 +104,13 @@ public class ActionPanel extends Group {
         effectsPanel.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
         addActor(effectsPanel);
 
+        addActor(spellbookBtn);
+        addActor(invBtn);
+        spellbookBtn.setPosition(modeActionsPanel.getX()+IMAGE_SIZE*6-12,
+         2);
+        invBtn.setPosition(modeActionsPanel.getX()-58,
+         2);
+
         setY(-IMAGE_SIZE);
         bindEvents();
         initListeners();
@@ -103,6 +119,14 @@ public class ActionPanel extends Group {
     public ActionPanel(int x, int y) {
         this();
         setPosition(x, y);
+    }
+
+    private void showSpellbook() {
+        HqMaster.openHqPanel();
+    }
+
+    private void showInventory() {
+        Eidolons.activateMainHeroAction(DC_ActionManager.USE_INVENTORY);
     }
 
     private void bindEvents() {
@@ -129,7 +153,7 @@ public class ActionPanel extends Group {
              new WeaponDataSource(hero.getOffhandNaturalWeapon())
             ));
             GuiEventManager.trigger(ACTION_PANEL_UPDATE,
-             new PanelActionsDataSource( hero));
+             new PanelActionsDataSource(hero));
 
         });
     }
@@ -170,6 +194,12 @@ public class ActionPanel extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        spellbookBtn.setPosition(modeActionsPanel.getX()+IMAGE_SIZE*6-12,
+         2);
+        invBtn.setPosition(modeActionsPanel.getX()-55,
+         2);
+
 
         mainHand.setPosition(rigthOrbPanel.getX() - 146,
          leftOrbPanel.getY() + 12);

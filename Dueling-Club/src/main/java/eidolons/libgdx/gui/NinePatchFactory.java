@@ -1,10 +1,20 @@
 package eidolons.libgdx.gui;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import main.data.filesys.PathFinder;
+import main.system.auxiliary.StrPathBuilder;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class NinePatchFactory {
+
+    private static final String LIGHT_PANEL_PATH =
+     StrPathBuilder.build(PathFinder.getComponentsPath(),
+      "ninepatch", "std", "light ninepatch.png");
+    private static final String LIGHT_PANEL_FILLED_PATH =
+     StrPathBuilder.build(PathFinder.getComponentsPath(),
+      "ninepatch", "std", "light ninepatch FILLED.png");
 
     public static NinePatch getTooltip() {
         return new NinePatch(getOrCreateR("UI/components/tooltip_background.png"), 16, 16, 14, 14);
@@ -21,7 +31,18 @@ public class NinePatchFactory {
     public static NinePatch getInfoPanel() {
         return new NinePatch(getOrCreateR("UI/components/panel ninepatch.png"), 50, 50, 50, 50);
     }
+    public static NinePatch getLightPanelFilled() {
+        return new NinePatch(getOrCreateR(
+         LIGHT_PANEL_FILLED_PATH), 10, 10, 10, 10);
+    }
     public static NinePatch getLightPanel() {
-        return new NinePatch(getOrCreateR("light ninepatch.png"), 10, 10, 10, 10);
+        return new NinePatch(getOrCreateR(
+         LIGHT_PANEL_PATH), 10, 10, 10, 10);
+    }
+    public static NinePatchDrawable getLightPanelFilledDrawable() {
+        return new NinePatchDrawable(getLightPanelFilled());
+    }
+    public static NinePatchDrawable getLightPanelDrawable() {
+        return new NinePatchDrawable(getLightPanel());
     }
 }

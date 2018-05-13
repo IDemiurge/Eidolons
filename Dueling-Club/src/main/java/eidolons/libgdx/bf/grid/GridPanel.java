@@ -634,6 +634,8 @@ public class GridPanel extends Group {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         setUpdateRequired(true);
+        if (overlayManager != null)
+            overlayManager.clearTooltip(object);
     }
 
     private BaseView createUnitView(BattleFieldObject battleFieldObjectbj) {
@@ -730,6 +732,7 @@ public class GridPanel extends Group {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 GridCellContainer cell = cells[x][y];
+                cell.setHovered(false);
                 List<GenericGridView> views = cell.getUnitViewsVisible();
                 if (views.isEmpty()) {
                     cell.setZIndex(0);
@@ -741,6 +744,7 @@ public class GridPanel extends Group {
                             setHoverObj((GridUnitView) sub);
                             cell.setZIndex(Integer.MAX_VALUE);
                             cell.setTopUnitView(sub);
+                            cell.setHovered(true);
                         }
                     }
                 }

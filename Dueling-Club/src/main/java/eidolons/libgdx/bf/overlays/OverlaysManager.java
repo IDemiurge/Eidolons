@@ -23,6 +23,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.*;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -30,11 +31,16 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.data.filesys.PathFinder;
+import main.entity.Entity;
+import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
+import main.system.math.MathMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +57,8 @@ public class OverlaysManager extends SuperActor {
     GridPanel gridPanel;
     boolean sightInfoDisplayed;
     Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
-    Map<Rectangle, Tooltip> tooltipMap = new HashMap<>();
+    Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
+    Map<Entity, Map<Rectangle, OVERLAY>> overlayMap = new HashMap<>();
     private BattleFieldObject observer;
 
     public OverlaysManager(GridPanel gridPanel) {
@@ -59,45 +66,106 @@ public class OverlaysManager extends SuperActor {
         cells = gridPanel.getCells();
         setAlphaTemplate(ALPHA_TEMPLATE.OVERLAYS);
         for (OVERLAY sub : OVERLAY.values()) {
-            if (isListenerRequired(sub)) {
+            if (isTooltipRequired(sub)) {
                 listenerCaches.put(sub, new HashMap<>());
             }
         }
-//        gridPanel.addListener(getGlobalOverlayListener(gridPanel));
+        gridPanel.addListener(getGlobalOverlayListener(gridPanel));
     }
 
+    public void clearTooltip(Entity e) {
+        tooltipMap.remove(e);
+        overlayMap.remove(e);
+    }
 
     public ClickListener getGlobalOverlayListener(GridPanel panel) {
         return new SmartClickListener(panel) {
+
+            @Override
+            protected boolean isBattlefield() {
+                return true;
+            }
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 checkShowTooltip(x, y);
-                super.enter(event, x, y, pointer, fromActor);
+//                super.enter(event, x, y, pointer, fromActor);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                try {
+                    ImmutablePair<Entity, OVERLAY> pair = getEntityAndOverlay(x, y);
+                    OverlayClickHander.handle(pair.getLeft(), pair.getRight());
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+
             }
 
             private void checkShowTooltip(float x, float y) {
                 Tooltip tooltip = getTooltip(x, y);
-                if (tooltip != null)
+                if (tooltip != null) {
                     GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
                      tooltip);
+                    showing = true;
+                } else {
+                    if (showing) {
+                        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
+                         null);
+                        showing = false;
+                    }
+                }
             }
 
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 checkShowTooltip(x, y);
-                return super.mouseMoved(event, x, y);
+                return true;
+            }
+
+            private ImmutablePair<Entity, OVERLAY> getEntityAndOverlay(float x, float y) {
+                for (Entity e : tooltipMap.keySet()) {
+                    Map<Rectangle, OVERLAY> map = overlayMap.get(e);
+                    if (map != null)
+                        for (Rectangle sub : map.keySet()) {
+                            if (sub.contains(x, y)) {
+                                return new ImmutablePair<>(e, map.get(sub));
+                            }
+                        }
+                }
+                return null;
+            }
+
+            private Entity getEntity(float x, float y) {
+                for (Entity e : tooltipMap.keySet()) {
+                    Map<Rectangle, Tooltip> map = tooltipMap.get(e);
+                    for (Rectangle sub : map.keySet()) {
+                        if (sub.contains(x, y)) {
+                            return e;
+                        }
+                    }
+                }
+                return null;
             }
 
             private Tooltip getTooltip(float x, float y) {
 
                 Tooltip tooltip = null;
-                for (Rectangle sub : tooltipMap.keySet()) {
-                    if (sub.contains(x, y)) {
-                        tooltip = tooltipMap.get(sub);
-                        break;
+                for (Map<Rectangle, Tooltip> map : tooltipMap.values()) {
+                    for (Rectangle sub : map.keySet()) {
+                        if (sub.contains(x, y)) {
+                            tooltip = map.get(sub);
+                            break;
+                        }
                     }
                 }
                 return tooltip;
+            }
+
+            @Override
+            protected void exited() {
+                super.exited();
             }
         };
     }
@@ -190,10 +258,26 @@ public class OverlaysManager extends SuperActor {
         }
         super.draw(batch, parentAlpha);
         batch.setColor(1, 1, 1, 1);
-
         drawOverlays(batch);
 
+//        drawHoverObj(batch);
 
+    }
+
+    private void drawHoverObj(Batch batch) {
+        if (gridPanel.getHoverObj() != null) {
+            Vector2 pointer = screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            Vector2 pos = new Vector2(gridPanel.getHoverObj().getX() + 64,
+             gridPanel.getHoverObj().getY() + 64);
+
+            Vector2 stagePos = gridPanel.getHoverObj().localToStageCoordinates(new Vector2(pos));
+
+            if (pointer.dst(stagePos) <= 64) {
+                gridPanel.getHoverObj().setPosition(stagePos.x - pos.x, stagePos.y - pos.y);
+                gridPanel.getHoverObj().draw(batch, 1);
+                gridPanel.getHoverObj().setPosition(pos.x, pos.y);
+            }
+        }
     }
 
     public void setSightInfoDisplayed(boolean sightInfoDisplayed) {
@@ -206,12 +290,14 @@ public class OverlaysManager extends SuperActor {
     private void drawOverlays(Batch batch) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                drawOverlaysForCell(cells[i][j], i, cells[i].length - j - 1, batch);
+                int x = i;
+                int y = cells[i].length - j - 1;
+                drawOverlaysForCell(cells[i][j], x, y, batch);
 
                 for (Actor c : cells[i][j].getChildren()) {
                     if (c instanceof GridUnitView) {
                         if (c.isVisible())
-                            drawOverlaysForView(((GenericGridView) c), batch);
+                            drawOverlaysForView(((GenericGridView) c), batch, x, y);
                     }
 
                 }
@@ -220,14 +306,10 @@ public class OverlaysManager extends SuperActor {
         }
     }
 
-    private void drawOverlaysForView(GenericGridView actor, Batch batch) {
+    private void drawOverlaysForView(GenericGridView actor, Batch batch, int x, int y) {
 //        TODO  if (actor.isHovered()) {
         //emblem etc?
 //        }
-        if (actor.getHpBar() != null)
-            if (GridMaster.isHpBarsOnTop()) {
-                drawOverlay(actor, HP_BAR, batch);
-            }
         BattleFieldObject obj = null;
         if (actor instanceof LastSeenView) {
             obj = DungeonScreen.getInstance().getGridPanel().
@@ -239,19 +321,25 @@ public class OverlaysManager extends SuperActor {
         if (obj == null) {
             return;
         }
-        if (checkOverlayForObj(SPOTTED, obj)) {
-            drawOverlay(actor, SPOTTED, batch);
-        } else if (checkOverlayForObj(STEALTH, obj)) {
-            drawOverlay(actor, STEALTH, batch);
+        if (actor.getHpBar() != null)
+            if (GridMaster.isHpBarsOnTop()) {
+                if (checkOverlayForObj(HP_BAR, obj, actor))
+                    drawOverlay(actor, HP_BAR, batch, obj, x, y);
+            }
+        if (checkOverlayForObj(SPOTTED, obj, actor)) {
+            drawOverlay(actor, SPOTTED, batch, obj, x, y);
+        } else if (checkOverlayForObj(STEALTH, obj, actor)) {
+            drawOverlay(actor, STEALTH, batch, obj, x, y);
         }
 //        if (checkOverlayForObj(BAG, obj)) {
 //            drawOverlay(actor, BAG, batch);
 //        }
     }
 
-    private void drawOverlaysForCell(GridCellContainer container, int x, int y, Batch batch) {
+    private void drawOverlaysForCell(GridCellContainer container, int x, int y,
+                                     Batch batch) {
         if (sightInfoDisplayed) {
-            DC_Cell cell = observer.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
+            DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
 
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
@@ -259,49 +347,103 @@ public class OverlaysManager extends SuperActor {
             }
             switch (vision) {
                 case IN_PLAIN_SIGHT:
-                    drawOverlay(container, IN_PLAIN_SIGHT, batch);
+                    drawOverlay(container, IN_PLAIN_SIGHT, batch, cell, x, y);
                     break;
                 case IN_SIGHT:
-                    drawOverlay(container, IN_SIGHT, batch);
+                    drawOverlay(container, IN_SIGHT, batch, cell, x, y);
                     break;
                 case BLOCKED:
-                    drawOverlay(container, BLOCKED, batch);
+                    drawOverlay(container, BLOCKED, batch, cell, x, y);
                     break;
                 case CONCEALED:
-                    drawOverlay(container, FOG_OF_WAR, batch);
+                    drawOverlay(container, FOG_OF_WAR, batch, cell, x, y);
                     break;
             }
         }
         Object data = getOverlayDataForCell(BAG, new Coordinates(x, y));
-        if (data!=null ) {
-            drawOverlay(container, BAG, batch);
-
+        if (data != null) {
+            drawOverlay(container, BAG, batch, null, x, y);
         }
     }
 
-    public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch) {
+    public void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Obj obj, int x, int y) {
         //TODO SCALING
         if (isOverlayAlphaOn(overlay)) {
             batch.setColor(1, 1, 1, fluctuatingAlpha);
         } else {
             batch.setColor(1, 1, 1, 1);
         }
-        float x = 0, y = 0;
+        float xPos = 0, yPos = 0;
         if (overlay.alignment != null) {
             Vector2 v = GdxMaster.getAlignedPos(parent, overlay.alignment,
              getOverlayWidth(overlay, parent), getOverlayHeight(overlay, parent));
-            x = v.x;
-            y = v.y;
+            xPos = v.x;
+            yPos = v.y;
         } else
             switch (overlay) {
                 case HP_BAR: {
-                    y = -12;
+                    if (obj instanceof Unit)
+                        yPos = -12;
                     break;
                 }
             }
-        Vector2 v = parent.localToStageCoordinates(new Vector2(x, y));
+        Vector2 v = parent.localToStageCoordinates(new Vector2(xPos, yPos));
         drawOverlay(parent, overlay, batch, v);
 
+        addTooltip(obj, parent, overlay, v, x, y);
+
+
+    }
+
+    private void addTooltip(Obj obj, Actor parent, OVERLAY overlay, Vector2 v, int x, int y) {
+        Rectangle rect = null;
+        if (isTooltipRequired(overlay)) {
+            if (obj == null) {
+                obj = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
+            }
+            Map<Rectangle, Tooltip> map = tooltipMap.get(obj);
+            if (map == null) {
+                map = new HashMap<>();
+                tooltipMap.put(obj, map);
+            }
+            if (rect == null) {
+                rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
+                 , getOverlayHeight(overlay, parent));
+            }
+            Tooltip tooltip = map.get(rect);
+            if (tooltip == null) {
+                tooltip = getTooltip(overlay, parent, x, y);
+                if (tooltip != null) {
+                    map.put(rect, tooltip);
+                }
+            }
+        }
+
+        if (isClickListenerRequired(overlay)) {
+            if (obj == null) {
+                obj = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
+            }
+            Map<Rectangle, OVERLAY> map2 = overlayMap.get(obj);
+            if (map2 == null) {
+                map2 = new HashMap<>();
+                overlayMap.put(obj, map2);
+            }
+            if (rect == null) {
+                rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
+                 , getOverlayHeight(overlay, parent));
+            }
+            map2.put(rect, overlay);
+        }
+
+
+    }
+
+    private boolean isClickListenerRequired(OVERLAY overlay) {
+        switch (overlay) {
+            case BAG:
+                return true;
+        }
+        return false;
     }
 
     private void drawOverlay(Actor parent, OVERLAY overlay, Batch batch, Vector2 v) {
@@ -317,12 +459,6 @@ public class OverlaysManager extends SuperActor {
                     actor.draw(batch, 1);
                 }
         }
-        if (!isListenerRequired(overlay))
-            return;
-
-        Tooltip tooltip = getTooltip(overlay, parent);
-        tooltipMap.put(new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
-         , getOverlayHeight(overlay, parent)), tooltip);
 
 
 //        ClickListener listener = listenerCaches.get(overlay).get(parent);
@@ -335,16 +471,43 @@ public class OverlaysManager extends SuperActor {
 //        }
     }
 
-    private Tooltip getTooltip(OVERLAY overlay, Actor parent) {
-        return new ValueTooltip("!!!!!");
+    private Tooltip getTooltip(OVERLAY overlay, Actor parent, int x, int y) {
+        switch (overlay) {
+
+
+            case SPOTTED:
+                return new ValueTooltip("Stealth: Spotted");
+            case STEALTH:
+                return new ValueTooltip("Stealth: Hidden");
+            case BAG:
+                return new ValueTooltip("Dropped items");
+            case HP_BAR:
+                GridUnitView view = (GridUnitView) parent;
+                ResourceSourceImpl data = view.getHpBar().getDataSource();
+                String text = data.getName() + " has " +
+                 data.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) / MathMaster.MULTIPLIER + "% Toughness and " +
+                 data.getIntParam(PARAMS.ENDURANCE_PERCENTAGE) / MathMaster.MULTIPLIER +
+                 "% Endurance left";
+                return new ValueTooltip(text);
+
+
+            case IN_PLAIN_SIGHT:
+            case IN_SIGHT:
+            case FOG_OF_WAR:
+            case WATCH:
+            case BLOCKED:
+                return null;
+        }
+        return new ValueTooltip(StringMaster.
+         getWellFormattedString(overlay.name()));
     }
 
-    private boolean isListenerRequired(OVERLAY overlay) {
+    private boolean isTooltipRequired(OVERLAY overlay) {
         switch (overlay) {
             case HP_BAR:
                 return true;
         }
-        return false;
+        return true;
     }
 
     private Actor getOverlayActor(Actor parent, OVERLAY overlay) {
@@ -405,12 +568,12 @@ public class OverlaysManager extends SuperActor {
                      getDroppedItems(coordinates);
                 }
                 if (!items.isEmpty())
-                    return  items;
+                    return items;
         }
-        return null ;
+        return null;
     }
 
-    public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object) {
+    public boolean checkOverlayForObj(OVERLAY overlay, BattleFieldObject object, GenericGridView actor) {
         switch (overlay) {
             case STEALTH:
                 return object.isSneaking();
@@ -419,7 +582,14 @@ public class OverlaysManager extends SuperActor {
             case BAG:
                 return !object.getGame().getDroppedItemManager().
                  getDroppedItems(object.getCoordinates()).isEmpty();
-
+            case HP_BAR:
+                if (!actor.isHovered()) {
+                    GridCellContainer container = (GridCellContainer) actor.getParent();
+                    if (container.isHovered()) {
+                        return false;
+                    }
+                }
+                return actor.isHpBarVisible();
         }
 
 

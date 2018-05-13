@@ -13,6 +13,7 @@ import eidolons.libgdx.launch.MainLauncher;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -95,7 +96,8 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
 
-        if (CoreEngine.isFastMode() || CoreEngine.isMacro()) {
+        if ( CoreEngine.isMacro()
+         || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
             listPanel.updateAct(0);
             tryDone();
         }

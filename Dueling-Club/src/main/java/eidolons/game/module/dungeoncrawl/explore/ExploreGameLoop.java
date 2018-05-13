@@ -1,7 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.MacroTimeMaster;
@@ -273,8 +273,8 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     @Override
     protected boolean roundLoop() {
         while (true) {
-            if (activeUnit != game.getPlayer(true).getHeroObj()) {
-                setActiveUnit((Unit) game.getPlayer(true).getHeroObj());
+            if (activeUnit != Eidolons.getMainHero()) {
+                setActiveUnit(  Eidolons.getMainHero());
             }
 
             Boolean result = makeAction();

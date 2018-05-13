@@ -28,7 +28,7 @@ public class EmitterMaster {
 
     }
 
-    public enum SFX_TEMPLATE {
+    public enum VFX_TEMPLATE {
         CENTER, SWIRL, FADE, FLOW,
         MISSILE, WHIRL,
     }

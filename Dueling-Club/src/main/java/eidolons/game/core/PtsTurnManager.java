@@ -35,7 +35,7 @@ public class PtsTurnManager extends GenericTurnManager implements Comparator<Uni
         super.addToQueue();
     }
 
-    protected boolean chooseUnit() {
+    protected Boolean chooseUnit() {
         setActiveUnit(unitQueue.peek());
         if (!game.getManager().activeSelect(getActiveUnit())) {
             return false;

@@ -9,6 +9,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureManager;
 import main.content.values.parameters.PARAMETER;
 
@@ -45,6 +46,8 @@ public class HqParamPanel extends HqElement{
             container.overrideImageSize(32,32);
             container.setSize(GDX.size(50), GDX.size(64));
             container.setStyle(StyleHolder.getHqLabelStyle(18));
+            container.addListener(new ValueTooltip(sub.getName()).getController());
+
             containers.add(container);
             group.addActor(container);
         }

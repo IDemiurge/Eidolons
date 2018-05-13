@@ -110,7 +110,7 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     public Image getLargeImage() {
         if (!isMainHand()){
             return new Image(GdxImageMaster.flip(
-             GdxImageMaster.getSizedImagePath(getSpriteImagePath(), 128),
+             getSpriteImagePath(),
              true, false, true));
         }
         return new Image(GdxImageMaster.size(getSpriteImagePath(),

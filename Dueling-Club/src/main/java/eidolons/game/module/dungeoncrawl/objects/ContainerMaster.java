@@ -299,9 +299,11 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
                                         ObjType type) {
         List<ObjType> list = new ArrayList<>();
         list.add(type);
-        return generateTypes(c, rarity, list
+        list = generateTypes(c, rarity, list
 //         new ListMaster<ObjType>().getList(type)
         );
+        list = ContainerFilter.filter(list, c, rarity);
+        return list;
     }
 
     private List<ObjType> generateTypes(CONTAINER_CONTENTS c, ITEM_RARITY rarity,
@@ -310,9 +312,8 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         if (c == CONTAINER_CONTENTS.POTIONS ||
          group.get(0).getGroup().equalsIgnoreCase("Alchemy")) {
             return
-             ContainerFilter.filter(
-              DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy"),
-             c, rarity);
+//             DataManager.getTypesGroup(DC_TYPE.ITEMS, "Alchemy");
+            DataManager.getTypesSubGroup(DC_TYPE.ITEMS, "Potions");
 //            return DataManager.gettype;
         }
         if (c == CONTAINER_CONTENTS.JEWELRY ||

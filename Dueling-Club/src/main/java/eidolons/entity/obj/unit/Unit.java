@@ -15,6 +15,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.KeyResolver;
 import eidolons.entity.obj.attach.DC_FeatObj;
+import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.hero.DC_Attributes;
 import eidolons.entity.obj.hero.DC_Masteries;
@@ -90,7 +91,7 @@ public class Unit extends DC_UnitModel {
     // protected Cloak cloak;]
     protected DC_ArmorObj armor;
     protected DequeImpl<DC_FeatObj> skills;
-    protected DequeImpl<DC_FeatObj> classes;
+    protected DequeImpl<HeroClass> classes;
     protected DequeImpl<Perk> perks;
     protected DequeImpl<DC_QuickItemObj> quickItems;
     protected DequeImpl<DC_JewelryObj> jewelry;
@@ -178,7 +179,7 @@ public class Unit extends DC_UnitModel {
         saveRanks(skills ? getSkills() : getClasses(), skills ? PROPS.SKILLS : PROPS.CLASSES);
     }
 
-    public void saveRanks(DequeImpl<DC_FeatObj> container, PROPERTY property) {
+    public void saveRanks(DequeImpl<? extends DC_FeatObj> container, PROPERTY property) {
         String value = "";
         for (DC_FeatObj featObj : container) {
             value += featObj.getName();
@@ -497,7 +498,7 @@ public class Unit extends DC_UnitModel {
         if (e.getOBJ_TYPE_ENUM() == DC_TYPE.SKILLS) {
             getSkills().add(e);
         } else {
-            getClasses().add(e);
+            getClasses().addCast(e);
         }
     }
 
@@ -613,11 +614,11 @@ public class Unit extends DC_UnitModel {
         return StringMaster.openContainer(getProperty(prop)).size();
     }
 
-    public DequeImpl<DC_FeatObj> getClasses() {
+    public DequeImpl<HeroClass> getClasses() {
         return classes;
     }
 
-    public void setClasses(DequeImpl<DC_FeatObj> classes) {
+    public void setClasses(DequeImpl<HeroClass> classes) {
         this.classes = classes;
     }
 

@@ -100,6 +100,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     };
     public static final String[] SINGLE_ENUM_LIST_IDS = {
 
+     PROPS.CLASS_PERK_GROUP.name(),
      PROPS.FLAG_COLOR.name(),
      PROPS.DIFFICULTY.name(),
      PROPS.ITEM_RARITY.name(),

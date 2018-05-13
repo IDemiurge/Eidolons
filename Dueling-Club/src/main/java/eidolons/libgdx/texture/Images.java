@@ -17,19 +17,34 @@ public class Images {
      "hq", "inv", "empty QUICK.png");
     public static final String LOGO32 = "ui/arcane tower/logo32.png";
     public static final String LOGO64 = "ui/arcane tower/logo64.png";
+
+    public static final String TIER = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),
+     "hq", "trees", "tier.png");
     public static final String EMPTY_SKILL_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
      "hq", "trees", "empty skill slot.png");
     public static final String EMPTY_RANK_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
      "hq", "trees", "empty rank slot.png");
-
     public static final String EMPTY_CLASS_SLOT = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),"hq", "trees", "empty class slot.png");
+    public static final String CIRCLE_UNDERLAY = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),"hq", "trees", "CIRCLE UNDERLAY.png");
+    public static final String CIRCLE_OVERLAY = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),"hq", "trees", "CIRCLE OVERLAY.png");
+
+
+    public static final String SMALL_TIER = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
-     "hq", "trees", "empty class slot.png");
+     "hq", "trees", "SMALL TIER.png");
     public static final String EMPTY_PERK_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
      "hq", "trees", "empty perk slot.png");
-
-
+    public static final String UNKNOWN_PERK  = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),"hq", "trees", "unknown perk.png");
+    public static final String DIAMOND_OVERLAY = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),"hq", "trees", "DIAMOND OVERLAY.png");
+    public static final String DIAMOND_UNDERLAY = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),"hq", "trees", "DIAMOND UNDERLAY.png");
 }

@@ -47,8 +47,13 @@ public class AtbTurnManager extends GenericTurnManager {
         }
     }
 
-    protected boolean chooseUnit() {
+    protected Boolean chooseUnit() {
         AtbUnit unit = atbController.step();
+        if (atbController.isNextTurn())
+        {
+            atbController.setNextTurn(false);
+            return null;
+        }
         if (unit == null) {
             setActiveUnit(null);
             return false;

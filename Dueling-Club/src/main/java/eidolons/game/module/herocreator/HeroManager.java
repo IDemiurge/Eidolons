@@ -59,6 +59,10 @@ public class HeroManager {
         this.game = game;
     }
 
+    public static Integer getIntCost(Entity type, Entity hero) {
+        return
+         new Formula(getCost(type, hero, type.getOBJ_TYPE_ENUM(), null)).getInt(hero.getRef());
+    }
     public static String getCost(Entity type, Entity hero) {
         return getCost(type, hero, type.getOBJ_TYPE_ENUM(), null);
     }

@@ -3,9 +3,12 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 import eidolons.content.PARAMS;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.texture.Images;
+import eidolons.libgdx.texture.TextureCache;
 import main.content.values.parameters.PARAMETER;
 
 /**
@@ -18,15 +21,24 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
 
     @Override
     public void init() {
+        setBackground(NinePatchFactory.getLightPanelDrawable());
         pointsLeft = new LabelX("", 14);
+
         TablePanel pointTable = new TablePanel();
-        pointTable.setFixedSize(true);
-        pointTable.setSize(50, 40);
-        pointTable.initDefaultBackground();
+        pointTable.setBackground(
+         TextureCache.getOrCreateTextureRegionDrawable(Images.CIRCLE_OVERLAY));
         pointTable.add(pointsLeft);
-        add(pointTable).right().top(). colspan(2). row();
+        pointTable.setFixedSize(true);
+        pointTable.setSize(40, 40);
+
+        TablePanel points = new TablePanel();
+        points.add(new LabelX(getPointsText(), 14)).left();
+        points.add(pointTable).right();
+        add(points).right().top(). colspan(2). row();
         super.init();
     }
+
+    protected abstract String getPointsText();
 
     public HqStatTable() {
         super(2, 10);
@@ -58,7 +70,7 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
                 actor.setUserObject(getUserObject());
                 if (sub != null)
                 {
-                    actor.setDisabled(getPointsLeft() > getCost(sub));
+                    actor.setDisabled(getPointsLeft() < getCost(sub));
                     actor.setModifyParam(getModifyParam(sub));
                 }
                 actor.updateAct(delta);

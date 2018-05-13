@@ -14,10 +14,15 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanel {
     protected A[] actors;
     protected int wrap;
     protected int size;
+    protected float space;
 
     public ValueTable(int wrap, int size) {
+        this(wrap, size, 0);
+    }
+    public ValueTable(int wrap, int size, int space) {
         this.wrap = wrap;
         this.size = size;
+        this.space = space;
         columns = wrap;
         rows = size/wrap;
         if (size%wrap>0)
@@ -26,6 +31,10 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanel {
             setFixedSize(true);
             setSize(columns * getElementSize().x, rows * getElementSize().y);
         }
+    }
+
+    public void setSpace(float space) {
+        this.space = space;
     }
 
     protected Vector2 getElementSize() {
@@ -54,7 +63,7 @@ public abstract class ValueTable<D, A extends Actor> extends TablePanel {
 
         int j = 0, i = 0;
         for (D sub : data) {
-            addElement(actors[i] = createElement(sub)).top();
+            addElement(actors[i] = createElement(sub)).top().space(space);
             j++;
             i++;
             if (j >= wrap) {

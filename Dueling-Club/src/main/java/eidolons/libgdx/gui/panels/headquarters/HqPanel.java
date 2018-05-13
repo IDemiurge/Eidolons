@@ -2,7 +2,9 @@ package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.anims.ActorMaster;
@@ -16,12 +18,16 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.HqTabs;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
+import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
 import java.util.List;
+
+import static main.system.GuiEventType.RADIAL_MENU_CLOSE;
 
 /**
  * Created by JustMe on 4/13/2018.
@@ -33,6 +39,7 @@ public class HqPanel extends TablePanel implements Blocking {
     HqTabs hqTabs;
     HqHeroHeader header;
     HqHeroXp heroXp;
+    HqVerticalValueTable heroValues;
     HqHeroTraits traits;
     HqControlPanel controlPanel;
     private TablePanel infoTable;
@@ -54,12 +61,13 @@ public class HqPanel extends TablePanel implements Blocking {
 
     public HqPanel() {
 
-        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanelFilled()));
         partyMembers = createPartyMembers();
         hqTabs = createTabs();
         heroViewPanel = new HqHeroViewPanel();
         header = new HqHeroHeader();
         heroXp = new HqHeroXp();
+        heroValues = new HqVerticalValueTable(PARAMS.LEVEL, G_PROPS.RACE, G_PROPS.DEITY);
         dynamicParams = new HqParamPanel(true);
         staticParams = new HqParamPanel(false);
         traits = new HqHeroTraits();
@@ -68,6 +76,17 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable = createInfoTable();
         setSize(GDX.size(1600), GDX.size(900) );
         addElements();
+        addListener(new SmartClickListener(this){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Actor actor = hit(x, y, true);
+                if (actor==HqPanel.this)
+                {
+                    GuiEventManager.trigger(RADIAL_MENU_CLOSE);
+                    super.clicked(event, x, y);
+                }
+            }
+        });
 //        debugAll();
     }
 
@@ -112,7 +131,8 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable = new TablePanel<>();
         infoTable.top();
 //        infoTable.addActor(traits);
-        infoTable.add(heroXp).left(). row();
+        infoTable.add(heroValues).left();
+        infoTable.add(heroXp).right(). row();
         infoTable.add(dynamicParams).center().colspan(2) . row();
         infoTable.add(staticParams).center().colspan(2).row();
 

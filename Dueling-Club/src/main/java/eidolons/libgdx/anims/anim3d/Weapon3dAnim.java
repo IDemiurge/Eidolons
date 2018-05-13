@@ -34,14 +34,6 @@ public class Weapon3dAnim extends ActionAnim {
     protected SpriteAnimation sprite;
     protected Map<PROJECTION, SpriteAnimation> projectionsMap = new HashMap<>();
 
-    //additional actions
-    //effects/emitters
-
-    //moving anim
-    //frame rate / speed
-    //sound sync
-    //hit-part sync
-
     public Weapon3dAnim(DC_ActiveObj active) {
         super(active, init3dAnimData(active));
     }

@@ -26,12 +26,16 @@ public class ClassesDataSource extends HeroTreeDataSource {
     public List getPerkSlots(int tier) {
         List linkData = new ArrayList<>();
         List<DC_FeatObj> classes = HeroClassMaster.getClasses(hero, tier);
-        List<Perk> perk = HeroClassMaster.getPerks(hero, tier);
+        List<Perk> perks = HeroClassMaster.getPerks(hero, tier);
 
         for (DC_FeatObj class1 : classes) {
             DC_FeatObj class2 = null;
-            if (classes.size() > classes.indexOf(class1) + 1)
-                class2 = classes.get(classes.indexOf(class1) + 1);
+            int i = classes.indexOf(class1);
+            if (classes.size() >i + 1)
+                class2 = classes.get(i + 1);
+            Perk perk= null ;
+            if (perks.size()> i)
+                perk = perks.get(i);
 
             linkData.add(new ImmutableTriple<>(
              perk, class1, class2));

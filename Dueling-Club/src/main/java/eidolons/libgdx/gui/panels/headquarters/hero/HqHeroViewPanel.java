@@ -26,8 +26,8 @@ public class HqHeroViewPanel extends HqElement {
         setFixedSize(true);
         border.layout();
         setSize(border.getImageWidth(), border.getImageHeight());
-preview.setPosition((border.getImageWidth() - 500)/2
-, (border.getImageHeight() - 700)/2);
+        preview.setPosition((border.getImageWidth() - 500) / 2
+         , (border.getImageHeight() - 700) / 2);
 
     }
 
@@ -35,7 +35,7 @@ preview.setPosition((border.getImageWidth() - 500)/2
     protected void update(float delta) {
         preview.setImage(dataSource.getFullPreviewImagePath());
 
-   }
+    }
     //emblem?
 
 }

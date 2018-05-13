@@ -30,6 +30,7 @@ public class GridCellContainer extends GridCell {
     private boolean secondCheck;
     Map<Integer, GenericGridView> indexMap = new HashMap<>();
     private int Z=2;
+    private boolean hovered;
 
     public GridCellContainer(TextureRegion backTexture, int gridX, int gridY) {
         super(backTexture, gridX, gridY);
@@ -139,7 +140,14 @@ public class GridCellContainer extends GridCell {
     }
 
     public final float getViewY(float perImageOffsetY, int i, int n) {
+        if (isTopToBottom())
+            return (n - 1) * perImageOffsetY - perImageOffsetY * (n-i-1);
+            else
         return (n - 1) * perImageOffsetY - perImageOffsetY * i;
+    }
+
+    protected boolean isTopToBottom() {
+        return true;
     }
 
     private void recalcImagesPos() {
@@ -251,8 +259,8 @@ public class GridCellContainer extends GridCell {
 
     public float getSizeFactorPerView() {
         if (hasBackground)
-            return 4.0f;
-        return 3.0f;
+            return 6.0f;
+        return 5.0f;
     }
 
     public void addActor(Actor actor) {
@@ -367,5 +375,13 @@ public class GridCellContainer extends GridCell {
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
+    }
+
+    public boolean isHovered() {
+        return hovered;
+    }
+
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
     }
 }

@@ -6,9 +6,11 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
+import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class ClassSlot extends HtNode {
     private HeroClass data;
 
     public ClassSlot(int tier) {
-        super(tier, Images.EMPTY_CLASS_SLOT);
+        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY);
     }
 
 
@@ -47,18 +49,32 @@ public class ClassSlot extends HtNode {
         }
     }
 
+    @Override
+    protected String getTextPrefix() {
+        return "Tier " + StringMaster.getRoman(tier) + " Class";
+    }
+
+    @Override
+    protected Entity getEntity() {
+        if (data != null)
+            return data;
+        return null;
+    }
     public void update(float delta) {
         if (data != null) {
             enable();
             GdxImageMaster.round(data.getImagePath(), true);
             setRootPath(GdxImageMaster.getRoundedPath(data.getImagePath()));
         } else {
-            available = HeroClassMaster.getAvailableClasses(hero,
+            resetToOriginal();
+            available = HeroClassMaster.getAllClasses(hero,
              tier);
             if (available.isEmpty())
                 disable();
+            //TODO block(); if no reqs
         }
 
+        super.update(delta);
     }
 
     @Override

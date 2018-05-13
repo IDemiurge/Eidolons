@@ -12,7 +12,7 @@ import eidolons.libgdx.gui.tooltips.SmartClickListener;
 /**
  * Created by JustMe on 4/13/2018.
  */
-public class HqPartyMembers extends HqPartyElement{
+public class HqPartyMembers extends HqPartyElement {
     private final HqPanel panel;
     boolean vertical;
 
@@ -24,13 +24,14 @@ public class HqPartyMembers extends HqPartyElement{
     @Override
     protected void update(float delta) {
         clear();
-
-       Group group = (vertical) ? new VerticalGroup() : new HorizontalGroup();
+        if (dataSource.size() <= 1)
+            return;
+        Group group = (vertical) ? new VerticalGroup() : new HorizontalGroup();
         for (HqHeroDataSource hero : dataSource) {
             HqHeroPreview preview = new HqHeroPreview(hero);
             group.addActor(preview);
             preview.addListener(getListener(preview, hero));
-            if (panel.getSelectedHero().equals(hero)){
+            if (panel.getSelectedHero().equals(hero)) {
                 preview.setHighlight(true);
             }
         }
@@ -38,7 +39,7 @@ public class HqPartyMembers extends HqPartyElement{
     }
 
     private EventListener getListener(HqHeroPreview preview, HqHeroDataSource hero) {
-        return new SmartClickListener(preview){
+        return new SmartClickListener(preview) {
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
                 panel.memberSelected(hero);

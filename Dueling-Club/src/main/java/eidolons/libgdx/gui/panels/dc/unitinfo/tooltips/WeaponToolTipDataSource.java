@@ -29,6 +29,10 @@ if (weapon!=null )
         }
     }
 
+    public DC_WeaponObj getWeapon() {
+        return weapon;
+    }
+
     public List<ValueContainer> getMainParams() {
         return list;
     }

@@ -47,7 +47,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     }
 
     protected Vector2 getElementSize() {
-        return new Vector2(40, 40);
+        return new Vector2(50, 50);
     }
 
 

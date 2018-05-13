@@ -8,7 +8,7 @@ import eidolons.libgdx.anims.particles.EmitterPools;
 import eidolons.libgdx.screens.map.editor.EditorParticleMaster;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MOVE_DIRECTION;
-import main.content.CONTENT_CONSTS2.MIST_SFX;
+import main.content.CONTENT_CONSTS2.MIST_VFX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
@@ -181,10 +181,10 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
     }
 
     public enum MAP_EMITTER_GROUP {
-        DARK_MIST(MIST_SFX.DARK_MIST.getPath(), 70, 1),
-        CLOUDS(MIST_SFX.CLOUDS.getPath(), 70, 1),
-        WHITE_MIST(MIST_SFX.WHITE_MIST.getPath(), 70, 1),
-        CYAN_MIST(MIST_SFX.CYAN_MIST.getPath(), 70, 1),;
+        DARK_MIST(MIST_VFX.DARK_MIST.getPath(), 70, 1),
+        CLOUDS(MIST_VFX.CLOUDS.getPath(), 70, 1),
+        WHITE_MIST(MIST_VFX.WHITE_MIST.getPath(), 70, 1),
+        CYAN_MIST(MIST_VFX.CYAN_MIST.getPath(), 70, 1),;
 
         String sfxPath;
         DAY_TIME[] times;

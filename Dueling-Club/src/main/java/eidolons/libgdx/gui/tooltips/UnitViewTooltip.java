@@ -19,6 +19,11 @@ public class UnitViewTooltip extends ValueTooltip {
     }
 
     @Override
+    protected boolean isBattlefield() {
+        return true;
+    }
+
+    @Override
     protected void onMouseEnter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         updateRequired = true;
         if (view.isHoverResponsive() || view instanceof OverlayView) //TODO quick fix to ignore bf obj

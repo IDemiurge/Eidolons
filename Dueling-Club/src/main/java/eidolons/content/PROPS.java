@@ -53,7 +53,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MEMBERS(null, true, "party"),
     LEADER(null, false, "party"),
 
-    PERKS(null, true, "deities"),
+    PERKS(null, true, "deities", "chars"),
 
     STATS_SLAIN_ENEMIES(null, true, "party"),
     STATS_FALLEN_HEROES(null, true, "party"),
@@ -455,7 +455,7 @@ public enum PROPS implements PROPERTY { // SPECIAL_ATTACKS, MOVES, ACTIONS
     MASTERY_RANKS_4(null,true ,"chars" ),
     MASTERY_RANKS_5(null,true ,"chars" ),
 
-    PERK_GROUP(null,false ,"classes" ), PERK_PARAM(null,false ,"perks");
+    CLASS_PERK_GROUP(null,false ,"classes" ), PERK_PARAM(null,false ,"perks");
 
     static {
         FAVORED_SPELL_GROUPS.setContainer(true);

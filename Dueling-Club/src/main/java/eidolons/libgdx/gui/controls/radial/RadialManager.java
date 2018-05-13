@@ -23,12 +23,15 @@ import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
+import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
@@ -36,6 +39,8 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -57,16 +62,57 @@ public class RadialManager {
         if (obj.isAttackAny()) {
             DC_WeaponObj weapon = obj.getActiveWeapon();
             String path =
-             (!obj.isStandardAttack()) ? weapon.getImagePath()
-              : StrPathBuilder.build("main", "actions", "standard attack",
-              weapon.getProperty(G_PROPS.WEAPON_GROUP),
-              weapon.getProperty(G_PROPS.BASE_TYPE),
-              obj.getName() + ".png");
+             (!obj.isStandardAttack() || obj.isThrow()) ? weapon.getImagePath()
+              : getStandardAttackIcon(obj);
+
+//            if (obj.isOffhand()){
+//                Texture texture = GdxImageMaster.flip(path, true, false, true);
+//                return new TextureRegion(texture);
+//            }
             return
              TextureCache.getOrCreateR(path);
         }
 
         return getOrCreateRoundedRegion(obj.getImagePath());
+    }
+
+    private static String getStandardAttackIcon(ObjType action, ObjType weapon) {
+        String baseType=  weapon.getProperty(G_PROPS.BASE_TYPE);
+        String weaponGroup=  weapon.getProperty(G_PROPS.WEAPON_GROUP);
+        String path = getStandardAttackIcon(baseType, weaponGroup, action);
+        if (!ImageManager.isImage(path)) {
+            path = findClosestIcon(action, weapon );
+        }
+        return path;
+    }
+
+
+        private static String getStandardAttackIcon(DC_ActiveObj obj) {
+        DC_WeaponObj weapon = obj.getActiveWeapon();
+        return getStandardAttackIcon(obj.getType(), weapon.getType());
+    }
+        private static String getStandardAttackIcon(String baseType, String weaponGroup,
+                                                    ObjType action ) {
+        String path = StrPathBuilder.build("main", "actions", "standard attack",
+         weaponGroup,
+        baseType,
+         action.getName().replace(DC_ActionManager.OFFHAND, "") + ".png");
+        return path;
+    }
+
+    private static String findClosestIcon(ObjType action, ObjType weapon) {
+        String path = "";
+        String subgroup = weapon.getSubGroupingKey();
+        String baseType=  "";
+        String weaponGroup=  weapon.getProperty(G_PROPS.WEAPON_GROUP);
+        for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
+            baseType=  sub.getProperty(G_PROPS.BASE_TYPE);
+            path = getStandardAttackIcon(baseType, weaponGroup, action);
+            if (ImageManager.isImage(path)) {
+                return path;
+            }
+        }
+        return weapon.getImagePath();
     }
 
     protected static boolean isActionShown(ActiveObj el, DC_Obj target) {
@@ -136,6 +182,7 @@ public class RadialManager {
     }
 
     public static List<RadialValueContainer> createNodes(DC_Obj target) {
+        if (CoreEngine.isIDE())
         if (OutcomePanel.TEST_MODE)
             try {
                 GuiEventManager.trigger(GAME_FINISHED, DC_Game.game);

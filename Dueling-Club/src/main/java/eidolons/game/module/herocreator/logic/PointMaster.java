@@ -51,4 +51,9 @@ public class PointMaster {
 
         return pool> getCost(entity, modifyParam);
     }
+
+    public static void increased(PARAMETER arg,   Unit hero) {
+        PARAMS pool = arg.isMastery() ? PARAMS.MASTERY_POINTS : PARAMS.ATTR_POINTS;
+        hero.modifyParameter(pool, -getCost(hero, arg));
+    }
 }

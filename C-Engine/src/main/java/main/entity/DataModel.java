@@ -1072,10 +1072,10 @@ public abstract class DataModel {
         if (!firePropEvent(CONSTRUCTED_EVENT_TYPE.PROP_BEING_ADDED, prop.getName())) {
             return false;
         }
-
-        if (checkSingleProp(prop, value)) {
-            return false;
-        }
+        if (noDuplicates)
+            if (checkSingleProp(prop, value)) {
+                return false;
+            }
         if (noDuplicates) {
             if (checkProperty(prop, value)) {
                 return false;
@@ -1114,10 +1114,10 @@ public abstract class DataModel {
     }
 
     protected void putParameter(PARAMETER param, String value) {
-        if (param.getName().equalsIgnoreCase("Foc Req")){
+        if (param.getName().equalsIgnoreCase("Foc Req")) {
             main.system.auxiliary.log.LogMaster.log(1,
-             this+
-             " Foc Req set to" +value+ " from "  + getParam(param));
+             this +
+              " Foc Req set to" + value + " from " + getParam(param));
         }
         if (isTypeLinked()) {
             type.getParamMap().put(param, value);

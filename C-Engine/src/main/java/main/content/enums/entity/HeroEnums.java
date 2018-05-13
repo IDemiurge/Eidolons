@@ -5,6 +5,8 @@ import main.content.text.Descriptions;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
+import static main.content.enums.entity.HeroEnums.PERK_PARAM.*;
+
 /**
  * Created by JustMe on 2/14/2017.
  */
@@ -127,6 +129,54 @@ public class HeroEnums {
         }
     }
 
+    public enum CLASS_PERK_GROUP {
+
+        FIGHTER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE,  CARRYING_CAPACITY,STAMINA),
+        FIGHTER_SOLDIER(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE,  CARRYING_CAPACITY,STAMINA),
+        FIGHTER_WARRIOR(TOUGHNESS, ATTACK, ARMOR, FORTITUDE, ENDURANCE,  CARRYING_CAPACITY,STAMINA),
+
+        SQUIRE(LEADERSHIP_MASTERY, RESISTANCE,SPIRIT, N_OF_COUNTERS, CARRYING_CAPACITY, FORTITUDE, STAMINA),
+        SQUIRE_KNIGHT(TOUGHNESS, ATTACK, RESISTANCE, SPIRIT, N_OF_COUNTERS, FORTITUDE, STAMINA),
+        SQUIRE_OFFICER(LEADERSHIP_MASTERY, SIGHT_RANGE, RESISTANCE,SPIRIT, FORTITUDE, STAMINA),
+
+        ROGUE(STEALTH, ATTACK, TOUGHNESS, N_OF_ACTIONS, STAMINA, SNEAK_ATTACK_MOD),
+        ROGUE_SWASHBUCKLER(DEFENSE, N_OF_COUNTERS, ATTACK, N_OF_ACTIONS, FOCUS_REGEN,STAMINA_REGEN),
+        ROGUE_THUG(STARTING_FOCUS, STEALTH, ATTACK, TOUGHNESS, N_OF_ACTIONS,  SNEAK_ATTACK_MOD),
+
+        TRICKSTER(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
+        TRICKSTER_ACROBAT(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
+        TRICKSTER_THIEF(DEFENSE, QUICK_SLOTS, STARTING_FOCUS, N_OF_ACTIONS, STEALTH, ATTACK, SNEAK_ATTACK_MOD),
+
+        SCOUT(SIGHT_RANGE, STEALTH, DETECTION, ATTACK,STAMINA_REGEN, N_OF_ACTIONS, STAMINA),
+        SCOUT_RANGER(SIGHT_RANGE, STEALTH, ATTACK, ENDURANCE_REGEN, FOCUS_REGEN, STAMINA_REGEN, DETECTION, N_OF_ACTIONS, STAMINA),
+
+        HERMIT(SPELLPOWER,RESISTANCE, FORTITUDE, SPIRIT, ESSENCE, ESSENCE_REGEN, ENDURANCE_REGEN),
+        HERMIT_SHAMAN(SPELLPOWER, RESISTANCE_PENETRATION, FORTITUDE, SPIRIT,  ESSENCE_REGEN, ENDURANCE_REGEN),
+        HERMIT_DRUID(KNOWLEDGE, SPELLPOWER,RESISTANCE, FOCUS_REGEN,  SPIRIT, ESSENCE, ESSENCE_REGEN),
+
+        ACOLYTE(DIVINATION_CAP, SPIRIT, ESSENCE, ESSENCE_REGEN, STAMINA, FOCUS_REGEN, RESISTANCE),
+        ACOLYTE_CLERIC(DIVINATION_CAP, KNOWLEDGE, ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, RESISTANCE),
+        ACOLYTE_PRIEST(DIVINATION_CAP, SPELLPOWER, ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, RESISTANCE),
+        ACOLYTE_MONK(SPIRIT, FOCUS_REGEN, RESISTANCE, DEFENSE, N_OF_ACTIONS, N_OF_COUNTERS),
+
+        APOSTATE(RESISTANCE_PENETRATION, SPELLPOWER, ESSENCE_REGEN,STARTING_FOCUS,MEMORIZATION_CAP ),
+        APOSTATE_DARK(RESISTANCE_PENETRATION, SPELLPOWER, STARTING_FOCUS,MEMORIZATION_CAP ),
+        APOSTATE_ARCANE(ESSENCE, SPELLPOWER, ESSENCE_REGEN,STARTING_FOCUS,MEMORIZATION_CAP ),
+
+        WIZARD_APPRENTICE(KNOWLEDGE,  ESSENCE, FOCUS_REGEN, CARRYING_CAPACITY, MEMORIZATION_CAP ),
+        WIZARD(KNOWLEDGE,  ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, STARTING_FOCUS, MEMORIZATION_CAP ),
+        MAGE(SPELLPOWER, ESSENCE, ESSENCE_REGEN, FOCUS_REGEN, STARTING_FOCUS, MEMORIZATION_CAP ),
+
+        MULTICLASS,;
+        PERK_PARAM[] paramPerks;
+        CLASS_PERK_GROUP(PERK_PARAM... paramPerks) {
+            this.paramPerks = paramPerks;
+        }
+        public PERK_PARAM[] getParamPerks() {
+            return paramPerks;
+        }
+    }
+
     public enum CLASS_TYPE {
         MELEE, SPECIALIST, SPELLCASTER, GODLY
     }
@@ -191,6 +241,60 @@ public class HeroEnums {
             return female;
         }
 
+    }
+
+    public enum PERK_PARAM {
+        SPIRIT(2, 5, 10, false, "Indomitable"),
+        RESISTANCE(8, 16, 24, false, "Resilient"),
+        RESISTANCE_PENETRATION(10, 20, 30, false, "Penetrating"),
+        SPELLPOWER(3, 7, 16, false, "Overpowering"),
+        KNOWLEDGE(3, 8, 18, false, "Erudite"),
+        MEMORIZATION_CAP(14, 35, 80, false, "Prodigious"),
+        DIVINATION_CAP(14, 35, 80, false, "Favored"),
+
+        N_OF_COUNTERS(2, 5, 10, false, "Drilled"),
+        N_OF_ACTIONS(5, 15, 30, false, "Swift"),
+        ATTACK(15, 45, 120, false, "Accurate"),
+        DEFENSE(12, 35, 100, false, "Nimble"),
+        ARMOR(5, 18, 60, false, "Hard Skinned"),
+        FORTITUDE(3, 6, 12, false, "Hardy"),
+
+        ENDURANCE_REGEN(15, 45, 135, false, "Undying"),
+        STAMINA_REGEN(1, 3, 9, false, "Crafty"),
+        ESSENCE_REGEN(7, 20, 50, false, "Meditative"),
+        FOCUS_REGEN(4, 10, 25, false, "Recovering"),
+
+        TOUGHNESS(35, 125, 350, false, "Tough"),
+        ENDURANCE(65, 250, 650, false, "Steadfast"),
+        STAMINA(5, 17, 50, false, "Relentless"),
+        ESSENCE(30, 90, 270 , false, "Aligned"),
+        STARTING_FOCUS(7, 15, 30, false, "Sharp"),
+
+        CARRYING_CAPACITY(65, 200, 500, false, "Mighty"),
+        QUICK_SLOTS(2, 5, 10, false, "Resourceful"),
+        SNEAK_ATTACK_MOD(25, 40, 75, false, "Cunning"),
+        DETECTION(15, 45, 95, false, "Observant"),
+        STEALTH(8, 22, 50, false, "Surreptitious"),
+        SIGHT_RANGE(1, 2, 3, false, "Sharp Eyed"),
+        LEADERSHIP_MASTERY(10, 22, 40, false, "Confident"),
+
+        //sagacious
+        ;
+
+        //rolls?
+
+       public float[] values;
+        public boolean percentage;
+        public String name;
+
+        PERK_PARAM(float value1, float value2, float value3, boolean percentage, String name) {
+            this.values = new float[3];
+            values[0] = value1;
+            values[1] = value2;
+            values[2] = value3;
+            this.percentage = percentage;
+            this.name = name;
+        }
     }
 
     public enum PERSONALITY {

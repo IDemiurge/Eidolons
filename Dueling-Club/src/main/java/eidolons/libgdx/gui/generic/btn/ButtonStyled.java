@@ -81,8 +81,12 @@ public class ButtonStyled extends Image implements EventListener {
         PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "pause.png")),
         SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED UP.png")),
         SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED DOWN.png")),
-        STAT("UI\\components\\small\\cross tiny.png"),
+        STAT("UI\\components\\hq\\stats\\cross.png"),
         HIGHLIGHT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "highlight.png")),
+        SPELLBOOK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
+         "bottom panel", "spellbook btn.png")),
+        INV(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
+         "bottom panel", "INV btn.png"))
         ;
         String path;
         private Drawable texture;
@@ -118,7 +122,11 @@ public class ButtonStyled extends Image implements EventListener {
 
         public Drawable getTextureChecked() {
             return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
-             " checked"));
+             " checked", true));
+        }
+        public Drawable getTextureCheckedOver() {
+            return TextureCache.getOrCreateTextureRegionDrawable(StringMaster.getAppendedImageFile(path,
+             " checked over", true));
         }
     }
 }

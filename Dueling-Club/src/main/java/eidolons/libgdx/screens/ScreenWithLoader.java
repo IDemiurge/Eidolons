@@ -15,7 +15,9 @@ import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
+import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 
 /**
@@ -32,10 +34,16 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected EventCallbackParam param;
     protected float timeWaited;
     private boolean waitingForInput;
+    private float tooltipTimer;
+    protected Label tooltipLabel;
 
     public ScreenWithLoader() {
-        waitingLabel = new Label("Press any key to Continue...", StyleHolder.getDefaultLabelStyle());
+        waitingLabel = new Label("Press any key to Continue...",
+         StyleHolder.getDefaultLabelStyle());
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
+         50);
+        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.NYALA, 16));
+        tooltipLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
          50);
     }
 
@@ -166,9 +174,34 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
              : alpha * 2 + 0.15f;
             waitingLabel.draw(batch, alpha % 1);
+        } else {
+            if (isTooltipsOn()){
+                batch.begin();
+                tooltipTimer+=delta;
+                if (tooltipTimer>=getTooltipPeriod()){ //support manual!
+                    tooltipLabel.setText(getTooltipText());
+                    tooltipTimer=0;
+                }
+                tooltipLabel.draw(batch, 1);
+                batch.end();
+            }
         }
 
 //        batch.end();
+    }
+
+    private float getTooltipPeriod() {
+        return 20;
+    }
+
+    private String getTooltipText() {
+        return TipMaster.getTip();
+    }
+
+    private boolean isTooltipsOn() {
+        if (hideLoader)
+            return false;
+        return true;
     }
 
     protected void renderLoader(float delta) {

@@ -28,6 +28,11 @@ public class SpellbookContainer extends HqSpellContainer {
     }
 
     @Override
+    protected boolean isOverlayOn() {
+        return true;
+    }
+
+    @Override
     protected void click(int button, DC_SpellObj spell) {
         if (button == 1) {
             if (HqSpellMaster.canMemorize(spell))

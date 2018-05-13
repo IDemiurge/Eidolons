@@ -72,8 +72,9 @@ public abstract class GenericTurnManager implements TurnManager {
             return null;
         }
 
-        boolean result = chooseUnit();
-
+        Boolean result = chooseUnit();
+        if (result==null )
+            return null;
         resetDisplayedQueue();
         if (getActiveUnit() !=null )
             result &= getActiveUnit().turnStarted();
@@ -131,7 +132,7 @@ public abstract class GenericTurnManager implements TurnManager {
     }
 
 
-    protected boolean chooseUnit() {
+    protected Boolean chooseUnit() {
         return true;
     }
 

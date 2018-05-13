@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 
 /**
  * Created by JustMe on 8/31/2017.
@@ -31,6 +32,8 @@ public class BattleClickListener extends ClickListener {
         if (Eidolons.game == null)
             return true;
         if (!Eidolons.game.isBattleInit())
+            return true;
+        if (HqPanel.getActiveInstance()!=null )
             return true;
         return super.handle(e);
     }

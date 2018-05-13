@@ -63,6 +63,10 @@ public class FacingPanel extends TablePanel {
         face.setFadeDuration(getAnimationDuration()/1.5f);
         addListener(new SmartClickListener(this){
             @Override
+            protected boolean isBattlefield() {
+                return true;
+            }
+            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 DungeonScreen.getInstance().centerCameraOn(DC_Game.game.getManager().getMainHero());
                 return super.touchDown(event, x, y, pointer, button);

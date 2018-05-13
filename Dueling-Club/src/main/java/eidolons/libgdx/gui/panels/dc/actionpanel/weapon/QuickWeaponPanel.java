@@ -145,6 +145,11 @@ public class QuickWeaponPanel extends TablePanel {
     private EventListener getListener() {
         return new SmartClickListener(this) {
             @Override
+            protected boolean isBattlefield() {
+                return true;
+            }
+
+            @Override
             protected boolean checkActorExitRemoves(Actor toActor) {
                 if (toActor == border)
                     return false;

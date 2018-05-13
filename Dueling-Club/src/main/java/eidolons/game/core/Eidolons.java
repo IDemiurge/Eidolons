@@ -24,7 +24,6 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -284,5 +283,14 @@ public class Eidolons {
         Gdx.input.setInputProcessor(new InputAdapter());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
          new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
+    }
+
+    public static void nextScenario() {
+
+    }
+
+    public static void activateMainHeroAction(String action) {
+        Eidolons.getGame().getLoop().actionInput(
+         new ActionInput(Eidolons.getMainHero().getAction(action), Eidolons.getMainHero()));
     }
 }

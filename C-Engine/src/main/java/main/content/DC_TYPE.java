@@ -47,7 +47,12 @@ public enum DC_TYPE implements OBJ_TYPE {
             return true;
         }
     },
-    PERKS("perks", G_PROPS.GROUP, 14),
+    PERKS("perks", G_PROPS.GROUP, 14, G_PROPS.PERK_GROUP){
+        @Override
+        public OBJ_TYPE getParent() {
+            return SKILLS;
+        }
+    },
 
     DEITIES("deities", G_PROPS.GROUP, 14, G_PROPS.ASPECT),
     ENCOUNTERS("encounters", G_PROPS.GROUP, 15, G_PROPS.ENCOUNTER_GROUP),

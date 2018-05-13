@@ -41,7 +41,7 @@ public class EmitterController implements Controller {
     int multiplier;
     boolean cursorAttached;
     private LinkedList<EmitterActor> sfx;
-    private SFX_MODIFICATION_PRESET lastPreset;
+    private VFX_MODIFICATION_PRESET lastPreset;
     private String randomSfxPath = "modified\\work";
 
     public EmitterController() {
@@ -172,7 +172,7 @@ public class EmitterController implements Controller {
 //            lastPreset = random ?
 //             new EnumMaster<SFX_MODIFICATION_PRESET>().
 //              getRandomEnumConst(SFX_MODIFICATION_PRESET.class) :
-            lastPreset = new EnumMaster<SFX_MODIFICATION_PRESET>().selectEnum(SFX_MODIFICATION_PRESET.class);
+            lastPreset = new EnumMaster<VFX_MODIFICATION_PRESET>().selectEnum(VFX_MODIFICATION_PRESET.class);
             modify(lastPreset);
         } else {
             random = DialogMaster.confirm("random?");
@@ -205,7 +205,7 @@ public class EmitterController implements Controller {
         modify(lastPreset);
     }
 
-    private void modify(SFX_MODIFICATION_PRESET preset) {
+    private void modify(VFX_MODIFICATION_PRESET preset) {
         EMITTER_VALUE_GROUP group = getValGroup(preset);
 
         String val = getValue(preset);
@@ -224,7 +224,7 @@ public class EmitterController implements Controller {
 
     }
 
-    private String getValue(SFX_MODIFICATION_PRESET preset) {
+    private String getValue(VFX_MODIFICATION_PRESET preset) {
         switch (preset) {
             case IMAGE_SAME_FOLDER:
                 return FileManager.getRandomFile(
@@ -242,7 +242,7 @@ public class EmitterController implements Controller {
         return null;
     }
 
-    private EMITTER_VALUE_GROUP getValGroup(SFX_MODIFICATION_PRESET preset) {
+    private EMITTER_VALUE_GROUP getValGroup(VFX_MODIFICATION_PRESET preset) {
         switch (preset) {
             case IMAGE_SAME_FOLDER:
             case IMAGE_SPRITE:
@@ -429,7 +429,7 @@ public class EmitterController implements Controller {
     }
 
 
-    public enum SFX_MODIFICATION_PRESET {
+    public enum VFX_MODIFICATION_PRESET {
         IMAGE_SAME_FOLDER,
         IMAGE_SPRITE,
         IMAGE_PARTICLE,

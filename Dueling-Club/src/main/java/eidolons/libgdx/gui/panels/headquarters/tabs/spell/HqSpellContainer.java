@@ -26,7 +26,7 @@ implements HqActor {
 
     public HqSpellContainer(int wrap, int size) {
         super(wrap, size);
-        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
+        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanelFilled()));
     }
 
     @Override
@@ -37,13 +37,20 @@ implements HqActor {
 
     @Override
     protected SpellActor createElement(DC_SpellObj datum) {
-        SpellActor actor = new SpellActor(datum);
+        SpellActor actor = new SpellActor(datum){
+            @Override
+            public boolean isOverlayOn() {
+                return HqSpellContainer.this.isOverlayOn();
+            }
+        };
         if (datum != null) {
             actor.addListener(createSpellListener(datum, actor));
             actor.addListener(new ActionCostTooltip(datum).getController());
         }
         return actor;
     }
+
+    protected abstract boolean isOverlayOn();
 
     private EventListener createSpellListener(DC_SpellObj spell, SpellActor  actor) {
        return  new SmartClickListener(actor){
@@ -59,7 +66,7 @@ implements HqActor {
 
            @Override
            protected void entered() {
-               HqSpellContainer.this.enter (spell, actor);
+               HqSpellContainer.this.enter (spell,(SpellActor) actor);
            }
 
            @Override

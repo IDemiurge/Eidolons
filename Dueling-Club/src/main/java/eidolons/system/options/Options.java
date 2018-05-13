@@ -57,5 +57,9 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
         default String getName() {
             return StringMaster.getWellFormattedString(toString());
         }
+
+        default boolean isHidden(){
+            return false;
+        }
     }
 }

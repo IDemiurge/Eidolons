@@ -8,17 +8,21 @@ import main.system.auxiliary.StringMaster;
  * Created by JustMe on 5/8/2018.
  */
 public class LayeredActor extends GroupX {
+    private final String originalPath;
     protected String rootPath;
     protected FadeImageContainer underlay;
     protected FadeImageContainer overlay;
     protected FadeImageContainer image;
 
-    public LayeredActor(String rootPath) {
+    public LayeredActor(String rootPath, String overlayPath, String underlayPath) {
         this.rootPath = rootPath;
-
-        addActor(underlay = new FadeImageContainer());
+        this.originalPath = rootPath;
+        addActor(underlay = new FadeImageContainer(underlayPath));
         addActor(image = new FadeImageContainer(rootPath));
-        addActor(overlay = new FadeImageContainer());
+        addActor(overlay = new FadeImageContainer(overlayPath));
+    }
+    public LayeredActor(String rootPath) {
+        this(rootPath, "", "");
     }
 
     public void setUnderlayImage(String path) {
@@ -35,7 +39,9 @@ public class LayeredActor extends GroupX {
         this.rootPath = rootPath;
         image.setImage(rootPath);
     }
-
+    public void resetToOriginal() {
+        setRootPath(originalPath);
+    }
     protected String getImageVariant(String suffix) {
         return StringMaster.getAppendedImageFile(rootPath, suffix, true);
     }

@@ -10,4 +10,9 @@ public class Perk extends DC_FeatObj {
     public Perk(ObjType type, Unit hero) {
         super(type, hero.getRef());
     }
+
+    @Override
+    public void apply() {
+        super.apply();
+    }
 }

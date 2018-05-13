@@ -7,9 +7,11 @@ import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SpriteActor.SPRITE_ACTOR_ANIMATION;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import main.content.values.properties.G_PROPS;
+import main.entity.Entity;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -21,33 +23,19 @@ public abstract class HtNode extends DynamicLayeredActor {
     protected int tier;
     SpriteActor sprite = new SpriteActor();
 
-    public HtNode(  int tier, String rootPath) {
-        super(rootPath);
+    public HtNode(int tier, String rootPath) {
+        this(tier, rootPath, "", "");
+    }
+    public HtNode(  int tier, String rootPath, String overlay, String underlay) {
+        super(getRootPath(rootPath, tier), overlay, underlay);
         this.tier = tier;
         setSize(getDefaultWidth(), getDefaultHeight() );
-        addListener(new SmartClickListener(this) {
-            @Override
-            protected void onDoubleTouchDown(InputEvent event, float x, float y) {
-                doubleClick();
-            }
 
-            @Override
-            protected void onTouchDown(InputEvent event, float x, float y) {
-                click();
-            }
+    }
 
-            @Override
-            protected void entered() {
-                mouseEntered();
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, getTooltip());
-            }
 
-            @Override
-            protected void exited() {
-                mouseExited();
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
-            }
-        });
+    private static String getRootPath(String rootPath, int tier) {
+        return StringMaster.getAppendedImageFile(rootPath, " "+ (tier+1));
     }
 
     protected float getDefaultWidth() {
@@ -88,6 +76,35 @@ public abstract class HtNode extends DynamicLayeredActor {
         return null;
     }
     public void update(float delta) {
+        clearListeners();
+        Tooltip tooltip = getTooltip();
+        if (tooltip!=null )
+            addListener(tooltip.getController());
+        addListener(new SmartClickListener(this) {
+            @Override
+            protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+                doubleClick();
+            }
+
+            @Override
+            protected void onTouchDown(InputEvent event, float x, float y) {
+                click();
+            }
+
+            @Override
+            protected void entered() {
+                super.entered();
+                mouseEntered();
+//                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, getTooltip());
+            }
+
+            @Override
+            protected void exited() {
+                super.exited();
+                mouseExited();
+//                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
+            }
+        });
     }
     public float getPeriod() { // alt
         switch (status) {
@@ -100,7 +117,22 @@ public abstract class HtNode extends DynamicLayeredActor {
         return 2.5f;
     }
 
-    protected abstract Tooltip getTooltip();
+    protected   Tooltip getTooltip(){
+        Entity entity = getEntity();
+        String text=getTextPrefix();
+        if (entity!=null ){
+            text +="\n"+ entity.getName();
+            text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
+            text +="\n"+ entity.getDescription();
+        }
+        return new ValueTooltip(text);
+    }
+
+    protected abstract String getTextPrefix();
+
+    protected Entity getEntity() {
+        return null;
+    }
 
     protected abstract void click();
 

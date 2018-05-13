@@ -23,6 +23,11 @@ public class HqAttributeTable extends HqStatTable {
     }
 
     @Override
+    protected String getPointsText() {
+        return "Attribute pts";
+    }
+
+    @Override
     protected PARAMETER getModifyParam(PARAMS sub) {
         return ContentValsManager.getBaseAttribute(sub);
     }

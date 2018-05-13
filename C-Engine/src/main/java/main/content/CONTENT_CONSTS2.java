@@ -356,13 +356,13 @@ public class CONTENT_CONSTS2 {
         CAMPING, EXPLORING, TRAVELING, IN_AMBUSH, IDLE,
     }
 
-    public enum MIST_SFX {
+    public enum MIST_VFX {
         WHITE_MIST,
         CYAN_MIST,
         DARK_MIST,
         CLOUDS,;
 
-        MIST_SFX() {
+        MIST_VFX() {
 
         }
 
@@ -371,12 +371,6 @@ public class CONTENT_CONSTS2 {
         }
     }
 
-    public enum MIST_SFX_SUFFIX {
-        LIGHT,
-        THICK,
-        WIND,
-
-    }
 
     public enum ORDER_TYPE {
         PATROL, PURSUIT, MOVE, ATTACK, KILL, SPECIAL, HEAL, SUPPORT, PROTECT, HOLD, WANDER

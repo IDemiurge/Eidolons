@@ -20,6 +20,7 @@ import main.entity.type.SpellType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.entity.FilterMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class TestMasterContent {
      + "inferior redwood staff;"
      + "inferior redwood staff;"
      + "inferior redwood staff;";
-    public static final boolean ALL_WEAPONS_TEST =true;
+    public static final boolean ALL_WEAPONS_TEST = true;
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
     private static final String testGroups = "Fire;Water;Air;Earth;";
     private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
@@ -417,19 +418,19 @@ public class TestMasterContent {
             first = true;
             last = false;
         }
-        if (weaponTest) {
-            if (ALL_WEAPONS_TEST)
-            {
-                for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
-                            type.addProperty(PROPS.INVENTORY,
-                             s.getName(), true);
-                }
-            }else
-            for (String substring : StringMaster.openContainer(TEST_WEAPONS)) {
-                type.addProperty(PROPS.INVENTORY, substring, true);
-            }
+        if (CoreEngine.isIDE())
+            if (weaponTest) {
+                if (ALL_WEAPONS_TEST) {
+                    for (ObjType s : DataManager.getTypes(DC_TYPE.WEAPONS)) {
+                        type.addProperty(PROPS.INVENTORY,
+                         s.getName(), true);
+                    }
+                } else
+                    for (String substring : StringMaster.openContainer(TEST_WEAPONS)) {
+                        type.addProperty(PROPS.INVENTORY, substring, true);
+                    }
 
-        }
+            }
         if (!test_on) {
             return;
         }

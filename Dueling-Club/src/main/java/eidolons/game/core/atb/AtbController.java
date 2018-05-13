@@ -26,6 +26,7 @@ public class AtbController implements Comparator<Unit> {
     private float time = 0f; //passed in this round
     private float totalTime = 0f;
     private int step;   //during this round
+    private boolean nextTurn;
 
     public AtbController(AtbTurnManager manager) {
         this.manager = manager;
@@ -65,12 +66,19 @@ public class AtbController implements Comparator<Unit> {
                 timeElapsed = getDefaultTimePeriod();
             int n = 100 * OptionsMaster.getGameplayOptions().getIntValue(
              (GAMEPLAY_OPTION.ATB_WAIT_TIME));
-            if (step > 0) //initial step may be 0
-                WaitMaster.WAIT(n);
+          if (!isPrecalc())  //initial step may be 0
+              if (step > 0)                 WaitMaster.WAIT(n);
         }
         this.processTimeElapsed(timeElapsed + 0.0001f);
         this.updateTimeTillTurn();
         this.updateTurnOrder();
+        if (this.time >= TIME_IN_ROUND) {
+            addTime(-TIME_IN_ROUND);
+            setNextTurn(true);
+            return null;
+//            manager.getGame().getManager().endRound();
+//            newRound();
+        }
         if (this.unitsInAtb.get(0).getAtbReadiness() >= TIME_TO_READY) {
             return this.unitsInAtb.get(0);
         } else {
@@ -120,11 +128,6 @@ public class AtbController implements Comparator<Unit> {
          new Ref(Math.round(time * TIME_LOGIC_MODIFIER))));
         GuiEventManager.trigger(GuiEventType.TIME_PASSED, time);
         GuiEventManager.trigger(GuiEventType.NEW_ATB_TIME, this.time);
-        if (this.time >= TIME_IN_ROUND) {
-            addTime(-TIME_IN_ROUND);
-            manager.getGame().getStateManager().newRound();
-            newRound();
-        }
 
         if (!isPrecalc())
             manager.getGame().getLogManager().log(getTimeString(time) + " passed, " +
@@ -245,4 +248,11 @@ public class AtbController implements Comparator<Unit> {
     }
 
 
+    public boolean isNextTurn() {
+        return nextTurn;
+    }
+
+    public void setNextTurn(boolean nextTurn) {
+        this.nextTurn = nextTurn;
+    }
 }

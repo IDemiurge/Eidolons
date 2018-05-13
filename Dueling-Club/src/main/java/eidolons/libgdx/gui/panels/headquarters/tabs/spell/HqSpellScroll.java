@@ -22,7 +22,7 @@ public class HqSpellScroll extends HqElement {
 //         scroll = new ScrollPanel<>()
 //        );
         scroll = new ScrollPanel<>();
-       scroll.setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
+       scroll.setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanelFilled()));
         setFixedSize(true);
 
         addActor(new ScrollPane(container));

@@ -68,8 +68,13 @@ public class GdxImageMaster extends LwjglApplication {
         pixmap.dispose();
         return texture;
     }
+    public static Pixmap getPixmap(Texture texture) {
+        texture.getTextureData().prepare();
+        return texture.getTextureData().consumePixmap();
+    }
 
-    public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
+
+        public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
             final int width = src.getWidth();
             final int height = src.getHeight();
             Pixmap flipped = new Pixmap(width, height, src.getFormat());
@@ -192,5 +197,24 @@ public class GdxImageMaster extends LwjglApplication {
 
     public static String getRoundedPath(String path) {
         return StringMaster.cropFormat(path) + " rounded.png";
+    }
+
+    public static void drawTexture(int x, int y, int dX, int dY,
+                                    Texture texture, int times, Pixmap pixmap) {
+
+        texture.getTextureData().prepare();
+        Pixmap pixmap2 = texture.getTextureData().consumePixmap();
+        for (int i = 0; i < times; i++) {
+            pixmap.drawPixmap(pixmap2, x, y);
+            x += texture.getWidth() * dX;
+            y += texture.getHeight() * dY;
+        }
+    }
+
+    public static void drawTextureRegion(int x, int y, Texture texture,
+                                         int width, int height, Pixmap pixmap) {
+        texture.getTextureData().prepare();
+        Pixmap pixmap2 = texture.getTextureData().consumePixmap();
+            pixmap.drawPixmap(pixmap2, x, y,0,0, width,height);
     }
 }

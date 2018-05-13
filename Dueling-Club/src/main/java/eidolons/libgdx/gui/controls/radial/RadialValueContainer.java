@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.controls.radial;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -30,6 +31,7 @@ public class RadialValueContainer extends ActionValueContainer {
     Runnable lazyChildInitializer;
     Label infoLabel;
     Supplier<String> infoTextSupplier;
+    private ShaderProgram shader;
 
 
     public RadialValueContainer(TextureRegion texture, Runnable action) {
@@ -153,9 +155,18 @@ public class RadialValueContainer extends ActionValueContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        ShaderProgram bufferedShader=null;
+        if (shader!=null ){
+            bufferedShader = batch.getShader();
+            batch.setShader(shader);
+        }
         super.draw(batch, parentAlpha);
         if (underlayOffsetX == 0 || underlayOffsetY == 0)
             setUnderlay(underlay);
+
+        if (shader!=null ){
+            batch.setShader(bufferedShader);
+        }
     }
 
     public List<RadialValueContainer> getChildNodes() {
@@ -236,6 +247,13 @@ public class RadialValueContainer extends ActionValueContainer {
     public void setUnderlayOffsetY(float underlayOffsetY) {
 //        main.system.auxiliary.log.LogMaster.log(1,"y from " + this.underlayOffsetX+" to " + underlayOffsetX);
         this.underlayOffsetY = underlayOffsetY;
+    }
+    public void setShader(ShaderProgram shader) {
+        this.shader = shader;
+    }
+
+    public ShaderProgram getShader() {
+        return shader;
     }
 
     public enum RADIAL_UNDERLAYS {

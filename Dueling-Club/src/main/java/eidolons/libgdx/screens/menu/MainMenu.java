@@ -1,10 +1,7 @@
 package eidolons.libgdx.screens.menu;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.kotcrab.vis.ui.VisUI;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import main.data.filesys.PathFinder;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.ArrayList;
@@ -77,9 +74,13 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
 
     public enum MAIN_MENU_ITEM implements MenuItem<MAIN_MENU_ITEM> {
-        CRAWL(), STANDOFF(true), SKIRMISH(true),
-        ADVENTURE,
-        NEW_GAME(CRAWL, ADVENTURE),
+        NEXT_SCENARIO,
+        RANDOM_SCENARIO,
+        SELECT_SCENARIO(),
+        STANDOFF(true),
+        SKIRMISH(true),
+        PLAY(NEXT_SCENARIO, SELECT_SCENARIO, RANDOM_SCENARIO),
+        MAP_PREVIEW,
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),

@@ -50,7 +50,7 @@ public class VisionController {
     WallObstructionMapper wallObstructionMapper;
     GammaMapper gammaMapper;
     LastSeenMapper lastSeenMapper;
-    List<GenericMapper> mappers ;
+    List<GenericMapper> mappers;
     private StealthMapper stealthMapper;
 
 
@@ -62,7 +62,7 @@ public class VisionController {
 
     public void init() {
         mappers = new ArrayList<>();
-        mappers.add(stealthMapper= new StealthMapper());
+        mappers.add(stealthMapper = new StealthMapper());
         mappers.add(lastSeenMapper = new LastSeenMapper());
         mappers.add(gammaMapper = new GammaMapper());
         mappers.add(clearshotMapper = new ClearshotMapper());
@@ -71,7 +71,7 @@ public class VisionController {
         mappers.add(outlineMapper = new OutlineMapper());
         mappers.add(playerVisionMapper = new PlayerVisionMapper());
         mappers.add(detectionMapper = new DetectionMapper());
-        mappers.add(wallObstructionMapper= new WallObstructionMapper());
+        mappers.add(wallObstructionMapper = new WallObstructionMapper());
     }
 
     public LastSeenMapper getLastSeenMapper() {
@@ -158,9 +158,14 @@ public class VisionController {
         for (GenericMapper sub : mappers) {
             main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> "
              + sub);
-            sub.log(unit);
+            try {
+                sub.log(unit);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
+
     public void logFor(DC_Obj unit) {
         main.system.auxiliary.log.LogMaster.log(1, ">>>>>>>> FOR VALUE"
          + unit);
@@ -184,7 +189,6 @@ public class VisionController {
     public StealthMapper getStealthMapper() {
         return stealthMapper;
     }
-
 
 
     public enum VISIBILITY_CHECK_OBJ_CASE {

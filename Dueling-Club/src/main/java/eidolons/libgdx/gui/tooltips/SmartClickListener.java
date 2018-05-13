@@ -1,20 +1,34 @@
 package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 
 /**
  * Created by JustMe on 4/10/2018.
  */
 public class SmartClickListener extends ClickListener {
-    Actor actor;
-    boolean showing;
+    protected Actor actor;
+    protected boolean showing;
 
     public SmartClickListener(Actor actor) {
         this.actor = actor;
         setTapCountInterval(0.6f);
+    }
+
+    @Override
+    public boolean handle(Event e) {
+        if (isBattlefield())
+            if (HqPanel.getActiveInstance()!=null )
+                return true;
+        return super.handle(e);
+    }
+
+    protected boolean isBattlefield() {
+        return false;
     }
 
     @Override

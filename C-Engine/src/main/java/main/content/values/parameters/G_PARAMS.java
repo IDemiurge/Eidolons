@@ -22,7 +22,7 @@ public enum G_PARAMS implements PARAMETER {
 
     RADIUS("RADIUS", false, "spells", "actions", "items"),
     Z_LEVEL("Z", false, "dungeons"),
-    CHANCE("Chance", true, "all"),;
+    CHANCE("Chance", true, "all"), PERK_LEVEL("Perk Level", false, "perks"),;
 
     boolean writeToType;
     INPUT_REQ inputReq;

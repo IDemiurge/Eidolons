@@ -220,6 +220,8 @@ public class OptionsWindow extends VisWindow {
                 final OPTION option = options.getKey(v.toString());
                 if (option == null)
                     continue;
+                if (option.isHidden())
+                    continue;
                 VisLabel label = new VisLabel(option.getName());
                 content.add(label).left();
                 String optionType = options.getValueClass(option).getSimpleName();

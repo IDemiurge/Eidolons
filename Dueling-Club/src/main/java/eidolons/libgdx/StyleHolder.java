@@ -201,6 +201,7 @@ public class StyleHolder {
                 style.over = button.getTextureOver();
                 style.disabled = button.getTextureDisabled();
                 style.checked = button.getTextureChecked();
+                style.checkedOver = button.getTextureCheckedOver();
             } else {
                 style.down = button.getTexture();
                 style.over = button.getTexture();

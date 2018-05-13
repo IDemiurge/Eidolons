@@ -4,12 +4,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import eidolons.content.PARAMS;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
 import main.system.EventCallbackParam;
 import main.system.EventType;
@@ -115,9 +119,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         for (ObjType type : available) {
             String reason =getReqReason(type);
             boolean valid = reason == null;
-            TextureRegion region = !valid
-             ? TextureCache.getOrCreateGrayscaleR(type.getImagePath())
-             : TextureCache.getOrCreateR(type.getImagePath());
+            TextureRegion region =   TextureCache.getOrCreateR(type.getImagePath());
             RadialValueContainer node = new RadialValueContainer(region, () -> {
 
                 if (valid)
@@ -126,7 +128,21 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
                     //floating text?
                 }
             });
+            if (!valid)
+                node.setShader(GrayscaleShader.getGrayscaleShader());
+            node.addListener(new ValueTooltip(type.getName()+
+             "\n"+type.getProperty(G_PROPS.TOOLTIP)
+             + "\n"+type.getDescription()
+             + (valid
+             ? "\nXp Cost:"+type.getIntParam(PARAMS.XP_COST)
+             : "\n"+reason)
+             ).getController()
+
+
+            );
+
             list.add(node);
+
         }
         return list;
     }

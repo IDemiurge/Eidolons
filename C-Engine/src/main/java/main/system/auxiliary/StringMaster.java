@@ -1713,7 +1713,11 @@ public class StringMaster {
         return array[i];
     }
 
-    public static String getAppendedImageFile(String file, String suffix) {
+    public static String getAppendedFile(String file, String suffix) {
+        String format = getFormat(file);
+       return  cropFormat(file) + suffix + format;
+    }
+        public static String getAppendedImageFile(String file, String suffix) {
         return getAppendedImageFile(file, suffix, false);
     }
         public static String getAppendedImageFile(String file, String suffix, boolean returnNull) {

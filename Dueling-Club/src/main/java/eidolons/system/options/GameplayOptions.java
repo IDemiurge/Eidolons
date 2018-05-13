@@ -12,6 +12,8 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         GAMEPLAY_OPTION.RULES_SCOPE.setDefaultValue(RULE_SCOPE.BASIC);
         GAMEPLAY_OPTION.GAME_DIFFICULTY.setDefaultValue(GenericEnums.DIFFICULTY.NOVICE);
         GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.setDefaultValue(INFO_LEVEL.NORMAL);
+
+        GAMEPLAY_OPTION.NEXT_SCENARIO_INDEX.setHidden(true);
     }
 
     @Override
@@ -37,12 +39,13 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         ATB_WAIT_TIME(5, 0, 10)
         , SHUFFLE_LEVELS(false)
         , REVERSE_LEVELS(false),
-        GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300);
+        GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300), NEXT_SCENARIO_INDEX(0,0,6);
         private Boolean exclusive;
         private Integer min;
         private Integer max;
         private Object[] options;
         private Object defaultValue;
+        private boolean hidden;
 
         GAMEPLAY_OPTION(Boolean exclusive) {
             this.exclusive = exclusive;
@@ -89,5 +92,12 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
             return options;
         }
 
+        public void setHidden(boolean hidden) {
+            this.hidden = hidden;
+        }
+        @Override
+        public boolean isHidden() {
+            return hidden;
+        }
     }
 }

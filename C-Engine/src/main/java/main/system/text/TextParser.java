@@ -221,10 +221,11 @@ public class TextParser {
                 return ref_substring;
             }
         }
-        int id = 0;
+        Integer id = null ;
         if (isActiveParsing()) {
             id = ref.getId(KEYS.ACTIVE);
-        } else {
+        }
+        if (id==null ) {
             try {
                 id = ref.getId(KEYS.INFO);
             } catch (Exception e) {

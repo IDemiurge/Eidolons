@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.menus.outcome;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -17,11 +17,13 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.TabbedPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
-import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.secondary.BooleanMaster;
@@ -31,13 +33,12 @@ import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-
 /**
  * Created by JustMe on 8/15/2017.
  */
 public class OutcomePanel extends TablePanel implements EventListener {
     public static final boolean TEST_MODE = false;
+    public static final boolean TEST_OUTCOME = false;
     private static final String VICTORY_MESSAGE =
      "+++That's It - You are Victorious!+++";
     private static final String DEFEAT_MESSAGE =
@@ -52,14 +53,15 @@ public class OutcomePanel extends TablePanel implements EventListener {
     private TabbedPanel unitStatTabs;
 
     public OutcomePanel(OutcomeDatasource outcomeDatasource) {
-//        setDebug(true);
         addListener(this);
-        TextureRegion textureRegion = new TextureRegion(getOrCreateR(VISUALS.END_PANEL.getImgPath()));
-        TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        setBackground(drawable);
+        Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
+         NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, 980, 600);
+        TextureRegion textureRegion =new TextureRegion(background);
+        setBackground(new TextureRegionDrawable(textureRegion));
+
         outcome = outcomeDatasource.getOutcome();
         if (outcome == null)
-            outcome = true;
+            outcome = TEST_OUTCOME;
 
         datasource = outcomeDatasource;
         String imgPath = "UI\\big\\victory.png";
@@ -102,15 +104,14 @@ public class OutcomePanel extends TablePanel implements EventListener {
          new TextButton(outcome ? "Next" : "Restart",
           StyleHolder.getMenuTextButtonStyle(16))
         ).fill(false).expand(0, 0).right()
-         .pad(20, 10, 20, 10).size(50, 30);
+         .pad(20, 10, 20, 10);
         doneButton.getActor().addListener(this);
 
         exitButton = buttonTable.addElement(
          new TextButton("Exit",
           StyleHolder.getMenuTextButtonStyle(16))
         ).fill(false).expand(0, 0).right()
-//         .pad(20, 10, 20, 10)
-         .size(50, 30);
+         .pad(20, 10, 20, 10);
         exitButton.getActor().addListener(this);
 
         continueButton = buttonTable.addElement(
@@ -160,14 +161,17 @@ public class OutcomePanel extends TablePanel implements EventListener {
                     if (!BooleanMaster.isTrue(outcome))
                         Eidolons.restart();
                     else
-                        Eidolons.nextLevel();
+                    {
+
+                        Eidolons.nextScenario();
+                    }
 
                 } else if (exit_continue_next) {
 //                        if (DialogMaster.confirm("Must you really go?.."))
                     if (CoreEngine.isMacro()) {
                         GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                     } else {
-                        Gdx.app.exit();
+                        Eidolons.exitToMenu();
                     }
 //                    else DialogMaster.inform("Glad you're still with us! :)");
 

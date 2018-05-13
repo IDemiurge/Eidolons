@@ -12,6 +12,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.HeroManager;
+import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;

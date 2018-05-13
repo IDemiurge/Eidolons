@@ -23,6 +23,10 @@ public class MemorizedContainer extends HqSpellContainer {
     }
 
     @Override
+    protected boolean isOverlayOn() {
+        return false;
+    }
+    @Override
     protected void doubleClick(int button, DC_SpellObj spell) {
         if (!HqSpellMaster.canLearnEnVerbatim(spell))
         return;

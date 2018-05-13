@@ -4,12 +4,13 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
-import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 import main.content.enums.entity.SkillEnums.MASTERY;
+import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -25,27 +26,31 @@ public class SkillSlot extends HtNode {
     private List<ObjType> available;
 
     public SkillSlot(int tier) {
-        super(tier, Images.EMPTY_SKILL_SLOT);
+        super(tier, Images.TIER, Images.CIRCLE_OVERLAY, Images.CIRCLE_UNDERLAY);
     }
 
     public void update(float delta) {
         if (data == null) {
-            clearImage();
+//            clearImage();
             disable();
         } else {
             enable();
             available = new ArrayList<>();
             if (data.getLeft() != null) {
-                GdxImageMaster.round(data.getLeft().getImagePath() , true);
+                GdxImageMaster.round(data.getLeft().getImagePath(), true);
                 setRootPath(GdxImageMaster.getRoundedPath(data.getLeft().getImagePath()));
             } else {
-                if (data.getMiddle()!=null )
-                    if (data.getRight()!=null )
-                available = SkillMaster.getAvailableSkills(hero, tier, data.getMiddle(), data.getRight());
+
+                resetToOriginal();
+                if (data.getMiddle() != null)
+                    if (data.getRight() != null)
+                        available = SkillMaster.getAllSkills(hero, tier, data.getMiddle(), data.getRight());
                 //set image to N or X
             }
         }
+        super.update(delta);
     }
+
 
 
 
@@ -56,8 +61,16 @@ public class SkillSlot extends HtNode {
 //        tooltip = new SkillTooltip(data);
     }
 
+
     @Override
-    protected Tooltip getTooltip() {
+    protected String getTextPrefix() {
+        return "Tier " + StringMaster.getRoman(tier) + " Skill";
+    }
+
+    @Override
+    protected Entity getEntity() {
+        if (data != null)
+            return data.getLeft();
         return null;
     }
 

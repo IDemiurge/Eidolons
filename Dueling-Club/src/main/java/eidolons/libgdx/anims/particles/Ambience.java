@@ -102,9 +102,4 @@ public class Ambience extends EmitterActor {
         return true;
     }
 
-    public enum AMBIENT_SFX {
-        MIST,
-
-
-    }
 }

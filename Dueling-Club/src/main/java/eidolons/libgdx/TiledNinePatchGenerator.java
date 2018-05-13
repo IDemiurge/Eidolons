@@ -45,25 +45,6 @@ public class TiledNinePatchGenerator implements ApplicationListener {
         }
     }
 
-    private static void drawTexture(int x, int y, int dX, int dY,
-                                    Texture texture, int times, Pixmap pixmap) {
-
-        texture.getTextureData().prepare();
-        Pixmap pixmap2 = texture.getTextureData().consumePixmap();
-        for (int i = 0; i < times; i++) {
-            pixmap.drawPixmap(pixmap2, x, y);
-            x += texture.getWidth() * dX;
-            y += texture.getHeight() * dY;
-        }
-    }
-
-    private static void drawTextureRegion(int x, int y, Texture texture,
-                                          int width, int height,Pixmap pixmap) {
-        texture.getTextureData().prepare();
-        Pixmap pixmap2 = texture.getTextureData().consumePixmap();
-            pixmap.drawPixmap(pixmap2, x, y,0,0, width,height);
-    }
-
     public static void main(String[] args) {
         TextureCache.setReturnEmptyOnFail(false);
         CoreEngine.systemInit();
@@ -149,9 +130,12 @@ public class TiledNinePatchGenerator implements ApplicationListener {
          PathFinder.getImagePath() +
           path);
 
-        if (bottom == null)
+        if (bottom == null|| bottom==TextureCache.getEmptyTexture())
+        {
+//            GdxImageMaster.flip()
             bottom = top;
-        if (left == null)
+        }
+        if (left == null|| left==TextureCache.getEmptyTexture())
             left = right;
 
         int timesL = maxHeight / left.getHeight();
@@ -173,26 +157,26 @@ public class TiledNinePatchGenerator implements ApplicationListener {
 
         if (background != null)
         {
-            drawTextureRegion(offsetX, offsetY, background,
+            GdxImageMaster.drawTextureRegion(offsetX, offsetY, background,
              w-offsetX*2,
              h-offsetY+offsetY2 ,
              pixmap);
         }
-        drawTexture(offsetX, offsetY, 0, 1, left, timesL, pixmap);
-        drawTexture(-offsetX + w - right.getWidth(), offsetY, 0, 1, right, timesR, pixmap);
-        drawTexture(offsetX, h - top.getHeight() + offsetY2, 1, 0, bottom, timesT, pixmap);
-        drawTexture(offsetX, offsetY, 1, 0, top, timesB, pixmap);
+        GdxImageMaster.drawTexture(offsetX, offsetY, 0, 1, left, timesL, pixmap);
+        GdxImageMaster.drawTexture(-offsetX + w - right.getWidth(), offsetY, 0, 1, right, timesR, pixmap);
+        GdxImageMaster.drawTexture(offsetX, h - top.getHeight() + offsetY2, 1, 0, bottom, timesT, pixmap);
+        GdxImageMaster.drawTexture(offsetX, offsetY, 1, 0, top, timesB, pixmap);
 
-        drawTexture(0,
+        GdxImageMaster.drawTexture(0,
          0,
          0, 0, corner1, 1, pixmap);
-        drawTexture(w - corner2.getWidth(),
+        GdxImageMaster.drawTexture(w - corner2.getWidth(),
          0,
          0, 0, corner2, 1, pixmap);
-        drawTexture(0,
+        GdxImageMaster.drawTexture(0,
          h - corner3.getHeight(),
          0, 0, corner3, 1, pixmap);
-        drawTexture(w - corner4.getWidth(),
+        GdxImageMaster.drawTexture(w - corner4.getWidth(),
          h - corner4.getHeight(),
          0, 0, corner4, 1, pixmap);
 
@@ -236,7 +220,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
                                                BACKGROUND_NINE_PATCH background,
                                                int w, int h) {
         Texture texture = TextureCache.getOrCreate(getPath(ninePatch, background, w, h));
-        if (texture!=null )
+        if (texture!=null && texture!=TextureCache.getEmptyTexture())
             return texture;
         return generate(ninePatch, background, w, h);
     }

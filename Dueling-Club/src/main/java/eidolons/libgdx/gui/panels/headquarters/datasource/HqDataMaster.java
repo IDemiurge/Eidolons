@@ -5,6 +5,8 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
+import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
@@ -110,21 +112,36 @@ public class HqDataMaster {
 
     }
 
+    public static void undoAll(HeroDataModel entity) {
+        map.get(entity.getHero()).undoAll_();
+    }
+    public void undoAll_() {
+        undo_(true);
+    }
     public static void undo() {
         undo(HqMaster.getActiveHero());
     }
         public static void undo(Unit hero) {
         map.get(hero).undo_();
     }
-        public void undo_() {
+    public void undo_( ) {
+        undo_(false);
+    }
+        public void undo_(boolean all) {
         if (heroModel.getModificationList().isEmpty())
             return;
         List<HqOperation> list = heroModel.getModificationList();
         heroModel = createHeroDataModel(hero);
-        list.remove(list.size() - 1);
+        if (all)
+            list.clear();
+        else
+            list.remove(list.size() - 1);
         heroModel.setModificationList(list);
         applyModifications(true);
-       reset();
+        heroModel.reset();
+        if (HqPanel.getActiveInstance()!=null )
+            HqPanel.getActiveInstance().setUserObject(new HqHeroDataSource(heroModel));
+//       reset();
     }
 
     private HeroDataModel createHeroDataModel(Unit hero) {
@@ -206,9 +223,11 @@ public class HqDataMaster {
                 break;
             case ATTRIBUTE_INCREMENT:
                 hero.modifyParameter((PARAMETER) args[0], 1, true);
+                PointMaster.increased((PARAMETER) args[0],   hero);
                 break;
             case MASTERY_INCREMENT:
                 hero.modifyParameter((PARAMETER) args[0], 1, true);
+                PointMaster.increased((PARAMETER) args[0],   hero);
                 SkillMaster.masteryIncreased(hero, (PARAMETER) args[0]);
                 break;
             case NEW_MASTERY:
@@ -231,6 +250,9 @@ public class HqDataMaster {
             case SPELL_EN_VERBATIM:
             case SPELL_UNMEMORIZED:
                 applySpellOperation(hero, operation, args);
+                break;
+            case LEVEL_UP:
+                HeroLevelManager.levelUp(hero);
                 break;
         }
     }
@@ -273,4 +295,5 @@ public class HqDataMaster {
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
     }
+
 }

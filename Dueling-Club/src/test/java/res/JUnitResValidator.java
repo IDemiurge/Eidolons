@@ -66,7 +66,7 @@ public class JUnitResValidator extends LibgdxTest {
                             WaitMaster.receiveInput(
                              WAIT_OPERATIONS.SELECTION, regions);
                             if (regions.size<1){
-                                missing.add(weapon.getProperty(G_PROPS.BASE_TYPE) +
+                                missing.add(action.getActiveWeapon().getProperty(G_PROPS.BASE_TYPE) +
                                  "  " + action.getName()
                                 + " = "+ AnimMaster3d.getAtlasFileKeyForAction(projection.bool,
                                  action, WEAPON_ANIM_CASE.NORMAL) );
@@ -75,9 +75,9 @@ public class JUnitResValidator extends LibgdxTest {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            missingAtlas.add(weapon.getProperty(G_PROPS.BASE_TYPE)
+                            missingAtlas.add(action.getActiveWeapon().getProperty(G_PROPS.BASE_TYPE)
                              + "  " + action.getName()+" = "
-                            + AnimMaster3d.getAtlasPath(weapon, action.getName())
+                            + AnimMaster3d.getAtlasPath(action.getActiveWeapon(), action.getName())
                             );
 
                             WaitMaster.receiveInput(

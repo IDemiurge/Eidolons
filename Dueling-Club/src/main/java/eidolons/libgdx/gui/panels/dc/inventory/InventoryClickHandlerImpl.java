@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.HeroManager;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -168,7 +169,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (op == manager.getOperationsPool()) {
             dirty = false;
         }
-        refreshPanel();
+        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
+         new InventoryDataSource(dataMaster.getHeroModel()));
+//        refreshPanel();
 
     }
 
@@ -180,6 +183,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     @Override
     public void doneClicked() {
         if (!isDoneEnabled()) {
+            GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, false);
             return;
         }
         apply();

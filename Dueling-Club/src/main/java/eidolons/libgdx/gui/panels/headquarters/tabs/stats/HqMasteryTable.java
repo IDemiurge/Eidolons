@@ -23,7 +23,7 @@ public class HqMasteryTable extends HqStatTable {
 
     @Override
     protected int getPointsLeft() {
-        return getUserObject().getIntParam(PARAMS.ATTR_POINTS);
+        return getUserObject().getIntParam(PARAMS.MASTERY_POINTS);
     }
 
     @Override
@@ -31,10 +31,12 @@ public class HqMasteryTable extends HqStatTable {
         HqHeroDataSource hero = getUserObject();
         return PointMaster.getCost(
          hero.getEntity(),
-         sub
-        );
+         sub);
     }
-
+    @Override
+    protected String getPointsText() {
+        return "Mastery pts";
+    }
     @Override
     protected boolean isMastery() {
         return true;

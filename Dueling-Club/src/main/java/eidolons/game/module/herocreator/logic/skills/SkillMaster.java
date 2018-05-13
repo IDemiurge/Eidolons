@@ -7,6 +7,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.HeroManager;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.enums.entity.SkillEnums.MASTERY;
@@ -40,7 +41,7 @@ public class SkillMaster {
         int newValue = hero.getIntParam(mastery);
         if (newValue % 5 != 0)
             return;
-        int tier = newValue / 10;
+        int tier = (newValue-1) / 10;
         addMasteryRank(hero, mastery, tier);
 
     }
@@ -49,8 +50,8 @@ public class SkillMaster {
         PROPERTY prop = getMasteryRankProp(tier);
         if (StringMaster.openContainer(hero.getProperty(prop)).size() >= getSlotsForTier(tier))
             return;
-        hero.addProperty(prop, mastery.getName());
-        hero.getType().addProperty(prop, mastery.getName());
+        hero.addProperty(prop, mastery.getName(), false);
+        hero.getType().addProperty(prop, mastery.getName(), false);
     }
 
     public static void initMasteryRanks(Unit hero) {
@@ -82,8 +83,22 @@ public class SkillMaster {
         return list;
     }
 
-    public static List<ObjType> getAvailableSkills(Unit hero, int tier,
-                                                   MASTERY mastery1, MASTERY mastery2) {
+    public static List<ObjType> getAvailableSkills(List<ObjType> list, Unit hero, int tier) {
+        list.removeIf(type -> hero.getGame().getRequirementsManager().check(hero, type) != null);
+        return list;
+    }
+
+    public static List<ObjType> getAvailableSkills(Unit hero, int tier) {
+        List<ObjType> list = new ArrayList<>(DataManager.getTypes(DC_TYPE.SKILLS));
+        //check if branching is OK
+        list.removeIf(type -> type.getIntParam(PARAMS.CIRCLE) != tier
+         || hero.getGame().getRequirementsManager().check(hero, type) != null
+        );
+
+        return list;
+    }
+    public static List<ObjType> getAllSkills(Unit hero, int tier,
+                                             MASTERY mastery1, MASTERY mastery2) {
         List<ObjType> list = new ArrayList<>();
         list.addAll(DataManager.getTypesSubGroup(DC_TYPE.SKILLS,
          StringMaster.getWellFormattedString(mastery1.toString())));
@@ -135,8 +150,10 @@ public class SkillMaster {
 
     public static void newFeat(PROPERTY prop, Unit hero, ObjType arg) {
         DC_FeatObj featObj = createFeatObj(arg, hero.getRef());
-        hero.addProperty(prop, arg.getName());
-        hero.getType().addProperty(prop, arg.getName());
+        hero.addProperty(prop, arg.getName(), false);
+        hero.getType().addProperty(prop, arg.getName(), false);
+        hero.modifyParameter(PARAMS.XP,
+         -HeroManager.getIntCost(arg, hero));
         DequeImpl<? extends DC_FeatObj> container = hero.getSkills();
 
         if (arg.getOBJ_TYPE_ENUM() == DC_TYPE.CLASSES) {

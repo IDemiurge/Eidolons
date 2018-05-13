@@ -103,6 +103,8 @@ public class VisionMaster implements GenericVisionManager {
 
         firstResetDone = true;
         gammaMaster.setDirty(false);
+//        visionController.log(getActiveUnit());
+
 //    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
 //        getVisionController().log(getActiveUnit(), visibleList.toArray(new DC_Obj[visibleList.size()]));
         Chronos.logTimeElapsedForMark("VISIBILITY REFRESH", true);

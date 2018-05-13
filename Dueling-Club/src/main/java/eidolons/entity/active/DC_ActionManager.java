@@ -61,6 +61,7 @@ public class DC_ActionManager implements ActionManager {
     public static final G_PROPS ACTIVES = G_PROPS.ACTIVES;
     public static final String ATTACK = (STD_ACTIONS.Attack
      .name());
+    public static final String OFFHAND = "Off Hand ";
     public static final String RELOAD = "Reload";
     public static final String THROW = "Throw";
     public static final String CLUMSY_LEAP = "Clumsy Leap";
@@ -75,11 +76,11 @@ public class DC_ActionManager implements ActionManager {
     public static final String ENTER = "Enter";
     public static final String DISARM = "Disarm";
     public static final String UNLOCK = "Unlock";
-    private static final String DUMMY_ACTION = "Dummy Action";
-    private static final String USE_INVENTORY = StringMaster
+    public static final String DUMMY_ACTION = "Dummy Action";
+    public static final String USE_INVENTORY = StringMaster
      .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
-    private static final String DIVINATION = "Divination";
-    private static final String PICK_UP = "Pick Up Items";
+    public static final String DIVINATION = "Divination";
+    public static final String PICK_UP = "Pick Up Items";
     private static ArrayList<ObjType> stdActionTypes;
     private static ArrayList<ObjType> hiddenActions;
     private static ArrayList<ObjType> modeActionTypes;
@@ -628,7 +629,7 @@ public class DC_ActionManager implements ActionManager {
             }
             list.add(action);
         }
-        if (checkAddThrowAction(weapon.getOwnerObj(), !weapon.isMainHand())) {
+        if (checkAddThrowAction(weapon.getOwnerObj(), weapon)) {
             DC_ActiveObj throwAction = getOrCreateAction(weapon.isMainHand() ? THROW_MAIN : THROW_OFFHAND,
              obj);
             throwAction.setName(getThrowName(weapon.getName()));
@@ -778,8 +779,8 @@ public class DC_ActionManager implements ActionManager {
         return action;
     }
 
-    private boolean checkAddThrowAction(Unit unit, boolean offhand) {
-        DC_WeaponObj weapon = unit.getWeapon(offhand);
+    private boolean checkAddThrowAction(Unit unit, DC_WeaponObj weapon) {
+
         if (weapon == null) {
             return false;
         }
