@@ -82,6 +82,8 @@ public class ActiveChecker extends EntityChecker<DC_ActiveObj> {
     }
 
     public boolean isMelee() {
+        if (!isAttackAny())
+            return false;
         if (getIntParam(PARAMS.RANGE) > 1) {
             return false;
         }

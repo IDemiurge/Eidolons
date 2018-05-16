@@ -8,10 +8,9 @@ import eidolons.libgdx.texture.Images;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.GuiEventManager;
+import main.system.EventType;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
@@ -75,19 +74,14 @@ public class SkillSlot extends HtNode {
     }
 
     @Override
-    protected void click() {
-        if (ListMaster.isNotEmpty(available)) {
-            GuiEventManager.trigger(GuiEventType.SHOW_SKILL_CHOICE, available);
-        } else {
-        }
+    protected EventType getSelectionEvent() {
+        return GuiEventType.SHOW_SKILL_CHOICE;
     }
 
     @Override
-    protected void doubleClick() {
-        if (ListMaster.isNotEmpty(available)) {
-            GuiEventManager.trigger(GuiEventType.SHOW_SKILL_CHOICE, available);
-        } else {
-        }
-
+    public List<ObjType> getAvailable() {
+        return available;
     }
+
+
 }

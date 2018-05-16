@@ -22,36 +22,49 @@ public class IconGenerator extends GdxUtil {
     String root;
     String underlay;
     String output;
+    private boolean subdirs;
 
-    public IconGenerator(String root, String underlay, String output) {
+    public IconGenerator(String root, String underlay, String output, boolean subdirs) {
         this.root = root;
         this.underlay = underlay;
         this.output = output;
+        this.subdirs = subdirs;
         start();
     }
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
-        String path = StrPathBuilder.build(PathFinder.getImagePath(),ImageManager.getValueIconsPath(),
-         "masteries");
+        String path = StrPathBuilder.build(PathFinder.getImagePath(),
+         ImageManager.getValueIconsPath());
         String output = StrPathBuilder.build(path, "generated") + StringMaster.getPathSeparator();
-        new IconGenerator(path, Images.EMPTY_RANK_SLOT, output);
+        new IconGenerator(path, Images.EMPTY_RANK_SLOT, output,true);
+
+    }
+
+    public static void generateOverlaidIcon(Texture underlayTexture, String path, FileHandle handle, boolean b) {
+        Pixmap pixMap = GdxImageMaster.getPixmap(underlayTexture);
+        Texture texture = TextureCache.getOrCreate(path);
+        int w = texture.getWidth();
+        int h = texture.getHeight();
+        int x = (underlayTexture.getWidth() - w) / 2;
+        int y = (underlayTexture.getHeight() - h) / 2;
+        GdxImageMaster.drawTextureRegion(x, y, texture, w, h, pixMap);
+        GdxImageMaster.writeImage(handle, pixMap);
+
+//        pixMap.setBlending();
+//    pixMap.setFilter();
 
     }
 
     public void generate(String root, String underlay, String output) {
         Texture underlayTexture = TextureCache.getOrCreate(underlay);
-        for (File sub : FileManager.getFilesFromDirectory(root, false)) {
-            Pixmap pixMap = GdxImageMaster.getPixmap(underlayTexture);
+        for (File sub : FileManager.getFilesFromDirectory(root, false, subdirs)) {
+            if (!FileManager.isImageFile(sub.getName()))
+                continue;
             FileHandle handle = new FileHandle(output + (sub.getName()));
             String path = sub.getPath().replace(PathFinder.getImagePath(), "");
-            Texture texture = TextureCache.getOrCreate(path);
-            int w = texture.getWidth();
-            int h = texture.getHeight();
-            int x = (underlayTexture.getWidth() - w) / 2;
-            int y = (underlayTexture.getHeight() - h) / 2;
-            GdxImageMaster.drawTextureRegion(x, y, texture, w, h, pixMap);
-            GdxImageMaster.writeImage(handle, pixMap);
+            generateOverlaidIcon(underlayTexture, path, handle, true);
+
         }
     }
 

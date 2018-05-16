@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc.unitinfo;
+package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.MainAttributesSource;

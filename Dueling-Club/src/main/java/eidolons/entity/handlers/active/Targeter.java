@@ -88,6 +88,7 @@ public class Targeter extends ActiveHandler {
                 result = true;
             }
         } else {
+//            GuiEventManager.trigger(GuiEventType.ACTION_BEING_ACTIVATED, getAction());
             result = getTargeting().select(ref);
         }
 

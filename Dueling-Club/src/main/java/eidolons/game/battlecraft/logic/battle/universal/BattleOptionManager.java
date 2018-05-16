@@ -101,6 +101,8 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 //
     }
 
+    public static final float CHEAT_MODIFIER = 1.25f;
+
     public void applyDifficultyMods(BattleFieldObject unit) {
         Boolean ally_enemy_neutral = null;
         if (unit.isMine())
@@ -113,11 +115,18 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         if (ally_enemy_neutral) {
             if (unit.isMainHero()) {
                 mod = getDifficulty().getHealthPercentageMainHero();
+                mod = (int) (mod*CHEAT_MODIFIER);
             } else {
                 mod = getDifficulty().getHealthPercentageAlly();
+                mod = (int) (mod*CHEAT_MODIFIER);
             }
         } else
+        {
             mod = getDifficulty().getHealthPercentageEnemy();
+            mod = (int) (mod/CHEAT_MODIFIER);
+        }
+
+
 
         unit.multiplyParamByPercent(PARAMS.ENDURANCE, mod, false);
         unit.multiplyParamByPercent(PARAMS.TOUGHNESS, mod, false);
@@ -125,6 +134,9 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         unit.multiplyParamByPercent(PARAMS.DEFENSE_MOD, mod / 2, false);
         unit.multiplyParamByPercent(PARAMS.SPELLPOWER, mod / 3, false);
         unit.multiplyParamByPercent(PARAMS.OFFHAND_ATTACK_MOD, mod / 2, false);
+
+        unit.multiplyParamByPercent(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD, mod / 2, false);
+
         if (unit.isMine())
         {
             unit.multiplyParamByPercent(PARAMS.STAMINA, mod / 2, false);

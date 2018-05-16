@@ -36,6 +36,7 @@ public class ActionValueContainer extends ValueContainer {
     protected float underlayOffsetX;
     protected float underlayOffsetY;
     private float size = UiMaster.getIconSize();
+    private RadialMenu customRadialMenu;
 
     //overlay!
     public ActionValueContainer(boolean valid, TextureRegion texture, Runnable action) {
@@ -223,7 +224,13 @@ public class ActionValueContainer extends ValueContainer {
 //        }
     }
 
+    public void setCustomRadialMenu(RadialMenu customRadialMenu) {
+        this.customRadialMenu = customRadialMenu;
+    }
+
     public RadialMenu getRadial() {
+        if (customRadialMenu!=null )
+            return customRadialMenu;
         if (DungeonScreen.getInstance().
          getGuiStage() == null)
             return null;

@@ -17,6 +17,7 @@ import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.system.images.ImageManager;
@@ -451,6 +452,34 @@ public class UnitDataSource implements
         return getStatsValueContainers(UNIT_INFO_PARAMS_COMBAT);
     }
 
+    public List< ValueContainer > getFullStats() {
+         List<ValueContainer> list = new ArrayList<>();
+        for (List<ValueContainer> sub: getCombatStats())
+        {
+            list.addAll(sub);
+            list.add(null);
+        }
+        list.add(null);
+        for (List<ValueContainer> sub: getMagicStats())
+        {
+            list.addAll(sub);
+            list.add(null);
+        }
+        list.add(null);
+        for (List<ValueContainer> sub: getGeneralStats())
+        {
+            list.addAll(sub);
+            list.add(null);
+        }
+        list.add(null);
+
+        for (List<ValueContainer> sub: getMiscStats())
+        {
+            list.addAll(sub);
+            list.add(null);
+        }
+        return list;
+    }
     @Override
     public List<List<ValueContainer>> getMagicStats() {
         return getStatsValueContainers(UNIT_INFO_PARAMS_MAGIC);
@@ -489,6 +518,29 @@ public class UnitDataSource implements
             valueContainer.addListener(tooltip.getController());
         }
         return valueContainer;
+    }
+    public List<VALUE> getStatsValueList(VALUE[][] paramsGeneral) {
+
+        List<VALUE> values = new ArrayList<>();
+        for (int i = 0; i < paramsGeneral.length; i++) {
+            for (VALUE sub : paramsGeneral[i]) {
+                values.add(sub);
+            }
+            values.add(null);
+        }
+        return values;
+    }
+    public List<VALUE> getStatsValues( ) {
+        List<VALUE> values = new ArrayList<>();
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_GENERAL));
+        values.add(null);
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_COMBAT));
+        values.add(null);
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_MAGIC));
+        values.add(null);
+        values.addAll(getStatsValueList(UNIT_INFO_PARAMS_MISC));
+        values.add(null);
+        return values;
     }
 
     private List<List<ValueContainer>> getStatsValueContainers(PARAMS[][] unitInfoParamsGeneral) {

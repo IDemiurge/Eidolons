@@ -216,6 +216,10 @@ public class Anim extends Group implements Animation {
         sprites.forEach(s -> {
             s.draw(batch);
         });
+        batch.getColor().a=1;
+        batch.getColor().r=1;
+        batch.getColor().g=1;
+        batch.getColor().b=1;
         emitterList.forEach(e -> {
             e.draw(batch, 1f);
             main.system.auxiliary.log.LogMaster.log(1,
@@ -226,6 +230,7 @@ public class Anim extends Group implements Animation {
                 main.system.auxiliary.log.LogMaster.log(1,
                  em.getName() +
                   " emitter at at x " + em.getX() + " y " + em.getY()
+                 +" ; activecount == " +em.getActiveCount()
 
                 );
             });
@@ -276,12 +281,16 @@ public class Anim extends Group implements Animation {
         if (texture == null) {
             return;
         }
-
-        batch.draw((texture), this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-         this.getHeight(), this.getScaleX(), this.getScaleY(),
+        Color color = batch.getColor();
+        batch.setColor(new Color(1,1,1,1));
+        float w = Math.min(64, this.getWidth());
+        float h = Math.min(64, this.getHeight());
+        batch.draw((texture), this.getX(), getY(), this.getOriginX(),
+         this.getOriginY(), w, h, this.getScaleX(), this.getScaleY(),
          this.getRotation(), 0, 0,
          texture.getWidth(), texture.getHeight(), flipX, flipY);
 
+        batch.setColor(color);
     }
 
     @Override
@@ -329,7 +338,9 @@ public class Anim extends Group implements Animation {
             }
         });
 
-        getEmitterList().forEach(e -> e.reset());
+        getEmitterList().forEach(e -> {
+            e.reset();
+        });
     }
 
     protected void initDuration() {
@@ -494,6 +505,7 @@ public class Anim extends Group implements Animation {
     protected void startEmitters() {
         emitterList.forEach(e -> {
             e.start();
+            addActor(e);
         });
     }
 

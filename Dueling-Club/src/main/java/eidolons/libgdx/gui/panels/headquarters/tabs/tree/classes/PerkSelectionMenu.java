@@ -25,4 +25,7 @@ public class PerkSelectionMenu extends SlotSelectionRadialMenu {
         return  dataSource.getEntity() .getGame().getRequirementsManager()
          .check(dataSource.getEntity() , type);
     }
+    protected boolean isFree() {
+        return true;
+    }
 }

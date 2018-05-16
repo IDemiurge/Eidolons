@@ -319,5 +319,9 @@ public class ValueContainer extends TablePanel {
         if (getValueLabel() != null)
             getValueLabel().setStyle(labelStyle);
     }
+
+    public String getValueText() {
+        return getValueLabel().getText().toString();
+    }
 }
 

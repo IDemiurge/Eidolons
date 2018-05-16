@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battlefield.vision.OutlineMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -229,7 +230,10 @@ public class UnitView extends BaseView {
 
     }
 
-
+    @Override
+    public BattleFieldObject getUserObject() {
+        return (BattleFieldObject) super.getUserObject();
+    }
     public int getCurId() {
         return curId;
     }

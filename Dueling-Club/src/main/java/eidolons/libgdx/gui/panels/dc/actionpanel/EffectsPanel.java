@@ -12,7 +12,8 @@ public class EffectsPanel extends TablePanel {
     public void updateAct(float delta) {
         clear();
 
-        final EffectsAndAbilitiesSource source = (EffectsAndAbilitiesSource) getUserObject();
+        final EffectsAndAbilitiesSource source =
+         (EffectsAndAbilitiesSource) getUserObject();
 
         source.getBuffs().forEach(el -> {
             el.overrideImageSize(32, 32);

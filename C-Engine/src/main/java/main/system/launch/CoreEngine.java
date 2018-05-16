@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.5.9";
+    public static final String VERSION = "0.6.0";
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -265,6 +265,8 @@ public class CoreEngine {
         Chronos.mark("TYPES INIT");
 
         XML_Reader.readTypes(macro);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.XML_READY, true);
+        WaitMaster.markAsComplete(WAIT_OPERATIONS.XML_READY );
         List<String> classFolders = new ArrayList<>(Arrays.asList(classFolderPaths));
 //         if (dialogueDataRequired){
 //             classFolders.add( "main.data.dialogue" );

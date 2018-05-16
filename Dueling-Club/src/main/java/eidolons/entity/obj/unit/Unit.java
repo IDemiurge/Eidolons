@@ -1207,8 +1207,8 @@ public class Unit extends DC_UnitModel {
         return getCalculator().calculateRemainingMemory();
     }
 
-    public int calculateMemorizationPool() {
-        return getCalculator().calculateMemorizationPool();
+    public int calculateUsedMemory() {
+        return getCalculator().calculateUsedMemory();
     }
 
     public int calculatePower() {

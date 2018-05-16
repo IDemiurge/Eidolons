@@ -10,8 +10,13 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.system.EventType;
+import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ListMaster;
+
+import java.util.Collection;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -134,7 +139,22 @@ public abstract class HtNode extends DynamicLayeredActor {
         return null;
     }
 
-    protected abstract void click();
+    protected void click() {
+        if (ListMaster.isNotEmpty(getAvailable())) {
+            SlotSelectionRadialMenu.setActiveNode(this);
+            GuiEventManager.trigger(getSelectionEvent(), getAvailable());
+        } else {
+        }
+    }
+
+    protected abstract EventType getSelectionEvent();
+
+    protected abstract Collection getAvailable();
+
+    protected void doubleClick() {
+        click();
+
+    }
 
     protected void mouseEntered() {
 
@@ -144,7 +164,6 @@ public abstract class HtNode extends DynamicLayeredActor {
 
     }
 
-    protected abstract void doubleClick();
 
     public void setHero(Unit hero) {
         this.hero = hero;

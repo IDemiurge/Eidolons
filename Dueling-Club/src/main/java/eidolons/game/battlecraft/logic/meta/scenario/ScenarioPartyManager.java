@@ -6,20 +6,13 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.party.Party;
-import eidolons.game.module.herocreator.logic.skills.SkillMaster;
-import eidolons.libgdx.anims.text.FloatingText;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
@@ -99,11 +92,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
 
         getMetaGame().setRestarted(false);
-        try {
-            SkillMaster.initMasteryRanks(hero);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
 
     }
 
@@ -120,6 +109,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         ObjType type = getMetaGame().getScenario().getPartyType();
         randomOneHero = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
         chooseOneHero = !randomOneHero;
+//        if (CoreEngine.isFastMode())
+//            chooseOneHero=false;
         if (type == null) {
             String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
             type = new ObjType("dummy", DC_TYPE.PARTY);

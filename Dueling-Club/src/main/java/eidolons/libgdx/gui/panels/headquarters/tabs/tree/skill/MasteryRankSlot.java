@@ -5,8 +5,12 @@ import eidolons.libgdx.texture.Images;
 import main.content.ContentValsManager;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.parameters.PARAMETER;
+import main.entity.type.ObjType;
+import main.system.EventType;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
+
+import java.util.List;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -55,7 +59,15 @@ public class MasteryRankSlot extends HtNode {
             return "Mastery Slot, Rank " + StringMaster.getRoman(tier);
         return StringMaster.getWellFormattedString(data.name()) + " Rank " + StringMaster.getRoman(tier);
     }
+    @Override
+    protected EventType getSelectionEvent() {
+        return null ;
+    }
 
+    @Override
+    public List<ObjType> getAvailable() {
+        return null ;
+    }
 
     @Override
     protected void click() {

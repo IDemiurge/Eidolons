@@ -242,6 +242,11 @@ public class UnitResetter extends EntityResetter<Unit> {
         applyBackground();
         resetAttributes();
         resetMasteryScores();
+        if (getEntity().getPerks() != null) {
+            for (DC_FeatObj feat : getEntity().getPerks()) {
+                feat.apply();
+            }
+        }
         if (getEntity().getSkills() != null) {
 
             resetRanks(getEntity().getSkills(), PROPS.SKILLS);

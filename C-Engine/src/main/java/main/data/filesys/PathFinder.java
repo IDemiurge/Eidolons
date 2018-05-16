@@ -347,4 +347,16 @@ public class PathFinder {
          getImagePath()+
          "UI\\components\\skin\\neutralizer-ui.json";
     }
+
+    public static String getPerkImagePath() {
+        return StrPathBuilder.build(PathFinder.getUiPath(),
+         "value icons", "perks") + StringMaster.getPathSeparator();
+    }
+
+    public static String getItemIconPath() {
+        return StrPathBuilder.build("main",
+         "item",
+         "weapon",
+         "icons");
+    }
 }

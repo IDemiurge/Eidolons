@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc.unitinfo;
+package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;

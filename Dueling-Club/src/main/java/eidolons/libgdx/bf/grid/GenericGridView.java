@@ -138,6 +138,8 @@ public class GenericGridView extends UnitView {
     }
 
     public boolean isHpBarVisible() {
+        if (!isVisible())
+            return false;
         if (!getHpBar().getDataSource().canHpBarBeVisible())
             return false;
         if (!isCellBackground() && HpBar.getHpAlwaysVisible())

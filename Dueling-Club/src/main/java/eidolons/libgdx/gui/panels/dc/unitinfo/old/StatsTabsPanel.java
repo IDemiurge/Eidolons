@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc.unitinfo;
+package eidolons.libgdx.gui.panels.dc.unitinfo.old;
 
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.StatsDataSource;
 

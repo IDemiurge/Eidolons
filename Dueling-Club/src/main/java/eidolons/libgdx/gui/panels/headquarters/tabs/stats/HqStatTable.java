@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 
 import eidolons.content.PARAMS;
+import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -34,7 +35,7 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
         TablePanel points = new TablePanel();
         points.add(new LabelX(getPointsText(), 14)).left();
         points.add(pointTable).right();
-        add(points).right().top(). colspan(2). row();
+        add(points).right().top(). colspan(2).fillX(). row();
         super.init();
     }
 
@@ -66,11 +67,11 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
         for (HqStatElement actor :actors) {
             if (actor != null) {
                 PARAMS sub  = data [i++];
+                actor.setEditable(editable);
                 actor.setDisplayedParam(sub);
                 actor.setUserObject(getUserObject());
                 if (sub != null)
                 {
-                    actor.setDisabled(getPointsLeft() < getCost(sub));
                     actor.setModifyParam(getModifyParam(sub));
                 }
                 actor.updateAct(delta);

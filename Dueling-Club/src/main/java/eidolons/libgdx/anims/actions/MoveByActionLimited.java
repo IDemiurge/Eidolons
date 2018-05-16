@@ -61,11 +61,11 @@ public class MoveByActionLimited extends MoveByAction {
     protected void updateRelative(float percentDelta) {
         if (parent!=target.getParent())
             return;
-        if (getAmountX() != 0)
-            if (Math.abs(startPointX - target.getX()) >= Math.abs(getAmountX()))
-                return;
-        if (getAmountY() != 0) if (Math.abs(startPointY - target.getY()) >= Math.abs(getAmountY()))
-            return;
+//        if (getAmountX() != 0)
+//            if (Math.abs(startPointX - target.getX()) >= Math.abs(getAmountX()))
+//                return;
+//        if (getAmountY() != 0) if (Math.abs(startPointY - target.getY()) >= Math.abs(getAmountY()))
+//            return;
         super.updateRelative(percentDelta);
     }
 }

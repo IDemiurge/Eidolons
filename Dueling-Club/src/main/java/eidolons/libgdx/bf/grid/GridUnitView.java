@@ -1,7 +1,11 @@
 package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
@@ -18,6 +22,26 @@ public class GridUnitView extends GenericGridView {
     public GridUnitView(UnitViewOptions o) {
         super(o);
         initQueueView(o);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (mainHero){
+            if (getActionsOfClass(MoveToAction.class).size>0){
+                //set pos, don't draw
+                Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
+                Vector2 assumed=GridMaster.getCenteredPos(getUserObject().getCoordinates());
+                if (pos.dst(assumed)
+                 > 128)
+                {  setPosition(assumed.x, assumed.y);
+                    return ;
+                }
+            }else{
+
+            }
+
+        }
+        super.draw(batch, parentAlpha);
     }
 
     @Override
@@ -106,6 +130,12 @@ public class GridUnitView extends GenericGridView {
              resourceSource);
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        if (initiativeQueueUnitView!=null )
+            initiativeQueueUnitView.setUserObject(userObject);
+    }
 
     @Override
     public void setTeamColor(Color teamColor) {

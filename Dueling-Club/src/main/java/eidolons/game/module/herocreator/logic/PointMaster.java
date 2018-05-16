@@ -45,11 +45,14 @@ public class PointMaster {
     }
 
     public static boolean canIncrease(Unit entity, PARAMETER modifyParam) {
+        if (modifyParam == null) {
+            return false;
+        }
         boolean mastery = modifyParam.isMastery();
         int pool = mastery ? entity.getIntParam(PARAMS.MASTERY_POINTS)
          :  entity.getIntParam(PARAMS.ATTR_POINTS);
 
-        return pool> getCost(entity, modifyParam);
+        return pool>= getCost(entity, modifyParam);
     }
 
     public static void increased(PARAMETER arg,   Unit hero) {

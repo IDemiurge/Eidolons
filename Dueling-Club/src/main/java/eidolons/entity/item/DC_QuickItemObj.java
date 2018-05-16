@@ -53,13 +53,19 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     }
 
+    public DC_QuickItemObj(DC_WeaponObj item) {
+        this(item.getType(), item.getOwner(), item.getGame(), item.getRef(), false);
+        setWrappedWeapon(item);
+    }
+
     public boolean isAmmo() {
         return ammo;
     }
 
     private void generateWrappedActive() {
         String typeName;
-        setWrappedWeapon(new DC_WeaponObj(type, owner, getGame(), ref));
+        if (wrappedWeapon==null )
+            setWrappedWeapon(new DC_WeaponObj(type, owner, getGame(), ref));
 
         if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
             this.ammo = true;
@@ -382,6 +388,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     public void setWrappedWeapon(DC_WeaponObj wrappedWeapon) {
         this.wrappedWeapon = wrappedWeapon;
+        wrapped=wrappedWeapon!=null;
     }
 
     public void activate(Ref ref) {

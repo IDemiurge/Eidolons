@@ -28,11 +28,11 @@ public class Images {
      PathFinder.getComponentsPath(),
      "hq", "trees", "empty rank slot.png");
     public static final String EMPTY_CLASS_SLOT = StrPathBuilder.build(
-     PathFinder.getComponentsPath(),"hq", "trees", "empty class slot.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "empty class slot.png");
     public static final String CIRCLE_UNDERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(),"hq", "trees", "CIRCLE UNDERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "CIRCLE UNDERLAY.png");
     public static final String CIRCLE_OVERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(),"hq", "trees", "CIRCLE OVERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "CIRCLE OVERLAY.png");
 
 
     public static final String SMALL_TIER = StrPathBuilder.build(
@@ -41,10 +41,15 @@ public class Images {
     public static final String EMPTY_PERK_SLOT = StrPathBuilder.build(
      PathFinder.getComponentsPath(),
      "hq", "trees", "empty perk slot.png");
-    public static final String UNKNOWN_PERK  = StrPathBuilder.build(
-     PathFinder.getComponentsPath(),"hq", "trees", "unknown perk.png");
+    public static final String UNKNOWN_PERK = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "hq", "trees", "unknown perk.png");
     public static final String DIAMOND_OVERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(),"hq", "trees", "DIAMOND OVERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND OVERLAY.png");
     public static final String DIAMOND_UNDERLAY = StrPathBuilder.build(
-     PathFinder.getComponentsPath(),"hq", "trees", "DIAMOND UNDERLAY.png");
+     PathFinder.getComponentsPath(), "hq", "trees", "DIAMOND UNDERLAY.png");
+
+    public static final String COLORLESS_BORDER = StrPathBuilder.build(
+     PathFinder.getUiPath(), "Borders", "neo", "colorless.png");
+    public static final String TARGET_BORDER = StrPathBuilder.build(
+     PathFinder.getUiPath(), "Borders", "neo", "TARGET.png");
 }

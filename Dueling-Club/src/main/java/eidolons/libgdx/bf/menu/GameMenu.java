@@ -123,7 +123,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         OPTIONS,
         RESTART(true),
         PASS_TIME,
-        RUN,
+        RUN(true),
         RESUME,
         INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),

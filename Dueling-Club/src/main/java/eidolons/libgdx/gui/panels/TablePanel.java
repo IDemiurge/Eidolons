@@ -114,8 +114,12 @@ public class TablePanel<T extends Actor> extends Table {
     }
 
     public TablePanel<T> initDefaultBackground() {
-        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+            if (getDefaultBackground()!=null )
+                setBackground(getDefaultBackground());
         return this;
+    }
+    protected Drawable getDefaultBackground() {
+        return  new NinePatchDrawable(NinePatchFactory.getTooltip());
     }
     public void fadeOut() {
         clearActions();

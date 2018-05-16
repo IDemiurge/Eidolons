@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -21,7 +22,11 @@ public class MemorizedContainer extends HqSpellContainer {
             HqDataMaster.operation(getUserObject(), HQ_OPERATION.SPELL_UNMEMORIZED, spell);
         }
     }
-
+    @Override
+    protected String getLabelText() {
+        return "Memorized "+ getUserObject().getEntity().calculateUsedMemory()+"/"+
+         getUserObject().getEntity().getIntParam(PARAMS.MEMORIZATION_CAP);
+    }
     @Override
     protected boolean isOverlayOn() {
         return false;

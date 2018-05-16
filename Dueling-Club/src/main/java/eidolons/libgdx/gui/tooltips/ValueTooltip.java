@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -42,6 +43,11 @@ public class ValueTooltip extends Tooltip {
     @Override
     public void afterUpdateAct(float delta) {
         super.afterUpdateAct(delta);
-        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+        if (getDefaultBackground()!=null )
+        setBackground(getDefaultBackground());
+    }
+
+    protected Drawable getDefaultBackground() {
+        return  new NinePatchDrawable(NinePatchFactory.getTooltip());
     }
 }

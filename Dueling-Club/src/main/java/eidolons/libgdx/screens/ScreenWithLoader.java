@@ -34,17 +34,24 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected EventCallbackParam param;
     protected float timeWaited;
     private boolean waitingForInput;
-    private float tooltipTimer;
+    private float tooltipTimer=getTooltipPeriod();
     protected Label tooltipLabel;
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
          StyleHolder.getDefaultLabelStyle());
+        waitingLabel.pack();
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-         50);
-        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.NYALA, 16));
-        tooltipLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-         50);
+        getWaitY());
+        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.NYALA, 18));
+
+    }
+
+    private float getWaitY() {
+        return GdxMaster.getHeight()/20+35;
+    }
+    private float getTipY() {
+        return GdxMaster.getHeight()/20;
     }
 
     public Batch getBatch() {
@@ -165,33 +172,40 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected void waited(float delta) {
         timeWaited += delta;
 
-//        batch.begin();
+//
 
 //    TODO     tooltipLabel.draw(batch, 1f);
 
         if (isWaitingForInput()) {
+
             float alpha = (timeWaited / 3) % 1;
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
              : alpha * 2 + 0.15f;
+            batch.begin();
             waitingLabel.draw(batch, alpha % 1);
+            batch.end();
         } else {
             if (isTooltipsOn()){
                 batch.begin();
                 tooltipTimer+=delta;
+                tooltipLabel.setVisible(true);
                 if (tooltipTimer>=getTooltipPeriod()){ //support manual!
                     tooltipLabel.setText(getTooltipText());
+                    tooltipLabel.pack();
+                    tooltipLabel.setPosition(GdxMaster.centerWidth(tooltipLabel),
+                     getTipY());
                     tooltipTimer=0;
                 }
                 tooltipLabel.draw(batch, 1);
                 batch.end();
-            }
+            } else tooltipLabel.setVisible(false);
         }
 
 //        batch.end();
     }
 
     private float getTooltipPeriod() {
-        return 20;
+        return 8;
     }
 
     private String getTooltipText() {

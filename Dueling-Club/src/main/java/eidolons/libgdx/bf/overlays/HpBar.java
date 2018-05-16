@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
-import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
@@ -154,7 +152,7 @@ public class HpBar extends SuperActor {
             toughnessDeathBarrier = toughnessDeathBarrier * mod / 100;
         }
         //TODO quick fix
-        if (ExplorationMaster.isExplorationOn())
+//        if (ExplorationMaster.isExplorationOn())
             animateChange(false);
     }
 
@@ -180,7 +178,28 @@ public class HpBar extends SuperActor {
         setVisible(true);
         if (!smooth) {
             displayedEndurancePerc = getEndurancePerc();
+
+            float realPerc = new Float(100*dataSource.getIntParam(PARAMS.C_ENDURANCE) /
+             dataSource.getIntParam(PARAMS.ENDURANCE))/100f ;
+            if (displayedEndurancePerc!=realPerc){
+                main.system.auxiliary.log.LogMaster.log(1,"HP BAR ENDURANCE PERCENTAGE MISMATCH: " +
+                 displayedEndurancePerc+
+                 " VS REAL == " +
+                 realPerc );
+                displayedEndurancePerc=realPerc;
+            }
+
             displayedToughnessPerc = getToughnessPerc();
+
+            realPerc = new Float(100*dataSource.getIntParam(PARAMS.C_TOUGHNESS) /
+             dataSource.getIntParam(PARAMS.TOUGHNESS))/100f ;
+            if (displayedToughnessPerc!=realPerc){
+                main.system.auxiliary.log.LogMaster.log(1,"HP BAR TOUGHNESS PERCENTAGE MISMATCH: " +
+                 displayedToughnessPerc+
+                 " VS REAL == " +
+                 realPerc );
+                displayedToughnessPerc=realPerc;
+            }
             return;
         }
         if (!getToughnessPerc().equals(getPreviousToughnessPerc())) {
@@ -240,7 +259,7 @@ public class HpBar extends SuperActor {
 //            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
         } else if (!dirty)
             return;
-        String text = "" + Math.round(dataSource.getIntParam(PARAMS.ENDURANCE) * displayedEndurancePerc)
+        String text = "" + Math.round(dataSource.getIntParam(PARAMS.C_ENDURANCE) )
          + "/" + dataSource.getIntParam(PARAMS.ENDURANCE);
         label.setText(text);
 
@@ -281,9 +300,9 @@ public class HpBar extends SuperActor {
         }
         batch.setColor(color);
         float x = getX() + offsetX;
-//        if (reverse) {
-//            x = x + region.getRegionWidth() * (fullLengthPerc - perc);
-//        }
+        if (reverse) {
+            x = x + region.getRegionWidth() * (fullLengthPerc - perc);
+        }
         batch.draw(region, x, getY(), getScaleX()*region.getRegionWidth(),
          getScaleY()*region.getRegionHeight());
     }
@@ -334,25 +353,28 @@ public class HpBar extends SuperActor {
 
         Rectangle scissors = new Rectangle();
         Rectangle clipBounds = null ;
-        if (GridMaster.isHpBarsOnTop() && !queue)
-        {
-            Vector2 v = //localToStageCoordinates
-             (new Vector2(getX(), getY()));
-            clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
-        } else
+//        if (GridMaster.isHpBarsOnTop() && !queue)
+//        {
+//            Vector2 v = //localToStageCoordinates
+//             (new Vector2(getX(), getY()));
+//            clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
+//        } else
         clipBounds =        new Rectangle(getX(), getY(), innerWidth * fullLengthPerc, height);
         getStage().calculateScissors(clipBounds, scissors);
         ScissorStack.pushScissors(scissors);
 
         Color color = enduranceColor;
         TextureRegion region = enduranceBarRegion;
-        drawBar(region, batch, fullLengthPerc, color, false);
+        drawBar(region, batch, displayedEndurancePerc, color, false);
 
         if (toughnessDeath) {
             //setShader
         }
         color = toughnessColor;
         region = toughnessBarRegion;
+//        clipBounds =        new Rectangle(getX(), getY(), innerWidth * displayedToughnessPerc, height);
+//        getStage().calculateScissors(clipBounds, scissors);
+//        ScissorStack.pushScissors(scissors);
         drawBar(region, batch, displayedToughnessPerc, color, true);
 
         batch.flush();

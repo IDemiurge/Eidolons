@@ -1,6 +1,7 @@
 package eidolons.ability.effects;
 
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
 import main.ability.effects.MicroEffect;
@@ -19,9 +20,9 @@ public abstract class DC_Effect extends MicroEffect {
         return null;
     }
 
-    public Unit getTarget() {
-        if (getRef().getTargetObj() instanceof Unit) {
-            return (Unit) getRef().getTargetObj();
+    public BattleFieldObject getTarget() {
+        if (getRef().getTargetObj() instanceof BattleFieldObject) {
+            return (BattleFieldObject) getRef().getTargetObj();
         }
         return null;
     }

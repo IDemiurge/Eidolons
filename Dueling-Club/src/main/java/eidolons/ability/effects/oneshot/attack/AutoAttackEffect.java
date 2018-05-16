@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.attack;
 
 import eidolons.ability.effects.DC_Effect;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import main.ability.effects.OneshotEffect;
 
@@ -40,7 +40,7 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         return true;
     }
 
-    private int calculatePriority(DC_ActiveObj attack, Unit target) {
+    private int calculatePriority(DC_ActiveObj attack, BattleFieldObject target) {
         return DC_PriorityManager.getAttackPriority(attack, target);
     }
 

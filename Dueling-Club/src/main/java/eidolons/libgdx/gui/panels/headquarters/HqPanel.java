@@ -40,7 +40,7 @@ public class HqPanel extends TablePanel implements Blocking {
     HqHeroHeader header;
     HqHeroXp heroXp;
     HqVerticalValueTable heroValues;
-    HqHeroTraits traits;
+    HqTraitsPanel traits;
     HqControlPanel controlPanel;
     private TablePanel infoTable;
     private boolean editable;
@@ -70,7 +70,7 @@ public class HqPanel extends TablePanel implements Blocking {
         heroValues = new HqVerticalValueTable(PARAMS.LEVEL, G_PROPS.RACE, G_PROPS.DEITY);
         dynamicParams = new HqParamPanel(true);
         staticParams = new HqParamPanel(false);
-        traits = new HqHeroTraits();
+        traits = new HqTraitsPanel();
         controlPanel = new HqControlPanel();
         buttonPanel = new HqButtonPanel();
         infoTable = createInfoTable();
@@ -115,14 +115,15 @@ public class HqPanel extends TablePanel implements Blocking {
 
     private void addElements() {
         left();
-        add(header);
-        add(partyMembers).bottom();
+        add(partyMembers).left().colspan(3);
         row();
+
         add(heroViewPanel).left();
+
         add(infoTable).left();
         add(hqTabs);
-
         row();
+
         add(buttonPanel).colspan(3);
     }
 
@@ -130,11 +131,12 @@ public class HqPanel extends TablePanel implements Blocking {
     private TablePanel createInfoTable() {
         infoTable = new TablePanel<>();
         infoTable.top();
-//        infoTable.addActor(traits);
+        add(header).top();
         infoTable.add(heroValues).left();
         infoTable.add(heroXp).right(). row();
         infoTable.add(dynamicParams).center().colspan(2) . row();
         infoTable.add(staticParams).center().colspan(2).row();
+        infoTable.add(traits).center().colspan(2).row();
 
           masteryTable = new HqMasteryTable();
           attributeTable = new HqAttributeTable();
@@ -200,7 +202,8 @@ public class HqPanel extends TablePanel implements Blocking {
 
     @Override
     public void setUserObject(Object userObject) {
-
+//clear();
+//addElements();
 
         boolean first=false;
         List<HqHeroDataSource> heroes = partyMembers.getUserObject();
@@ -219,7 +222,7 @@ public class HqPanel extends TablePanel implements Blocking {
         super.setUserObject(userObject);
 
         partyMembers.setUserObject(heroes);
-        partyMembers.setUpdateRequired(first);
+        partyMembers.setUpdateRequired(true);
     }
 
     @Override

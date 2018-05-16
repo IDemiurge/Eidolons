@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
@@ -113,6 +114,9 @@ public class RadialMenu extends Group implements Closable {
         closeButton.setChildNodes(nodes);
 
         setParents(closeButton, null);
+
+        nodes.forEach(node-> node.setCustomRadialMenu(this));
+
         if (closeButton.getChildren().size < 1) {
             return;
         }
@@ -158,6 +162,7 @@ public class RadialMenu extends Group implements Closable {
         setVisible(true);
         updatePosition();
         setColor(new Color(1, 1, 1, 0));
+        adjustPosition();
 //  TODO fade out the old nodes       ActorMaster.addChained
 //         (this, ActorMaster.addFadeOutAction(this, getAnimationDuration()/2),
         ActorMaster.addFadeInAction(this, getAnimationDuration());
@@ -169,6 +174,18 @@ public class RadialMenu extends Group implements Closable {
             }
         });
         ActorMaster.addRotateByAction(closeButton, -90);
+    }
+
+    protected void adjustPosition() {
+        float w = getWidth();
+        float h = getHeight();
+
+        float x=MathMaster.minMax(getX(),
+         w/2, GdxMaster.getWidth()-w );
+        float y=MathMaster.minMax(getY(),
+         h/2, GdxMaster.getHeight()-h );
+        ActorMaster.addMoveToAction(this, x, y, 1);
+
     }
 
     protected float getMinCoef() {
@@ -191,6 +208,10 @@ public class RadialMenu extends Group implements Closable {
         if (makeSecondRing ) {
             coefficient = 3.5;
         }
+        int xMax=0;
+        int xMin=0;
+        int yMax=0;
+        int yMin=0;
 
         radius = (int) (72 * coefficient);
         final List<RadialValueContainer> children = currentNode.getChildNodes();
@@ -206,13 +227,27 @@ public class RadialMenu extends Group implements Closable {
             }
             int y = (int) (r * Math.sin(Math.toRadians(pos )));
             int x = (int) (r * Math.cos(Math.toRadians(pos )));
+
+            if (y<yMin)
+                yMin=y;
+            if (x<xMin)
+                xMin=x;
+            if (x>xMax)
+                xMax=x;
+            if (y>yMax)
+                yMax=y;
+
             Vector2 v = new Vector2(x + currentNode.getX(), y + currentNode.getY());
+
+
+
             if (isAnimated()) {
                 valueContainer.setPosition(currentNode.getX(), currentNode.getY());
                 ActorMaster.addMoveToAction(valueContainer, v.x, v.y, 0.5f);
             } else
                 valueContainer.setPosition(v.x, v.y);
         }
+        setSize(xMax-xMin,yMax-yMin);
     }
 
     protected boolean isMakeSecondRing(int size) {

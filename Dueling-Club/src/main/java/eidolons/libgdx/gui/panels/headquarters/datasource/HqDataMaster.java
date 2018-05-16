@@ -1,9 +1,12 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
+import eidolons.ability.InventoryTransactionManager;
+import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.PointMaster;
@@ -14,11 +17,18 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERA
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HqOperation;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
+import eidolons.system.text.NameMaster;
+import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.parameters.ParamMap;
+import main.content.values.properties.PROPERTY;
 import main.content.values.properties.PropMap;
+import main.data.DataManager;
+import main.data.xml.XML_Writer;
+import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
@@ -52,7 +62,44 @@ public class HqDataMaster {
     }
 
     public static void saveHero(HeroDataModel model) {
+        saveHero(model, false, false);
+    }
+
+    public static void saveHero(HeroDataModel model, boolean type, boolean asNew) {
         map.get(model.getHero()).save();
+        if (type) {
+            if (asNew)
+                model.setName(NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS));
+
+            updateType(model);
+            DataManager.addType(model.getType());
+            XML_Writer.writeXML_ForType(model.getType(), DC_TYPE.CHARS, model.getGroupingKey());
+        }
+    }
+
+    public static void updateType(HeroDataModel model) {
+        for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
+            String val = model.getProperty(sub);
+            String newVal = "";
+            for (String substring : StringMaster.openContainer(val)) {
+                if (!StringMaster.isInteger(substring))
+                    continue;
+                Integer id = StringMaster.getInteger(substring);
+                if (id != 0) {
+                    Obj obj = model.getGame().getObjectById(id);
+                    if (obj == null)
+                        continue;
+                    newVal += obj.getName() + ";";
+                }
+            }
+            if (newVal.isEmpty())
+                continue;
+            main.system.auxiliary.log.LogMaster.log(1,model+" updates type with " +
+             sub +"==" +newVal);
+            model.getType().setProperty(sub, newVal.substring(0,
+             newVal.length() - 1));
+        }
+
     }
 
     public static void operation(HqHeroDataSource dataSource,
@@ -64,12 +111,14 @@ public class HqDataMaster {
     public static void operation(HeroDataModel model,
                                  HQ_OPERATION operation,
                                  Object... args) {
+//        new Thread(() -> {
         HqDataMaster master = getInstance(model.getHero());
-
         master.applyOperation(model,
          operation, args);
         model.modified(operation, args);
         master.reset();
+//        }, operation+ " hq operation thread").start();
+
     }
 
     private static DC_HeroItemObj getItem(Unit hero, Object arg) {
@@ -107,27 +156,32 @@ public class HqDataMaster {
         map.clear();
     }
 
+    public static void undoAll(HeroDataModel entity) {
+        map.get(entity.getHero()).undoAll_();
+    }
+
+    public static void undo() {
+        undo(HqMaster.getActiveHero());
+    }
+
+    public static void undo(Unit hero) {
+        map.get(hero).undo_();
+    }
+
     public void save() {
         applyModifications();
 
     }
 
-    public static void undoAll(HeroDataModel entity) {
-        map.get(entity.getHero()).undoAll_();
-    }
     public void undoAll_() {
         undo_(true);
     }
-    public static void undo() {
-        undo(HqMaster.getActiveHero());
-    }
-        public static void undo(Unit hero) {
-        map.get(hero).undo_();
-    }
-    public void undo_( ) {
+
+    public void undo_() {
         undo_(false);
     }
-        public void undo_(boolean all) {
+
+    public void undo_(boolean all) {
         if (heroModel.getModificationList().isEmpty())
             return;
         List<HqOperation> list = heroModel.getModificationList();
@@ -139,7 +193,7 @@ public class HqDataMaster {
         heroModel.setModificationList(list);
         applyModifications(true);
         heroModel.reset();
-        if (HqPanel.getActiveInstance()!=null )
+        if (HqPanel.getActiveInstance() != null)
             HqPanel.getActiveInstance().setUserObject(new HqHeroDataSource(heroModel));
 //       reset();
     }
@@ -204,6 +258,10 @@ public class HqDataMaster {
                 break;
             case EQUIP_QUICK_SLOT:
                 hero.removeFromInventory(item);
+                if (item instanceof DC_WeaponObj){
+                    hero.addQuickItem(new DC_QuickItemObj(((DC_WeaponObj) item)));
+
+                } else
                 hero.addQuickItem((DC_QuickItemObj) item);
                 break;
         }
@@ -223,23 +281,26 @@ public class HqDataMaster {
                 break;
             case ATTRIBUTE_INCREMENT:
                 hero.modifyParameter((PARAMETER) args[0], 1, true);
-                PointMaster.increased((PARAMETER) args[0],   hero);
+                PointMaster.increased((PARAMETER) args[0], hero);
                 break;
             case MASTERY_INCREMENT:
                 hero.modifyParameter((PARAMETER) args[0], 1, true);
-                PointMaster.increased((PARAMETER) args[0],   hero);
+                PointMaster.increased((PARAMETER) args[0], hero);
                 SkillMaster.masteryIncreased(hero, (PARAMETER) args[0]);
                 break;
             case NEW_MASTERY:
+                hero.getType().addProperty(PROPS.UNLOCKED_MASTERIES,
+                 ((PARAMETER) args[0]).getName(), true);
+                hero.addParam((PARAMETER) args[0], "1", true);
                 break;
             case NEW_CLASS:
-                SkillMaster.newClass(hero,(ObjType) args[0]);
+                SkillMaster.newClass(hero, (ObjType) args[0]);
                 break;
             case NEW_PERK:
-                SkillMaster.newPerk(hero,(ObjType) args[0]);
+                SkillMaster.newPerk(hero, (ObjType) args[0]);
                 break;
             case NEW_SKILL:
-                SkillMaster.newSkill(hero,(ObjType) args[0]);
+                SkillMaster.newSkill(hero, (ObjType) args[0]);
                 break;
             case SKILL_RANK:
                 break;

@@ -158,7 +158,6 @@ public class GenericEnums {
         }
 
     }
-
     public enum DIFFICULTY {
         NEOPHYTE(100, 175, 75, 300, 350),
         NOVICE(125, 150, 85, 200, 250),

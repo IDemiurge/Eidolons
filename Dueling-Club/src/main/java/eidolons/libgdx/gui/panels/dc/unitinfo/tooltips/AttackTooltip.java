@@ -9,7 +9,7 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.gui.panels.dc.unitinfo.MultiValueContainer;
+import eidolons.libgdx.gui.panels.dc.unitinfo.old.MultiValueContainer;
 
 import java.util.ArrayList;
 import java.util.List;

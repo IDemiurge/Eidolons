@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_SpellObj;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.headquarters.HqActor;
@@ -33,6 +34,25 @@ implements HqActor {
     protected Vector2 getElementSize() {
         return new Vector2(64, 64);
 
+    }
+
+    @Override
+    public void init() {
+        if (isLabelBefore()){
+            add(new LabelX(getLabelText(), 16)).center().colspan(wrap);
+            row();
+        }
+        super.init();
+        if (!isLabelBefore()){
+            row();
+            add(new LabelX(getLabelText(), 16)).center().colspan(wrap);
+        }
+    }
+
+    protected abstract CharSequence getLabelText();
+
+    private boolean isLabelBefore() {
+        return false;
     }
 
     @Override

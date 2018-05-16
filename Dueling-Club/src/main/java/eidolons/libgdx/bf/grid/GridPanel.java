@@ -356,7 +356,7 @@ public class GridPanel extends Group {
 
                 map.put(b, () -> p.getRight().run(obj1));
             }
-            GuiEventManager.trigger(SHOW_BLUE_BORDERS, map);
+            GuiEventManager.trigger(SHOW_TARGET_BORDERS, map);
         });
 
         GuiEventManager.bind(DESTROY_UNIT_MODEL, param -> {
@@ -458,7 +458,17 @@ public class GridPanel extends Group {
     }
 
     private void setVisible(BattleFieldObject sub, boolean b) {
-        setVisible(viewMap.get(sub), b);
+        BaseView view = viewMap.get(sub);
+        //TODO refactor this quick fix!
+        if (sub.isWall()){
+            if (!b) {
+                if (view.isVisible()){
+                    return;
+                }
+            }
+        }
+
+        setVisible(view, b);
     }
 
     private void setVisible(BaseView view, boolean visible) {
@@ -810,5 +820,9 @@ public class GridPanel extends Group {
     public BattleFieldObject getObjectForView(BaseView source) {
         return new MapMaster<BattleFieldObject, BaseView>()
          .getKeyForValue(viewMap, source);
+    }
+
+    public void clearSelection() {
+        GuiEventManager.trigger(TARGET_SELECTION, null); ;
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.utils.Array;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.AnimMaster3d;
@@ -62,7 +63,10 @@ public class Weapon3dAnim extends ActionAnim {
         return AnimMaster3d.getWeaponActionSpeed(getActive());
 
     }
-
+    public String getTexturePath() {
+        return GdxImageMaster.getAttackActionPath(getActive(), getActive().getActiveWeapon());
+//        return active.getImagePath();
+    }
 
     @Override
     protected void resetSprites() {
@@ -73,16 +77,24 @@ public class Weapon3dAnim extends ActionAnim {
             return;
         sprite.setScale(getSpriteScale());
         sprite.setFlipX(checkFlipHorizontally());
-        getSprites().clear();
+
+        if (!isRandomized()) {
+            return;
+        }
         SpriteAnimation randomized = getRandomizedSprite(sprite);
-        getSprites().add(randomized);
         if (randomized.getRegions().size == 0)
             return;
+        getSprites().clear();
+        getSprites().add(randomized);
 //        int w = new FuncMaster<AtlasRegion>().getGreatest_(  (Arrays.asList(sprite.getRegions().toArray())),
 //         r -> r.getRegionWidth()).getRegionWidth();
 //        int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
 //         r -> r.getRegionHeight()).getRegionHeight();
 //        setSize(w, h);
+    }
+
+    private boolean isRandomized() {
+        return getActive().isMelee();
     }
 
     private SpriteAnimation getRandomizedSprite(SpriteAnimation sprite) {

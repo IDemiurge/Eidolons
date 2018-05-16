@@ -4,6 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.TargetRunnable;
@@ -108,10 +109,16 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     protected void mainHeroSelected(Party party, Unit hero) {
         party.getMembers().forEach(member -> {
-            if (chooseOneHero) {
-                if (member != hero)
-                    member.kill(member, false, true);
-            } else
+//            if (chooseOneHero) {
+//                if (member != hero)
+//                    member.kill(member, false, true);
+//            } else
+            try {
+                SkillMaster.initMasteryRanks(member);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            //TODO refactor
                 member.setMainHero(false);
         });
         hero.getOwner().setHeroObj(hero);

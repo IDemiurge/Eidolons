@@ -4,10 +4,15 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
@@ -24,6 +29,7 @@ import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
+import main.elements.targeting.SelectiveTargeting;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -52,6 +58,11 @@ public class GuiStage extends StageX implements StageWithClosable {
     private ToolTipManager tooltips;
     private HqPanel hqPanel;
     private boolean blackoutIn;
+    private   SuperContainer actionTooltipContainer;
+    private final LabelX actionTooltip = new LabelX("", 16);
+
+    private   SuperContainer infoTooltipContainer;
+    private final LabelX infoTooltip = new LabelX("", 16);
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -106,10 +117,20 @@ public class GuiStage extends StageX implements StageWithClosable {
         bindEvents();
 
         gameMenu.setZIndex(Integer.MAX_VALUE);
+
+        addActor(actionTooltipContainer = new SuperContainer(actionTooltip));
+        actionTooltipContainer.setAlphaTemplate(ALPHA_TEMPLATE.ATB_POS);
+        actionTooltipContainer.setAlphaFluctuationOn(true);
+
         addActor(hqPanel = new HqPanel());
         hqPanel.setPosition(GdxMaster.centerWidth(hqPanel),
          GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
+
+        addActor(infoTooltipContainer = new SuperContainer(infoTooltip));
+        infoTooltipContainer.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT_MAP);
+        infoTooltipContainer.setAlphaFluctuationOn(true);
+
         setDebugAll(false);
 
         setBlackoutIn(true);
@@ -132,9 +153,19 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (!Blackout.isOnNewScreen())
         if (isBlackoutIn())
         {
-            blackout.fadeOutAndBack( );
+            blackout.fadeOutAndBack(2f);
             setBlackoutIn(false);
         }
+
+        if (actionTooltipContainer.getActions().size==0)
+        {
+            actionTooltipContainer.setFluctuateAlpha(true);
+
+        }
+        if (infoTooltipContainer.getActions().size==0)
+            infoTooltipContainer.setFluctuateAlpha(true);
+
+
         super.act(delta);
         resetZIndices();
     }
@@ -178,8 +209,76 @@ public class GuiStage extends StageX implements StageWithClosable {
             hqPanel.open();
             hqPanel.setUserObject(p.get());
         });
+        GuiEventManager.bind(GuiEventType.SHOW_INFO_TEXT, p -> {
+            if (p.get() == null) {
+                hideTooltip(infoTooltip, 1f);
+            } else {
+                infoTooltipContainer.setContents(infoTooltip);
+                showTooltip(p.get().toString(), infoTooltip, 2f);
+            }
+        });
+        GuiEventManager.bind(GuiEventType.TARGET_SELECTION, p -> {
+            hideTooltip(actionTooltip, 0.5f);
+        });
+        GuiEventManager.bind(GuiEventType.ACTION_BEING_ACTIVATED, p -> {
+            DC_ActiveObj active = (DC_ActiveObj) p.get();
+            if (!active.isMine()) {
+                return;
+            }
+            actionTooltipContainer.setContents(actionTooltip);
+            if (active.getTargeting() instanceof SelectiveTargeting
+             && active.getTargetObj()==null && active .getRef(). getTargetObj()==null )
+                showTooltip("Select a target for " + active.getName()
+                 , actionTooltip, 0);
+            else {
+                showTooltip(active.getName()+"..."
+                 , actionTooltip, 2f);
+            }
+            hideTooltip(infoTooltip, 1f);
+        });
+
+        GuiEventManager.bind(GuiEventType.ACTION_BEING_RESOLVED, p -> {
+            DC_ActiveObj active = (DC_ActiveObj) p.get();
+            if (ExplorationMaster.isExplorationOn()) {
+                return;
+            }
+
+            showTooltip(active.getOwnerObj().getNameIfKnown()
+             + " activates " + active.getName(), actionTooltip, 3f);
+            hideTooltip(infoTooltip, 1f);
+
+        });
     }
 
+    private void showTooltip(String s, LabelX tooltip, float dur) {
+
+        tooltip.setText(s);
+        tooltip.getColor().a = 0;
+        tooltip.clearActions();
+        if (dur != 0) {
+            ActorMaster.addFadeInAndOutAction(tooltip, dur, true);
+        } else {
+            ActorMaster.addFadeInAction(tooltip, 0.5f);
+        }
+        tooltip.layout();
+        tooltip.pack();
+        SuperContainer container= (SuperContainer) tooltip.getParent();
+
+        container.setFluctuateAlpha(false);
+        tooltip.getParent().setPosition(
+         (1235 - tooltip.getWidth()) / 2,
+         200);
+    }
+
+    private void hideTooltip(LabelX tooltip, float dur) {
+        SuperContainer container= (SuperContainer) tooltip.getParent();
+        ActorMaster.addFadeOutAction(tooltip, dur, false);
+        if (container==null )
+            return;
+//        tooltip.clearActions();
+        container.setFluctuateAlpha(false);
+
+    }
     public void blackout(float dur) {
 
         blackout.fadeOutAndBack(dur);

@@ -8,12 +8,22 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import eidolons.entity.active.DC_ActionManager;
+import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.libgdx.texture.TextureCache;
+import main.content.DC_TYPE;
+import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.data.filesys.PathFinder;
+import main.entity.type.ObjType;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 /**
@@ -68,26 +78,27 @@ public class GdxImageMaster extends LwjglApplication {
         pixmap.dispose();
         return texture;
     }
+
     public static Pixmap getPixmap(Texture texture) {
         texture.getTextureData().prepare();
         return texture.getTextureData().consumePixmap();
     }
 
 
-        public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
-            final int width = src.getWidth();
-            final int height = src.getHeight();
-            Pixmap flipped = new Pixmap(width, height, src.getFormat());
+    public static Pixmap getFlippedPixmap(Pixmap src, boolean flipX, boolean flipY) {
+        final int width = src.getWidth();
+        final int height = src.getHeight();
+        Pixmap flipped = new Pixmap(width, height, src.getFormat());
 
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    int x1 = flipX ? width - x - 1 : x;
-                    int y1 = flipY ? height - y - 1 : y;
-                    flipped.drawPixel(x, y, src.getPixel(x1, y1));
-                }
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int x1 = flipX ? width - x - 1 : x;
+                int y1 = flipY ? height - y - 1 : y;
+                flipped.drawPixel(x, y, src.getPixel(x1, y1));
             }
-            return flipped;
         }
+        return flipped;
+    }
 
     public static Texture size(String path, int size, boolean write) {
         Texture texture = TextureCache.getOrCreate(path);
@@ -96,10 +107,10 @@ public class GdxImageMaster extends LwjglApplication {
                 return texture;
             }
         }
-        if (texture.equals(TextureCache.getEmptyTexture())){
+        if (texture.equals(TextureCache.getEmptyTexture())) {
             return null;
         }
-        path =getSizedImagePath(path, size);
+        path = getSizedImagePath(path, size);
 
         FileHandle handle = new FileHandle(
          PathFinder.getImagePath() +
@@ -126,28 +137,28 @@ public class GdxImageMaster extends LwjglApplication {
         return StringMaster.cropFormat(path) + " " + size + StringMaster.getFormat(path);
     }
 
-    public static void writeImage(FileHandle handle, Pixmap pixmap){
-        PixmapIO.writePNG(handle, pixmap );
+    public static void writeImage(FileHandle handle, Pixmap pixmap) {
+        PixmapIO.writePNG(handle, pixmap);
     }
 
     public static TextureRegion round(String path, boolean write) {
         if (!GdxMaster.isLwjglThread())
-            return null ;
-        TextureRegion textureRegion=TextureCache.getOrCreateR(path);
-        if (textureRegion.getTexture()==TextureCache.getEmptyTexture())
+            return null;
+        TextureRegion textureRegion = TextureCache.getOrCreateR(path);
+        if (textureRegion.getTexture() == TextureCache.getEmptyTexture())
             return textureRegion;
 
         path = getRoundedPath(path);
-        TextureRegion roundedRegion=TextureCache.getOrCreateR(path);
-        if (roundedRegion.getTexture()!=TextureCache.getEmptyTexture())
+        TextureRegion roundedRegion = TextureCache.getOrCreateR(path);
+        if (roundedRegion.getTexture() != TextureCache.getEmptyTexture())
             return roundedRegion;
 
-            Pixmap rounded = roundTexture(textureRegion);
-            FileHandle handle = new FileHandle(
-             PathFinder.getImagePath() + path);
-            if (write) {
-                PixmapIO.writePNG(handle, rounded);
-            }
+        Pixmap rounded = roundTexture(textureRegion);
+        FileHandle handle = new FileHandle(
+         PathFinder.getImagePath() + path);
+        if (write) {
+            PixmapIO.writePNG(handle, rounded);
+        }
         return TextureCache.getOrCreateR(path);
     }
 
@@ -200,7 +211,7 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static void drawTexture(int x, int y, int dX, int dY,
-                                    Texture texture, int times, Pixmap pixmap) {
+                                   Texture texture, int times, Pixmap pixmap) {
 
         texture.getTextureData().prepare();
         Pixmap pixmap2 = texture.getTextureData().consumePixmap();
@@ -215,6 +226,56 @@ public class GdxImageMaster extends LwjglApplication {
                                          int width, int height, Pixmap pixmap) {
         texture.getTextureData().prepare();
         Pixmap pixmap2 = texture.getTextureData().consumePixmap();
-            pixmap.drawPixmap(pixmap2, x, y,0,0, width,height);
+        pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
+
+    public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
+        return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
+         : getStandardAttackIcon(obj);
+//            if (obj.isOffhand()){
+//                Texture texture = GdxImageMaster.flip(path, true, false, true);
+//                return new TextureRegion(texture);
+//            }
+    }
+
+    private static String getStandardAttackIcon(DC_ActiveObj obj) {
+        DC_WeaponObj weapon = obj.getActiveWeapon();
+        return getStandardAttackIcon(obj.getType(), weapon.getType());
+    }
+
+    private static String getStandardAttackIcon(String baseType, String weaponGroup,
+                                                ObjType action) {
+        String path = StrPathBuilder.build("main", "actions", "standard attack",
+         weaponGroup,
+         baseType,
+         action.getName().replace(DC_ActionManager.OFFHAND, "") + ".png");
+        return path;
+    }
+
+    private static String getStandardAttackIcon(ObjType action, ObjType weapon) {
+        String baseType = weapon.getProperty(G_PROPS.BASE_TYPE);
+        String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
+        String path = getStandardAttackIcon(baseType, weaponGroup, action);
+        if (!ImageManager.isImage(path)) {
+            path = findClosestIcon(action, weapon);
+        }
+        return path;
+    }
+
+
+    private static String findClosestIcon(ObjType action, ObjType weapon) {
+        String path = "";
+        String subgroup = weapon.getSubGroupingKey();
+        String baseType = "";
+        String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
+        for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
+            baseType = sub.getProperty(G_PROPS.BASE_TYPE);
+            path = getStandardAttackIcon(baseType, weaponGroup, action);
+            if (ImageManager.isImage(path)) {
+                return path;
+            }
+        }
+        return weapon.getImagePath();
+    }
+
 }

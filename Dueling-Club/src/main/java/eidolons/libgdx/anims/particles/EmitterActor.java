@@ -89,6 +89,11 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     }
 
     public void updatePosition(float x, float y) {
+        main.system.auxiliary.log.LogMaster.log(1,this + " from " +
+         getX() +
+         " " +
+         getY() +
+         " pos set to " +x +" " + y);
         setPosition(x, y);
     }
 
@@ -105,7 +110,7 @@ public void hide(){
 }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha); if (parentAlpha!=1)
+        super.draw(batch, parentAlpha);
 //        effect.getEmitters().forEach(e ->
 //        {
 //            e.getTransparency().set(new ScaledNumericValue());
@@ -116,7 +121,7 @@ public void hide(){
 //            );
 //        }
 //        );
-
+//            if (parentAlpha!=1) //TODO why?
         effect.setPosition(getX(), getY());
 //        sprite = effect.getEmitters().first().getSprite();
 //        sprite.setRotation(new Random().nextInt(360));
@@ -181,6 +186,7 @@ public void hide(){
 
     public void reset() {
         getEffect().reset();
+
     }
 
     public String getPath() {

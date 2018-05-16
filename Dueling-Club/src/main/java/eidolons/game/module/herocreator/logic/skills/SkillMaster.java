@@ -55,6 +55,8 @@ public class SkillMaster {
     }
 
     public static void initMasteryRanks(Unit hero) {
+        if (hero.checkProperty(PROPS.MASTERY_RANKS_1))
+            return;
         Map<PARAMS, Integer> map = new XLinkedMap<>();
         for (PARAMS sub : DC_ContentValsManager.getMasteryParams()) {
             Integer val = hero.getIntParam(sub);

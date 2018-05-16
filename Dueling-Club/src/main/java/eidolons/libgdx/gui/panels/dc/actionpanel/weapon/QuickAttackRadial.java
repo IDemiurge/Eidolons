@@ -35,6 +35,11 @@ public class QuickAttackRadial extends RadialMenu {
     }
 
     @Override
+    protected void adjustPosition() {
+        super.adjustPosition();
+    }
+
+    @Override
     public void close() {
         super.close();
     }

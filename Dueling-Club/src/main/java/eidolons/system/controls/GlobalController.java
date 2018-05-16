@@ -75,6 +75,13 @@ public class GlobalController implements Controller {
     }
 
     private void escape() {
+
+        if ( DC_Game.game.getManager().isSelecting()
+//         DungeonScreen.getInstance().getGridPanel().isSelecting()
+        ){
+            DungeonScreen.getInstance().getGridPanel().clearSelection();
+            return;
+        }
         BattleGuiStage gui = DungeonScreen.getInstance().getGuiStage();
         if (gui.closeDisplayed())
             return;

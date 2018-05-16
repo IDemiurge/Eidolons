@@ -53,6 +53,7 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(),
                  true);
             case SELECT_SCENARIO:
+            case PLAY:
 //          TODO   case STANDOFF:
 //            case SKIRMISH:
                 return startMicro(getScenarioTypes(),
@@ -81,7 +82,12 @@ public class MainMenuHandler {
         return true;
     }
     public static List<ObjType> getScenarioTypes() {
-        return getScenarioTypes("Crawl");
+        return getScenarioTypes(getScenarioGroup());
+    }
+
+    private static String getScenarioGroup() {
+//        return "Crawl";
+        return "Beta";
     }
 
     public static List<ObjType> getScenarioTypes(String scenarioGroup) {

@@ -27,8 +27,8 @@ public class HqMaster {
 
     public static void openHqPanel() {
 
-        List<Unit> members = new ArrayList<>();
-        members.add(DC_Game.game.getManager().getMainHero());
+        List<Unit> members = new ArrayList<>(DC_Game.game.getMetaMaster().getPartyManager().getParty().getMembers());
+//        members.add(DC_Game.game.getManager().getMainHero());
         List<HqHeroDataSource> list = new ArrayList<>();
 
         for (Unit sub : members) {

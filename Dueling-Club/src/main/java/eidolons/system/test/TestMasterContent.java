@@ -48,7 +48,7 @@ public class TestMasterContent {
      + "inferior redwood staff;"
      + "inferior redwood staff;"
      + "inferior redwood staff;";
-    public static final boolean ALL_WEAPONS_TEST = true;
+    public static final boolean ALL_WEAPONS_TEST = false;
     private static final String DEFAULT_SKILLS = "Turn About;Leap;Side Step;Quick Turn;";
     private static final String testGroups = "Fire;Water;Air;Earth;";
     private static final String TEST_SKILLS = "Warcry: To Arms!;Druidic Visions;Roots of Wisdom;Coating Expert;Coating Mastery III;Toss Item;Feint Throw;Cleave (Axe);"
@@ -136,7 +136,7 @@ public class TestMasterContent {
     private static boolean addItems;
     private static boolean addActives;
     private static boolean first;
-    private static boolean weaponTest = true;
+    private static boolean weaponTest = false;
     String MAGIC_SCHOOLS = "";
     int circle;
     // TODO also give them for free to all units!

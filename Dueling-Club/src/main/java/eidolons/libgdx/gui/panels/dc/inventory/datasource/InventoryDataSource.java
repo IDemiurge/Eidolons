@@ -15,7 +15,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
  EquipDataSource {
 
     private final HqDataMaster dataMaster;
-    private InventoryValueContainerFactory factory;
+    private InventoryFactory factory;
     private HeroDataModel unit;
     private InventoryClickHandler handler;
 
@@ -24,7 +24,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
         this.unit = dataMaster.getHeroModel();
         handler = new InventoryClickHandlerImpl(
          dataMaster, dataMaster.getHeroModel());
-        factory = new InventoryValueContainerFactory(handler);
+        factory = new InventoryFactory(handler);
     }
 
     public InventoryClickHandler getHandler() {

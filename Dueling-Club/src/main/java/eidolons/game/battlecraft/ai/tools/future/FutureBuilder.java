@@ -33,7 +33,8 @@ public class FutureBuilder {
         // TODO basically, I have to use a copy of the gamestate...! To make it
         // precise...
         Map<String, Integer> cache = getCache(min_max_normal);
-
+        if (targetObj == null)
+            targetObj = active.getOwnerObj();
         Integer damage = cache.get(getCacheKey(active, targetObj));
         if (damage != null)
             return damage;

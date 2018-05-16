@@ -28,6 +28,7 @@ public class MainLauncher extends GenericLauncher {
 
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
+        WaitMaster.waitForInput(WAIT_OPERATIONS.XML_READY);
         if (args.length > 0) {
             String[] commands = args;
             if (commands.length == 1) {

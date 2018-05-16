@@ -1,6 +1,7 @@
 <Level><Custom_Props><Workspace_Group>IMPLEMENT</Workspace_Group>
 <Dungeon_Subfolder>crawl</Dungeon_Subfolder>
 <Dungeon_Main_Entrances>Eerie Portal(1-19);Dark Winding Downward Stairs(13-10)</Dungeon_Main_Entrances>
+<Map_Background>main\background\Old cemetery.png</Map_Background>
 </Custom_Props><Custom_Params><Bf_Width>32</Bf_Width>
 <Bf_Height>21</Bf_Height>
 </Custom_Params><Wall_Objects></Wall_Objects>

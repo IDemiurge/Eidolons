@@ -88,7 +88,7 @@ public class GridCell extends Group implements Borderable {
                             } catch (Exception e) {
                                 main.system.ExceptionMaster.printStackTrace(e);
                             }
-                    GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, GridCell.this);
+                    GuiEventManager.trigger(TARGET_SELECTION, GridCell.this);
 
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }

@@ -141,6 +141,9 @@ public class AI_Manager extends AiMaster {
                 action = actionManager.getForcedAction(getAI(unit));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
+                SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
+                 "'s Forced Action choice failed: " + e.getMessage());
+                return null;
             } finally {
                 running = false;
                 SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.AI, getUnit() +
@@ -286,4 +289,7 @@ public class AI_Manager extends AiMaster {
             return;
     }
 
+    public Action getDefaultAction(Unit activeUnit) {
+        return getAtomicAi().getAtomicWait(activeUnit);
+    }
 }

@@ -17,7 +17,10 @@ public class VerbatimContainer extends HqSpellContainer {
     protected void click(int button, DC_SpellObj spell) {
 
     }
-
+    @Override
+    protected String getLabelText() {
+        return "Verbatim";
+    }
     @Override
     protected boolean isOverlayOn() {
         return false;

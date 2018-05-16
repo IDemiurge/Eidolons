@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.datasource;
 
+import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
@@ -63,5 +64,9 @@ public class EntityDataSource<T extends Entity> {
 
     public int getIntParam(PARAMETER p) {
         return entity.getIntParam(p);
+    }
+
+    public String getValue(VALUE value) {
+        return getEntity().getValue(value);
     }
 }

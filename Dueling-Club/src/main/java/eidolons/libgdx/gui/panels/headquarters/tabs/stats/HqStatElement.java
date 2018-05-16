@@ -36,13 +36,13 @@ public class HqStatElement extends HqElement {
     boolean editable;
     PARAMS displayedParam;
     private boolean leftToRight;
-    private boolean disabled;
     private PARAMETER modifyParam;
+    private boolean disabled;
 
     public HqStatElement(PARAMS param, boolean mastery, boolean editable) {
         this.displayedParam = param;
         this.mastery = mastery;
-        leftToRight=mastery;
+        leftToRight = mastery;
         this.editable = editable;
 //   TODO      leftToRight = mastery;
         setSize(GDX.size(80), GDX.size(50));
@@ -80,12 +80,16 @@ public class HqStatElement extends HqElement {
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
                 super.onTouchDown(event, x, y);
-                if (PointMaster.canIncrease(dataSource.getEntity(), modifyParam)) {
-                    HqDataMaster.operation(dataSource,
-                     mastery
-                      ? HQ_OPERATION.MASTERY_INCREMENT
-                      : HQ_OPERATION.ATTRIBUTE_INCREMENT, modifyParam);
-                }
+                if (modifyParam==null )
+                    return;
+                if (disabled)
+                    return;
+//              redundant  if (PointMaster.canIncrease(dataSource.getEntity(), modifyParam)) {
+                HqDataMaster.operation(dataSource,
+                 mastery
+                  ? HQ_OPERATION.MASTERY_INCREMENT
+                  : HQ_OPERATION.ATTRIBUTE_INCREMENT, modifyParam);
+//                }
             }
         };
     }
@@ -99,6 +103,7 @@ public class HqStatElement extends HqElement {
         container.clearListeners();
         if (displayedParam != null) {
             button.setVisible(editable);
+            disabled=!PointMaster.canIncrease(dataSource.getEntity(), modifyParam);
             button.setDisabled(disabled);
             container.setImage(ImageManager.getValueIconPath(displayedParam));
             container.setValueText(dataSource.getParamRounded(displayedParam));
@@ -113,7 +118,7 @@ public class HqStatElement extends HqElement {
 
             container.getValueContainer().padLeft(5);
             container.getValueContainer().padRight(5);
-        }else
+        } else
             container.addListener(new ValueTooltip("Mastery Slot").getController());
 
         if (mastery) {
@@ -142,13 +147,6 @@ public class HqStatElement extends HqElement {
         this.editable = editable;
     }
 
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
 
     public PARAMETER getModifyParam() {
         return modifyParam;

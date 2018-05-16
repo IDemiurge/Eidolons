@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxColorMaster;
+import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.system.auxiliary.RandomWizard;
@@ -109,18 +110,23 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     @Override
     public void setBorder(TextureRegion texture) {
-        if (border != null) {
-            removeActor(border);
-        }
-        alphaGrowing = false;
-        fluctuatingAlpha = 0.75f;
+
+//        alphaGrowing = false;
+//        fluctuatingAlpha = 0.75f;
 
         if (texture == null) {
-            border = null;
+            ActorMaster.addFadeOutAction(border, 0.65f, true);
+//            border = null;
             borderTexture = null;
             setTeamColorBorder(false);
         } else {
+            if (border != null) {
+            removeActor(border);
+            }
             addActor(border = new Image(texture));
+            border.getColor().a=0;
+            ActorMaster.addFadeInAction(border, 0.65f );
+
             borderTexture = texture;
             updateBorderSize();
         }
@@ -219,7 +225,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
     }
 
     protected void alphaFluctuation(float delta) {
-        alphaFluctuation(border, delta);
+        if (isTeamColorBorder())
+            alphaFluctuation(border, delta);
     }
 
     protected void alphaFluctuation(Actor image, float delta) {

@@ -37,8 +37,8 @@ public class DefaultActionHandler {
     private static boolean moveToMotion(Unit source, Coordinates coordinates) {
 //        List<ActionPath> paths = source.getGame().getAiManager().getPathBuilder().getInstance(source)
 //         .build(new ListMaster<Coordinates>().getList(coordinates));
-if (!isMoveToOn())
-    return false;
+        if (!isMoveToOn())
+            return false;
         source.getGame().getMovementManager().cancelAutomove(source);
         new Thread(() -> {
             source.getGame().getMovementManager().moveTo(

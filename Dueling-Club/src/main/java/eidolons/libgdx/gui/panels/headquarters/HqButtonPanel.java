@@ -21,6 +21,12 @@ public class HqButtonPanel extends HqElement {
         HqDataMaster.saveHero(dataSource.getEntity());
         HqMaster.closeHqPanel();
     }
+    private void saveType() {
+        HqDataMaster.saveHero(dataSource.getEntity(), true, false);
+    }
+    private void saveTypeNew() {
+        HqDataMaster.saveHero(dataSource.getEntity(), true, true);
+    }
 
     private void viewInfo() {
         GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL, new UnitDataSource(dataSource.getEntity()));
@@ -33,9 +39,11 @@ public class HqButtonPanel extends HqElement {
     }
     public HqButtonPanel() {
         if (!CoreEngine.isJar())
-        add(new TextButtonX("Level Up", STD_BUTTON.GAME_MENU, () -> {
-            levelUp();
-        }));
+        {
+            add(new TextButtonX("Level Up", STD_BUTTON.GAME_MENU, () -> {  levelUp();}));
+            add(new TextButtonX("Save Type", STD_BUTTON.GAME_MENU, () -> { saveType();}));
+            add(new TextButtonX("Save as New", STD_BUTTON.GAME_MENU, () -> { saveTypeNew();}));
+        } else
             {
             add(new TextButtonX("View Info", STD_BUTTON.GAME_MENU, () -> {
                 viewInfo();

@@ -1,10 +1,7 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel.datasource;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
-import eidolons.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
@@ -13,11 +10,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.*;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.DC_TYPE;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
-import main.data.DataManager;
-import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -103,17 +96,19 @@ public class PanelActionsDataSource implements
              return valueContainer;
          })
          .collect(Collectors.toList());
-        ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
-        TextureRegion invTexture = TextureCache.getOrCreateR(type.getImagePath());
 
-        DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
-        if (action == null)
-            return list;
-        boolean valid = action.canBeManuallyActivated();
-        ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
-            action.clicked();
-        });
-        list.add(invButton);
+        // Now via special button!
+//        ObjType type = DataManager.getType(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()), DC_TYPE.ACTIONS);
+//        TextureRegion invTexture = TextureCache.getOrCreateR(type.getImagePath());
+//        DC_UnitAction action = unit.getAction(StringMaster.getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.name()));
+//        if (action == null)
+//            return list;
+//        boolean valid = action.canBeManuallyActivated();
+//        ActionValueContainer invButton = new ActionValueContainer(valid, invTexture, () -> {
+//            action.clicked();
+//        });
+//        list.add(invButton);
+
         for (int i = 0; i < unit.getRemainingQuickSlots() - 1; i++) {
             list.add(null);
         }

@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc.unitinfo;
+package eidolons.libgdx.gui.panels.dc.unitinfo.old;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Align;

@@ -185,7 +185,7 @@ public class StyleHolder {
         LabelStyle labelStyle = getSizedColoredLabelStyle(FONT, size, color);
         TextButtonStyle style = null;
         if (map != null) {
-            style = map.get(style);
+            style = map.get(labelStyle);
         } else {
             map = new HashMap<>();
             textButtonStyleMap.put(button, map);

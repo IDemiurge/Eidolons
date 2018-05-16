@@ -20,14 +20,15 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.bf.grid.*;
+import eidolons.libgdx.bf.grid.GenericGridView;
+import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.data.filesys.PathFinder;
@@ -85,6 +86,7 @@ public class OverlaysManager extends SuperActor {
             protected boolean isBattlefield() {
                 return true;
             }
+
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 checkShowTooltip(x, y);
@@ -94,12 +96,14 @@ public class OverlaysManager extends SuperActor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                try {
-                    ImmutablePair<Entity, OVERLAY> pair = getEntityAndOverlay(x, y);
-                    OverlayClickHander.handle(pair.getLeft(), pair.getRight());
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
+
+                ImmutablePair<Entity, OVERLAY> pair = getEntityAndOverlay(x, y);
+                if (pair != null)
+                    try {
+                        OverlayClickHander.handle(pair.getLeft(), pair.getRight());
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
 
             }
 
@@ -298,6 +302,11 @@ public class OverlaysManager extends SuperActor {
                     if (c instanceof GridUnitView) {
                         if (c.isVisible())
                             drawOverlaysForView(((GenericGridView) c), batch, x, y);
+                        else {
+                            //TODO grave/corpse???
+                            clearTooltip((Entity) c.getUserObject());
+
+                        }
                     }
 
                 }
@@ -310,22 +319,12 @@ public class OverlaysManager extends SuperActor {
 //        TODO  if (actor.isHovered()) {
         //emblem etc?
 //        }
-        BattleFieldObject obj = null;
-        if (actor instanceof LastSeenView) {
-            obj = DungeonScreen.getInstance().getGridPanel().
-             getObjectForView(((LastSeenView) actor).getParentView());
+        BattleFieldObject obj = actor.getUserObject();
 
-        } else {
-            obj = DungeonScreen.getInstance().getGridPanel().getObjectForView(actor);
-        }
-        if (obj == null) {
-            return;
-        }
         if (actor.getHpBar() != null)
-            if (GridMaster.isHpBarsOnTop()) {
                 if (checkOverlayForObj(HP_BAR, obj, actor))
                     drawOverlay(actor, HP_BAR, batch, obj, x, y);
-            }
+
         if (checkOverlayForObj(SPOTTED, obj, actor)) {
             drawOverlay(actor, SPOTTED, batch, obj, x, y);
         } else if (checkOverlayForObj(STEALTH, obj, actor)) {

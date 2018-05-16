@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.dc.unitinfo;
+package eidolons.libgdx.gui.panels.dc.unitinfo.old;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import eidolons.libgdx.gui.panels.TabbedPanel;

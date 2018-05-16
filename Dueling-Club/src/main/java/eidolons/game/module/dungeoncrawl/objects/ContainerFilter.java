@@ -34,6 +34,8 @@ public class ContainerFilter {
                  WEAPON_TYPE.MAGICAL.toString())) {
                     return true;
                 }
+                if (type.getName().contains("Pistol")) return true;
+                if (type.getName().contains("Bullet")) return true;
                 break;
             case ITEMS:
 //                if (type.getProperty(G_PROPS.ITEM_GROUP).equalsIgnoreCase(

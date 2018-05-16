@@ -14,9 +14,11 @@ import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
 /*
@@ -84,13 +86,15 @@ public class PerkGenerator {
 //                type.setParam(param, sub.values[level] + "");
 //                if (sub.percentage)
 //                    type.setProperty(G_PROPS.STD_BOOLS, STD_BOOLS.PERCENT_MOD.name());
-
-                String boni=param.getName()+"(" +sub.values[level];
+                float amount = sub.values[level];
+                String boni=param.getName()+"(" +amount;
                 if (sub.percentage)
                     boni += "%";
                 boni += ")";
                 type.setProperty(PROPS.PARAMETER_BONUSES,
                  boni);
+                type.setProperty(G_PROPS.DESCRIPTION,
+                 getDescription(sub, amount));
                 type.setProperty(PROPS.PERK_PARAM,
                  sub.toString());
 
@@ -103,7 +107,7 @@ public class PerkGenerator {
                 type.setParam(PARAMS.CIRCLE,
                  level);
                 type.setProperty(G_PROPS.IMAGE,
-                 getImageName(sub, level));
+                 getImage(sub, level));
                 type.setProperty(G_PROPS.GROUP, "Parameter");
 
                 //TODO image
@@ -112,7 +116,19 @@ public class PerkGenerator {
         }
     }
 
-    private static String getImageName(PERK_PARAM sub, int level) {
+    private static String getDescription(PERK_PARAM sub, float amount) {
+        return "Increases hero's " +
+         sub +" by " +amount;
+    }
+
+    private static String getImage(PERK_PARAM sub, int level) {
+//generate tiered via overlays
+        PARAMETER relatedValue = ContentValsManager.getPARAM(sub.name());
+        if (relatedValue != null) {
+            return StrPathBuilder.build(PathFinder. getPerkImagePath(),
+             relatedValue.getName() + ".png");
+        }
+        //mastery
 
         return Images.UNKNOWN_PERK;
     }

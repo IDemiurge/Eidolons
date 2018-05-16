@@ -12,20 +12,16 @@ import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Loop;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
-
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by JustMe on 9/9/2017.
  */
 public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
-    Lock lock = new ReentrantLock();
-    Condition waiting = lock.newCondition();
     private Thread realTimeThread;
     private MacroTimeMaster macroTimeMaster;
     private ExplorationMaster master;
@@ -41,7 +37,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
              signal();
          });
     }
-
 
 
     protected GameScreen getGdxScreen() {
@@ -62,6 +57,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             }
         }
         return super.startInNewThread();
+    }
+
+    public Thread getRealTimeThread() {
+        return realTimeThread;
     }
 
     @Override
@@ -97,22 +96,18 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     @Override
+    protected String getThreadName() {
+        return "Explore Game Loop";
+    }
+
+    @Override
     protected Boolean makeAction() {
         if (exited)
             return true;
         if (actionQueue.isEmpty()) {
             if (!master.getAiMaster().isAiActs()) {
-                lock.lock();
-                try {
-                    waiting.await();
-                } catch (InterruptedException ie){
-                //ignored
-                }
-                catch (Exception e1) {
-                    e1.printStackTrace();
-                } finally {
-                    lock.unlock();
-                }
+                lock();
+
             }
         }
         if (resetRequired) {
@@ -182,6 +177,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         waitForPause();
         return exited;
     }
+
 
     protected boolean checkActionInputValid(ActionInput playerAction) {
         if (!playerAction.getAction().canBeActivated(playerAction.getContext(), true))
@@ -253,12 +249,6 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         actionQueue.add(actionInput);
     }
 
-    public void signal() {
-        lock.lock();
-        waiting.signal();
-        lock.unlock();
-
-    }
 
     @Override
     protected void loopExit() {
@@ -267,6 +257,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 //        master.switchExplorationMode(false);
         if (ExplorationMaster.isExplorationOn()) //TODO refactor!
             super.loopExit();
+        else {
+            SpecialLogger.getInstance().appendSpecialLog(
+             SPECIAL_LOG.EXCEPTIONS, "Explore game loop failed to exit");
+        }
 
     }
 
@@ -274,7 +268,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected boolean roundLoop() {
         while (true) {
             if (activeUnit != Eidolons.getMainHero()) {
-                setActiveUnit(  Eidolons.getMainHero());
+                setActiveUnit(Eidolons.getMainHero());
             }
 
             Boolean result = makeAction();

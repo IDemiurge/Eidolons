@@ -1,6 +1,5 @@
 package eidolons.game.core;
 
-import eidolons.entity.active.DC_ActionManager.STD_SPEC_ACTIONS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -22,12 +21,19 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.SpecialLogger;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
 
@@ -36,6 +42,9 @@ import static main.system.GuiEventType.ACTIVE_UNIT_SELECTED;
  * Created by JustMe on 3/23/2017.
  */
 public class GameLoop {
+
+    protected Lock lock = new ReentrantLock();
+    protected Condition waiting = lock.newCondition();
 
     protected Unit activeUnit;
     protected DC_Game game;
@@ -47,8 +56,9 @@ public class GameLoop {
     protected boolean nextLevel;
     protected boolean exited;
     protected DequeImpl<ActionInput> actionQueue = new DequeImpl<>();
-    private Thread thread;
-    private boolean started;
+    protected Thread thread;
+    protected boolean started;
+    private boolean stopped;
 
     public GameLoop(DC_Game game) {
         this.game = game;
@@ -68,7 +78,7 @@ public class GameLoop {
 
         while (true) {
             //for JUnit
-            if (game.getUnits().isEmpty()){
+            if (game.getUnits().isEmpty()) {
                 continue;
             }
             if (!AiTrainingRunner.running) {
@@ -115,6 +125,15 @@ public class GameLoop {
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
         main.system.auxiliary.log.LogMaster.log(1, this + " exited!");
         setExited(false);
+
+        if (game.getLoop() != null)
+            if (game.getLoop() != this)
+                if (game.getGameLoopThread() != null)
+                    if (game.getGameLoopThread() != thread)
+                        return;
+
+        SpecialLogger.getInstance().appendSpecialLog(
+         SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
     }
 
     public Thread startInNewThread() {
@@ -297,21 +316,25 @@ public class GameLoop {
     protected ActionInput waitForAI() {
         Action aiAction =
          game.getAiManager().getAction(game.getManager().getActiveObj());
-        if (!aiAction.getActive().isChanneling())
+        boolean failed = false;
+        if (aiAction == null)
+            failed = true;
+        else if (!aiAction.getActive().isChanneling())
             if (!aiAction.canBeTargeted()) {
                 {
                     AI_Manager.getBrokenActions().add(aiAction.getActive());
-                    return new ActionInput(getActiveUnit().getAction(STD_SPEC_ACTIONS.Wait.name())
-                     , getActiveUnit());
+                    failed = true;
                 }
 
             }
+        if (failed)
+            aiAction = game.getAiManager().getDefaultAction(getActiveUnit());
         return new ActionInput(aiAction.getActive(), new Context(aiAction.getRef()));
     }
 
     protected ActionInput waitForPlayerInput() {
-        ActionInput input=(ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
-         System.out.println("Player action input: " +input );
+        ActionInput input = (ActionInput) WaitMaster.waitForInput(WAIT_OPERATIONS.ACTION_INPUT);
+        System.out.println("Player action input: " + input);
         return input;
     }
 
@@ -324,7 +347,16 @@ public class GameLoop {
     }
 
     public void setPaused(boolean paused) {
-        game.getLogManager().log(paused ? "Game paused" : "Game resumed");
+        setPaused(paused, false);
+    }
+
+    public void setPaused(boolean paused, boolean logged) {
+        if (logged)
+            if (CoreEngine.isIDE())
+                game.getLogManager().log(paused ? "Game paused" : "Game resumed");
+        if (paused)
+            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Game Paused");
+        else GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Game Resumed");
         GearActor.setPaused(paused);
         this.paused = paused;
         SuperActor.setAlphaFluctuationOn(!paused);
@@ -352,27 +384,9 @@ public class GameLoop {
         return activeUnit;
     }
 
-    public void setExited(boolean exited) {
-        this.exited = exited;
-        if (exited) {
-            main.system.auxiliary.log.LogMaster.log(1,this+" interrupting thread... " );
-            WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-
-//            if (Thread.currentThread() == thread)
-                try {
-                    game.getGameLoopThread().interrupt();
-                    main.system.auxiliary.log.LogMaster.log(1,this+" interrupted thread!" );
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-
-            if (this instanceof ExploreGameLoop){
-
-            }
-            else  {
-                actionInput(null);
-            }
-        }
+    public void setActiveUnit(Unit activeUnit) {
+        this.activeUnit = activeUnit;
+        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
     }
 
     protected boolean checkNextLevel() {
@@ -382,7 +396,7 @@ public class GameLoop {
         }
         if (!(this instanceof ExploreGameLoop)) {
             if (!game.isDebugMode())
-                return  false;
+                return false;
         }
         Coordinates c = game.getPlayer(true).getHeroObj().getCoordinates();
         Location location = (Location) game.getDungeonMaster().getDungeonWrapper();
@@ -398,20 +412,67 @@ public class GameLoop {
                 }
         return false;
     }
+
     public void togglePaused() {
-        setPaused(!isPaused());
+        setPaused(!isPaused(), true);
     }
 
     public Float getTime() {
         return game.getDungeonMaster().getExplorationMaster().getTimeMaster().getTime();
     }
 
-    public void setActiveUnit(Unit activeUnit) {
-        this.activeUnit = activeUnit;
-        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
-    }
-
     public boolean isExited() {
         return exited;
+    }
+
+    public void setExited(boolean exited) {
+        this.exited = exited;
+        if (exited) {
+            main.system.auxiliary.log.LogMaster.log(1, this + " interrupting thread... ");
+            WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
+
+//            if (Thread.currentThread() == thread)
+            try {
+                game.getGameLoopThread().interrupt();
+                main.system.auxiliary.log.LogMaster.log(1, this + " interrupted thread!");
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+            if (this instanceof ExploreGameLoop) {
+
+            } else {
+                actionInput(null);
+            }
+        }
+    }
+
+    public void stop() {
+        stopped = true;
+    }
+
+    public void resume() {
+        stopped = false;
+        signal();
+    }
+
+    public void signal() {
+        lock.lock();
+        waiting.signal();
+        lock.unlock();
+
+    }
+
+    public void lock() {
+        lock.lock();
+        try {
+            waiting.await();
+        } catch (InterruptedException ie) {
+            //ignored
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
     }
 }

@@ -8,10 +8,9 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.GuiEventManager;
+import main.system.EventType;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
@@ -34,21 +33,14 @@ public class ClassSlot extends HtNode {
     }
 
     @Override
-    protected void click() {
-        if (ListMaster.isNotEmpty(available)) {
-            GuiEventManager.trigger(GuiEventType.SHOW_CLASS_CHOICE, available);
-        } else {
-        }
+    protected EventType getSelectionEvent() {
+        return GuiEventType.SHOW_CLASS_CHOICE;
     }
 
     @Override
-    protected void doubleClick() {
-        if (ListMaster.isNotEmpty(available)) {
-            GuiEventManager.trigger(GuiEventType.SHOW_CLASS_CHOICE, available);
-        } else {
-        }
+    public List<ObjType> getAvailable() {
+        return available;
     }
-
     @Override
     protected String getTextPrefix() {
         return "Tier " + StringMaster.getRoman(tier) + " Class";

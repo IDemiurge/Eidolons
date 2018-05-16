@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.active.DefaultActionHandler;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import main.system.GuiEventManager;
 
-import static main.system.GuiEventType.CALL_BLUE_BORDER_ACTION;
+import static main.system.GuiEventType.TARGET_SELECTION;
 
 public class BaseView extends SuperActor {
     protected TextureRegion originalTexture;
@@ -53,7 +54,7 @@ public class BaseView extends SuperActor {
                         } catch (Exception e) {
                             main.system.ExceptionMaster.printStackTrace(e);
                         }
-                    GuiEventManager.trigger(CALL_BLUE_BORDER_ACTION, BaseView.this);
+                    GuiEventManager.trigger(TARGET_SELECTION, BaseView.this);
                 }
             }
         });
@@ -81,6 +82,11 @@ public class BaseView extends SuperActor {
         super.sizeChanged();
         portrait.setSize(getWidth(), getHeight());
 
+    }
+
+    @Override
+    public DC_Obj getUserObject() {
+        return (DC_Obj) super.getUserObject();
     }
 
     @Override

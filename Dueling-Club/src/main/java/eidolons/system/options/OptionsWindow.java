@@ -23,6 +23,8 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.system.options.Options.OPTION;
 import eidolons.system.options.OptionsMaster.OPTIONS_GROUP;
 import main.data.filesys.PathFinder;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
@@ -35,7 +37,6 @@ public class OptionsWindow extends VisWindow {
     private static OptionsWindow instance;
     private static boolean active;
     Stage stage;
-    Table root;
     Array<OptionsTab> tabs = new Array<>();
     private Map<OPTIONS_GROUP, Options> optionsMap;
 
@@ -77,6 +78,7 @@ public class OptionsWindow extends VisWindow {
 
     public void open(Map<OPTIONS_GROUP, Options> optionsMap
      , Stage stage) {
+        GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
         this.optionsMap = optionsMap;
         this.stage = stage;
         setVisible(true);
@@ -97,6 +99,7 @@ public class OptionsWindow extends VisWindow {
     protected void close() {
         super.close();
         active = false;
+        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
     }
 
     private Table init() {

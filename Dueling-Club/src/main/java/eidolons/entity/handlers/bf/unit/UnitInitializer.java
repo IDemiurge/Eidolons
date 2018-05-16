@@ -53,6 +53,7 @@ import static main.content.DC_TYPE.PERKS;
  */
 public class UnitInitializer extends BfObjInitializer<Unit> {
 
+
     public UnitInitializer(Unit entity, EntityMaster<Unit> entityMaster) {
         super(entity, entityMaster);
     }
@@ -148,7 +149,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         LibraryManager.initSpellbook(getEntity());
         List<DC_SpellObj> spellbook =
          new ArrayList<>(getEntity().getSpells());
-        spellbook.addAll( getGame().getManager().getSpellMaster().
+        spellbook.addAll(getGame().getManager().getSpellMaster().
          initSpellpool(getEntity(), PROPS.SPELLBOOK));
         getEntity().setSpellbook(spellbook);
         // init objects for all the known spells as well!
@@ -159,6 +160,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         initFeatContainer(PROPS.PERKS, PERKS,
          (DequeImpl<? extends DC_FeatObj>) getEntity().getPerks());
     }
+
     public void initClasses() {
         getEntity().setClasses(new DequeImpl<>());
         initFeatContainer(PROPS.CLASSES, DC_TYPE.CLASSES,
@@ -271,7 +273,6 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
 
-
     // TODO reqs: save() ; modify() ; resetSkillRanks() for (s s : skills)
     public void initFeatContainer(PROPERTY PROP, DC_TYPE TYPE,
                                   DequeImpl<? extends DC_FeatObj> list) {
@@ -288,9 +289,11 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                 feat = VariableManager.removeVarPart(feat);
             }
             ObjType featType = DataManager.getType(feat, TYPE);
-
+            if (featType == null) {
+                continue;
+            }
             if (featObj == null) {
-                    featObj =createFeatObj(featType );
+                featObj = createFeatObj(featType);
             }
             if (rank != 0) {
                 featObj.setParam(PARAMS.RANK, rank);
@@ -299,8 +302,8 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
     }
 
-    private DC_FeatObj createFeatObj(ObjType featType ) {
-       return SkillMaster.createFeatObj(featType, getRef());
+    private DC_FeatObj createFeatObj(ObjType featType) {
+        return SkillMaster.createFeatObj(featType, getRef());
     }
 
     public boolean checkItemChanged(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
@@ -426,4 +429,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
     }
 
+//    public boolean isItemsInitialized() {
+//        return getEntity().isItemsInitialized();
+//    }
 }

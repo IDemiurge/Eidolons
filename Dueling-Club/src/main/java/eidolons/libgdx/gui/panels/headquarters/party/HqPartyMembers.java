@@ -1,10 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.party;
 
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -26,16 +23,16 @@ public class HqPartyMembers extends HqPartyElement {
         clear();
         if (dataSource.size() <= 1)
             return;
-        Group group = (vertical) ? new VerticalGroup() : new HorizontalGroup();
+//        Group group = (vertical) ? new VerticalGroup() : new HorizontalGroup();
         for (HqHeroDataSource hero : dataSource) {
             HqHeroPreview preview = new HqHeroPreview(hero);
-            group.addActor(preview);
+             add(preview);
+             if (vertical)
+                 row();
             preview.addListener(getListener(preview, hero));
-            if (panel.getSelectedHero().equals(hero)) {
-                preview.setHighlight(true);
-            }
+            preview.setHighlight(panel.getSelectedHero().equals(hero));
         }
-        add(group);
+
     }
 
     private EventListener getListener(HqHeroPreview preview, HqHeroDataSource hero) {

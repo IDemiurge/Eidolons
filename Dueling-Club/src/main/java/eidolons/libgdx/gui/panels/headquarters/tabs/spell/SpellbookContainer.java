@@ -28,6 +28,11 @@ public class SpellbookContainer extends HqSpellContainer {
     }
 
     @Override
+    protected String getLabelText() {
+        return "Spellbook";
+    }
+
+    @Override
     protected boolean isOverlayOn() {
         return true;
     }

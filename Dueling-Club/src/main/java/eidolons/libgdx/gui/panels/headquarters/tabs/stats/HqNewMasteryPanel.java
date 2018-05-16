@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.DescriptionMaster;
+import eidolons.content.PARAMS;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -12,6 +15,7 @@ import eidolons.libgdx.gui.panels.headquarters.HqActor;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.system.math.DC_MathManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
@@ -30,7 +34,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     private final TextButtonX cancelButton;
 
     public HqNewMasteryPanel() {
-        super(4, DC_ContentValsManager.getMasteries().size());
+        super(6, DC_ContentValsManager.getMasteries().size());
         setVisible(false);
         cancelButton = new TextButtonX(STD_BUTTON.CANCEL, ()->{
             fadeOut();
@@ -42,6 +46,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
                 return;
             }
             fadeIn();
+            setPosition(getX(), GdxMaster.centerHeight(this));
             setUserObject(p.get());
         });
     }
@@ -50,12 +55,32 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
         return new Vector2(50, 50);
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        super.updateAct(delta);
+    }
+
+    @Override
+    public void clear() {
+        clearChildren();
+        clearListeners();
+    }
+
+    @Override
+    public void clearActions() {
+        super.clearActions();
+    }
 
     @Override
     public void init() {
         super.init();
-        row();
-        add(cancelButton).colspan(4).right();
+//        row();
+        add(cancelButton).colspan(wrap+1).right();
     }
 
     @Override
@@ -71,6 +96,9 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
         group.addActor(container);
 //        group.addActor(overlay);
         group.addListener(getListener(datum, container));
+
+        group.addListener(new ValueTooltip("Learn " + datum.getName()).getController());
+
         container.setSize(getElementSize().x, getElementSize().y);
         group.setSize(getElementSize().x, getElementSize().y);
         return group;
@@ -78,8 +106,16 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
 
     private EventListener getListener(PARAMETER datum, FadeImageContainer container) {
         return new SmartClickListener(container) {
+
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
+                if (event.getButton() == 1) {
+                    GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP,
+                     new ValueTooltip(DescriptionMaster.
+                      getMasteryDescription((PARAMS) datum)));
+
+                    return;
+                }
                 if (HqStatMaster.learnMastery(getUserObject().getEntity(), datum)) {
                     modelChanged();
                     fadeOut();

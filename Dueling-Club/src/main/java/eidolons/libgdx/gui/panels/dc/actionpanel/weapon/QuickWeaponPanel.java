@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.actionpanel.weapon;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.ActionInput;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
@@ -167,8 +168,10 @@ public class QuickWeaponPanel extends TablePanel {
                      dataSource.getWeapon());
 
                 } else {
+                    DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
+                    attack.setAutoSelectionOn(true);
                     getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(
-                     new ActionInput(getDataSource().getOwnerObj().getAttackAction(offhand)
+                     new ActionInput(attack
                       , new Context(getDataSource().getOwnerObj(), null))
                     );
                 }

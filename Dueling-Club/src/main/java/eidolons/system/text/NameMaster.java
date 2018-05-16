@@ -23,8 +23,6 @@ public class NameMaster {
     /*
     Feren Dauril
 	Edrail Neref Raurim 
-	
-	
 	Sileeve
 	Eerive
 	Yvrieec
@@ -435,13 +433,14 @@ public class NameMaster {
 
     public static String getUniqueVersionedName(List<ObjType> types, String name) {
         int i = 0;
-        String newName;
+        String newName=name;
         loop:
         while (true) {
             i++;
-            newName = name + StringMaster.VERSION_SEPARATOR + i;
+
             for (ObjType t : types) {
                 if (t.getName().equals(newName)) {
+                    newName = name + StringMaster.VERSION_SEPARATOR + i;
                     continue loop;
                 }
             }

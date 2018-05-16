@@ -70,7 +70,7 @@ public class TextButtonX extends TextButton implements EventListener {
             return true;
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
-        if (event.getType() == Type.touchDown) {
+        if (event.getType() == Type.touchUp) {
             runnable.run();
         }
         return true;

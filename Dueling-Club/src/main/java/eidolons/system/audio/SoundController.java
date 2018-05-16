@@ -32,8 +32,8 @@ public class SoundController {
 //        GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, p->playGuiSound(p,SHOW_UNIT_INFO_PANEL));
 //        GuiEventManager.bind(GuiEventType.GAME_PAUSED, p->playGuiSound(p,GAME_PAUSED));
 //        GuiEventManager.bind(GuiEventType.GAME_RESUMED, p->playGuiSound(p,GAME_RESUMED));
-//        GuiEventManager.bind(GuiEventType.SHOW_BLUE_BORDERS, p->playGuiSound(p,SHOW_BLUE_BORDERS));
-//        GuiEventManager.bind(GuiEventType.CALL_BLUE_BORDER_ACTION, p->playGuiSound(p,CALL_BLUE_BORDER_ACTION));
+//        GuiEventManager.bind(GuiEventType.SHOW_TARGET_BORDERS, p->playGuiSound(p,SHOW_TARGET_BORDERS));
+//        GuiEventManager.bind(GuiEventType.TARGET_SELECTION, p->playGuiSound(p,TARGET_SELECTION));
 //        GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_OFF, p->playGuiSound(p,GRID_OBJ_HOVER_OFF));
 //        GuiEventManager.bind(GuiEventType.GRID_OBJ_HOVER_ON, p->playGuiSound(p,GRID_OBJ_HOVER_ON));
     }
@@ -75,9 +75,9 @@ public class SoundController {
                 return STD_SOUNDS.CLOCK.getPath();
             case GAME_RESUMED:
                 return STD_SOUNDS.DONE2.getPath();
-            case SHOW_BLUE_BORDERS:
+            case SHOW_TARGET_BORDERS:
                 return STD_SOUNDS.CLICK_ACTIVATE.getPath();
-            case CALL_BLUE_BORDER_ACTION:
+            case TARGET_SELECTION:
                 return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();
             case GRID_OBJ_HOVER_OFF:
                 return STD_SOUNDS.CLICK_TARGET_SELECTED.getPath();

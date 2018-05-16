@@ -22,7 +22,10 @@ public class LastSeenMaster {
         if (obj instanceof Unit){
             obj.isPlayerCharacter();
         }
-        if (visible)
+        if (!obj.isDead())
+            view.getLastSeenView().fadeOut();
+        else
+        if (visible  )
         {
             view.getLastSeenView().remove();
             view.getParent().addActor(view.getLastSeenView());
@@ -30,9 +33,6 @@ public class LastSeenMaster {
         }
         else
         {
-            if (obj instanceof Unit){
-                obj.isPlayerCharacter();
-            }
             view.getLastSeenView().fadeOut();
         }
 

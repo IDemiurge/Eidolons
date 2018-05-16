@@ -43,12 +43,12 @@ public class UnitCalculator extends EntityCalculator<Unit> {
     }
 
     public int calculateRemainingMemory() {
-        int memory = getIntParam(PARAMS.MEMORIZATION_CAP) - calculateMemorizationPool();
+        int memory = getIntParam(PARAMS.MEMORIZATION_CAP) - calculateUsedMemory();
         setParam(PARAMS.MEMORY_REMAINING, memory);
         return memory;
     }
 
-    public int calculateMemorizationPool() {
+    public int calculateUsedMemory() {
         int memory = 0;
         for (ObjType type : DataManager.toTypeList(StringMaster
          .openContainer(getProperty(PROPS.MEMORIZED_SPELLS)), DC_TYPE.SPELLS)) {
@@ -153,7 +153,8 @@ public class UnitCalculator extends EntityCalculator<Unit> {
             weight += getEntity().getArmor().getIntParam(PARAMS.WEIGHT);
         }
 
-        if (game.isSimulation()) {
+        if (false) {
+//        TODO when is this necessary?    if (!getEntity().isItemsInitialized()) {
             for (ObjType type : DataManager.toTypeList(StringMaster
              .openContainer(getProperty(PROPS.INVENTORY)), C_OBJ_TYPE.ITEMS)) {
                 weight += type.getIntParam(PARAMS.WEIGHT);

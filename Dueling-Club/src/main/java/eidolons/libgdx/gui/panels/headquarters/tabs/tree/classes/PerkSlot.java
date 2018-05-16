@@ -5,10 +5,11 @@ import eidolons.entity.obj.attach.Perk;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
-import eidolons.libgdx.gui.tooltips.Tooltip;
+import eidolons.libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
 import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -29,10 +30,6 @@ public class PerkSlot extends HtNode {
         super(tier, Images.SMALL_TIER, Images.DIAMOND_OVERLAY, Images.DIAMOND_UNDERLAY);
     }
 
-    @Override
-    protected Tooltip getTooltip() {
-        return null;
-    }
 
     @Override
     public void setUserObject(Object userObject) {
@@ -43,9 +40,20 @@ public class PerkSlot extends HtNode {
     @Override
     protected void click() {
         if (ListMaster.isNotEmpty(available)) {
+            SlotSelectionRadialMenu.setActiveNode(this);
             GuiEventManager.trigger(GuiEventType.SHOW_PERK_CHOICE, available);
         } else {
         }
+    }
+
+    @Override
+    protected EventType getSelectionEvent() {
+        return GuiEventType.SHOW_PERK_CHOICE;
+    }
+
+    @Override
+    public List<ObjType> getAvailable() {
+        return available;
     }
 
     @Override

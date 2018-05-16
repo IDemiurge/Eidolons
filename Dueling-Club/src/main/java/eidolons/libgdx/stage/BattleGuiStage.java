@@ -14,7 +14,7 @@ import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
-import eidolons.libgdx.gui.panels.dc.unitinfo.UnitInfoPanel;
+import eidolons.libgdx.gui.panels.dc.unitinfo.old.UnitInfoPanel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -47,11 +47,16 @@ public class BattleGuiStage extends GuiStage {
         inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
         this.addActor(inventoryForm);
 
+
+
+
     }
+
 
 
     protected void bindEvents() {
         super.bindEvents();
+
         GuiEventManager.bind(GuiEventType.GAME_FINISHED, p -> {
             if (outcomePanel != null)
                 outcomePanel.remove();

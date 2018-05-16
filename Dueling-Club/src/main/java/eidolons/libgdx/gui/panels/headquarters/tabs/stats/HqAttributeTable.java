@@ -24,7 +24,7 @@ public class HqAttributeTable extends HqStatTable {
 
     @Override
     protected String getPointsText() {
-        return "Attribute pts";
+        return "Attribute pts             ";
     }
 
     @Override

@@ -134,10 +134,10 @@ public class VisionRule {
         //is hostile
         if (observer.isDead())
             return false;
-        if (observer.isUnconscious())
-            return false;
         if (observer.isPlayerCharacter())
             return true;
+        if (observer.isUnconscious())
+            return false;
         else if (getPlayerUnseenMode()) {
             return false;
         }

@@ -123,9 +123,9 @@ public class SpriteAnimation extends Animation<TextureRegion> {
         }
         float alpha = this.alpha;
         drawTextureRegion(batch, currentFrame, alpha, offsetX, offsetY);
-//        offsets.add
+
         try {
-            for (int i = 1; i < getFrameNumber() - 1; ) {
+            for (int i = 1; i < getTrailingFramesNumber(); ) {
 
                 TextureRegion frame = getOffsetFrame(stateTime, -i);
                 if (frame == null) {
@@ -143,6 +143,11 @@ public class SpriteAnimation extends Animation<TextureRegion> {
             main.system.ExceptionMaster.printStackTrace(e);
         }
         return true;
+    }
+
+    private int getTrailingFramesNumber() {
+        return 0;
+//        return (int) (getFrameNumber() - 1);
     }
 
     private void drawTextureRegion(Batch batch, TextureRegion currentFrame, float alpha

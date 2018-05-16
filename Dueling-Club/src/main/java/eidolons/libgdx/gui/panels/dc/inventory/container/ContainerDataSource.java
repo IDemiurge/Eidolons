@@ -7,10 +7,9 @@ import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
-import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainerFactory;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import main.system.auxiliary.data.ListMaster;
-import main.system.datatypes.DequeImpl;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
 public class ContainerDataSource implements InventoryTableDataSource {
 
     private List<DC_HeroItemObj> items;
-    private InventoryValueContainerFactory factory;
+    private InventoryFactory factory;
     private DC_Obj obj;
     private ContainerClickHandler handler;
 
@@ -34,7 +33,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
             items = obj.getGame().getDroppedItemManager().getDroppedItems(obj);
         }
         handler = new ContainerClickHandler(obj.getImagePath(), items, unit, obj);// obj.getGame().getInventoryManager().getClickHandler();
-        factory = new InventoryValueContainerFactory(handler);
+        factory = new InventoryFactory(handler);
     }
 
     public ContainerClickHandler getHandler() {

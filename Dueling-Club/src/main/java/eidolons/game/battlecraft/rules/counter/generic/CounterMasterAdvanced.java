@@ -1,6 +1,6 @@
 package eidolons.game.battlecraft.rules.counter.generic;
 
-import eidolons.entity.obj.unit.Unit;
+import eidolons.entity.obj.BattleFieldObject;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.COUNTER_INTERACTION;
 import main.content.enums.entity.UnitEnums.COUNTER_OPERATION;
@@ -20,7 +20,7 @@ public class CounterMasterAdvanced {
         }
     }
 
-    public static void afterRoundEnds(Unit unit) {
+    public static void afterRoundEnds(BattleFieldObject unit) {
 //some interactions should happen immediately - e.g. moist vs blaze
 // so we need to Interact, Convert and Transfer... what's the order? probably exactly that!
         Map<COUNTER, Integer> map = createCounterMap(unit);
@@ -47,7 +47,7 @@ public class CounterMasterAdvanced {
         }));
     }
 
-    private static int getMaxConvertionValue(Unit unit, COUNTER counter, COUNTER counter2, Integer value) {
+    private static int getMaxConvertionValue(BattleFieldObject unit, COUNTER counter, COUNTER counter2, Integer value) {
         return 0;
     }
 
@@ -55,7 +55,7 @@ public class CounterMasterAdvanced {
         return counter;
     }
 
-    private static Map<COUNTER, Integer> createCounterMap(Unit unit) {
+    private static Map<COUNTER, Integer> createCounterMap(BattleFieldObject unit) {
         Map<COUNTER, Integer> map = new XLinkedMap<>();
         for (DC_CounterRule rule : unit.getGame().getRules().getCounterRules()) {
             COUNTER c = getCounter(rule.getCounterName());
@@ -66,7 +66,7 @@ public class CounterMasterAdvanced {
         return map;
     }
 
-    private static int getMaxInteractionValue(Unit unit, COUNTER counter, COUNTER counter2, Integer value, Integer value2) {
+    private static int getMaxInteractionValue(BattleFieldObject unit, COUNTER counter, COUNTER counter2, Integer value, Integer value2) {
         //TODO
         return Math.min(value, value2);
     }
@@ -75,7 +75,7 @@ public class CounterMasterAdvanced {
         return CounterMaster.getCounter(counterName, true);
     }
 
-    public static void afterActionDone(Unit unit) {
+    public static void afterActionDone(BattleFieldObject unit) {
 
     }
 
@@ -226,7 +226,7 @@ public class CounterMasterAdvanced {
 
     public static void interact(COUNTER from, COUNTER to,
                                 COUNTER_INTERACTION interactionType,
-                                Integer max, Unit unit) {
+                                Integer max, BattleFieldObject unit) {
 
 
         switch (interactionType) {
@@ -260,12 +260,12 @@ public class CounterMasterAdvanced {
         }
     }
 
-    private static void removeCounters(COUNTER counter, Integer amount, Unit unit) {
+    private static void removeCounters(COUNTER counter, Integer amount, BattleFieldObject unit) {
         int toValue = unit.getCounter(counter) - amount;
         unit.setCounter(counter.getName(), toValue);
     }
 
-    private static void setCounters(COUNTER counter, Integer amount, Unit unit) {
+    private static void setCounters(COUNTER counter, Integer amount, BattleFieldObject unit) {
         if (amount == 0) {
             unit.removeCounter(counter.getName());
             return;
@@ -278,18 +278,18 @@ public class CounterMasterAdvanced {
         unit.setCounter(counter.getName(), amount);
     }
 
-    public static void transform(COUNTER counter, Boolean upOrDownTransform, Integer max, Unit target) {
+    public static void transform(COUNTER counter, Boolean upOrDownTransform, Integer max, BattleFieldObject target) {
         COUNTER to = upOrDownTransform ? counter.getUp() : counter.getDown();
         convertCounters(counter, to, max, target);
     }
 
     public static void convertCounters(COUNTER from,
-                                       COUNTER to, int max, Unit unit) {
+                                       COUNTER to, int max, BattleFieldObject unit) {
         convertCounters(from, to, max, unit, unit);
     }
 
     public static void convertCounters(COUNTER from,
-                                       COUNTER to, int max, Unit unitFrom, Unit unitTo) {
+                                       COUNTER to, int max, BattleFieldObject unitFrom, BattleFieldObject unitTo) {
         int amount = Math.min(max, unitFrom.getCounter(from));
         int fromValue = unitFrom.getCounter(from) - amount;
         int toValue = unitFrom.getCounter(to) + amount;
@@ -300,7 +300,7 @@ public class CounterMasterAdvanced {
     }
 
 
-    public static void operation(COUNTER counter, COUNTER_OPERATION operation, Integer amount, Unit source, Unit target) {
+    public static void operation(COUNTER counter, COUNTER_OPERATION operation, Integer amount, BattleFieldObject source, BattleFieldObject target) {
         switch (operation) {
             case TRANSFER_TO:
                 convertCounters(counter, counter, amount, source, target);

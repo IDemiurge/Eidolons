@@ -7,6 +7,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.game.core.game.Game;
+import main.system.auxiliary.StringMaster;
 
 import javax.swing.*;
 
@@ -127,4 +128,13 @@ public class ObjType extends Entity {
         this.model = model;
     }
 
+    @Override
+    protected void putProperty(PROPERTY prop, String value) {
+        if (prop == G_PROPS.MAIN_HAND_ITEM) {
+            if (StringMaster.isInteger(value)) {
+                return;
+            }
+        }
+        super.putProperty(prop, value);
+    }
 }

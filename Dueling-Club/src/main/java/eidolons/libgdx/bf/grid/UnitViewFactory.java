@@ -76,6 +76,8 @@ public class UnitViewFactory {
         ClickListener listener = createListener(bfObj);
         view.addListener(listener);
         view.getInitiativeQueueUnitView().addListener(listener);
+
+        view.setUserObject(bfObj);
         return view;
     }
 
@@ -85,6 +87,7 @@ public class UnitViewFactory {
         tooltip.setUserObject(UnitViewTooltipFactory.create(bfObj));
         view.addListener(tooltip.getController());
         view.addListener(createListener(bfObj));
+        view.setUserObject(bfObj);
         return view;
     }
 
@@ -158,6 +161,7 @@ public class UnitViewFactory {
             view.setDirection(map.get(bfObj));
         }
 
+        view.setUserObject(bfObj);
         return view;
     }
 }
