@@ -29,7 +29,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         DEFAULT_ACTIONS(true),
 //        ALT_DEFAULT_ACTIONS,
 
-        RANDOM_HERO(true),
+        RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
 

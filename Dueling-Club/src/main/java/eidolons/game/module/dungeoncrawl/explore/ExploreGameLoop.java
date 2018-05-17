@@ -42,7 +42,11 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
     protected GameScreen getGdxScreen() {
         return DungeonScreen.getInstance();
     }
-
+    @Override
+    public void resume() {
+        super.resume();
+        startRealTimeThread();
+    }
     @Override
     public Thread startInNewThread() {
         if (!CoreEngine.isGraphicsOff()) {
@@ -51,12 +55,17 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             getGdxScreen().setRealTimeGameLoop(this);
         }
         if (!CoreEngine.isJUnit()) {
-            if (realTimeThread == null) {
-                realTimeThread = new RealTimeThread(this);
-                realTimeThread.start();
-            }
+//            if (realTimeThread == null)
+                startRealTimeThread();
+
         }
         return super.startInNewThread();
+    }
+
+    private void startRealTimeThread() {
+
+        realTimeThread = new RealTimeThread(this);
+        realTimeThread.start();
     }
 
     public Thread getRealTimeThread() {
@@ -100,10 +109,14 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         return "Explore Game Loop";
     }
 
+
+
     @Override
     protected Boolean makeAction() {
         if (exited)
             return true;
+        if (isStopped())
+            lock();
         if (actionQueue.isEmpty()) {
             if (!master.getAiMaster().isAiActs()) {
                 lock();
@@ -234,6 +247,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
     @Override
     public void actionInput(ActionInput actionInput) {
+        if (isStopped()){
+            main.system.auxiliary.log.LogMaster.log(1,"action input in stopped " );
+            return ;
+        }
         if (isPaused())
             return;
         if (ExplorationMaster.isWaiting()) {
@@ -251,12 +268,12 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
     @Override
-    protected void loopExit() {
+    protected void loopExited() {
 //            if (ExplorationMaster.checkExplorationSupported(game)) {
 //                WaitMaster.receiveInput(WAIT_OPERATIONS.BATTLE_FINISHED, false);
 //        master.switchExplorationMode(false);
         if (ExplorationMaster.isExplorationOn()) //TODO refactor!
-            super.loopExit();
+            super.loopExited();
         else {
             SpecialLogger.getInstance().appendSpecialLog(
              SPECIAL_LOG.EXCEPTIONS, "Explore game loop failed to exit");
@@ -276,19 +293,21 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
                 return false;
             if (result != null) {
                 if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
-                    return false;
+                    break;
                 }
                 if (checkNextLevel()) {
                     game.getBattleMaster().getOutcomeManager().next();
                     game.getVisionMaster().refresh();
-                    return false;
+                    break;
                 }
                 if (result) {
                     break;
                 }
             }
             if (!ExplorationMaster.isExplorationOn())
-                return true;
+            {
+                lock();
+            }
         }
         return true;
     }

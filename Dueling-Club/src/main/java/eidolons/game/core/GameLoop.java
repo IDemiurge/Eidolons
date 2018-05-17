@@ -69,6 +69,7 @@ public class GameLoop {
     }
 
     public void start() {
+        stopped =false;
         if (!CoreEngine.isGraphicsOff()) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         }
@@ -81,29 +82,19 @@ public class GameLoop {
             if (game.getUnits().isEmpty()) {
                 continue;
             }
-            if (!AiTrainingRunner.running) {
-                try {
-                    if (!roundLoop())
-                        break;
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                }
-            } else
-                try {
-                    {
-                        if (!roundLoop())
-                            break;
-                    }
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+            try {
+                if (!roundLoop())
                     break;
-                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
         }
-        loopExit();
+        loopExited();
         return;
     }
 
-    protected void loopExit() {
+    protected void loopExited() {
         LogMaster.log(1, "Game Loop exit " + this);
         if (AiTrainingRunner.running) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
@@ -137,15 +128,22 @@ public class GameLoop {
     }
 
     public Thread startInNewThread() {
-        if (thread == null) {
-            thread = new Thread(() -> {
-                start();
-            }, getThreadName());
-
-            thread.start();
-            LogMaster.log(1, "Game Loop started " + this);
+        if (thread != null) {
+            LogMaster.log(1, "Game Loop ALREADY started " + this);
+            try {
+                thread.interrupt();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
-        LogMaster.log(1, "Game Loop ALREADY started " + this);
+        thread = new Thread(() -> {
+            start();
+        }, getThreadName());
+
+        thread.start();
+        LogMaster.log(1, "Game Loop started " + this);
+
+        started = true;
         return thread;
     }
 
@@ -156,9 +154,15 @@ public class GameLoop {
     protected boolean roundLoop() {
         game.getStateManager().newRound();
         while (true) {
-
-            if (exited || ExplorationMaster.isExplorationOn())
+            if (stopped) {
+                lock();
+            }
+            if (exited)
                 return false;
+            if (ExplorationMaster.isExplorationOn()) {
+                main.system.auxiliary.log.LogMaster.log(1, "COMBAT LOOP EXITS FROM EXPLORE!");
+                lock();
+            }
             Boolean result = game.getTurnManager().nextAction();
             if (result == null) {
                 break;
@@ -193,12 +197,6 @@ public class GameLoop {
                 break;
             }
         }
-        if (skippingToNext)
-            return false;
-        if (aftermath)
-            if (game.getBattleMaster().getOutcomeManager().checkOutcomeClear()) {
-                return false;
-            }
         return game.getManager().endRound();
     }
 
@@ -364,13 +362,6 @@ public class GameLoop {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_PAUSE_DONE, true);
     }
 
-    public void setSkippingToNext(boolean skippingToNext) {
-        this.skippingToNext = skippingToNext;
-    }
-
-    public void setAftermath(boolean aftermath) {
-        this.aftermath = aftermath;
-    }
 
     public void queueActionInput(ActionInput actionInput) {
         actionQueue.add(actionInput);
@@ -381,6 +372,8 @@ public class GameLoop {
     }
 
     public Unit getActiveUnit() {
+        if (activeUnit == null)
+            return Eidolons.getMainHero();
         return activeUnit;
     }
 
@@ -449,11 +442,17 @@ public class GameLoop {
 
     public void stop() {
         stopped = true;
+
+
     }
 
     public void resume() {
         stopped = false;
         signal();
+    }
+
+    public boolean isStopped() {
+        return stopped;
     }
 
     public void signal() {
@@ -475,4 +474,9 @@ public class GameLoop {
             lock.unlock();
         }
     }
+
+    public boolean isStarted() {
+        return started;
+    }
+
 }

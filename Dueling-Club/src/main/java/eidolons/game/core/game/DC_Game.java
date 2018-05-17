@@ -30,6 +30,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.rules.DC_Rules;
 import eidolons.game.battlecraft.rules.combat.attack.DC_AttackMaster;
 import eidolons.game.battlecraft.rules.combat.damage.ArmorMaster;
+import eidolons.game.core.CombatLoop;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.GenericTurnManager;
 import eidolons.game.core.atb.AtbController;
@@ -121,7 +122,10 @@ public class DC_Game extends MicroGame {
     protected boolean AI_ON = true;
 
     protected Thread gameLoopThread;
+    protected Thread exploreGameLoopThread;
     protected GameLoop loop;
+    protected GameLoop combatLoop;
+    protected ExploreGameLoop exploreLoop;
     protected LaunchDataKeeper dataKeeper;
     @Refactor
     protected Map<BattleFieldObject, Map<String, DC_HeroAttachedObj>> simulationCache; //to simGame!
@@ -142,9 +146,15 @@ public class DC_Game extends MicroGame {
 
         setState(new DC_GameState(this));
         initMasters();
+        initGameLoops();
         init();
     }
 
+    public void initGameLoops() {
+        exploreLoop = new ExploreGameLoop(this);
+        combatLoop = new CombatLoop(this);
+
+    }
     protected void initMasters() {
 
         master = new DC_GameObjMaster(this);
@@ -173,11 +183,11 @@ public class DC_Game extends MicroGame {
             return;
         musicMaster = MusicMaster.getInstance();
         if (MusicMaster.isOn())
-        if (musicMaster.isRunning()) {
-            musicMaster.resume();
-        } else {
-            musicMaster.startLoop();
-        }
+            if (musicMaster.isRunning()) {
+                musicMaster.resume();
+            } else {
+                musicMaster.startLoop();
+            }
     }
 
     protected CombatMaster createCombatMaster() {
@@ -231,7 +241,7 @@ public class DC_Game extends MicroGame {
 
         getRules().getIlluminationRule().clearCache();
         inventoryTransactionManager = new InventoryTransactionManager(this);
-        inventoryManager = new DC_InventoryManager( );
+        inventoryManager = new DC_InventoryManager();
 
         battleMaster.init();
         dungeonMaster.init();
@@ -263,8 +273,8 @@ public class DC_Game extends MicroGame {
         battleMaster.startGame();
 
 
-            if (getMetaMaster() != null)
-                getMetaMaster().gameStarted();
+        if (getMetaMaster() != null)
+            getMetaMaster().gameStarted();
         dungeonMaster.gameStarted();
 
         if (dungeonMaster.getExplorationMaster() != null) {
@@ -284,32 +294,46 @@ public class DC_Game extends MicroGame {
         getVisionMaster().refresh();
     }
 
+
     public void startGameLoop(boolean first) {
         if (MusicMaster.isOn())
             GuiEventManager.trigger(MUSIC_START, null);
-        getState().gameStarted(first);
 
-        if (first) {
-            if (loop != null)
-                loop.setExited(true);
-            loop = createGameLoop();
-            if (ExplorationMaster.isExplorationOn()) {
-                getStateManager().newRound(); //for reset
-//                if (!first)
-//
-            }
-            setGameLoopThread(loop.startInNewThread());
+        boolean explore = ExplorationMaster.isExplorationOn();
+        getState().gameStarted(first); // ?
+
+        if (explore) {
+            startExploration();
+        } else {
+            startCombat();
         }
+
         setRunning(true);
         setStarted(true);
 
     }
 
-    protected GameLoop createGameLoop() {
-        if (ExplorationMaster.isExplorationOn())
-            return new ExploreGameLoop(this);
-        return new GameLoop(this);
+    private void startExploration() {
+        loop = exploreLoop;
+        if (combatLoop.isStarted())
+            combatLoop.stop();
+        if (exploreLoop.isStarted())
+            exploreLoop.resume();
+        else
+            setGameLoopThread(exploreLoop.startInNewThread());
+
+        getStateManager().newRound();
     }
+
+    private void startCombat() {
+        loop = combatLoop;
+        exploreLoop.stop();
+        if (combatLoop.isStarted())
+            combatLoop.resume();
+        else
+            setGameLoopThread(loop.startInNewThread());
+    }
+
 
     public DC_StateManager getStateManager() {
         return getManager().getStateManager();
@@ -801,17 +825,17 @@ public class DC_Game extends MicroGame {
         start(true);
     }
 
+    public void exit(boolean mainMenu) {
+        loop.setExited(true);
+
+    }
+
     public enum GAME_MODES {
         ARENA, SIMULATION, DUEL, ENCOUNTER, DUNGEON_CRAWL, ARENA_ARCADE
     }
 
     public enum GAME_TYPE {
         SCENARIO, ARCADE, SKIRMISH, TEST,
-
-    }
-
-    public void exit(boolean mainMenu)  {
-        loop.setExited(true);
 
     }
 

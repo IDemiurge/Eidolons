@@ -46,9 +46,11 @@ public class CombatInventory extends TablePanel implements Closable {
 
         actionPointsText = lower.addElement(null).left();
 
-        lower.addElement(undoButton = new SymbolButton(STD_BUTTON.UNDO))
-                .fill(false).expand(0, 0).right()
-                .pad(20, 0, 20, 0);
+//        lower.addElement(
+         undoButton = new SymbolButton(STD_BUTTON.UNDO)
+//     TODO            ).fill(false).expand(0, 0).right()
+//                .pad(20, 0, 20, 0)
+        ;
 
         lower.addElement(cancelButton = new SymbolButton(STD_BUTTON.CANCEL))
                 .fill(false).expand(0, 0).right()

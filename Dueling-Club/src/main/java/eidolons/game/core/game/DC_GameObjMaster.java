@@ -377,7 +377,7 @@ public class DC_GameObjMaster extends GameMaster {
     }
 
     public void nextLevel() {
-        getGame().getGameLoop().setSkippingToNext(true);
+//        getGame().getGameLoop().setSkippingToNext(true);
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT,
          null);
         WaitMaster.WAIT(100);

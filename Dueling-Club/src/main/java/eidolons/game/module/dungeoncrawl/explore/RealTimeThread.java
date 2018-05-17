@@ -48,6 +48,9 @@ public class RealTimeThread extends Thread {
                 return;
             if (loop.isExited())
                 return;
+            if (loop.isStopped()){
+                return;
+            }
             if (Eidolons.getGame().isPaused()) continue;
             if (!ExplorationMaster.isExplorationOn()) continue;
             if (ExplorationMaster.isRealTimePaused()) continue;

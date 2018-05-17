@@ -112,7 +112,11 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected void selectionPanelClosed() {
-        selectionPanel.setStage(null);
+        try {
+            selectionPanel.setStage(null);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {

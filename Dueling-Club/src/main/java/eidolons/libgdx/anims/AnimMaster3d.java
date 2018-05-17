@@ -69,6 +69,8 @@ public class AnimMaster3d {
      {"heavy crossbow", "crossbow"},
      {"hand crossbow", "crossbow"},
      {"longbow", "short bow"},
+     {"war axe", "battle axe"},
+     {"great axe", "battle axe"},
 //     {"kriss", "stiletto"},
 
 

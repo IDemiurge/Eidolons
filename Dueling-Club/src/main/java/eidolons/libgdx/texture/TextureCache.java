@@ -90,6 +90,11 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateR(String path) {
+
+        if (path==null ){
+            main.system.auxiliary.log.LogMaster.log(1,"EMPTY TEXTURE REGION REQUEST!" );
+            return new TextureRegion(emptyTexture);
+        }
         if (textureCache == null) {
             init();
         }
@@ -241,7 +246,10 @@ public class TextureCache {
     }
 
     private Texture _getOrCreate(String path) {
-
+if (path==null ){
+    main.system.auxiliary.log.LogMaster.log(1,"EMPTY TEXTURE REQUEST!" );
+    return emptyTexture;
+}
         path = path
          .toLowerCase();
         if (!path.startsWith("/")) {

@@ -23,11 +23,11 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 
     public enum GRAPHIC_OPTION implements Options.OPTION {
 
-        FULLSCREEN(false),
+        FULLSCREEN(true),
 //        GAMMA(),
 
-        AMBIENCE(false),
-        VIDEO(false),
+        AMBIENCE(true),
+        VIDEO(true),
         AMBIENCE_MOVE_SUPPORTED(false),
 //        SPRITE_CACHE_ON(true),
 

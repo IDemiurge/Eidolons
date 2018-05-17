@@ -136,7 +136,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     private void clicked(int index) {
-        index = Math.min( buttons.size(), index);
+        index = Math.min( buttons.size()-1, index);
         clicked(buttons.get(index), getItems().get(index));
     }
 

@@ -113,7 +113,8 @@ public class IlluminationMaster {
 
         // TODO DISTANCE FACTOR?
         illumination = (int) Math.round(illumination * ilMod / 100);
-        cache.put(target, illumination);
+        if (source == master.getSeeingUnit())
+            cache.put(target, illumination);
         return illumination;
     }
 
