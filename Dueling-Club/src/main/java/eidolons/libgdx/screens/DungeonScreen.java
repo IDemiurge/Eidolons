@@ -21,10 +21,8 @@ import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.GridPanel;
-import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.bf.mouse.DungeonInputController;
 import eidolons.libgdx.bf.mouse.InputController;
-import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.stage.BattleGuiStage;
@@ -35,10 +33,10 @@ import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.system.options.OptionsWindow;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -61,6 +59,7 @@ public class DungeonScreen extends GameScreen {
     protected ParticleManager particleManager;
     protected StageX gridStage;
     protected GridPanel gridPanel;
+    private boolean blocked;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -248,6 +247,7 @@ public class DungeonScreen extends GameScreen {
         guiStage.act(delta);
         gridStage.act(delta);
 
+        blocked = checkBlocked();
 
         cameraShift();
         //cam.update();
@@ -255,7 +255,8 @@ public class DungeonScreen extends GameScreen {
             if (DC_Game.game != null)
                 if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
 //              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
-                    ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
+                    if (!isBlocked())
+                        ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
                 }
 
             if (backTexture != null) {
@@ -298,6 +299,10 @@ public class DungeonScreen extends GameScreen {
         }
     }
 
+    @Override
+    protected Stage getMainStage() {
+        return guiStage;
+    }
 
     @Override
     public void render(float delta) {
@@ -314,8 +319,10 @@ public class DungeonScreen extends GameScreen {
         if (speed != null) {
             delta = delta * speed;
         }
-        if (DC_Game.game != null) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+        if (!CoreEngine.isExe())
+            if (DC_Game.game != null) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
+             Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                 DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
             } else {
                 if (Gdx.input.isKeyJustPressed(Keys.CONTROL_RIGHT)) {
@@ -344,9 +351,17 @@ public class DungeonScreen extends GameScreen {
     }
 
     public boolean isBlocked() {
-        return
-         HqPanel.getActiveInstance()!=null || OptionsWindow.isActive()
-         || GameMenu.menuOpen;
+        return blocked;
+    }
+
+    public boolean checkBlocked() {
+        if (manualPanel != null)
+            if (manualPanel.isVisible())
+                return true;
+        if (selectionPanel != null)
+            if (selectionPanel.isVisible())
+                return true;
+        return guiStage.isBlocked();
     }
 
     @Override

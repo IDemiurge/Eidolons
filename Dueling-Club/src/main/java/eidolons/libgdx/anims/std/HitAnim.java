@@ -51,6 +51,7 @@ import static main.system.GuiEventType.HP_BAR_UPDATE;
  */
 public class HitAnim extends ActionAnim {
     private static String spritesPath;
+    private static Boolean bloodOff;
     private SPRITE_TYPE spriteType;
     private HIT hitType;
     private String text;
@@ -59,24 +60,25 @@ public class HitAnim extends ActionAnim {
     private FloatingText floatingText;
     private float originalActorX;
     private float originalActorY;
-//    AttackAnim atkAnim;
-//    private DC_WeaponObj weapon;
-
+    private boolean blood;
 
     public HitAnim(DC_ActiveObj active, AnimData params, Color c) {
         this(active, params, true, c, null);
     }
 
-
     public HitAnim(DC_ActiveObj active, AnimData params) {
         this(active, params, null);
     }
+    //    AttackAnim atkAnim;
+//    private DC_WeaponObj weapon;
+
 
     public HitAnim(DC_ActiveObj active, AnimData params, boolean blood, Color c, String text) {
         this(active, params, blood, c, text,
          ImageManager.getDamageTypeImagePath(
           active.getDamageType() == null ? "Physical" : active.getDamageType().getName(), true));
     }
+
 
     public HitAnim(DC_ActiveObj active, AnimData params, boolean blood, Color c,
                    String text, String imagePath) {
@@ -102,6 +104,16 @@ public class HitAnim extends ActionAnim {
 
 
         part = ANIM_PART.IMPACT;
+    }
+
+    public static Boolean getBloodOff() {
+        if (bloodOff == null)
+            bloodOff =  OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.BLOOD_ANIMS_OFF);
+        return bloodOff;
+    }
+
+    public static void setBloodOff(Boolean bloodOff) {
+        HitAnim.bloodOff = bloodOff;
     }
 
     public static String getHitSpritesPath() {
@@ -131,6 +143,10 @@ public class HitAnim extends ActionAnim {
          getDuration() / regions.size, 1);
         if (getRef().getTargetObj() instanceof Unit)
             sprite.setColor(getColorForSprite((Unit) getRef().getTargetObj()));
+        blood = spriteType == SPRITE_TYPE.BLOOD;
+        if (blood)
+            if (getBloodOff())
+                return;
         sprites.add(sprite);
     }
 

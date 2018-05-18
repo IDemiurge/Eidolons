@@ -64,7 +64,8 @@ public class TipMaster {
                 break;
         }
         String tip = "";
-        Loop loop = new Loop(200);
+        Loop loop = new Loop(200); //if we check 200 tips and they all have been displayed,
+        //well, let's go for another round!
         while (loop.continues()) {
 //            int i = RandomWizard.getRandomInt(tipClass.getEnumConstants().length);
             List<TIP> list = new EnumMaster<TIP>().getEnumList((Class<TIP>) tipClass);
@@ -149,41 +150,49 @@ public static void main(String[] args){
 
     public static String getText(BASIC_COMBAT_TIPS tip) {
         switch (tip) {
-//            case ARMOR:
-//                return "Armor reduces physical damage if attacker fails to penetrate it, but only as long as it has some Durability left.";
-//            case ATTACK_AND_DEFENSE:
-//                return  StringMaster.getWellFormattedString(tip.name())
-//                 +" determine what percentage of damage is dealt. " +
-//                 "Greater difference creates chance to miss or make a critical strike";
-            case DYNAMIC_ROUNDS:
-                return
-                 "Units take actions when they become 1st " +
-                  "(from the right side) in the Initiative Queue on top of the screen. \n" +
-                  "";
-            case DEBUG:
-                return "Press [ctrl]+[alt] to enter full-manual mode and debug mode";
+            case CHARACTER_SCREEN:
+               return  "Use F1 or double-click on your character to open the (raw) Character Screen! ";
+
+            case LEVEL_UP:
+                return "You gain a level up after each dungeon – use F1 to enter the Character Screen and customize the hero!";
+
+            case ORIENT_YOURSELF:
+                return "To orient yourself, you can zoom out with the wheel button and locate the glowing square – that’s the dungeon’s exit. ";
+
+            case OPTIMAL_ATTACK:
+                return "Use [alt+left-click] on a valid target to activate optimal attack. Use [shift+click] to turn towards selected cell or object.  ";
+
+            case THROW:
+                return "You can throw any weapon you have equipped, and you can put tiny weapons like dagger into your Quick Slots ";
+
+            case QUICK_SLOTS:
+                return "Depending on the type of armor, the hero can have a number of usable items in quick reach, which they can use in combat. ";
+
+            case RANGED_ATTACKS:
+                return "Ranged attacks usually require you to load some ammo first - like notching an arrow or a bolt from your Quick Slots ";
+
+            case CONTAINERS:
+                return "Containers likes chests, barrels and bone piles may contain useful items, or just a bit of trash. ";
+
+            case VISION:
+                return "Some objects will not be identified without enough Illumination! They will appear as Outlines with just some hints as to what they might be... ";
+
+
             case PAUSE:
                 return "Press [spacebar] to pause the game";
-            case MISSION:
-                return "There are two sets of 6 missions in this version, plus custom-skirmish setup mode!";
+//            case MISSION:
+//                return "There are two sets of 6 missions in this version, plus custom-skirmish setup mode!";
             case OPTIONS:
                 return
                  "You can adjust options by clicking on gears icon in top-right corner";
             case MODES:
-                return "Use Restoration Mode on the bottom panel to regain lost Stamina, Focus or Essence";
+                return "Use Restoration Mode on the bottom panel to regain lost Stamina, Focus or Essence. Camp when outside combat and with enough food.";
 
-            case GAME_START:
-                return
-                 "Normally, you choose one hero to control in your party when game starts.";
             case DEFAULT_ACTIONS:
                 return
-                 "To move quickly to a cell, press alt and left-click it.";
+                 "To move quickly to a cell, press alt and left-click it. Same for quick attacks and default object actions";
 //                 "To make a default action on a unit or cell, press alt and left-click it." +
 //                 "Your hero will try to either move or attack accordingly.";
-            case RESISTANCE:
-                return "";
-            case VISION:
-                return "If 'outlines' option is on, some units will not be identified without enough Illumination!";
             default:
                 return "";
 

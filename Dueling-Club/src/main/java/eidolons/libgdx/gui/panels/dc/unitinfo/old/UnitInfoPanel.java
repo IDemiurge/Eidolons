@@ -11,12 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.stage.Closable;
+import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
-public class UnitInfoPanel extends Container<TablePanel> implements Closable {
+public class UnitInfoPanel extends Container<TablePanel> implements Blocking {
     private Actor outside;
 
     public UnitInfoPanel() {
@@ -47,6 +48,11 @@ public class UnitInfoPanel extends Container<TablePanel> implements Closable {
         setVisible(false);
         setClip(true);
         setTouchable(Touchable.enabled);
+    }
+
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) getStage();
     }
 
     public UnitInfoPanel(int x, int y) {

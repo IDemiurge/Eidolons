@@ -17,16 +17,16 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     private int offsetY;
     private boolean widgetPosChanged;
 
+    public ScrollPanel() {
+        init();
+    }
+
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
         table.setSize(width, height);
         innerScrollContainer.setSize(width, height);
         table.setFixedSize(true);
-    }
-
-    public ScrollPanel() {
-        init();
     }
 
     public InnerScrollContainer<Table> getInnerScrollContainer() {
@@ -109,12 +109,14 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                getStage().setScrollFocus(ScrollPanel.this);
+                if (getStage() != null)
+                    getStage().setScrollFocus(ScrollPanel.this);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                getStage().setScrollFocus(null);
+                if (getStage() != null)
+                    getStage().setScrollFocus(null);
             }
         });
     }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import eidolons.content.PARAMS;
+import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
@@ -19,7 +20,6 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -56,7 +56,7 @@ public class HpBar extends SuperActor {
     private final Label label;
     private final Label label_t;
     private final int innerWidth;
-    ResourceSourceImpl dataSource;
+    BattleFieldObject dataSource;
     Float toughnessDeathBarrier;
     float displayedToughnessPerc;
     float displayedEndurancePerc;
@@ -81,7 +81,7 @@ public class HpBar extends SuperActor {
     private Float lastOfferedToughness;
     private Float lastOfferedEndurance;
 
-    public HpBar(ResourceSourceImpl dataSource) {
+    public HpBar(BattleFieldObject dataSource) {
         this.dataSource = dataSource;
         barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
          "dc",  "unit", "hp bar empty.png"));
@@ -119,14 +119,13 @@ public class HpBar extends SuperActor {
     }
 
     //make sure this isn't called all the time!
-    public void reset(ResourceSourceImpl resourceSource) {
+    public void reset() {
         //TODO queue animation?
 //        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
 //         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
 
-        dataSource = resourceSource;
         setToughnessPerc(new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
-         / (dataSource.getIntParam(PARAMS.ENDURANCE)));
+         / (dataSource.getIntParam(PARAMS.ENDURANCE))); //not a bug - we want to display this way!
         setToughnessPerc(((int) (getToughnessPerc() / 0.01f) / new Float(100)));//  toughnessPerc % 0.01f;
         setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getIntParam(PARAMS.ENDURANCE)));
         setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
@@ -161,7 +160,7 @@ public class HpBar extends SuperActor {
     }
 
     public void animateChange(boolean smooth) {
-        if (!dataSource.isHpBarVisible()) {
+        if (!HpBarManager.isHpBarVisible(dataSource)) {
 //            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar not visible " +
 //             dataSource);
             return;
@@ -428,11 +427,6 @@ public class HpBar extends SuperActor {
         return true;
     }
 
-
-    public ResourceSourceImpl getDataSource() {
-        return dataSource;
-    }
-
     public void setLabelsDisplayed(boolean labelsDisplayed) {
         this.labelsDisplayed = labelsDisplayed;
     }
@@ -492,5 +486,13 @@ public class HpBar extends SuperActor {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
+    }
+
+    public boolean canHpBarBeVisible() {
+    return HpBarManager.canHpBarBeVisible(dataSource);
+    }
+
+    public boolean isHpBarVisible() {
+        return HpBarManager.isHpBarVisible(dataSource);
     }
 }

@@ -41,7 +41,7 @@ public class MapGuiStage extends GuiStage {
     PartyActor mainPartyMarker;
     private PartyInfoPanel partyInfoPanel;
     private MapActionPanel actionPanel;
-    private boolean dirty;
+    private boolean dirty=true;
     private MapResourcesPanel resources;
     private MapTimePanel timePanel;
     private MapDatePanel datePanel;

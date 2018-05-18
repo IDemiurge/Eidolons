@@ -146,9 +146,9 @@ public class HqDataMaster {
 
     public static HqDataMaster getInstance(Unit unit) {
         HqDataMaster instance = map.get(unit);
-        if (instance == null) {
+//       TODO  if (instance == null) {
             instance = new HqDataMaster(unit);
-        }
+//        }
         return instance;
     }
 

@@ -1,15 +1,18 @@
 package eidolons.libgdx.gui.menu.selection;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.game.core.Eidolons;
+import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.launch.MainLauncher;
+import eidolons.libgdx.shaders.ShaderMaster;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -27,7 +30,7 @@ import java.util.List;
 public abstract class SelectionPanel extends TablePanel {
     protected ItemListPanel listPanel;
     protected ItemInfoPanel infoPanel;
-    protected ButtonStyled backButton;
+    protected TextButtonX backButton;
     protected TextButtonX startButton;
     protected SelectionInputListener listener;
     Label title;
@@ -41,9 +44,8 @@ public abstract class SelectionPanel extends TablePanel {
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
         listPanel.setInfoPanel(infoPanel);
-        backButton = new ButtonStyled(STD_BUTTON.CANCEL, () -> cancel());
-        startButton = new TextButtonX(getDoneText(),
-         STD_BUTTON.GAME_MENU, () -> tryDone());
+        backButton = new TextButtonX(STD_BUTTON.CANCEL, () -> cancel());
+        startButton = new TextButtonX(STD_BUTTON.OK, () -> tryDone());
 
         addElement(title).center();
         row();
@@ -85,6 +87,12 @@ public abstract class SelectionPanel extends TablePanel {
         startButton.setDisabled(isDoneDisabled());
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (getStage()!=null )
+            ShaderMaster.drawWithCustomShader(() -> super.draw(batch, parentAlpha), batch, null);
+    }
+
     protected boolean isDoneDisabled() {
         if (listPanel.getCurrentItem() == null)
             return true;
@@ -108,7 +116,8 @@ public abstract class SelectionPanel extends TablePanel {
         if (stage != null) {
             stage.addListener(listener);
         } else {
-            getStage().removeListener(listener);
+            if (getStage()!=null )
+                getStage().removeListener(listener);
         }
         super.setStage(stage);
     }
@@ -138,8 +147,20 @@ public abstract class SelectionPanel extends TablePanel {
 
     protected abstract ItemListPanel createListPanel();
 
-    protected void cancel() {
+    public void cancel(boolean manual) {
+        listPanel.deselect();
         closed(null);
+        if (manual)
+            close();
+//        back();
+    }
+
+    public void cancel() {
+        cancel(true);
+    }
+    private void back() {
+        if (Eidolons.getScope() == SCOPE.MENU)
+            Eidolons.showMainMenu();
     }
 
     public void tryDone() {
@@ -148,7 +169,6 @@ public abstract class SelectionPanel extends TablePanel {
                 listPanel.select(MainLauncher.presetNumbers.pop());
             } else if (isRandom()) {
                 listPanel.selectRandomItem();
-                WaitMaster.WAIT(400);
             } else
                 return;
         }
@@ -171,8 +191,8 @@ public abstract class SelectionPanel extends TablePanel {
          null);
         if (listPanel.getCurrentItem() != null)
             closed(listPanel.getCurrentItem().name);
-        else
-            closed(listPanel.getItems().get(0).name);
+//        else
+//            closed(listPanel.getItems().get(0).name);
 
     }
 
@@ -181,7 +201,7 @@ public abstract class SelectionPanel extends TablePanel {
             WaitMaster.receiveInput(getWaitOperation(), selection);
         else
             WaitMaster.interrupt(getWaitOperation());
-        setVisible(false);
+        fadeOut();
     }
 
     public WAIT_OPERATIONS getWaitOperation() {

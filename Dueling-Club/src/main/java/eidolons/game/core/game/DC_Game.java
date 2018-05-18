@@ -146,7 +146,8 @@ public class DC_Game extends MicroGame {
 
         setState(new DC_GameState(this));
         initMasters();
-        initGameLoops();
+        if (CoreEngine.isCombatGame())
+            initGameLoops();
         init();
     }
 

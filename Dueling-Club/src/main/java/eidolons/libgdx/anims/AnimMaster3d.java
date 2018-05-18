@@ -19,6 +19,8 @@ import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TexturePackerLaunch;
+import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.values.properties.G_PROPS;
@@ -69,8 +71,8 @@ public class AnimMaster3d {
      {"heavy crossbow", "crossbow"},
      {"hand crossbow", "crossbow"},
      {"longbow", "short bow"},
-     {"war axe", "battle axe"},
-     {"great axe", "battle axe"},
+//     {"war axe", "battle axe"},
+//     {"great axe", "battle axe"},
 //     {"kriss", "stiletto"},
 
 
@@ -87,6 +89,8 @@ public class AnimMaster3d {
         init();
     }
 
+    private static Boolean off;
+
     public static void init() {
         substituteMap = new HashMap<>();
         for (String[] sub : substitutesWeapons) {
@@ -98,6 +102,8 @@ public class AnimMaster3d {
     }
 
     public static boolean is3dAnim(DC_ActiveObj active) {
+        if (isOff())
+            return false;
         if (!active.isAttackAny()) return false;
         DC_WeaponObj weapon = active.getActiveWeapon();
         if (!is3dSupported(weapon))
@@ -552,6 +558,20 @@ public class AnimMaster3d {
         }
         anim.start(entity.getRef());
         return anim;
+    }
+
+    public static Boolean isOff() {
+        if (off==null )
+            off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
+        return off;
+    }
+
+    public static Boolean getOff() {
+        return off;
+    }
+
+    public static void setOff(Boolean off) {
+        AnimMaster3d.off = off;
     }
 
     public enum PROJECTION {

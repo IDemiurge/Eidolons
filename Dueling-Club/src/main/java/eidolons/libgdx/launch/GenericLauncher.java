@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.*;
@@ -283,8 +284,10 @@ public class GenericLauncher extends Game {
                     break;
                 case BATTLE:
                     switchScreen(DungeonScreen::new, newMeta);
+                    Eidolons.setScope(SCOPE.BATTLE);
                     break;
                 case MAP:
+                    Eidolons.setScope(SCOPE.MAP);
                     switchScreen(() -> MapScreen.getInstance(), newMeta);
                     if (newMeta.getName() != null)
                         MacroManager.setScenario(newMeta.getName());
@@ -292,6 +295,7 @@ public class GenericLauncher extends Game {
                 case PRE_BATTLE:
                     break;
                 case MAIN_MENU:
+                    Eidolons.setScope(SCOPE.MENU);
                     switchScreen(AnimatedMenuScreen::new, newMeta);
                     break;
             }

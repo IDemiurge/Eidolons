@@ -14,7 +14,8 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import eidolons.libgdx.stage.Closable;
+import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.StageWithClosable;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -23,7 +24,7 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_INVENTORY;
 import static main.system.GuiEventType.UPDATE_INVENTORY_PANEL;
 
-public class CombatInventory extends TablePanel implements Closable {
+public class CombatInventory extends TablePanel implements Blocking {
     private InventoryPanel inventoryPanel;
 
     private Cell<Actor> actionPointsText;
@@ -65,6 +66,10 @@ public class CombatInventory extends TablePanel implements Closable {
         setVisible(false);
     }
 
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) getStage();
+    }
     private void bindListeners() {
         addListener(new InputListener() {
             @Override

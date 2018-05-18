@@ -1,6 +1,5 @@
 package main.system.threading;
 
-import main.system.auxiliary.log.Err;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
@@ -90,7 +89,7 @@ public class WaitMaster {
 
     public static void interrupt(WAIT_OPERATIONS waiter) {
         if (waiters.get(waiter) == null) {
-            Err.error("No such operation in process!" + waiter.name());
+            main.system.auxiliary.log.LogMaster.log(1,  "No such operation in process!" + waiter.name());
             return;
         }
         waiters.get(waiter).interrupt();

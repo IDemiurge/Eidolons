@@ -168,6 +168,11 @@ public class QuickWeaponPanel extends TablePanel {
                      dataSource.getWeapon());
 
                 } else {
+                    if (radial.isVisible())
+                        if (radial.getColor().a>0)
+//                    if (DC_Game.game.getManager().isSelecting()){
+                        return false;
+//                    }
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
                     attack.setAutoSelectionOn(true);
                     getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(

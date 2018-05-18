@@ -63,7 +63,6 @@ public class ManualPanel extends SelectionPanel {
     public void close() {
         GuiEventManager.trigger(GuiEventType.SHOW_MANUAL_PANEL,
          null);
-        setVisible(false);
     }
 
     protected boolean isDoneSupported() {

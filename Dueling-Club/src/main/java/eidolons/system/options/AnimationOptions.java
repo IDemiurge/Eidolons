@@ -2,15 +2,29 @@ package eidolons.system.options;
 
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 
+import static eidolons.system.options.AnimationOptions.ANIMATION_OPTION.*;
+
 public class AnimationOptions extends Options<ANIMATION_OPTION, ANIMATION_OPTION> {
     @Override
     protected Class getOptionClass() {
         return ANIMATION_OPTION.class;
     }
 
+static {
+    WAIT_FOR_ANIM.setDevOnly(true);
+    PARALLEL_DRAWING.setDevOnly(true);
+    TEXT_DURATION.setDevOnly(true);
 
+    PRECAST_ANIMATIONS.setDevOnly(true);
+    AFTER_EFFECTS_ANIMATIONS.setDevOnly(true);
+    CAST_ANIMATIONS.setDevOnly(true);
+
+}
     // AI_PARAMS,
     public enum ANIMATION_OPTION implements Options.OPTION {
+        WEAPON_3D_ANIMS_OFF(false),
+        BLOOD_ANIMS_OFF(false),
+
         WAIT_FOR_ANIM(false),
         MAX_ANIM_WAIT_TIME(1000, 0, 3000),
         PARALLEL_DRAWING(false),
@@ -33,6 +47,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION, ANIMATION_OPTION
         Integer min;
         Integer max;
         Object defaultValue;
+        private boolean devOnly;
 
         ANIMATION_OPTION() {
 
@@ -65,6 +80,14 @@ public class AnimationOptions extends Options<ANIMATION_OPTION, ANIMATION_OPTION
             return max;
         }
 
+        @Override
+        public boolean isDevOnly() {
+            return devOnly;
+        }
+
+        public void setDevOnly(boolean devOnly) {
+            this.devOnly = devOnly;
+        }
         public Object getDefaultValue() {
             return defaultValue;
         }

@@ -63,6 +63,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     private   SuperContainer infoTooltipContainer;
     private final LabelX infoTooltip = new LabelX("", 16);
+    private boolean blocked;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -80,7 +81,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
 
         ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () ->
-         gameMenu.open());
+         gameMenu.toggle());
         menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
          GdxMaster.getHeight() - menuButton.getHeight());
         addActor(menuButton);
@@ -139,17 +140,58 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected GameMenu createGameMenu() {
         return new GameMenu();
     }
+//
+//    @Override
+//    public void closeClosable(Closable closable) {
+//        if (closable instanceof GroupX) {
+//            ((GroupX) closable).fadeOut();
+//        } else ((Actor) closable).setVisible(false);
+//        if (closable instanceof Blocking) {
+////            GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
+//            if (DC_Game.game!=null )
+//                DC_Game.game.getLoop().setPaused(false, false);
+//        }
+//        setDisplayedClosable(null);
+//    }
+//
+//    @Override
+//    public void openClosable(Closable closable) {
+//         closeDisplayed(closable);
+//
+//        if (closable instanceof Blocking) {
+////            GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
+//            if (DC_Game.game!=null )
+//                DC_Game.game.getLoop().setPaused(true, false);
+//        }
+//
+//         setDisplayedClosable(closable);
+//
+//        if (closable instanceof GroupX) {
+//            ((GroupX) closable).fadeIn();
+//        } else ((Actor) closable).setVisible(true);
+//    }
+//
+//    @Override
+//    public boolean closeDisplayed(Closable newClosable) {
+//        if (getDisplayedClosable() == newClosable)
+//            return false;
+//        return closeDisplayed();
+//    }
+//        public boolean closeDisplayed() {
+//        if (getDisplayedClosable() == null)
+//            return false;
+//        getDisplayedClosable().close();
+//        displayedClosable = null;
+//        return true;
+//    }
 
-    public boolean closeDisplayed() {
-        if (getDisplayedClosable() == null)
-            return false;
-        getDisplayedClosable().close();
-        displayedClosable = null;
-        return true;
+    public boolean isBlocked() {
+        return blocked;
     }
 
     @Override
     public void act(float delta) {
+        blocked = checkBlocked();
         if (!Blackout.isOnNewScreen())
         if (isBlackoutIn())
         {
@@ -168,6 +210,12 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         super.act(delta);
         resetZIndices();
+    }
+
+    private boolean checkBlocked() {
+        return textPanel.isVisible() ||
+        HqPanel.getActiveInstance()!=null || OptionsWindow.isActive()
+         || GameMenu.menuOpen ;
     }
 
     public Closable getDisplayedClosable() {
@@ -357,6 +405,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (containerPanel.isVisible()) {
             containerPanel.close();
         }
+//        if (gameMenu.isVisible()) {
+//            gameMenu.close();
+//        }
+
     }
 
     public RadialMenu getRadial() {

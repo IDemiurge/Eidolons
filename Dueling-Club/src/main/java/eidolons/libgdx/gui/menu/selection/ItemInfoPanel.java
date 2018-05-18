@@ -1,12 +1,15 @@
 package eidolons.libgdx.gui.menu.selection;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
@@ -70,18 +73,22 @@ public class ItemInfoPanel extends TablePanel {
 
     protected void initBg() {
         if (isNinepatch())
-            setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
-        else
+//            setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
+            setBackground(new TextureRegionDrawable(new TextureRegion(
+             TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
+             BACKGROUND_NINE_PATCH.PATTERN, 1050, 850))));
+        else {
             setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
+        }
 //
     }
 
     protected boolean isNinepatch() {
-        return false;
+        return true;
     }
 
     protected void initHeader(TablePanel<Actor> header) {
-        header.addNormalSize(preview).left().padLeft(50).padTop(15);
+        header.addNormalSize(preview).left().padLeft(70).padTop(55);
         header.addElement(title).right();
 
     }

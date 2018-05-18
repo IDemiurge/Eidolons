@@ -14,6 +14,13 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         GAMEPLAY_OPTION.INFO_DETAIL_LEVEL.setDefaultValue(INFO_LEVEL.NORMAL);
 
         GAMEPLAY_OPTION.NEXT_SCENARIO_INDEX.setHidden(true);
+
+        GAMEPLAY_OPTION.MANUAL_CONTROL.setDevOnly(true);
+        GAMEPLAY_OPTION.DEBUG_MODE.setDevOnly(true);
+        GAMEPLAY_OPTION.DEFAULT_ACTIONS.setDevOnly(true);
+
+        GAMEPLAY_OPTION.REVERSE_LEVELS.setDevOnly(true);
+        GAMEPLAY_OPTION.SHUFFLE_LEVELS.setDevOnly(true);
     }
 
     @Override
@@ -46,6 +53,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         private Object[] options;
         private Object defaultValue;
         private boolean hidden;
+        private boolean devOnly;
 
         GAMEPLAY_OPTION(Boolean exclusive) {
             this.exclusive = exclusive;
@@ -99,5 +107,15 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         public boolean isHidden() {
             return hidden;
         }
+
+        @Override
+        public boolean isDevOnly() {
+            return devOnly;
+        }
+
+        public void setDevOnly(boolean devOnly) {
+            this.devOnly = devOnly;
+        }
+
     }
 }

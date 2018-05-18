@@ -25,7 +25,6 @@ import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.bf.grid.GridUnitView;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -481,8 +480,8 @@ public class OverlaysManager extends SuperActor {
             case BAG:
                 return new ValueTooltip("Dropped items");
             case HP_BAR:
-                GridUnitView view = (GridUnitView) parent;
-                ResourceSourceImpl data = view.getHpBar().getDataSource();
+
+                BattleFieldObject data = (BattleFieldObject) parent.getUserObject();
                 String text = data.getName() + " has " +
                  data.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) / MathMaster.MULTIPLIER + "% Toughness and " +
                  data.getIntParam(PARAMS.ENDURANCE_PERCENTAGE) / MathMaster.MULTIPLIER +
@@ -490,6 +489,14 @@ public class OverlaysManager extends SuperActor {
                 return new ValueTooltip(text);
 
 
+            case GRAVE:
+                break;
+            case CORPSE:
+                break;
+            case ITEM:
+                break;
+            case TRAP:
+                break;
             case IN_PLAIN_SIGHT:
             case IN_SIGHT:
             case FOG_OF_WAR:

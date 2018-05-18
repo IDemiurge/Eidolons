@@ -32,7 +32,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
 
-
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
         super();
@@ -55,12 +54,23 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     @Override
+    protected boolean isTooltipsOn() {
+        if (selectionPanel != null)
+            if (selectionPanel.isVisible())
+                return false;
+        if (manualPanel != null)
+            if (manualPanel.isVisible())
+                return false;
+        return super.isTooltipsOn();
+    }
+
+    @Override
     protected void preLoad() {
         super.preLoad();
         GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
             if (p.get() != DIFFICULTY_PANEL_ARG) {
                 if (selectionPanel != null)
-                    selectionPanel.closed(null);
+                    selectionPanel.cancel(false);
                 if (p.get() == null) {
                     selectionPanelClosed();
                     updateInputController();
@@ -76,17 +86,20 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_MANUAL_PANEL, p -> {
-            if (manualPanel != null)
+            if (manualPanel != null) {
                 manualPanel.closed(null);
-            else
-                try {
-                    manualPanel = new ManualPanel();
-                } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
-                    return;
-                }
+            } else {
+                manualPanel = new ManualPanel() {
+                    @Override
+                    public void close() {
+                        super.close();
+                        ScreenWithVideoLoader.this.back();
+                    }
+                };
+            }
+
             if (p.get() == null) {
-                selectionPanelClosed();
+                manualPanel.setStage(null);
                 updateInputController();
                 return;
             }
@@ -94,21 +107,25 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         });
     }
 
+    protected void back() {
+    }
+
     private void addSelectionPanel(SelectionPanel selectionPanel) {
         boolean displayOnLoader = hideLoader != isVideoLoader();
-        if (displayOnLoader) {
-            getOverlayStage().addActor(selectionPanel);
-        } else {
-            if (getMainStage() != null)
-                getMainStage().addActor(selectionPanel);
+        Stage stage = displayOnLoader ? getOverlayStage() : getMainStage();
+        if (stage != null) {
+            stage.addActor(selectionPanel);
+            selectionPanel.setStage(stage);
         }
         getOverlayStage().setActive(true);
-//        selectionPanel.setStage(getOverlayStage());
+
         updateInputController();
         selectionPanel.setVisible(true);
         selectionPanel.setPosition(
          GdxMaster.right(selectionPanel),
          GdxMaster.centerHeight(selectionPanel));
+
+        selectionPanel.fadeIn();
     }
 
     protected void selectionPanelClosed() {

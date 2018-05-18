@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.ShaderMaster;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -34,13 +35,7 @@ public class HqHeroPreview extends FadeImageContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
-        ShaderProgram originalShader = batch.getShader();
-        batch.setShader(shader);
-
-        super.draw(batch, parentAlpha);
-
-        batch.setShader(originalShader);
+        ShaderMaster.drawWithCustomShader(() -> super.draw(batch, parentAlpha), batch, shader);
     }
 
     @Override

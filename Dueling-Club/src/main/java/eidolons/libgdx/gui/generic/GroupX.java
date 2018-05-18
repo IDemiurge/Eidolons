@@ -103,6 +103,7 @@ if (recursive)
         for (Action sub : getActionsOfClass(AfterAction.class)) {
             removeAction(sub);
         }
+        setVisible(true);
         ActorMaster.addFadeOutAction(this);
         ActorMaster.addHideAfter(this);
     }

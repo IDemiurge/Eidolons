@@ -61,5 +61,8 @@ public abstract class Options<E extends Enum<E>, T extends OPTION> extends DataU
         default boolean isHidden(){
             return false;
         }
+        default boolean isDevOnly(){
+            return false;
+        }
     }
 }

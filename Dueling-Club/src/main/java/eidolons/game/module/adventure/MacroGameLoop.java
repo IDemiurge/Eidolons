@@ -34,7 +34,9 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         this.game = game;
         timeMaster =MacroTimeMaster.getInstance();
     }
-
+    public void togglePaused() {
+        setPaused(!isPaused(), false);
+    }
     @Override
     protected Boolean makeAction() {
         if (exited)

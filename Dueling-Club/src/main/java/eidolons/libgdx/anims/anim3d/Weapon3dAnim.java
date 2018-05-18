@@ -21,6 +21,7 @@ import eidolons.libgdx.anims.std.ActionAnim;
 import main.entity.Ref;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
@@ -79,6 +80,8 @@ public class Weapon3dAnim extends ActionAnim {
         sprite.setFlipX(checkFlipHorizontally());
 
         if (!isRandomized()) {
+            getSprites().clear();
+            sprites.add(sprite);
             return;
         }
         SpriteAnimation randomized = getRandomizedSprite(sprite);
@@ -92,9 +95,15 @@ public class Weapon3dAnim extends ActionAnim {
 //         r -> r.getRegionHeight()).getRegionHeight();
 //        setSize(w, h);
     }
+    protected String getDefaultTexturePath() {
+        return StringMaster.getAppendedImageFile(
+         GdxImageMaster.
+          getAttackActionPath(getActive()), " 64");
+    }
 
     private boolean isRandomized() {
-        return getActive().isMelee();
+//        return getActive().isMelee();
+        return false;
     }
 
     private SpriteAnimation getRandomizedSprite(SpriteAnimation sprite) {

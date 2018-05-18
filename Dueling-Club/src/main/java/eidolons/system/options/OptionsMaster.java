@@ -11,7 +11,9 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
+import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.anims.particles.ParticleManager;
+import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -60,6 +62,7 @@ public class OptionsMaster {
               animOptions.getValues().get(sub).toString());
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
             String value = animOptions.getValue(key);
+            boolean booleanValue = animOptions.getBooleanValue(key);
             if (StringMaster.isInteger(value)) {
                 Integer intValue = StringMaster.getInteger(value);
                 switch (key) {
@@ -69,6 +72,12 @@ public class OptionsMaster {
                 }
             } else {
                 switch (key) {
+                    case WEAPON_3D_ANIMS_OFF:
+                        AnimMaster3d.setOff(booleanValue);
+                        break;
+                    case BLOOD_ANIMS_OFF:
+                        HitAnim.setBloodOff(booleanValue);
+                        break;
                     case WAIT_FOR_ANIM:
                         break;
                     case MAX_ANIM_WAIT_TIME:
@@ -77,6 +86,8 @@ public class OptionsMaster {
                         AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
                         break;
 
+                    case SPEED:
+                        break;
                     case TEXT_DURATION:
                         break;
                     case PRECAST_ANIMATIONS:
@@ -84,6 +95,8 @@ public class OptionsMaster {
                     case CAST_ANIMATIONS:
                         break;
                     case AFTER_EFFECTS_ANIMATIONS:
+                        break;
+                    case HIT_ANIM_DISPLACEMENT:
                         break;
                 }
 

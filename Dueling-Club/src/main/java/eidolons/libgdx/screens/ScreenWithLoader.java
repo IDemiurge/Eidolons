@@ -9,9 +9,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.system.audio.MusicMaster;
@@ -33,25 +37,26 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected Label waitingLabel;
     protected EventCallbackParam param;
     protected float timeWaited;
-    private boolean waitingForInput;
-    private float tooltipTimer=getTooltipPeriod();
     protected Label tooltipLabel;
+    private boolean waitingForInput;
+    private float tooltipTimer = getTooltipPeriod();
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
-         StyleHolder.getDefaultLabelStyle());
+         StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));
         waitingLabel.pack();
         waitingLabel.setPosition(GdxMaster.centerWidth(waitingLabel),
-        getWaitY());
-        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.NYALA, 18));
+         getWaitY());
+        tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
 
     }
 
     private float getWaitY() {
-        return GdxMaster.getHeight()/20+35;
+        return GdxMaster.getHeight() / 20 + 35;
     }
+
     private float getTipY() {
-        return GdxMaster.getHeight()/20;
+        return GdxMaster.getHeight() / 20;
     }
 
     public Batch getBatch() {
@@ -81,6 +86,14 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void loadDone(EventCallbackParam param) {
         if (Assets.isOn()) {
+            if (AnimationConstructor.isPreconstructAllOnGameInit())
+                if (param.get() instanceof BFDataCreatedEvent) {
+                    for (BattleFieldObject sub : ((BFDataCreatedEvent) param.get()).getObjects()) {
+                        if (sub instanceof Unit)
+                            AnimationConstructor.preconstruct((Unit) sub);
+                    }
+
+                }
             while (!Assets.get().getManager().update()) {
                 //loading...
             }
@@ -181,20 +194,20 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             float alpha = (timeWaited / 3) % 1;
             alpha = (alpha >= 0.5f) ? 1.5f - (alpha)
              : alpha * 2 + 0.15f;
-            batch.begin();
+            getBatch().begin();
             waitingLabel.draw(batch, alpha % 1);
             batch.end();
         } else {
-            if (isTooltipsOn()){
-                batch.begin();
-                tooltipTimer+=delta;
+            if (isTooltipsOn()) {
+                getBatch().begin();
+                tooltipTimer += delta;
                 tooltipLabel.setVisible(true);
-                if (tooltipTimer>=getTooltipPeriod()){ //support manual!
+                if (tooltipTimer >= getTooltipPeriod()) { //support manual!
                     tooltipLabel.setText(getTooltipText());
                     tooltipLabel.pack();
                     tooltipLabel.setPosition(GdxMaster.centerWidth(tooltipLabel),
                      getTipY());
-                    tooltipTimer=0;
+                    tooltipTimer = 0;
                 }
                 tooltipLabel.draw(batch, 1);
                 batch.end();
@@ -204,15 +217,15 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 //        batch.end();
     }
 
-    private float getTooltipPeriod() {
+    protected float getTooltipPeriod() {
         return 8;
     }
 
-    private String getTooltipText() {
+    protected String getTooltipText() {
         return TipMaster.getTip();
     }
 
-    private boolean isTooltipsOn() {
+    protected boolean isTooltipsOn() {
         if (hideLoader)
             return false;
         return true;

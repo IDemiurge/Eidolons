@@ -12,7 +12,6 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -178,11 +177,7 @@ public class QueueView extends UnitView {
     }
 
 
-    public void resetHpBar(ResourceSourceImpl resourceSource) {
-        if (getHpBar() == null)
-            hpBar = new HpBar((resourceSource));
-        getHpBar().reset(resourceSource);
-    }
+
 
     public void setHpBar(HpBar hpBar) {
         if (this.hpBar != null) {

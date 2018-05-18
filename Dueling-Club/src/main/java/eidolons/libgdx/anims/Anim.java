@@ -18,15 +18,14 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.texture.TextureCache;
-import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
+import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.Pair;
@@ -281,6 +280,9 @@ public class Anim extends Group implements Animation {
         if (texture == null) {
             return;
         }
+        if (isDone() || !isRunning()) {
+            return ;
+        }
         Color color = batch.getColor();
         batch.setColor(new Color(1,1,1,1));
         float w = Math.min(64, this.getWidth());
@@ -408,9 +410,9 @@ public class Anim extends Group implements Animation {
     protected Texture getTexture() {
         if (texture == null) {
             if (ImageManager.isImage(getTexturePath())) {
-                texture = TextureCache.getOrCreate(getTexturePath());
+                texture = TextureCache.getOrCreateNonEmpty(getTexturePath());
             } else {
-                texture = TextureCache.getOrCreate(getDefaultTexturePath());
+                texture = TextureCache.getOrCreateNonEmpty(getDefaultTexturePath());
             }
         }
         return texture;
@@ -419,8 +421,7 @@ public class Anim extends Group implements Animation {
 
     protected String getDefaultTexturePath() {
         return
-         StrPathBuilder.build(PathFinder.getSpritesPath(),
-          "weapons", "artifact", "wraith force.png");
+         VISUALS.QUESTION.getImgPath();
     }
 
     @Override

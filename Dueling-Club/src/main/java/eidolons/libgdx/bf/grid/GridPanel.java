@@ -20,7 +20,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
-import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -136,12 +135,12 @@ public class GridPanel extends Group {
         addActor(animMaster = AnimMaster.getInstance());
         animMaster.bindEvents();
 
-        if (AnimationConstructor.isPreconstructAllOnGameInit())
-            units.forEach(unit ->
-            {
-                if (unit instanceof Unit)
-                    animMaster.getConstructor().preconstructAll((Unit) unit);
-            });
+//        if (AnimationConstructor.isPreconstructAllOnGameInit())
+//            units.forEach(unit ->
+//            {
+//                if (unit instanceof Unit)
+//                    animMaster.getConstructor().preconstructAll((Unit) unit);
+//            });
 
 
         return this;

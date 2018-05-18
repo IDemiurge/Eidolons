@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
@@ -59,6 +60,7 @@ public class Eidolons {
     private static Party party;
     private static boolean battleRunning;
     private static GameScreen screen;
+    private static SCOPE scope;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -66,19 +68,14 @@ public class Eidolons {
         mainGame.init();
         if (mainGame.isAborted()) {
             master.gameExited();
-            toMainMenu();
+            showMainMenu();
             return false;
         }
 
         return true;
     }
 
-    private static void toMainMenu() {
-        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(ScreenType.MAIN_MENU, "Back to the Void..."));
 
-        ScenarioLauncher.missionIndex = 0;
-    }
 
     public static EidolonsGame getMainGame() {
         return mainGame;
@@ -281,16 +278,34 @@ public class Eidolons {
         gameExited();
         GameMenu.menuOpen = false;
         Gdx.input.setInputProcessor(new InputAdapter());
+        showMainMenu();
+    }
+    public static void showMainMenu() {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
          new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
+
+        ScenarioLauncher.missionIndex = 0;
     }
 
     public static void nextScenario() {
 
     }
-
     public static void activateMainHeroAction(String action) {
+        activateMainHeroAction(Eidolons.getMainHero().getAction(action));
+    }
+
+    public static void activateMainHeroAction(DC_ActiveObj action) {
         Eidolons.getGame().getLoop().actionInput(
-         new ActionInput(Eidolons.getMainHero().getAction(action), Eidolons.getMainHero()));
+         new ActionInput( (action), Eidolons.getMainHero()));
+    }
+public enum SCOPE{
+        MENU, BATTLE, MAP
+}
+    public static SCOPE getScope() {
+        return scope;
+    }
+
+    public static void setScope(SCOPE scope) {
+        Eidolons.scope = scope;
     }
 }

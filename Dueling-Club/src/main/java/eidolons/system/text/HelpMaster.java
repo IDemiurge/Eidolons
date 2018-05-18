@@ -11,10 +11,9 @@ import main.system.auxiliary.data.FileManager;
  */
 public class HelpMaster {
     public static String getHelpText() {
-//         TextMaster.getLocale()
         String text = FileManager.readFile(
          StrPathBuilder.build(PathFinder.getTextPath(),
-          "russian", "info", "manual.txt"));
+          TextMaster.getLocale(), "info", "manual.txt"));
         return text;
     }
 
@@ -23,12 +22,21 @@ public class HelpMaster {
     }
 
     public static String getHeroInfoText(String name, String suffix) {
+        boolean demo=false;
         if (name.contains(" ")) {
-            name = name.split(" ")[0];
+            if (name.split(" ")[0].equalsIgnoreCase("demo")){
+                name = name.split(" ")[1];
+                demo = true;
+            } else
+                name = name.split(" ")[0];
+        }
+        String path=StrPathBuilder.build(PathFinder.getTextPath(),
+         TextMaster.getLocale(), "info", "heroes");
+        if (demo){
+            path=StrPathBuilder.build(path, "demo");
         }
         String text = FileManager.readFile(
-         StrPathBuilder.build(PathFinder.getTextPath(),
-          TextMaster.getLocale(), "info", "heroes",
+         StrPathBuilder.build(path,
           name + (suffix != null ? suffix : "") + ".txt"));
         if (text.isEmpty()) {
             text = "Sorry, no info on this hero!..";

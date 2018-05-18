@@ -36,6 +36,11 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         return new GameMenuHandler(this);
     }
 
+    public void toggle() {
+        if (GameMenu.menuOpen)
+            close();
+        else open();
+    }
     @Override
     public void open() {
         getLoop().setPaused(true);
@@ -59,10 +64,14 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         if (item.getItems().length > 0)
             return true;
         if (item instanceof GAME_MENU_ITEM)
+        {
+            clicked();
             return getHandler().clicked((GAME_MENU_ITEM) item);
+        }
 
         return null;
     }
+
 
     public GameMenuHandler getHandler() {
         if (handler == null)
@@ -110,6 +119,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     protected STD_BUTTON getButtonStyle() {
         return STD_BUTTON.GAME_MENU;
     }
+
 
 
     public enum GAME_MENU_ITEM implements MenuItem<GAME_MENU_ITEM> {

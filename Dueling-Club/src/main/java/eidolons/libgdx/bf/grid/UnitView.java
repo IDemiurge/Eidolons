@@ -247,9 +247,14 @@ public class UnitView extends BaseView {
     }
 
     public void resetHpBar(ResourceSourceImpl resourceSource) {
+//        if (getHpBar() == null)
+//            hpBar = new HpBar((resourceSource));
+//        getHpBar().reset(resourceSource);
+    }
+    public void resetHpBar( ) {
         if (getHpBar() == null)
-            hpBar = new HpBar((resourceSource));
-        getHpBar().reset(resourceSource);
+            hpBar = new HpBar(getUserObject());
+        getHpBar().reset();
     }
 
     @Override

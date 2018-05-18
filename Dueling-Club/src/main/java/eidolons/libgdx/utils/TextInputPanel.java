@@ -4,12 +4,13 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.stage.Closable;
+import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.StageWithClosable;
 
 /**
  * Created by JustMe on 2/22/2018.
  */
-public class TextInputPanel extends TablePanel implements Closable, TextFieldListener {
+public class TextInputPanel extends TablePanel implements Blocking, TextFieldListener {
     String title, text, hint;
     TextInputListener textInputListener;
     private TextField tf;
@@ -24,6 +25,10 @@ public class TextInputPanel extends TablePanel implements Closable, TextFieldLis
 //        tf.setTextFieldListener(this);
     }
 
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) getStage();
+    }
     @Override
     public void close() {
 

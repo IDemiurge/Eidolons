@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StringMaster;
@@ -123,11 +122,12 @@ public class GridUnitView extends GenericGridView {
     }
 
 
-    public void resetHpBar(ResourceSourceImpl resourceSource) {
-        super.resetHpBar(resourceSource);
+
+    @Override
+    public void resetHpBar() {
+        super.resetHpBar();
         if (initiativeQueueUnitView != null)
-            initiativeQueueUnitView.resetHpBar(
-             resourceSource);
+            initiativeQueueUnitView.resetHpBar();
     }
 
     @Override
@@ -152,10 +152,10 @@ public class GridUnitView extends GenericGridView {
             initiativeQueueUnitView.setTeamColorBorder(teamColorBorder);
     }
 
-    public void createHpBar(ResourceSourceImpl resourceSource) {
-        setHpBar(new HpBar(resourceSource));
+    public void createHpBar( ) {
+        setHpBar(new HpBar(getUserObject()));
         if (initiativeQueueUnitView != null)
-            initiativeQueueUnitView.setHpBar(new HpBar(resourceSource));
+            initiativeQueueUnitView.setHpBar(new HpBar(getUserObject()));
     }
 
     public void animateHpBarChange() {

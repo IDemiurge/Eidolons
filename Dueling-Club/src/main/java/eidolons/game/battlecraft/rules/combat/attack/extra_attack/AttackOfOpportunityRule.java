@@ -47,7 +47,7 @@ public class AttackOfOpportunityRule {
     }
 
     public static boolean checkActionNotInterrupted(DC_ActiveObj active, boolean simulation) {
-        if (!RuleKeeper.isRuleOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+        if (isOff()) {
             return false;
         }
         sim = simulation;
@@ -157,12 +157,12 @@ public class AttackOfOpportunityRule {
         boolean result = false;
 
         if (!checkAction(active)) {
-            if (!RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+            if (isOff()) {
                 return true;
             }
         }
 
-        if (!RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+        if (isOff()) {
             if (!stealthAoO) {
                 if (!VisionManager.checkVisible(unit)) {
                     if (!unit.checkBool(GenericEnums.STD_BOOLS.STEALTHY_AOOS)) {
@@ -202,7 +202,7 @@ public class AttackOfOpportunityRule {
         }
 
         if (!result) {
-            if (!RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY)) {
+            if (isOff()) {
                 return null;
             }
         }
@@ -214,6 +214,10 @@ public class AttackOfOpportunityRule {
         }
         return !active.getOwnerObj().isDead();
 
+    }
+
+    public static boolean isOff() {
+        return !RuleKeeper.isRuleTestOn(RULE.ATTACK_OF_OPPORTUNITY);
     }
 
     private static int getAoOMaxDistance(Unit unit, DC_ActiveObj active) {
@@ -339,7 +343,8 @@ public class AttackOfOpportunityRule {
     }
 
     public static Boolean checkAttacksOfOpportunityInterrupt(DC_ActiveObj action) {
-
+if (isOff())
+    return false;
         List<Unit> set = getPotentialAttackersOfOpportunity(action);
         for (Unit unit : set) {
             DC_ActiveObj attack = getAttackOfOpportunity(action, unit);

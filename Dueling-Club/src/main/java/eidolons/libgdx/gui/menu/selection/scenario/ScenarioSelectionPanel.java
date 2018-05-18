@@ -29,7 +29,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
 
     @Override
     public void closed(Object selection) {
-        setVisible(false);
+        fadeOut();
         if (selection == null) {
             return;
         }

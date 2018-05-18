@@ -95,6 +95,11 @@ public class RadialMenu extends Group implements Closable {
     }
 
     @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) getStage();
+    }
+
+    @Override
     public void act(float delta) {
         //TODO fix
         if (getColor().a == 0.0f)

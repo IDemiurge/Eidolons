@@ -16,11 +16,10 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import eidolons.libgdx.stage.Closable;
+import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,7 +30,7 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 /**
  * Created by JustMe on 11/16/2017.
  */
-public class ContainerPanel extends TablePanel implements Closable {
+public class ContainerPanel extends TablePanel implements Blocking {
 
     Image portrait;
     private Cell<Actor> takeAllButton;
@@ -127,21 +126,20 @@ public class ContainerPanel extends TablePanel implements Closable {
         });
     }
 
+
+
+
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) super.getStage();
+    }
+
     public void close() {
-        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
+        getStageWithClosable().closeClosable(this);
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, true);
-        setVisible(false);
-    }
 
-    public void open() {
-        GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
-        if (getStage() instanceof StageWithClosable) {
-            ((StageWithClosable) getStage()).closeDisplayed();
-            ((StageWithClosable) getStage()).setDisplayedClosable(this);
-        }
-        setVisible(true);
-    }
 
+    }
 
     @Override
     public void updateAct(float delta) {

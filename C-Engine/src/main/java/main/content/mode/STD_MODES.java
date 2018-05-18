@@ -33,6 +33,8 @@ public enum STD_MODES implements MODE {
     NORMAL(false, false, false),
     COWER(true, true, true);
 
+    private static final String DEFAULT_ATB_PERIOD="0.25";
+
     static {
         COWER.setDefenseMod(Formulas.DEFAULT_MODE_DEF_MOD * 3 / 2);
 
@@ -66,11 +68,11 @@ public enum STD_MODES implements MODE {
         // DEFENDING.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
         // ALERT.setRemoveEvent(STANDARD_EVENT_TYPE.UNIT_TURN_STARTED);
 
-        MEDITATION.period = "1";
-        CONCENTRATION.period = "1";
-        RESTING.period = "1";
-        DIVINATION.period = "1";
-        CHANNELING.period = "1";
+        MEDITATION.period = DEFAULT_ATB_PERIOD;
+        CONCENTRATION.period = DEFAULT_ATB_PERIOD;
+        RESTING.period = DEFAULT_ATB_PERIOD;
+        DIVINATION.period = DEFAULT_ATB_PERIOD;
+        CHANNELING.period = DEFAULT_ATB_PERIOD;
 
         MEDITATION.periodicValues = MEDITATION.getParameter() + "(" +
          Formulas.MEDITATION_PERIODIC_GAIN +

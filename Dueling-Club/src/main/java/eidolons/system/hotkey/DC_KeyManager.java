@@ -215,15 +215,16 @@ public class DC_KeyManager
     }
 
     public boolean handleKeyTyped(int keyMod, char CHAR) {
+        if (globalController != null) {
+            if (globalController.charTyped(CHAR)) {
+                return true;
+            }
+        }
         if (!CoreEngine.isJar() && !CoreEngine.isJarlike()) {
             if (checkControllerHotkey(keyMod, CHAR)) {
                 return true;
             }
-            if (globalController != null) {
-                if (globalController.charTyped(CHAR)) {
-                    return true;
-                }
-            }
+
             if (controller != null) {
                 try {
                     if (controller.charTyped(CHAR)) {

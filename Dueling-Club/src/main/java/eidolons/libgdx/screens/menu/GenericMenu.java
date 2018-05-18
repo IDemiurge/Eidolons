@@ -10,7 +10,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.stage.Closable;
+import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.OptionsMaster;
@@ -27,13 +27,13 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/28/2017.
  */
-public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel implements Closable {
+public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel implements Blocking {
     protected Map<T, TextButton> cache = new HashMap<>();
     OptionsWindow optionsWindow;
     private T currentItem;
     private T previousItem;
     private List<MenuItem<T>> defaultItems;
-
+List <TextButton>   buttons=    new ArrayList<>() ;
     public GenericMenu() {
         Drawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
          "UI", "components", "generic", "game menu", "background.png"));
@@ -103,6 +103,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
 
     protected void addButtons() {
         List<MenuItem<T>> items = getItems();
+        buttons.clear();
         for (MenuItem sub : items) {
             TextButton button = null;
             if (sub.toString().equalsIgnoreCase("Back")) {
@@ -110,6 +111,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
             } else
                 button = getButton((T) sub, StringMaster.getWellFormattedString(sub.toString()));
             addNormalSize(button).top().pad(10, 10, 10, 10);
+            buttons.add(button);
             row();
         }
         float top = getTopPadding(items.size());
@@ -165,14 +167,14 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (currentItem == sub) {
-                    return true; //why duplicate events?!
-                }
                 if (sub == null) {
                     setCurrentItem(previousItem);
                     setPreviousItem(null);
                     updateRequired = true;
                     return true;
+                }
+                if (currentItem == sub) {
+                    return true; //why duplicate events?!
                 }
                 Boolean result = GenericMenu.this.clicked(sub);
                 if (result == null) {
@@ -194,20 +196,26 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel impl
 
     }
 
+    protected void clicked() {
+        for (TextButton sub : buttons) {
+            sub.setChecked(false);
+        }
+    }
     protected abstract Boolean clicked(MenuItem sub);
 
     public void open() {
         setCurrentItem(null);
         setPreviousItem(null);
-        if (getStage() instanceof StageWithClosable) {
-            ((StageWithClosable) getStage()).closeDisplayed();
-            ((StageWithClosable) getStage()).setDisplayedClosable(this);
-        }
-        setVisible(true);
+        getStageWithClosable().openClosable(this);
+    }
+
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) super.getStage();
     }
 
     public void close() {
-        setVisible(false);
+        getStageWithClosable().closeClosable(this);
 
     }
 

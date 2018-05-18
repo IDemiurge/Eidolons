@@ -98,8 +98,9 @@ public class AnimationConstructor {
     };
     private boolean reconstruct = false;
     private boolean findClosestResource;
+    private static AnimationConstructor instance;
 
-    public AnimationConstructor() {
+    private AnimationConstructor() {
 
     }
 
@@ -114,7 +115,7 @@ public class AnimationConstructor {
             try {
                 int i = 0;
                 for (ANIM_PART part : ANIM_PART.values()) {
-                    data = new AnimationConstructor().getStandardData(active, part, i);
+                    data =   AnimationConstructor.getInstance().getStandardData(active, part, i);
                     for (ANIM_VALUES val : ANIM_VALUES.values()) {
                         String identifier;
                         switch (val) {
@@ -181,12 +182,20 @@ public class AnimationConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return false;//CoreEngine.isExe()  ;
+        return CoreEngine.isJar()  ;
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {
         return isPreconstructOn();
     }
+
+    public static AnimationConstructor getInstance() {
+        if (instance == null) {
+            instance = new AnimationConstructor();
+        }
+        return instance;
+    }
+
 
     public void tryPreconstruct(Unit unit) {
         if (isPreconstructOn())
@@ -238,7 +247,14 @@ public class AnimationConstructor {
                 }));
     }
 
-    public void preconstructAll(Unit unit) {
+    public static void preconstruct(Unit unit) {
+        AnimationConstructor constructor = AnimationConstructor.getInstance();
+        unit.getActives().forEach(spell ->
+         constructor.getOrCreate(spell));
+        AnimMaster3d.preloadAtlases(unit);
+
+    }
+        public void preconstructAll(Unit unit) {
         if (isPreconstructAllOnGameInit())
             if (GdxMaster.isLwjglThread()) {
                 unit.getActives().forEach(spell -> getOrCreate(spell));

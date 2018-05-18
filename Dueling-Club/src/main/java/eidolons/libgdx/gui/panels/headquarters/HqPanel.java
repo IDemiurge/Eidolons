@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GDX;
-import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -23,7 +22,6 @@ import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
 import java.util.List;
 
@@ -182,22 +180,22 @@ public class HqPanel extends TablePanel implements Blocking {
 
     @Override
     public void close() {
-        ActorMaster.addFadeOutAction(this, 0.3f );
-        ActorMaster.addHideAfter(this );
-        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
+//        ActorMaster.addFadeOutAction(this, 0.3f );
+//        ActorMaster.addHideAfter(this );
+//        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
         HqPanel.setActiveInstance(null  );
-        HqDataMaster.exit();
+        getStageWithClosable().closeClosable(this);
     }
 
     @Override
     public void open() {
-        if ( ((StageWithClosable) this.getStage()).getDisplayedClosable()!=this)
-            ((StageWithClosable) this.getStage()).closeDisplayed();
-        ((StageWithClosable) this.getStage()).setDisplayedClosable(this);
-
-        GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
         HqPanel.setActiveInstance(this);
-        fadeIn();
+        getStageWithClosable().openClosable(this);
+    }
+
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) super.getStage();
     }
 
     @Override

@@ -229,7 +229,10 @@ public class GdxImageMaster extends LwjglApplication {
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 
-    public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
+    public static String getAttackActionPath(DC_ActiveObj obj ) {
+        return getAttackActionPath(obj, obj.getActiveWeapon());
+    }
+        public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
         return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
          : getStandardAttackIcon(obj);
 //            if (obj.isOffhand()){

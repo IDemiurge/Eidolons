@@ -177,6 +177,9 @@ public class Executor extends ActiveHandler {
         }
         resolve();
         if (!BooleanMaster.isTrue(cancelled)) {
+            if (getChecker().isCancellable()) {
+                setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
+            }
             payCosts();
         }
 //        else {???
@@ -251,9 +254,7 @@ public class Executor extends ActiveHandler {
         } else {
 //            activated(ref); TODO
         }
-        if (getChecker().isCancellable()) {
-            setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
-        }
+
 
 
         if (getChecker().isRangedTouch()) {

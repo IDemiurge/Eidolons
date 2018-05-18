@@ -219,6 +219,10 @@ public abstract class ItemListPanel extends TablePanel {
         return isBlocked(getCurrentItem());
     }
 
+    public void deselect() {
+        currentItem=null;
+    }
+
 
     public static class SelectableItemData {
         public String previewImagePath;

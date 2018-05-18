@@ -73,7 +73,13 @@ public class TextureCache {
         return textureCache._getOrCreateGrayScale(path);
     }
 
-    public static Texture getOrCreate(String path) {
+    public static Texture getOrCreateNonEmpty(String path) {
+        Texture texture = getOrCreate(path);
+        if (texture==emptyTexture)
+            return null;
+        return texture;
+    }
+        public static Texture getOrCreate(String path) {
         if (textureCache == null) {
             init();
         }

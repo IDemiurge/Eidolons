@@ -62,7 +62,10 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
     @Override
     protected Boolean clicked(MenuItem sub) {
         if (sub instanceof MAIN_MENU_ITEM)
+        {
+            clicked();
             return handler.handle((MAIN_MENU_ITEM) sub);
+        }
         setVisible(true);
         return false;
     }
@@ -80,7 +83,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
         STANDOFF(true),
         SKIRMISH(true),
         PLAY(NEXT_SCENARIO, SELECT_SCENARIO, RANDOM_SCENARIO),
-        MAP_PREVIEW,
+        MAP_PREVIEW(true),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),

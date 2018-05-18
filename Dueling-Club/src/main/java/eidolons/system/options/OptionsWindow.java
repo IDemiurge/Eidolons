@@ -27,6 +27,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.Map;
 
@@ -42,9 +43,9 @@ public class OptionsWindow extends VisWindow {
 
     private OptionsWindow(
     ) {
-        super("Options", new WindowStyle(StyleHolder.getDefaultLabelStyle().font
+        super("Options", new WindowStyle(StyleHolder.getHqLabelStyle(20).font
          , StyleHolder.getDefaultLabelStyle().fontColor,
-         new NinePatchDrawable(NinePatchFactory.getTooltip())
+         new NinePatchDrawable(NinePatchFactory.getLightPanelFilled())
         ));
         setVisible(false);
         setSize(800, 600);
@@ -225,6 +226,9 @@ public class OptionsWindow extends VisWindow {
                     continue;
                 if (option.isHidden())
                     continue;
+                if (option.isDevOnly())
+                    if (!CoreEngine.isIDE())
+                        continue;
                 VisLabel label = new VisLabel(option.getName());
                 content.add(label).left();
                 String optionType = options.getValueClass(option).getSimpleName();

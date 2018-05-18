@@ -214,6 +214,7 @@ public class ActionValueContainer extends ValueContainer {
         }
         super.draw(batch, parentAlpha);
         batch.setShader(shader);
+
 //        if (hover) {
 //            batch.draw(overlay, (getParent().getX() + getX() + (imageContainer.getActorWidth() -
 //              overlay.getRegionWidth()) / 2),

@@ -53,8 +53,8 @@ public class EmitterPools {
     }
 
     public static ParticleEffect getEffect(String path) {
-        if (CoreEngine.isJar())
-            System.out.println("getEffect " + path);
+//        if (CoreEngine.isJar())
+//            System.out.println("getEffect " + path);
         if (!effectPoolingOn) {
             return new ParticleEffect(path);
         }

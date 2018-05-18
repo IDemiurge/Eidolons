@@ -1,21 +1,19 @@
 package eidolons.libgdx.stage;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-
 /**
  * Created by JustMe on 11/25/2017.
  */
 public interface Closable {
 
     default void close() {
-        ((Actor) this).setVisible(false);
+        getStageWithClosable().closeClosable(this);
+
     }
 
+    StageWithClosable getStageWithClosable();
+
     default void open() {
-        if ( ((StageWithClosable) ((Actor) this).getStage()).getDisplayedClosable()!=this)
-            ((StageWithClosable) ((Actor) this).getStage()).closeDisplayed();
-        ((StageWithClosable) ((Actor) this).getStage()).setDisplayedClosable(this);
-        ((Actor) this).setVisible(true);
+        getStageWithClosable().openClosable(this);
     }
 
 }

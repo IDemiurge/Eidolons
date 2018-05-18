@@ -2,13 +2,15 @@ package eidolons.libgdx.bf.grid;
 
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
+import eidolons.libgdx.bf.overlays.HpBarManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.entity.obj.Obj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.EventCallback;
@@ -92,14 +94,12 @@ public class GridManager {
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
-                    UnitView view = (UnitView) getViewMap().get(
-                     event.getRef().getSourceObj());
-                    if (view != null)
-                        if (view.isVisible())
-                            if (view.getHpBar() != null)
-//                                if (view.getHpBar( ).getDataSource().canHpBarBeVisible())
-                                view.resetHpBar(new ResourceSourceImpl((BattleFieldObject) event.getRef().getSourceObj()));
-                }
+                    checkHpBarReset(event.getRef().getSourceObj());
+                   }
+                caught = true;
+            }
+            if (event.getType()==STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
+                checkHpBarReset( event.getRef().getTargetObj());
                 caught = true;
             }
 
@@ -109,4 +109,17 @@ public class GridManager {
             }
         };
     }
+
+    private void checkHpBarReset(Obj obj) {
+        UnitView view = (UnitView) getViewMap().get(obj);
+        if (view != null)
+            if (view.isVisible())
+                if (view.getHpBar() != null)
+                    if (
+                     !ExplorationMaster.isExplorationOn()
+                      || HpBarManager.canHpBarBeVisible(view.getUserObject()))
+                        view.resetHpBar();
+    }
+
+
 }

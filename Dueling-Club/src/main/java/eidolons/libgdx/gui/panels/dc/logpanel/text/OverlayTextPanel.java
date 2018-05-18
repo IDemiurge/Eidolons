@@ -1,18 +1,21 @@
 package eidolons.libgdx.gui.panels.dc.logpanel.text;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.gui.panels.dc.logpanel.LogPanel;
-import eidolons.libgdx.stage.Closable;
+import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.StageWithClosable;
 import main.system.graphics.FontMaster.FONT;
 
 /**
  * Created by JustMe on 11/14/2017.
  */
-public class OverlayTextPanel extends LogPanel implements Closable {
+public class OverlayTextPanel extends LogPanel implements Blocking {
 
     public static final boolean TEST_MODE = false;
 
@@ -22,10 +25,19 @@ public class OverlayTextPanel extends LogPanel implements Closable {
     }
 
     @Override
+    public void draw(Batch batch, float parentAlpha) {
+        ShaderMaster.drawWithCustomShader(() -> super.draw(batch, parentAlpha), batch, null);
+    }
+
+    @Override
     public void bind() {
 
     }
 
+    @Override
+    public StageWithClosable getStageWithClosable() {
+        return (StageWithClosable) getStage();
+    }
     @Override
     protected float getDefaultHeight() {
         return 850;

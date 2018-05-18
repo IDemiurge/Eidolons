@@ -28,7 +28,9 @@ public class MainLauncher extends GenericLauncher {
 
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-        WaitMaster.waitForInput(WAIT_OPERATIONS.XML_READY);
+        if (CoreEngine.isFastMode()) {
+            CoreEngine.setJar(true);
+        }
         if (args.length > 0) {
             String[] commands = args;
             if (commands.length == 1) {
@@ -36,6 +38,7 @@ public class MainLauncher extends GenericLauncher {
                 return;
             }
             for (String command : commands) {
+                command = command.trim();
                 MAIN_MENU_ITEM item =
                  new EnumMaster<MAIN_MENU_ITEM>().retrieveEnumConst(MAIN_MENU_ITEM.class, command);
                 if (item != null)

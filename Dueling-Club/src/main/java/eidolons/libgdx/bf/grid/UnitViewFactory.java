@@ -15,7 +15,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
@@ -64,7 +63,8 @@ public class UnitViewFactory {
             return (path);
         });
 
-        view.createHpBar((new ResourceSourceImpl(bfObj)));
+        view.setUserObject(bfObj);
+        view.createHpBar();
         if (bfObj instanceof Unit) {
             view.getInitiativeQueueUnitView().getHpBar().setTeamColor(options.getTeamColor());
         }
@@ -77,7 +77,6 @@ public class UnitViewFactory {
         view.addListener(listener);
         view.getInitiativeQueueUnitView().addListener(listener);
 
-        view.setUserObject(bfObj);
         return view;
     }
 

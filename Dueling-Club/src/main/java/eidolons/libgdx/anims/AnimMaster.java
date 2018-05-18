@@ -75,7 +75,7 @@ public class AnimMaster extends Group {
 //         FAST_DC.getGameLauncher().FAST_MODE ||
 //          FAST_DC.getGameLauncher().SUPER_FAST_MODE;
 
-        constructor = new AnimationConstructor();
+        constructor =   AnimationConstructor.getInstance();
         controller = new AnimController();
 //        AnimMaster3d.init();
 //        bindEvents(); now in GridPanel.bindEvents()
