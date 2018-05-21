@@ -432,6 +432,10 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     public void resetZIndices() {
+        if (infoTooltipContainer != null)
+            infoTooltipContainer.setZIndex(Integer.MAX_VALUE);
+        if (actionTooltipContainer != null)
+            actionTooltipContainer.setZIndex(Integer.MAX_VALUE);
         if (tooltips != null)
             tooltips.setZIndex(Integer.MAX_VALUE);
         if (blackout != null)

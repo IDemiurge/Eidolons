@@ -66,8 +66,12 @@ public class StyleHolder {
     public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
                                                              FONT fontStyle,
                                                              Integer size, Color color) {
+        if (size>100)
+            size = size/100;
+        else //quick fix to enable static size
         if (adjustSizeCoef > 0)
-            if (GdxMaster.getFontSizeMod() != 1) {
+            if (GdxMaster.getFontSizeMod() != 1)
+            {
                 int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
                 size += mod;
             }

@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
@@ -18,6 +20,7 @@ import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.graphics.FontMaster.FONT;
 import main.system.threading.WaitMaster;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
@@ -28,6 +31,9 @@ public class CombatInventory extends TablePanel implements Blocking {
     private InventoryPanel inventoryPanel;
 
     private Cell<Actor> actionPointsText;
+    private Cell<Actor> weightText;
+    private Cell<Actor> slotsText;
+    private Cell<Actor> goldText;
     private SymbolButton doneButton;
     private SymbolButton cancelButton;
     private SymbolButton undoButton;
@@ -42,6 +48,13 @@ public class CombatInventory extends TablePanel implements Blocking {
         addElement(inventoryPanel);
         row();
 
+        final TablePanel<Actor> info = new TablePanel<>();
+        addElement(info).pad(0, 20, 20, 20);
+        slotsText =info.addElement(null).left() ;
+        weightText =info.addElement(null).center() ;
+        goldText =info.addElement(null).right() ;
+        info.setBackground(NinePatchFactory.getLightPanelDrawable());
+        row();
         final TablePanel<Actor> lower = new TablePanel<>();
         addElement(lower).pad(0, 20, 20, 20);
 
@@ -123,12 +136,34 @@ public class CombatInventory extends TablePanel implements Blocking {
         super.updateAct(delta);
 
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
-        if (ExplorationMaster.isExplorationOn()) {
-            actionPointsText.setActor(new ValueContainer("Free Mode", ""));
-        } else {
-            actionPointsText.setActor(new ValueContainer("Actions available:",
-             source.getOperationsString()));
+        String header="Free Mode";
+        cancelButton.setVisible(false);
+        if (!ExplorationMaster.isExplorationOn()) {
+            header = "Operations:\n" +
+             source.getOperationsString();
+            cancelButton.setVisible(true);
         }
+        ValueContainer controls = new ValueContainer(
+         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
+         header,
+         "\n[Right click]: unequip or drop onto the ground\n" +
+          "[Double left-click]: default equip \n" +
+          "[Alt-Click]: equip weapon in quick slot \n");
+        controls.setBackground(NinePatchFactory.getLightPanelDrawable());
+            actionPointsText.setActor(controls
+             );
+
+        weightText.setActor(new ValueContainer(
+         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1800),
+         "Weight: ", source.getWeightInfo()));
+
+        goldText.setActor(new ValueContainer(
+         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1800),
+         "Gold: ", source.getGoldInfo()));
+
+        slotsText.setActor(new ValueContainer(
+         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1800),
+         "Quick Slots: ", source.getSlotsInfo()));
         initButtonListeners();
     }
 
@@ -137,14 +172,13 @@ public class CombatInventory extends TablePanel implements Blocking {
         if (result == null)
             result = false;
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
-        if (ExplorationMaster.isExplorationOn()) {
-            GuiEventManager.trigger(GuiEventType.GAME_RESET );
-        }
-        setVisible(false);
-        GuiEventManager.trigger(GuiEventType.GAME_RESUMED );
+//        if (ExplorationMaster.isExplorationOn()) {
+//            GuiEventManager.trigger(GuiEventType.GAME_RESET );
+//        }
+//        setVisible(false);
+//        GuiEventManager.trigger(GuiEventType.GAME_RESUMED );
+        close();
     }
 
-    public void close() {
-        close(null);
-    }
+
 }

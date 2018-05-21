@@ -532,6 +532,12 @@ public class Unit extends DC_UnitModel {
         return getIntParam(PARAMS.QUICK_SLOTS) - quickItems.size();
     }
 
+    public int getOccupiedQuickSlots() {
+        if (quickItems == null) {
+            return 0;
+        }
+        return  quickItems.size();
+    }
     public DequeImpl<DC_QuickItemObj> getQuickItems() {
         if (!isItemsInitialized()) {
             if (quickItems == null) {

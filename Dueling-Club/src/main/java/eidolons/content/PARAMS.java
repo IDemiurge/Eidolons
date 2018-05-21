@@ -433,7 +433,6 @@ public enum PARAMS implements PARAMETER {
 
     NECROMANCY_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
-    VOID_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     DETECTION_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
     STEALTH_MASTERY(null, "Mastery", false, 0, "units", "chars", "perks", "classes"),
 
@@ -924,7 +923,6 @@ public enum PARAMS implements PARAMETER {
 
         ELEMENTAL_MASTERY.initMastery();
         SYLVAN_MASTERY.initMastery();
-        VOID_MASTERY.initMastery();
         BLADE_MASTERY.initMastery();
         BLUNT_MASTERY.initMastery();
         // AXE_MASTERY.initMastery();

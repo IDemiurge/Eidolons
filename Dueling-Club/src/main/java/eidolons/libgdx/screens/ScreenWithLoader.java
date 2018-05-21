@@ -9,18 +9,19 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import eidolons.entity.obj.BattleFieldObject;
-import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.anims.AnimationConstructor;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.LoadingStage;
+import eidolons.libgdx.stage.UiStage;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.text.TipMaster;
 import main.system.EventCallbackParam;
+import main.system.auxiliary.log.Chronos;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 
@@ -28,6 +29,7 @@ import main.system.launch.CoreEngine;
  * Created by JustMe on 11/28/2017.
  */
 public abstract class ScreenWithLoader extends ScreenAdapter {
+    public static final String ASSET_LOADING = "ASSET LOADING";
     protected LoadingStage loadingStage;
     protected boolean hideLoader = false;
     protected ScreenData data;
@@ -40,6 +42,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected Label tooltipLabel;
     private boolean waitingForInput;
     private float tooltipTimer = getTooltipPeriod();
+    private boolean loadingAtlases;
+    private int assetLoadTimer=getAssetLoadTimeLimit();
+
+    protected UiStage overlayStage;
+    protected SelectionPanel selectionPanel;
+    protected ManualPanel manualPanel;
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
@@ -49,6 +57,11 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
          getWaitY());
         tooltipLabel = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAIN, 20));
 
+        overlayStage = new UiStage();
+    }
+
+    public UiStage getOverlayStage() {
+        return overlayStage;
     }
 
     private float getWaitY() {
@@ -85,24 +98,28 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void loadDone(EventCallbackParam param) {
+        this.param=param;
+        if (param.get() instanceof BFDataCreatedEvent)
         if (Assets.isOn()) {
-            if (AnimationConstructor.isPreconstructAllOnGameInit())
-                if (param.get() instanceof BFDataCreatedEvent) {
-                    for (BattleFieldObject sub : ((BFDataCreatedEvent) param.get()).getObjects()) {
-                        if (sub instanceof Unit)
-                            AnimationConstructor.preconstruct((Unit) sub);
-                    }
-
-                }
-            while (!Assets.get().getManager().update()) {
-                //loading...
+            Chronos.mark(ASSET_LOADING);
+            if (Assets.preloadAll(((BFDataCreatedEvent) param.get()).getObjects()))
+            {
+                setLoadingAtlases(true);
+                return ;
             }
+
         }
+        loadingAssetsDone(param);
+
+    }
+
+    public void loadingAssetsDone(EventCallbackParam param) {
+        Chronos.logTimeElapsedForMark( ASSET_LOADING  );
         if (isWaitForInput()) {
             setWaitingForInput(true);
-            this.param = param;
+            this.param =  param;
             updateInputController();
-        } else done(param);
+        } else done(this.param);
     }
 
     protected boolean isWaitForInput() {
@@ -172,6 +189,19 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         renderLoader(delta);
         waited(delta);
         checkShaderReset();
+        if (isLoadingAtlases()) {
+            if (assetLoadTimer<=0||Assets.get().getManager().update()) {
+                setLoadingAtlases(false);
+                loadingAssetsDone(param);
+                return;
+            }
+            if (isAssetLoadTimerOn())
+                assetLoadTimer -= delta;
+        }
+    }
+
+    private boolean isAssetLoadTimerOn() {
+        return false;
     }
 
     protected void checkShaderReset() {
@@ -218,7 +248,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected float getTooltipPeriod() {
-        return 8;
+        return 5;
     }
 
     protected String getTooltipText() {
@@ -239,6 +269,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         } else if (!hideLoader) {
             loadingStage.act(delta);
             loadingStage.draw();
+            overlayStage.act(delta);
+            overlayStage.draw();
+
         } else
             renderMain(delta);
     }
@@ -310,5 +343,18 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void reset() {
 
+    }
+
+    public boolean isLoadingAtlases() {
+        return loadingAtlases;
+    }
+
+    public void setLoadingAtlases(boolean loadingAtlases) {
+        assetLoadTimer = getAssetLoadTimeLimit();
+        this.loadingAtlases = loadingAtlases;
+    }
+
+    private int getAssetLoadTimeLimit() {
+        return 20;
     }
 }

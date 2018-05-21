@@ -12,7 +12,7 @@ import main.system.graphics.FontMaster.FONT;
  * Created by JustMe on 11/14/2017.
  */
 public class TextBuilder {
-    protected Message Message;
+    protected Message message;
 
     protected StringBuilder sb;
 
@@ -29,18 +29,18 @@ public class TextBuilder {
         );
         l.setWrap(true);
         l.setAlignment(Align.left);
-        Message = newMessage();
-        Message.setFillParent(true);
-        Message.align(Align.bottomLeft);
-        Message.add(l).fill().width(w);
-        Message.setLayoutEnabled(true);
-        Message.pack();
-        Message.padTop(5);
-        Message.padBottom(5);
+        message = newMessage();
+        message.setFillParent(true);
+        message.align(Align.bottomLeft);
+        message.add(l).fill().width(w);
+        message.setLayoutEnabled(true);
+        message.pack();
+        message.padTop(5);
+        message.padBottom(5);
         addHoverObjects();
 
 
-        return Message;
+        return message;
     }
 
     protected Message newMessage() {

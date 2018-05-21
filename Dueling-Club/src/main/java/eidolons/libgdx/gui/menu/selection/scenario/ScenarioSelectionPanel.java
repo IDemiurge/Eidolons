@@ -25,8 +25,12 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         this.dataSupplier = dataSupplier;
         init();
     }
-
-
+    protected String getDoneText() {
+        return "Next";
+    }
+    protected String getTitle() {
+        return "Select a Scenario";
+    }
     @Override
     public void closed(Object selection) {
         fadeOut();

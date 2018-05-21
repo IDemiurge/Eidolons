@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
@@ -40,14 +41,14 @@ public class ItemInfoPanel extends TablePanel {
 //        TablePanel<Actor> centered = new TablePanel<>();
 //        centered.addNoGrow(header).  center().padLeft(100);//.height(128);
 
-        addElement(header).left().padTop(35)
+        addElement(header).left().padTop(GDX.size(40))
 //         .maxWidth(700).maxHeight(700)
         ;
         row();
         if (description != null)
             addElement(description).left().padLeft(30);
         if (fullsizePortrait != null) {
-            addNormalSize(fullsizePortrait).right().padBottom(75).padRight(35);
+            addNormalSize(fullsizePortrait).right().padBottom(GDX.size(80)).padRight(GDX.size(42));
             fullsizePortrait.setZIndex(0);
         }
         if (item != null)
@@ -67,7 +68,7 @@ public class ItemInfoPanel extends TablePanel {
 
     protected void initSize() {
         if (GdxMaster.getFontSizeMod() != 1) {
-            setSize(GdxMaster.adjustSize(1020), 900);
+            setSize(GdxMaster.adjustSizePlain(1020), 900);
         }
     }
 
@@ -76,7 +77,9 @@ public class ItemInfoPanel extends TablePanel {
 //            setBackground(new NinePatchDrawable(NinePatchFactory.getInfoPanel()));
             setBackground(new TextureRegionDrawable(new TextureRegion(
              TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
-             BACKGROUND_NINE_PATCH.PATTERN, 1050, 850))));
+             BACKGROUND_NINE_PATCH.PATTERN,
+              (int) GdxMaster.adjustSizePlain(1050)
+              , 850))));
         else {
             setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
         }
@@ -88,7 +91,7 @@ public class ItemInfoPanel extends TablePanel {
     }
 
     protected void initHeader(TablePanel<Actor> header) {
-        header.addNormalSize(preview).left().padLeft(70).padTop(55);
+        header.addNormalSize(preview).left().padLeft(GDX.size(70)).padTop(GDX.size(70));
         header.addElement(title).right();
 
     }

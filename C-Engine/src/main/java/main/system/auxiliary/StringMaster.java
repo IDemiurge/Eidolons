@@ -2,6 +2,7 @@ package main.system.auxiliary;
 
 import main.content.ContentValsManager;
 import main.content.VALUE;
+import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
@@ -1743,6 +1744,18 @@ public class StringMaster {
         else
             result += getStringXTimes(i, "I");
         return result;
+    }
+
+    public static String getCurrentOutOfBaseVal(Entity entity, PARAMETER parameter) {
+        return entity.getIntParam(ContentValsManager.getCurrentParam(parameter)) + "/"
+         + entity.getIntParam(parameter);
+    }
+
+    public static String formatFloat(int digitsAfterPeriod, float v) {
+        return
+         String.format(java.util.Locale.US, "%." +
+         digitsAfterPeriod +
+          "f", v);
     }
 
 

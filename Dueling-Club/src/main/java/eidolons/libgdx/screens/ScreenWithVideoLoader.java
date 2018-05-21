@@ -9,7 +9,6 @@ import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
-import eidolons.libgdx.stage.UiStage;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -26,20 +25,16 @@ import static main.system.GuiEventType.SHOW_SELECTION_PANEL;
 public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
     private static Boolean videoEnabled;
-    protected UiStage overlayStage;
     protected VideoMaster video;
     protected boolean looped;
-    protected SelectionPanel selectionPanel;
-    protected ManualPanel manualPanel;
 
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
         super();
-        if (isVideoLoader())
+        if (isLoadingWithVideo())
             if (isVideoEnabled())
                 initVideo();
         looped = true;
-        overlayStage = new UiStage();
 
     }
 
@@ -111,7 +106,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     private void addSelectionPanel(SelectionPanel selectionPanel) {
-        boolean displayOnLoader = hideLoader != isVideoLoader();
+        boolean displayOnLoader = hideLoader != isLoadingWithVideo();
         Stage stage = displayOnLoader ? getOverlayStage() : getMainStage();
         if (stage != null) {
             stage.addActor(selectionPanel);
@@ -151,8 +146,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     @Override
     protected void hideLoader() {
         super.hideLoader();
-        if (!isVideoLoader()) {
-            initVideo();
+        if (!isLoadingWithVideo()) {
+             initVideo();
         } else if (video != null) {
             try {
                 video.stop();
@@ -165,7 +160,15 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected void initVideo() {
-        video = new VideoMaster();
+        try {
+            video = new VideoMaster();
+        } catch (Exception e) {
+            main.system.auxiliary.log.LogMaster.log(1, "VIDEO INIT FAILED!");
+            main.system.ExceptionMaster.printStackTrace(e);
+        } finally{
+            videoEnabled=false;
+//            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
+        }
     }
 
     @Override
@@ -210,13 +213,15 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     @Override
     protected void renderMain(float delta) {
+        if (!isVideoEnabled()) {
+            loadingStage.act(delta);
+            loadingStage.draw();
+            overlayStage.act(delta);
+            overlayStage.draw();
+        }
     }
 
-    public UiStage getOverlayStage() {
-        return overlayStage;
-    }
-
-    protected boolean isVideoLoader() {
+    protected boolean isLoadingWithVideo() {
         return true;
     }
 

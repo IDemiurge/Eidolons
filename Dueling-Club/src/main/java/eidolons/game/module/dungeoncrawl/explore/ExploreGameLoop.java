@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.explore;
 
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
@@ -252,7 +253,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
             return ;
         }
         if (isPaused())
+        {
+            EUtils.showInfoText("The game is paused!");
             return;
+        }
         if (ExplorationMaster.isWaiting()) {
             ExplorationMaster.setWaiting(false);
             return;

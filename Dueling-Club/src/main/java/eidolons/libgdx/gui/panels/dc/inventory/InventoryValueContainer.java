@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
-import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.entity.Entity;
 
 public class InventoryValueContainer extends ValueContainer {
@@ -39,7 +38,6 @@ public class InventoryValueContainer extends ValueContainer {
     @Override
     protected void init(TextureRegion texture, String name, String value) {
         super.init(texture, "", "");
-        addListener(new ValueTooltip(name).getController());
         addListener(new ClickListener(-1) {
             @Override
             public void clicked(InputEvent event, float x, float y) {

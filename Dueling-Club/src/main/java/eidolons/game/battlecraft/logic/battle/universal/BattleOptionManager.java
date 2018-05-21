@@ -21,6 +21,7 @@ import main.system.threading.WaitMaster;
  */
 public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
+    public static final float CHEAT_MODIFIER = 1.25f;
     BattleOptions options;
     DIFFICULTY defaultDifficulty = GenericEnums.DIFFICULTY.NOVICE;
     DIFFICULTY difficulty;
@@ -55,18 +56,6 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
     public void selectDifficulty() {
 
     }
-
-    public DIFFICULTY getDifficulty() {
-        if (difficulty == null) {
-            difficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(
-             DIFFICULTY.class, OptionsMaster.getGameplayOptions().
-              getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
-        }
-        return difficulty;
-//        return   new EnumMaster<DIFFICULTY>().retrieveEnumConst(
-//         DIFFICULTY.class,OptionsMaster.getGameplayOptions().
-//          getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
-    }
 //        battleLevel = 0;
 //
 //        List<? extends Obj> units = new ArrayList<>(game.getPlayer(true).getControlledUnits());
@@ -79,6 +68,18 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 //
 //        return battleLevel;
 //    }
+
+    public DIFFICULTY getDifficulty() {
+        if (difficulty == null) {
+            difficulty = new EnumMaster<DIFFICULTY>().retrieveEnumConst(
+             DIFFICULTY.class, OptionsMaster.getGameplayOptions().
+              getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+        }
+        return difficulty;
+//        return   new EnumMaster<DIFFICULTY>().retrieveEnumConst(
+//         DIFFICULTY.class,OptionsMaster.getGameplayOptions().
+//          getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
+    }
 
     public BattleOptions getOptions() {
         return options;
@@ -101,8 +102,6 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 //
     }
 
-    public static final float CHEAT_MODIFIER = 1.25f;
-
     public void applyDifficultyMods(BattleFieldObject unit) {
         Boolean ally_enemy_neutral = null;
         if (unit.isMine())
@@ -115,17 +114,15 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         if (ally_enemy_neutral) {
             if (unit.isMainHero()) {
                 mod = getDifficulty().getHealthPercentageMainHero();
-                mod = (int) (mod*CHEAT_MODIFIER);
+                mod = (int) (mod * CHEAT_MODIFIER);
             } else {
                 mod = getDifficulty().getHealthPercentageAlly();
-                mod = (int) (mod*CHEAT_MODIFIER);
+                mod = (int) (mod * CHEAT_MODIFIER);
             }
-        } else
-        {
+        } else {
             mod = getDifficulty().getHealthPercentageEnemy();
-            mod = (int) (mod/CHEAT_MODIFIER);
+            mod = (int) (mod / CHEAT_MODIFIER);
         }
-
 
 
         unit.multiplyParamByPercent(PARAMS.ENDURANCE, mod, false);
@@ -137,17 +134,15 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
         unit.multiplyParamByPercent(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD, mod / 2, false);
 
-        if (unit.isMine())
-        {
-            unit.multiplyParamByPercent(PARAMS.STAMINA, mod / 2, false);
-            if (mod>100)
-                if (ExplorationMaster.isExplorationOn())
-                {
+        if (unit.isMine()) {
+            if (mod / 2 > 100)
+                unit.multiplyParamByPercent(PARAMS.STAMINA, mod / 2, false);
+            if (mod > 100)
+                if (ExplorationMaster.isExplorationOn()) {
                     int amount = unit.getIntParam(PARAMS.STAMINA) * mod / 1000;
-                    unit.modifyParameter(PARAMS.STAMINA_REGEN,             amount, false);
+                    unit.modifyParameter(PARAMS.STAMINA_REGEN, amount, false);
                 }
-        }
-        else {
+        } else {
             unit.multiplyParamByPercent(PARAMS.STEALTH, mod / 2, false);
         }
         unit.modifyParamByPercent(PARAMS.N_OF_ACTIONS, mod / 4);
@@ -157,7 +152,7 @@ public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
         if (!forced)
             if (difficulty != null) {
                 return true;
-        }
+            }
         GuiEventManager.trigger(
          GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL);
         try {

@@ -52,6 +52,10 @@ public class ValueContainer extends TablePanel {
     public ValueContainer(String name, String value) {
         init(null, name, value);
     }
+    public ValueContainer(LabelStyle style, String name, String value) {
+        init(null, name, value);
+        setStyle(style);
+    }
 
     public ValueContainer(Label actor) {
         this(actor, null);

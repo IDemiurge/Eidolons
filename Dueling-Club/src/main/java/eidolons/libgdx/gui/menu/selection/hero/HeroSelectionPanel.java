@@ -21,7 +21,12 @@ public class HeroSelectionPanel extends SelectionPanel {
         this.dataSupplier = dataSupplier;
         init();
     }
-
+    protected String getDoneText() {
+        return "Ready";
+    }
+    protected String getTitle() {
+        return "Select a Hero";
+    }
     protected boolean isReadyToBeInitialized() {
         return false;
     }

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.inventory.datasource;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.inventory.*;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
@@ -109,5 +110,18 @@ public class InventoryDataSource implements QuickSlotDataSource,
 
     public Unit getUnit() {
         return unit;
+    }
+
+    public String getWeightInfo() {
+        return unit.calculateCarryingWeight()+"/" +
+         unit.getIntParam(PARAMS.CARRYING_CAPACITY) +
+         "lb";
+    }
+    public String getGoldInfo() {
+        return  unit.getIntParam(PARAMS.GOLD) +"gp";
+    }
+    public String getSlotsInfo() {
+        return unit.getOccupiedQuickSlots()+"/" +
+         unit.getIntParam(PARAMS.QUICK_SLOTS) ;
     }
 }

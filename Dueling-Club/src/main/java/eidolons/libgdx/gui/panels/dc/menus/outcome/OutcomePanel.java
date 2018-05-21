@@ -42,7 +42,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
     private static final String VICTORY_MESSAGE =
      "+++That's It - You are Victorious!+++";
     private static final String DEFEAT_MESSAGE =
-     "***Defeat - The Enemy has Prevailed!***";
+     "***All is lost - the Enemy has Prevailed!***";
     Cell<TextButton> doneButton;
     Cell<TextButton> exitButton;
     Cell<TextButton> continueButton;
@@ -100,27 +100,27 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
         final TablePanel<TextButton> buttonTable = new TablePanel<>();
 
-        doneButton = buttonTable.addElement(
-         new TextButton(outcome ? "Next" : "Restart",
-          StyleHolder.getMenuTextButtonStyle(16))
-        ).fill(false).expand(0, 0).right()
-         .pad(20, 10, 20, 10);
-        doneButton.getActor().addListener(this);
+//        doneButton = buttonTable.addElement(
+//         new TextButton(outcome ? "Next" : "Restart",
+//          StyleHolder.getMenuTextButtonStyle(16))
+//        ).fill(false).expand(0, 0).right()
+//         .pad(20, 10, 20, 10);
+//        doneButton.getActor().addListener(this);
 
         exitButton = buttonTable.addElement(
-         new TextButton("Exit",
-          StyleHolder.getMenuTextButtonStyle(16))
-        ).fill(false).expand(0, 0).right()
+         new TextButton("Main Menu",
+          StyleHolder.getMenuTextButtonStyle(18))
+        ).fill(false).expand(0, 0).center()
          .pad(20, 10, 20, 10);
         exitButton.getActor().addListener(this);
 
-        continueButton = buttonTable.addElement(
-         new TextButton("Explore",
-          StyleHolder.getMenuTextButtonStyle(16))
-        ).fill(false).expand(0, 0).right()
-         .pad(20, 10, 20, 10);
-//         .size(50, 30);
-        continueButton.getActor().addListener(this);
+//        continueButton = buttonTable.addElement(
+//         new TextButton("Explore",
+//          StyleHolder.getMenuTextButtonStyle(16))
+//        ).fill(false).expand(0, 0).right()
+//         .pad(20, 10, 20, 10);
+////         .size(50, 30);
+//        continueButton.getActor().addListener(this);
         addActor(buttonTable);
         buttonTable.setPosition(
          MigMaster.center(textureRegion.getRegionWidth(), buttonTable.getWidth()),
@@ -147,9 +147,9 @@ public class OutcomePanel extends TablePanel implements EventListener {
             if (actor.getParent() instanceof TextButton) {
                 ActorMaster.addMoveToAction(this, getX(), GdxMaster.getHeight(), 1.5f);
 //                ActorMaster.addRemoveAfter(this);
-                final Boolean exit_continue_next =
-                 doneButton.getActor().getLabel() == actor ? null :
-                  exitButton.getActor().getLabel() == actor;
+                final Boolean exit_continue_next =true;
+//                 doneButton.getActor().getLabel() == actor ? null :
+//                  exitButton.getActor().getLabel() == actor;
 //            ActorMaster.addAfter(this, new Action() {
 //
 //                @Override

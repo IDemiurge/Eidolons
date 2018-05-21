@@ -4,7 +4,6 @@ import eidolons.entity.obj.attach.HeroClass;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
-import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.texture.Images;
 import main.entity.Entity;
 import main.entity.type.ObjType;
@@ -69,8 +68,5 @@ public class ClassSlot extends HtNode {
         super.update(delta);
     }
 
-    @Override
-    protected Tooltip getTooltip() {
-        return null;
-    }
+
 }

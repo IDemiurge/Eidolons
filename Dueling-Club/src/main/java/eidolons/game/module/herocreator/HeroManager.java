@@ -64,6 +64,7 @@ public class HeroManager {
         return
          new Formula(getCost(type, hero, type.getOBJ_TYPE_ENUM(), null)).getInt(hero.getRef());
     }
+
     public static String getCost(Entity type, Entity hero) {
         return getCost(type, hero, type.getOBJ_TYPE_ENUM(), null);
     }
@@ -79,7 +80,7 @@ public class HeroManager {
     }
 
     public static String getCost(Entity type, Entity hero, OBJ_TYPE TYPE, PROPERTY PROP,
-                                 boolean buying) {
+                                 boolean buying, boolean parsed) {
         if (TYPE.getParam() == null) {
             return "";
         }
@@ -97,10 +98,7 @@ public class HeroManager {
         }
 
         discountParam = DC_ContentValsManager.getSpecialCostReductionParam(costParam, PROP);
-        if (discountParam == null) {
-            return "" + costFormula;
-        }
-
+        if (discountParam != null) {
         mod = hero.getIntParam(discountParam);
         if (mod == 100) {
             value = 0;
@@ -108,8 +106,16 @@ public class HeroManager {
             costFormula.applyFactor((!buying ? "" : "-")
              + StringMaster.getValueRef(KEYS.SOURCE, discountParam));
         }
-
+        }
+        if (parsed) {
+            return "" + costFormula.getInt(hero.getRef());
+        }
         return "(" + costFormula + ")";
+    }
+
+    public static String getCost(Entity type, Entity hero, OBJ_TYPE TYPE, PROPERTY PROP,
+                                 boolean buying) {
+        return getCost(type, hero, TYPE, PROP, buying, true);
     }
 
     public static void applyChangedTypeStatic(Entity hero, Entity type) {
@@ -141,6 +147,123 @@ public class HeroManager {
         if (type instanceof DC_QuickItemObj)
             return true;
         return type.checkSingleProp(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "");
+    }
+
+    public static ITEM_SLOT getItemSlot(Unit hero, Entity type) {
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
+            return null;
+        }
+        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
+            WEAPON_CLASS CLASS = getWeaponClass(type);
+            switch (CLASS) {
+                case OFF_HAND:
+                    if (hero.getMainWeapon() == null) {
+                        return ItemEnums.ITEM_SLOT.MAIN_HAND;
+                    }
+                    if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.MAIN_HAND_ITEM),
+                     hero, type)) {
+                        return ItemEnums.ITEM_SLOT.MAIN_HAND;
+                    }
+                    if (getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == ItemEnums.WEAPON_CLASS.TWO_HANDED
+                     || getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == ItemEnums.WEAPON_CLASS.DOUBLE) {
+                        return null;
+                    }
+                    if (hero.getOffhandWeapon() == null) {
+                        return ItemEnums.ITEM_SLOT.OFF_HAND;
+                    }
+                    if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.OFF_HAND_ITEM),
+                     hero, type)) {
+                        return ItemEnums.ITEM_SLOT.OFF_HAND;
+                    }
+                    return null;
+                case MAIN_HAND_ONLY:
+                    if (hero.getMainWeapon() != null) {
+                        if (!MessageManager.promptItemSwap(
+                         hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
+                            return null;
+                        }
+                    }
+                    return ItemEnums.ITEM_SLOT.MAIN_HAND;
+
+                case OFF_HAND_ONLY:
+                    if (hero.getOffhandWeapon() != null) {
+                        return null;
+                    }
+                    if (hero.getMainWeapon() != null) {
+                        if (hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED) {
+                            return null;
+                        }
+                    }
+                    return ItemEnums.ITEM_SLOT.OFF_HAND;
+                case DOUBLE:
+                case TWO_HANDED:
+                    if (hero.getOffhandWeapon() != null) {
+                        return null;
+                    }
+                    if (hero.getMainWeapon() != null) {
+                        if (!MessageManager.promptItemSwap(
+                         hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
+                            return null;
+                        }
+                    }
+                    return ItemEnums.ITEM_SLOT.MAIN_HAND;
+                default:
+                    return null;
+
+            }
+
+            // if (!type
+            // .checkProperty((G_PROPS.WEAPON_CLASS), WEAPON_CLASS.OFF_HAND_ONLY
+            // .toString())) {
+            // if (!StringMaster.isEmpty(hero
+            // .getProperty(G_PROPS.MAIN_HAND_ITEM)))
+            // if (!promptItemSwap(G_PROPS.MAIN_HAND_ITEM, hero, type))
+            // return null;
+            // return ITEM_SLOT.MAIN_HAND;
+            // }
+            //
+            // if (type.checkProperty((G_PROPS.WEAPON_CLASS),
+            // WEAPON_CLASS.MAIN_HAND_ONLY
+            // .toString())
+            // )
+            // if (!StringMaster.isEmpty(hero
+            // .getProperty(G_PROPS.MAIN_HAND_ITEM)))
+            // return null;
+            //
+            // if (type.checkProperty((G_PROPS.WEAPON_CLASS),
+            // WEAPON_CLASS.TWO_HANDED
+            // .toString())
+            //
+            // )
+            // // this item can only be used with main hand!
+            // return null;
+            //
+            // if
+            // (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM)))
+            // if (!promptItemSwap(G_PROPS.OFF_HAND_ITEM, hero, type))
+            // return null;
+            // return ITEM_SLOT.OFF_HAND;
+
+        }
+        if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM))) {
+            if (!MessageManager.promptItemSwap(hero.getProperty(G_PROPS.ARMOR_ITEM), hero, type)) {
+                return null;
+            }
+        }
+        return ItemEnums.ITEM_SLOT.ARMOR;
+    }
+
+    public static WEAPON_CLASS getWeaponClass(String type) {
+        ObjType objType = DataManager.getType(type, DC_TYPE.WEAPONS);
+        if (objType == null) {
+            objType = Eidolons.game.getObjectById(StringMaster.getInteger(type)).getType();
+        }
+        return getWeaponClass(objType);
+    }
+
+    public static WEAPON_CLASS getWeaponClass(Entity type) {
+        return new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class, type
+         .getProperty(G_PROPS.WEAPON_CLASS));
     }
 
     public void removeHero(Unit hero) {
@@ -269,123 +392,6 @@ public class HeroManager {
     protected void refreshInvWindow() {
     }
 
-    public static ITEM_SLOT getItemSlot(Unit hero, Entity type) {
-        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
-            return null;
-        }
-        if (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) {
-            WEAPON_CLASS CLASS = getWeaponClass(type);
-            switch (CLASS) {
-                case OFF_HAND:
-                    if (hero.getMainWeapon() == null) {
-                        return ItemEnums.ITEM_SLOT.MAIN_HAND;
-                    }
-                    if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.MAIN_HAND_ITEM),
-                     hero, type)) {
-                        return ItemEnums.ITEM_SLOT.MAIN_HAND;
-                    }
-                    if (getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == ItemEnums.WEAPON_CLASS.TWO_HANDED
-                     || getWeaponClass(hero.getProperty(G_PROPS.MAIN_HAND_ITEM)) == ItemEnums.WEAPON_CLASS.DOUBLE) {
-                        return null;
-                    }
-                    if (hero.getOffhandWeapon()==null ) {
-                        return ItemEnums.ITEM_SLOT.OFF_HAND;
-                    }
-                    if (MessageManager.promptItemSwap(hero.getProperty(G_PROPS.OFF_HAND_ITEM),
-                     hero, type)) {
-                        return ItemEnums.ITEM_SLOT.OFF_HAND;
-                    }
-                    return null;
-                case MAIN_HAND_ONLY:
-                    if (hero.getMainWeapon()!=null ) {
-                        if (!MessageManager.promptItemSwap(
-                         hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
-                            return null;
-                        }
-                    }
-                    return ItemEnums.ITEM_SLOT.MAIN_HAND;
-
-                case OFF_HAND_ONLY:
-                    if (hero.getOffhandWeapon()!=null) {
-                        return null;
-                    }
-                    if (hero.getMainWeapon()!=null) {
-                        if (hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.TWO_HANDED) {
-                            return null;
-                        }
-                    }
-                    return ItemEnums.ITEM_SLOT.OFF_HAND;
-                case DOUBLE:
-                case TWO_HANDED:
-                    if (hero.getOffhandWeapon()!=null) {
-                        return null;
-                    }
-                    if (hero.getMainWeapon()!=null) {
-                        if (!MessageManager.promptItemSwap(
-                         hero.getProperty(G_PROPS.MAIN_HAND_ITEM), hero, type)) {
-                            return null;
-                        }
-                    }
-                    return ItemEnums.ITEM_SLOT.MAIN_HAND;
-                default:
-                    return null;
-
-            }
-
-            // if (!type
-            // .checkProperty((G_PROPS.WEAPON_CLASS), WEAPON_CLASS.OFF_HAND_ONLY
-            // .toString())) {
-            // if (!StringMaster.isEmpty(hero
-            // .getProperty(G_PROPS.MAIN_HAND_ITEM)))
-            // if (!promptItemSwap(G_PROPS.MAIN_HAND_ITEM, hero, type))
-            // return null;
-            // return ITEM_SLOT.MAIN_HAND;
-            // }
-            //
-            // if (type.checkProperty((G_PROPS.WEAPON_CLASS),
-            // WEAPON_CLASS.MAIN_HAND_ONLY
-            // .toString())
-            // )
-            // if (!StringMaster.isEmpty(hero
-            // .getProperty(G_PROPS.MAIN_HAND_ITEM)))
-            // return null;
-            //
-            // if (type.checkProperty((G_PROPS.WEAPON_CLASS),
-            // WEAPON_CLASS.TWO_HANDED
-            // .toString())
-            //
-            // )
-            // // this item can only be used with main hand!
-            // return null;
-            //
-            // if
-            // (!StringMaster.isEmpty(hero.getProperty(G_PROPS.OFF_HAND_ITEM)))
-            // if (!promptItemSwap(G_PROPS.OFF_HAND_ITEM, hero, type))
-            // return null;
-            // return ITEM_SLOT.OFF_HAND;
-
-        }
-        if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM))) {
-            if (!MessageManager.promptItemSwap(hero.getProperty(G_PROPS.ARMOR_ITEM), hero, type)) {
-                return null;
-            }
-        }
-        return ItemEnums.ITEM_SLOT.ARMOR;
-    }
-
-    public static WEAPON_CLASS getWeaponClass(String type) {
-        ObjType objType = DataManager.getType(type, DC_TYPE.WEAPONS);
-        if (objType == null) {
-            objType = Eidolons.game.getObjectById(StringMaster.getInteger(type)).getType();
-        }
-        return getWeaponClass(objType);
-    }
-
-    public static WEAPON_CLASS getWeaponClass(Entity type) {
-        return new EnumMaster<WEAPON_CLASS>().retrieveEnumConst(WEAPON_CLASS.class, type
-         .getProperty(G_PROPS.WEAPON_CLASS));
-    }
-
     public int addSlotItem(Unit hero, Entity type, boolean alt) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY) {
             return addJewelryItem(hero, type);
@@ -466,7 +472,7 @@ public class HeroManager {
     }
 
     private List<ObjType> getSortedJewelry(Unit hero) {
-         List<ObjType> sortedJewelryData = JewelryMaster
+        List<ObjType> sortedJewelryData = JewelryMaster
          .getSortedJewelryData(new ListMaster<DC_JewelryObj>().convertToTypeList(
           hero
            .getJewelry()));

@@ -142,6 +142,8 @@ public class UnitCalculator extends EntityCalculator<Unit> {
 
     // Java 8 collections methods?
     public int calculateCarryingWeight() {
+        if (getEntity().getInventory()==null )
+            return 0;
         int weight = 0;
         if (getEntity().getMainWeapon() != null) {
             weight += getEntity().getMainWeapon().getIntParam(PARAMS.WEIGHT);

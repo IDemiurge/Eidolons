@@ -42,30 +42,45 @@ public abstract class SelectionPanel extends TablePanel {
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         listPanel = createListPanel();
         infoPanel = createInfoPanel();
-        title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.AVQ, 24));
+        title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
         backButton = new TextButtonX(STD_BUTTON.CANCEL, () -> cancel());
-        startButton = new TextButtonX(STD_BUTTON.OK, () -> tryDone());
+        startButton = new TextButtonX(getDoneText(),STD_BUTTON.GAME_MENU , () -> tryDone());
 
-        addElement(title).center();
+        listPanel.addActor(title); //trick for pos
+        title.pack();
+        title.setPosition(GdxMaster.centerWidth(title), GdxMaster.getHeight()-(GdxMaster.getHeight() / 5));
+        addActor(title);
         row();
         addNormalSize(listPanel).left();
         addNormalSize(infoPanel).right();
 
         row();
-        TablePanel buttonPanel = new TablePanel<>();
-        buttonPanel
-//         .padRight(300)
-         .setWidth(getWidth());
-        if (isDoneSupported())
-            addElement(buttonPanel).bottom().size(getWidth(), 70);
-        if (isBackSupported())
-            buttonPanel.addNormalSize(backButton).left();
-        buttonPanel.addNormalSize(startButton).right();
+        addElement(null ).bottom().size(getWidth(), 70);
+//        TablePanel buttonPanel = new TablePanel<>();
+//        buttonPanel
+//         .setWidth(getWidth());
+//        if (isDoneSupported())
+//            addElement(buttonPanel).bottom().size(getWidth(), 70);
+//        if (isBackSupported())
+//            buttonPanel.addNormalSize(backButton).left();
+//        buttonPanel.addNormalSize(startButton).center();
+
+        if (isDoneSupported()) {
+            addActor(startButton);
+            startButton.setPosition(GdxMaster.centerWidth(startButton),
+             (42+ GdxMaster.getHeight() / 30));
+        }
+        if (isBackSupported()) {
+            addActor(backButton);
+        }
+
+
         if (isReadyToBeInitialized())
             init();
 
         padRight(50);
+        title.setZIndex(Integer.MAX_VALUE);
 
     }
 

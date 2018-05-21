@@ -8,8 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
+import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.anims.particles.EmitterPools;
+import eidolons.libgdx.anims.particles.EmitterPresetMaster;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.system.auxiliary.secondary.ReflectionMaster;
+import main.system.datatypes.DequeImpl;
 
 /**
  * Created by JustMe on 12/1/2017.
@@ -61,6 +66,21 @@ public class Assets {
 
     public static boolean isOn() {
         return true;
+    }
+
+    public static boolean preloadAll(DequeImpl<BattleFieldObject> objects) {
+        boolean result = false;
+        if (AnimationConstructor.isPreconstructAllOnGameInit()) {
+            for (BattleFieldObject sub : objects) {
+                if (sub instanceof Unit)
+                    AnimationConstructor.preconstruct((Unit) sub);
+            }
+            result = true;
+        }
+        EmitterPresetMaster.getInstance().init();
+        EmitterPools.init(get().getManager());
+
+        return result;
     }
 
     public AssetManager getManager() {

@@ -2,6 +2,7 @@ package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
@@ -29,6 +30,7 @@ public class EmitterPresetMaster {
     private static EmitterPresetMaster instance;
     private static boolean spriteEmitterTest;
     private static Map<EmitterActor, String> mods = new HashMap<>();
+    Map<String, String> imagePathMap;
     private Map<String, String> map = new HashMap<>();
     private String lowHighMinMax = "lowMin lowMax highMin highMax";
 
@@ -173,7 +175,13 @@ public class EmitterPresetMaster {
     }
 
     public String getImagePath(String path) {
-        String imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
+        String imgPath = null;
+        if (imagePathMap != null) {
+            imgPath = imagePathMap.get(path.toLowerCase());
+            if (imgPath != null)
+                return imgPath;
+        }
+        imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
         if (StringMaster.isEmpty(imgPath)) {
             imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
         }
@@ -326,6 +334,20 @@ public class EmitterPresetMaster {
             }
         }
         return data;
+    }
+
+    public void init() {
+        imagePathMap = new HashMap<>();
+        for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
+            String path = null;
+            try {
+                path = findImagePath(sub.path);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                continue;
+            }
+            imagePathMap.put(sub.path.toLowerCase(), path);
+        }
     }
 
     private void saveLastAs() {

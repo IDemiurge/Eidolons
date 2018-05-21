@@ -4,7 +4,6 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.system.math.DC_PositionMaster;
-import main.content.DC_TYPE;
 import main.elements.conditions.MicroCondition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -234,10 +233,15 @@ public class ClearShotCondition extends MicroCondition {
         return checkClearShot(x, y, array);
     }
 
+    /**
+     * Checks if there is a diagonal wall block that obstructs clearshot between source and target
+     * @param source
+     * @param target
+     * @param coordinates
+     * @return
+     */
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
-        if (isUnitTestBreakMode()) {
-            return false;
-        }
+
         Boolean result =  source.getGame().getVisionMaster().getVisionController().
          getWallObstructionMapper().get(source.getCoordinates(),
          source.getGame().getCellByCoordinate(target.getCoordinates()));
@@ -254,7 +258,6 @@ public class ClearShotCondition extends MicroCondition {
         // difference from <?> no greater than... on both/either axis?
 
         for (Coordinates c : coordinates.getAdjacent()) { // c
-
 
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
              .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
@@ -366,22 +369,15 @@ public class ClearShotCondition extends MicroCondition {
         double k = 0.5 - slope / 2;
         double x = 1;
         double a, b;
-//        log("slope= " + slope + "; k= " + k);
         while (x < dX) {
             a = Math.floor(LineY(slope, k, x));
             b = Math.floor(LineY(slope, k, x + 1));
-
-//            log("a= " + a + "; b= " + b);
             if (obstructionArray[(int) x - 1][(int) a]
              && obstructionArray[(int) x - 1][(int) b]) {
-                // target.setBlockingCoordinate(new Coordinates(a, b));
-//                GuiEventManager.trigger(GuiEventType.SHOW_CLEARSHOT, new ClearShotData(ref , target, d, c, left));
                 return false;
             }
             x++;
-
             // TODO mystery solutions: 1) transform the Array 2) run the same
-            // preCheck without 'rotation'
         }
 
         return true;

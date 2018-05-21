@@ -4,9 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import main.system.auxiliary.StringMaster;
 
 public class ScrollPanel<T extends Actor> extends Container<Container> {
 
@@ -45,11 +47,12 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         throw new UnsupportedOperationException("Use ScrollPanel#addElement.");
     }
 
-    public void addElement(T obj) {
-        table.addNormalSize(obj).fill();
+    public Cell addElement(T obj) {
+        Cell cell = table.addNormalSize(obj).fill();
         table.row();
         table.pack();
         offsetY = 200;
+        return cell;
     }
 
     @Override
@@ -128,15 +131,21 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
     @Override
     public void act(float delta) {
+        if (!isAlwaysScrolled())
+        if (getHeight()>= innerScrollContainer.getHeight())
+            return;
         if (!widgetPosChanged && innerScrollContainer.getY() != 0) {
             innerScrollContainer.setY(0);
             widgetPosChanged = true;
         }
 
-        if (0 != offsetY || instantOffsetY != 0) {
+        if ( 0 != offsetY ||
+         instantOffsetY != 0) {
             float cy = innerScrollContainer.getY();
 
-            float step = (float) Math.sqrt(Math.abs(offsetY)) * 2;
+            float step =new Float(
+             StringMaster.formatFloat(8,
+              (float) Math.sqrt(Math.abs(offsetY)))) * 5 ;
 
             if (offsetY < 0) {
                 step *= -1;
@@ -151,6 +160,10 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
                 offsetY -= step;
             }
         }
+    }
+
+    protected boolean isAlwaysScrolled() {
+        return false;
     }
 
     @Override

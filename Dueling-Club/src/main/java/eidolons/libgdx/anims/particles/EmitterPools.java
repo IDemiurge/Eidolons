@@ -1,5 +1,6 @@
 package eidolons.libgdx.anims.particles;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Pool;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.auxiliary.EnumMaster;
@@ -111,5 +112,9 @@ public class EmitterPools {
             Chronos.logTimeElapsedForMark("emitter " + path);
         }
         return list;
+    }
+
+    public static void init(AssetManager manager) {
+//      TODO   manager.load("", );
     }
 }

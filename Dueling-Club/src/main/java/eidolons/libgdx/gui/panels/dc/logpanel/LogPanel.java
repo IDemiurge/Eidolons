@@ -18,7 +18,9 @@ public class LogPanel extends ScrollTextPanel {
         if (getCallbackEvent() != null)
             bind();
     }
-
+    protected boolean isAlwaysScrolled() {
+        return true;
+    }
     protected GuiEventType getCallbackEvent() {
         return LOG_ENTRY_ADDED;
     }

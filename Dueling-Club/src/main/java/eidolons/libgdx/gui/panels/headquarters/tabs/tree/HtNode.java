@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.DynamicLayeredActor;
 import eidolons.libgdx.bf.SpriteActor;
 import eidolons.libgdx.bf.SpriteActor.SPRITE_ACTOR_ANIMATION;
@@ -10,11 +11,14 @@ import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
+import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.text.TextParser;
 
 import java.util.Collection;
 
@@ -126,9 +130,12 @@ public abstract class HtNode extends DynamicLayeredActor {
         Entity entity = getEntity();
         String text=getTextPrefix();
         if (entity!=null ){
+            Ref ref = Eidolons.getMainHero().getRef().getCopy();
+            ref.setID(KEYS.SKILL,  entity.getId());
             text +="\n"+ entity.getName();
             text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
-            text +="\n"+ entity.getDescription();
+            text +="\n"+ TextParser.parse( entity.getDescription(),
+           ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
         }
         return new ValueTooltip(text);
     }

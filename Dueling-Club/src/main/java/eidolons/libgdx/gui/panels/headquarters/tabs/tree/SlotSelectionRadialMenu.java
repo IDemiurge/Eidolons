@@ -14,6 +14,8 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.values.properties.G_PROPS;
+import main.entity.Ref;
+import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.system.EventCallbackParam;
 import main.system.EventType;
@@ -180,14 +182,16 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
             });
             if (!valid)
                 node.setShader(GrayscaleShader.getGrayscaleShader());
+            Ref ref = dataSource.getEntity().getRef().getCopy();
+            ref.setID(KEYS.INFO, type.getId());
             node.addListener(new ValueTooltip(type.getName() +
               "\n" + type.getProperty(G_PROPS.TOOLTIP)
-              + "\n" + type.getDescription()
+              + "\n" + type.getDescription(ref)
               + (isFree() ? "" :
              (valid
               ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
-              : "\n" + reason))
-             ).getController()
+              : ("\n" +reason))
+             )).getController()
             );
 
             node.setCustomRadialMenu(this);

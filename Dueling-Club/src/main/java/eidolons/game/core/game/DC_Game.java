@@ -156,6 +156,7 @@ public class DC_Game extends MicroGame {
         combatLoop = new CombatLoop(this);
 
     }
+
     protected void initMasters() {
 
         master = new DC_GameObjMaster(this);
@@ -827,7 +828,10 @@ public class DC_Game extends MicroGame {
     }
 
     public void exit(boolean mainMenu) {
-        loop.setExited(true);
+        if (combatLoop != null)
+            exploreLoop.setExited(true);
+        if (combatLoop != null)
+            combatLoop.setExited(true);
 
     }
 

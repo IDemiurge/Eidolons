@@ -25,6 +25,7 @@ import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.TypeInitializer;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.text.TextParser;
 
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
@@ -41,6 +42,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref) {
         super(type, owner, game, ref, null);
 
+    }
+
+    @Override
+    public String getDescription(Ref ref) {
+        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref, TextParser.ACTIVE_PARSING_CODE);
     }
 
     public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref, boolean wrapped) {

@@ -89,7 +89,11 @@ public abstract class DataModel {
     }
 
     public String getDescription() {
-        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), getRef(), TextParser.ACTIVE_PARSING_CODE);
+        return getDescription(getRef());
+    }
+
+    public String getDescription(Ref ref) {
+        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref, TextParser.INFO_PARSING_CODE);
     }
 
     public String getCustomValue(String value_ref) {

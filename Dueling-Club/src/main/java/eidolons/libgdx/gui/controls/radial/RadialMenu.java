@@ -11,7 +11,6 @@ import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.stage.Closable;
@@ -273,7 +272,7 @@ public class RadialMenu extends Group implements Closable {
     }
 
     protected float getAnimationDuration() {
-        return 0.2f * AnimMaster.getInstance().getAnimationSpeedFactor();
+        return 0.65f;
     }
 
     protected String getEmptyNodePath() {

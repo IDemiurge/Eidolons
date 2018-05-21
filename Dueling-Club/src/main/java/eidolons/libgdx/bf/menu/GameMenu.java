@@ -138,9 +138,9 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),
         ABOUT(true), LAUNCH_GAME(true),
-        MAIN_MENU,
-        OUTER_WORLD,
-        EXIT(MAIN_MENU, OUTER_WORLD),
+        MAIN_MENU(true),
+        OUTER_WORLD(true),
+        EXIT(), //MAIN_MENU, OUTER_WORLD),
         ;
         boolean hidden;
         private GAME_MENU_ITEM[] items;

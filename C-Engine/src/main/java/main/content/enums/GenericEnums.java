@@ -162,9 +162,9 @@ public class GenericEnums {
         NEOPHYTE(100, 175, 75, 300, 350),
         NOVICE(125, 150, 85, 200, 250),
         DISCIPLE(150, 125, 100, 150, 175),
-        ADEPT(200, 100, 100, 100, 100),
-        CHAMPION(300, 75, 150, 75, 80),
-        AVATAR(450, 50, 200, 60, 65);
+        ADEPT(200, 100, 100, 100, 125),
+        CHAMPION(300, 75, 150, 85, 100),
+        AVATAR(450, 50, 200, 70, 85);
         private int powerPercentage;
         private int roundsToFightMod;
         private int healthPercentageEnemy;

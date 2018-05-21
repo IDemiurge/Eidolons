@@ -13,9 +13,8 @@ public class UiMaster {
 
     public static float getSpeedFactor() {
         if (speedFactor == null) {
-            speedFactor =
-             new Float(100) / OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)
-            ;
+            speedFactor =new Float(100)
+             / OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)            ;
         }
         return speedFactor;
     }
@@ -31,6 +30,8 @@ public class UiMaster {
     }
 
     public static int getSmallIconSize() {
+        if (!isIconsScaled())
+            return 32;
         return (int) (32 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
     }
 
@@ -40,13 +41,25 @@ public class UiMaster {
 
     // use  String.format("%.1f", x);?
     public static int getSpellIconSize() {
+        if (!isIconsScaled())
+                return 80;
         return (int) (80 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
     }
 
     public static int getIconSize(boolean smaller) {
+        if (!isIconsScaled())
+        if (smaller)
+            return 42;
+       else
+           return 64;
+
         if (smaller)
             return (int) (42 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
         return (int) (64 * new Float((((int) (GdxMaster.getFontSizeMod() * 100)) / 10)) / 10);
+    }
+
+    private static boolean isIconsScaled() {
+        return false;
     }
 
     public static int getBottomQuickItemIconSize() {

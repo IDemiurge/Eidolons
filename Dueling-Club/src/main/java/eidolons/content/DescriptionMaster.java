@@ -144,8 +144,6 @@ public class DescriptionMaster {
                 return "";
             case SYLVAN_MASTERY:
                 return "";
-            case VOID_MASTERY:
-                return "";
             case BLADE_MASTERY:
                 return "Blade Mastery increases your Attack when using swords and daggers, which are among the lightest and most versatile weapons, with best armor penetration and piercing/slashing damage output. Parry and Defense bonuses also come in handy. Synergy with Axes - bonus of 1 point for every 4 of Blade ";
             case BLUNT_MASTERY:

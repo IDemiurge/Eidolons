@@ -62,6 +62,9 @@ public class GdxMaster {
          + size
          * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef;
     }
+    public static float adjustSizePlain(float size) {
+        return size* GdxMaster.getFontSizeMod();
+    }
 
     public static float centerHeightScreen(Actor actor) {
         return GdxMaster.getHeight() / 2 - actor.getHeight() / 2;

@@ -84,12 +84,11 @@ public class AnimMaster3d {
     private static Map<String, TextureAtlas> atlasMap = new HashMap<>();
     private static List<DC_WeaponObj> broken = new ArrayList<>();
     private static Map<String, String> substituteMap;
+    private static Boolean off;
 
     static {
         init();
     }
-
-    private static Boolean off;
 
     public static void init() {
         substituteMap = new HashMap<>();
@@ -155,8 +154,14 @@ public class AnimMaster3d {
                 preloadAtlas(sub.getWrappedWeapon());
             } else {
                 if (sub.getWrappedWeapon() == null) {
-                    String path =
-                     getPotionAtlasPath(sub.getActive());
+                    String path = null;
+                    try {
+                        path = getPotionAtlasPath(sub.getActive());
+                    } catch (Exception e) {
+                        main.system.auxiliary.log.LogMaster.log(1,"FAILED TO LOAD A QUICK ITEM ATLAS: " +sub);
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        return;
+                    }
                     preloadAtlas(path);
                 }
             }
@@ -272,9 +277,8 @@ public class AnimMaster3d {
     }
 
     public static String getAtlasPath(DC_WeaponObj weapon, String name) {
-        if (weapon.getWeaponGroup()==null )
-        {
-            main.system.auxiliary.log.LogMaster.log(1,"Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP) );
+        if (weapon.getWeaponGroup() == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP));
             return "Invalid weapon group " + weapon.getProperty(G_PROPS.WEAPON_GROUP);
         }
         String groupName = weapon.getWeaponGroup().toString().replace("_", " ");
@@ -451,17 +455,26 @@ public class AnimMaster3d {
             getOrCreateAtlas(weapon);
             return;
         }
-        String path =
-         getFullAtlasPath(weapon);
+        String path = null;
+        getFullAtlasPath(weapon);
+        try {
+            path = getFullAtlasPath(weapon);
+        } catch (Exception e) {
+            main.system.auxiliary.log.LogMaster.log(1, "FAILED TO LOAD ATLAS FOR WEAPON: " + weapon);
+            main.system.ExceptionMaster.printStackTrace(e);
+            return;
+        }
         preloadAtlas(path);
     }
 
     private static void preloadAtlas(String path) {
-        main.system.auxiliary.log.LogMaster.log(1, path + "   to preload...");
-        if (!FileManager.isFile(path))
-            return;
         if (atlasMap.containsKey(path))
             return;
+        if (!FileManager.isFile(path))
+        {
+            main.system.auxiliary.log.LogMaster.log(1, path + " needs to preload, but it is not a file!..");
+            return;
+        }
         main.system.auxiliary.log.LogMaster.log(1, path + " loading...");
         Assets.get().getManager().load(path, TextureAtlas.class);
         atlasMap.put(path, null);
@@ -508,7 +521,7 @@ public class AnimMaster3d {
     private static String getFullAtlasPath(DC_WeaponObj weapon) {
         try {
             return TextureCache.formatTexturePath(PathFinder.getImagePath()
-              + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
+             + getAtlasPath(weapon, getWeaponAtlasKey(weapon)));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -561,7 +574,7 @@ public class AnimMaster3d {
     }
 
     public static Boolean isOff() {
-        if (off==null )
+        if (off == null)
             off = OptionsMaster.getAnimOptions().getBooleanValue(ANIMATION_OPTION.WEAPON_3D_ANIMS_OFF);
         return off;
     }

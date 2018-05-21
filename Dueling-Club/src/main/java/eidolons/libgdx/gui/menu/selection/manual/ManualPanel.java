@@ -25,7 +25,9 @@ public class ManualPanel extends SelectionPanel {
     protected ItemInfoPanel createInfoPanel() {
         return new ManualDetails(null);
     }
-
+    protected String getDoneText() {
+        return "Understood!";
+    }
     @Override
     protected List<SelectableItemData> createListData() {
         List<SelectableItemData> list = new ArrayList<>();

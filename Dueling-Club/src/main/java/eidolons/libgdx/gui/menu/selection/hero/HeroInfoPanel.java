@@ -57,6 +57,7 @@ public class HeroInfoPanel extends ItemInfoPanel {
         mainInfo = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
         mainInfo.setText("A touch of Fate...");
         header.addNormalSize(mainInfo).padTop(50);
+
     }
 
     @Override

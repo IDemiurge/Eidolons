@@ -40,7 +40,7 @@ public class ScrollTextPanel extends GroupX {
         init();
     }
 
-    public void init() {
+    public void initBg() {
         if (getBgPath() != null) {
             bg = new Image(TextureCache.getOrCreateR(getBgPath()));
 
@@ -51,11 +51,14 @@ public class ScrollTextPanel extends GroupX {
             bg.setFillParent(true);
             addActor(bg);
         }
+    }
+        public void init() {
 
         setSize(GdxMaster.adjustSize(getDefaultWidth()),
          GdxMaster.adjustSize(getDefaultHeight()));
 
         initScrollPanel();
+            initBg();
 
         updatePos = true;
     }
@@ -99,8 +102,8 @@ public class ScrollTextPanel extends GroupX {
         //TODO split?!
         for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
             TextBuilder builder = getBuilder();
-            Message message = builder.addString(substring).build(getWidth());
-            scrollPanel.addElement(message);
+            Message message = builder.addString(substring).build(getWidth()*0.92f);
+            scrollPanel.addElement(message).width(getWidth());
         }
 //        outside.setTouchable(Touchable.enabled);
     }
@@ -131,12 +134,21 @@ public class ScrollTextPanel extends GroupX {
         if (scrollPanel != null) {
             scrollPanel.remove();
         }
-        scrollPanel = new ScrollPanel<>();
+        scrollPanel = new ScrollPanel(){
+            @Override
+            protected boolean isAlwaysScrolled() {
+                return ScrollTextPanel.this.isAlwaysScrolled();
+            }
+        };
 
         scrollPanel.pad(1, 10, 1, 10);
         scrollPanel.fill();
 
         addActor(scrollPanel);
+    }
+
+    protected boolean isAlwaysScrolled() {
+        return false;
     }
 
 

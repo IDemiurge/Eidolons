@@ -35,13 +35,17 @@ public class DifficultySelectionPanel extends SelectionPanel {
     protected ItemInfoPanel createInfoPanel() {
         return new DifficultyInfoPanel(getItemFromDiff(getDefaultDifficulty()));
     }
-
+    protected String getTitle() {
+        return "Select Difficulty";
+    }
     private DIFFICULTY getDefaultDifficulty() {
 //        DIFFICULTY.NOVICE
         return new EnumMaster<DIFFICULTY>().retrieveEnumConst(DIFFICULTY.class,
          OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.GAME_DIFFICULTY));
     }
-
+    protected String getDoneText() {
+        return "Play";
+    }
     @Override
     protected List<SelectableItemData> createListData() {
         return getSupplier(DIFFICULTY.values()).get();

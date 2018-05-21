@@ -736,7 +736,7 @@ public class ItemGenerator implements GenericItemGenerator {
          new EnumMaster<MATERIAL>().retrieveEnumConst(
           MATERIAL.class, name, true, false);
         if (material == null) {
-            name = name + StringMaster.getFirstItem(typeName.replace(name, "").trim(), " ");
+            name = name +" "+ StringMaster.getFirstItem(typeName.replace(name, "").trim(), " ");
             material =
              new EnumMaster<MATERIAL>().retrieveEnumConst(
               MATERIAL.class, name);

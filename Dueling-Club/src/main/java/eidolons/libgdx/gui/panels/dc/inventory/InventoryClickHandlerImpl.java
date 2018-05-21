@@ -4,6 +4,7 @@ import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
@@ -40,13 +41,13 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             result = false;
         } else {
 
-                if (manager.canDoOperation(operation, cellContents)) {
+            if (manager.canDoOperation(operation, cellContents)) {
 
-                    execute(operation, cellContents);
-                    manager.operationDone(operation);
-                    dirty = true;
-                    result = true;
-                }
+                execute(operation, cellContents);
+                manager.operationDone(operation);
+                dirty = true;
+                result = true;
+            }
         }
 
         if (result) {
@@ -59,6 +60,11 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     private void execute(OPERATIONS operation, Entity type) {
         Object secondArg = getSecondArg(operation, type);
+
+        if (operation==OPERATIONS.DROP)
+        GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+         type.getName()+" is dropped down!");
+
         HqDataMaster.operation(sim, getHqOperation(operation), type, secondArg);
 //         new EnumMaster<HQ_OPERATION>().retrieveEnumConst(HQ_OPERATION.class, operation.name()),
 //         item);
@@ -108,6 +114,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
             case WEAPON_OFFHAND:
                 if (altClick) {
                     return OPERATIONS.DROP;
+
                 }
                 if (rightClick || clickCount > 1) {
                     return OPERATIONS.UNEQUIP;
@@ -131,18 +138,31 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return null;
             case ARMOR:
                 //preCheck can be unequipped
+                if (!ExplorationMaster.isExplorationOn())
+                    GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Cannot (un)equip armor in combat!");
 
                 break;
             case INVENTORY:
                 if (altClick) {
-                    return OPERATIONS.EQUIP_QUICK_SLOT;
+                    if (sim.getRemainingQuickSlots() > 0)
+                        return OPERATIONS.EQUIP_QUICK_SLOT;
+                    else {
+                        GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Not enough quick slots!");
+                        return null;
+                    }
                 }
                 if (rightClick) {
                     return OPERATIONS.DROP;
                 }
                 if (clickCount > 1) {
                     if (HeroManager.isQuickSlotOnly(cellContents))
-                        return OPERATIONS.EQUIP_QUICK_SLOT;
+                        if (sim.getRemainingQuickSlots() > 0) {
+                            return OPERATIONS.EQUIP_QUICK_SLOT;
+                        } else {
+                            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Not enough quick slots!");
+                            return null;
+                        }
+
                     return OPERATIONS.EQUIP;
                 }
         }
@@ -202,6 +222,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (!isCancelEnabled()) {
             return;
         }
+        GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+          "Inventory operations cancelled!");
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, false);
 
     }

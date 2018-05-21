@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.menu.selection.scenario;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.content.PROPS;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
@@ -48,14 +49,12 @@ public class ScenarioInfoPanel extends ItemInfoPanel {
 
     @Override
     protected void initHeader(TablePanel<Actor> header) {
-
-        header.addNormalSize(preview).left().padLeft(20).padTop(45);
-        header.addElement(title).left();
+        super.initHeader(header);
 
         header.row();
         TablePanel<Actor> infoTable = new TablePanel<>();
         header.addNoGrow(infoTable);
-        infoTable.padLeft(50).padTop(50);
+        infoTable.padLeft(GDX.size(  50)).padTop(GDX.size(  50));
         missionsInfo = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
         missionsInfo.setText("Missions: N/A");
         infoTable.addNoGrow(missionsInfo);

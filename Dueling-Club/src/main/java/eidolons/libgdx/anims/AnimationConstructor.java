@@ -182,7 +182,7 @@ public class AnimationConstructor {
     }
 
     public static boolean isPreconstructAllOnGameInit() {
-        return CoreEngine.isJar()  ;
+        return  !CoreEngine.isFastMode()  ;
     }
 
     public static boolean isPreconstructEnemiesOnCombatStart() {

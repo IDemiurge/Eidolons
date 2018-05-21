@@ -26,7 +26,7 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
 
     public ParticleEffect(String path) {
         this.path = path;
-        String imagePath = EmitterPresetMaster.getInstance().findImagePath(path);
+        String imagePath = EmitterPresetMaster.getInstance().getImagePath(path);
         if (FileManager.isImageFile(StringMaster.getLastPathSegment(imagePath))) {
             imagePath = StringMaster.cropLastPathSegment(imagePath);
         }

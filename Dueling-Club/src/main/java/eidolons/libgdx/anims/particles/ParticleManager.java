@@ -101,8 +101,8 @@ public class ParticleManager extends GroupX {
         ParticleManager.ambienceOn = ambienceOn;
     }
 
-    public static Ambience addFogOn(Vector2 at, List<Ambience> fogList) {
-        Ambience fog = new Ambience(FOG_SFX) {
+    public static Ambience addFogOn(Vector2 at, EMITTER_PRESET preset) {
+        Ambience fog = new Ambience(preset) {
             @Override
             protected boolean isCullingOn() {
                 return false;
@@ -114,8 +114,6 @@ public class ParticleManager extends GroupX {
         fog.added();
         fog.setVisible(true);
         fog.getEffect().start();
-        if (fogList != null)
-            fogList.add(fog);
         return fog;
     }
 

@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.headquarters;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GDX;
@@ -58,8 +57,7 @@ public class HqPanel extends TablePanel implements Blocking {
     }
 
     public HqPanel() {
-
-        setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanelFilled()));
+        setBackground( NinePatchFactory.getHqDrawable() );
         partyMembers = createPartyMembers();
         hqTabs = createTabs();
         heroViewPanel = new HqHeroViewPanel();

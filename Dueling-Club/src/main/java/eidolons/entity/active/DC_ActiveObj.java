@@ -48,6 +48,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
+import main.system.text.TextParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +256,10 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
 
     }
 
+    public String getDescription(Ref ref) {
+        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref,
+         TextParser.ACTIVE_PARSING_CODE);
+    }
     @Override
     public void invokeRightClicked() {
         super.invokeRightClicked();

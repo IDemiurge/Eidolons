@@ -41,7 +41,7 @@ public abstract class ItemListPanel extends TablePanel {
         //scroll?
 //     TODO    setBackground(new NinePatchDrawable(NinePatchFactory.getMainMenuFrame()));
         setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
-        setHeight(MathMaster.minMax(GdxMaster.getHeight(), 800, 1200));
+        setHeight(MathMaster.minMax(GdxMaster.getHeight(), 700, 900));
 //        scrollPanel = new ScrollPanel();
 //        scrollPanel.setSize();
 //        addActor(scrollPanel);
@@ -176,7 +176,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected String getBackgroundPath() {
-        if (GdxMaster.getHeight()>900)
+        if (GdxMaster.getHeight()>=900)
             return VISUALS.FRAME_BIG_FILLED.getImgPath();
         return VISUALS.FRAME_FILLED.getImgPath();
     }

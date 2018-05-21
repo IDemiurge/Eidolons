@@ -67,10 +67,12 @@ public class TiledNinePatchGenerator implements ApplicationListener {
 
 
       return   generate(
-         TextureCache.getOrCreate(partPath + "top.png"),
-         TextureCache.getOrCreate(partPath + "bottom.png"),
-         TextureCache.getOrCreate(partPath + "right.png"),
-         TextureCache.getOrCreate(partPath + "left.png"),
+       TextureCache.getOrCreate(partPath + "top.png"),
+       TextureCache.getOrCreate(partPath + "top.png"),
+//         TextureCache.getOrCreate(partPath + "bottom.png"),
+       TextureCache.getOrCreate(partPath + "right.png"),
+       TextureCache.getOrCreate(partPath + "right.png"),
+//         TextureCache.getOrCreate(partPath + "left.png"),
 
          TextureCache.getOrCreate(partPath + "corner1.png"),
          TextureCache.getOrCreate(partPath + "corner2.png"),

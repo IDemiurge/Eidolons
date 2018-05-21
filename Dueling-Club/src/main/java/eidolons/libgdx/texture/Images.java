@@ -12,7 +12,10 @@ public class Images {
     public static final String SPELLBOOK = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "spell", "spellbook.png");
     public static final String EMPTY_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
-     "hq", "inv", "empty.png");
+//     "hq", "inv", "empty.png");
+    "dc", "dialog" ,
+      "inv" ,
+      "empty slots", "empty_pack.jpg");
     public static final String EMPTY_QUICK_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "inv", "empty QUICK.png");
     public static final String LOGO32 = "ui/arcane tower/logo32.png";

@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.menu.selection;
 
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextPanel;
 import main.system.graphics.FontMaster.FONT;
 
@@ -9,19 +10,15 @@ import main.system.graphics.FontMaster.FONT;
 public class DescriptionPanel extends ScrollTextPanel {
     public DescriptionPanel() {
     }
-
     @Override
     protected String getBgPath() {
-//        return StrPathBuilder.build(
-//         "UI",
-//         "components",
-//         "dc",
-//         "dialog",
-//         "log",
-//         "background.png");
         return null;
     }
 
+    @Override
+    public void initBg() {
+
+    }
 
     @Override
     protected int getFontSize() {
@@ -40,6 +37,6 @@ public class DescriptionPanel extends ScrollTextPanel {
 
     @Override
     protected float getDefaultWidth() {
-        return 455;
+        return GdxMaster.adjustSize(430);
     }
 }
