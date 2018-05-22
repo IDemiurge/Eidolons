@@ -99,6 +99,7 @@ public class WeaponDataSource extends EntityDataSource<DC_WeaponObj> {
     }
 
     public Image getNormalImage() {
+        GdxImageMaster.size(getSpriteImagePath(),96, true);
         if (!isMainHand()){
             return new Image(GdxImageMaster.flip(
              GdxImageMaster.getSizedImagePath(getSpriteImagePath(), 96),

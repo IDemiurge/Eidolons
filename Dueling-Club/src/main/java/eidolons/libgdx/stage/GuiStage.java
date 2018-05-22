@@ -51,7 +51,6 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected GameMenu gameMenu;
     protected OutcomePanel outcomePanel;
     protected Blackout blackout;
-    OptionsWindow optionsWindow;
     private TextInputPanel tf;
     private List<String> charsUp = new ArrayList<>();
     private char lastTyped;
@@ -262,6 +261,7 @@ public class GuiStage extends StageX implements StageWithClosable {
                 hideTooltip(infoTooltip, 1f);
             } else {
                 infoTooltipContainer.setContents(infoTooltip);
+                hideTooltip(actionTooltip, 1f);
                 showTooltip(p.get().toString(), infoTooltip, 2f);
             }
         });
@@ -405,9 +405,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (containerPanel.isVisible()) {
             containerPanel.close();
         }
-//        if (gameMenu.isVisible()) {
-//            gameMenu.close();
-//        }
+        if (gameMenu.isVisible()) {
+            gameMenu.close();
+        }
 
     }
 

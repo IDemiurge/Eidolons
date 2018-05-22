@@ -137,7 +137,7 @@ public class ScrollTextPanel extends GroupX {
         scrollPanel = new ScrollPanel(){
             @Override
             protected boolean isAlwaysScrolled() {
-                return ScrollTextPanel.this.isAlwaysScrolled();
+                return  isScrolledAlways();
             }
         };
 
@@ -147,7 +147,7 @@ public class ScrollTextPanel extends GroupX {
         addActor(scrollPanel);
     }
 
-    protected boolean isAlwaysScrolled() {
+    protected boolean isScrolledAlways() {
         return false;
     }
 

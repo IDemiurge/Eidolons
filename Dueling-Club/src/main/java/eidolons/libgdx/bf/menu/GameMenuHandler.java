@@ -33,7 +33,7 @@ public class GameMenuHandler {
                 break;
             case OUTER_WORLD:
                 //TODO save and send log!
-                Gdx.app.exit();
+                Eidolons.exitGame();
             case EXIT:
             case MAIN_MENU:
 //                DC_Game.game.getBattleMaster().getOutcomeManager().next();

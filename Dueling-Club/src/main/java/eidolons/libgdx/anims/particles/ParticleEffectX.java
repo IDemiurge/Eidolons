@@ -20,11 +20,11 @@ import java.io.InputStreamReader;
 /**
  * Created by JustMe on 1/27/2017.
  */
-public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
+public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
     public String path;
 
-    public ParticleEffect(String path) {
+    public ParticleEffectX(String path) {
         this.path = path;
         String imagePath = EmitterPresetMaster.getInstance().getImagePath(path);
         if (FileManager.isImageFile(StringMaster.getLastPathSegment(imagePath))) {
@@ -38,7 +38,7 @@ public class ParticleEffect extends com.badlogic.gdx.graphics.g2d.ParticleEffect
 
     }
 
-    public ParticleEffect() {
+    public ParticleEffectX() {
         super();
     }
 

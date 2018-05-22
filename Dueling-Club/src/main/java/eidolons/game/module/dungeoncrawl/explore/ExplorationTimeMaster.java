@@ -20,6 +20,7 @@ import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -308,6 +309,8 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private float getRegenModifier() {
+        if (CoreEngine.isTestingMode())
+            return REGEN_MODIFIER*5;
         return REGEN_MODIFIER;
     }
 

@@ -18,7 +18,7 @@ public class EmitterMaster {
 
     }
 
-    public void applyMod(ParticleEffect effect) {
+    public void applyMod(ParticleEffectX effect) {
 
 //        EmitterPresetMaster.getInstance().getModifiedEmitter()
 

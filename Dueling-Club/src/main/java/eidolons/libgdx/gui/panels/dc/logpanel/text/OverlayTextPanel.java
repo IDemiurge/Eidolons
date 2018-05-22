@@ -26,7 +26,13 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        ShaderMaster.drawWithCustomShader(() -> super.draw(batch, parentAlpha), batch, null);
+
+        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+            return;
+        }
+        ShaderMaster.drawWithCustomShader(this, batch, null);
     }
 
     @Override

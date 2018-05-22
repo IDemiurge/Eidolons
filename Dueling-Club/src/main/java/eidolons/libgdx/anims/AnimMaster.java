@@ -31,6 +31,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -466,7 +467,6 @@ public class AnimMaster extends Group {
             leadAnimation = null;
             if (drawing) {
                 drawing = false;
-                main.system.auxiliary.log.LogMaster.log(1, "ANIMATION_QUEUE_FINISHED");
                 WaitMaster.receiveInput(WAIT_OPERATIONS.ANIMATION_QUEUE_FINISHED, true);
 //                GuiEventManager.trigger(GuiEventType.ANIMATION_QUEUE_FINISHED);
             }
@@ -482,7 +482,7 @@ public class AnimMaster extends Group {
             }
         leadAnimation = leadQueue.removeFirst();
 
-        main.system.auxiliary.log.LogMaster.log(1, "next animation: " + leadAnimation +
+        main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ANIM_DEBUG, "next animation: " + leadAnimation +
          "; " +
          leadQueue.size() +
          " in Queue= " + leadQueue);

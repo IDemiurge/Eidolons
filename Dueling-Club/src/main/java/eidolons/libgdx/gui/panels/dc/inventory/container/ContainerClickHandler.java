@@ -31,7 +31,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     public ContainerClickHandler(
      String containerImagePath,
      List<DC_HeroItemObj> items, Unit unit, DC_Obj container) {
-        super(new HqDataMaster(unit), HqDataMaster.getHeroModel(unit));
+        super(  HqDataMaster.getInstance(unit), HqDataMaster.getHeroModel(unit));
         this.containerImagePath = containerImagePath;
         this.items = items;
         this.container = container;
@@ -41,7 +41,6 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     @Override
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         if (cellContents == null) {
-            close();
             return false;
         }
         if (sim.isInventoryFull()) {

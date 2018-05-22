@@ -46,6 +46,7 @@ import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_RequirementsManager;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.hotkey.DC_KeyManager;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.test.TestMasterContent;
@@ -69,7 +70,6 @@ import main.game.bf.GraveyardManager;
 import main.game.core.game.Game;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
-import main.system.GuiEventManager;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
@@ -77,8 +77,6 @@ import main.system.launch.CoreEngine;
 import main.system.util.Refactor;
 
 import java.util.*;
-
-import static main.system.GuiEventType.MUSIC_START;
 
 /**
  * contains references to everything that may be needed in scope of a single game
@@ -184,12 +182,6 @@ public class DC_Game extends MicroGame {
         if (!CoreEngine.isCombatGame())
             return;
         musicMaster = MusicMaster.getInstance();
-        if (MusicMaster.isOn())
-            if (musicMaster.isRunning()) {
-                musicMaster.resume();
-            } else {
-                musicMaster.startLoop();
-            }
     }
 
     protected CombatMaster createCombatMaster() {
@@ -298,8 +290,8 @@ public class DC_Game extends MicroGame {
 
 
     public void startGameLoop(boolean first) {
-        if (MusicMaster.isOn())
-            GuiEventManager.trigger(MUSIC_START, null);
+//        if (MusicMaster.isOn())
+//            GuiEventManager.trigger(MUSIC_START, null);
 
         boolean explore = ExplorationMaster.isExplorationOn();
         getState().gameStarted(first); // ?
@@ -316,6 +308,7 @@ public class DC_Game extends MicroGame {
     }
 
     private void startExploration() {
+
         loop = exploreLoop;
         if (combatLoop.isStarted())
             combatLoop.stop();
@@ -323,8 +316,11 @@ public class DC_Game extends MicroGame {
             exploreLoop.resume();
         else
             setGameLoopThread(exploreLoop.startInNewThread());
-
+        if (isStarted())
+            if (MusicMaster.isOn())
+                musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
+
     }
 
     private void startCombat() {
@@ -334,6 +330,9 @@ public class DC_Game extends MicroGame {
             combatLoop.resume();
         else
             setGameLoopThread(loop.startInNewThread());
+
+        if (MusicMaster.isOn())
+            musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
     }
 
 

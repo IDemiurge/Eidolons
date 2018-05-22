@@ -69,7 +69,7 @@ public class GameLoop {
     }
 
     public void start() {
-        stopped =false;
+        stopped = false;
         if (!CoreEngine.isGraphicsOff()) {
             WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
         }
@@ -379,7 +379,9 @@ public class GameLoop {
 
     public void setActiveUnit(Unit activeUnit) {
         this.activeUnit = activeUnit;
-        GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+        if (activeUnit != null)
+            GuiEventManager.trigger(ACTIVE_UNIT_SELECTED, activeUnit);
+
     }
 
     protected boolean checkNextLevel() {

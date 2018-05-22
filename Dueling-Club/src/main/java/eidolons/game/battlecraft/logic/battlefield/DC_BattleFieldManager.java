@@ -75,20 +75,12 @@ public class DC_BattleFieldManager extends BattleFieldManager {
 
     public void resetWallMap() {
 
-//        main.system.auxiliary.log.LogMaster.log(1,"START resetWallMap" +wallMap.size());
-//        if (wallResetRequired) {
-            main.system.auxiliary.log.LogMaster.log(1,"invoked resetWalls!" );
             resetWalls();
-//        }
         resetVisibleWallMap();
-        main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_DOOR_MAP!"+doorMap.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_DOOR_MAP, this.doorMap);
-        main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_WALL_MAP!"+visibleWallMap.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_WALL_MAP, this.visibleWallMap);
-        main.system.auxiliary.log.LogMaster.log(1,"trigger UPDATE_DIAGONAL_WALL_MAP!"+visibleDiagonalJoints.size() );
         GuiEventManager.trigger(GuiEventType.UPDATE_DIAGONAL_WALL_MAP, this.visibleDiagonalJoints);
         wallResetRequired = true;
-//        main.system.auxiliary.log.LogMaster.log(1,"END resetWallMap" +wallMap.size());
     }
 
 
@@ -104,12 +96,6 @@ public class DC_BattleFieldManager extends BattleFieldManager {
         });
         visibleDiagonalJoints = new MapMaster().cloneHashMap(diagonalJoints);
         visibleDiagonalJoints.keySet().removeIf((sub) -> !visibleWallMap.containsKey(sub));
-//        for (Coordinates sub: wallMap.keySet()){
-//           DC_Obj obj = (DC_Obj) game.getObjectByCoordinate(sub);
-//            if (VisionManager.checkVisible(obj, false)){
-//                visibleWallMap.put(sub, wallMap.get(sub));
-//            }
-//        }
     }
 
     public void resetWalls() {

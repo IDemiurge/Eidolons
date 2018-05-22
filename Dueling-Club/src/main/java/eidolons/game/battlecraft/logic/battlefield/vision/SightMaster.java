@@ -364,7 +364,6 @@ public class SightMaster {
     }
     public void resetUnitVision(BattleFieldObject observer,DC_Obj unit) {
         UNIT_VISION status = getUnitVisionStatusPrivate(unit, (Unit) observer);
-        master.getVisionController().getUnitVisionMapper().set(observer, unit, status);
-
+        unit.setUnitVisionStatus(status, observer);
     }
 }

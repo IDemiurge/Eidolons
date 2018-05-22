@@ -25,15 +25,19 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
+import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.test.Debugger;
 import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
+import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 
 import java.awt.*;
@@ -272,13 +276,14 @@ public class Eidolons {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
 //            DialogMaster.confirm("Game exit failed!");
-            Gdx.app.exit();
+            exitGame();
         }
         getScreen().reset();
         gameExited();
         GameMenu.menuOpen = false;
         Gdx.input.setInputProcessor(new InputAdapter());
         showMainMenu();
+        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
     }
     public static void showMainMenu() {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
@@ -298,7 +303,15 @@ public class Eidolons {
         Eidolons.getGame().getLoop().actionInput(
          new ActionInput( (action), Eidolons.getMainHero()));
     }
-public enum SCOPE{
+
+    public static void exitGame() {
+        SpecialLogger.getInstance().writeLogs();
+        Debugger.writeLog();
+        LogMaster.writeAll();
+        Gdx.app.exit();
+    }
+
+    public enum SCOPE{
         MENU, BATTLE, MAP
 }
     public static SCOPE getScope() {

@@ -2,7 +2,6 @@ package eidolons.libgdx.anims.std;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import eidolons.ability.effects.oneshot.move.MoveEffect;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
@@ -183,17 +182,7 @@ public class MoveAnimation extends ActionAnim {
     @Override
     public void finished() {
         super.finished();
-        Vector2 v = new Vector2(getActor().getX(), getActor().getY());
-        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after move " +v);
-        v =getActor(). localToStageCoordinates(v);
-        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after move abs " +v);
-
         DungeonScreen.getInstance().getGridPanel(). unitViewMoved((BaseView) getActor());
-        v = new Vector2(getActor().getX(), getActor().getY());
-        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after attach " +v);
-        v =getActor(). localToStageCoordinates(v);
-        main.system.auxiliary.log.LogMaster.log(1,getActor()+" pos after attach abs " +v);
-
     }
 
     @Override

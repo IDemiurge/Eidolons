@@ -65,6 +65,8 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public boolean isAmmo() {
+        if (!isConstructed())
+            construct(); //TODO refactor!
         return ammo;
     }
 

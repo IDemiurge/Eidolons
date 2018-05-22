@@ -55,6 +55,14 @@ public class GridCellContainer extends GridCell {
         return this;
     }
 
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        graveyard.setUserObject(new GridCellDataSource(
+         new Coordinates(getGridX(), getGridY())
+        ));
+    }
+
     public List<GenericGridView> getUnitViewsVisible() {
         return getUnitViews(true);
     }
@@ -300,7 +308,6 @@ public class GridCellContainer extends GridCell {
 
         if (result && actor instanceof GenericGridView) {
             unitViewCount = getUnitViewsVisible().size();
-            main.system.auxiliary.log.LogMaster.log(1, actor + " removed from " + this);
             dirty = true;
             if (isAnimated())
                 ActorMaster.addFadeOutAction(actor, getFadeDuration());

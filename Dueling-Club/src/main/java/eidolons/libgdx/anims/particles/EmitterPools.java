@@ -19,7 +19,7 @@ import java.util.Map;
 public class EmitterPools {
 
     private static Map<String, Pool<EmitterActor>> actorPoolMap = new HashMap<>();
-    private static Map<String, Pool<ParticleEffect>> effectPoolMap = new HashMap<>();
+    private static Map<String, Pool<ParticleEffectX>> effectPoolMap = new HashMap<>();
     private static boolean effectPoolingOn = true;
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
 
@@ -53,19 +53,20 @@ public class EmitterPools {
         return pool.obtain();
     }
 
-    public static ParticleEffect getEffect(String path) {
+    public static ParticleEffectX getEffect(String path) {
 //        if (CoreEngine.isJar())
 //            System.out.println("getEffect " + path);
         if (!effectPoolingOn) {
-            return new ParticleEffect(path);
+            return new ParticleEffectX(path);
         }
         final String finalPath = path.toLowerCase();
-        Pool<ParticleEffect> pool = effectPoolMap.get(finalPath);
+        Pool<ParticleEffectX> pool = effectPoolMap.get(finalPath);
         if (pool == null) {
-            pool = new Pool<ParticleEffect>() {
+            pool = new Pool<ParticleEffectX>() {
                 @Override
-                protected ParticleEffect newObject() {
-                    return new ParticleEffect(finalPath);
+                protected ParticleEffectX newObject() {
+//                  TODO   Assets.get().getManager().load();
+                    return new ParticleEffectX(finalPath);
                 }
             };
             effectPoolMap.put(finalPath, pool);
@@ -73,8 +74,8 @@ public class EmitterPools {
         return pool.obtain();
     }
 
-    public static void freeEffect(ParticleEffect e) {
-        Pool<ParticleEffect> pool = effectPoolMap.get(e.path.toLowerCase());
+    public static void freeEffect(ParticleEffectX e) {
+        Pool<ParticleEffectX> pool = effectPoolMap.get(e.path.toLowerCase());
         if (pool == null) {
             return;
         }

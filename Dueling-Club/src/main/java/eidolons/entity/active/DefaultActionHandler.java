@@ -10,6 +10,7 @@ import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManagerImpl;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
@@ -189,12 +190,26 @@ public class DefaultActionHandler {
         if (target.isMine())
             return false;
         DC_ActiveObj action = null;
+        String msg=null ;
         if (target instanceof DungeonObj)
+        {
             action = getDungeonObjAction(source, (DungeonObj) target);
+            if (action == null)
+                msg = "Cannot find default action";
+        }
         else
+        {
             action = getPreferredAttackAction(source, target);
+            if (action == null)
+                msg = "Cannot find optimal attack";
+        }
         if (action == null)
+        {
+            EUtils.showInfoText(msg);
+            main.system.auxiliary.log.LogMaster.log(1,source+ " " +
+             msg +" " +target);
             return false;
+        }
         Context context = new Context(source, target);
         return activate(context, action);
 

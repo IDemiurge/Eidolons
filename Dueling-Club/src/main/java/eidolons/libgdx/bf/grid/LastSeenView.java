@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import eidolons.entity.obj.BattleFieldObject;
 
 /**
  * Created by JustMe on 4/1/2018.
@@ -20,6 +21,11 @@ public class LastSeenView extends  GenericGridView{
         super(o);
         greyedOut = true;
         setParentView(view);
+    }
+
+    @Override
+    public BattleFieldObject getUserObject() {
+        return parentView.getUserObject();
     }
 
     @Override
@@ -47,6 +53,8 @@ public class LastSeenView extends  GenericGridView{
     @Override
     public void draw(Batch batch, float parentAlpha) {
 //        setVisible(!getParentView().isVisible());
+        if (getUserObject().isPlayerCharacter())
+            return;
         super.draw(batch, parentAlpha);
     }
 
@@ -64,6 +72,8 @@ public class LastSeenView extends  GenericGridView{
 
     @Override
     public void addAction(Action action) {
+        if (getUserObject().isPlayerCharacter())
+            return;
         super.addAction(action);
 //        main.system.auxiliary.log.LogMaster.log(1,this+" action: " +action);
     }

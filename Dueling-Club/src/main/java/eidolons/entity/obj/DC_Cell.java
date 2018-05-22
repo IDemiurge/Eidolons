@@ -5,6 +5,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
+import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -21,6 +22,7 @@ import main.system.images.ImageManager;
 public class DC_Cell extends DC_Obj implements Cell {
 
     private static ObjType EMPTY_CELL_TYPE;
+    private boolean playerHasSeen;
 
     public DC_Cell(ObjType t, int i, int j, DC_Game game, Ref ref, Dungeon dungeon) {
         super(t, Player.NEUTRAL, game, ref);
@@ -163,5 +165,33 @@ public class DC_Cell extends DC_Obj implements Cell {
     @Override
     public boolean isPlayerDetected() {
         return isDetectedByPlayer();
+    }
+
+    public void setUnitVisionStatus(UNIT_VISION status, BattleFieldObject observer) {
+        super.setUnitVisionStatus(status, observer);
+        if (status == UNIT_VISION.IN_PLAIN_SIGHT) {
+            playerHasSeen=true;
+        }
+    }
+
+    @Override
+    public Integer getGamma() {
+        if (playerHasSeen)
+            return super.getGamma()*3/2+15;
+        return super.getGamma();
+    }
+
+    public boolean isDetectedByPlayer() {
+        boolean result = super.isDetectedByPlayer();
+        if (result)
+            playerHasSeen=true;
+        return result;
+    }
+    public boolean isPlayerHasSeen() {
+        return playerHasSeen;
+    }
+
+    public void setPlayerHasSeen(boolean playerHasSeen) {
+        this.playerHasSeen = playerHasSeen;
     }
 }

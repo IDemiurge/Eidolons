@@ -2,7 +2,6 @@ package eidolons.libgdx.bf.grid;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -17,6 +16,7 @@ import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResourceSourceImpl;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.shaders.GrayscaleShader;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -188,21 +188,13 @@ public class UnitView extends BaseView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        ShaderProgram shader = null;
-
-        if (isVisible()) {
-            if (greyedOut) {
-                shader = batch.getShader();
-                batch.setShader(GrayscaleShader.getGrayscaleShader());
-            }
+        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+            return;
         }
-
-
-        super.draw(batch, parentAlpha);
-
-        if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
-            batch.setShader(shader);
-
+        ShaderMaster.drawWithCustomShader(this, batch,
+         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
     }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {

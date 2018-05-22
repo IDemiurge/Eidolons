@@ -17,7 +17,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private final int defaultCapacity = 12;
     private final int defaultMaxCapacity = 24;
     public String path;
-    protected ParticleEffect effect;
+    protected ParticleEffectX effect;
     protected ParticleEffectPool pool;
     protected EMITTER_PRESET sfx;
     boolean flipX;
@@ -132,7 +132,7 @@ public void hide(){
     }
 
     @Override
-    public ParticleEffect getEffect() {
+    public ParticleEffectX getEffect() {
         return effect;
     }
 

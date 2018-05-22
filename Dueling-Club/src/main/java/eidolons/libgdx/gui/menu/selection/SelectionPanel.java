@@ -57,19 +57,11 @@ public abstract class SelectionPanel extends TablePanel {
 
         row();
         addElement(null ).bottom().size(getWidth(), 70);
-//        TablePanel buttonPanel = new TablePanel<>();
-//        buttonPanel
-//         .setWidth(getWidth());
-//        if (isDoneSupported())
-//            addElement(buttonPanel).bottom().size(getWidth(), 70);
-//        if (isBackSupported())
-//            buttonPanel.addNormalSize(backButton).left();
-//        buttonPanel.addNormalSize(startButton).center();
 
         if (isDoneSupported()) {
             addActor(startButton);
-            startButton.setPosition(GdxMaster.centerWidth(startButton),
-             (42+ GdxMaster.getHeight() / 30));
+            startButton.setPosition(GdxMaster.centerWidth(startButton)-40,
+             (40+ GdxMaster.getHeight() / 25));
         }
         if (isBackSupported()) {
             addActor(backButton);
@@ -105,7 +97,15 @@ public abstract class SelectionPanel extends TablePanel {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (getStage()!=null )
-            ShaderMaster.drawWithCustomShader(() -> super.draw(batch, parentAlpha), batch, null);
+        {
+            if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+            return;
+        }
+
+            ShaderMaster.drawWithCustomShader(this, batch, null);
+        }
     }
 
     protected boolean isDoneDisabled() {

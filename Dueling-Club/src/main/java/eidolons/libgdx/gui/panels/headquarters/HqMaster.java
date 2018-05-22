@@ -32,7 +32,7 @@ public class HqMaster {
         List<HqHeroDataSource> list = new ArrayList<>();
 
         for (Unit sub : members) {
-            list.add(new HqHeroDataSource(new HqDataMaster(
+            list.add(new HqHeroDataSource(HqDataMaster.createAndSaveInstance(
              sub).getHeroModel()));
 
         }

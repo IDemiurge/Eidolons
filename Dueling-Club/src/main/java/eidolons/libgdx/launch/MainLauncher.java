@@ -28,9 +28,9 @@ public class MainLauncher extends GenericLauncher {
 
         new MainLauncher().start();
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
-        if (CoreEngine.isFastMode()) {
-            CoreEngine.setJar(true);
-        }
+//        if (CoreEngine.isFastMode()) {
+//            CoreEngine.setJar(true);
+//        }
         if (args.length > 0) {
             String[] commands = args;
             if (commands.length == 1) {

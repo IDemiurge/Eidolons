@@ -1,8 +1,6 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -12,7 +10,6 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
-import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.system.GuiEventManager;
@@ -27,17 +24,17 @@ import static main.system.GuiEventType.ADD_OR_UPDATE_INITIATIVE;
  */
 public class QueueView extends UnitView {
     protected int initiativeIntVal;
-    protected TextureRegion clockTexture; 
-    protected Label initiativeLabel; 
-    protected Image clockImage; 
+    protected TextureRegion clockTexture;
+    protected Label initiativeLabel;
+    protected Image clockImage;
     protected boolean queueMoving = true;//queueMoving, temporary. 
-     protected GridUnitView parentView;
-    
+    protected GridUnitView parentView;
+
     protected QueueView(UnitViewOptions o, int curId) {
         super(o, curId);
         init(o.getClockTexture(), o.getClockValue());
     }
-  
+
 
     protected void init(TextureRegion clockTexture, int clockVal) {
         this.initiativeIntVal = clockVal;
@@ -63,7 +60,7 @@ public class QueueView extends UnitView {
             clockImage.setVisible(true);
         }
     }
- 
+
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
@@ -96,6 +93,11 @@ public class QueueView extends UnitView {
         return queueMoving;
     }
 
+    public void setQueueMoving(boolean queueMoving) {
+        this.queueMoving = queueMoving;
+        GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, this);
+    }
+
     public void updateInitiative(Integer val) {
         if (clockTexture != null) {
             initiativeIntVal = val;
@@ -122,8 +124,6 @@ public class QueueView extends UnitView {
          getTeamColor());
     }
 
-      
-
     protected void checkResetOutline(float delta) {
         if (!getParentView().isVisible()) {
             setDefaultTexture();
@@ -139,30 +139,18 @@ public class QueueView extends UnitView {
         setPortraitTexture(getOutline());
     }
 
-
     protected boolean isHpBarVisible() {
         return true;
     }
 
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        ShaderProgram shader = null;
-
-        if (isVisible()) {
-            if (greyedOut) {
-                shader = batch.getShader();
-                batch.setShader(GrayscaleShader.getGrayscaleShader());
-            }
-        }
-
-
-        super.draw(batch, parentAlpha);
-
-        if (batch.getShader() == GrayscaleShader.getGrayscaleShader())
-            batch.setShader(shader);
-
-    }
+//    @Override
+//    public void draw(Batch batch, float parentAlpha) {
+//        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+//            super.draw(batch, 1);
+//        else
+//        ShaderMaster.drawWithCustomShader(this, batch,
+//         greyedOut ? GrayscaleShader.getGrayscaleShader() : null, true);
+//    }
 
     protected void setPortraitTexture(TextureRegion textureRegion) {
         getPortrait().setTexture(TextureCache.getOrCreateTextureRegionDrawable(textureRegion));
@@ -176,17 +164,14 @@ public class QueueView extends UnitView {
         this.outlineSupplier = outlineSupplier;
     }
 
-
-
-
     public void setHpBar(HpBar hpBar) {
         if (this.hpBar != null) {
             this.hpBar.remove();
         }
         this.hpBar = hpBar;
 //        if (!GridPanel.isHpBarsOnTop()) {
-            addActor(hpBar);
-            hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
+        addActor(hpBar);
+        hpBar.setPosition(GdxMaster.centerWidth(hpBar), -hpBar.getHeight() / 2);
 //        }
         hpBar.setQueue(true);
     }
@@ -198,27 +183,21 @@ public class QueueView extends UnitView {
             getHpBar().setZIndex(Integer.MAX_VALUE);
     }
 
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + " for " + name;
-    }
-
-    public void setQueueMoving(boolean queueMoving) {
-        this.queueMoving = queueMoving;
-        GuiEventManager.trigger(ADD_OR_UPDATE_INITIATIVE, this);
     }
 
     public GridUnitView getParentView() {
         return parentView;
     }
 
-    public void setInitiativeLabelText(String text) {
-        initiativeLabel.setText(text);
-    }
-
     public void setParentView(GridUnitView parentView) {
         this.parentView = parentView;
+    }
+
+    public void setInitiativeLabelText(String text) {
+        initiativeLabel.setText(text);
     }
 }
 

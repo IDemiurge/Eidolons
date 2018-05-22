@@ -17,6 +17,8 @@ import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
+import eidolons.system.audio.MusicMaster;
+import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -41,11 +43,11 @@ import static main.system.GuiEventType.SWITCH_SCREEN;
  */
 public class GenericLauncher extends Game {
     public static final int FRAMERATE = 60;
+    private static boolean firstInitDone;
     public GameScreen gameScreen;
     protected boolean fullscreen;
     protected ScreenViewport viewport;
     private LwjglApplicationConfiguration conf;
-    private static boolean firstInitDone;
 
     public static void setFirstInitDone(boolean firstInitDone) {
         GenericLauncher.firstInitDone = firstInitDone;
@@ -53,6 +55,9 @@ public class GenericLauncher extends Game {
 
     @Override
     public void create() {
+
+        MusicMaster.preload(MUSIC_SCOPE.MENU);
+        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
         GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
         OrthographicCamera camera = new OrthographicCamera();
@@ -70,6 +75,7 @@ public class GenericLauncher extends Game {
             return;
         Eidolons.setApplication(new LwjglApplication(this,
          getConf()));
+
         Eidolons.setLauncher(this);
         if (fullscreen
          ) {
@@ -246,7 +252,7 @@ public class GenericLauncher extends Game {
 
     protected void triggerLoaded(ScreenData meta) {
         if (Blackout.isOnNewScreen())
-         GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
+            GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         switch (meta.getType()) {
             case BATTLE:
                 if (!CoreEngine.isMacro())
@@ -257,7 +263,8 @@ public class GenericLauncher extends Game {
                         if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
                             return;
                         DC_Engine.gameStartInit();
-
+                        if (MusicMaster.isOn())
+                            MusicMaster.preload(MUSIC_SCOPE.ATMO);
                         Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                         firstInitDone = true;
                     }

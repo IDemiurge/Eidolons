@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.menu;
 
-import com.badlogic.gdx.Gdx;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
@@ -75,7 +75,7 @@ public class MainMenuHandler {
             case ABOUT:
                 break;
             case EXIT:
-                Gdx.app.exit();
+                Eidolons.exitGame();
                 break;
         }
 

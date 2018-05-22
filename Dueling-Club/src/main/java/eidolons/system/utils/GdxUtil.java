@@ -11,9 +11,15 @@ public abstract class GdxUtil implements ApplicationListener {
     @Override
     public void create() {
         execute();
+        if (isExitOnDone())
         Gdx.app.exit();
     }
-public void start(){
+
+    protected boolean isExitOnDone() {
+        return true;
+    }
+
+    public void start(){
     new LwjglApplication(this, "", 1, 1);
 }
     protected abstract void execute();

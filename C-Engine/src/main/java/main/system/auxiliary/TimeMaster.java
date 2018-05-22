@@ -209,7 +209,15 @@ public class TimeMaster {
         return new Date(time).getMonth() == getMonth();
     }
 
-    public static String getTimeStamp() {
+    private static final String timeStamp;
+
+    static {
+        timeStamp = getTimeStamp();
+    }
+    public static String getTimeStampForThisSession() {
+        return timeStamp ;
+    }
+        public static String getTimeStamp() {
         return TimeMaster.getFormattedDate(true) +
          " " +
          TimeMaster.getFormattedTime(false, true);

@@ -142,7 +142,7 @@ public class UnitEnums {
          StringMaster.getWellFormattedString(name()) + StringMaster.COUNTER;
 
         COUNTER() {
-            imagePath = ImageManager.getValueIconsPath() + "counters\\" + toString() + ".jpg";
+            imagePath = ImageManager.getValueIconsPath() + "counters\\" + toString() + ".png";
         }
 
         public boolean isNegativeAllowed() {

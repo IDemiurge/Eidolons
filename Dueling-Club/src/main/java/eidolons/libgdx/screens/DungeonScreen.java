@@ -31,6 +31,7 @@ import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
@@ -41,6 +42,7 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
+import static eidolons.system.audio.MusicMaster.MUSIC_SCOPE.ATMO;
 import static main.system.GuiEventType.*;
 
 /**
@@ -167,6 +169,11 @@ public class DungeonScreen extends GameScreen {
             particleManager = new ParticleManager();
 
             soundMaster = new DC_SoundMaster(this);
+
+            if (MusicMaster.isOn()) {
+                MusicMaster.getInstance().scopeChanged(ATMO);
+            }
+
             final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
             gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
         } catch (Exception e) {

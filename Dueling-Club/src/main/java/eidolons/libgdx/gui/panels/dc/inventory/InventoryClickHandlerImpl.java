@@ -222,8 +222,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         if (!isCancelEnabled()) {
             return;
         }
-        GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-          "Inventory operations cancelled!");
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, false);
 
     }

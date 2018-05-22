@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
+import eidolons.libgdx.stage.LoadingStage;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -27,6 +30,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     private static Boolean videoEnabled;
     protected VideoMaster video;
     protected boolean looped;
+    private Label underText;
 
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
@@ -35,6 +39,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             if (isVideoEnabled())
                 initVideo();
         looped = true;
+        underText = new Label(LoadingStage. getBottonText(), StyleHolder.getHqLabelStyle(20));
+        getOverlayStage().addActor(underText);
+        underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
     }
 
@@ -147,7 +154,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     protected void hideLoader() {
         super.hideLoader();
         if (!isLoadingWithVideo()) {
-             initVideo();
+            initVideo();
         } else if (video != null) {
             try {
                 video.stop();
@@ -165,12 +172,22 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         } catch (Exception e) {
             main.system.auxiliary.log.LogMaster.log(1, "VIDEO INIT FAILED!");
             main.system.ExceptionMaster.printStackTrace(e);
-        } finally{
-            videoEnabled=false;
+        } finally {
+            videoEnabled = false;
 //            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
         }
     }
 
+    private void playVideo() {
+        try {
+            video.playTestVideo();
+        } catch (Exception e) {
+            main.system.auxiliary.log.LogMaster.log(1, "VIDEO PLAY FAILED!");
+            main.system.ExceptionMaster.printStackTrace(e);
+            video = null;
+            videoEnabled=false;
+        }
+    }
     @Override
     public void render(float delta) {
         if (CoreEngine.isJar()) {
@@ -233,20 +250,13 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             playVideo();
         Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        if (!video.getPlayer().render())
+            if (isLooped())
+                playVideo();
 
-        try {
-            if (!video.getPlayer().render()) {
-                if (isLooped())
-                    playVideo();
-            }
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
     }
 
-    private void playVideo() {
-        video.playTestVideo();
-    }
 
     public boolean isLooped() {
         return looped;

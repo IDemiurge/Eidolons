@@ -2,6 +2,7 @@ package eidolons.ability.effects.oneshot.dialog;
 
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -31,6 +32,8 @@ public class InventoryDialogEffect extends DialogEffect {
 
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
          new InventoryDataSource((Unit) ref.getSourceObj()));
+        if (ExplorationMaster.isExplorationOn())
+            return true;
         boolean result = (boolean) WaitMaster.waitForInputAnew(
          InventoryTransactionManager.OPERATION);
         getGame().getInventoryTransactionManager().setActive(false);

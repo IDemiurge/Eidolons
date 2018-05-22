@@ -181,10 +181,10 @@ public class HpBar extends SuperActor {
             float realPerc = new Float(100*dataSource.getIntParam(PARAMS.C_ENDURANCE) /
              dataSource.getIntParam(PARAMS.ENDURANCE))/100f ;
             if (displayedEndurancePerc!=realPerc){
-                main.system.auxiliary.log.LogMaster.log(1,"HP BAR ENDURANCE PERCENTAGE MISMATCH: " +
-                 displayedEndurancePerc+
-                 " VS REAL == " +
-                 realPerc );
+//                main.system.auxiliary.log.LogMaster.log(1,"HP BAR ENDURANCE PERCENTAGE MISMATCH: " +
+//                 displayedEndurancePerc+
+//                 " VS REAL == " +
+//                 realPerc );
                 displayedEndurancePerc=realPerc;
             }
 
@@ -193,10 +193,10 @@ public class HpBar extends SuperActor {
             realPerc = new Float(100*dataSource.getIntParam(PARAMS.C_TOUGHNESS) /
              dataSource.getIntParam(PARAMS.TOUGHNESS))/100f ;
             if (displayedToughnessPerc!=realPerc){
-                main.system.auxiliary.log.LogMaster.log(1,"HP BAR TOUGHNESS PERCENTAGE MISMATCH: " +
-                 displayedToughnessPerc+
-                 " VS REAL == " +
-                 realPerc );
+//                main.system.auxiliary.log.LogMaster.log(1,"HP BAR TOUGHNESS PERCENTAGE MISMATCH: " +
+//                 displayedToughnessPerc+
+//                 " VS REAL == " +
+//                 realPerc );
                 displayedToughnessPerc=realPerc;
             }
             return;

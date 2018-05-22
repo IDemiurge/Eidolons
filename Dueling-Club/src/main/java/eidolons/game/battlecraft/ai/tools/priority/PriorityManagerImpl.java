@@ -1572,6 +1572,9 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         setUnit(actions.get(0).getAi().getUnit());
         setUnitAi(actions.get(0).getAi());
         for (ActionSequence as : actions) {
+            if (as.getTask() == null) {
+                continue;
+            }
             Integer mod = getUnitAi().getGoalPriorityMod(as.getTask().getType());
             if (mod == null) {
                 mod = 0;

@@ -21,6 +21,8 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -113,8 +115,25 @@ public class GridCell extends Group implements Borderable {
              getGridX(), getGridY()
             ));
         }
-        super.draw(batch, parentAlpha);
+        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+            super.draw(batch, 1);
+        else
+            ShaderMaster.drawWithCustomShader(this,
+             batch,
+             !getUserObject().isPlayerHasSeen() ?
+              DarkShader.getShader() : null, true);
 
+    }
+
+    @Override
+    public DC_Cell getUserObject() {
+        return (DC_Cell) super.getUserObject();
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
+        getChildren().forEach(ch -> ch.setUserObject(userObject));
     }
 
     @Override
@@ -167,7 +186,6 @@ public class GridCell extends Group implements Borderable {
         }
     }
 
-
     @Override
     public TextureRegion getBorder() {
         return borderTexture;
@@ -203,13 +221,6 @@ public class GridCell extends Group implements Borderable {
     protected int getGridY() {
         return gridY;
     }
-
-    @Override
-    public void setUserObject(Object userObject) {
-        super.setUserObject(userObject);
-        getChildren().forEach(ch -> ch.setUserObject(userObject));
-    }
-
 
     @Override
     public boolean isTeamColorBorder() {

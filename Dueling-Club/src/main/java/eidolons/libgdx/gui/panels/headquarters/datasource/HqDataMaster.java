@@ -8,6 +8,7 @@ import eidolons.entity.item.DC_JewelryObj;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
@@ -50,7 +51,6 @@ public class HqDataMaster {
         this.hero = hero;
         heroModel = createHeroDataModel(hero);
         stack = new Stack<>();
-        map.put(hero, this);
     }
 
     public static HeroDataModel getHeroModel(Unit hero) {
@@ -67,6 +67,7 @@ public class HqDataMaster {
 
     public static void saveHero(HeroDataModel model, boolean type, boolean asNew) {
         map.get(model.getHero()).save();
+        EUtils.showInfoText(model.getName()+ " saved");
         if (type) {
             if (asNew)
                 model.setName(NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS));
@@ -144,11 +145,20 @@ public class HqDataMaster {
         map.get(entity.getHero()).reset();
     }
 
-    public static HqDataMaster getInstance(Unit unit) {
+    public static HqDataMaster createInstance(Unit unit) {
+        return  new HqDataMaster(unit);
+    }
+    public static HqDataMaster createAndSaveInstance(Unit unit) {
+        HqDataMaster  instance =  new HqDataMaster(unit);
+        map.put(unit, instance);
+        return instance;
+    }
+        public static HqDataMaster getInstance(Unit unit) {
         HqDataMaster instance = map.get(unit);
-//       TODO  if (instance == null) {
+        if (instance == null) {
             instance = new HqDataMaster(unit);
-//        }
+            map.put(unit, instance);
+        }
         return instance;
     }
 

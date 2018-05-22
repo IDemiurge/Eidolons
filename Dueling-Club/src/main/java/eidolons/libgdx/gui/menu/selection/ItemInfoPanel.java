@@ -68,7 +68,7 @@ public class ItemInfoPanel extends TablePanel {
 
     protected void initSize() {
         if (GdxMaster.getFontSizeMod() != 1) {
-            setSize(GdxMaster.adjustSizePlain(1020), 900);
+            setSize(GdxMaster.adjustSize(1020), 900);
         }
     }
 
@@ -78,7 +78,7 @@ public class ItemInfoPanel extends TablePanel {
             setBackground(new TextureRegionDrawable(new TextureRegion(
              TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
              BACKGROUND_NINE_PATCH.PATTERN,
-              (int) GdxMaster.adjustSizePlain(1050)
+              (int) GdxMaster.adjustSize(1050)
               , 850))));
         else {
             setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));

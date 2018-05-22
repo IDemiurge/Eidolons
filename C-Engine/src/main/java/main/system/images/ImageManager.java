@@ -775,14 +775,20 @@ public static String getValueIconPath(VALUE value ) {
     }
 
     public static boolean isImage(String imgPath) {
-        Image image = getImage(imgPath);
-        if (image == null) {
+        if (!FileManager.isImageFile(imgPath))
             return false;
-        }
-        if (image.getWidth(null) < 1) {
+        if (!FileManager.isFile( imgPath))
+            if (!FileManager.isFile(getImageFolderPath()+ imgPath))
             return false;
-        }
-        return image.getHeight(null) >= 1;
+        return true;
+//        Image image = getImage(imgPath);
+//        if (image == null) {
+//            return false;
+//        }
+//        if (image.getWidth(null) < 1) {
+//            return false;
+//        }
+//        return image.getHeight(null) >= 1;
     }
 
     public static String getDefaultEmptyListIcon() {

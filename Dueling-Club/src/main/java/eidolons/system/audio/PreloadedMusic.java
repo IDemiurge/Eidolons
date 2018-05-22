@@ -12,20 +12,26 @@ import com.badlogic.gdx.files.FileHandle;
 public class PreloadedMusic implements Music {
     Sound sound;
     private boolean playing;
+    private long id;
 
     public PreloadedMusic(String path) {
         FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
         this.sound = Gdx.audio.newSound(file);
+
     }
 
     public long play(float volume) {
+        if (isPlaying())
+            return 0;
         playing = true;
         return sound.play(volume);
     }
 
     public long play(float volume, float pitch, float pan) {
+        if (isPlaying())
+            return 0;
         playing = true;
-        return sound.play(volume, pitch, pan);
+        return id=sound.play(volume, pitch, pan);
     }
 
     public long loop() {
@@ -68,8 +74,10 @@ public class PreloadedMusic implements Music {
     }
 
     public void play() {
+        if (isPlaying())
+            return;
         playing = true;
-        sound.play();
+        id= sound.play();
     }
 
     public void stop() {
@@ -99,7 +107,7 @@ public class PreloadedMusic implements Music {
 
     @Override
     public void setVolume(float volume) {
-
+        sound.setVolume(id, volume);
     }
 
     @Override
@@ -118,7 +126,7 @@ public class PreloadedMusic implements Music {
     }
 
     public void pause() {
-        playing = false;
+        playing = false; 
         sound.pause();
     }
 

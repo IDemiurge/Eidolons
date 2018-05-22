@@ -1,5 +1,6 @@
 package eidolons.system.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +20,7 @@ import java.io.File;
  * Created by JustMe on 5/13/2018.
  */
 public class IconGenerator extends GdxUtil {
+    private static IconGenerator generator;
     String root;
     String underlay;
     String output;
@@ -34,11 +36,53 @@ public class IconGenerator extends GdxUtil {
 
     public static void main(String[] args) {
         CoreEngine.systemInit();
+
+//        generateDefault();
+        generateAll();
+
+
+    }
+
+    private static void generateAll() {
+
+        String path = StrPathBuilder.build(
+         ImageManager.getValueIconsPath(), "generator");
+
+        String imagesPath = StrPathBuilder.build(PathFinder.getImagePath(), path, "images");
+
+        String underlaysPath = StrPathBuilder.
+         build(PathFinder.getImagePath(), path, "underlays") +
+         StringMaster.getPathSeparator();
+          generator = null;
+
+        for (File sub : FileManager.getFilesFromDirectory(underlaysPath, false, false)) {
+            String output = StrPathBuilder.build(PathFinder.getImagePath(), path, "generated",
+             StringMaster.cropFormat(sub.getName())) +
+             StringMaster.getPathSeparator();
+            String underlay = StrPathBuilder.build(path, "underlays", sub.getName());
+
+            if (generator == null)
+                generator = new IconGenerator(imagesPath, underlay, output, true);
+           else
+                Gdx.app.postRunnable(()-> {
+               try {
+                getGenerator().generate(imagesPath, underlay, output);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }});
+        }
+    }
+
+    public static IconGenerator getGenerator() {
+        return generator;
+    }
+
+    private static void generateDefault() {
         String path = StrPathBuilder.build(PathFinder.getImagePath(),
          ImageManager.getValueIconsPath());
-        String output = StrPathBuilder.build(path, "generated") + StringMaster.getPathSeparator();
-        new IconGenerator(path, Images.EMPTY_RANK_SLOT, output,true);
-
+        String output = StrPathBuilder.build(path, "generated") +
+         StringMaster.getPathSeparator();
+        new IconGenerator(path, Images.EMPTY_RANK_SLOT, output, true);
     }
 
     public static void generateOverlaidIcon(Texture underlayTexture, String path, FileHandle handle, boolean b) {
@@ -54,6 +98,10 @@ public class IconGenerator extends GdxUtil {
 //        pixMap.setBlending();
 //    pixMap.setFilter();
 
+    }
+
+    protected boolean isExitOnDone() {
+        return false;
     }
 
     public void generate(String root, String underlay, String output) {

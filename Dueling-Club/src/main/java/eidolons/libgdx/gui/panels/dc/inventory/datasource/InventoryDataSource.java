@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.inventory.*;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -21,7 +22,10 @@ public class InventoryDataSource implements QuickSlotDataSource,
     private InventoryClickHandler handler;
 
     public InventoryDataSource(Unit unit) {
-        dataMaster =HqDataMaster.getInstance(unit);
+        if (HqPanel.getActiveInstance()==null )
+             dataMaster =HqDataMaster.createAndSaveInstance(unit);
+        else
+            dataMaster =HqDataMaster.getInstance(unit);
         this.unit = dataMaster.getHeroModel();
         handler = new InventoryClickHandlerImpl(
          dataMaster, dataMaster.getHeroModel());

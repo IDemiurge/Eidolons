@@ -153,10 +153,11 @@ public class VisionMaster implements GenericVisionManager {
             else invisibleList.add(sub);
         }
 //        WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
-        main.system.auxiliary.log.LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
+       main.system.auxiliary.log.LogMaster.log(1, ">>>>>> visibleList  = " + visibleList);
 
         if (LOG_CHANNEL.VISIBILITY_DEBUG.isOn()) {
+            main.system.auxiliary.log.LogMaster.log(1, ">>>>>> invisibleList  = " + invisibleList);
+
             String string = "";
             for (BattleFieldObject sub : visibleList) {
                 string += sub + ": \n";

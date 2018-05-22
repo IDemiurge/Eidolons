@@ -171,6 +171,9 @@ public class CombatInventory extends TablePanel implements Blocking {
     public void close(Boolean result) {
         if (result == null)
             result = false;
+        if (!result)
+            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+         "Inventory operations cancelled!");
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
 //        if (ExplorationMaster.isExplorationOn()) {
 //            GuiEventManager.trigger(GuiEventType.GAME_RESET );

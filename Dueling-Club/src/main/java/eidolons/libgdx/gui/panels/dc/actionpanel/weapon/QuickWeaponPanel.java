@@ -170,6 +170,7 @@ public class QuickWeaponPanel extends TablePanel {
                 } else {
                     if (radial.isVisible())
                         if (radial.getColor().a>0)
+                            if (radial.getChildren().size >0)
 //                    if (DC_Game.game.getManager().isSelecting()){
                         return false;
 //                    }

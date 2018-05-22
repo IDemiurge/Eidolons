@@ -12,7 +12,7 @@ import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
  * Created by JustMe on 8/2/2017.
  */
 public class ExplorationMaster {
-    static boolean explorationOn;
+    static boolean explorationOn=true;
     private static boolean testMode;
     private static boolean realTimePaused;
     private static boolean waiting;

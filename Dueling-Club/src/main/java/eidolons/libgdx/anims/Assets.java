@@ -1,10 +1,11 @@
 package eidolons.libgdx.anims;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
@@ -12,6 +13,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.anims.particles.EmitterPools;
 import eidolons.libgdx.anims.particles.EmitterPresetMaster;
+import eidolons.libgdx.anims.particles.ParticleEffectX;
 import eidolons.libgdx.texture.SmartTextureAtlas;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
@@ -25,13 +27,19 @@ public class Assets {
 
     private Assets() {
         manager = new AssetManager();
-        manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(
-         new FileHandleResolver() {
+        manager.setLoader(ParticleEffect.class,
+         new ParticleEffectLoader(fileName -> new FileHandle(fileName)){
              @Override
-             public FileHandle resolve(String fileName) {
-                 return new FileHandle(fileName);
+             public ParticleEffect load(AssetManager am, String fileName,
+                                        FileHandle file, ParticleEffectParameter param) {
+                 ParticleEffectX fx = new ParticleEffectX(file.path());
+//                 ParticleEffect fx=super.load(am, fileName, file, param);
+                 main.system.auxiliary.log.LogMaster.log(1, fileName +file.path()+ " loaded...");
+                 return fx;
              }
-         }
+         });
+        manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(
+         fileName -> new FileHandle(fileName)
         ) {
             @Override
             public TextureAtlas load(AssetManager assetManager, String fileName, FileHandle file, TextureAtlasParameter parameter) {

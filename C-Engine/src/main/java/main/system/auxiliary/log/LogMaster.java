@@ -2,11 +2,17 @@ package main.system.auxiliary.log;
 
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LogMaster {
     public static final int PRIORITY_INFO = 0;
@@ -98,7 +104,7 @@ public class LogMaster {
     public static boolean AI_DEBUG_ON2 = true;
     public static boolean MOVEMENT_DEBUG_ON = false;
     public static boolean GUI_DEBUG_ON = false;
-    public static boolean ANIM_DEBUG_ON = true;
+    public static boolean ANIM_DEBUG_ON = false;
     public static boolean EVENT_DEBUG_ON = false;
     public static boolean EFFECT_DEBUG_ON = false;
     public static boolean TRIGGER_DEBUG_ON = false;
@@ -129,6 +135,7 @@ public class LogMaster {
     static String shout = "\n******************\n";
     private static boolean off = false;
     private static int PRIORITY = 1;
+    private static Map<LOG_CHANNEL, List<String>> logBufferMap;
 
     public static Logger getInstance() {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
@@ -179,6 +186,22 @@ public class LogMaster {
             // TODO Game.game.getLogManager().log(c.getLog(), s);
         }
         LogFileMaster.checkWriteToFileNewThread(c, s);
+    }
+
+    public static void writeAll() {
+        for (LOG_CHANNEL sub : getLogBufferMap().keySet()) {
+            String msg="";
+            for (String s : getLogBufferMap().get(sub)) {
+                msg += s + "\n";
+            }
+            FileManager.write(msg, getLogFilePath(sub));
+            //email?..
+        }
+    }
+
+    private static String getLogFilePath(LOG_CHANNEL sub) {
+        return StrPathBuilder.build(PathFinder.getLogPath(),
+         "game " + TimeMaster.getTimeStampForThisSession(), sub + ".txt");
     }
 
     public static void log(int priority, String s) {
@@ -337,24 +360,36 @@ public class LogMaster {
                 }
             }
             if (switcher) {
-                if (isLogInNewThread()) {
-                    logInNewThread(prefix + s);
-                } else {
                     log(prefix + s);
-                }
-                // if (logs != null) {
-                // for (Log log : logs)
-                // log.log(prefix + s);
-                // }
-                // if (MicroGame.game.getLog() != null)
-                // MicroGame.game.getLog().sysLog(s);
             }
+            addToLogBuffer(c, s);
+            return ;
         }
         if (priority >= PRIORITY) {
             log(s);
         }
+        addToLogBuffer(null , s);
+//        LogFileMaster.checkWriteToFileNewThread(priority, s);
+    }
 
-        LogFileMaster.checkWriteToFileNewThread(priority, s);
+    private static Map<LOG_CHANNEL, List<String>> getLogBufferMap( ) {
+        if (logBufferMap == null) {
+            init();
+        }
+        return logBufferMap;
+    }
+
+    private static void init() {
+        logBufferMap = new HashMap<>();
+        for (LOG_CHANNEL sub : LOG_CHANNEL.values()) {
+            logBufferMap.put(sub, new ArrayList<>());
+        }
+        logBufferMap.put(null , new ArrayList<>());
+    }
+
+    private static void addToLogBuffer(LOG_CHANNEL c, String s) {
+        getLogBufferMap()
+        .get(c).add(s);
     }
 
     private static boolean isLogInNewThread() {
@@ -415,6 +450,7 @@ public class LogMaster {
         log(ERROR_PREFIX + string);
 
     }
+
 
     public enum LOG {
         GAME_INFO, HIDDEN_INFO, SYSTEM_INFO, DEBUG

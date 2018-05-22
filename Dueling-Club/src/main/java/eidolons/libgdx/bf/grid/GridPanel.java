@@ -103,7 +103,8 @@ public class GridPanel extends Group {
                 cells[x][y].setY(y * GridMaster.CELL_H);
                 addActor(cells[x][y].init());
                 checkAddBorder(x, y);
-
+                cells[x][y].setUserObject(units.getFirst().
+                 getGame().getCellByCoordinate(new Coordinates(x, rows1 - y)));
             }
         }
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON))
@@ -628,12 +629,8 @@ public class GridPanel extends Group {
         Coordinates c = object.getCoordinates();
 
 //        uv.setVisible(true);
-        if (object.isPlayerCharacter())
-            main.system.auxiliary.log.LogMaster.log(1, object + " moving; pos= " + uv.getX() + ":" + uv.getY());
         try {
             cells[c.x][rows1 - c.y].addActor(uv);
-            if (object.isPlayerCharacter())
-                main.system.auxiliary.log.LogMaster.log(1, object + " moved; pos= " + uv.getX() + ":" + uv.getY());
 
             if (uv.getLastSeenView() != null) {
                 if (LastSeenMaster.isUpdateRequired(object))

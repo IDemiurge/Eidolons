@@ -35,7 +35,13 @@ public class HqHeroPreview extends FadeImageContainer {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        ShaderMaster.drawWithCustomShader(() -> super.draw(batch, parentAlpha), batch, shader);
+
+        if (parentAlpha== ShaderMaster.SUPER_DRAW)
+        {
+            super.draw(batch, 1);
+            return;
+        }
+        ShaderMaster.drawWithCustomShader( this, batch, shader);
     }
 
     @Override

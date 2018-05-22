@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -140,6 +141,9 @@ public class GdxImageMaster extends LwjglApplication {
     public static void writeImage(FileHandle handle, Pixmap pixmap) {
         PixmapIO.writePNG(handle, pixmap);
     }
+    public static void writeImage(FileHandle handle, Texture texture) {
+        PixmapIO.writePNG(handle, getPixmap(texture));
+    }
 
     public static TextureRegion round(String path, boolean write) {
         if (!GdxMaster.isLwjglThread())
@@ -220,12 +224,20 @@ public class GdxImageMaster extends LwjglApplication {
             x += texture.getWidth() * dX;
             y += texture.getHeight() * dY;
         }
+    }   public static void drawTextureRegion(int x, int y, Texture texture,
+                                             int width, int height, Pixmap pixmap) {
+
+        drawTextureRegion(x, y, texture, width, height, pixmap, false);
     }
 
-    public static void drawTextureRegion(int x, int y, Texture texture,
-                                         int width, int height, Pixmap pixmap) {
+
+        public static void drawTextureRegion(int x, int y, Texture texture,
+                                             int width, int height, Pixmap pixmap, boolean sourceOver) {
         texture.getTextureData().prepare();
         Pixmap pixmap2 = texture.getTextureData().consumePixmap();
+        if (sourceOver)
+            pixmap.setBlending(Blending.SourceOver);
+        else pixmap.setBlending(Blending.None);
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 

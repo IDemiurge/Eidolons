@@ -20,7 +20,7 @@ public class PointMaster {
     }
         public static int getPointCost(int value, Entity hero, PARAMETER param) {
         int MOD_FACTOR = 10;
-        value--;
+//        value--;
         if (param.isAttribute()) {
             Integer defParam = hero
              .getIntParam(DC_ContentValsManager

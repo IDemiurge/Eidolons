@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
@@ -26,7 +27,14 @@ public class BattleGuiStage extends GuiStage {
     private final InitiativePanel initiativePanel;
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
+    private final CombatInventory combatInventory;
 
+    @Override
+    public void outsideClick() {
+        super.outsideClick();
+        if (combatInventory.isVisible())
+            combatInventory.close(ExplorationMaster.isExplorationOn());
+    }
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
@@ -43,9 +51,9 @@ public class BattleGuiStage extends GuiStage {
 
         addActor(new UnitInfoPanel(0, 0));
         init();
-        CombatInventory inventoryForm = new CombatInventory();
-        inventoryForm.setPosition(0, GdxMaster.getHeight() - inventoryForm.getHeight());
-        this.addActor(inventoryForm);
+         combatInventory = new CombatInventory();
+        combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
+        this.addActor(combatInventory);
 
 
 

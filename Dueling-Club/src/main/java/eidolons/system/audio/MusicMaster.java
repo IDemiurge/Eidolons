@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.SoundOptions.SOUND_OPTION;
@@ -42,7 +43,7 @@ public class MusicMaster {
     static Map<MUSIC_SCOPE, Integer> indexMap;
     static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
     private static MusicMaster instance;
-    private static boolean on = true;
+    private static Boolean on;
     Stack<String> playList;
     Stack<String> cachedPlayList;
     MUSIC_SCOPE scope = MUSIC_SCOPE.MENU;
@@ -123,7 +124,7 @@ public class MusicMaster {
         on = !(OptionsMaster.getSoundOptions().
          getBooleanValue(SOUND_OPTION.MUSIC_OFF));
 
-        if (!on) {
+        if (!isOn()) {
             getInstance().pause();
         } else {
             getInstance().resume();
@@ -136,22 +137,68 @@ public class MusicMaster {
             getInstance().getPlayedMusic().setVolume(getInstance().getVolume());
     }
 
+    public static void preload(MUSIC_SCOPE scope) {
+        if (isOn())
+            if (isMusicPreloadOn()) {
+                String path = MASTER_PATH;
+            if (scope!=null )
+                path = StrPathBuilder.build(path, scope.name());
+
+                for (File sub : FileManager.getFilesFromDirectory(
+                 path, false, true)) {
+                    if (isMusic(sub.getName()))
+                    {
+                        getInstance().getMusic(sub.getPath());
+
+                    }
+                }
+            }
+    }
+
+    public static boolean isMusic(String sub) {
+        String format = StringMaster.getFormat(sub).toLowerCase();
+        // white list is a better idea probably
+        // Drive on macos spam 'icon' files all over the place
+        return format.contains("mp3") || format.contains("wav");
+    }
+
+    public static boolean isMusicPreloadOn() {
+        return true;//!mainThemePlayed;
+    }
+
+    public static boolean isOn() {
+        if (CoreEngine.isjUnit()) return false;
+        if (on == null)
+            on = !(OptionsMaster.getSoundOptions().
+             getBooleanValue(SOUND_OPTION.MUSIC_OFF));
+        return on;
+    }
+
     public void scopeChanged(MUSIC_SCOPE scope) {
         if (!isRunning())
-            return;
+        {
+            startLoop();
+        }
         if (!isOn())
             return;
-        trackCache.put(this.scope, playedMusic);
-        playList.clear();
+        if (ListMaster.isNotEmpty(playList))
+            playList.clear();
         setScope(scope);
         pause();
-        playedMusic = trackCache.get(scope);
+        if (isStreaming())
+            playedMusic = trackCache.get(scope);
+        else
+            playedMusic=null;
         if (playedMusic == null) {
             checkNewMusicToPlay();
         }
         resume();
         //fade? :)
         //
+    }
+
+    private boolean isStreaming() {
+        return false;
     }
 
     public Stack<String> getPlayList() {
@@ -163,7 +210,6 @@ public class MusicMaster {
     }
 
     public void init() {
-        scope = MUSIC_SCOPE.ATMO;
         variant =
          new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
           OptionsMaster.getSoundOptions().getValue(SOUND_OPTION.MUSIC_VARIANT));
@@ -242,20 +288,12 @@ public class MusicMaster {
         }
     }
 
-    private boolean isMusic(String sub) {
-        String format = StringMaster.getFormat(sub).toLowerCase();
-        // white list is a better idea probably
-        // Drive on macos spam 'icon' files all over the place
-        return format.contains("mp3") || format.contains("wav");
-    }
-
     private String getMusicFolder() {
         if (MASTER_MODE) {
             if (Eidolons.game != null && Eidolons.game.isStarted())
-                if (!ExplorationMaster.isExplorationOn())
-//        if (scope==MUSIC_SCOPE.BATTLE)
+                if (scope==MUSIC_SCOPE.BATTLE)
                     return MASTER_PATH + "battle";
-            if (!mainThemePlayed || scope == MUSIC_SCOPE.MENU) {
+            if (scope == MUSIC_SCOPE.MENU) {
                 mainThemePlayed = true;
                 return MASTER_PATH + "menu";
             }
@@ -290,11 +328,6 @@ public class MusicMaster {
         thread =
          new Thread(() -> {
              while (true) {
-                 try {
-                     WaitMaster.WAIT(PERIOD);
-                 } catch (Exception e) {
-                     main.system.ExceptionMaster.printStackTrace(e);
-                 }
                  checkAmbience();
                  if (stopped)
                      continue;
@@ -304,6 +337,12 @@ public class MusicMaster {
                      }
                  } else {
                      checkNewMusicToPlay();
+                 }
+
+                 try {
+                     WaitMaster.WAIT(PERIOD);
+                 } catch (Exception e) {
+                     main.system.ExceptionMaster.printStackTrace(e);
                  }
              }
 //        MusicMaster.this.running=false;
@@ -336,29 +375,34 @@ public class MusicMaster {
         if (playedMusic != null)
             playedMusic.stop();
 
-        playedMusic = musicCache.get(path);
+        playedMusic = getMusic(path);
+        Float volume =
+         getVolume();
+        playedMusic.setVolume(volume);
+        try {
+            playedMusic.play();
+            trackCache.put(this.scope, playedMusic);
+            main.system.auxiliary.log.LogMaster.log(1,"Music playing: " +path);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
+
+    private Music getMusic(String path) {
+        path = path.toLowerCase();
+        Music playedMusic = musicCache.get(path);
         if (playedMusic == null) {
             if (isMusicPreloadOn()) {
                 playedMusic = new PreloadedMusic(path);
             } else {
                 FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
                 playedMusic = Gdx.audio.newMusic(file);
-//                Gdx.audio.newAudioDevice()
             }
             musicCache.put(path, playedMusic);
+            main.system.auxiliary.log.LogMaster.log(1,"Music loaded " +path);
         }
-        Float volume =
-         getVolume();
-        playedMusic.setVolume(volume);
-        try {
-            playedMusic.play();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-    }
-
-    private boolean isMusicPreloadOn() {
-        return !mainThemePlayed;
+//what if music was disposed?
+        return playedMusic;
     }
 
     private Float getVolume() {
@@ -425,8 +469,14 @@ public class MusicMaster {
         this.running = running;
     }
 
-    public static boolean isOn() {
-        return !CoreEngine.isjUnit();
+    public void autoScope() {
+        if (DC_Game.game==null )
+            scopeChanged(MUSIC_SCOPE.MENU);
+        else
+        {
+//            if (MacroGame)
+            scopeChanged(ExplorationMaster.isExplorationOn()? MUSIC_SCOPE.ATMO: MUSIC_SCOPE.BATTLE);
+        }
     }
 
 

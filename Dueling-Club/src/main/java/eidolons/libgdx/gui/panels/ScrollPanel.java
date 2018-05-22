@@ -143,9 +143,13 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
          instantOffsetY != 0) {
             float cy = innerScrollContainer.getY();
 
-            float step =new Float(
-             StringMaster.formatFloat(8,
-              (float) Math.sqrt(Math.abs(offsetY)))) * 5 ;
+            float step = isAlwaysScrolled()
+             ?
+            (float) Math.sqrt(Math.abs(offsetY))* 5
+             :
+             new Float(
+              StringMaster.formatFloat(8,
+               (float) Math.sqrt(Math.abs(offsetY))))* 5;
 
             if (offsetY < 0) {
                 step *= -1;
@@ -179,6 +183,5 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             return null;
         }
         return this;
-
     }
 }

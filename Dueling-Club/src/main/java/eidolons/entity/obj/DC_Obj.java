@@ -723,4 +723,8 @@ public abstract class DC_Obj extends MicroObj {
     public void setVisibilityLevel(Unit source, VISIBILITY_LEVEL visibilityLevel) {
         getVisibilityLevelMapper().set(source, this, visibilityLevel);
     }
+
+    public void setUnitVisionStatus(UNIT_VISION status, BattleFieldObject observer) {
+        getUnitVisionMapper() .set(observer, this, status);
+    }
 }

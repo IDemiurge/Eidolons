@@ -91,14 +91,14 @@ public class InventoryFactory {
         if (entity == null) {
             return "";
         }
-        String path = entity.getImagePath();
+        String baseType=entity.getName();
         if (entity instanceof DC_WeaponObj) {
-
-            path = StrPathBuilder.build(PathFinder.getItemIconPath(),
-             ((DC_WeaponObj) entity).getBaseTypeName() + ".png");
-            if (!ImageManager.isImage(path))
-                path = entity.getImagePath();
+            baseType = ((DC_WeaponObj) entity).getBaseTypeName();
         }
+        String  path = StrPathBuilder.build(PathFinder.getItemIconPath(),
+         baseType + ".png");
+        if (!ImageManager.isImage(path))
+            path = entity.getImagePath();
         return path;
     }
 

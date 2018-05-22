@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.6.0";
+    public static final String VERSION = "0.6.1b";
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -392,5 +392,9 @@ public class CoreEngine {
 
     public static void setInitialized(boolean initialized) {
         CoreEngine.initialized = initialized;
+    }
+
+    public static boolean isTestingMode() {
+        return true;
     }
 }
