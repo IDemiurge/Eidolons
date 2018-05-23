@@ -25,8 +25,7 @@ public class TextBuilder {
     }
 
     public Message build(float w) {
-        Label l = new Label(sb.toString(), getDefaultLabelStyle()
-        );
+        Label l = new Label(sb.toString(), getDefaultLabelStyle());
         l.setWrap(true);
         l.setAlignment(Align.left);
         message = newMessage();
@@ -38,7 +37,6 @@ public class TextBuilder {
         message.padTop(5);
         message.padBottom(5);
         addHoverObjects();
-
 
         return message;
     }

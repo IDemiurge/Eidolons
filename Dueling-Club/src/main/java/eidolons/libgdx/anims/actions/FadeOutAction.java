@@ -8,4 +8,19 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
  * purely for classification purposes
  */
 public class FadeOutAction extends AlphaAction {
+
+    @Override
+    protected void begin() {
+        super.begin();
+    }
+
+    @Override
+    protected void end() {
+        super.end();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
 }

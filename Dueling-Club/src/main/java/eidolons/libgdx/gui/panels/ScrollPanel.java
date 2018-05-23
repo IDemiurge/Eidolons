@@ -29,6 +29,11 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         table.setSize(width, height);
         innerScrollContainer.setSize(width, height);
         table.setFixedSize(true);
+        offsetY= getDefaultOffsetY();
+    }
+
+    public int getDefaultOffsetY() {
+        return 0;
     }
 
     public InnerScrollContainer<Table> getInnerScrollContainer() {
@@ -131,6 +136,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
     @Override
     public void act(float delta) {
+        super.act(delta);
         if (!isAlwaysScrolled())
         if (getHeight()>= innerScrollContainer.getHeight())
             return;

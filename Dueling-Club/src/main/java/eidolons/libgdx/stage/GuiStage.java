@@ -23,6 +23,7 @@ import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.OverlayTextPanel;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
+import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.map.layers.Blackout;
@@ -63,6 +64,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     private   SuperContainer infoTooltipContainer;
     private final LabelX infoTooltip = new LabelX("", 16);
     private boolean blocked;
+    private ConfirmationPanel confirmationPanel;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -131,6 +133,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         infoTooltipContainer.setAlphaTemplate(ALPHA_TEMPLATE.HIGHLIGHT_MAP);
         infoTooltipContainer.setAlphaFluctuationOn(true);
 
+        addActor(confirmationPanel = ConfirmationPanel.getInstance());
         setDebugAll(false);
 
         setBlackoutIn(true);
@@ -212,7 +215,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     private boolean checkBlocked() {
-        return textPanel.isVisible() ||
+        return confirmationPanel.isVisible() ||textPanel.isVisible() ||
         HqPanel.getActiveInstance()!=null || OptionsWindow.isActive()
          || GameMenu.menuOpen ;
     }
@@ -248,7 +251,11 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         GuiEventManager.bind(GuiEventType.SHOW_HQ_SCREEN, p -> {
             if (p.get() == null) {
-                hqPanel.close();
+                if (HqMaster.isDirty())
+                confirm("Discard changes?", true, ()->
+                    hqPanel.close());
+                else
+                    hqPanel.close() ;
                 return;
             }
 
@@ -297,7 +304,15 @@ public class GuiStage extends StageX implements StageWithClosable {
 
         });
     }
+    public   void confirm(String text,
+                                  boolean canCancel,
+                                  Runnable onConfirm) {
+        confirmationPanel.setText(text);
+        confirmationPanel.setCanCancel(canCancel);
+        confirmationPanel.setOnConfirm(onConfirm);
+        confirmationPanel.open();
 
+    }
     private void showTooltip(String s, LabelX tooltip, float dur) {
 
         tooltip.setText(s);

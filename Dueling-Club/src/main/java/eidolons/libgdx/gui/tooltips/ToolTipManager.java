@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -16,6 +17,8 @@ import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.LastSeenView;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -27,6 +30,15 @@ public class ToolTipManager extends TablePanel {
 
     private final GuiStage guiStage;
     private Cell actorCell;
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (parentAlpha== ShaderMaster.SUPER_DRAW ||
+         ConfirmationPanel.getInstance().isVisible())
+            super.draw(batch, 1);
+        else
+            ShaderMaster.drawWithCustomShader(this, batch, null );
+    }
 
     public ToolTipManager(GuiStage battleGuiStage) {
         guiStage = battleGuiStage;

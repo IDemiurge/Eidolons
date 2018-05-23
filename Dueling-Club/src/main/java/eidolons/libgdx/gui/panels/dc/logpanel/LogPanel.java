@@ -59,7 +59,6 @@ public class LogPanel extends ScrollTextPanel {
             LogMessage message = builder.build(getWidth() - offsetX);
             message.setFillParent(true);
             scrollPanel.addElement(message);
-//            debugAll();
         });
     }
 

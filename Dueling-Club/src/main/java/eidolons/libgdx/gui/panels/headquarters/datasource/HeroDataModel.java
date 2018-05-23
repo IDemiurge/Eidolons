@@ -28,7 +28,7 @@ import java.util.List;
  * yes, just equip the one that is displayed
  */
 public class HeroDataModel extends Unit {
-    List<HqOperation> modificationList;
+    List<HqOperation> modificationList= new ArrayList<>();
     private Unit hero;
     private boolean resetting;
 
@@ -40,7 +40,6 @@ public class HeroDataModel extends Unit {
         this.hero = hero;
         reset();
 //        cacheSimItems();
-        modificationList = new ArrayList<>();
     }
 
     @Override

@@ -64,11 +64,28 @@ public class GroupX extends Group {
     public Array<Action> getActionsOfClass(Class actionClass) {
         return getActionsOfClass(actionClass, true);
     }
-        public Array<Action> getActionsOfClass(Class actionClass,
+
+    public Array<Action> getActionsOfClass(Class actionClass,
         boolean recursive) {
         Array<Action> list = new Array<>();
         addActions(list, this, actionClass, recursive);
         return list;
+    }
+
+    public Array<Actor> getAllChildren( ) {
+            Array<Actor> list = new Array<>();
+            addChildren(list, this );
+            return list;
+    }
+
+    private void addChildren(Array<Actor> list, Group group ) {
+        for (Actor sub : group.getChildren()) {
+            list.add(sub );
+            if (sub instanceof Group) {
+                addChildren(list, ((Group) sub) );
+            }
+
+        }
     }
 
     private void addActions(Array<Action> list, Actor actor, Class actionClass
@@ -104,8 +121,15 @@ if (recursive)
             removeAction(sub);
         }
         setVisible(true);
-        ActorMaster.addFadeOutAction(this);
+        ActorMaster.addFadeOutAction(this, getFadeOutDuration());
         ActorMaster.addHideAfter(this);
+    }
+
+    protected float getFadeOutDuration() {
+        return 0;
+    }
+    protected float getFadeInDuration() {
+        return 0;
     }
 
     public void fadeIn() {
@@ -117,6 +141,6 @@ if (recursive)
         for (Action sub : getActionsOfClass(AfterAction.class)) {
             removeAction(sub);
         }
-        ActorMaster.addFadeInAction(this);
+        ActorMaster.addFadeInAction(this, getFadeInDuration());
     }
 }

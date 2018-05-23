@@ -4,6 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import main.content.CONTENT_CONSTS.DEITY;
 import main.content.enums.entity.SkillEnums;
 import main.content.enums.entity.SkillEnums.MASTERY_RANK;
+import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
 
 public class DescriptionMaster {
@@ -188,7 +189,11 @@ public class DescriptionMaster {
         return "";
     }
 
-    public static String getNonMasteryDescription(PARAMS param) {
+    public static String getDescription(PARAMETER parameter) {
+        PARAMS param= (PARAMS) parameter;
+        return param.isMastery() ? getMasteryDescription(param) : getNonMasteryDescription(param);
+    }
+        public static String getNonMasteryDescription(PARAMS param) {
 
         switch (param) {
             case FORTITUDE:

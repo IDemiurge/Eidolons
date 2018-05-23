@@ -41,7 +41,7 @@ public class VideoMaster {
 
     }
 
-    public VideoPlayer play(String path, int w, int h) {
+    public VideoPlayer play(String path, int w, int h) throws FileNotFoundException {
         if (!videoAvailable) return null;
         OrthographicCamera cam = new OrthographicCamera(GdxMaster.getWidth(), GdxMaster.getHeight());
         cam.position.set(10f, 10f, 0);
@@ -66,8 +66,6 @@ public class VideoMaster {
         FileHandle file = new FileHandle(FileManager.getFile(path));
         try {
             player.play(file);
-        } catch (FileNotFoundException e) {
-            main.system.ExceptionMaster.printStackTrace(e);
         } catch (UnsatisfiedLinkError e) {
             // doesnt work on mac
             // TODO it probably should work, but release we are using doesnt include binaries for oses other then windows
@@ -84,7 +82,7 @@ public class VideoMaster {
         return player;
     }
 
-    public void playTestVideo() {
+    public void playTestVideo() throws FileNotFoundException {
         play(getTestPath(), GdxMaster.getWidth(), GdxMaster.getHeight());
     }
 

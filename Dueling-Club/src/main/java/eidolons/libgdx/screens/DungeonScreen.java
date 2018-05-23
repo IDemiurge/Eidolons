@@ -17,6 +17,8 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.anims.particles.EmitterPools;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
 import eidolons.libgdx.bf.GridMaster;
@@ -98,6 +100,8 @@ public class DungeonScreen extends GameScreen {
         });
 
         initDialogue();
+
+        EmitterPools.preloadDefaultEmitters();
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);

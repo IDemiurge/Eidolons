@@ -13,6 +13,7 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.CombatInventory;
+import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomeDatasource;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.old.UnitInfoPanel;
@@ -29,13 +30,6 @@ public class BattleGuiStage extends GuiStage {
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
 
-    @Override
-    public void outsideClick() {
-        super.outsideClick();
-        if (combatInventory.isVisible())
-            combatInventory.close(ExplorationMaster.isExplorationOn());
-    }
-
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
           new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
@@ -51,16 +45,25 @@ public class BattleGuiStage extends GuiStage {
 
         addActor(new UnitInfoPanel(0, 0));
         init();
-         combatInventory = new CombatInventory();
+        combatInventory = new CombatInventory();
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
         this.addActor(combatInventory);
 
 
-
-
     }
 
-
+    @Override
+    public void outsideClick() {
+        super.outsideClick();
+        if (combatInventory.isVisible()) {
+//            combatInventory.close(ExplorationMaster.isExplorationOn());
+            InventoryDataSource dataSource = (InventoryDataSource) combatInventory.getUserObject();
+            if (ExplorationMaster.isExplorationOn()) {
+                dataSource.getDoneHandler().run();
+            } else
+                dataSource.getCancelHandler().run();
+        }
+    }
 
     protected void bindEvents() {
         super.bindEvents();

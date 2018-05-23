@@ -66,4 +66,13 @@ public class HqMaster {
     public static Unit getActiveHero() {
         return activeHero;
     }
+
+
+    public static boolean isDirty() {
+        for (HqHeroDataSource sub: HqPanel.getActiveInstance().getHeroes()){
+            if (!sub.getEntity().getModificationList().isEmpty())
+                return true;
+        }
+        return false;
+    }
 }

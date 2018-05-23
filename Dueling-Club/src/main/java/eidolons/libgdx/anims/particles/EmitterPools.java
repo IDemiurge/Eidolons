@@ -1,7 +1,9 @@
 package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
+import eidolons.libgdx.anims.Assets;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -117,5 +119,12 @@ public class EmitterPools {
 
     public static void init(AssetManager manager) {
 //      TODO   manager.load("", );
+    }
+
+    public static void preloadDefaultEmitters() {
+        for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
+            if (sub.isPreloaded())
+                Assets.get().getManager().load(sub.path, ParticleEffect.class);
+        }
     }
 }

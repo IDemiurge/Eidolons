@@ -17,7 +17,9 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqMasteryTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqNewMasteryPanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageWithClosable;
 import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
@@ -47,13 +49,17 @@ public class HqPanel extends TablePanel implements Blocking {
     private static HqPanel activeInstance;
     HqParamPanel dynamicParams;
     HqParamPanel staticParams;
+    private List<HqHeroDataSource> heroes;
 
 //    PartyDataSource partyDataSource;
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.setShader(null);
-        super.draw(batch, parentAlpha);
+        if (parentAlpha==ShaderMaster.SUPER_DRAW ||
+         ConfirmationPanel.getInstance().isVisible())
+            super.draw(batch, 1);
+        else
+            ShaderMaster.drawWithCustomShader(this, batch, null );
     }
 
     public HqPanel() {
@@ -183,6 +189,10 @@ public class HqPanel extends TablePanel implements Blocking {
 //        GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
         HqPanel.setActiveInstance(null  );
         getStageWithClosable().closeClosable(this);
+
+        for (HqHeroDataSource sub : heroes) {
+            sub.getEntity().getModificationList().clear();
+        }
     }
 
     @Override
@@ -196,20 +206,17 @@ public class HqPanel extends TablePanel implements Blocking {
         return (StageWithClosable) super.getStage();
     }
 
+    public List<HqHeroDataSource> getHeroes() {
+        return heroes;
+    }
+
     @Override
     public void setUserObject(Object userObject) {
-//clear();
-//addElements();
 
-        boolean first=false;
-        List<HqHeroDataSource> heroes = partyMembers.getUserObject();
             if (userObject instanceof List) {
-                if (heroes==null ){
                     heroes = (List<HqHeroDataSource>) userObject;
-                    first = true;
-                }
-                userObject=((List) userObject).get(0);
-        }
+                    userObject=((List) userObject).get(0);
+            }
         if (userObject instanceof HqHeroDataSource) {
             HqHeroDataSource source = (HqHeroDataSource) userObject;
             source.setEditable(editable);

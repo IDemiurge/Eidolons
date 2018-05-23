@@ -132,6 +132,8 @@ public class Eidolons {
     public static void setFullscreen(boolean b) {
         if (getApplication() == null)
             return;
+        if (fullscreen==b)
+            return;
         fullscreen = b;
         Eidolons.getApplication().getGraphics().setResizable(true);
         if (fullscreen) {

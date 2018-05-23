@@ -25,6 +25,14 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
     }
 
     @Override
+    protected float getFadeOutDuration() {
+        return 1;
+    }
+
+    protected int getInitialYOffset() {
+        return -450;
+    }
+    @Override
     public void draw(Batch batch, float parentAlpha) {
 
         if (parentAlpha== ShaderMaster.SUPER_DRAW)
@@ -112,17 +120,5 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
             }
         });
 
-    }
-//    public void open() {
-//        if (getStage() instanceof StageWithClosable) {
-//            ((StageWithClosable) getStage()).setDisplayedClosable(this);
-//        }
-//        setVisible(true);
-//    }
-
-
-    @Override
-    public void close() {
-        setVisible(false);
     }
 }

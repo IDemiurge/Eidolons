@@ -115,8 +115,8 @@ public class GuiEventManagerOld {
             if (onDemand.containsKey(type)) {
                 EventCallbackParam r = onDemand.remove(type);
                 eventQueue.add(() -> event.call(r));
-                main.system.auxiliary.log.LogMaster.log(1,
-                 "onDemand triggered for " + type);
+//                main.system.auxiliary.log.LogMaster.log(1,
+//                 "onDemand triggered for " + type);
 //                r.call(null);
 
 //                lock.lock();

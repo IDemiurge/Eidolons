@@ -472,6 +472,7 @@ public class AnimMaster3d {
             return;
         if (!FileManager.isFile(path))
         {
+//            brokenPaths.add(path)
             main.system.auxiliary.log.LogMaster.log(1, path + " needs to preload, but it is not a file!..");
             return;
         }

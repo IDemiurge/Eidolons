@@ -13,7 +13,7 @@ public class HelpMaster {
     public static String getHelpText() {
         String text = FileManager.readFile(
          StrPathBuilder.build(PathFinder.getTextPath(),
-          TextMaster.getLocale(), "info", "manual.txt"));
+          TextMaster.getLocale(), "manual", "manual.txt"));
         return text;
     }
 

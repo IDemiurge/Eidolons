@@ -49,7 +49,8 @@ public abstract class SelectionPanel extends TablePanel {
 
         listPanel.addActor(title); //trick for pos
         title.pack();
-        title.setPosition(GdxMaster.centerWidth(title), GdxMaster.getHeight()-(GdxMaster.getHeight() / 5));
+        title.setPosition(GdxMaster.centerWidth(title),
+         GdxMaster.getHeight()-(GdxMaster.getHeight() / 5));
         addActor(title);
         row();
         addNormalSize(listPanel).left();
@@ -118,6 +119,10 @@ public abstract class SelectionPanel extends TablePanel {
     public void init() {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
+
+        title.setY(GdxMaster.getHeight()- (GdxMaster.getHeight() / 5)+
+         Math.min((listPanel.getItems().size()-7)*35 , 0));
+
 
         if ( CoreEngine.isMacro()
          || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {

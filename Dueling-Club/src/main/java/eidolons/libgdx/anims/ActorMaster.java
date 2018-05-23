@@ -20,6 +20,8 @@ import java.util.*;
  */
 public class ActorMaster {
     public static final Map<Class, ActionPool> poolMap = new HashMap<>();
+    private static final float DEFAULT_FADE_OUT_DURATION = 2;
+    private static final float DEFAULT_FADE_IN_DURATION = 0.5f;
 
     public static void addAfter(Actor actor, Action action) {
         if (getActionsOfClass(actor, AfterAction.class).size() > 0) {
@@ -96,7 +98,7 @@ public class ActorMaster {
             addRemoveAfter(actor);
     }
     public static AlphaAction addFadeInAction(Actor actor) {
-        return addFadeAction(actor, 0.5f, false);
+        return addFadeAction(actor, 0, false);
     }
 
     public static AlphaAction addFadeInAction(Actor actor, float dur) {
@@ -130,6 +132,9 @@ public class ActorMaster {
     }
 
     public static AlphaAction addFadeAction(Actor actor, float dur, boolean out) {
+        if (dur<=0){
+            dur =out? DEFAULT_FADE_OUT_DURATION : DEFAULT_FADE_IN_DURATION;
+        }
         AlphaAction action = (AlphaAction) getAction(
          out? FadeOutAction.class : FadeInAction.class );// new AlphaAction();
         action.setAlpha(out ? 0 : 1);
@@ -141,7 +146,7 @@ public class ActorMaster {
     }
 
     public static AlphaAction addFadeOutAction(Actor actor) {
-        return addFadeOutAction(actor, 3);
+        return addFadeOutAction(actor, 0);
 
     }
 

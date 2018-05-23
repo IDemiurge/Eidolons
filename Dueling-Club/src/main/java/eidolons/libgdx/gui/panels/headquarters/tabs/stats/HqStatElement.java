@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
+import eidolons.game.core.EUtils;
 import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
@@ -84,6 +86,11 @@ public class HqStatElement extends HqElement {
                     return;
                 if (disabled)
                     return;
+                if (event.getButton() == 1) {
+                    EUtils.showTextTooltip(
+                     DescriptionMaster.getDescription(modifyParam));
+                    return;
+                }
 //              redundant  if (PointMaster.canIncrease(dataSource.getEntity(), modifyParam)) {
                 HqDataMaster.operation(dataSource,
                  mastery

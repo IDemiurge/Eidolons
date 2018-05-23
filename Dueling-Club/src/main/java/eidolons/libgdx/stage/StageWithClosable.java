@@ -1,6 +1,7 @@
 package eidolons.libgdx.stage;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.MacroGame;
@@ -34,8 +35,12 @@ public interface StageWithClosable {
     }
 
     default void openClosable(Closable closable) {
-        closeDisplayed(closable);
+        if (!(closable instanceof ConfirmationPanel))
+            closeDisplayed(closable);
 
+        if (this instanceof Stage) {
+            ((Stage) this).setScrollFocus((Actor) closable);
+        }
 
         setDisplayedClosable(closable);
 

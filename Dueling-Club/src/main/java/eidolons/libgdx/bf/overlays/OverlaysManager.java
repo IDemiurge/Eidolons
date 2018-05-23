@@ -295,7 +295,6 @@ public class OverlaysManager extends SuperActor {
             for (int j = 0; j < cells[i].length; j++) {
                 int x = i;
                 int y = cells[i].length - j - 1;
-                drawOverlaysForCell(cells[i][j], x, y, batch);
 
                 for (Actor c : cells[i][j].getChildren()) {
                     if (c instanceof GridUnitView) {
@@ -310,6 +309,7 @@ public class OverlaysManager extends SuperActor {
 
                 }
 
+                drawOverlaysForCell(cells[i][j], x, y, batch);
             }
         }
     }

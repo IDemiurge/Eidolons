@@ -415,6 +415,9 @@ public class CONTENT_CONSTS2 {
         }
 
 
+        public boolean isPreloaded() {
+            return true;
+        }
     }
 
     public enum SHOP_LEVEL { // quality and materials - filter in and Type will
