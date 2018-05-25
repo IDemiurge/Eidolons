@@ -175,6 +175,7 @@ public class MusicMaster {
     }
 
     public void scopeChanged(MUSIC_SCOPE scope) {
+        setScope(scope);
         if (!isRunning())
         {
             startLoop();
@@ -183,7 +184,6 @@ public class MusicMaster {
             return;
         if (ListMaster.isNotEmpty(playList))
             playList.clear();
-        setScope(scope);
         pause();
         if (isStreaming())
             playedMusic = trackCache.get(scope);
@@ -225,7 +225,8 @@ public class MusicMaster {
     private void musicReset() {
         //cache to scope
         stop();
-        playList.clear();
+        if (ListMaster.isNotEmpty(playList))
+            playList.clear();
         checkNewMusicToPlay();
         resume();
     }

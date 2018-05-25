@@ -31,6 +31,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,6 +105,10 @@ public class AnimMaster3d {
         if (isOff())
             return false;
         if (!active.isAttackAny()) return false;
+        if (!active.getOwnerObj().isPlayerCharacter()){
+            if (CoreEngine.isFastMode())
+                return false;
+        }
         DC_WeaponObj weapon = active.getActiveWeapon();
         if (!is3dSupported(weapon))
             return false;
@@ -137,6 +142,10 @@ public class AnimMaster3d {
 
 
     public static void preloadAtlases(Unit unit) {
+        if (!unit.isPlayerCharacter()){
+            if (CoreEngine.isFastMode())
+                return;
+        }
         DC_WeaponObj weapon = unit.getWeapon(false);
         if (weapon != null)
             preloadAtlas(weapon);
@@ -456,7 +465,7 @@ public class AnimMaster3d {
             return;
         }
         String path = null;
-        getFullAtlasPath(weapon);
+
         try {
             path = getFullAtlasPath(weapon);
         } catch (Exception e) {

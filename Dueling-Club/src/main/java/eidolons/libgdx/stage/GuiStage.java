@@ -31,9 +31,11 @@ import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.elements.targeting.SelectiveTargeting;
+import main.entity.Entity;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,19 +54,21 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected GameMenu gameMenu;
     protected OutcomePanel outcomePanel;
     protected Blackout blackout;
-    private TextInputPanel tf;
-    private List<String> charsUp = new ArrayList<>();
-    private char lastTyped;
-    private ToolTipManager tooltips;
-    private HqPanel hqPanel;
-    private boolean blackoutIn;
-    private   SuperContainer actionTooltipContainer;
-    private final LabelX actionTooltip = new LabelX("", 16);
+    protected TextInputPanel tf;
+    protected List<String> charsUp = new ArrayList<>();
+    protected char lastTyped;
+    protected ToolTipManager tooltips;
+    protected HqPanel hqPanel;
+    protected boolean blackoutIn;
+    protected   SuperContainer actionTooltipContainer;
+    protected final LabelX actionTooltip = new LabelX("", 16);
 
-    private   SuperContainer infoTooltipContainer;
-    private final LabelX infoTooltip = new LabelX("", 16);
-    private boolean blocked;
-    private ConfirmationPanel confirmationPanel;
+    protected   SuperContainer infoTooltipContainer;
+    protected final LabelX infoTooltip = new LabelX("", 16);
+    protected boolean blocked;
+    protected ConfirmationPanel confirmationPanel;
+    protected DragManager dragManager;
+    private Entity draggedEntity;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -109,7 +113,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(textPanel);
         textPanel.setPosition(GdxMaster.centerWidth(textPanel),
          GdxMaster.centerHeight(textPanel));
-        textPanel.close();
+
 
         containerPanel = new ContainerPanel();
         addActor(containerPanel);
@@ -136,6 +140,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(confirmationPanel = ConfirmationPanel.getInstance());
         setDebugAll(false);
 
+        addActor(dragManager  = DragManager.getInstance());
         setBlackoutIn(true);
     }
 
@@ -192,6 +197,12 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     @Override
+    public void draw() {
+        super.draw();
+    }
+
+
+    @Override
     public void act(float delta) {
         blocked = checkBlocked();
         if (!Blackout.isOnNewScreen())
@@ -214,7 +225,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         resetZIndices();
     }
 
-    private boolean checkBlocked() {
+    protected boolean checkBlocked() {
         return confirmationPanel.isVisible() ||textPanel.isVisible() ||
         HqPanel.getActiveInstance()!=null || OptionsWindow.isActive()
          || GameMenu.menuOpen ;
@@ -227,6 +238,8 @@ public class GuiStage extends StageX implements StageWithClosable {
     @Override
     public void setDisplayedClosable(Closable displayedClosable) {
         this.displayedClosable = displayedClosable;
+        if (displayedClosable==null )
+            setDraggedEntity(null);
     }
 
     protected void bindEvents() {
@@ -303,17 +316,24 @@ public class GuiStage extends StageX implements StageWithClosable {
             hideTooltip(infoTooltip, 1f);
 
         });
+
+        GuiEventManager.bind(GuiEventType.CONFIRM, p -> {
+            Triple<String, Boolean, Runnable> triple = (Triple<String, Boolean, Runnable>) p.get();
+            confirm(triple.getLeft(), triple.getMiddle(), triple.getRight());
+
+        });
     }
     public   void confirm(String text,
                                   boolean canCancel,
                                   Runnable onConfirm) {
         confirmationPanel.setText(text);
-        confirmationPanel.setCanCancel(canCancel);
+        confirmationPanel.setCanCancel(
+         canCancel);
         confirmationPanel.setOnConfirm(onConfirm);
         confirmationPanel.open();
 
     }
-    private void showTooltip(String s, LabelX tooltip, float dur) {
+    protected void showTooltip(String s, LabelX tooltip, float dur) {
 
         tooltip.setText(s);
         tooltip.getColor().a = 0;
@@ -333,7 +353,7 @@ public class GuiStage extends StageX implements StageWithClosable {
          200);
     }
 
-    private void hideTooltip(LabelX tooltip, float dur) {
+    protected void hideTooltip(LabelX tooltip, float dur) {
         SuperContainer container= (SuperContainer) tooltip.getParent();
         ActorMaster.addFadeOutAction(tooltip, dur, false);
         if (container==null )
@@ -453,6 +473,8 @@ public class GuiStage extends StageX implements StageWithClosable {
             actionTooltipContainer.setZIndex(Integer.MAX_VALUE);
         if (tooltips != null)
             tooltips.setZIndex(Integer.MAX_VALUE);
+        if (dragManager != null)
+            dragManager.setZIndex(Integer.MAX_VALUE);
         if (blackout != null)
             blackout.setZIndex(Integer.MAX_VALUE);
     }
@@ -467,5 +489,14 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     public void setBlackoutIn(boolean blackoutIn) {
         this.blackoutIn = blackoutIn;
+    }
+
+    public Entity getDraggedEntity() {
+        return draggedEntity;
+    }
+
+    public void setDraggedEntity(Entity draggedEntity) {
+        this.draggedEntity = draggedEntity;
+        dragManager.setDraggedEntity(draggedEntity);
     }
 }

@@ -267,6 +267,7 @@ public class HqDataMaster {
                     hero.equip(item, (ITEM_SLOT) args[1]);
                 break;
             case EQUIP_QUICK_SLOT:
+                hero.unequip(item, false);
                 hero.removeFromInventory(item);
                 if (item instanceof DC_WeaponObj){
                     hero.addQuickItem(new DC_QuickItemObj(((DC_WeaponObj) item)));

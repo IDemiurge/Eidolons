@@ -40,7 +40,8 @@ public class SuperContainer extends SuperActor {
     @Override
     public void setTouchable(Touchable touchable) {
         super.setTouchable(touchable);
-        getContent().setTouchable(touchable);
+        if (getContent()!=null )
+            getContent().setTouchable(touchable);
     }
 
     public Actor getContent() {

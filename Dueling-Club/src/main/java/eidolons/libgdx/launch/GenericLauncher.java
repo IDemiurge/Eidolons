@@ -188,7 +188,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void resize(int width, int height) {
-//        viewport.update(width, height);
+        viewport.update(width, height);
         if (gameScreen != null) gameScreen.resize(width, height);
 //        if (VignetteShader.isUsed()) {
 //            ShaderProgram program = VignetteShader.getShader();

@@ -22,6 +22,12 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
     public OverlayTextPanel() {
         setTouchable(Touchable.enabled);
         initListeners();
+        setVisible(false);
+    }
+
+    @Override
+    public void fadeOut() {
+        super.fadeOut();
     }
 
     @Override
@@ -34,7 +40,7 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
+        getStage().setScrollFocus(scrollPanel);
         if (parentAlpha== ShaderMaster.SUPER_DRAW)
         {
             super.draw(batch, 1);

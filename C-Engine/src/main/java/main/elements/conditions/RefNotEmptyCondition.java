@@ -24,12 +24,11 @@ public class RefNotEmptyCondition extends MicroCondition {
 
     @Override
     public boolean check(Ref ref) {
-        try {
+        if (ref.getObj(obj) !=null ){
             return ref.getObj(obj).getRef().getObj(key) != null;
-        } catch (Exception e) {
-            LogMaster.log(1, toString() + " failed on "
-             + ref);
         }
+        LogMaster.log(1, toString() + " failed on "
+         + ref);
         return false;
     }
 }

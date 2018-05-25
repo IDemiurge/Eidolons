@@ -101,6 +101,8 @@ public class ActionSequence {
     }
 
     public Task getTask() {
+        if (task==null )
+            task = new Task(getAi(), getType(), "");
         return task;
     }
 

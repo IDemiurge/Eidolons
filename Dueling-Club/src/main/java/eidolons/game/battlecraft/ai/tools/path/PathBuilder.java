@@ -22,7 +22,7 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.ArrayList;
 import java.util.List;

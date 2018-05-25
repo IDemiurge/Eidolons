@@ -40,6 +40,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -181,7 +182,7 @@ public class Eidolons {
              h);
             getApplication().getApplicationListener().resize(w, h);
             getApplication().getGraphics().setResizable(false);
-            getMainViewport().setScreenSize(w, h);
+//            getMainViewport().setScreenSize(w, h);
         }
         GdxMaster.resized();
     }
@@ -278,7 +279,7 @@ public class Eidolons {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
 //            DialogMaster.confirm("Game exit failed!");
-            exitGame();
+//            exitGame();
         }
         getScreen().reset();
         gameExited();
@@ -311,6 +312,11 @@ public class Eidolons {
         Debugger.writeLog();
         LogMaster.writeAll();
         Gdx.app.exit();
+        System.exit(0);
+    }
+
+    public static void onNonGdxThread(Runnable o) {
+        SwingUtilities.invokeLater(o);
     }
 
     public enum SCOPE{

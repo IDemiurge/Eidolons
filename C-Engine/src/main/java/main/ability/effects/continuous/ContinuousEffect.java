@@ -5,7 +5,7 @@ import main.content.ContentValsManager;
 import main.entity.Ref;
 import main.entity.obj.Attachment;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.math.Formula;
 
 public class ContinuousEffect extends MicroEffect {

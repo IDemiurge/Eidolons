@@ -13,6 +13,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
+import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.stage.ChainedStage;
@@ -329,7 +330,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void updateInputController() {
-        GdxMaster.setInputProcessor(getInputController());
+        GdxMaster.setInputProcessor(
+         new InputMultiplexer(GlobalInputController.getInstance(),
+         getInputController()));
     }
 
     public void initLoadingStage(ScreenData meta) {

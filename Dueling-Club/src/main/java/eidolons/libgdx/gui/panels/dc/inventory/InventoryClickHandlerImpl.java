@@ -1,8 +1,10 @@
 package eidolons.libgdx.gui.panels.dc.inventory;
 
+import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_InventoryManager;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.item.DC_JewelryObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
@@ -10,6 +12,9 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import main.content.enums.entity.ItemEnums.ITEM_SLOT;
+import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
+import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -23,6 +28,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     //IDEA: FOR NON-COMBAT, DROP == SELL!
     protected HeroDataModel sim;
     protected boolean dirty;
+    private Entity dragged;
 
     public InventoryClickHandlerImpl(HqDataMaster dataMaster, HeroDataModel sim) {
         this.dataMaster = dataMaster;
@@ -34,38 +40,122 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     public boolean cellClicked(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                boolean altClick, Entity cellContents) {
 
-        boolean result = false;
         OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
          altClick, cellContents);
         if (operation == null) {
-            result = false;
+            if (!rightClick) {
+                singleClick(cell_type, cellContents);
+                return true;
+            }
         } else {
-
-            if (manager.canDoOperation(operation, cellContents)) {
-
-                execute(operation, cellContents);
-                manager.operationDone(operation);
-                dirty = true;
-                result = true;
+            Object arg = getSecondArg(operation, cellContents);
+            if (manager.canDoOperation(operation, cellContents, arg)) {
+                execute(operation, cellContents, arg);
+                return true;
             }
         }
 
-        if (result) {
-            refreshPanel();
-        }
-
-        return result;
+        return false;
 
     }
 
-    private void execute(OPERATIONS operation, Entity type) {
-        Object secondArg = getSecondArg(operation, type);
+    public void singleClick(CELL_TYPE cell_type, Entity cellContents) {
+        if (getDragged() != null) {
+            if (getDragged() == cellContents) {
+                setDragged(null);
+                return;
+            }
+            OPERATIONS operation = getDragOperation(cell_type, cellContents, getDragged());
+            if (operation == null) {
+                if (cellContents == null) {
+                    //error
+                } else {
+                    setDragged(cellContents);
+                }
+                return;
+            }
+            Object arg = getSlotArg(cell_type);
+//           if (arg==null )
+//               arg= getSecondArg(operation, dragged);
 
-        if (operation==OPERATIONS.DROP)
-        GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-         type.getName()+" is dropped down!");
+            if (manager.canDoOperation(operation, dragged, arg)) {
+                execute(operation, dragged, arg);
+                setDragged(cellContents);
+            }
 
-        HqDataMaster.operation(sim, getHqOperation(operation), type, secondArg);
+        } else {
+            setDragged(cellContents);
+        }
+
+    }
+
+    private ITEM_SLOT getSlotArg(CELL_TYPE cell_type) {
+        switch (cell_type) {
+            case WEAPON_MAIN:
+                return ITEM_SLOT.MAIN_HAND;
+            case WEAPON_OFFHAND:
+                return ITEM_SLOT.OFF_HAND;
+            case ARMOR:
+                return ITEM_SLOT.ARMOR;
+
+        }
+        return null;
+    }
+
+    private OPERATIONS getDragOperation(CELL_TYPE cell_type, Entity cellContents, Entity dragged) {
+        switch (cell_type) {
+            case QUICK_SLOT:
+                return OPERATIONS.EQUIP_QUICK_SLOT;
+            case INVENTORY:
+                if (cellContents == null)
+                    return OPERATIONS.UNEQUIP;
+        }
+        if (checkContentMatches(cell_type, dragged))
+            return OPERATIONS.EQUIP;
+        return null;
+    }
+
+
+    private boolean checkContentMatches(CELL_TYPE cell_type, Entity dragged) {
+        switch (cell_type) {
+            case WEAPON_OFFHAND:
+//                if (dragged)
+            case WEAPON_MAIN:
+                if (dragged instanceof DC_WeaponObj)
+                    return HeroManager.canEquip(dataMaster.getHeroModel(), dragged,
+                     getSlotArg(cell_type));
+
+            case ARMOR:
+                return dragged instanceof DC_ArmorObj;
+            case QUICK_SLOT:
+                return HeroManager.isQuickItem(dragged);
+
+            case AMULET:
+                return dragged instanceof DC_JewelryObj
+                 && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
+                 equalsIgnoreCase(JEWELRY_TYPE.AMULET.toString());
+
+            case RING:
+                return dragged instanceof DC_JewelryObj
+                 && dragged.getProperty(G_PROPS.JEWELRY_TYPE).
+                 equalsIgnoreCase(JEWELRY_TYPE.RING.toString());
+
+
+        }
+        return false;
+    }
+
+    private void execute(OPERATIONS operation, Entity type, Object arg) {
+
+        if (operation == OPERATIONS.DROP)
+            GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
+             type.getName() + " is dropped down!");
+
+        HqDataMaster.operation(sim, getHqOperation(operation), type, arg);
+
+        manager.operationDone(operation);
+        dirty = true;
+        refreshPanel();
 //         new EnumMaster<HQ_OPERATION>().retrieveEnumConst(HQ_OPERATION.class, operation.name()),
 //         item);
     }
@@ -244,5 +334,18 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     protected String getArg(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         return cellContents.getName();
     }
+@Override
+    public Entity getDragged() {
+        return dragged;
+    }
 
+    @Override
+    public void setDragged(Entity dragged) {
+        this.dragged = dragged;
+        try {
+            Eidolons.getScreen().getGuiStage().setDraggedEntity(dragged);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
 }

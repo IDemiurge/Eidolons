@@ -22,7 +22,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.entity.FilterMaster;
 
 import java.util.ArrayList;

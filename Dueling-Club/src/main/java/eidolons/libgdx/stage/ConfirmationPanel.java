@@ -15,7 +15,11 @@ import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderMaster;
+import main.system.graphics.FontMaster;
 import main.system.graphics.FontMaster.FONT;
+import main.system.text.TextWrapper;
+import main.system.threading.WaitMaster;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 /**
  * Created by JustMe on 5/23/2018.
@@ -34,7 +38,7 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     private ConfirmationPanel() {
         setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         setSize(600, 300);
-        add(label= new Label("", StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20)))
+        add(label= new Label("", StyleHolder.getSizedLabelStyle(getFONT(), getFontSize())))
          .center().colspan(2).minWidth(400).top(). row();
         TablePanel<Actor> btns = new TablePanel<>();
         add( btns)
@@ -47,6 +51,14 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         })).right();
         setVisible(false);
 
+    }
+
+    private Integer getFontSize() {
+        return 20;
+    }
+
+    private FONT getFONT() {
+        return FONT.METAMORPH;
     }
 
     public static ConfirmationPanel getInstance() {
@@ -75,7 +87,9 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     public void open() {
         getStageWithClosable().openClosable(this);
         cancel.setVisible(canCancel);
-        label.setText(text);
+        label.setText(TextWrapper.wrapWithNewLine(text,
+         FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
+          (int) (getWidth() / 3 * 2))));
         label.pack();
         bufferedController = Gdx.input.getInputProcessor();
         Gdx.input.setInputProcessor(
@@ -124,11 +138,14 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
 
     private void ok() {
         close();
-        onConfirm.run();
+        if (onConfirm!=null )
+            onConfirm.run();
+        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true);
     }
 
     private void cancel() {
         close();
+        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false);
     }
 
     @Override

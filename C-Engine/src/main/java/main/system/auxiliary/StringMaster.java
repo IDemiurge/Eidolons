@@ -12,6 +12,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.game.core.game.Game;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.Formula;
@@ -1756,6 +1757,17 @@ public class StringMaster {
          String.format(java.util.Locale.US, "%." +
          digitsAfterPeriod +
           "f", v);
+    }
+
+    public static String getNameFromId(String property, Game game) {
+        if (isInteger(property)) {
+            Obj obj = game.getObjectById(getInteger(property));
+            if (obj == null) {
+                return wrapInBraces("invalid id "+property);
+            }
+            return obj.getName();
+        }
+        return property;
     }
 
 

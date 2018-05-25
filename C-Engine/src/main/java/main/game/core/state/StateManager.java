@@ -9,7 +9,7 @@ import main.game.core.game.Game;
 import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.Map;
 

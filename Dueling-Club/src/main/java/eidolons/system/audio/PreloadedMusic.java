@@ -4,7 +4,9 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.backends.lwjgl.audio.OpenALSound;
 import com.badlogic.gdx.files.FileHandle;
+import main.system.auxiliary.TimeMaster;
 
 /**
  * Created by JustMe on 11/15/2017.
@@ -13,24 +15,44 @@ public class PreloadedMusic implements Music {
     Sound sound;
     private boolean playing;
     private long id;
+    long timeStarted;
+    float duration;
+    private boolean done;
 
     public PreloadedMusic(String path) {
         FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
         this.sound = Gdx.audio.newSound(file);
-
+        if (sound instanceof OpenALSound) {
+            duration=   ((OpenALSound) sound).duration()*1000;
+        }
     }
+
+
+    public void play() {
+        if (playing)
+            return;
+        id= sound.play();
+        done = false;
+        playing = true;
+        timeStarted= TimeMaster.getTime();
+    }
+
 
     public long play(float volume) {
         if (isPlaying())
             return 0;
+        sound.setVolume(id, volume);
         playing = true;
+        timeStarted= TimeMaster.getTime();
+        done=false;
         return sound.play(volume);
     }
-
     public long play(float volume, float pitch, float pan) {
-        if (isPlaying())
+        if (playing)
             return 0;
         playing = true;
+        timeStarted= TimeMaster.getTime();
+        done=false;
         return id=sound.play(volume, pitch, pan);
     }
 
@@ -73,20 +95,19 @@ public class PreloadedMusic implements Music {
         sound.setPan(soundId, pan, volume);
     }
 
-    public void play() {
-        if (isPlaying())
-            return;
-        playing = true;
-        id= sound.play();
-    }
 
     public void stop() {
-        playing = false;
         sound.stop();
+        playing = false;
     }
 
     @Override
     public boolean isPlaying() {
+        done=main.system.auxiliary.TimeMaster.getTime()-timeStarted > duration;
+        if (done){
+            stop();
+        }
+//        playing = AL10.alGetSourcei((int) id, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
         return playing;
     }
 

@@ -182,8 +182,10 @@ public class UnitInfoPanel extends Container<TablePanel> implements Blocking {
     }
 
     @Override
-    public void close() {
-        setVisible(false);
-        outside.setTouchable(Touchable.disabled);
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        outside.setTouchable(visible? Touchable.enabled: Touchable.disabled);
     }
+
+
 }

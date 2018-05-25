@@ -75,12 +75,6 @@ public class ActionValueContainer extends ValueContainer {
 
     public static void setLastPressed(ActionValueContainer lastPressed) {
         ActionValueContainer.lastPressed = lastPressed;
-        if (lastPressed == null)
-            main.system.auxiliary.log.LogMaster.log(1,
-             "lastPressed to null ");
-        else
-            main.system.auxiliary.log.LogMaster.log(1, lastPressed.getName() +
-             " pressed " + lastPressed);
     }
 
     protected void initSize() {

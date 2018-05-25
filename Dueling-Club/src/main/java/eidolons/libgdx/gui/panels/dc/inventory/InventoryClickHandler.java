@@ -11,6 +11,7 @@ public interface InventoryClickHandler {
     boolean itemDragAndDropped(CELL_TYPE cell_type,
                                Entity cellContents, Entity droppedItem
     );
+    void singleClick(CELL_TYPE cell_type, Entity cellContents);
 
     void undoClicked();
 
@@ -25,6 +26,10 @@ public interface InventoryClickHandler {
     boolean isDoneEnabled();
 
     boolean isCancelEnabled();
+
+    Entity getDragged();
+
+    void setDragged(Entity dragged);
 
     enum CELL_TYPE {
         WEAPON_MAIN("UI/components/dc/dialog/inv/empty slots/empty weapon main.png"),

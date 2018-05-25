@@ -1,5 +1,7 @@
 package eidolons.libgdx.anims;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
@@ -27,6 +29,13 @@ public class Assets {
 
     private Assets() {
         manager = new AssetManager();
+        manager.setErrorListener(new AssetErrorListener() {
+            @Override
+            public void error(AssetDescriptor asset, Throwable throwable) {
+                main.system.auxiliary.log.LogMaster.log(1,"Failed to load " +asset.fileName);
+            }
+        });
+        if (EmitterPools.isPreloaded())
         manager.setLoader(ParticleEffect.class,
          new ParticleEffectLoader(fileName -> new FileHandle(fileName)){
              @Override

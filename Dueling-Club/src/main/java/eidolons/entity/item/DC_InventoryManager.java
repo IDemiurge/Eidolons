@@ -1,6 +1,7 @@
 package eidolons.entity.item;
 
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.game.module.herocreator.HeroManager;
 import main.entity.Entity;
 
 /**
@@ -12,9 +13,9 @@ public class DC_InventoryManager {
 
     protected Integer operationsLeft = 0;
     protected Integer operationsPool = 0;
-    private boolean freeMode ;
+    private boolean freeMode;
 
-    public DC_InventoryManager( ) {
+    public DC_InventoryManager() {
 
     }
 
@@ -45,12 +46,20 @@ public class DC_InventoryManager {
     }
 
 
-    public boolean canDoOperation(OPERATIONS operation, Entity type) {
-        if (ExplorationMaster.isExplorationOn()) {
-            return true;
+    public boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
+        if (arg == null) {
+            switch (operation) {
+                case EQUIP:
+                    return false;
+            }
         }
-
-        if (!hasOperations()) {
+        switch (operation) {
+            case EQUIP_QUICK_SLOT:
+                if (!HeroManager.isQuickItem(type)){
+                    return false;
+                }
+        }
+        if (!hasOperations() && !ExplorationMaster.isExplorationOn()) {
             return false;
         }
 
@@ -61,15 +70,15 @@ public class DC_InventoryManager {
     }
 
 
-    public boolean operationDone(OPERATIONS operation ) {
+    public boolean operationDone(OPERATIONS operation) {
         if (ExplorationMaster.isExplorationOn()) {
             return true;
         }
-        return operationDone(1, operation );
+        return operationDone(1, operation);
     }
 
 
-    public boolean operationDone(int n, OPERATIONS operation ) {
+    public boolean operationDone(int n, OPERATIONS operation) {
         setOperationsLeft(getOperationsLeft() - n);
         boolean result = hasOperations();
         return result;

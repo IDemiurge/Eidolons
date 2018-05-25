@@ -18,7 +18,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 

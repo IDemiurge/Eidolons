@@ -19,7 +19,7 @@ import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
 import main.system.SortMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.math.PositionMaster;
 
 import java.util.ArrayList;

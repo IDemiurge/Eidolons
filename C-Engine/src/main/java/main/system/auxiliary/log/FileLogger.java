@@ -1,7 +1,5 @@
 package main.system.auxiliary.log;
 
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
-
 import java.util.Arrays;
 import java.util.List;
 

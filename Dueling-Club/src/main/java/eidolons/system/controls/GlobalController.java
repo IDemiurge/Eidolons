@@ -82,6 +82,10 @@ public class GlobalController implements Controller {
             DungeonScreen.getInstance().getGridPanel().clearSelection();
             return;
         }
+        if (Eidolons.getScreen().getGuiStage().getDraggedEntity() !=   null) {
+            Eidolons.getScreen().getGuiStage().setDraggedEntity(null);
+            return;
+        }
         BattleGuiStage gui = DungeonScreen.getInstance().getGuiStage();
         if (gui.closeDisplayed())
             return;

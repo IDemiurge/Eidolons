@@ -120,8 +120,8 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
 
-        title.setY(GdxMaster.getHeight()- (GdxMaster.getHeight() / 5)+
-         Math.min((listPanel.getItems().size()-7)*35 , 0));
+        title.setY(25+GdxMaster.getHeight()- (GdxMaster.getHeight() / 5)+
+         Math.min((listPanel.getItems().size()-7)*50 , 0));
 
 
         if ( CoreEngine.isMacro()

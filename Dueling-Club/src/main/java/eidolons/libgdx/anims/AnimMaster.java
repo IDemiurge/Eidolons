@@ -31,7 +31,7 @@ import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;

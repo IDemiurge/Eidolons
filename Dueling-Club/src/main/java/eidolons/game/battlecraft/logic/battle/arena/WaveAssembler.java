@@ -25,7 +25,7 @@ import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 

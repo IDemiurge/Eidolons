@@ -391,8 +391,9 @@ public class FileManager {
         try {
             File file = new File(filepath);
             if (!file.exists()) {
-                if (!new File(file.getParent()).isDirectory()) {
-                    file.mkdirs();
+                File parent = new File(file.getParent());
+                if (!parent.isDirectory()) {
+                    parent.mkdirs();
                 }
                 file.createNewFile();
             } else {

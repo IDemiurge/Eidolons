@@ -54,6 +54,7 @@ public class BattleGuiStage extends GuiStage {
 
     @Override
     public void outsideClick() {
+        setDraggedEntity(null);
         super.outsideClick();
         if (combatInventory.isVisible()) {
 //            combatInventory.close(ExplorationMaster.isExplorationOn());

@@ -424,6 +424,7 @@ public class OptionsMaster {
         } else {
             optionsMap = readOptions(data);
             addMissingDefaults(optionsMap);
+            autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }
         OptionsMaster.cacheOptions();
         try {

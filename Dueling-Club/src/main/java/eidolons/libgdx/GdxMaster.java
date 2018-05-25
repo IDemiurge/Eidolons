@@ -17,6 +17,7 @@ import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.ClassMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ public class GdxMaster {
         }
         return list;
     }
-
     public static float adjustPos(boolean x, float pos) {
         if (true) //temp
             return pos;
@@ -225,5 +225,22 @@ public class GdxMaster {
         if (alignment.isAlignedWithRight())
             x = parent.getWidth() - w;
         return new Vector2(x, y);
+    }
+
+
+
+    public static Group getFirstParentOfClass(Actor child, Class clazz) {
+        Group actor =child. getParent();
+        while (true) {
+            actor = actor.getParent();
+            if (actor == null) {
+                break;
+            }
+            if (ClassMaster.isInstanceOf(actor, clazz)) {
+                return actor;
+            }
+
+        }
+        return null;
     }
 }

@@ -10,7 +10,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Rule;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.Arrays;
 

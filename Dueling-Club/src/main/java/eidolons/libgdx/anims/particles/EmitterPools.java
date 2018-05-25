@@ -122,9 +122,15 @@ public class EmitterPools {
     }
 
     public static void preloadDefaultEmitters() {
+        if (isPreloaded())
+            return ;
         for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
             if (sub.isPreloaded())
                 Assets.get().getManager().load(sub.path, ParticleEffect.class);
         }
+    }
+
+    public static boolean isPreloaded() {
+        return false;
     }
 }

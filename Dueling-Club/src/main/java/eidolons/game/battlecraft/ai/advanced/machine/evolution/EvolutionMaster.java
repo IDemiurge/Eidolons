@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.ai.advanced.machine.evolution;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.*;
 

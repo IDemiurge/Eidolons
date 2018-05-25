@@ -1,15 +1,28 @@
 package main.gui.components.controls;
 
+import eidolons.ability.ActionGenerator;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import main.AV_DataManager;
-import main.ability.AE_Manager;
-import eidolons.ability.ActionGenerator;
+import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
+import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.MacroManager;
+import eidolons.game.module.adventure.travel.EncounterMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
+import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
+import eidolons.swing.generic.services.dialog.DialogMaster;
+import eidolons.system.DC_Formulas;
+import eidolons.system.content.BfObjPropGenerator;
+import eidolons.system.content.ContentGenerator;
+import eidolons.system.math.DC_MathManager;
+import main.AV_DataManager;
+import main.ability.AE_Manager;
 import main.content.CONTENT_CONSTS2.FACTION;
-import main.content.*;
+import main.content.ContentValsManager;
+import main.content.DC_TYPE;
+import main.content.OBJ_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.HeroEnums;
 import main.content.enums.entity.HeroEnums.RACE;
@@ -21,27 +34,17 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
-import eidolons.entity.obj.unit.Unit;
 import main.entity.type.ObjType;
-import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import main.game.core.game.Game;
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.travel.EncounterMaster;
 import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
-import eidolons.swing.generic.services.dialog.DialogMaster;
-import eidolons.system.DC_Formulas;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.system.content.BfObjPropGenerator;
-import eidolons.system.content.ContentGenerator;
 import main.system.launch.CoreEngine;
-import eidolons.system.math.DC_MathManager;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -276,6 +279,18 @@ public class ModelManager {
         }
     }
 
+    private static void checkAdjustIcon(OBJ_TYPE obj_type) {
+        for (ObjType type : DataManager.getTypes(obj_type)) {
+                if (obj_type instanceof DC_TYPE) {
+                    switch (((DC_TYPE) obj_type)) {
+                        case WEAPONS:
+                            type.setImage(InventoryFactory.getWeaponIconPath(type));
+                            break;
+                    }
+                }
+
+        }
+    }
 
     private static void checkTypeModifications(OBJ_TYPE obj_type) {
         if (obj_type == DC_TYPE.CHARS || obj_type == DC_TYPE.BF_OBJ
@@ -298,6 +313,7 @@ public class ModelManager {
             }
         }
         checkPrincipleProcessing(obj_type);
+        checkAdjustIcon(obj_type);
 
         if (obj_type == DC_TYPE.PARTY) {
             ContentGenerator.adjustParties();
@@ -444,6 +460,7 @@ public class ModelManager {
 
         }
     }
+
 
     private static void initRarity(ObjType type) {
         if (type.getProperty(PROPS.ITEM_RARITY).isEmpty()){

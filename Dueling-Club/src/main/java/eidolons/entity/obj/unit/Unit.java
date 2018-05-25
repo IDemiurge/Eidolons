@@ -244,37 +244,44 @@ public class Unit extends DC_UnitModel {
         return weaponObj;
     }
 
-    public void removeJewelryItem(DC_HeroItemObj itemObj) {
-        getJewelry().remove(itemObj);
+    public boolean removeJewelryItem(DC_HeroItemObj itemObj) {
+        boolean result = getJewelry().remove(itemObj);
         if (getJewelry().isEmpty()) {
             setJewelry(null);
         }
+        return result;
     }
 
     public void addQuickItem(DC_QuickItemObj itemObj) {
+        if (getQuickItems()==null )
+            setQuickItems(new DequeImpl<>());
         getQuickItems().add(itemObj);
         itemObj.setRef(ref);
         getResetter().resetQuickSlotsNumber();
     }
 
-    public void removeQuickItem(DC_QuickItemObj itemObj) {
+    public boolean removeQuickItem(DC_QuickItemObj itemObj) {
+        if (getQuickItems() == null)
+            return false;
         if (getQuickItems().remove(itemObj)) {
             getResetter().resetQuickSlotsNumber();
 
-        type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
+            type.removeProperty(PROPS.QUICK_ITEMS, itemObj.getName(), false);
 
-        removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
+            removeProperty(PROPS.QUICK_ITEMS, "" + itemObj.getId(), true);
 
-        if (getQuickItems().isEmpty()) {
-            setQuickItems(null);
+            if (getQuickItems().isEmpty()) {
+                setQuickItems(null);
+            }
+            return true;
         }
-        }
+        return false;
     }
 
     @Override
     public void reset() {
-          super.reset();
-        }
+        super.reset();
+    }
 
     public String getDynamicInfo() {
         String info = "";
@@ -525,9 +532,12 @@ public class Unit extends DC_UnitModel {
         return getRemainingQuickSlots() <= 0;
     }
 
-    public int getRemainingQuickSlots() {
+    public int getQuickSlotsMax() {
+        return getIntParam(PARAMS.QUICK_SLOTS);
+    }
+        public int getRemainingQuickSlots() {
         if (quickItems == null) {
-            return getIntParam(PARAMS.QUICK_SLOTS);
+            return getQuickSlotsMax();
         }
         return getIntParam(PARAMS.QUICK_SLOTS) - quickItems.size();
     }
@@ -536,8 +546,9 @@ public class Unit extends DC_UnitModel {
         if (quickItems == null) {
             return 0;
         }
-        return  quickItems.size();
+        return quickItems.size();
     }
+
     public DequeImpl<DC_QuickItemObj> getQuickItems() {
         if (!isItemsInitialized()) {
             if (quickItems == null) {
@@ -655,9 +666,9 @@ public class Unit extends DC_UnitModel {
         }
         if (game.isStarted())
             if (!CoreEngine.isGraphicsOff())
-            if (!ExplorationMaster.isExplorationOn()) //only in combat!
-                if (item instanceof DC_WeaponObj)
-                    AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
+                if (!ExplorationMaster.isExplorationOn()) //only in combat!
+                    if (item instanceof DC_WeaponObj)
+                        AnimMaster3d.preloadAtlas((DC_WeaponObj) item);
         // preCheck weight and prompt drop if too heavy?
         return true;
     }
@@ -734,6 +745,7 @@ public class Unit extends DC_UnitModel {
     public boolean dropItemFromInventory(DC_HeroItemObj item) {
         return dropItemFromInventory(item, getCoordinates());
     }
+
     public boolean removeFromInventory(DC_HeroItemObj item) {
         if (!getInventory().remove(item))
             return false;
@@ -866,18 +878,18 @@ public class Unit extends DC_UnitModel {
             unequip(ItemEnums.ITEM_SLOT.ARMOR, drop);
             return;
         }
-
-        if (getQuickItems().contains(item)) {
-            removeQuickItem((DC_QuickItemObj) item);
+        boolean result = removeJewelryItem(item);
+        if (!result)
+            if (item instanceof DC_QuickItemObj)
+                result =removeQuickItem((DC_QuickItemObj) item);
+        if (result)
+        {
             addItemToInventory(item);
-        } else if (getJewelry().contains(item)) {
-            removeJewelryItem(item);
-            addItemToInventory(item);
+            if (drop) {
+                dropItemFromInventory(item);
+            }
+        }
 
-        }
-        if (drop) {
-            dropItemFromInventory(item);
-        }
     }
 
     @Override
@@ -891,9 +903,9 @@ public class Unit extends DC_UnitModel {
 //                for (AbilityObj p : passives) {
 //                    p.activate();
 //                }
-                // TODO could filter by some boolean set via GOME itself! so
-                // much
-                // for a small thing...
+        // TODO could filter by some boolean set via GOME itself! so
+        // much
+        // for a small thing...
 //            }
 //        }
         return result;
@@ -1417,7 +1429,7 @@ public class Unit extends DC_UnitModel {
         return perks;
     }
 
-    public  void setPerks(DequeImpl<Perk>  perks) {
+    public void setPerks(DequeImpl<Perk> perks) {
         this.perks = perks;
     }
 }

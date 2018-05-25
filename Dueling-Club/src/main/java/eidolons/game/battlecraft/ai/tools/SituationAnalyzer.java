@@ -12,7 +12,7 @@ import main.content.enums.system.AiEnums;
 import main.entity.Entity;
 import main.entity.obj.ActiveObj;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.List;
 

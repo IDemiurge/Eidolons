@@ -79,6 +79,8 @@ public class GameLoop {
 
         while (true) {
             //for JUnit
+            if (exited)
+                break;
             if (game.getUnits().isEmpty()) {
                 continue;
             }

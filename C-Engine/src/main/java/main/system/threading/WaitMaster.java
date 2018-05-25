@@ -1,7 +1,7 @@
 package main.system.threading;
 
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.log.LogMaster.LOG_CHANNEL;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -136,7 +136,7 @@ public class WaitMaster {
         AUTO_TEST_INPUT,
         ACTIVE_UNIT_SELECTED, ACTION_INPUT, ANIMATION_QUEUE_FINISHED,
         GAME_LOOP_PAUSE_DONE, GAME_FINISHED, AI_TRAINING_FINISHED, GDX_READY, TEXT_INPUT, DUNGEON_SCREEN_READY,
-        GAME_LOOP_STARTED, XML_READY, WAIT_COMPLETE
+        GAME_LOOP_STARTED, XML_READY, CONFIRM, WAIT_COMPLETE
     }
 
 }

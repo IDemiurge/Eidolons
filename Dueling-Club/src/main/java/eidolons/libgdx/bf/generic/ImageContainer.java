@@ -63,7 +63,7 @@ public class ImageContainer extends SuperContainer {
             if (sprite!=null )
                 if (sprite.getTexture().equals(r) )
                 {
-                    if (getContent()==null )
+                    if (getContent()==null || isResetImageAlways())
 //                     if (!getContent().getDrawable().equals(new TextureRegionDrawable(sprite)))
                     setImage(new Image(sprite));
                     return;
@@ -74,6 +74,10 @@ public class ImageContainer extends SuperContainer {
         {
             setEmpty();
         }
+    }
+
+    protected boolean isResetImageAlways() {
+        return false;
     }
 
     public void setEmpty() {

@@ -29,7 +29,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         table.setSize(width, height);
         innerScrollContainer.setSize(width, height);
         table.setFixedSize(true);
-        offsetY= getDefaultOffsetY();
+        offsetY = getDefaultOffsetY();
     }
 
     public int getDefaultOffsetY() {
@@ -111,7 +111,13 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             }
 
             public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                offsetY += amount * 3500;
+               if (amount<0)
+                   if (innerScrollContainer.getY()<=-innerScrollContainer.getHeight())
+                   {
+                       offsetY=0;
+                       return true;
+                   }
+                offsetY += amount *6000;// getScrollAmount();
                 return true;
             }
 
@@ -138,24 +144,24 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
     public void act(float delta) {
         super.act(delta);
         if (!isAlwaysScrolled())
-        if (getHeight()>= innerScrollContainer.getHeight())
-            return;
+            if (getHeight() >= innerScrollContainer.getHeight())
+                return;
         if (!widgetPosChanged && innerScrollContainer.getY() != 0) {
             innerScrollContainer.setY(0);
             widgetPosChanged = true;
         }
 
-        if ( 0 != offsetY ||
+        if (0 != offsetY ||
          instantOffsetY != 0) {
             float cy = innerScrollContainer.getY();
+           if (offsetY<0)
+               if (cy<=-innerScrollContainer.getHeight()/2) {
+                return;
+            }
 
-            float step = isAlwaysScrolled()
-             ?
-            (float) Math.sqrt(Math.abs(offsetY))* 5
-             :
-             new Float(
-              StringMaster.formatFloat(8,
-               (float) Math.sqrt(Math.abs(offsetY))))* 5;
+            float step =
+             new Float(StringMaster.formatFloat(2,
+              (float) Math.sqrt(Math.abs(offsetY)))) * 5;
 
             if (offsetY < 0) {
                 step *= -1;
@@ -163,9 +169,9 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
             step += instantOffsetY;
 
-            cy = Math.min(cy + step * delta, 0);
-
-            innerScrollContainer.setY(cy);
+            cy = Math.min(cy + step * delta, innerScrollContainer.getHeight()/2);
+            if (Math.abs(innerScrollContainer.getY() - cy) > 6f)
+                innerScrollContainer.setY(cy);
             if (offsetY != 0) {
                 offsetY -= step;
             }

@@ -6,6 +6,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
 import main.system.text.TextWrapper;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 /**
  * Created by JustMe on 5/21/2018.
@@ -26,5 +27,6 @@ public class EUtils {
     }
 
     public static void onConfirm(String text, boolean cancel, Runnable o) {
+        GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text,cancel, o));
     }
 }

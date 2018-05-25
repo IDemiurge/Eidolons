@@ -9,25 +9,10 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.anims.ActorMaster;
 import main.system.auxiliary.ClassMaster;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by JustMe on 3/2/2018.
  */
 public class GroupX extends Group {
-
-    public static List<Group> getAncestors(Actor actor) {
-        List<Group> list = new ArrayList<>();
-        while (true) {
-            actor = actor.getParent();
-            if (actor == null) {
-                break;
-            }
-            list.add(actor.getParent());
-        }
-        return list;
-    }
 
     public void addAt(float x, float y, Actor actor) {
         super.addActor(actor);

@@ -136,7 +136,10 @@ public class FontMaster {
         return getFontMetrics(font).getHeight();
     }
 
-    public static int getStringLengthForWidth(Font font, int width) {
+    public static int getStringLengthForWidth(FONT FONT,int size, int width) {
+        return getStringLengthForWidth(getFont(FONT, size, Font.PLAIN), width);
+    }
+        public static int getStringLengthForWidth(Font font, int width) {
         return Math.round(width / getFontMetrics(font).getMaxAdvance()
          * getFontWidthCoefficient(font.getFontName()));
     }
