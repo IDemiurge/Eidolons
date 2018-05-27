@@ -25,6 +25,8 @@ import java.util.Map;
 public class StyleHolder {
     public static final FONT DEFAULT_FONT = FONT.MAIN;
     public static final FONT ALT_FONT = FONT.NYALA;
+    public static final FONT DEFAULT_FONT_FLOAT_TEXT = FONT.MAIN;
+    public static final int DEFAULT_FONT_SIZE_FLOAT_TEXT = 18;
     //    private static String FONT_CHARS = "";
 //
 //    static {

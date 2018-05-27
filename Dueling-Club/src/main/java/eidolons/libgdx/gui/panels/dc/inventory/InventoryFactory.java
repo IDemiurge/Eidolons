@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.UiMaster;
@@ -10,7 +11,6 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
-import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.Ref;
@@ -34,9 +34,24 @@ public class InventoryFactory {
         this.handler = inventoryClickHandler;
     }
 
+    public static String getWeaponIconPath(Entity entity) {
+        if (entity == null) {
+            return "";
+        }
+        String baseType = entity.getName();
+        if (entity instanceof DC_WeaponObj) {
+            baseType = ((DC_WeaponObj) entity).getBaseTypeName();
+        }
+        String path = StrPathBuilder.build(PathFinder.getItemIconPath(),
+         baseType + ".png");
+        if (!ImageManager.isImage(path))
+            path = entity.getImagePath();
+        return path;
+    }
+
     public InventoryValueContainer get(Entity entity, CELL_TYPE cellType) {
         int size = UiMaster.getIconSize();
-        String path = getWeaponIconPath(entity) ;
+        String path = getWeaponIconPath(entity);
         if (entity != null) {
             if (!C_OBJ_TYPE.ITEMS.equals(entity.getOBJ_TYPE_ENUM())) {
                 size = 128;
@@ -53,7 +68,7 @@ public class InventoryFactory {
              " slot").getController());
         } else {
             String vals = getTooltipsVals(entity);
-            container.addListener( new ValueTooltip(entity.getName()+"\n"+
+            container.addListener(new ValueTooltip(entity.getName() + "\n" +
              vals).getController());
         }
         container.setEntity(entity);
@@ -62,44 +77,52 @@ public class InventoryFactory {
         return container;
     }
 
-    private String getTooltipsVals(Entity entity) {
-        String text="";
-        if (entity!=null ){
+    public static  String getTooltipsVals(Entity entity) {
+        String text = "";
+        if (entity != null) {
             Ref ref = Eidolons.getMainHero().getRef().getCopy();
-            ref.setID(KEYS.SKILL,  entity.getId());
+            ref.setID(KEYS.SKILL, entity.getId());
 
             if (entity.getOBJ_TYPE_ENUM() instanceof DC_TYPE) {
                 switch (((DC_TYPE) entity.getOBJ_TYPE_ENUM())) {
                     case WEAPONS:
-                    case ARMOR:
-                        text += "\n" +PARAMS.DURABILITY.getName()+ ": "+
+                        DC_WeaponObj weapon = null ;
+                        if (entity instanceof DC_QuickItemObj)
+                        {
+                            weapon= ((DC_QuickItemObj) entity).getWrappedWeapon();
+                        }
+                            else weapon=
+                        (DC_WeaponObj) entity;
+                        int min = weapon.calculateDamageMin(ref);
+                        int max = min + weapon.calculateDiceMax();
+                        text += "\n" + PARAMS.DAMAGE.getName() + ": " + min
+                         + "-" + max;
+
+                        text += "\n" + PARAMS.ATTACK_MOD.getName() + ": " + entity.getIntParam(PARAMS.ATTACK_MOD);
+
+                        text += "\n" + PARAMS.DURABILITY.getName() + ": " +
                          StringMaster.getCurrentOutOfBaseVal(entity, PARAMS.DURABILITY);
+                        break;
+                    case ARMOR:
+                        text += "\n" + PARAMS.ARMOR.getName() + ": " +
+                         entity.getIntParam(PARAMS.ARMOR);
+                        text += "\n" + PARAMS.COVER_PERCENTAGE.getName() + ": " +
+                         entity.getIntParam(PARAMS.COVER_PERCENTAGE)+"%";
+
+                        text += "\n" + PARAMS.DURABILITY.getName() + ": " +
+                         StringMaster.getCurrentOutOfBaseVal(entity, PARAMS.DURABILITY);
+                        break;
                 }
 
             }
 
-            text +="\n"+ entity.getName();
-            text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
-            text +="\n"+ TextParser.parse( entity.getDescription(),
+            text += "\n" + entity.getName();
+//            text +="\n"+ entity.getProperty(G_PROPS.TOOLTIP);
+            text += "\n" + TextParser.parse(entity.getDescription(),
              ref, TextParser.TOOLTIP_PARSING_CODE, TextParser.INFO_PARSING_CODE);
-            text +="\n"+PARAMS.WEIGHT.getName()+ ": "+ entity.getParam(PARAMS.WEIGHT);
+            text += "\n" + PARAMS.WEIGHT.getName() + ": " + entity.getParam(PARAMS.WEIGHT);
         }
         return text;
-    }
-
-    public static String getWeaponIconPath(Entity entity) {
-        if (entity == null) {
-            return "";
-        }
-        String baseType=entity.getName();
-        if (entity instanceof DC_WeaponObj) {
-            baseType = ((DC_WeaponObj) entity).getBaseTypeName();
-        }
-        String  path = StrPathBuilder.build(PathFinder.getItemIconPath(),
-         baseType + ".png");
-        if (!ImageManager.isImage(path))
-            path = entity.getImagePath();
-        return path;
     }
 
     private TextureRegion getEmptyImageForCell(CELL_TYPE cellType) {

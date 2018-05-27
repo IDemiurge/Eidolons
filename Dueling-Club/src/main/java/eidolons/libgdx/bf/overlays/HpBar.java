@@ -258,6 +258,8 @@ public class HpBar extends SuperActor {
 //            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
         } else if (!dirty)
             return;
+        if (dataSource.isBeingReset())
+            return;
         String text = "" + Math.round(dataSource.getIntParam(PARAMS.C_ENDURANCE) )
          + "/" + dataSource.getIntParam(PARAMS.ENDURANCE);
         label.setText(text);

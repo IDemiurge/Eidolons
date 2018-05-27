@@ -9,7 +9,9 @@ import main.system.launch.CoreEngine;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LogMaster {
@@ -137,6 +139,7 @@ public class LogMaster {
     private static boolean off = false;
     private static int PRIORITY = 1;
     private static Map<LOG_CHANNEL, StringBuilder> logBufferMap;
+    private static List<Exception> exceptionList=    new ArrayList<>() ;
 
     public static Logger getInstance() {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
@@ -462,6 +465,11 @@ public class LogMaster {
         log(ERROR_PREFIX + string);
 
     }
+
+    public static List<Exception> getExceptionList() {
+        return exceptionList;
+    }
+
 
 
     public enum LOG {

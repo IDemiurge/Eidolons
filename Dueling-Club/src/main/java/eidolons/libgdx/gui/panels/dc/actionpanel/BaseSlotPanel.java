@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.system.audio.DC_SoundMaster;
-import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,9 +46,6 @@ public class BaseSlotPanel extends TablePanel {
         if (mod != activePage) {
             if (modTableMap.containsKey(mod)) {
                 setActivePage(mod);
-                DC_SoundMaster.playRandomStandardSound(
-                 STD_SOUNDS.PAGE_TURNED,
-                 STD_SOUNDS.PAGE_TURNED_ALT);
             }
         }
     }

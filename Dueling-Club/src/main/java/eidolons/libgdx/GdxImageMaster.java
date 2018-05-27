@@ -237,7 +237,7 @@ public class GdxImageMaster extends LwjglApplication {
         Pixmap pixmap2 = texture.getTextureData().consumePixmap();
         if (sourceOver)
             pixmap.setBlending(Blending.SourceOver);
-        else pixmap.setBlending(Blending.None);
+//        else pixmap.setBlending(Blending.None);
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 

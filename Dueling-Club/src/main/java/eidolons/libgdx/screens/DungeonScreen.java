@@ -17,7 +17,6 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.anims.particles.EmitterPools;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
@@ -88,7 +87,7 @@ public class DungeonScreen extends GameScreen {
         super.preLoad();
         gridStage = new StageX(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage(null, getBatch());
+        guiStage = new BattleGuiStage(null , getBatch());
 
         initGl();
 
@@ -254,7 +253,6 @@ public class DungeonScreen extends GameScreen {
 
 
     public void renderMain(float delta) {
-
         guiStage.act(delta);
         gridStage.act(delta);
 
@@ -330,7 +328,7 @@ public class DungeonScreen extends GameScreen {
         if (speed != null) {
             delta = delta * speed;
         }
-        if (!CoreEngine.isExe())
+        if (!CoreEngine.isJar() || CoreEngine.isJarlike())
             if (DC_Game.game != null) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
              Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
@@ -342,6 +340,11 @@ public class DungeonScreen extends GameScreen {
                 }
             }
 
+        }
+        if (cam != null) {
+//            cam.update();
+//            getBatch().setTransformMatrix(cam.view);
+//            getBatch().setProjectionMatrix(cam.projection);
         }
         super.render(delta);
     }
@@ -379,10 +382,16 @@ public class DungeonScreen extends GameScreen {
     public void resize(int width, int height) {
 //     animationEffectStage.getViewport().update(width, height);
 
+//        float aspectRatio = (float) width / (float) height;
+//        cam = new OrthographicCamera(width * aspectRatio, height) ;
+
         gridStage.getRoot().setSize(width, height);
 //        guiStage.getRoot().setSize(width, height);
         gridStage.getViewport().update(width, height);
         guiStage.getViewport().update(width, height);
+
+        BattleGuiStage.camera.viewportWidth=width;
+        BattleGuiStage.camera.viewportHeight=height;
     }
 
     public GridPanel getGridPanel() {

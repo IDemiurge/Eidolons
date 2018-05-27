@@ -160,10 +160,6 @@ public class GammaMaster {
     }
 
 
-    public void clearCache() {
-        cache.clear();
-        dirty = true;
-    }
 
     public float getGammaForCell(int x, int y) {
         DC_Cell cell = Eidolons.game.getCellByCoordinate(new Coordinates(x, y));
@@ -193,7 +189,4 @@ public class GammaMaster {
 //        return new Random().nextInt(50)/100 + 0.5f;
     }
 
-    public void setDirty(boolean dirty) {
-        this.dirty = dirty;
-    }
 }

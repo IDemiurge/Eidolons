@@ -6,6 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.GDX;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
@@ -27,6 +31,8 @@ public class InventoryPanel extends TablePanel {
         TextureRegion textureRegion = new TextureRegion(getOrCreateR("UI/components/inventory_background.png"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
+        TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
+         (int) GDX.size(525),(int) GDX.size(800));
 
         TablePanel upper = new TablePanel();
         inventorySlotsPanel = new InventorySlotsPanel();

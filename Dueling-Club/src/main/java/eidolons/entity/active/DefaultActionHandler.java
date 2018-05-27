@@ -271,9 +271,7 @@ public class DefaultActionHandler {
         ClearShotCondition.clearCache();
         source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         DC_Obj target = source.getGame().getCellByCoordinate(c);
-        target.getGame().getVisionMaster().getGammaMaster().clearCache();
-        target.getGame().getVisionMaster().getIlluminationMaster().clearCache();
-        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
+         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
         return false;
     }
 

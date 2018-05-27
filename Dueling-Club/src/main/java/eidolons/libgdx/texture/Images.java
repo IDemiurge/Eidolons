@@ -11,13 +11,40 @@ public class Images {
      "hq", "spell", "empty.png");
     public static final String SPELLBOOK = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "spell", "spellbook.png");
+    public static final String EMPTY_CONTAINER_SPACE = StrPathBuilder.build(PathFinder.getComponentsPath(),
+     "hq", "inv", "empty.png");
     public static final String EMPTY_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
-//     "hq", "inv", "empty.png");
     "dc", "dialog" ,
       "inv" ,
       "empty slots", "empty_pack.jpg");
     public static final String EMPTY_QUICK_ITEM = StrPathBuilder.build(PathFinder.getComponentsPath(),
      "hq", "inv", "empty QUICK.png");
+
+
+    public static final String EMPTY_WEAPON_MAIN = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),
+     "generic", "empty slots", "empty weapon main.png");
+    public static final String EMPTY_WEAPON_OFFHAND = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),
+     "generic", "empty slots", "empty weapon off.png");
+    public static final String EMPTY_ARMOR = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),
+     "generic", "empty slots", "empty armor.png");
+    public static final String EMPTY_AMULET = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),
+     "generic", "empty slots", "amulet_empty_slot.png");
+    public static final String EMPTY_RING = StrPathBuilder.build(
+     PathFinder.getComponentsPath(),
+     "generic", "empty slots", "ring_empty_slot.png");
+
+
+
+
+
+
+
+
+
     public static final String LOGO32 = "ui/arcane tower/logo32.png";
     public static final String LOGO64 = "ui/arcane tower/logo64.png";
 

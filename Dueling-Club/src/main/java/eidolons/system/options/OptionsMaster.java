@@ -14,6 +14,7 @@ import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.anims.std.HitAnim;
+import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -21,6 +22,7 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.Options.OPTION;
@@ -106,6 +108,22 @@ public class OptionsMaster {
         }
     }
 
+    private static void applyControlOptions(ControlOptions options) {
+        for (Object sub : options.getValues().keySet()) {
+            new EnumMaster<CONTROL_OPTION>().
+             retrieveEnumConst(CONTROL_OPTION.class,
+              options.getValues().get(sub).toString());
+            CONTROL_OPTION key = options.getKey((sub.toString()));
+            String value = options.getValue(key);
+            boolean booleanValue = options.getBooleanValue(key);
+            if (!StringMaster.isInteger(value)) {
+                switch (key) {
+                    case ALT_MODE_ON:
+                        BattleClickListener.setAltDefault(booleanValue);
+                }
+            }
+    }
+    }
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
             new EnumMaster<GAMEPLAY_OPTION>().
@@ -305,6 +323,7 @@ public class OptionsMaster {
         applyGraphicsOptions(getGraphicsOptions());
         applySoundOptions(getSoundOptions());
         applyGameplayOptions(getGameplayOptions());
+        applyControlOptions(getControlOptions());
 
         if (!GdxMaster.isGuiReady())
             return;
@@ -424,7 +443,8 @@ public class OptionsMaster {
         } else {
             optionsMap = readOptions(data);
             addMissingDefaults(optionsMap);
-            autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
+            if (CoreEngine.isJar() || CoreEngine.isFastMode())
+                autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }
         OptionsMaster.cacheOptions();
         try {
@@ -440,11 +460,10 @@ public class OptionsMaster {
 
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
             Options map = optionsMap.get(group);
-            if (map == null) {
-
-                continue;
-            }
             Options options = generateDefaultOptions(group);
+            if (map == null) {
+                optionsMap.put(group, options);
+            } else
             for (Object val : options.getValues().keySet()) {
                 if (map.getValues().containsKey(val))
                     continue;
@@ -482,19 +501,16 @@ public class OptionsMaster {
 
     private static Class<?> getOptionGroupEnumClass(OPTIONS_GROUP group) {
         switch (group) {
+            case CONTROLS:
+                return CONTROL_OPTION.class;
             case ANIMATION:
                 return ANIMATION_OPTION.class;
             case GRAPHICS:
                 return GRAPHIC_OPTION.class;
             case SOUND:
                 return SOUND_OPTION.class;
-            case TUTORIAL:
-//                return TUTORIAL_OPTION.class;
-
             case GAMEPLAY:
                 return GAMEPLAY_OPTION.class;
-            case ENGINE:
-//                return Engine_Options.class;
         }
         return null;
     }
@@ -552,14 +568,16 @@ public class OptionsMaster {
         switch (group) {
             case ANIMATION:
                 return new AnimationOptions();
+            case CONTROLS:
+                return  new ControlOptions();
             case SOUND:
                 return new SoundOptions();
             case GRAPHICS:
                 return new GraphicsOptions();
-            case TUTORIAL:
-                break;
+
             case GAMEPLAY:
                 return new GameplayOptions();
+
         }
         return null;
     }
@@ -588,6 +606,9 @@ public class OptionsMaster {
         return null;
     }
 
+    public static ControlOptions getControlOptions() {
+        return (ControlOptions) getOptions(OPTIONS_GROUP.CONTROLS);
+    }
     public static SoundOptions getSoundOptions() {
         return (SoundOptions) getOptions(OPTIONS_GROUP.SOUND);
     }
@@ -598,7 +619,8 @@ public class OptionsMaster {
 
 
     public enum OPTIONS_GROUP {
-        ANIMATION, SOUND, GRAPHICS, TUTORIAL, GAMEPLAY, ENGINE,
+        GRAPHICS,GAMEPLAY, CONTROLS, SOUND,ANIMATION,
+        //TUTORIAL, ENGINE,
     }
 
 }

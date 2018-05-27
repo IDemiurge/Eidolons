@@ -6,11 +6,25 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
+import eidolons.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 8/31/2017.
  */
 public class BattleClickListener extends ClickListener {
+
+    private static Boolean altDefault;
+
+    public static Boolean getAltDefault() {
+        if (altDefault==null )
+            altDefault = OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALT_MODE_ON);
+        return altDefault;
+    }
+
+    public static void setAltDefault(Boolean altDefault) {
+        BattleClickListener.altDefault = altDefault;
+    }
 
     public boolean isShift() {
         return Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)
@@ -23,6 +37,9 @@ public class BattleClickListener extends ClickListener {
     }
 
     public boolean isAlt() {
+        if (getAltDefault())
+            return !(Gdx.input.isKeyPressed(Keys.ALT_RIGHT)
+             || Gdx.input.isKeyPressed(Keys.ALT_LEFT));
         return Gdx.input.isKeyPressed(Keys.ALT_RIGHT)
          || Gdx.input.isKeyPressed(Keys.ALT_LEFT);
     }
@@ -37,4 +54,6 @@ public class BattleClickListener extends ClickListener {
             return true;
         return super.handle(e);
     }
+
+
 }

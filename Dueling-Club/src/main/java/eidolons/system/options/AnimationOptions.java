@@ -23,6 +23,7 @@ static {
     // AI_PARAMS,
     public enum ANIMATION_OPTION implements Options.OPTION {
         WEAPON_3D_ANIMS_OFF(false),
+        ENEMY_3D_ANIMS_OFF(false),
         BLOOD_ANIMS_OFF(false),
 
         WAIT_FOR_ANIM(false),

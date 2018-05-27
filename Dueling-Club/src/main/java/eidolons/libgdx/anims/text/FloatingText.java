@@ -216,7 +216,8 @@ public class FloatingText extends Group {
 
     public LabelStyle getFontStyle() {
         if (fontStyle == null)
-            return StyleHolder.getSizedLabelStyle(StyleHolder.DEFAULT_FONT, DEFAULT_FONT_SIZE);
+            return StyleHolder.getSizedLabelStyle(
+             StyleHolder.DEFAULT_FONT_FLOAT_TEXT, StyleHolder.DEFAULT_FONT_SIZE_FLOAT_TEXT);
         return fontStyle;
     }
 

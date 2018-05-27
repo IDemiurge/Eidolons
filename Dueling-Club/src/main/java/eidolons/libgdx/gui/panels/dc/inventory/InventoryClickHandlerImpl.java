@@ -28,7 +28,6 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     //IDEA: FOR NON-COMBAT, DROP == SELL!
     protected HeroDataModel sim;
     protected boolean dirty;
-    private Entity dragged;
 
     public InventoryClickHandlerImpl(HqDataMaster dataMaster, HeroDataModel sim) {
         this.dataMaster = dataMaster;
@@ -43,10 +42,12 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
          altClick, cellContents);
         if (operation == null) {
-            if (!rightClick) {
+            if (cellContents == null || getDragged() != null)
                 singleClick(cell_type, cellContents);
-                return true;
-            }
+//            if (!rightClick) {
+//                singleClick(cell_type, cellContents);
+//                return true;
+//            }
         } else {
             Object arg = getSecondArg(operation, cellContents);
             if (manager.canDoOperation(operation, cellContents, arg)) {
@@ -78,8 +79,8 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 //           if (arg==null )
 //               arg= getSecondArg(operation, dragged);
 
-            if (manager.canDoOperation(operation, dragged, arg)) {
-                execute(operation, dragged, arg);
+            if (manager.canDoOperation(operation, getDragged(), arg)) {
+                execute(operation, getDragged(), arg);
                 setDragged(cellContents);
             }
 
@@ -106,6 +107,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         switch (cell_type) {
             case QUICK_SLOT:
                 return OPERATIONS.EQUIP_QUICK_SLOT;
+            case CONTAINER:
+                if (cellContents == null)
+                    return OPERATIONS.DROP;
+
             case INVENTORY:
                 if (cellContents == null)
                     return OPERATIONS.UNEQUIP;
@@ -232,6 +237,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                     GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Cannot (un)equip armor in combat!");
 
                 break;
+            case CONTAINER:
             case INVENTORY:
                 if (altClick) {
                     if (sim.getRemainingQuickSlots() > 0)
@@ -334,14 +340,14 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     protected String getArg(CELL_TYPE cell_type, int clickCount, boolean rightClick, boolean altClick, Entity cellContents) {
         return cellContents.getName();
     }
-@Override
+
+    @Override
     public Entity getDragged() {
-        return dragged;
+        return Eidolons.getScreen().getGuiStage().getDraggedEntity();
     }
 
     @Override
     public void setDragged(Entity dragged) {
-        this.dragged = dragged;
         try {
             Eidolons.getScreen().getGuiStage().setDraggedEntity(dragged);
         } catch (Exception e) {

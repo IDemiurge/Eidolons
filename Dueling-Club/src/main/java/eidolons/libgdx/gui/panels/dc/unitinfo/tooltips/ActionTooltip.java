@@ -1,8 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.entity.active.DC_ActiveObj;
-import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.screens.DungeonScreen;
@@ -47,7 +45,6 @@ public class ActionTooltip extends Tooltip {
     @Override
     public void afterUpdateAct(float delta) {
         super.afterUpdateAct(delta);
-        setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
     }
 
     public boolean isRadial() {

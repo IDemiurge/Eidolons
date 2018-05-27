@@ -58,9 +58,12 @@ public class GdxMaster {
     }
 
     public static float adjustSize(float size) {
+        return adjustSize(size, fontSizeAdjustCoef);
+    }
+        public static float adjustSize(float size,float coef) {
         return size
          + size
-         * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef;
+         * (GdxMaster.getFontSizeMod() - 1) * coef;
     }
     public static float adjustSizePlain(float size) {
         return size* GdxMaster.getFontSizeMod();

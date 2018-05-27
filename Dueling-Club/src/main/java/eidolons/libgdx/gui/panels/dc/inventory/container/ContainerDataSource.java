@@ -44,6 +44,6 @@ public class ContainerDataSource implements InventoryTableDataSource {
     public List<InventoryValueContainer> getInventorySlots() {
         ListMaster.fillWithNullElements(items
          , InventorySlotsPanel.SIZE);
-        return factory.getList(items, CELL_TYPE.INVENTORY);
+        return factory.getList(items, CELL_TYPE.CONTAINER);
     }
 }

@@ -9,16 +9,18 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
 
     @Override
     protected Class<? extends CONTROL_OPTION> getOptionClass() {
-        return null;
+        return CONTROL_OPTION.class;
     }
 
     public enum CONTROL_OPTION implements Options.OPTION {
-        ALT_MODE_ON,
-        NUMPAD,
-        ZOOM,
-        DRAG,
-        CENTER_CAMERA,
-        BINDING_PROFILE,;
+        ALT_MODE_ON(false),
+        NUMPAD_CONTROLS_ON(false),
+        UNLIMITED_ZOOM(false),
+        DRAG_OFF(false),
+        PAN_CAMERA_ON_EDGES(false),
+        CENTER_CAMERA_DISTANCE(300),
+//        BINDING_PROFILE,
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;

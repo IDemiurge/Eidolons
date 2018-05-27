@@ -34,14 +34,16 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     //refactor - why not implement?
     public InputListener getController() {
-        return new  ClickListener() {
+        return new ClickListener() {
 
             public boolean handle(Event e) {
                 if (isBattlefield()) {
                     if (DungeonScreen.getInstance().isBlocked())
                         return true;
                 }
-
+                if (actor != null)
+                    if (!actor.isVisible() || actor.getColor().a <= 0)
+                        return true;
                 return super.handle(e);
             }
 
@@ -77,6 +79,13 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
                 onMouseExit(event, x, y, pointer, toActor);
             }
         };
+    }
+
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+            if (!isTouchable())
+                return null;
+        return super.hit(x, y, touchable);
     }
 
     protected boolean isBattlefield() {

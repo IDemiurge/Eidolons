@@ -293,12 +293,13 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     public boolean isMainHand() {
         return mainHand;
     }
-    public boolean isOffhand() {
-        return !mainHand;
-    }
 
     public void setMainHand(boolean mainHand) {
         this.mainHand = mainHand;
+    }
+
+    public boolean isOffhand() {
+        return !mainHand;
     }
 
     public boolean isWeapon() {
@@ -444,20 +445,35 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     }
 
     public String getSpriteImagePath() {
-        if (!checkProperty(PROPS.SPRITE_PATH)){
+        if (!checkProperty(PROPS.SPRITE_PATH)) {
             setProperty(PROPS.SPRITE_PATH,
-             StrPathBuilder.build("main" ,
-              "item" ,
-              "weapon" ,
-              "sprites", getBaseType()+".png"));
+             StrPathBuilder.build("main",
+              "item",
+              "weapon",
+              "sprites", getBaseType() + ".png"));
         }
         return getProperty(PROPS.SPRITE_PATH);
     }
 
     private String getBaseType() {
-if (!getType().isGenerated())
-    return getName();
+        if (!getType().isGenerated())
+            return getName();
         return getProperty(G_PROPS.BASE_TYPE);
     }
 
+    public int calculateDamageMin(Ref ref) {
+        Unit source = (Unit) ref.getSourceObj();
+        int damage = getIntParam(PARAMS.DAMAGE_BONUS) + getIntParam(PARAMS.DICE);
+        damage += source.getIntParam(PARAMS.STRENGTH) * getIntParam(PARAMS.STR_DMG_MODIFIER)/100;
+        damage += source.getIntParam(PARAMS.AGILITY) * getIntParam(PARAMS.AGI_DMG_MODIFIER)/100;
+        damage += source.getIntParam(PARAMS.SPELLPOWER) * getIntParam(PARAMS.SP_DMG_MODIFIER)/100;
+        damage += source.getIntParam(PARAMS.INTELLIGENCE) * getIntParam(PARAMS.INT_DMG_MODIFIER)/100;
+
+        damage = damage*getIntParam(PARAMS.DAMAGE_MOD)/100;
+        return damage;
+    }
+
+    public int calculateDiceMax() {
+       return getIntParam(PARAMS.DICE) * getIntParam(PARAMS.DIE_SIZE)*getIntParam(PARAMS.DAMAGE_MOD)/100;
+    }
 }

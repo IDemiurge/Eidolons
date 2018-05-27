@@ -90,7 +90,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
             // will it not have effect on hero?
 
-            ref.setID(KEYS.WEAPON, getWrappedWeapon().getId());
+            ref.setID(KEYS.WEAPON, wrappedWeapon.getId());
             setParam(PARAMS.CHARGES, 1);
             setParam(PARAMS.C_CHARGES, 1);
         }
@@ -150,8 +150,8 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         REF = REF.getCopy();
         super.setRef(REF);
         this.ref.setID(KEYS.ITEM, id);
-        if (getWrappedWeapon() != null) {
-            ref.setID(KEYS.WEAPON, getWrappedWeapon().getId());
+        if (wrappedWeapon != null) {
+            ref.setID(KEYS.WEAPON, wrappedWeapon.getId());
         }
         if (ammo) {
             ref.setID(KEYS.AMMO, getId());
@@ -391,6 +391,8 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     }
 
     public DC_WeaponObj getWrappedWeapon() {
+        if (!isConstructed())
+            construct();
         return wrappedWeapon;
     }
 

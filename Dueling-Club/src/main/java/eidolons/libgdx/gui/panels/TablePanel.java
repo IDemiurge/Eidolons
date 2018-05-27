@@ -119,7 +119,7 @@ public class TablePanel<T extends Actor> extends Table {
         return this;
     }
     protected Drawable getDefaultBackground() {
-        return  new NinePatchDrawable(NinePatchFactory.getTooltip());
+        return  new NinePatchDrawable(NinePatchFactory.getLightPanelFilled());
     }
     public void fadeOut() {
         clearActions();

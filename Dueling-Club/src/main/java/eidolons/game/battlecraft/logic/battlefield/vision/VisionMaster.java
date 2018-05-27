@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.Structure;
@@ -17,8 +16,8 @@ import main.game.bf.GenericVisionManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -71,8 +70,6 @@ public class VisionMaster implements GenericVisionManager {
     }
     public void resetVisibilityStatuses() {
         Chronos.mark("VISIBILITY REFRESH");
-        ClearShotCondition.clearCache();
-        getGammaMaster().clearCache();
         getIlluminationMaster().clearCache();
         getSightMaster().clearCaches();
         visionController.reset();
@@ -102,7 +99,6 @@ public class VisionMaster implements GenericVisionManager {
         triggerGuiEvents();
 
         firstResetDone = true;
-        gammaMaster.setDirty(false);
 //        visionController.log(getActiveUnit());
 
 //    try{    getVisionController().logAll();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}

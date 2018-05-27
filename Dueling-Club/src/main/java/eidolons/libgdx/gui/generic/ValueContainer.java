@@ -49,6 +49,9 @@ public class ValueContainer extends TablePanel {
         init(texture, null, value);
     }
 
+    public ValueContainer(String name ) {
+        init(null, name, null );
+    }
     public ValueContainer(String name, String value) {
         init(null, name, value);
     }

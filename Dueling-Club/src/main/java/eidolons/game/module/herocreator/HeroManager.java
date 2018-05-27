@@ -154,7 +154,12 @@ public class HeroManager {
 
     public static boolean canEquip(Unit hero, Entity item, ITEM_SLOT slot) {
         ITEM_SLOT possible_slot = getItemSlot(hero, item, false);
-        return possible_slot == slot;
+        if(possible_slot == slot)
+            return true;
+          possible_slot = getItemSlot(hero, item, false, true);
+        if(possible_slot == slot)
+            return true;
+        return false;
     }
 
     public static ITEM_SLOT getItemSlot(Unit hero, Entity type) {
@@ -162,6 +167,9 @@ public class HeroManager {
     }
 
     public static ITEM_SLOT getItemSlot(Unit hero, Entity type, boolean askSwap) {
+        return getItemSlot(hero, type, askSwap, false);
+    }
+        public static ITEM_SLOT getItemSlot(Unit hero, Entity type, boolean askSwap, boolean alt) {
         if (type.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS) {
             return null;
         }
@@ -169,10 +177,10 @@ public class HeroManager {
             WEAPON_CLASS CLASS = getWeaponClass(type);
             switch (CLASS) {
                 case OFF_HAND:
-                    if (hero.getMainWeapon() == null) {
+                    if (hero.getMainWeapon() == null || (!askSwap&&!alt)) {
                         return ItemEnums.ITEM_SLOT.MAIN_HAND;
                     }
-                    if (askSwap)
+                    if ( askSwap)
                         if (promptItemSwap(hero.getMainWeapon(),
                          hero, type)) {
                             return ItemEnums.ITEM_SLOT.MAIN_HAND;
@@ -181,7 +189,7 @@ public class HeroManager {
                      || hero.getMainWeapon().getWeaponClass() == ItemEnums.WEAPON_CLASS.DOUBLE) {
                         return null;
                     }
-                    if (hero.getOffhandWeapon() == null) {
+                    if (hero.getOffhandWeapon() == null|| (!askSwap&& alt)) {
                         return ItemEnums.ITEM_SLOT.OFF_HAND;
                     }
                     if (askSwap)

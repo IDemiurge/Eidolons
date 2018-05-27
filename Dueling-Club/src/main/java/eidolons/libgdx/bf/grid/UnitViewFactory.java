@@ -105,9 +105,18 @@ public class UnitViewFactory {
                     if (event.getButton() == 0)
                         if (bfObj.isPlayerCharacter()) {
                             HqMaster.openHqPanel();
+                            return;
                         } else if (bfObj instanceof Unit) {
                             GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
                              new UnitDataSource((Unit) bfObj));
+                            return;
+                        }
+                if (event.getButton() == Buttons.LEFT)
+                    if (isAlt() || isShift() || isControl())
+                        try {
+                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                        } catch (Exception e) {
+                            main.system.ExceptionMaster.printStackTrace(e);
                         }
                 super.clicked(event, x, y);
             }
@@ -131,13 +140,7 @@ public class UnitViewFactory {
                     event.handle();
                     event.stop();
                 } else {
-                    if (event.getButton() == Buttons.LEFT)
-                        if (isAlt() || isShift() || isControl())
-                            try {
-                                DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                            } catch (Exception e) {
-                                main.system.ExceptionMaster.printStackTrace(e);
-                            }
+
 
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }

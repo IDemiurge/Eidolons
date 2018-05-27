@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
@@ -25,18 +25,25 @@ public class GridUnitView extends GenericGridView {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (mainHero){
-            if (getActionsOfClass(MoveToAction.class).size>0){
+        if (mainHero) {
+            Vector2 assumed = GridMaster.getCenteredPos(getUserObject().getCoordinates());
+            if (getActionsOfClass(MoveByActionLimited.class).size > 0) {
                 //set pos, don't draw
-                Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
-                Vector2 assumed=GridMaster.getCenteredPos(getUserObject().getCoordinates());
+//                Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
+//                if (pos.dst(assumed)
+//                 > 128) {
+//                    setPosition(assumed.x, assumed.y);
+//                    return;
+//                }
+            } else {
+               Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
                 if (pos.dst(assumed)
-                 > 128)
-                {  setPosition(assumed.x, assumed.y);
-                    return ;
+                 > 256) {
+                    getParent(). setTransform(true);
+                    pos = stageToLocalCoordinates(new Vector2(assumed.x , assumed.y ));
+                    setPosition(pos.x, pos.y);
+                    return;
                 }
-            }else{
-
             }
 
         }
@@ -122,7 +129,6 @@ public class GridUnitView extends GenericGridView {
     }
 
 
-
     @Override
     public void resetHpBar() {
         super.resetHpBar();
@@ -133,7 +139,7 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        if (initiativeQueueUnitView!=null )
+        if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setUserObject(userObject);
     }
 
@@ -152,7 +158,7 @@ public class GridUnitView extends GenericGridView {
             initiativeQueueUnitView.setTeamColorBorder(teamColorBorder);
     }
 
-    public void createHpBar( ) {
+    public void createHpBar() {
         setHpBar(new HpBar(getUserObject()));
         if (initiativeQueueUnitView != null)
             initiativeQueueUnitView.setHpBar(new HpBar(getUserObject()));

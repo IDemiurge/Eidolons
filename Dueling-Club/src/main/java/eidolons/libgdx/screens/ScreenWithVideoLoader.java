@@ -204,14 +204,14 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     protected void renderLoader(float delta) {
 
+        super.renderLoader(delta);
+
         if (video != null) {
             renderVideo(delta);
             overlayStage.act(delta);
             overlayStage.draw();
-            return;
-        }
-        super.renderLoader(delta);
 
+        }
     }
 
     @Override
@@ -230,12 +230,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     @Override
     protected void renderMain(float delta) {
-        if (!isVideoEnabled()) {
+//        if (!isVideoEnabled()) {
             loadingStage.act(delta);
             loadingStage.draw();
             overlayStage.act(delta);
             overlayStage.draw();
-        }
+//        }
     }
 
     protected boolean isLoadingWithVideo() {
@@ -249,12 +249,17 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         else if (!video.getPlayer().isPlaying())
             playVideo();
         Gdx.gl.glViewport(0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        if (isClearForVideo())
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         if (!video.getPlayer().render())
             if (isLooped())
                 playVideo();
 
 
+    }
+
+    protected boolean isClearForVideo() {
+        return false;
     }
 
 

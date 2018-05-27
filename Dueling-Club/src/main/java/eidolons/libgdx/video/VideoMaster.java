@@ -62,6 +62,7 @@ public class VideoMaster {
             player.dispose();
         }
         player = VideoPlayerCreator.createVideoPlayer();
+//        player.resize((int)GDX.size(w), (int)GDX.size(h));
         player.resize(w, h);
         FileHandle file = new FileHandle(FileManager.getFile(path));
         try {

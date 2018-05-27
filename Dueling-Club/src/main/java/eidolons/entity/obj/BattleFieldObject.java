@@ -186,6 +186,8 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     @Override
     public boolean isObstructing() {
+        if (isDead())
+            return false;
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING)) {
             return false;
         }

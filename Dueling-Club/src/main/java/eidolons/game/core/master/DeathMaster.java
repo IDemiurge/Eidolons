@@ -1,11 +1,14 @@
 package eidolons.game.core.master;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
@@ -55,6 +58,24 @@ public class DeathMaster extends Master {
 
     }
 
+    private void checkXpGranted(Obj killed, Obj killer) {
+        if ( killed ==  killer)
+            return;
+        if (killed instanceof Unit) {
+            if (!((Unit) killed).isHostileTo((DC_Player) killer.getOwner())) {
+                return;
+            }
+        } else
+            return;
+            Unit unit = (Unit) killed;
+            int xp = (int) (unit.getIntParam(PARAMS.POWER)+
+             (Math.sqrt(unit.getIntParam(PARAMS.POWER))*
+            unit.getIntParam(PARAMS.POWER))/10);
+
+            HeroLevelManager.addXp((Unit) killer, xp);
+
+    }
+
     public void unitDies(DC_ActiveObj activeObj, Obj _killed, Obj _killer, boolean leaveCorpse, boolean quietly) {
         if (_killed.isDead())
             return;
@@ -62,8 +83,13 @@ public class DeathMaster extends Master {
         if (_killed == _killer) {
             message = _killed + " dies ";// + _killed.getInfoString();
         } else
+        {
             message = _killed + " killed by " + _killer + " with " + activeObj;
 
+
+        }
+        if (!quietly)
+            checkXpGranted(_killed, _killer);
         SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
         _killed.setDead(true);
         BattleFieldObject killed = (BattleFieldObject) _killed;

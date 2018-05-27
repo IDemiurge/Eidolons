@@ -294,7 +294,11 @@ public abstract class InputController implements InputProcessor {
         return isWithinCamera(actor.getX() + actor.getWidth(), actor.getY() + actor.getHeight(), actor.getWidth(), actor.getHeight());
     }
 
-    public boolean isWithinCamera(float x, float y, float width, float height) {
+    public boolean isCursorWithinCameraX(float x) {
+
+        return false;
+    }
+        public boolean isWithinCamera(float x, float y, float width, float height) {
         float xPos = Math.abs(camera.position.x - x) - width;
         if (xPos > halfWidth)
             return false;

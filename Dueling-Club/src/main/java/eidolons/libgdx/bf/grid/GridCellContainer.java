@@ -116,12 +116,11 @@ public class GridCellContainer extends GridCell {
                 actor.sizeChanged();
             } else {
                 actor.setPosition(x, y);
-
                 actor.setScale(scaleX, scaleY);
-                actor.setScaledHeight(scaleY);
-                actor.setScaledWidth(scaleX);
                 actor.sizeChanged();
             }
+            actor.setScaledHeight(scaleY);
+            actor.setScaledWidth(scaleX);
 
             recalcImagesPos(actor, offset, offset, i++);
         }

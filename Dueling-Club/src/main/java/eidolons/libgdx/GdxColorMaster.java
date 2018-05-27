@@ -27,7 +27,7 @@ public class GdxColorMaster {
     public static final Color DEEP_GRAY = getColor(120, 120, 120, 1f);
     public static final Color MILD_WHITE = getColor(240, 240, 240, 1f);
     public static final Color PURPLE = getColor(175, 85, 255, 1f);
-    public static final Color LILAC = getColor(125, 65, 235, 1f);
+    public static final Color LILAC = getColor(115, 65, 245, 1f);
     public static final Color CYAN = getColor(45, 225, 165, 1f);
     public static final Color GREEN = getColor(55, 255, 65, 1f);
     public static final Color YELLOW_GREEN = getColor(95, 205, 25, 1f);

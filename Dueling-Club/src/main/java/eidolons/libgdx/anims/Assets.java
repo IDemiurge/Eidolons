@@ -17,6 +17,7 @@ import eidolons.libgdx.anims.particles.EmitterPools;
 import eidolons.libgdx.anims.particles.EmitterPresetMaster;
 import eidolons.libgdx.anims.particles.ParticleEffectX;
 import eidolons.libgdx.texture.SmartTextureAtlas;
+import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.secondary.ReflectionMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -32,21 +33,21 @@ public class Assets {
         manager.setErrorListener(new AssetErrorListener() {
             @Override
             public void error(AssetDescriptor asset, Throwable throwable) {
-                main.system.auxiliary.log.LogMaster.log(1,"Failed to load " +asset.fileName);
+                main.system.auxiliary.log.LogMaster.log(1, "Failed to load " + asset.fileName);
             }
         });
         if (EmitterPools.isPreloaded())
-        manager.setLoader(ParticleEffect.class,
-         new ParticleEffectLoader(fileName -> new FileHandle(fileName)){
-             @Override
-             public ParticleEffect load(AssetManager am, String fileName,
-                                        FileHandle file, ParticleEffectParameter param) {
-                 ParticleEffectX fx = new ParticleEffectX(file.path());
+            manager.setLoader(ParticleEffect.class,
+             new ParticleEffectLoader(fileName -> new FileHandle(fileName)) {
+                 @Override
+                 public ParticleEffect load(AssetManager am, String fileName,
+                                            FileHandle file, ParticleEffectParameter param) {
+                     ParticleEffectX fx = new ParticleEffectX(file.path());
 //                 ParticleEffect fx=super.load(am, fileName, file, param);
-                 main.system.auxiliary.log.LogMaster.log(1, fileName +file.path()+ " loaded...");
-                 return fx;
-             }
-         });
+                     main.system.auxiliary.log.LogMaster.log(1, fileName + file.path() + " loaded...");
+                     return fx;
+                 }
+             });
         manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(
          fileName -> new FileHandle(fileName)
         ) {
@@ -90,7 +91,13 @@ public class Assets {
         if (AnimationConstructor.isPreconstructAllOnGameInit()) {
             for (BattleFieldObject sub : objects) {
                 if (sub instanceof Unit)
-                    AnimationConstructor.preconstruct((Unit) sub);
+                    try {
+                        AnimationConstructor.preconstruct((Unit) sub);
+                    } catch (Exception e) {
+                         main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL,"FAILED TO CONSTRUCT ANIMS FOR " +sub);
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        continue;
+                    }
             }
             result = true;
         }

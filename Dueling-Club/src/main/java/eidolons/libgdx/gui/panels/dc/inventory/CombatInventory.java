@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -146,7 +147,8 @@ public class CombatInventory extends TablePanel implements Blocking {
         ValueContainer controls = new ValueContainer(
          StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
          header,
-         "\n[Right click]: unequip or drop onto the ground\n" +
+         "\n**Drag'n'drop is [ON]**\n" +
+         "[Right click]: unequip or drop onto the ground\n" +
           "[Double left-click]: default equip \n" +
           "[Alt-Click]: equip weapon in quick slot \n");
         controls.setBackground(NinePatchFactory.getLightPanelDrawable());
@@ -167,6 +169,10 @@ public class CombatInventory extends TablePanel implements Blocking {
         initButtonListeners();
     }
 
+    @Override
+    public InventoryDataSource getUserObject() {
+        return (InventoryDataSource) super.getUserObject();
+    }
 
     public void close(Boolean result) {
         if (result == null)
@@ -174,6 +180,12 @@ public class CombatInventory extends TablePanel implements Blocking {
         if (!result)
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
          "Inventory operations cancelled!");
+        else {
+            int x = getUserObject().getUnit().getX();
+            int y = getUserObject().getUnit().getY();
+            Eidolons.getGame().getDroppedItemManager().reset(x, y);
+        }
+
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
 //        if (ExplorationMaster.isExplorationOn()) {
 //            GuiEventManager.trigger(GuiEventType.GAME_RESET );

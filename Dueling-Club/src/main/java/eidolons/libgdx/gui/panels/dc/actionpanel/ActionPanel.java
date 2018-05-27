@@ -7,6 +7,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -232,6 +233,7 @@ public class ActionPanel extends Group {
     }
 
     public void update() {
+        setX(GdxMaster.centerWidth(this)-(1600-getWidth())/2);
         leftOrbPanel.setUpdateRequired(true);
         rigthOrbPanel.setUpdateRequired(true);
     }

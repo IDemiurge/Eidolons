@@ -12,21 +12,21 @@ import java.util.stream.Collectors;
 
 import static eidolons.content.UNIT_INFO_PARAMS.WEAPON_DC_INFO_PARAMS;
 
-public   class WeaponToolTipDataSource {
+public class WeaponToolTipDataSource {
     DC_WeaponObj weapon;
     List<ValueContainer> list = new ArrayList<>();
 
     public WeaponToolTipDataSource(DC_WeaponObj weapon) {
         this.weapon = weapon;
-if (weapon!=null )
-        for (int i = 0; i < WEAPON_DC_INFO_PARAMS.length; i++) {
-            PARAMS p = WEAPON_DC_INFO_PARAMS[i];
-            String value = String.valueOf(weapon.getIntParam(p));
-            String name = p.getName();
-            final ValueContainer tooltipContainer = new ValueContainer(name, value);
-            tooltipContainer.pad(10);
-            list.add(tooltipContainer);
-        }
+        if (weapon != null)
+            for (int i = 0; i < WEAPON_DC_INFO_PARAMS.length; i++) {
+                PARAMS p = WEAPON_DC_INFO_PARAMS[i];
+                String value = String.valueOf(weapon.getIntParam(p));
+                String name = p.getName();
+                final ValueContainer tooltipContainer = new ValueContainer(name, value);
+                tooltipContainer.pad(10);
+                list.add(tooltipContainer);
+            }
     }
 
     public DC_WeaponObj getWeapon() {

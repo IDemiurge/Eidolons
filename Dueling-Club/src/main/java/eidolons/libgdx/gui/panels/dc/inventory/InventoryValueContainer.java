@@ -12,6 +12,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import main.entity.Entity;
 
 public class InventoryValueContainer extends ValueContainer {
@@ -63,7 +64,18 @@ public class InventoryValueContainer extends ValueContainer {
                   if (handler.getDragged() != null) {
                       Vector2 v = localToStageCoordinates(new Vector2(x, y));
 
-                      Group panel = GdxMaster.getFirstParentOfClass(InventoryValueContainer.this, InventoryPanel.class);
+                      Group panel = GdxMaster.getFirstParentOfClass(
+                       InventoryValueContainer.this,
+                       InventoryPanel.class);
+                      if (panel == null) {
+                          panel = GdxMaster.getFirstParentOfClass(
+                           InventoryValueContainer.this,
+                           ContainerPanel.class);
+                      }
+                      if (panel == null) {
+                          super.touchUp(event, x, y, pointer, button);
+                          return;
+                      }
                       v = panel.stageToLocalCoordinates(v);
                       Actor cell = panel.hit(v.x, v.y, true);
                       if (cell != null)
@@ -98,4 +110,6 @@ public class InventoryValueContainer extends ValueContainer {
               }
           });
     }
+
+
 }

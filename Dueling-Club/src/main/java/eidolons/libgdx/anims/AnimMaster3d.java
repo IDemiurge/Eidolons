@@ -146,6 +146,8 @@ public class AnimMaster3d {
             if (CoreEngine.isFastMode())
                 return;
         }
+        if (isOff())
+            return;
         DC_WeaponObj weapon = unit.getWeapon(false);
         if (weapon != null)
             preloadAtlas(weapon);

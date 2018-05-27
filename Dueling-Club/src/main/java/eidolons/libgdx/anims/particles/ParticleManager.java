@@ -27,12 +27,25 @@ public class ParticleManager extends GroupX {
     private static Dungeon dungeon_;
     public boolean debugMode;
     List<EmitterMap> emitterMaps = new ArrayList<>();
+    List<EmitterActor> dynamicVfx = new ArrayList<>();
     Map<String, EmitterMap> cache = new HashMap<>();
-
     public ParticleManager() {
         GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
             GuiEventManager.trigger(GuiEventType.INIT_AMBIENCE,
              new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
+        });
+
+        GuiEventManager.bind(GuiEventType.SHOW_VFX, p -> {
+            List args = (List) p.get();
+            EMITTER_PRESET preset = (EMITTER_PRESET) args.get(0);
+            Vector2 v = (Vector2) args.get(1);
+             EmitterActor vfx = new EmitterActor(preset);
+
+            dynamicVfx.add(vfx);
+            vfx.setPosition(v.x, v.y);
+            addActor(vfx);
+            vfx.start();
+            vfx.getEffect().allowCompletion();
         });
 
         GuiEventManager.bind(GuiEventType.INIT_AMBIENCE, p -> {

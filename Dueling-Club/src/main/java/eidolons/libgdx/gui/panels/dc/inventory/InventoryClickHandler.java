@@ -32,13 +32,15 @@ public interface InventoryClickHandler {
     void setDragged(Entity dragged);
 
     enum CELL_TYPE {
-        WEAPON_MAIN("UI/components/dc/dialog/inv/empty slots/empty weapon main.png"),
-        WEAPON_OFFHAND("UI/components/dc/dialog/inv/empty slots/empty weapon off.png"),
-        ARMOR("UI/components/dc/dialog/inv/empty slots/empty armor.png"),
-        AMULET("UI/components/dc/dialog/inv/empty slots/empty amulet.jpg"),
-        RING("UI/components/dc/dialog/inv/empty slots/ring_empty_slot.png"),
+        WEAPON_MAIN(Images.EMPTY_WEAPON_MAIN),
+        WEAPON_OFFHAND(Images.EMPTY_WEAPON_OFFHAND),
+        ARMOR(Images.EMPTY_ARMOR),
+        AMULET(Images.EMPTY_AMULET),
+        RING(Images.EMPTY_RING),
         QUICK_SLOT(Images.EMPTY_QUICK_ITEM),
-        INVENTORY(Images.EMPTY_ITEM);
+        INVENTORY(Images.EMPTY_ITEM),
+        CONTAINER(Images.EMPTY_CONTAINER_SPACE),
+        ;
 
 
         private String slotImagePath;

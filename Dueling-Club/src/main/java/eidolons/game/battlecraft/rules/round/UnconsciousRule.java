@@ -223,7 +223,7 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
                 }
             return false;
         } else if (checkUnitDies(unit, getDeathBarrier(unit), true)) {
-            unit.getGame().getManager().unitDies(activeObj, unit, unit, true, false);
+            unit.getGame().getManager().unitDies(activeObj, unit,activeObj.getOwnerObj(),  true, false);
             return false;
         }
         if (unit.isUnconscious()) {

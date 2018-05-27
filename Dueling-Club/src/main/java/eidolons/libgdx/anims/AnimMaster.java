@@ -13,7 +13,6 @@ import eidolons.libgdx.anims.AnimationConstructor.ANIM_PART;
 import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.libgdx.anims.std.BuffAnim;
 import eidolons.libgdx.anims.std.EventAnimCreator;
-import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.system.audio.DC_SoundMaster;
@@ -30,8 +29,8 @@ import main.system.EventCallback;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -48,6 +47,7 @@ public class AnimMaster extends Group {
 
     static private boolean off;
     private static AnimMaster instance;
+    private final FloatTextLayer floatTextLayer;
     //    private   SpriteCache spriteCache;
     DequeImpl<CompositeAnim> leadQueue = new DequeImpl<>(); //if more Action Stacks have been created before leadAnimation is finished
     CompositeAnim leadAnimation; // wait for it to finish before popping more from the queue
@@ -55,7 +55,6 @@ public class AnimMaster extends Group {
     ConcurrentMap<BuffObj, BuffAnim> continuousAnims = new ConcurrentMap<>();
     DequeImpl<Animation> attachedAnims = new DequeImpl<>();
     private AnimController controller;
-    private FloatingTextMaster floatingTextMaster;
     private AnimationConstructor constructor;
     private boolean continuousAnimsOn;
     private Integer showBuffAnimsOnNewRoundLength = 2;
@@ -70,7 +69,6 @@ public class AnimMaster extends Group {
         instance = this;
 //        spriteCache = new SpriteCache();
 //        spriteCache.add();
-        floatingTextMaster = new FloatingTextMaster();
         continuousAnimsOn =
          false;
 //         FAST_DC.getGameLauncher().FAST_MODE ||
@@ -78,6 +76,7 @@ public class AnimMaster extends Group {
 
         constructor =   AnimationConstructor.getInstance();
         controller = new AnimController();
+        addActor(floatTextLayer = new FloatTextLayer());
 //        AnimMaster3d.init();
 //        bindEvents(); now in GridPanel.bindEvents()
 
@@ -143,14 +142,7 @@ public class AnimMaster extends Group {
 
     public void bindEvents() {
         DC_SoundMaster.bindEvents();
-        GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
-            FloatingText floatingText = (FloatingText) p.get();
-//            if (!floatingText.isInitialized())
 
-            floatingText.init();
-            addActor(floatingText);
-
-        });
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {
                 return;
@@ -288,7 +280,7 @@ public class AnimMaster extends Group {
             }
         }
         CompositeAnim parentAnim = null;
-        if (floatingTextMaster.isEventDisplayable(event)) {
+        if (FloatingTextMaster.isEventDisplayable(event)) {
             parentAnim = getParentAnim(event.getRef());
             if (parentAnim != null) {
                 parentAnim.addTextEvent(event);
@@ -531,10 +523,9 @@ public class AnimMaster extends Group {
 
             leadQueue.removeIf((CompositeAnim anim) -> anim.isFinished());
         }
-// ???
-        if (getChildren().size > 0) {
-            super.draw(batch, parentAlpha);
-        }
+
+        super.draw(batch, parentAlpha);
+
     }
 
     private boolean tryDrawAnimation(Batch batch, CompositeAnim anim) {

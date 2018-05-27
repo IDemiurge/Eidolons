@@ -41,6 +41,8 @@ public class Door extends DungeonObj {
 
     @Override
     public boolean isObstructing() {
+        if (isDead())
+            return false;
         if (getState() == DOOR_STATE.OPEN)
             return false;
         return !checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING);
