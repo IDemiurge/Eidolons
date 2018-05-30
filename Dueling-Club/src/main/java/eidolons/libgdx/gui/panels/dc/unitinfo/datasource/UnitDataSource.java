@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.item.DC_ArmorObj;
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.UiMaster;
@@ -12,7 +13,7 @@ import eidolons.libgdx.gui.generic.VerticalValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltip;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
-import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponToolTipDataSource;
+import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.SlotItemToolTipDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.tooltips.Tooltip;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
@@ -299,7 +300,12 @@ public class UnitDataSource implements
 
             WeaponTooltip tooltip = new WeaponTooltip();
 
-            tooltip.setUserObject(new WeaponToolTipDataSource(null ) {
+            tooltip.setUserObject(new SlotItemToolTipDataSource(null ) {
+                @Override
+                public DC_HeroSlotItem getItem() {
+                    return armor;
+                }
+
                 @Override
                 public List<ValueContainer> getMainParams() {
                     return Arrays.stream(ARMOR_TOOLTIP)
@@ -514,7 +520,7 @@ public class UnitDataSource implements
             }
 
             Tooltip tooltip = new WeaponTooltip();
-            tooltip.setUserObject(new WeaponToolTipDataSource(weapon)  );
+            tooltip.setUserObject(new SlotItemToolTipDataSource(weapon)  );
             valueContainer.addListener(tooltip.getController());
         }
         return valueContainer;

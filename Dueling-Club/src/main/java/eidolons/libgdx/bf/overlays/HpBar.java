@@ -58,8 +58,8 @@ public class HpBar extends SuperActor {
     private final int innerWidth;
     BattleFieldObject dataSource;
     Float toughnessDeathBarrier;
-    float displayedToughnessPerc;
-    float displayedEndurancePerc;
+    float displayedToughnessPerc= 1f;
+    float displayedEndurancePerc= 1f;
     FloatActionLimited toughnessAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     FloatActionLimited enduranceAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     boolean labelsDisplayed = true;
@@ -67,7 +67,7 @@ public class HpBar extends SuperActor {
     private Float endurancePerc = 1f;
     private Float previousToughnessPerc = 1f;
     private Float previousEndurancePerc = 1f;
-    private float fullLengthPerc;
+    private float fullLengthPerc=1f;
     private boolean toughnessDeath;
     private TextureRegion barRegion; //TODO can it be static?
     private TextureRegion toughnessBarRegion;
@@ -84,13 +84,13 @@ public class HpBar extends SuperActor {
     public HpBar(BattleFieldObject dataSource) {
         this.dataSource = dataSource;
         barRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "dc",  "unit", "hp bar empty.png"));
+         "dc", "unit", "hp bar empty.png"));
         height = barRegion.getRegionHeight();
 
         toughnessBarRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "dc",  "unit", "hp bar.png"));
+         "dc", "unit", "hp bar.png"));
         enduranceBarRegion = TextureCache.getOrCreateR(StrPathBuilder.build("ui", "components",
-         "dc",  "unit", "hp bar.png"));
+         "dc", "unit", "hp bar.png"));
         innerWidth = enduranceBarRegion.getRegionWidth();
         barImage = new Image(barRegion);
         addActor(barImage);
@@ -101,6 +101,13 @@ public class HpBar extends SuperActor {
         addActor(label_t);
         addActor(label);
         offsetX = barRegion.getRegionWidth() - toughnessBarRegion.getRegionWidth();
+    }
+
+    public static Boolean getHpAlwaysVisible() {
+        if (hpAlwaysVisible == null) {
+            hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
+        }
+        return hpAlwaysVisible;
     }
 
     @Override
@@ -123,12 +130,12 @@ public class HpBar extends SuperActor {
         //TODO queue animation?
 //        main.system.auxiliary.log.LogMaster.log(1, this + ">>>  tries to reset " +
 //         dataSource + " previousToughnessPerc=" + previousToughnessPerc + " previousEndurancePerc=" + previousEndurancePerc + " toughnessPerc=" + toughnessPerc + " endurancePerc=" + endurancePerc);
-
         setToughnessPerc(new Float(dataSource.getIntParam(PARAMS.C_TOUGHNESS))
-         / (dataSource.getIntParam(PARAMS.ENDURANCE))); //not a bug - we want to display this way!
-        setToughnessPerc(((int) (getToughnessPerc() / 0.01f) / new Float(100)));//  toughnessPerc % 0.01f;
-        setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getIntParam(PARAMS.ENDURANCE)));
-        setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
+         / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE))); //not a bug - we want to display this way!
+        setToughnessPerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getToughnessPerc()));//  toughnessPerc % 0.01f;
+        setEndurancePerc(new Float(dataSource.getIntParam(PARAMS.C_ENDURANCE)) / (dataSource.getLastValidParamValue(PARAMS.ENDURANCE)));
+        setEndurancePerc(MathMaster.getFloatWithDigitsAfterPeriod(2, getEndurancePerc()));//  toughnessPerc % 0.01f;
+//        setEndurancePerc(((int) (getEndurancePerc() / 0.01f) / new Float(100)));// endurancePerc % 0.01f;
         if (getToughnessPerc().equals(lastOfferedToughness) &&
          getEndurancePerc().equals(lastOfferedEndurance))
             return;
@@ -152,7 +159,8 @@ public class HpBar extends SuperActor {
         }
         //TODO quick fix
 //        if (ExplorationMaster.isExplorationOn())
-            animateChange(false);
+        animateChange(isAnimated());
+        resetLabel();
     }
 
     public void animateChange() {
@@ -165,39 +173,27 @@ public class HpBar extends SuperActor {
 //             dataSource);
             return;
         }
-        if (getActions().size != 0)
-//        getActions().clear();
-            return;
 //        if (getActions().size != 0)
-//        {
-//            main.system.auxiliary.log.LogMaster.log(1, ">>> hp bar already being animated " +
-//             dataSource);
 //            return;
-//        }
+//        getActions().clear();
+
+
         setVisible(true);
         if (!smooth) {
             displayedEndurancePerc = getEndurancePerc();
 
-            float realPerc = new Float(100*dataSource.getIntParam(PARAMS.C_ENDURANCE) /
-             dataSource.getIntParam(PARAMS.ENDURANCE))/100f ;
-            if (displayedEndurancePerc!=realPerc){
-//                main.system.auxiliary.log.LogMaster.log(1,"HP BAR ENDURANCE PERCENTAGE MISMATCH: " +
-//                 displayedEndurancePerc+
-//                 " VS REAL == " +
-//                 realPerc );
-                displayedEndurancePerc=realPerc;
+            float realPerc = new Float(100 * dataSource.getIntParam(PARAMS.C_ENDURANCE) /
+             dataSource.getIntParam(PARAMS.ENDURANCE)) / 100f;
+            if (displayedEndurancePerc != realPerc) {
+                displayedEndurancePerc = realPerc;
             }
 
             displayedToughnessPerc = getToughnessPerc();
 
-            realPerc = new Float(100*dataSource.getIntParam(PARAMS.C_TOUGHNESS) /
-             dataSource.getIntParam(PARAMS.TOUGHNESS))/100f ;
-            if (displayedToughnessPerc!=realPerc){
-//                main.system.auxiliary.log.LogMaster.log(1,"HP BAR TOUGHNESS PERCENTAGE MISMATCH: " +
-//                 displayedToughnessPerc+
-//                 " VS REAL == " +
-//                 realPerc );
-                displayedToughnessPerc=realPerc;
+            realPerc = new Float(100 * dataSource.getIntParam(PARAMS.C_TOUGHNESS) /
+             dataSource.getIntParam(PARAMS.TOUGHNESS)) / 100f;
+            if (displayedToughnessPerc != realPerc) {
+                displayedToughnessPerc = realPerc;
             }
             return;
         }
@@ -219,7 +215,7 @@ public class HpBar extends SuperActor {
     }
 
     private boolean isAnimated() {
-        return false;
+        return true;
     }
 
     public void initChangeActions(FloatAction floatAction, Float previousPerc, float perc) {
@@ -250,34 +246,35 @@ public class HpBar extends SuperActor {
             label.setVisible(false);
         }
         if (isAnimated() && getActions().size > 0) {
-//            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " WAS " +displayedEndurancePerc);
-            displayedEndurancePerc = MathMaster.minMax(enduranceAction.getValue(),
-             Math.min(previousEndurancePerc, endurancePerc), Math.max(previousEndurancePerc, endurancePerc));
-            displayedToughnessPerc = MathMaster.minMax(toughnessAction.getValue(),
-             Math.min(previousToughnessPerc, toughnessPerc), Math.max(previousToughnessPerc, toughnessPerc));
-//            main.system.auxiliary.log.LogMaster.log(1,displayedToughnessPerc+ " BECAME " +displayedEndurancePerc);
+            displayedEndurancePerc =
+             enduranceAction.getValue();
+            displayedToughnessPerc =
+             toughnessAction.getValue();
+
+            fullLengthPerc = displayedEndurancePerc;
         } else if (!dirty)
             return;
-        if (dataSource.isBeingReset())
-            return;
-        String text = "" + Math.round(dataSource.getIntParam(PARAMS.C_ENDURANCE) )
-         + "/" + dataSource.getIntParam(PARAMS.ENDURANCE);
+//        if (dataSource.isBeingReset())
+//            return;
+//        resetLabel(); now in logic thread!
+        dirty = false;
+
+    }
+
+    private void resetLabel() {
+
+        String text = "" + Math.round(dataSource.getIntParam(PARAMS.C_ENDURANCE))
+         + "/" + dataSource.getLastValidParamValue(PARAMS.ENDURANCE);
         label.setText(text);
 
         text = "" + (dataSource.getIntParam(PARAMS.C_TOUGHNESS) //* displayedToughnessPerc
-        ) + "/" + dataSource.getIntParam(PARAMS.TOUGHNESS);
+        ) + "/" + dataSource.getLastValidParamValue(PARAMS.TOUGHNESS);
         label_t.setText(text);
         fullLengthPerc = displayedEndurancePerc;
         if (getToughnessPerc() <= 0) {
             setToughnessPerc(toughnessDeathBarrier);
             toughnessDeath = true; //diff color?
         }
-        resetLabel();
-        dirty = false;
-
-    }
-
-    private void resetLabel() {
 //        float offset = innerWidth * displayedToughnessPerc / 2;
         label_t.setPosition(0,
 //         offset - label_t.getWidth() / 2,
@@ -299,13 +296,16 @@ public class HpBar extends SuperActor {
         if (color == null) {
             return;
         }
+        if (perc==0)
+            return;
         batch.setColor(color);
         float x = getX() + offsetX;
         if (reverse) {
-            x = x + region.getRegionWidth() * (fullLengthPerc - perc);
+            x = x + region.getRegionWidth()*getScaleX() * (Math.min(1,fullLengthPerc) - Math.min(1,perc));
+//            x = x + region.getRegionWidth() * (  perc-1);
         }
-        batch.draw(region, x, getY(), getScaleX()*region.getRegionWidth(),
-         getScaleY()*region.getRegionHeight());
+        batch.draw(region, x, getY(), getScaleX() * region.getRegionWidth(),
+         getScaleY() * region.getRegionHeight());
     }
 
     @Override
@@ -316,7 +316,7 @@ public class HpBar extends SuperActor {
             return true;
         if (fullLengthPerc == 0) {
             if (isAnimated()) {
-                return true;
+//                return true; TODO why?
             }
             fullLengthPerc = displayedEndurancePerc;
         }
@@ -327,12 +327,7 @@ public class HpBar extends SuperActor {
         return getHpAlwaysVisible() == true;
 
     }
-    public static Boolean getHpAlwaysVisible() {
-        if (hpAlwaysVisible == null) {
-            hpAlwaysVisible = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.HP_BARS_ALWAYS_VISIBLE);
-        }
-        return hpAlwaysVisible;
-    }
+
     public void drawAt(Batch batch, float x, float y) {
         setPosition(x, y);
         resetLabel();
@@ -353,20 +348,20 @@ public class HpBar extends SuperActor {
 //TODO ownership change? team colors reset...
 
         Rectangle scissors = new Rectangle();
-        Rectangle clipBounds = null ;
+        Rectangle clipBounds = null;
 //        if (GridMaster.isHpBarsOnTop() && !queue)
 //        {
 //            Vector2 v = //localToStageCoordinates
 //             (new Vector2(getX(), getY()));
 //            clipBounds =   new Rectangle(v.x , v.y , innerWidth * fullLengthPerc, height);
 //        } else
-        clipBounds =        new Rectangle(getX(), getY(), innerWidth * fullLengthPerc, height);
+        clipBounds = new Rectangle(getX(), getY(), innerWidth * Math.min(1, fullLengthPerc)*getScaleX(), height);
         getStage().calculateScissors(clipBounds, scissors);
         ScissorStack.pushScissors(scissors);
 
         Color color = enduranceColor;
         TextureRegion region = enduranceBarRegion;
-        drawBar(region, batch, displayedEndurancePerc, color, false);
+        drawBar(region, batch,Math.min(1,  displayedEndurancePerc), color, false);
 
         if (toughnessDeath) {
             //setShader
@@ -376,7 +371,7 @@ public class HpBar extends SuperActor {
 //        clipBounds =        new Rectangle(getX(), getY(), innerWidth * displayedToughnessPerc, height);
 //        getStage().calculateScissors(clipBounds, scissors);
 //        ScissorStack.pushScissors(scissors);
-        drawBar(region, batch, displayedToughnessPerc, color, true);
+        drawBar(region, batch,Math.min(displayedEndurancePerc, displayedToughnessPerc), color, true);
 
         batch.flush();
         try {
@@ -491,10 +486,14 @@ public class HpBar extends SuperActor {
     }
 
     public boolean canHpBarBeVisible() {
-    return HpBarManager.canHpBarBeVisible(dataSource);
+        return HpBarManager.canHpBarBeVisible(dataSource);
     }
 
     public boolean isHpBarVisible() {
         return HpBarManager.isHpBarVisible(dataSource);
+    }
+
+    public static boolean isResetOnLogicThread() {
+        return true;
     }
 }

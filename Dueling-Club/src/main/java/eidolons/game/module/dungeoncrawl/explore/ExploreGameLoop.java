@@ -219,6 +219,7 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
               )) {
                 WaitMaster.WAIT(100);
                 waitTime += 100;
+                main.system.auxiliary.log.LogMaster.log(1,"Explore loops waited for anim to draw: " +waitTime);
             }
         }
     }

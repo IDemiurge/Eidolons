@@ -26,7 +26,7 @@ import java.util.List;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
-    public static final float fontSizeAdjustCoef = 0.3f;
+    public static final float fontSizeAdjustCoef = 0.25f;
     private static final int DEFAULT_WIDTH = 1600;
     private static final int DEFAULT_HEIGHT = 900;
     private static final int DEFAULT_WIDTH_FULLSCREEN = 1680;

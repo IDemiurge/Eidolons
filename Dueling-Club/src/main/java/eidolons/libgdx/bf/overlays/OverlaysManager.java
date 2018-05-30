@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.content.PARAMS;
@@ -18,6 +19,8 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.actions.MoveByActionLimited;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.SuperActor;
@@ -58,7 +61,7 @@ public class OverlaysManager extends SuperActor {
     boolean sightInfoDisplayed;
     Map<OVERLAY, Map<Actor, ClickListener>> listenerCaches = new HashMap<>();
     Map<Entity, Map<Rectangle, Tooltip>> tooltipMap = new HashMap<>();
-    Map<Entity, Map<Rectangle, OVERLAY>> overlayMap = new HashMap<>();
+    Map<Entity, Map<OVERLAY, Rectangle>> overlayMap = new HashMap<>();
     private BattleFieldObject observer;
 
     public OverlaysManager(GridPanel gridPanel) {
@@ -74,6 +77,8 @@ public class OverlaysManager extends SuperActor {
     }
 
     public void clearTooltip(Entity e) {
+        main.system.auxiliary.log.LogMaster.log(1, "Removing mapping for " + e
+         + ":\n " + tooltipMap.get(e) + ";\n " + overlayMap.get(e));
         tooltipMap.remove(e);
         overlayMap.remove(e);
     }
@@ -129,11 +134,11 @@ public class OverlaysManager extends SuperActor {
 
             private ImmutablePair<Entity, OVERLAY> getEntityAndOverlay(float x, float y) {
                 for (Entity e : tooltipMap.keySet()) {
-                    Map<Rectangle, OVERLAY> map = overlayMap.get(e);
+                    Map<OVERLAY, Rectangle> map = overlayMap.get(e);
                     if (map != null)
-                        for (Rectangle sub : map.keySet()) {
-                            if (sub.contains(x, y)) {
-                                return new ImmutablePair<>(e, map.get(sub));
+                        for (OVERLAY sub : map.keySet()) {
+                            if (map.get(sub).contains(x, y)) {
+                                return new ImmutablePair<>(e, sub);
                             }
                         }
                 }
@@ -302,7 +307,7 @@ public class OverlaysManager extends SuperActor {
                             drawOverlaysForView(((GenericGridView) c), batch, x, y);
                         else {
                             //TODO grave/corpse???
-                            clearTooltip((Entity) c.getUserObject());
+//                            clearTooltip((Entity) c.getUserObject());
 
                         }
                     }
@@ -321,8 +326,8 @@ public class OverlaysManager extends SuperActor {
         BattleFieldObject obj = actor.getUserObject();
 
         if (actor.getHpBar() != null)
-                if (checkOverlayForObj(HP_BAR, obj, actor))
-                    drawOverlay(actor, HP_BAR, batch, obj, x, y);
+            if (checkOverlayForObj(HP_BAR, obj, actor))
+                drawOverlay(actor, HP_BAR, batch, obj, x, y);
 
         if (checkOverlayForObj(SPOTTED, obj, actor)) {
             drawOverlay(actor, SPOTTED, batch, obj, x, y);
@@ -387,9 +392,9 @@ public class OverlaysManager extends SuperActor {
             }
         Vector2 v = parent.localToStageCoordinates(new Vector2(xPos, yPos));
         drawOverlay(parent, overlay, batch, v);
-
-        addTooltip(obj, parent, overlay, v, x, y);
-
+        if (ActorMaster.getActionsOfClass(parent, MoveByActionLimited.class).size() == 0)
+            if (ActorMaster.getActionsOfClass(parent, MoveToAction.class).size() == 0)
+                addTooltip(obj, parent, overlay, v, x, y);
 
     }
 
@@ -404,6 +409,7 @@ public class OverlaysManager extends SuperActor {
                 map = new HashMap<>();
                 tooltipMap.put(obj, map);
             }
+            rect = getOverlayMap(obj).get(overlay);
             if (rect == null) {
                 rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
                  , getOverlayHeight(overlay, parent));
@@ -413,6 +419,8 @@ public class OverlaysManager extends SuperActor {
                 tooltip = getTooltip(overlay, parent, x, y);
                 if (tooltip != null) {
                     map.put(rect, tooltip);
+                    main.system.auxiliary.log.LogMaster.log(1, "Adding tooltip for "
+                     + obj + ":\n " + tooltip + "Map:\n " + tooltipMap.get(obj));
                 }
             }
         }
@@ -421,19 +429,25 @@ public class OverlaysManager extends SuperActor {
             if (obj == null) {
                 obj = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
             }
-            Map<Rectangle, OVERLAY> map2 = overlayMap.get(obj);
-            if (map2 == null) {
-                map2 = new HashMap<>();
-                overlayMap.put(obj, map2);
-            }
+            Map<OVERLAY, Rectangle> map2 = getOverlayMap(obj);
+            rect = map2.get(overlay);
             if (rect == null) {
                 rect = new Rectangle(v.x, v.y, getOverlayWidth(overlay, parent)
                  , getOverlayHeight(overlay, parent));
             }
-            map2.put(rect, overlay);
+            map2.put(overlay, rect);
         }
 
 
+    }
+
+    private Map<OVERLAY, Rectangle> getOverlayMap(Obj obj) {
+        Map<OVERLAY, Rectangle> map = overlayMap.get(obj);
+        if (map == null) {
+            map = new HashMap<>();
+            overlayMap.put(obj, map);
+        }
+        return map;
     }
 
     private boolean isClickListenerRequired(OVERLAY overlay) {

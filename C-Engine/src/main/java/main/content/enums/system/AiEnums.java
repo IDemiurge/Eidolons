@@ -1,5 +1,6 @@
 package main.content.enums.system;
 
+import main.content.mode.STD_MODES;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -72,11 +73,19 @@ public class AiEnums {
     public enum BEHAVIOR_MODE
      // implements MODE
     {
-        PANIC, CONFUSED, BERSERK {
+        PANIC(STD_MODES.PANIC),
+        CONFUSED(STD_MODES.CONFUSED),
+        BERSERK(STD_MODES.BERSERK) {
         public boolean isDisableCounters() {
             return false;
         }
     };
+
+        BEHAVIOR_MODE(STD_MODES mode) {
+            this.mode = mode;
+        }
+
+        public STD_MODES mode;
 
         public String getName() {
             return StringMaster.getWellFormattedString(name());

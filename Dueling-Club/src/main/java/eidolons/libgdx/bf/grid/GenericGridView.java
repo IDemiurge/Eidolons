@@ -128,12 +128,13 @@ public class GenericGridView extends UnitView {
 
     public void updateRotation(int val) {
         if (arrow != null) {
-//            arrow.setOrigin(0  , getHeight()/2  );
-//            arrow.setOrigin(getWidth()/2-arrow.getWidth()  , getHeight()/2  );
-//            arrow.setOrigin(0  , 0  );
-            ActorMaster.addRotateByAction(arrow, arrowRotation, val % 360 + 90);
+           val= val % 360;
+            if (isVisible())
+            ActorMaster.addRotateByAction(arrow, arrowRotation, val  + 90);
+            else
+                arrow.setRotation(val   + 90);
             arrowRotation = val + 90;
-//            arrow.setRotation(arrowRotation);
+
         }
     }
 

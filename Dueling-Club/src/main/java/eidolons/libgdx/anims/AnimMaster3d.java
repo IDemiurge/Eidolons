@@ -55,6 +55,8 @@ public class AnimMaster3d {
 //     {"halbert", "axe"},
 
      {"golem fist", "armored fist"},
+     {"tail", "insect claws"},
+     {"tentacle", "insect claws"},
 //     {"lance", "spear"},
 //     {"pike", "spear"},
 //     {"staff", "spear"},

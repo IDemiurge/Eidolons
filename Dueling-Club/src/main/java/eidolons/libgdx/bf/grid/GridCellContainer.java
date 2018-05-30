@@ -142,7 +142,19 @@ public class GridCellContainer extends GridCell {
         return true;
     }
 
-    public final float getViewX(float perImageOffsetX, int i) {
+    public final float getViewX(  GridUnitView view) {
+        return getViewX(getUnitViews(true).indexOf(view));
+    }
+    public final float getViewY(  GridUnitView view) {
+        return getViewY(getUnitViews(true).indexOf(view), getUnitViewCount());
+    }
+        public final float getViewX(  int i) {
+        return getViewX(getUnitViewOffset(), i);
+    }
+    public final float getViewY(  int i,int n) {
+        return getViewY(getUnitViewOffset(), i, n);
+    }
+        public final float getViewX(float perImageOffsetX, int i) {
         return perImageOffsetX * i;
     }
 

@@ -377,6 +377,30 @@ public class CONTENT_CONSTS2 {
     }
 
     public enum EMITTER_PRESET {
+        IMPACT_demonology,
+        IMPACT_scare,
+        IMPACT_psychic,
+
+
+
+        CAST_darkness,
+        CAST_black_hand,
+        CAST_black_hand2,
+        CAST_black_hand3,
+        CAST_blindness,
+
+        CAST_dark_shapes,
+
+        CAST_drain_focus,
+        CAST_drain_focus2,
+        CAST_drain_focus3,
+
+        CAST_celestial1,
+        CAST_celestial2,
+        CAST_celestial3,
+
+
+
         DARK_MIST("mist\\dark mist"),
         DARK_MIST_LITE("mist\\dark mist2 light"),
         SMOKE_TEST("Smoke_Test1.pt"),
@@ -410,6 +434,12 @@ public class CONTENT_CONSTS2 {
         MIST_BLACK("black mist\\clouds wind light2");
         public String path;
 
+        EMITTER_PRESET() {
+            String[] parts = name().split("_");
+            String realName = name().replace(parts[0], "").replace("_", " ").trim();
+            this.path = StrPathBuilder.build(
+            parts[0], realName);
+        }
         EMITTER_PRESET(String path) {
             this.path = path;
         }

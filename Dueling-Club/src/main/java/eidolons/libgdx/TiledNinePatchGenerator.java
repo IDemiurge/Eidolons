@@ -68,11 +68,9 @@ public class TiledNinePatchGenerator implements ApplicationListener {
 
       return   generate(
        TextureCache.getOrCreate(partPath + "top.png"),
-       TextureCache.getOrCreate(partPath + "top.png"),
-//         TextureCache.getOrCreate(partPath + "bottom.png"),
+         TextureCache.getOrCreate(partPath + "bottom.png"),
        TextureCache.getOrCreate(partPath + "right.png"),
-       TextureCache.getOrCreate(partPath + "right.png"),
-//         TextureCache.getOrCreate(partPath + "left.png"),
+         TextureCache.getOrCreate(partPath + "left.png"),
 
          TextureCache.getOrCreate(partPath + "corner1.png"),
          TextureCache.getOrCreate(partPath + "corner2.png"),
@@ -238,6 +236,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
 
     public enum NINE_PATCH {
         SAURON(-16, 60, -16, -34),
+        FRAME(),
         DEMIURGE,
         LIGHT,;
         String path = StrPathBuilder.build(PathFinder.getComponentsPath(),

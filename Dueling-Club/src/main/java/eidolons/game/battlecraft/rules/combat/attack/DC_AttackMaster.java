@@ -14,6 +14,7 @@ import eidolons.game.battlecraft.rules.combat.damage.DamageFactory;
 import eidolons.game.battlecraft.rules.combat.misc.CleaveRule;
 import eidolons.game.battlecraft.rules.combat.misc.InjuryRule;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
+import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.master.EffectMaster;
 import eidolons.system.audio.DC_SoundMaster;
@@ -318,8 +319,7 @@ public class DC_AttackMaster {
             final_amount = calculator.calculateFinalDamage();
         }
         // TODO different for multiDamageType
-        if (CoreEngine.isPhaseAnimsOn())
-        {
+        if (CoreEngine.isPhaseAnimsOn()) {
 //         TODO    PhaseAnimator.getInstance().initAttackAnimRawDamage(attack);
         }
 
@@ -368,9 +368,10 @@ public class DC_AttackMaster {
         if (!attacked.isDead())
             if (attackedUnit != null)
                 if (attackedUnit.getOffhandWeapon() != null) {
+                    int blocked = 0;
                     if (attackedUnit.getOffhandWeapon().isShield()) {
                         if (!attack.isSneak()) {// && !isCounter) {
-                            int blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attackedUnit,
+                             blocked = game.getArmorMaster().getShieldDamageBlocked(final_amount, attackedUnit,
                              attacker, action, getAttackWeapon(ref, attack.isOffhand()),
                              attack.getDamageType());
                             final_amount -= blocked;
@@ -388,6 +389,12 @@ public class DC_AttackMaster {
                             }
 
                         }
+                    }
+                    //SHIELD ONLY!
+                    if (blocked > 0) {
+                        int durabilityLost = DurabilityRule.damageDealt(
+                         blocked, attackedUnit.getOffhandWeapon(), dmg_type, attacker
+                          .getActiveWeapon(offhand), final_amount, attacked);
                     }
                 }
         // armor penetration?

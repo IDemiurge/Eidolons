@@ -2,8 +2,11 @@ package eidolons.libgdx.audio;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.system.sound.Player;
 import main.system.sound.SoundFx;
+import main.system.sound.SoundMaster.SOUNDS;
 
 import java.util.Stack;
 
@@ -21,7 +24,50 @@ public class SoundPlayer extends Player {
         this.dungeonScreen = dungeonScreen;
 
     }
+    public enum SOUND_TYPE{
+        VOICE,
+    }
+    protected SOUND_TYPE getSoundType(SOUNDS sound_type) {
+        switch (sound_type) {
+            case ATTACK:
+            case HIT:
+            case WHAT:
+            case FLEE:
+            case TAUNT:
+            case THREAT:
+            case DEATH:
+            case READY:
+            case FAIL:
+            case CHANNELING:
+            case W_CHANNELING:
+            case FALL:
+                return SOUND_TYPE.VOICE;
 
+        }
+        return null ;
+    }
+        protected boolean checkSoundTypeOff(SOUNDS sound) {
+            SOUND_TYPE sound_type = getSoundType(sound);
+            if (sound_type!=null )
+        switch (sound_type) {
+            case VOICE:
+                return OptionsMaster.getSoundOptions().
+                 getBooleanValue(SOUND_OPTION.VOICE_OFF);
+
+        }
+        return false;
+    }
+    protected int checkAdditionalVolume(SOUNDS sound) {
+        SOUND_TYPE sound_type = getSoundType(sound);
+        if (sound_type!=null )
+            switch (sound_type) {
+                case VOICE:
+                    return OptionsMaster.getSoundOptions().
+                     getIntValue(SOUND_OPTION.VOICE_VOLUME);
+
+            }
+        return 100;
+    }
     @Override
     public int getVolume() {
 //        OptionsMaster.get

@@ -27,9 +27,10 @@ public interface StageWithClosable {
         } else ((Actor) closable).setVisible(false);
         if (ExplorationMaster.isExplorationOn() || AI_Manager.isRunning())
             if (closable instanceof Blocking) {
-//            GuiEventManager.trigger(GuiEventType.GAME_RESUMED);
+                if (((Blocking) closable).isPausing())
                 if (DC_Game.game != null)
                     DC_Game.game.getLoop().setPaused(false, false);
+
             }
         setDisplayedClosable(null);
     }
@@ -41,7 +42,6 @@ public interface StageWithClosable {
         if (this instanceof Stage) {
             ((Stage) this).setScrollFocus((Actor) closable);
         }
-
         setDisplayedClosable(closable);
 
         if (closable instanceof GroupX) {
@@ -49,8 +49,8 @@ public interface StageWithClosable {
         } else ((Actor) closable).setVisible(true);
         if (ExplorationMaster.isExplorationOn() || AI_Manager.isRunning())
             if (closable instanceof Blocking) {
-//            GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
-                if (DC_Game.game != null)
+                if (((Blocking) closable).isPausing())
+                    if (DC_Game.game != null)
                     if (DC_Game.game.getLoop() != null) {
                         DC_Game.game.getLoop().setPaused(true, false);
                         return;

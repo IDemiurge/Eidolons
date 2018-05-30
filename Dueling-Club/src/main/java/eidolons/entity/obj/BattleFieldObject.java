@@ -513,7 +513,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
             removeStatus(STATUS.SNEAKING);
         this.sneaking = sneaking;
     }
-
+    public boolean isValidMapStored(PARAMETER p) {
+        if (p== PARAMS.ENDURANCE)
+            return true;
+        if (p== PARAMS.TOUGHNESS)
+            return true;
+        return false;
+    }
     public int getMaxVisionDistance() {
         if (maxVisionDistance == 0)
             maxVisionDistance = getIntParam(PARAMS.SIGHT_RANGE) * 2 + 1;

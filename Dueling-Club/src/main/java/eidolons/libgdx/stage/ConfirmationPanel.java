@@ -28,12 +28,14 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     private static ConfirmationPanel instance;
     private boolean canCancel;
     private Runnable onConfirm;
+    private Runnable onCancel;
     private String text;
     private InputProcessor bufferedController;
 
     Label label;
     TextButtonX ok;
     TextButtonX cancel;
+    private boolean result;
 
     private ConfirmationPanel() {
         setBackground(NinePatchFactory.getLightPanelFilledDrawable());
@@ -52,7 +54,9 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         setVisible(false);
 
     }
-
+    public boolean isPausing(){
+        return false;
+    }
     private Integer getFontSize() {
         return 20;
     }
@@ -76,12 +80,6 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
             ShaderMaster.drawWithCustomShader(this, batch, null );
     }
 
-    @Override
-    public void close() {
-//        Eidolons.getScreen().updateInputController();
-        getStageWithClosable().closeClosable(this);
-        Gdx.input.setInputProcessor(bufferedController);
-    }
 
     @Override
     public void open() {
@@ -136,16 +134,25 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         return false;
     }
 
+    @Override
+    public void close() {
+//        Eidolons.getScreen().updateInputController();
+        getStageWithClosable().closeClosable(this);
+        Gdx.input.setInputProcessor(bufferedController);
+        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, result);
+    }
     private void ok() {
+        result = true;
         close();
         if (onConfirm!=null )
             onConfirm.run();
-        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, true);
     }
 
     private void cancel() {
+        result = false;
         close();
-        WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, false);
+        if (onCancel!=null )
+            onCancel.run();
     }
 
     @Override
@@ -176,5 +183,9 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    public void setOnCancel(Runnable onCancel) {
+        this.onCancel = onCancel;
     }
 }

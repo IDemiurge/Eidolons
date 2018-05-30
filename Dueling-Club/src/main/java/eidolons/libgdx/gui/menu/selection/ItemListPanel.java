@@ -1,17 +1,21 @@
 package eidolons.libgdx.gui.menu.selection;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
-import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
@@ -19,7 +23,6 @@ import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
-import main.system.math.MathMaster;
 
 import java.util.*;
 
@@ -38,16 +41,22 @@ public abstract class ItemListPanel extends TablePanel {
 
     public ItemListPanel() {
         super();
-        //scroll?
-//     TODO    setBackground(new NinePatchDrawable(NinePatchFactory.getMainMenuFrame()));
-        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
-        setHeight(MathMaster.minMax(GdxMaster.getHeight(), 700, 900));
-//        scrollPanel = new ScrollPanel();
-//        scrollPanel.setSize();
-//        addActor(scrollPanel);
+        initBg();
 
     }
 
+    protected void initBg() {
+//        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
+
+        TextureRegion generated=new TextureRegion(
+         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
+          BACKGROUND_NINE_PATCH.SEMI,
+          (int) GdxMaster.adjustSize(410)
+          ,   GdxMaster.getHeight()*6/7));
+        setSize(generated.getRegionWidth(), generated.getRegionHeight());
+        setFixedSize(true);
+        setBackground(new TextureRegionDrawable(generated));
+    }
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);

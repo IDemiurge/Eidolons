@@ -71,7 +71,7 @@ public class PathFinder {
         RES_PATH = RES_FOLDER_NAME + File.separator;
         IMG_PATH = ENGINE_PATH + RES_PATH + "img" + StringMaster.getPathSeparator();
 
-        main.system.auxiliary.log.LogMaster.log(1, "IMG_PATH PATH= " + IMG_PATH);
+        System.out.println(  "IMG_PATH PATH= " + IMG_PATH);
         SND_PATH = ENGINE_PATH + RES_PATH + "sound" + StringMaster.getPathSeparator();
 
         FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts" + StringMaster.getPathSeparator();
@@ -353,10 +353,22 @@ public class PathFinder {
          "value icons", "perks") + StringMaster.getPathSeparator();
     }
 
-    public static String getItemIconPath() {
+    public static String getWeaponIconPath() {
         return StrPathBuilder.build("main",
          "item",
          "weapon",
+         "icons");
+    }
+    public static String getJewelryIconPath() {
+        return StrPathBuilder.build("main",
+         "item",
+         "Jewelry",
+         "icons");
+    }
+    public static String getArmorIconPath() {
+        return StrPathBuilder.build("main",
+         "item",
+         "armor",
          "icons");
     }
 }

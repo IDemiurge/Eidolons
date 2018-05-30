@@ -28,8 +28,14 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         return GAMEPLAY_OPTION.class;
     }
 
-    public enum GAMEPLAY_OPTION implements Options.OPTION {
-        RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
+    public enum LOGGING_DETAIL_LEVEL  {
+        FULL,
+        ESSENTIAL,
+        CONCISE,
+        DEV,
+        ;
+    }
+        public enum GAMEPLAY_OPTION implements Options.OPTION {   RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),
 
         //        AI_SPEED,
@@ -39,6 +45,7 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         RANDOM_HERO(false),
         MANUAL_CONTROL(false),
         DEBUG_MODE(false),
+            LOG_DETAIL_LEVEL(LOGGING_DETAIL_LEVEL.values()),
 
         INFO_DETAIL_LEVEL(INFO_LEVEL.values()),
         DEFAULT_WAIT_TIME(60, 10, 300),
@@ -46,7 +53,8 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
         ATB_WAIT_TIME(5, 0, 10)
         , SHUFFLE_LEVELS(false)
         , REVERSE_LEVELS(false),
-        GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300), NEXT_SCENARIO_INDEX(0,0,6);
+        GHOST_MODE(false), AI_TIME_LIMIT_MOD(100, 10, 300), NEXT_SCENARIO_INDEX(0,0,6),
+        IMMORTALITY(false);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

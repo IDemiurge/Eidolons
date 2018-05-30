@@ -29,9 +29,11 @@ public enum STD_MODES implements MODE {
 
     PRAYER(true, true, true, "C_MORALE", "(max(100, {SOURCE_PRAYER_MOD})/100*("
      + Formulas.PRAYER_CONST + "+{SOURCE_PRAYER_BONUS})"), // {ACTIVE_something}
-
-    NORMAL(false, false, false),
-    COWER(true, true, true);
+    COWER(true, true, true),
+    PANIC(false, true, false),
+    CONFUSED(false, true, false),
+    BERSERK(false, false, false),
+    NORMAL(false, false, false);
 
     private static final String DEFAULT_ATB_PERIOD="0.25";
 

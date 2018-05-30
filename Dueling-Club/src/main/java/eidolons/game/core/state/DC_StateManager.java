@@ -73,6 +73,10 @@ public class DC_StateManager extends StateManager {
         return keeper;
     }
 
+    public boolean isResetting() {
+        return resetting;
+    }
+
     @Override
     public void resetAllSynchronized() {
         if (!resetting) {
@@ -81,11 +85,13 @@ public class DC_StateManager extends StateManager {
                 if (!resetting) {
                     resetAll();
                     if (DC_Engine.isAtbMode()) {
-//                        getGame().getTurnManager().getAtbController().processAtbRelevantEvent();
                     }
                     resetting = false;
                 }
-            } finally {
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace( e);
+
+        } finally {
                 resetLock.unlock();
             }
         }
@@ -109,11 +115,13 @@ public class DC_StateManager extends StateManager {
 
 
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
-            if (getGame().getDungeonMaster().getExplorationMaster().getResetter().isFirstResetDone()) {
+            if (getGame().getDungeonMaster().getExplorationMaster().
+             getResetter().isResetNotRequired()) {
                 getGame().getBfObjects().forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
                 triggerOnResetGuiEvents();
                 return;
-            } else getGame().getDungeonMaster().getExplorationMaster().getResetter().setFirstResetDone(true);
+            } else
+                getGame().getDungeonMaster().getExplorationMaster().getResetter().setResetNotRequired(true);
 
         }
         super.resetAllSynchronized();

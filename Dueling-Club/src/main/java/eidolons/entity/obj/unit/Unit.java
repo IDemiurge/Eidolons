@@ -32,6 +32,7 @@ import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
+import eidolons.system.test.Debugger;
 import main.ability.AbilityObj;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.CONTENT_CONSTS.DYNAMIC_BOOLS;
@@ -76,6 +77,7 @@ import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
+import main.system.math.MathMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -253,7 +255,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public void addQuickItem(DC_QuickItemObj itemObj) {
-        if (getQuickItems()==null )
+        if (getQuickItems() == null)
             setQuickItems(new DequeImpl<>());
         getQuickItems().add(itemObj);
         itemObj.setRef(ref);
@@ -281,6 +283,37 @@ public class Unit extends DC_UnitModel {
     @Override
     public void reset() {
         super.reset();
+    }
+
+    @Override
+    protected void putParameter(PARAMETER param, String value) {
+        if (isPlayerCharacter()) {
+            Integer integer = StringMaster.getInteger(value);
+            if (param.getName().contains("Percentage")) {
+                if (integer < 0) {
+                    return;
+                }
+                if (integer > MathMaster.MAX_REASONABLE_PERCENTAGE) {
+                    return;
+                }
+            }
+            if (param.isDynamic()) {
+                if (integer < 0) {
+                    if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
+                        if (!CoreEngine.isJar() ||
+                         Debugger.isImmortalityOn())
+                            return;
+                }
+            }
+        }
+        if (isValidMapStored(param))
+            if (!getGame().getState().getManager().isResetting())
+            //this is gross!
+            if (!isBeingReset()){
+                    getValidParams().put(param, StringMaster.getInteger(value));
+                }
+
+        super.putParameter(param, value);
     }
 
     public String getDynamicInfo() {
@@ -535,7 +568,8 @@ public class Unit extends DC_UnitModel {
     public int getQuickSlotsMax() {
         return getIntParam(PARAMS.QUICK_SLOTS);
     }
-        public int getRemainingQuickSlots() {
+
+    public int getRemainingQuickSlots() {
         if (quickItems == null) {
             return getQuickSlotsMax();
         }
@@ -881,9 +915,8 @@ public class Unit extends DC_UnitModel {
         boolean result = removeJewelryItem(item);
         if (!result)
             if (item instanceof DC_QuickItemObj)
-                result =removeQuickItem((DC_QuickItemObj) item);
-        if (result)
-        {
+                result = removeQuickItem((DC_QuickItemObj) item);
+        if (result) {
             addItemToInventory(item);
             if (drop) {
                 dropItemFromInventory(item);

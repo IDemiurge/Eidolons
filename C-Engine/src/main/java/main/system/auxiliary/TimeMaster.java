@@ -218,7 +218,7 @@ public class TimeMaster {
         return timeStamp ;
     }
         public static String getTimeStamp() {
-        return TimeMaster.getFormattedDate(true) +
+        return TimeMaster.getFormattedDate(false) +
          " " +
          TimeMaster.getFormattedTime(false, true);
 

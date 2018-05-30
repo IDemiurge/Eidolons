@@ -11,15 +11,18 @@ import java.util.List;
  */
 public class ExceptionMaster {
 
-   static   List<String> printed = new ArrayList<>();
-    public static void printStackTrace(Exception e) {
-        if (!CoreEngine.isExe())
-        {
-            if (printed.contains(e.getMessage()))
-                return;
-            LogMaster.getExceptionList().add(e);
+    static List<String> printed = new ArrayList<>();
 
-                printed.add(e.getMessage());
+    public static void printStackTrace(Exception e) {
+//
+        {
+            if (CoreEngine.isJar())
+                if (printed.contains(e.getMessage()))
+                    return;
+            LogMaster.getExceptionList().add(e);
+            LogMaster.logException(e);
+
+            printed.add(e.getMessage());
             e.printStackTrace();
         }
 //        else

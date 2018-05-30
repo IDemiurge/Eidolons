@@ -219,6 +219,8 @@ public class AtbController implements Comparator<Unit> {
                 return;
         }
         addUnit(new AtbUnitImpl(this, unit));
+        unit.getGame().fireEvent(new Event(
+         STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT, unit.getRef()));
     }
 
     public void removeUnit(Unit unit) {

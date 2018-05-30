@@ -46,8 +46,8 @@ public class SoundController {
 
     public static String getCustomEventSound(SOUND_EVENT e) {
         switch (e) {
-            case RADIAL_CLOSED:
-                return STD_SOUNDS.ACTION_CANCELLED.getPath();
+//            case RADIAL_CLOSED:
+//                return STD_SOUNDS.ACTION_CANCELLED.getPath();
         }
         return null;
     }

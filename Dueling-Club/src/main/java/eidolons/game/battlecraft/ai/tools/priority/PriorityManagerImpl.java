@@ -100,6 +100,7 @@ import java.util.*;
  */
 public class PriorityManagerImpl extends AiHandler implements PriorityManager {
 
+    private static final boolean FIRST_SPELL_MAX_PRIORITY = true;
     private Unit unit;
     private UnitAI unit_ai;
     private float modifier;
@@ -413,6 +414,10 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
                 break;
 
         }
+        if (FIRST_SPELL_MAX_PRIORITY)
+            if (!getUnitAi().getUsedActions().contains(action.getActive())){
+                priority=  (priority+50)*100;
+            }
         if (getUnit().getAiType().isCaster()) {
             priority *= 3;
         }
@@ -1343,7 +1348,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         if (mod == 0) {
             return (less_or_more_for_health ? 0 : 100);
         }
-        int profileMod = ((int) getConstValue(getUnit().isHostileTo((DC_Player) targetObj.getOwner())
+        int profileMod =100* ((int) getConstValue(getUnit().isHostileTo((DC_Player) targetObj.getOwner())
          ? AiConst.ENEMY_PRIORITY_HEALTH
          : AiConst.ALLY_PRIORITY_HEALTH));
         if (less_or_more_for_health) {

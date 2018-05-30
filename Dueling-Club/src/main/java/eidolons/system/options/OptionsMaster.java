@@ -8,16 +8,19 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionRule;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
+import eidolons.libgdx.anims.FloatTextLayer;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.screens.GameScreen;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_VARIANT;
@@ -65,15 +68,18 @@ public class OptionsMaster {
             ANIMATION_OPTION key = animOptions.getKey((sub.toString()));
             String value = animOptions.getValue(key);
             boolean booleanValue = animOptions.getBooleanValue(key);
-            if (StringMaster.isInteger(value)) {
-                Integer intValue = StringMaster.getInteger(value);
+            Integer intValue = animOptions.getIntValue(key);
+            float floatValue=new Float(intValue) / 100;
+
                 switch (key) {
                     case SPEED:
                         AnimMaster.getInstance().setAnimationSpeedFactor(
-                         new Float(intValue) / 100);
-                }
-            } else {
-                switch (key) {
+                         floatValue);
+                        break;
+                    case FLOAT_TEXT_DURATION_MOD:
+                        FloatTextLayer.setDurationMod(floatValue );
+                        break;
+
                     case WEAPON_3D_ANIMS_OFF:
                         AnimMaster3d.setOff(booleanValue);
                         break;
@@ -88,10 +94,6 @@ public class OptionsMaster {
                         AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
                         break;
 
-                    case SPEED:
-                        break;
-                    case TEXT_DURATION:
-                        break;
                     case PRECAST_ANIMATIONS:
                         break;
                     case CAST_ANIMATIONS:
@@ -99,6 +101,7 @@ public class OptionsMaster {
                     case AFTER_EFFECTS_ANIMATIONS:
                         break;
                     case HIT_ANIM_DISPLACEMENT:
+                        HitAnim.setDisplacementOn(booleanValue);
                         break;
                 }
 
@@ -106,7 +109,6 @@ public class OptionsMaster {
 
 
         }
-    }
 
     private static void applyControlOptions(ControlOptions options) {
         for (Object sub : options.getValues().keySet()) {
@@ -114,14 +116,34 @@ public class OptionsMaster {
              retrieveEnumConst(CONTROL_OPTION.class,
               options.getValues().get(sub).toString());
             CONTROL_OPTION key = options.getKey((sub.toString()));
+            if (key==null )
+                continue;
             String value = options.getValue(key);
+            int intValue = options.getIntValue(key);
             boolean booleanValue = options.getBooleanValue(key);
-            if (!StringMaster.isInteger(value)) {
+            float floatValue=new Float(intValue)/100;
                 switch (key) {
+                    case ZOOM_STEP:
+                        InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
+                        break;
+                    case UNLIMITED_ZOOM:
+                        InputController.setUnlimitedZoom(booleanValue);
+                        break;
+//                    case DRAG_OFF:
+//                        InputController.setDragOff(booleanValue);
+//                        break;
+                    case AUTO_CENTER_CAMERA_ON_HERO:
+                        DungeonScreen.setCameraAutoCenteringOn(booleanValue);
+                        break;
                     case ALT_MODE_ON:
                         BattleClickListener.setAltDefault(booleanValue);
+                        break;
+                    case CAMERA_FOLLOW_CURSOR_DISTANCE:
+                        break;
+                    case CENTER_CAMERA_DISTANCE_MOD:
+                        GameScreen.setCameraPanMod(floatValue);
+                        break;
                 }
-            }
     }
     }
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
@@ -242,24 +264,19 @@ public class OptionsMaster {
                 GenericLauncher launcher = Eidolons.getLauncher();
                 launcher.setForegroundFPS(Integer.valueOf(value));
                 break;
-            case AUTO_CAMERA:
-                DungeonScreen.setCameraAutoCenteringOn(bool);
-                break;
             case AMBIENCE:
                 ParticleManager.setAmbienceOn(bool);
                 break;
             case FULLSCREEN:
-                Eidolons.setFullscreen(bool);
+                if (Eidolons.getScope()== SCOPE.MENU)
+                    Eidolons.setFullscreen(bool);
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
                 ParticleManager.setAmbienceMoveOn(
                  bool);
                 break;
             case RESOLUTION:
-                Eidolons.setResolution(value);
-                break;
-            case ZOOM_STEP:
-                InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
+                    Eidolons.setResolution(value);
                 break;
         }
     }
@@ -479,7 +496,7 @@ public class OptionsMaster {
     private static void autoAdjustOptions(OPTIONS_GROUP group,  Options options) {
         switch (group){
             case GRAPHICS:
-                options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolution());
+                options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolutionString());
                 break;
         }
     }

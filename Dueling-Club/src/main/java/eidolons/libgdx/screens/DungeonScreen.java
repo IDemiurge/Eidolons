@@ -31,8 +31,10 @@ import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
+import eidolons.libgdx.utils.ActTimer;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
@@ -56,13 +58,15 @@ public class DungeonScreen extends GameScreen {
     protected static float FRAMERATE_DELTA_CONTROL =
      new Float(1) / GenericLauncher.FRAMERATE * 3;
     protected static DungeonScreen instance;
-    protected static boolean cameraAutoCenteringOn = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.AUTO_CAMERA);
+    protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
+     getBooleanValue(CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
 
 
     protected ParticleManager particleManager;
     protected StageX gridStage;
     protected GridPanel gridPanel;
     private boolean blocked;
+    private ActTimer cameraTimer;
 
     public static void setFramerateDeltaControl(float framerateDeltaControl) {
         FRAMERATE_DELTA_CONTROL = framerateDeltaControl;
@@ -166,7 +170,7 @@ public class DungeonScreen extends GameScreen {
 
     @Override
     protected void afterLoad() {
-        try {
+
             cam = (OrthographicCamera) viewPort.getCamera();
             controller = new DungeonInputController(cam);
             particleManager = new ParticleManager();
@@ -179,9 +183,7 @@ public class DungeonScreen extends GameScreen {
 
             final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
             gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager);
         try {
@@ -191,6 +193,13 @@ public class DungeonScreen extends GameScreen {
         }
         bindEvents();
 
+        cameraTimer= new ActTimer(2, ()-> {
+            if (isCameraAutoCenteringOn())
+            if (Eidolons.getGame().getManager(). checkAutoCameraCenter())
+            {
+                centerCameraOn(Eidolons.getMainHero());
+            }
+        });
         try {
 
             Unit unit = null;
@@ -219,7 +228,10 @@ public class DungeonScreen extends GameScreen {
         getGuiStage().getBottomPanel().update();
         checkGraphicsUpdates();
     }
-
+    public void cameraStop() {
+       super.cameraStop();
+       cameraTimer.reset();
+    }
     @Override
     protected InputMultiplexer getInputController() {
         InputMultiplexer current;
@@ -255,9 +267,8 @@ public class DungeonScreen extends GameScreen {
     public void renderMain(float delta) {
         guiStage.act(delta);
         gridStage.act(delta);
-
         blocked = checkBlocked();
-
+        cameraTimer.act(delta);
         cameraShift();
         //cam.update();
         if (canShowScreen()) {
@@ -388,10 +399,12 @@ public class DungeonScreen extends GameScreen {
         gridStage.getRoot().setSize(width, height);
 //        guiStage.getRoot().setSize(width, height);
         gridStage.getViewport().update(width, height);
+//        guiStage.setViewport(new ScreenViewport(new OrthographicCamera(width, height)));
         guiStage.getViewport().update(width, height);
+//        getGuiStage().getGuiVisuals().resized();
 
-        BattleGuiStage.camera.viewportWidth=width;
-        BattleGuiStage.camera.viewportHeight=height;
+//        BattleGuiStage.camera.viewportWidth=width;
+//        BattleGuiStage.camera.viewportHeight=height;
     }
 
     public GridPanel getGridPanel() {
@@ -419,11 +432,14 @@ public class DungeonScreen extends GameScreen {
     }
 
     public void centerCameraOn(BattleFieldObject hero) {
-        if (isCameraAutoCenteringOn()) {
+        centerCameraOn(hero, null );
+    }
+        public void centerCameraOn(BattleFieldObject hero, Boolean force) {
             Coordinates coordinatesActiveObj =
              hero.getCoordinates();
             Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
-            cameraPan(unitPosition);
-        }
+            cameraPan(unitPosition,force);
+
+
     }
 }

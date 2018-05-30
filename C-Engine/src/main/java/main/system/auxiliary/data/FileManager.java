@@ -377,10 +377,14 @@ public class FileManager {
         return files;
     }
 
-    public static void appendToTextFile(String content, String path, String fileName) {
-        String filePath = path + "\\" + fileName;
-        String prevContent = readFile(filePath);
-        write(prevContent + content, filePath);
+    public static void appendToTextFile(String content, String path,
+                                        String fileName) {
+        String fullPath = path + "\\" + fileName;
+        appendToTextFile(content, fullPath);
+    }
+        public static void appendToTextFile(String content, String fullPath) {
+        String prevContent = readFile(fullPath);
+        write(prevContent + content, fullPath);
     }
 
     public static boolean write(String content, String filepath) {

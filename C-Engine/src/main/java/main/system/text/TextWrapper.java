@@ -1,5 +1,6 @@
 package main.system.text;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.text.WordUtils;
@@ -47,5 +48,18 @@ public class TextWrapper {
             else result += sub;
         }
         return result;
+    }
+
+    public static String processText(int width, String text, LabelStyle style ) {
+        if (text.isEmpty())
+            return "";
+        String newText = "";
+        int maxLength = (int) (width / style.font.getSpaceWidth());
+        for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
+            if (substring.length()>maxLength)
+                substring = wrapWithNewLine(substring, maxLength);
+            newText += substring+ StringMaster.NEW_LINE;
+        }
+        return newText.substring(0, newText.length()-1);
     }
 }

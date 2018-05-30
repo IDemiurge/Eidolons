@@ -31,7 +31,16 @@ public class UnitTrainingMaster {
         if (FAST_DC.isRunning())
             return;
         if (CoreEngine.isFastMode())
+        {
+            if (isSpellsOn()) {
+                try {
+                    UnitLibrary.learnSpellsForUnit(unit);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
             return;
+        }
         if (DC_Engine.isTrainingOff())
             return;
 //        if (!FAST_DC.getLauncher().getFAST_MODE()) {

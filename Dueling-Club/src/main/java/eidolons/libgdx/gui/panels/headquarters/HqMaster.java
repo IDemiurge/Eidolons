@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -32,9 +33,15 @@ public class HqMaster {
         List<HqHeroDataSource> list = new ArrayList<>();
 
         for (Unit sub : members) {
-            list.add(new HqHeroDataSource(HqDataMaster.createAndSaveInstance(
+            list.add(new HqHeroDataSource(
+             HqDataMaster.createAndSaveInstance(
              sub).getHeroModel()));
 
+        }
+        if (list.isEmpty()){
+            list.add(new HqHeroDataSource(
+             HqDataMaster.createAndSaveInstance(
+              Eidolons.getMainHero()).getHeroModel()));
         }
         GuiEventManager.trigger(GuiEventType.SHOW_HQ_SCREEN, list);
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);

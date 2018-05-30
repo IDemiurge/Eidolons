@@ -33,10 +33,13 @@ import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.PanelActionsDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.shaders.GrayscaleShader;
+import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import eidolons.system.test.Debugger;
 import eidolons.system.text.HelpMaster;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
@@ -81,6 +84,7 @@ public class GridPanel extends Group {
     private OverlaysManager overlayManager;
     private GridUnitView mainHeroView;
     private float resetTimer;
+    private GridManager manager;
 
     public GridPanel(int cols, int rows) {
         this.cols = cols;
@@ -89,7 +93,7 @@ public class GridPanel extends Group {
 
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
         this.viewMap = new HashMap<>();
-        new GridManager(this);
+        manager=new GridManager(this);
         emptyImage = TextureCache.getOrCreateR(getCellImagePath());
         cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
         cells = new GridCellContainer[cols][rows];
@@ -149,7 +153,15 @@ public class GridPanel extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+        boolean paused = false;
+        if (Eidolons.game!=null )
+            if (Eidolons.game.getLoop()!=null )
+                paused =Eidolons.game.getLoop().isPaused();
+        if (parentAlpha== ShaderMaster.SUPER_DRAW )
+            super.draw(batch, 1);
+        else
+            ShaderMaster.drawWithCustomShader(this, batch,
+             paused? GrayscaleShader.getGrayscaleShader() : null, true );
     }
 
     @Override
@@ -169,9 +181,11 @@ public class GridPanel extends Group {
                         resetTimer = 0.5f;
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
                             setVisible(viewMap.get(sub), true);
+                            Debugger.validateVisibleUnitView(viewMap.get(sub));
                         }
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
                             setVisible(viewMap.get(sub), false);
+//                            Debugger.validateInvisibleUnitView(viewMap.get(sub));
                         }
 //                        for (int x = 0; x < cols; x++) {
 //                            for (int y = 0; y < rows; y++) {
@@ -373,7 +387,8 @@ public class GridPanel extends Group {
 
         GuiEventManager.bind(ACTIVE_UNIT_SELECTED, obj -> {
             BattleFieldObject hero = (BattleFieldObject) obj.get();
-            DungeonScreen.getInstance().centerCameraOn(hero);
+            if (DungeonScreen. isCameraAutoCenteringOn())
+                DungeonScreen.getInstance().centerCameraOn(hero);
             if (hero instanceof Unit)
                 animMaster.getConstructor().tryPreconstruct((Unit) hero);
             BaseView view = viewMap.get(hero);
@@ -494,6 +509,9 @@ public class GridPanel extends Group {
             } else {
                 ActorMaster.addFadeOutAction(view, 0.25f);
                 ActorMaster.addSetVisibleAfter(view, false);
+
+                if (overlayManager != null)
+                    overlayManager.clearTooltip(view.getUserObject());
             }
             if (view instanceof GridUnitView)
                 if (((GridUnitView) view).getLastSeenView() != null) {
@@ -698,6 +716,8 @@ public class GridPanel extends Group {
         uv.setVisible(false);
 
 
+        if (overlayManager != null)
+            overlayManager.clearTooltip(obj);
         return uv;
     }
 
@@ -746,11 +766,14 @@ public class GridPanel extends Group {
                     cell.setZIndex(y);
 //                TODO     cell.recalcUnitViewBounds();
                     for (GenericGridView sub : views) {
-                        if (sub.isHovered() && sub instanceof GridUnitView) {
+                        if (sub.isHovered() && sub instanceof GridUnitView
+                          ) {
                             setHoverObj((GridUnitView) sub);
                             cell.setZIndex(Integer.MAX_VALUE);
                             cell.setTopUnitView(sub);
                             cell.setHovered(true);
+                        } else if (sub.getUserObject().isPlayerCharacter()) {
+                            cell.setZIndex(Integer.MAX_VALUE);
                         }
                     }
                 }
@@ -820,5 +843,10 @@ public class GridPanel extends Group {
 
     public void clearSelection() {
         GuiEventManager.trigger(TARGET_SELECTION, null); ;
+    }
+
+    public GridManager getGridManager() {
+        return manager;
+
     }
 }

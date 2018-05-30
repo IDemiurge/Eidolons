@@ -4,20 +4,24 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.texture.TextureCache;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.ToolTipMaster;
 import main.content.enums.rules.VisionEnums.INFO_LEVEL;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.content.values.properties.G_PROPS;
+import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.EnumMaster;
@@ -50,27 +54,30 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
     }
 
     @Override
-    protected Supplier<List<ValueContainer>> supplier(BattleFieldObject hero) {
+    protected Supplier<List<ValueContainer>> supplier(BattleFieldObject unit) {
         return () -> {
+            if (Eidolons.getGame().getStateManager().isResetting()){
+                return null ;
+            }
             List<ValueContainer> values = new ArrayList<>();
-            if (hero.isDead()) {
+            if (unit.isDead()) {
 //                addKeyAndValue();
-                values.add(new ValueContainer("Corpse of ", hero.getName()));
-                if (hero.getRef().getValue(KEYS.KILLER) != null)
-                    if (hero.getRef().getId(KEYS.KILLER) != hero.getId()) {
+                values.add(new ValueContainer("Corpse of ", unit.getName()));
+                if (unit.getRef().getValue(KEYS.KILLER) != null)
+                    if (unit.getRef().getId(KEYS.KILLER) != unit.getId()) {
                         values.add(new ValueContainer("Slain by ",
-                         hero.getGame().getObjectById(hero.getRef().
+                         unit.getGame().getObjectById(unit.getRef().
                           getId(KEYS.KILLER)).getNameIfKnown()
                         ));
                     }
 
                 return values;
             }
-            if (hero.checkSelectHighlighted()) {
+            if (unit.checkSelectHighlighted()) {
                 String actionTargetingTooltip = "";
-                DC_ActiveObj action = (DC_ActiveObj) hero.getGame().getManager().getActivatingAction();
+                DC_ActiveObj action = (DC_ActiveObj) unit.getGame().getManager().getActivatingAction();
                 try {
-                    actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(hero, action);
+                    actionTargetingTooltip = ToolTipMaster.getActionTargetingTooltip(unit, action);
                 } catch (Exception e) {
                     if (!action.isBroken()) {
                         main.system.ExceptionMaster.printStackTrace(e);
@@ -86,21 +93,21 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                 }
             }
 
-            if (!hero.isMine())
-                if (!hero.getGame().isDebugMode())
-                    if (hero.getVisibilityLevelForPlayer() !=
+            if (!unit.isMine())
+                if (!unit.getGame().isDebugMode())
+                    if (unit.getVisibilityLevelForPlayer() !=
                      VISIBILITY_LEVEL.CLEAR_SIGHT) {
-                        final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");
+                        final ValueContainer nameContainer = new ValueContainer(unit.getToolTip(), "");
                         nameContainer.setNameAlignment(Align.left);
                         values.add(nameContainer);
-                        if (hero.getGame().isStarted())
-                            if (hero.getUnitVisionStatus() != null) {
+                        if (unit.getGame().isStarted())
+                            if (unit.getUnitVisionStatus() != null) {
                                 final ValueContainer valueContainer =
-                                 new ValueContainer(StringMaster.getWellFormattedString(hero.getUnitVisionStatus().name()), "");
+                                 new ValueContainer(StringMaster.getWellFormattedString(unit.getUnitVisionStatus().name()), "");
                                 valueContainer.setNameAlignment(Align.left);
                                 values.add(valueContainer);
                             }
-                        String text = hero.getGame().getVisionMaster().getHintMaster().getHintsString(hero);
+                        String text = unit.getGame().getVisionMaster().getHintMaster().getHintsString(unit);
                         TextureRegion texture = TextureCache.getOrCreateR(VISUALS.QUESTION.getImgPath());
                         final ValueContainer hintsContainer = new ValueContainer(texture, text);
                         hintsContainer.setNameAlignment(Align.left);
@@ -110,7 +117,7 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
                         return values;
                     }
-            final ValueContainer nameContainer = new ValueContainer(hero.getToolTip(), "");
+            final ValueContainer nameContainer = new ValueContainer(unit.getToolTip(), "");
             nameContainer.setNameAlignment(Align.left);
             values.add(nameContainer);
 
@@ -120,56 +127,56 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
               retrieveEnumConst(INFO_LEVEL.class,
                OptionsMaster.getGameplayOptions().getValue(GAMEPLAY_OPTION.INFO_DETAIL_LEVEL));
 
-            values.add(getValueContainer(hero, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
-            values.add(getValueContainer(hero, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
+            values.add(getValueContainer(unit, PARAMS.C_TOUGHNESS, PARAMS.TOUGHNESS));
+            values.add(getValueContainer(unit, PARAMS.C_ENDURANCE, PARAMS.ENDURANCE));
             if (info_level != null)
                 switch (info_level) {
                     case VERBOSE:
-                        values.add(getValueContainer(hero, PARAMS.C_STAMINA, PARAMS.STAMINA));
-                        values.add(getValueContainer(hero, PARAMS.C_FOCUS, PARAMS.FOCUS));
-                        values.add(getValueContainer(hero, PARAMS.C_MORALE, PARAMS.MORALE));
-                        values.add(getValueContainer(hero, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
+                        values.add(getValueContainer(unit, PARAMS.C_STAMINA, PARAMS.STAMINA));
+                        values.add(getValueContainer(unit, PARAMS.C_FOCUS, PARAMS.FOCUS));
+                        values.add(getValueContainer(unit, PARAMS.C_MORALE, PARAMS.MORALE));
+                        values.add(getValueContainer(unit, PARAMS.C_ESSENCE, PARAMS.ESSENCE));
                     case NORMAL:
-                        addParamStringToValues(hero, values, PARAMS.ARMOR);
-                        addParamStringToValues(hero, values, PARAMS.RESISTANCE);
+                        addParamStringToValues(unit, values, PARAMS.ARMOR);
+                        addParamStringToValues(unit, values, PARAMS.RESISTANCE);
                     case BASIC:
-                        addParamStringToValues(hero, values, PARAMS.DAMAGE);
-                        addParamStringToValues(hero, values, PARAMS.ATTACK);
-                        addParamStringToValues(hero, values, PARAMS.DEFENSE);
+                        addParamStringToValues(unit, values, PARAMS.DAMAGE);
+                        addParamStringToValues(unit, values, PARAMS.ATTACK);
+                        addParamStringToValues(unit, values, PARAMS.DEFENSE);
                 }
 
 
-            if (hero.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
-                addParamStringToValues(hero, values, PARAMS.N_OF_ACTIONS);
+            if (unit.getIntParam(PARAMS.N_OF_ACTIONS) > 0) {
+                addParamStringToValues(unit, values, PARAMS.N_OF_ACTIONS);
             } else {
                 //immobile
             }
-            if (hero.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
-                values.add(getValueContainer(hero, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
+            if (unit.getIntParam(PARAMS.N_OF_COUNTERS) > 0) {
+                values.add(getValueContainer(unit, PARAMS.C_N_OF_COUNTERS, PARAMS.N_OF_COUNTERS));
             }
-            if (hero.getGame().isDebugMode()) {
+            if (unit.getGame().isDebugMode()) {
                 ValueContainer valueContainer =
-                 new ValueContainer("coord:", hero.getCoordinates().toString());
+                 new ValueContainer("coord:", unit.getCoordinates().toString());
                 valueContainer.setNameAlignment(Align.left);
                 valueContainer.setValueAlignment(Align.right);
                 values.add(valueContainer);
-                if (hero.getFacing() != null || hero.getDirection() != null) {
-                    final String name = "direction: " + (hero.getFacing() != null ?
-                     hero.getFacing().getDirection() :
-                     hero.getDirection());
-                    valueContainer = new ValueContainer(name, hero.getCoordinates().toString());
+                if (unit.getFacing() != null || unit.getDirection() != null) {
+                    final String name = "direction: " + (unit.getFacing() != null ?
+                     unit.getFacing().getDirection() :
+                     unit.getDirection());
+                    valueContainer = new ValueContainer(name, unit.getCoordinates().toString());
                     valueContainer.setNameAlignment(Align.left);
                     valueContainer.setValueAlignment(Align.right);
                     values.add(valueContainer);
                 }
             }
-            if (hero instanceof Unit) {
-                addPropStringToValues(hero, values, G_PROPS.MODE);
-                addPropStringToValues(hero, values, G_PROPS.STATUS);
+            if (unit instanceof Unit) {
+                addPropStringToValues(unit, values, G_PROPS.MODE);
+                addPropStringToValues(unit, values, G_PROPS.STATUS);
             }
 
-            if (hero.getCustomParamMap() != null) {
-                hero.getCustomParamMap().keySet().forEach(counter -> {
+            if (unit.getCustomParamMap() != null) {
+                unit.getCustomParamMap().keySet().forEach(counter -> {
                     final String name = StringMaster.getWellFormattedString(counter);
                     String img = CounterMaster.getImagePath(counter);
                     if (img != null) {
@@ -178,8 +185,8 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
                          img);
 
                         final ValueContainer valueContainer = (texture == null)
-                         ? new ValueContainer(name, hero.getCustomParamMap().get(counter))
-                         : new ValueContainer(texture, name, hero.getCustomParamMap().get(counter));
+                         ? new ValueContainer(name, unit.getCustomParamMap().get(counter))
+                         : new ValueContainer(texture, name, unit.getCustomParamMap().get(counter));
                         valueContainer.setNameAlignment(Align.left);
                         valueContainer.setValueAlignment(Align.right);
                         values.add(valueContainer);
@@ -189,26 +196,53 @@ public class UnitViewTooltipFactory extends TooltipFactory<BattleFieldObject, Ba
 
             //            if (VisionManager.isVisibilityOn()){
             if (RuleKeeper.isRuleOn(RULE.VISIBILITY) || Eidolons.game.isDebugMode()) {
-                addParamStringToValues(hero, values, PARAMS.LIGHT_EMISSION);
-                addParamStringToValues(hero, values, PARAMS.ILLUMINATION);
-                addParamStringToValues(hero, values, PARAMS.CONCEALMENT);
+                addParamStringToValues(unit, values, PARAMS.LIGHT_EMISSION);
+                addParamStringToValues(unit, values, PARAMS.ILLUMINATION);
+                addParamStringToValues(unit, values, PARAMS.CONCEALMENT);
                 //                    addKeyAndValue("Gamma", ""+hero.getGame().getVisionMaster().
                 //                     getGammaMaster().
                 //                     getGamma(false, hero.getGame().getManager().getActiveObj(), hero), values);
             }
-            if (hero.getGame().isDebugMode()) {
+            if (unit.getGame().isDebugMode()) {
 
                 final ValueContainer outlineContainer =
                  new ValueContainer(StringMaster.getWellFormattedString
-                  (hero.getOutlineTypeForPlayer() + ""), "");
+                  (unit.getOutlineTypeForPlayer() + ""), "");
                 outlineContainer.setNameAlignment(Align.left);
                 values.add(outlineContainer);
 
                 final ValueContainer outlineContainer2 =
                  new ValueContainer(StringMaster.getWellFormattedString
-                  (hero.getVisibilityLevel() + ""), "");
+                  (unit.getVisibilityLevel() + ""), "");
                 outlineContainer.setNameAlignment(Align.left);
                 values.add(outlineContainer);
+            }
+
+            try {
+                DC_ActiveObj attackAction = DefaultActionHandler.getPreferredAttackAction(Eidolons.getMainHero(), unit);
+                if (attackAction != null) {
+                    String control =
+                     "Click to attack with ";
+                    if (!OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALT_MODE_ON)) {
+                        control = "Alt-" + control;
+                    }
+                    Ref ref = Eidolons.getMainHero().getRef().getCopy();
+                    ref.setID(KEYS.ACTIVE, attackAction.getId());
+                    ref.setTarget(unit.getId());
+//                    Attack attack = DC_AttackMaster.getAttackFromAction(attackAction);
+                    String tip = "Damage: " +
+                     FutureBuilder.precalculateDamage(attackAction, unit, true, true)
+                     //DamageCalculator.precalculateDamage(attack, true)
+                      + "-" +  FutureBuilder.precalculateDamage(attackAction, unit, true, false)
+                     //DamageCalculator.precalculateDamage(attack, false)
+                     ;
+//chance to hit
+                    ValueContainer atkContainer = new ValueContainer(control +
+                     attackAction.getName() + "\n" + tip);
+                    values.add(atkContainer);
+                }
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
             }
             return values;
         };

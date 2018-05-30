@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels.dc.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.game.core.Eidolons;
@@ -34,19 +35,39 @@ public class InventoryFactory {
         this.handler = inventoryClickHandler;
     }
 
-    public static String getWeaponIconPath(Entity entity) {
+    public static String getArmorIconPath(Entity entity) {
+        return getItemIconPath(entity);
+    }
+    public static String getItemIconPath(Entity entity) {
         if (entity == null) {
             return "";
         }
+        DC_TYPE TYPE = (DC_TYPE) entity.getOBJ_TYPE_ENUM();
         String baseType = entity.getName();
-        if (entity instanceof DC_WeaponObj) {
-            baseType = ((DC_WeaponObj) entity).getBaseTypeName();
+        if (entity instanceof DC_HeroSlotItem) {
+            DC_HeroSlotItem item = ((DC_HeroSlotItem) entity);
+            baseType = item.getBaseTypeName();
         }
-        String path = StrPathBuilder.build(PathFinder.getItemIconPath(),
+        String basePath="";
+        switch (TYPE) {
+            case ARMOR:
+                basePath = PathFinder.getArmorIconPath();
+                break;
+            case WEAPONS:
+                basePath = PathFinder.getWeaponIconPath();
+                break;
+            case JEWELRY:
+                basePath = PathFinder.getJewelryIconPath();
+                break;
+        }
+        String path = StrPathBuilder.build(basePath,
          baseType + ".png");
         if (!ImageManager.isImage(path))
             path = entity.getImagePath();
         return path;
+    }
+    public static String getWeaponIconPath(Entity entity) {
+        return getItemIconPath(entity);
     }
 
     public InventoryValueContainer get(Entity entity, CELL_TYPE cellType) {
@@ -137,4 +158,5 @@ public class InventoryFactory {
          get(item, type)));
         return list;
     }
+
 }

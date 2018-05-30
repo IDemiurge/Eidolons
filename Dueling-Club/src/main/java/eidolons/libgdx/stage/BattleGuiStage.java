@@ -31,7 +31,10 @@ public class BattleGuiStage extends GuiStage {
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
-          new ScreenViewport(camera= new OrthographicCamera()) : viewport,
+//         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+//          GdxMaster.getHeight(), new OrthographicCamera())
+          new ScreenViewport( new OrthographicCamera())
+        : viewport,
          batch == null ? new SpriteBatch() :
           batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
@@ -124,4 +127,7 @@ public class BattleGuiStage extends GuiStage {
         return bottomPanel;
     }
 
+    public GuiVisualEffects getGuiVisuals() {
+        return guiVisualEffects;
+    }
 }

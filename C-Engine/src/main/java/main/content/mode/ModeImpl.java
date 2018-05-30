@@ -44,6 +44,7 @@ public class ModeImpl implements MODE {
 
     public ModeImpl(BEHAVIOR_MODE behaviorMode) {
         this.behaviorMode = behaviorMode;
+        template= behaviorMode.mode;
     }
 
     @Override

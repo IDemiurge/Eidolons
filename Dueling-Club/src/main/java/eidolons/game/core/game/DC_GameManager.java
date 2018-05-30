@@ -6,6 +6,7 @@ import eidolons.entity.active.DC_UnitAction;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.tools.future.FutureBuilder;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.battlecraft.rules.action.ActionRule;
@@ -18,7 +19,9 @@ import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.TargetRunnable;
+import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.launch.Showcase;
+import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.PassiveAbilityObj;
 import main.ability.effects.Effect;
@@ -388,13 +391,14 @@ public class DC_GameManager extends GameManager {
     }
 
     public void previewMyAction(int index, ACTION_TYPE group) {
-        if ( ExplorationMaster.isExplorationOn())
+        if (ExplorationMaster.isExplorationOn())
             return;
         DC_UnitAction action = getActiveObj().getActionMap().get(group).get(index);
         GuiEventManager.trigger(GuiEventType.ACTION_HOVERED, action);
     }
-        public void activateMyAction(int index, ACTION_TYPE group) {
-            getActiveObj().getActionMap().get(group).get(index).invokeClicked();
+
+    public void activateMyAction(int index, ACTION_TYPE group) {
+        getActiveObj().getActionMap().get(group).get(index).invokeClicked();
     }
 
 
@@ -445,9 +449,9 @@ public class DC_GameManager extends GameManager {
 
     public Unit getActiveObj() {
         if (game.isStarted()) {
-             return getGame().getLoop().getActiveUnit();
+            return getGame().getLoop().getActiveUnit();
         }
-        return null ;
+        return null;
     }
 
     @Override
@@ -506,8 +510,27 @@ public class DC_GameManager extends GameManager {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
             }
+        checkDefaultEventTriggers(event);
         return super.handleEvent(event);
     }
+
+    private void checkDefaultEventTriggers(Event event) {
+        if (HpBar.isResetOnLogicThread())
+        if (event.getType()==STANDARD_EVENT_TYPE.UNIT_HAS_ENTERED_COMBAT ||
+
+         event.getType().name().startsWith("PARAM_MODIFIED")
+            && GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
+
+                    try {
+                        DungeonScreen.getInstance().getGridPanel().getGridManager().
+                         checkHpBarReset(event.getRef().getSourceObj());
+                    } catch (NullPointerException e) {
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                    }
+            }
+        }
+
 
     @Override
     protected void checkEventIsGuiHandled(Event event) {
@@ -515,7 +538,7 @@ public class DC_GameManager extends GameManager {
             GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         else {
             if (FloatingTextMaster.getInstance().isEventDisplayable(event)) {
-                    GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
+                GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
             } else if (EventAnimCreator.isEventAnimated(event))
                 GuiEventManager.trigger(INGAME_EVENT_TRIGGERED, event);
         }
@@ -574,4 +597,10 @@ public class DC_GameManager extends GameManager {
     }
 
 
+    public boolean checkAutoCameraCenter() {
+        if (AI_Manager.isRunning()) {
+            return false;
+        }
+        return true;
+    }
 }

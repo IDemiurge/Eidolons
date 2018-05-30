@@ -11,11 +11,13 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueHandler;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.DialogScenario;
-import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.stage.ChainedStage;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
@@ -40,6 +42,7 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected TextureRegion backTexture;
     protected GuiStage guiStage;
     private RealTimeGameLoop realTimeGameLoop;
+    private static Float cameraPanMod;
 
     public TextureRegion getBackTexture() {
         return backTexture;
@@ -54,22 +57,30 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         });
     }
 
-    protected void cameraPan(Vector2 unitPosition) {
+
+    protected void cameraPan(Vector2 unitPosition ) {
+        cameraPan(unitPosition, null);
+    }
+        protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
         this.cameraDestination = unitPosition;
-        float dest = cam.position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
-        if (dest < getCameraMinCameraPanDist())
+        float dst = cam.position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
+            if (overrideCheck==null )
+                overrideCheck= controller.isWithinCamera(unitPosition.x, unitPosition.y, 128,128);
+
+       if (!overrideCheck)
+           if (dst < getCameraMinCameraPanDist())
             return;
-        velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dest));
+        velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dst));
         if (CoreEngine.isGraphicTestMode()) {
 //            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- unitPosition:" + unitPosition);
-            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dest);
+            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- dest:" + dst);
             Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- velocity:" + velocity);
         }
     }
 
     protected float getCameraMinCameraPanDist() {
-        return GdxMaster.getWidth() / 3; //TODO if too close to the edge also
+        return (GDX.size(1600, 0.1f)) / 3 * getCameraPanMod(); //TODO if too close to the edge also
     }
 
     protected float getCameraDistanceFactor() {
@@ -149,5 +160,17 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
 
     public GuiStage getGuiStage() {
         return guiStage;
+    }
+
+    public static float getCameraPanMod() {
+        if (cameraPanMod==null )
+            cameraPanMod=new Float(OptionsMaster.getControlOptions().
+             getIntValue(CONTROL_OPTION.CENTER_CAMERA_DISTANCE_MOD))/100;
+
+        return cameraPanMod;
+    }
+
+    public static void setCameraPanMod(float mod) {
+         cameraPanMod = mod;
     }
 }

@@ -151,6 +151,7 @@ public class AI_Manager extends AiMaster {
             }
         } else {
             try {
+                getUnitAI().getUsedActions().add(action.getActive());
                 getMessageBuilder().append("Task: " + action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
                     if (game.isDebugMode()  )
@@ -165,6 +166,7 @@ public class AI_Manager extends AiMaster {
         if (!bufferedCoordinates.equals(unit.getCoordinates())) {
             unit.setCoordinates(bufferedCoordinates);
         }
+
         return action;
     }
 

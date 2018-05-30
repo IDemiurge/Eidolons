@@ -10,7 +10,7 @@ import main.system.math.PositionMaster;
  */
 public class ExplorationResetHandler extends ExplorationHandler {
     private boolean resetNeeded;
-    private boolean firstResetDone;
+    private boolean resetNotRequired;
 
     public ExplorationResetHandler(ExplorationMaster master) {
         super(master);
@@ -63,11 +63,11 @@ public class ExplorationResetHandler extends ExplorationHandler {
         return input.getAction().getActionGroup() == ACTION_TYPE_GROUPS.TURN;
     }
 
-    public boolean isFirstResetDone() {
-        return firstResetDone;
+    public boolean isResetNotRequired() {
+        return resetNotRequired;
     }
 
-    public void setFirstResetDone(boolean firstResetDone) {
-        this.firstResetDone = firstResetDone;
+    public void setResetNotRequired(boolean b) {
+        this.resetNotRequired = b;
     }
 }

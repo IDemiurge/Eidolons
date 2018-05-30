@@ -105,7 +105,7 @@ public class ExplorationMaster {
             //TODO quick-fix
             cleaner.cleanUpAfterBattle();
             game.getLogManager().logBattleEnds();
-            getResetter().setFirstResetDone(false);
+            getResetter().setResetNotRequired(false);
 
             MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.ATMO);
         } else {
@@ -114,14 +114,14 @@ public class ExplorationMaster {
                 AggroMaster.getLastAggroGroup().forEach(unit -> {
                     AnimMaster.getInstance().getConstructor().preconstructAll(unit);
                 });
-            getResetter().setFirstResetDone(false);
+            getResetter().setResetNotRequired(false);
             try {
                 MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.BATTLE);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        getResetter().setFirstResetDone(false);
+        getResetter().setResetNotRequired(false);
         game.startGameLoop();
 
 //        game.getManager().reset();

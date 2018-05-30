@@ -68,11 +68,8 @@ public class DeathMaster extends Master {
         } else
             return;
             Unit unit = (Unit) killed;
-            int xp = (int) (unit.getIntParam(PARAMS.POWER)+
-             (Math.sqrt(unit.getIntParam(PARAMS.POWER))*
-            unit.getIntParam(PARAMS.POWER))/10);
 
-            HeroLevelManager.addXp((Unit) killer, xp);
+            HeroLevelManager.addXpForKill(unit,(Unit) killer );
 
     }
 

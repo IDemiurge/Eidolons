@@ -24,7 +24,8 @@ public class NinePatchFactory {
      StrPathBuilder.build(PathFinder.getComponentsPath(),
       "ninepatch", "std", "light ninepatch hq empty.png");
     public static NinePatch getTooltip() {
-        return new NinePatch(getOrCreateR("UI/components/tooltip_background.png"), 16, 16, 14, 14);
+        return getLightPanelFilled();
+//        return new NinePatch(getOrCreateR("UI/components/tooltip_background.png"), 16, 16, 14, 14);
     }
 
     public static NinePatch get3pxBorder() {

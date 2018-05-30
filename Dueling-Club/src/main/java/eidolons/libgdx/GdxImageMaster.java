@@ -141,6 +141,7 @@ public class GdxImageMaster extends LwjglApplication {
     public static void writeImage(FileHandle handle, Pixmap pixmap) {
         PixmapIO.writePNG(handle, pixmap);
     }
+
     public static void writeImage(FileHandle handle, Texture texture) {
         PixmapIO.writePNG(handle, getPixmap(texture));
     }
@@ -224,27 +225,37 @@ public class GdxImageMaster extends LwjglApplication {
             x += texture.getWidth() * dX;
             y += texture.getHeight() * dY;
         }
-    }   public static void drawTextureRegion(int x, int y, Texture texture,
-                                             int width, int height, Pixmap pixmap) {
+    }
+
+    public static void drawTextureRegion(int x, int y, Texture texture,
+                                         int width, int height, Pixmap pixmap) {
 
         drawTextureRegion(x, y, texture, width, height, pixmap, false);
     }
 
 
-        public static void drawTextureRegion(int x, int y, Texture texture,
-                                             int width, int height, Pixmap pixmap, boolean sourceOver) {
-        texture.getTextureData().prepare();
+    public static void drawTextureRegion(int x, int y, Texture texture,
+                                         int width, int height, Pixmap pixmap, boolean sourceOver) {
+
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
         Pixmap pixmap2 = texture.getTextureData().consumePixmap();
         if (sourceOver)
             pixmap.setBlending(Blending.SourceOver);
 //        else pixmap.setBlending(Blending.None);
+
         pixmap.drawPixmap(pixmap2, x, y, 0, 0, width, height);
     }
 
-    public static String getAttackActionPath(DC_ActiveObj obj ) {
+    public static String cropImageImage(String s) {
+        return s.replace('/', '\\').toLowerCase().replace(PathFinder.getImagePath().toLowerCase(), "");
+    }
+
+    public static String getAttackActionPath(DC_ActiveObj obj) {
         return getAttackActionPath(obj, obj.getActiveWeapon());
     }
-        public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
+
+    public static String getAttackActionPath(DC_ActiveObj obj, DC_WeaponObj weapon) {
         return (!obj.isStandardAttack() || obj.isThrow()) ? InventoryFactory.getWeaponIconPath(weapon)
          : getStandardAttackIcon(obj);
 //            if (obj.isOffhand()){
@@ -284,7 +295,7 @@ public class GdxImageMaster extends LwjglApplication {
         String baseType = "";
         String weaponGroup = weapon.getProperty(G_PROPS.WEAPON_GROUP);
         for (ObjType sub : DataManager.getTypesSubGroup(DC_TYPE.WEAPONS, subgroup)) {
-            baseType = sub.getProperty(G_PROPS.BASE_TYPE);
+            baseType = sub.getName();
             path = getStandardAttackIcon(baseType, weaponGroup, action);
             if (ImageManager.isImage(path)) {
                 return path;

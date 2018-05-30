@@ -302,6 +302,8 @@ public class Player {
     }
 
     private boolean playCustomSoundsetSound(String prop, SOUNDS sound_type) {
+        if (checkSoundTypeOff(sound_type))
+            return false;
         if (!prop.contains("soundsets")) {
             prop = "soundsets\\" + prop;
         }
@@ -330,14 +332,23 @@ public class Player {
         if (files.isEmpty()) {
             return false;
         }
+
+        int volume = getVolume()*checkAdditionalVolume(sound_type)/100;
         File file = files.get(RandomWizard.getRandomListIndex(files, new Random()));
         try {
-            play(file.getAbsolutePath());
+            play(file.getAbsolutePath(), volume , getDelay());
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             return false;
         }
         return true;
+    }
+
+    protected int checkAdditionalVolume(SOUNDS sound) {
+        return 100;
+    }
+    protected boolean checkSoundTypeOff(SOUNDS sound_type) {
+        return false;
     }
 
     private String getSoundsetSuffix(SOUNDS sound_type) {

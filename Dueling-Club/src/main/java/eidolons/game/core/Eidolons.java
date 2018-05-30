@@ -18,6 +18,7 @@ import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.launch.GenericLauncher;
@@ -42,6 +43,7 @@ import main.system.auxiliary.log.SpecialLogger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by JustMe on 2/15/2017.
@@ -164,11 +166,21 @@ public class Eidolons {
     public static void setResolution(String value) {
         RESOLUTION resolution =
          new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, value);
+        if (Eidolons.getResolution()==null )
+            Eidolons.resolution= resolution;
+
         setResolution(resolution);
     }
 
     public static void setResolution(RESOLUTION resolution) {
         if (resolution != null) {
+        if (resolution != Eidolons.getResolution()) {
+            if (Eidolons.getScope()!= SCOPE.MENU){
+                EUtils.onConfirm(
+                 "New resolution will be applied on restart... Ok?", true, ()->
+                OptionsMaster.saveOptions());
+                return;
+            }
             Eidolons.getApplication().getGraphics().setResizable(true);
             Eidolons.resolution = resolution;
             Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
@@ -183,8 +195,9 @@ public class Eidolons {
             getApplication().getApplicationListener().resize(w, h);
             getApplication().getGraphics().setResizable(false);
 //            getMainViewport().setScreenSize(w, h);
+            GdxMaster.resized();
         }
-        GdxMaster.resized();
+        }
     }
 
     public static Dimension getResolutionDimensions(RESOLUTION resolution, boolean fullscreen) {
@@ -310,13 +323,24 @@ public class Eidolons {
     public static void exitGame() {
         SpecialLogger.getInstance().writeLogs();
         Debugger.writeLog();
-        LogMaster.writeAll();
+        try {
+            LogMaster.writeAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Gdx.app.exit();
         System.exit(0);
     }
 
     public static void onNonGdxThread(Runnable o) {
         SwingUtilities.invokeLater(o);
+    }
+
+    public static RESOLUTION getResolution() {
+        if (resolution == null) {
+            resolution= GDX.getDisplayResolution();
+        }
+        return resolution;
     }
 
     public enum SCOPE{

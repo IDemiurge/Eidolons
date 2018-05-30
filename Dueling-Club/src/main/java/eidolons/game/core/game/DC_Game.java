@@ -807,7 +807,7 @@ public class DC_Game extends MicroGame {
             getState().addObject(sub);
         }
         dungeonMaster.getExplorationMaster().
-         getResetter().setFirstResetDone(false);
+         getResetter().setResetNotRequired(false);
         visionMaster.reinit();
 
     }

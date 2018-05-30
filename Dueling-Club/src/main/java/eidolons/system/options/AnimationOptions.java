@@ -13,7 +13,7 @@ public class AnimationOptions extends Options<ANIMATION_OPTION, ANIMATION_OPTION
 static {
     WAIT_FOR_ANIM.setDevOnly(true);
     PARALLEL_DRAWING.setDevOnly(true);
-    TEXT_DURATION.setDevOnly(true);
+
 
     PRECAST_ANIMATIONS.setDevOnly(true);
     AFTER_EFFECTS_ANIMATIONS.setDevOnly(true);
@@ -29,8 +29,7 @@ static {
         WAIT_FOR_ANIM(false),
         MAX_ANIM_WAIT_TIME(1000, 0, 3000),
         PARALLEL_DRAWING(false),
-        SPEED(100, 1, 1500),
-        TEXT_DURATION(100, 0, 300),
+        SPEED(350, 50, 1500),
         //        INFO_LEVEL(1, 0, 1),
 //        PHASE_TIME(500, 0, 1000),
 //        OFFSET_FOR_OVERLAP(true),
@@ -41,7 +40,10 @@ static {
 //        MOVE_ANIM(true),
 //        MELEE_ANIMS(true),
 
-        HIT_ANIM_DISPLACEMENT(false);
+        HIT_ANIM_DISPLACEMENT(true),
+        FLOAT_TEXT_DURATION_MOD(100, 25, 500),
+//        FLOAT_TEXT_SIZE_MOD(100, 50, 300)
+        ;
 
         Boolean exclusive;
         Object[] options;

@@ -9,7 +9,6 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 
 
         //caching
-
     }
 
     static {
@@ -21,6 +20,13 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         return GRAPHIC_OPTION.class;
     }
 
+    public enum PERFORMANCE_BOOST_LEVEL  {
+        NONE,
+        DISABLE_ALL_VISUALS,
+        DISABLE_ALL_BACKGROUND_OPERATIONS,
+        DISABLE_ALL,;
+    }
+
     public enum GRAPHIC_OPTION implements Options.OPTION {
 
         FULLSCREEN(true),
@@ -28,13 +34,20 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 
         AMBIENCE(true),
         VIDEO(true),
-        AMBIENCE_MOVE_SUPPORTED(false),
-//        SPRITE_CACHE_ON(true),
+        AMBIENCE_MOVE_SUPPORTED(true),
 
-        AUTO_CAMERA(true),
         FRAMERATE(60, 20, 80),
         RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
-        ZOOM_STEP(5, 1, 20), SPRITE_CACHE_ON(false), VSYNC(true);
+//        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
+        VSYNC(true),
+        UI_EMITTERS(false),
+        SPRITE_CACHE_ON(false){
+            @Override
+            public boolean isDevOnly() {
+                return true;
+            }
+        },
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;

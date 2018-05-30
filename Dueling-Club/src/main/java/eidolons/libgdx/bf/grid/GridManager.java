@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.std.DeathAnim;
 import eidolons.libgdx.anims.std.MoveAnimation;
+import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.bf.overlays.HpBarManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.entity.Ref;
@@ -94,12 +95,14 @@ public class GridManager {
                 caught = true;
             } else if (event.getType().name().startsWith("PARAM_MODIFIED")) {
                 if (GuiEventManager.isParamEventAlwaysFired(event.getType().getArg())) {
-                    checkHpBarReset(event.getRef().getSourceObj());
+                    if (!HpBar.isResetOnLogicThread())
+                        checkHpBarReset(event.getRef().getSourceObj());
                    }
                 caught = true;
             }
             if (event.getType()==STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE) {
-                checkHpBarReset( event.getRef().getTargetObj());
+                if (!HpBar.isResetOnLogicThread())
+                    checkHpBarReset( event.getRef().getTargetObj());
                 caught = true;
             }
 
@@ -110,7 +113,7 @@ public class GridManager {
         };
     }
 
-    private void checkHpBarReset(Obj obj) {
+    public void checkHpBarReset(Obj obj) {
         UnitView view = (UnitView) getViewMap().get(obj);
         if (view != null)
             if (view.isVisible())

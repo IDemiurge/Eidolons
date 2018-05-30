@@ -35,7 +35,7 @@ public class DC_Formulas {
     public static final int INFINITE_VALUE = 100;
     public static final int DURABILITY_DAMAGE_THRESHOLD_ARMOR = 10;
     public static final int DURABILITY_DAMAGE_FACTOR_ARMOR = 20;
-    public static final int DURABILITY_DAMAGE_THRESHOLD_WEAPON = 25;
+    public static final int DURABILITY_DAMAGE_THRESHOLD_WEAPON = 5;
     public static final int DURABILITY_DAMAGE_FACTOR_WEAPON = 15;
     public static final int BUY_ATTRIBUTE_XP_COST = 35;
     public static final int BUY_ATTRIBUTE_GOLD_COST = 50;

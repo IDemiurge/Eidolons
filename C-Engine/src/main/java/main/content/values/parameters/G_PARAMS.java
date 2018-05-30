@@ -16,7 +16,7 @@ public enum G_PARAMS implements PARAMETER {
 
     C_DURATION("CURRENT DURATION", true, "spells", "buffs"),
     DURATION("Duration", false, "spells", "buffs", "actions", "items", "Track"),
-    TURN_CREATED("Turn created", true, "all"),
+    TURN_CREATED("Turn created", false, "all"),
     TURNS_IN_GAME("TURNS_IN_GAME", true, "all"),
     N_OF_CORPSES("N_OF_CORPSES", true, "terrain"),
 

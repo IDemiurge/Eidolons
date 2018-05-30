@@ -175,6 +175,9 @@ public class QuickWeaponPanel extends TablePanel {
                         return false;
 //                    }
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
+                    if (attack == null) {
+                        return false;
+                    }
                     attack.setAutoSelectionOn(true);
                     getActiveWeaponDataSource().getWeapon().getGame().getLoop().actionInput(
                      new ActionInput(attack

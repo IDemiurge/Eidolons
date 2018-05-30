@@ -27,10 +27,12 @@ public class UnitAnalyzer {
         if (unit.getActiveWeapon(true) == null) {
             return false;
         }
-        if (unit.getMainWeapon() == null) {
-            return true;
-        }
-        return !unit.getMainWeapon().isTwoHanded();
+        return true;
+        //old rule - no offhand natural attack for  twohanded
+//        if (unit.getMainWeapon() == null) {
+//            return true;
+//        }
+//        return !unit.getMainWeapon().isTwoHanded();
 
         // if (checkDualNaturalWeapons(unit))
         // return true;

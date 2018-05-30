@@ -110,7 +110,7 @@ public class CellBorderManager extends Group {
 
         if (unitBorderOwner != null && unitBorderOwner != owner) {
             unitBorderOwner.setBorder(null);
-            unitBorderOwner.setTeamColorBorder(false);
+//            unitBorderOwner.setTeamColorBorder(false);
         }
         owner.setTeamColorBorder(true);
 

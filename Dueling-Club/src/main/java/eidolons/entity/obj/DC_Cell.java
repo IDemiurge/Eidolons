@@ -43,6 +43,7 @@ public class DC_Cell extends DC_Obj implements Cell {
     public DC_Cell(int x, int y, DC_Game game) {
         this(x, y, game, new Ref(game), game.getDungeon());
     }
+
     public DC_Cell(Coordinates c, DC_Game game) {
         this(c.x, c.y, game, new Ref(game), game.getDungeon());
     }
@@ -170,23 +171,27 @@ public class DC_Cell extends DC_Obj implements Cell {
     public void setUnitVisionStatus(UNIT_VISION status, BattleFieldObject observer) {
         super.setUnitVisionStatus(status, observer);
         if (status == UNIT_VISION.IN_PLAIN_SIGHT) {
-            playerHasSeen=true;
+            playerHasSeen = true;
         }
     }
 
     @Override
     public Integer getGamma() {
         if (playerHasSeen)
-            return super.getGamma()*3/2+15;
+            if (super.getGamma() == null)
+                return null;
+            else
+                return super.getGamma() * 3 / 2 + 15;
         return super.getGamma();
     }
 
     public boolean isDetectedByPlayer() {
         boolean result = super.isDetectedByPlayer();
         if (result)
-            playerHasSeen=true;
+            playerHasSeen = true;
         return result;
     }
+
     public boolean isPlayerHasSeen() {
         return playerHasSeen;
     }

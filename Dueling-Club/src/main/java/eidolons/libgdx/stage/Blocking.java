@@ -5,4 +5,7 @@ package eidolons.libgdx.stage;
  */
 public interface Blocking extends Closable{
 
+   default boolean isPausing(){
+       return true;
+   }
 }

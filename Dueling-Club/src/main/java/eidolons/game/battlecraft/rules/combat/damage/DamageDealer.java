@@ -2,12 +2,16 @@ package eidolons.game.battlecraft.rules.combat.damage;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
+import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.battlecraft.rules.round.UnconsciousRule;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
+import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.screens.DungeonScreen;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.entity.ActionEnums;
 import main.content.values.parameters.PARAMETER;
@@ -142,7 +146,7 @@ public class DamageDealer {
         if (damage_type == DAMAGE_TYPE.PURE) {
             damageDealt = dealPureDamage(targetObj, attacker,
              (DamageCalculator.isEnduranceOnly(ref) ? 0
-              : amount),  amount, ref);
+              : amount), amount, ref);
         } else {
             damageDealt = dealDamage(ref, !isAttack(ref), damage_type);
         }
@@ -195,6 +199,12 @@ public class DamageDealer {
                     }
                 }
             }
+        int durabilityLost = DurabilityRule.damageDealt(blocked,
+         (DC_HeroSlotItem) attacked.getRef().getObj(KEYS.ARMOR), dmg_type, active
+          .getActiveWeapon(), amount, attacked);
+        if (durabilityLost > 0) {
+            main.system.auxiliary.log.LogMaster.log(1, "durabilityLost= " + durabilityLost);
+        }
 
         int t_damage = DamageCalculator.calculateToughnessDamage(attacked, attacker, amount, ref, blocked,
          dmg_type);
@@ -297,7 +307,7 @@ public class DamageDealer {
     }
 
     private static int dealPureDamage(BattleFieldObject attacked, Unit attacker,
-                                      Integer toughness_dmg, Integer endurance_dmg,Ref ref) {
+                                      Integer toughness_dmg, Integer endurance_dmg, Ref ref) {
         // apply Absorption here?
 
         boolean enduranceOnly = false;
@@ -412,6 +422,11 @@ public class DamageDealer {
              damageDealt);
         }
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
+
+        if (HpBar.isResetOnLogicThread())
+            DungeonScreen.getInstance().getGridPanel().getGridManager().
+             checkHpBarReset(attacked);
+
         return damageDealt;
     }
 

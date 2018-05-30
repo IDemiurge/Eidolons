@@ -71,7 +71,7 @@ public class DC_MathManager extends MathMaster {
 
     private static int getWeaponDurabilityForDamage(int damage, int armor) {
         if (armor < DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON) {
-            return 0;
+            armor= DC_Formulas.DURABILITY_DAMAGE_THRESHOLD_WEAPON;
         }
         int max = armor;
         if (damage < armor) {

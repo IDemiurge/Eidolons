@@ -24,6 +24,8 @@ import main.system.images.ImageManager;
 public class ItemInfoPanel extends TablePanel {
 
 
+    public static final int WIDTH = 1020;
+    public static final int HEIGHT = 850;
     protected DescriptionPanel description;
     protected Image preview;
     protected Image fullsizePortrait;
@@ -48,7 +50,7 @@ public class ItemInfoPanel extends TablePanel {
         if (description != null)
             addElement(description).left().padLeft(30);
         if (fullsizePortrait != null) {
-            addNormalSize(fullsizePortrait).right().padBottom(GDX.size(80)).padRight(GDX.size(42));
+            addNormalSize(fullsizePortrait).right().padBottom(GDX.size(110)).padRight(GDX.size(42));
             fullsizePortrait.setZIndex(0);
         }
         if (item != null)
@@ -68,7 +70,7 @@ public class ItemInfoPanel extends TablePanel {
 
     protected void initSize() {
         if (GdxMaster.getFontSizeMod() != 1) {
-            setSize(GdxMaster.adjustSize(1020),  GdxMaster.adjustSize(850));
+            setSize(GdxMaster.adjustSize(WIDTH),  GdxMaster.adjustSize(HEIGHT));
         }
     }
 
@@ -78,8 +80,8 @@ public class ItemInfoPanel extends TablePanel {
             setBackground(new TextureRegionDrawable(new TextureRegion(
              TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
              BACKGROUND_NINE_PATCH.PATTERN,
-              (int) GdxMaster.adjustSize(1050)
-              , (int) GdxMaster.adjustSize(850)))));
+              (int) GdxMaster.adjustSize(WIDTH+30)
+              , (int) GdxMaster.adjustSize(HEIGHT)))));
         else {
             setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
         }
@@ -91,7 +93,7 @@ public class ItemInfoPanel extends TablePanel {
     }
 
     protected void initHeader(TablePanel<Actor> header) {
-        header.addNormalSize(preview).left().padLeft(GDX.size(70)).padTop(GDX.size(70));
+        header.addNormalSize(preview).left().padLeft(GDX.size(70)).padTop(GDX.size(100));
         header.addElement(title).right();
 
     }

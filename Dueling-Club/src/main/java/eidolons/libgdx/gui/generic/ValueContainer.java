@@ -328,6 +328,8 @@ public class ValueContainer extends TablePanel {
     }
 
     public String getValueText() {
+        if (getValueLabel()==null )
+            return null ;
         return getValueLabel().getText().toString();
     }
 }

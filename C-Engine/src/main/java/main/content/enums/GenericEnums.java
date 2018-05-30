@@ -170,6 +170,7 @@ public class GenericEnums {
         private int healthPercentageEnemy;
         private int healthPercentageAlly;
         private int healthPercentageMainHero;
+        private int durabilityDamageMod;
 
 
         DIFFICULTY(int powerPercentage,
@@ -216,6 +217,13 @@ public class GenericEnums {
         }
 
 
+        public int getDurabilityDamageMod() {
+            return healthPercentageEnemy;
+        }
+
+        public void setDurabilityDamageMod(int durabilityDamageMod) {
+            this.durabilityDamageMod = durabilityDamageMod;
+        }
     }
 
     public enum RESIST_GRADE {

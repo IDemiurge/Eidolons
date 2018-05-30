@@ -3,9 +3,6 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import eidolons.libgdx.anims.actions.MoveByActionLimited;
-import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.tooltips.Tooltip;
@@ -26,8 +23,8 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (mainHero) {
-            Vector2 assumed = GridMaster.getCenteredPos(getUserObject().getCoordinates());
-            if (getActionsOfClass(MoveByActionLimited.class).size > 0) {
+//            Vector2 assumed = GridMaster.getCenteredPos(getUserObject().getCoordinates());
+//            if (getActionsOfClass(MoveByActionLimited.class).size > 0) {
                 //set pos, don't draw
 //                Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
 //                if (pos.dst(assumed)
@@ -36,15 +33,17 @@ public class GridUnitView extends GenericGridView {
 //                    return;
 //                }
             } else {
-               Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
-                if (pos.dst(assumed)
-                 > 256) {
-                    getParent(). setTransform(true);
-                    pos = stageToLocalCoordinates(new Vector2(assumed.x , assumed.y ));
-                    setPosition(pos.x, pos.y);
-                    return;
-                }
-            }
+//               Vector2 pos = localToStageCoordinates(new Vector2(getX(), getY()));
+//                if (pos.dst(assumed)
+//                 > 256) {
+//                    main.system.auxiliary.log.LogMaster.log(1,"PC VIEW IS MISPLACED AT " +pos);
+//                    ExceptionMaster.printStackTrace(new RuntimeException("PC VIEW IS MISPLACED AT " +pos));
+//                    getParent(). setTransform(true);
+//                    pos = stageToLocalCoordinates(new Vector2(assumed.x , assumed.y ));
+//                    setPosition(pos.x, pos.y);
+//                    return;
+//                }
+//            }
 
         }
         super.draw(batch, parentAlpha);

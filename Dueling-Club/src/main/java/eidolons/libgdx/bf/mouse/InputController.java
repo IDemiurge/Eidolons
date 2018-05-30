@@ -11,7 +11,7 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.screens.GameScreen;
-import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.math.MathMaster;
@@ -30,8 +30,8 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
  */
 public abstract class InputController implements InputProcessor {
     protected static final float MARGIN = 300;
-    protected static float zoomStep = OptionsMaster.getGraphicsOptions().
-     getIntValue(GRAPHIC_OPTION.ZOOM_STEP) / new Float(100);
+    protected static float zoomStep = OptionsMaster.getControlOptions().
+     getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
     protected OrthographicCamera camera;
     protected boolean isLeftClick = false;
     protected boolean alt = false;
@@ -46,6 +46,8 @@ public abstract class InputController implements InputProcessor {
     float halfWidth;
     float halfHeight;
     private Set<SuperActor> cachedPosActors = new HashSet<>();
+    private static boolean unlimitedZoom;
+    private static boolean dragOff;
 
 
     public InputController(OrthographicCamera camera) {
@@ -59,6 +61,22 @@ public abstract class InputController implements InputProcessor {
 
     public static void setZoomStep(float zoomStep) {
         InputController.zoomStep = zoomStep;
+    }
+
+    public static void setUnlimitedZoom(boolean unlimitedZoom) {
+        InputController.unlimitedZoom = unlimitedZoom;
+    }
+
+    public static boolean isUnlimitedZoom() {
+        return unlimitedZoom;
+    }
+
+    public static void setDragOff(boolean dragOff) {
+        InputController.dragOff = dragOff;
+    }
+
+    public static boolean isDragOff() {
+        return dragOff;
     }
 
     @Override
@@ -172,6 +190,8 @@ public abstract class InputController implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
         mouseInput();
+        if (isDragOff())
+            return false;
         if (isBlocked())
             return true;
         if (mouseButtonPresed == LEFT) {
@@ -244,6 +264,7 @@ public abstract class InputController implements InputProcessor {
     }
 
     protected void zoom(int i) {
+        if (!isUnlimitedZoom())
         if (!checkZoom(i))
             return;
         if (!alt && !ctrl) {

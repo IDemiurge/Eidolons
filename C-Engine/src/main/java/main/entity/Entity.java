@@ -18,6 +18,7 @@ import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -60,6 +61,7 @@ public abstract class Entity extends DataModel implements OBJ {
     protected boolean added;
     protected Map<VALUE, String> valueCache = new HashMap<>(); //to cache valid tooltip values
     EntityMaster master;
+    protected Map<PARAMETER, Integer> validParams;
 
 
     public Entity() {
@@ -157,17 +159,31 @@ public abstract class Entity extends DataModel implements OBJ {
         return master;
     }
 
+    public int getLastValidParamValue(PARAMETER parameter) {
+        if (getValidParams().containsKey(parameter))
+            return validParams.get(parameter);
+        return getIntParam(parameter);
+    }
+
+    public Map<PARAMETER, Integer> getValidParams() {
+        if (validParams == null) {
+            validParams = new HashMap<>();
+        }
+        return validParams;
+    }
+
     public void toBase() {
 
         setBeingReset(true);
-        //TODO DRY!
-        if (getMaster() != null) {
-            if (getResetter() != null) {
-                getResetter().toBase();
-                setBeingReset(false);
-                return;
+
+        if (isResetViaHandler())
+            if (getMaster() != null) {
+                if (getResetter() != null) {
+                    getResetter().toBase();
+                    setBeingReset(false);
+                    return;
+                }
             }
-        }
 
         getPropCache().clear();
         getIntegerMap(false).clear(); // TODO [OPTIMIZED] no need to clear
@@ -206,6 +222,9 @@ public abstract class Entity extends DataModel implements OBJ {
             getValueCache().put(p, value);
 
             if (!value.equals(baseValue)) {
+                if (isValidMapStored(p)){
+                    getValidParams().put(p, StringMaster.getInteger(value));
+                }
                 String amount = getType().getParam(p);
                 putParameter(p, amount);
                 if (game.isStarted() && !game.isSimulation()) {
@@ -245,6 +264,14 @@ public abstract class Entity extends DataModel implements OBJ {
         setDirty(false);
         setBeingReset(false);
 
+    }
+
+    protected boolean isResetViaHandler() {
+        return true;
+    }
+
+    public boolean isValidMapStored(PARAMETER p) {
+        return false;
     }
 
     public Map<VALUE, String> getValueCache() {
@@ -536,4 +563,5 @@ public abstract class Entity extends DataModel implements OBJ {
     public void reset() {
         getResetter().reset();
     }
+
 }

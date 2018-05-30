@@ -6,13 +6,11 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_ArmorObj;
-import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.combat.attack.DefenseVsAttackRule;
-import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
@@ -75,13 +73,18 @@ public class ArmorMaster {
 
 
         if (attacked.getArmor() == null) {
-            return 0;
+            return getNaturalArmorBlock(damage, attacked, attacker, action);
         }
         boolean offhand = action.isOffhand();
         int blocked = getArmorBlockDamage(false, action instanceof DC_SpellObj, !action.isZone(), action
          .isZone(), damage, attacked, attacker, offhand, getDamageType(action, attacker
          .getActiveWeapon(offhand)), action);
         return Math.min(damage, blocked);
+    }
+
+    private int getNaturalArmorBlock(int damage, Unit attacked, Unit attacker, DC_ActiveObj action) {
+//        DurabilityRule.physicalDamage()
+        return 0;
     }
 
     // for spells/special actions
@@ -158,11 +161,6 @@ public class ArmorMaster {
             } else {
                 DC_SoundMaster.playAttackImpactSound(attacker.getActiveWeapon(offhand), attacker,
                  attacked, damage, blocked);
-                if (CoreEngine.isPhaseAnimsOn()) {
-//                int durabilityLost = reduceDurability(blocked, armorObj, spell, dmg_type, attacker
-//                 .getActiveWeapon(offhand), damage);
-                }
-
             }
             if (!simulation) {
                 action.getGame().getLogManager().log(LOG.GAME_INFO, entry, ENTRY_TYPE.DAMAGE);
@@ -183,7 +181,7 @@ public class ArmorMaster {
                 dmg_type = weapon.getDamageType();
             }
         }
-        int blockValue = getArmorValue(shield, dmg_type);
+        int blockValue =shield.getIntParam(PARAMS.DAMAGE_BONUS);// getArmorValue(shield, dmg_type);
         // if blocks, full value is applied always
 
         if (zone) {
@@ -224,7 +222,7 @@ public class ArmorMaster {
 
     public int getShieldDamageBlocked(Integer damage, Unit attacked, Unit attacker,
                                       DC_ActiveObj action, DC_WeaponObj weapon, DAMAGE_TYPE damage_type) {
-        if (checkCanShieldBlock(action, attacked)) {
+        if (!checkCanShieldBlock(action, attacked)) {
             return 0;
         }
         DC_WeaponObj shield = (DC_WeaponObj) attacked.getRef().getObj(KEYS.OFFHAND);
@@ -253,15 +251,6 @@ public class ArmorMaster {
         blockValue = Math.min(blockValue, damage);
         if (!simulation) {
             action.getRef().setID(KEYS.BLOCK, shield.getId());
-            int durabilityLost = reduceDurability(blockValue, shield, spell, damage_type, attacker
-             .getActiveWeapon(offhand), damage);
-            // shield.getIntParam(PARAMS.DAMAGE_BONUS); TODO so strength may
-            // increase it? ...
-            // RandomWizard.getRandomIntBetween(attacked.getIntParam(PARAMS.OFF_HAND_MIN_DAMAGE),
-            // attacked
-            // .getIntParam(PARAMS.OFF_HAND_MAX_DAMAGE));
-            // blockValue = blockValue * (100 +
-            // attacked.getIntParam(PARAMS.SHIELD_MASTERY)) / 100;
             if (blockValue <= 0) {
                 action.getGame().getLogManager().log(LOG.GAME_INFO,
                  shield.getName() + " is ineffective against " + action.getName() + "!",
@@ -385,18 +374,6 @@ public class ArmorMaster {
         int percentageBlocked = RandomWizard.getRandomIntBetween(minimum, maximum);
 
         return percentageBlocked;
-    }
-
-    private int reduceDurability(int blocked, DC_HeroSlotItem armorObj, boolean spell,
-                                 DAMAGE_TYPE damage_type, DC_WeaponObj weapon, int damage) {
-
-        if (spell) {
-            return DurabilityRule.spellDamage(damage, blocked, damage_type, armorObj, simulation);
-        } else {
-            return DurabilityRule.physicalDamage(damage, blocked, damage_type, armorObj, weapon,
-             simulation);
-        }
-
     }
 
     private DAMAGE_TYPE getDamageType(DC_ActiveObj action, DC_WeaponObj weapon) {

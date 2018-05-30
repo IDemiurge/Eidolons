@@ -14,13 +14,15 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
 
     public enum CONTROL_OPTION implements Options.OPTION {
         ALT_MODE_ON(false),
-        NUMPAD_CONTROLS_ON(false),
+//        NUMPAD_CONTROLS_ON(false),
         UNLIMITED_ZOOM(false),
-        DRAG_OFF(false),
-        PAN_CAMERA_ON_EDGES(false),
-        CENTER_CAMERA_DISTANCE(300),
-//        BINDING_PROFILE,
-        ;
+        ZOOM_STEP( 5, 1, 20),
+//        DRAG_OFF(false),
+//        PAN_CAMERA_ON_EDGES(false),
+        AUTO_CENTER_CAMERA_ON_HERO(true),
+        CAMERA_FOLLOW_CURSOR_DISTANCE(0, 0, 1000),
+        CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),;
+//        BINDING_PROFILE, ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;

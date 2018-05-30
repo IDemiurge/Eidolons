@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.ai;
 
 import eidolons.content.PROPS;
+import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.CompanionMaster;
@@ -68,6 +69,7 @@ public class UnitAI {
     private float explorationTimeOfRegenEffects;
     private boolean attached;
     private int engagementDuration;
+    private List<DC_ActiveObj> usedActions;
 //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
 //    private IMPULSE_TYPE impulseType;
@@ -548,6 +550,12 @@ public class UnitAI {
 
     }
 
+    public List<DC_ActiveObj> getUsedActions() {
+        if (usedActions == null) {
+            usedActions = new ArrayList<>();
+        }
+        return usedActions;
+    }
 
     public enum AI_BEHAVIOR_MODE {
         WANDER, AMBUSH, AGGRO, STALK, PATROL, GUARD,

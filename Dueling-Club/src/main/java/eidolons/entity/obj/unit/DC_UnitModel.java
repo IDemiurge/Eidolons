@@ -14,6 +14,7 @@ import eidolons.entity.handlers.bf.unit.UnitResetter;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.UnitAI;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.bf.Rotatable;
@@ -309,6 +310,8 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
         }
         else {
             GuiEventManager.trigger(SHOW_MODE_ICON, this,mode.getImagePath());
+            EUtils.showInfoText(
+             StringMaster.getWellFormattedString(mode.getBuffName())+"...");
         }
     }
 

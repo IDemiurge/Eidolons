@@ -2,20 +2,23 @@ package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.text.TextWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ValueTooltip extends Tooltip {
+
+    public static final Object WAIT_FOR_RESET =   new ArrayList<>();
+    private int valueAlign= Align.left;
+    private int nameAlign= Align.left;
 
     public ValueTooltip(String text) {
         this(null, text);
@@ -26,19 +29,6 @@ public class ValueTooltip extends Tooltip {
         setUserObject(new ListMaster<ValueContainer>().
          getList(new ValueContainer(texture, text)));
 
-    }
-
-    private String processText(String text, LabelStyle style) {
-        if (text.isEmpty())
-            return "";
-        String newText = "";
-        int maxLength = (int) (getMaxWidth() / style.font.getSpaceWidth());
-        for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
-            if (substring.length()>maxLength)
-                substring = TextWrapper.wrapWithNewLine(substring, maxLength);
-            newText += substring+ StringMaster.NEW_LINE;
-        }
-        return newText.substring(0, newText.length()-1);
     }
 
     @Override
@@ -56,12 +46,24 @@ public class ValueTooltip extends Tooltip {
 
     @Override
     public void updateAct(float delta) {
+        if (getUserObject()==WAIT_FOR_RESET || getUserObject()==null ){
+            updateRequired=true;
+            return;
+        }
         clear();
         List<ValueContainer> values = (List<ValueContainer>) getUserObject();
 
+
         values.forEach(el -> {
-            el.setValueText(processText( el.getValueText(), el.getValueLabel().getStyle()));
-            el.setValueAlignment(Align.left);
+            if (el.getValueText() != null)
+                el.setValueText(TextWrapper.processText((int) getMaxWidth(), el.getValueText(), el.getValueLabel().getStyle()));
+            if (el.getNameLabel() != null)
+                el.getNameLabel().setText(TextWrapper.processText((int) getMaxWidth(),
+                 el.getNameLabel().getText().toString(),
+                 el.getNameLabel().getStyle()));
+
+            el.setValueAlignment(getValueAlign());
+            el.setNameAlignment(getNameAlign());
             addElement(el);
             row();
         });
@@ -76,5 +78,21 @@ public class ValueTooltip extends Tooltip {
 
     protected Drawable getDefaultBackground() {
         return  new NinePatchDrawable(NinePatchFactory.getLightPanelFilled());
+    }
+
+    public int getValueAlign() {
+        return valueAlign;
+    }
+
+    public void setValueAlign(int valueAlign) {
+        this.valueAlign = valueAlign;
+    }
+
+    public int getNameAlign() {
+        return nameAlign;
+    }
+
+    public void setNameAlign(int nameAlign) {
+        this.nameAlign = nameAlign;
     }
 }

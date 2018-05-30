@@ -13,11 +13,28 @@ public class GDX {
     public static float size(float s){
         return GdxMaster.adjustSize(s);
     }
+    public static float size(float s,float coef){
+        return GdxMaster.adjustSize(s, coef);
+    }
 
-    public static String getDisplayResolution() {
+    public static String getDisplayResolutionString() {
         Toolkit toolkit = Toolkit.getDefaultToolkit ();
         Dimension dim = toolkit.getScreenSize();
         String string = "_" +((int) dim.getWidth()) + "x" + ((int) dim.getHeight());
+        RESOLUTION res = new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, string);
+        if (res==null ){
+            main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL,"FAILED TO FIND RESOLUTION: "+string );
+            return "blast";
+        }
+        return res.name();
+    }
+    public static RESOLUTION getDisplayResolution() {
+        return new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, getDisplayResolutionString());
+    }
+
+    public static String getCurrentResolutionString() {
+
+        String string = "_" +((int) GdxMaster.getWidth()) + "x" + ((int) GdxMaster.getHeight());
         RESOLUTION res = new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, string);
         if (res==null ){
             main.system.auxiliary.log.LogMaster.log(LOG_CHANNEL.ERROR_CRITICAL,"FAILED TO FIND RESOLUTION: "+string );

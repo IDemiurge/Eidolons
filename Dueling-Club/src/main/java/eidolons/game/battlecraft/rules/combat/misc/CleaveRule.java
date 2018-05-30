@@ -4,6 +4,8 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.GenericEnums;
@@ -44,6 +46,9 @@ public class CleaveRule {
     }
 
     public void apply(Ref ref, Attack attack) {
+        if (!RuleKeeper.isRuleOn(RULE.CLEAVE)){
+            return ;
+        }
         this.attack = attack;
 
         attack.setTriggered(true);

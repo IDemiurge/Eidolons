@@ -21,7 +21,7 @@ import main.system.threading.WaitMaster;
  */
 public class BattleOptionManager<E extends Battle> extends BattleHandler<E> {
 
-    public static final float CHEAT_MODIFIER = 1.25f;
+    public static   float CHEAT_MODIFIER = 1.0f;
     BattleOptions options;
     DIFFICULTY defaultDifficulty = GenericEnums.DIFFICULTY.NOVICE;
     DIFFICULTY difficulty;

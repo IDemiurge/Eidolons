@@ -6,6 +6,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Property;
 import main.system.text.TextParser;
@@ -58,6 +59,9 @@ public class EntityResetter<E extends Entity> extends EntityHandler<E> {
             String value = getParam(p);
             getEntity().getValueCache().put(p, value);
             if (!value.equals(baseValue)) {
+                if (getEntity(). isValidMapStored(p)){
+                    getEntity().getValidParams().put(p, StringMaster.getInteger(value));
+                }
                 String amount = getType().getParam(p);
                 if (getEntity().isTypeLinked()) {
                     getType().getParamMap().put(p, value);

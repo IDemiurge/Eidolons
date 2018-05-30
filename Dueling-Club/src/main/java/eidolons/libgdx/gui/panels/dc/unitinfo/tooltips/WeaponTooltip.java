@@ -1,10 +1,8 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.tooltips;
 
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
@@ -22,18 +20,18 @@ public class WeaponTooltip extends ValueTooltip {
 
     public WeaponTooltip(DC_WeaponObj weapon) {
         this();
-        setUserObject(new WeaponToolTipDataSource(weapon));
+        setUserObject(new SlotItemToolTipDataSource(weapon));
     }
     @Override
     public void updateAct(float delta) {
-        final WeaponToolTipDataSource source = (WeaponToolTipDataSource) getUserObject();
+        final SlotItemToolTipDataSource source = (SlotItemToolTipDataSource) getUserObject();
 
-        ValueContainer container = new ValueContainer(source.getWeapon().getName()  );
+        ValueContainer container = new ValueContainer(source.getItem().getName()  );
         container.setStyle(StyleHolder.getHqLabelStyle(16));
         addElement(container);
         row();
 
-        container = new ValueContainer(InventoryFactory.getTooltipsVals(source.getWeapon()));
+        container = new ValueContainer(InventoryFactory.getTooltipsVals(source.getItem()));
         container.setStyle(StyleHolder.getHqLabelStyle(15));
         addElement(container);
         row();

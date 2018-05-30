@@ -1,6 +1,7 @@
 package eidolons.libgdx.anims.anim3d;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -64,9 +65,23 @@ public class Weapon3dAnim extends ActionAnim {
         return AnimMaster3d.getWeaponActionSpeed(getActive());
 
     }
+
+    @Override
+    protected Texture getTexture() {
+        if (isValid())
+            return null;
+        return super.getTexture();
+    }
+
+    private boolean isValid() {
+        if (sprite != null)
+            if (sprite.getRegions().size > 0)
+                return true;
+        return false;
+    }
+
     public String getTexturePath() {
         return GdxImageMaster.getAttackActionPath(getActive(), getActive().getActiveWeapon());
-//        return active.getImagePath();
     }
 
     @Override
@@ -89,12 +104,8 @@ public class Weapon3dAnim extends ActionAnim {
             return;
         getSprites().clear();
         getSprites().add(randomized);
-//        int w = new FuncMaster<AtlasRegion>().getGreatest_(  (Arrays.asList(sprite.getRegions().toArray())),
-//         r -> r.getRegionWidth()).getRegionWidth();
-//        int h = new FuncMaster<AtlasRegion>().getGreatest_((Arrays.asList(sprite.getRegions().toArray())),
-//         r -> r.getRegionHeight()).getRegionHeight();
-//        setSize(w, h);
     }
+
     protected String getDefaultTexturePath() {
         return StringMaster.getAppendedImageFile(
          GdxImageMaster.
@@ -218,10 +229,6 @@ public class Weapon3dAnim extends ActionAnim {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-//        if (sprite != null)
-//            if (sprite.getSprite()!=null )
-//        main.system.auxiliary.log.LogMaster.log(1,
-//         "drawing weapon anim at " +getX() + " "+ getY() + "; w="+sprite.getSprite().getWidth()+ "; h="+sprite.getSprite().getHeight());
     }
 
 }

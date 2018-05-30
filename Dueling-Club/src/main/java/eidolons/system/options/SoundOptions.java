@@ -16,18 +16,14 @@ public class SoundOptions extends Options<SOUND_OPTION, SOUND_OPTION> {
 
     public enum SOUND_OPTION implements Options.OPTION {
         SOUNDS_OFF(false),
-        //        VOICE_OFF,
+        VOICE_OFF(false),
+        FOOTSTEPS_OFF(false),
         MUSIC_OFF(false),
         MASTER_VOLUME(100, 0, 100),
         MUSIC_VOLUME(100, 0, 100),
-        //        VOICE_VOLUME(100, 0, 100),
+        VOICE_VOLUME(100, 0, 100),
 //        EFFECT_VOLUME(100, 0, 100),
-        MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values()),
-
-//        POSITIONED_SOUND(),
-//        NEVER_REPEAT,
-
-        ;
+        MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values())  ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;

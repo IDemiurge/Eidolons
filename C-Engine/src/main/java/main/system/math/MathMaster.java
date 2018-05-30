@@ -16,13 +16,16 @@ import java.util.List;
 public abstract class MathMaster {
 
     public static final Integer PERCENTAGE = 1000000;
+    public static final Integer MAX_REASONABLE_PERCENTAGE = 3000000;
     public static final Integer MULTIPLIER = 10000;
     public static final double NUMBERS_AFTER_PERIOD = 2;
     private static final boolean autoResolveParseExceptions = true;
     protected MicroGame game;
 
     // public abstract Integer getStartingFocus(Obj obj);
-
+    public static float getFloatWithDigitsAfterPeriod(int digitsAfterPeriod, float v) {
+        return Float.parseFloat(StringMaster.formatFloat(digitsAfterPeriod, v));
+    }
     public static Integer getAverage(Integer... integers) {
         Integer sum = 0;
         for (Integer i : integers) {

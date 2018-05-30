@@ -12,7 +12,8 @@ public class DurabilityReductionEffect extends MicroEffect implements OneshotEff
     private Boolean attacker;
     private Integer dmg_amount;
     private int durabilityLost;
-    private boolean simulation;
+    private Integer hardness;
+    private Integer hardness2;
 
     public DurabilityReductionEffect(Boolean attacker) {
         this.attacker = attacker;
@@ -36,9 +37,7 @@ public class DurabilityReductionEffect extends MicroEffect implements OneshotEff
         if (attacker == null) {// spell
             DC_HeroItemObj item = (DC_HeroItemObj) ref.getTargetObj();
             // mod = ref.getActive().getIntParam(param, base)
-            durabilityLost = item.reduceDurabilityForDamage(dmg_amount, armor, 100, simulation
-
-            );
+            durabilityLost = item.reduceDurabilityForDamage(dmg_amount, armor, 100, false);
             return true;
         }
 
@@ -46,22 +45,24 @@ public class DurabilityReductionEffect extends MicroEffect implements OneshotEff
         if (item == null) {
             return false;
         }
-        if (attacker) {
-            if (ref.getObj(KEYS.SPELL) != null) {
-                return false;
-            }
-        }
+//        if (attacker) { TODO wtf?
+//            if (ref.getObj(KEYS.SPELL) != null) {
+//                return false;
+//            }
+//        }
 
         // ref.getObj(KEYS.TARGET).getIntParam(PARAMS.ARMOR);
 
         int mod;
         mod = ((attacker) ? weapon : armorItem).getIntParam(PARAMS.DURABILITY_DAMAGE_MOD);
-        int hardness = ((!attacker) ? weapon : armorItem).getIntParam(PARAMS.HARDNESS);
-        int hardness2 = ((attacker) ? weapon : armorItem).getIntParam(PARAMS.HARDNESS);
+        if (hardness == null )
+         hardness = ((!attacker) ? weapon : armorItem).getIntParam(PARAMS.HARDNESS);
+        if (hardness2 == null )
+            hardness2 = ((attacker) ? weapon : armorItem).getIntParam(PARAMS.HARDNESS);
 
         mod += hardness * 100 / hardness2;
         if (mod > 0) {
-            durabilityLost = item.reduceDurabilityForDamage(amount, armor, mod, simulation);
+            durabilityLost = item.reduceDurabilityForDamage(amount, armor, mod, false);
         }
 
         // preCheck broken item TODO
@@ -73,9 +74,20 @@ public class DurabilityReductionEffect extends MicroEffect implements OneshotEff
         return durabilityLost;
     }
 
-    public void setSimulation(boolean simulation) {
-        this.simulation = simulation;
 
+    public void setHardness(int hardness) {
+        this.hardness = hardness;
     }
 
+    public int getHardness() {
+        return hardness;
+    }
+
+    public void setHardness2(int hardness2) {
+        this.hardness2 = hardness2;
+    }
+
+    public int getHardness2() {
+        return hardness2;
+    }
 }

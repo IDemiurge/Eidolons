@@ -286,6 +286,12 @@ public class ModelManager {
                         case WEAPONS:
                             type.setImage(InventoryFactory.getWeaponIconPath(type));
                             break;
+                        case ARMOR:
+                            type.setImage(InventoryFactory.getArmorIconPath(type));
+                            break;
+                        case JEWELRY:
+                            type.setImage(InventoryFactory.getItemIconPath(type));
+                            break;
                     }
                 }
 

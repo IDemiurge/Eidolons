@@ -191,6 +191,7 @@ public class GenericLauncher extends Game {
         viewport.update(width, height);
 
         if (gameScreen != null) gameScreen.resize(width, height);
+        else getScreen().resize(width, height);
 //        if (VignetteShader.isUsed()) {
 //            ShaderProgram program = VignetteShader.getShader();
 //      try{

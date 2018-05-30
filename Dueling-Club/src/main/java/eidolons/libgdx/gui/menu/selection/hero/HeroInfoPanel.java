@@ -3,8 +3,9 @@ package eidolons.libgdx.gui.menu.selection.hero;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
@@ -19,7 +20,7 @@ import main.system.graphics.FontMaster.FONT;
  * Created by JustMe on 11/29/2017.
  */
 public class HeroInfoPanel extends ItemInfoPanel {
-    Label mainInfo;
+    LabelX mainInfo;
     Image emblem; //TODO implement choice/ color change
     TablePanel stats; // class, power,
 
@@ -43,6 +44,7 @@ public class HeroInfoPanel extends ItemInfoPanel {
         super.updateAct(delta);
         emblem.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.getEntity().getProperty(G_PROPS.EMBLEM)));
         mainInfo.setText(HelpMaster.getHeroMainInfoText(item.getName()));
+        mainInfo.pack();
     }
 
     @Override
@@ -54,9 +56,12 @@ public class HeroInfoPanel extends ItemInfoPanel {
 //        header.addNormalSize(emblem).colspan(2). right().padRight(20);
 //        header.pack();
         header.row();
-        mainInfo = new Label("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
+        mainInfo = new LabelX("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
+        mainInfo.setWrap(true);
+        mainInfo.setMaxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500);
         mainInfo.setText("A touch of Fate...");
-        header.addNormalSize(mainInfo).padTop(50);
+        mainInfo.pack();
+        header.add(mainInfo).maxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500). padTop(50);
 
     }
 

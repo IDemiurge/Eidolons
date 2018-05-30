@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
+import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -50,7 +51,7 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.addActor(title); //trick for pos
         title.pack();
         title.setPosition(GdxMaster.centerWidth(title),
-         GdxMaster.getHeight()-100);
+         GdxMaster.getHeight()- GDX.size(200));
         addActor(title);
         row();
         addNormalSize(listPanel).left();

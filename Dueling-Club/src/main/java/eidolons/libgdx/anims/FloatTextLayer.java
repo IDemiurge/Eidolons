@@ -1,7 +1,10 @@
 package eidolons.libgdx.anims;
 
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.text.FloatingText;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
@@ -17,6 +20,7 @@ import static eidolons.libgdx.anims.text.FloatingTextMaster.displacementInvertFl
 public class FloatTextLayer extends GroupX {
     DequeImpl<FloatingText> queued = new DequeImpl<>();
     DequeImpl<FloatingText> displaying = new DequeImpl<>();
+    private static Float durationMod;
 
     public FloatTextLayer() {
         bindEvents();
@@ -25,6 +29,11 @@ public class FloatTextLayer extends GroupX {
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.ADD_FLOATING_TEXT, p -> {
             FloatingText floatingText = (FloatingText) p.get();
+            if (queued.contains(floatingText))
+                return;
+            if (displaying.contains(floatingText))
+                return;
+            floatingText.setDuration(floatingText.getDuration() * getDurationMod());
             floatingText.init();
             addToQueue(floatingText);
         });
@@ -36,24 +45,25 @@ public class FloatTextLayer extends GroupX {
 
     @Override
     public void act(float delta) {
+        if (Eidolons.getGame().isPaused())
+            return;
         super.act(delta);
-        for (FloatingText sub : queued) {
+        for (FloatingText sub : new ArrayList<>(queued)) {
             show(sub);
         }
         for (FloatingText sub :     new ArrayList<>(displaying) ) {
-            if (sub.getColor().a<=0)
+            if (sub.getActions().size<=0 ||sub.getColor().a<=0 || sub.getParent()==null || !sub.isVisible())
                 displaying.remove(sub);
         }
 
     }
 
     private void show(FloatingText text) {
-        displaying.add(text);
-        float offsetX=0;
-        float offsetY=0;
-        offsetX=
+        float offsetX = 0;
+        float offsetY = 0;
+        offsetX =
          displacementInvertFlag
-          ? - DEFAULT_DISPLACEMENT_X
+          ? -DEFAULT_DISPLACEMENT_X
           : DEFAULT_DISPLACEMENT_X;
 
 //        for (FloatingText text : displaying) {
@@ -65,12 +75,25 @@ public class FloatTextLayer extends GroupX {
 //                  offsetY=0;
 //            }
 //        }
-        text.setX(text.getX()+offsetX);
-        text.setY(text.getY()+offsetY);
-        queued.remove(text);
-        float mod = 0.7f + displaying.size() * 0.1f;
-        text.setDuration(text.getDuration()*mod);
+        text.setX(text.getX() + offsetX);
+        text.setY(text.getY() + offsetY);
+//        float mod = 0.7f + displaying.size() * 0.05f;
         addActor(text);
+        queued.remove(text);
+        displaying.add(text);
+
+    }
+
+    public static Float getDurationMod() {
+        if (durationMod == null) {
+            durationMod=new Float(
+             OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.FLOAT_TEXT_DURATION_MOD))/100;
+        }
+        return durationMod;
+    }
+
+    public static void setDurationMod(Float mod) {
+        durationMod = mod;
     }
 }
 

@@ -182,6 +182,16 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+try{
+    overlayStage.getRoot().setSize(width, height);
+    overlayStage.getViewport().update(width, height);
+    loadingStage.getRoot().setSize(width, height);
+    loadingStage.getViewport().update(width, height);}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+    }
+
+    @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);

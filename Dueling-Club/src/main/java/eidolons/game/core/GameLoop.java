@@ -275,6 +275,8 @@ public class GameLoop {
         if (input == null) {
             return true;
         }
+        if (input.getContext().getSourceObj().isDead())
+            return false;
         boolean result;
         try {
             activatingAction = input.getAction();
@@ -370,6 +372,11 @@ public class GameLoop {
     }
 
     public void actionInput(ActionInput actionInput) {
+        if (isPaused())
+        {
+            EUtils.showInfoText("The game is paused!");
+            return;
+        }
         WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
     }
 

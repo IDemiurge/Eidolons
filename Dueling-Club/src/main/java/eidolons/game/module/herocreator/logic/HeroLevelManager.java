@@ -14,6 +14,7 @@ import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.auxiliary.EnumMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class HeroLevelManager {
         levelUp(hero, null);
         EUtils.showInfoText(hero.getName()+"is now Level " +hero.getLevel());
         EUtils.playSound(STD_SOUNDS.LEVEL_UP);
-        EUtils.showVFX(EMITTER_PRESET.LEAVES,
+        EUtils.showVFX(EMITTER_PRESET.IMPACT_scare,
          GridMaster.getCenteredPos(hero.getCoordinates())
          );
     }
@@ -159,10 +160,18 @@ public class HeroLevelManager {
         FloatingTextMaster.getInstance().createFloatingText(
          TEXT_CASES.XP, xp+" xp",hero);
 
-        EUtils.showVFX(EMITTER_PRESET.LEAVES,
+        EUtils.showVFX(new EnumMaster<EMITTER_PRESET>().getRandomEnumConst(EMITTER_PRESET.class),
          GridMaster.getCenteredPos(hero.getCoordinates())
         );
         EUtils.showInfoText("Experience gained: " + xp);
     }
 
+    public static void addXpForKill(Unit unit, Unit killer) {
+        int divider=Math.max(1, killer.getLevel()-unit.getLevel());
+        int xp = (int) (Math.round ((unit.getIntParam(PARAMS.POWER)/10+
+                 (Math.sqrt(unit.getIntParam(PARAMS.POWER))*
+                  unit.getIntParam(PARAMS.POWER))/50)/divider));
+
+        addXp(killer, xp);
+    }
 }

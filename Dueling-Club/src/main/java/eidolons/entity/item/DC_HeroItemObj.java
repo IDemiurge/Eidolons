@@ -2,6 +2,8 @@ package eidolons.entity.item;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
+import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
+import eidolons.game.core.EUtils;
 import eidolons.system.math.DC_MathManager;
 import main.content.enums.entity.UnitEnums;
 import main.content.values.parameters.PARAMETER;
@@ -139,7 +141,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         if (integer != 0) {
             mod = mod * integer / 100;
         }
-
+        mod = mod * getGame().getBattleMaster().getOptionManager().getDifficulty().getDurabilityDamageMod() / 100;
         amount = amount * mod / 100;
         return reduceDurability(amount, simulation);
 
@@ -155,11 +157,15 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
             return;
         }
         setProperty(G_PROPS.STATUS, UnitEnums.STATUS.BROKEN.toString());
-        getHero().unequip(this, false);
+        if (DurabilityRule.isSaveBrokenItem())
+         getHero().unequip(this, false);
+        else {
+            getHero().unequip(this, null );
+        }
         kill();
-        game.getLogManager()
-         .log(StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!");
-
+        String msg = StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!";
+        game.getLogManager().log(msg);
+        EUtils.showInfoText(msg);
 
     }
 

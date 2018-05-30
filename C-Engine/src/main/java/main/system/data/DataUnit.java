@@ -56,6 +56,8 @@ public class DataUnit<T extends Enum<T>> {
         if (StringMaster.isEmpty(val)) {
             return 0;
         }
+        if (!StringMaster.isInteger(val))
+            return 0;
         return StringMaster.getInteger(val);
     }
 

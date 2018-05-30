@@ -8,6 +8,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.active.DC_QuickItemAction;
 import eidolons.entity.active.DC_SpellObj;
+import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
@@ -718,6 +719,11 @@ public class AnimationConstructor {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         });
+    }
+
+    public CompositeAnim getParryAnim(DC_WeaponObj weaponObj, DC_ActiveObj attack) {
+        Parry3dAnim parryAnim =new Parry3dAnim(weaponObj, attack) ;
+        return new CompositeAnim(parryAnim);
     }
 
     public enum ANIM_PART {

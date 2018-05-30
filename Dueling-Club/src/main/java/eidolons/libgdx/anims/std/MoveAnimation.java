@@ -13,6 +13,8 @@ import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.audio.DC_SoundMaster;
+import eidolons.system.options.OptionsMaster;
+import eidolons.system.options.SoundOptions.SOUND_OPTION;
 import main.entity.Entity;
 import main.game.bf.Coordinates;
 import main.system.EventCallbackParam;
@@ -100,6 +102,8 @@ public class MoveAnimation extends ActionAnim {
     }
 
     public void playSound() {
+        if (OptionsMaster.getSoundOptions().getBooleanValue(SOUND_OPTION.FOOTSTEPS_OFF))
+            return;
         DC_SoundMaster.playMoveSound(getActive().getOwnerObj());
     }
 

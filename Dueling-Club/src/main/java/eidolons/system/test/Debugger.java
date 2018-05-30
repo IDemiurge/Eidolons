@@ -3,6 +3,11 @@ package eidolons.system.test;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.bf.grid.BaseView;
+import eidolons.libgdx.bf.grid.GridCellContainer;
+import eidolons.libgdx.bf.grid.GridUnitView;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 
 /**
  * Created by JustMe on 5/16/2018.
@@ -70,4 +75,33 @@ public class Debugger {
 
     }
 
+    public static boolean isImmortalityOn() {
+        return OptionsMaster.getGameplayOptions().
+         getBooleanValue(GAMEPLAY_OPTION.IMMORTALITY);
+    }
+
+    public static void validateInvisibleUnitView(BaseView baseView) {
+
+    }
+        public static void validateVisibleUnitView(BaseView baseView) {
+        if (baseView instanceof GridUnitView) {
+            GridUnitView view = ((GridUnitView) baseView);
+            if (view.getActions().size == 0) {
+                if (view.getColor().a == 0) {
+                    main.system.auxiliary.log.LogMaster.log(1,"Validation was required for "+view+
+                    " - alpha==0");
+                    view.fadeIn();
+                }
+                if (view.getParent() instanceof GridCellContainer) {
+                    GridCellContainer cell = ((GridCellContainer) view.getParent());
+                    if (view.getX() != cell.getViewX(view) ||
+                     view.getY() != cell.getViewY(view)) {
+                       cell.recalcUnitViewBounds();
+                    }
+
+                }
+            }
+
+        }
+    }
 }

@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.PARAMS;
+import eidolons.game.core.EUtils;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
+import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -39,7 +42,11 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     public SlotSelectionRadialMenu() {
         super();
         GuiEventManager.bind(getEvent(), p -> {
-            triggered(p);
+            if (ExplorationMaster.isExplorationOn())
+                triggered(p);
+            else {
+                EUtils.showInfoText("Cannot do this while in combat!");
+            }
         });
     }
 
@@ -105,11 +112,15 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
             }
         });
         GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
-            close();
+            if (HqPanel.getActiveInstance()!=null )
+            if (ready)
+                close();
         });
     }
 
     public void selected(ObjType type) {
+        if (!ExplorationMaster.isExplorationOn())
+            return;
         HqDataMaster.operation(dataSource,
          getOperation(), type);
     }

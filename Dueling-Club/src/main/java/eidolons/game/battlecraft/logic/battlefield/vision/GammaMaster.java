@@ -180,13 +180,20 @@ public class GammaMaster {
 
             }
         if (cell.getUnitVisionStatus() == UNIT_VISION.BLOCKED)
-            return 0;
+            return getBlockedGamma(cell);
 
 
 //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
          cell.getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
+    }
+
+    private float getBlockedGamma(DC_Cell cell) {
+        if (cell.isPlayerHasSeen()) {
+            return 0.22f;
+        }
+        return 0;
     }
 
 }

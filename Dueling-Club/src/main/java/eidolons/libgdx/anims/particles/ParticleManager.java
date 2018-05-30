@@ -35,11 +35,11 @@ public class ParticleManager extends GroupX {
              new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
         });
 
-        GuiEventManager.bind(GuiEventType.SHOW_VFX, p -> {
+        GuiEventManager.bind(GuiEventType.SHOW_CUSTOM_VFX, p -> {
             List args = (List) p.get();
-            EMITTER_PRESET preset = (EMITTER_PRESET) args.get(0);
+            String preset = (String) args.get(0);
             Vector2 v = (Vector2) args.get(1);
-             EmitterActor vfx = new EmitterActor(preset);
+            EmitterActor vfx = new EmitterActor(preset);
 
             dynamicVfx.add(vfx);
             vfx.setPosition(v.x, v.y);
@@ -47,6 +47,16 @@ public class ParticleManager extends GroupX {
             vfx.start();
             vfx.getEffect().allowCompletion();
         });
+            GuiEventManager.bind(GuiEventType.SHOW_VFX, p -> {
+                List<Object> list = (List<Object>) p.get();
+                List<Object> newList = new ArrayList<>();
+                EMITTER_PRESET preset= (EMITTER_PRESET) list.get(0);
+                newList.add(preset.path);
+                newList.add(list.get(1));
+                GuiEventManager.trigger(GuiEventType.SHOW_CUSTOM_VFX,
+                 newList);
+
+            });
 
         GuiEventManager.bind(GuiEventType.INIT_AMBIENCE, p -> {
             AmbienceDataSource dataSource = (AmbienceDataSource) p.get();

@@ -1752,7 +1752,8 @@ public class StringMaster {
          + entity.getIntParam(parameter);
     }
 
-    public static String formatFloat(int digitsAfterPeriod, float v) {
+
+        public static String formatFloat(int digitsAfterPeriod, float v) {
         return
          String.format(java.util.Locale.US, "%." +
          digitsAfterPeriod +

@@ -61,6 +61,7 @@ public class HitAnim extends ActionAnim {
     private float originalActorX;
     private float originalActorY;
     private boolean blood;
+    private static boolean displacementOn=true;
 
     public HitAnim(DC_ActiveObj active, AnimData params, Color c) {
         this(active, params, true, c, null);
@@ -124,6 +125,14 @@ public class HitAnim extends ActionAnim {
         return spritesPath;
     }
 
+    public static void setDisplacementOn(boolean displacementOn) {
+        HitAnim.displacementOn = displacementOn;
+    }
+
+    public static boolean isDisplacementOn() {
+        return displacementOn;
+    }
+
     @Override
     protected void resetSprites() {
         sprites.clear();
@@ -172,6 +181,8 @@ public class HitAnim extends ActionAnim {
 //        if (!OptionsMaster.getAnimOptions().getBooleanValue(
 //         ANIMATION_OPTION.HIT_ANIM_DISPLACEMENT))
 //            return null;
+        if (!isDisplacementOn())
+            return null ;
         if (getRef() == null)
             return null;
         if (getRef().getSourceObj() == null)
@@ -263,8 +274,7 @@ public class HitAnim extends ActionAnim {
           : text);
         floatingText.setImageSupplier(() -> imagePath);
         floatingText.setColor(c);
-        floatingText.init(destination, 0, 128, getDuration() * 0.3f *
-         OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.TEXT_DURATION)
+        floatingText.init(destination, 0, 128, getDuration() * 0.3f
         );
 
         GuiEventManager.trigger(GuiEventType.ADD_FLOATING_TEXT, floatingText);

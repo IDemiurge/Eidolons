@@ -61,7 +61,12 @@ public class HqDataMaster {
         return new HqHeroDataSource(map.get(hero).getHeroModel());
     }
 
-    public static void saveHero(HeroDataModel model) {
+    public static void saveAll() {
+        for (Unit sub : map.keySet()) {
+            map.get(sub).save();
+        }
+    }
+        public static void saveHero(HeroDataModel model) {
         saveHero(model, false, false);
     }
 
@@ -291,8 +296,8 @@ public class HqDataMaster {
                 applyItemOperation(hero, operation, args);
                 break;
             case ATTRIBUTE_INCREMENT:
-                hero.modifyParameter((PARAMETER) args[0], 1, true);
                 PointMaster.increased((PARAMETER) args[0], hero);
+                hero.modifyParameter((PARAMETER) args[0], 1, true);
                 break;
             case MASTERY_INCREMENT:
                 hero.modifyParameter((PARAMETER) args[0], 1, true);
