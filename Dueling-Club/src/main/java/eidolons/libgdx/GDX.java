@@ -31,6 +31,9 @@ public class GDX {
     public static RESOLUTION getDisplayResolution() {
         return new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, getDisplayResolutionString());
     }
+    public static RESOLUTION getCurrentResolution() {
+        return new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, getCurrentResolutionString());
+    }
 
     public static String getCurrentResolutionString() {
 

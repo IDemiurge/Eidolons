@@ -163,9 +163,11 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
             getHero().unequip(this, null );
         }
         kill();
+        if (isMine()) {
         String msg = StringMaster.MESSAGE_PREFIX_ALERT + getHero().getName() + "'s " + getName() + " is broken!";
         game.getLogManager().log(msg);
         EUtils.showInfoText(msg);
+        }
 
     }
 

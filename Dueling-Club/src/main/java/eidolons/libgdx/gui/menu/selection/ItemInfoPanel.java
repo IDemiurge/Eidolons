@@ -94,7 +94,7 @@ public class ItemInfoPanel extends TablePanel {
 
     protected void initHeader(TablePanel<Actor> header) {
         header.addNormalSize(preview).left().padLeft(GDX.size(70)).padTop(GDX.size(100));
-        header.addElement(title).right();
+        header.addElement(title).right().padTop(65);
 
     }
 

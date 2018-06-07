@@ -20,8 +20,17 @@ public abstract class GdxUtil implements ApplicationListener {
     }
 
     public void start(){
-    new LwjglApplication(this, "", 1, 1);
+    new LwjglApplication(this, "", getWidth(), getHeight());
 }
+
+    protected int getHeight() {
+        return 1;
+    }
+
+    protected int getWidth() {
+        return 1;
+    }
+
     protected abstract void execute();
 
     @Override

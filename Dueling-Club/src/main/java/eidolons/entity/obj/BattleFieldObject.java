@@ -306,9 +306,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 //             (1,this+"'s INITIATIVE modified by " +mod);
             modifyParameter(PARAMS.C_INITIATIVE, mod);
         } else if (param == PARAMS.INITIATIVE_MODIFIER) {
-            Integer prev = getIntParam(param);
-            int diff = StringMaster.getInteger(value) - prev;
-            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
+//            Integer prev = getIntParam(param);
+//            int diff = StringMaster.getInteger(value) - prev;
+//            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
         } else if (param == PARAMS.C_INITIATIVE_BONUS) {
             Integer prev = getIntParam(param);
             int diff = StringMaster.getInteger(value) - prev;

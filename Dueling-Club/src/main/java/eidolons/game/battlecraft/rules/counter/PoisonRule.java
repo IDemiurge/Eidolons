@@ -34,10 +34,12 @@ public class PoisonRule extends DamageCounterRule implements TimedRule{
     }
 
     public boolean checkApplies(BattleFieldObject unit) {
-        if (unit instanceof Unit) {
-            return ((Unit) unit).isLiving();
+        if ((unit instanceof Unit)) {
+            if (!((Unit) unit).isLiving()) {
+                return false;
+            }
         }
-        return false;
+        return super.checkApplies(unit);
     }
 
     @Override

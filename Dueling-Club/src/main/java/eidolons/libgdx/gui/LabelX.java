@@ -33,12 +33,13 @@ public class LabelX extends VisLabel {
 
     public void setMaxWidth(float maxWidth) {
         this.maxWidth = maxWidth;
+        setWrap(true);
     }
 
     @Override
     public void setText(CharSequence newText) {
         if (wrapped){
-            newText = TextWrapper.processText((int) getMaxWidth(), newText.toString(), getStyle());
+            newText = TextWrapper.processText((int) getMaxWidth()*2/3, newText.toString(), getStyle());
         }
         super.setText(newText);
     }

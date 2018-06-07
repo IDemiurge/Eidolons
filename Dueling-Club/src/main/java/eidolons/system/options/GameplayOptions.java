@@ -29,11 +29,10 @@ public class GameplayOptions extends Options<GAMEPLAY_OPTION, GAMEPLAY_OPTION> {
     }
 
     public enum LOGGING_DETAIL_LEVEL  {
-        FULL,
-        ESSENTIAL,
         CONCISE,
-        DEV,
-        ;
+        ESSENTIAL,
+        FULL,
+        DEV,;
     }
         public enum GAMEPLAY_OPTION implements Options.OPTION {   RULES_SCOPE(RuleKeeper.RULE_SCOPE.values()),
         GAME_DIFFICULTY(GenericEnums.DIFFICULTY.values()),

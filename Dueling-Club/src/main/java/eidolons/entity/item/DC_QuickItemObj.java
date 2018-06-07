@@ -268,6 +268,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         modifyParameter(PARAMS.C_CHARGES, -1);
         if (wrapped) {
             modifyParameter(PARAMS.C_DURABILITY, -1);
+            getWrappedWeapon(). modifyParameter(PARAMS.C_DURABILITY, -1);
         }
         if (getIntParam(PARAMS.C_CHARGES) <= 0) {
             outOfCharges();

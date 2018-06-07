@@ -67,7 +67,7 @@ public class Eidolons {
     private static Party party;
     private static boolean battleRunning;
     private static GameScreen screen;
-    private static SCOPE scope;
+    private static SCOPE scope=SCOPE.MENU;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -135,8 +135,9 @@ public class Eidolons {
     public static void setFullscreen(boolean b) {
         if (getApplication() == null)
             return;
-        if (fullscreen==b)
-            return;
+        if (resolution!=null )
+            if (fullscreen==b)
+                return;
         fullscreen = b;
         Eidolons.getApplication().getGraphics().setResizable(true);
         if (fullscreen) {
@@ -166,16 +167,14 @@ public class Eidolons {
     public static void setResolution(String value) {
         RESOLUTION resolution =
          new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, value);
-        if (Eidolons.getResolution()==null )
-            Eidolons.resolution= resolution;
-
         setResolution(resolution);
     }
 
     public static void setResolution(RESOLUTION resolution) {
         if (resolution != null) {
         if (resolution != Eidolons.getResolution()) {
-            if (Eidolons.getScope()!= SCOPE.MENU){
+            if (Eidolons.getScope()!=null)
+                if (Eidolons.getScope()!= SCOPE.MENU){
                 EUtils.onConfirm(
                  "New resolution will be applied on restart... Ok?", true, ()->
                 OptionsMaster.saveOptions());
@@ -338,7 +337,7 @@ public class Eidolons {
 
     public static RESOLUTION getResolution() {
         if (resolution == null) {
-            resolution= GDX.getDisplayResolution();
+            resolution= GDX.getCurrentResolution();
         }
         return resolution;
     }

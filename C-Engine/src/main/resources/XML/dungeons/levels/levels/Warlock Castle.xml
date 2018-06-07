@@ -1,5 +1,6 @@
-<Level><Custom_Props><Party_Spawn_Coordinates>11-12;</Party_Spawn_Coordinates>
+<Level><Custom_Props><Map_Background>gen\entity\Map Background\dungeons\Standard\\Wraith Kingdom.png</Map_Background>
 <Dungeon_Subfolder>levels</Dungeon_Subfolder>
+<Party_Spawn_Coordinates>11-12;</Party_Spawn_Coordinates>
 <Color_Theme>purple</Color_Theme>
 </Custom_Props><Custom_Params><Bf_Width>23</Bf_Width>
 <Bf_Height>15</Bf_Height>

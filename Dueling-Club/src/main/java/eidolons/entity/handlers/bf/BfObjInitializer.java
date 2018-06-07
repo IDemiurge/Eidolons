@@ -1,8 +1,10 @@
 package eidolons.entity.handlers.bf;
 
 import eidolons.content.DC_ContentValsManager;
+import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
@@ -93,8 +95,17 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                          {
                             HqMaster.getSimCache().addSim(item, ItemFactory.createItemObj(item.getType(), getEntity().getOriginalOwner(), getGame(), getRef(),
                              quick));
+                        } 
+                        Integer durability =null ;
+                        if (item instanceof DC_QuickItemObj){
+                            if (((DC_QuickItemObj) item).getWrappedWeapon()!=null ){
+                                  durability = ((DC_QuickItemObj) item).getWrappedWeapon()
+                                   .getIntParam(PARAMS.C_DURABILITY);
+                            }
                         }
                         item = (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
+                        if (durability!=null )
+                            item.setParam(PARAMS.C_DURABILITY, durability);
                     }
                 } else {
                     ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProperty(prop));

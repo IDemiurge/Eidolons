@@ -33,7 +33,12 @@ public class TrampleRule extends DC_RuleImpl {
          // new RollCondition(ROLL_TYPES.REFLEX))
          new InstantDeathEffect(false, null),
          // conditional ( new SpaceCondition(),
-         new SelfMoveEffect());
+         new SelfMoveEffect(){
+             @Override
+             public boolean applyThis() {
+                 return super.applyThis();
+             }
+         });
         // new ConditionalEffect //isDead
     }
 

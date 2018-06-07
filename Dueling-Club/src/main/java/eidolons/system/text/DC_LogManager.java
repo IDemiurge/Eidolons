@@ -6,12 +6,14 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.advanced.companion.Order;
 import eidolons.game.core.game.DC_Game;
+import eidolons.system.options.GameplayOptions.LOGGING_DETAIL_LEVEL;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -27,6 +29,8 @@ import java.util.Map;
 
 public class DC_LogManager extends LogManager {
 
+
+    private int logLevel=1;
 
     public DC_LogManager(Game game) {
         super(game);
@@ -135,6 +139,13 @@ public class DC_LogManager extends LogManager {
     @Override
     public boolean log(LOG log, String entry, ENTRY_TYPE enclosingEntryType) {
         return super.log(log, entry, enclosingEntryType);
+    }
+    public boolean log(LOGGING_DETAIL_LEVEL log, String entry  ) {
+        int i = EnumMaster.getEnumConstIndex(LOGGING_DETAIL_LEVEL.class, log);
+        if (logLevel<i)
+            return false;
+
+        return super.log(LOG.GAME_INFO, entry );
     }
 
 

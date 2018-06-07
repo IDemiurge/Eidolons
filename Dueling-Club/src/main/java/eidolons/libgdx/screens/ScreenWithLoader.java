@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -41,14 +42,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected EventCallbackParam param;
     protected float timeWaited;
     protected Label tooltipLabel;
-    private boolean waitingForInput;
-    private float tooltipTimer = getTooltipPeriod();
-    private boolean loadingAtlases;
-    private int assetLoadTimer=getAssetLoadTimeLimit();
-
     protected UiStage overlayStage;
     protected SelectionPanel selectionPanel;
     protected ManualPanel manualPanel;
+    private boolean waitingForInput;
+    private float tooltipTimer = getTooltipPeriod();
+    private boolean loadingAtlases;
+    private int assetLoadTimer = getAssetLoadTimeLimit();
 
     public ScreenWithLoader() {
         waitingLabel = new Label("Press any key to Continue...",
@@ -99,26 +99,25 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void loadDone(EventCallbackParam param) {
-        this.param=param;
+        this.param = param;
         if (param.get() instanceof BFDataCreatedEvent)
-        if (Assets.isOn()) {
-            Chronos.mark(ASSET_LOADING);
-            if (Assets.preloadAll(((BFDataCreatedEvent) param.get()).getObjects()))
-            {
-                setLoadingAtlases(true);
-                return ;
-            }
+            if (Assets.isOn()) {
+                Chronos.mark(ASSET_LOADING);
+                if (Assets.preloadAll(((BFDataCreatedEvent) param.get()).getObjects())) {
+                    setLoadingAtlases(true);
+                    return;
+                }
 
-        }
+            }
         loadingAssetsDone(param);
 
     }
 
     public void loadingAssetsDone(EventCallbackParam param) {
-        Chronos.logTimeElapsedForMark( ASSET_LOADING  );
+        Chronos.logTimeElapsedForMark(ASSET_LOADING);
         if (isWaitForInput()) {
             setWaitingForInput(true);
-            this.param =  param;
+            this.param = param;
             updateInputController();
         } else done(this.param);
     }
@@ -184,11 +183,12 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-try{
-    overlayStage.getRoot().setSize(width, height);
-    overlayStage.getViewport().update(width, height);
-    loadingStage.getRoot().setSize(width, height);
-    loadingStage.getViewport().update(width, height);}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        overlayStage.getRoot().setSize(width, height);
+        overlayStage.getViewport().update(width, height);
+        loadingStage.getRoot().setSize(width, height);
+    loadingStage.getViewport().update(width, height);
+
+
     }
 
     @Override
@@ -201,7 +201,7 @@ try{
         waited(delta);
         checkShaderReset();
         if (isLoadingAtlases()) {
-            if (assetLoadTimer<=0||Assets.get().getManager().update()) {
+            if (assetLoadTimer <= 0 || Assets.get().getManager().update()) {
                 setLoadingAtlases(false);
                 loadingAssetsDone(param);
                 return;
@@ -342,11 +342,12 @@ try{
     public void updateInputController() {
         GdxMaster.setInputProcessor(
          new InputMultiplexer(GlobalInputController.getInstance(),
-         getInputController()));
+          getInputController()));
     }
 
     public void initLoadingStage(ScreenData meta) {
         this.loadingStage = new LoadingStage(meta);
+        loadingStage.setViewport(new ScreenViewport(new OrthographicCamera( )));
         initLoadingCursor();
     }
 

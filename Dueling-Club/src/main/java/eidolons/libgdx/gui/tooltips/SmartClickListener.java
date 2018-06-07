@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
+import eidolons.libgdx.stage.ConfirmationPanel;
 
 /**
  * Created by JustMe on 4/10/2018.
@@ -24,6 +25,9 @@ public class SmartClickListener extends ClickListener {
         if (isBattlefield())
             if (HqPanel.getActiveInstance()!=null )
                 return true;
+
+        if (ConfirmationPanel.getInstance().isVisible())
+            return true;
         return super.handle(e);
     }
 

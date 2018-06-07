@@ -77,8 +77,8 @@ public class OverlaysManager extends SuperActor {
     }
 
     public void clearTooltip(Entity e) {
-        main.system.auxiliary.log.LogMaster.log(1, "Removing mapping for " + e
-         + ":\n " + tooltipMap.get(e) + ";\n " + overlayMap.get(e));
+//        main.system.auxiliary.log.LogMaster.log(1, "Removing mapping for " + e
+//         + ":\n " + tooltipMap.get(e) + ";\n " + overlayMap.get(e));
         tooltipMap.remove(e);
         overlayMap.remove(e);
     }
@@ -419,8 +419,6 @@ public class OverlaysManager extends SuperActor {
                 tooltip = getTooltip(overlay, parent, x, y);
                 if (tooltip != null) {
                     map.put(rect, tooltip);
-                    main.system.auxiliary.log.LogMaster.log(1, "Adding tooltip for "
-                     + obj + ":\n " + tooltip + "Map:\n " + tooltipMap.get(obj));
                 }
             }
         }

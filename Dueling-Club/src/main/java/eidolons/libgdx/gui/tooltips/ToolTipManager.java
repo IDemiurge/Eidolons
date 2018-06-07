@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.tooltips;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -31,15 +32,6 @@ public class ToolTipManager extends TablePanel {
     private final GuiStage guiStage;
     private Cell actorCell;
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (parentAlpha== ShaderMaster.SUPER_DRAW ||
-         ConfirmationPanel.getInstance().isVisible())
-            super.draw(batch, 1);
-        else
-            ShaderMaster.drawWithCustomShader(this, batch, null );
-    }
-
     public ToolTipManager(GuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
@@ -63,7 +55,7 @@ public class ToolTipManager extends TablePanel {
             if (DungeonScreen.getInstance().isBlocked())
                 return;
             BaseView object = (BaseView) event.get();
-            if (object instanceof  LastSeenView)
+            if (object instanceof LastSeenView)
                 return;
 //            if (object.getScaleX()==getDefaultScale(object))
 //                if (object.getScaleX()==getDefaultScale(object))
@@ -125,6 +117,15 @@ public class ToolTipManager extends TablePanel {
         actorCell = addElement(null);
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (parentAlpha == ShaderMaster.SUPER_DRAW ||
+         ConfirmationPanel.getInstance().isVisible())
+            super.draw(batch, 1);
+        else
+            ShaderMaster.drawWithCustomShader(this, batch, null, false, false);
+    }
+
     private boolean isRemoveImmediately(Actor actor) {
 
         return actor instanceof UnitViewTooltip;
@@ -151,10 +152,10 @@ public class ToolTipManager extends TablePanel {
     public void entityHoverOff(Entity entity) {
         if (entity instanceof DC_ActiveObj) {
             GuiEventManager.trigger(ACTION_HOVERED_OFF, entity);
-        if (DC_Engine.isAtbMode())
-            if (!ExplorationMaster.isExplorationOn())
-                GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
-            }
+            if (DC_Engine.isAtbMode())
+                if (!ExplorationMaster.isExplorationOn())
+                    GuiEventManager.trigger(GuiEventType.ATB_POS_PREVIEW, null);
+        }
         if (entity instanceof DC_UnitAction) {
             AnimMaster3d.hoverOff((DC_UnitAction) entity);
         }
@@ -199,6 +200,9 @@ public class ToolTipManager extends TablePanel {
     public void act(float delta) {
         super.act(delta);
 
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            setVisible(false);
+        } else setVisible(true);
         if (actorCell.getActor() != null) {
             final Tooltip tooltip = (Tooltip) actorCell.getActor();
             if (tooltip.getColor().a == 0) {

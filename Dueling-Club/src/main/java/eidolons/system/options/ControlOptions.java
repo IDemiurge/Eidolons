@@ -20,8 +20,11 @@ public class ControlOptions extends  Options<CONTROL_OPTION,CONTROL_OPTION> {
 //        DRAG_OFF(false),
 //        PAN_CAMERA_ON_EDGES(false),
         AUTO_CENTER_CAMERA_ON_HERO(true),
-        CAMERA_FOLLOW_CURSOR_DISTANCE(0, 0, 1000),
-        CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),;
+//        CAMERA_FOLLOW_CURSOR_DISTANCE(0, 0, 1000),
+        CENTER_CAMERA_AFTER_TIME(2, 1, 10),
+        CENTER_CAMERA_DISTANCE_MOD(100, 50, 200),
+        CENTER_CAMERA_ON_ALLIES_ONLY(false),
+        ALWAYS_CAMERA_CENTER_ON_ACTIVE(false);
 //        BINDING_PROFILE, ;
         private Boolean exclusive;
         private Integer min;

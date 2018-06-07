@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.MacroGame;
@@ -40,6 +41,7 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -61,6 +63,8 @@ public class DungeonScreen extends GameScreen {
     protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
      getBooleanValue(CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
 
+    private static boolean centerCameraOnAlliesOnly = OptionsMaster.getControlOptions().
+     getBooleanValue(CONTROL_OPTION.CENTER_CAMERA_ON_ALLIES_ONLY);
 
     protected ParticleManager particleManager;
     protected StageX gridStage;
@@ -83,6 +87,9 @@ public class DungeonScreen extends GameScreen {
     public static void setCameraAutoCenteringOn(boolean b) {
         cameraAutoCenteringOn = b;
     }
+    public static void setCenterCameraOnAlliesOnly(boolean b) {
+        centerCameraOnAlliesOnly = b;
+    }
 
     @Override
     protected void preLoad() {
@@ -91,7 +98,7 @@ public class DungeonScreen extends GameScreen {
         super.preLoad();
         gridStage = new StageX(viewPort, getBatch());
 
-        guiStage = new BattleGuiStage(null , getBatch());
+        guiStage = new BattleGuiStage(null, getBatch());
 
         initGl();
 
@@ -171,18 +178,18 @@ public class DungeonScreen extends GameScreen {
     @Override
     protected void afterLoad() {
 
-            cam = (OrthographicCamera) viewPort.getCamera();
-            controller = new DungeonInputController(cam);
-            particleManager = new ParticleManager();
+        cam = (OrthographicCamera) viewPort.getCamera();
+        controller = new DungeonInputController(cam);
+        particleManager = new ParticleManager();
 
-            soundMaster = new DC_SoundMaster(this);
+        soundMaster = new DC_SoundMaster(this);
 
-            if (MusicMaster.isOn()) {
-                MusicMaster.getInstance().scopeChanged(ATMO);
-            }
+        if (MusicMaster.isOn()) {
+            MusicMaster.getInstance().scopeChanged(ATMO);
+        }
 
-            final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
-            gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
+        final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
+        gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
 
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager);
@@ -193,12 +200,12 @@ public class DungeonScreen extends GameScreen {
         }
         bindEvents();
 
-        cameraTimer= new ActTimer(2, ()-> {
+        cameraTimer = new ActTimer(OptionsMaster.getControlOptions().
+         getIntValue(CONTROL_OPTION.CENTER_CAMERA_AFTER_TIME), () -> {
             if (isCameraAutoCenteringOn())
-            if (Eidolons.getGame().getManager(). checkAutoCameraCenter())
-            {
-                centerCameraOn(Eidolons.getMainHero());
-            }
+                if (Eidolons.getGame().getManager().checkAutoCameraCenter()) {
+                    centerCameraOn(Eidolons.getMainHero());
+                }
         });
         try {
 
@@ -228,10 +235,12 @@ public class DungeonScreen extends GameScreen {
         getGuiStage().getBottomPanel().update();
         checkGraphicsUpdates();
     }
+
     public void cameraStop() {
-       super.cameraStop();
-       cameraTimer.reset();
+        super.cameraStop();
+        cameraTimer.reset();
     }
+
     @Override
     protected InputMultiplexer getInputController() {
         InputMultiplexer current;
@@ -263,11 +272,18 @@ public class DungeonScreen extends GameScreen {
         return 5f;
     }
 
+    private void setBlocked(boolean blocked) {
+        if (this.blocked == blocked)
+            return ;
+        this.blocked = blocked;
+        if (blocked)
+            EUtils.hideTooltip();
+    }
 
     public void renderMain(float delta) {
         guiStage.act(delta);
         gridStage.act(delta);
-        blocked = checkBlocked();
+        setBlocked(checkBlocked());
         cameraTimer.act(delta);
         cameraShift();
         //cam.update();
@@ -341,17 +357,17 @@ public class DungeonScreen extends GameScreen {
         }
         if (!CoreEngine.isJar() || CoreEngine.isJarlike())
             if (DC_Game.game != null) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
-             Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-                DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
-            } else {
-                if (Gdx.input.isKeyJustPressed(Keys.CONTROL_RIGHT)) {
-                    DC_Game.game.getVisionMaster().refresh();
-                    GuiEventManager.trigger(UPDATE_GUI);
+                if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) &&
+                 Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+                    DC_Game.game.setDebugMode(!DC_Game.game.isDebugMode());
+                } else {
+                    if (Gdx.input.isKeyJustPressed(Keys.CONTROL_RIGHT)) {
+                        DC_Game.game.getVisionMaster().refresh();
+                        GuiEventManager.trigger(UPDATE_GUI);
+                    }
                 }
-            }
 
-        }
+            }
         if (cam != null) {
 //            cam.update();
 //            getBatch().setTransformMatrix(cam.view);
@@ -432,14 +448,28 @@ public class DungeonScreen extends GameScreen {
     }
 
     public void centerCameraOn(BattleFieldObject hero) {
-        centerCameraOn(hero, null );
+        centerCameraOn(hero, null);
     }
-        public void centerCameraOn(BattleFieldObject hero, Boolean force) {
-            Coordinates coordinatesActiveObj =
-             hero.getCoordinates();
-            Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
-            cameraPan(unitPosition,force);
+
+    public void centerCameraOn(BattleFieldObject hero, Boolean force) {
+        if (!isCenterAlways())
+            if (!BooleanMaster.isTrue(force))
+                if (centerCameraOnAlliesOnly)
+                    if (!hero.isMine())
+                        return;
+
+        Coordinates coordinatesActiveObj =
+         hero.getCoordinates();
+        Vector2 unitPosition = new Vector2(coordinatesActiveObj.x * GridMaster.CELL_W + GridMaster.CELL_W / 2, (gridPanel.getRows() - coordinatesActiveObj.y) * GridMaster.CELL_H - GridMaster.CELL_H / 2);
+        cameraPan(unitPosition, force);
 
 
+    }
+
+    public void setCameraTimer(int intValue) {
+        if (cameraTimer == null) {
+            return;
+        }
+        cameraTimer.setPeriod(intValue);
     }
 }

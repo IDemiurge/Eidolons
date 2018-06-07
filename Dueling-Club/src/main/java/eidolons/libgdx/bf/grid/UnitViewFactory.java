@@ -15,7 +15,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
@@ -106,10 +105,18 @@ public class UnitViewFactory {
                         if (bfObj.isPlayerCharacter()) {
                             HqMaster.openHqPanel();
                             return;
-                        } else if (bfObj instanceof Unit) {
-                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-                             new UnitDataSource((Unit) bfObj));
-                            return;
+                        } else  //TODO control options
+//                            if (bfObj instanceof Unit) {
+//                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+//                             new UnitDataSource((Unit) bfObj));
+//                            return;
+//                        } else
+                        {
+                            try {
+                                DefaultActionHandler.leftClickUnit(false, false, bfObj);
+                            } catch (Exception e) {
+                                main.system.ExceptionMaster.printStackTrace(e);
+                            }
                         }
                 if (event.getButton() == Buttons.LEFT)
                     if (isAlt() || isShift() || isControl())

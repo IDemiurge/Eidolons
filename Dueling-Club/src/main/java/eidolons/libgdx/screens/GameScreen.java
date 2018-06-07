@@ -31,6 +31,7 @@ import static main.system.GuiEventType.DIALOG_SHOW;
  */
 public abstract class GameScreen extends ScreenWithVideoLoader {
 
+    private static Float cameraPanMod;
     public InputController controller;
     protected ChainedStage dialogsStage = null;
     protected OrthographicCamera cam;
@@ -42,34 +43,50 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
     protected TextureRegion backTexture;
     protected GuiStage guiStage;
     private RealTimeGameLoop realTimeGameLoop;
-    private static Float cameraPanMod;
+    private Boolean centerCameraAlways;
+
+    public GameScreen() {
+        GuiEventManager.bind(GuiEventType.GAME_PAUSED, d -> {
+            DC_Game.game.getLoop().setPaused(true);
+        });
+        GuiEventManager.bind(GuiEventType.GAME_RESUMED, d -> {
+            DC_Game.game.getLoop().setPaused(false);
+        });
+    }
+
+    public static float getCameraPanMod() {
+        if (cameraPanMod == null)
+            cameraPanMod = new Float(OptionsMaster.getControlOptions().
+             getIntValue(CONTROL_OPTION.CENTER_CAMERA_DISTANCE_MOD)) / 100;
+
+        return cameraPanMod;
+    }
+
+    public static void setCameraPanMod(float mod) {
+        cameraPanMod = mod;
+    }
 
     public TextureRegion getBackTexture() {
         return backTexture;
     }
 
-    public GameScreen() {
-        GuiEventManager.bind(GuiEventType.GAME_PAUSED, d->{
-            DC_Game.game.getLoop().setPaused(true);
-        });
-        GuiEventManager.bind(GuiEventType.GAME_RESUMED, d->{
-            DC_Game.game.getLoop().setPaused(false);
-        });
-    }
-
-
-    protected void cameraPan(Vector2 unitPosition ) {
+    protected void cameraPan(Vector2 unitPosition) {
         cameraPan(unitPosition, null);
     }
-        protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
+
+    protected void cameraPan(Vector2 unitPosition, Boolean overrideCheck) {
         this.cameraDestination = unitPosition;
         float dst = cam.position.dst(unitPosition.x, unitPosition.y, 0f);// / getCameraDistanceFactor();
-            if (overrideCheck==null )
-                overrideCheck= controller.isWithinCamera(unitPosition.x, unitPosition.y, 128,128);
 
-       if (!overrideCheck)
-           if (dst < getCameraMinCameraPanDist())
-            return;
+        if (overrideCheck == null)
+            if (isCenterAlways()) {
+                overrideCheck = !controller.isWithinCamera(unitPosition.x, unitPosition.y, 128, 128);
+            } else overrideCheck = false;
+
+        if (!overrideCheck)
+            if (dst < getCameraMinCameraPanDist())
+                return;
+
         velocity = new Vector2(unitPosition.x - cam.position.x, unitPosition.y - cam.position.y).nor().scl(Math.min(cam.position.dst(unitPosition.x, unitPosition.y, 0f), dst));
         if (CoreEngine.isGraphicTestMode()) {
 //            Gdx.app.log("DungeonScreen::show()--bind.ACTIVE_UNIT_SELECTED", "-- coordinatesActiveObj:" + coordinatesActiveObj);
@@ -162,15 +179,11 @@ public abstract class GameScreen extends ScreenWithVideoLoader {
         return guiStage;
     }
 
-    public static float getCameraPanMod() {
-        if (cameraPanMod==null )
-            cameraPanMod=new Float(OptionsMaster.getControlOptions().
-             getIntValue(CONTROL_OPTION.CENTER_CAMERA_DISTANCE_MOD))/100;
-
-        return cameraPanMod;
+    public Boolean isCenterAlways() {
+        if (centerCameraAlways == null) {
+            centerCameraAlways = OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.ALWAYS_CAMERA_CENTER_ON_ACTIVE);
+        }
+        return centerCameraAlways;
     }
 
-    public static void setCameraPanMod(float mod) {
-         cameraPanMod = mod;
-    }
 }

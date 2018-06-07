@@ -190,24 +190,20 @@ public class DefaultActionHandler {
         if (target.isMine())
             return false;
         DC_ActiveObj action = null;
-        String msg=null ;
-        if (target instanceof DungeonObj)
-        {
+        String msg = null;
+        if (target instanceof DungeonObj) {
             action = getDungeonObjAction(source, (DungeonObj) target);
             if (action == null)
                 msg = "Cannot find default action";
-        }
-        else
-        {
+        } else {
             action = getPreferredAttackAction(source, target);
             if (action == null)
                 msg = "Cannot find optimal attack";
         }
-        if (action == null)
-        {
+        if (action == null) {
             EUtils.showInfoText(msg);
-            main.system.auxiliary.log.LogMaster.log(1,source+ " " +
-             msg +" " +target);
+            main.system.auxiliary.log.LogMaster.log(1, source + " " +
+             msg + " " + target);
             return false;
         }
         Context context = new Context(source, target);
@@ -226,6 +222,10 @@ public class DefaultActionHandler {
         if (action == null)
             if (source.getOffhandAttack() != null)
                 action = pickAutomatically(source.getOffhandAttack().getSubActions(), target);
+        if (action != null)
+            if (action.isAttackGeneric()) {
+                return null;
+            }
         return action;
     }
 
@@ -271,7 +271,7 @@ public class DefaultActionHandler {
         ClearShotCondition.clearCache();
         source.getGame().getVisionMaster().getSightMaster().getClearShotCondition().preCheck(ref);
         DC_Obj target = source.getGame().getCellByCoordinate(c);
-         int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
+        int g = target.getGame().getVisionMaster().getGammaMaster().getGamma(source, target);
         return false;
     }
 

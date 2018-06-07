@@ -24,6 +24,9 @@ import java.io.File;
  */
 public class IconGenerator extends GdxUtil {
     private static IconGenerator generator;
+    private static boolean rounded;
+    private static boolean folderPerUnderlay=true;
+    private static boolean resize;
     String root;
     String underlay;
     String output;
@@ -42,10 +45,26 @@ public class IconGenerator extends GdxUtil {
 //        generateDefault();
 //        generateAll();
 //        generateArmor();
-        generateWeapons();
+//        generateWeapons();
 //        generateJewelry();
-//        sizeImages(64, PathFinder.getImagePath() +
-//         "\\main\\item\\weapon\\sprites");
+        generateMasteries();
+//        generateRoundedSkills();
+//        sizeImages(64,
+//         PathFinder.getImagePath() +
+//          getGeneratorRootPath() +
+//         "//large");
+    }
+
+    private static void generateMasteries() {
+        generateByRoot("mastery", false);
+    }
+        private static void generateRoundedSkills() {
+//        folderPerUnderlay = false;
+//        rounded = true;
+        resize = true;
+        generateByRoot("large", false);
+//        generateByRoot("64\\skills\\generated", false);
+
     }
 
     private static void sizeImages(int size, String s) {
@@ -71,7 +90,7 @@ public class IconGenerator extends GdxUtil {
 
     private static void generateByRoot(String rootPath, boolean subdirs) {
         String path = StrPathBuilder.build(
-         ImageManager.getValueIconsPath(), "generator", rootPath);
+         getGeneratorRootPath(), rootPath);
 
         String imagesPath = StrPathBuilder.build(PathFinder.getImagePath(), path, "images");
 
@@ -79,6 +98,10 @@ public class IconGenerator extends GdxUtil {
          build(PathFinder.getImagePath(), path, "underlays") +
          StringMaster.getPathSeparator();
         gen(path, imagesPath, underlaysPath, subdirs);
+    }
+
+    private static String getGeneratorRootPath() {
+        return StrPathBuilder.build(ImageManager.getValueIconsPath(), "generator");
     }
 
     private static void generateAll() {
@@ -99,7 +122,7 @@ public class IconGenerator extends GdxUtil {
         for (File sub : FileManager.getFilesFromDirectory(underlaysPath, false, false)) {
             String output = StrPathBuilder.build(
              PathFinder.getImagePath(), path, "generated",
-             StringMaster.cropFormat(sub.getName())) +
+             (folderPerUnderlay?   StringMaster.cropFormat(sub.getName()):"")) +
              StringMaster.getPathSeparator();
             String underlay = StrPathBuilder.build(path, "underlays", sub.getName());
 
@@ -128,15 +151,23 @@ public class IconGenerator extends GdxUtil {
         new IconGenerator(path, Images.EMPTY_RANK_SLOT, output, true);
     }
 
-    public static void generateOverlaidIcon(Texture underlayTexture, String path, FileHandle handle, boolean b) {
+    public static void generateOverlaidIcon(Texture underlayTexture, String path, FileHandle outputHandle, boolean b) {
         Pixmap pixMap = GdxImageMaster.getPixmap(underlayTexture);
-        Texture texture = TextureCache.getOrCreate(path);
+        Texture texture =folderPerUnderlay&&rounded?
+         TextureCache.getOrCreateRoundedRegion(path, true).getTexture()
+        :  TextureCache.getOrCreate(path);
+
+        if (resize){
+            int size = Math.min(underlayTexture.getHeight(), underlayTexture.getWidth());
+            texture = GdxImageMaster.size(path, size, false);
+        }
+
         int w = Math.min(underlayTexture.getWidth(), texture.getWidth());
         int h = Math.min(underlayTexture.getHeight(), texture.getHeight());
         int x = (underlayTexture.getWidth() - w) / 2;
         int y = (underlayTexture.getHeight() - h) / 2;
         GdxImageMaster.drawTextureRegion(x, y, texture, w, h, pixMap);
-        GdxImageMaster.writeImage(handle, pixMap);
+        GdxImageMaster.writeImage(outputHandle, pixMap);
 
 //        pixMap.setBlending();
 //    pixMap.setFilter();
@@ -148,24 +179,26 @@ public class IconGenerator extends GdxUtil {
     }
 
     public void generate(String root, String underlay, String output) {
-        Texture underlayTexture = TextureCache.getOrCreate(underlay);
+        Texture underlayTexture =!folderPerUnderlay&&rounded? TextureCache.
+         getOrCreateRoundedRegion(underlay, false).getTexture() : TextureCache.getOrCreate(underlay);
         for (File sub : FileManager.getFilesFromDirectory(root, false, subdirs)) {
             if (!FileManager.isImageFile(sub.getName()))
                 continue;
-            FileHandle handle =getOutputHandle(output, sub);
+            FileHandle handle =getOutputHandle(output, folderPerUnderlay? sub.getName(): StringMaster.getLastPathSegment(underlay));
             String path = sub.getPath().replace(PathFinder.getImagePath(), "");
             generateOverlaidIcon(underlayTexture, path, handle, true);
 
         }
     }
 
-    private FileHandle getOutputHandle(String output, File sub) {
-        return new FileHandle(output + (sub.getName().replace(" 64", "")
+    private FileHandle getOutputHandle(String output, String name) {
+        return new FileHandle(output + (name.replace(" 64", "")
          .replace(" 128", "").replace(" 96", "")));
     }
 
     @Override
     protected void execute() {
-        generate(root, underlay, output);
+        if (!StringMaster.isEmpty(root))
+            generate(root, underlay, output);
     }
 }

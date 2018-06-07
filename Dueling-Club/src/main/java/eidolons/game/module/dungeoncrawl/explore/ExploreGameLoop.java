@@ -13,6 +13,7 @@ import main.elements.targeting.SelectiveTargeting;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
@@ -255,7 +256,10 @@ public class ExploreGameLoop extends GameLoop implements RealTimeGameLoop {
         }
         if (isPaused())
         {
-            EUtils.showInfoText("The game is paused!");
+            EUtils.showInfoText(
+             RandomWizard.random()?
+              "The game is Paused!" :
+              "Game is paused now...");
             return;
         }
         if (ExplorationMaster.isWaiting()) {

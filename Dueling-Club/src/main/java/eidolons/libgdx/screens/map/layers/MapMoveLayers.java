@@ -201,11 +201,16 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
                     continue;
                 }
                 if (triggerMap.get(sub) == null || timerMap.get(sub) > triggerMap.get(sub)) {
-                    spawn(sub);
-                    float willSpawnOn = RandomWizard.getRandomFloatBetween(sub.delay, 2 * sub.delay);
-                    willSpawnOn = applyLayerDelayMods(sub, day_time, willSpawnOn);
-                    triggerMap.put(sub, willSpawnOn);
-                    timerMap.put(sub, 0f);
+                    try {
+                        spawn(sub);
+                        float willSpawnOn = RandomWizard.getRandomFloatBetween(sub.delay, 2 * sub.delay);
+                        willSpawnOn = applyLayerDelayMods(sub, day_time, willSpawnOn);
+                        triggerMap.put(sub, willSpawnOn);
+                        timerMap.put(sub, 0f);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        timerMap.remove(sub);
+                    }
 
                 }
             }

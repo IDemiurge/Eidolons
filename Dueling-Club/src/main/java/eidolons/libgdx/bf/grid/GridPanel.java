@@ -18,6 +18,7 @@ import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.actions.FadeOutAction;
@@ -182,6 +183,12 @@ public class GridPanel extends Group {
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getVisible()) {
                             setVisible(viewMap.get(sub), true);
                             Debugger.validateVisibleUnitView(viewMap.get(sub));
+                            if (sub.isPlayerCharacter()){
+                                if (ExplorationMaster.isExplorationOn()) {
+                                    GridUnitView view = (GridUnitView) viewMap.get(sub);
+                                     view.resetHpBar();
+                                }
+                            }
                         }
                         for (BattleFieldObject sub : DC_Game.game.getVisionMaster().getInvisible()) {
                             setVisible(viewMap.get(sub), false);
@@ -789,7 +796,6 @@ public class GridPanel extends Group {
         }
         wallMap.setZIndex(Integer.MAX_VALUE);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-
         if (!ctrl) {
             if (ShadowMap.isOn())
                 for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {

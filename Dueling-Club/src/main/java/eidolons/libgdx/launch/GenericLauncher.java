@@ -77,10 +77,7 @@ public class GenericLauncher extends Game {
          getConf()));
 
         Eidolons.setLauncher(this);
-        if (fullscreen
-         ) {
-            Eidolons.setFullscreen(true);
-        }
+        Eidolons.setFullscreen(fullscreen);
     }
 
     protected void screenInit() {
@@ -188,7 +185,10 @@ public class GenericLauncher extends Game {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        if (viewport == null)
+            return;
+
+            viewport.update(width, height);
 
         if (gameScreen != null) gameScreen.resize(width, height);
         else getScreen().resize(width, height);

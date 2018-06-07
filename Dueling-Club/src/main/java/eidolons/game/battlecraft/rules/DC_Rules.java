@@ -175,7 +175,7 @@ public class DC_Rules implements GameRules {
         woundsRule = new WoundsBuffRule(getGame());
         this.buffRules.add(woundsRule);
 
-        getTriggerRules().add(trampleRule = new TrampleRule(getGame()));
+//        getTriggerRules().add(trampleRule = new TrampleRule(getGame()));
         getTriggerRules().add(durabilityRule = new DurabilityRule(getGame()));
         getTriggerRules().add(bleedingTriggerRule = new BleedingRule(game));
         getTriggerRules().add(ashAnnihilationRule = new AshAnnihilationRule(game));

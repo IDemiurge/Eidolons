@@ -84,7 +84,7 @@ public class VisionRule {
         BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
-                BattleFieldObject[] objects = master.getGame().getMaster().getObjects(i, j);
+                BattleFieldObject[] objects = master.getGame().getMaster().getObjects(i, j, true);
                 DC_Cell cell = master.getGame().getCellByCoordinate(new Coordinates(i, j));
 
                 for (Unit observer : observers) {

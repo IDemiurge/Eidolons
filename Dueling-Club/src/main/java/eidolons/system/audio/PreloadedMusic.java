@@ -18,6 +18,7 @@ public class PreloadedMusic implements Music {
     long timeStarted;
     float duration;
     private boolean done;
+    private float volume;
 
     public PreloadedMusic(String path) {
         FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
@@ -32,6 +33,7 @@ public class PreloadedMusic implements Music {
         if (playing)
             return;
         id= sound.play();
+        sound.setVolume(id, volume);
         done = false;
         playing = true;
         timeStarted= TimeMaster.getTime();
@@ -39,21 +41,14 @@ public class PreloadedMusic implements Music {
 
 
     public long play(float volume) {
-        if (isPlaying())
-            return 0;
-        sound.setVolume(id, volume);
-        playing = true;
-        timeStarted= TimeMaster.getTime();
-        done=false;
-        return sound.play(volume);
+        setVolume(volume);
+         play();
+         return  id;
     }
     public long play(float volume, float pitch, float pan) {
-        if (playing)
-            return 0;
-        playing = true;
-        timeStarted= TimeMaster.getTime();
-        done=false;
-        return id=sound.play(volume, pitch, pan);
+        setVolume(volume);
+        play();
+        return  id;
     }
 
     public long loop() {
@@ -128,6 +123,7 @@ public class PreloadedMusic implements Music {
 
     @Override
     public void setVolume(float volume) {
+        this.volume = volume;
         sound.setVolume(id, volume);
     }
 

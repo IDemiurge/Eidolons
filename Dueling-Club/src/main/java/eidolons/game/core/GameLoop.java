@@ -22,6 +22,7 @@ import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
@@ -372,12 +373,15 @@ public class GameLoop {
     }
 
     public void actionInput(ActionInput actionInput) {
+        if (AI_Manager.isRunning())
+            EUtils.showInfoText(RandomWizard.random() ? "The enemy has the initiative!" : "The enemy has initiative...");
         if (isPaused())
         {
-            EUtils.showInfoText("The game is paused!");
+            EUtils.showInfoText(RandomWizard.random()?"The game is Paused!" : "Game is paused now...");
             return;
         }
-        WaitMaster.receiveInput(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
+
+        WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
     }
 
     public Unit getActiveUnit() {

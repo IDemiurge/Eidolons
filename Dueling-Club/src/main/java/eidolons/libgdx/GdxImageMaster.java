@@ -81,7 +81,8 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static Pixmap getPixmap(Texture texture) {
-        texture.getTextureData().prepare();
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
         return texture.getTextureData().consumePixmap();
     }
 

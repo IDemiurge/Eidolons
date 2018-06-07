@@ -30,7 +30,9 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     private Set<Coordinates> coordinates;
     private LinkedHashSet<DC_Cell> cellsSet;
     DC_Cell[][] cells;
-    private BattleFieldObject[][][] objCells;
+    private BattleFieldObject[][][] objCellsNoOverlaying;
+    private BattleFieldObject[][][] objCellsOverlaying;
+    private BattleFieldObject[][][] objCellsAll;
 
     public DC_BattleFieldGrid(Dungeon dungeon) {
         this.dungeon = dungeon; // TODO
@@ -50,25 +52,40 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         }
 
     }
+        public BattleFieldObject[] getObjects(int x_, int y_) {
+            return getObjects(x_, y_, true);
+        }
 
-    public BattleFieldObject[] getObjects(int x_, int y_) {
-        BattleFieldObject[] array = getObjCells()[x_][y_];
+    public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
+        BattleFieldObject[] array = getObjCells( )[x_][y_];
         if (array == null) {
             List<BattleFieldObject> list =game.getMaster().getObjectsOnCoordinate(
-             new Coordinates(x_, y_), false);
+             new Coordinates(x_, y_), null );
+//            list.addAll(
+//            game.getMaster().getObjectsOnCoordinate(
+//             new Coordinates(x_, y_), true));
+
             if (list.isEmpty())
                 array = new BattleFieldObject[0];
             else
                 array = list.toArray(new BattleFieldObject[list.size()]);
-            objCells[x_][y_] = array;
+            getObjCells( )[x_][y_] = array;
         }
         return array;
     }
+    public BattleFieldObject[][][] getObjCells(Boolean overlayingIncluded_Not_Only) {
+        if (overlayingIncluded_Not_Only==null )
+            return objCellsOverlaying;
+        return overlayingIncluded_Not_Only? objCellsAll:objCellsNoOverlaying;
+    }
+
     public void resetObjCells() {
-        objCells = new BattleFieldObject[w][h][];
+        objCellsNoOverlaying = new BattleFieldObject[w][h][];
+        objCellsOverlaying = new BattleFieldObject[w][h][];
+        objCellsAll = new BattleFieldObject[w][h][];
     }
     public BattleFieldObject[][][] getObjCells() {
-        return objCells;
+        return objCellsNoOverlaying;
     }
 
 

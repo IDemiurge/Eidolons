@@ -9,6 +9,7 @@ import eidolons.ability.effects.common.ModifyStatusEffect;
 import eidolons.ability.effects.oneshot.mechanic.ModeEffect;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Obj;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.game.battlecraft.rules.combat.damage.Damage;
 import eidolons.game.battlecraft.rules.combat.damage.MultiDamage;
@@ -24,6 +25,7 @@ import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.system.config.ConfigKeys;
 import eidolons.system.config.ConfigMaster;
+import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.values.parameters.PARAMETER;
 import main.elements.costs.Cost;
 import main.entity.Entity;
@@ -179,6 +181,13 @@ public class FloatingTextMaster {
                             if (e.getRef().getActive().isTurn())
                                 return null ;
                         }
+
+                    if (!e.getRef().getSourceObj().isMine())
+                    {
+                        if (((DC_Obj)e.getRef().getSourceObj()).getPlayerVisionStatus()!= PLAYER_VISION.DETECTED)
+                            return null ;
+                    }
+
                         return TEXT_CASES.COSTS;
                 case ATTACK_CRITICAL:
                     return TEXT_CASES.ATTACK_CRITICAL;

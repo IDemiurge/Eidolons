@@ -3,6 +3,7 @@ package eidolons.game.core;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.audio.DC_SoundMaster;
 import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.GuiEventManager;
@@ -34,6 +35,12 @@ public class EUtils {
         GuiEventManager.trigger(GuiEventType.CONFIRM, new ImmutableTriple<>(text, cancel, o));
     }
 
+    public static void hideTooltip() {
+        GuiEventManager.trigger(GuiEventType.
+         SHOW_TOOLTIP, null);
+
+    }
+
     public static void playSound(STD_SOUNDS sound) {
 //        GuiEventManager.trigger(GuiEventType.SFX_PLAY_LAST);
         DC_SoundMaster.playStandardSound(sound);
@@ -42,7 +49,12 @@ public class EUtils {
     public static void showVFX(EMITTER_PRESET preset, Vector2 v) {
         GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, v);
     }
+
     public static void showVFX(EMITTER_PRESET preset, int x, int y) {
         GuiEventManager.trigger(GuiEventType.SHOW_VFX, preset, new Vector2(x, y));
+    }
+
+    public static void switchScreen(ScreenData screenData) {
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, screenData);
     }
 }

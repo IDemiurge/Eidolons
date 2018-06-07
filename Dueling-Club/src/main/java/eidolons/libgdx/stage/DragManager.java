@@ -36,7 +36,7 @@ public class DragManager extends FadeImageContainer {
         if (parentAlpha==ShaderMaster.SUPER_DRAW)
             super.draw(batch, 1);
         else
-            ShaderMaster.drawWithCustomShader(this, batch, null);
+            ShaderMaster.drawWithCustomShader(this, batch, null, false,false);
 //        b.draw(draggedRegion, x, y);
     }
 

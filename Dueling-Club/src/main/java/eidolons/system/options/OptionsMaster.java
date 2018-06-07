@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OptionsMaster {
+    static OptionsWindow optionsWindow;
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
     private static Map<OPTIONS_GROUP, Options> cachedMap;
     private static OptionsPanelSwing optionsPanel;
@@ -69,46 +70,46 @@ public class OptionsMaster {
             String value = animOptions.getValue(key);
             boolean booleanValue = animOptions.getBooleanValue(key);
             Integer intValue = animOptions.getIntValue(key);
-            float floatValue=new Float(intValue) / 100;
+            float floatValue = new Float(intValue) / 100;
 
-                switch (key) {
-                    case SPEED:
-                        AnimMaster.getInstance().setAnimationSpeedFactor(
-                         floatValue);
-                        break;
-                    case FLOAT_TEXT_DURATION_MOD:
-                        FloatTextLayer.setDurationMod(floatValue );
-                        break;
+            switch (key) {
+                case SPEED:
+                    AnimMaster.getInstance().setAnimationSpeedFactor(
+                     floatValue);
+                    break;
+                case FLOAT_TEXT_DURATION_MOD:
+                    FloatTextLayer.setDurationMod(floatValue);
+                    break;
 
-                    case WEAPON_3D_ANIMS_OFF:
-                        AnimMaster3d.setOff(booleanValue);
-                        break;
-                    case BLOOD_ANIMS_OFF:
-                        HitAnim.setBloodOff(booleanValue);
-                        break;
-                    case WAIT_FOR_ANIM:
-                        break;
-                    case MAX_ANIM_WAIT_TIME:
-                        break;
-                    case PARALLEL_DRAWING:
-                        AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
-                        break;
+                case WEAPON_3D_ANIMS_OFF:
+                    AnimMaster3d.setOff(booleanValue);
+                    break;
+                case BLOOD_ANIMS_OFF:
+                    HitAnim.setBloodOff(booleanValue);
+                    break;
+                case WAIT_FOR_ANIM:
+                    break;
+                case MAX_ANIM_WAIT_TIME:
+                    break;
+                case PARALLEL_DRAWING:
+                    AnimMaster.getInstance().setParallelDrawing(Boolean.valueOf(value));
+                    break;
 
-                    case PRECAST_ANIMATIONS:
-                        break;
-                    case CAST_ANIMATIONS:
-                        break;
-                    case AFTER_EFFECTS_ANIMATIONS:
-                        break;
-                    case HIT_ANIM_DISPLACEMENT:
-                        HitAnim.setDisplacementOn(booleanValue);
-                        break;
-                }
-
+                case PRECAST_ANIMATIONS:
+                    break;
+                case CAST_ANIMATIONS:
+                    break;
+                case AFTER_EFFECTS_ANIMATIONS:
+                    break;
+                case HIT_ANIM_DISPLACEMENT:
+                    HitAnim.setDisplacementOn(booleanValue);
+                    break;
             }
 
-
         }
+
+
+    }
 
     private static void applyControlOptions(ControlOptions options) {
         for (Object sub : options.getValues().keySet()) {
@@ -116,36 +117,44 @@ public class OptionsMaster {
              retrieveEnumConst(CONTROL_OPTION.class,
               options.getValues().get(sub).toString());
             CONTROL_OPTION key = options.getKey((sub.toString()));
-            if (key==null )
+            if (key == null)
                 continue;
             String value = options.getValue(key);
             int intValue = options.getIntValue(key);
             boolean booleanValue = options.getBooleanValue(key);
-            float floatValue=new Float(intValue)/100;
-                switch (key) {
-                    case ZOOM_STEP:
-                        InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
-                        break;
-                    case UNLIMITED_ZOOM:
-                        InputController.setUnlimitedZoom(booleanValue);
-                        break;
+            float floatValue = new Float(intValue) / 100;
+            switch (key) {
+                case ZOOM_STEP:
+                    InputController.setZoomStep(Integer.valueOf(value) / new Float(100));
+                    break;
+                case UNLIMITED_ZOOM:
+                    InputController.setUnlimitedZoom(booleanValue);
+                    break;
 //                    case DRAG_OFF:
 //                        InputController.setDragOff(booleanValue);
 //                        break;
-                    case AUTO_CENTER_CAMERA_ON_HERO:
-                        DungeonScreen.setCameraAutoCenteringOn(booleanValue);
+                case AUTO_CENTER_CAMERA_ON_HERO:
+                    DungeonScreen.setCameraAutoCenteringOn(booleanValue);
+                    break;
+                case ALT_MODE_ON:
+                    BattleClickListener.setAltDefault(booleanValue);
+                    break;
+                case CENTER_CAMERA_ON_ALLIES_ONLY:
+                    DungeonScreen.setCenterCameraOnAlliesOnly(booleanValue);
+                    break;
+                case CENTER_CAMERA_AFTER_TIME:
+                    if (DungeonScreen.getInstance() == null) {
                         break;
-                    case ALT_MODE_ON:
-                        BattleClickListener.setAltDefault(booleanValue);
-                        break;
-                    case CAMERA_FOLLOW_CURSOR_DISTANCE:
-                        break;
-                    case CENTER_CAMERA_DISTANCE_MOD:
-                        GameScreen.setCameraPanMod(floatValue);
-                        break;
-                }
+                    }
+                    DungeonScreen.getInstance().setCameraTimer(intValue);
+                    break;
+                case CENTER_CAMERA_DISTANCE_MOD:
+                    GameScreen.setCameraPanMod(floatValue);
+                    break;
+            }
+        }
     }
-    }
+
     private static void applyGameplayOptions(GameplayOptions gameplayOptions) {
         for (Object sub : gameplayOptions.getValues().keySet()) {
             new EnumMaster<GAMEPLAY_OPTION>().
@@ -227,7 +236,9 @@ public class OptionsMaster {
 
     public static void applyGraphicsOptions(GraphicsOptions graphicsOptions) {
         if (Gdx.app == null)
+        {
             return;
+        }
         if (!GdxMaster.isLwjglThread()) {
             Gdx.app.postRunnable(() ->
              applyGraphicsOptions_(graphicsOptions));
@@ -250,7 +261,7 @@ public class OptionsMaster {
 //            Eidolons.getApplication().getGraphics(). setCursor();
 
             try {
-                applyOption(key, value, bool  );
+                applyOption(key, value, bool);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -258,7 +269,7 @@ public class OptionsMaster {
         }
     }
 
-    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool ) {
+    private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
             case FRAMERATE:
                 GenericLauncher launcher = Eidolons.getLauncher();
@@ -268,7 +279,7 @@ public class OptionsMaster {
                 ParticleManager.setAmbienceOn(bool);
                 break;
             case FULLSCREEN:
-                if (Eidolons.getScope()== SCOPE.MENU)
+                if (Eidolons.getScope() == SCOPE.MENU)
                     Eidolons.setFullscreen(bool);
                 break;
             case AMBIENCE_MOVE_SUPPORTED:
@@ -276,33 +287,9 @@ public class OptionsMaster {
                  bool);
                 break;
             case RESOLUTION:
-                    Eidolons.setResolution(value);
+                Eidolons.setResolution(value);
                 break;
         }
-    }
-
-    public static String promptSetOption() {
-        String name = ListChooser.chooseEnum(OPTIONS_GROUP.class);
-        if (name == null) {
-            return null;
-        }
-        OPTIONS_GROUP group = new EnumMaster<OPTIONS_GROUP>().retrieveEnumConst(
-         OPTIONS_GROUP.class, name);
-        Options options = getOptions(group);
-
-        if (options == null) {
-            return null;
-        }
-
-        String optionName = ListChooser.chooseString(ListMaster.toStringList(options.getValues()
-         .keySet().toArray()));
-        String value = DialogMaster.inputText("", options.getValue(optionName));
-        if (value == null) {
-            options.removeValue(optionName);
-        } else {
-            options.setValue(optionName, value);
-        }
-        return value;
     }
 
     // Useful Options Gui
@@ -336,6 +323,30 @@ public class OptionsMaster {
     // Tooltips
     //
 
+    public static String promptSetOption() {
+        String name = ListChooser.chooseEnum(OPTIONS_GROUP.class);
+        if (name == null) {
+            return null;
+        }
+        OPTIONS_GROUP group = new EnumMaster<OPTIONS_GROUP>().retrieveEnumConst(
+         OPTIONS_GROUP.class, name);
+        Options options = getOptions(group);
+
+        if (options == null) {
+            return null;
+        }
+
+        String optionName = ListChooser.chooseString(ListMaster.toStringList(options.getValues()
+         .keySet().toArray()));
+        String value = DialogMaster.inputText("", options.getValue(optionName));
+        if (value == null) {
+            options.removeValue(optionName);
+        } else {
+            options.setValue(optionName, value);
+        }
+        return value;
+    }
+
     public static void applyOptions() {
         applyGraphicsOptions(getGraphicsOptions());
         applySoundOptions(getSoundOptions());
@@ -352,7 +363,6 @@ public class OptionsMaster {
             Gdx.app.postRunnable(() ->
              applyAnimOptions(getAnimOptions()));
     }
-
 
     public static void saveOptions() {
         StringBuilder content = new StringBuilder();
@@ -381,7 +391,6 @@ public class OptionsMaster {
         openVisUiMenu(new Stage(new FitViewport(800, 800), new SpriteBatch()));
 
     }
-   static OptionsWindow optionsWindow;
 
     public static void openVisUiMenu(Stage stage) {
         OptionsWindow.getInstance().open(optionsMap, stage);
@@ -401,7 +410,7 @@ public class OptionsMaster {
     }
 
     public static void openMenu() {
-        if (isVisUiMode()){
+        if (isVisUiMode()) {
             openVisUiMenu(Eidolons.getScreen().getGuiStage());
             return;
         }
@@ -481,11 +490,11 @@ public class OptionsMaster {
             if (map == null) {
                 optionsMap.put(group, options);
             } else
-            for (Object val : options.getValues().keySet()) {
-                if (map.getValues().containsKey(val))
-                    continue;
-                map.setValue(val.toString(), options.getValue(val.toString()));
-            }
+                for (Object val : options.getValues().keySet()) {
+                    if (map.getValues().containsKey(val))
+                        continue;
+                    map.setValue(val.toString(), options.getValue(val.toString()));
+                }
 //            for (Object sub : getOptionGroupEnumClass(group).getEnumConstants()) {
 //                String value = map.getValue((Enum) sub);
 //            }
@@ -493,17 +502,19 @@ public class OptionsMaster {
 
     }
 
-    private static void autoAdjustOptions(OPTIONS_GROUP group,  Options options) {
-        switch (group){
+    private static void autoAdjustOptions(OPTIONS_GROUP group, Options options) {
+        switch (group) {
             case GRAPHICS:
                 options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolutionString());
                 break;
         }
     }
+
     private static Map<OPTIONS_GROUP, Options> initDefaults() {
         return initDefaults(false);
     }
-        private static Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {
+
+    private static Map<OPTIONS_GROUP, Options> initDefaults(boolean adjust) {
         XLinkedMap optionsMap = new XLinkedMap<>();
         for (OPTIONS_GROUP group : OPTIONS_GROUP.values()) {
 
@@ -586,7 +597,7 @@ public class OptionsMaster {
             case ANIMATION:
                 return new AnimationOptions();
             case CONTROLS:
-                return  new ControlOptions();
+                return new ControlOptions();
             case SOUND:
                 return new SoundOptions();
             case GRAPHICS:
@@ -626,6 +637,7 @@ public class OptionsMaster {
     public static ControlOptions getControlOptions() {
         return (ControlOptions) getOptions(OPTIONS_GROUP.CONTROLS);
     }
+
     public static SoundOptions getSoundOptions() {
         return (SoundOptions) getOptions(OPTIONS_GROUP.SOUND);
     }
@@ -636,7 +648,7 @@ public class OptionsMaster {
 
 
     public enum OPTIONS_GROUP {
-        GRAPHICS,GAMEPLAY, CONTROLS, SOUND,ANIMATION,
+        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION,
         //TUTORIAL, ENGINE,
     }
 

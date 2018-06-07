@@ -228,6 +228,7 @@ public class HeroManager {
                         return null;
                     }
                     if (hero.getMainWeapon() != null) {
+                        if (askSwap)
                         if (!promptItemSwap(
                          hero.getMainWeapon(), hero, type)) {
                             return null;

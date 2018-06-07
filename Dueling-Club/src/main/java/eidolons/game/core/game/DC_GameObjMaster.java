@@ -393,7 +393,10 @@ public class DC_GameObjMaster extends GameMaster {
 
 
     public BattleFieldObject[] getObjects(int x_, int y_) {
-        return getGame().getGrid().getObjects(x_, y_);
+        return getObjects(x_, y_, true);
+    }
+        public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
+        return getGame().getGrid().getObjects(x_, y_, overlayingIncluded_Not_Only);
     }
 
     public List<Structure> getWalls() {

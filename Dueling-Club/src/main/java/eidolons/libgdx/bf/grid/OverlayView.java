@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
@@ -45,6 +46,11 @@ public class OverlayView extends BaseView {
     public Actor hit(float x, float y, boolean touchable) {
 
         return super.hit(x, y, touchable) != null ? this : null;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
     public Coordinates.DIRECTION getDirection() {

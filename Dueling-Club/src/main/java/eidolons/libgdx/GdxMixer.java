@@ -3,60 +3,120 @@ package eidolons.libgdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.ScreenUtils;
 import eidolons.libgdx.bf.SuperActor.BLENDING;
+import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.shaders.GrayscaleShader;
+import eidolons.libgdx.texture.Images;
 import eidolons.system.utils.GdxUtil;
+import main.data.filesys.PathFinder;
+import main.system.launch.CoreEngine;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.Supplier;
 
 /**
  * Created by JustMe on 5/21/2018.
  */
 public class GdxMixer extends GdxUtil{
 
-    private final ShaderProgram shaderProgram;
+    private final Supplier<ShaderProgram> shaderProgram;
     private final BLENDING blending;
-    private final Actor[] actors;
-    private   Float[] alpha;
+    private final ArrayList<Actor> actors;
+    private   Float[] alpha=new Float[0];
     private final String pathRoot;
     private float m_fboScaler = 1.5f;
     private boolean m_fboEnabled = true;
     private FrameBuffer fbo = null;
     private TextureRegion region = null;
     private SpriteBatch batch;
+    private int size;
 
 
+    public static void main(String[] args) {
+        CoreEngine.systemInit();
+        new GdxMixer(()->GrayscaleShader.getGrayscaleShader(), BLENDING.MULTIPLY,
+         Images.LOGO64,64
+        );
+    }
     @Override
     protected void execute() {
+        this.actors.add(new ImageContainer(pathRoot));
+        render(null);
+        mix();
+    }
 
+    @Override
+    protected boolean isExitOnDone() {
+        return false;
     }
 
     private void renderToFbo() {
-        batch.setShader(shaderProgram);
-        int i=0;
-        for (Actor sub : actors) {
-            sub.draw(batch, alpha[i++]);
-            batch.setBlendFunction(blending.blendSrcFunc, blending.blendDstFunc);
+        if (shaderProgram != null) {
+            batch.setShader(shaderProgram.get());
         }
+        int i=0;
+        batch.begin();
+        for (Actor sub : actors) {
+            sub.draw(batch,alpha.length>i? alpha[i++]:1);
+//            batch.setBlendFunction(blending.blendSrcFunc, blending.blendDstFunc);
+        }
+        batch.end();
     }
-    public GdxMixer(ShaderProgram shaderProgram, BLENDING blending, String pathRoot, Actor... actors) {
+    public GdxMixer(Supplier<ShaderProgram> shaderProgram, BLENDING blending,
+                    String pathRoot,int size, Actor... actors) {
         this.shaderProgram = shaderProgram;
         this.blending = blending;
+        this.size = size;
         this.pathRoot = pathRoot;
-        this.actors = actors;
+        this.actors = new ArrayList<>(Arrays.asList(actors));
+        start();
+    }
+
+    @Override
+    protected int getWidth() {
+        return size;
+    }
+
+    @Override
+    protected int getHeight() {
+        return size;
     }
 
     public void mix() {
 
-        FileHandle handle = new FileHandle(getPath());
-        GdxImageMaster.writeImage(handle, region.getTexture());
+        FileHandle handle = new FileHandle(
+         PathFinder.getImagePath()+
+         getPath());
+
+        // bind
+//        Gdx.gl20.glBindFramebuffer(GL20.GL_READ_FRAMEBUFFER, fbo.getFramebufferHandle());
+//        Gdx.gl20.glReadBuffer(GL20.GL_COLOR_ATTACHMENT0);
+// read content
+        Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, fbo.getWidth(), fbo.getHeight());
+// unbind
+//        Gdx.gl20.glBindFramebuffer(GL20.GL_READ_FRAMEBUFFER, 0);
+//           Gdx. gl20.glReadBuffer(GL20.GL_BACK);
+
+        PixmapIO.writePNG(handle, pixmap);
     }
 
     private String getPath() {
         return pathRoot;
+    }
+
+    @Override
+    public void render() {
+        render(null );
     }
 
     public void render(SpriteBatch spriteBatch) {

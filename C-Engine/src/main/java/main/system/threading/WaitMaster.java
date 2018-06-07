@@ -1,7 +1,7 @@
 package main.system.threading;
 
-import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
@@ -44,6 +44,7 @@ public class WaitMaster {
         WaitMaster.getWaiters().remove(operation);
         return waitForInput(operation, null);
     }
+
     public static Object waitForInput(WAIT_OPERATIONS operation,
                                       Integer maxTime) {
         if (getCompleteOperations().contains(operation)) {
@@ -72,6 +73,13 @@ public class WaitMaster {
         return receiveInput(operation, input, true);
     }
 
+    public static boolean receiveInputIfWaiting(WAIT_OPERATIONS operation, Object input) {
+        if (getWaiters().get(operation) == null) {
+            return false;
+        }
+        return receiveInput(operation, input);
+    }
+
     public static boolean receiveInput(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
         LogMaster.log(LOG_CHANNEL.WAIT_DEBUG, " received input for "
          + operation.toString() + ": " + input);
@@ -89,7 +97,7 @@ public class WaitMaster {
 
     public static void interrupt(WAIT_OPERATIONS waiter) {
         if (waiters.get(waiter) == null) {
-            main.system.auxiliary.log.LogMaster.log(1,  "No such operation in process!" + waiter.name());
+            main.system.auxiliary.log.LogMaster.log(1, "No such operation in process!" + waiter.name());
             return;
         }
         waiters.get(waiter).interrupt();

@@ -187,7 +187,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
     @Override
     public void create() {
 
-        generate(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,520, 735);
+        generate(NINE_PATCH.FRAME, BACKGROUND_NINE_PATCH.TRANSPARENT,1950, 1210);
 //        generateNinePatches();
     }
 

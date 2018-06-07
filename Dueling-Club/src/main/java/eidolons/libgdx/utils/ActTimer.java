@@ -21,6 +21,10 @@ public class ActTimer {
         }
     }
 
+    public void setPeriod(float period) {
+        this.period = period;
+    }
+
     public void reset() {
         timer = 0;
     }

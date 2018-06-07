@@ -17,5 +17,5 @@ public class Formulas {
     public static final String MEDITATION_PERIODIC_GAIN = "2+{MEDITATION_BONUS}";
     public static final String CONCENTRATION_PERIODIC_GAIN = "1+{CONCENTRATION_BONUS}";
     public static final String RESTING_PERIODIC_GAIN = "1+{REST_BONUS}";
-    public static final Integer DEFAULT_MODE_DURATION = 5;
+    public static final Integer DEFAULT_MODE_DURATION = 3;
 }

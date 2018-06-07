@@ -88,11 +88,14 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateRoundedRegion(String path) {
+        return getOrCreateRoundedRegion(path, true);
+    }
+        public static TextureRegion getOrCreateRoundedRegion(String path, boolean write) {
         TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPath(path));
         if (!region.getTexture().equals(emptyTexture)) {
             return region;
         }
-        return GdxImageMaster.round(path, true);
+        return GdxImageMaster.round(path, write);
     }
 
     public static TextureRegion getOrCreateR(String path) {

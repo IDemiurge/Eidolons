@@ -55,8 +55,8 @@ public class ScrollTextPanel extends GroupX {
 
     public void init() {
 
-        setSize(GdxMaster.adjustSize(getDefaultWidth()),
-         GdxMaster.adjustSize(getDefaultHeight()));
+        setSize(GdxMaster.adjustSize(getDefaultWidth(), 0.42f),
+         GdxMaster.adjustSize(getDefaultHeight(), 0.40f));
 
         initScrollPanel();
         initBg();

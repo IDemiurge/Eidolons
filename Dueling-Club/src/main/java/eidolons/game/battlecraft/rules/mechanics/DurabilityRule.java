@@ -48,9 +48,11 @@ public class DurabilityRule extends DC_RuleImpl {
             reduceDurability(false, armor, weapon, m1, m2, damage, blocked, self_damage_mod);
         }
         if (weapon != null) {
+            if (!weapon.isRanged()){ //TODO check ranged atk
             self_damage_mod = weapon.getIntParam(DC_ContentValsManager
              .getArmorSelfDamageParamForDmgType(damage_type));
             reduceDurability(true, weapon, weapon, m2, m1, damage, blocked, self_damage_mod);
+            }
         }
         if (durabilityReductionEffect == null) {
             return 0;
@@ -126,6 +128,11 @@ public class DurabilityRule extends DC_RuleImpl {
                                   BattleFieldObject target) {
         if (!RuleKeeper.isRuleOn(RULE.DURABILITY))
             return 0;
+        if (!checkDamageType(damage_type))
+            return 0;
+    if (weapon.getOwnerObj()== target)
+    return 0;
+
 
         if (spell) {
             return spellDamage(damage, blocked, damage_type, armorObj, target);
@@ -134,6 +141,18 @@ public class DurabilityRule extends DC_RuleImpl {
              target);
         }
 
+    }
+
+    private static boolean checkDamageType(DAMAGE_TYPE damage_type) {
+        switch (damage_type) {
+            case POISON:
+            case PSIONIC:
+            case HOLY:
+            case SHADOW:
+            case DEATH:
+                return false;
+        }
+        return true;
     }
 
     @Override

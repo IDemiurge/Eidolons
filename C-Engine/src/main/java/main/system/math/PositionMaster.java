@@ -218,10 +218,17 @@ public class PositionMaster {
         int x2 = xLine.getX2();
         int y1 = xLine.getY1();
         int y2 = xLine.getY2();
+        return getDistanceToLine(x, y, x1, y1, x2,  y2);
+    }
+        public static double getDistanceToLine(
+        int x ,
+        int y ,
+        int x1 ,
+        int y1 ,
+        int x2 ,
+        int y2){
         double result = Math.abs((y2 - y1) * x - (x2 - x1) * y - y2 * x1 + x2 * y1)
          / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
-        // return (int) Math.round(result);
-        // denominator =
         return result;
     }
 

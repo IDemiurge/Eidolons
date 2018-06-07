@@ -6,6 +6,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.StageX;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -39,6 +40,9 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
             public boolean handle(Event e) {
                 if (isBattlefield()) {
                     if (DungeonScreen.getInstance().isBlocked())
+                        return true;
+                } else {
+                    if (ConfirmationPanel.getInstance().isVisible())
                         return true;
                 }
                 if (actor != null)

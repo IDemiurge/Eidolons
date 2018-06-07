@@ -2,6 +2,7 @@ package eidolons.entity.item;
 
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
+import main.content.DC_TYPE;
 import main.entity.Entity;
 
 /**
@@ -50,12 +51,13 @@ public class DC_InventoryManager {
         if (arg == null) {
             switch (operation) {
                 case EQUIP:
-                    return false;
+                    if (type.getOBJ_TYPE_ENUM() != DC_TYPE.JEWELRY)
+                        return false;
             }
         }
         switch (operation) {
             case EQUIP_QUICK_SLOT:
-                if (!HeroManager.isQuickItem(type)){
+                if (!HeroManager.isQuickItem(type)) {
                     return false;
                 }
         }

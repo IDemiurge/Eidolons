@@ -1,8 +1,6 @@
 package eidolons.libgdx.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,7 +28,6 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     private Runnable onConfirm;
     private Runnable onCancel;
     private String text;
-    private InputProcessor bufferedController;
 
     Label label;
     TextButtonX ok;
@@ -51,6 +48,8 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         btns. addNormalSize(ok = new TextButtonX(STD_BUTTON.OK, () -> {
             ok();
         })).right();
+        ok.setIgnoreConfirmBlock(true);
+        cancel.setIgnoreConfirmBlock(true);
         setVisible(false);
 
     }
@@ -89,12 +88,6 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
          FontMaster.getStringLengthForWidth(getFONT(), getFontSize(),
           (int) (getWidth() / 3 * 2))));
         label.pack();
-        bufferedController = Gdx.input.getInputProcessor();
-        Gdx.input.setInputProcessor(
-         new InputMultiplexer(getStage(),
-         this)
-        );
-
         setPosition(GdxMaster.centerWidth(this), GdxMaster.centerHeight(this));
     }
 
@@ -138,7 +131,6 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     public void close() {
 //        Eidolons.getScreen().updateInputController();
         getStageWithClosable().closeClosable(this);
-        Gdx.input.setInputProcessor(bufferedController);
         WaitMaster.receiveInput(WAIT_OPERATIONS.CONFIRM, result);
     }
     private void ok() {

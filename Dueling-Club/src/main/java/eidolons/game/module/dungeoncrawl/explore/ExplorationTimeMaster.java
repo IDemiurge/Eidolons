@@ -305,7 +305,7 @@ public class ExplorationTimeMaster extends ExplorationHandler {
     }
 
     private int getParamRestoration(float delta, PARAMETER param, float modifier) {
-        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param));
+        return Math.round(modifier * delta * getRegenModifier() * getRegenModifier(param)+getRegenBonus(param));
     }
 
     private float getRegenModifier() {
@@ -328,6 +328,17 @@ public class ExplorationTimeMaster extends ExplorationHandler {
         return 1f;
     }
 
+    private float getRegenBonus(PARAMETER param) {
+        if (param instanceof PARAMS) {
+            switch ((PARAMS) param) {
+                case STAMINA:
+                    return 1f;
+                case ESSENCE:
+                    return 1f;
+            }
+        }
+        return 0f;
+    }
     public float getTime() {
         return time;
     }

@@ -11,7 +11,6 @@ import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.bf.DirectionMaster;
-import main.swing.XLine;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.PositionMaster;
@@ -268,8 +267,9 @@ public class ClearShotCondition extends MicroCondition {
             if (BooleanMaster.areOpposite(relativeDirection.growY, direction.growY)) {
                 continue;
             }
-            double distance = PositionMaster.getDistanceToLine(new XLine(source.getCoordinates(),
-             target.getCoordinates()), c);
+            double distance = PositionMaster.getDistanceToLine(
+             c.x,c.y, source.getX(),source.getY(),
+             target.getX(),target.getY() );
             if (distance > 1) {
                 continue;
             }

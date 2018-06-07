@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.stage.ConfirmationPanel;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -18,13 +19,14 @@ public class TextButtonX extends TextButton implements EventListener {
 
     private Runnable runnable;
     private boolean fixedSize;
+    private boolean ignoreConfirmBlock;
 
     public TextButtonX(String text, TextButtonStyle style) {
         this(text, style, null);
 
     }
 
-    public TextButtonX( STD_BUTTON button, Runnable runnable) {
+    public TextButtonX(STD_BUTTON button, Runnable runnable) {
         this("", button, runnable);
     }
 
@@ -68,6 +70,9 @@ public class TextButtonX extends TextButton implements EventListener {
     public boolean handle(Event e) {
         if (runnable == null)
             return true;
+        if (!isIgnoreConfirmBlock())
+            if (ConfirmationPanel.getInstance().isVisible())
+                return true;
         if (!(e instanceof InputEvent)) return false;
         InputEvent event = (InputEvent) e;
         if (event.getType() == Type.touchUp) {
@@ -86,5 +91,13 @@ public class TextButtonX extends TextButton implements EventListener {
 
     public void setRunnable(Runnable runnable) {
         this.runnable = runnable;
+    }
+
+    public boolean isIgnoreConfirmBlock() {
+        return ignoreConfirmBlock;
+    }
+
+    public void setIgnoreConfirmBlock(boolean ignoreConfirmBlock) {
+        this.ignoreConfirmBlock = ignoreConfirmBlock;
     }
 }

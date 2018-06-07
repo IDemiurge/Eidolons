@@ -44,7 +44,7 @@ public class HeroInfoPanel extends ItemInfoPanel {
         super.updateAct(delta);
         emblem.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.getEntity().getProperty(G_PROPS.EMBLEM)));
         mainInfo.setText(HelpMaster.getHeroMainInfoText(item.getName()));
-        mainInfo.pack();
+
     }
 
     @Override
@@ -56,12 +56,11 @@ public class HeroInfoPanel extends ItemInfoPanel {
 //        header.addNormalSize(emblem).colspan(2). right().padRight(20);
 //        header.pack();
         header.row();
-        mainInfo = new LabelX("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 18));
+        mainInfo = new LabelX("", StyleHolder.getSizedLabelStyle(FONT.MAGIC, 20));
         mainInfo.setWrap(true);
         mainInfo.setMaxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500);
         mainInfo.setText("A touch of Fate...");
-        mainInfo.pack();
-        header.add(mainInfo).maxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500). padTop(50);
+        header.add(mainInfo).maxWidth(GDX.size(ItemInfoPanel.WIDTH-50)-500). padLeft(50). padTop(50);
 
     }
 
