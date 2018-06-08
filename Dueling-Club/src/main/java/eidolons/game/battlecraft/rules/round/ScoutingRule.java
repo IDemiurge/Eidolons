@@ -4,7 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.travel.Encounter;
+import eidolons.game.module.adventure.map.travel.encounter.Encounter;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;

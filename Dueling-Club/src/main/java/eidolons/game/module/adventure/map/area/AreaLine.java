@@ -1,7 +1,5 @@
 package eidolons.game.module.adventure.map.area;
 
-import eidolons.game.module.adventure.map.Area;
-
 public class AreaLine {
     public BoundaryPoint p1;
     public BoundaryPoint p2;

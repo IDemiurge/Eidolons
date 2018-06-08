@@ -5,7 +5,7 @@ import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.MacroTimeMaster;
+import eidolons.game.module.adventure.global.time.MacroTimeMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.GameScreen;

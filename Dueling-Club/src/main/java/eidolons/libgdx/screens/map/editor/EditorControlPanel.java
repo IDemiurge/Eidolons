@@ -9,6 +9,7 @@ import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.entity.MacroObj;
+import eidolons.game.module.adventure.utils.SaveMaster;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
@@ -69,9 +70,9 @@ public class EditorControlPanel extends HorizontalFlowGroup {
                 //type? create local type
                 break;
             case SAVE:
-                MacroManager.saveTheWorld();
+                SaveMaster.saveTheWorld();
                 EditorMapView.getInstance().getEditorParticles().saveAll();
-                MacroManager.getPointMaster()
+                MacroGame.getPointMaster()
                  .save();
 //                MacroManager.saveCustomTypes();
                 //data into World/Campaign type?

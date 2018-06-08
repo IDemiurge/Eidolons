@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.MacroTimeMaster;
+import eidolons.game.module.adventure.global.time.MacroTimeMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.mouse.InputController;

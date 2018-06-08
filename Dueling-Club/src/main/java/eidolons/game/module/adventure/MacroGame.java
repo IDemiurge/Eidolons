@@ -3,16 +3,20 @@ package eidolons.game.module.adventure;
 import eidolons.entity.DC_IdManager;
 import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.MacroParty;
-import eidolons.game.module.adventure.faction.Faction;
-import eidolons.game.module.adventure.faction.FactionObj;
+import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.game.module.adventure.entity.MacroRef;
+import eidolons.game.module.adventure.entity.faction.Faction;
+import eidolons.game.module.adventure.entity.faction.FactionObj;
+import eidolons.game.module.adventure.generation.WorldGenerator;
 import eidolons.game.module.adventure.global.*;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.map.Route;
-import eidolons.game.module.adventure.rules.HungerRule;
-import eidolons.game.module.adventure.rules.TurnRule;
-import eidolons.game.module.adventure.town.Town;
+import eidolons.game.module.adventure.global.rules.HungerRule;
+import eidolons.game.module.adventure.global.rules.TurnRule;
+import eidolons.game.module.adventure.entity.town.Town;
+import eidolons.game.module.adventure.global.time.TimeMaster;
+import eidolons.game.module.adventure.map.travel.RouteMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.map.editor.MapPointMaster;
 import main.content.OBJ_TYPE;
@@ -95,7 +99,7 @@ public class MacroGame extends Game {
 //        ref.setRegion(region);
 
 
-        pointMaster = new MapPointMaster();
+        pointMaster = MapPointMaster.getInstance();
         routeMaster = new RouteMaster();
 
     }

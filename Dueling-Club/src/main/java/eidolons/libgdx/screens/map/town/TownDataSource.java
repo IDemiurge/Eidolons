@@ -1,7 +1,7 @@
 package eidolons.libgdx.screens.map.town;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.game.module.adventure.town.Town;
+import eidolons.game.module.adventure.entity.town.Town;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 

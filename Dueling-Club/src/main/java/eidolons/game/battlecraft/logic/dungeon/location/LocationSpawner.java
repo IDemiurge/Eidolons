@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import eidolons.game.module.adventure.travel.EncounterMaster;
+import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.test.PresetMaster;

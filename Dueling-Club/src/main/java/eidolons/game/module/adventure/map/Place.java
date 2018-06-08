@@ -2,11 +2,12 @@ package eidolons.game.module.adventure.map;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroRef;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.MacroRef;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.entity.MapObj;
+import eidolons.game.module.adventure.map.area.Area;
 import eidolons.game.module.adventure.map.area.AreaManager;
-import eidolons.game.module.adventure.travel.TravelMasterOld;
+import eidolons.game.module.adventure.map.travel.old.TravelMasterOld;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;

@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.meta.skirmish;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.party.warband.Warband;
-import eidolons.game.module.adventure.faction.FactionObj;
+import eidolons.game.module.adventure.entity.faction.FactionObj;
 
 import java.util.List;
 

@@ -5,30 +5,13 @@ import eidolons.game.battlecraft.logic.meta.macro.MacroPartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.global.Campaign;
-import eidolons.game.module.adventure.global.TimeMaster;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
-import eidolons.libgdx.screens.map.editor.MapPointMaster;
-import main.content.OBJ_TYPE;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.values.properties.G_PROPS;
-import main.content.values.properties.MACRO_PROPS;
-import main.data.DataManager;
-import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
-import main.data.xml.XML_Reader;
-import main.data.xml.XML_Writer;
-import main.entity.type.ObjType;
 import main.system.GuiEventManager;
-import main.system.auxiliary.data.FileManager;
-import main.system.datatypes.DequeImpl;
-import main.system.entity.FilterMaster;
 import main.system.launch.CoreEngine;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import static main.system.GuiEventType.SCREEN_LOADED;
@@ -36,31 +19,16 @@ import static main.system.MapEvent.*;
 
 public class MacroManager {
     private final static String defaultWorldName = "Test World";
-    // "Ersidris";
     private final static String defaultCampaignName = "Introduction";
-    /*
-     * Party Gold - each hero has a 'share' Perhaps heroes without enough
-     * Influence should act on their own - buy stuff, sell stuff, play with AI
-     * in battle
-     */
     private static MacroGame game;
     private static String campaignName;
     private static String worldName;
     private static Unit selectedPartyMember;
-    private static DequeImpl<OBJ_TYPE> custom_OBJ_TYPES;
-    private static DequeImpl<ObjType> customTypes;
-
-    private static DequeImpl<ObjType> copyTypes;
-    private static DequeImpl<ObjType> removedTypes;
     private static boolean save;
-    private static boolean turnProcessing;
     private static boolean load;
     private static String scenario = "Mistfall";
     private static MetaGameMaster metaMaster;
 
-    public static void loadGame(String path) {
-
-    }
 
     public static void setScenario(String scenario) {
         MacroManager.scenario = scenario;
@@ -113,32 +81,6 @@ public class MacroManager {
         }
     }
 
-    public static void saveTheWorld() {
-        //all locations to regions, etc
-        for (Region region : getGame().getState().getRegions()) {
-            String places = "";
-            for (Place sub : getGame().getPlaces()) {
-                if (sub.getRegion() != region)
-                    continue;
-                places +=
-                 sub.getNameAndCoordinate() + ";";
-            }
-            region.setProperty(MACRO_PROPS.PLACES, places, true);
-
-            String parties = "";
-            for (MacroParty sub : getGame().getParties()) {
-                if (sub.getRegion() != region)
-                    continue;
-                parties +=
-                 sub.getNameAndCoordinate() + ";";
-            }
-            region.setProperty(MACRO_PROPS.PARTIES, parties, true);
-
-        }
-        XML_Writer.writeXML_ForTypeGroup(MACRO_OBJ_TYPES.REGION);
-
-    }
-
     public static void exitGame() {
         if (game == null) {
             return;
@@ -150,101 +92,9 @@ public class MacroManager {
         MacroGame.setGame(null);
     }
 
-    public static void endTurn() {
-        // TODO preCheck orders are given or prompt
-        turnProcessing = true;
-        try {
-            game.getManager().newTurn();
-            TimeMaster.turnEnded();
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        turnProcessing = false;
-    }
-
-    private static void initCustomTypes() {
-        customTypes = new DequeImpl<>();
-        custom_OBJ_TYPES = new DequeImpl<>();
-        for (OBJ_TYPE t : MACRO_OBJ_TYPES.values()) {
-            File file = FileManager.getFile(getTypeDataPath() + t.getName() + ".xml");
-            if (!file.isFile()) {
-                continue;
-            }
-            custom_OBJ_TYPES.add(t);
-            String xml = FileManager.readFile(file);
-            customTypes.addAll(XML_Reader.createCustomTypeList(xml, t, MacroGame.getGame(),
-             !isEditMode(), true, false));
-
-            // full type data or on top of base type?
-        }
-        for (ObjType type : customTypes) {
-            type.setGenerated(true);
-            DataManager.addType(type);
-        }
-    }
-
-    public static ObjType getCustomType(String typeName) {
-        if (typeName == null) {
-            return null;
-        }
-        for (ObjType t : MacroManager.getCustomTypes()) {
-            if (typeName.equals(t.getName())) {
-                return t;
-            }
-        }
-
-        return null;
-    }
-
-    public static void saveCustomTypes() {
-        // saveCopyTypes();
-        for (OBJ_TYPE t : custom_OBJ_TYPES) {
-            String content = XML_Converter.openXmlFormatted(t.getName());
-            for (ObjType type : customTypes) {
-
-                if (type.getOBJ_TYPE_ENUM() == t) {
-                    content += XML_Writer.getIncompleteTypeXML(type, type.getType());
-                }
-            }
-            content += XML_Converter.closeXmlFormatted(t.getName());
-
-            String path = getTypeDataPath();
-            String fileName = t.getName() + ".xml";
-            XML_Writer.write(content, path, fileName);
-        }
-    }
-
-    private static String getCopyTypePath() {
-        return PathFinder.getTYPES_PATH() + "\\campaign\\" + campaignName + "\\";
-    }
-
-    private static String getTypeDataPath() {
-        return PathFinder.getTYPES_PATH() + (!isSave() ? "\\campaign\\" : "\\save\\")
-         + getCampaignName() + "\\";
-    }
 
     public static boolean isSave() {
         return save;
-    }
-
-    public static DequeImpl<OBJ_TYPE> getCustom_OBJ_TYPES() {
-        return custom_OBJ_TYPES;
-    }
-
-    public static DequeImpl<ObjType> getCustomTypes() {
-        return customTypes;
-    }
-
-    public static DequeImpl<ObjType> getRemovedTypes() {
-        if (removedTypes == null) {
-            removedTypes = new DequeImpl<>();
-        }
-        return removedTypes;
-
-    }
-
-    public static DequeImpl<ObjType> getCopyTypes() {
-        return copyTypes;
     }
 
 
@@ -259,10 +109,7 @@ public class MacroManager {
         MacroManager.worldName = worldName;
     }
 
-    public static void refreshGui() {
-//        mapView.refresh();
 
-    }
 
     public static Unit getSelectedPartyMember() {
         if (selectedPartyMember == null) {
@@ -300,30 +147,16 @@ public class MacroManager {
     }
 
 
-    public static void initTypes() {
-        initCustomTypes();
-        // initCopyTypes();
+
+    public static List<Region> getRegions() {
+        return getGame().getWorld().getRegions();
     }
 
-    public static List<ObjType> getCustomTypes(MACRO_OBJ_TYPES TYPE) {
-        ArrayList<ObjType> list = new ArrayList<>(customTypes);
-        FilterMaster.filterByProp(list, "Type", TYPE.getName());
-        return list;
+    public static boolean isLoad() {
+        return load;
     }
 
-    public static ObjType addCustomType(ObjType parent, String name) {
-        ObjType type = new ObjType(parent, true);
-        type.initType();
-        type.setName(name);
-        type.setProperty(G_PROPS.PARENT_TYPE, parent.getName());
-        getCustomTypes().add(type);
-        if (!getCustom_OBJ_TYPES().contains(type.getOBJ_TYPE_ENUM())) {
-            getCustom_OBJ_TYPES().add(type.getOBJ_TYPE_ENUM());
-        }
-        type.setGenerated(true);
-        DataManager.addType(type);
-        return type;
-    }
+
 
     // private static void saveCopyTypes() {
     // String typeMapContent = "";
@@ -454,21 +287,6 @@ public class MacroManager {
 		 * a somewhat special format perhaps
 		 */
 
-    public static List<Region> getRegions() {
-        return getGame().getWorld().getRegions();
-    }
-
-    public static boolean isTurnProcessing() {
-        return turnProcessing;
-    }
-
-    public static boolean isLoad() {
-        return load;
-    }
-
-    public static MapPointMaster getPointMaster() {
-        return getGame().getPointMaster();
-    }
 
 
     // each object must maintain its values dynamically, always...

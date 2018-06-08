@@ -25,7 +25,7 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.MacroActionManager.MACRO_MODES;
+import eidolons.game.module.adventure.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster3d;

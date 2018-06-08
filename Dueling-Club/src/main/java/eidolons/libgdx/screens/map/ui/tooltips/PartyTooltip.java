@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import eidolons.content.PARAMS;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;

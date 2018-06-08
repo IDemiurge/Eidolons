@@ -1,6 +1,6 @@
 package eidolons.game.module.adventure;
 
-import eidolons.game.module.adventure.entity.MacroActionManager;
+import eidolons.game.module.adventure.entity.action.MacroActionManager;
 
 public class MacroEngine {
 

@@ -23,6 +23,11 @@ public class NinePatchFactory {
     private static final String LIGHT_PANEL_HQ_EMPTY_PATH =
      StrPathBuilder.build(PathFinder.getComponentsPath(),
       "ninepatch", "std", "light ninepatch hq empty.png");
+
+    private static final String LIGHT_PANEL_FILLED_SMALL_PATH =
+     StrPathBuilder.build(PathFinder.getComponentsPath(),
+      "ninepatch", "std", "light ninepatch filled small.png");
+
     public static NinePatch getTooltip() {
         return getLightPanelFilled();
 //        return new NinePatch(getOrCreateR("UI/components/tooltip_background.png"), 16, 16, 14, 14);
@@ -55,6 +60,10 @@ public class NinePatchFactory {
     }
     public static NinePatch getInfoPanel() {
         return new NinePatch(getOrCreateR("UI/components/panel ninepatch.png"), 50, 50, 50, 50);
+    }
+    public static NinePatch getLightPanelFilledSmall() {
+        return new NinePatch(getOrCreateR(
+         LIGHT_PANEL_FILLED_SMALL_PATH), 5, 5, 5, 5);
     }
     public static NinePatch getLightPanelFilled() {
         return new NinePatch(getOrCreateR(

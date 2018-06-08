@@ -6,7 +6,7 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;

@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import eidolons.game.module.adventure.travel.FreeTravelMaster;
+import eidolons.game.module.adventure.map.travel.old.FreeTravelMaster;
 import eidolons.libgdx.screens.map.layers.AlphaMap;
 import eidolons.libgdx.screens.map.layers.AlphaMap.ALPHA_MAP;
 import main.data.XLinkedMap;

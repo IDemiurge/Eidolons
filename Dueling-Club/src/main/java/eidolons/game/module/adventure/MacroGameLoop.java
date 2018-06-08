@@ -2,7 +2,8 @@ package eidolons.game.module.adventure;
 
 import eidolons.game.core.ActionInput;
 import eidolons.game.core.GameLoop;
-import eidolons.game.module.adventure.global.ScenarioGenerator;
+import eidolons.game.module.adventure.generation.ScenarioGenerator;
+import eidolons.game.module.adventure.global.time.MacroTimeMaster;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.ScreenData;

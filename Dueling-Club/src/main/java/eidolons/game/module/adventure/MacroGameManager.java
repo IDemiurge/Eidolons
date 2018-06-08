@@ -1,14 +1,14 @@
 package eidolons.game.module.adventure;
 
 import com.badlogic.gdx.math.Vector2;
-import eidolons.game.module.adventure.entity.MacroActionManager;
+import eidolons.game.module.adventure.entity.action.MacroActionManager;
 import eidolons.game.module.adventure.entity.MacroObj;
-import eidolons.game.module.adventure.entity.MacroParty;
-import eidolons.game.module.adventure.global.TimeMaster;
+import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.game.module.adventure.global.time.TimeMaster;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.area.AreaManager;
-import eidolons.game.module.adventure.rules.TurnRule;
-import eidolons.game.module.adventure.travel.TravelMasterOld;
+import eidolons.game.module.adventure.global.rules.TurnRule;
+import eidolons.game.module.adventure.map.travel.old.TravelMasterOld;
 import eidolons.game.module.adventure.utils.SaveMaster;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.effects.Effect;

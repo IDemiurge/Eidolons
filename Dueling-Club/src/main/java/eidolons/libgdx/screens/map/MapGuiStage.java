@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
@@ -36,17 +36,17 @@ import static main.system.MapEvent.CREATE_PARTY;
  * Created by JustMe on 2/9/2018.
  */
 public class MapGuiStage extends GuiStage {
-    private final String vignettePath = "ui\\macro\\vignette.png";
-    private final LightLayer lights;
+    protected final String vignettePath = "ui\\macro\\vignette.png";
+    protected final LightLayer lights;
     PartyActor mainPartyMarker;
-    private PartyInfoPanel partyInfoPanel;
-    private MapActionPanel actionPanel;
-    private boolean dirty=true;
-    private MapResourcesPanel resources;
-    private MapTimePanel timePanel;
-    private MapDatePanel datePanel;
-    private SuperContainer vignette;
-    private MapKeyHandler keyHandler = new MapKeyHandler();
+    protected PartyInfoPanel partyInfoPanel;
+    protected MapActionPanel actionPanel;
+    protected boolean dirty=true;
+    protected MapResourcesPanel resources;
+    protected MapTimePanel timePanel;
+    protected MapDatePanel datePanel;
+    protected SuperContainer vignette;
+    protected MapKeyHandler keyHandler = new MapKeyHandler();
 
     public MapGuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -155,7 +155,7 @@ public class MapGuiStage extends GuiStage {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (dirty) {
+       if (dirty) {
             timePanel.setPosition(GdxMaster.centerWidthScreen(timePanel),
              GdxMaster.topScreen(timePanel) + 13 * (1 + GdxMaster.getFontSizeMod()) / 2);
             actionPanel.layout();
@@ -250,7 +250,7 @@ public class MapGuiStage extends GuiStage {
 //            update(getRoot().getChildren());
     }
 
-    private void update(SnapshotArray<Actor> children) {
+    protected void update(SnapshotArray<Actor> children) {
         for (Actor sub : children) {
             if (sub instanceof TablePanel) {
                 ((TablePanel) sub).setUpdateRequired(true);

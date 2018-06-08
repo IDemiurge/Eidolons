@@ -2,13 +2,12 @@ package eidolons.game.module.adventure.map.area;
 
 import eidolons.content.PARAMS;
 import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.global.TimeMaster;
-import eidolons.game.module.adventure.map.Area;
+import eidolons.game.module.adventure.global.time.TimeMaster;
 import eidolons.game.module.adventure.map.MacroCoordinates;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
-import eidolons.game.module.adventure.travel.EncounterMaster;
-import eidolons.game.module.adventure.travel.MacroGroup;
+import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
+import eidolons.game.module.adventure.map.travel.old.MacroGroup;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.content.DC_TYPE;
 import main.content.enums.EncounterEnums.ENCOUNTER_SUBGROUP;

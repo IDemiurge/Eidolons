@@ -1,6 +1,6 @@
 package eidolons.game.module.adventure.global;
 
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Route;
 import main.entity.Ref;

@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.travel.EncounterMaster;
+import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.content.values.properties.G_PROPS;

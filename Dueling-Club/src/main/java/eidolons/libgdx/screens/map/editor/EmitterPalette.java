@@ -79,7 +79,7 @@ public class EmitterPalette extends TabbedPanel {
             for (File preset : presets.get(sub)) {
                 ValueContainer label = //textButton?
                  new ValueContainer(new Label(preset.getName(), style));
-                NinePatch patch = NinePatchFactory.getTooltip();
+                NinePatch patch = NinePatchFactory.getLightPanelFilledSmall();
                 patch.scale(0.7f, 0.7f);
                 if (bg)
                     label.setBackground(new NinePatchDrawable(patch));

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.content.PARAMS;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;

@@ -181,13 +181,14 @@ public class GuiStage extends StageX implements StageWithClosable {
                 blackout.fadeOutAndBack(2f);
                 setBlackoutIn(false);
             }
+        if (actionTooltipContainer != null)
+            if (actionTooltipContainer.getActions().size == 0) {
+                actionTooltipContainer.setFluctuateAlpha(true);
 
-        if (actionTooltipContainer.getActions().size == 0) {
-            actionTooltipContainer.setFluctuateAlpha(true);
-
-        }
-        if (infoTooltipContainer.getActions().size == 0)
-            infoTooltipContainer.setFluctuateAlpha(true);
+            }
+        if (infoTooltipContainer != null)
+            if (infoTooltipContainer.getActions().size == 0)
+                infoTooltipContainer.setFluctuateAlpha(true);
 
 
         super.act(delta);
@@ -204,9 +205,9 @@ public class GuiStage extends StageX implements StageWithClosable {
     public Actor hit(float stageX, float stageY, boolean touchable) {
         Actor actor = super.hit(stageX, stageY, touchable);
 
-            if (actor != null)
+        if (actor != null)
             if (blocked) {
-                if (actor instanceof com.badlogic.gdx.scenes.scene2d.ui.List  )
+                if (actor instanceof com.badlogic.gdx.scenes.scene2d.ui.List)
                     return actor;
 
                 List<Group> ancestors = GdxMaster.getAncestors(actor);

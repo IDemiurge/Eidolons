@@ -1,8 +1,7 @@
 package eidolons.game.module.adventure.entity;
 
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroRef;
-import eidolons.game.module.adventure.faction.Faction;
+import eidolons.game.module.adventure.entity.faction.Faction;
 import eidolons.game.module.adventure.map.MacroCoordinates;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.utils.MacroContentManager;

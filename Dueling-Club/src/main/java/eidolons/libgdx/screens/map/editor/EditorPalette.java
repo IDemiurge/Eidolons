@@ -85,7 +85,7 @@ public class EditorPalette extends TabbedPanel {
                 for (ObjType type : types) {
                     TextureRegion texture = TextureCache.getOrCreateR(type.getImagePath());
                     ValueContainer item = new ValueContainer(texture);
-                    item.setBackground(new NinePatchDrawable(NinePatchFactory.getTooltip()));
+                    item.setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanelFilledSmall()));
                     item.overrideImageSize(64, 64);
                     item.addListener(new ValueTooltip(type.getName()).getController());
                     item.addListener(getItemListener(item));

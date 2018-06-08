@@ -2,8 +2,13 @@ package eidolons.game.module.adventure.utils;
 
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
+import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.game.module.adventure.map.Place;
+import eidolons.game.module.adventure.map.Region;
 import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
+import main.content.enums.macro.MACRO_OBJ_TYPES;
+import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -88,5 +93,31 @@ public class SaveMaster {
 
     private static String getSavePath() {
         return PathFinder.getXML_PATH() + "macro\\saves\\";
+    }
+
+    public static void saveTheWorld() {
+        //all locations to regions, etc
+        for (Region region : MacroManager.getGame().getState().getRegions()) {
+            String places = "";
+            for (Place sub : MacroManager.getGame().getPlaces()) {
+                if (sub.getRegion() != region)
+                    continue;
+                places +=
+                 sub.getNameAndCoordinate() + ";";
+            }
+            region.setProperty(MACRO_PROPS.PLACES, places, true);
+
+            String parties = "";
+            for (MacroParty sub : MacroManager.getGame().getParties()) {
+                if (sub.getRegion() != region)
+                    continue;
+                parties +=
+                 sub.getNameAndCoordinate() + ";";
+            }
+            region.setProperty(MACRO_PROPS.PARTIES, parties, true);
+
+        }
+        XML_Writer.writeXML_ForTypeGroup(MACRO_OBJ_TYPES.REGION);
+
     }
 }

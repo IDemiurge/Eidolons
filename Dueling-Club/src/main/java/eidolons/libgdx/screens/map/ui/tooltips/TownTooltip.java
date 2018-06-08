@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.ui.tooltips;
 
-import eidolons.game.module.adventure.town.Town;
+import eidolons.game.module.adventure.entity.town.Town;
 import eidolons.libgdx.screens.map.obj.PlaceActor;
 
 /**

@@ -1,7 +1,7 @@
 package eidolons.game.module.adventure.global;
 
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroRef;
+import eidolons.game.module.adventure.entity.MacroRef;
 import eidolons.game.module.adventure.entity.MacroObj;
 import eidolons.game.module.adventure.map.Region;
 import main.entity.Ref;

@@ -1,10 +1,11 @@
 package eidolons.game.module.adventure.map;
 
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroRef.MACRO_KEYS;
+import eidolons.game.module.adventure.entity.MacroRef.MACRO_KEYS;
 import eidolons.game.module.adventure.entity.MacroObj;
-import eidolons.game.module.adventure.entity.MacroParty;
-import eidolons.game.module.adventure.town.Town;
+import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.game.module.adventure.entity.town.Town;
+import eidolons.game.module.adventure.map.area.Area;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;

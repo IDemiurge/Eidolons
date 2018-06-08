@@ -7,8 +7,8 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.rpg.PrincipleMaster;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.travel.EncounterMaster;
+import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
+import eidolons.game.module.adventure.utils.SaveMaster;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
@@ -792,7 +792,7 @@ public class ModelManager {
         if (!auto)
             if (CoreEngine.isMacro())
                 if (MacroGame.getGame()!=null )
-                    MacroManager.saveTheWorld();
+                    SaveMaster.saveTheWorld();
         ArcaneVault.setDirty(true);
         SoundMaster.playStandardSound(STD_SOUNDS.DONE);
         Weaver.inNewThread(new Runnable() {

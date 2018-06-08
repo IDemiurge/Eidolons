@@ -6,6 +6,7 @@ import com.kotcrab.vis.ui.layout.DragPane;
 import com.kotcrab.vis.ui.widget.Draggable;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.screens.map.MapGuiStage;
+import eidolons.libgdx.stage.ConfirmationPanel;
 
 /**
  * Created by JustMe on 2/10/2018.
@@ -49,8 +50,18 @@ public class EditorMapGuiStage extends MapGuiStage {
         editorInfoPanel.setPosition(GdxMaster.right(editorInfoPanel), 0);
 
 
+        addActor(confirmationPanel = ConfirmationPanel.getInstance());
     }
 
+    @Override
+    public void act(float delta) {
+        dirty=false;
+        super.act(delta);
+    }
+
+    protected boolean checkBlocked() {
+        return false;
+    }
     public EditorPalette getPalette() {
         return palette;
     }

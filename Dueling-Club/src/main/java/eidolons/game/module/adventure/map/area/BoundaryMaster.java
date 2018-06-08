@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure.map.area;
 
-import eidolons.game.module.adventure.map.Area;
 import eidolons.game.module.adventure.map.Region;
 import main.system.auxiliary.RandomWizard;
 

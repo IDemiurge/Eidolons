@@ -31,8 +31,9 @@ public class MapPointMaster {
 
     Map<String, Coordinates> map;
     private String last;
+    private static MapPointMaster instance;
 
-    public MapPointMaster() {
+    private MapPointMaster() {
         if (CoreEngine.isMapEditor()) {
             GuiEventManager.bind(MapEvent.LOCATION_ADDED, p -> {
                 Pair<String, Coordinates> pair = (Pair<String, Coordinates>) p.get();
@@ -47,6 +48,14 @@ public class MapPointMaster {
         }
         load();
     }
+
+    public static MapPointMaster getInstance() {
+        if (instance == null) {
+            instance=new MapPointMaster();
+        }
+        return instance;
+    }
+
 
     public void save() {
         String s = "";

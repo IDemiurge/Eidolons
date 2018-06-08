@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.ai.PlayerAI;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.faction.Faction;
+import eidolons.game.module.adventure.entity.faction.Faction;
 import main.content.enums.system.AiEnums;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;

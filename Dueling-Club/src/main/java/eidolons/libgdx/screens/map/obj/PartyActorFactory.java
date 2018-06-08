@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.screens.map.ui.tooltips.PartyTooltip;

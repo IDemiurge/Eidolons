@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VAL
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonInitializer;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.module.adventure.map.Place;
-import eidolons.game.module.adventure.travel.Encounter;
+import eidolons.game.module.adventure.map.travel.encounter.Encounter;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;

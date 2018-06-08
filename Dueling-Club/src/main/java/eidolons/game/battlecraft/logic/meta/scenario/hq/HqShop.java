@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.meta.scenario.hq;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.module.adventure.town.ShopMaster;
+import eidolons.game.module.adventure.entity.town.ShopMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;

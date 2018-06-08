@@ -1,8 +1,8 @@
 package eidolons.game.module.adventure.map;
 
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.RouteMaster;
-import eidolons.game.module.adventure.entity.MacroParty;
+import eidolons.game.module.adventure.map.travel.RouteMaster;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 
 /**
  * Created by JustMe on 2/22/2018.
