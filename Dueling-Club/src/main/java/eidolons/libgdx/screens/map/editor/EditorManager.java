@@ -64,7 +64,7 @@ public class EditorManager {
                 }
                 break;
             case POINT:
-                MacroManager.getPointMaster().clicked(x, y);
+                MapPointMaster.getInstance().clicked(x, y);
                 return;
             case EMITTER:
                 if (addOrRemove) {

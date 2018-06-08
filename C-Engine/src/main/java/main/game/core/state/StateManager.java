@@ -151,7 +151,7 @@ public abstract class StateManager {
         if (map == null) {
             return;
         }
-        // if (!map.containsValue(obj))
+
         map.put(obj.getId(), obj);
 
     }

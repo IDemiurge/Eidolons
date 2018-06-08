@@ -3,6 +3,7 @@ package eidolons.game.module.adventure.map.travel;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Route;
+import eidolons.libgdx.screens.map.editor.MapPointMaster;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -56,14 +57,13 @@ public class RouteMaster {
         GuiEventManager.bind(MapEvent.MAP_READY, p -> added());
         afterInit();
     }
-
     public void afterInit() {
         for (Route sub : MacroGame.getGame().getRoutes()) {
             String point = sub.getDestinationPoint();
-            sub.setDestination(MacroGame.getGame().getManager().getPlaceForPoint(point));
+            sub.setDestination(MapPointMaster.getInstance().getPlaceForPoint(point));
 
             point = sub.getOriginPoint();
-            sub.setOrigin(MacroGame.getGame().getManager().getPlaceForPoint(point));
+            sub.setOrigin(MapPointMaster.getInstance().getPlaceForPoint(point));
 
         }
     }

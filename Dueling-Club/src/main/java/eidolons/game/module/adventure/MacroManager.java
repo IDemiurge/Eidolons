@@ -110,7 +110,6 @@ public class MacroManager {
     }
 
 
-
     public static Unit getSelectedPartyMember() {
         if (selectedPartyMember == null) {
             return game.getPlayerParty().getLeader();
@@ -147,7 +146,6 @@ public class MacroManager {
     }
 
 
-
     public static List<Region> getRegions() {
         return getGame().getWorld().getRegions();
     }
@@ -155,8 +153,6 @@ public class MacroManager {
     public static boolean isLoad() {
         return load;
     }
-
-
 
     // private static void saveCopyTypes() {
     // String typeMapContent = "";
@@ -286,7 +282,6 @@ public class MacroManager {
 		 * 
 		 * a somewhat special format perhaps
 		 */
-
 
 
     // each object must maintain its values dynamically, always...

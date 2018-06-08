@@ -1,11 +1,11 @@
 package eidolons.game.module.adventure;
 
-import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.entity.faction.FactionObj;
+import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.game.module.adventure.entity.town.Town;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.map.Route;
-import eidolons.game.module.adventure.entity.town.Town;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
@@ -13,12 +13,6 @@ import main.game.core.state.GameState;
 import main.system.datatypes.DequeImpl;
 
 public class MacroGameState extends GameState {
-    /*
-     * party effects? world effects?
-	 * 
-	 * but most of all - Places, Settlements
-	 */
-
     DequeImpl<FactionObj> factions = new DequeImpl<>();
     DequeImpl<Town> towns = new DequeImpl<>();
     DequeImpl<Place> places = new DequeImpl<>();
@@ -28,7 +22,6 @@ public class MacroGameState extends GameState {
 
     public MacroGameState(MacroGame game) {
         super(game);
-        manager = new MacroStateManager(this);
     }
 
     @Override
@@ -71,22 +64,13 @@ public class MacroGameState extends GameState {
             regions.add((Region) obj);
         }
 
-        super.addObject(obj);
-    }
-
-    public void allToBase() {
-        for (MacroParty p : parties) {
-            p.toBase();
-        }
-        // PartyManager.getParty().toBase();
-
+        objMap.put(obj.getId(), obj);
     }
 
     @Override
     protected void initTypeMaps() {
 
         for (MACRO_OBJ_TYPES TYPE : MACRO_OBJ_TYPES.values()) {
-
             getObjMaps().put(TYPE, new ConcurrentMap<>());
         }
     }

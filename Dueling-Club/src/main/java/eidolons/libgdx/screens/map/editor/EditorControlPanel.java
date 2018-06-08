@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.kotcrab.vis.ui.layout.HorizontalFlowGroup;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.entity.MacroObj;
 import eidolons.game.module.adventure.utils.SaveMaster;
 import eidolons.libgdx.GdxColorMaster;
@@ -72,7 +71,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
             case SAVE:
                 SaveMaster.saveTheWorld();
                 EditorMapView.getInstance().getEditorParticles().saveAll();
-                MacroGame.getPointMaster()
+                MapPointMaster.getInstance()
                  .save();
 //                MacroManager.saveCustomTypes();
                 //data into World/Campaign type?

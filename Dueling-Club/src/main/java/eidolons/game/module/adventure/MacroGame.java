@@ -1,21 +1,20 @@
 package eidolons.game.module.adventure;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.game.core.GameLoop;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.entity.MacroRef;
 import eidolons.game.module.adventure.entity.faction.Faction;
 import eidolons.game.module.adventure.entity.faction.FactionObj;
+import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.game.module.adventure.entity.town.Town;
 import eidolons.game.module.adventure.generation.WorldGenerator;
-import eidolons.game.module.adventure.global.*;
+import eidolons.game.module.adventure.global.Campaign;
+import eidolons.game.module.adventure.global.Journal;
+import eidolons.game.module.adventure.global.World;
+import eidolons.game.module.adventure.global.time.TimeMaster;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.map.Route;
-import eidolons.game.module.adventure.global.rules.HungerRule;
-import eidolons.game.module.adventure.global.rules.TurnRule;
-import eidolons.game.module.adventure.entity.town.Town;
-import eidolons.game.module.adventure.global.time.TimeMaster;
 import eidolons.game.module.adventure.map.travel.RouteMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.map.editor.MapPointMaster;
@@ -40,21 +39,18 @@ import main.system.datatypes.DequeImpl;
  */
 public class MacroGame extends Game {
     public static MacroGame game;
-    DC_Game microGame;
-    MacroParty playerParty;
     World world;
+    MacroParty playerParty;
+    DC_Game microGame; // needed?
     MacroRef ref; // with active party/route/region/place/town
-    DequeImpl<TurnRule> turnRules;
     DequeImpl<Faction> factions = new DequeImpl<>();
-    private Campaign campaign;
-    private GameLoop loop;
-    private DAY_TIME time = DAY_TIME.MIDDAY;
+
+    private Campaign campaign; //CUSTOM GAME?
+    private MacroGameLoop loop;
     private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
-    private Thread gameLoopThread;
     private Faction playerFaction;
 
-    // ...masters
 
     public MacroGame() {
         game = this;
@@ -79,12 +75,9 @@ public class MacroGame extends Game {
         loop = new MacroGameLoop(this);
         ref = new MacroRef(this);
         state = new MacroGameState(this);
-        manager = new MacroGameManager(this);
-        master = new MacroGameMaster(this);
         logManager = new Journal(this);
         idManager = new DC_IdManager();
-        turnRules = new DequeImpl<>();
-        turnRules.add(new HungerRule());
+
         initObjTypes();
         ObjType cType = DataManager.getType(MacroManager.getCampaignName(),
          MACRO_OBJ_TYPES.CAMPAIGN);
@@ -106,7 +99,7 @@ public class MacroGame extends Game {
 
 
     public void initObjTypes() {
-        MacroManager.initTypes();
+//        SaveMaster.initTypes();
         for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
             if (TYPE.getCode() == -1) {
                 continue;
@@ -120,16 +113,12 @@ public class MacroGame extends Game {
     public void start(boolean host) {
 //        getManager().getStateManager().resetAllSynchronized();
         loop = new MacroGameLoop(this);
-        setGameLoopThread(loop.startInNewThread());
+         loop.startInNewThread();
 
         setRunning(true);
         setStarted(true);
     }
 
-    @Override
-    public MacroGameManager getManager() {
-        return (MacroGameManager) super.getManager();
-    }
 
     public DequeImpl<FactionObj> getFactions() {
         return getState().getFactions();
@@ -155,14 +144,6 @@ public class MacroGame extends Game {
         return getState().getParties();
     }
 
-    public DC_Game getMicroGame() {
-        return microGame;
-    }
-
-    public void setMicroGame(DC_Game microGame) {
-        this.microGame = microGame;
-    }
-
     @Override
     public Obj getCellByCoordinate(Coordinates coordinates) {
         // TODO Auto-generated method stub
@@ -175,10 +156,6 @@ public class MacroGame extends Game {
 
     public void setPlayerParty(MacroParty playerParty) {
         this.playerParty = playerParty;
-    }
-
-    public World takeWorld() {
-        return getGame().getWorld();
     }
 
     public World getWorld() {
@@ -197,46 +174,20 @@ public class MacroGame extends Game {
         return campaign;
     }
 
-    public DequeImpl<TurnRule> getTurnRules() {
-        return turnRules;
-    }
-
-    public void setTurnRules(DequeImpl<TurnRule> turnRules) {
-        this.turnRules = turnRules;
-    }
-
     public MacroGameLoop getLoop() {
-        return (MacroGameLoop) loop;
-    }
-
-    public void setLoop(GameLoop loop) {
-        this.loop = loop;
+        return   loop;
     }
 
     public RealTimeGameLoop getRealtimeLoop() {
-        return (RealTimeGameLoop) loop;
+        return   loop;
     }
 
     public DAY_TIME getTime() {
-        return time;
+        return getLoop().getTimeMaster().getDayTime();
     }
-
-    public void setTime(DAY_TIME time) {
-        this.time = time;
-    }
-
-
 
     public MapPointMaster getPointMaster() {
         return pointMaster;
-    }
-
-    public Thread getGameLoopThread() {
-        return gameLoopThread;
-    }
-
-    public void setGameLoopThread(Thread gameLoopThread) {
-        this.gameLoopThread = gameLoopThread;
     }
 
     public WEATHER getWeather() {

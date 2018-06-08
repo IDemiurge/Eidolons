@@ -15,12 +15,7 @@ import main.system.datatypes.DequeImpl;
 
 public class Region extends MacroObj {
     private float milesToPixels;
-    /*
-     * calculating the basic length of routes from one place to another...
-     *
-     * as far as turns are concerned... 1-3 perhaps, with float points resulting
-     * in randomization?
-     */
+
     private DequeImpl<Place> places = new DequeImpl<>();
     private DequeImpl<Town> towns = new DequeImpl<>();
     private DequeImpl<Route> routes = new DequeImpl<>();

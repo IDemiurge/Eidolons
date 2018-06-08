@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
@@ -23,7 +22,6 @@ import eidolons.libgdx.screens.map.ui.*;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.texture.TextureCache;
-import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
@@ -82,7 +80,6 @@ public class MapGuiStage extends GuiStage {
 
             if (!CoreEngine.isMapEditor())
                 blackout.fadeOut(1.25f);
-            MacroGame.getGame().setTime((DAY_TIME) p.get());
             new Thread(new Runnable() {
                 public void run() {
                     WaitMaster.WAIT(1500);

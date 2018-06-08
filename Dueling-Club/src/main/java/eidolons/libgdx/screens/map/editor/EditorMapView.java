@@ -4,7 +4,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import eidolons.game.module.adventure.MacroManager;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.mouse.InputController;
 import eidolons.libgdx.screens.map.MapGuiStage;
@@ -59,7 +58,7 @@ public class EditorMapView extends MapScreen {
     @Override
     protected void afterLoad() {
         super.afterLoad();
-        MacroManager.getPointMaster().added();
+        MapPointMaster.getInstance(). added();
     }
 
     protected InputController initController() {

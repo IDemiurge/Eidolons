@@ -1,8 +1,11 @@
 package eidolons.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.game.module.adventure.MacroGame;
+import eidolons.game.module.adventure.map.Place;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
@@ -57,6 +60,22 @@ public class MapPointMaster {
     }
 
 
+    public Place getPlaceForPoint(String point) {
+        //        Map<String, Place> map = new HashMap<>();
+        //get closest?
+        float minDistance = Float.MAX_VALUE;
+        Coordinates c = MacroGame.getGame().getPointMaster().getCoordinates(point);
+        Place place = null;
+        for (Place sub : MacroGame. getGame().getPlaces()) {
+            float distance = new Vector2(c.x, c.y).dst(new Vector2(sub.getX(), sub.getY()));
+            if (distance < minDistance) {
+                minDistance = distance;
+                place = sub;
+            }
+            //can we not attach click listeners to emtiterActors?!
+        }
+        return place;
+    }
     public void save() {
         String s = "";
         for (String substring : map.keySet()) {

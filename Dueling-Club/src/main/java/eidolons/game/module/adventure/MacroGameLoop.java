@@ -14,20 +14,13 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * Created by JustMe on 2/9/2018.
  */
 public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
-    private static Thread realTimeThread;
     MacroTimeMaster timeMaster;
-    Lock lock = new ReentrantLock();
-    Condition waiting = lock.newCondition();
     MacroGame game;
 
     public MacroGameLoop(MacroGame game) {

@@ -105,7 +105,7 @@ public class MacroAction extends MacroObj implements ActiveObj {
             }
         } else {
             if (MacroActionManager.isActionsBlocked()) {
-                getGame().getManager().cancelSelection();
+//                getGame().getManager().cancelSelection();
             }
             playCancelSound();
         }
