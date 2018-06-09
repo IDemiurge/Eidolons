@@ -28,7 +28,7 @@ public class MapMenu extends GameMenu {
 //            case QUICK_HELP:
             case MANUAL:
             case OPTIONS:
-            case PASS_TIME:
+            case SAVE:
             case RESUME:
             case EXIT:
                 return false;

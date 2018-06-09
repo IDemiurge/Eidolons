@@ -273,11 +273,22 @@ public class XML_Writer {
     }
 
     public static StringBuilder getTypeXML_Builder(Entity type,
-                                                   Entity parent) {
-        return getTypeXML_Builder(type, null, parent);
+                                                   Entity parent,
+                                                   boolean writeAllValues) {
+        return getTypeXML_Builder(type, null, parent, writeAllValues);
+    }
+    public static StringBuilder getTypeXML_Builder(Entity type,
+                                                   StringBuilder builder, Entity parent) {
+        return getTypeXML_Builder(type, builder, parent, false);
     }
 
-        public static StringBuilder getTypeXML_Builder(Entity type, StringBuilder builder, Entity parent) {
+
+        public static StringBuilder getTypeXML_Builder(Entity type,
+                                                       StringBuilder builder,
+                                                       Entity parent,
+                                                       boolean writeAllValues
+
+        ) {
             if (type.getName().isEmpty()) {
             return builder;
         }
@@ -291,8 +302,11 @@ public class XML_Writer {
             }
 
             String value = XML_Formatter.formatXmlTextContent(type.getParamMap().get(param), param);
-            if (parent != null) {
-                if (parent.getParam(param).equals(value)) {
+            if (!writeAllValues)
+                if (parent != null) {
+                String parentValue = parent.getParamMap().get(param);
+                if (parentValue!=null )
+                if (parentValue.equals(value)) {
                     continue;
                 }
             }
@@ -311,8 +325,11 @@ public class XML_Writer {
         for (PROPERTY prop : type.getPropMap().keySet()) {
 
             String value = XML_Formatter.formatXmlTextContent(type.getPropMap().get(prop), prop);
+            if (!writeAllValues)
             if (parent != null) { // don't duplicate
-                if (parent.getProperty(prop).equals(value)) {
+                String parentValue = parent.getPropMap() .get(prop);
+                if (parentValue!=null )
+                    if (parentValue.equalsIgnoreCase(value)) {
                     continue;
                 }
             }

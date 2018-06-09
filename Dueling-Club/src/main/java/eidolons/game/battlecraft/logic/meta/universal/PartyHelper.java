@@ -1,6 +1,5 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.ability.InventoryTransactionManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
@@ -17,7 +16,6 @@ import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.data.MetaManager;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
-import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
@@ -122,25 +120,6 @@ public class PartyHelper {
         saveParty(party, false);
     }
 
-    private static void prepareType(ObjType type) {
-        for (PROPERTY prop : InventoryTransactionManager.INV_PROPS) {
-            String propValue = type.getProperty(prop);
-            List<String> items = StringMaster.openContainer(propValue);
-            for (String item : items) {
-                if (StringMaster.isInteger(item)) {
-                    try {
-                        propValue = StringMaster.replaceFirst(propValue, item, type.getGame()
-                         .getObjectById(StringMaster.getInteger(item)).getType().getName());
-                    } catch (Exception e) {
-                        main.system.ExceptionMaster.printStackTrace(e);
-                    }
-                }
-            }
-            type.setProperty(prop, propValue);
-        }
-
-    }
-
     public static void saveParty(Party party, boolean newType) {
 
         if (party.getName().equals(DEFAULT_TYPE_NAME)) {
@@ -155,7 +134,7 @@ public class PartyHelper {
 
             ObjType type = hero.getType();
 
-            prepareType(type);
+            eidolons.game.module.adventure.global.persist.Saver.prepareType(type);
 
             xml += XML_Writer.getTypeXML(type, new StringBuilder(XML_Writer.STR_CAPACITY));
             names += hero.getName() + StringMaster.CONTAINER_SEPARATOR;
