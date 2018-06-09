@@ -4,13 +4,13 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.type.ActionType;
+import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
 
 public interface ActionManager {
 
-    ActiveObj newAction(ActionType type, Ref ref, Player owner, MicroGame game);
+    ActiveObj newAction(ObjType type, Ref ref, Player owner, MicroGame game);
 
     ActiveObj activateCounterAttack(ActiveObj action, Obj _countering);
 

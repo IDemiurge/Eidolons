@@ -9,11 +9,10 @@ import eidolons.game.module.adventure.entity.MacroRef;
 import eidolons.game.module.adventure.entity.MacroRef.MACRO_KEYS;
 import eidolons.game.module.adventure.entity.MapObj;
 import eidolons.game.module.adventure.entity.faction.Faction;
-import eidolons.game.module.adventure.map.area.Area;
+import eidolons.game.module.adventure.entity.town.Town;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Route;
-import eidolons.game.module.adventure.entity.town.Town;
-import eidolons.game.module.adventure.map.travel.old.RestMasterOld;
+import eidolons.game.module.adventure.map.area.Area;
 import eidolons.game.module.adventure.map.travel.old.TravelMasterOld;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.CONTENT_CONSTS2.MACRO_STATUS;
@@ -148,9 +147,7 @@ public class MacroParty extends MapObj {
     @Override
     public void newTurn() {
         toBase();
-        if (status == MACRO_STATUS.CAMPING) {
-            RestMasterOld.applyMacroMode(this);
-        }
+
     }
 
     public void useTime(int hours) {
@@ -201,22 +198,19 @@ public class MacroParty extends MapObj {
     }
 
     public Player getOwner() {
+        if (getParty()==null ){
+            return owner;
+        }
         return getParty().getOwner();
     }
 
-    @Override
-    public void setOwner(Player owner) {
-        getParty().setOwner(owner);
-    }
-
     public Player getOriginalOwner() {
+        if (getParty()==null ){
+            return originalOwner;
+        }
         return getParty().getOriginalOwner();
     }
 
-    @Override
-    public void setOriginalOwner(Player originalOwner) {
-        getParty().setOriginalOwner(originalOwner);
-    }
 
     public void addMember(Unit hero) {
         getParty().addMember(hero);
@@ -426,9 +420,6 @@ public class MacroParty extends MapObj {
     }
 
     public Party getParty() {
-        if (party == null) {
-            party = new Party(getType());
-        }
         return party;
     }
 }

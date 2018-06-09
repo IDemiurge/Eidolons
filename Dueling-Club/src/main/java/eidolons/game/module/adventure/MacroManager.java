@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.macro.MacroPartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
@@ -19,16 +18,12 @@ import static main.system.MapEvent.*;
 
 public class MacroManager {
     private final static String defaultWorldName = "Test World";
-    private final static String defaultCampaignName = "Introduction";
     private static MacroGame game;
-    private static String campaignName;
-    private static String worldName;
-    private static Unit selectedPartyMember;
-    private static boolean save;
-    private static boolean load;
     private static String scenario = "Mistfall";
+    private static Campaign campaign;
     private static MetaGameMaster metaMaster;
-
+    private static String worldName;
+    private static boolean load;
 
     public static void setScenario(String scenario) {
         MacroManager.scenario = scenario;
@@ -50,6 +45,7 @@ public class MacroManager {
             metaMaster.init();
             if (metaMaster.getPartyManager().getParty() == null)
                 return;
+            metaMaster.getPartyManager().gameStarted();
         }
         game = new MacroGame();
         if (!CoreEngine.isMapEditor()) {
@@ -87,14 +83,8 @@ public class MacroManager {
         }
         // try { save();
         game = null;
-        campaignName = null;
         worldName = null;
         MacroGame.setGame(null);
-    }
-
-
-    public static boolean isSave() {
-        return save;
     }
 
 
@@ -110,30 +100,12 @@ public class MacroManager {
     }
 
 
-    public static Unit getSelectedPartyMember() {
-        if (selectedPartyMember == null) {
-            return game.getPlayerParty().getLeader();
-        }
-        return selectedPartyMember;
-    }
-
-    public static void setSelectedPartyMember(Unit selectedPartyMember) {
-        MacroManager.selectedPartyMember = selectedPartyMember;
-    }
-
     public static MacroParty getActiveParty() {
         return game.getPlayerParty();
     }
 
     public static Campaign getCampaign() {
-        return game.getCampaign();
-    }
-
-    public static String getCampaignName() {
-        if (campaignName == null) {
-            return defaultCampaignName;
-        }
-        return campaignName;
+        return campaign ;
     }
 
 
@@ -153,6 +125,38 @@ public class MacroManager {
     public static boolean isLoad() {
         return load;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // private static void saveCopyTypes() {
     // String typeMapContent = "";

@@ -272,10 +272,17 @@ public class XML_Writer {
         return getTypeXML_Builder(type, builder, null);
     }
 
-    public static StringBuilder getTypeXML_Builder(Entity type, StringBuilder builder, Entity parent) {
-        if (type.getName().isEmpty()) {
+    public static StringBuilder getTypeXML_Builder(Entity type,
+                                                   Entity parent) {
+        return getTypeXML_Builder(type, null, parent);
+    }
+
+        public static StringBuilder getTypeXML_Builder(Entity type, StringBuilder builder, Entity parent) {
+            if (type.getName().isEmpty()) {
             return builder;
         }
+        if (builder==null )
+            builder = new StringBuilder();
         builder.append(openXML(type.getName()));
         builder.append("<params>");
         for (PARAMETER param : type.getParamMap().keySet()) {

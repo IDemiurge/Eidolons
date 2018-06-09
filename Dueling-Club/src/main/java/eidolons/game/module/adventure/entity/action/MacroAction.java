@@ -1,11 +1,10 @@
 package eidolons.game.module.adventure.entity.action;
 
-import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.entity.action.MacroActionManager.MACRO_MODES;
-import eidolons.game.module.adventure.entity.action.MacroActionManager.MACRO_PARTY_ACTIONS;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.adventure.entity.MacroObj;
 import eidolons.game.module.adventure.entity.MacroRef;
+import eidolons.game.module.adventure.entity.action.MacroActionManager.MACRO_MODES;
+import eidolons.game.module.adventure.entity.action.MacroActionManager.MACRO_PARTY_ACTIONS;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.Abilities;
 import main.elements.targeting.Targeting;
@@ -63,8 +62,8 @@ public class MacroAction extends MacroObj implements ActiveObj {
     public boolean activateThis(MacroRef ref) {
         if (mode != null) { // ref from where, exactly? ActiveSelected obj,
             // perhaps, by clicking Members?
-            Unit hero = MacroManager.getSelectedPartyMember();
-            hero.setMacroMode(mode);
+//            Unit hero = MacroManager.getSelectedPartyMember();
+//            hero.setMacroMode(mode);
             return true;
         }
         if (mpa != null) {
@@ -113,8 +112,8 @@ public class MacroAction extends MacroObj implements ActiveObj {
 
     @Override
     public boolean activate() {
-        MacroRef ref = new MacroRef(MacroManager.getSelectedPartyMember());
-        ref.setParty(MacroManager.getActiveParty());
+//        MacroRef ref = new MacroRef(MacroManager.getSelectedPartyMember());
+//        ref.setParty(MacroManager.getActiveParty());
         return activatedOn(ref);
     }
 
@@ -208,6 +207,11 @@ public class MacroAction extends MacroObj implements ActiveObj {
     }
 
     @Override
+    public Obj getOwnerObj() {
+        return Eidolons.getMainHero();
+    }
+
+    @Override
     public void setCancelled(Boolean c) {
         // TODO Auto-generated method stub
 
@@ -225,10 +229,6 @@ public class MacroAction extends MacroObj implements ActiveObj {
         return false;
     }
 
-    @Override
-    public Unit getOwnerObj() {
-        return MacroManager.getSelectedPartyMember();
-    }
 
     @Override
     public boolean isFree() {

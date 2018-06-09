@@ -38,7 +38,6 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
-import main.entity.type.ActionType;
 import main.entity.type.ObjType;
 import main.game.core.game.MicroGame;
 import main.game.logic.battle.player.Player;
@@ -81,10 +80,10 @@ public class DC_ActionManager implements ActionManager {
      .getWellFormattedString(STD_SPEC_ACTIONS.Use_Inventory.toString());
     public static final String DIVINATION = "Divination";
     public static final String PICK_UP = "Pick Up Items";
-    private static ArrayList<ObjType> stdActionTypes;
+    private static ArrayList<ObjType> stdObjTypes;
     private static ArrayList<ObjType> hiddenActions;
-    private static ArrayList<ObjType> modeActionTypes;
-    private static ArrayList<ObjType> orderActionTypes;
+    private static ArrayList<ObjType> modeObjTypes;
+    private static ArrayList<ObjType> orderObjTypes;
     private MicroGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
     private boolean offhandInit;
@@ -94,31 +93,31 @@ public class DC_ActionManager implements ActionManager {
     }
 
     public static void init() {
-        stdActionTypes = new ArrayList<>();
+        stdObjTypes = new ArrayList<>();
         for (STD_ACTIONS name : STD_ACTIONS.values()) {
             if (!(DataManager.getType(StringMaster
-             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS) instanceof ActionType)) {
+             .getWellFormattedString(name.name()), DC_TYPE.ACTIONS) instanceof ObjType)) {
                 continue;
             }
             ObjType type = DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
-            stdActionTypes.add(type);
+            stdObjTypes.add(type);
         }
 
-        modeActionTypes = new ArrayList<>();
+        modeObjTypes = new ArrayList<>();
         for (STD_MODE_ACTIONS name : STD_MODE_ACTIONS.values()) {
             ObjType type = DataManager.getType(StringMaster
              .getWellFormattedString(name.name()), DC_TYPE.ACTIONS);
 
-            modeActionTypes.add(type);
+            modeObjTypes.add(type);
         }
 
-        orderActionTypes = new ArrayList<>();
+        orderObjTypes = new ArrayList<>();
         for (STD_ORDER_ACTIONS type : STD_ORDER_ACTIONS.values()) {
             ObjType actionType = DataManager.getType(StringMaster
              .getWellFormattedString(type.toString()), DC_TYPE.ACTIONS);
-            orderActionTypes.add(actionType);
+            orderObjTypes.add(actionType);
         }
 
         hiddenActions = new ArrayList<>();
@@ -141,7 +140,7 @@ public class DC_ActionManager implements ActionManager {
         return list;
     }
 
-    public static ACTION_TYPE_GROUPS getStdActionType(DC_ActiveObj activeObj) {
+    public static ACTION_TYPE_GROUPS getStdObjType(DC_ActiveObj activeObj) {
         for (STD_ACTIONS action : STD_ACTIONS.values()) {
             if (action.toString().equals(activeObj.getType().getName())) {
                 switch (action) {
@@ -194,7 +193,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     @Override
-    public DC_UnitAction newAction(ActionType type, Ref ref, Player owner, MicroGame game) {
+    public DC_UnitAction newAction(ObjType type, Ref ref, Player owner, MicroGame game) {
 
         DC_UnitAction action = new DC_UnitAction(type, owner, game, ref);
         game.getState().addObject(action);
@@ -286,7 +285,7 @@ public class DC_ActionManager implements ActionManager {
             return (DC_UnitAction) map.get(typeName);
         }
 
-        ActionType type = (ActionType) DataManager.getType(typeName, DC_TYPE.ACTIONS);
+        ObjType type =  DataManager.getType(typeName, DC_TYPE.ACTIONS);
         if (type == null) {
             LogMaster.log(1, "no such active: " + typeName);
             return null;
@@ -364,7 +363,7 @@ public class DC_ActionManager implements ActionManager {
 
     // public boolean activateAttack(Obj _attacked, Obj _attacker) {
     // // for Communicator
-    // // ActionType type = (ActionType) DataManager.getType(ATTACK,
+    // // ObjType type =  DataManager.getType(ATTACK,
     // // OBJ_TYPES.ACTIONS);
     // //
     // // Ref ref = new Ref(game, _attacker.getId());
@@ -458,7 +457,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private DC_UnitAction generateModeAction(STD_ACTION_MODES mode, DC_ActiveObj baseAction) {
-        ActionType type = new ActionType(baseAction.getType());
+        ObjType type = new ObjType(baseAction.getType());
         if (mode.getAddPropMap() != null) {
             for (String s : mode.getAddPropMap().keySet()) {
                 type.addProperty(s, mode.getAddPropMap().get(s));
@@ -622,7 +621,7 @@ public class DC_ActionManager implements ActionManager {
             }
             DC_UnitAction action = getOrCreateAction(typeName, obj);
 
-            // action.setActionTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
+            // action.setObjTypeGroup(ACTION_TYPE_GROUPS.HIDDEN);
             // TODO so it's inside normal attack then?
             if (action == null) {
                 continue;
@@ -873,7 +872,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     private Collection<? extends ActiveObj> getOrderActions(Unit unit) {
-        return getActionTypes(orderActionTypes, unit);
+        return getObjTypes(orderObjTypes, unit);
     }
 
     public void constructActionMaps(Unit unit) {
@@ -912,7 +911,7 @@ public class DC_ActionManager implements ActionManager {
     private DequeImpl<DC_UnitAction> getStandardActionsForGroup(ACTION_TYPE type,
 
                                                                 Unit unit) {
-        if (stdActionTypes == null) {
+        if (stdObjTypes == null) {
             init();
         }
         DequeImpl<DC_UnitAction> actions = new DequeImpl<>();
@@ -926,15 +925,15 @@ public class DC_ActionManager implements ActionManager {
                 break;
             case HIDDEN:
                 // TODO extract into separate?
-                actions.addAll(getActionTypes(hiddenActions, unit));
+                actions.addAll(getObjTypes(hiddenActions, unit));
                 List<DC_ActiveObj> generatedSubactions = generateStandardSubactionsForUnit(unit);
                 actives.addAllCast(generatedSubactions);
                 break;
             case MODE:
-                actions.addAll(getActionTypes(modeActionTypes, unit));
+                actions.addAll(getObjTypes(modeObjTypes, unit));
                 break;
             case STANDARD:
-                actions.addAll(getActionTypes(stdActionTypes, unit));
+                actions.addAll(getObjTypes(stdObjTypes, unit));
                 break;
         }
         unit.getActionMap().put(type, actions);
@@ -943,7 +942,7 @@ public class DC_ActionManager implements ActionManager {
 
     }
 
-    private List<DC_UnitAction> getActionTypes(List<? extends ObjType> actionTypes,
+    private List<DC_UnitAction> getObjTypes(List<? extends ObjType> actionTypes,
                                                Unit unit) {
         List<DC_UnitAction> list = new ArrayList<>();
         for (ObjType type : actionTypes) {

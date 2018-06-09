@@ -9,6 +9,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.screens.menu.GenericMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
 import main.system.graphics.FontMaster.FONT;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,6 +97,10 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     }
 
     protected boolean isHidden(GAME_MENU_ITEM item) {
+        if (item==GAME_MENU_ITEM.RUN)
+            return !CoreEngine.isMacro();
+        if (item==GAME_MENU_ITEM.SAVE)
+            return !CoreEngine.isMacro();
         return item.hidden;
     }
 
@@ -134,6 +139,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         RESTART(true),
         PASS_TIME,
         RUN(true),
+        SAVE(true),
         RESUME,
         INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),

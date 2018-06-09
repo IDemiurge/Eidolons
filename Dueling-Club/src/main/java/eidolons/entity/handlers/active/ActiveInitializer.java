@@ -172,7 +172,7 @@ public class ActiveInitializer extends EntityInitializer<DC_ActiveObj> {
             case SPECIAL_MOVE:
                 return ActionEnums.ACTION_TYPE_GROUPS.MOVE;
             case STANDARD:
-                return DC_ActionManager.getStdActionType(getEntity());
+                return DC_ActionManager.getStdObjType(getEntity());
 
         }
         return ActionEnums.ACTION_TYPE_GROUPS.SPELL;

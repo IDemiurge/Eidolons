@@ -27,6 +27,8 @@ import java.util.Map;
  */
 public class MapParticles extends MapTimedLayer<EmitterActor> {
 
+    private List broken=    new ArrayList<>() ;
+
     public Map<DAY_TIME, List<EmitterActor>> getEmitterMap() {
         return map;
     }
@@ -169,13 +171,16 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
 
     public void load(String data, DAY_TIME time) {
         for (String sub : StringMaster.openContainer(data)) {
+            if (broken.contains(sub))
+                continue;
             String pos = VariableManager.getVarPart(sub);
             Coordinates c = new Coordinates(true, pos);
             try {
                 create((VariableManager.removeVarPart(sub)).trim(), c.x, c.y, time);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
-                main.system.auxiliary.log.LogMaster.log(1, "failed to l: " + sub);
+                main.system.auxiliary.log.LogMaster.log(1, "failed to load: " + sub);
+                broken.add(sub);
             }
         }
     }

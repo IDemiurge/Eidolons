@@ -33,7 +33,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public void preStart() {
-//  TODO       is this the right time to set it?
+        //  TODO       is this the right time to set it?
 
     }
 
@@ -57,7 +57,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     public String checkLeveledHeroVersionNeeded(String heroName) {
 
         int i = getMetaGame().getMissionIndex();
-//        getMetaDataManager().getMissionName()
+        //        getMetaDataManager().getMissionName()
         while (i > 0) {
             heroName = NameMaster.appendVersionToName(heroName, i + 1);
             if (DataManager.isTypeName(heroName, DC_TYPE.CHARS))
@@ -75,8 +75,17 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public void gameStarted() {
-        Unit hero = Eidolons.getMainHero();
+        Unit hero =         findMainHero();
+        //will find 1st if name==null
+        mainHeroSelected(party, hero);
 
+        getMetaGame().setRestarted(false);
+
+
+    }
+
+    protected Unit findMainHero() {
+        Unit hero = Eidolons.getMainHero();
         if (hero == null || getMetaGame().isRestarted()) {
             hero = getGame().getMaster().getUnitByName(
              PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
@@ -87,13 +96,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                 hero = list.get(0);
             }
         }
-        //will find 1st if name==null
-        mainHeroSelected(party, hero);
-
-
-        getMetaGame().setRestarted(false);
-
-
+        return hero;
     }
 
 
@@ -101,7 +104,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     public Party initPlayerParty() {
         if (!getMaster().getMetaGame().isPartyRespawn()) {
             party = Eidolons.getParty();
-            return party;
+            if (party != null)
+                return party;
         }
         //preset
         //choice
@@ -109,8 +113,8 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         ObjType type = getMetaGame().getScenario().getPartyType();
         randomOneHero = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
         chooseOneHero = !randomOneHero;
-//        if (CoreEngine.isFastMode())
-//            chooseOneHero=false;
+        //        if (CoreEngine.isFastMode())
+        //            chooseOneHero=false;
         if (type == null) {
             String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
             type = new ObjType("dummy", DC_TYPE.PARTY);
@@ -137,14 +141,14 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         }
         party = new Party(type);
 
-//        if (party.getNextMission().isEmpty()) {
-//            String missions = StringMaster.joinList(getMetaGame().getScenario().getAvailableMissions());
-//            party.setProperty(PROPS.PARTY_MISSIONS_NEXT,
-//             missions
-//             StringMaster.openContainer(getMetaGame().getScenario().
-//              getProperty(PROPS.SCENARIO_MISSIONS)).get(0)
-//             , true);
-//        }
+        //        if (party.getNextMission().isEmpty()) {
+        //            String missions = StringMaster.joinList(getMetaGame().getScenario().getAvailableMissions());
+        //            party.setProperty(PROPS.PARTY_MISSIONS_NEXT,
+        //             missions
+        //             StringMaster.openContainer(getMetaGame().getScenario().
+        //              getProperty(PROPS.SCENARIO_MISSIONS)).get(0)
+        //             , true);
+        //        }
 
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));

@@ -55,14 +55,11 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         if (Eidolons.getSelectedMainHero() != null)
             name = Eidolons.getSelectedMainHero();
         if (name.isEmpty())
+            name = chooseMainHero();
+        if (name.isEmpty())
             if (getMaster().getEntity() != null) {
-                //TODO set main hero if created
                 name = getMaster().getEntity().getProperty(PROPS.PARTY_MAIN_HERO);
             }
-//            if (true){
-        name = chooseMainHero();
-        if (name == null)
-            name = "Harlen Rolwain";
 
         Ref ref = new Ref(getParty().getLeader());
         Unit hero = getGame().getMaster().getUnitByName(name, ref, true, null, null);
@@ -94,14 +91,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
         Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 15000);
         if (unit == null) {
-//            List<JButton> pics = party.getMembers().stream().map(hero ->
-//             new JButton(ImageManager.getIcon(hero.getImagePath().replace(" 128", "")))).collect(Collectors.toList());
-//            int i = DialogMaster.optionChoice(pics.toArray(), "Choose a hero to control...");
-//            if (i==-1)
-//                i=0;
-            String hero =
-//             party.getMembers().get(i).getName();
-             ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+            //SWING!
+            String hero =ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
             return hero;
         }
         return unit.getName();

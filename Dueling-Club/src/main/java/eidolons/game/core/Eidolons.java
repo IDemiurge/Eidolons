@@ -40,6 +40,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.launch.CoreEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +68,7 @@ public class Eidolons {
     private static Party party;
     private static boolean battleRunning;
     private static GameScreen screen;
-    private static SCOPE scope=SCOPE.MENU;
+    private static SCOPE scope = SCOPE.MENU;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -83,14 +84,13 @@ public class Eidolons {
     }
 
 
-
     public static EidolonsGame getMainGame() {
         return mainGame;
     }
 
     //    public static void init(){
-//
-//    }
+    //
+    //    }
     public static DC_Game getGame() {
         return game;
     }
@@ -135,8 +135,8 @@ public class Eidolons {
     public static void setFullscreen(boolean b) {
         if (getApplication() == null)
             return;
-        if (resolution!=null )
-            if (fullscreen==b)
+        if (resolution != null)
+            if (fullscreen == b)
                 return;
         fullscreen = b;
         Eidolons.getApplication().getGraphics().setResizable(true);
@@ -146,9 +146,9 @@ public class Eidolons {
             GdxMaster.setWidth(width);
             GdxMaster.setHeight(LwjglApplicationConfiguration.getDesktopDisplayMode().height);
             getApplication().getGraphics().setUndecorated(true);
-//            getApplication().getGraphics().setFullscreenMode(
-//             new LwjglDisplayMode(width, height,
-//              60, 256, null));
+            //            getApplication().getGraphics().setFullscreenMode(
+            //             new LwjglDisplayMode(width, height,
+            //              60, 256, null));
 
             Gdx.graphics.setWindowedMode(width,
              LwjglApplicationConfiguration.getDesktopDisplayMode().height);
@@ -168,35 +168,6 @@ public class Eidolons {
         RESOLUTION resolution =
          new EnumMaster<RESOLUTION>().retrieveEnumConst(RESOLUTION.class, value);
         setResolution(resolution);
-    }
-
-    public static void setResolution(RESOLUTION resolution) {
-        if (resolution != null) {
-        if (resolution != Eidolons.getResolution()) {
-            if (Eidolons.getScope()!=null)
-                if (Eidolons.getScope()!= SCOPE.MENU){
-                EUtils.onConfirm(
-                 "New resolution will be applied on restart... Ok?", true, ()->
-                OptionsMaster.saveOptions());
-                return;
-            }
-            Eidolons.getApplication().getGraphics().setResizable(true);
-            Eidolons.resolution = resolution;
-            Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
-            Integer w = (int)
-             dimension.getWidth();
-            Integer h = (int)
-             dimension.getHeight();
-            GdxMaster.setWidth(w);
-            GdxMaster.setHeight(h);
-            Gdx.graphics.setWindowedMode(w,
-             h);
-            getApplication().getApplicationListener().resize(w, h);
-            getApplication().getGraphics().setResizable(false);
-//            getMainViewport().setScreenSize(w, h);
-            GdxMaster.resized();
-        }
-        }
     }
 
     public static Dimension getResolutionDimensions(RESOLUTION resolution, boolean fullscreen) {
@@ -223,7 +194,7 @@ public class Eidolons {
     }
 
     public static void gameExited() {
-//        DC_Game toFinilize = game;
+        //        DC_Game toFinilize = game;
         GenericLauncher.setFirstInitDone(false);
         PartyManager.setSelectedHero(null);
         game.getMetaMaster().gameExited();
@@ -235,7 +206,7 @@ public class Eidolons {
         mainHero = null;
         DC_Game.game = null;
         Game.game = null;
-//        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
     }
 
     public static GenericLauncher getLauncher() {
@@ -247,6 +218,13 @@ public class Eidolons {
     }
 
     public static Party getParty() {
+        if (party == null)
+            if (CoreEngine.isMacro()) {
+                if (MacroGame.game == null) {
+                    return  null ;
+                }
+                return MacroGame.game.getPlayerParty().getParty();
+            }
         return party;
     }
 
@@ -290,8 +268,8 @@ public class Eidolons {
             DC_Game.game.getMetaMaster().gameExited();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
-//            DialogMaster.confirm("Game exit failed!");
-//            exitGame();
+            //            DialogMaster.confirm("Game exit failed!");
+            //            exitGame();
         }
         getScreen().reset();
         gameExited();
@@ -300,6 +278,7 @@ public class Eidolons {
         showMainMenu();
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
     }
+
     public static void showMainMenu() {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
          new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
@@ -310,13 +289,14 @@ public class Eidolons {
     public static void nextScenario() {
 
     }
+
     public static void activateMainHeroAction(String action) {
         activateMainHeroAction(Eidolons.getMainHero().getAction(action));
     }
 
     public static void activateMainHeroAction(DC_ActiveObj action) {
         Eidolons.getGame().getLoop().actionInput(
-         new ActionInput( (action), Eidolons.getMainHero()));
+         new ActionInput((action), Eidolons.getMainHero()));
     }
 
     public static void exitGame() {
@@ -331,25 +311,61 @@ public class Eidolons {
         System.exit(0);
     }
 
+    public static void onThisOrNonGdxThread(Runnable o) {
+        if (GdxMaster.isLwjglThread()) {
+            onNonGdxThread(o);
+        } else o.run();
+    }
+
     public static void onNonGdxThread(Runnable o) {
         SwingUtilities.invokeLater(o);
     }
 
     public static RESOLUTION getResolution() {
         if (resolution == null) {
-            resolution= GDX.getCurrentResolution();
+            resolution = GDX.getCurrentResolution();
         }
         return resolution;
     }
 
-    public enum SCOPE{
-        MENU, BATTLE, MAP
-}
+    public static void setResolution(RESOLUTION resolution) {
+        if (resolution != null) {
+            if (resolution != Eidolons.getResolution()) {
+                if (Eidolons.getScope() != null)
+                    if (Eidolons.getScope() != SCOPE.MENU) {
+                        EUtils.onConfirm(
+                         "New resolution will be applied on restart... Ok?", true, () ->
+                          OptionsMaster.saveOptions());
+                        return;
+                    }
+                Eidolons.getApplication().getGraphics().setResizable(true);
+                Eidolons.resolution = resolution;
+                Dimension dimension = Eidolons.getResolutionDimensions(resolution, fullscreen);
+                Integer w = (int)
+                 dimension.getWidth();
+                Integer h = (int)
+                 dimension.getHeight();
+                GdxMaster.setWidth(w);
+                GdxMaster.setHeight(h);
+                Gdx.graphics.setWindowedMode(w,
+                 h);
+                getApplication().getApplicationListener().resize(w, h);
+                getApplication().getGraphics().setResizable(false);
+                //            getMainViewport().setScreenSize(w, h);
+                GdxMaster.resized();
+            }
+        }
+    }
+
     public static SCOPE getScope() {
         return scope;
     }
 
     public static void setScope(SCOPE scope) {
         Eidolons.scope = scope;
+    }
+
+    public enum SCOPE {
+        MENU, BATTLE, MAP
     }
 }

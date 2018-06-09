@@ -18,12 +18,11 @@ import java.util.Map;
 
 public class IlluminationRule {
     private static final boolean BASE_ILLUMINATION = true;
-    static Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
-    private final DC_Game game;
+    private Map<Obj, LightEmittingEffect> effectCache = new HashMap<>();
     private static boolean applied;
 
-    public IlluminationRule(DC_Game game) {
-        this.game = game;
+
+    public IlluminationRule() {
     }
 
     public void applyLightEmission() {
@@ -31,7 +30,7 @@ public class IlluminationRule {
             main.system.auxiliary.log.LogMaster.log(1,"IlluminationRule already applied!" );
             return;
         }
-        for (Obj obj : game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
+        for (Obj obj : DC_Game.game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
 //                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));
@@ -42,10 +41,10 @@ public class IlluminationRule {
     }
 
     public void resetIllumination() {
-        game.getCells().forEach(cell -> {
+        DC_Game.game.getCells().forEach(cell -> {
             cell.setParam(PARAMS.ILLUMINATION, 0);
         });
-        game.getBfObjects().forEach(unit -> {
+       DC_Game. game.getBfObjects().forEach(unit -> {
             unit.setParam(PARAMS.ILLUMINATION, 0);
         });
         applied=false;

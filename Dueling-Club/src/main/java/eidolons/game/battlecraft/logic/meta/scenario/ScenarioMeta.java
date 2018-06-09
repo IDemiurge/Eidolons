@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.battle.mission.Mission;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/12/2017.
@@ -55,6 +56,9 @@ public class ScenarioMeta extends MetaGame {
 
     public boolean isPartyRespawn() {
 //        if (getMission().checkProperty(PROPS.MISSION_BRIEFING_DATA))
+        if (CoreEngine.isMacro()) {
+            return false;
+        }
         if (getMissionIndex() == 0)
             return true;
         if (isRestarted()) {

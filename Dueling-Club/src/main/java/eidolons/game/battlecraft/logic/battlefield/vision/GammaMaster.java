@@ -191,7 +191,7 @@ public class GammaMaster {
 
     private float getBlockedGamma(DC_Cell cell) {
         if (cell.isPlayerHasSeen()) {
-            return 0.22f;
+            return 0.25f;
         }
         return 0;
     }

@@ -126,15 +126,13 @@ public class DungeonScreen extends GameScreen {
     protected void bindEvents() {
 
         GuiEventManager.bind(BATTLE_FINISHED, param -> {
-            DC_Game.game.getLoop().setExited(true); //cleanup on real exit
-
-
+            DC_Game.game.getLoop().stop(); //cleanup on real exit
+            DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.getGame() != null) {
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
                  new ScreenData(ScreenType.MAP, ""));
 
-                MacroGame.getGame().getLoop().setPaused(false);
-                MacroGame.getGame().getLoop().signal();
+                MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");
             }
         });

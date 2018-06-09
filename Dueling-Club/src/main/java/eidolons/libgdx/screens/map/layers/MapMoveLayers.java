@@ -33,6 +33,8 @@ import static eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_MOVING_LAYER.
 public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
     private static final int DEFAULT_AREA_SIZE = 100;
 
+    private static final boolean SNOW_ON = false;
+
     static {
 
         LIGHT_SPREAD.tinted = false;
@@ -41,11 +43,13 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 //        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
 //         DAY_TIME.MIDDAY, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
 //        };
+
+        if (SNOW_ON) {
         CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.path);
         CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.path);
         CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.path);
         CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.path);
-
+        }
 
         LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;
         LIGHT_SPREAD_GOLDEN.areaGroup = MAP_AREA_GROUP.PEAK;

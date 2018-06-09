@@ -1,10 +1,10 @@
 package eidolons.game.module.adventure.entity.action;
 
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.entity.MacroRef;
+import eidolons.game.module.adventure.entity.party.MacroParty;
 import main.content.DC_TYPE;
 import main.data.ConcurrentMap;
 import main.data.filesys.PathFinder;
@@ -40,7 +40,7 @@ public class MacroActionManager {
 
     public static List<MacroAction> getMacroActions(MACRO_ACTION_GROUPS group,
                                                     MacroParty playerParty) {
-        Unit hero = MacroManager.getSelectedPartyMember();
+        Unit hero = Eidolons.getMainHero();// MacroManager.getSelectedPartyMember();
         switch (group) {
             case CHARACTER:
                 return getHeroActions(hero);

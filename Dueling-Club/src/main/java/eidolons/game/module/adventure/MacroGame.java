@@ -1,17 +1,14 @@
 package eidolons.game.module.adventure;
 
 import eidolons.entity.DC_IdManager;
-import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.entity.MacroRef;
 import eidolons.game.module.adventure.entity.faction.Faction;
 import eidolons.game.module.adventure.entity.faction.FactionObj;
 import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.entity.town.Town;
 import eidolons.game.module.adventure.generation.WorldGenerator;
-import eidolons.game.module.adventure.global.Campaign;
 import eidolons.game.module.adventure.global.Journal;
 import eidolons.game.module.adventure.global.World;
-import eidolons.game.module.adventure.global.time.TimeMaster;
 import eidolons.game.module.adventure.map.Place;
 import eidolons.game.module.adventure.map.Region;
 import eidolons.game.module.adventure.map.Route;
@@ -22,9 +19,7 @@ import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.data.DataManager;
 import main.entity.obj.Obj;
-import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.Coordinates.DIRECTION;
 import main.game.core.game.Game;
@@ -41,11 +36,9 @@ public class MacroGame extends Game {
     public static MacroGame game;
     World world;
     MacroParty playerParty;
-    DC_Game microGame; // needed?
     MacroRef ref; // with active party/route/region/place/town
     DequeImpl<Faction> factions = new DequeImpl<>();
 
-    private Campaign campaign; //CUSTOM GAME?
     private MacroGameLoop loop;
     private MapPointMaster pointMaster;
     private RouteMaster routeMaster;
@@ -79,18 +72,8 @@ public class MacroGame extends Game {
         idManager = new DC_IdManager();
 
         initObjTypes();
-        ObjType cType = DataManager.getType(MacroManager.getCampaignName(),
-         MACRO_OBJ_TYPES.CAMPAIGN);
-        campaign = new Campaign(this, cType, ref);
-
-        TimeMaster.setCampaign(campaign);
         world = WorldGenerator.generateWorld(ref);
         MacroManager.setWorldName(world.getName());
-//        Region region;
-//        region = world.getRegion(campaign.getProperty(MACRO_PROPS.REGION));
-//        ref.setID(MACRO_KEYS.REGION.toString(), region.getId());
-//        ref.setRegion(region);
-
 
         pointMaster = MapPointMaster.getInstance();
         routeMaster = new RouteMaster();
@@ -99,7 +82,7 @@ public class MacroGame extends Game {
 
 
     public void initObjTypes() {
-//        SaveMaster.initTypes();
+        //        SaveMaster.initTypes();
         for (OBJ_TYPE TYPE : MACRO_OBJ_TYPES.values()) {
             if (TYPE.getCode() == -1) {
                 continue;
@@ -111,9 +94,9 @@ public class MacroGame extends Game {
 
     @Override
     public void start(boolean host) {
-//        getManager().getStateManager().resetAllSynchronized();
+        //        getManager().getStateManager().resetAllSynchronized();
         loop = new MacroGameLoop(this);
-         loop.startInNewThread();
+        loop.startInNewThread();
 
         setRunning(true);
         setStarted(true);
@@ -170,16 +153,13 @@ public class MacroGame extends Game {
         return ref;
     }
 
-    public Campaign getCampaign() {
-        return campaign;
-    }
 
     public MacroGameLoop getLoop() {
-        return   loop;
+        return loop;
     }
 
     public RealTimeGameLoop getRealtimeLoop() {
-        return   loop;
+        return loop;
     }
 
     public DAY_TIME getTime() {

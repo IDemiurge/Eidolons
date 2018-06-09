@@ -1,6 +1,7 @@
 package eidolons.game.module.adventure;
 
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.game.module.adventure.generation.ScenarioGenerator;
 import eidolons.game.module.adventure.global.time.MacroTimeMaster;
@@ -9,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.map.MapScreen;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -107,6 +109,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public void combatFinished() {
         timeMaster.hoursPassed(12);
         setPaused(false);
+        signal();
     }
 
 
@@ -149,37 +152,22 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     public void combatStarts(Place entered) {
-        setPaused(true);// OR do it on logic thread
-        new Thread(() -> {
+        setPaused(true);
+        stop();
+        Eidolons.onThisOrNonGdxThread(() -> {
             startBattle(entered);
-        }, " battle start thread").start();
+        });
     }
 
     private void startBattle(Place entered) {
-        //stop all the map related stuff
-        /*
-        we need
-        1) dungeon level
-        2) party data
-        3)
-         */
+        ObjType type = ScenarioGenerator.generateScenarioType(entered);
+        main.system.auxiliary.log.LogMaster.log(1,"gen Scenario for dungeon:" +type.getName());
 
-        // TODO blackout
 
-        String name = ScenarioGenerator.generateScenarioType(entered).getName();
-
-//        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-//         new ScreenData(ScreenType.PRE_BATTLE, "Wait..."));
-//        Eidolons.initScenario(new ScenarioMetaMaster(name));
-        ScreenData data = new ScreenData(ScreenType.BATTLE,
-         name//  entered.getName()
-        );
-        //new SceneFactory("Test")
+        String name =type.getName();
+        ScreenData data = new ScreenData(ScreenType.BATTLE,name );
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
-//        DC_Engine.gameStartInit();
-//        Eidolons.mainGame.getMetaMaster().getGame().dungeonInit();
-//        Eidolons.mainGame.getMetaMaster().getGame().battleInit();
-//        Eidolons.mainGame.getMetaMaster().getGame().start(true);
+        //when loaded, will init DC_Game properly
     }
 
     private Place checkBattleStarts() {

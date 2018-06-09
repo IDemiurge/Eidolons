@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SaveMaster {
+public class SaveMasterOld {
 
     private static Map<OBJ_TYPE, StringBuilder> builders;
 

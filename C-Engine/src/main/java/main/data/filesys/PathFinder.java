@@ -122,6 +122,9 @@ public class PathFinder {
         return RES_PATH + StringMaster.getPathSeparator() + "text" + StringMaster.getPathSeparator();
     }
 
+    public static String getSavesPath() {
+        return getTextPath() + StringMaster.getPathSeparator() + "saves" + StringMaster.getPathSeparator();
+    }
     public static String getScenariosPath() {
         init();
         return RES_PATH + StringMaster.getPathSeparator() + "text" + StringMaster.getPathSeparator() + "scenario" + StringMaster.getPathSeparator();
@@ -371,4 +374,5 @@ public class PathFinder {
          "armor",
          "icons");
     }
+
 }

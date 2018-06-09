@@ -1,7 +1,7 @@
 package eidolons.libgdx.bf.menu;
 
-import com.badlogic.gdx.Gdx;
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.adventure.global.persist.Saver;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
@@ -49,11 +49,13 @@ public class GameMenuHandler {
                 break;
 
 
+            case SAVE:
+                GameMenu.menuOpen = false;
+                Saver.save();
+                break;
             case RUN:
                 GameMenu.menuOpen = false;
                 GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
-
-//                Eidolons.gameExited();
                 break;
             case RESUME:
                 break;

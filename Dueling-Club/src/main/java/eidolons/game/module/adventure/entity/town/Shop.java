@@ -3,7 +3,7 @@ package eidolons.game.module.adventure.entity.town;
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.utils.SaveMaster;
+import eidolons.game.module.adventure.utils.SaveMasterOld;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
 import main.content.CONTENT_CONSTS2.SHOP_LEVEL;
@@ -54,7 +54,7 @@ public class Shop extends TownPlace implements ShopInterface {
     public String getSaveData() {
         String s = "";
         for (PROPERTY p : propMap.keySet()) {
-            if (SaveMaster.isPropSaved(p, getOBJ_TYPE_ENUM())) {
+            if (SaveMasterOld.isPropSaved(p, getOBJ_TYPE_ENUM())) {
                 s += XML_Writer.openXML(p.getName())
                  + XML_Formatter.formatStringForXmlNodeName(getProperty(p))
                  + XML_Writer.closeXML(p.getName());

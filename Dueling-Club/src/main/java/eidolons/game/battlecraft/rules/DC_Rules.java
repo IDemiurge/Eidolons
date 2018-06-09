@@ -95,7 +95,7 @@ public class DC_Rules implements GameRules {
     private void init() {
         RuleKeeper.init();
         WaitRule.reset();
-        illuminationRule = new IlluminationRule(game);
+        illuminationRule = new IlluminationRule();
         unconsciousRule = new UnconsciousRule(game);
         watchRule = new WatchRule();
         engagedRule = new EngagedRule(getGame());

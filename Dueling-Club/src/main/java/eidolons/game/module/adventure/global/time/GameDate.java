@@ -17,30 +17,15 @@ import static eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
 public class GameDate extends DataUnit<TIME_UNITS> {
 
     private static final int HOUR_OFFSET = 6;
-    private final String DAY = "pm";
-    private final String NIGHT = "am";
-    private final String MORNING = "Early hour";
-    // midday
-    private final String EVENING = "Night";
-    private String era;
+    private String era="3rd Era";
     private int year;
     private int monthNumber;
-    private MONTH month;
+    private MONTH month=HUMAN_MONTHS.ARDENT;
     private int day;
     private int hour;
-    private boolean day_or_night; // pm or am
     private boolean humanMonthsDisplayed = true;
     private DAY_TIME dayTime;
 
-    // midnight
-    public GameDate(String era, int year, MONTH month, int day,
-                    boolean day_or_night) {
-        this.era = era;
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.day_or_night = day_or_night;
-    }
 
     public GameDate() {
         // TODO Auto-generated constructor stub
@@ -57,15 +42,11 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public String getShortString() {
         return
-         // ((day_or_night) ? MORNING : EVENING) +
-         getHourString() + " on the " + day + StringMaster.getOrdinalEnding(day)
+       dayTime + " on the " + day + StringMaster.getOrdinalEnding(day)
           + " of " + month.toString();
     }
 
-    private String getHourString() {
-        return (getHour() + getHourOffset()) + " "
-         + ((day_or_night) ? DAY : NIGHT);
-    }
+
 
     private int getHourOffset() {
         return HOUR_OFFSET;
@@ -92,22 +73,6 @@ public class GameDate extends DataUnit<TIME_UNITS> {
         return false;
     }
 
-    public void nextTurn() {
-        setHour(0);
-        day_or_night = !day_or_night;
-        if (!day_or_night) {
-            if (day < getMonth().getDays()) {
-                day++;
-            } else {
-                day = 1;
-                if (getMonth().isLastMonthInYear()) {
-                    year++;
-
-                }
-                month = getMonth().getNextMonth();
-            }
-        }
-    }
 
     public String getEra() {
         return era;
@@ -158,14 +123,6 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public void setDay(int day) {
         this.day = day;
-    }
-
-    public boolean isDay_or_night() {
-        return day_or_night;
-    }
-
-    public void setDay_or_night(boolean day_or_night) {
-        this.day_or_night = day_or_night;
     }
 
     public int getHour() {

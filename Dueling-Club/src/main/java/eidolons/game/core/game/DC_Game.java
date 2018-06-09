@@ -152,7 +152,7 @@ public class DC_Game extends MicroGame {
     public void initGameLoops() {
         exploreLoop = new ExploreGameLoop(this);
         combatLoop = new CombatLoop(this);
-
+        loop = exploreLoop;
     }
 
     protected void initMasters() {
@@ -196,9 +196,9 @@ public class DC_Game extends MicroGame {
         initObjTypes();
 
 
-//    TODO to battle init!
-//            SpellGenerator.init();
-//            ActionGenerator.init();
+        //    TODO to battle init!
+        //            SpellGenerator.init();
+        //            ActionGenerator.init();
         //to engine!
 
         if (PresetMaster.getPreset() != null) {
@@ -229,7 +229,7 @@ public class DC_Game extends MicroGame {
     }
 
     public void battleInit() {
-//            SpellGenerator.init();
+        //            SpellGenerator.init();
         setSimulation(false);
         ActionGenerator.init();
 
@@ -290,8 +290,8 @@ public class DC_Game extends MicroGame {
 
 
     public void startGameLoop(boolean first) {
-//        if (MusicMaster.isOn())
-//            GuiEventManager.trigger(MUSIC_START, null);
+        //        if (MusicMaster.isOn())
+        //            GuiEventManager.trigger(MUSIC_START, null);
 
         boolean explore = ExplorationMaster.isExplorationOn();
         getState().gameStarted(first); // ?
@@ -609,7 +609,12 @@ public class DC_Game extends MicroGame {
 
 
     public Dungeon getDungeon() {
-        return getDungeonMaster().getDungeonWrapper().getDungeon();
+        try {
+            return getDungeonMaster().getDungeonWrapper().getDungeon();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return null;
     }
 
     public GAME_TYPE getGameType() {
@@ -821,6 +826,8 @@ public class DC_Game extends MicroGame {
     }
 
     public void initAndStart() {
+        if (isInitialized())
+            reinit();
         dungeonInit();
         battleInit();
         start(true);
@@ -844,37 +851,37 @@ public class DC_Game extends MicroGame {
     }
 
 
-//    public void exit(boolean mainMenu) throws InterruptedException {
-//        // TODO review this! only for arcade-game, btw!
-//        stop();
-//        WaitRule.reset();
-//        for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
-//            BuffObj buff = (BuffObj) obj;
-//            if (buff.isDispelable() || !buff.isPermanent()) {
-//                buff.kill();
-//            }
-//        }
-//        state.reset();
-//        logManager.clear();
-//        for (Obj obj : getUnits()) {
-//            if (!obj.getOriginalOwner().isMe()) {
-//                obj.kill(obj, false, true);
-//            }
-//            if (!mainMenu && obj.getOwner().isMe()) {
-//                continue;
-//            }
-//
-//            state.removeObject(obj.getId());
-//        }
-//        if (mainMenu) {
-//            getMaster().clear();
-//        }
-//
-//        for (Obj obj : getCells()) {
-//            obj.kill(obj, false, true);
-//            state.removeObject(obj.getId());
-//        }
-//
-//    }
+    //    public void exit(boolean mainMenu) throws InterruptedException {
+    //        // TODO review this! only for arcade-game, btw!
+    //        stop();
+    //        WaitRule.reset();
+    //        for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
+    //            BuffObj buff = (BuffObj) obj;
+    //            if (buff.isDispelable() || !buff.isPermanent()) {
+    //                buff.kill();
+    //            }
+    //        }
+    //        state.reset();
+    //        logManager.clear();
+    //        for (Obj obj : getUnits()) {
+    //            if (!obj.getOriginalOwner().isMe()) {
+    //                obj.kill(obj, false, true);
+    //            }
+    //            if (!mainMenu && obj.getOwner().isMe()) {
+    //                continue;
+    //            }
+    //
+    //            state.removeObject(obj.getId());
+    //        }
+    //        if (mainMenu) {
+    //            getMaster().clear();
+    //        }
+    //
+    //        for (Obj obj : getCells()) {
+    //            obj.kill(obj, false, true);
+    //            state.removeObject(obj.getId());
+    //        }
+    //
+    //    }
 
 }

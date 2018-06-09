@@ -135,7 +135,6 @@ public class TravelMasterOld {
          / 100;
         int progress = party.getIntParam(MACRO_PARAMS.ROUTE_PROGRESS);
         int progressPercentageMade = 100 * leaguesTraveled / length;
-        TimeMaster.hoursPassed(1);
         Encounter e = null;
         if (!testMode) {
             try {

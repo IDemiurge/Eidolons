@@ -228,6 +228,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
+        main.system.auxiliary.log.LogMaster.log(1,"switchScreen " +meta.getName());
         final ScreenWithVideoLoader newScreen = factory.get();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
@@ -253,6 +254,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void triggerLoaded(ScreenData meta) {
+        main.system.auxiliary.log.LogMaster.log(1,"triggerLoaded " +meta.getName());
         if (Blackout.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
         switch (meta.getType()) {
@@ -260,17 +262,16 @@ public class GenericLauncher extends Game {
                 if (!CoreEngine.isMacro())
                     if (firstInitDone)
                         return;
-                new Thread(new Runnable() {
-                    public void run() {
-                        if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
-                            return;
-                        DC_Engine.gameStartInit();
-                        if (MusicMaster.isOn())
-                            MusicMaster.preload(MUSIC_SCOPE.ATMO);
-                        Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
-                        firstInitDone = true;
-                    }
-                }, " thread").start();
+                Eidolons.onThisOrNonGdxThread(  () -> {
+                    main.system.auxiliary.log.LogMaster.log(1,"initScenario for dungeon:" +meta.getName());
+                    if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
+                        return;
+                    DC_Engine.gameStartInit();
+                    if (MusicMaster.isOn())
+                        MusicMaster.preload(MUSIC_SCOPE.ATMO);
+                    Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
+                    firstInitDone = true;
+                } );
                 break;
             case MAIN_MENU:
                 GuiEventManager.trigger(SCREEN_LOADED,
