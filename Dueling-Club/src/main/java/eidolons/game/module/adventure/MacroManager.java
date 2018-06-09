@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.meta.macro.MacroPartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.adventure.global.Campaign;
 import eidolons.game.module.adventure.map.Place;
@@ -33,8 +34,13 @@ public class MacroManager {
         newGame(scenario);
     }
 
-    public static void newGame(String scenario) {
-        load = false;
+    public static void newGame(String data) {
+        if (data==null ){
+            data =scenario; //single option for now....
+        } else
+        {
+            load = true;
+        }
         metaMaster = new ScenarioMetaMaster(scenario) {
             @Override
             protected PartyManager createPartyManager() {
@@ -51,6 +57,11 @@ public class MacroManager {
         if (!CoreEngine.isMapEditor()) {
             MacroEngine.init();
             game.start(true);
+            Eidolons.getMainHero().reset();
+        }
+
+        if (load){
+            eidolons.game.module.adventure.global.persist.Loader.load(data);
         }
 
         GuiEventManager.bind(MAP_READY, p -> {

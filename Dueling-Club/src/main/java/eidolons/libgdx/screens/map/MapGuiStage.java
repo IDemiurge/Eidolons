@@ -233,7 +233,7 @@ public class MapGuiStage extends GuiStage {
 
     @Override
     protected boolean handleKeyTyped(char character) {
-        keyHandler.handleKeyTyped(character);
+        keyHandler. handleKeyTyped(character);
         return true; //TODO
     }
 

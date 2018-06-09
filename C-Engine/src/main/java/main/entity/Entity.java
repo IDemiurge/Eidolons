@@ -69,26 +69,21 @@ public abstract class Entity extends DataModel implements OBJ {
     }
 
     public Entity(ObjType type, Player owner, Game game, Ref ref) {
-        // initial party?
         if (type == null) {
-
-//            if (!CoreEngine.isTEST_MODE()) {
             RuntimeException e = new RuntimeException("null type!" + ref);
             throw (e);
-//            }
         } else {
             this.game = game;
             getId(); // new id if null
             this.TYPE_ENUM = type.getOBJ_TYPE_ENUM();
-            this.type = (type); // no map cloning by default
+            this.type = (type); // no cloning by default
             this.owner = owner;
             this.setOriginalOwner(owner);
             setProperty(G_PROPS.NAME, type.getName());
             setOriginalName(type.getName());
-            LogMaster.log(-1, id + " - NEW ID for " + type.getName());
 
             master = initMaster();
-            setRef(ref);
+            setRef(ref); //create ref branch
             init();
         }
     }

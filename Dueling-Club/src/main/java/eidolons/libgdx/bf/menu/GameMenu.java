@@ -99,8 +99,6 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     protected boolean isHidden(GAME_MENU_ITEM item) {
         if (item==GAME_MENU_ITEM.RUN)
             return !CoreEngine.isMacro();
-        if (item==GAME_MENU_ITEM.SAVE)
-            return !CoreEngine.isMacro();
         return item.hidden;
     }
 
@@ -140,6 +138,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         PASS_TIME,
         RUN(true),
         SAVE(true),
+        LOAD(true),
         RESUME,
         INFO(QUICK_HELP, HERO_INFO, MANUAL),
         WEBSITE(true),

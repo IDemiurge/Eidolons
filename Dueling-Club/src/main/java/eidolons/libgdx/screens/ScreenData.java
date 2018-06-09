@@ -37,6 +37,11 @@ public class ScreenData {
         return dialogScenarios;
     }
 
+    public Object getParameter() {
+        if (param==null )
+            return null;
+        return param.get();
+    }
     public ScreenType getType() {
         return type;
     }

@@ -5,6 +5,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
+import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -283,10 +284,19 @@ public class XML_Writer {
     }
 
 
+    public static StringBuilder getTypeXML_Builder(Entity type,
+                                                   StringBuilder builder,
+                                                   Entity parent,
+                                                   boolean writeAllValues
+
+    ) {
+        return getTypeXML_Builder(type, builder, parent,null, writeAllValues);
+    }
         public static StringBuilder getTypeXML_Builder(Entity type,
-                                                       StringBuilder builder,
+         StringBuilder builder,
                                                        Entity parent,
-                                                       boolean writeAllValues
+                                                       Entity originalType,
+        boolean writeAllValues
 
         ) {
             if (type.getName().isEmpty()) {
@@ -296,21 +306,29 @@ public class XML_Writer {
             builder = new StringBuilder();
         builder.append(openXML(type.getName()));
         builder.append("<params>");
+
         for (PARAMETER param : type.getParamMap().keySet()) {
             if (param == null) {
                 continue;
             }
-
-            String value = XML_Formatter.formatXmlTextContent(type.getParamMap().get(param), param);
-            if (!writeAllValues)
-                if (parent != null) {
-                String parentValue = parent.getParamMap().get(param);
-                if (parentValue!=null )
-                if (parentValue.equals(value)) {
-                    continue;
-                }
+          ParamMap map=type.getParamMap();
+            if (originalType!=null )
+            if (!param.isDynamic()) {
+                map = parent.getParamMap();
             }
-
+            String value = XML_Formatter.formatXmlTextContent(map.get(param), param);
+            if (!writeAllValues)
+                if (!param.isDynamic()) {
+                    if (parent != null) {
+                        String parentValue = (originalType != null)
+                         ? originalType.getParamMap().get(param)
+                         : parent.getParamMap().get(param);
+                        if (parentValue != null)
+                            if (parentValue.equals(value)) {
+                                continue;
+                            }
+                    }
+                }
             if (!checkWriteValue(param, value, type.getOBJ_TYPE_ENUM())) {
                 continue;
             }

@@ -1,13 +1,13 @@
 package eidolons.game.module.adventure.global.persist;
 
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
@@ -20,10 +20,10 @@ import java.util.List;
  */
 public class Saver {
 
-    private static final String HEAD = "SAVE";
-    private static final String HERO_NODE = "HERO";
-    private static final String ITEMS_NODE = "HERO";
-    private static final String WORLD_NODE = "WORLD";
+    public static final String HEAD = "SAVE";
+    public static final String HERO_NODE = "HERO";
+    public static final String ITEMS_NODE = "ITEMS";
+    public static final String WORLD_NODE = "WORLD";
 
     public static void save() {
         //slot
@@ -51,7 +51,7 @@ public class Saver {
         Unit hero = Eidolons.getMainHero();
 
         String heroData = XML_Writer.getTypeXML_Builder(hero,
-         hero.getType(), true).toString();
+         null, hero.getType(), hero.getOriginalType(), true).toString();
 
         String itemsData = "";
         for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
@@ -59,12 +59,12 @@ public class Saver {
                 if (!StringMaster.isInteger(substring))
                     continue;
                 Integer id = StringMaster.getInteger(substring);
-                Obj item = hero.getGame()
+                DC_HeroItemObj item = (DC_HeroItemObj) hero.getGame()
                  .getObjectById((id));
                 String itemData = XML_Writer.getTypeXML_Builder(item,
-                 item.getType(), false).toString();
+                 null, item.getType(), item.getOriginalType(), false).toString();
 
-                itemData = XML_Converter.wrap(item.getName()+"_" + id, itemData);
+                itemData = XML_Converter.wrap(item.getName() + "_" + id, itemData);
                 itemsData += itemData + "\n";
             }
         }

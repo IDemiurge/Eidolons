@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
+import eidolons.game.module.adventure.global.persist.Loader;
 import eidolons.game.module.adventure.global.persist.Saver;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.system.text.HelpMaster;
@@ -48,6 +49,10 @@ public class GameMenuHandler {
                  .getTimeMaster().playerWaits();
                 break;
 
+            case LOAD:
+                GameMenu.menuOpen = false;
+                Loader.load();
+                break;
 
             case SAVE:
                 GameMenu.menuOpen = false;

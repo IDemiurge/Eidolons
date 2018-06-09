@@ -1,6 +1,7 @@
 package eidolons.entity.item;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.ChangeableType;
 import eidolons.entity.obj.attach.DC_HeroAttachedObj;
 import eidolons.game.battlecraft.rules.mechanics.DurabilityRule;
 import eidolons.game.core.EUtils;
@@ -19,8 +20,9 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 
-public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroItem {
+public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroItem, ChangeableType {
 
+    private final ObjType originalType;
     protected boolean equipped;
     private PARAMETER[] params;
     private PROPERTY[] props = {G_PROPS.STD_BOOLS};
@@ -28,10 +30,15 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     public DC_HeroItemObj(ObjType type, Player owner, MicroGame game, Ref ref, PARAMETER[] params
                           // , PROPERTY[] props
     ) {
-        super(type, owner, game, ref);
+        super(new ObjType(type), owner, game, ref);
         addDynamicValues();
         this.params = params;
+        this.originalType = type;
         // this.props = props;
+    }
+
+    public ObjType getOriginalType() {
+        return originalType;
     }
 
     @Override

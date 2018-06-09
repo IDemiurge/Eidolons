@@ -10,8 +10,8 @@ import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.screens.DungeonScreen;
-import eidolons.libgdx.stage.BattleGuiStage;
 import eidolons.libgdx.stage.Blocking;
+import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.OptionsMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -82,14 +82,14 @@ public class GlobalController implements Controller {
             DungeonScreen.getInstance().getGridPanel().clearSelection();
             return;
         }
-        if (Eidolons.getScreen().getGuiStage().getDraggedEntity() !=   null) {
-            Eidolons.getScreen().getGuiStage().setDraggedEntity(null);
+        GuiStage guiStage = Eidolons.getScreen().getGuiStage();
+        if (guiStage.getDraggedEntity() !=   null) {
+            guiStage.setDraggedEntity(null);
             return;
         }
-        BattleGuiStage gui = DungeonScreen.getInstance().getGuiStage();
-        if (gui.closeDisplayed())
+        if (guiStage.closeDisplayed())
             return;
-        gui.getGameMenu().open();
+        guiStage.getGameMenu().open();
     }
 
     @Override

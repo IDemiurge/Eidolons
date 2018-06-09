@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.adventure.MacroGame;
 import eidolons.game.module.adventure.MacroManager;
 import eidolons.game.module.adventure.global.time.MacroTimeMaster;
@@ -78,13 +79,13 @@ public class MapScreen extends GameScreen {
         super.preLoad();
         initGl();
         initDialogue();
+        String saveName = (String) data.getParameter();
+        Eidolons.onThisOrNonGdxThread(() -> {
 
-        new Thread(() -> {
-            //if
             XML_Reader.readTypes(true);
-            MacroManager.newGame();
+            MacroManager.newGame(saveName);
             preloaded = true;
-        }, "macro init thread").start();
+        });
 
 //        GuiEventManager.trigger(SHOW_SELECTION_PANEL,
 //         DataManager.getTypesGroup(DC_TYPE.SCENARIOS,

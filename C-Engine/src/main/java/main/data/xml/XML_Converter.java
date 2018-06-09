@@ -366,15 +366,19 @@ public class XML_Converter {
     }
 
     public static Node findNode(String xml, String nodeName) {
-        //TODO recursive
-        Document node = getDoc(xml);
 
-        for (Node sub : getNodeList(node)) {
+        Document document = getDoc(xml);
+        return findNode(document, nodeName);
+    }
+        public static Node findNode( Document document, String nodeName) {
+        //TODO recursive
+
+        for (Node sub : getNodeList(document)) {
             if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
                 return sub;
             }
         }
-        for (Node sub : getNodeListFromFirstChild(node, true)) {
+        for (Node sub : getNodeListFromFirstChild(document, true)) {
             Node found = findNode(getStringFromXML(sub, false), nodeName);
             if (found != null)
                 return found;

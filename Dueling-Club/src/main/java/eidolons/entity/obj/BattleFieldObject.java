@@ -4,6 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
+import eidolons.entity.ChangeableType;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
@@ -45,7 +46,7 @@ import java.util.Arrays;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class BattleFieldObject extends DC_Obj implements BfObj {
+public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     protected FACING_DIRECTION facing;
     protected int maxVisionDistance;
@@ -56,6 +57,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
     private FACING_DIRECTION lastSeenFacing;
     private Coordinates lastCoordinates;
     private OUTLINE_TYPE lastSeenOutline;
+    private ObjType originalType;
 
     public BattleFieldObject(ObjType type, Player owner, Game game, Ref ref) {
         super(type, owner, game, ref);
@@ -557,5 +559,13 @@ public class BattleFieldObject extends DC_Obj implements BfObj {
 
     public void setLastSeenOutline(OUTLINE_TYPE lastSeenOutline) {
         this.lastSeenOutline = lastSeenOutline;
+    }
+
+    public void setOriginalType(ObjType originalType) {
+        this.originalType = originalType;
+    }
+
+    public ObjType getOriginalType() {
+        return originalType;
     }
 }
