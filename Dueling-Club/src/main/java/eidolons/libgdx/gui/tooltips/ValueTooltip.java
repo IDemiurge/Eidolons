@@ -50,7 +50,7 @@ public class ValueTooltip extends Tooltip {
             updateRequired=true;
             return;
         }
-        clear();
+        clearChildren();
         List<ValueContainer> values = (List<ValueContainer>) getUserObject();
 
 

@@ -19,6 +19,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     protected boolean showing;
     protected ToolTipManager manager;
     protected Actor actor;
+    private boolean mouseHasMoved;
 
     public Tooltip(Actor actor) {
         this.actor = actor;
@@ -112,6 +113,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
         }
 
         if (showing) {
+            mouseHasMoved =true;
             return;
         }
         entered();
@@ -126,6 +128,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
 
     protected void entered() {
         showing = true;
+        mouseHasMoved =false;
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, this);
     }
 
@@ -150,6 +153,11 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     protected void exited() {
         GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
         showing = false;
+        mouseHasMoved =false;
+    }
+
+    public boolean isMouseHasMoved() {
+        return mouseHasMoved;
     }
 
     protected boolean checkActorExitRemoves(Actor toActor) {

@@ -21,9 +21,12 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.stage.ConfirmationPanel;
 import eidolons.libgdx.stage.GuiStage;
+import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.log.LogMaster;
 
 import static main.system.GuiEventType.*;
 
@@ -35,14 +38,17 @@ public class ToolTipManager extends TablePanel {
     private Tooltip tooltip;
     private Cell actorCell;
     private float toWait;
+    private Vector2 originalPosition;
 
     public ToolTipManager(GuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
 
             Object object = event.get();
-            if (tooltip == object)
+            if (tooltip == object) {
+               if (isLogged()) LogMaster.log(1, "Update ignored: " + tooltip);
                 return;
+            }
             if (isRemoveImmediately(actorCell.getActor())) {
                 actorCell.setActor(null);
                 //                    immediate removal
@@ -52,8 +58,11 @@ public class ToolTipManager extends TablePanel {
             }
             tooltip = (Tooltip) object;
             toWait = getTimeToWaitForTooltip(tooltip);
-            if (toWait == 0)
+            if (toWait == 0) {
+               if (isLogged())LogMaster.log(1, "Immediate show: " + tooltip);
                 show();
+            } else
+               if (isLogged())LogMaster.log(1, "Wait for tooltip: " + tooltip);
 
         });
 
@@ -132,7 +141,7 @@ public class ToolTipManager extends TablePanel {
         if (!tooltip.isBattlefield()) {
             return 0;
         }
-        return DEFAULT_WAIT_TIME;
+        return DEFAULT_WAIT_TIME/ OptionsMaster.getAnimOptions().getIntValue(ANIMATION_OPTION.SPEED)*50;
     }
 
     @Override
@@ -145,9 +154,7 @@ public class ToolTipManager extends TablePanel {
     }
 
     private boolean isRemoveImmediately(Actor actor) {
-
-        return actor instanceof UnitViewTooltip;
-
+        return false;
     }
 
     public void entityHover(Entity entity) {
@@ -196,20 +203,19 @@ public class ToolTipManager extends TablePanel {
 
 
     private void init(Tooltip tooltip) {
+
+       if (isLogged())LogMaster.log(1,"showing tooltips" +tooltip);
         tooltip.setManager(this);
 
         tooltip.invalidate();
         actorCell.setActor(tooltip);
 
-        Vector2 v2 = GdxMaster.getCursorPosition(this);
-        setPosition(v2.x + 10, v2.y);
+          originalPosition = GdxMaster.getCursorPosition(this);
+        setPosition(originalPosition.x + 10, originalPosition.y);
 
-        if (isRemoveImmediately(tooltip)) {
-
-        } else {
-            tooltip.getColor().a = 0;
-            ActorMaster.addFadeInAction(tooltip, 0.5f);
-        }
+        tooltip.getColor().a = 0;
+        tooltip.clearActions();
+        ActorMaster.addFadeInAction(tooltip, 0.5f);
         if (tooltip.getEntity() != null)
             entityHover(tooltip.getEntity());
     }
@@ -217,24 +223,33 @@ public class ToolTipManager extends TablePanel {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (toWait>0)
         if (tooltip != null) {
-            tooltipTimer += delta;
-            if (tooltipTimer >= toWait) {
+            if (tooltip.isMouseHasMoved()) {
                 tooltipTimer = 0;
-                toWait = 0;
-                show();
+               if (isLogged())LogMaster.log(1, "MouseHasMoved: " + tooltip);
+            } else {
+                tooltipTimer += delta;
+               if (isLogged())LogMaster.log(1, "tooltipTimer: " + tooltipTimer);
+                if (tooltipTimer >= toWait) {
+                   if (isLogged())LogMaster.log(1, "tooltipTimer out!" + tooltipTimer);
+                    tooltipTimer = 0;
+                    toWait = 0;
+                    show();
+                }
             }
         }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        
+        if (originalPosition.dst(GdxMaster.getCursorPosition(this)) > 50
+         ||Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             setVisible(false);
         } else setVisible(true);
         if (actorCell.getActor() != null) {
             final Tooltip tooltip = (Tooltip) actorCell.getActor();
-            if (tooltip.getColor().a == 0) {
-                actorCell.setActor(null);
-                return;
-            }
+//         WTF?!   if (tooltip.getColor().a == 0) {
+//                actorCell.setActor(null);
+//                return;
+//            }
             Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
             v2 = getStage().screenToStageCoordinates(v2);
 
@@ -268,6 +283,10 @@ public class ToolTipManager extends TablePanel {
             }
 
         }
+    }
+
+    private boolean isLogged() {
+        return false;
     }
 
     private float getPreferredPadding() {
