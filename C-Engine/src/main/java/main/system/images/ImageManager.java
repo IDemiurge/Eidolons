@@ -17,7 +17,7 @@ import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.SwingMaster;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;

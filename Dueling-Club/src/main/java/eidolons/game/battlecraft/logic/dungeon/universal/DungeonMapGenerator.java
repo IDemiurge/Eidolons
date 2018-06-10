@@ -15,7 +15,7 @@ import main.content.enums.DungeonEnums.MAP_FILL_TEMPLATE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -472,10 +472,10 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
         CENTER(DC_Map.CENTER_ZONE, 2, 50),
         LEFT_FREE_ZONE(DC_Map.WEST_FREE_ZONE, 3, 100),
         RIGHT_FREE_ZONE(DC_Map.EAST_FREE_ZONE, 3, 100),
-        SIDE_SOUTH(FACING_DIRECTION.SOUTH, 2, 70),
-        SIDE_NORTH(FACING_DIRECTION.NORTH, 2, 70),
-        SIDE_EAST(FACING_DIRECTION.EAST, 1, 30),
-        SIDE_WEST(FACING_DIRECTION.WEST, 1, 30),;
+        SIDE_SOUTH(main.game.bf.directions.FACING_DIRECTION.SOUTH, 2, 70),
+        SIDE_NORTH(main.game.bf.directions.FACING_DIRECTION.NORTH, 2, 70),
+        SIDE_EAST(main.game.bf.directions.FACING_DIRECTION.EAST, 1, 30),
+        SIDE_WEST(main.game.bf.directions.FACING_DIRECTION.WEST, 1, 30),;
         private String coordinates;
         private int obj_limit;
         private int chance_mod;

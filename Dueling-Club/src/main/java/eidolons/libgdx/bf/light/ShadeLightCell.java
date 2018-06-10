@@ -26,7 +26,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 

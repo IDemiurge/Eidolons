@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.ai;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
 import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.module.dungeoncrawl.ai.Patrol;
@@ -12,7 +11,7 @@ import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.data.XStack;
 import main.entity.obj.MicroObj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -23,7 +22,6 @@ public class GroupAI {
     private Unit leader;
     private DequeImpl<Unit> members = new DequeImpl<>();
     private Party party;
-    private Wave creepGroup;
     private ENGAGEMENT_LEVEL engagementLevel;
     private AI_BEHAVIOR_MODE behaviorPref;
     private DIRECTION wanderDirection;
@@ -49,25 +47,6 @@ public class GroupAI {
         add(leader);
     }
 
-    public GroupAI(Wave creepGroup) {
-        this.creepGroup = creepGroup;
-        if (creepGroup != null) {
-            encounterType = creepGroup.getWaveType();
-            if (creepGroup == null) {
-                return;
-            }
-            this.party = creepGroup.getParty();
-            leader = party.getLeader();
-            for (Unit m : party.getMembers()) {
-                add(m);
-            }
-
-            originCoordinates = creepGroup.getCoordinates();
-            if (originCoordinates == null) {
-                originCoordinates = leader.getCoordinates();
-            }
-        }
-    }
 
     @Override
     public String toString() {
@@ -134,16 +113,6 @@ public class GroupAI {
         return members;
     }
 
-    public AI_BEHAVIOR_MODE getBehaviorPref() {
-        if (behaviorPref == null) {
-            behaviorPref = BehaviorMaster.initGroupPref(this);
-        }
-        return behaviorPref;
-    }
-
-    public void setBehaviorPref(AI_BEHAVIOR_MODE behaviorPref) {
-        this.behaviorPref = behaviorPref;
-    }
 
     public DIRECTION getWanderDirection() {
         if (wanderDirection == null) {
@@ -190,10 +159,6 @@ public class GroupAI {
 
     public Party getParty() {
         return party;
-    }
-
-    public Wave getCreepGroup() {
-        return creepGroup;
     }
 
     public ENGAGEMENT_LEVEL getEngagementLevel() {

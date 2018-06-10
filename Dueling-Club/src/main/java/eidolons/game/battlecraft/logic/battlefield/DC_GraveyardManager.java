@@ -39,15 +39,6 @@ public class DC_GraveyardManager implements GraveyardManager {
     }
 
     @Override
-    public void updateGraveIndices() {
-
-        for (Obj c : game.getUnits()) {
-
-        }
-
-    }
-
-    @Override
     public ZCoordinates getZCoordinate(Coordinates c) {
         return new ZCoordinates(c.x, c.y, game.getDungeon().getZ());
     }
@@ -100,10 +91,6 @@ public class DC_GraveyardManager implements GraveyardManager {
     }
 
 
-    @Override
-    public int getGraveIndex(BfObj obj) {
-        return indexMap.get(obj);
-    }
 
     @Override
     public Obj getTopDeadUnit(Coordinates c) {

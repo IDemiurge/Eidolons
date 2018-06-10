@@ -13,7 +13,7 @@ import main.entity.Ref;
 import main.entity.obj.Cell;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.GuiManager;

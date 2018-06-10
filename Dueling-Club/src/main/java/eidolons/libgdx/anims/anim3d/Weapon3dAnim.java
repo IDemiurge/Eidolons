@@ -20,7 +20,7 @@ import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.anims.sprite.SpriteAnimationFactory;
 import eidolons.libgdx.anims.std.ActionAnim;
 import main.entity.Ref;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.math.PositionMaster;
@@ -152,7 +152,7 @@ public class Weapon3dAnim extends ActionAnim {
         boolean offhand = getActive().isOffhand();
         boolean flipHor = false;
         if (getProjection() == PROJECTION.HOR) {
-            flipHor = getActive().getOwnerObj().getFacing() == FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
+            flipHor = getActive().getOwnerObj().getFacing() == main.game.bf.directions.FACING_DIRECTION.WEST;// PositionMaster.isToTheLeft(activeObj.getOwnerObj(), targetObj);
         } else {
             flipHor = (getProjection() == PROJECTION.TO) != offhand;
         }
@@ -203,7 +203,7 @@ public class Weapon3dAnim extends ActionAnim {
     private PROJECTION getProjectionByFacing(FACING_DIRECTION facing) {
         if (!facing.isVertical())
             return PROJECTION.HOR;
-        return facing == FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
+        return facing == main.game.bf.directions.FACING_DIRECTION.NORTH ? PROJECTION.TO : PROJECTION.FROM;
     }
 
     protected PROJECTION getProjection() {

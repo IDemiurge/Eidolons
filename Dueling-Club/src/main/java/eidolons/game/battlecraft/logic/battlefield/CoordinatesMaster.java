@@ -5,8 +5,8 @@ import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.ability.effects.Effect;
 import main.ability.effects.container.SpecialTargetingEffect;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -352,7 +352,7 @@ public class CoordinatesMaster {
         FACING_DIRECTION y_dir = null;
         int min_x_diff = Integer.MAX_VALUE;
         int min_y_diff = Integer.MAX_VALUE;
-        for (FACING_DIRECTION d : FACING_DIRECTION.values) {
+        for (FACING_DIRECTION d : main.game.bf.directions.FACING_DIRECTION.values) {
             int x_diff = Integer.MAX_VALUE;
             int y_diff = Integer.MAX_VALUE;
             switch (d) {

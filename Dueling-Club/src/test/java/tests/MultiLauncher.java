@@ -12,6 +12,7 @@ import org.junit.Before;
  * Created by JustMe on 4/7/2018.
  */
 public class MultiLauncher {
+
     String playerParty, enemyParty, dungeonPath;
     Runnable afterEngineInit;
 
@@ -40,6 +41,7 @@ public class MultiLauncher {
         launcher.PLAYER_PARTY = playerParty;
         launcher.ENEMY_PARTY = enemyParty;
         launcher.setDungeon(dungeonPath);
+
         FAST_DC.setLauncher(launcher);
         DC_Game game = launcher.initDC_Game();
         game.start(true);
@@ -49,10 +51,6 @@ public class MultiLauncher {
         this.afterEngineInit = afterEngineInit;
     }
 
-    @Before
-    public void init() {
-
-    }
 
     public enum LAUNCH_OPTION {
         FAST_MODE,

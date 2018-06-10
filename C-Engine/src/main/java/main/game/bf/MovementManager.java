@@ -4,8 +4,8 @@ import main.data.ability.construct.VarHolder;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
 
 public interface MovementManager {
 
@@ -28,28 +28,21 @@ public interface MovementManager {
 
     enum MOVE_MODIFIER {
         NONE, FLYING, AGILE, TELEPORT, DISPLACEMENT,
-        // trample, jump over
 
     }
 
-    // VAR TYPE!
     enum MOVE_TEMPLATES implements VarHolder {
+
         ANY(true, "Range", VariableManager.NUMBER_VAR_CLASS),
         FORWARD_1(false, UNIT_DIRECTION.AHEAD),
         BACKWARD_1(false, UNIT_DIRECTION.BACKWARDS),
         FORWARD(true, "Range", UNIT_DIRECTION.AHEAD, VariableManager.NUMBER_VAR_CLASS),
-        // SIDEWAYS_1(true ),
-
         CUSTOM(false, "Selective;Range;Direction", VariableManager.NUMBER_VAR_CLASS, UNIT_DIRECTION.class, VariableManager.BOOLEAN_VAR_CLASS),
-
         SIDEWAYS_2(true, "2"),
-
         SIDEWAYS_RIGHT_1(false, UNIT_DIRECTION.RIGHT),
         SIDEWAYS_LEFT_1(false, UNIT_DIRECTION.LEFT),
-
         SIDEWAYS_LEFT(true, "Range", UNIT_DIRECTION.LEFT, VariableManager.NUMBER_VAR_CLASS),
         SIDEWAYS_RIGHT(true, "Range", VariableManager.NUMBER_VAR_CLASS),
-
         DIAGONAL_ANY(true, "Range", VariableManager.NUMBER_VAR_CLASS),
         DIAGONAL_FORWARD(true, "Range", VariableManager.NUMBER_VAR_CLASS),
         DIAGONAL_BACKWARD(true, "Range", VariableManager.NUMBER_VAR_CLASS),
@@ -62,7 +55,7 @@ public interface MovementManager {
         String range;
         private String varNames;
         private Object[] varClasses;
-        private Boolean selectiveTargeting; // null
+        private Boolean selectiveTargeting;
         private UNIT_DIRECTION direction;
 
         // point to spec req?
@@ -96,21 +89,9 @@ public interface MovementManager {
             return varClasses;
         }
 
-        public void setVarClasses(Object[] varClasses) {
-            this.varClasses = varClasses;
-        }
-
         @Override
         public String getVariableNames() {
             return varNames;
-        }
-
-        public String getVarNames() {
-            return varNames;
-        }
-
-        public void setVarNames(String varNames) {
-            this.varNames = varNames;
         }
 
         public Boolean isSelectiveTargeting() {
@@ -121,21 +102,12 @@ public interface MovementManager {
             return direction;
         }
 
-        public void setDirection(UNIT_DIRECTION direction) {
-            this.direction = direction;
-        }
-
         public String getRange() {
             return range;
         }
 
-        public void setRange(String range) {
-            this.range = range;
-        }
 
-        public void setSelectiveTargeting(Boolean selectiveTargeting) {
-            this.selectiveTargeting = selectiveTargeting;
-        }
+
 
     }
 

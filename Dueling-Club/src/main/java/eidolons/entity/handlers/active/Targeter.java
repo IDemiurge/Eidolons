@@ -17,7 +17,7 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 

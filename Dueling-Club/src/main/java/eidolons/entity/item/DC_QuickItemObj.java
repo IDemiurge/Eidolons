@@ -29,7 +29,7 @@ import main.system.text.TextParser;
 
 public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     private static final VALUE[] TRANSLATED_VALUES = {G_PROPS.STD_BOOLS,
-     PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
+            PARAMS.FORMULA, G_PROPS.DESCRIPTION,};
     // or aggregation?
     private DC_QuickItemAction active;
     private boolean wrapped;
@@ -42,11 +42,6 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref) {
         super(type, owner, game, ref, null);
 
-    }
-
-    @Override
-    public String getDescription(Ref ref) {
-        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref, TextParser.ACTIVE_PARSING_CODE);
     }
 
     public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref, boolean wrapped) {
@@ -64,6 +59,11 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         setWrappedWeapon(item);
     }
 
+    @Override
+    public String getDescription(Ref ref) {
+        return TextParser.parse(getProperty(G_PROPS.DESCRIPTION), ref, TextParser.ACTIVE_PARSING_CODE);
+    }
+
     public boolean isAmmo() {
         if (!isConstructed())
             construct(); //TODO refactor!
@@ -72,7 +72,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     private void generateWrappedActive() {
         String typeName;
-        if (wrappedWeapon==null )
+        if (wrappedWeapon == null)
             setWrappedWeapon(new DC_WeaponObj(type, owner, getGame(), ref));
 
         if (checkProperty(G_PROPS.WEAPON_TYPE, ItemEnums.WEAPON_TYPE.AMMO + "")) {
@@ -98,7 +98,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         ObjType type = new ObjType(DataManager.getType(typeName, DC_TYPE.ACTIONS));
         type.setProperty(G_PROPS.IMAGE, getImagePath());
         type.setProperty(G_PROPS.NAME, type.getName() + ""
-         + StringMaster.wrapInParenthesis(getName()));
+                + StringMaster.wrapInParenthesis(getName()));
         type.setGame(game);
         setActive(new DC_QuickItemAction(type, getOriginalOwner(), getGame(), ref));
         getActive().setItem(this);
@@ -268,7 +268,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
         modifyParameter(PARAMS.C_CHARGES, -1);
         if (wrapped) {
             modifyParameter(PARAMS.C_DURABILITY, -1);
-            getWrappedWeapon(). modifyParameter(PARAMS.C_DURABILITY, -1);
+            getWrappedWeapon().modifyParameter(PARAMS.C_DURABILITY, -1);
         }
         if (getIntParam(PARAMS.C_CHARGES) <= 0) {
             outOfCharges();
@@ -399,7 +399,7 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
 
     public void setWrappedWeapon(DC_WeaponObj wrappedWeapon) {
         this.wrappedWeapon = wrappedWeapon;
-        wrapped=wrappedWeapon!=null;
+        wrapped = wrappedWeapon != null;
     }
 
     public void activate(Ref ref) {

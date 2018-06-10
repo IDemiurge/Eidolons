@@ -38,7 +38,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;

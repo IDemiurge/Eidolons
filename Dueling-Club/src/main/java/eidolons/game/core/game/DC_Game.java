@@ -65,7 +65,7 @@ import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.GraveyardManager;
 import main.game.core.game.Game;
 import main.game.core.game.MicroGame;

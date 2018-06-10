@@ -14,7 +14,7 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.ClassMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ArrayMaster;

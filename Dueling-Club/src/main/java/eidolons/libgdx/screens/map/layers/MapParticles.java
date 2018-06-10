@@ -12,7 +12,7 @@ import main.content.CONTENT_CONSTS2.MIST_VFX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;

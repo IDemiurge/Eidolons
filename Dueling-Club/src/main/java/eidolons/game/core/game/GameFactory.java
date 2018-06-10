@@ -10,12 +10,6 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
  */
 public class GameFactory {
 
-    public static DC_Game createAndInitGame(GAME_SUBCLASS subclass) {
-        DC_Game game = createGame(subclass);
-        game.init();
-        return game;
-    }
-
     public static DC_Game createGame(GAME_SUBCLASS subclass) {
         switch (subclass) {
             case SCENARIO:
@@ -32,12 +26,9 @@ public class GameFactory {
                 };
             case TEST:
                 return new DC_Game();
-            case ARENA:
-                return new ArenaGame();
             case ARCADE:
                 return new ArcadeGame();
-            case SKIRMISH:
-//                return new DC_Game();
+
         }
         return new DC_Game();
     }

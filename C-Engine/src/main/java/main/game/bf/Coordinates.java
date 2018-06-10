@@ -1,5 +1,7 @@
 package main.game.bf;
 
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
@@ -268,11 +270,7 @@ public class Coordinates {
         return c;
     }
 
-    // public boolean isAdjacent(Coordinates coordinates,
-    // Boolean diagonals_included_not_only) {
-    //
-    // }
-    public List<Coordinates> getAdjacentDiagonal() {
+    private List<Coordinates> getAdjacentDiagonal() {
         return getAdjacent(true);
     }
 
@@ -410,8 +408,6 @@ public class Coordinates {
             }
         }
         return false;
-        // [OPTIMIZED] return
-        // getAdjacentCoordinates(diagonals_included_not_only).contains(coordinates);
     }
 
     public boolean isAdjacent(Coordinates coordinates) {
@@ -426,8 +422,6 @@ public class Coordinates {
             }
         }
         return false;
-        // [OPTIMIZED] return
-        // getAdjacentCoordinates(true).contains(coordinates);
     }
 
     public Coordinates getOffsetByX(int i) {
@@ -462,171 +456,5 @@ public class Coordinates {
         return (int) Math.round(Math.sqrt((x - c.x) * (x - c.x) + (y - c.y) * (y - c.y)));
     }
 
-    public enum DIRECTION {
-        UP(false, 90, true, null, false),
-        DOWN(false, 270, true, null, true),
-        LEFT(false, 180, false, false, null),
-        RIGHT(false, 360, false, true, null),
-        UP_LEFT(true, 135, true, false, false),
-        UP_RIGHT(true, 45, true, true, false),
-        DOWN_RIGHT(true, 225, true, true, true),
-        DOWN_LEFT(true, 315, true, false, true),;
-
-        public static final DIRECTION[] values = values();
-        public Boolean growX;
-        public Boolean growY;
-        private boolean vertical;
-        private boolean diagonal;
-        private int degrees;
-
-        DIRECTION(boolean diagonal, int degrees, boolean vertical,
-                  Boolean growX, Boolean growY) {
-            this.vertical = vertical;
-            this.growX = growX;
-            this.growY = growY;
-            this.diagonal = diagonal;
-            this.degrees = degrees;
-        }
-
-        public DIRECTION getXDirection() {
-            if (this == RIGHT || this == UP_RIGHT || this == DIRECTION.DOWN_RIGHT) {
-                return RIGHT;
-            }
-            if (this == LEFT || this == DOWN_LEFT || this == DIRECTION.UP_LEFT) {
-                return LEFT;
-            }
-            return null;
-        }
-
-        public DIRECTION getYDirection() {
-            if (this == UP || this == UP_RIGHT || this == DIRECTION.UP_LEFT) {
-                return UP;
-            }
-            if (this == DOWN || this == DOWN_RIGHT || this == DIRECTION.DOWN_LEFT) {
-                return DOWN;
-            }
-            return null;
-        }
-
-        public boolean isDiagonal() {
-            return diagonal;
-        }
-
-        public void setDiagonal(boolean diagonal) {
-            this.diagonal = diagonal;
-        }
-
-        public int getDegrees() {
-            return degrees;
-        }
-
-        public void setDegrees(int degrees) {
-            this.degrees = degrees;
-        }
-
-        public Boolean isGrowX() {
-            return growX;
-        }
-
-        public Boolean isGrowY() {
-            return growY;
-        }
-
-        public boolean isVertical() {
-            return vertical;
-        }
-
-        public DIRECTION rotate90(boolean clockwise) {
-            return DirectionMaster.rotate90(this, clockwise);
-        }
-
-        public DIRECTION rotate45(boolean clockwise) {
-            return DirectionMaster.rotate45(this, clockwise);
-        }
-
-        public DIRECTION rotate180() {
-            return DirectionMaster.rotate180(this);
-        }
-
-        public DIRECTION flip() {
-            return DirectionMaster.flip(this);
-        }
-
-    }
-
-    public enum FACING_DIRECTION {
-        NORTH(DIRECTION.UP, true, true),
-        WEST(DIRECTION.LEFT, false, true),
-        EAST(DIRECTION.RIGHT, false, false),
-        SOUTH(DIRECTION.DOWN, true, false),
-        NONE(null, false, false);
-
-        public static final FACING_DIRECTION[] values = values();
-        private DIRECTION direction;
-        private boolean vertical;
-        private boolean closerToZero;
-
-        FACING_DIRECTION(DIRECTION direction, boolean vertical, boolean closerToZero) {
-            this.setDirection(direction);
-            this.vertical = (vertical);
-            this.closerToZero = (closerToZero);
-        }
-
-        public DIRECTION getDirection() {
-            return direction;
-        }
-
-        public void setDirection(DIRECTION direction) {
-            this.direction = direction;
-        }
-
-        public String getName() {
-            return StringMaster.getWellFormattedString(name());
-        }
-
-        public boolean isVertical() {
-            return vertical;
-        }
-
-
-        public boolean isCloserToZero() {
-            return closerToZero;
-        }
-
-        public boolean isMirrored() {
-            return !closerToZero;
-        }
-
-
-        // public FACING_DIRECTION rotate180() {
-        // return
-        // FacingMaster.getFacingFromDirection(DirectionMaster.rotate180(getDirection()));
-        // }
-        //
-        // public DIRECTION flip() {
-        // return DirectionMaster.flip(this);
-        // }
-    }
-
-    public enum UNIT_DIRECTION {
-        AHEAD(0),
-        AHEAD_LEFT(45),
-        AHEAD_RIGHT(-45),
-        LEFT(90),
-        RIGHT(-90),
-        BACKWARDS(180),
-        BACKWARDS_LEFT(135),
-        BACKWARDS_RIGHT(-135),;
-
-        private int degrees;
-
-        UNIT_DIRECTION(int degrees) {
-            this.degrees = degrees;
-        }
-
-        public int getDegrees() {
-            return degrees;
-        }
-    }
 
 }

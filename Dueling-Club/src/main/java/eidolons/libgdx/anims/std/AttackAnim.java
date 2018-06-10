@@ -19,7 +19,7 @@ import main.content.enums.entity.UnitEnums.FACING_SINGLE;
 import main.content.values.properties.G_PROPS;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;

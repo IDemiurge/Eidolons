@@ -45,21 +45,21 @@ import java.util.List;
 public class TestLauncher //extends MetaGameMaster
 {
     //    @Override
-//    protected DC_Game createGame() {
-//        return new TestGame();
-//    }
+    //    protected DC_Game createGame() {
+    //        return new TestGame();
+    //    }
     public int ENEMY_CODE = CODE.CHOOSE;
     public int PARTY_CODE = CODE.CHOOSE;
     public boolean VISION_HACK = false;
     public boolean LEADER_MOVES_FIRST = false;
     public String ENEMY_PARTY = ""; //Pirate
-    public String PLAYER_PARTY= "";
-     // +",Blauri Kinter v2"
-//            "Nelia Valrith;"
-     // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
-//      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"
-     //     "Demir;Brother Anthin;Ogsit Tholmir;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
-     ;
+    public String PLAYER_PARTY = "";
+    // +",Blauri Kinter v2"
+    //            "Nelia Valrith;"
+    // +"Grufirant Grossklotz;Orthaelion Enloth;Belia Haevril"
+    //      ";Anfina Ilarfis;Amaltha Soamdath;Belia Haevril"
+    //     "Demir;Brother Anthin;Ogsit Tholmir;";//"Guy Fox;Fiona Emrin;Donkel Nogvir;";// "Elberen v2;";//"Bandit Archer";//Zail Adelwyn v4
+    ;
     public boolean DUMMY_MODE = false;
     public boolean DUMMY_PP = false;
     public Boolean FAST_MODE;
@@ -85,8 +85,8 @@ public class TestLauncher //extends MetaGameMaster
 
 
     protected String initFactionData() {
-//        unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
-//                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
+        //        unitGroupLevel = BooleanMaster.isFalse(host_client) ? UnitGroupMaster.getPowerLevel()
+        //                : DialogMaster.inputInt(UnitGroupMaster.getPowerLevel());
         // Faction faction = chooseFaction();
         // if (random)
         UnitTrainingMaster.setRandom(false);
@@ -142,7 +142,7 @@ public class TestLauncher //extends MetaGameMaster
 
             }
             game = GameFactory.createGame(gameType);
-//                game = new DC_Game(false);
+            //                game = new DC_Game(false);
         }
         DC_Game.game = (game);
         initLaunch();
@@ -167,10 +167,10 @@ public class TestLauncher //extends MetaGameMaster
         }
         try {
             if (PresetMaster.getPreset() == null // &&
-             // !BooleanMaster.isTrue(FAST_MODE)
-             && BooleanMaster.isFalse(SUPER_FAST_MODE)) {
+                    // !BooleanMaster.isTrue(FAST_MODE)
+                    && BooleanMaster.isFalse(SUPER_FAST_MODE)) {
                 createPreset();
-//                autosavePreset();
+                //                autosavePreset();
             }
             savePresetAsLast();
         } catch (Exception e) {
@@ -199,7 +199,7 @@ public class TestLauncher //extends MetaGameMaster
             }
         }
         if (game.getBattleMaster() != null) {
-//            game.getBattleMaster().getSpawner().init();
+            //            game.getBattleMaster().getSpawner().init();
         }
 
 
@@ -210,7 +210,7 @@ public class TestLauncher //extends MetaGameMaster
         LaunchDataKeeper dataKeeper = createDataKeeper();
         if (workspaceFilter != null)
             dataKeeper.getDungeonData().setValue(DUNGEON_VALUE.WORKSPACE_FILTER
-             , workspaceFilter.toString());
+                    , workspaceFilter.toString());
 
         game.setDataKeeper(dataKeeper);
     }
@@ -221,10 +221,10 @@ public class TestLauncher //extends MetaGameMaster
             TestMasterContent.test_on = false;
             return;
         }
-//            if (PresetLauncher.getLaunch().preset != null) {
-//                Preset portrait = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
-//         PresetMaster.setPreset(portrait);
-//            } TODO move here from PResetLauncher
+        //            if (PresetLauncher.getLaunch().preset != null) {
+        //                Preset portrait = PresetMaster.loadPreset(PresetLauncher.getLaunch().preset);
+        //         PresetMaster.setPreset(portrait);
+        //            } TODO move here from PResetLauncher
         ENEMY_CODE = launch.ENEMY_CODE;
         PARTY_CODE = launch.PARTY_CODE;
 
@@ -264,11 +264,11 @@ public class TestLauncher //extends MetaGameMaster
         }
         DC_KeyManager.DEFAULT_CONTROLLER = launch.controller;
 
-//TODO options init!         GameLoop.setMaxAnimTime(launch.maxAnimTime);
+        //TODO options init!         GameLoop.setMaxAnimTime(launch.maxAnimTime);
     }
 
     protected void initLogicTest() {
-//        ChannelingRule.setTestMode(true);
+        //        ChannelingRule.setTestMode(true);
     }
 
     protected void initPlayerParties() {
@@ -328,7 +328,7 @@ public class TestLauncher //extends MetaGameMaster
         game.setTestMode(true);
         if (OPTION == null) {
             OPTION = DialogMaster.optionChoice("Select party init option", "Group", "Default",
-             "Heroes", "Units", "Party");
+                    "Heroes", "Units", "Party");
         }
         switch (OPTION) {
             case 0:
@@ -359,11 +359,11 @@ public class TestLauncher //extends MetaGameMaster
 
     protected String chooseParty() {
         ObjType party = ListChooser.chooseType_(
-         DataManager
-          .getTypes(DC_TYPE.PARTY)
-//         DataManager
-//          .getTypesGroup(DC_TYPE.PARTY, "Preset")
-         , DC_TYPE.PARTY);
+                DataManager
+                        .getTypes(DC_TYPE.PARTY)
+                //         DataManager
+                //          .getTypesGroup(DC_TYPE.PARTY, "Preset")
+                , DC_TYPE.PARTY);
         return party.getProperty(PROPS.MEMBERS);
     }
 
@@ -417,7 +417,7 @@ public class TestLauncher //extends MetaGameMaster
     public String chooseEnemies(Integer ENEMY_OPTION) {
         if (ENEMY_OPTION == null) {
             ENEMY_OPTION = DialogMaster.optionChoice("Select Enemy init option", "Group",
-             "Encounter", "Heroes", "Units", "Default");
+                    "Encounter", "Heroes", "Units", "Default");
         }
         switch (ENEMY_OPTION) {
             case 0:
@@ -427,7 +427,7 @@ public class TestLauncher //extends MetaGameMaster
                 encounterName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
                 if (encounterName != null) {
                     return getEnemiesFromWave(DataManager.getType(encounterName,
-                     DC_TYPE.ENCOUNTERS));
+                            DC_TYPE.ENCOUNTERS));
                 }
             case 2:
                 return chooseCharacters();

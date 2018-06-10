@@ -1,6 +1,6 @@
 package eidolons.swing.generic.services.dialog;
 
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 
 public class EnumChooser<E> {
 

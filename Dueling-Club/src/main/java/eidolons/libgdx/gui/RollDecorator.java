@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.images.ImageManager.STD_IMAGES;
 
 /**
@@ -16,7 +16,7 @@ import main.system.images.ImageManager.STD_IMAGES;
  */
 public class RollDecorator {
     public static RollableGroup decorate(Actor actor) {
-        return decorate(actor, FACING_DIRECTION.WEST);
+        return decorate(actor, main.game.bf.directions.FACING_DIRECTION.WEST);
     }
 
     public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction) {

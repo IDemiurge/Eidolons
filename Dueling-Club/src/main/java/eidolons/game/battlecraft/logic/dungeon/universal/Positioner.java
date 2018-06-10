@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.arena.ArenaPositioner;
 import eidolons.game.battlecraft.logic.dungeon.test.TestSpawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner.SPAWN_MODE;
 import eidolons.game.battlecraft.rules.action.StackingRule;
@@ -13,9 +12,9 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -62,7 +61,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         Coordinates coordinate = new Coordinates(c.x, c.y);
         while (loop.continues()) { // TODO remove from adj. list to limit
             // iterations to 8!
-            DIRECTION direction = ArenaPositioner.getRandomSpawnAdjustDirection();
+            DIRECTION direction = getRandomSpawnAdjustDirection();
             coordinate = c.getAdjacentCoordinate(direction);
             if (coordinate != null) {
                 if (filterPredicate != null)
@@ -89,7 +88,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
          || coordinate == null) {
 
             Coordinates adjacentCoordinate = c
-             .getAdjacentCoordinate(ArenaPositioner.getRandomSpawnAdjustDirection());
+             .getAdjacentCoordinate(getRandomSpawnAdjustDirection());
             coordinate = adjustCoordinate(adjacentCoordinate, facing);
         }
         if (coordinate.isInvalid()) {
@@ -184,7 +183,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
     }
 
     public Coordinates getPlayerSpawnCoordinates() {
-        return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
+        return Coordinates.getMiddleCoordinate(main.game.bf.directions.FACING_DIRECTION.NONE);
     }
 
     public Coordinates getEnemyTestPartyCoordinates() {
@@ -231,7 +230,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                 return c;
             }
         }
-        DIRECTION spawnSide = ArenaPositioner.DEFAULT_CENTER_SPAWN_SIDE;
+        DIRECTION spawnSide = DIRECTION.LEFT;
         if (randomPrefSide) {
             spawnSide = DirectionMaster.getRandomDirection();
         }
@@ -239,7 +238,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (checkCanPlaceUnitOnCoordinate(adjacentCoordinate, objType)) {
             getFacingAdjuster().unitPlaced(adjacentCoordinate,
              FacingMaster.getFacingFromDirection(
-              ArenaPositioner.DEFAULT_CENTER_SPAWN_SIDE, false, false));
+              DIRECTION.LEFT, false, false));
             return adjacentCoordinate;
         }
         DIRECTION direction = spawnSide;
@@ -303,6 +302,14 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public void setMaxSpacePercentageTaken(Integer maxSpacePercentageTaken) {
         this.maxSpacePercentageTaken = maxSpacePercentageTaken;
+    }
+
+    public static DIRECTION getRandomSpawnAdjustDirection() {
+        DIRECTION direction = FacingMaster.getRandomFacing().getDirection();
+        if (RandomWizard.chance(20)) {
+            direction = DirectionMaster.rotate45(direction, RandomWizard.random());
+        }
+        return direction;
     }
 
 

@@ -6,9 +6,10 @@ import main.ability.effects.OneshotEffect;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.UNIT_DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.math.Formula;
 
 public class MoveEffect extends DC_Effect implements OneshotEffect {
@@ -89,7 +90,7 @@ public class MoveEffect extends DC_Effect implements OneshotEffect {
         //
         // FacingManager.
 
-        Coordinates.FACING_DIRECTION facing = obj.getFacing();
+        FACING_DIRECTION facing = obj.getFacing();
 //         direction = DirectionMaster.getDirectionByFacing(facing, d);
 
         return true;

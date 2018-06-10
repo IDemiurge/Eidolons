@@ -20,8 +20,8 @@ import main.elements.targeting.SelectiveTargeting;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.logic.action.context.Context;
 
 import java.util.List;

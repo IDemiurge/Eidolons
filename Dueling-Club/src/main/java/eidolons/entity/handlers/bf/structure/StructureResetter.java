@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 
 /**

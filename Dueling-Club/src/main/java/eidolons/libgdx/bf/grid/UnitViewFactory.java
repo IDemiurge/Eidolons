@@ -22,6 +22,7 @@ import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import eidolons.test.frontend.IntroTestLauncher;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -161,10 +162,9 @@ public class UnitViewFactory {
         UnitViewOptions options = new UnitViewOptions(bfObj);
         OverlayView view = new OverlayView(options, bfObj);
 
-//        view.setScale(OverlayView.SCALE, OverlayView.SCALE);
 
-        Map<Coordinates, Map<BattleFieldObject, Coordinates.DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
-        Map<BattleFieldObject, Coordinates.DIRECTION> map = directionMap.get(bfObj.getCoordinates());
+        Map<Coordinates, Map<BattleFieldObject, DIRECTION>> directionMap = DC_Game.game.getDirectionMap();
+        Map<BattleFieldObject, DIRECTION> map = directionMap.get(bfObj.getCoordinates());
 
         if (map != null) {
             view.setDirection(map.get(bfObj));

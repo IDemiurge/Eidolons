@@ -25,7 +25,7 @@ import main.elements.costs.Cost;
 import main.elements.costs.Costs;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;

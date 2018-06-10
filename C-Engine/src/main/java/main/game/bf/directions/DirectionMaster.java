@@ -1,9 +1,8 @@
-package main.game.bf;
+package main.game.bf.directions;
 
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
@@ -147,8 +146,7 @@ public class DirectionMaster {
     }
 
     public static DIRECTION getRandomDirection() {
-        DIRECTION d = new EnumMaster<DIRECTION>().getRandomEnumConst(DIRECTION.class);
-        return d;
+        return new EnumMaster<DIRECTION>().getRandomEnumConst(DIRECTION.class);
     }
 
 }

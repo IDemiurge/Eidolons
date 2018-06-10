@@ -23,7 +23,7 @@ import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;

@@ -26,7 +26,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.ZCoordinates;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.RandomWizard;

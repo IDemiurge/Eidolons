@@ -6,8 +6,8 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.test.frontend.FAST_DC;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.launch.CoreEngine;
 
@@ -315,7 +315,7 @@ public class DungeonLevelMaster {
         // return new Coordinates(0, y - 1);
         // case WEST:
         // return new Coordinates(0, 0);
-        side = FACING_DIRECTION.SOUTH;
+        side = main.game.bf.directions.FACING_DIRECTION.SOUTH;
         return getEntranceCoordinates(side, template, dungeon);
     }
 

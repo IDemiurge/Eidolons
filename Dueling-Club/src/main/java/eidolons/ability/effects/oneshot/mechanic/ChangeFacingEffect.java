@@ -8,7 +8,7 @@ import main.content.enums.entity.UnitEnums;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
@@ -38,7 +38,7 @@ public class ChangeFacingEffect extends MicroEffect implements OneshotEffect {
 
         FACING_DIRECTION newDirection = null;
         if (isClockwise() == null) {
-            for (FACING_DIRECTION f : FACING_DIRECTION.values()) {
+            for (FACING_DIRECTION f : main.game.bf.directions.FACING_DIRECTION.values()) {
                 Obj active = ref.getObj(KEYS.ACTIVE);
                 if (active == null) {
                     return false;

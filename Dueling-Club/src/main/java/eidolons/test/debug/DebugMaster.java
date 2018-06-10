@@ -15,8 +15,6 @@ import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.ai.UnitAI;
-import eidolons.game.battlecraft.logic.battle.arena.ArenaBattleMaster;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionManager;
@@ -59,7 +57,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
@@ -733,26 +731,7 @@ public class DebugMaster {
                 case ADD_UNIT:
                     summon(true, DC_TYPE.UNITS, ref);
                     break;
-                case SET_WAVE_POWER:
-                    Integer forcedPower;
-                    forcedPower = DialogMaster.inputInt();
-                    if (forcedPower < 0) {
-                        forcedPower = null;
-                    }
-                    ArenaBattleMaster a = (ArenaBattleMaster) game.getBattleMaster();
-                    a.getWaveAssembler().setForcedPower(forcedPower);
-                    break;
-                case SPAWN_CUSTOM_WAVE:
-                    coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                    ObjType waveType = ListChooser.chooseType_(DC_TYPE.ENCOUNTERS);
-                    Wave wave = new Wave(coordinate, waveType, game, ref, game.getPlayer(!isAltMode()));
 
-                    String value = new ListChooser(SELECTION_MODE.MULTIPLE, StringMaster
-                     .openContainer(wave.getProperty(PROPS.UNIT_TYPES)), DC_TYPE.UNITS)
-                     .choose();
-                    wave.setProperty(PROPS.UNIT_TYPES, value);
-                    // PROPS.EXTENDED_PRESET_GROUP
-                    break;
                 case SPAWN_PARTY:
 
                     coordinate = getGame().getBattleFieldManager().pickCoordinate();
@@ -763,11 +742,6 @@ public class DebugMaster {
                 case SPAWN_WAVE:
                     if (!isAltMode()) {
                         coordinate = getGame().getBattleFieldManager().pickCoordinate();
-                    } else {
-//                        FACING_DIRECTION side = new EnumChooser<FACING_DIRECTION>()
-//                                .choose(FACING_DIRECTION.class);
-                        // if (side== FACING_DIRECTION.NONE)
-//                        game.getBattleMaster().getSpawner().getPositioner().setForcedSide(side);
                     }
                     String typeName = ListChooser.chooseType(DC_TYPE.ENCOUNTERS);
                     if (typeName == null) {
@@ -785,20 +759,6 @@ public class DebugMaster {
                     break;
                 case ADD_ENEMY_UNIT:
                     summon(false, DC_TYPE.UNITS, new Ref(game));
-                    // ref = new Ref(game
-                    // // , game.getManager().getActiveObj().getId()
-                    // );
-                    // ref.setPlayer(game.getPlayer(false));
-                    // typeName = ListChooser.chooseType(OBJ_TYPES.UNITS);
-                    // if (StringMaster.isEmpty(typeName))
-                    // break;
-                    // new SelectiveTargeting(new Conditions(
-                    // ConditionMaster.getTYPECondition(OBJ_TYPES.TERRAIN)))
-                    // .select(ref);
-                    // effect = new SummonEffect(typeName);
-                    // effect.apply(ref);
-                    // effect.getUnit().setOwner(game.getPlayer(false));
-                    // game.getManager().refreshAll();
                     break;
 
                 case TOGGLE_ALT_AI: {
@@ -824,21 +784,8 @@ public class DebugMaster {
                     }
                     input = DialogMaster.inputText("input");
                     WaitMaster.receiveInput(operation, input);
+                    break;
                 }
-                case REMOVE_HACKS:
-                    break;
-//                case CLEAR_WAVES:
-//                    game.getBattleMaster().getSpawner().clear();
-//                    game.getBattleMaster().getBattleConstructor().setIndex(0);
-//                    break;
-//                case SCHEDULE_WAVES:
-//                    game.getBattleMaster().getBattleConstructor().setIndex(0);
-//                    game.getBattleMaster().getBattleConstructor().construct();
-//                    break;
-                case TOGGLE_LIGHTING:
-                    break;
-                case TOGGLE_FOG:
-                    break;
                 case GUI_EVENT:
                     EmitterController.getInstance();
                     String string = ListChooser.chooseEnum(GuiEventType.class);
