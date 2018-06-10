@@ -1,7 +1,7 @@
 package eidolons.libgdx.screens.map;
 
 import eidolons.game.core.GameLoop;
-import eidolons.game.module.adventure.MacroGame;
+import eidolons.macro.MacroGame;
 import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.screens.menu.MenuItem;
 

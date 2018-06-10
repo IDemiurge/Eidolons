@@ -1,14 +1,11 @@
 package eidolons.game.module.herocreator.logic;
 
-import com.badlogic.gdx.math.Vector2;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.module.adventure.map.Place;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
-import main.game.bf.Coordinates;
 
 public class PointMaster {
 

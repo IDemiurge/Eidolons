@@ -6,13 +6,12 @@ import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.party.MacroParty;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.macro.entity.party.MacroParty;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
-import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ARMOR_TYPE;
 import main.content.enums.entity.ItemEnums.WEAPON_TYPE;
 import main.content.enums.rules.ArcadeEnums.LOOT_GROUP;
@@ -194,14 +193,14 @@ public class LootMaster {
     public static Object[] getFilteringValues(LOOT_GROUP group) {
         switch (group) {
             case AMMO:
-                return new WEAPON_TYPE[]{ItemEnums.WEAPON_TYPE.AMMO};
+                return new WEAPON_TYPE[]{WEAPON_TYPE.AMMO};
             case ARMOR:
 
                 break;
             case CONCONCTIONS:
                 break;
             case HEAVY_ARMOR:
-                return new ARMOR_TYPE[]{ItemEnums.ARMOR_TYPE.HEAVY};
+                return new ARMOR_TYPE[]{ARMOR_TYPE.HEAVY};
             case HEAVY_WEAPONS:
                 break;
             case JEWELRY:

@@ -71,8 +71,8 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         if (party.getMembers().size() == 1) {
             return party.getLeader().getName();
         }
-//        if (chooseOneHero)
-//            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+        //        if (chooseOneHero)
+        //            return ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
         if (!WaitMaster.isComplete(WAIT_OPERATIONS.GUI_READY)) {
             Object result = WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY, 4000);
             if (result == null)
@@ -92,7 +92,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
         Unit unit = (Unit) WaitMaster.waitForInput(WAIT_OPERATIONS.SELECT_BF_OBJ, 15000);
         if (unit == null) {
             //SWING!
-            String hero =ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
+            String hero = ListChooser.chooseObj(party.getMembers(), SELECTION_MODE.SINGLE);
             return hero;
         }
         return unit.getName();
@@ -100,19 +100,23 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
 
     protected void mainHeroSelected(Party party, Unit hero) {
         party.getMembers().forEach(member -> {
-//            if (chooseOneHero) {
-//                if (member != hero)
-//                    member.kill(member, false, true);
-//            } else
+            //            if (chooseOneHero) {
+            //                if (member != hero)
+            //                    member.kill(member, false, true);
+            //            } else
             try {
                 SkillMaster.initMasteryRanks(member);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
             //TODO refactor
-                member.setMainHero(false);
+            member.setMainHero(false);
         });
-        hero.getOwner().setHeroObj(hero);
+        try {
+            hero.getOwner().setHeroObj(hero);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         hero.setMainHero(true);
         party.setProperty(PROPS.PARTY_MAIN_HERO, hero.getName());
         Eidolons.setSelectedMainHero(hero.getName());

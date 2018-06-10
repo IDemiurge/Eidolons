@@ -83,11 +83,11 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
         STANDOFF(true),
         SKIRMISH(true),
         PLAY(NEXT_SCENARIO, SELECT_SCENARIO, RANDOM_SCENARIO),
-        MAP_PREVIEW(false),
+        MAP_PREVIEW(false),LOAD(),
         OPTIONS,//(GAMEPLAY, AUDIO, ),
         MANUAL(false),
         ABOUT(true),
-        EXIT,;
+        EXIT;
         boolean secondary;
         private MAIN_MENU_ITEM[] items;
 

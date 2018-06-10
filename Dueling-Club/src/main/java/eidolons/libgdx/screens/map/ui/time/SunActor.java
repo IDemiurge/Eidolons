@@ -2,7 +2,7 @@ package eidolons.libgdx.screens.map.ui.time;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Align;
-import eidolons.game.module.adventure.MacroGame;
+import eidolons.macro.MacroGame;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;

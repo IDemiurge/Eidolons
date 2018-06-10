@@ -15,7 +15,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.DC_GameObjMaster;
 import eidolons.game.core.state.DC_StateManager;
-import eidolons.game.module.adventure.MacroGame;
+import eidolons.macro.MacroGame;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.GDX;

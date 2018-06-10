@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.ai.PlayerAI;
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingRunner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.faction.Faction;
+import eidolons.macro.entity.faction.Faction;
 import main.content.enums.system.AiEnums;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 public class DC_Player extends Player {
 
-    public static DC_Player NEUTRAL;
+    public static DC_Player NEUTRAL=new DC_Player();
 
     protected ALLEGIENCE allegiance;
     private Map<DC_Obj, Coordinates> detectionCache = new HashMap<>();
@@ -34,6 +34,9 @@ public class DC_Player extends Player {
     private UnitData unitData;
     private Faction faction;
 
+    public DC_Player() {
+        this("neutral", Color.red, false);
+    }
     public DC_Player(String name, Color color, boolean me) {
 //        int volume = sound.getVolume() * OptionsMaster.getSoundOptions().
 //         getIntValue(SOUND_OPTION.MUSIC_VOLUME) / 100;

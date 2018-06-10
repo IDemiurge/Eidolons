@@ -5,6 +5,7 @@ import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import eidolons.macro.global.persist.Loader;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
@@ -44,6 +45,20 @@ public class MainMenuHandler {
         return null;
     }
 
+    public static List<ObjType> getScenarioTypes() {
+        return getScenarioTypes(getScenarioGroup());
+    }
+
+    private static String getScenarioGroup() {
+        //        return "Crawl";
+        return "Beta";
+    }
+
+    public static List<ObjType> getScenarioTypes(String scenarioGroup) {
+        return DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
+         StringMaster.getWellFormattedString(scenarioGroup));
+    }
+
     public Boolean handle(MAIN_MENU_ITEM item) {
         switch (item) {
             case NEXT_SCENARIO:
@@ -54,16 +69,25 @@ public class MainMenuHandler {
                  true);
             case SELECT_SCENARIO:
             case PLAY:
-//          TODO   case STANDOFF:
-//            case SKIRMISH:
+                //          TODO   case STANDOFF:
+                //            case SKIRMISH:
                 return startMicro(getScenarioTypes(),
-                 null );
+                 null);
             case MAP_PREVIEW:
                 CoreEngine.setMacro(true);
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
-                 ScreenType.MAP, "Mistfall"));
-
+                 ScreenType.MAP, null));
                 return null;
+            case LOAD:
+                CoreEngine.setMacro(true);
+                try {
+                    Loader.load();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                    CoreEngine.setMacro(false);
+                    Eidolons.exitToMenu();
+                }
+                break;
             case OPTIONS:
                 OptionsMaster.init();
                 menu.openOptionsMenu();
@@ -80,19 +104,6 @@ public class MainMenuHandler {
         }
 
         return true;
-    }
-    public static List<ObjType> getScenarioTypes() {
-        return getScenarioTypes(getScenarioGroup());
-    }
-
-    private static String getScenarioGroup() {
-//        return "Crawl";
-        return "Beta";
-    }
-
-    public static List<ObjType> getScenarioTypes(String scenarioGroup) {
-        return DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
-         StringMaster.getWellFormattedString(scenarioGroup));
     }
 
 }

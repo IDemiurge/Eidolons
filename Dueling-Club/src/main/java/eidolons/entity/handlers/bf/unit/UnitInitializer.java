@@ -19,6 +19,7 @@ import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.game.module.herocreator.logic.spells.LibraryManager;
 import eidolons.game.module.herocreator.logic.spells.SpellUpgradeMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.macro.global.persist.Loader;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.content.enums.entity.UnitEnums;
@@ -331,6 +332,9 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     }
 
     public DC_HeroItemObj initItem(DC_HeroItemObj item, G_PROPS prop, DC_TYPE TYPE) {
+        if (getEntity().isLoaded()){
+            return getLoadedItem(prop);
+        }
         if (game.isSimulation() || !getEntity().isItemsInitialized()) {
             if (checkItemChanged(item, prop, TYPE)) {
                 String property = getProperty(prop);
@@ -369,6 +373,10 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
         }
 
         return item;
+    }
+
+    private DC_HeroItemObj getLoadedItem(G_PROPS prop) {
+        return Loader.getLoadedItem(getEntity(), prop);
     }
 
     private DC_HeroItemObj createItem(PROPERTY prop, ObjType type) {

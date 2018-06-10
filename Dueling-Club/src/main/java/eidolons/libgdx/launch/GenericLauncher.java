@@ -11,7 +11,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
-import eidolons.game.module.adventure.MacroManager;
+import eidolons.macro.MacroManager;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;

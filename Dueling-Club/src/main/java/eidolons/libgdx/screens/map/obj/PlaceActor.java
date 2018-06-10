@@ -3,7 +3,7 @@ package eidolons.libgdx.screens.map.obj;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.game.module.adventure.map.Place;
+import eidolons.macro.map.Place;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.screens.map.obj.PlaceActorFactory.PlaceActorParameters;

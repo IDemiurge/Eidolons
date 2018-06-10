@@ -2,7 +2,7 @@ package eidolons.game.module.dungeoncrawl.explore;
 
 import com.badlogic.gdx.Gdx;
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.adventure.global.time.MacroTimeMaster;
+import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;

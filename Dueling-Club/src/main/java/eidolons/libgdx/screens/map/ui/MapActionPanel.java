@@ -1,10 +1,10 @@
 package eidolons.libgdx.screens.map.ui;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import eidolons.game.module.adventure.entity.action.MACRO_ACTION_GROUPS;
-import eidolons.game.module.adventure.entity.action.MacroAction;
-import eidolons.game.module.adventure.entity.action.MacroActionManager;
-import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.macro.entity.action.MACRO_ACTION_GROUPS;
+import eidolons.macro.entity.action.MacroAction;
+import eidolons.macro.entity.action.MacroActionManager;
+import eidolons.macro.entity.party.MacroParty;
 import eidolons.libgdx.gui.panels.dc.actionpanel.ActionValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.BaseSlotPanel;
 import eidolons.libgdx.texture.TextureCache;

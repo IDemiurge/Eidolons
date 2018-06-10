@@ -8,7 +8,7 @@ import eidolons.entity.item.DC_QuickItemObj;
 import eidolons.entity.item.ItemFactory;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.town.ShopMaster;
+import eidolons.macro.entity.town.ShopMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;

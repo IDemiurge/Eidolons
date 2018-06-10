@@ -1,10 +1,10 @@
 package eidolons.game.module.adventure.map.travel.encounter;
 
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
-import eidolons.game.module.adventure.entity.MacroRef;
-import eidolons.game.module.adventure.entity.party.MacroParty;
-import eidolons.game.module.adventure.map.Route;
-import eidolons.game.module.adventure.map.travel.old.MacroGroup;
+import eidolons.macro.entity.MacroRef;
+import eidolons.macro.entity.party.MacroParty;
+import eidolons.macro.map.Route;
+import eidolons.macro.map.area.MacroGroup;
 import main.system.auxiliary.StringMaster;
 
 import java.util.List;

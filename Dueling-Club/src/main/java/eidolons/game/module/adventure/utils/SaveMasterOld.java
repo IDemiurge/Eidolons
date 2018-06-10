@@ -1,10 +1,10 @@
 package eidolons.game.module.adventure.utils;
 
-import eidolons.game.module.adventure.MacroGame;
-import eidolons.game.module.adventure.MacroManager;
-import eidolons.game.module.adventure.entity.party.MacroParty;
-import eidolons.game.module.adventure.map.Place;
-import eidolons.game.module.adventure.map.Region;
+import eidolons.macro.MacroGame;
+import eidolons.macro.MacroManager;
+import eidolons.macro.entity.party.MacroParty;
+import eidolons.macro.map.Place;
+import eidolons.macro.map.Region;
 import main.content.ContentValsManager;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;

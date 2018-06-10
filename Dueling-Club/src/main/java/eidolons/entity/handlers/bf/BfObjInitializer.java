@@ -12,6 +12,7 @@ import eidolons.game.battlecraft.logic.battlefield.DC_MovementManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.SimulationGame;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.macro.global.persist.Loader;
 import main.data.DataManager;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
@@ -69,6 +70,9 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
 
     public DequeImpl<? extends DC_HeroItemObj> initContainedItems(PROPS prop,
                                                                   DequeImpl<? extends DC_HeroItemObj> list, boolean quick) {
+        if (getEntity().isLoaded()){
+            return getLoadedItemContainer(prop);
+        }
         if (StringMaster.isEmpty(getProperty(prop))) {
             if (list == null) {
                 return new DequeImpl<>();
@@ -108,7 +112,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                             item.setParam(PARAMS.C_DURABILITY, durability);
                     }
                 } else {
-                    ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProperty(prop));
+                    ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProp (prop));
 
                     item = ItemFactory.createItemObj(type, getEntity().getOriginalOwner(), getGame(), getRef(),
                      quick);
@@ -131,5 +135,9 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
         }
         return list;
 
+    }
+
+    private DequeImpl<? extends DC_HeroItemObj> getLoadedItemContainer(PROPS prop) {
+        return Loader.getLoadedItemContainer(getEntity(), prop);
     }
 }

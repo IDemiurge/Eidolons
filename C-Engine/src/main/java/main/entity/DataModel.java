@@ -83,6 +83,7 @@ public abstract class DataModel {
     private HashMap<PROPERTY, Map<String, Boolean>> propCache;
     private Map<PARAMETER, Integer> integerMap = new HashMap<>();
     private boolean beingReset;
+    private boolean loaded;
 
     public String getToolTip() {
         return getType().getDisplayedName();
@@ -1698,5 +1699,13 @@ public abstract class DataModel {
 
     public boolean isSimulation() {
         return getGame().isSimulation();
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 }

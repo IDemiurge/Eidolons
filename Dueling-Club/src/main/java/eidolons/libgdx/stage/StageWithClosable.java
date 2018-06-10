@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.MacroGame;
+import eidolons.macro.MacroGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 

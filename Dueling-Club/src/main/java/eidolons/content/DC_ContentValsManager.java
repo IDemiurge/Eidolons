@@ -43,16 +43,16 @@ public class DC_ContentValsManager extends ContentValsManager {
      PARAMS.C_ESSENCE,
     };
     public static final PARAMETER[] MAIN_PARAMETERS = {
-     PARAMS.ATTACK,PARAMS.DEFENSE,PARAMS.ARMOR,PARAMS.FORTITUDE,PARAMS.RESISTANCE,PARAMS.SPIRIT,
+     PARAMS.ATTACK, PARAMS.DEFENSE, PARAMS.ARMOR, PARAMS.FORTITUDE, PARAMS.RESISTANCE, PARAMS.SPIRIT,
     };
     public static final VALUE[] ATTRIBUTES = {PARAMS.STRENGTH, PARAMS.VITALITY, PARAMS.AGILITY,
      PARAMS.DEXTERITY, PARAMS.WILLPOWER, PARAMS.INTELLIGENCE, PARAMS.SPELLPOWER,
      PARAMS.KNOWLEDGE, PARAMS.WISDOM, PARAMS.CHARISMA,};
 
     public static final PARAMS[] ATTRIBUTES_WRAPPED = {
-     PARAMS.STRENGTH, PARAMS.INTELLIGENCE,PARAMS.VITALITY,
-     PARAMS.SPELLPOWER,  PARAMS.AGILITY, PARAMS.KNOWLEDGE,    PARAMS.DEXTERITY,
-     PARAMS.WISDOM,  PARAMS.WILLPOWER,  PARAMS.CHARISMA,
+     PARAMS.STRENGTH, PARAMS.INTELLIGENCE, PARAMS.VITALITY,
+     PARAMS.SPELLPOWER, PARAMS.AGILITY, PARAMS.KNOWLEDGE, PARAMS.DEXTERITY,
+     PARAMS.WISDOM, PARAMS.WILLPOWER, PARAMS.CHARISMA,
 
     };
 
@@ -88,7 +88,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static PARAMETER[] REGENERATED_PARAMS = {
      PARAMS.ENDURANCE, PARAMS.FOCUS,
      PARAMS.ESSENCE, PARAMS.STAMINA
-//   ,PARAMS.ENERGY
+     //   ,PARAMS.ENERGY
     };
     private static PARAMETER[] WEAPON_MODIFYING_PARAMS = {
 
@@ -525,7 +525,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static void addDefaultValues(Entity entity) {
-//this should be done in AV!!!
+        //this should be done in AV!!!
         for (String value : DC_ContentValsManager.getInfoPanelValueList(entity.getOBJ_TYPE())) {
             VALUE VAL = ContentValsManager.getValue(value);
             if (VAL == null) {
@@ -872,26 +872,28 @@ public class DC_ContentValsManager extends ContentValsManager {
     public static DC_WeaponObj getDefaultWeapon(Unit heroObj) {
         return new DC_WeaponObj(DataManager.getType(DEFAULT_WEAPON, DC_TYPE.WEAPONS), heroObj);
     }
-@Deprecated
+
+    @Deprecated
     public static String getFocusMasteries() {
         if (focusMasteries != null) {
             return focusMasteries;
         }
         focusMasteries = "";
-//        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
-//            focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
-//        }
+        //        for (SkillEnums.MASTERY m : SkillTreeView.FOCUS_WORKSPACE) {
+        //            focusMasteries += StringMaster.getWellFormattedString(m.toString()) + ";";
+        //        }
         return focusMasteries;
     }
-@Deprecated
+
+    @Deprecated
     public static String getFocusClassGroups() {
         if (focusClassGroups != null) {
             return focusClassGroups;
         }
         focusClassGroups = "";
-//        for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
-//            focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
-//        }
+        //        for (CLASS_GROUP m : ClassTreeView.FOCUS_WORKSPACE) {
+        //            focusClassGroups += StringMaster.getWellFormattedString(m.toString()) + ";";
+        //        }
         return focusClassGroups;
     }
 
@@ -953,7 +955,21 @@ public class DC_ContentValsManager extends ContentValsManager {
         return costParam;
     }
 
-    public static OBJ_TYPE getTypeForProperty(PROPS prop) {
+    public static OBJ_TYPE getTypeForProperty(PROPERTY prop) {
+        if (prop instanceof PROPS)
+            return getTypeForProp((PROPS) prop);
+        if (prop instanceof G_PROPS)
+            switch ((G_PROPS) prop) {
+                case MAIN_HAND_ITEM:
+                case OFF_HAND_ITEM:
+                    return DC_TYPE.WEAPONS;
+                case ARMOR_ITEM:
+                    return DC_TYPE.ARMOR;
+            }
+        return C_OBJ_TYPE.ITEMS;
+    }
+
+    public static OBJ_TYPE getTypeForProp(PROPS prop) {
         switch (prop) {
             case QUICK_ITEMS:
                 return C_OBJ_TYPE.QUICK_ITEMS;
@@ -973,12 +989,12 @@ public class DC_ContentValsManager extends ContentValsManager {
         ArrayList<PARAMETER> params = new ArrayList<>();
         params.addAll(Arrays.asList(G_PARAMS.values()));
         params.addAll(Arrays.asList(PARAMS.values()));
-            params.addAll(Arrays.asList(MACRO_PARAMS.values()));
+        params.addAll(Arrays.asList(MACRO_PARAMS.values()));
 
         ArrayList<PROPERTY> props = new ArrayList<>();
         props.addAll(Arrays.asList(G_PROPS.values()));
         props.addAll(Arrays.asList(PROPS.values()));
-            props.addAll(Arrays.asList(MACRO_PROPS.values()));
+        props.addAll(Arrays.asList(MACRO_PROPS.values()));
 
         params.addAll(generateDerivedParams());
 

@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.Analyzer;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.global.rules.TurnRule;
+import eidolons.macro.global.rules.TurnRule;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;

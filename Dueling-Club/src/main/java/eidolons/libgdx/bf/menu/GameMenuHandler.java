@@ -1,8 +1,8 @@
 package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
-import eidolons.game.module.adventure.global.persist.Loader;
-import eidolons.game.module.adventure.global.persist.Saver;
+import eidolons.macro.global.persist.Loader;
+import eidolons.macro.global.persist.Saver;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;

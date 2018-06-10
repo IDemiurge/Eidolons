@@ -47,18 +47,17 @@ public class SteerableParty extends SteeringAgent {
         } else {
 
         }
-        int n = 10;
         Array waypoints = new Array();
         position = new Vector2(actor.getX(), actor.getY());
+        int n = (int) (position.dst(destination)/150)+1;
         for (int i = 1; i <= n; i++) {
             Vector2 p = new Vector2(position).lerp(destination, 1f / n * (i));
             p.add(RandomWizard.getRandomIntBetween(-4, 4),
              RandomWizard.getRandomIntBetween(-4, 4));
             waypoints.add(p);
         }
-        Path<Vector2, LinePathParam> path = new LinePath(waypoints);
+        Path<Vector2, LinePathParam> path = new LinePath(waypoints, true);
         setSteeringBehavior(PixmapPathBuilder.getFollowPath(path, this));
-
     }
 
     private boolean isSequenceMoveOn() {

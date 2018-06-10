@@ -4,12 +4,9 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.map.travel.encounter.Encounter;
 import main.entity.Entity;
 import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;
-
-import java.util.List;
 
 @Refactor
 public class ScoutingRule extends RoundRule {
@@ -19,9 +16,9 @@ public class ScoutingRule extends RoundRule {
         super(game);
     }
 
-    public static List<String> getScoutedWaves(Encounter e) {
-        return StringMaster.openContainer(e.getTypeNames());
-    }
+//    public static List<String> getScoutedWaves(Encounter e) {
+//        return StringMaster.openContainer(e.getTypeNames());
+//    }
 
     public void checkEnemiesDetected(Unit hero) {
         // pre-define spawning side!

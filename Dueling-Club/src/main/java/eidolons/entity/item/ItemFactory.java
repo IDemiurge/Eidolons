@@ -1,5 +1,6 @@
 package eidolons.entity.item;
 
+import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.entity.Ref;
@@ -39,4 +40,7 @@ public class ItemFactory {
         return null;
     }
 
+    public static DC_HeroItemObj createItemObj(ObjType type, Unit hero, boolean quick) {
+        return createItemObj(type, hero.getOwner(), hero.getGame(), hero.getRef(), quick);
+    }
 }

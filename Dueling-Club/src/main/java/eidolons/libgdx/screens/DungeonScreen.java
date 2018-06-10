@@ -13,7 +13,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.MacroGame;
+import eidolons.macro.MacroGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxColorMaster;
@@ -130,7 +130,7 @@ public class DungeonScreen extends GameScreen {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.getGame() != null) {
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                 new ScreenData(ScreenType.MAP, ""));
+                 new ScreenData(ScreenType.MAP, null ));
 
                 MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");

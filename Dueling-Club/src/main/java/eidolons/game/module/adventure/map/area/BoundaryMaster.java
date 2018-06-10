@@ -1,6 +1,7 @@
 package eidolons.game.module.adventure.map.area;
 
-import eidolons.game.module.adventure.map.Region;
+import eidolons.macro.map.Region;
+import eidolons.macro.map.area.Area;
 import main.system.auxiliary.RandomWizard;
 
 import java.awt.*;

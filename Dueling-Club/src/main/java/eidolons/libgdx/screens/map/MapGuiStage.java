@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.macro.entity.party.MacroParty;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
@@ -95,6 +95,7 @@ public class MapGuiStage extends GuiStage {
     public void resetZIndices() {
         if (CoreEngine.isMapEditor())
             return;
+        hqPanel.setZIndex(0);
         super.resetZIndices();
         lights.setZIndex(0);
         vignette.setZIndex(0);

@@ -22,14 +22,15 @@ import eidolons.entity.obj.hero.DC_Masteries;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.battlecraft.ai.UnitAI;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
+import eidolons.game.battlecraft.logic.battle.universal.PlayerManager;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.adventure.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
+import eidolons.macro.entity.action.MacroActionManager.MACRO_MODES;
 import eidolons.system.DC_Constants;
 import eidolons.system.DC_Formulas;
 import eidolons.system.test.Debugger;
@@ -141,7 +142,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public Unit(ObjType type, DC_Game game) {
-        this(type, 0, 0, DC_Player.NEUTRAL, game, new Ref(game));
+        this(type, 0, 0, PlayerManager.getDefaultPlayer(), game, new Ref(game));
     }
 
 

@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.ui;
 
-import eidolons.game.module.adventure.MacroGame;
+import eidolons.macro.MacroGame;
 import eidolons.system.controls.GlobalController;
 
 /**

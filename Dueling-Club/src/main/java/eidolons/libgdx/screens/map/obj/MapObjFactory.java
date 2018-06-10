@@ -1,6 +1,6 @@
 package eidolons.libgdx.screens.map.obj;
 
-import eidolons.game.module.adventure.entity.MacroObj;
+import eidolons.macro.entity.MacroObj;
 import eidolons.libgdx.screens.map.editor.EditorManager;
 import main.system.launch.CoreEngine;
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.game.module.adventure.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
+import eidolons.macro.map.MapVisionMaster.MAP_OBJ_INFO_LEVEL;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.texture.TextureCache;

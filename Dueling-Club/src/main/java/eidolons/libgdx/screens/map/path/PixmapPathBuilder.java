@@ -126,17 +126,26 @@ public class PixmapPathBuilder {
             @Override
             protected SteeringAcceleration arrive(SteeringAcceleration steering,
                                                   Vector targetPosition) {
-//                setSteeringBehavior(null);
+                steering.setZero();
                 setEnabled(false);
                 return super.arrive(steering, targetPosition);
             }
 
+            @Override
+            protected SteeringAcceleration calculateRealSteering(SteeringAcceleration
+                                                                  steering) {
+                main.system.auxiliary.log.LogMaster.log(1," " );
+                return super.calculateRealSteering(steering);
+            }
         };
+
         behavior.setArriveEnabled(true);
         behavior.setEnabled(true);
-        behavior.setArrivalTolerance(5);
+        behavior.setArrivalTolerance(25);
         behavior.setTimeToTarget(2);
-//        behavior.setPredictionTime()
+        behavior.setPredictionTime(1f);
+        behavior.setPathOffset(-1f);
+        behavior.setDecelerationRadius(25f);
         return behavior;
     }
 
@@ -253,7 +262,7 @@ public class PixmapPathBuilder {
             points.add(sub);
         }
         try {
-            return new LinePath<>(points);
+            return new LinePath<>(points,true);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

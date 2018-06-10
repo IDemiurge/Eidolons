@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import eidolons.game.module.adventure.entity.party.MacroParty;
+import eidolons.macro.entity.party.MacroParty;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.screens.map.obj.PartyActorFactory.PartyActorParameters;
 import eidolons.libgdx.screens.map.path.SteerableParty;

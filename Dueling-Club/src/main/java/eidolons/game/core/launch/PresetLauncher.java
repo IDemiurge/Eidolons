@@ -12,7 +12,7 @@ import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
 import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.core.state.Loader;
 import eidolons.game.core.state.Saver;
-import eidolons.game.module.adventure.entity.faction.FactionMaster;
+import eidolons.macro.entity.faction.FactionMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.anims.controls.EmitterController;

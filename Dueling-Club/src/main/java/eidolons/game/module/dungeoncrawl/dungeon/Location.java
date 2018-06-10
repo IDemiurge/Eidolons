@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
-import eidolons.game.module.adventure.map.Place;
+import eidolons.macro.map.Place;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
