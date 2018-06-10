@@ -15,9 +15,9 @@ import eidolons.game.battlecraft.logic.dungeon.universal.Positioner;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.GOAL_TYPE;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -210,19 +210,6 @@ public class WanderAi extends AiBehavior {
         return false;
     }
 
-    public static void initPatrol(GroupAI group, boolean guard) {
-        if (!guard) {
-            try {
-                guard = group.getCreepGroup().getBlock().getType() == BLOCK_TYPE.CORRIDOR;
-            } catch (Exception e) {
-            }
-        }
-        if (guard) {
-            group.setBackAndForth(true); // corridor?
-        } else {
-            group.setClockwisePatrol(RandomWizard.random());
-        }
-    }
 
     public static void changeGroupMoveDirection(GroupAI group, GOAL_TYPE type) {
         DIRECTION wanderDirection = group.getWanderDirection();

@@ -10,8 +10,8 @@ import main.content.enums.system.AiEnums;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 
 import java.util.ArrayList;
 import java.util.Collection;

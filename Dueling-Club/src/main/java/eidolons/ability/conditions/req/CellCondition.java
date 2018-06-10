@@ -6,9 +6,9 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 
 public class CellCondition extends OccupiedCondition {
     boolean free;

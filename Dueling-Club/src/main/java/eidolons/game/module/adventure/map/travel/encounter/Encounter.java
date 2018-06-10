@@ -1,6 +1,5 @@
 package eidolons.game.module.adventure.map.travel.encounter;
 
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Route;
@@ -19,7 +18,6 @@ public class Encounter {
      */
     private int hoursIntoTheTurn; // what if 12+? pass turn? TODO for TImeMaster
     private String typeNames;
-    private List<Wave> waves;
     private MacroParty defendingParty;
     private Integer progress;
     private boolean surrounded;
@@ -69,10 +67,6 @@ public class Encounter {
 
     public String getTypeNames() {
         return typeNames;
-    }
-
-    public List<Wave> getWaves() {
-        return waves;
     }
 
     public Integer getProgress() {

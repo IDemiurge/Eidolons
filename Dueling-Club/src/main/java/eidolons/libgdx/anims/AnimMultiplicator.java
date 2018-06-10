@@ -16,7 +16,7 @@ import main.content.values.parameters.G_PARAMS;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.GeometryMaster;

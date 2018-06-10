@@ -30,9 +30,9 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
@@ -79,16 +79,16 @@ public class DC_MovementManager implements MovementManager {
             if (new CellCondition(UNIT_DIRECTION.AHEAD).check(unit))
                 return AiActionFactory.newAction("Move", unit.getAI());
         }
-        boolean left = (unit.getFacing().isVertical()) ?
+        boolean wantToMoveLeft = (unit.getFacing().isVertical()) ?
          PositionMaster.isToTheLeft(unit.getCoordinates(), coordinates)
          : PositionMaster.isAbove(unit.getCoordinates(), coordinates);
-        if (unit.getFacing().isMirrored()) {
-            left = !left;
+        if (!unit.getFacing().isCloserToZero()) {
+            wantToMoveLeft = !wantToMoveLeft;
         }
 
-        if (!new CellCondition(left ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
+        if (!new CellCondition(wantToMoveLeft ? UNIT_DIRECTION.LEFT : UNIT_DIRECTION.RIGHT).check(unit))
             return null;
-        return AiActionFactory.newAction("Move " + (left ? "Left" : "Right"), unit.getAI());
+        return AiActionFactory.newAction("Move " + (wantToMoveLeft ? "Left" : "Right"), unit.getAI());
     }
 
     public static List<DC_ActiveObj> getMoves(Unit unit) {
@@ -129,7 +129,7 @@ public class DC_MovementManager implements MovementManager {
 
     public static FACING_DIRECTION getDefaultFacingDirection(boolean me) {
 
-        return (me) ? FACING_DIRECTION.NORTH : FACING_DIRECTION.SOUTH;
+        return (me) ? main.game.bf.directions.FACING_DIRECTION.NORTH : main.game.bf.directions.FACING_DIRECTION.SOUTH;
     }
 
     @Override

@@ -6,7 +6,6 @@ import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.entity.EntityWrapper;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 
 /**
  * Created by JustMe on 5/10/2017.
@@ -25,7 +24,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
     public Coordinates getPlayerSpawnCoordinates() {
         String prop = getProperty(PROPS.PARTY_SPAWN_COORDINATES);
         if (prop.isEmpty()) {
-            return Coordinates.getMiddleCoordinate(FACING_DIRECTION.NONE);
+            return Coordinates.getMiddleCoordinate(main.game.bf.directions.FACING_DIRECTION.NONE);
         }
         return new Coordinates(prop);
     }

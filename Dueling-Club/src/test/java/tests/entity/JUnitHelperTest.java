@@ -3,7 +3,6 @@ package tests.entity;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.action.context.Context;
 import org.junit.Test;
 import res.JUnitResources;
@@ -29,8 +28,8 @@ public class JUnitHelperTest extends EidolonsTest {
     public void test() {
         Unit unit = helper.unit(JUnitResources.DEFAULT_UNIT, 0, 0, true);
         helper.move(unit, 1, 1);
-        helper.turn(unit, FACING_DIRECTION.WEST);
-        helper.turn(unit, FACING_DIRECTION.SOUTH);
+        helper.turn(unit, main.game.bf.directions.FACING_DIRECTION.WEST);
+        helper.turn(unit, main.game.bf.directions.FACING_DIRECTION.SOUTH);
         helper.turn(unit, true, true);
         helper.doAction(unit, STD_ACTIONS.Move.name(), new Context(unit.getRef()), true);
         assertTrue(unit.getX() == 0);

@@ -1,7 +1,7 @@
 package main.system.auxiliary.secondary;
 
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 
 import java.awt.*;
 import java.awt.geom.Line2D;

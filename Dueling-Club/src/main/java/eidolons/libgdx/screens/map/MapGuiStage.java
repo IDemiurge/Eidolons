@@ -22,7 +22,6 @@ import eidolons.libgdx.screens.map.ui.*;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel;
 import eidolons.libgdx.stage.GuiStage;
 import eidolons.libgdx.texture.TextureCache;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.launch.CoreEngine;
@@ -134,7 +133,7 @@ public class MapGuiStage extends GuiStage {
          RollDecorator.decorate(partyInfoPanel));
 
         actionPanel = new MapActionPanel();
-        addActor(RollDecorator.decorate(actionPanel, FACING_DIRECTION.SOUTH));
+        addActor(RollDecorator.decorate(actionPanel, main.game.bf.directions.FACING_DIRECTION.SOUTH));
         //background? roll out decorator
 
 //        resources = new MapResourcesPanel();
@@ -143,7 +142,7 @@ public class MapGuiStage extends GuiStage {
 //         GdxMaster.top(resources));
 
         datePanel = new MapDatePanel();
-        addActor(RollDecorator.decorate(datePanel, FACING_DIRECTION.WEST));
+        addActor(RollDecorator.decorate(datePanel, main.game.bf.directions.FACING_DIRECTION.WEST));
 
         timePanel = new MapTimePanel();
         addActor(timePanel); //RollDecorator.decorate(timePanel, FACING_DIRECTION.NORTH));

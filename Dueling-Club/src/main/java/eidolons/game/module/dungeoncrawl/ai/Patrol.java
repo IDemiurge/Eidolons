@@ -4,7 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.GroupAI;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
 
 public class Patrol {
@@ -24,7 +24,6 @@ public class Patrol {
     private Integer distance;
 
     public Patrol(GroupAI group) {
-        group.getCreepGroup().getBlock();
 
     }
 

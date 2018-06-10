@@ -49,7 +49,6 @@ public class DC_Rules implements GameRules {
     private WeightBuffRule weightRule;
     private FocusBuffRule focusBuffRule;
     private DurabilityRule durabilityRule;
-    private ScoutingRule scoutingRule;
 
     private BleedingRule bleedingTriggerRule;
     private BleedingDamageRule bleedingRule;
@@ -276,10 +275,6 @@ public class DC_Rules implements GameRules {
 
     public DurabilityRule getDurabilityRule() {
         return durabilityRule;
-    }
-
-    public ScoutingRule getScoutingRule() {
-        return scoutingRule;
     }
 
     public BleedingRule getBleedingTriggerRule() {

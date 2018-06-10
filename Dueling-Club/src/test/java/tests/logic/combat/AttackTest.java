@@ -3,7 +3,6 @@ package tests.logic.combat;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import main.elements.conditions.Condition;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -30,7 +29,7 @@ public class AttackTest extends CombatTest {
 
         assertTrue(unit.getNaturalWeapon() != null);
 
-        helper.turn(unit, FACING_DIRECTION.WEST);
+        helper.turn(unit, main.game.bf.directions.FACING_DIRECTION.WEST);
 
         atbHelper.startCombat();
         helper.resetAll();

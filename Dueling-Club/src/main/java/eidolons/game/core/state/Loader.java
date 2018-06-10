@@ -12,7 +12,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonData.DUNGEON_VALUE;
@@ -221,9 +220,6 @@ public class Loader {
                 return new DC_ArmorObj(type, owner, game, ref);
             case ITEMS:
                 return new DC_QuickItemObj(type, owner, game, ref);
-//            case DC_ItemActiveObj:
-//                return new DC_QuickItemAction(type, owner, game, ref);
-//            case GARMENT:
             case JEWELRY:
                 return new DC_JewelryObj(type, owner, game, ref);
 
@@ -231,11 +227,6 @@ public class Loader {
                 return new DC_Cell(type, x, y, game, ref
                  , game.getDungeon());
 
-            case ENCOUNTERS:
-                return new Wave(type, game, ref, owner);
-
-//           TODO  case PARTY:
-//                 return new DC_;
         }
         return null;
     }

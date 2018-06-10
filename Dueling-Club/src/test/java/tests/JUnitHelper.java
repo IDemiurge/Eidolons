@@ -7,7 +7,7 @@ import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.unit.Unit;
 import main.entity.Entity;
 import main.entity.obj.Obj;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.logic.action.context.Context;
 
 /**

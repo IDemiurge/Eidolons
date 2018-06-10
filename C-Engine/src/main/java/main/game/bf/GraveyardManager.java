@@ -30,10 +30,6 @@ public interface GraveyardManager {
 
     void addCorpse(Obj unit);
 
-    void updateGraveIndices();
-
-    int getGraveIndex(BfObj obj);
-
     Obj getTopDeadUnit(Coordinates c);
 
     List<Coordinates> getCorpseCells();

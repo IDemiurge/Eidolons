@@ -4,7 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import main.ability.effects.Effect;
 import main.content.OBJ_TYPE;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.math.Formula;
 import main.system.math.PositionMaster.SHAPES;
 

@@ -12,7 +12,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.attach.DC_BuffObj;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
@@ -248,15 +247,11 @@ public class StateCloner {
                     return new DC_BuffObj(
                      (DC_BuffObj) e);
                 case DC_Cell:
-//                Cell cell = (Cell) e;
                     return new DC_Cell(
                      e.getType(), e.getX(), e.getY(), game, e.getRef().getCopy()
                      ,
-//                 cell.
                      game.getDungeon());
 
-                case Wave:
-                    return new Wave(e.getType(), game, e.getRef().getCopy(), (DC_Player) e.getOwner());
             }
         }
         switch (e.getOBJ_TYPE_ENUM()) {
@@ -265,8 +260,6 @@ public class StateCloner {
             case PARTY:
                 return new Party(e.getType(), ((Party) e).getLeader());
 
-//        case JEWELRY:
-//            return new DC_JewelryObj();
             case DEITIES:
                 break;
             case ENCOUNTERS:

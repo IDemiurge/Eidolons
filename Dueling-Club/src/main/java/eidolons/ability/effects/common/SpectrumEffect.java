@@ -11,7 +11,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
@@ -91,7 +91,7 @@ public class SpectrumEffect extends DC_Effect {
 
         if (circular) {
             backwardRange = range;
-            facing = FACING_DIRECTION.NORTH;
+            facing = main.game.bf.directions.FACING_DIRECTION.NORTH;
         } else {
             sidePenalty = 1;
         }

@@ -3,8 +3,8 @@ package eidolons.system.math;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import main.data.XList;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.math.PositionMaster.SHAPES;
 
 import java.util.ArrayList;

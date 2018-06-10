@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.dungeon.test;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.battle.arena.WaveAssembler;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
 import eidolons.game.module.herocreator.logic.UnitLevelManager;
 import eidolons.swing.generic.services.dialog.DialogMaster;
@@ -121,11 +120,6 @@ public class UnitGroupMaster {
         // random
     }
 
-    public static void initUnitGroupLevels(String group, String group2, Player p1, Player p2) {
-        WaveAssembler wa = new WaveAssembler(null);
-        // wa.setForcedPower(forcedPower);
-
-    }
 
     public static ObjType getLeveledType(ObjType type, Player owner, String objData) {
         if (levelMap == null) {

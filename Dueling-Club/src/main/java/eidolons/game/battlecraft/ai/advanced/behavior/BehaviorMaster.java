@@ -39,44 +39,6 @@ public class BehaviorMaster extends AiHandler {
         super(master);
     }
 
-    public static AI_BEHAVIOR_MODE initGroupPref(GroupAI groupAI) {
-        if (groupAI.getCreepGroup() != null) {
-
-        }
-        // else groupAI.getLeader();
-
-        switch (groupAI.getEngagementLevel()) {
-            case AGGRO:
-                break;
-            case ALARMED:
-                break;
-            case SUSPECTING:
-                break;
-            case UNSUSPECTING:
-                break;
-
-        }
-        return AI_BEHAVIOR_MODE.WANDER;
-    }
-
-    private static GOAL_TYPE getGoalFromBehavior(AI_BEHAVIOR_MODE b) {
-        switch (b) {
-            case AGGRO:
-                return (AiEnums.GOAL_TYPE.AGGRO);
-            case AMBUSH:
-                return (AiEnums.GOAL_TYPE.AMBUSH);
-            case GUARD:
-                return (AiEnums.GOAL_TYPE.STAND_GUARD);
-            case PATROL:
-                return (AiEnums.GOAL_TYPE.PATROL);
-            case STALK:
-                return (AiEnums.GOAL_TYPE.STALK);
-            case WANDER:
-                return (AiEnums.GOAL_TYPE.WANDER);
-        }
-        return AiEnums.GOAL_TYPE.MOVE;
-    }
-
     public AiBehavior getBehavior(UnitAI ai) {
         AI_BEHAVIOR_MODE type = AI_BEHAVIOR_MODE.WANDER;
 

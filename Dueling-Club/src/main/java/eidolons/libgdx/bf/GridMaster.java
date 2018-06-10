@@ -7,7 +7,7 @@ import eidolons.libgdx.bf.grid.OverlayView;
 import eidolons.libgdx.gui.CursorPosVector2;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.MigMaster;
 

@@ -11,6 +11,7 @@ import eidolons.test.PresetMaster;
  * Created by JustMe on 8/3/2017.
  */
 public class GameLauncher extends TestLauncher {
+
     private GAME_SUBCLASS gameClass = GAME_SUBCLASS.TEST;
 
     public GameLauncher(GAME_SUBCLASS gameClass) {

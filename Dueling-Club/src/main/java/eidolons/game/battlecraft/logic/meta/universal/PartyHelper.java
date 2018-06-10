@@ -4,7 +4,6 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.module.herocreator.CharacterCreator;
@@ -231,9 +230,6 @@ public class PartyHelper {
     private static Party newParty(ObjType newType) {
         Party party = new Party(newType);
         DC_Game.game.getState().addObject(party);
-        if (DC_Game.game.getGameMode() == GAME_MODES.ARENA_ARCADE) {
-//            DC_Game.game.getArenaArcadeMaster().init(partyObj);
-        }
         return party;
     }
 
@@ -266,18 +262,13 @@ public class PartyHelper {
         return PathFinder.getTYPES_PATH() + PARTY_FOLDER;
     }
 
-    public static List<Unit> loadParty(String typeName) {
-        return loadParty(typeName, Simulation.getGame(), true);
-    }
-
-    public static List<Unit> loadParty(String typeName, DC_Game game, boolean readTypes) {
+    private static List<Unit> loadParty(String typeName, DC_Game game, boolean readTypes) {
         // invoke before obj init, to getOrCreate full obj string
         if (readTypes) {
             File file = getPartyFile(typeName);
             String xml = FileManager.readFile(file);
             if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {
                 String partyTypeData = StringMaster.getXmlNode(xml, typeName);
-                xml = xml.replace(partyTypeData, "");
                 XML_Reader.createCustomTypeList(partyTypeData, DC_TYPE.PARTY, game, true);
             }
             XML_Reader.readCustomTypeFile(file, DC_TYPE.CHARS, game);
@@ -289,7 +280,7 @@ public class PartyHelper {
 
     }
 
-    public static void saveParty() {
+    private static void saveParty() {
         if (getParty() != null) {
             saveParty(getParty());
         }
@@ -349,14 +340,6 @@ public class PartyHelper {
         MetaManager.saveMetaData();
     }
 
-    public static String readLastPartyType() {
-        return MetaManager.getProperty(PROPS.LAST_ARCADE);
-    }
-
-    public static boolean checkPartySize() {
-
-        return checkPartySize(party);
-    }
 
     private static boolean checkPartySize(Party party2) {
         return party2.getMembers().size() <= getMaxPartyMembers(party2);
@@ -370,55 +353,18 @@ public class PartyHelper {
         return max;
     }
 
-    public static Conditions getPrincipleConditions(Party party) {
-        Conditions principlesConditions = new Conditions();
-        for (Unit m : party.getMembers()) {
-            String principles = m.getProperty(G_PROPS.PRINCIPLES);
-            Condition principlesCondition = new PrinciplesCondition(principles, "{MATCH_"
-             + G_PROPS.PRINCIPLES + "}", true);
-            principlesConditions.add(principlesCondition);
-
-        }
-        return principlesConditions;
-    }
 
     public static List<Party> getParties() {
         return parties;
     }
 
-    public static void addCreepParty(Wave wave) {
-        DC_Game game = wave.getGame();
-        Unit leader = wave.getLeader();
-        String name = wave.getName();
-        List<Unit> units = wave.getUnits();
-        ObjType newType = new ObjType(game);
-        wave.setParty(addCreepParty(leader, name, units, newType));
 
-    }
 
-    public static Party addCreepParty(Unit leader, String name, List<Unit> units,
-                                      ObjType newType) {
-        newType.setName(name);
-        Party p = createParty(newType, leader);
-        for (Unit unit : units) {
-            p.addMember(unit);
-        }
-        parties.add(p);
-        return p;
-    }
-
-    public static boolean checkMergeParty(Wave wave) {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     public static ObjType getType() {
-        // if (type == null) {
         ObjType type = (new ObjType(DEFAULT_TYPE_NAME));
         type.setOBJ_TYPE_ENUM(DC_TYPE.PARTY);
-        // DataManager.getType(DEFAULT_TYPE_NAME, OBJ_TYPES.PARTY);
         type.setGame(DC_Game.game);
-        // }
         return type;
     }
 }

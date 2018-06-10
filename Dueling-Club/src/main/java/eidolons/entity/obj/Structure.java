@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 
@@ -82,7 +82,7 @@ public class Structure extends BattleFieldObject {
         if (getDirection() != null) {
             setFacing(FacingMaster.getFacingFromDirection(getDirection()));
         } else {
-            setFacing(FACING_DIRECTION.NONE);
+            setFacing(main.game.bf.directions.FACING_DIRECTION.NONE);
         }
     }
 

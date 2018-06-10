@@ -2,7 +2,6 @@ package eidolons.game.module.adventure.map.travel.encounter;
 
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.core.game.DC_Game;
 import eidolons.macro.MacroManager;
@@ -18,7 +17,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
@@ -55,121 +54,11 @@ public class EncounterMaster {
     private static boolean checkEscape(Encounter e) {
         int distance = 0;
         int headstart = 10;
-//		while (true) {
-//			// mini-message with progress updates
-//
-//			if (distance < x)
-//				return false;
-//			TimeMaster.hoursPassed(1);
-//
-//			Integer speed = e.getDefendingParty().getIntParam(MACRO_PARAMS.TRAVEL_SPEED);
-//			distance += speed;
-//			for (MacroGroup group : e.getGroups()) {
-//				group.getTravelSpeed();
-//				group.chase();
-//				if (distance - group.getChaseDistance() > surroundAdvantage) {
-//
-//				}
-//				if (distance > x)
-//					e.getGroups().remove(group);
-//			}
-//			e.getGroups().addAll(checkEncounterGroups(e.getDefendingParty(), 1));
-//			// preCheck coordinates - surround?
-//			if (e.getGroups().isEmpty())
-//				return true;
-//		}
+
         return false;
     }
 
-    private static boolean parlay(Encounter e) {
-        // e.getWaves();
-        for (Wave wave : e.getWaves()) {
-            // set owner? remove from encounter? set in front? delay?
-        }
-        // middle outcome - persuaded some waves to stay away
 
-        // bribe, intimidate, taunt, ++ converse/chat/blather
-
-        Boolean choice = DialogMaster.askAndWait(getEncounterDescription(e), true, "Bribe",
-         "Intimidate", "Taunt");
-        if (choice == null) {
-            return taunt(e);
-        } else {
-            if (!choice) {
-                return intimidate(e);
-            }
-            return bribe(e);
-        }
-    }
-
-    private static boolean bribe(Encounter e) {
-        for (Wave wave : e.getWaves()) {
-            // set owner? remove from encounter? set in front? delay?
-        }
-        return false;
-    }
-
-    private static boolean intimidate(Encounter e) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    private static boolean taunt(Encounter e) {
-        // TODO morale? focus? rage counters?
-        return false;
-    }
-
-    public static boolean resolveEncounter(Encounter e) {
-        // return outcome, what for? Fled, Surrendered
-        Boolean choice = DialogMaster.askAndWait(getEncounterDescription(e), true, "Fight", "Flee",
-         "Parlay");
-        boolean result = false;
-        if (choice == null) {
-            result = parlay(e);
-        } else {
-            if (!choice) {
-                result = flee(e);
-            }
-        }
-        if (result) {
-            return true;
-        }
-
-        encounterBeingResolved = true;
-        // save macro game
-        // DC_Game.game.getBattleManager().setEncounter(e);
-        // DC_Game.game.getBattleManager().setEncounter(true);
-        DC_Game game = DC_Game.game;
-        // game.setPlayerParty(e.getDefendingParty().getMicroParty());
-//        game.getDungeonMaster().initEncounterDungeon(e);
-//        if (!game.isBattleInit()) {
-//            game.battleInit();
-//        }
-//        game.getBattleManager().setEncounter(e);
-//        game.getBattleMaster().getBattleConstructor().setEncounterSequence(getWaveSequence(e));
-//        Launcher.launchDC(e.getDefendingParty().getName(), false);
-        boolean outcome = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.BATTLE_FINISHED);
-//        encounterBeingResolved = false;
-//        game.getBattleManager().setEncounter(null);
-        return outcome;
-    }
-
-    private static Map<Wave, Integer> getWaveSequence(Encounter e) {
-        Map<Wave, Integer> waves = new XLinkedMap<>();
-        int i = 0;
-        for (String typeName : StringMaster.open(e.getTypeNames())) {
-            ObjType waveType = DataManager.getType(typeName, DC_TYPE.ENCOUNTERS);
-            Wave wave = new Wave(waveType, DC_Game.game, new Ref(), DC_Game.game.getPlayer(false));
-            wave.initUnitMap(); // TODO is the field ready for coordinates?
-            int j = i;
-//                    + DC_Game.game.getBattleMaster().getBattleConstructor().getRoundsToFight(
-//                    waveType);
-            Integer round = RandomWizard.getRandomIntBetween(i, j);
-            i += round;
-            waves.put(wave, round);
-        }
-        return waves;
-    }
 
     public static void newTurn() {
         // add lurkers

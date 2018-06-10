@@ -13,7 +13,7 @@ import main.elements.targeting.AutoTargeting;
 import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.FilterMaster;
 import main.system.math.Formula;

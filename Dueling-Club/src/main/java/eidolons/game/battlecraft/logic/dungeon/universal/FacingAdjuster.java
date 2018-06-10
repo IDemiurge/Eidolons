@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMapGenerator.MAP
 import eidolons.game.core.game.DC_Game.GAME_MODES;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Collection;
@@ -92,16 +92,16 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         if (zone != null) {
             switch (zone) {
                 case SIDE_EAST:
-                    return FACING_DIRECTION.WEST;
+                    return main.game.bf.directions.FACING_DIRECTION.WEST;
                 case SIDE_NORTH:
-                    return FACING_DIRECTION.SOUTH;
+                    return main.game.bf.directions.FACING_DIRECTION.SOUTH;
                 case SIDE_SOUTH:
-                    return FACING_DIRECTION.NORTH;
+                    return main.game.bf.directions.FACING_DIRECTION.NORTH;
                 case SIDE_WEST:
-                    return FACING_DIRECTION.EAST;
+                    return main.game.bf.directions.FACING_DIRECTION.EAST;
             }
         }
-        return FACING_DIRECTION.NORTH;
+        return main.game.bf.directions.FACING_DIRECTION.NORTH;
     }
 
     public void unitPlaced(Coordinates adjacentCoordinate, FACING_DIRECTION facingFromDirection) {

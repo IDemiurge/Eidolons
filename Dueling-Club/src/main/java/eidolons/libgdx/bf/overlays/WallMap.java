@@ -11,7 +11,7 @@ import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -34,20 +34,7 @@ public class WallMap extends SuperActor {
     private Map<Coordinates, DOOR_STATE> doorMap;
 
     public WallMap() {
-        //doors? probably as separate actors
         bindEvents();
-        //idea - just statically modify wall actors?
-        // flipping, darkening, ...
-
-        // main challenge - sometimes wall is "full", sometimes "fractured"
-
-        /*
-        new in this version:
-        > My aim might be to transition into "overlays only" wall mode
-         >
-        > slight alpha fluctuation?
-
-         */
 
     }
 
@@ -59,7 +46,7 @@ public class WallMap extends SuperActor {
         WallMap.on = on;
     }
 
-    private static STD_IMAGES getWallImageFromSide(DIRECTION side, String suffix) {
+    private static STD_IMAGES getWallImageFromSide(DIRECTION side) {
         switch (side) {
             case DOWN_LEFT:
                 return STD_IMAGES.WALL_DIAGONAL_DOWN_LEFT;
@@ -81,12 +68,8 @@ public class WallMap extends SuperActor {
         return null;
     }
 
-    private static String getPath(DIRECTION directions) {
-        return StrPathBuilder.build("ui", "bf", "");
-    }
 
     private static TextureRegion getRegion(STD_IMAGES images, String suffix) {
-//        images.getPathsuffixedImage(j).g
         if (!StringMaster.isEmpty(suffix)) {
             String path = StringMaster.cropFormat(images.getPath());
             path += suffix + ".png";
@@ -146,7 +129,7 @@ public class WallMap extends SuperActor {
                 diamond = true;
             } else {
                 for (DIRECTION side : list) {
-                    TextureRegion image = getRegion(getWallImageFromSide(side, suffix), suffix);
+                    TextureRegion image = getRegion(getWallImageFromSide(side), suffix);
 
                     if (side.isDiagonal()) {
                         if (list.size() == 1) {
@@ -276,29 +259,29 @@ public class WallMap extends SuperActor {
         if (diagonalJoints == null)
             return;
         for (Coordinates c : set) {
-            List<Coordinates.DIRECTION> list = diagonalJoints.get(c);
+            List<DIRECTION> list = diagonalJoints.get(c);
             if (!ListMaster.isNotEmpty(list))
                 continue;
             if (checkCoordinateIgnored(c))
                 continue;
             int h = GridMaster.CELL_H;
             int w = GridMaster.CELL_W;
-            for (Coordinates.DIRECTION side : list) {
+            for (DIRECTION side : list) {
 
                 Vector2 v = GridMaster.getVectorForCoordinate(c, false, false);
 
                 float x1 = v.x;
                 float y1 = v.y;
                 boolean flipped = false;
-                if (side == Coordinates.DIRECTION.DOWN_LEFT) {
+                if (side == DIRECTION.DOWN_LEFT) {
                     y1 -= h;
-                } else if (side == Coordinates.DIRECTION.DOWN_RIGHT) {
+                } else if (side == DIRECTION.DOWN_RIGHT) {
                     x1 += w;
                     y1 -= h;
                     flipped = true;
-                } else if (side == Coordinates.DIRECTION.UP_LEFT) {
+                } else if (side == DIRECTION.UP_LEFT) {
                     flipped = true;
-                } else if (side == Coordinates.DIRECTION.UP_RIGHT) {
+                } else if (side == DIRECTION.UP_RIGHT) {
                     x1 += w;
                 }
 

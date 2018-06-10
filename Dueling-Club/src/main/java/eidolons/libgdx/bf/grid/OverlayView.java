@@ -8,10 +8,11 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 
 public class OverlayView extends BaseView {
     public static final float SCALE = 0.5F;
-    private Coordinates.DIRECTION direction;
+    private DIRECTION direction;
 
     public OverlayView(UnitViewOptions viewOptions, BattleFieldObject bfObj) {
         super(viewOptions);
@@ -53,11 +54,11 @@ public class OverlayView extends BaseView {
         super.draw(batch, parentAlpha);
     }
 
-    public Coordinates.DIRECTION getDirection() {
+    public DIRECTION getDirection() {
         return direction;
     }
 
-    public void setDirection(Coordinates.DIRECTION direction) {
+    public void setDirection(DIRECTION direction) {
         this.direction = direction;
     }
 }

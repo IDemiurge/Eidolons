@@ -1,10 +1,12 @@
 package eidolons.libgdx.bf;
 
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 
 public interface Rotatable {
-    Coordinates.DIRECTION getDirection();
+    DIRECTION getDirection();
 
-    Coordinates.FACING_DIRECTION getFacing();
+    FACING_DIRECTION getFacing();
 
 }

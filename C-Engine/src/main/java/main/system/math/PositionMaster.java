@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import main.entity.obj.Obj;
 import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.graphics.GuiManager;

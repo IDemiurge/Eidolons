@@ -21,7 +21,7 @@ import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
+import main.game.bf.directions.DIRECTION;
 import main.game.core.game.Game;
 import main.system.auxiliary.SearchMaster;
 import main.system.datatypes.DequeImpl;
@@ -144,7 +144,6 @@ public class MacroGame extends Game {
     public World getWorld() {
         return world;
     }
-
     public void setWorld(World world) {
         this.world = world;
     }

@@ -2,7 +2,7 @@ package eidolons.ability.effects.oneshot.move;
 
 import eidolons.entity.obj.unit.Unit;
 import main.game.bf.Coordinates;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.DirectionMaster;
 import main.game.bf.MovementManager.MOVE_MODIFIER;
 import main.system.auxiliary.RandomWizard;
 

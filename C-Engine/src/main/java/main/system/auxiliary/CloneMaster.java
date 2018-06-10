@@ -10,7 +10,7 @@ public class CloneMaster  {
     //this used to work for ObjTypes too until 'somefilename' was deleted....
     // now it only works for tree nodes
     public static Object deepCopy(Object object) {
-        FileOutputStream fos;
+        FileOutputStream fos = null;
         ObjectOutputStream out;
         try {
             fos = new FileOutputStream("somefilename");
@@ -19,6 +19,7 @@ public class CloneMaster  {
             out.close();
         } catch (IOException ex) {
             main.system.ExceptionMaster.printStackTrace(ex);
+        } finally {
         }
 
         FileInputStream fis;

@@ -33,7 +33,7 @@ import main.entity.Ref.KEYS;
 import main.entity.handlers.EntityMaster;
 import main.entity.handlers.EntityResetter;
 import main.entity.obj.ActiveObj;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;

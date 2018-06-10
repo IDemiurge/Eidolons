@@ -1,18 +1,12 @@
 package eidolons.game.battlecraft.logic.dungeon.test;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.ai.GroupAI;
-import eidolons.game.battlecraft.logic.battle.arena.Wave;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
 import eidolons.game.battlecraft.logic.dungeon.universal.Spawner;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
-import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.module.herocreator.logic.party.Party;
-import main.data.XList;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -43,23 +37,6 @@ public class TestSpawner extends Spawner<TestDungeon> {
 
     }
 
-    private void initGroup(Wave group) {
-        GroupAI groupAi = new GroupAI(group);
-        groupAi.setLeader(group.getParty().getLeader());
-        groupAi.setWanderDirection(FacingMaster.getRandomFacing().getDirection());
-        group.setAi(groupAi);
-        if (getGame().getGameMode() == GAME_MODES.DUNGEON_CRAWL) {
-            XList<MapBlock> permittedBlocks = new XList<>();
-            permittedBlocks.addAllUnique(group.getBlock().getConnectedBlocks().keySet());
-            int wanderBlockDistance = 1;
-            for (int i = 0; i < wanderBlockDistance; i++) {
-                for (MapBlock b : group.getBlock().getConnectedBlocks().keySet()) {
-                    permittedBlocks.addAllUnique(b.getConnectedBlocks().keySet());
-                }
-            }
-            groupAi.setPermittedBlocks(permittedBlocks);
-        }
-    }
 
     @Override
     public List<Unit> spawn(UnitData data, DC_Player owner, SPAWN_MODE mode) {

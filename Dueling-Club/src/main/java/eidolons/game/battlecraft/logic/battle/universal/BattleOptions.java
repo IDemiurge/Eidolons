@@ -3,7 +3,7 @@ package eidolons.game.battlecraft.logic.battle.universal;
 import eidolons.game.battlecraft.logic.battle.universal.BattleOptions.ARENA_GAME_OPTIONS;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DIFFICULTY;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.data.DataUnit;
 
@@ -16,7 +16,7 @@ public class BattleOptions extends DataUnit<ARENA_GAME_OPTIONS> {
              FACING_DIRECTION.class,
              getValue(ARENA_GAME_OPTIONS.PLAYER_STARTING_SIDE));
         }
-        return FACING_DIRECTION.NONE;
+        return main.game.bf.directions.FACING_DIRECTION.NONE;
     }
 
     public DIFFICULTY getDifficulty() {

@@ -37,7 +37,7 @@ import main.elements.targeting.SelectiveTargeting.SELECTIVE_TARGETING_TEMPLATES;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;

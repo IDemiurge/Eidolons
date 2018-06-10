@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYP
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.system.math.DC_PositionMaster;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.FACING_DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XDimension;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -346,9 +346,9 @@ public class BuildHelper {
 
     private List<Coordinates> getCoordinates(Coordinates baseCoordinate, int width, int height,
                                              boolean flipX, boolean flipY) {
-        FACING_DIRECTION lengthDirection = (flipY) ? FACING_DIRECTION.NORTH
-         : FACING_DIRECTION.SOUTH;
-        FACING_DIRECTION widthDirection = (flipX) ? FACING_DIRECTION.WEST : FACING_DIRECTION.EAST;
+        FACING_DIRECTION lengthDirection = (flipY) ? main.game.bf.directions.FACING_DIRECTION.NORTH
+         : main.game.bf.directions.FACING_DIRECTION.SOUTH;
+        FACING_DIRECTION widthDirection = (flipX) ? main.game.bf.directions.FACING_DIRECTION.WEST : main.game.bf.directions.FACING_DIRECTION.EAST;
         return DC_PositionMaster.getRectangle(true, lengthDirection, widthDirection,
          baseCoordinate, height, width);
 

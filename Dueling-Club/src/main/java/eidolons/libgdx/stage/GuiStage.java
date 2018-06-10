@@ -39,7 +39,6 @@ import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
-import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.Triple;
@@ -105,7 +104,7 @@ public class GuiStage extends StageX implements StageWithClosable {
 
 
         SimpleLogPanel log = new SimpleLogPanel();
-        RollableGroup decorated = RollDecorator.decorate(log, FACING_DIRECTION.EAST);
+        RollableGroup decorated = RollDecorator.decorate(log, main.game.bf.directions.FACING_DIRECTION.EAST);
         addActor(decorated);
         decorated.
          setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);

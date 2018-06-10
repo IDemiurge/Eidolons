@@ -8,9 +8,9 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.game.bf.Coordinates;
-import main.game.bf.Coordinates.DIRECTION;
-import main.game.bf.Coordinates.UNIT_DIRECTION;
-import main.game.bf.DirectionMaster;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.UNIT_DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 
 import java.util.ArrayList;
 import java.util.List;
