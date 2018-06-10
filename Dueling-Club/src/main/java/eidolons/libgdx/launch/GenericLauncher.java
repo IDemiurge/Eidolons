@@ -11,12 +11,12 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
-import eidolons.macro.MacroManager;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
+import eidolons.macro.MacroManager;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -63,9 +63,9 @@ public class GenericLauncher extends Game {
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         Eidolons.setMainViewport(viewport);
-//        if (!CoreEngine.isInitializing() && !CoreEngine.isInitialized()) {
-//            engineInit();
-//        }
+        //        if (!CoreEngine.isInitializing() && !CoreEngine.isInitialized()) {
+        //            engineInit();
+        //        }
         screenInit();
     }
 
@@ -105,11 +105,11 @@ public class GenericLauncher extends Game {
     }
 
     public LwjglApplicationConfiguration getConf() {
-//        Eidolons. getApplication().getGraphics().setFullscreenMode();
+        //        Eidolons. getApplication().getGraphics().setFullscreenMode();
         conf = new LwjglApplicationConfiguration();
         conf.title = getTitle();
-//        if (Gdx.graphics.isGL30Available())
-//        conf.useGL30 = true;
+        //if (Gdx.graphics.isGL30Available())
+        //conf.useGL30 = true;
         conf.resizable = false;
 
         conf.fullscreen = false;
@@ -139,12 +139,12 @@ public class GenericLauncher extends Game {
 
     protected void initResolution(LwjglApplicationConfiguration conf) {
         if (fullscreen) {
-//            DisplayMode displayMode = LwjglApplicationConfiguration.getDesktopDisplayMode();
-//            conf.setFromDisplayMode(displayMode);
+            //            DisplayMode displayMode = LwjglApplicationConfiguration.getDesktopDisplayMode();
+            //            conf.setFromDisplayMode(displayMode);
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
             conf.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
             conf.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
-//            conf.fullscreen=true;
+            //            conf.fullscreen=true;
             System.out.println("resolution width " + conf.width);
             System.out.println("resolution height " + conf.height);
         } else {
@@ -188,17 +188,17 @@ public class GenericLauncher extends Game {
         if (viewport == null)
             return;
 
-            viewport.update(width, height);
+        viewport.update(width, height);
 
         if (gameScreen != null) gameScreen.resize(width, height);
         else getScreen().resize(width, height);
-//        if (VignetteShader.isUsed()) {
-//            ShaderProgram program = VignetteShader.getShader();
-//      try{
-//        program.use();
-//        program.setUniformf("resolution", Display.getWidth(), Display.getHeight());
-//      }catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
-//    }
+        //        if (VignetteShader.isUsed()) {
+        //            ShaderProgram program = VignetteShader.getShader();
+        //      try{
+        //        program.use();
+        //        program.setUniformf("resolution", Display.getWidth(), Display.getHeight());
+        //      }catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
+        //    }
     }
 
     @Override
@@ -228,7 +228,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
-        main.system.auxiliary.log.LogMaster.log(1,"switchScreen " +meta.getName());
+        main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getName());
         final ScreenWithVideoLoader newScreen = factory.get();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);
@@ -253,25 +253,25 @@ public class GenericLauncher extends Game {
         triggerLoaded(meta);
     }
 
-    protected void triggerLoaded(ScreenData meta) {
-        main.system.auxiliary.log.LogMaster.log(1,"triggerLoaded " +meta.getName());
+    protected void triggerLoaded(ScreenData data) {
+        main.system.auxiliary.log.LogMaster.log(1, "triggerLoaded " + data.getName());
         if (Blackout.isOnNewScreen())
             GuiEventManager.trigger(GuiEventType.FADE_OUT_AND_BACK);
-        switch (meta.getType()) {
+        switch (data.getType()) {
             case BATTLE:
                 if (!CoreEngine.isMacro())
                     if (firstInitDone)
                         return;
-                Eidolons.onThisOrNonGdxThread(  () -> {
-                    main.system.auxiliary.log.LogMaster.log(1,"initScenario for dungeon:" +meta.getName());
-                    if (!Eidolons.initScenario(new ScenarioMetaMaster(meta.getName())))
-                        return;
+                Eidolons.onThisOrNonGdxThread(() -> {
+                    main.system.auxiliary.log.LogMaster.log(1, "initScenario for dungeon:" + data.getName());
+                    if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
+                        return; // INIT FAILED
                     DC_Engine.gameStartInit();
                     if (MusicMaster.isOn())
                         MusicMaster.preload(MUSIC_SCOPE.ATMO);
                     Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                     firstInitDone = true;
-                } );
+                });
                 break;
             case MAIN_MENU:
                 GuiEventManager.trigger(SCREEN_LOADED,
@@ -279,7 +279,7 @@ public class GenericLauncher extends Game {
                 break;
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(meta.getType(), null));
+                 new ScreenData(data.getType(), null));
         }
     }
 
@@ -312,7 +312,7 @@ public class GenericLauncher extends Game {
         }
     }
 
-    public void onScreenLoadDone(EventCallbackParam param) {
+    private void onScreenLoadDone(EventCallbackParam param) {
         if (getScreen() == null)
             return;
         else {

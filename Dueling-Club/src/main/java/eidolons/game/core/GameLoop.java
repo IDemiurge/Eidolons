@@ -101,31 +101,13 @@ public class GameLoop {
         LogMaster.log(1, "Game Loop exit " + this);
         if (AiTrainingRunner.running) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, false);
-        } else {
-//            if (ExplorationMaster.isExplorationOn())
-//                return;
-//
-//            Boolean result = (boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_FINISHED);
-//            if (result) {
-//                Eidolons.getGame().getBattleMaster().getOutcomeManager().next();
-//            } else {
-//                aftermath = true;
-//                start();
-//            }
-
         }
-
 
         WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
         main.system.auxiliary.log.LogMaster.log(1, this + " exited!");
         setExited(false);
 
-        if (game.getLoop() != null)
-            if (game.getLoop() != this)
-                if (game.getGameLoopThread() != null)
-                    if (game.getGameLoopThread() != thread)
-                        return;
-
+            if (game.getLoop() == this)
         SpecialLogger.getInstance().appendSpecialLog(
          SPECIAL_LOG.EXCEPTIONS, "game loop exits without new loop running!");
     }
@@ -438,10 +420,8 @@ public class GameLoop {
         if (exited) {
             main.system.auxiliary.log.LogMaster.log(1, this + " interrupting thread... ");
             WaitMaster.unmarkAsComplete(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-
-//            if (Thread.currentThread() == thread)
             try {
-                game.getGameLoopThread().interrupt();
+                thread.interrupt();
                 main.system.auxiliary.log.LogMaster.log(1, this + " interrupted thread!");
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -453,6 +433,10 @@ public class GameLoop {
                 actionInput(null);
             }
         }
+    }
+
+    public Thread getThread() {
+        return thread;
     }
 
     public void stop() {

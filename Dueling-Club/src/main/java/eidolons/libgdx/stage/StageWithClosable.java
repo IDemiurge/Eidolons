@@ -12,10 +12,6 @@ import eidolons.libgdx.gui.generic.GroupX;
  * Created by JustMe on 11/25/2017.
  */
 public interface StageWithClosable {
-//    boolean closeDisplayed(Closable newClosable);
-//    boolean closeDisplayed();
-//    void openClosable(Closable closable);
-//    void closeClosable(Closable closable);
 
     Closable getDisplayedClosable();
 

@@ -141,15 +141,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         }
         party = new Party(type);
 
-        //        if (party.getNextMission().isEmpty()) {
-        //            String missions = StringMaster.joinList(getMetaGame().getScenario().getAvailableMissions());
-        //            party.setProperty(PROPS.PARTY_MISSIONS_NEXT,
-        //             missions
-        //             StringMaster.openContainer(getMetaGame().getScenario().
-        //              getProperty(PROPS.SCENARIO_MISSIONS)).get(0)
-        //             , true);
-        //        }
-
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));
 
@@ -158,11 +149,6 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
           getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
         return party;
 
-    }
-
-
-    private boolean isSwingOn() {
-        return false;
     }
 
 }

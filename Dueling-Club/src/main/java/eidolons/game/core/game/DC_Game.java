@@ -81,7 +81,6 @@ import java.util.*;
 /**
  * contains references to everything that may be needed in scope of a single game
  * TODO refactor - put data into GameState!
- * <portrait>
  * init() should be called to create all Masters
  * battleInit() is a reset method
  * start() creates units and starts GameLoop (DC_TurnManager)
@@ -119,8 +118,6 @@ public class DC_Game extends MicroGame {
     protected boolean dummyPlus;
     protected boolean AI_ON = true;
 
-    protected Thread gameLoopThread;
-    protected Thread exploreGameLoopThread;
     protected GameLoop loop;
     protected GameLoop combatLoop;
     protected ExploreGameLoop exploreLoop;
@@ -315,7 +312,7 @@ public class DC_Game extends MicroGame {
         if (exploreLoop.isStarted())
             exploreLoop.resume();
         else
-            setGameLoopThread(exploreLoop.startInNewThread());
+            exploreLoop.startInNewThread();
         if (isStarted())
             if (MusicMaster.isOn())
                 musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
@@ -329,7 +326,7 @@ public class DC_Game extends MicroGame {
         if (combatLoop.isStarted())
             combatLoop.resume();
         else
-            setGameLoopThread(loop.startInNewThread());
+             loop.startInNewThread() ;
 
         if (MusicMaster.isOn())
             musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
@@ -553,11 +550,7 @@ public class DC_Game extends MicroGame {
     }
 
     public Thread getGameLoopThread() {
-        return gameLoopThread;
-    }
-
-    public void setGameLoopThread(Thread gameLoopThread) {
-        this.gameLoopThread = gameLoopThread;
+        return loop.getThread();
     }
 
     public DroppedItemManager getDroppedItemManager() {
@@ -850,38 +843,5 @@ public class DC_Game extends MicroGame {
 
     }
 
-
-    //    public void exit(boolean mainMenu) throws InterruptedException {
-    //        // TODO review this! only for arcade-game, btw!
-    //        stop();
-    //        WaitRule.reset();
-    //        for (Obj obj : getObjects(DC_TYPE.BUFFS)) {
-    //            BuffObj buff = (BuffObj) obj;
-    //            if (buff.isDispelable() || !buff.isPermanent()) {
-    //                buff.kill();
-    //            }
-    //        }
-    //        state.reset();
-    //        logManager.clear();
-    //        for (Obj obj : getUnits()) {
-    //            if (!obj.getOriginalOwner().isMe()) {
-    //                obj.kill(obj, false, true);
-    //            }
-    //            if (!mainMenu && obj.getOwner().isMe()) {
-    //                continue;
-    //            }
-    //
-    //            state.removeObject(obj.getId());
-    //        }
-    //        if (mainMenu) {
-    //            getMaster().clear();
-    //        }
-    //
-    //        for (Obj obj : getCells()) {
-    //            obj.kill(obj, false, true);
-    //            state.removeObject(obj.getId());
-    //        }
-    //
-    //    }
 
 }

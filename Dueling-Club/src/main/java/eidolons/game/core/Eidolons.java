@@ -266,6 +266,9 @@ public class Eidolons {
     public static void exitToMenu() {
         try {
             DC_Game.game.getMetaMaster().gameExited();
+            if (MacroGame.game!=null ){
+                MacroGame.game.getLoop().setExited(true);
+            }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             //            DialogMaster.confirm("Game exit failed!");

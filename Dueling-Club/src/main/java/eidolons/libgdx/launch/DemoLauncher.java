@@ -53,7 +53,7 @@ public class DemoLauncher extends GenericLauncher {
     }
 
     @Override
-    protected void triggerLoaded(ScreenData meta) {
+    protected void triggerLoaded(ScreenData data) {
 
     }
 

@@ -19,12 +19,12 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     public AnimatedMenuScreen() {
         initMenu();
-        bindEvents();
     }
 
     protected void initMenu() {
         getOverlayStage().clear();
         mainMenu = MainMenu.getInstance();
+        mainMenu.setVisible(true);
         getOverlayStage().addActor(mainMenu);
         mainMenu.setPosition(
          GdxMaster.centerWidth(mainMenu)
@@ -36,10 +36,6 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         initMenu();
         super.backToLoader();
         getOverlayStage().setActive(true);
-
-    }
-    protected void bindEvents() {
-
     }
 
     protected boolean isWaitForInput() {
@@ -48,7 +44,6 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
 
     @Override
     protected void afterLoad() {
-//music
         getOverlayStage().setActive(true);
     }
     protected void back() {

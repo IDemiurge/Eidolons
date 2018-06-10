@@ -18,27 +18,14 @@ import main.system.GuiEventType;
  */
 public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
-    ScenarioData data;
-
     public ScenarioMetaMaster(String data) {
         super(data);
 
     }
 
-    /*
-        on clicking a mission...
-        full loading 
-        > create dungeon(s)
-        > create party units (maybe  place them at once)
-         */
     @Override
     public void preStart() {
         getMetaDataManager().initMissionName();
-//        String levelPath = DataManager.getType(getMissionName(), DC_TYPE.MISSIONS).
-//         getProperty(PROPS.MISSION_FILE_PATH);
-//        getGame().getDataKeeper().getDungeonData().setValue(DUNGEON_VALUE.PATH,
-//         levelPath);
-
         super.preStart();
     }
 

@@ -23,13 +23,14 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
     MacroTimeMaster timeMaster;
-    MacroGame game;
+    MacroGame macroGame;
 
     public MacroGameLoop(MacroGame game) {
         super();
-        this.game = game;
+        this.macroGame = game;
         timeMaster =MacroTimeMaster.getInstance();
     }
+
     public void togglePaused() {
         setPaused(!isPaused(), false);
     }
@@ -145,7 +146,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     public void tryEnter(Place sub) {
-        Coordinates c = game.getPlayerParty().getCoordinates();
+        Coordinates c = macroGame.getPlayerParty().getCoordinates();
         if (sub.getCoordinates().dst(c) < 150) {
             combatStarts(sub);
         }
@@ -171,8 +172,8 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     private Place checkBattleStarts() {
-        Coordinates c = game.getPlayerParty().getCoordinates();
-        for (Place sub : game.getPlaces()) {
+        Coordinates c = macroGame.getPlayerParty().getCoordinates();
+        for (Place sub : macroGame.getPlaces()) {
             if (sub.getCoordinates().dst(c) < 150) {
                 return sub;
             }
