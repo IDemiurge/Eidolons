@@ -20,7 +20,7 @@ import tests.utils.JUnitUtils;
 /**
  * Created by JustMe on 3/27/2017.
  */
-public class DcTest {
+public class EidolonsTest {
 
     protected DC_Game game;
     protected DcHelper helper;
@@ -48,17 +48,15 @@ public class DcTest {
         CoreEngine.setGraphicsOff(isGraphicsOff());
         CoreEngine.setjUnit(true);
         if (isSelectiveXml())
-        CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
+            CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
         AI_Manager.setOff(isAiOff());
         DC_Engine.setTrainingOff(isTrainingOff());
-        if (isScenario()){
-           new  MainLauncher().main(new String[]{
-            MAIN_MENU_ITEM.PLAY.name()+","+getScenarioIndex() +","+getHeroIndex()
-           });
+        if (isScenario()) {
+            new MainLauncher().main(new String[]{
+             getLaunchArgString()
+            });
             WaitMaster.waitForInputAnew(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-        }
-        else
-        if (isOldLauncher()) {
+        } else if (isOldLauncher()) {
             FAST_DC.main(new String[]{
              FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
              getPlayerParty(),
@@ -81,9 +79,15 @@ public class DcTest {
         utils = new JUnitUtils(game);
     }
 
+    protected String getLaunchArgString() {
+        return MAIN_MENU_ITEM.PLAY.name() + "," +
+         getScenarioIndex() + "," + getHeroIndex();
+    }
+
     protected Integer getScenarioIndex() {
         return null;
     }
+
     protected Integer getHeroIndex() {
         return null;
     }
@@ -95,8 +99,10 @@ public class DcTest {
     protected void log(String s) {
         System.out.println(s);
     }
+
     protected boolean isSelectiveXml() {
-        return true;}
+        return true;
+    }
 
     protected String getXmlTypesToRead() {
         return "bf obj;buffs;weapons;armor;terrain;dungeons;units;actions;abils;";
@@ -105,6 +111,7 @@ public class DcTest {
     protected boolean isTrainingOff() {
         return true;
     }
+
     protected boolean isAiOff() {
         return true;
     }

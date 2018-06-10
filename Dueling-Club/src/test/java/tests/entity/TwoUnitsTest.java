@@ -3,14 +3,14 @@ package tests.entity;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import res.JUnitResources;
-import tests.DcTest;
+import tests.EidolonsTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/28/2017.
  */
-public class TwoUnitsTest extends DcTest {
+public class TwoUnitsTest extends EidolonsTest {
     protected   Unit unit;
     protected   Unit unit2;
 

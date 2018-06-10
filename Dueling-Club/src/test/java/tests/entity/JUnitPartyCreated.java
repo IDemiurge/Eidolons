@@ -4,14 +4,14 @@ import eidolons.entity.obj.unit.Unit;
 import org.junit.Ignore;
 import org.junit.Test;
 import res.JUnitResources;
-import tests.DcTest;
+import tests.EidolonsTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class JUnitPartyCreated extends DcTest {
+public class JUnitPartyCreated extends EidolonsTest {
 
 
     protected Unit unit;

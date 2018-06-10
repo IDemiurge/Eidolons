@@ -7,14 +7,14 @@ import main.game.bf.Coordinates.FACING_DIRECTION;
 import main.game.logic.action.context.Context;
 import org.junit.Test;
 import res.JUnitResources;
-import tests.DcTest;
+import tests.EidolonsTest;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by JustMe on 4/12/2018.
  */
-public class JUnitHelperTest extends DcTest {
+public class JUnitHelperTest extends EidolonsTest {
     @Override
     protected String getPlayerParty() {
         return "";

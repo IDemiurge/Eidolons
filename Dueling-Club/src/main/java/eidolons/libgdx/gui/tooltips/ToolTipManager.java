@@ -29,25 +29,31 @@ import static main.system.GuiEventType.*;
 
 public class ToolTipManager extends TablePanel {
 
+    private static final float DEFAULT_WAIT_TIME = 1f;
     private final GuiStage guiStage;
+    float tooltipTimer;
+    private Tooltip tooltip;
     private Cell actorCell;
+    private float toWait;
 
     public ToolTipManager(GuiStage battleGuiStage) {
         guiStage = battleGuiStage;
         GuiEventManager.bind(SHOW_TOOLTIP, (event) -> {
 
             Object object = event.get();
-            if (object == null) {
-                if (isRemoveImmediately(actorCell.getActor())) {
-                    actorCell.setActor(null);
-//                    immediate removal
-                } else {
-                    if (actorCell.getActor() != null)
-                        ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
-                }
+            if (tooltip == object)
+                return;
+            if (isRemoveImmediately(actorCell.getActor())) {
+                actorCell.setActor(null);
+                //                    immediate removal
             } else {
-                init((Tooltip) object);
+                if (actorCell.getActor() != null)
+                    ActorMaster.addFadeOutAction(actorCell.getActor(), 0.35f);
             }
+            tooltip = (Tooltip) object;
+            toWait = getTimeToWaitForTooltip(tooltip);
+            if (toWait == 0)
+                show();
 
         });
 
@@ -57,8 +63,6 @@ public class ToolTipManager extends TablePanel {
             BaseView object = (BaseView) event.get();
             if (object instanceof LastSeenView)
                 return;
-//            if (object.getScaleX()==getDefaultScale(object))
-//                if (object.getScaleX()==getDefaultScale(object))
 
             float scaleX = getDefaultScale(object);
             if (object.getScaleX() == getDefaultScale(object))
@@ -80,7 +84,7 @@ public class ToolTipManager extends TablePanel {
             } else {
 
             }
-//           DungeonScreen.getInstance().getGridPanel().getbo
+            //           DungeonScreen.getInstance().getGridPanel().getbo
             object.setHovered(true);
             DungeonScreen.getInstance().getGridPanel().setUpdateRequired(true);
         });
@@ -117,6 +121,20 @@ public class ToolTipManager extends TablePanel {
         actorCell = addElement(null);
     }
 
+    private void show() {
+        init(tooltip);
+    }
+
+    private float getTimeToWaitForTooltip(Tooltip tooltip) {
+        if (tooltip == null) {
+            return -1;
+        }
+        if (!tooltip.isBattlefield()) {
+            return 0;
+        }
+        return DEFAULT_WAIT_TIME;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (parentAlpha == ShaderMaster.SUPER_DRAW ||
@@ -145,7 +163,7 @@ public class ToolTipManager extends TablePanel {
         guiStage.getRadial().hover(entity);
         //differentiate radial from bottom panel? no matter really ... sync :)
 
-//        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
+        //        guiStage.getBottomPanel().getSpellPanel().getCellsSet();
 
     }
 
@@ -163,16 +181,16 @@ public class ToolTipManager extends TablePanel {
     }
 
     private float getZoomScale(BaseView object) {
-//        if (object instanceof OverlayView){
-//            return 0.61f;
-//        } gridPanel handles this by setBounds()!
+        //        if (object instanceof OverlayView){
+        //            return 0.61f;
+        //        } gridPanel handles this by setBounds()!
         return 1.12f;
     }
 
     private float getDefaultScale(BaseView object) {
-//        if (object instanceof OverlayView){
-//            return OverlayView.SCALE;
-//        } gridPanel handles this by setBounds()!
+        //        if (object instanceof OverlayView){
+        //            return OverlayView.SCALE;
+        //        } gridPanel handles this by setBounds()!
         return 1;
     }
 
@@ -199,6 +217,14 @@ public class ToolTipManager extends TablePanel {
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (tooltip != null) {
+            tooltipTimer += delta;
+            if (tooltipTimer >= toWait) {
+                tooltipTimer = 0;
+                toWait = 0;
+                show();
+            }
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             setVisible(false);

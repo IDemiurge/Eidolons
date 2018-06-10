@@ -162,12 +162,14 @@ public class ActorMaster {
             });
             actor.setRotation(from);
         }
-        RotateByActionLimited action = new RotateByActionLimited();// (RotateByActionLimited) getAction(RotateByActionLimited.class);// new RotateByAction();
-        action.setAmount(to - from);
-        if (Math.abs(action.getAmount()) >= 270)
-            action.setAmount((action.getAmount() + 360) % 360);
+        RotateByActionLimited action = (RotateByActionLimited) getAction(RotateByActionLimited.class);
 
-//        main.system.auxiliary.log.LogMaster.log(1,from+ "from; to: " +to + "; amount = " + action.getAmount());
+        action.setAmount(to - from);
+        if ((action.getAmount()) >= 270)
+            action.setAmount(   to - from-360);
+        if ((action.getAmount()) <= -270)
+            action.setAmount(   to - from+360);
+
         float speed = 180 * AnimMaster.getInstance().getAnimationSpeedFactor(); //* options
         float duration = Math.abs(from - to) / speed;
         action.setDuration(duration);

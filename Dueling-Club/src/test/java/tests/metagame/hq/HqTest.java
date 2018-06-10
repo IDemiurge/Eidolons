@@ -1,12 +1,12 @@
 package tests.metagame.hq;
 
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
-import tests.DcTest;
+import tests.EidolonsTest;
 
 /**
  * Created by JustMe on 5/16/2018.
  */
-public class HqTest extends DcTest{
+public class HqTest extends EidolonsTest {
 
     @Override
     public void init() {

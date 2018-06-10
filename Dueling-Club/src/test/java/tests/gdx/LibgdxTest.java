@@ -1,12 +1,12 @@
 package tests.gdx;
 
 import eidolons.libgdx.screens.ScreenWithVideoLoader;
-import tests.DcTest;
+import tests.EidolonsTest;
 
 /**
  * Created by JustMe on 4/29/2018.
  */
-public class LibgdxTest extends DcTest {
+public class LibgdxTest extends EidolonsTest {
 
     @Override
     protected String getPlayerParty() {

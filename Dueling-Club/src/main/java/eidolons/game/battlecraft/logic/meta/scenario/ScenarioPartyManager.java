@@ -19,7 +19,6 @@ import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/14/2017.
@@ -85,18 +84,19 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     }
 
     protected Unit findMainHero() {
-        Unit hero = Eidolons.getMainHero();
-        if (hero == null || getMetaGame().isRestarted()) {
-            hero = getGame().getMaster().getUnitByName(
-             PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
-             null);
-            if (hero == null) {
-                List<Unit> list = getGame().getUnits().stream().
-                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
-                hero = list.get(0);
-            }
-        }
-        return hero;
+        return getParty().getLeader();
+//        Unit hero = Eidolons.getMainHero();
+//        if (hero == null || getMetaGame().isRestarted()) {
+//            hero = getGame().getMaster().getUnitByName(
+//             PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
+//             null);
+//            if (hero == null) {
+//                List<Unit> list = getGame().getUnits().stream().
+//                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
+//                hero = list.get(0);
+//            }
+//        }
+//        return hero;
     }
 
 

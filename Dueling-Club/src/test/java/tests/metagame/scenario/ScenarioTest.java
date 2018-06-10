@@ -1,11 +1,11 @@
 package tests.metagame.scenario;
 
-import tests.DcTest;
+import tests.EidolonsTest;
 
 /**
  * Created by JustMe on 5/16/2017.
  */
-public class ScenarioTest extends DcTest {
+public class ScenarioTest extends EidolonsTest {
 
     @Override
     protected boolean isScenario() {
