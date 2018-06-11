@@ -239,8 +239,10 @@ public class ToolTipManager extends TablePanel {
                 }
             }
         }
-        
-        if (originalPosition.dst(GdxMaster.getCursorPosition(this)) > 50
+        float dst = 0;
+        if (originalPosition!=null )
+            dst =originalPosition.dst(GdxMaster.getCursorPosition(this));
+        if (dst > 50
          ||Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
             setVisible(false);
         } else setVisible(true);

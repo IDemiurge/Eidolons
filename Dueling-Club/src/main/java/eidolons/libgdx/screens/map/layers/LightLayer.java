@@ -9,6 +9,8 @@ import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer.LightContainer;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
@@ -147,6 +149,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
         container.setFlipX(flipX);
         container.setPosition(x, y);
 
+        if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.UI_EMITTERS))
         if (container.lightLayer.emitterPaths != null) {
             for (String sub : container.lightLayer.emitterPaths) {
                 EmitterActor emitter = new EmitterActor(sub);

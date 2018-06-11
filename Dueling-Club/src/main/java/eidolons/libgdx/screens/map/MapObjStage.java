@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import eidolons.macro.entity.party.MacroParty;
-import eidolons.macro.map.Place;
-import eidolons.macro.map.travel.MapWanderAi;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.screens.map.editor.EditorManager;
 import eidolons.libgdx.screens.map.obj.*;
+import eidolons.macro.entity.party.MacroParty;
+import eidolons.macro.map.Place;
+import eidolons.macro.map.travel.MapWanderAi;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
 import main.system.launch.CoreEngine;
@@ -139,6 +139,11 @@ public class MapObjStage extends Stage {
                 setMainPartyActor(partyActor);
                 MapScreen.getInstance().getGuiStage().setMainPartyMarker(
                  PartyActorFactory.getParty(party));
+                try {
+                    MapScreen.getInstance().centerCamera();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             }
             parties.add(partyActor);
             wanderAi.update();

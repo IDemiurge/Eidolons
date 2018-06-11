@@ -77,7 +77,7 @@ public class MoonActor extends Group {
     }
 
     private void initEmitters() {
-        emitter = new EmitterActor(StrPathBuilder.build(PathFinder.getSfxPath(), "moons", moon.name()));
+        emitter = new EmitterActor(StrPathBuilder.build(PathFinder.getVfxPath(), "moons", moon.name()));
         addActor(emitter);
         float offsetX = getOffset();
         float offsetY = getOffset();
@@ -87,7 +87,7 @@ public class MoonActor extends Group {
         emitter.getEffect().getEmitters().get(0).scaleSize(size, size);
         emitter.setPosition((FULL_SIZE / 2 + offsetX), (FULL_SIZE / 2 + offsetY));
 
-        circleEmitter = new EmitterActor(StrPathBuilder.build(PathFinder.getSfxPath(),
+        circleEmitter = new EmitterActor(StrPathBuilder.build(PathFinder.getVfxPath(),
          "moons", "circle " + moon.name()));
         addActor(circleEmitter);
         offsetX = getOffset();

@@ -3,6 +3,7 @@ package eidolons.libgdx.anims.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
@@ -31,11 +32,23 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
             imagePath = StringMaster.cropLastPathSegment(imagePath);
         }
 
+        if (isEmitterAtlasesOn()){
+            load(Gdx.files.internal(imagePath), getEmitterAtlas());
+        }
+
         load(Gdx.files.internal(
          StringMaster.addMissingPathSegments(
           path, PathFinder.getParticlePresetPath())),
          Gdx.files.internal(imagePath));
 
+    }
+
+    private boolean isEmitterAtlasesOn() {
+        return false;
+    }
+
+    private TextureAtlas getEmitterAtlas() {
+        return null;
     }
 
     public ParticleEffectX() {

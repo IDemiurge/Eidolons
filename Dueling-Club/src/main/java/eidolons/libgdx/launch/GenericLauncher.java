@@ -243,11 +243,6 @@ public class GenericLauncher extends Game {
         }
 
         if (newScreen instanceof MapScreen) {
-            try {
-                ((MapScreen) newScreen).centerCamera();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
             return;
         }
         triggerLoaded(meta);

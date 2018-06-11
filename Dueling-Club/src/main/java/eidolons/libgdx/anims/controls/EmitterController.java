@@ -83,12 +83,12 @@ public class EmitterController implements Controller {
 
     public void create() {
         String presetPath =
-         new FileChooser(PathFinder.getSfxPath()).launch("", "");
+         new FileChooser(PathFinder.getVfxPath()).launch("", "");
         if (presetPath == null) {
             return;
         }
         ImageChooser ic = new ImageChooser();
-        ic.setDefaultFileLocation(PathFinder.getSfxPath() + "images//");
+        ic.setDefaultFileLocation(PathFinder.getVfxPath() + "images//");
         String imagePath = ic
          .launch("", "");
         add(presetPath, imagePath);
@@ -96,7 +96,7 @@ public class EmitterController implements Controller {
 
     public void addRandom() {
         String presetPath =
-         FileManager.getRandomFilePath(PathFinder.getSfxPath()
+         FileManager.getRandomFilePath(PathFinder.getVfxPath()
           + randomSfxPath
          );
         add(presetPath, null);
@@ -236,8 +236,8 @@ public class EmitterController implements Controller {
                   new ImageChooser(PathFinder.getSpritesPath()).launch("", "");
 
             case IMAGE:
-                return PathFinder.getSfxPath() + "images\\" +
-                 new ImageChooser(PathFinder.getSfxPath() + "images\\").launch("", "");
+                return PathFinder.getVfxPath() + "images\\" +
+                 new ImageChooser(PathFinder.getVfxPath() + "images\\").launch("", "");
         }
         return null;
     }
@@ -307,9 +307,9 @@ public class EmitterController implements Controller {
 
     public void setForActive() {
         String presetPath =
-         new FileChooser(PathFinder.getSfxPath()).launch("", "");
+         new FileChooser(PathFinder.getVfxPath()).launch("", "");
 //        ImageChooser ic = new ImageChooser();
-//        ic.setDefaultFileLocation(PathFinder.getSfxPath()+"images//");
+//        ic.setDefaultFileLocation(PathFinder.getVfxPath()+"images//");
 //        String imagePath = ic.
 
         ActiveObj active = DC_Game.game.getManager().getActiveObj().getRef().getActive();
@@ -399,9 +399,9 @@ public class EmitterController implements Controller {
             case SAVE_ALL:
                 break;
             case SET_DEFAULT_ADD_PATH:
-                String result = new FileChooser(true, PathFinder.getSfxPath()).launch("", "");
+                String result = new FileChooser(true, PathFinder.getVfxPath()).launch("", "");
                 if (result != null) {
-                    if (FileManager.isDirectory(PathFinder.getSfxPath() + result)) {
+                    if (FileManager.isDirectory(PathFinder.getVfxPath() + result)) {
                         randomSfxPath = result;
                     }
                 }

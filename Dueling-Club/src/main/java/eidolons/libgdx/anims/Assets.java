@@ -42,10 +42,14 @@ public class Assets {
                  @Override
                  public ParticleEffect load(AssetManager am, String fileName,
                                             FileHandle file, ParticleEffectParameter param) {
-                     ParticleEffectX fx = new ParticleEffectX(file.path());
+                     ParticleEffectX fx = createEmitter(file.path());
 //                 ParticleEffect fx=super.load(am, fileName, file, param);
                      main.system.auxiliary.log.LogMaster.log(1, fileName + file.path() + " loaded...");
                      return fx;
+                 }
+
+                 private ParticleEffectX createEmitter(String path) {
+                    return  new ParticleEffectX(path);
                  }
              });
         manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(

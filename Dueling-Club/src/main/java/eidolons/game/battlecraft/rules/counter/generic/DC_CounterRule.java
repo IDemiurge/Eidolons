@@ -59,7 +59,7 @@ public abstract class DC_CounterRule {
     public abstract String getBuffName();
 
     public final String getEmitterPath() {
-        return PathFinder.getSfxPath() + "counters\\" + getCounterName();
+        return PathFinder.getVfxPath() + "counters\\" + getCounterName();
     }
 
     public void initEffects() {

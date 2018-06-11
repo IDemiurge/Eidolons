@@ -72,12 +72,12 @@ public class EmitterPresetMaster {
             }
         }
         String newName = (name != null) ? name :
-         FileManager.getUniqueVersion(new File(PathFinder.getSfxPath() + prefix +
+         FileManager.getUniqueVersion(new File(PathFinder.getVfxPath() + prefix +
           "\\" + last.path + suffix));
 
         String path = StringMaster.replace(true, last.path,
-         PathFinder.getSfxPath(), "").replace(prefix, "");
-        String pathAndName = PathFinder.getSfxPath() + prefix +
+         PathFinder.getVfxPath(), "").replace(prefix, "");
+        String pathAndName = PathFinder.getVfxPath() + prefix +
          "\\" +
          StringMaster.cropLastPathSegment(path) +
          newName;
@@ -163,7 +163,7 @@ public class EmitterPresetMaster {
 //            });
         }
 
-        imagePath = searchImage(FileManager.getFile(PathFinder.getSfxPath()), name);
+        imagePath = searchImage(FileManager.getFile(PathFinder.getVfxPath()), name);
         if (StringMaster.isEmpty(imagePath)) {
             imagePath = searchImage(FileManager.getFile(PathFinder.getSpritesPath()), name);
         }
@@ -323,9 +323,14 @@ public class EmitterPresetMaster {
         return text;
     }
 
+    public String getModifiedData(String path, EMITTER_VALUE_GROUP image_path, String newVal) {
+        String data = getData(path);
+        return  setValue(image_path, newVal, data);
+
+    }
     private String getData(String path) {
         path = path.toLowerCase();
-        path = StringMaster.addMissingPathSegments(path, PathFinder.getSfxPath());
+        path = StringMaster.addMissingPathSegments(path, PathFinder.getVfxPath());
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);
@@ -375,6 +380,7 @@ public class EmitterPresetMaster {
 
      */
     }
+
 
     public enum EMITTER_VALUE_GROUP {
         Image_Path(),

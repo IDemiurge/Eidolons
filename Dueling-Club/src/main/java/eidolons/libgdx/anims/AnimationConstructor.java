@@ -641,7 +641,7 @@ public class AnimationConstructor {
         String path = null;
         switch (s) {
             case PARTICLE_EFFECTS:
-                path = PathFinder.getSfxPath();
+                path = PathFinder.getVfxPath();
                 break;
             case SPRITES:
                 path = PathFinder.getSpritesPath();

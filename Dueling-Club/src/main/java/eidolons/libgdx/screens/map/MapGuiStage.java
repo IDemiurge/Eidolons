@@ -94,7 +94,7 @@ public class MapGuiStage extends GuiStage {
     public void resetZIndices() {
         if (CoreEngine.isMapEditor())
             return;
-        hqPanel.setZIndex(0);
+        hqPanel.setZIndex(Integer.MAX_VALUE);
         super.resetZIndices();
         lights.setZIndex(0);
         vignette.setZIndex(0);

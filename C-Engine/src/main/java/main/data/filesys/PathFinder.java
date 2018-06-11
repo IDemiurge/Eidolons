@@ -236,7 +236,7 @@ public class PathFinder {
         return path.contains(ENGINE_PATH);
     }
 
-    public static String getSfxPath() {
+    public static String getVfxPath() {
         init();
         return getImagePath() + StringMaster.getPathSeparator() + "mini" + StringMaster.getPathSeparator() + "sfx" + StringMaster.getPathSeparator();
     }

@@ -63,7 +63,7 @@ public class EmitterPalette extends TabbedPanel {
         defaults().padLeft(200).top().right().width(GdxMaster.getWidth() - 300);
         Map<String, List<File>> presets = new LinkedHashMap<>();
         List<File> subfolders = FileManager.getFilesFromDirectory(
-         PathFinder.getSfxPath(), true);
+         PathFinder.getVfxPath(), true);
         subfolders.forEach(file -> {
             if (!file.isDirectory()) {
                 MapMaster.addToListMap(presets, "main", file);

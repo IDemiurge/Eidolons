@@ -40,7 +40,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     }
 
     public EmitterActor(String path) {
-//        path =PathFinder.getSfxPath() + "templates\\sprite test";
+//        path =PathFinder.getVfxPath() + "templates\\sprite test";
         this.path = path;
         effect = EmitterPools.getEffect(path);
     }
