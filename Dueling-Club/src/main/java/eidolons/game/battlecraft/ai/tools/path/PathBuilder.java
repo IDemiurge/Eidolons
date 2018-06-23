@@ -74,7 +74,7 @@ public class PathBuilder extends AiHandler {
             moveActions.add(getUnit().getAction("Move"));
         }
         if (targetAction == null) {
-            targetAction = AiActionFactory.newAction(("Move"), getUnitAI());
+            targetAction = AiActionFactory.newAction(("Move"), getUnitAi());
         }
         this.targetAction = targetAction;
         init();
@@ -222,7 +222,7 @@ public class PathBuilder extends AiHandler {
             finished();
             return true;
         }
-        if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
+        if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
             return false;
         if (Chronos.getTimeElapsedForMark(getChronosPrefix() + targetAction) >
          (timeLimit > 0 ? timeLimit :

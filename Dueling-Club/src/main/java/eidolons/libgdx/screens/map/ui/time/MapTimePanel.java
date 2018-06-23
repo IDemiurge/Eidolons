@@ -247,7 +247,7 @@ public class MapTimePanel extends GroupX {
     @Override
     public void act(float delta) {
 //        initPositions();
-        setDebug(false, true);
+//        setDebug(false, true);
         float deltaX = delta +
          (delta / 5 * MacroGame.getGame().getLoop().getTimeMaster().getSpeed());
 

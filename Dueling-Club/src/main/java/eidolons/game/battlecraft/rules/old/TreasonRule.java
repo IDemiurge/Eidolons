@@ -11,7 +11,7 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.NumericCondition;
 import main.entity.Ref;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.entity.ConditionMaster;
@@ -30,7 +30,7 @@ public class TreasonRule extends DC_RuleImpl {
 
     private Conditions retain_conditions;
 
-    public TreasonRule(MicroGame game) {
+    public TreasonRule(GenericGame game) {
         super(game);
 
     }

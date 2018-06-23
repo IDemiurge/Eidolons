@@ -1,9 +1,9 @@
-package eidolons.game.battlecraft.logic.meta.party;
+package eidolons.game.battlecraft.logic.meta.adventure.party;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon.POINTS;
-import eidolons.game.battlecraft.logic.meta.party.warband.Warband;
+import eidolons.game.battlecraft.logic.meta.adventure.party.warband.Warband;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.Entity;

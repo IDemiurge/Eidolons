@@ -7,8 +7,9 @@ import java.util.Map;
 
 /**
  * Created by JustMe on 2/14/2017.
+ * Contains all enums related to Units
  */
-public class UnitEnums {
+public final class UnitEnums {
     public enum CLASSIFICATIONS {
         MECHANICAL(true),
         UNDEAD(true),

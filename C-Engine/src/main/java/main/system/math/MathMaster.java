@@ -5,7 +5,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
@@ -20,7 +20,7 @@ public abstract class MathMaster {
     public static final Integer MULTIPLIER = 10000;
     public static final double NUMBERS_AFTER_PERIOD = 2;
     private static final boolean autoResolveParseExceptions = true;
-    protected MicroGame game;
+    protected GenericGame game;
 
     // public abstract Integer getStartingFocus(Obj obj);
     public static float getFloatWithDigitsAfterPeriod(int digitsAfterPeriod, float v) {

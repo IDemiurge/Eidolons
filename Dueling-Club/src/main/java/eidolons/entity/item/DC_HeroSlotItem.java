@@ -10,13 +10,13 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
 public abstract class DC_HeroSlotItem extends DC_HeroItemObj {
 
-    public DC_HeroSlotItem(ObjType type, Player owner, MicroGame game, Ref ref, PARAMETER[] params
+    public DC_HeroSlotItem(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
                            // , PROPERTY[] props
     ) {
         super(type, owner, game, ref, params

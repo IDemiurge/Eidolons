@@ -102,8 +102,8 @@ public class TexturePackerLaunch {
         return settings;
     }
 
-    public static void packWeaponSprites(String[] args) {
-        Settings settings = getSetting();
+
+        public static void packWeaponSprites(String[] args) {
         String outputDir = POTIONS ? OUTPUT_DIR_POTION : OUTPUT_DIR;
         for (String sub : args) {
             String dir = POTIONS ? WORKSPACE_PATH_POTIONS : WORKSPACE_PATH
@@ -119,15 +119,19 @@ public class TexturePackerLaunch {
                  subFolder.getPath();
                 String packFileName = subFolder.getName();
 
-                TexturePacker.process(settings, inputDir, outputDir, packFileName);
+                pack( inputDir, outputDir, packFileName);
                 processed = true;
             }
             if (!processed) {
-                TexturePacker.process(settings, dir, outputDir, sub);
+                pack( dir, outputDir, sub);
             }
         }
-        return;
-//            TexturePacker.process(inputDir, outputDir, packFileName);
+
+    }
+
+    public static void pack(String inputDir, String outputDir, String packFileName) {
+            Settings settings = getSetting();
+            TexturePacker.process(settings, inputDir, outputDir, packFileName);
     }
 
 }

@@ -15,7 +15,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -27,7 +27,7 @@ public class DC_UnitAction extends DC_ActiveObj {
     private ACTION_TYPE actionType;
     private ModeEffect modeEffect;
 
-    public DC_UnitAction(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_UnitAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
 
     }

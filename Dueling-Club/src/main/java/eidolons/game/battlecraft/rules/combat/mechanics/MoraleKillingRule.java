@@ -13,7 +13,7 @@ import main.elements.conditions.Conditions;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.ActiveObj;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.math.PositionMaster;
@@ -30,7 +30,7 @@ public class MoraleKillingRule extends DC_RuleImpl {
 
     private Conditions boost_conditions = new Conditions();
 
-    public MoraleKillingRule(MicroGame game) {
+    public MoraleKillingRule(GenericGame game) {
         super(game);
         boostEffect.setValueOverMax(true);
         reductionEffect.setFormula(boostEffect.getFormula().getNegative());

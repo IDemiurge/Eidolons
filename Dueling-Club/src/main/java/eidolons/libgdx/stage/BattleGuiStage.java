@@ -3,6 +3,7 @@ package eidolons.libgdx.stage;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
@@ -33,7 +34,9 @@ public class BattleGuiStage extends GuiStage {
         super(viewport == null ?
 //         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
 //          GdxMaster.getHeight(), new OrthographicCamera())
-          new ScreenViewport( new OrthographicCamera())
+          new FillViewport(GdxMaster.getWidth(),
+           GdxMaster.getHeight(),  new OrthographicCamera())
+//        new ScreenViewport( new OrthographicCamera())
         : viewport,
          batch == null ? new SpriteBatch() :
           batch);

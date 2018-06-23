@@ -5,7 +5,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.Entity;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.swing.renderers.SmartTextManager;
 import main.swing.renderers.SmartTextManager.VALUE_CASES;
 import main.system.auxiliary.StringMaster;
@@ -26,13 +26,13 @@ import java.awt.*;
 public class DC_InfoPanelRenderer implements TableCellRenderer {
 
     private SmartTextManager smartRender;
-    private MicroGame game;
+    private GenericGame game;
     private Entity obj;
     private ImageIcon icon;
 
     public DC_InfoPanelRenderer(Entity infoObj) {
         this.obj = infoObj;
-        this.game = (MicroGame) infoObj.getGame();
+        this.game = (GenericGame) infoObj.getGame();
         this.smartRender = new SmartTextManager();
     }
 

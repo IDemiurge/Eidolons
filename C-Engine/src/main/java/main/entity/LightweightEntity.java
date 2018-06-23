@@ -7,6 +7,7 @@ import main.entity.type.ObjType;
 
 /**
  * Created by JustMe on 5/17/2017.
+ * Supposed to be used as 'singleton' one per ObjType
  */
 public class LightweightEntity extends DataModel {
 

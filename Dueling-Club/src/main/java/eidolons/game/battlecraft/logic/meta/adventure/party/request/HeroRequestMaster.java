@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.party.request;
+package eidolons.game.battlecraft.logic.meta.adventure.party.request;
 
 /**
  * Created by JustMe on 7/23/2017.

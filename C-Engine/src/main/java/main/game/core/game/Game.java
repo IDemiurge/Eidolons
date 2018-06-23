@@ -38,7 +38,7 @@ import java.util.Set;
 
 public abstract class Game implements Serializable {
     public static Game game;
-    protected GameMaster master;
+    protected GameObjMaster master;
     protected GameState state;
     protected IdManager idManager;
     protected GameManager manager;
@@ -74,7 +74,7 @@ public abstract class Game implements Serializable {
         return manager.handleEvent(event);
     }
 
-    public GameMaster getMaster() {
+    public GameObjMaster getMaster() {
         return master;
     }
 

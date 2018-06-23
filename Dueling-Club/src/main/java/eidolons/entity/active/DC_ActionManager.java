@@ -39,7 +39,7 @@ import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.generic.ActionManager;
 import main.system.auxiliary.EnumMaster;
@@ -84,11 +84,11 @@ public class DC_ActionManager implements ActionManager {
     private static ArrayList<ObjType> hiddenActions;
     private static ArrayList<ObjType> modeObjTypes;
     private static ArrayList<ObjType> orderObjTypes;
-    private MicroGame game;
+    private GenericGame game;
     private HashMap<Entity, Map<String, ActiveObj>> actionsCache = new HashMap<>();
     private boolean offhandInit;
 
-    public DC_ActionManager(MicroGame game) {
+    public DC_ActionManager(GenericGame game) {
         this.game = game;
     }
 
@@ -193,7 +193,7 @@ public class DC_ActionManager implements ActionManager {
     }
 
     @Override
-    public DC_UnitAction newAction(ObjType type, Ref ref, Player owner, MicroGame game) {
+    public DC_UnitAction newAction(ObjType type, Ref ref, Player owner, GenericGame game) {
 
         DC_UnitAction action = new DC_UnitAction(type, owner, game, ref);
         game.getState().addObject(action);

@@ -15,7 +15,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.AttachedObj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -28,7 +28,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
 
     protected Integer heroId;
 
-    public DC_HeroAttachedObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_HeroAttachedObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
     }
 

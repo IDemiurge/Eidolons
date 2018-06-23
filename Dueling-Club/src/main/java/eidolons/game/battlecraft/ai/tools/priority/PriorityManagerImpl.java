@@ -1719,10 +1719,11 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         this.unit = unit;
     }
 
+@Override
     public UnitAI getUnitAi() {
         if (unit_ai != null)
             return unit_ai;
-        return super.getUnitAI();
+        return super.getUnitAi();
     }
 
     public void setUnitAi(UnitAI unit_ai) {

@@ -301,8 +301,7 @@ public class Unit extends DC_UnitModel {
             if (param.isDynamic()) {
                 if (integer < 0) {
                     if (param == PARAMS.C_ENDURANCE || param == PARAMS.C_TOUGHNESS)
-                        if (!CoreEngine.isJar() ||
-                         Debugger.isImmortalityOn())
+                        if (Debugger.isImmortalityOn())
                             return;
                 }
             }
@@ -1175,6 +1174,16 @@ public class Unit extends DC_UnitModel {
             coordinates = CoordinatesMaster.getClosestValid(coordinates);
             super.setCoordinates(coordinates);
             return;
+        }
+        if (isPlayerCharacter()){
+            if (!getCoordinates().equals(coordinates)){
+                if (AI_Manager.isRunning()){
+                    return;
+                }
+                if (getGame().getLoop().getActiveUnit()!=this){
+                    return;
+                }
+            }
         }
         super.setCoordinates(coordinates);
     }

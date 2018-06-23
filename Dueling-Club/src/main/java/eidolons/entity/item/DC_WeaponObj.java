@@ -24,7 +24,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
@@ -41,11 +41,11 @@ public class DC_WeaponObj extends DC_HeroSlotItem {
     private DC_QuickItemObj ammo;
     private DC_QuickItemObj lastAmmo;
 
-    public DC_WeaponObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_WeaponObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         this(type, owner, game, ref, false);
     }
 
-    public DC_WeaponObj(ObjType type, Player owner, MicroGame game, Ref ref, boolean main_hand) {
+    public DC_WeaponObj(ObjType type, Player owner, GenericGame game, Ref ref, boolean main_hand) {
         super(type, owner, game, ref, DC_ContentValsManager.getWeaponModifyingParams());
         this.setMainHand(main_hand);
     }

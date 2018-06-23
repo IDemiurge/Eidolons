@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
 import eidolons.libgdx.gui.tooltips.Tooltip;
@@ -184,5 +185,15 @@ public class GridUnitView extends GenericGridView {
                 return;
             }
         super.setPosition(x, y);
+    }
+
+    public Image getArrow() {
+        return arrow;
+    }
+
+    public void validateArrowRotation() {
+        if (arrow.getRotation()!=arrowRotation){
+             updateRotation(arrowRotation-ARROW_ROTATION_OFFSET);
+        }
     }
 }

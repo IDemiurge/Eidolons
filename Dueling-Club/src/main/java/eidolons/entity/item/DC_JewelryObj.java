@@ -7,12 +7,12 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
 public class DC_JewelryObj extends DC_HeroItemObj {
 
-    public DC_JewelryObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_JewelryObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref, getJewelryParams());
     }
 

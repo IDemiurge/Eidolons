@@ -59,12 +59,19 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
             }
 
             @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (getTapCount() > 1) {
+                    onDoubleClick(event, x, y);
+                } else super.clicked(event, x, y);
+            }
+
+            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (getTapCount() > 1) {
-                    onDoubleTouchDown(event, x, y);
+                    onDoubleClick(event, x, y);
                 } else
                     onTouchDown(event, x, y);
-                return true;
+                return super.touchDown(event, x, y, pointer, button);
             }
 
             @Override
@@ -103,7 +110,7 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     protected void onTouchDown(InputEvent event, float x, float y) {
     }
 
-    protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+    protected void onDoubleClick(InputEvent event, float x, float y) {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {

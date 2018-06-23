@@ -84,7 +84,9 @@ public class ActionManager extends AiHandler {
         }
 
         getPathSequenceConstructor().clearCache(); // TODO try not to? :)
-        if (getUnit() != ai.getUnit()) {
+        Unit unit = getUnit();
+
+        if (unit != ai.getUnit()) {
             getCellPrioritizer().reset();
         } else {
         }
@@ -101,8 +103,8 @@ public class ActionManager extends AiHandler {
 //       TODO      return behaviorMaster.getBehaviorAction(ai);
 //        }
 
-        FACING_DIRECTION originalFacing = getUnit().getFacing();
-        Coordinates originalCoordinates = getUnit().getCoordinates();
+        FACING_DIRECTION originalFacing = unit.getFacing();
+        Coordinates originalCoordinates = unit.getCoordinates();
         Action action = null;
         ActionSequence chosenSequence = null;
         boolean atomic = false;
@@ -136,8 +138,8 @@ public class ActionManager extends AiHandler {
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             } finally {
-                getUnit().setCoordinates(originalCoordinates);
-                getUnit().setFacing(originalFacing);
+                unit.setCoordinates(originalCoordinates);
+                unit.setFacing(originalFacing);
             }
 
         }
@@ -153,12 +155,12 @@ public class ActionManager extends AiHandler {
                 return chosenSequence.nextAction();
 
         }
-        if (getUnit().getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
+        if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE) {
             if (AI_Manager.DEV_MODE)
                 game.getLogManager().log(LOG.GAME_INFO, ai.getUnit().getName()
                  + " chooses task: " + chosenSequence.getTask().toShortString());
 
-            String message = getUnit() + " has chosen: "
+            String message = unit + " has chosen: "
              + chosenSequence + " with priority of "
              + StringMaster.wrapInParenthesis(chosenSequence.getPriority() + "");
             LogMaster.log(LOG_CHANNEL.AI_DEBUG, message);

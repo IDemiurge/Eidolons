@@ -56,6 +56,7 @@ public class CoreEngine {
     private static boolean jUnit;
     private static boolean initializing;
     private static boolean initialized;
+    private static boolean crashSafeMode=true;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -396,5 +397,13 @@ public class CoreEngine {
 
     public static boolean isTestingMode() {
         return true;
+    }
+
+    public static boolean isCrashSafeMode() {
+        return crashSafeMode;
+    }
+
+    public static void setCrashSafeMode(boolean crashSafeMode) {
+        CoreEngine.crashSafeMode = crashSafeMode;
     }
 }

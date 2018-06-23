@@ -3,7 +3,7 @@ package eidolons.game.core.state;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.core.state.MicroGameState;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class DC_GameState extends MicroGameState {
     private Map<Unit, Stack<DC_ActiveObj>> unitActionStack;
 
 
-    public DC_GameState(MicroGame game) {
+    public DC_GameState(GenericGame game) {
         super(game);
     }
 

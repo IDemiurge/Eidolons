@@ -21,27 +21,27 @@ public class ScenarioGenerator {
         //dungeon level
 
         //missions
-//        TERRAIN_TYPE terrainType;
-//        PLACE_TYPE type=null ;
-//        LOCATION_TYPE
-//        switch (type) {
-//            case DUNGEON:
-//                break;
-//            case LOCATION:
-//                break;
-//            case BUILDING:
-//                break;
-//        }
+        //        TERRAIN_TYPE terrainType;
+        //        PLACE_TYPE type=null ;
+        //        LOCATION_TYPE
+        //        switch (type) {
+        //            case DUNGEON:
+        //                break;
+        //            case LOCATION:
+        //                break;
+        //            case BUILDING:
+        //                break;
+        //        }
         //that's already about generating the missions!
         //but this stuff will need to be saved() somehow too!
         //temp directory for each Macro Game
         //store levels, party data's etc
 
         //how to import the LE branch?
-//        MacroDataManager.saveLevel(level);
-//        Mission surface;
-//        Mission[] sub= new Mission[n];
-//        Mission boss;
+        //        MacroDataManager.saveLevel(level);
+        //        Mission surface;
+        //        Mission[] sub= new Mission[n];
+        //        Mission boss;
 
         int n = 1;
         String missions = "";
@@ -49,14 +49,22 @@ public class ScenarioGenerator {
          PathFinder.getDungeonLevelFolder(), "place dungeons",
          place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
         for (int i = 0; i < n; i++) {
-            String mission = FileManager.getRandomFilePath(path);
+            String mission = null;
+            try {
+                mission = FileManager.getRandomFilePath(path);
+            } catch (Exception e) {
+                mission = FileManager.getRandomFilePath( StrPathBuilder.build(
+                 PathFinder.getDungeonLevelFolder(), "place dungeons", "default"));
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
             mission = StringMaster.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
             ObjType missionType = new ObjType("", DC_TYPE.MISSIONS);
             missionType.setProperty(PROPS.MISSION_FILE_PATH, mission);
             DataManager.addType(missionType);
             missions += mission;
         }
-//        String missions=DataManager.toString(DataManager.getTypes(DC_TYPE.MISSIONS));
+        //        String missions=DataManager.toString(DataManager.getTypes(DC_TYPE.MISSIONS));
         //will be available as info for player review?
 
         ObjType templateType =
@@ -67,7 +75,7 @@ public class ScenarioGenerator {
 
         DataManager.addType(scenarioType);
         //place types
-//        scenarioType.setpr
+        //        scenarioType.setpr
         return scenarioType;
     }
 }

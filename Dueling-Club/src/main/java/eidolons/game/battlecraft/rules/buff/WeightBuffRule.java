@@ -9,7 +9,7 @@ import main.ability.effects.Effect.MOD;
 import main.content.VALUE;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class WeightBuffRule extends DC_BuffRule {
      StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
 
 
-    public WeightBuffRule(MicroGame game) {
+    public WeightBuffRule(GenericGame game) {
         super(game);
     }
 

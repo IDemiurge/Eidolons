@@ -21,6 +21,7 @@ import java.util.function.Supplier;
  * for structures? anything that does not need QueueView
  */
 public class GenericGridView extends UnitView {
+    public static final int ARROW_ROTATION_OFFSET = 90;
     protected Image arrow;
     protected Image emblemLighting;
     protected Image icon;
@@ -59,7 +60,7 @@ public class GenericGridView extends UnitView {
             addActor(arrow);
 //            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
             arrow.setOrigin(getWidth() / 2  , getHeight() / 2 );
-            this.arrowRotation = arrowRotation + 90;
+            this.arrowRotation = arrowRotation + ARROW_ROTATION_OFFSET;
             arrow.setRotation(this.arrowRotation);
         }
 

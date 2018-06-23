@@ -13,12 +13,12 @@ import main.content.enums.entity.UnitEnums;
 import main.elements.conditions.Conditions;
 import main.elements.conditions.NumericCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 public class TrampleRule extends DC_RuleImpl {
 
-    public TrampleRule(MicroGame game) {
+    public TrampleRule(GenericGame game) {
         super(game);
     }
 

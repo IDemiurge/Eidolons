@@ -3,7 +3,7 @@ package eidolons.entity;
 import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.entity.IdManager;
 
 public class DC_IdManager implements IdManager {
@@ -18,7 +18,7 @@ public class DC_IdManager implements IdManager {
 
     }
 
-    public DC_IdManager(MicroGame game) {
+    public DC_IdManager(GenericGame game) {
         super();
         this.game = game;
         this.setHost(game.isHost());

@@ -17,7 +17,7 @@ import main.game.logic.battle.player.Player;
 import java.util.Collection;
 import java.util.Set;
 
-public abstract class MicroGame extends Game {
+public abstract class GenericGame extends Game {
 
     protected boolean host;
     protected Player player1;
@@ -27,12 +27,12 @@ public abstract class MicroGame extends Game {
     protected String unitData1;
     protected String unitData2;
 
-    public MicroGame() {
+    public GenericGame() {
         this.gameName = "Battlecraft Game";
     }
 
-    public MicroGame(Player player1, Player player2, String gamename, String objData,
-                     String objData2) {
+    public GenericGame(Player player1, Player player2, String gamename, String objData,
+                       String objData2) {
         this.player1 = player1;
         this.player2 = player2;
         this.gameName = gamename;

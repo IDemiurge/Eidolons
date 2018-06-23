@@ -8,7 +8,7 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
 public class MicroObj extends Obj {
@@ -24,8 +24,8 @@ public class MicroObj extends Obj {
         super(type, owner, game, ref);
     }
 
-    public MicroGame getGame() {
-        return (MicroGame) game;
+    public GenericGame getGame() {
+        return (GenericGame) game;
     }
 
     public void init() {

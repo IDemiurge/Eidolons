@@ -160,6 +160,8 @@ public class ForceRule {
 
 
     public static void addForceEffects(DC_ActiveObj action) {
+        if (!RuleKeeper.isRuleOn(RULE.FORCE))
+            return ;
         if (!isForceEnabled(action)) {
             return;
         }

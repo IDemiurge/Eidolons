@@ -8,7 +8,7 @@ import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -83,7 +83,7 @@ public abstract class GameState {
         return game;
     }
 
-    public void setGame(MicroGame game) {
+    public void setGame(GenericGame game) {
         this.game = game;
     }
 

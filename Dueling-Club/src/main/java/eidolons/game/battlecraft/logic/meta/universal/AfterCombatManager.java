@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.logic.meta.universal;
 
-import eidolons.game.battlecraft.logic.meta.party.FormationMaster;
-import eidolons.game.battlecraft.logic.meta.party.LoyaltyMaster;
+import eidolons.game.battlecraft.logic.meta.adventure.party.FormationMaster;
+import eidolons.game.battlecraft.logic.meta.adventure.party.LoyaltyMaster;
 
 /**
  * Created by JustMe on 5/8/2017.

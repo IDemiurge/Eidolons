@@ -5,7 +5,7 @@ import eidolons.game.core.game.DC_Game;
 import main.ability.effects.Effect;
 import main.elements.conditions.Conditions;
 import main.entity.Ref;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Rule;
@@ -18,13 +18,13 @@ public abstract class DC_RuleImpl implements Rule {
     protected EVENT_TYPE event_type;
     protected EVENT_TYPE[] event_types;
     protected Conditions conditions = new Conditions();
-    protected MicroGame game;
+    protected GenericGame game;
     protected Effect effects;
     protected boolean on = true;
     private boolean initialized = false;
 
 
-    public DC_RuleImpl(MicroGame game) {
+    public DC_RuleImpl(GenericGame game) {
         this.game = game;
         initEventType();
         initConditions();

@@ -147,7 +147,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     public void tryEnter(Place sub) {
         Coordinates c = macroGame.getPlayerParty().getCoordinates();
-        if (sub.getCoordinates().dst(c) < 150) {
+        if (MacroManager.isTestMode()|| sub.getCoordinates().dst(c) < 150) {
             combatStarts(sub);
         }
     }

@@ -79,7 +79,7 @@ public class PlaceTooltip extends Tooltip {
     }
 
     @Override
-    protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+    protected void onDoubleClick(InputEvent event, float x, float y) {
         if (CoreEngine.isMapEditor()) {
             if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
                 EditorManager.remove(actor);
@@ -93,7 +93,7 @@ public class PlaceTooltip extends Tooltip {
     @Override
     protected void onTouchDown(InputEvent event, float x, float y) {
         if (Gdx.input.isKeyPressed(Keys.ALT_LEFT)) {
-            onDoubleTouchDown(event, x, y);
+            onDoubleClick(event, x, y);
             return;
         }
         GuiEventManager.trigger(MapEvent.PLACE_HOVER, place);

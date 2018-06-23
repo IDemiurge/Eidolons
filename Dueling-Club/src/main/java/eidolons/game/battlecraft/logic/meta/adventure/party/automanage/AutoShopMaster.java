@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.party.automanage;
+package eidolons.game.battlecraft.logic.meta.adventure.party.automanage;
 
 import eidolons.entity.obj.unit.Unit;
 

@@ -22,7 +22,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
@@ -545,7 +545,7 @@ public abstract class DataModel {
     }
 
     public void setRef(Ref ref) {
-        if (game instanceof MicroGame) {
+        if (game instanceof GenericGame) {
             ref.setGame(game);
         }
         ref.setPlayer(owner);

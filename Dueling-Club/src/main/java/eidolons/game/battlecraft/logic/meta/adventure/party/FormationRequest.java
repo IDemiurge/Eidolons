@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.party;
+package eidolons.game.battlecraft.logic.meta.adventure.party;
 
 /*
     hero requests:

@@ -7,10 +7,10 @@ import main.system.auxiliary.log.LogMaster;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class GameMaster {
+public class GameObjMaster {
     protected Game game;
 
-    public GameMaster(Game game) {
+    public GameObjMaster(Game game) {
         this.game = game;
     }
 

@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.campaign;
+package eidolons.game.battlecraft.logic.meta.adventure.campaign;
 
 import eidolons.entity.obj.unit.Unit;
 

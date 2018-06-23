@@ -38,7 +38,7 @@ public abstract class GameManager implements GenericGameManager {
     protected StatMaster statMaster;
     protected Game game;
     protected StateManager stateManager;
-    protected GameMaster gameMaster;
+    protected GameObjMaster gameObjMaster;
     protected boolean selecting;
     protected Set<Obj> selectingSet;
     private ActiveObj activatingAction;
@@ -49,7 +49,7 @@ public abstract class GameManager implements GenericGameManager {
 
     }
 
-    public GameManager(MicroGameState state, MicroGame game) {
+    public GameManager(MicroGameState state, GenericGame game) {
         this.setState(state);
         this.game = game;
         getGame().setManager(this);
@@ -248,8 +248,8 @@ public abstract class GameManager implements GenericGameManager {
         return stateManager;
     }
 
-    public GameMaster getGameMaster() {
-        return gameMaster;
+    public GameObjMaster getGameObjMaster() {
+        return gameObjMaster;
     }
 
 

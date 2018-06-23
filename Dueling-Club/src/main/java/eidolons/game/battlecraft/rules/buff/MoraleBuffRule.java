@@ -16,7 +16,7 @@ import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
 public class MoraleBuffRule extends DC_BuffRule {
@@ -40,7 +40,7 @@ public class MoraleBuffRule extends DC_BuffRule {
      + PARAMS.RESISTANCE.getName();
 
     // reverse means MORE THAN {THIS} and
-    public MoraleBuffRule(MicroGame game) {
+    public MoraleBuffRule(GenericGame game) {
         super(game);
     }
 

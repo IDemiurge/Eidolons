@@ -3,7 +3,7 @@ package main.game.logic.event;
 import main.entity.Ref;
 import main.entity.Referred;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
@@ -91,7 +91,7 @@ public class Event implements Referred {
         ref.base = base;
     }
 
-    public void setGame(MicroGame game) {
+    public void setGame(GenericGame game) {
         ref.game = game;
     }
 

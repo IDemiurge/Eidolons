@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.party.autocombat;
+package eidolons.game.battlecraft.logic.meta.adventure.party.autocombat;
 
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.entity.Entity;

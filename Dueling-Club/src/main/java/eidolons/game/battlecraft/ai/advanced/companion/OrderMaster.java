@@ -109,12 +109,12 @@ public class OrderMaster extends AiHandler {
 //        if (type == null) {
 //            return;
 //        }
-//        GroupAI group = leader.getUnitAI().getGroup();
+//        GroupAI group = leader.getUnitAi().getGroup();
 //
 ////        group.setOrder(new Order(group, type, arg));
 //        for (Unit member :
 //                group.getMembers()) {
-////            member.getUnitAI().setCurrentBehavior(currentBehavior);
+////            member.getUnitAi().setCurrentBehavior(currentBehavior);
 //        }
 //    }
 //
@@ -137,7 +137,7 @@ public class OrderMaster extends AiHandler {
 //        new SelectiveTargeting(conditions).select(ref);
 //        Order order = new Order(  TYPE, ref.getTarget() + "");
 //        initOrderSequence(order);
-//        unit.getUnitAI().setPlayerOrdered(true);
+//        unit.getUnitAi().setPlayerOrdered(true);
 //
 //    }
 //    private void initOrderSequence(Order order) {

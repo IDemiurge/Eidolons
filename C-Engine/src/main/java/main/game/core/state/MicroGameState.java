@@ -4,7 +4,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.ConcurrentMap;
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ public abstract class MicroGameState extends GameState {
 
     protected Map<OBJ_TYPE, List<Obj>> graveyard = new HashMap<>();
 
-    public MicroGameState(MicroGame game) {
+    public MicroGameState(GenericGame game) {
         super(game);
 
     }
@@ -42,8 +42,8 @@ public abstract class MicroGameState extends GameState {
         return string;
     }
 
-    public MicroGame getGame() {
-        return (MicroGame) game;
+    public GenericGame getGame() {
+        return (GenericGame) game;
     }
 
 

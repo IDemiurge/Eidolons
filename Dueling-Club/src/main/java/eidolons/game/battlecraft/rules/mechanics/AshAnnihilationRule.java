@@ -15,14 +15,14 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.PropCondition;
 import main.elements.conditions.standard.ClassificationCondition;
 import main.elements.targeting.AutoTargeting.AUTO_TARGETING_TEMPLATES;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 
 /**
  * Created by JustMe on 4/22/2017.
  */
 public class AshAnnihilationRule extends DC_RuleImpl {
-    public AshAnnihilationRule(MicroGame game) {
+    public AshAnnihilationRule(GenericGame game) {
         super(game);
     }
 

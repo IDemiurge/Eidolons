@@ -14,7 +14,7 @@ import main.entity.Ref;
 import main.entity.obj.BuffObj;
 import main.entity.obj.HeroItem;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -27,7 +27,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
     private PARAMETER[] params;
     private PROPERTY[] props = {G_PROPS.STD_BOOLS};
 
-    public DC_HeroItemObj(ObjType type, Player owner, MicroGame game, Ref ref, PARAMETER[] params
+    public DC_HeroItemObj(ObjType type, Player owner, GenericGame game, Ref ref, PARAMETER[] params
                           // , PROPERTY[] props
     ) {
         super(new ObjType(type), owner, game, ref);

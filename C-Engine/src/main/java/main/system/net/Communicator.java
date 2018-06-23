@@ -2,7 +2,7 @@ package main.system.net;
 
 import main.entity.Ref;
 import main.entity.obj.Active;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.net.socket.GenericConnection;
@@ -15,14 +15,14 @@ public abstract class Communicator {
     protected static final String ACTIVATED_OBJ = "ACTIVATED_OBJ";
     protected static final String CMD_SEPARATOR = StringMaster.getAltPairSeparator();
     protected static final String ARG_SEPARATOR = StringMaster.getAltSeparator();
-    protected MicroGame game;
+    protected GenericGame game;
     protected CMD_ARGS ID_ARG = CMD_ARGS.ID;
     protected CMD_ARGS REF_ARG = CMD_ARGS.REF;
     protected COMMAND ACTIVATE_COMMAND = COMMAND.ACTIVATE;
     protected COMMAND END_TURN_COMMAND = COMMAND.END_TURN;
     private GenericConnection connectionHandler;
 
-    public Communicator(MicroGame game, GenericConnection handlerThread) {
+    public Communicator(GenericGame game, GenericConnection handlerThread) {
         this.setConnectionHandler(handlerThread);
         this.game = game;
 
@@ -137,17 +137,17 @@ public abstract class Communicator {
             }
         },;
 
-        protected MicroGame game;
+        protected GenericGame game;
 
         public Object construct(Object... args) {
             return null;
         }
 
-        public MicroGame getGame() {
+        public GenericGame getGame() {
             return game;
         }
 
-        public void setGame(MicroGame game) {
+        public void setGame(GenericGame game) {
             this.game = game;
         }
     }

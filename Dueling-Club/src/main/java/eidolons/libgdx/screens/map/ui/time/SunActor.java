@@ -37,7 +37,7 @@ public class SunActor extends GroupX {
             setY(0);
             setScale(0.6f);
             setRotation(270);
-            debug();
+//            debug();
         }
         updateOrigins();
         GuiEventManager.bind(MapEvent.TIME_CHANGED, p -> {

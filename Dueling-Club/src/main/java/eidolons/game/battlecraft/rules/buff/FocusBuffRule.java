@@ -15,7 +15,7 @@ import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
 public class FocusBuffRule extends DC_BuffRule {
@@ -24,7 +24,7 @@ public class FocusBuffRule extends DC_BuffRule {
     public static final String[] formulas = {"1", "10", "50",};
 
     // reverse means MORE THAN {THIS} and
-    public FocusBuffRule(MicroGame game) {
+    public FocusBuffRule(GenericGame game) {
         super(game);
     }
 

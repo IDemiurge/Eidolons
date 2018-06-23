@@ -23,7 +23,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
@@ -36,7 +36,7 @@ public class DC_MathManager extends MathMaster {
 
     public static final int DEFAULT_FREE_MASTERY_COUNT = 2;
 
-    public DC_MathManager(MicroGame game) {
+    public DC_MathManager(GenericGame game) {
         this.game = game;
     }
 

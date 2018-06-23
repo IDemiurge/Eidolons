@@ -177,7 +177,7 @@ public class DebugMaster {
     private String lastFunction;
     private Stack<String> executedFunctions = new Stack<>();
     // public void editAi(DC_HeroObj unit) {
-    // UnitAI ai = unit.getUnitAI();
+    // UnitAI ai = unit.getUnitAi();
     // }
     private DC_Game game;
     private DC_GameState state;

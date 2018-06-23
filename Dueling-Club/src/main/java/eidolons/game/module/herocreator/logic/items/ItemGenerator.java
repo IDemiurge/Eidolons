@@ -23,7 +23,7 @@ import main.data.GenericItemGenerator;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -966,7 +966,7 @@ public class ItemGenerator implements GenericItemGenerator {
     public DC_HeroItemObj createItem(ObjType type, Ref ref, boolean addMaterialParams) {
         // if (addMaterialParams)//if building from blueprint type
         // type = generateItem_(quality, material, type, params, mod_params);
-        MicroGame game = (MicroGame) ref.getGame();
+        GenericGame game = (GenericGame) ref.getGame();
         DC_HeroItemObj item = (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? new DC_WeaponObj(
          type, ref.getPlayer(), game, ref) : new DC_ArmorObj(type, ref.getPlayer(), game,
          ref);

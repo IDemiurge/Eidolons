@@ -1,6 +1,6 @@
 package eidolons.macro;
 
-import eidolons.game.battlecraft.logic.meta.macro.MacroPartyManager;
+import eidolons.game.battlecraft.logic.meta.adventure.AdventurePartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
@@ -25,6 +25,7 @@ public class MacroManager {
     private static MetaGameMaster metaMaster;
     private static String worldName;
     private static boolean load;
+    private static boolean testMode =true;
 
     public static void setScenario(String scenario) {
         MacroManager.scenario = scenario;
@@ -44,7 +45,7 @@ public class MacroManager {
         metaMaster = new ScenarioMetaMaster(scenario) {
             @Override
             protected PartyManager createPartyManager() {
-                return new MacroPartyManager(this);
+                return new AdventurePartyManager(this);
             }
         };
         if (!CoreEngine.isMapEditor()) {
@@ -135,36 +136,13 @@ public class MacroManager {
         return load;
     }
 
+    public static boolean isTestMode() {
+        return testMode;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static void setTestMode(boolean testMode) {
+        MacroManager.testMode = testMode;
+    }
 
 
     // private static void saveCopyTypes() {

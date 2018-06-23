@@ -1,16 +1,16 @@
 package main.game.bf;
 
 import main.game.core.game.GameManager;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.core.state.MicroGameState;
 
 public abstract class BattleFieldManager {
 
-    protected MicroGame game;
+    protected GenericGame game;
     protected GameManager mngr;
     protected MicroGameState state;
 
-    public BattleFieldManager(MicroGame game) {
+    public BattleFieldManager(GenericGame game) {
         this.game = game;
         mngr = game.getManager();
         this.state = game.getState();

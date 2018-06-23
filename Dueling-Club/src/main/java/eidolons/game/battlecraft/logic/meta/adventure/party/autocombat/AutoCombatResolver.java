@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.party.autocombat;
+package eidolons.game.battlecraft.logic.meta.adventure.party.autocombat;
 
 /**
  * Created by JustMe on 7/21/2017.

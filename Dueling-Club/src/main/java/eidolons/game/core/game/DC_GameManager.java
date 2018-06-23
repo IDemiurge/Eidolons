@@ -78,9 +78,9 @@ public class DC_GameManager extends GameManager {
         Manager.init(game, state, this);
 
         stateManager = new DC_StateManager(state);
-        gameMaster = game.getMaster();// new DC_GameMaster(game);
+        gameObjMaster = game.getMaster();// new DC_GameMaster(game);
         Eidolons.stateManager = getStateManager();
-        Eidolons.gameMaster = getGameMaster();
+        Eidolons.gameMaster = getGameObjMaster();
         Eidolons.game = game;
         Eidolons.gameManager = this;
         state.setManager(getStateManager());
@@ -170,7 +170,7 @@ public class DC_GameManager extends GameManager {
             resetWallMap();
             return;
         }
-        getGameMaster().clearCaches();
+        getGameObjMaster().clearCaches();
         FutureBuilder.clearCaches();
         getStateManager().resetAllSynchronized();
         checkForChanges(true);
@@ -561,8 +561,8 @@ public class DC_GameManager extends GameManager {
     }
 
     @Override
-    public DC_GameObjMaster getGameMaster() {
-        return (DC_GameObjMaster) super.getGameMaster();
+    public DC_GameObjMaster getGameObjMaster() {
+        return (DC_GameObjMaster) super.getGameObjMaster();
     }
 
     public BuffMaster getBuffMaster() {

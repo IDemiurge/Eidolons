@@ -1,7 +1,7 @@
-package eidolons.game.battlecraft.logic.meta.party.request;
+package eidolons.game.battlecraft.logic.meta.adventure.party.request;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.game.battlecraft.logic.meta.party.request.HeroRequestMaster.REQUEST_TYPE;
+import eidolons.game.battlecraft.logic.meta.adventure.party.request.HeroRequestMaster.REQUEST_TYPE;
 
 /**
  * Created by JustMe on 7/23/2017.

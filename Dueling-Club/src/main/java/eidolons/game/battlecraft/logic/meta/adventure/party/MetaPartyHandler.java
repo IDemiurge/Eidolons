@@ -1,4 +1,4 @@
-package eidolons.game.battlecraft.logic.meta.party;
+package eidolons.game.battlecraft.logic.meta.adventure.party;
 
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMeta;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameHandler;

@@ -96,6 +96,8 @@ public class MapStage extends Stage {
         resetZIndices();
         if (CoreEngine.isMapEditor())
             return;
+        if (nextMap.getContent()==null )
+            return; //TODO make sure background is initialized always on time! 
         Color color = nextMap.getContent().getColor();
         float percentage =
          MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();

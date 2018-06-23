@@ -32,12 +32,12 @@ import main.system.launch.CoreEngine;
  */
 public abstract class ScreenWithLoader extends ScreenAdapter {
     public static final String ASSET_LOADING = "ASSET LOADING";
+    protected Batch batch;
     protected LoadingStage loadingStage;
-    protected boolean hideLoader = false;
+    protected boolean loading = true;
     protected ScreenData data;
     protected ScreenViewport viewPort;
     protected ChainedStage introStage;
-    protected Batch batch;
     protected Label waitingLabel;
     protected EventCallbackParam param;
     protected float timeWaited;
@@ -90,7 +90,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (data.getDialogScenarios().size() > 0) {
             introStage = new ChainedStage(viewPort, getBatch(), data.getDialogScenarios());
             introStage.setOnDoneCallback(() -> {
-                if (hideLoader) {
+                if (!loading) {
                     updateInputController();
                 }
             });
@@ -171,7 +171,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     protected abstract void afterLoad();
 
     protected void hideLoader() {
-        this.hideLoader = true;
+        this.loading = false;
         loadingStage.done();
         if (introStage != null)
             if (introStage.isDone()) {
@@ -267,9 +267,9 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     protected boolean isTooltipsOn() {
-        if (hideLoader)
-            return false;
-        return true;
+        if (loading)
+            return true;
+        return false;
     }
 
     protected void renderLoader(float delta) {
@@ -277,7 +277,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         if (introStage != null && !introStage.isDone()) {
             introStage.act(delta);
             introStage.draw();
-        } else if (!hideLoader) {
+        } else if (loading) {
             loadingStage.act(delta);
             loadingStage.draw();
             overlayStage.act(delta);
@@ -292,7 +292,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     }
 
     public void backToLoader() {
-        hideLoader = false;
+        loading = true;
     }
 
     public boolean isWaitingForInput() {
@@ -317,7 +317,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             isIntroFinished = false;
         }
 
-        return hideLoader && isIntroFinished;
+        return !loading && isIntroFinished;
     }
 
     public void setData(ScreenData data) {
@@ -349,10 +349,6 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         this.loadingStage = new LoadingStage(meta);
         loadingStage.setViewport(new ScreenViewport(new OrthographicCamera( )));
         initLoadingCursor();
-    }
-
-    public boolean isLoadingDone() {
-        return hideLoader;
     }
 
     public void reset() {

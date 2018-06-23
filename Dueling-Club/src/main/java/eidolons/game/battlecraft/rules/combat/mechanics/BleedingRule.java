@@ -11,7 +11,7 @@ import main.elements.conditions.NumericCondition;
 import main.elements.conditions.ObjTypeComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
@@ -28,7 +28,7 @@ public class BleedingRule extends DC_RuleImpl {
     private static final Integer THRESHOLD = 20;
     private static final Integer MODIFIER = 10;
 
-    public BleedingRule(MicroGame game) {
+    public BleedingRule(GenericGame game) {
         super(game);
     }
 

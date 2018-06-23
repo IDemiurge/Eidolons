@@ -13,7 +13,7 @@ import main.content.enums.system.MetaEnums;
 import main.elements.conditions.Condition;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
 public class StaminaBuffRule extends DC_BuffRule {
@@ -21,7 +21,7 @@ public class StaminaBuffRule extends DC_BuffRule {
      MetaEnums.STD_BUFF_NAMES.Fatigued.getName(), MetaEnums.STD_BUFF_NAMES.Energized.getName()};
     public static final String[] formulas = {"1", "10", "150",};
 
-    public StaminaBuffRule(MicroGame game) {
+    public StaminaBuffRule(GenericGame game) {
         super(game);
     }
 

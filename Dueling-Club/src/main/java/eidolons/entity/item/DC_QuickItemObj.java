@@ -18,7 +18,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.HeroItem;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -39,12 +39,12 @@ public class DC_QuickItemObj extends DC_HeroItemObj implements HeroItem {
     private boolean ammo;
     private boolean trap;
 
-    public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref, null);
 
     }
 
-    public DC_QuickItemObj(ObjType type, Player owner, MicroGame game, Ref ref, boolean wrapped) {
+    public DC_QuickItemObj(ObjType type, Player owner, GenericGame game, Ref ref, boolean wrapped) {
         super(type, owner, game, ref, null);
         this.wrapped = wrapped;
         type.addProperty(G_PROPS.STD_BOOLS, GenericEnums.STD_BOOLS.WRAPPED_ITEM + "", true);

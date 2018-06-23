@@ -15,7 +15,7 @@ import main.content.enums.system.AiEnums;
 import main.content.enums.system.MetaEnums;
 import main.elements.conditions.NotCondition;
 import main.entity.Ref.KEYS;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -32,7 +32,7 @@ public class WoundsBuffRule extends DC_BuffRule {
     public static final String[] buffTypeNames = {MetaEnums.STD_BUFF_NAMES.Critically_Wounded.getName(),
      MetaEnums.STD_BUFF_NAMES.Wounded.getName(),};
 
-    public WoundsBuffRule(MicroGame game) {
+    public WoundsBuffRule(GenericGame game) {
         super(game);
     }
 

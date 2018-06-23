@@ -155,7 +155,7 @@ public class WanderAi extends AiBehavior {
 
         boolean change = false;
 
-//        if (checkUnitArrived(group.getLeader().getUnitAI(), type)) {
+//        if (checkUnitArrived(group.getLeader().getUnitAi(), type)) {
 //            change = true;
 //        } else {
         List<UnitAI> forwards = new ArrayList<>();

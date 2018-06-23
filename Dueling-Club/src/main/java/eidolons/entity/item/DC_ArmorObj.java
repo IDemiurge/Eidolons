@@ -10,7 +10,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
@@ -18,7 +18,7 @@ public class DC_ArmorObj extends DC_HeroSlotItem {
 
     private ARMOR_TYPE armorType;
 
-    public DC_ArmorObj(ObjType armor_type, Player originalOwner, MicroGame game, Ref ref) {
+    public DC_ArmorObj(ObjType armor_type, Player originalOwner, GenericGame game, Ref ref) {
         super(armor_type, originalOwner, game, ref, DC_ContentValsManager.getArmorModifyingParams());
     }
 

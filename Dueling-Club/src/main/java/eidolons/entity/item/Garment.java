@@ -5,7 +5,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 
@@ -23,7 +23,7 @@ public class Garment extends DC_HeroSlotItem {
     private GARMENT_TYPE garment_type;
 
     // TODO GENERATION: material types? noise level...
-    public Garment(ObjType type, Player owner, MicroGame game, Ref ref,
+    public Garment(ObjType type, Player owner, GenericGame game, Ref ref,
                    PARAMETER[] params) {
         super(type, owner, game, ref, params);
         garment_type =

@@ -503,7 +503,7 @@ public class AtomicAi extends AiHandler {
 
     public boolean isOn() {
 
-        if (getUnitAI().getType() == AI_TYPE.ARCHER) {
+        if (getUnitAi().getType() == AI_TYPE.ARCHER) {
             return true;
         }
         return on;

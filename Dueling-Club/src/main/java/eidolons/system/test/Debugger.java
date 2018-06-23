@@ -22,7 +22,7 @@ public class Debugger {
 
     private static final String NO_HERO = "No main hero!";
     private static final String NOT_ACTIVE = "Main hero is not the active unit!";
-    private static final String NOT_PLAYERS_HERO ="Main hero is not player's heroobj!" ;
+    private static final String NOT_PLAYERS_HERO = "Main hero is not player's heroobj!";
 
     public static String getGameStateSnapshot() {
         String data = "Data: \n";
@@ -62,9 +62,9 @@ public class Debugger {
 
         Thread[] array = new Thread[100];
         int count = Thread.enumerate(array);
-        String msg = "Current Thread: "+ Thread.currentThread().getName();
-          msg += "\n" + count+
-           " threads: ";
+        String msg = "Current Thread: " + Thread.currentThread().getName();
+        msg += "\n" + count +
+         " threads: ";
         for (Thread sub : array) {
             msg += sub.getName() + "\n";
         }
@@ -83,24 +83,28 @@ public class Debugger {
     public static void validateInvisibleUnitView(BaseView baseView) {
 
     }
-        public static void validateVisibleUnitView(BaseView baseView) {
+
+    public static void validateVisibleUnitView(BaseView baseView) {
         if (baseView instanceof GridUnitView) {
             GridUnitView view = ((GridUnitView) baseView);
             if (view.getActions().size == 0) {
                 if (view.getColor().a == 0) {
-                    main.system.auxiliary.log.LogMaster.log(1,"Validation was required for "+view+
-                    " - alpha==0");
+                    main.system.auxiliary.log.LogMaster.log(1, "Validation was required for " + view +
+                     " - alpha==0");
                     view.fadeIn();
                 }
                 if (view.getParent() instanceof GridCellContainer) {
                     GridCellContainer cell = ((GridCellContainer) view.getParent());
                     if (view.getX() != cell.getViewX(view) ||
                      view.getY() != cell.getViewY(view)) {
-                       cell.recalcUnitViewBounds();
+                        cell.recalcUnitViewBounds();
                     }
 
                 }
             }
+            if (view.getArrow() !=  null)
+                if (view.getArrow().getActions().size == 0)
+                    view.validateArrowRotation();
 
         }
     }

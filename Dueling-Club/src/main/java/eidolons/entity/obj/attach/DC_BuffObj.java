@@ -13,18 +13,18 @@ import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
 public class DC_BuffObj extends BuffObj {
 
-    public DC_BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
+    public DC_BuffObj(ObjType type, Player owner, GenericGame game, Ref ref, Effect effect,
                       double duration, Condition retainCondition) {
         super(type, owner, game, ref, effect, duration, retainCondition);
 
     }
 
-    public DC_BuffObj(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_BuffObj(ObjType type, Player owner, GenericGame game, Ref ref) {
         this(type, owner, game, ref, null, 0, null);
     }
 

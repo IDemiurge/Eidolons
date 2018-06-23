@@ -105,7 +105,7 @@ public class PerceptionRule extends TurnRule implements ActionRule {
     private void checkResetPlayerPerceptionStatus(PERCEPTION_STATUS status,
                                                   Unit source, Unit unit) {
         if (source.isAiControlled()) {
-//			PERCEPTION_STATUS_PLAYER s = source.getUnitAI().getGroup()
+//			PERCEPTION_STATUS_PLAYER s = source.getUnitAi().getGroup()
 //					.getPerceptionStatus();
             for (PERCEPTION_STATUS perc : PERCEPTION_STATUS.values()) {
 

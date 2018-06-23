@@ -20,6 +20,10 @@ import main.system.auxiliary.log.SpecialLogger;
 
 /**
  * Created by JustMe on 5/7/2017.
+ *
+ * Does everything TO the Game
+ * It kind of "owns" the Game
+ *
  */
 public abstract class MetaGameMaster<E extends MetaGame> {
 
@@ -75,6 +79,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         initializer = createMetaInitializer();
         shopManager = createShopManager();
         metaDataManager = createMetaDataManager();
+
         dialogueFactory = createDialogueFactory();
         introFactory = createIntroFactory();
         dialogueManager = new DialogueManager(this);

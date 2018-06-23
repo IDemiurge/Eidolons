@@ -17,7 +17,7 @@ import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
@@ -39,13 +39,13 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     private Map<PARAMETER, String> bonusMap;
     private int tier;
 
-    public DC_FeatObj(ObjType featType, Player originalOwner, MicroGame game, Ref ref) {
+    public DC_FeatObj(ObjType featType, Player originalOwner, GenericGame game, Ref ref) {
         super(featType, originalOwner, game, ref);
         tier = getIntParam(PARAMS.CIRCLE);
     }
 
     public DC_FeatObj(ObjType type, Ref ref) {
-        this(type, ref.getSourceObj().getOwner(), (MicroGame) ref.getGame(), ref);
+        this(type, ref.getSourceObj().getOwner(), (GenericGame) ref.getGame(), ref);
     }
 
     @Override

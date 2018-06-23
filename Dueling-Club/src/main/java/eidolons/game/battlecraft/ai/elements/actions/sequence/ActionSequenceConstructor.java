@@ -85,7 +85,7 @@ public class ActionSequenceConstructor extends AiHandler {
         List<DC_ActiveObj> actions = AiUnitActionMaster.getFullActionList(goal.getTYPE(), ai.getUnit());
         actions.addAll(addSubactions(actions));
         for (DC_ActiveObj action : actions) {
-            if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
+            if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
                 break;
 
             Chronos.mark(getChronosPrefix() + action);
@@ -152,7 +152,7 @@ public class ActionSequenceConstructor extends AiHandler {
                 }
             } else {
 
-                // if (unit.getUnitAI().getLogLevel() > UnitAI.LOG_LEVEL_NONE)
+                // if (unit.getUnitAi().getLogLevel() > UnitAI.LOG_LEVEL_NONE)
                 // TODO smarter logging?
                 // main.system.auxiliary.LogMaster.log(1, "***" +
                 // action.toString()
@@ -257,7 +257,7 @@ public class ActionSequenceConstructor extends AiHandler {
         } else {
             // if (prioritizedCells == null)
             // prioritizedCells = CellPrioritizer
-            // .getMeleePriorityCellsForUnit(unit.getUnitAI(),
+            // .getMeleePriorityCellsForUnit(unit.getUnitAi(),
             // moveActions, action);
         }
 
@@ -275,7 +275,7 @@ public class ActionSequenceConstructor extends AiHandler {
                                                       Action action) {
         List<ActionSequence> list = new ArrayList<>();
         for (ActionPath path : paths) {
-            if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAI()))
+            if (!TimeLimitMaster.checkTimeLimitForAi(getUnitAi()))
                 break;
             ActionSequence sequence = new ActionSequence(path.getActions(), task, task.getAI());
             if (action.getActive().isRanged()) {

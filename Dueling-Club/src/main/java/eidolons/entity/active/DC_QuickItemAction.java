@@ -10,7 +10,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
@@ -18,7 +18,7 @@ public class DC_QuickItemAction extends DC_ActiveObj {
 
     private DC_QuickItemObj item;
 
-    public DC_QuickItemAction(ObjType type, Player owner, MicroGame game, Ref ref) {
+    public DC_QuickItemAction(ObjType type, Player owner, GenericGame game, Ref ref) {
         super(type, owner, game, ref);
     }
 

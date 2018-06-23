@@ -18,7 +18,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -101,7 +101,7 @@ potions
         Ref ref = new Ref();
         DC_HeroItemObj itemObj =
          ItemFactory.createItemObj(hungObj.getItemType(), DC_Player.NEUTRAL,
-          (MicroGame) ref.getGame(), ref, false);
+          (GenericGame) ref.getGame(), ref, false);
         return itemObj;
     }
 

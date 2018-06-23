@@ -15,7 +15,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.BuffType;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.MessageManager;
 import main.system.auxiliary.EnumMaster;
@@ -49,7 +49,7 @@ public class BuffObj extends MicroObj implements Attachment, AttachedObj {
     private List<PeriodicEffect> timeEffects;
     private boolean immobilizing;
 
-    public BuffObj(ObjType type, Player owner, MicroGame game, Ref ref, Effect effect,
+    public BuffObj(ObjType type, Player owner, GenericGame game, Ref ref, Effect effect,
                    double duration, Condition retainCondition) {
         super(
          type==null ?          DataManager.getType(DUMMY_BUFF_TYPE, DC_TYPE.BUFFS)

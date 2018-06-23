@@ -10,7 +10,7 @@ import main.data.XList;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.core.game.GameMaster;
+import main.game.core.game.GameObjMaster;
 import main.game.logic.battle.player.Player;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * Created by JustMe on 2/15/2017.
  */
-public class DC_GameObjMaster extends GameMaster {
+public class DC_GameObjMaster extends GameObjMaster {
 
     protected DequeImpl<Unit> units;
     protected DequeImpl<Structure> structures;

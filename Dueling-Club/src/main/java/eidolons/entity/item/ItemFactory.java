@@ -5,12 +5,12 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 
 public class ItemFactory {
 
-    public static DC_HeroItemObj createItemObj(ObjType type, Player originalOwner, MicroGame game,
+    public static DC_HeroItemObj createItemObj(ObjType type, Player originalOwner, GenericGame game,
                                                Ref ref, boolean quick) {
         if (type == null) {
             return null;

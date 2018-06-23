@@ -11,7 +11,7 @@ import main.elements.conditions.Conditions;
 import main.elements.conditions.NotCondition;
 import main.elements.conditions.NumericCondition;
 import main.entity.Ref;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
@@ -35,7 +35,7 @@ public class PanicRule extends DC_RuleImpl {
 
     // put a conditional continuous effect
 
-    public PanicRule(MicroGame game) {
+    public PanicRule(GenericGame game) {
         super(game);
 
     }

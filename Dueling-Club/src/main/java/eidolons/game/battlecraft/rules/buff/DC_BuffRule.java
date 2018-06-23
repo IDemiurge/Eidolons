@@ -17,7 +17,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
@@ -38,7 +38,7 @@ public abstract class DC_BuffRule extends DC_RuleImpl {
     Map<Obj, Effect[]> effectCache = new XLinkedMap<>();
     private Map<Obj, Integer> levelCache = new ConcurrentHashMap<>();
 
-    public DC_BuffRule(MicroGame game) {
+    public DC_BuffRule(GenericGame game) {
         super(game);
 
     }

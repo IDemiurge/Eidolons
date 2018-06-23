@@ -13,6 +13,7 @@ import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.libgdx.video.VideoMaster;
+import eidolons.macro.MacroManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
@@ -113,7 +114,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     private void addSelectionPanel(SelectionPanel selectionPanel) {
-        boolean displayOnLoader = hideLoader != isLoadingWithVideo();
+        boolean displayOnLoader = loading == isLoadingWithVideo();
         Stage stage = displayOnLoader ? getOverlayStage() : getMainStage();
         if (stage != null) {
             stage.addActor(selectionPanel);
@@ -190,7 +191,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
     @Override
     public void render(float delta) {
-        if (CoreEngine.isJar()) {
+        if (CoreEngine.isJar() && !CoreEngine.isCrashSafeMode()) {
             super.render(delta);
         } else
             try {

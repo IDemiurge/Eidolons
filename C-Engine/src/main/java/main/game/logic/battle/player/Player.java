@@ -2,7 +2,7 @@ package main.game.logic.battle.player;
 
 import main.entity.obj.MicroObj;
 import main.entity.obj.Obj;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.system.auxiliary.log.Chronos;
 import main.system.entity.FilterMaster;
 import main.system.graphics.ColorManager.FLAG_COLOR;
@@ -15,7 +15,7 @@ public class Player {
 
 
     protected MicroObj heroObj;
-    protected MicroGame game;
+    protected GenericGame game;
     protected String portrait;
     protected boolean ai;
     FLAG_COLOR flagColor;
@@ -141,11 +141,11 @@ public class Player {
         this.flagColor = flagColor;
     }
 
-    public MicroGame getGame() {
+    public GenericGame getGame() {
         return game;
     }
 
-    public void setGame(MicroGame game) {
+    public void setGame(GenericGame game) {
         this.game = game;
     }
 

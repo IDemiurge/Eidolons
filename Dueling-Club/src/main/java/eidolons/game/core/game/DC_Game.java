@@ -68,7 +68,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.GraveyardManager;
 import main.game.core.game.Game;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
@@ -85,7 +85,7 @@ import java.util.*;
  * battleInit() is a reset method
  * start() creates units and starts GameLoop (DC_TurnManager)
  */
-public class DC_Game extends MicroGame {
+public class DC_Game extends GenericGame {
     public static DC_Game game;
 
     protected MetaGameMaster metaMaster;

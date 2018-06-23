@@ -1,7 +1,7 @@
 package eidolons.game.battlecraft.rules;
 
 import main.elements.triggers.Trigger;
-import main.game.core.game.MicroGame;
+import main.game.core.game.GenericGame;
 
 public abstract class TriggerRule {
 
@@ -12,7 +12,7 @@ public abstract class TriggerRule {
         return trigger;
     }
 
-    public void init(MicroGame game) {
+    public void init(GenericGame game) {
         if (trigger == null) {
             initTrigger();
         }
@@ -22,7 +22,7 @@ public abstract class TriggerRule {
 
     public abstract void initTrigger();
 
-    public void removeFrom(MicroGame game) {
+    public void removeFrom(GenericGame game) {
         if (trigger == null) {
             initTrigger();
         }
