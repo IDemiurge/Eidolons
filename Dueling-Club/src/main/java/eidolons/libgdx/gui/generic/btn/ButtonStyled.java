@@ -62,7 +62,7 @@ public class ButtonStyled extends Image implements EventListener {
         CANCEL("UI/components/generic/buttons/no.png"),
         UNDO("UI/components/generic/buttons/back.png"),
         NEXT("UI/components/generic/buttons/forward.png"),
-        GAME_MENU("UI/components/generic/buttons/button.png"),
+        MENU("UI/components/generic/buttons/button.png"),
         UNARMED("UI/components/dc/quick weapon/unarmed.png"),
 
         HELP(VISUALS.QUESTION.getImgPath()) {

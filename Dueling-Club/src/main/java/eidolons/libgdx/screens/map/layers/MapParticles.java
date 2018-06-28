@@ -2,6 +2,8 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import eidolons.libgdx.anims.particles.EmitterMaster;
+import eidolons.libgdx.anims.particles.ParticleEffectX;
 import eidolons.macro.MacroGame;
 import eidolons.libgdx.anims.particles.EmitterActor;
 import eidolons.libgdx.anims.particles.EmitterPools;
@@ -14,6 +16,7 @@ import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
@@ -176,13 +179,21 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
             String pos = VariableManager.getVarPart(sub);
             Coordinates c = new Coordinates(true, pos);
             try {
-                create((VariableManager.removeVarPart(sub)).trim(), c.x, c.y, time);
+                create( getPresetPath(sub), c.x, c.y, time);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 main.system.auxiliary.log.LogMaster.log(1, "failed to load: " + sub);
                 broken.add(sub);
             }
         }
+    }
+
+    private String getPresetPath(String sub) {
+        if (ParticleEffectX.isEmitterAtlasesOn()){
+            return
+             StrPathBuilder.build(EmitterMaster.ATLAS_VFX_PREFIX, (VariableManager.removeVarPart(sub)).trim());
+        }
+        return (VariableManager.removeVarPart(sub)).trim();
     }
 
     public enum MAP_EMITTER_GROUP {

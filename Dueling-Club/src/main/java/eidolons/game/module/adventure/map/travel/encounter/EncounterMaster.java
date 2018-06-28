@@ -3,29 +3,22 @@ package eidolons.game.module.adventure.map.travel.encounter;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.game.core.game.DC_Game;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Route;
 import eidolons.macro.map.area.Area;
 import eidolons.macro.map.area.MacroGroup;
-import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.DC_TYPE;
 import main.content.values.parameters.MACRO_PARAMS;
 import main.data.DataManager;
-import main.data.XLinkedMap;
-import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class EncounterMaster {
 
@@ -174,16 +167,18 @@ public class EncounterMaster {
     }
 
     public static int getMinCreepWavePower() {
-        return MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE)
-         + MacroManager.getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
-         * MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR);
+        return Integer.MIN_VALUE;
+//        return MacroInitializer.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE)
+//         + MacroInitializer.getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
+//         * MacroInitializer.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR);
     }
 
     public static int getMaxCreepWavePower() {
-        return MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_MAX_FACTOR)
-         * (MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE) + MacroManager
-         .getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
-         * MacroManager.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR));
+        return Integer.MAX_VALUE;
+//        return MacroInitializer.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_MAX_FACTOR)
+//         * (MacroInitializer.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_BASE) + MacroInitializer
+//         .getCampaign().getIntParam(MACRO_PARAMS.HOURS_ELAPSED)
+//         * MacroInitializer.getCampaign().getIntParam(MACRO_PARAMS.CREEP_POWER_PER_HOUR));
     }
 
     public static boolean isEncounterBeingResolved() {

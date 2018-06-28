@@ -4,7 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.global.time.TimeMaster;
 import eidolons.macro.generation.HeroGenerator;
@@ -38,7 +38,7 @@ public class Tavern extends TownPlace {
 
     public Tavern(MacroGame game, ObjType type, Ref ref) {
         super(game, type, ref);
-        if (!MacroManager.isEditMode()) {
+        if (!MacroInitializer.isEditMode()) {
             generateHeroes();
         }
     }
@@ -236,7 +236,7 @@ public class Tavern extends TownPlace {
     }
 
     public void buyProvisions(Boolean max_min_all) {
-        buyProvisions(max_min_all, MacroManager.getActiveParty());
+        buyProvisions(max_min_all, MacroInitializer.getActiveParty());
     }
 
     public void buyProvisions(Boolean max_min_all, MacroParty party) {
@@ -251,7 +251,7 @@ public class Tavern extends TownPlace {
     }
 
     public void hired(Unit hero) {
-        hired(false, MacroManager.getActiveParty(), hero);
+        hired(false, MacroInitializer.getActiveParty(), hero);
     }
 
     public void hired(boolean merc, MacroParty party, Unit hero) {

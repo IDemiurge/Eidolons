@@ -3,9 +3,11 @@ package eidolons.libgdx.screens;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
 import main.entity.Entity;
+import main.entity.type.ObjType;
 import main.system.EventCallbackParam;
 
 import java.util.List;
@@ -52,6 +54,19 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     }
     @Override
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
+        List<? extends Entity> list = (List<? extends Entity>) p.get();
+        if (isLoadGame(list)){
+            return new SaveSelectionPanel(() -> list) {
+                @Override
+                public void closed(Object selection) {
+                    if (selection == null) {
+                        if (mainMenu != null)
+                            mainMenu.setVisible(true);
+                    }
+                    super.closed(selection);
+                }
+            };
+        }
         return new ScenarioSelectionPanel(() -> (List<? extends Entity>) p.get()) {
             @Override
             public void closed(Object selection) {
@@ -62,6 +77,10 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
                 super.closed(selection);
             }
         };
+    }
+
+    private boolean isLoadGame(List<? extends Entity> p) {
+        return p.get(0) instanceof ObjType;
     }
 
     @Override

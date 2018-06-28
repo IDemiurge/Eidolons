@@ -45,10 +45,10 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 //        };
 
         if (SNOW_ON) {
-        CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.path);
-        CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.path);
-        CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.path);
-        CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.path);
+        CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
+        CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
+        CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
+        CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
         }
 
         LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;

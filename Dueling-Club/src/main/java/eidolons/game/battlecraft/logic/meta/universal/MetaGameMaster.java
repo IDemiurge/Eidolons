@@ -10,7 +10,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.dialogue.intro.IntroFactory
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.global.persist.Loader;
 import main.entity.DataModel;
 import main.game.bf.Coordinates;
@@ -104,7 +104,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         metaGame = initializer.initMetaGame(data);
         preStart();
 
-        if (MacroManager.isLoad())
+        if (MacroInitializer.isLoad())
             Loader.loadCharacters();
         if (partyManager.initPlayerParty() != null) {
             if (getBattleMaster().getOptionManager().chooseDifficulty(getMetaGame().isDifficultyReset()))

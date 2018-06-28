@@ -1,7 +1,7 @@
 package eidolons.game.module.adventure.utils;
 
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Region;
@@ -88,7 +88,7 @@ public class SaveMasterOld {
 
     private static String getSaveFileName() {
         // ++ unique code generated per Macro Game and stored in Campaign obj
-        return MacroManager.getActiveParty().getName();
+        return MacroInitializer.getActiveParty().getName();
     }
 
     private static String getSavePath() {
@@ -97,9 +97,9 @@ public class SaveMasterOld {
 
     public static void saveTheWorld() {
         //all locations to regions, etc
-        for (Region region : MacroManager.getGame().getState().getRegions()) {
+        for (Region region : MacroGame.getGame().getState().getRegions()) {
             String places = "";
-            for (Place sub : MacroManager.getGame().getPlaces()) {
+            for (Place sub : MacroGame.getGame().getPlaces()) {
                 if (sub.getRegion() != region)
                     continue;
                 places +=
@@ -108,7 +108,7 @@ public class SaveMasterOld {
             region.setProperty(MACRO_PROPS.PLACES, places, true);
 
             String parties = "";
-            for (MacroParty sub : MacroManager.getGame().getParties()) {
+            for (MacroParty sub : MacroGame.getGame().getParties()) {
                 if (sub.getRegion() != region)
                     continue;
                 parties +=

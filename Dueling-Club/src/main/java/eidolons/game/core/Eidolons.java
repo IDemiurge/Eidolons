@@ -25,7 +25,7 @@ import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -284,7 +284,7 @@ public class Eidolons {
 
     public static void showMainMenu() {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(ScreenType.MAIN_MENU, "Loading..."));
+         new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading..."));
 
         ScenarioLauncher.missionIndex = 0;
     }

@@ -51,7 +51,7 @@ public class ParticleManager extends GroupX {
                 List<Object> list = (List<Object>) p.get();
                 List<Object> newList = new ArrayList<>();
                 EMITTER_PRESET preset= (EMITTER_PRESET) list.get(0);
-                newList.add(preset.path);
+                newList.add(preset.getPath());
                 newList.add(list.get(1));
                 GuiEventManager.trigger(GuiEventType.SHOW_CUSTOM_VFX,
                  newList);

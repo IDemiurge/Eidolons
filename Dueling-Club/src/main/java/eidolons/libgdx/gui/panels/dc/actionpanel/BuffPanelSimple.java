@@ -3,8 +3,8 @@ package eidolons.libgdx.gui.panels.dc.actionpanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.EffectsAndAbilitiesSource;
 
-public class EffectsPanel extends TablePanel {
-    public EffectsPanel() {
+public class BuffPanelSimple extends TablePanel {
+    public BuffPanelSimple() {
         left().bottom();
     }
 

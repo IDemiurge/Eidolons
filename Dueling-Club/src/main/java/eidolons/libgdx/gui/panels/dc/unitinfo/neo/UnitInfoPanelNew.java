@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
-import eidolons.libgdx.gui.panels.dc.actionpanel.EffectsPanel;
+import eidolons.libgdx.gui.panels.dc.actionpanel.BuffPanelSimple;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqParamPanel;
 import eidolons.libgdx.gui.panels.headquarters.hero.HqTraitsPanel;
@@ -38,7 +38,7 @@ public class UnitInfoPanelNew  extends HqElement{
     FullParamTable paramTable;
     HqAttributeTable attributeTable;
     HqTraitsPanel traitsPanel;
-    EffectsPanel effectsPanel;
+    BuffPanelSimple buffPanelSimple;
 
     HqParamPanel paramPanel;
     HqParamPanel dynamicParamPanel;

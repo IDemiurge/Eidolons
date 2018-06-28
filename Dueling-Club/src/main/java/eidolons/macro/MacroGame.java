@@ -73,7 +73,6 @@ public class MacroGame extends Game {
 
         initObjTypes();
         world = WorldGenerator.generateWorld(ref);
-        MacroManager.setWorldName(world.getName());
 
         pointMaster = MapPointMaster.getInstance();
         routeMaster = new RouteMaster();

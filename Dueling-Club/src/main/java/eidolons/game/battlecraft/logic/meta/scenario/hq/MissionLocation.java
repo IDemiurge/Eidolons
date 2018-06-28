@@ -6,8 +6,8 @@ import main.entity.type.ObjType;
 /**
  * Created by JustMe on 5/31/2017.
  */
-public class Place extends LightweightEntity {
-    public Place(ObjType type) {
+public class MissionLocation extends LightweightEntity {
+    public MissionLocation(ObjType type) {
         super(type);
     }
 }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
@@ -83,7 +83,7 @@ public class MapScreen extends GameScreen {
         Eidolons.onThisOrNonGdxThread(() -> {
 
             XML_Reader.readTypes(true);
-            MacroManager.newGame(saveName);
+            MacroInitializer.newAdventureGame(saveName);
             preloaded = true;
         });
 

@@ -3,7 +3,7 @@ package eidolons.libgdx.launch;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.system.EventCallbackParam;
@@ -59,7 +59,7 @@ public class DemoLauncher extends GenericLauncher {
 
     @Override
     protected void screenInit() {
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...");
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, "Loading...");
         screenSwitcher(new EventCallbackParam(data));
 
 

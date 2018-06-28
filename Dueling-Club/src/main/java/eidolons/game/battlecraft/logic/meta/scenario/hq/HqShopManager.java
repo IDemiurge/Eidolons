@@ -22,7 +22,7 @@ public class HqShopManager extends ShopManager<ScenarioMeta> {
     @Override
     public void init() {
         shops = new ArrayList<>();
-        for (String substring : StringMaster.open(getMetaGame().getMission().getPlace().getProperty(PROPS.PLACE_SHOPS))) {
+        for (String substring : StringMaster.open(getMetaGame().getMission().getMissionLocation().getProperty(PROPS.PLACE_SHOPS))) {
             HqShop shop = new HqShop(DataManager.getType(substring, DC_TYPE.SHOPS));
             shops.add(shop);
         }

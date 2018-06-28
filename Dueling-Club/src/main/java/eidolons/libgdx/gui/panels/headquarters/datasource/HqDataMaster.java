@@ -49,7 +49,13 @@ public class HqDataMaster {
 
     public HqDataMaster(Unit hero) {
         this.hero = hero;
-        heroModel = createHeroDataModel(hero);
+        try {
+            heroModel = createHeroDataModel(hero);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            if (map.get(hero) != null)
+             heroModel=map.get(hero).getHeroModel();
+        }
         stack = new Stack<>();
     }
 
@@ -66,13 +72,14 @@ public class HqDataMaster {
             map.get(sub).save();
         }
     }
-        public static void saveHero(HeroDataModel model) {
+
+    public static void saveHero(HeroDataModel model) {
         saveHero(model, false, false);
     }
 
     public static void saveHero(HeroDataModel model, boolean type, boolean asNew) {
         map.get(model.getHero()).save();
-        EUtils.showInfoText(model.getName()+ " saved");
+        EUtils.showInfoText(model.getName() + " saved");
         if (type) {
             if (asNew)
                 model.setName(NameMaster.getUniqueVersionedName(model.getName(), DC_TYPE.CHARS));
@@ -100,8 +107,8 @@ public class HqDataMaster {
             }
             if (newVal.isEmpty())
                 continue;
-            main.system.auxiliary.log.LogMaster.log(1,model+" updates type with " +
-             sub +"==" +newVal);
+            main.system.auxiliary.log.LogMaster.log(1, model + " updates type with " +
+             sub + "==" + newVal);
             model.getType().setProperty(sub, newVal.substring(0,
              newVal.length() - 1));
         }
@@ -117,13 +124,13 @@ public class HqDataMaster {
     public static void operation(HeroDataModel model,
                                  HQ_OPERATION operation,
                                  Object... args) {
-//        new Thread(() -> {
+        //        new Thread(() -> {
         HqDataMaster master = getInstance(model.getHero());
         master.applyOperation(model,
          operation, args);
         model.modified(operation, args);
         master.reset();
-//        }, operation+ " hq operation thread").start();
+        //        }, operation+ " hq operation thread").start();
 
     }
 
@@ -138,7 +145,7 @@ public class HqDataMaster {
             }
         } else {
             if (item.isSimulation())
-//                return (DC_HeroItemObj) hero.getGame().getObjectById(item.getId());
+                //                return (DC_HeroItemObj) hero.getGame().getObjectById(item.getId());
                 return (DC_HeroItemObj) HqMaster.getSimCache().getReal(item);
             else
                 return item;
@@ -151,14 +158,16 @@ public class HqDataMaster {
     }
 
     public static HqDataMaster createInstance(Unit unit) {
-        return  new HqDataMaster(unit);
+        return new HqDataMaster(unit);
     }
+
     public static HqDataMaster createAndSaveInstance(Unit unit) {
-        HqDataMaster  instance =  new HqDataMaster(unit);
+        HqDataMaster instance = new HqDataMaster(unit);
         map.put(unit, instance);
         return instance;
     }
-        public static HqDataMaster getInstance(Unit unit) {
+
+    public static HqDataMaster getInstance(Unit unit) {
         HqDataMaster instance = map.get(unit);
         if (instance == null) {
             instance = new HqDataMaster(unit);
@@ -210,7 +219,7 @@ public class HqDataMaster {
         heroModel.reset();
         if (HqPanel.getActiveInstance() != null)
             HqPanel.getActiveInstance().setUserObject(new HqHeroDataSource(heroModel));
-//       reset();
+        //       reset();
     }
 
     private HeroDataModel createHeroDataModel(Unit hero) {
@@ -235,7 +244,7 @@ public class HqDataMaster {
             }
             if (!self) {
                 heroModel.getModificationList().clear();
-//           TODO why?     this.hero.resetObjectContainers(false);
+                //           TODO why?     this.hero.resetObjectContainers(false);
                 this.hero.reset();
                 dirty = false;
             }
@@ -274,11 +283,11 @@ public class HqDataMaster {
             case EQUIP_QUICK_SLOT:
                 hero.unequip(item, false);
                 hero.removeFromInventory(item);
-                if (item instanceof DC_WeaponObj){
+                if (item instanceof DC_WeaponObj) {
                     hero.addQuickItem(new DC_QuickItemObj(((DC_WeaponObj) item)));
 
                 } else
-                hero.addQuickItem((DC_QuickItemObj) item);
+                    hero.addQuickItem((DC_QuickItemObj) item);
                 break;
         }
     }
@@ -348,7 +357,7 @@ public class HqDataMaster {
                 break;
             case SPELL_UNMEMORIZED:
                 HqSpellMaster.unmemorizeSpell(hero, spell);
-//                CharacterCreator.getHeroManager().removeContainerItem(hero, spell);
+                //                CharacterCreator.getHeroManager().removeContainerItem(hero, spell);
                 break;
         }
     }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.data.xml.XML_Reader;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -31,11 +31,11 @@ public class MapEditor extends GenericLauncher {
         XML_Reader.readTypes(false);
         //custom options?!
         new MapEditor().start();
-//        MacroManager.newGame(arg);
+//        MacroManager.newAdventureGame(arg);
 
         WaitMaster.waitForInput(WAIT_OPERATIONS.GDX_READY);
         Gdx.app.postRunnable(() -> GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(ScreenType.MAP, arg)));
+         new ScreenData(SCREEN_TYPE.MAP, arg)));
     }
 
     public static void main(String[] args) {

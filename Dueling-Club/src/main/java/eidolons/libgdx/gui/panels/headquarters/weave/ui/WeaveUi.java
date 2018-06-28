@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.headquarters.weave;
+package eidolons.libgdx.gui.panels.headquarters.weave.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -11,4 +11,8 @@ public class WeaveUi extends GuiStage{
     public WeaveUi(Viewport viewport, Batch batch) {
         super(viewport, batch);
     }
+
+    WeaveButtonPanel buttonPanel;
+    WeaveHeroPreview heroPreview;
+
 }

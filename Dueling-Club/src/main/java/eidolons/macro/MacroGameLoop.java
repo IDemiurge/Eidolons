@@ -8,7 +8,7 @@ import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.macro.map.Place;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.map.MapScreen;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -147,7 +147,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     public void tryEnter(Place sub) {
         Coordinates c = macroGame.getPlayerParty().getCoordinates();
-        if (MacroManager.isTestMode()|| sub.getCoordinates().dst(c) < 150) {
+        if (MacroInitializer.isTestMode()|| sub.getCoordinates().dst(c) < 150) {
             combatStarts(sub);
         }
     }
@@ -166,7 +166,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
 
         String name =type.getName();
-        ScreenData data = new ScreenData(ScreenType.BATTLE,name );
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,name );
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         //when loaded, will init DC_Game properly
     }

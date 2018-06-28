@@ -30,7 +30,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private float speed = 1;
 
     public EmitterActor(EMITTER_PRESET fx) {
-        this(fx.path);
+        this(fx.getPath());
         this.sfx = fx;
     }
 
@@ -50,7 +50,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         if (path != null)
             return "emitter: " + path;
         if (sfx != null)
-            return "emitter: " + sfx.path;
+            return "emitter: " + sfx.getPath();
         return super.toString();
     }
 
@@ -111,21 +111,7 @@ public void hide(){
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-//        effect.getEmitters().forEach(e ->
-//        {
-//            e.getTransparency().set(new ScaledNumericValue());
-//            float a = e.getTransparency().getScale(e.getPercentComplete());
-//             e.getTransparency().set(new RangedNumericValue());
-//            e.getSprites().forEach(
-//             s-> s.getColor().a= a*parentAlpha
-//            );
-//        }
-//        );
-//            if (parentAlpha!=1) //TODO why?
         effect.setPosition(getX(), getY());
-//        sprite = effect.getEmitters().first().getSprite();
-//        sprite.setRotation(new Random().nextInt(360));
-//        if (speed!=null )
         float delta = Gdx.graphics.getDeltaTime() * speed;
         effect.draw(batch, delta);
 

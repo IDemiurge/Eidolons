@@ -20,7 +20,7 @@ public class MissionDataSourceImpl implements MissionDataSource {
     @Override
     public ValueContainer getPosition() {
         Coordinates c = new Coordinates(true,
-         mission.getPlace().getProperty(PROPS.PLACE_COORDINATES));
+         mission.getMissionLocation().getProperty(PROPS.PLACE_COORDINATES));
         return new ValueContainer("" + c.x, "" + c.y);
     }
 
@@ -37,7 +37,7 @@ public class MissionDataSourceImpl implements MissionDataSource {
 
     @Override
     public ValueContainer getMapIcon() {
-        return new ValueContainer(TextureCache.getOrCreateR(mission.getPlace().getImagePath()));
+        return new ValueContainer(TextureCache.getOrCreateR(mission.getMissionLocation().getImagePath()));
     }
 
     @Override

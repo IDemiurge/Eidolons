@@ -6,10 +6,13 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.entity.HeroEnums.CLASS_PERK_GROUP;
 import main.content.enums.entity.HeroEnums.PERK_PARAM;
+import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
@@ -112,4 +115,16 @@ public class HeroClassMaster {
         return list;
     }
 
+    public static List<CLASS_GROUP> getClassGroups(HeroDataModel entity) {
+        List<CLASS_GROUP> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            List<DC_FeatObj> classes = getClasses(entity, i);
+            for (DC_FeatObj sub : classes) {
+                CLASS_GROUP group = new EnumMaster<CLASS_GROUP>().retrieveEnumConst(CLASS_GROUP.class, sub.getProperty(G_PROPS.CLASS_GROUP));
+                if (!list.contains(group))
+                    list.add(group);
+            }
+        }
+        return list;
+    }
 }

@@ -1,7 +1,6 @@
 package eidolons.macro.entity.town;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.macro.MacroManager;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.entity.party.MacroPartyUtils;
 import eidolons.macro.global.time.TimeMaster;
@@ -193,10 +192,11 @@ public class TavernMaster {
 
     public static int getXpPool(Tavern tavern) {
         return 10
-         * // test
-         MacroManager.getCampaign().getIntParam(
-          MACRO_PARAMS.HOURS_ELAPSED)
-         * tavern.getIntParam(MACRO_PARAMS.TAVERN_XP_PER_HOUR)
-         + tavern.getIntParam(MACRO_PARAMS.HERO_POWER_POOL);
+//         * // test
+//         MacroInitializer.getCampaign().getIntParam(
+//          MACRO_PARAMS.HOURS_ELAPSED)
+//         * tavern.getIntParam(MACRO_PARAMS.TAVERN_XP_PER_HOUR)
+//         + tavern.getIntParam(MACRO_PARAMS.HERO_POWER_POOL)
+         ;
     }
 }

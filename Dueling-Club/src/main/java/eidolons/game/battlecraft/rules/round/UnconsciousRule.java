@@ -45,7 +45,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
 	 * 
 	 */
 
-    public static final Integer DEFAULT_FOCUS_REQ = 10;
+    public static final Integer DEFAULT_FOCUS_REQ = 15;
+    public static final Integer DEFAULT_FOCUS_REQ_UNIT = 25;
     // ++ only regen part of toughness ...
     public static final int DEFAULT_DEATH_BARRIER = 33;
     public static final int DEFAULT_ANNIHILATION_BARRIER = 100;
@@ -61,7 +62,8 @@ public class UnconsciousRule extends RoundRule implements ActionRule {
     public static boolean checkUnitRecovers(Unit unit) {
         // toughness barrier... ++ focus? ++status?
         if (unit.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) >= 25) {
-            if (unit.getIntParam(PARAMS.C_FOCUS) >= unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ)
+            if (unit.getIntParam(PARAMS.C_FOCUS) >=
+             unit.getCalculator().getFocusRecoveryRequirement()
                 // Math.min(unit.getIntParam(PARAMS.FOCUS_RECOVER_REQ),
                 // DEFAULT_FOCUS_REQ )
              ) {

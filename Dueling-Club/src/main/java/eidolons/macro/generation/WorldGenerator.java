@@ -5,7 +5,6 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroManager;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.Faction;
 import eidolons.macro.entity.party.MacroParty;
@@ -36,8 +35,10 @@ public class WorldGenerator {
     private static MacroGame game;
     private static World world;
 
+    private final static String defaultWorldName = "Test World";
+
     public static World generateWorld(MacroRef ref) {
-        ObjType wType = DataManager.getType(MacroManager.getWorldName(),
+        ObjType wType = DataManager.getType(defaultWorldName,
          MACRO_OBJ_TYPES.WORLD);
         game = ref.getGame();
         world = new World(ref.getGame(), wType, ref);

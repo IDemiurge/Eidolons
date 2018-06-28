@@ -13,7 +13,6 @@ import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.libgdx.video.VideoMaster;
-import eidolons.macro.MacroManager;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
@@ -24,6 +23,7 @@ import main.system.launch.CoreEngine;
 
 import java.util.List;
 
+import static main.system.GuiEventType.SHOW_LOAD_PANEL;
 import static main.system.GuiEventType.SHOW_SELECTION_PANEL;
 
 public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
@@ -67,23 +67,29 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         return super.isTooltipsOn();
     }
 
+    private void selectionPanelEvent(EventCallbackParam p) {
+        if (p.get() != DIFFICULTY_PANEL_ARG) {
+            if (selectionPanel != null)
+                selectionPanel.cancel(false);
+            if (p.get() == null) {
+                selectionPanelClosed();
+                updateInputController();
+                return;
+            }
+        }
+        selectionPanel =
+         createSelectionPanel(p);
+        addSelectionPanel(selectionPanel);
+    }
     @Override
     protected void preLoad() {
         super.preLoad();
-        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
-            if (p.get() != DIFFICULTY_PANEL_ARG) {
-                if (selectionPanel != null)
-                    selectionPanel.cancel(false);
-                if (p.get() == null) {
-                    selectionPanelClosed();
-                    updateInputController();
-                    return;
-                }
-            }
-            selectionPanel =
-             createSelectionPanel(p);
-            addSelectionPanel(selectionPanel);
 
+        GuiEventManager.bind(true, SHOW_LOAD_PANEL, p -> {
+            selectionPanelEvent(p);
+        });
+        GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
+            selectionPanelEvent(p);
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL, p -> {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
@@ -109,6 +115,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             addSelectionPanel(manualPanel);
         });
     }
+
 
     protected void back() {
     }

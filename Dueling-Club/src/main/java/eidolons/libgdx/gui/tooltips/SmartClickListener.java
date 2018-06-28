@@ -44,7 +44,7 @@ public class SmartClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         if (getTapCount() > 1)
-            onDoubleTouchDown(event, x, y);
+            onDoubleClick(event, x, y);
 
         super.clicked(event, x, y);
     }
@@ -78,7 +78,7 @@ public class SmartClickListener extends ClickListener {
     protected void onTouchDown(InputEvent event, float x, float y) {
     }
 
-    protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+    protected void onDoubleClick(InputEvent event, float x, float y) {
     }
 
     protected void onMouseMoved(InputEvent event, float x, float y) {

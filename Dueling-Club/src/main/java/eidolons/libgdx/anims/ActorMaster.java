@@ -89,20 +89,20 @@ public class ActorMaster {
     }
 
     public static AlphaAction addFadeOutAction(Actor actor, float dur) {
-        return addFadeAction(actor, dur, true);
+        return addAlphaAction(actor, dur, true);
     }
 
     public static void addFadeOutAction( Actor actor, float dur, boolean remove) {
-        addFadeAction(actor, dur, true);
+        addAlphaAction(actor, dur, true);
         if (remove)
             addRemoveAfter(actor);
     }
     public static AlphaAction addFadeInAction(Actor actor) {
-        return addFadeAction(actor, 0, false);
+        return addAlphaAction(actor, 0, false);
     }
 
     public static AlphaAction addFadeInAction(Actor actor, float dur) {
-        return addFadeAction(actor, dur, false);
+        return addAlphaAction(actor, dur, false);
     }
 
     public static void addFadeInAndOutAction(Actor actor, float dur, boolean remove) {
@@ -130,14 +130,18 @@ public class ActorMaster {
         actor.addAction(sequence);
         sequence.setTarget(actor);
     }
-
-    public static AlphaAction addFadeAction(Actor actor, float dur, boolean out) {
+    public static AlphaAction addAlphaAction(Actor actor, float dur, boolean out) {
         if (dur<=0){
             dur =out? DEFAULT_FADE_OUT_DURATION : DEFAULT_FADE_IN_DURATION;
         }
+        return addAlphaAction(actor, dur, out ? 0 : 1);
+    }
+
+        public static AlphaAction addAlphaAction(Actor actor, float dur, float alpha) {
         AlphaAction action = (AlphaAction) getAction(
-         out? FadeOutAction.class : FadeInAction.class );// new AlphaAction();
-        action.setAlpha(out ? 0 : 1);
+         alpha<actor.getColor().a ? FadeOutAction.class : FadeInAction.class );
+
+        action.setAlpha(alpha);
         action.setDuration(dur);
         action.setTarget(actor);
         actor.addAction(action);

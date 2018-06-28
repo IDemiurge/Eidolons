@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
@@ -49,7 +49,7 @@ public class ScenarioLauncher {
             return;
         }
 
-        ScreenData data = new ScreenData(ScreenType.BATTLE,
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,
          master.getMissionName()
         );
         //new SceneFactory("Test")

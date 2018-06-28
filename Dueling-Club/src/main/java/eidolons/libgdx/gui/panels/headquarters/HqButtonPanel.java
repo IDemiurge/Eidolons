@@ -40,19 +40,19 @@ public class HqButtonPanel extends HqElement {
     public HqButtonPanel() {
         if (!CoreEngine.isJar())
         {
-            add(new TextButtonX("Level Up", STD_BUTTON.GAME_MENU, () -> {  levelUp();}));
-            add(new TextButtonX("Save Type", STD_BUTTON.GAME_MENU, () -> { saveType();}));
-            add(new TextButtonX("Save as New", STD_BUTTON.GAME_MENU, () -> { saveTypeNew();}));
+            add(new TextButtonX("Level Up", STD_BUTTON.MENU, () -> {  levelUp();}));
+            add(new TextButtonX("Save Type", STD_BUTTON.MENU, () -> { saveType();}));
+            add(new TextButtonX("Save as New", STD_BUTTON.MENU, () -> { saveTypeNew();}));
         } else
             {
-            add(new TextButtonX("View Info", STD_BUTTON.GAME_MENU, () -> {
+            add(new TextButtonX("View Info", STD_BUTTON.MENU, () -> {
                 viewInfo();
             }));
         }
-        add(new TextButtonX("Undo All", STD_BUTTON.GAME_MENU, () -> {
+        add(new TextButtonX("Undo All", STD_BUTTON.MENU, () -> {
             undoAll();
         }));
-        add(new TextButtonX("Save and Exit", STD_BUTTON.GAME_MENU, () -> {
+        add(new TextButtonX("Save and Exit", STD_BUTTON.MENU, () -> {
             saveAndExit();
         }));
     }

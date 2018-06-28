@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DescriptionMaster;
 import eidolons.content.PARAMS;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -16,7 +17,6 @@ import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
-import eidolons.system.math.DC_MathManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -135,7 +135,7 @@ public class HqNewMasteryPanel extends ValueTable<PARAMETER,
     protected PARAMETER[] initDataArray() {
         List<PARAMETER> availableMasteries = new ArrayList<>(
          DC_ContentValsManager.getMasteries());
-        List<PARAMETER> unlocked = DC_MathManager.getUnlockedMasteries(getUserObject().getEntity());
+        List<PARAMETER> unlocked = SkillMaster.getUnlockedMasteries(getUserObject().getEntity());
         availableMasteries.removeIf(p ->
          unlocked.contains(p));
         return availableMasteries.toArray(new PARAMETER[availableMasteries.size()]);

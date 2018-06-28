@@ -82,4 +82,6 @@ public class Images {
      PathFinder.getUiPath(), "Borders", "neo", "colorless.png");
     public static final String TARGET_BORDER = StrPathBuilder.build(
      PathFinder.getUiPath(), "Borders", "neo", "TARGET.png");
+    public static final String WEAVE_LINK = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "hq", "weave", "link.png");
 }

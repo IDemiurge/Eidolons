@@ -8,25 +8,18 @@ import eidolons.entity.active.DefaultActionHandler;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.VisionMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.dialogue.GameDialogue;
-import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.tooltips.LastSeenTooltipFactory;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltip;
 import eidolons.libgdx.gui.tooltips.UnitViewTooltipFactory;
-import eidolons.test.frontend.IntroTestLauncher;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 
-import java.util.List;
 import java.util.Map;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
@@ -134,13 +127,7 @@ public class UnitViewFactory {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
 
-                if (IntroTestLauncher.running) {
-                    ScenarioMetaMaster m = new ScenarioMetaMaster("Pride and Treachery");
-                    GameDialogue dialogue = null;//new LinearDialogue();
-                    dialogue = bfObj.getGame().getMetaMaster().getDialogueFactory().getDialogue("Interrogation");
-                    List<DialogScenario> list = SceneFactory.getScenes(dialogue);
-                    GuiEventManager.trigger(GuiEventType.DIALOG_SHOW, list);
-                }
+
                 if (event.getButton() == Input.Buttons.RIGHT)
 
                 {

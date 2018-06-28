@@ -123,7 +123,7 @@ public class PathFinder {
     }
 
     public static String getSavesPath() {
-        return getTextPath() + StringMaster.getPathSeparator() + "saves" + StringMaster.getPathSeparator();
+        return getXML_PATH() + StringMaster.getPathSeparator() + "saves" + StringMaster.getPathSeparator();
     }
     public static String getScenariosPath() {
         init();
@@ -238,7 +238,7 @@ public class PathFinder {
 
     public static String getVfxPath() {
         init();
-        return getImagePath() + StringMaster.getPathSeparator() + "mini" + StringMaster.getPathSeparator() + "sfx" + StringMaster.getPathSeparator();
+        return getImagePath() +  "mini" + StringMaster.getPathSeparator() + "sfx" ;
     }
 
     public static String getSpritesPath() {

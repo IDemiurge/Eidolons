@@ -5,7 +5,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -43,7 +43,7 @@ public class ScenarioSelectionPanel extends SelectionPanel {
 //            }
 //        }, " thread").start();
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(ScreenType.BATTLE, selection.toString()
+         new ScreenData(SCREEN_TYPE.BATTLE, selection.toString()
          ));
     }
 

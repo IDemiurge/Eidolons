@@ -6,7 +6,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.CoatingRule;
 import eidolons.game.core.game.DC_Game;
-import eidolons.system.math.DC_MathManager;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
@@ -462,10 +462,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic) {
-        addDefaultValues(entity, dynamic,
-
-         ContentValsManager.getValueList()
-        );
+        addDefaultValues(entity, dynamic,ContentValsManager.getValueList());
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic,
@@ -531,12 +528,14 @@ public class DC_ContentValsManager extends ContentValsManager {
             if (VAL == null) {
                 continue;
             }
+            String defaultValue = VAL.getDefaultValue();
+
             if (StringMaster.isEmpty(entity.getValue(VAL))
-             && !StringMaster.isEmptyOrZero(VAL.getDefaultValue())) {
+             && !StringMaster.isEmptyOrZero(defaultValue)) {
                 if (entity instanceof Obj) {
-                    entity.getType().setValue(VAL, VAL.getDefaultValue());
+                    entity.getType().setValue(VAL, defaultValue);
                 }
-                entity.setValue(VAL, VAL.getDefaultValue());
+                entity.setValue(VAL, defaultValue);
             }
         }
         entity.setDefaultValuesInitialized(true);
@@ -739,7 +738,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static PARAMETER getHighestMastery(Unit hero) {
-        List<PARAMETER> masteries = DC_MathManager.getUnlockedMasteries(hero);
+        List<PARAMETER> masteries = SkillMaster.getUnlockedMasteries(hero);
         sortMasteries(hero, masteries);
         return masteries.get(0);
     }

@@ -47,7 +47,7 @@ public class GuiVisualEffects extends GroupX {
             addActor(vignette);
             vignette.setTouchable(Touchable.disabled);
         }
-        initEmitters();
+//        initEmitters();
         addActor(lightLayer = new LightLayer(true));
     }
 

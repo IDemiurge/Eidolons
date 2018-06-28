@@ -2,9 +2,8 @@ package eidolons.libgdx.screens.menu;
 
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
-import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.global.persist.Loader;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -74,12 +73,9 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(),
                  null);
             case MAP_PREVIEW:
-                CoreEngine.setMacro(true);
-                GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
-                 ScreenType.MAP, null));
+                MacroInitializer.launchAdventureGame(null );
                 return null;
             case LOAD:
-                CoreEngine.setMacro(true);
                 try {
                     Loader.load();
                 } catch (Exception e) {

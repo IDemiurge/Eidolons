@@ -26,7 +26,7 @@ public class EmitterPools {
     private static boolean actorPoolingOn = true; //TODO emitters are not reset properly!
 
     public static EmitterActor getEmitterActor(EMITTER_PRESET sfx) {
-        return getEmitterActor(sfx.path);
+        return getEmitterActor(sfx.getPath());
     }
 
     public static EmitterActor getEmitterActor(String path) {
@@ -126,11 +126,11 @@ public class EmitterPools {
             return ;
         for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
             if (sub.isPreloaded())
-                Assets.get().getManager().load(sub.path, ParticleEffect.class);
+                Assets.get().getManager().load(sub.getPath(), ParticleEffect.class);
         }
     }
 
     public static boolean isPreloaded() {
-        return false;
+        return true;
     }
 }

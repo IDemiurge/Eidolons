@@ -2,7 +2,7 @@ package eidolons.macro.map;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.entity.town.Town;
@@ -165,10 +165,10 @@ public class Route extends Place {
 
         // TODO MIN_MAX
         if (isActive()) {
-            MacroManager.getActiveParty().getCurrentDestination();
-            displacement = MacroManager.getActiveParty().getIntParam(
+            MacroInitializer.getActiveParty().getCurrentDestination();
+            displacement = MacroInitializer.getActiveParty().getIntParam(
              MACRO_PARAMS.ROUTE_PROGRESS_PERCENTAGE);
-            if (isBackwards(MacroManager.getActiveParty())) {
+            if (isBackwards(MacroInitializer.getActiveParty())) {
                 displacement = 100 - displacement;
             }
         }
@@ -186,12 +186,12 @@ public class Route extends Place {
     }
 
     private boolean isActive() {
-        return MacroManager.getActiveParty().getCurrentRoute() == this;
+        return MacroInitializer.getActiveParty().getCurrentRoute() == this;
     }
 
     public boolean isAvailable() {
-        return dest == MacroManager.getActiveParty().getCurrentLocation()
-         || orig == MacroManager.getActiveParty().getCurrentLocation();
+        return dest == MacroInitializer.getActiveParty().getCurrentLocation()
+         || orig == MacroInitializer.getActiveParty().getCurrentLocation();
     }
 
     public boolean isCoordinatesValid() {

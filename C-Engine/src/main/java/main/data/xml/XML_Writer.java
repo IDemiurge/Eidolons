@@ -19,10 +19,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class XML_Writer {
 
@@ -278,6 +275,7 @@ public class XML_Writer {
                                                    boolean writeAllValues) {
         return getTypeXML_Builder(type, null, parent, writeAllValues);
     }
+
     public static StringBuilder getTypeXML_Builder(Entity type,
                                                    StringBuilder builder, Entity parent) {
         return getTypeXML_Builder(type, builder, parent, false);
@@ -290,32 +288,39 @@ public class XML_Writer {
                                                    boolean writeAllValues
 
     ) {
-        return getTypeXML_Builder(type, builder, parent,null, writeAllValues);
+        return getTypeXML_Builder(type, builder, parent, null, writeAllValues);
     }
-        public static StringBuilder getTypeXML_Builder(Entity type,
-         StringBuilder builder,
-                                                       Entity parent,
-                                                       Entity originalType,
-        boolean writeAllValues
 
-        ) {
-            if (type.getName().isEmpty()) {
+    public static StringBuilder getTypeXML_Builder(Entity type,
+                                                   StringBuilder builder,
+                                                   Entity parent,
+                                                   Entity originalType,
+                                                   boolean writeAllValues, VALUE... exceptions
+
+    ) {
+        if (type.getName().isEmpty()) {
             return builder;
         }
-        if (builder==null )
+        if (builder == null)
             builder = new StringBuilder();
         builder.append(openXML(type.getName()));
         builder.append("<params>");
 
+        List<VALUE> exceptionList=new ArrayList<>();
+        if (exceptions != null) {
+            if (exceptions.length > 0) {
+                exceptionList.addAll(Arrays.asList(exceptions));
+            }
+        }
         for (PARAMETER param : type.getParamMap().keySet()) {
-            if (param == null) {
+            if (exceptionList.contains(param))
                 continue;
-            }
-          ParamMap map=type.getParamMap();
-            if (originalType!=null )
-            if (!param.isDynamic()) {
-                map = parent.getParamMap();
-            }
+
+                ParamMap map = type.getParamMap();
+            if (originalType != null)
+                if (!param.isDynamic()) {
+                    map = parent.getParamMap();
+                }
             String value = XML_Formatter.formatXmlTextContent(map.get(param), param);
             if (!writeAllValues)
                 if (!param.isDynamic()) {
@@ -342,15 +347,17 @@ public class XML_Writer {
 
         for (PROPERTY prop : type.getPropMap().keySet()) {
 
+            if (exceptionList.contains(prop))
+                continue;
             String value = XML_Formatter.formatXmlTextContent(type.getPropMap().get(prop), prop);
             if (!writeAllValues)
-            if (parent != null) { // don't duplicate
-                String parentValue = parent.getPropMap() .get(prop);
-                if (parentValue!=null )
-                    if (parentValue.equalsIgnoreCase(value)) {
-                    continue;
+                if (parent != null) { // don't duplicate
+                    String parentValue = parent.getPropMap().get(prop);
+                    if (parentValue != null)
+                        if (parentValue.equalsIgnoreCase(value)) {
+                            continue;
+                        }
                 }
-            }
             if (prop == null) {
                 LogMaster.log(1, "null key! ; value = "
                  + type.getPropMap().get(prop));

@@ -9,7 +9,7 @@ import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import eidolons.game.core.launch.TestLauncher.CODE;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.test.frontend.FAST_DC;
 import main.content.DC_TYPE;
@@ -82,7 +82,7 @@ public class Crawler {
          : parts.get(0);
         launchData += dungeon;
         dungeon = StringMaster.removePreviousPathSegments(dungeon, PathFinder.getDungeonLevelFolder());
-        ScreenData data = new ScreenData(ScreenType.BATTLE,
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,
          dungeon
         );
         GameLauncher launcher = new GameLauncher(GAME_SUBCLASS.TEST);

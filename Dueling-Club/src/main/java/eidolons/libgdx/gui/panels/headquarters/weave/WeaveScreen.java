@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.weave;
 
+import eidolons.libgdx.gui.panels.headquarters.weave.ui.WeaveUi;
 import eidolons.libgdx.screens.GameScreen;
 
 /**

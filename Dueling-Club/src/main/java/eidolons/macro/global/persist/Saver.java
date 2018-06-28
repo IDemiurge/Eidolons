@@ -1,16 +1,17 @@
 package eidolons.macro.global.persist;
 
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.content.PARAMS;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
+import main.content.VALUE;
 import main.content.values.properties.PROPERTY;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.List;
@@ -61,12 +62,15 @@ public class Saver {
 
         //loading is more under question actually!
 
-        String saveName = "Test " +
-         TimeMaster.getFormattedTime(true, true) +
-         ".xml";
+        String saveName =getSaveName();
         String path = getPath() + saveName;
         String content = getSaveContent();
         FileManager.write(content, path);
+    }
+
+    private static String getSaveName() {
+        return Eidolons.getMainHero().getType().getName()+
+         ".xml";
     }
 
     private static String getSaveContent() {
@@ -76,7 +80,7 @@ public class Saver {
         Unit hero = Eidolons.getMainHero();
 
         String heroData = XML_Writer.getTypeXML_Builder(hero,
-         null, hero.getType(), hero.getOriginalType(), true).toString();
+         null, hero.getType(), hero.getOriginalType(), true, getExceptionValues()).toString();
 
         String fullItemsData = "";
         for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
@@ -102,6 +106,13 @@ public class Saver {
         content = XML_Converter.wrap(HERO_NODE, content);
         content = XML_Converter.wrap(HEAD, content);
         return content;
+    }
+
+    private static VALUE[] getExceptionValues() {
+        return new VALUE[]{
+         PARAMS.ATTACK,
+         PARAMS.DEFENSE,
+        };
     }
 
     private static String getPath() {

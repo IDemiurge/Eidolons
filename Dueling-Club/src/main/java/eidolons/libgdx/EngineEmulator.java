@@ -1,7 +1,7 @@
 package eidolons.libgdx;
 
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.system.EngineEventManager;
 import main.system.EngineEventType;
 import main.system.GuiEventManager;
@@ -44,7 +44,7 @@ public class EngineEmulator {
     private void scheduleLoad(ScreenData data) {
         executorService.submit(() -> {
             try {
-                if (data.getType() == ScreenType.MAIN_MENU) {
+                if (data.getType() == SCREEN_TYPE.MAIN_MENU) {
 //                    ((MainMenuScreenData) data).setNewGames(Arrays.asList(new ScreenData(ScreenType.HEADQUARTERS, "demo")));
                 }
 

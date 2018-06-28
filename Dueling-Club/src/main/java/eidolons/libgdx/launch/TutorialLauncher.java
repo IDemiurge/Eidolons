@@ -3,7 +3,7 @@ package eidolons.libgdx.launch;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.tutorial.TutorialMetaMaster;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -17,7 +17,7 @@ public class TutorialLauncher {
         TutorialMetaMaster master = new TutorialMetaMaster("");
         master.init();
 
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "name"
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, "name"
 //         , new SceneFactory("Tutorial Intro")
         );
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);

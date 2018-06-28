@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.battle.mission;
 
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
-import eidolons.game.battlecraft.logic.meta.scenario.hq.Place;
+import eidolons.game.battlecraft.logic.meta.scenario.hq.MissionLocation;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -15,19 +15,19 @@ import main.system.auxiliary.StringMaster;
  */
 public class Mission extends LightweightEntity {
     Scenario scenario;
-    Place place;
+    MissionLocation missionLocation;
 
     public Mission(ObjType type, Scenario scenario) {
         super(type);
         this.scenario = (scenario);
     }
 
-    public Place getPlace() {
-        if (place == null) {
-            place = new Place(DataManager.getType(getProperty(PROPS.MISSION_PLACE),
+    public MissionLocation getMissionLocation() {
+        if (missionLocation == null) {
+            missionLocation = new MissionLocation(DataManager.getType(getProperty(PROPS.MISSION_PLACE),
              DC_TYPE.PLACES));
         }
-        return place;
+        return missionLocation;
     }
 
     public String getMissionResourceFolderPath() {
@@ -44,6 +44,6 @@ public class Mission extends LightweightEntity {
 
     @Override
     public String getToolTip() {
-        return "Travel to " + getPlace().getName();
+        return "Travel to " + getMissionLocation().getName();
     }
 }

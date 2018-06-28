@@ -2,8 +2,8 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 
 import eidolons.content.PARAMS;
 import eidolons.game.module.herocreator.logic.PointMaster;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
-import eidolons.system.math.DC_MathManager;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.data.ListMaster;
@@ -45,7 +45,7 @@ public class HqMasteryTable extends HqStatTable {
     @Override
     protected PARAMS[] initDataArray() {
         HqHeroDataSource hero = getUserObject();
-        List<PARAMETER> list = new ArrayList<>(DC_MathManager.getUnlockedMasteries(hero.getEntity()));
+        List<PARAMETER> list = new ArrayList<>(SkillMaster.getUnlockedMasteries(hero.getEntity()));
         list =list.stream().map(p -> ContentValsManager.getMasteryFromScore(p)).
          collect(Collectors.toList());
         ListMaster.fillWithNullElements(list, size);

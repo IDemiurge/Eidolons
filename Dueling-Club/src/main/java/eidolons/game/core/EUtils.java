@@ -57,4 +57,8 @@ public class EUtils {
     public static void switchScreen(ScreenData screenData) {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, screenData);
     }
+
+    public static void event(GuiEventType eventType, Object param) {
+        GuiEventManager.trigger(eventType, param);
+    }
 }

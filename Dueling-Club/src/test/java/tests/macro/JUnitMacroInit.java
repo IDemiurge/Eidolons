@@ -1,9 +1,9 @@
 package tests.macro;
 
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroGame;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
@@ -27,7 +27,7 @@ public void test(){
         if (isManual())
             manualInit();
     WaitMaster.waitForInput(WAIT_OPERATIONS.GAME_LOOP_STARTED);
-    assertTrue(MacroManager.getGame().getWorld()!=null );
+    assertTrue(MacroGame.getGame().getWorld()!=null );
 }
 
     private boolean isManual() {
@@ -36,7 +36,7 @@ public void test(){
 
 
     public void manualInit(){
-        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(ScreenType.MAP, null));
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(SCREEN_TYPE.MAP, null));
     }
     @Override
     protected String getLaunchArgString() {

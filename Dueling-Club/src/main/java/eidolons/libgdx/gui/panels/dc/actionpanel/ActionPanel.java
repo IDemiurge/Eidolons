@@ -29,7 +29,7 @@ import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
 public class ActionPanel extends Group {
     public final static int IMAGE_SIZE = 60;
-    private static final String BACKGROUND = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
+    private static final String BACKGROUND_PATH = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
     private static final float SPELL_OFFSET_Y = -6;
     private static final float OFFSET_X = 70;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
@@ -44,7 +44,7 @@ public class ActionPanel extends Group {
     protected QuickSlotPanel quickSlotPanel;
     protected ModeActionsPanel modeActionsPanel;
     protected SpellPanel spellPanel;
-    protected EffectsPanel effectsPanel;
+    protected BuffPanelSimple buffPanelSimple;
     protected Image background;
     QuickWeaponPanel mainHand;
     QuickWeaponPanel offhand;
@@ -55,7 +55,7 @@ public class ActionPanel extends Group {
     SymbolButton invBtn = new SymbolButton(STD_BUTTON.INV, () -> showInventory());
 
     public ActionPanel() {
-        background = new Image(TextureCache.getOrCreateR(BACKGROUND));
+        background = new Image(TextureCache.getOrCreateR(BACKGROUND_PATH));
         addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
 
@@ -101,9 +101,9 @@ public class ActionPanel extends Group {
         addActor(bottomOverlay = new ImageContainer(BOTTOM_OVERLAY));
         bottomOverlay.setPosition(80, -12);
 
-        effectsPanel = new EffectsPanel();
-        effectsPanel.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
-        addActor(effectsPanel);
+        buffPanelSimple = new BuffPanelSimple();
+        buffPanelSimple.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
+        addActor(buffPanelSimple);
 
         addActor(spellbookBtn);
         addActor(invBtn);
@@ -133,15 +133,9 @@ public class ActionPanel extends Group {
     private void bindEvents() {
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED_OFF, p -> {
             ActorMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -9, 0.4f);
-//            spellPanel.setZIndex(1);
-//            quickSlotPanel.setZIndex(1);
-//            modeActionsPanel.setZIndex(1);
         });
         GuiEventManager.bind(GuiEventType.ACTION_HOVERED, p -> {
             ActorMaster.addMoveToAction(bottomOverlay, bottomOverlay.getX(), -15, 0.4f);
-//            spellPanel.setZIndex(Integer.MAX_VALUE);
-//            quickSlotPanel.setZIndex(Integer.MAX_VALUE);
-//            modeActionsPanel.setZIndex(Integer.MAX_VALUE);
         });
         GuiEventManager.bind(GuiEventType.UPDATE_MAIN_HERO, p -> {
             Unit hero = (Unit) p.get();
@@ -173,7 +167,7 @@ public class ActionPanel extends Group {
                 quickSlotPanel.setUserObject(source);
                 modeActionsPanel.setUserObject(source);
                 spellPanel.setUserObject(source);
-                effectsPanel.setUserObject(source);
+                buffPanelSimple.setUserObject(source);
                 leftOrbPanel.setUserObject(source);
                 rigthOrbPanel.setUserObject(source);
             } else {
@@ -228,8 +222,8 @@ public class ActionPanel extends Group {
         return spellPanel;
     }
 
-    public EffectsPanel getEffectsPanel() {
-        return effectsPanel;
+    public BuffPanelSimple getBuffPanelSimple() {
+        return buffPanelSimple;
     }
 
     public void update() {

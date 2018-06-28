@@ -27,15 +27,26 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 
     public ParticleEffectX(String path) {
         this.path = path;
+
+        if (isEmitterAtlasesOn()) {
+            FileHandle presetFile = Gdx.files.internal(  path);
+            if (!presetFile.exists())
+                presetFile=Gdx.files.internal(PathFinder.getVfxPath()+path);
+
+            try {
+                load(presetFile, getEmitterAtlas());
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         String imagePath = EmitterPresetMaster.getInstance().getImagePath(path);
+        if (StringMaster.isEmpty(imagePath)) {
+            return;
+        }
         if (FileManager.isImageFile(StringMaster.getLastPathSegment(imagePath))) {
             imagePath = StringMaster.cropLastPathSegment(imagePath);
         }
-
-        if (isEmitterAtlasesOn()){
-            load(Gdx.files.internal(imagePath), getEmitterAtlas());
-        }
-
         load(Gdx.files.internal(
          StringMaster.addMissingPathSegments(
           path, PathFinder.getParticlePresetPath())),
@@ -43,16 +54,16 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
 
     }
 
-    private boolean isEmitterAtlasesOn() {
-        return false;
+    public ParticleEffectX() {
+        super();
+    }
+
+    public static  boolean isEmitterAtlasesOn() {
+        return true;
     }
 
     private TextureAtlas getEmitterAtlas() {
-        return null;
-    }
-
-    public ParticleEffectX() {
-        super();
+        return EmitterMaster.getAtlas(path);
     }
 
     public void offset(String value, String offset) {

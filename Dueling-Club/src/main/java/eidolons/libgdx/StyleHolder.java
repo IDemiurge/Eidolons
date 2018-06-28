@@ -183,7 +183,7 @@ public class StyleHolder {
 
     public static TextButton.TextButtonStyle getMenuTextButtonStyle(
       int size) {
-        return getTextButtonStyle(STD_BUTTON.GAME_MENU, FontMaster.FONT.METAMORPH, DEFAULT_COLOR, size);
+        return getTextButtonStyle(STD_BUTTON.MENU, FontMaster.FONT.METAMORPH, DEFAULT_COLOR, size);
     }
         public static TextButton.TextButtonStyle getTextButtonStyle(
          STD_BUTTON button, FONT FONT, Color color, int size) {

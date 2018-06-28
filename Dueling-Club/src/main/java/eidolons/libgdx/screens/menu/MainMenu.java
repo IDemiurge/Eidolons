@@ -56,7 +56,7 @@ public class MainMenu extends GenericMenu<MAIN_MENU_ITEM> {
 
     @Override
     protected STD_BUTTON getButtonStyle() {
-        return STD_BUTTON.GAME_MENU;
+        return STD_BUTTON.MENU;
     }
 
     @Override

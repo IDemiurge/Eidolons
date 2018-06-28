@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.scene.SceneFactory;
 import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.launch.DemoLauncher;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.system.EventCallbackParam;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class IntroTestLauncher extends DemoLauncher {
 
     @Override
     protected void engineInit() {
-        ScreenData data = new ScreenData(ScreenType.BATTLE, "Loading...", factory);
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, "Loading...", factory);
         screenSwitcher(new EventCallbackParam(data));
     }
 }

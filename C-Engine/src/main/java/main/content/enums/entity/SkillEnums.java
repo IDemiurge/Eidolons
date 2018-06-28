@@ -1,5 +1,7 @@
 package main.content.enums.entity;
 
+import main.content.ContentValsManager;
+import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -74,14 +76,17 @@ public class SkillEnums {
         MARKSMANSHIP_MASTERY,
         ITEM_MASTERY,
 
-    LEADERSHIP_MASTERY,
-    TACTICS_MASTERY,
+        LEADERSHIP_MASTERY,
+        TACTICS_MASTERY,
         WARCRY_MASTERY;
 
         MASTERY() {
 
         }
 
+        public PARAMETER getParam() {
+            return ContentValsManager.getPARAM(name());
+        }
     }
 
     public enum MASTERY_RANK {

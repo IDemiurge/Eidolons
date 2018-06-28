@@ -81,8 +81,8 @@ public abstract class ItemListPanel extends TablePanel {
                     return true;
                 }
             };
-            button.setSize(STD_BUTTON.GAME_MENU.getTexture().getMinWidth(),
-             STD_BUTTON.GAME_MENU.getTexture().getMinHeight());
+            button.setSize(STD_BUTTON.MENU.getTexture().getMinWidth(),
+             STD_BUTTON.MENU.getTexture().getMinHeight());
             getCache().put(sub, button);
             TextButton finalButton = button;
             button.addListener(new ClickListener() {
@@ -109,7 +109,7 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected STD_BUTTON getButtonStyle() {
-        return STD_BUTTON.GAME_MENU;
+        return STD_BUTTON.MENU;
     }
 
     public void previous() {

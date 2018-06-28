@@ -35,6 +35,13 @@ public class GlobalController implements Controller {
     @Override
     public void keyDown(int keyCode) {
         switch (keyCode) {
+            case Keys.F2:
+                try {
+                    DC_Game.game.getMetaMaster().getDialogueManager().test();
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+                break;
             case Keys.F1:
                 HqMaster.toggleHqPanel();
                 break;
@@ -76,14 +83,14 @@ public class GlobalController implements Controller {
 
     private void escape() {
 
-        if ( DC_Game.game.getManager().isSelecting()
-//         DungeonScreen.getInstance().getGridPanel().isSelecting()
-        ){
+        if (DC_Game.game.getManager().isSelecting()
+            //         DungeonScreen.getInstance().getGridPanel().isSelecting()
+         ) {
             DungeonScreen.getInstance().getGridPanel().clearSelection();
             return;
         }
         GuiStage guiStage = Eidolons.getScreen().getGuiStage();
-        if (guiStage.getDraggedEntity() !=   null) {
+        if (guiStage.getDraggedEntity() != null) {
             guiStage.setDraggedEntity(null);
             return;
         }
@@ -112,13 +119,13 @@ public class GlobalController implements Controller {
             case ' ':
                 if (DungeonScreen.getInstance() == null)
                     return false;
-                if ( DungeonScreen.getInstance().isWaitingForInput())
+                if (DungeonScreen.getInstance().isWaitingForInput())
                     return true;
                 if (Eidolons.getScreen().getGuiStage().getDisplayedClosable()
                  instanceof Blocking)
                     return false;
                 Eidolons.game.getLoop().togglePaused();
-//                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
+                //                Eidolons.game.getDebugMaster().executeDebugFunction(DEBUG_FUNCTIONS.PAUSE);
                 return true;
             case 'D':
                 Eidolons.game.getDebugMaster().showDebugWindow();
@@ -132,8 +139,8 @@ public class GlobalController implements Controller {
                 break;
             }
             case 'S': {
-//                if (!Gdx.input.isKeyPressed(Keys.ALT_LEFT))
-//                    break;
+                //                if (!Gdx.input.isKeyPressed(Keys.ALT_LEFT))
+                //                    break;
                 SpecialLogger.getInstance().writeLogs();
                 break;
             }

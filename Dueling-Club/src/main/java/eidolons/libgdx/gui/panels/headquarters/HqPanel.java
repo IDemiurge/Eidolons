@@ -39,6 +39,7 @@ public class HqPanel extends TablePanel implements Blocking {
     HqHeroHeader header;
     HqHeroXp heroXp;
     HqVerticalValueTable heroValues;
+    HqScrolledValuePanel scrolledValuePanel;
     HqTraitsPanel traits;
     HqControlPanel controlPanel;
     private TablePanel infoTable;
@@ -152,6 +153,8 @@ public class HqPanel extends TablePanel implements Blocking {
         HqNewMasteryPanel newMastery = new HqNewMasteryPanel();
 //        newMastery.setPosition();
         infoTable.addActor(newMastery);
+        infoTable.row();
+        infoTable.addActor(scrolledValuePanel);
         infoTable.row();
         infoTable.add(controlPanel).padTop(100).bottom().center().colspan(2).row();
 

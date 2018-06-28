@@ -2,14 +2,21 @@ package eidolons.macro;
 
 import eidolons.game.battlecraft.logic.meta.adventure.AdventurePartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
 import eidolons.macro.entity.party.MacroParty;
-import eidolons.macro.global.Campaign;
+import eidolons.macro.global.persist.Loader;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Region;
+import eidolons.system.text.TextMaster;
+import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
+import main.system.GuiEventType;
+import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -17,25 +24,19 @@ import java.util.List;
 import static main.system.GuiEventType.SCREEN_LOADED;
 import static main.system.MapEvent.*;
 
-public class MacroManager {
-    private final static String defaultWorldName = "Test World";
+public class MacroInitializer {
     private static MacroGame game;
     private static String scenario = "Mistfall";
-    private static Campaign campaign;
     private static MetaGameMaster metaMaster;
-    private static String worldName;
     private static boolean load;
     private static boolean testMode =true;
 
     public static void setScenario(String scenario) {
-        MacroManager.scenario = scenario;
+        MacroInitializer.scenario = scenario;
     }
 
-    public static void newGame() {
-        newGame(scenario);
-    }
 
-    public static void newGame(String data) {
+    public static void newAdventureGame(String data) {
         if (data==null ){
             data =scenario; //single option for now....
         } else
@@ -45,7 +46,21 @@ public class MacroManager {
         metaMaster = new ScenarioMetaMaster(scenario) {
             @Override
             protected PartyManager createPartyManager() {
-                return new AdventurePartyManager(this);
+                return new AdventurePartyManager(this, load);
+            }
+
+            @Override
+            protected DialogueFactory createDialogueFactory() {
+                return new DialogueFactory(){
+                    protected String getFileRootPath() {
+                        return
+                         StringMaster.buildPath(
+                         "adventure" ,
+                          "dialogue"
+                          , TextMaster.getLocale(),
+                          StringMaster.getPathSeparator());
+                    }
+                };
             }
         };
         if (!CoreEngine.isMapEditor()) {
@@ -87,37 +102,10 @@ public class MacroManager {
         }
     }
 
-    public static void exitGame() {
-        if (game == null) {
-            return;
-        }
-        // try { save();
-        game = null;
-        worldName = null;
-        MacroGame.setGame(null);
-    }
-
-
-    public static String getWorldName() {
-        if (worldName == null) {
-            return defaultWorldName;
-        }
-        return worldName;
-    }
-
-    public static void setWorldName(String worldName) {
-        MacroManager.worldName = worldName;
-    }
-
 
     public static MacroParty getActiveParty() {
         return game.getPlayerParty();
     }
-
-    public static Campaign getCampaign() {
-        return campaign ;
-    }
-
 
     public static MacroGame getGame() {
         return game;
@@ -140,10 +128,22 @@ public class MacroManager {
         return testMode;
     }
 
-    public static void setTestMode(boolean testMode) {
-        MacroManager.testMode = testMode;
+    public static void launchAdventureGame(String data) {
+        CoreEngine.setMacro(true);
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new ScreenData(
+         SCREEN_TYPE.MAP, data));
     }
 
+    public static void load(String saveName) {
+        Loader.load(saveName);
+        ScreenData data = new ScreenData(SCREEN_TYPE.MAP, null);
+        data.setParam(new EventCallbackParam(saveName));
+        GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
+         data);
+    }
+
+
+    // TODO clean
 
     // private static void saveCopyTypes() {
     // String typeMapContent = "";
@@ -265,7 +265,7 @@ public class MacroManager {
     // }
     //
     // }
-    // newGame();
+    // newAdventureGame();
     /* SAVE
          * create a joint xml file with all necessary types...
 		 * 

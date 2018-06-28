@@ -111,7 +111,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         //choice
         //already as Unit?
         ObjType type = getMetaGame().getScenario().getPartyType();
-        randomOneHero = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
+        randomOneHero =  OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
         chooseOneHero = !randomOneHero;
         //        if (CoreEngine.isFastMode())
         //            chooseOneHero=false;
@@ -121,10 +121,10 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
             type.setProperty(PROPS.MEMBERS, string);
 
         } else type = new ObjType(type);
-        if (getGame().getMetaMaster().getPartyManager().isRandomOneHero() ||
-         getGame().getMetaMaster().getPartyManager().isChooseOneHero()) {
+        if ( isRandomOneHero() ||
+                isChooseOneHero()) {
             List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
-            if (getGame().getMetaMaster().getPartyManager().isRandomOneHero()
+            if ( isRandomOneHero()
              || members.size() == 1) {
                 String hero = new RandomWizard<String>().getRandomListItem(
                  members);

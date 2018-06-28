@@ -91,7 +91,7 @@ public abstract class HtNode extends DynamicLayeredActor {
             addListener(tooltip.getController());
         addListener(new SmartClickListener(this) {
             @Override
-            protected void onDoubleTouchDown(InputEvent event, float x, float y) {
+            protected void onDoubleClick(InputEvent event, float x, float y) {
                 doubleClick();
             }
 

@@ -805,6 +805,7 @@ public enum PARAMS implements PARAMETER {
 
     static {
         COUNTER_MOD.addSpecialDefault(DC_TYPE.ACTIONS, 75);
+        FOCUS_RECOVER_REQ.addSpecialDefault(DC_TYPE.UNITS, UnconsciousRule.DEFAULT_FOCUS_REQ_UNIT);
 
         C_TOUGHNESS.setColor(ColorManager.TOUGHNESS);
         C_ENDURANCE.setColor(ColorManager.ENDURANCE);

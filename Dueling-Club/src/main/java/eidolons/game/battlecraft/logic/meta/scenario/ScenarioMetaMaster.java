@@ -8,7 +8,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.ScreenData;
-import eidolons.libgdx.screens.ScreenType;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.entity.DataModel;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -53,7 +53,7 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
             }
         getMetaDataManager().setMissionName(null);
         getMetaDataManager().initMissionName();
-        ScreenData data = new ScreenData(ScreenType.BATTLE, getMissionName());
+        ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, getMissionName());
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, data);
         if (restart) {
             Eidolons.mainGame.getMetaMaster().getMetaGame().setRestarted(true);

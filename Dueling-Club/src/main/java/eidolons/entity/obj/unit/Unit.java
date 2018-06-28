@@ -423,7 +423,7 @@ public class Unit extends DC_UnitModel {
         } else {
             ref.setID(KEYS.WEAPON, null);
         }
-        if (!game.isSimulation()) {
+        if (!game.isSimulation()&& !isLoaded()) {
             String id = "";
             if (weapon != null) {
                 id = weapon.getId() + "";
@@ -452,7 +452,7 @@ public class Unit extends DC_UnitModel {
         if (armor == null) {
             ref.setID(KEYS.ARMOR, null);
         }
-        if (!game.isSimulation()) {
+        if (!game.isSimulation()&& !isLoaded()) {
             String id = "";
             if (armor != null) {
                 id = armor.getId() + "";
@@ -485,7 +485,7 @@ public class Unit extends DC_UnitModel {
             ref.setID(KEYS.WEAPON, null);
         }
 
-        if (!game.isSimulation()) {
+        if (!game.isSimulation() && !isLoaded()) {
             String id = "";
             if (secondWeapon != null) {
                 id = secondWeapon.getId() + "";

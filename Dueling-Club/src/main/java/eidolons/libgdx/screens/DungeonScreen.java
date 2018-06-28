@@ -130,7 +130,7 @@ public class DungeonScreen extends GameScreen {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.getGame() != null) {
                 GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-                 new ScreenData(ScreenType.MAP, null ));
+                 new ScreenData(SCREEN_TYPE.MAP, null ));
 
                 MacroGame.getGame().getLoop().combatFinished();
                 main.system.auxiliary.log.LogMaster.log(1, " returning to the map...");

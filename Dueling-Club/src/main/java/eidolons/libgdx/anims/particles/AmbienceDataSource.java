@@ -26,31 +26,31 @@ public class AmbienceDataSource {
         this.template = template;
         switch (time) {
             case DAWN:
-                emitters.add(EMITTER_PRESET.MIST_WHITE2.path);
+                emitters.add(EMITTER_PRESET.MIST_WHITE2.getPath());
             case MORNING:
-                emitters.add(EMITTER_PRESET.SMOKE_TEST.path);
-                emitters.add(EMITTER_PRESET.MIST_WHITE.path);
+                emitters.add(EMITTER_PRESET.SMOKE_TEST.getPath());
+                emitters.add(EMITTER_PRESET.MIST_WHITE.getPath());
 
-                emitters.add(EMITTER_PRESET.WISPS.path);
+                emitters.add(EMITTER_PRESET.WISPS.getPath());
 
                 break;
             case MIDDAY:
-                emitters.add(EMITTER_PRESET.MIST_WHITE3.path);
+                emitters.add(EMITTER_PRESET.MIST_WHITE3.getPath());
             case DUSK:
-                emitters.add(EMITTER_PRESET.MIST_WHITE.path);
-                emitters.add(EMITTER_PRESET.MIST_BLACK.path);
-                emitters.add(EMITTER_PRESET.SNOW.path);
+                emitters.add(EMITTER_PRESET.MIST_WHITE.getPath());
+                emitters.add(EMITTER_PRESET.MIST_BLACK.getPath());
+                emitters.add(EMITTER_PRESET.SNOW.getPath());
 
                 break;
 
             case NIGHTFALL:
-                emitters.add(EMITTER_PRESET.MIST_COLD.path);
+                emitters.add(EMITTER_PRESET.MIST_COLD.getPath());
             case MIDNIGHT:
-                emitters.add(EMITTER_PRESET.WISPS.path);
-                emitters.add(EMITTER_PRESET.STARS.path);
-                emitters.add(EMITTER_PRESET.SMOKE_TEST.path);
+                emitters.add(EMITTER_PRESET.WISPS.getPath());
+                emitters.add(EMITTER_PRESET.STARS.getPath());
+                emitters.add(EMITTER_PRESET.SMOKE_TEST.getPath());
 
-                emitters.add(EMITTER_PRESET.DARK_MIST_LITE.path);
+                emitters.add(EMITTER_PRESET.DARK_MIST_LITE.getPath());
                 break;
         }
         showChance = 80 - 10 * emitters.size();
@@ -74,7 +74,7 @@ public class AmbienceDataSource {
     }
 
     private String string(EMITTER_PRESET emitterPreset, int i) {
-        return emitterPreset.path
+        return emitterPreset.getPath()
          + StringMaster.wrapInParenthesis("" + i / 3);
     }
 

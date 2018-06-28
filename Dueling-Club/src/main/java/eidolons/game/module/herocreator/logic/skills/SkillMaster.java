@@ -15,8 +15,10 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
+import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.DequeImpl;
@@ -24,6 +26,7 @@ import main.system.datatypes.DequeImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 5/6/2018.
@@ -164,5 +167,24 @@ public class SkillMaster {
             container = hero.getPerks();
         }
         container.addCast(featObj);
+    }
+
+    public static List<MASTERY> getUnlockedMasteries_(Entity entity) {
+        List<PARAMETER> list = getUnlockedMasteries(entity);
+        return list.stream().map(parameter -> new EnumMaster<MASTERY>()
+         .retrieveEnumConst(MASTERY.class, parameter.getName())).collect(Collectors.toList());
+    }
+        public static List<PARAMETER> getUnlockedMasteries(Entity entity) {
+        List<PARAMETER> list = new ArrayList<>();
+        for (PARAMS p : DC_ContentValsManager.getMasteryParams()) {
+            if (isMasteryUnlocked(entity, p)) {
+                list.add(p);
+            }
+        }
+        return list;
+    }
+
+    public static boolean isMasteryUnlocked(Entity entity, PARAMETER p) {
+        return entity.getIntParam(p, true) > 0;
     }
 }

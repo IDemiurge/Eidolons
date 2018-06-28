@@ -12,11 +12,12 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.anims.Assets;
+import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -81,7 +82,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void screenInit() {
-        ScreenData data = new ScreenData(ScreenType.MAIN_MENU, "Loading...");
+        ScreenData data = new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading...");
         screenSwitcher(new EventCallbackParam(data));
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
@@ -270,7 +271,7 @@ public class GenericLauncher extends Game {
                 break;
             case MAIN_MENU:
                 GuiEventManager.trigger(SCREEN_LOADED,
-                 new ScreenData(ScreenType.MAIN_MENU, null));
+                 new ScreenData(SCREEN_TYPE.MAIN_MENU, null));
                 break;
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,
@@ -287,6 +288,9 @@ public class GenericLauncher extends Game {
                 case HEADQUARTERS:
                     switchScreen(HeadquarterScreen::new, newMeta);
                     break;
+                case WEAVE:
+                    switchScreen(WeaveScreen::new, newMeta);
+                    break;
                 case BATTLE:
                     switchScreen(DungeonScreen::new, newMeta);
                     Eidolons.setScope(SCOPE.BATTLE);
@@ -295,7 +299,7 @@ public class GenericLauncher extends Game {
                     Eidolons.setScope(SCOPE.MAP);
                     switchScreen(() -> MapScreen.getInstance(), newMeta);
                     if (newMeta.getName() != null)
-                        MacroManager.setScenario(newMeta.getName());
+                        MacroInitializer.setScenario(newMeta.getName());
                     break;
                 case PRE_BATTLE:
                     break;

@@ -8,6 +8,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.PointMaster;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
@@ -28,9 +29,6 @@ import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DC_MathManager extends MathMaster {
 
@@ -137,22 +135,8 @@ public class DC_MathManager extends MathMaster {
 
     }
 
-    public static List<PARAMETER> getUnlockedMasteries(Entity entity) {
-        List<PARAMETER> list = new ArrayList<>();
-        for (PARAMS p : DC_ContentValsManager.getMasteryParams()) {
-            if (isMasteryUnlocked(entity, p)) {
-                list.add(p);
-            }
-        }
-        return list;
-    }
-
-    public static boolean isMasteryUnlocked(Entity entity, PARAMETER p) {
-        return entity.getIntParam(p, true) > 0;
-    }
-
     public static int getMasteriesUnlocked(Entity entity) {
-        return getUnlockedMasteries(entity).size();
+        return SkillMaster.getUnlockedMasteries(entity).size();
     }
 
     public static int getMasteryDiscount(Entity entity) {

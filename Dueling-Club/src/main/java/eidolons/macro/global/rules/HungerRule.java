@@ -1,7 +1,7 @@
 package eidolons.macro.global.rules;
 
 import eidolons.entity.obj.unit.Unit;
-import eidolons.macro.MacroManager;
+import eidolons.macro.MacroGame;
 import eidolons.macro.entity.party.MacroParty;
 import main.content.values.parameters.MACRO_PARAMS;
 
@@ -9,7 +9,7 @@ public class HungerRule extends TurnRule {
     private static final float HEALTH_REDUCTION_FACTOR = 0.1f;
 
     public void newTurn() {
-        for (MacroParty p : MacroManager.getGame().getParties()) {
+        for (MacroParty p : MacroGame.getGame().getParties()) {
             // TODO preCheck turn is 'normal' - not a chase/flight, nor a battle or
             // march
             consumeProvisions(p);

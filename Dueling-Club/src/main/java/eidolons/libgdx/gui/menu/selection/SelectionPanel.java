@@ -46,7 +46,7 @@ public abstract class SelectionPanel extends TablePanel {
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
         backButton = new TextButtonX(STD_BUTTON.CANCEL, () -> cancel());
-        startButton = new TextButtonX(getDoneText(),STD_BUTTON.GAME_MENU , () -> tryDone());
+        startButton = new TextButtonX(getDoneText(),STD_BUTTON.MENU, () -> tryDone());
 
         listPanel.addActor(title); //trick for pos
         title.pack();

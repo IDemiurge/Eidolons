@@ -108,9 +108,11 @@ public class EmitterPresetMaster {
 
     public String findImagePath(String path) {
         String imagePath = getImagePath(path);
-        if (imagePath.isEmpty()) {
+        if (imagePath.split("\n").length>1) {
             //TODO how to handle this?
+        return imagePath;
         }
+
         FileHandle file = Gdx.files.internal(imagePath);
         if (file.exists()) {
             return imagePath;
@@ -134,7 +136,7 @@ public class EmitterPresetMaster {
         imagePath += "particles\\";
         file = Gdx.files.internal(imagePath + "\\" + name);
         if (file.exists()) {
-            return imagePath;
+            return imagePath +"\\" + name;
         }
 
         imagePath =
@@ -176,11 +178,11 @@ public class EmitterPresetMaster {
 
     public String getImagePath(String path) {
         String imgPath = null;
-        if (imagePathMap != null) {
-            imgPath = imagePathMap.get(path.toLowerCase());
-            if (imgPath != null)
-                return imgPath;
-        }
+//        if (imagePathMap != null) {
+//            imgPath = imagePathMap.get(path.toLowerCase());
+//            if (imgPath != null)
+//                return imgPath;
+//        }
         imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Path, null);
         if (StringMaster.isEmpty(imgPath)) {
             imgPath = getValueFromGroup(path, EMITTER_VALUE_GROUP.Image_Paths, null);
@@ -259,7 +261,7 @@ public class EmitterPresetMaster {
                 data = data.replace(substring, newString);
             }
         }
-        data = data.replace(getGroupText(data, group), text);
+        data = data.replace(getGroupText(data, group), val);
         return data;
     }
 
@@ -309,7 +311,13 @@ public class EmitterPresetMaster {
         String valuePart = null;
 
         if (parts.length == 1) {
+            parts = data.split(group.name + "s -");
+        }
+        if (parts.length == 1) {
             parts = data.split(group.name + " -\n");
+        }
+        if (parts.length == 1) {
+            parts = data.split(group.name + " -");
         }
         if (parts.length > 1) {
             valuePart = parts[1];
@@ -346,12 +354,12 @@ public class EmitterPresetMaster {
         for (EMITTER_PRESET sub : EMITTER_PRESET.values()) {
             String path = null;
             try {
-                path = findImagePath(sub.path);
+                path = findImagePath(sub.getPath());
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 continue;
             }
-            imagePathMap.put(sub.path.toLowerCase(), path);
+            imagePathMap.put(sub.getPath().toLowerCase(), path);
         }
     }
 

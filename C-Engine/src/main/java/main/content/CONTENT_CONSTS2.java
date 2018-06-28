@@ -437,16 +437,30 @@ public class CONTENT_CONSTS2 {
         EMITTER_PRESET() {
             String[] parts = name().split("_");
             String realName = name().replace(parts[0], "").replace("_", " ").trim();
-            this.path = StrPathBuilder.build(
-            parts[0], realName);
+            this.setPath(StrPathBuilder.build(
+            parts[0], realName));
         }
         EMITTER_PRESET(String path) {
-            this.path = path;
+            this.setPath(path);
         }
 
 
         public boolean isPreloaded() {
             return true;
+        }
+        public boolean isAtlas() {
+            return true;
+        }
+
+        public String getPath() {
+            if (isAtlas()){
+                return StrPathBuilder.build("atlas", path);
+            }
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
         }
     }
 

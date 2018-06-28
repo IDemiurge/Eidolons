@@ -11,6 +11,7 @@ import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.LightLayer.LightContainer;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
@@ -26,8 +27,7 @@ import java.util.Map;
 public class LightLayer extends MapTimedLayer<LightContainer> {
 
     static {
-        LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths("woods\\stars");
-//        LIGHT_LAYER.VERTICAL_LIGHT.setEmitterPaths("woods\\leaves");
+        LIGHT_LAYER.VERTICAL_MOONLIGHT.setEmitterPaths(EMITTER_PRESET.STARS.getPath());
     }
 
     boolean uiStage;

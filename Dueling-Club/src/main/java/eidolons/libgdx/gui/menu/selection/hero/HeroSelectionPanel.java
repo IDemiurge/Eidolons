@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 public class HeroSelectionPanel extends SelectionPanel {
 
-    Supplier<List<? extends Entity>> dataSupplier;
+    protected Supplier<List<? extends Entity>> dataSupplier;
 
     public HeroSelectionPanel(Supplier<List<? extends Entity>> dataSupplier) {
         super();
@@ -38,7 +38,6 @@ public class HeroSelectionPanel extends SelectionPanel {
 
     @Override
     protected List<SelectableItemData> createListData() {
-
         return listPanel.toDataList(dataSupplier.get());
     }
 
