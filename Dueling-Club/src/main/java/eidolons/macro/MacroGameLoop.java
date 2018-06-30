@@ -4,12 +4,15 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.GameLoop;
 import eidolons.macro.generation.ScenarioGenerator;
+import eidolons.macro.global.persist.Saver;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.macro.map.Place;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -29,6 +32,14 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         super();
         this.macroGame = game;
         timeMaster =MacroTimeMaster.getInstance();
+    }
+
+    @Override
+    public void setExited(boolean exited) {
+        if (exited)
+            if (OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.AUTOSAVE_ON))
+                Saver.autosave();
+        super.setExited(exited);
     }
 
     public void togglePaused() {
@@ -147,7 +158,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     public void tryEnter(Place sub) {
         Coordinates c = macroGame.getPlayerParty().getCoordinates();
-        if (MacroInitializer.isTestMode()|| sub.getCoordinates().dst(c) < 150) {
+        if (AdventureInitializer.isTestMode()|| sub.getCoordinates().dst(c) < 150) {
             combatStarts(sub);
         }
     }

@@ -3,9 +3,12 @@ package eidolons.libgdx.gui.panels.headquarters.weave.actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.bf.DynamicLayeredActor;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveHighlightable;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
+import eidolons.libgdx.texture.Images;
+import main.system.images.ImageManager;
 
 /**
  * Created by JustMe on 6/25/2018.
@@ -15,7 +18,9 @@ public class WeaveNodeActor extends DynamicLayeredActor implements WeaveHighligh
     private WeaveLinkActor link;
 
     public WeaveNodeActor(String rootPath) {
-        super(rootPath);
+        super(!ImageManager.isImage(rootPath)? Images.EMPTY_RANK_SLOT:  rootPath);
+        overlay= new FadeImageContainer(Images.WEAVE_OVERLAY);
+        underlay = new FadeImageContainer(Images.WEAVE_UNDERLAY);
         addListener(getListener());
     }
 

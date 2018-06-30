@@ -6,8 +6,8 @@ import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
+import main.content.DC_TYPE;
 import main.entity.Entity;
-import main.entity.type.ObjType;
 import main.system.EventCallbackParam;
 
 import java.util.List;
@@ -80,7 +80,7 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     }
 
     private boolean isLoadGame(List<? extends Entity> p) {
-        return p.get(0) instanceof ObjType;
+        return p.get(0).getOBJ_TYPE_ENUM()== DC_TYPE.CHARS;
     }
 
     @Override

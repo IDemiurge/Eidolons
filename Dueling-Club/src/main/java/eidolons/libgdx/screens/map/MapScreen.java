@@ -3,6 +3,7 @@ package eidolons.libgdx.screens.map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,7 +11,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import eidolons.game.core.Eidolons;
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroInitializer;
+import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.time.MacroTimeMaster;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.GdxMaster;
@@ -83,7 +84,7 @@ public class MapScreen extends GameScreen {
         Eidolons.onThisOrNonGdxThread(() -> {
 
             XML_Reader.readTypes(true);
-            MacroInitializer.newAdventureGame(saveName);
+            AdventureInitializer.newAdventureGame(saveName);
             preloaded = true;
         });
 
@@ -136,7 +137,7 @@ public class MapScreen extends GameScreen {
     }
 
     @Override
-    protected InputMultiplexer getInputController() {
+    protected InputProcessor getInputController() {
         InputMultiplexer current;
         if (canShowScreen()) {
             current = new InputMultiplexer(guiStage, controller, objectStage);
@@ -145,7 +146,7 @@ public class MapScreen extends GameScreen {
             }
             current.addProcessor(controller);//new GestureDetector(controller));
         } else {
-            current = super.getInputController();
+            current = new InputMultiplexer(super.getInputController());
         }
 
         return current;

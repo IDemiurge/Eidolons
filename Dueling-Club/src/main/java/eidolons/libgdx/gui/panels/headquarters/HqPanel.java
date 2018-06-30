@@ -154,7 +154,7 @@ public class HqPanel extends TablePanel implements Blocking {
 //        newMastery.setPosition();
         infoTable.addActor(newMastery);
         infoTable.row();
-        infoTable.addActor(scrolledValuePanel);
+        infoTable.addActor(scrolledValuePanel=new HqScrolledValuePanel());
         infoTable.row();
         infoTable.add(controlPanel).padTop(100).bottom().center().colspan(2).row();
 

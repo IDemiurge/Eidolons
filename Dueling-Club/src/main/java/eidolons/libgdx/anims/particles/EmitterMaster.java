@@ -35,35 +35,49 @@ public class EmitterMaster extends GdxUtil {
     static Map<String, String> map = new HashMap<>();
     static Map<String, String> broken = new HashMap<>();
     private static TextureAtlas atlas;
-    private static boolean writeImage = false;
-    private static boolean pack = false;
-static String[] exceptions= {
- "custom",
+    private static boolean writeImage = true;
+    private static boolean pack = true;
+    private static boolean overwriteImage=false;
+    private static boolean sizeImages=false;
+    static String[] exceptions= {
+ "custom","atlas", "atlases", "broken", "templates", "workspace", "export", "target"
 };
+    private static final int MAX_IMAGE_SIZE=200;
+
     public static void createVfxAtlas() {
         String atlasPath = null;
         String atlasName = null;
         String imagesPath = null;
-        for (File sub : FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true)) {
+       main: for (File sub : FileManager.getFilesFromDirectory(PathFinder.getVfxPath(), false, true)) {
             String path = sub.getPath().toLowerCase().replace(PathFinder.getVfxPath().toLowerCase(), "");
 
             for (String s: exceptions){
                 if (path.contains(s))
-                    continue;
+                    continue main;
             }
 
             String imagePath = EmitterPresetMaster.getInstance().findImagePath(path);
             List<Texture> t = new ArrayList<>();
 
-            String imagesData="";
             if (writeImage)
                 try {
                     for (String s : StringMaster.openContainer(imagePath, "\n")) {
-                        t.add(new Texture(s));
-                        imagesData+= StringMaster.getLastPathSegment(s)+"\n";
+                        Texture texture = new Texture(s);
+                     if (sizeImages)
+                         if (texture.getHeight()>MAX_IMAGE_SIZE || texture.getWidth()>MAX_IMAGE_SIZE)
+                        {
+//                            EmitterPresetMaster.getInstance().getGroupText(data, EMITTER_VALUE_GROUP.Scale);
+                            int max = Math.max(texture.getHeight(), texture.getWidth());
+                            int coef = max / MAX_IMAGE_SIZE;
+                             texture = GdxImageMaster.size(s, texture.getWidth()*coef,
+                              texture.getHeight()*coef, false);
+                        }
+                        t.add(texture);
                     }
                 } catch (Exception e) {
-                    main.system.ExceptionMaster.printStackTrace(e);
+//                    main.system.ExceptionMaster.printStackTrace(e);
+                    main.system.auxiliary.log.LogMaster.log(1,
+                     path + " vfx broken! "  );
                     broken.put(path, imagePath);
                     continue;
                 }
@@ -71,12 +85,11 @@ static String[] exceptions= {
             imagesPath = getVfxAtlasImagesPath();
             atlasPath = getVfxAtlasPath();
             atlasName = getVfxAtlasName();
+            String imagesData="\n";
 
             try {
-                if (writeImage)
-                    for (String s : StringMaster.openContainer(imagePath)) {
-                        Texture texture = (new Texture(s));
-                        String imageName=StringMaster.getLastPathSegment(s);
+                    for (String s : StringMaster.openContainer(imagePath, "\n")) {
+                       String imageName=StringMaster.getLastPathSegment(s);
                         imagesData+= imageName+"\n";
 
                         String newPath = map.get(imageName);
@@ -84,14 +97,25 @@ static String[] exceptions= {
                             newPath = imagesPath + StringMaster.getPathSeparator() + imageName  ;
                             map.put(imageName, newPath);
                         }
+                        if (writeImage)
+                        {
+                            Texture texture = (new Texture(s));
                         FileHandle handle = new FileHandle(newPath);
-                        GdxImageMaster.writeImage(handle, texture);
+                        if (!handle.exists() || overwriteImage)
+                            GdxImageMaster.writeImage(handle, texture);
+                            main.system.auxiliary.log.LogMaster.log(1,
+                             path + " vfx image written: " + newPath);
+                        }
                     }
 
                 String data = EmitterPresetMaster.getInstance().getModifiedData(path,
                  EMITTER_VALUE_GROUP.Image_Path,imagesData);
 
                 FileManager.write(data, PathFinder.getVfxPath() + StringMaster.getPathSeparator() + "atlas" + StringMaster.getPathSeparator() + path);
+
+                main.system.auxiliary.log.LogMaster.log(1,
+                 path + " vfx preset written  "  );
+
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
                 broken.put(path, imagePath);

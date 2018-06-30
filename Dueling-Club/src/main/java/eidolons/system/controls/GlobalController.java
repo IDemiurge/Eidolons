@@ -9,6 +9,7 @@ import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
+import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.GuiStage;
@@ -44,6 +45,12 @@ public class GlobalController implements Controller {
                 break;
             case Keys.F1:
                 HqMaster.toggleHqPanel();
+                break;
+            case Keys.F3:
+                WeaveMaster.openWeave();
+                break;
+            case Keys.F12:
+                Eidolons.exitToMenu();
                 break;
             case Keys.ESCAPE:
                 escape();

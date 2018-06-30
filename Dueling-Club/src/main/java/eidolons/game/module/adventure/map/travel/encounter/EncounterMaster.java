@@ -3,7 +3,6 @@ package eidolons.game.module.adventure.map.travel.encounter;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
-import eidolons.macro.MacroInitializer;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Route;

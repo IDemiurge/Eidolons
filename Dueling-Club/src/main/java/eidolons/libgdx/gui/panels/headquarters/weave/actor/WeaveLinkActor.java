@@ -25,13 +25,15 @@ public class WeaveLinkActor extends FadeImageContainer implements WeaveHighlight
 
     @Override
     public void highlight() {
-        fromNode.highlight();
+        if (fromNode!=null )
+            fromNode.highlight();
         ActorMaster.addAlphaAction(this, 0.5f, 1f);
     }
 
     @Override
     public void highlightOff() {
-        fromNode.highlightOff();
+        if (fromNode!=null )
+            fromNode.highlightOff();
         ActorMaster.addAlphaAction(this, 0.5f, getDefaultAlpha());
 
     }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.libgdx.anims.particles.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.gui.generic.GroupX;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.system.GuiEventManager;

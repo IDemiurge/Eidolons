@@ -3,7 +3,7 @@ package eidolons.libgdx.screens.menu;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
-import eidolons.macro.MacroInitializer;
+import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -73,7 +73,7 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(),
                  null);
             case MAP_PREVIEW:
-                MacroInitializer.launchAdventureGame(null );
+                AdventureInitializer.launchAdventureGame(null );
                 return null;
             case LOAD:
                 try {

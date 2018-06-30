@@ -1,7 +1,6 @@
 package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.graphics.Color;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.StringMaster;
 

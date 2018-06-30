@@ -27,14 +27,17 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
  ArmorDataSource
 {
 
-    private final UnitDataSource unitDataSource;
-    private boolean editable;
+    protected final UnitDataSource unitDataSource;
+    protected boolean editable;
 
     public HqHeroDataSource(HeroDataModel entity) {
         super(entity);
         unitDataSource = new UnitDataSource(entity);
     }
 
+    public UnitDataSource getUnitDataSource() {
+        return unitDataSource;
+    }
 
     public int getLevel() {
         return  entity.getLevel() ;

@@ -5,7 +5,10 @@ import eidolons.libgdx.gui.panels.headquarters.weave.Weave;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveTree;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;
 import main.content.enums.entity.SkillEnums.MASTERY;
+import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,18 +16,29 @@ import java.util.List;
  */
 public class SkillWeave extends Weave<MASTERY> {
 
-    public SkillWeave(WeaveDataNode coreNode) {
-        super(coreNode);
+
+    public SkillWeave(WeaveDataNode root, boolean unbound) {
+        super(root, unbound);
     }
 
     @Override
-    protected List<MASTERY> getData() {
+    protected List<MASTERY> getData(boolean unbound) {
+
+        if (unbound) {
+            SKILL_GROUP group = (SKILL_GROUP) getCoreNode().getArg();
+            return
+             new ArrayList<>(Arrays.asList(SkillMaster.getMasteriesFromSkillGroup(group)));
+        }
+
+
         return SkillMaster.getUnlockedMasteries_(getUserObject().getEntity());
+
     }
+
 
     @Override
     protected WeaveTree createTree(MASTERY sub) {
-        return new WeaveSkillTree(sub);
+        return new WeaveSkillTree(sub, unbound);
     }
 
 }

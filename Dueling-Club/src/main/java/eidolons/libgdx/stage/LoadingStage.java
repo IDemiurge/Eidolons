@@ -14,12 +14,12 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.particles.Ambience;
+import eidolons.libgdx.anims.particles.EMITTER_PRESET;
 import eidolons.libgdx.anims.particles.ParticleManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.text.TipMaster;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 

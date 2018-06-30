@@ -5,25 +5,31 @@ import eidolons.libgdx.gui.panels.headquarters.weave.Weave;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveTree;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.WeaveDataNode;
 import main.content.enums.entity.HeroEnums.CLASS_GROUP;
-import main.system.auxiliary.ClassMaster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by JustMe on 6/25/2018.
  */
 public class ClassWeave extends Weave<CLASS_GROUP> {
-    public ClassWeave(WeaveDataNode coreNode) {
-        super(coreNode);
+    public ClassWeave(WeaveDataNode root, boolean unbound) {
+        super(root, unbound);
     }
-
     @Override
-    protected List<CLASS_GROUP> getData() {
+    protected List<CLASS_GROUP> getData(boolean unbound) {
+        if (unbound)
+        {
+            List<CLASS_GROUP> list=    new ArrayList<>() ;
+            list.add((CLASS_GROUP) coreNode.getArg());
+            return list;
+        }
+
         return HeroClassMaster.getClassGroups(getUserObject().getEntity());
     }
 
     @Override
     protected WeaveTree createTree(CLASS_GROUP sub) {
-        return new WeaveClassTree(sub);
+        return new WeaveClassTree(sub, unbound);
     }
 }

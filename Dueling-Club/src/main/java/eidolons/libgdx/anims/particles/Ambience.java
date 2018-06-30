@@ -3,7 +3,6 @@ package eidolons.libgdx.anims.particles;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.screens.DungeonScreen;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.system.auxiliary.RandomWizard;
 
 /**

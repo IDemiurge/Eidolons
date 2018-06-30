@@ -1,8 +1,10 @@
 package eidolons.libgdx.gui.panels.headquarters.weave.model;
 
+import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.weave.Weave;
+import eidolons.libgdx.gui.panels.headquarters.weave.WeaveSpace.WEAVE_VIEW_FILTER;
 import eidolons.libgdx.gui.panels.headquarters.weave.actor.WeaveActorBuilder;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.classes.ClassWeave;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.skills.SkillWeave;
@@ -22,11 +24,18 @@ import java.util.stream.Collectors;
  * <p>
  * rotate the link
  */
-public class WeaveModelBuilder {
+public abstract class WeaveModelBuilder {
 
+    public static List<Weave> buildAllGraphs(WEAVE_VIEW_FILTER filter, Unit hero, boolean skills) {
+        return skills? new SkillWeaveBuilder(filter).buildAll(hero) :
+         new ClassWeaveBuilder().buildAll(hero);
+    }
+    private static WeaveDataNode createHeroNode(Unit hero, boolean skills) {
+        return new WeaveDataNode(hero.getImagePath(), hero.getName(), null );
+    }
     public static Weave buildHeroGraph(Unit hero, boolean skills) {
         WeaveDataNode root = createHeroNode(hero, skills);
-        Weave graph = skills ? new SkillWeave(root) : new ClassWeave(root);
+        Weave graph = skills ? new SkillWeave(root, false) : new ClassWeave(root, false);
         graph.setUserObject(HqDataMaster.getHeroDataSource(hero));
         //base node is 'hero'?
         //each mastery is a tree
@@ -36,14 +45,13 @@ public class WeaveModelBuilder {
         return graph;
     }
 
-    private static WeaveDataNode createHeroNode(Unit hero, boolean skills) {
-        return new WeaveDataNode(hero.getImagePath(), hero.getName());
-    }
+    protected abstract WeaveDataNode createGroupNode(String sub);
+    protected abstract String[] getWeaveGroups() ;
 
-    public static List<Weave> buildAllGraphs(boolean skills) {
-        return null;
-    }
 
+    protected Vector2 getWeavePosition(int i) {
+        return WeaveActorBuilder.getWeavePosition(i);
+    }
     public static WeaveDataNode buildTreeModel(Object rootArg, List<ObjType> data, boolean skill) {
         List<WeaveDataNode> children = new ArrayList<>();
         for (ObjType sub : data) {
@@ -53,21 +61,11 @@ public class WeaveModelBuilder {
                 children.add(root);
             }
         }
-        WeaveDataNode root = new WeaveDataNode(getRootImagePath(rootArg), getRootDescription(rootArg));
+        WeaveDataNode root = new WeaveDataNode(getRootImagePath(rootArg), getRootDescription(rootArg), null );
         root.setChildren(children);
         return root;
     }
 
-    private static String getRootImagePath(Object rootArg) {
-        if (rootArg instanceof MASTERY) {
-            return ImageManager.getValueIconPath(((MASTERY) rootArg).getParam());
-        }
-        return null;
-    }
-
-    private static String getRootDescription(Object rootArg) {
-        return null;
-    }
 
     private static void buildTreeNodesModel(WeaveDataNode node, List<ObjType> data, boolean skill) {
         List<ObjType> children = data.stream().filter(type -> type.getProperty(G_PROPS.BASE_TYPE)
@@ -84,4 +82,14 @@ public class WeaveModelBuilder {
     }
 
 
+    private static String getRootImagePath(Object rootArg) {
+        if (rootArg instanceof MASTERY) {
+            return ImageManager.getValueIconPath(((MASTERY) rootArg).getParam());
+        }
+        return null;
+    }
+
+    private static String getRootDescription(Object rootArg) {
+        return null;
+    }
 }

@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.weave;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
@@ -16,19 +16,25 @@ import java.util.Map;
  * Created by JustMe on 6/4/2018.
  */
 public class WeaveSpace extends StageX {
-    WEAVE_VIEW_MODE viewMode;
+    WEAVE_VIEW_MODE viewMode =WEAVE_VIEW_MODE.DEFAULT;
+    WEAVE_VIEW_FILTER filter =WEAVE_VIEW_FILTER.MAGIC;
     Map<Object, GroupX> cache = new HashMap<>();
     private GroupX currentView;
-    boolean skills;
+    boolean skills=true; //toggle between class/skill view
 
-    public WeaveSpace() {
-        super(new ScreenViewport(new OrthographicCamera()));
+    public WeaveSpace(Camera cam) {
+        super(new ScreenViewport(cam));
+        //emitters!
         refresh();
     }
 
-    public void refresh() {
+    public void toggle() {
+        skills=!skills;
+    }
+        public void refresh() {
         clear();
         addActor(currentView = getView(viewMode));
+
     }
 
     private GroupX getView(WEAVE_VIEW_MODE viewMode) {
@@ -46,14 +52,18 @@ public class WeaveSpace extends StageX {
             group = new GroupX();
             Weave graph = WeaveModelBuilder.buildHeroGraph(getHero(), skills);
             group.addActor(graph);
+
         }
+//        group.pack();
+//        group.layout();
+        group.setPosition( (group).getWidth()/2, (group).getHeight()/2);
         //events? refresh?
         return group;
     }
 
     private GroupX initFullView() {
         GroupX group = new GroupX();
-        List<Weave> graphs = WeaveModelBuilder.buildAllGraphs(skills);
+        List<Weave> graphs = WeaveModelBuilder.buildAllGraphs(filter, getHero(), skills);
         for (Weave graph : graphs) group.addActor(graph);
         return group;
     }
@@ -62,7 +72,20 @@ public class WeaveSpace extends StageX {
         return Eidolons.getMainHero();
     }
 
-    public enum WEAVE_VIEW_MODE {
-        ALL, HERO,
+    public void setViewMode(WEAVE_VIEW_MODE viewMode) {
+        this.viewMode = viewMode;
+    }
+
+    public enum WEAVE_VIEW_FILTER {
+        NONE,
+        MAGIC,
+        NON_MAGIC,
+
+
+    }
+        public enum WEAVE_VIEW_MODE {
+        ALL, HERO,;
+        public static WEAVE_VIEW_MODE DEFAULT=ALL;
+
     }
 }

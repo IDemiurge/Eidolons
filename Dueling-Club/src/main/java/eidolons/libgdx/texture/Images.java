@@ -84,4 +84,10 @@ public class Images {
      PathFinder.getUiPath(), "Borders", "neo", "TARGET.png");
     public static final String WEAVE_LINK = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "weave", "link.png");
+    public static final String WEAVE_OVERLAY = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "hq", "weave", "OVERLAY.png");
+    public static final String WEAVE_UNDERLAY = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "hq", "weave", "UNDERLAY.png");
+    public static final String WEAVE_BACKGROUND = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "hq", "weave", "BACKGROUND.jpg");
 }

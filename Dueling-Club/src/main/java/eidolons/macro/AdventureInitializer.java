@@ -24,7 +24,7 @@ import java.util.List;
 import static main.system.GuiEventType.SCREEN_LOADED;
 import static main.system.MapEvent.*;
 
-public class MacroInitializer {
+public class AdventureInitializer {
     private static MacroGame game;
     private static String scenario = "Mistfall";
     private static MetaGameMaster metaMaster;
@@ -32,7 +32,7 @@ public class MacroInitializer {
     private static boolean testMode =true;
 
     public static void setScenario(String scenario) {
-        MacroInitializer.scenario = scenario;
+        AdventureInitializer.scenario = scenario;
     }
 
 

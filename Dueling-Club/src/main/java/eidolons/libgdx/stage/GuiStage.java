@@ -87,15 +87,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     }
 
     protected void init() {
-        gameMenu = createGameMenu();
-        addActor(gameMenu);
-        gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
-
-        ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () ->
-         gameMenu.toggle());
-        menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
-         GdxMaster.getHeight() - menuButton.getHeight());
-        addActor(menuButton);
+        initGameMenu();
 //        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
 //         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
 //        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
@@ -108,18 +100,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(decorated);
         decorated.
          setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);
-        addActor(blackout = new Blackout());
-        addActor(logPanel = new FullLogPanel(100, 200));
+       addActor(logPanel = new FullLogPanel(100, 200));
 
         radial = new RadialMenu();
         addActor(radial);
-        addActor(tooltips = new ToolTipManager(this));
-
-        textPanel = new OverlayTextPanel();
-        addActor(textPanel);
-        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
-         GdxMaster.centerHeight(textPanel));
-
 
         containerPanel = new ContainerPanel();
         addActor(containerPanel);
@@ -139,6 +123,23 @@ public class GuiStage extends StageX implements StageWithClosable {
          GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
 
+        initTooltipsAndMisc();
+
+        setDebugAll(false);
+
+        addActor(dragManager = DragManager.getInstance());
+        setBlackoutIn(true);
+    }
+
+    protected void initTooltipsAndMisc() {
+
+        textPanel = new OverlayTextPanel();
+        addActor(textPanel);
+        textPanel.setPosition(GdxMaster.centerWidth(textPanel),
+         GdxMaster.centerHeight(textPanel));
+
+        addActor(blackout = new Blackout());
+        addActor(tooltips = new ToolTipManager(this));
         addActor(infoTooltipContainer = new SuperContainer(infoTooltip) {
             @Override
             public void draw(Batch batch, float parentAlpha) {
@@ -152,10 +153,19 @@ public class GuiStage extends StageX implements StageWithClosable {
         infoTooltipContainer.setAlphaFluctuationOn(true);
 
         addActor(confirmationPanel = ConfirmationPanel.getInstance());
-        setDebugAll(false);
 
-        addActor(dragManager = DragManager.getInstance());
-        setBlackoutIn(true);
+    }
+
+    protected void initGameMenu() {
+        gameMenu = createGameMenu();
+        addActor(gameMenu);
+        gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
+
+        ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () ->
+         gameMenu.toggle());
+        menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
+         GdxMaster.getHeight() - menuButton.getHeight());
+        addActor(menuButton);
     }
 
     protected GameMenu createGameMenu() {

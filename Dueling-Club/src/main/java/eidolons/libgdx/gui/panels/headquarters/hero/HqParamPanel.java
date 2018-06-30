@@ -20,20 +20,21 @@ public class HqParamPanel extends HqElement{
     private   PARAMETER[] params;
     private   HorizontalGroup group;
     Array<ValueContainer> containers;
-    boolean dynamic;
 
     public HqParamPanel(boolean dynamic) {
-        this.dynamic = dynamic;
+        this((dynamic)
+         ? DC_ContentValsManager.DYNAMIC_PARAMETERS
+         : DC_ContentValsManager.MAIN_PARAMETERS);
+    }
+    public HqParamPanel(PARAMETER...params) {
         setBackground(new NinePatchDrawable(NinePatchFactory.getLightPanel()));
         setSize(GDX.size(300), GDX.size(75));
         add(group = new HorizontalGroup()).center();
         group.setSize(getWidth()-60, getHeight());
         group.space(GDX.size(10));
-
+        this.params = params;
         containers = new Array<>(6);
-            params = (dynamic)
-             ? DC_ContentValsManager.DYNAMIC_PARAMETERS
-             : DC_ContentValsManager.MAIN_PARAMETERS;
+
 
         for (PARAMETER sub : params) {
             ValueContainer container = new ValueContainer(

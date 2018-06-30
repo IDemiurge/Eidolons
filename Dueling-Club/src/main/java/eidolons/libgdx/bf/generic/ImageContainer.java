@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.Entity;
+import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 
 /**
@@ -28,8 +29,10 @@ public class ImageContainer extends SuperContainer {
 
     public ImageContainer(String path) {
         super();
-        content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path)));
-        addActor(content);
+        if (!StringMaster.isEmpty(path)) {
+            content = new Image(sprite = new Sprite(TextureCache.getOrCreateR(path)));
+            addActor(content);
+        }
         this.path = path;
     }
 
@@ -57,21 +60,18 @@ public class ImageContainer extends SuperContainer {
     }
 
     public void setImage(String path) {
-        if (ImageManager.isImage(path))
-        { this.path =path;
+        if (ImageManager.isImage(path)) {
+            this.path = path;
             Texture r = TextureCache.getOrCreate(path);
-            if (sprite!=null )
-                if (sprite.getTexture().equals(r) )
-                {
-                    if (getContent()==null || isResetImageAlways())
-//                     if (!getContent().getDrawable().equals(new TextureRegionDrawable(sprite)))
-                    setImage(new Image(sprite));
+            if (sprite != null)
+                if (sprite.getTexture().equals(r)) {
+                    if (getContent() == null || isResetImageAlways())
+                        //                     if (!getContent().getDrawable().equals(new TextureRegionDrawable(sprite)))
+                        setImage(new Image(sprite));
                     return;
                 }
             setImage(new Image(sprite = new Sprite(TextureCache.getOrCreate(path))));
-        }
-        else
-        {
+        } else {
             setEmpty();
         }
     }
@@ -170,7 +170,7 @@ public class ImageContainer extends SuperContainer {
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-//        getContent().setPosition(x, y);
+        //        getContent().setPosition(x, y);
     }
 
     @Override

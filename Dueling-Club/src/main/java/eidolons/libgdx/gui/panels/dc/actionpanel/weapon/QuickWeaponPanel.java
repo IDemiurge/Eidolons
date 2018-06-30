@@ -29,7 +29,7 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class QuickWeaponPanel extends TablePanel {
 
-    private static final float WEAPON_POS_X = 12;
+    protected static final float WEAPON_POS_X = 12;
     ImageContainer border;
     FadeImageContainer weapon;
     ImageContainer background;
@@ -51,7 +51,7 @@ public class QuickWeaponPanel extends TablePanel {
          StrPathBuilder.build(PathFinder.getComponentsPath(),
           "dc", "quick weapon", "border" +
            suffix + ".png")));
-        addActor(radial = new QuickAttackRadial(this, offhand));
+        addActor(radial = createRadial(offhand));
 //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
         addListener(getListener());
 
@@ -71,7 +71,11 @@ public class QuickWeaponPanel extends TablePanel {
 
     }
 
-    private void initTooltip() {
+    protected QuickAttackRadial createRadial(boolean offhand) {
+        return new QuickAttackRadial(this, offhand);
+    }
+
+    protected void initTooltip() {
         if (getActiveWeaponDataSource()==null )
             return;
         weapon.clearListeners();
@@ -118,7 +122,7 @@ public class QuickWeaponPanel extends TablePanel {
         initTooltip();
     }
 
-    private void toggleUnarmed() {
+    protected void toggleUnarmed() {
         unarmed = !unarmed;
         initWeapon(getActiveWeaponDataSource());
     }
@@ -135,7 +139,7 @@ public class QuickWeaponPanel extends TablePanel {
         return unarmed ? dataSourceAlt : dataSource;
     }
 
-    private void initWeapon(WeaponDataSource dataSource) {
+    protected void initWeapon(WeaponDataSource dataSource) {
         weapon.setImage(
          dataSource. getNormalImage());
     }
@@ -143,7 +147,7 @@ public class QuickWeaponPanel extends TablePanel {
 
 
 
-    private EventListener getListener() {
+    protected EventListener getListener() {
         return new SmartClickListener(this) {
             @Override
             protected boolean isBattlefield() {

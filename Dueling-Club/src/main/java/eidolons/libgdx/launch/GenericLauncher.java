@@ -17,7 +17,7 @@ import eidolons.libgdx.screens.*;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.texture.Images;
-import eidolons.macro.MacroInitializer;
+import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -112,7 +112,7 @@ public class GenericLauncher extends Game {
         //if (Gdx.graphics.isGL30Available())
         //conf.useGL30 = true;
         conf.resizable = false;
-
+        conf.samples = 4;
         conf.fullscreen = false;
         fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
         conf.foregroundFPS = FRAMERATE;
@@ -236,16 +236,17 @@ public class GenericLauncher extends Game {
         newScreen.setData(meta);
         final Screen oldScreen = getScreen();
         setScreen(newScreen);
-        if (oldScreen instanceof MapScreen) {
-            // ?
-        } else {
+//        if (oldScreen instanceof MapScreen) {
+//            // ?
+//        } else
+            {
             if (oldScreen != null)
                 oldScreen.dispose();
         }
 
-        if (newScreen instanceof MapScreen) {
-            return;
-        }
+//        if (newScreen instanceof MapScreen) {
+//            return;
+//        }
         triggerLoaded(meta);
     }
 
@@ -289,7 +290,7 @@ public class GenericLauncher extends Game {
                     switchScreen(HeadquarterScreen::new, newMeta);
                     break;
                 case WEAVE:
-                    switchScreen(WeaveScreen::new, newMeta);
+                    switchScreen(WeaveScreen::getInstance, newMeta);
                     break;
                 case BATTLE:
                     switchScreen(DungeonScreen::new, newMeta);
@@ -299,7 +300,7 @@ public class GenericLauncher extends Game {
                     Eidolons.setScope(SCOPE.MAP);
                     switchScreen(() -> MapScreen.getInstance(), newMeta);
                     if (newMeta.getName() != null)
-                        MacroInitializer.setScenario(newMeta.getName());
+                        AdventureInitializer.setScenario(newMeta.getName());
                     break;
                 case PRE_BATTLE:
                     break;

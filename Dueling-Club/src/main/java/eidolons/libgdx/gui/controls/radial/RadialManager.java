@@ -20,7 +20,6 @@ import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.tooltips.ActionCostTooltip;
 import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
-import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.AttackTooltipFactory;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.TextureCache;
@@ -400,7 +399,7 @@ public class RadialManager {
         Runnable runnable = () -> {
             GuiEventManager.trigger(
              GuiEventType.SHOW_UNIT_INFO_PANEL,
-             new UnitDataSource(((Unit) target)));
+             target);
 
         };
         final RadialValueContainer valueContainer = new RadialValueContainer(getOrCreateR("UI/components\\dc\\radial/examine.png"), runnable);

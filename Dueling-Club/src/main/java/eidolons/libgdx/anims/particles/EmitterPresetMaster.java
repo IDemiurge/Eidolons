@@ -2,7 +2,6 @@ package eidolons.libgdx.anims.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
 import main.system.auxiliary.EnumMaster;
@@ -190,9 +189,9 @@ public class EmitterPresetMaster {
         if (imgPath.contains(StringMaster.NEW_LINE)) {
             imgPath = imgPath.split(StringMaster.NEW_LINE)[0];
         }
-        if (imgPath.contains("\n")) {
-            imgPath = imgPath.split("\n")[0];
-        }
+//        if (imgPath.contains("\n")) {
+//            imgPath = imgPath.split("\n")[0];
+//        }
         return imgPath;
 
     }

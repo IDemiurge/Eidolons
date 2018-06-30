@@ -1,6 +1,7 @@
 package eidolons.libgdx.screens.map.editor;
 
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -42,7 +43,7 @@ public class EditorMapView extends MapScreen {
     }
 
     @Override
-    protected InputMultiplexer getInputController() {
+    protected InputProcessor getInputController() {
         return
          new InputMultiplexer(guiStage,
           super.getInputController());

@@ -12,8 +12,13 @@ import java.util.List;
  *
  */
 public class WeaveDataNode {
-   private ObjType type;
+    private ObjType type;
     private boolean skill;
+
+    private Object arg;
+    private   String description;
+    private   String imagePath;
+
     private List<WeaveDataNode> children;
     private WeaveDataNode parent;
 
@@ -22,8 +27,10 @@ public class WeaveDataNode {
         this.skill = skill;
     }
 
-    public WeaveDataNode(String imagePath, String description) {
-
+    public WeaveDataNode(String imagePath, String description, Object arg) {
+        this.imagePath = imagePath;
+        this.description = description;
+        this.arg = arg;
     }
 
     public ObjType getType() {
@@ -48,5 +55,27 @@ public class WeaveDataNode {
 
     public WeaveDataNode getParent() {
         return parent;
+    }
+
+    public Object getArg() {
+        return arg;
+    }
+
+    public void setArg(Object arg) {
+        this.arg = arg;
+    }
+
+    public String getDescription() {
+        if (description == null) {
+            return getType().getDescription();
+        }
+        return description;
+    }
+
+    public String getImagePath() {
+        if (imagePath == null) {
+            return getType().getImagePath();
+        }
+        return imagePath;
     }
 }

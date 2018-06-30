@@ -15,7 +15,8 @@ import java.util.List;
 public class WeaveSkillTree extends WeaveTree {
     MASTERY mastery;
 
-    public WeaveSkillTree(MASTERY mastery) {
+    public WeaveSkillTree(MASTERY mastery, boolean unbound) {
+        super(unbound);
         this.mastery = mastery;
     }
 

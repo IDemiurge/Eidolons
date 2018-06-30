@@ -15,8 +15,8 @@ import java.util.List;
  * Created by JustMe on 3/29/2018.
  */
 public class QuickAttackRadial extends RadialMenu {
-    private final boolean offhand;
-    QuickWeaponPanel quickWeaponPanel;
+    protected final boolean offhand;
+    protected QuickWeaponPanel quickWeaponPanel;
 
     public QuickAttackRadial(QuickWeaponPanel quickWeaponPanel, boolean offhand) {
         this.offhand = offhand;
@@ -50,7 +50,7 @@ public class QuickAttackRadial extends RadialMenu {
          getActiveWeaponDataSource().getActions();
         List<RadialValueContainer> nodes = null;
         try {
-            nodes =RadialManager.createNodes(source, null, attacks, false);
+            nodes =createNodes(source, attacks);
 //        getDualNode();
 //        getSpecialActionNodes();
             init(nodes);
@@ -58,6 +58,11 @@ public class QuickAttackRadial extends RadialMenu {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
+    }
+
+    protected List<RadialValueContainer> createNodes(Unit source,
+                                                     List<? extends ActiveObj> attacks) {
+        return RadialManager.createNodes(source, null, attacks, false);
     }
 
     @Override

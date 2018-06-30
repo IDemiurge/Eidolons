@@ -15,7 +15,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.DC_GameObjMaster;
 import eidolons.game.core.state.DC_StateManager;
-import eidolons.macro.MacroGame;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.libgdx.GDX;
@@ -24,8 +23,9 @@ import eidolons.libgdx.bf.menu.GameMenu;
 import eidolons.libgdx.launch.GenericLauncher;
 import eidolons.libgdx.launch.ScenarioLauncher;
 import eidolons.libgdx.screens.GameScreen;
-import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
+import eidolons.macro.MacroGame;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
 import eidolons.system.graphics.RESOLUTION;
@@ -268,6 +268,7 @@ public class Eidolons {
             DC_Game.game.getMetaMaster().gameExited();
             if (MacroGame.game!=null ){
                 MacroGame.game.getLoop().setExited(true);
+
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -277,7 +278,7 @@ public class Eidolons {
         getScreen().reset();
         gameExited();
         GameMenu.menuOpen = false;
-        Gdx.input.setInputProcessor(new InputAdapter());
+        GdxMaster. setInputProcessor(new InputAdapter());
         showMainMenu();
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
     }

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import eidolons.libgdx.bf.SuperActor;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
 import main.game.bf.Coordinates;
 
 /**

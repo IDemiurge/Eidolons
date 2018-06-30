@@ -11,7 +11,7 @@ import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.content.CONTENT_CONSTS2.EMITTER_PRESET;
+import eidolons.libgdx.anims.particles.EMITTER_PRESET;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;

@@ -162,7 +162,7 @@ public class ColorManager {
                 return COLORS.YELLOW.getColor();
             case LIFE_ARTS:
                 return COLORS.GREEN.getColor();
-            case MISC:
+            case COMMAND:
                 return COLORS.GOLDEN_WHITE.getColor();
             case OFFENSE:
                 return ORANGE;

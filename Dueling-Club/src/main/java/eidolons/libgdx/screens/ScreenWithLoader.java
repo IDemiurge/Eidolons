@@ -2,6 +2,7 @@ package eidolons.libgdx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL30;
@@ -14,7 +15,6 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.bf.BFDataCreatedEvent;
-import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
 import eidolons.libgdx.stage.ChainedStage;
@@ -331,7 +331,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         loadingStage.setViewport(viewPort);
     }
 
-    protected InputMultiplexer getInputController() {
+    protected InputProcessor getInputController() {
         if (isWaitingForInput())
             return getWaitForInputController(param);
         return introStage != null ?
@@ -341,8 +341,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public void updateInputController() {
         GdxMaster.setInputProcessor(
-         new InputMultiplexer(GlobalInputController.getInstance(),
-          getInputController()));
+          getInputController()) ;
     }
 
     public void initLoadingStage(ScreenData meta) {

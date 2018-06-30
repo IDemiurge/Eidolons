@@ -238,7 +238,7 @@ public class PathFinder {
 
     public static String getVfxPath() {
         init();
-        return getImagePath() +  "mini" + StringMaster.getPathSeparator() + "sfx" ;
+        return getImagePath() +  "mini" + StringMaster.getPathSeparator() + "sfx"+ StringMaster.getPathSeparator() ;
     }
 
     public static String getSpritesPath() {

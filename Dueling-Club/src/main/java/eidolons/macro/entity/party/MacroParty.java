@@ -5,7 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroInitializer;
+import eidolons.macro.AdventureInitializer;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.MacroRef.MACRO_KEYS;
 import eidolons.macro.entity.MapObj;
@@ -96,7 +96,7 @@ public class MacroParty extends MapObj {
 
     @Override
     public void toBase() {
-        if (MacroInitializer.isEditMode()) {
+        if (AdventureInitializer.isEditMode()) {
             return;
         }
         super.toBase();

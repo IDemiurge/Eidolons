@@ -35,7 +35,7 @@ import static eidolons.content.UNIT_INFO_PARAMS.*;
 import static eidolons.content.ValuePages.*;
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
-public class UnitDataSource implements
+public class UnitDataSource  implements
  AttributesDataSource, ResourceSource,
  AvatarDataSource, CounterAndActionPointsSource,
  EffectsAndAbilitiesSource, MainWeaponDataSource<ValueContainer>, OffWeaponDataSource,

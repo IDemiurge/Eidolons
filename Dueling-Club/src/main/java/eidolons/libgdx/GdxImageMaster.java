@@ -103,6 +103,10 @@ public class GdxImageMaster extends LwjglApplication {
     }
 
     public static Texture size(String path, int size, boolean write) {
+        return size(path, size,size, write);
+    }
+        public static Texture size(String path, int width, int height, boolean write) {
+        int size = (width+height)/2;
         Texture texture = TextureCache.getOrCreate(path);
         if (texture.getWidth() == size) {
             if (texture.getHeight() == size) {
@@ -121,7 +125,7 @@ public class GdxImageMaster extends LwjglApplication {
             return TextureCache.getOrCreate(path);
         texture.getTextureData().prepare();
         Pixmap pixmap = texture.getTextureData().consumePixmap();
-        Pixmap pixmap2 = new Pixmap(size, size, pixmap.getFormat());
+        Pixmap pixmap2 = new Pixmap(width, height, pixmap.getFormat());
         pixmap2.drawPixmap(pixmap,
          0, 0, pixmap.getWidth(), pixmap.getHeight(),
          0, 0, pixmap2.getWidth(), pixmap2.getHeight()

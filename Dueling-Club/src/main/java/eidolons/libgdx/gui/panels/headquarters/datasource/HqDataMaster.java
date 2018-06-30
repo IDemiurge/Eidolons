@@ -64,6 +64,9 @@ public class HqDataMaster {
     }
 
     public static HqHeroDataSource getHeroDataSource(Unit hero) {
+        if (map.get(hero) == null) {
+            createAndSaveInstance(hero);
+        }
         return new HqHeroDataSource(map.get(hero).getHeroModel());
     }
 

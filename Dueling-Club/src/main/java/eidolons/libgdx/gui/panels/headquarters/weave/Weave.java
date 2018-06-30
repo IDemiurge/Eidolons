@@ -38,18 +38,20 @@ import java.util.List;
  */
 public abstract class Weave<T> extends HqElement{
 
-    WeaveDataNode coreNode;
-    List<WeaveTree> trees;
+    protected WeaveDataNode coreNode;
+    protected List<WeaveTree> trees;
+    protected boolean unbound;
 
-    public Weave(WeaveDataNode coreNode) {
+    public Weave(WeaveDataNode coreNode, boolean unbound) {
         this.coreNode = coreNode;
+        this.unbound = unbound;
     }
 
-    abstract protected List<T> getData();
+    abstract protected List<T> getData(boolean unbound);
 
     public void init(){
         trees = new ArrayList<>();
-        List<T> data = getData();
+        List<T> data = getData(unbound);
         for (T sub : data) {
             trees.add(createTree(sub).init());
         }

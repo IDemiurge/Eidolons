@@ -14,7 +14,14 @@ import java.util.List;
 public abstract class WeaveTree extends HqElement {
 
     WeaveDataNode root;
+    boolean unbound;
 
+    public WeaveTree() {
+        this(false);
+    }
+    public WeaveTree(boolean unbound) {
+        this.unbound = unbound;
+    }
 
     public WeaveTree init() {
         List<ObjType> data = initData(getUserObject());

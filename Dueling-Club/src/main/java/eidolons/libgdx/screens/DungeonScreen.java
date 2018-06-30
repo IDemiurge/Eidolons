@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -13,7 +14,6 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
-import eidolons.macro.MacroGame;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
 import eidolons.libgdx.GdxColorMaster;
@@ -33,6 +33,7 @@ import eidolons.libgdx.stage.StageX;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.texture.TextureManager;
 import eidolons.libgdx.utils.ActTimer;
+import eidolons.macro.MacroGame;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
@@ -240,7 +241,7 @@ public class DungeonScreen extends GameScreen {
     }
 
     @Override
-    protected InputMultiplexer getInputController() {
+    protected InputProcessor getInputController() {
         InputMultiplexer current;
         if (canShowScreen()) {
             current = new InputMultiplexer(guiStage, controller, gridStage);
@@ -249,7 +250,7 @@ public class DungeonScreen extends GameScreen {
             }
             current.addProcessor(controller);//new GestureDetector(controller));
         } else {
-            current = super.getInputController();
+            current = new InputMultiplexer(super.getInputController());
         }
 
         return current;
@@ -294,16 +295,16 @@ public class DungeonScreen extends GameScreen {
                 }
 
             if (backTexture != null) {
-                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-                    TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
-                } else {
+//                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
+//                    TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
+//                } else {
                     guiStage.getBatch().begin();
                     float colorBits = GdxColorMaster.WHITE.toFloatBits();
                     if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
-                        guiStage.getBatch().setColor(colorBits); //damned alpha...
+                        guiStage.getBatch().setColor(colorBits); //gotta reset the alpha...
                     guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
                     guiStage.getBatch().end();
-                }
+//                }
             }
             gridStage.setDebugAll(false);
             gridStage.draw();

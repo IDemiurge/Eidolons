@@ -1,6 +1,9 @@
 package eidolons.libgdx.bf.mouse;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import eidolons.game.core.Eidolons;
+import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 
 /**
  * Created by JustMe on 5/24/2018.
@@ -20,6 +23,15 @@ public class GlobalInputController implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+
+        switch (keycode) {
+            case Keys.F3     :
+                WeaveMaster.openWeave();
+                return true;
+            case Keys.F12:
+                Eidolons.exitToMenu();
+                return true;
+        }
         return false;
     }
 

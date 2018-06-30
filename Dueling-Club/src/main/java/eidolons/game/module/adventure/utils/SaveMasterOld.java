@@ -1,7 +1,7 @@
 package eidolons.game.module.adventure.utils;
 
 import eidolons.macro.MacroGame;
-import eidolons.macro.MacroInitializer;
+import eidolons.macro.AdventureInitializer;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Place;
 import eidolons.macro.map.Region;
@@ -88,7 +88,7 @@ public class SaveMasterOld {
 
     private static String getSaveFileName() {
         // ++ unique code generated per Macro Game and stored in Campaign obj
-        return MacroInitializer.getActiveParty().getName();
+        return AdventureInitializer.getActiveParty().getName();
     }
 
     private static String getSavePath() {

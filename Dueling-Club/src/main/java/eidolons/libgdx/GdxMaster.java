@@ -11,10 +11,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ClassMaster;
@@ -34,6 +36,7 @@ public class GdxMaster {
     private static int width;
     private static int height;
     private static Float fontSizeMod;
+    private static InputProcessor globalInputProcessor;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -191,6 +194,8 @@ public class GdxMaster {
         } else
             main.system.auxiliary.log.LogMaster.log(0, ">>>>> setInputProcessor: " + inputController);
 
+        inputController = new InputMultiplexer(inputController,
+         GlobalInputController.getInstance()) ;
         Gdx.input.setInputProcessor(inputController);
     }
 
@@ -245,5 +250,22 @@ public class GdxMaster {
 
         }
         return null;
+    }
+
+
+    public static Array<Actor> getAllChildren(Group group ) {
+            Array<Actor> list = new Array<>();
+            addChildren(list, group );
+            return list;
+    }
+
+    private static void addChildren(Array<Actor> list, Group group ) {
+        for (Actor sub : group.getChildren()) {
+            list.add(sub );
+            if (sub instanceof Group) {
+                addChildren(list, ((Group) sub) );
+            }
+
+        }
     }
 }

@@ -3,7 +3,7 @@ package eidolons.macro.map.area;
 import eidolons.content.PARAMS;
 import eidolons.game.module.adventure.map.travel.encounter.EncounterMaster;
 import eidolons.libgdx.screens.map.MapScreen;
-import eidolons.macro.MacroInitializer;
+import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.time.TimeMaster;
 import eidolons.macro.map.MacroCoordinates;
 import eidolons.macro.map.Place;
@@ -29,7 +29,7 @@ public class AreaManager {
     // how to figure out which groups got killed in a skirmish?
     public static void newTurn() {
         // danger_level -> newGroup
-        for (Region region : MacroInitializer.getRegions()) {
+        for (Region region : AdventureInitializer.getRegions()) {
             for (Area area : region.getAreas()) {
                 area.modifyParameter(
                  MACRO_PARAMS.AREA_CREEP_POWER_TOTAL,
@@ -86,7 +86,7 @@ public class AreaManager {
     }
 
     public static Area getAreaForCoordinate(Coordinates c) {
-        for (Area area : MacroInitializer.getActiveParty().getRegion().getAreas()) {
+        for (Area area : AdventureInitializer.getActiveParty().getRegion().getAreas()) {
             if (checkWithinAreaBoundaries(area, c)) {
                 return area;
             }

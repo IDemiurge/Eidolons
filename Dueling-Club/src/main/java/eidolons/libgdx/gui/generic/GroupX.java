@@ -57,22 +57,6 @@ public class GroupX extends Group {
         return list;
     }
 
-    public Array<Actor> getAllChildren( ) {
-            Array<Actor> list = new Array<>();
-            addChildren(list, this );
-            return list;
-    }
-
-    private void addChildren(Array<Actor> list, Group group ) {
-        for (Actor sub : group.getChildren()) {
-            list.add(sub );
-            if (sub instanceof Group) {
-                addChildren(list, ((Group) sub) );
-            }
-
-        }
-    }
-
     private void addActions(Array<Action> list, Actor actor, Class actionClass
      ) {
         addActions(list, actor, actionClass, true);

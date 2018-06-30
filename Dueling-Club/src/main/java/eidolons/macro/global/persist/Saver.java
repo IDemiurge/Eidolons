@@ -137,4 +137,8 @@ public class Saver {
         }
 
     }
+
+    public static void autosave() {
+        save();
+    }
 }

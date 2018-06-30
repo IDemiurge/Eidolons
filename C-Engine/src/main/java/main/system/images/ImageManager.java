@@ -604,8 +604,15 @@ public class ImageManager {
         return getImage(VALUE_ICONS_PATH + "Principles\\" + principle.toString() + ".jpg");
     }
 
+    public static String getMasteryGroupPath(String title) {
+        return VALUE_ICONS_PATH + "masteries\\groups\\" + title + ".png";
+    }
+
+    public static String getClassGroupPath(String title) {
+        return VALUE_ICONS_PATH + "Class groups\\" + title + ".png";
+    }
     public static ImageIcon getMasteryGroupIcon(String title) {
-        String imgPath = VALUE_ICONS_PATH + "masteries\\groups\\" + title + ".png";
+        String imgPath = getMasteryGroupPath(title);
         Image image = getNewBufferedImage(32, 32);
         Image masteryIcon = getImage(imgPath);
         if (masteryIcon == null) {
@@ -623,52 +630,53 @@ public class ImageManager {
     }
 
 
-//    public static String getValueIconPath(VALUE value) {
-//        if (value == null) {
-//            return "";
-//        }
-//        Image img = getValueIcon(value);
-//        if (img == null) {
-//            return "";
-//        }
-//        return ((CustomImage) img).getImgPath();
-//
-//    }
-public static String getValueIconPath(VALUE value ) {
-    String imgPath = VALUE_ICONS_PATH;
-    String name = value.getName().toLowerCase();
+    //    public static String getValueIconPath(VALUE value) {
+    //        if (value == null) {
+    //            return "";
+    //        }
+    //        Image img = getValueIcon(value);
+    //        if (img == null) {
+    //            return "";
+    //        }
+    //        return ((CustomImage) img).getImgPath();
+    //
+    //    }
+    public static String getValueIconPath(VALUE value) {
+        String imgPath = VALUE_ICONS_PATH;
+        String name = value.getName().toLowerCase();
 
-    boolean mastery = false;
-    if (value instanceof MACRO_PARAMS) {
-        imgPath = VALUE_ICONS_PATH + "macro\\";
-    } else if (value instanceof PARAMETER) {
-        PARAMETER parameter = (PARAMETER) value;
-        if (parameter.getName().contains(" Durability Mod")) {
-            return getDamageTypeImagePath(parameter.getName().replace(" Durability Mod", ""));
-        }
-        if (parameter.getName().contains(" Armor")) {
-            return getDamageTypeImagePath(parameter.getName().replace(" Armor", ""));
-        }
+        boolean mastery = false;
+        if (value instanceof MACRO_PARAMS) {
+            imgPath = VALUE_ICONS_PATH + "macro\\";
+        } else if (value instanceof PARAMETER) {
+            PARAMETER parameter = (PARAMETER) value;
+            if (parameter.getName().contains(" Durability Mod")) {
+                return getDamageTypeImagePath(parameter.getName().replace(" Durability Mod", ""));
+            }
+            if (parameter.getName().contains(" Armor")) {
+                return getDamageTypeImagePath(parameter.getName().replace(" Armor", ""));
+            }
 
-        if (parameter.isMastery()) {
-            mastery = true;
-            imgPath += "masteries\\";
-            name = name.replace(" mastery", "");
-        } else if (parameter.isAttribute()) {
-            imgPath += "attributes\\";
+            if (parameter.isMastery()) {
+                mastery = true;
+                imgPath += "masteries\\";
+                name = name.replace(" mastery", "");
+            } else if (parameter.isAttribute()) {
+                imgPath += "attributes\\";
+            }
+
         }
+        if (!mastery) {
+            name = name.replaceFirst("c ", "");
+        }
+        String path = imgPath + name + ".png"; // free format
+        if (!FileManager.isFile(getImageFolderPath() + path))
+            path = imgPath + name + ".jpg";
+
+        return path;
 
     }
-    if (!mastery) {
-        name = name.replaceFirst("c ", "");
-    }
-    String path = imgPath + name + ".png"; // free format
-    if (!FileManager.isFile(getImageFolderPath()+path))
-        path = imgPath + name + ".jpg";
 
-    return path;
-
-}
     public static Image getValueIcon(VALUE value, boolean glowIconForDynamicIfAvailable) {
         Image icon;
         String imgPath = VALUE_ICONS_PATH;
@@ -777,18 +785,18 @@ public static String getValueIconPath(VALUE value ) {
     public static boolean isImage(String imgPath) {
         if (!FileManager.isImageFile(imgPath))
             return false;
-        if (!FileManager.isFile( imgPath))
-            if (!FileManager.isFile(getImageFolderPath()+ imgPath))
-            return false;
+        if (!FileManager.isFile(imgPath))
+            if (!FileManager.isFile(getImageFolderPath() + imgPath))
+                return false;
         return true;
-//        Image image = getImage(imgPath);
-//        if (image == null) {
-//            return false;
-//        }
-//        if (image.getWidth(null) < 1) {
-//            return false;
-//        }
-//        return image.getHeight(null) >= 1;
+        //        Image image = getImage(imgPath);
+        //        if (image == null) {
+        //            return false;
+        //        }
+        //        if (image.getWidth(null) < 1) {
+        //            return false;
+        //        }
+        //        return image.getHeight(null) >= 1;
     }
 
     public static String getDefaultEmptyListIcon() {

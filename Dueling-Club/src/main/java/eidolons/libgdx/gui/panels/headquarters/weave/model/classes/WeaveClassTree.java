@@ -15,7 +15,8 @@ import java.util.List;
 public class WeaveClassTree extends WeaveTree{
     private final CLASS_GROUP group;
 
-    public WeaveClassTree(CLASS_GROUP sub) {
+    public WeaveClassTree(CLASS_GROUP sub, boolean unbound) {
+      super(unbound);
         group= sub;
     }
 

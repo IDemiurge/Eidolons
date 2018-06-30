@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
@@ -153,7 +155,7 @@ public class UnitInfoPanel extends Container<TablePanel> implements Blocking {
         });
 
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
-            setUserObject(obj.get());
+            setUserObject(new UnitDataSource((Unit) obj.get()));
             outside.setTouchable(Touchable.enabled);
         });
     }
