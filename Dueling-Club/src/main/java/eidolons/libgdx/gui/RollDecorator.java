@@ -20,11 +20,16 @@ public class RollDecorator {
     }
 
     public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction) {
-        RollableGroup group = new RollableGroup(actor, direction);
+        return decorate(actor, direction, true);
+
+    }
+        public static RollableGroup decorate(Actor actor, FACING_DIRECTION direction, boolean manual) {
+        RollableGroup group = new RollableGroup(actor, direction,manual);
         return group;
     }
 
     public static class RollableGroup extends Group {
+        private final boolean manual;
         private TablePanel table;
         private ImageContainer arrow;
         private Actor contents;
@@ -33,10 +38,15 @@ public class RollDecorator {
         private float origY;
 
         public RollableGroup(Actor contents, FACING_DIRECTION direction) {
-            this.contents = contents;
+            this(contents, direction, true);
+        }
+        public RollableGroup(Actor contents, FACING_DIRECTION direction, boolean manual) {
+            this.manual = manual;
             this.direction = direction;
             this.contents = contents;
             this.arrow = initArrow();
+            if (!manual)
+                arrow.setVisible(false);
             table = new TablePanel();
 
             switch (direction) {
@@ -134,16 +144,11 @@ public class RollDecorator {
             return arrow;
         }
 
-        private void open() {
-            //wait for non-moving
-            toggle(true);
-        }
-
         private void toggle() {
             toggle(isOpen());
         }
 
-        private void toggle(boolean open) {
+        public void toggle(boolean open) {
             float toY = getY();
             float toX = getX();
 //            int toX = open ? 0 : (int) -contents.getWidth();

@@ -4,10 +4,16 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Array;
+import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -21,6 +27,7 @@ import eidolons.libgdx.gui.panels.headquarters.hero.HqVerticalValueTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
+import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -52,8 +59,8 @@ import main.system.GuiEventType;
  */
 public class UnitInfoPanelNew extends HqElement implements Blocking {
 
-    public static final float WIDTH = 1200;
-    public static final float HEIGHT = 900;
+    public static final int WIDTH = 1200;
+    public static final int HEIGHT = 900;
     private static UnitInfoPanelNew instance;
     private final Actor outside;
     //centered?
@@ -71,10 +78,14 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     UnitDescriptionPanel descriptionPanel;
     HqScrolledValuePanel scrolledValuePanel;
     ArmorPanel armorPanel;
-    ResistPanel resistPanel;
+    ResistInfoTabsPanel resistPanel;
     HqTraitsPanel traitsPanel;
 
     private UnitInfoPanelNew() {
+        super(WIDTH, HEIGHT);
+        addActor(new ImageContainer(new Image(TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
+         BACKGROUND_NINE_PATCH.PATTERN, WIDTH, HEIGHT))));
+
         TablePanelX<Actor> rootTable = new TablePanelX<>(WIDTH, HEIGHT);
         TablePanelX<Actor> upperTable = new TablePanelX<>(WIDTH, HEIGHT / 4);
         TablePanelX<Actor> lowerTable = new TablePanelX<>(WIDTH, HEIGHT * 3 / 4);
@@ -85,9 +96,9 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         column1.setWidth(330);
         column2.setWidth(540);
         column3.setWidth(330);
-        lowerTable.add(column1).width(330);
+        lowerTable.add(column1).width(330).padLeft(30);
         lowerTable.add(column2).width(540);
-        lowerTable.add(column3).width(330);
+        lowerTable.add(column3).width(330).padRight(30);
 
         rootTable.add(upperTable).row();
         rootTable.add(lowerTable).row();
@@ -108,11 +119,12 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         column1.addActor(pointsPanel = new PointsPanel());
 
         column1.addActor(attributeTable = new HqAttributeTable());
+        attributeTable.setSize(330, 400);
         attributeTable.setEditable(false);
         column1.addActor(buffPanelSimple = new BuffPanelSimple());
 
         //column2
-        column2.addActor(mainValuesPanel = new HqVerticalValueTable());
+//        column2.addActor(mainValuesPanel = new HqVerticalValueTable(G_PROPS.NAME, PARAMS.LEVEL));
         column2.addActor(dynamicParamPanel = new HqParamPanel(true));
         column2.addActor(paramPanel = new HqParamPanel(false));
         column2.addActor(descriptionPanel = new UnitDescriptionPanel());
@@ -120,7 +132,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
 
         //column3
         column3.addActor(armorPanel = new ArmorPanel());
-        column3.addActor(resistPanel = new ResistPanel());
+        column3.addActor(resistPanel = new ResistInfoTabsPanel());
         column3.addActor(traitsPanel = new HqTraitsPanel());
 
 
@@ -140,12 +152,32 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         });
         add(rootTable);
         children = GdxMaster.getAllChildren(this);
+
+        addActor(new ImageContainer(new Image(TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
+         BACKGROUND_NINE_PATCH.TRANSPARENT, WIDTH, HEIGHT))));
+        setVisible(false);
+
+        debugAll();
+        addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                event.stop();
+                return true;
+            }
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                event.stop();
+                return true;
+            }
+        }
+        );
     }
 
     public static UnitInfoPanelNew getInstance() {
         if (instance == null) {
             try {
-                instance= new UnitInfoPanelNew();
+                instance = new UnitInfoPanelNew();
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -159,7 +191,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
         super.setUserObject(userObject);
 
         children.forEach(ch -> {
-            ch.setUserObject(dataSource);
+            ch.setUserObject(getUserObject());
         });
         if (userObject != null) {
             open();
@@ -171,7 +203,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
     public Actor hit(float x, float y, boolean touchable) {
         Actor actor = super.hit(x, y, touchable);
         if (actor == null) {
-            actor = outside;
+            return outside;
         }
         return actor;
     }

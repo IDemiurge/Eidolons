@@ -64,11 +64,6 @@ public class TutorialMetaMaster extends MetaGameMaster<TutorialMeta> {
     }
 
     @Override
-    protected ShopManager<TutorialMeta> createShopManager() {
-        return null;
-    }
-
-    @Override
     protected MetaInitializer<TutorialMeta> createMetaInitializer() {
         return new TutorialInitializer(this);
     }

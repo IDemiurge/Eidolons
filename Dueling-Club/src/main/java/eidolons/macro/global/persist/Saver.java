@@ -51,7 +51,7 @@ public class Saver {
     public static final String ITEMS_NODE = "ITEMS";
     public static final String WORLD_NODE = "WORLD";
 
-    public static void save() {
+    public static String save() {
         //slot
         //file
         //ui?
@@ -66,6 +66,7 @@ public class Saver {
         String path = getPath() + saveName;
         String content = getSaveContent();
         FileManager.write(content, path);
+        return path;
     }
 
     private static String getSaveName() {

@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import eidolons.content.PARAMS;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
+import main.content.enums.entity.SkillEnums.SKILL_GROUP;
 import main.content.values.parameters.PARAMETER;
 import main.system.graphics.ColorManager.FLAG_COLOR;
 
@@ -207,5 +209,54 @@ public class GdxColorMaster {
 
     public static Color getDefaultTextColor() {
         return GOLDEN_WHITE;
+    }
+
+    public static Color getColorForSkillGroup(SKILL_GROUP arg) {
+        switch (arg) {
+            case SPELLCASTING:
+                break;
+            case PRIME_ARTS:
+                break;
+            case ARCANE_ARTS:
+                break;
+            case LIFE_ARTS:
+                break;
+            case DARK_ARTS:
+                break;
+            case CHAOS_ARTS:
+                break;
+            case HOLY_ARTS:
+                break;
+            case DEATH_ARTS:
+                break;
+        }
+        return Color.WHITE;
+    }
+
+    public static Color getColorForClassGroup(CLASS_GROUP arg) {
+        switch (arg) {
+            case SORCERER:
+                return LILAC;
+            case WIZARD:
+                return Color.BLUE;
+            case FIGHTER:
+                return Color.RED;
+            case ROGUE:
+                return Color.ORANGE;
+            case KNIGHT:
+                return Color.WHITE;
+            case TRICKSTER:
+                return CYAN;
+            case HERMIT:
+                return Color.BROWN;
+            case ACOLYTE:
+                return Color.YELLOW;
+            case RANGER:
+                return Color.GREEN;
+            case MULTICLASS:
+                return LILAC;
+        }
+
+            return Color.WHITE;
     }
 }

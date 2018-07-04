@@ -90,4 +90,7 @@ public class Images {
      PathFinder.getComponentsPath(), "hq", "weave", "UNDERLAY.png");
     public static final String WEAVE_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq", "weave", "BACKGROUND.jpg");
+
+    public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
 }

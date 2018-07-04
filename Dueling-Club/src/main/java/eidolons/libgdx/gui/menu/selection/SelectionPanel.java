@@ -30,40 +30,40 @@ import java.util.List;
  */
 public abstract class SelectionPanel extends TablePanel {
     protected ItemListPanel listPanel;
-    protected ItemInfoPanel infoPanel;
+    protected SelectableItemDisplayer infoPanel;
     protected TextButtonX backButton;
     protected TextButtonX startButton;
     protected SelectionInputListener listener;
     Label title;
 
     public SelectionPanel() {
-//        setBackground(TextureCache.getOrCreateTextureRegionDrawable
-//         (getBackgroundPath()));
-//        debug();
+        //        setBackground(TextureCache.getOrCreateTextureRegionDrawable
+        //         (getBackgroundPath()));
+        //        debug();
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         listPanel = createListPanel();
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
         backButton = new TextButtonX(STD_BUTTON.CANCEL, () -> cancel());
-        startButton = new TextButtonX(getDoneText(),STD_BUTTON.MENU, () -> tryDone());
+        startButton = new TextButtonX(getDoneText(), STD_BUTTON.MENU, () -> tryDone());
 
         listPanel.addActor(title); //trick for pos
         title.pack();
         title.setPosition(GdxMaster.centerWidth(title),
-         GdxMaster.getHeight()- GDX.size(200));
+         GdxMaster.getHeight() - GDX.size(200));
         addActor(title);
         row();
         addNormalSize(listPanel).left();
-        addNormalSize(infoPanel).right();
+        addNormalSize(infoPanel.getActor()).right();
 
         row();
-        addElement(null ).bottom().size(getWidth(), 70);
+        addElement(null).bottom().size(getWidth(), 70);
 
         if (isDoneSupported()) {
             addActor(startButton);
-            startButton.setPosition(GdxMaster.centerWidth(startButton)-40,
-             (40+ GdxMaster.getHeight() / 25));
+            startButton.setPosition(GdxMaster.centerWidth(startButton) - 40,
+             (40 + GdxMaster.getHeight() / 25));
         }
         if (isBackSupported()) {
             addActor(backButton);
@@ -98,13 +98,11 @@ public abstract class SelectionPanel extends TablePanel {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (getStage()!=null )
-        {
-            if (parentAlpha== ShaderMaster.SUPER_DRAW)
-        {
-            super.draw(batch, 1);
-            return;
-        }
+        if (getStage() != null) {
+            if (parentAlpha == ShaderMaster.SUPER_DRAW) {
+                    super.draw(batch, 1);
+                return;
+            }
 
             ShaderMaster.drawWithCustomShader(this, batch, null);
         }
@@ -121,8 +119,8 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.setItems(createListData());
         listener = new SelectionInputListener(this);
 
-        startButton.setY(GdxMaster.getHeight()/2- infoPanel.getHeight()/2+80);
-        if ( CoreEngine.isMacro()
+        startButton.setY(GdxMaster.getHeight() / 2 - infoPanel.getActor().getHeight() / 2 + 80);
+        if (CoreEngine.isMacro()
          || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
             listPanel.updateAct(0);
             tryDone();
@@ -134,7 +132,7 @@ public abstract class SelectionPanel extends TablePanel {
         if (stage != null) {
             stage.addListener(listener);
         } else {
-            if (getStage()!=null )
+            if (getStage() != null)
                 getStage().removeListener(listener);
         }
         super.setStage(stage);
@@ -159,7 +157,7 @@ public abstract class SelectionPanel extends TablePanel {
     }
 
 
-    protected abstract ItemInfoPanel createInfoPanel();
+    protected abstract SelectableItemDisplayer createInfoPanel();
 
     protected abstract List<SelectableItemData> createListData();
 
@@ -170,30 +168,36 @@ public abstract class SelectionPanel extends TablePanel {
         closed(null);
         if (manual)
             close();
-//        back();
+        //        back();
     }
 
     public void cancel() {
         cancel(true);
     }
+
     private void back() {
         if (Eidolons.getScope() == SCOPE.MENU)
             Eidolons.showMainMenu();
     }
 
     public void tryDone() {
-        if (listPanel.getCurrentItem() == null) {
-            if (!MainLauncher.presetNumbers.isEmpty()) {
-                listPanel.select(MainLauncher.presetNumbers.pop());
-            } else if (isRandom()) {
-                listPanel.selectRandomItem();
-            } else
-                return;
-        }
-        if (listPanel.isBlocked(listPanel.getCurrentItem())) {
+        if (isAutoDoneEnabled())
+            if (listPanel.getCurrentItem() == null) {
+                if (!MainLauncher.presetNumbers.isEmpty()) {
+                    listPanel.select(MainLauncher.presetNumbers.pop());
+                } else if (isRandom()) {
+                    listPanel.selectRandomItem();
+                } else
+                    return;
+            }
+        if (listPanel.getCurrentItem() == null || listPanel.isBlocked(listPanel.getCurrentItem())) {
             return;
         }
         done();
+    }
+
+    protected boolean isAutoDoneEnabled() {
+        return true;
     }
 
     public void done() {
@@ -209,8 +213,8 @@ public abstract class SelectionPanel extends TablePanel {
          null);
         if (listPanel.getCurrentItem() != null)
             closed(listPanel.getCurrentItem().name);
-//        else
-//            closed(listPanel.getItems().get(0).name);
+        //        else
+        //            closed(listPanel.getItems().get(0).name);
 
     }
 

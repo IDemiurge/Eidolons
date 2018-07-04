@@ -2,14 +2,15 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 
 import eidolons.game.battlecraft.logic.battle.mission.MissionBattleMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
-import eidolons.game.battlecraft.logic.meta.scenario.hq.HqShopManager;
-import eidolons.game.battlecraft.logic.meta.universal.*;
+import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
+import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
+import eidolons.game.battlecraft.logic.meta.universal.MetaInitializer;
+import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.ScenarioGame;
 import eidolons.libgdx.launch.ScenarioLauncher;
-import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
-import main.entity.DataModel;
+import eidolons.libgdx.screens.ScreenData;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -20,7 +21,6 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
 
     public ScenarioMetaMaster(String data) {
         super(data);
-
     }
 
     @Override
@@ -80,31 +80,6 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     }
 
     @Override
-    public DataModel getEntity() {
-        return getMetaGame().getScenario();
-    }
-
-    public void chosenMission(String data) {
-        getMetaDataManager().setMissionName(data);
-    }
-
-    public void loadMission(String data) {
-        getGame().getDungeonMaster().init(); //create dungeon
-
-        getGame().getBattleMaster().init(); //create Mission
-        //game.load()
-        //precombat?
-        getGame().start(true); //game loop??
-        getMetaGame().getScenario().next();
-//        getPartyManager().getParty().getIntParam(mission_index);
-//        Mission mission= (Mission) getGame().getBattleMaster().getBattle();
-//        getMetaGame().getScenario().setMission(mission);
-        //for Mission
-//        getDialogueManager().startDialogue(); //block game?
-
-    }
-
-    @Override
     protected ScenarioGame createGame() {
         return new ScenarioGame(this);
     }
@@ -117,11 +92,6 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
     @Override
     protected MetaDataManager<ScenarioMeta> createMetaDataManager() {
         return new ScenarioMetaDataManager(this);
-    }
-
-    @Override
-    protected ShopManager<ScenarioMeta> createShopManager() {
-        return new HqShopManager(this);
     }
 
     @Override

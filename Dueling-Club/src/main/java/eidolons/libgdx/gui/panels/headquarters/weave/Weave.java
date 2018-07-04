@@ -41,6 +41,7 @@ public abstract class Weave<T> extends HqElement{
     protected WeaveDataNode coreNode;
     protected List<WeaveTree> trees;
     protected boolean unbound;
+    private WeaveAmbience ambience;
 
     public Weave(WeaveDataNode coreNode, boolean unbound) {
         this.coreNode = coreNode;
@@ -55,6 +56,12 @@ public abstract class Weave<T> extends HqElement{
         for (T sub : data) {
             trees.add(createTree(sub).init());
         }
+        if (isAmbienceOn())
+            addActor(ambience =new WeaveAmbience(this));
+    }
+
+    private boolean isAmbienceOn() {
+        return false;
     }
 
     protected abstract WeaveTree createTree(T sub);

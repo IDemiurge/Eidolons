@@ -11,9 +11,7 @@ import main.content.*;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.ASPECT;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
-import main.content.enums.entity.HeroEnums.CLASS_GROUP;
-import main.content.enums.entity.HeroEnums.CLASS_TYPE;
-import main.content.enums.entity.HeroEnums.PRINCIPLES;
+import main.content.enums.entity.HeroEnums.*;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.WEAPON_SIZE;
 import main.content.enums.entity.UnitEnums.COUNTER;
@@ -1005,6 +1003,21 @@ public class DC_ContentValsManager extends ContentValsManager {
 
         EnumMaster.setALT_CONSTS_CLASS(DC_CONSTS.class);
         // initTypeDynamicValues(); TODO !
+    }
+
+    public static BACKGROUND[] getSubraces(RACE race) {
+        switch (race) {
+            case HUMAN:
+                return new BACKGROUND[]{
+                 BACKGROUND.MAN_OF_KINGS_REALM,
+                 BACKGROUND.MAN_OF_EAGLE_REALM,
+                 BACKGROUND.MAN_OF_GRIFF_REALM,
+                 BACKGROUND.MAN_OF_RAVEN_REALM,
+                 BACKGROUND.MAN_OF_WOLF_REALM,
+                 BACKGROUND.MAN_OF_EAST_EMPIRE,
+                };
+        }
+        return new BACKGROUND[0];
     }
 
     public enum ATTRIBUTE {

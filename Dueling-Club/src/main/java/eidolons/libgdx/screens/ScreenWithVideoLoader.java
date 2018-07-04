@@ -6,12 +6,15 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.stage.LoadingStage;
 import eidolons.libgdx.video.VideoMaster;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
@@ -24,8 +27,7 @@ import main.system.launch.CoreEngine;
 
 import java.util.List;
 
-import static main.system.GuiEventType.SHOW_LOAD_PANEL;
-import static main.system.GuiEventType.SHOW_SELECTION_PANEL;
+import static main.system.GuiEventType.*;
 
 public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
@@ -33,6 +35,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     protected VideoMaster video;
     protected boolean looped;
     private Label underText;
+    private HeroCreationPanel hcPanel;
 
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
@@ -41,7 +44,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             if (isVideoEnabled())
                 initVideo();
         looped = true;
-        underText = new Label(LoadingStage. getBottonText(), StyleHolder.getHqLabelStyle(20));
+        underText = new Label(LoadingStage.getBottonText(), StyleHolder.getHqLabelStyle(20));
         getOverlayStage().addActor(underText);
         underText.setPosition(GdxMaster.centerWidth(underText), 0);
 
@@ -82,6 +85,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
          createSelectionPanel(p);
         addSelectionPanel(selectionPanel);
     }
+
     @Override
     protected void preLoad() {
         super.preLoad();
@@ -91,6 +95,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         });
         GuiEventManager.bind(true, SHOW_SELECTION_PANEL, p -> {
             selectionPanelEvent(p);
+        });
+        GuiEventManager.bind(true, HC_SHOW, p -> {
+            showHeroCreationPanel(p);
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL, p -> {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
@@ -115,6 +122,26 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             }
             addSelectionPanel(manualPanel);
         });
+    }
+
+    private void showHeroCreationPanel(EventCallbackParam p) {
+        if (p.get() == null) {
+            hcPanel.setVisible(false);
+            overlayStage.setActive(false);
+            updateInputController();
+        } else {
+            Unit unit = (Unit) p.get();
+            if (hcPanel == null) {
+                overlayStage.addActor(hcPanel = new HeroCreationPanel(unit));
+            } else {
+                hcPanel.setVisible(true);
+            }
+            hcPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
+            overlayStage.setActive(true);
+            updateInputController();
+        }
+
+
     }
 
 
@@ -183,7 +210,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             main.system.ExceptionMaster.printStackTrace(e);
         } finally {
             videoEnabled = false;
-//            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
+            //            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
         }
     }
 
@@ -194,9 +221,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             main.system.auxiliary.log.LogMaster.log(1, "VIDEO PLAY FAILED!");
             main.system.ExceptionMaster.printStackTrace(e);
             video = null;
-            videoEnabled=false;
+            videoEnabled = false;
         }
     }
+
     @Override
     public void render(float delta) {
         if (CoreEngine.isJar() && !CoreEngine.isCrashSafeMode()) {
@@ -239,12 +267,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     @Override
     protected void renderMain(float delta) {
-//        if (!isVideoEnabled()) {
-            loadingStage.act(delta);
-            loadingStage.draw();
-            overlayStage.act(delta);
-            overlayStage.draw();
-//        }
+        //        if (!isVideoEnabled()) {
+        loadingStage.act(delta);
+        loadingStage.draw();
+        overlayStage.act(delta);
+        overlayStage.draw();
+        //        }
     }
 
     protected boolean isLoadingWithVideo() {

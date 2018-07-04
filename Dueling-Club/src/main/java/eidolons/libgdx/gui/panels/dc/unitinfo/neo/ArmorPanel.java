@@ -20,7 +20,8 @@ public class ArmorPanel extends TablePanel {
         row();
 
         for (ValueContainer valueContainer : source.getParamValues()) {
-            valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
+            valueContainer.setBorder(getOrCreateR(
+             "UI/components/infopanel/simple_value_border.png"));
             addElement(valueContainer);
             row();
         }

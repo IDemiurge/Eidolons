@@ -26,17 +26,31 @@ public class FadeImageContainer extends ImageContainer {
     }
 
     public void resetPreviousImage() {
-        if (previousImage==null )
+        if (previousImage == null)
             return;
         setContents(previousImage);
-        main.system.auxiliary.log.LogMaster.log(1,this+ " resetPreviousImage to " +previousImage);
+        main.system.auxiliary.log.LogMaster.log(1, this + " resetPreviousImage to " + previousImage);
     }
 
 
     @Override
     public void setEmpty() {
-        if (getContent()!=null )
+        if (getContent() != null)
             fadeOut();
+    }
+
+    @Override
+    public float getHeight() {
+        if (getContent() == null)
+            return 0;
+        return super.getHeight();
+    }
+
+    @Override
+    public float getWidth() {
+        if (getContent() == null)
+            return 0;
+        return super.getWidth();
     }
 
     @Override

@@ -21,6 +21,10 @@ public class ClassWeave extends Weave<CLASS_GROUP> {
         if (unbound)
         {
             List<CLASS_GROUP> list=    new ArrayList<>() ;
+            for (CLASS_GROUP sub : CLASS_GROUP.values()) {
+             if (sub!=CLASS_GROUP.MULTICLASS)
+                 list.add(sub);
+            }
             list.add((CLASS_GROUP) coreNode.getArg());
             return list;
         }

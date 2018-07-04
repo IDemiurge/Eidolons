@@ -5,6 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.ValuePages;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.ResistSource;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.content.values.parameters.PARAMETER;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -152,7 +153,10 @@ public class ResistPanel extends TablePanel {
 
     @Override
     public void updateAct(float delta) {
-        List<Pair<PARAMETER, String>> source = (List<Pair<PARAMETER, String>>) getUserObject();
+        List<Pair<PARAMETER, String>> source = null;
+        if (getUserObject() instanceof ResistSource) {
+            source = ((ResistSource) getUserObject()).getMagickResists();
+        } else source = (List<Pair<PARAMETER, String>>) getUserObject();
 
         source.forEach(pair -> {
             PARAMS param = (PARAMS) pair.getLeft();

@@ -51,7 +51,7 @@ public class CharacterCreator {
     private static Unit hero;
 
     public static void init() {
-        setHeroCreator(new HeroCreator(getGame()));
+        setHeroCreator(HeroCreator.getInstance() );
         setHeroManager(new HeroManager(getGame()));
     }
 
@@ -246,7 +246,7 @@ public class CharacterCreator {
 
     public static HeroCreator getHeroCreator() {
         if (heroCreator == null) {
-            heroCreator = new HeroCreator(getGame());
+            heroCreator = HeroCreator.getInstance();
         }
         return heroCreator;
     }

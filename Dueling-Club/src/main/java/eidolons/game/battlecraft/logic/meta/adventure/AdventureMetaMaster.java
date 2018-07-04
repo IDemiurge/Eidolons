@@ -26,10 +26,6 @@ public class AdventureMetaMaster extends MetaGameMaster<AdventureMeta> {
         return null;
     }
 
-    @Override
-    protected ShopManager<AdventureMeta> createShopManager() {
-        return null;
-    }
 
     @Override
     protected MetaInitializer<AdventureMeta> createMetaInitializer() {

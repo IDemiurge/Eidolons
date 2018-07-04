@@ -26,5 +26,8 @@ public class WeaveInputController extends InputController{
         return 15000;
     }
 
-
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
 }

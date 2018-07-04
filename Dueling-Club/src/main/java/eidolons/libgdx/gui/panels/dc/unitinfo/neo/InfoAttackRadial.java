@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.panels.dc.actionpanel.weapon.QuickAttackRadial;
+import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.entity.obj.ActiveObj;
@@ -28,11 +29,12 @@ public class InfoAttackRadial extends QuickAttackRadial {
     protected void bindEvents() {
 
     }
-
+    protected Unit getSource() {
+        return  ((HqHeroDataSource)getUserObject()).getEntity();
+    }
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        openMenu();
     }
 
     @Override

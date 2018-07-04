@@ -14,24 +14,24 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill.SkillTreeTab;
 /**
  * Created by JustMe on 4/13/2018.
  */
-public class HqTabs extends TabbedPanel<HqElement> implements HqActor{
+public class HqTabs extends TabbedPanel<HqElement> implements HqActor {
+
+    public static final float WIDTH =460 ;
+    public static final float HEIGHT =832 ;
 
     public HqTabs() {
-        addTab(new SkillTreeTab() , HQ_TAB.Skills.name());
-        addTab(new ClassTreeTab() , HQ_TAB.Class.name());
-        addTab(new HqInvTab() , HQ_TAB.Items.name());
-        addTab(new HqSpellTab() , HQ_TAB.Spells.name());
+        initTabs();
         setFixedSize(true);
-        setSize(460, 832);
-        resetCheckedTab();
-//        addTab( , HQ_TAB.Inventory.name());
+        setSize(WIDTH, HEIGHT);
     }
 
-    @Override
-    public void setUserObject(Object userObject) {
-        setSize(460, 832);
-        super.setUserObject(userObject);
-        tabsToNamesMap.values().forEach(tab-> tab.setUserObject(userObject));
+    protected void initTabs() {
+        addTab(new SkillTreeTab(), HQ_TAB.Skills.name());
+        addTab(new ClassTreeTab(), HQ_TAB.Class.name());
+        addTab(new HqInvTab(), HQ_TAB.Items.name());
+        addTab(new HqSpellTab(), HQ_TAB.Spells.name());
+        resetCheckedTab();
+
     }
 
     @Override
@@ -41,11 +41,18 @@ public class HqTabs extends TabbedPanel<HqElement> implements HqActor{
 
     @Override
     public HqHeroDataSource getUserObject() {
-        setSize(460, 832);
+        //        setSize(460, 832);
         return (HqHeroDataSource) super.getUserObject();
     }
 
-    public enum HQ_TAB{
+    @Override
+    public void setUserObject(Object userObject) {
+        //        setSize(460, 832);
+        super.setUserObject(userObject);
+        tabsToNamesMap.values().forEach(tab -> tab.setUserObject(userObject));
+    }
+
+    public enum HQ_TAB {
         Items,
         Spells,
         Skills,

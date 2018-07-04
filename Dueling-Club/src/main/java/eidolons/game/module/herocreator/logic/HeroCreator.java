@@ -21,18 +21,18 @@ public class HeroCreator {
 
     public static final String BASE_HERO = "Base Hero Type";
     public static final int NEW_HERO_LEVELS = 3;
-    private ObjType heroType;
-    private DC_Game game;
     private ObjType ROOT_TYPE;
+   static HeroCreator instance;
 
-    public HeroCreator(DC_Game game) {
-        this.setGame(game);
-        try {
-            ROOT_TYPE = DataManager.getType(BASE_HERO, DC_TYPE.CHARS);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            ROOT_TYPE = DataManager.getTypes().get(0);
+    public static HeroCreator getInstance() {
+        if (instance == null) {
+            instance = new HeroCreator();
         }
+        return instance;
+    }
+
+    private HeroCreator( ) {
+            ROOT_TYPE = DataManager.getType(BASE_HERO, DC_TYPE.CHARS);
     }
 
     public static Unit initHero(String typeName) {
@@ -85,11 +85,7 @@ public class HeroCreator {
 
 
     public DC_Game getGame() {
-        return game;
-    }
-
-    public void setGame(DC_Game game) {
-        this.game = game;
+        return DC_Game.game;
     }
 
 }

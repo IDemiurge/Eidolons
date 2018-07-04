@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.weave;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -15,7 +16,7 @@ public class WeaveScreen extends GameScreen {
 
     WeaveSpace space;
     WeaveUi ui;
-    WeaveInputController inputController;
+    InputProcessor inputController;
     private static WeaveScreen instance;
     private FadeImageContainer background;
 
@@ -44,7 +45,11 @@ public class WeaveScreen extends GameScreen {
     @Override
     public InputProcessor getInputController() {
         if (inputController == null)
-            inputController = new WeaveInputController(cam);
+            inputController =
+             new InputMultiplexer(
+              new WeaveInputController(cam),
+              ui, space,
+              new WeaveKeyController());
         return inputController;
     }
 

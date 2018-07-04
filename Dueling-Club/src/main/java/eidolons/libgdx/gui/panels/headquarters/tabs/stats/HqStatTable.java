@@ -1,7 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 
 import eidolons.content.PARAMS;
-import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.libgdx.GDX;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
@@ -37,6 +36,8 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
         points.add(pointTable).right();
         add(points).right().top(). colspan(2).fillX(). row();
         super.init();
+
+        setSize(300, 350);
     }
 
     protected abstract String getPointsText();

@@ -16,23 +16,27 @@ import java.util.Map;
  * Created by JustMe on 6/4/2018.
  */
 public class WeaveSpace extends StageX {
-    WEAVE_VIEW_MODE viewMode =WEAVE_VIEW_MODE.DEFAULT;
-    WEAVE_VIEW_FILTER filter =WEAVE_VIEW_FILTER.MAGIC;
+    WEAVE_VIEW_MODE viewMode = WEAVE_VIEW_MODE.DEFAULT;
+    WEAVE_VIEW_FILTER filter = WEAVE_VIEW_FILTER.NONE;
     Map<Object, GroupX> cache = new HashMap<>();
+    boolean skills = false; //toggle between class/skill view
     private GroupX currentView;
-    boolean skills=true; //toggle between class/skill view
 
     public WeaveSpace(Camera cam) {
         super(new ScreenViewport(cam));
         //emitters!
+//        addActor(ambience =new WeaveAmbience());
         refresh();
     }
 
     public void toggle() {
-        skills=!skills;
+        skills = !skills;
     }
-        public void refresh() {
-        clear();
+
+    public void refresh() {
+        if (currentView != null) {
+            currentView.remove();
+        }
         addActor(currentView = getView(viewMode));
 
     }
@@ -54,9 +58,9 @@ public class WeaveSpace extends StageX {
             group.addActor(graph);
 
         }
-//        group.pack();
-//        group.layout();
-        group.setPosition( (group).getWidth()/2, (group).getHeight()/2);
+        //        group.pack();
+        //        group.layout();
+        group.setPosition((group).getWidth() / 2, (group).getHeight() / 2);
         //events? refresh?
         return group;
     }
@@ -83,9 +87,10 @@ public class WeaveSpace extends StageX {
 
 
     }
-        public enum WEAVE_VIEW_MODE {
+
+    public enum WEAVE_VIEW_MODE {
         ALL, HERO,;
-        public static WEAVE_VIEW_MODE DEFAULT=ALL;
+        public static WEAVE_VIEW_MODE DEFAULT = ALL;
 
     }
 }

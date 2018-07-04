@@ -31,6 +31,6 @@ public class WeaveClassTree extends WeaveTree{
     }
     @Override
     protected List<ObjType> initData(HqHeroDataSource userObject) {
-        return  DataManager.getTypesSubGroup(DC_TYPE.SKILLS, group.name());
+        return  DataManager.getTypesSubGroup(DC_TYPE.CLASSES, group.name());
     }
 }

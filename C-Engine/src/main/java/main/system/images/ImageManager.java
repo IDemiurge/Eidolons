@@ -907,7 +907,7 @@ public class ImageManager {
             case NORDHEIMER:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\Nordheim");
                 break;
-            case EASTERLING:
+            case MAN_OF_EAST_EMPIRE:
                 paths.add(PORTRAIT_ROOT_PATH + "human\\East");
                 break;
 

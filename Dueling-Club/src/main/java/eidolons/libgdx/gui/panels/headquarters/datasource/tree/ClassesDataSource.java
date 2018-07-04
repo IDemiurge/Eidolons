@@ -4,6 +4,7 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.attach.Perk;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.PerkMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ClassesDataSource extends HeroTreeDataSource {
     public List getPerkSlots(int tier) {
         List linkData = new ArrayList<>();
         List<DC_FeatObj> classes = HeroClassMaster.getClasses(hero, tier);
-        List<Perk> perks = HeroClassMaster.getPerks(hero, tier);
+        List<Perk> perks = PerkMaster.getPerks(hero, tier);
 
         for (DC_FeatObj class1 : classes) {
             DC_FeatObj class2 = null;

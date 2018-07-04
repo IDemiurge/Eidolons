@@ -12,7 +12,6 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
-import main.entity.DataModel;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -30,18 +29,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected String data;
     protected PartyManager<E> partyManager;
     protected MetaInitializer<E> initializer;
-    protected ShopManager<E> shopManager;
     protected MetaDataManager<E> metaDataManager;
     protected DialogueFactory dialogueFactory;
     protected IntroFactory introFactory;
 
     protected E metaGame;
-    protected DC_Game game; //<? extends DC_Game>
+    protected DC_Game game;
     DialogueManager dialogueManager;
     DialogueActorMaster dialogueActorMaster;
-    private DataModel entity;
-    //    PrecombatManager<E> precombatManager;
-//    AfterCombatManager<E> afterCombatManager;
+
 
     public MetaGameMaster(String data) {
         this.data = data;
@@ -66,8 +62,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected abstract MetaDataManager<E> createMetaDataManager();
 
-    protected abstract ShopManager<E> createShopManager();
-
     public DialogueActorMaster getDialogueActorMaster() {
         return dialogueActorMaster;
     }
@@ -77,7 +71,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void initHandlers() {
         partyManager = createPartyManager();
         initializer = createMetaInitializer();
-        shopManager = createShopManager();
         metaDataManager = createMetaDataManager();
 
         dialogueFactory = createDialogueFactory();
@@ -87,19 +80,17 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void init() {
-//        shopManager.init();
-//        metaDataManager.init();
         game = Eidolons.game;
-        if (game == null //|| CoreEngine.isMacro()
-         )
+        if (game == null)
         {
             Simulation.init();
             game = createGame();
             Simulation.setRealGame(game);
         }
         else
+        {
             game.setMetaMaster(this);
-
+        }
 
         metaGame = initializer.initMetaGame(data);
         preStart();
@@ -124,7 +115,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void gameStarted() {
         partyManager.gameStarted();
 //   TODO remove lazy init hack?
-//     getDialogueFactory().init(this);
+//        getDialogueFactory().init(this);
 //        getIntroFactory().init(this);
     }
 
@@ -168,35 +159,17 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return initializer;
     }
 
-    public ShopManager<E> getShopManager() {
-        return shopManager;
-    }
-
     public MetaDataManager<E> getMetaDataManager() {
         return metaDataManager;
     }
 
-    public DataModel getEntity() {
-        return entity;
-    }
-
     public void next(Boolean outcome) {
 
-        String
-         message = (outcome != null) ? "next level!" : "game restarted!";
+        String message = (outcome != null) ? "next level!" : "game restarted!";
         SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN, message);
-
 
         gameExited();
         game.reinit(outcome == null);
-        //or selective clear() - removeIf() ...
-//        for (Unit hero : getPartyManager().getParty().getMembers()) {
-//            for (ActiveObj activeObj : hero.getActives()) {
-//                game.getState().addObject((Obj) activeObj);
-//            }
-//            for (ActiveObj activeObj : hero.getstattaiteActives()) {
-//            }
-//        }
 
     }
 

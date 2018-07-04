@@ -67,7 +67,7 @@ public class AdventureInitializer {
             metaMaster.init();
             if (metaMaster.getPartyManager().getParty() == null)
                 return;
-            metaMaster.getPartyManager().gameStarted();
+//            metaMaster.getPartyManager().gameStarted();
         }
         game = new MacroGame();
         if (!CoreEngine.isMapEditor()) {

@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.logic.meta.tutorial;
 
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.module.herocreator.logic.party.Party;
@@ -26,5 +27,10 @@ public class TutorialPartyManager extends PartyManager<TutorialMeta> {
         getGame().getDataKeeper().addUnitData(new UnitData(party));
         return party;
 
+    }
+
+    @Override
+    protected Unit findMainHero() {
+        return null;
     }
 }

@@ -165,7 +165,7 @@ public class TavernMaster {
                 backgrounds += HeroEnums.BACKGROUND.ELF.toString() + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.DWARF.toString() + "(15);";
                 backgrounds += HeroEnums.BACKGROUND.FEY_ELF.toString() + "(15);";
-                backgrounds += HeroEnums.BACKGROUND.EASTERLING.toString() + "(10);";
+                backgrounds += HeroEnums.BACKGROUND.MAN_OF_EAST_EMPIRE.toString() + "(10);";
                 backgrounds += HeroEnums.BACKGROUND.MAN_OF_WOLF_REALM.toString()
                  + "(20);";
                 backgrounds += HeroEnums.BACKGROUND.WOMAN_OF_WOLF_REALM.toString()

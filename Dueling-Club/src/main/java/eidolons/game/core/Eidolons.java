@@ -69,6 +69,8 @@ public class Eidolons {
     private static boolean battleRunning;
     private static GameScreen screen;
     private static SCOPE scope = SCOPE.MENU;
+    private static SCREEN_TYPE screenType;
+    private static SCREEN_TYPE previousScreenType;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -367,6 +369,20 @@ public class Eidolons {
 
     public static void setScope(SCOPE scope) {
         Eidolons.scope = scope;
+    }
+
+    public static void screenSet(SCREEN_TYPE type) {
+        if (screenType!=null )
+            previousScreenType = screenType;
+        screenType = type;
+    }
+
+    public static SCREEN_TYPE getScreenType() {
+        return screenType;
+    }
+
+    public static SCREEN_TYPE getPreviousScreenType() {
+        return previousScreenType;
     }
 
     public enum SCOPE {

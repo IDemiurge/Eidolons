@@ -3,9 +3,11 @@ package eidolons.game.core;
 import com.badlogic.gdx.math.Vector2;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
+import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.audio.DC_SoundMaster;
 import eidolons.libgdx.anims.particles.EMITTER_PRESET;
+import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.graphics.FontMaster;
@@ -58,7 +60,15 @@ public class EUtils {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, screenData);
     }
 
+    public static void bind(GuiEventType eventType, EventCallback callback) {
+        GuiEventManager.bind(eventType, callback);
+    }
     public static void event(GuiEventType eventType, Object param) {
         GuiEventManager.trigger(eventType, param);
+    }
+
+    public static void switchBackScreen() {
+        SCREEN_TYPE type = Eidolons.getPreviousScreenType();
+        switchScreen(new ScreenData(type, null));
     }
 }

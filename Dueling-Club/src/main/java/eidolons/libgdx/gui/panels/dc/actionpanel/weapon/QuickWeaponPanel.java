@@ -30,15 +30,15 @@ import org.apache.commons.lang3.tuple.Pair;
 public class QuickWeaponPanel extends TablePanel {
 
     protected static final float WEAPON_POS_X = 12;
-    ImageContainer border;
-    FadeImageContainer weapon;
-    ImageContainer background;
-    WeaponDataSource dataSource;
-    WeaponDataSource dataSourceAlt;
-    TextButtonX toggleUnarmed;
-    boolean unarmed;
-    QuickAttackRadial radial;
-    boolean offhand;
+    protected ImageContainer border;
+    protected FadeImageContainer weapon;
+    protected ImageContainer background;
+    protected WeaponDataSource dataSource;
+    protected WeaponDataSource dataSourceAlt;
+    protected TextButtonX toggleUnarmed;
+    protected boolean unarmed;
+    protected QuickAttackRadial radial;
+    protected boolean offhand;
 
     public QuickWeaponPanel(boolean offhand) {
         this.offhand = offhand;
@@ -52,7 +52,7 @@ public class QuickWeaponPanel extends TablePanel {
           "dc", "quick weapon", "border" +
            suffix + ".png")));
         addActor(radial = createRadial(offhand));
-//   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
+        //   TODO      addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.SPEED_UP));
         addListener(getListener());
 
         initTooltip();
@@ -63,11 +63,11 @@ public class QuickWeaponPanel extends TablePanel {
         addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.UNARMED));
         pack();
         if (offhand)
-            toggleUnarmed.setPosition(0, background.getHeight() - toggleUnarmed.getHeight()/2);
+            toggleUnarmed.setPosition(0, background.getHeight() - toggleUnarmed.getHeight() / 2);
         else
             toggleUnarmed.setPosition(
-             background.getWidth() - toggleUnarmed.getWidth()/2,
-             background.getHeight() - toggleUnarmed.getHeight()/2);
+             background.getWidth() - toggleUnarmed.getWidth() / 2,
+             background.getHeight() - toggleUnarmed.getHeight() / 2);
 
     }
 
@@ -76,7 +76,7 @@ public class QuickWeaponPanel extends TablePanel {
     }
 
     protected void initTooltip() {
-        if (getActiveWeaponDataSource()==null )
+        if (getActiveWeaponDataSource() == null)
             return;
         weapon.clearListeners();
         WeaponTooltip t = new WeaponTooltip(getActiveWeaponDataSource().getWeapon());
@@ -128,23 +128,21 @@ public class QuickWeaponPanel extends TablePanel {
     }
 
     public WeaponDataSource getActiveWeaponDataSource() {
-        if (dataSource==null )
-        if (dataSourceAlt==null )
-            return null ;
+        if (dataSource == null)
+            if (dataSourceAlt == null)
+                return null;
 
-        if (dataSource==null )
+        if (dataSource == null)
             return dataSourceAlt;
-        if (dataSourceAlt==null )
+        if (dataSourceAlt == null)
             return dataSource;
         return unarmed ? dataSourceAlt : dataSource;
     }
 
     protected void initWeapon(WeaponDataSource dataSource) {
         weapon.setImage(
-         dataSource. getNormalImage());
+         dataSource.getNormalImage());
     }
-
-
 
 
     protected EventListener getListener() {
@@ -173,11 +171,11 @@ public class QuickWeaponPanel extends TablePanel {
 
                 } else {
                     if (radial.isVisible())
-                        if (radial.getColor().a>0)
-                            if (radial.getChildren().size >0)
-//                    if (DC_Game.game.getManager().isSelecting()){
-                        return false;
-//                    }
+                        if (radial.getColor().a > 0)
+                            if (radial.getChildren().size > 0)
+                                //                    if (DC_Game.game.getManager().isSelecting()){
+                                return false;
+                    //                    }
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
                     if (attack == null) {
                         return false;
@@ -198,7 +196,7 @@ public class QuickWeaponPanel extends TablePanel {
                 weapon.setZIndex(getChildren().size - 2);
                 radial.setZIndex(Integer.MAX_VALUE);
                 weapon.setFadeDuration(0.25f);
-                weapon.setImage(getActiveWeaponDataSource(). getLargeImage());
+                weapon.setImage(getActiveWeaponDataSource().getLargeImage());
                 int i = !offhand ? -1 : 1;
                 ActorMaster.addMoveToAction(weapon, WEAPON_POS_X + 20 * i, 20, 0.75f);
             }
@@ -210,7 +208,7 @@ public class QuickWeaponPanel extends TablePanel {
                 radial.setZIndex(Integer.MAX_VALUE);
                 weapon.setFadeDuration(0.5f);
                 weapon.setImage(getActiveWeaponDataSource().getNormalImage());
-                ActorMaster.addMoveToAction(weapon, WEAPON_POS_X , 0, 0.75f);
+                ActorMaster.addMoveToAction(weapon, WEAPON_POS_X, 0, 0.75f);
             }
         };
     }

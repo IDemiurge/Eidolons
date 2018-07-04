@@ -145,7 +145,7 @@ public class NameMaster {
     private static List<String> usedNames = new ArrayList<>();
     private static String pirateNamesSecond;
     private static String demonNamesSecond;
-    String orcNames = "Ormog;Nuglog;Usbrol;Buvlud;Xlirg;Xlard;Xmun;Yach-Yach;Guchruk;Durbul;Mubruk;Zurdun;Drufsin;";
+    String orcNames = "Ormog;Nuglog;Usbrol;Buvlud;Xlirg;Xlard;Xumn;Yach-Yach;Guchruk;Durbul;Mubruk;Zurdun;Drufsin;";
 
     public static String generateNewHeroName(ObjType type) {
         BACKGROUND bg = getBg(type);

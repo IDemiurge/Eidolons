@@ -7,6 +7,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.text.NameMaster;
@@ -74,7 +75,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     @Override
     public void gameStarted() {
-        Unit hero =         findMainHero();
+        Unit hero = findMainHero();
         //will find 1st if name==null
         mainHeroSelected(party, hero);
 
@@ -85,18 +86,18 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
 
     protected Unit findMainHero() {
         return getParty().getLeader();
-//        Unit hero = Eidolons.getMainHero();
-//        if (hero == null || getMetaGame().isRestarted()) {
-//            hero = getGame().getMaster().getUnitByName(
-//             PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
-//             null);
-//            if (hero == null) {
-//                List<Unit> list = getGame().getUnits().stream().
-//                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
-//                hero = list.get(0);
-//            }
-//        }
-//        return hero;
+        //        Unit hero = Eidolons.getMainHero();
+        //        if (hero == null || getMetaGame().isRestarted()) {
+        //            hero = getGame().getMaster().getUnitByName(
+        //             PartyManager.selectedHero, true, null, null, getGame().getPlayer(true),
+        //             null);
+        //            if (hero == null) {
+        //                List<Unit> list = getGame().getUnits().stream().
+        //                 filter(unit -> unit.isPlayerCharacter()).collect(Collectors.toList());
+        //                hero = list.get(0);
+        //            }
+        //        }
+        //        return hero;
     }
 
 
@@ -107,24 +108,21 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
             if (party != null)
                 return party;
         }
-        //preset
-        //choice
-        //already as Unit?
-        ObjType type = getMetaGame().getScenario().getPartyType();
-        randomOneHero =  OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
-        chooseOneHero = !randomOneHero;
-        //        if (CoreEngine.isFastMode())
-        //            chooseOneHero=false;
-        if (type == null) {
-            String string = getMetaGame().getScenario().getProperty(PROPS.SCENARIO_PARTY);
-            type = new ObjType("dummy", DC_TYPE.PARTY);
-            type.setProperty(PROPS.MEMBERS, string);
 
-        } else type = new ObjType(type);
-        if ( isRandomOneHero() ||
-                isChooseOneHero()) {
+
+        ObjType type = new ObjType(getMetaGame().getScenario().getPartyType());
+        randomOneHero = OptionsMaster.getGameplayOptions().getBooleanValue(GAMEPLAY_OPTION.RANDOM_HERO);
+        chooseOneHero = !randomOneHero;
+
+        if (isCreateNewHero()) {
+            ObjType baseType;
+            Unit hero = HeroCreationMaster.newHero();
+            type.setProperty(PROPS.MEMBERS, hero.getName());
+
+        } else if (isRandomOneHero() ||
+         isChooseOneHero()) {
             List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
-            if ( isRandomOneHero()
+            if (isRandomOneHero()
              || members.size() == 1) {
                 String hero = new RandomWizard<String>().getRandomListItem(
                  members);
@@ -139,6 +137,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                 type.setProperty(PROPS.MEMBERS, hero);
             }
         }
+
         party = new Party(type);
 
         getGame().getState().addObject(party);
@@ -149,6 +148,10 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
           getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
         return party;
 
+    }
+
+    private boolean isCreateNewHero() {
+        return true;
     }
 
 }

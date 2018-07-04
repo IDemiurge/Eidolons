@@ -8,8 +8,11 @@ import eidolons.libgdx.gui.panels.headquarters.weave.WeaveSpace.WEAVE_VIEW_FILTE
 import eidolons.libgdx.gui.panels.headquarters.weave.actor.WeaveActorBuilder;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.classes.ClassWeave;
 import eidolons.libgdx.gui.panels.headquarters.weave.model.skills.SkillWeave;
+import main.content.DC_TYPE;
+import main.content.enums.entity.HeroEnums.CLASS_GROUP;
 import main.content.enums.entity.SkillEnums.MASTERY;
 import main.content.values.properties.G_PROPS;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.images.ImageManager;
 
@@ -85,6 +88,9 @@ public abstract class WeaveModelBuilder {
     private static String getRootImagePath(Object rootArg) {
         if (rootArg instanceof MASTERY) {
             return ImageManager.getValueIconPath(((MASTERY) rootArg).getParam());
+        }
+        if (rootArg instanceof CLASS_GROUP) {
+            return DataManager.getType(rootArg.toString(), DC_TYPE.CLASSES).getImagePath();
         }
         return null;
     }

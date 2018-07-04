@@ -176,8 +176,12 @@ public class StyleHolder {
         return defaultTextButtonStyle;
     }
 
-    public static TextButton.TextButtonStyle getTextButtonStyle(
-     FONT FONT, Color color, int size) {
+    public static TextButton.TextButtonStyle getHqTextButtonStyle(
+       int size) {
+        return getTextButtonStyle(FONT.METAMORPH, DEFAULT_COLOR, size);
+    }
+        public static TextButton.TextButtonStyle getTextButtonStyle(
+         FONT FONT, Color color, int size) {
         return getTextButtonStyle(null, FONT, color, size);
     }
 

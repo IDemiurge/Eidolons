@@ -21,7 +21,7 @@ import main.system.images.ImageManager;
 /**
  * Created by JustMe on 11/29/2017.
  */
-public class ItemInfoPanel extends TablePanel {
+public class ItemInfoPanel extends TablePanel implements SelectableItemDisplayer{
 
 
     public static final int WIDTH = 1020;
@@ -171,5 +171,10 @@ public class ItemInfoPanel extends TablePanel {
     public void setItem(SelectableItemData item) {
         this.item = item;
         updateRequired = true;
+    }
+
+    @Override
+    public Actor getActor() {
+        return this;
     }
 }

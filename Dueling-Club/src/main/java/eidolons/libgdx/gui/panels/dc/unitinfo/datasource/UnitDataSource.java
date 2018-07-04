@@ -7,6 +7,7 @@ import eidolons.entity.item.DC_ArmorObj;
 import eidolons.entity.item.DC_HeroSlotItem;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.VerticalValueContainer;
@@ -339,11 +340,11 @@ public class UnitDataSource  implements
             final String cd = armor.getStrParam(PARAMS.C_DURABILITY);
             final String d = armor.getStrParam(PARAMS.DURABILITY);
 
-            values.add(new ValueContainer(PARAMS.DURABILITY.getName(), cd + "/" + d));
+            values.add(new ValueContainer(StyleHolder.getHqLabelStyle(14),PARAMS.DURABILITY.getName(), cd + "/" + d));
 
             final String cover = armor.getStrParam(PARAMS.COVER_PERCENTAGE);
 
-            values.add(new ValueContainer(PARAMS.COVER_PERCENTAGE.getName(), cover));
+            values.add(new ValueContainer(StyleHolder.getHqLabelStyle(14), PARAMS.COVER_PERCENTAGE.getName(), cover));
         }
 
         return values;

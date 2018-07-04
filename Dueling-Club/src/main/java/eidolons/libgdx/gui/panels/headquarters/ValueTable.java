@@ -2,12 +2,12 @@ package eidolons.libgdx.gui.panels.headquarters;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 
 /**
  * Created by JustMe on 4/16/2018.
  */
-public abstract class ValueTable<D, A extends Actor> extends TablePanel {
+public abstract class ValueTable<D, A extends Actor> extends TablePanelX {
     protected   int rows;
     protected   int columns;
     protected D[] data;

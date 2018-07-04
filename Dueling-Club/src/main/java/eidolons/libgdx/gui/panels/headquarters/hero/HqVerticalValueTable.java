@@ -20,8 +20,13 @@ public   class HqVerticalValueTable extends HqElement {
 
     private final VALUE[] values;
     private final List<ValueContainer> containers = new ArrayList<>();
+    private boolean newLine;
 
     public HqVerticalValueTable(VALUE... values) {
+        this(false, values);
+    }
+    public HqVerticalValueTable(boolean newLine, VALUE... values) {
+        this.newLine = newLine;
         this.values = values;
         setBackground(NinePatchFactory.getLightPanelDrawable());
         GdxMaster.adjustAndSetSize(this, getDefaultWidth(), getDefaultHeight());
@@ -55,7 +60,18 @@ public   class HqVerticalValueTable extends HqElement {
                 sub.setValueText(dataSource.getProperty((PROPERTY) val));
             else if (val instanceof PARAMETER)
                 sub.setValueText(dataSource.getParamRounded((PARAMETER) val));
+
+            if (isNewLine())
+                sub.setValueText("\n" + sub.getValueText());
         }
 
+    }
+
+    public boolean isNewLine() {
+        return newLine;
+    }
+
+    public void setNewLine(boolean newLine) {
+        this.newLine = newLine;
     }
 }

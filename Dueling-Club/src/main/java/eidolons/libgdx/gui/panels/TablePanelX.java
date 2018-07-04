@@ -17,6 +17,12 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
     }
 
     @Override
+    public void setSize(float width, float height) {
+        setFixedSize(true);
+        super.setSize(width, height);
+    }
+
+    @Override
     public <T extends Actor> Cell<T> add(T actor) {
         return super.add(actor);
     }

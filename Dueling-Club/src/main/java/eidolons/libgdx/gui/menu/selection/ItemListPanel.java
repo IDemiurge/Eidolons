@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.menu.selection;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,13 +13,18 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.gui.RollDecorator;
+import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.entity.Entity;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
@@ -34,10 +40,10 @@ public abstract class ItemListPanel extends TablePanel {
     protected List<SelectableItemData> items;
     protected ScrollPanel scrollPanel;
     protected TextButton lastChecked;
-    private ItemInfoPanel infoPanel;
+    private SelectableItemDisplayer infoPanel;
     private Map<SelectableItemData, TextButton> cache = new HashMap<>();
     private List<TextButton> buttons = new ArrayList<>();
-
+    private Map<SelectableItemData, RollableGroup> subCache = new HashMap<>();
 
     public ItemListPanel() {
         super();
@@ -46,17 +52,18 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected void initBg() {
-//        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
+        //        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
 
-        TextureRegion generated=new TextureRegion(
+        TextureRegion generated = new TextureRegion(
          TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
           BACKGROUND_NINE_PATCH.SEMI,
           (int) GdxMaster.adjustSize(410)
-          ,   GdxMaster.getHeight()*6/7));
+          , GdxMaster.getHeight() * 6 / 7));
         setSize(generated.getRegionWidth(), generated.getRegionHeight());
         setFixedSize(true);
         setBackground(new TextureRegionDrawable(generated));
     }
+
     @Override
     public void updateAct(float delta) {
         super.updateAct(delta);
@@ -145,47 +152,73 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     private void clicked(int index) {
-        index = Math.min( buttons.size()-1, index);
+        index = Math.min(buttons.size() - 1, index);
         clicked(buttons.get(index), getItems().get(index));
     }
 
     private boolean clicked(TextButton textButton, SelectableItemData sub) {
         currentItem = (sub);
-        getParent().setUserObject(sub);
+//        getParent().setUserObject(sub); what for?
         infoPanel.setItem(sub);
         if (lastChecked != null)
             lastChecked.setChecked(false);
         lastChecked = textButton;
         textButton.setChecked(true);
-//                textButton.getClickListener().clicked(event, x, y);
-//                button.down=true;
+        if (sub.getSubItems() != null) {
+            if (sub.getSubItems().length > 0)
+                showSubItemPanel(sub );
+        }
+        //                textButton.getClickListener().clicked(event, x, y);
+        //                button.down=true;
 
-//              getListeners()  clicked(event, x, y);
+        //              getListeners()  clicked(event, x, y);
         return false;
+    }
+
+    private void showSubItemPanel(SelectableItemData item) {
+        for (RollableGroup sub: subCache.values())
+        {
+            sub.toggle(false);
+        }
+        RollableGroup rollable = subCache.get(item);
+        if (rollable==null ){
+
+            SelectionSubItemsPanel subItemsPanel = new SelectionSubItemsPanel(
+             item.getSubItems(), item, this);
+            rollable = RollDecorator.decorate(subItemsPanel, FACING_DIRECTION.WEST, false);
+            subCache.put(item, rollable);
+            addActor(rollable);
+        }
+    }
+
+    private EventListener getSubPanelListener(SelectableItemData item) {
+        return new SmartClickListener(this){
+
+        };
     }
 
     protected void addElements() {
         buttons.clear();
         for (SelectableItemData sub : items) {
-//            boolean selected = sub == currentItem;
+            //            boolean selected = sub == currentItem;
             TextButton element = getOrCreateElement(sub);
             addNormalSize(element).top().pad(10, 10, 10, 10);
             buttons.add(element);
             element.setDisabled(isBlocked(sub));
             row();
         }
-//        float top= getTopPadding(items.size());
-//        float left= getLeftPadding();
-//        float botton= getBottonPadding(items.size());
-//        float right= getRightPadding();
-//        pad(top, left, botton, right);
+        //        float top= getTopPadding(items.size());
+        //        float left= getLeftPadding();
+        //        float botton= getBottonPadding(items.size());
+        //        float right= getRightPadding();
+        //        pad(top, left, botton, right);
         pad(50, 25, 50, 25);
 
 
     }
 
     protected String getBackgroundPath() {
-        if (GdxMaster.getHeight()>=900)
+        if (GdxMaster.getHeight() >= 900)
             return VISUALS.FRAME_BIG_FILLED.getImgPath();
         return VISUALS.FRAME_FILLED.getImgPath();
     }
@@ -203,11 +236,7 @@ public abstract class ItemListPanel extends TablePanel {
         updateRequired = true;
     }
 
-    public ItemInfoPanel getInfoPanel() {
-        return infoPanel;
-    }
-
-    public void setInfoPanel(ItemInfoPanel infoPanel) {
+    public void setInfoPanel(SelectableItemDisplayer infoPanel) {
         this.infoPanel = infoPanel;
     }
 
@@ -229,7 +258,11 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     public void deselect() {
-        currentItem=null;
+        currentItem = null;
+    }
+
+    public void subItemClicked(SelectableItemData item, String sub) {
+        infoPanel.subItemClicked(item, sub);
     }
 
 
@@ -240,7 +273,10 @@ public abstract class ItemListPanel extends TablePanel {
         String imagePath;
         String borderSelected;
         String borderDisabled;
+        String emblem;
         Entity entity;
+
+        String[] subItems;
 
         public SelectableItemData(String name,
                                   String description, String previewImagePath, String imagePath) {
@@ -258,6 +294,27 @@ public abstract class ItemListPanel extends TablePanel {
             borderDisabled = BORDER.HIDDEN.getImagePath();
             description = entity.getDescription();
             this.entity = entity;
+        }
+
+        public SelectableItemData(String name, Entity entity) {
+            this.name = name;
+            this.entity = entity;
+            imagePath=entity.getImagePath();
+            description=entity.getDescription();
+            previewImagePath = StringMaster.getAppendedImageFile(entity.getImagePath(), " full", true);
+            emblem = entity.getEmblemPath();
+        }
+
+        public String[] getSubItems() {
+            return subItems;
+        }
+
+        public String getEmblem() {
+            return emblem;
+        }
+
+        public void setSubItems(String[] subItems) {
+            this.subItems = subItems;
         }
 
         public Entity getEntity() {

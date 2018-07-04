@@ -45,7 +45,7 @@ public class QuickAttackRadial extends RadialMenu {
     }
 
     public void openMenu() {
-        Unit source = quickWeaponPanel.getDataSource().getOwnerObj();
+        Unit source =getSource();
         List<? extends ActiveObj> attacks = quickWeaponPanel.
          getActiveWeaponDataSource().getActions();
         List<RadialValueContainer> nodes = null;
@@ -58,6 +58,10 @@ public class QuickAttackRadial extends RadialMenu {
             main.system.ExceptionMaster.printStackTrace(e);
         }
 
+    }
+
+    protected Unit getSource() {
+        return  quickWeaponPanel.getDataSource().getOwnerObj();
     }
 
     protected List<RadialValueContainer> createNodes(Unit source,

@@ -229,7 +229,8 @@ public class GenericLauncher extends Game {
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
-        main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getName());
+        main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
+        Eidolons.screenSet(meta.getType());
         final ScreenWithVideoLoader newScreen = factory.get();
         newScreen.initLoadingStage(meta);
         newScreen.setViewPort(viewport);

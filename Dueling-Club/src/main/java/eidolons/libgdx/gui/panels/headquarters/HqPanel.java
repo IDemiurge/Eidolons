@@ -123,7 +123,7 @@ public class HqPanel extends TablePanel implements Blocking {
 
         add(heroViewPanel).left();
 
-        add(infoTable).left();
+        add(infoTable).center().padLeft(65);
         add(hqTabs);
         row();
 
@@ -144,7 +144,7 @@ public class HqPanel extends TablePanel implements Blocking {
           masteryTable = new HqMasteryTable();
           attributeTable = new HqAttributeTable();
 
-        infoTable.add(attributeTable).left().top();
+        infoTable.add(attributeTable).left().top().padLeft(30);
         //separator
         infoTable.add(masteryTable).right().top();
         masteryTable.setEditable(isEditable());
@@ -215,6 +215,8 @@ public class HqPanel extends TablePanel implements Blocking {
 
     @Override
     public void setUserObject(Object userObject) {
+        clear();
+        addElements();
 
             if (userObject instanceof List) {
                     heroes = (List<HqHeroDataSource>) userObject;

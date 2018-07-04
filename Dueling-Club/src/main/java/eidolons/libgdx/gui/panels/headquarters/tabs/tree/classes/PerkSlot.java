@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
 import eidolons.entity.obj.attach.HeroClass;
 import eidolons.entity.obj.attach.Perk;
-import eidolons.game.module.herocreator.logic.HeroClassMaster;
+import eidolons.game.module.herocreator.logic.PerkMaster;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HtNode;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
@@ -88,7 +88,7 @@ public class PerkSlot extends HtNode {
             if (data.getRight() != null) {
             HeroClass c1 = data.getMiddle();
             HeroClass c2 = data.getRight();
-            available = HeroClassMaster.getAvailablePerks(hero,
+            available = PerkMaster.getAvailablePerks(hero,
              tier, c1, c2);
             if (available.isEmpty())
                 disable();

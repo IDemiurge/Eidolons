@@ -38,10 +38,6 @@ public class MetaGameHandler<E extends MetaGame> {
         return master.getInitializer();
     }
 
-    public ShopManager getShopManager() {
-        return master.getShopManager();
-    }
-
     public MetaDataManager getMetaDataManager() {
         return master.getMetaDataManager();
     }

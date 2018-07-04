@@ -35,8 +35,8 @@ public class ObjType extends Entity {
         setRef(type.getRef());
         setGame(type.getGame());
         setGenerated(true);
-        type.getGame().initType(this);
-        // Weaver.inNewThread(this, "initType");
+        if (type.getGame()!=null )
+            type.getGame().initType(this);
     }
 
     public ObjType(String typeName) {

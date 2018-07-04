@@ -14,6 +14,7 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveSpace.WEAVE_VIEW_MODE;
 import eidolons.libgdx.stage.GuiStage;
+import main.entity.Entity;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -31,19 +32,19 @@ public class WeaveUi extends GuiStage {
 
     public WeaveUi(Viewport viewport, Batch batch) {
         super(viewport, batch);
-
-        addActor(buttonPanel = new WeaveButtonPanel());
-        buttonPanel.setPosition(GdxMaster.centerWidth(buttonPanel),
-         0 );
-//        addActor(heroPreview = new WeaveHeroPreview());
-        addActor(viewModeBox = createViewModeBox());
-        viewModeBox.setPosition(GdxMaster.right(viewModeBox),
-         GdxMaster.top(viewModeBox) );
         addActor(frame = new ImageContainer(new Image(
          TiledNinePatchGenerator.getOrCreateNinePatch(
           NINE_PATCH.FRAME, BACKGROUND_NINE_PATCH.TRANSPARENT,
           GdxMaster.getWidth()*11/10, GdxMaster.getHeight()*11/10) )));
-        init();
+
+        addActor(buttonPanel = new WeaveButtonPanel());
+        buttonPanel.setPosition(GdxMaster.centerWidth(buttonPanel),
+         50 );
+//        addActor(heroPreview = new WeaveHeroPreview());
+        addActor(viewModeBox = createViewModeBox());
+        viewModeBox.setPosition(GdxMaster.right(viewModeBox),
+         GdxMaster.top(viewModeBox)-100 );
+       init();
 
     }
 
@@ -78,5 +79,7 @@ public class WeaveUi extends GuiStage {
         });
         return selectBox;
     }
+    public void setDraggedEntity(Entity draggedEntity) {
 
+    }
 }
