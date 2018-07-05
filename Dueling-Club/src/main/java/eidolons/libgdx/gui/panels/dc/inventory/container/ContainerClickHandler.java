@@ -9,7 +9,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.entity.Entity;
 import main.system.GuiEventManager;
@@ -77,7 +77,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
             if (container instanceof DC_Cell){
                 item.getGame().getDroppedItemManager().pickedUp(item);
             }
-            dataMaster.operation(sim, HQ_OPERATION.PICK_UP, item);
+            dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
         }
         close();
     }
@@ -87,7 +87,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         if (container instanceof DC_Cell){
             item.getGame().getDroppedItemManager().pickedUp(item);
         }
-        dataMaster.operation(sim, HQ_OPERATION.PICK_UP, item);
+        dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
         update();
     }
 

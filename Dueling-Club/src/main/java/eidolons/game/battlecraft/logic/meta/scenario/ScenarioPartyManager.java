@@ -16,6 +16,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -151,7 +152,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
     }
 
     private boolean isCreateNewHero() {
-        return true;
+        return !CoreEngine.isMacro();
     }
 
 }

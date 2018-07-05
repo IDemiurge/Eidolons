@@ -330,6 +330,7 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public void resetCurrentValues() {
+        if (!isSimulation())
         if (getGame().getBattleMaster() != null) {
             try {
                 getGame().getBattleMaster().getOptionManager().applyDifficultyMods(this);

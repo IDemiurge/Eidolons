@@ -20,6 +20,7 @@ public class SelectionSubItemsPanel extends TablePanelX{
              StyleHolder.getHqTextButtonStyle(16), ()-> clicked(item, sub) );
             add(line).center().row();
         }
+        pack();
     }
 
     private void clicked(SelectableItemData item, String sub) {

@@ -1,6 +1,5 @@
 package eidolons.libgdx.gui.panels.headquarters.creation;
 
-import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
@@ -14,15 +13,21 @@ import java.util.List;
  * Created by JustMe on 6/5/2018.
  */
 public class HeroCreationPanel extends SelectionPanel {
-    public HeroCreationPanel(Unit unit) {
-        super();
-        setUserObject(unit);
-        init();
+
+    private static HeroCreationPanel instance;
+
+    private HeroCreationPanel() {
     }
 
-    @Override
-    protected boolean isReadyToBeInitialized() {
-        return false;
+    public static HeroCreationPanel getInstance() {
+        if (instance == null) {
+            instance = new HeroCreationPanel();
+        }
+        return instance;
+    }
+
+    public void modelChanged() {
+        updateRequired=true;
     }
 
     @Override
@@ -50,11 +55,10 @@ public class HeroCreationPanel extends SelectionPanel {
     protected boolean isAutoDoneEnabled() {
         return false;
     }
-    @Override
-    public Unit getUserObject() {
-        return (Unit) super.getUserObject();
-    }
 
+    public HcHeroModel getUserObject() {
+        return HeroCreationMaster.getModel();
+    }
     @Override
     protected ItemListPanel createListPanel() {
         return new HeroCreationSequence();

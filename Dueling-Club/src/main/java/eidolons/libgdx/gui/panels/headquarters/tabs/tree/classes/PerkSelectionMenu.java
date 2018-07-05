@@ -1,6 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes;
 
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.SlotSelectionRadialMenu;
 import main.entity.type.ObjType;
 import main.system.EventType;
@@ -16,8 +16,8 @@ public class PerkSelectionMenu extends SlotSelectionRadialMenu {
     }
 
     @Override
-    protected HQ_OPERATION getOperation() {
-        return HQ_OPERATION.NEW_PERK;
+    protected HERO_OPERATION getOperation() {
+        return HERO_OPERATION.NEW_PERK;
     }
 
     @Override

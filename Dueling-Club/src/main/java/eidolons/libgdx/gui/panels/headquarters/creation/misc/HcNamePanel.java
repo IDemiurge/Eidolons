@@ -1,8 +1,10 @@
-package eidolons.libgdx.gui.panels.headquarters.creation.general;
+package eidolons.libgdx.gui.panels.headquarters.creation.misc;
 
+import eidolons.game.core.EUtils;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.panels.headquarters.creation.general.SelectionTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.system.text.NameMaster;
 import main.content.values.properties.G_PROPS;
@@ -18,6 +20,9 @@ public class HcNamePanel extends SelectionTable<TextButtonX> {
     public HcNamePanel() {
         super(3, 36);
         add(new TextButtonX("Randomize", STD_BUTTON.MENU, () -> randomize())).colspan(3);
+        EUtils.bind(GuiEventType.HC_GENDER_CHOSEN, p -> {
+             randomize();
+        });
     }
 
     private void randomize() {

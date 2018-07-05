@@ -1,7 +1,10 @@
 package eidolons.libgdx.gui.panels.headquarters.creation.preview;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -53,9 +56,16 @@ public class HcGeneralTab extends eidolons.libgdx.gui.panels.headquarters.HqElem
     @Override
     protected void update(float delta) {
         HqHeroDataSource dataSource = getUserObject();
-
-        portrait.setImage(StringMaster.
-         getAppendedImageFile(dataSource.getImagePath(), " full"));
+        if ( StringMaster.
+         getAppendedImageFile(dataSource.getImagePath(), " m")!=null ){
+            portrait.setImage(StringMaster.
+             getAppendedImageFile(dataSource.getImagePath(), " m"));
+            return;
+        }
+        Texture texture = GdxImageMaster.size(StringMaster.
+         getAppendedImageFile(dataSource.getImagePath(), " full"), 250, 350, false);
+        portrait.setImage(
+         new Image(texture));
         //the rest will self-update on setUserObject
     }
 

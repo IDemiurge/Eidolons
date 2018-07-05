@@ -14,8 +14,6 @@ import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.texture.Images;
@@ -34,6 +32,7 @@ public class HqStatElement extends HqElement {
 
     private final ValueContainer container;
     private final TextButtonX button;
+    private final Runnable modifyRunnable;
     boolean mastery;
     boolean editable;
     PARAMS displayedParam;
@@ -41,7 +40,8 @@ public class HqStatElement extends HqElement {
     private PARAMETER modifyParam;
     private boolean disabled;
 
-    public HqStatElement(PARAMS param, boolean mastery, boolean editable) {
+    public HqStatElement(PARAMS param, boolean mastery, boolean editable, Runnable modifyRunnable) {
+        this.modifyRunnable = modifyRunnable;
         this.displayedParam = param;
         this.mastery = mastery;
         leftToRight = mastery;
@@ -91,12 +91,7 @@ public class HqStatElement extends HqElement {
                      DescriptionMaster.getDescription(modifyParam));
                     return;
                 }
-//              redundant  if (PointMaster.canIncrease(dataSource.getEntity(), modifyParam)) {
-                HqDataMaster.operation(dataSource,
-                 mastery
-                  ? HQ_OPERATION.MASTERY_INCREMENT
-                  : HQ_OPERATION.ATTRIBUTE_INCREMENT, modifyParam);
-//                }
+                modifyRunnable.run();
             }
         };
     }

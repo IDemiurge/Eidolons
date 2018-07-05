@@ -21,7 +21,7 @@ public class HeroCreator {
 
     public static final String BASE_HERO = "Base Hero Type";
     public static final int NEW_HERO_LEVELS = 3;
-    private ObjType ROOT_TYPE;
+    public static ObjType ROOT_TYPE;
    static HeroCreator instance;
 
     public static HeroCreator getInstance() {

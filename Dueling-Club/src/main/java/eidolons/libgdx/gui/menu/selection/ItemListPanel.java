@@ -21,6 +21,7 @@ import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.entity.Entity;
+import main.entity.type.ObjType;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
@@ -40,10 +41,10 @@ public abstract class ItemListPanel extends TablePanel {
     protected List<SelectableItemData> items;
     protected ScrollPanel scrollPanel;
     protected TextButton lastChecked;
-    private SelectableItemDisplayer infoPanel;
-    private Map<SelectableItemData, TextButton> cache = new HashMap<>();
-    private List<TextButton> buttons = new ArrayList<>();
-    private Map<SelectableItemData, RollableGroup> subCache = new HashMap<>();
+    protected SelectableItemDisplayer infoPanel;
+    protected Map<SelectableItemData, TextButton> cache = new HashMap<>();
+    protected List<TextButton> buttons = new ArrayList<>();
+    protected Map<SelectableItemData, RollableGroup> subCache = new HashMap<>();
 
     public ItemListPanel() {
         super();
@@ -71,7 +72,7 @@ public abstract class ItemListPanel extends TablePanel {
         addElements();
     }
 
-    private Map<SelectableItemData, TextButton> getCache() {
+    protected Map<SelectableItemData, TextButton> getCache() {
         return cache;
     }
 
@@ -151,12 +152,12 @@ public abstract class ItemListPanel extends TablePanel {
         selectWithOffset(1);
     }
 
-    private void clicked(int index) {
+    protected void clicked(int index) {
         index = Math.min(buttons.size() - 1, index);
         clicked(buttons.get(index), getItems().get(index));
     }
 
-    private boolean clicked(TextButton textButton, SelectableItemData sub) {
+    protected boolean clicked(TextButton textButton, SelectableItemData sub) {
         currentItem = (sub);
 //        getParent().setUserObject(sub); what for?
         infoPanel.setItem(sub);
@@ -175,7 +176,7 @@ public abstract class ItemListPanel extends TablePanel {
         return false;
     }
 
-    private void showSubItemPanel(SelectableItemData item) {
+    protected void showSubItemPanel(SelectableItemData item) {
         for (RollableGroup sub: subCache.values())
         {
             sub.toggle(false);
@@ -188,10 +189,13 @@ public abstract class ItemListPanel extends TablePanel {
             rollable = RollDecorator.decorate(subItemsPanel, FACING_DIRECTION.WEST, false);
             subCache.put(item, rollable);
             addActor(rollable);
+            rollable.setPosition(getX()+getWidth()-subItemsPanel.getWidth(),
+             cache.get(item).getY()-subItemsPanel.getHeight()/2);
+            rollable.setZIndex(0);
         }
     }
 
-    private EventListener getSubPanelListener(SelectableItemData item) {
+    protected EventListener getSubPanelListener(SelectableItemData item) {
         return new SmartClickListener(this){
 
         };
@@ -351,6 +355,14 @@ public abstract class ItemListPanel extends TablePanel {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public void setEntity(ObjType entity) {
+            this.entity = entity;
+        }
+
+        public void setEmblem(String emblem) {
+            this.emblem = emblem;
         }
     }
 }

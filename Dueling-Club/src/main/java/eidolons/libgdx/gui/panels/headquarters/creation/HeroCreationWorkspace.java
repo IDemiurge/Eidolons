@@ -12,11 +12,14 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationSequence.HERO_CREATION_ITEM;
-import eidolons.libgdx.gui.panels.headquarters.creation.general.HcNamePanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.general.HcPortraitPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.general.HcDeitySelectionPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.misc.HcNamePanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.misc.HcPortraitPanel;
 import eidolons.libgdx.gui.panels.headquarters.creation.general.HcRaceSelectPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.misc.HcPersonalityPanel;
 import eidolons.libgdx.gui.panels.headquarters.creation.preview.HcIntro;
 import eidolons.libgdx.gui.panels.headquarters.creation.preview.HcPreview;
+import eidolons.libgdx.gui.panels.headquarters.creation.skillset.HcSkillsetPanel;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -62,6 +65,14 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
                 prop = G_PROPS.GENDER;
                 eventType = GuiEventType.HC_GENDER_CHOSEN;
                 break;
+            case DEITY:
+                //TODO aspect
+                eventType = GuiEventType.HC_DEITY_ASPECT_CHOSEN;
+                break;
+            case SKILLSET:
+                break;
+            case FINALIZE:
+                break;
         }
 
         HeroCreationMaster.modified(prop, sub);
@@ -76,7 +87,7 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
         if (item == previousItem)
             return;
         displayed.remove();
-        add(displayed = getOrCreateDisplayable(new EnumMaster<HERO_CREATION_ITEM>().retrieveEnumConst(
+        displayableContainer.setActor(displayed = getOrCreateDisplayable(new EnumMaster<HERO_CREATION_ITEM>().retrieveEnumConst(
          HERO_CREATION_ITEM.class, item.getName())));
         displayed.setUserObject(getUserObject());
     }
@@ -99,11 +110,11 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
             case PORTRAIT:
                 return new HcPortraitPanel();
             case PERSONALITY:
-                break;
+                return new HcPersonalityPanel();
             case DEITY:
-                break;
+                return new HcDeitySelectionPanel();
             case SKILLSET:
-                break;
+                return new HcSkillsetPanel();
         }
         return null;
     }

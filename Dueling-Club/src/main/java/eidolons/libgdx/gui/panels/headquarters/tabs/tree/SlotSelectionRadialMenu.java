@@ -9,7 +9,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -125,7 +125,7 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
          getOperation(), type);
     }
 
-    protected abstract HQ_OPERATION getOperation();
+    protected abstract HERO_OPERATION getOperation();
 
     @Override
     protected Vector2 getInitialPosition() {

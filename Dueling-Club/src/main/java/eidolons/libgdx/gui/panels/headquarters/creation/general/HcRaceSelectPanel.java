@@ -5,10 +5,8 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanelX;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.system.GuiEventType;
-import main.system.auxiliary.EnumMaster;
 
 /**
  * Created by JustMe on 7/3/2018.
@@ -34,16 +32,14 @@ public class HcRaceSelectPanel extends TablePanelX {
             RACE race = (RACE) p.get();
             raceLabel.setText(getRaceText(race));
             subracePanel.setUserObject(race);
+            subracePanel.updateAct(0);
             subracePanel.select(0);
         });
         EUtils.bind(GuiEventType.HC_SUBRACE_CHOSEN, p -> {
             SelectableItemData data = (SelectableItemData) p.get();
             subraceLabel.setText(getSubraceText(data));
-            BACKGROUND subrace =
-             new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
-              data.getEntity().getName());
 
-            backgroundPanel.setUserObject(subrace);
+            backgroundPanel.setUserObject(data.getEntity());
             SelectableItemData item = backgroundPanel.select(0);
 
             backgroundLabel.setText(getBackgroundText(item));

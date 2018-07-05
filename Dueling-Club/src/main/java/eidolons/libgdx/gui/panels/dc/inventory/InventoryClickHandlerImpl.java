@@ -10,7 +10,7 @@ import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.herocreator.HeroManager;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
@@ -175,20 +175,20 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return null;
     }
 
-    private HQ_OPERATION getHqOperation(OPERATIONS operation) {
+    private HERO_OPERATION getHqOperation(OPERATIONS operation) {
         switch (operation) {
             case PICK_UP:
-                return HQ_OPERATION.PICK_UP;
+                return HERO_OPERATION.PICK_UP;
             case DROP:
-                return HQ_OPERATION.DROP;
+                return HERO_OPERATION.DROP;
             case UNEQUIP:
-                return HQ_OPERATION.UNEQUIP;
+                return HERO_OPERATION.UNEQUIP;
             case UNEQUIP_QUICK_SLOT:
-                return HQ_OPERATION.UNEQUIP_QUICK_SLOT;
+                return HERO_OPERATION.UNEQUIP_QUICK_SLOT;
             case EQUIP:
-                return HQ_OPERATION.EQUIP;
+                return HERO_OPERATION.EQUIP;
             case EQUIP_QUICK_SLOT:
-                return HQ_OPERATION.EQUIP_QUICK_SLOT;
+                return HERO_OPERATION.EQUIP_QUICK_SLOT;
         }
         return null;
     }

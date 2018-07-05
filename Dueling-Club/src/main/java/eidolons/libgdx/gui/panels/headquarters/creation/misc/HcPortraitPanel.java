@@ -1,5 +1,6 @@
-package eidolons.libgdx.gui.panels.headquarters.creation.general;
+package eidolons.libgdx.gui.panels.headquarters.creation.misc;
 
+import eidolons.libgdx.gui.panels.headquarters.creation.general.SelectionImageTable;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.system.GuiEventType;

@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.datasource.UnitDataSource;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -35,7 +35,7 @@ public class HqButtonPanel extends HqElement {
         HqDataMaster.undoAll(dataSource.getEntity());
     }
     private void levelUp() {
-        HqDataMaster.operation(dataSource, HQ_OPERATION.LEVEL_UP);
+        HqDataMaster.operation(dataSource, HERO_OPERATION.LEVEL_UP);
     }
     public HqButtonPanel() {
         if (!CoreEngine.isJar())

@@ -13,6 +13,7 @@ import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.stage.LoadingStage;
@@ -130,13 +131,16 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             overlayStage.setActive(false);
             updateInputController();
         } else {
+            HeroCreationMaster.setHeroCreationInProgress(true);
             Unit unit = (Unit) p.get();
+            HqDataMaster.getInstance(unit);
             if (hcPanel == null) {
-                overlayStage.addActor(hcPanel = new HeroCreationPanel(unit));
+                overlayStage.addActor(hcPanel = HeroCreationPanel.getInstance());
             } else {
                 hcPanel.setVisible(true);
             }
-            hcPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
+            hcPanel.setUserObject(hcPanel.getUserObject());
+            //update
             overlayStage.setActive(true);
             updateInputController();
         }

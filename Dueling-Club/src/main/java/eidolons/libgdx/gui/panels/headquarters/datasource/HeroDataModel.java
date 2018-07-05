@@ -28,7 +28,7 @@ import java.util.List;
  * yes, just equip the one that is displayed
  */
 public class HeroDataModel extends Unit {
-    List<HqOperation> modificationList= new ArrayList<>();
+    List<HeroOperation> modificationList = new ArrayList<>();
     private Unit hero;
     private boolean resetting;
 
@@ -37,15 +37,24 @@ public class HeroDataModel extends Unit {
          hero.getOriginalOwner(),
          Simulation.getGame(), hero.getRef().getCopy());
         copyDynamicParams(hero); //for dynamic params!
-        this.hero = hero;
+        setHero(hero);
         reset();
-//        cacheSimItems();
+        //        cacheSimItems();
+    }
+
+    public HeroDataModel(ObjType type, Pair<ParamMap, PropMap> pair) {
+        super(type);
+        cloneMaps(pair.getRight(), pair.getLeft());
+    }
+
+    public void setHero(Unit hero) {
+        this.hero = hero;
+        type.copyValues(getHero(), InventoryTransactionManager.INV_PROPS);
+        copyValues(getHero(), InventoryTransactionManager.INV_PROPS);
     }
 
     @Override
     public void init() {
-        type.copyValues(getHero(), InventoryTransactionManager.INV_PROPS);
-        copyValues(getHero(), InventoryTransactionManager.INV_PROPS);
         super.init();
     }
 
@@ -69,15 +78,17 @@ public class HeroDataModel extends Unit {
         }
     }
 
-    public void modified(HQ_OPERATION operation, Object... arg) {
-        modificationList.add(new HqOperation(operation, arg));
+    public HeroOperation modified(HERO_OPERATION operation, Object... arg) {
+        HeroOperation o = new HeroOperation(operation, arg);
+        modificationList.add(o);
+        return o;
     }
 
-    public List<HqOperation> getModificationList() {
+    public List<HeroOperation> getModificationList() {
         return modificationList;
     }
 
-    public void setModificationList(List<HqOperation> modificationList) {
+    public void setModificationList(List<HeroOperation> modificationList) {
         this.modificationList = modificationList;
     }
 
@@ -92,12 +103,6 @@ public class HeroDataModel extends Unit {
     public boolean isDirty() {
         return true;
     }
-
-    public HeroDataModel(ObjType type, Pair<ParamMap, PropMap> pair) {
-        super(type);
-        cloneMaps(pair.getRight(), pair.getLeft());
-    }
-
 
     public Unit getHero() {
         return hero;
@@ -134,8 +139,8 @@ public class HeroDataModel extends Unit {
         return super.equip(item, slot);
     }
 
-    public enum HQ_OPERATION {
-        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT,UNEQUIP_JEWELRY,
+    public enum HERO_OPERATION {
+        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, UNEQUIP_JEWELRY,
 
         ATTRIBUTE_INCREMENT,
         MASTERY_INCREMENT,
@@ -147,21 +152,21 @@ public class HeroDataModel extends Unit {
         SPELL_LEARNED,
         SPELL_MEMORIZED,
         SPELL_EN_VERBATIM,
-        SPELL_UNMEMORIZED, NEW_PERK, LEVEL_UP,
+        SPELL_UNMEMORIZED, NEW_PERK, LEVEL_UP, SET_PROPERTY, SET_PARAMETER,
 
 
     }
 
-    public class HqOperation {
-        HQ_OPERATION operation;
+    public class HeroOperation {
+        HERO_OPERATION operation;
         Object[] arg;
 
-        public HqOperation(HQ_OPERATION operation, Object... arg) {
+        public HeroOperation(HERO_OPERATION operation, Object... arg) {
             this.operation = operation;
             this.arg = arg;
         }
 
-        public HQ_OPERATION getOperation() {
+        public HERO_OPERATION getOperation() {
             return operation;
         }
 

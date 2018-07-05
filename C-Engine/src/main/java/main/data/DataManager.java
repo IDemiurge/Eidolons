@@ -191,25 +191,16 @@ public class DataManager {
         }
         ObjType type = map.get(typeName);
         if (type == null) {
-            // typeName = typeName.replace(";", " "); never needed???
-            type = map.get(typeName);
+            for (String item : map.keySet()) {
+                if (item.equalsIgnoreCase(typeName))
+                    type = map.get(item);
+            }
         }
 
         if (type != null) {
             return type;
         }
 
-//        if (!recursion) {
-//            for (String s : map.keySet()) {
-//                if (StringMaster
-//                 .compareByChar(s.replace(" ", ""), typeName.replace(" ", ""), false)) {
-//                    return map.get(s);
-//                }
-//            }
-        //LogMaster.log(log, "Type not found: " + obj_type
-//                    + ":" + typeName);
-//            return null;
-//        }
         if (!recursion) {
             LogMaster.log(log, "Type not found: " + TYPE
              + ":" + typeName);
@@ -572,7 +563,7 @@ public class DataManager {
         return list;
     }
 
-    public static List<ObjType> getFilteredTypes(String filter, OBJ_TYPE OBJ_TYPE, VALUE filterValue) {
+    public static List<ObjType> getFilteredTypes( OBJ_TYPE OBJ_TYPE,String filter, VALUE filterValue) {
         Map<String, ObjType> map = XML_Reader.getTypeMaps().get(OBJ_TYPE.toString());
 
         List<ObjType> list = new ArrayList<>();

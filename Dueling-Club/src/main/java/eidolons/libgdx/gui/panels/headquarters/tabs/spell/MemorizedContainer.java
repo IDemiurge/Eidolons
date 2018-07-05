@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.panels.headquarters.tabs.spell;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_SpellObj;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class MemorizedContainer extends HqSpellContainer {
     @Override
     protected void click(int button, DC_SpellObj spell) {
         if (button==1){
-            HqDataMaster.operation(getUserObject(), HQ_OPERATION.SPELL_UNMEMORIZED, spell);
+            HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_UNMEMORIZED, spell);
         }
     }
     @Override
@@ -35,8 +35,8 @@ public class MemorizedContainer extends HqSpellContainer {
     protected void doubleClick(int button, DC_SpellObj spell) {
         if (!HqSpellMaster.canLearnEnVerbatim(spell))
         return;
-        HqDataMaster.operation(getUserObject(), HQ_OPERATION.SPELL_UNMEMORIZED, spell);
-        HqDataMaster.operation(getUserObject(), HQ_OPERATION.SPELL_EN_VERBATIM, spell);
+        HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_UNMEMORIZED, spell);
+        HqDataMaster.operation(getUserObject(), HERO_OPERATION.SPELL_EN_VERBATIM, spell);
 
     }
 

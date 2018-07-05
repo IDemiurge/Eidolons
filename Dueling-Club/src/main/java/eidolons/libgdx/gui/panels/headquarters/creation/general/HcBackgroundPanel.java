@@ -2,7 +2,6 @@ package eidolons.libgdx.gui.panels.headquarters.creation.general;
 
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import main.content.DC_TYPE;
-import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -28,10 +27,12 @@ public class HcBackgroundPanel extends SelectionImageTable {
 
     @Override
     protected SelectableItemData[] initDataArray() {
-        BACKGROUND subrace = (BACKGROUND) getUserObject();
+        ObjType  type = (ObjType) getUserObject();
+
         List<SelectableItemData> filtered = new ArrayList<>();
         List<ObjType> types = DataManager.getFilteredTypes(
-         StringMaster.getWellFormattedString(subrace.name()), DC_TYPE.CHARS, G_PROPS.BACKGROUND);
+         DC_TYPE.CHARS,
+         StringMaster.getWellFormattedString(type.getProperty(G_PROPS.BACKGROUND)), G_PROPS.BACKGROUND);
         for (ObjType sub : types) {
             if (sub.getProperty(G_PROPS.GROUP).equalsIgnoreCase("background"))
                 filtered.add(new SelectableItemData(sub.getName(), sub));

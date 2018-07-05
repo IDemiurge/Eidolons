@@ -6,6 +6,8 @@ import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
@@ -88,7 +90,14 @@ public abstract class HqStatTable extends ValueTable<PARAMS, HqStatElement> {
 
     @Override
     protected HqStatElement createElement(PARAMS datum) {
-        return new HqStatElement(datum, isMastery(), isEditable());
+        return new HqStatElement(datum, isMastery(), isEditable(), ()-> modify(datum));
+    }
+
+    protected   void modify(PARAMS datum){
+        HqDataMaster.operation(getUserObject(),
+         isMastery()
+          ? HERO_OPERATION.MASTERY_INCREMENT
+          : HERO_OPERATION.ATTRIBUTE_INCREMENT, datum);
     }
 
     protected abstract boolean isMastery();

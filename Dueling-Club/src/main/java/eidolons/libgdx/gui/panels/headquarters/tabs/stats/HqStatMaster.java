@@ -1,8 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.tabs.stats;
 
-import eidolons.content.PROPS;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.content.values.parameters.PARAMETER;
 
@@ -26,7 +25,7 @@ public class HqStatMaster {
 //              entity, Eidolons.getScreen().getGuiStage());
 //            return false;
 //        }
-        HqDataMaster.operation(entity, HQ_OPERATION.NEW_MASTERY, datum);
+        HqDataMaster.operation(entity, HERO_OPERATION.NEW_MASTERY, datum);
 
 //        entity.modifyParameter(PARAMS.GOLD, -costGold);
 //        entity.modifyParameter(PARAMS.XP, -cost);

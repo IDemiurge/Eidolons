@@ -14,8 +14,11 @@ import eidolons.game.module.herocreator.logic.PointMaster;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HQ_OPERATION;
-import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HqOperation;
+import eidolons.libgdx.gui.panels.headquarters.creation.HcHeroModel;
+import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
+import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
+import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HeroOperation;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
 import eidolons.system.text.NameMaster;
@@ -54,7 +57,7 @@ public class HqDataMaster {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             if (map.get(hero) != null)
-             heroModel=map.get(hero).getHeroModel();
+                heroModel = map.get(hero).getHeroModel();
         }
         stack = new Stack<>();
     }
@@ -119,13 +122,13 @@ public class HqDataMaster {
     }
 
     public static void operation(HqHeroDataSource dataSource,
-                                 HQ_OPERATION operation,
+                                 HERO_OPERATION operation,
                                  Object... args) {
         operation(dataSource.getEntity(), operation, args);
     }
 
     public static void operation(HeroDataModel model,
-                                 HQ_OPERATION operation,
+                                 HERO_OPERATION operation,
                                  Object... args) {
         //        new Thread(() -> {
         HqDataMaster master = getInstance(model.getHero());
@@ -211,12 +214,17 @@ public class HqDataMaster {
     public void undo_(boolean all) {
         if (heroModel.getModificationList().isEmpty())
             return;
-        List<HqOperation> list = heroModel.getModificationList();
-        heroModel = createHeroDataModel(hero);
-        if (all)
+        List<HeroOperation> list = heroModel.getModificationList();
+       if (all)
             list.clear();
         else
             list.remove(list.size() - 1);
+
+        undo_(list);
+    }
+
+    public void undo_(List<HeroOperation> list) {
+        heroModel = createHeroDataModel(hero);
         heroModel.setModificationList(list);
         applyModifications(true);
         heroModel.reset();
@@ -226,12 +234,11 @@ public class HqDataMaster {
     }
 
     private HeroDataModel createHeroDataModel(Unit hero) {
-        return new HeroDataModel(hero) {
-            @Override
-            public Unit getHero() {
-                return hero;
-            }
-        };
+        if (HeroCreationMaster.isHeroCreationInProgress())
+        {
+            return new HcHeroModel(hero);
+        }
+        return new HeroDataModel(hero);
     }
 
     public void applyModifications() {
@@ -242,7 +249,7 @@ public class HqDataMaster {
         Unit hero = self ? heroModel : heroModel.getHero();
         //QUIET MODE ETC , LOCK THINGS!
         try {
-            for (HqOperation operation : heroModel.getModificationList()) {
+            for (HeroOperation operation : heroModel.getModificationList()) {
                 applyOperation(hero, operation.getOperation(), operation.getArg());
             }
             if (!self) {
@@ -256,7 +263,7 @@ public class HqDataMaster {
         }
     }
 
-    public void applyItemOperation(Unit hero, HQ_OPERATION operation, Object... args) {
+    public void applyItemOperation(Unit hero, HERO_OPERATION operation, Object... args) {
         DC_HeroItemObj item = getItem(hero, args[0]);
         switch (operation) {
             case PICK_UP:
@@ -295,9 +302,12 @@ public class HqDataMaster {
         }
     }
 
-    public void applyOperation(Unit hero, HQ_OPERATION operation, Object... args) {
+    public void applyOperation(Unit hero, HERO_OPERATION operation, Object... args) {
 
         switch (operation) {
+            case SET_PROPERTY:
+                hero.setProperty((PROPERTY) args[0], args[1].toString());
+                break;
             case PICK_UP:
             case DROP:
             case UNEQUIP_JEWELRY:
@@ -346,7 +356,7 @@ public class HqDataMaster {
         }
     }
 
-    private void applySpellOperation(Unit hero, HQ_OPERATION operation, Object... args) {
+    private void applySpellOperation(Unit hero, HERO_OPERATION operation, Object... args) {
         DC_SpellObj spell = (DC_SpellObj) args[0];
         switch (operation) {
             case SPELL_LEARNED:
@@ -370,6 +380,10 @@ public class HqDataMaster {
         heroModel.reset();
         if (HqPanel.getActiveInstance() != null) {
             HqPanel.getActiveInstance().modelChanged();
+        } else {
+            if (HeroCreationMaster.isHeroCreationInProgress()) {
+                HeroCreationPanel.getInstance().modelChanged();
+            }
         }
     }
 
