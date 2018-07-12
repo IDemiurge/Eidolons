@@ -36,6 +36,7 @@ public abstract class SelectionPanel extends TablePanel {
     protected SelectionInputListener listener;
     Label title;
 
+
     public SelectionPanel() {
         //        setBackground(TextureCache.getOrCreateTextureRegionDrawable
         //         (getBackgroundPath()));
@@ -74,6 +75,7 @@ public abstract class SelectionPanel extends TablePanel {
             init();
 
         padRight(50);
+        listPanel.setZIndex(Integer.MAX_VALUE);
         title.setZIndex(Integer.MAX_VALUE);
 
     }
@@ -236,5 +238,13 @@ public abstract class SelectionPanel extends TablePanel {
 
     public void previous() {
         listPanel.previous();
+    }
+
+    public SelectableItemDisplayer getInfoPanel() {
+        return infoPanel;
+    }
+
+    public ItemListPanel getListPanel() {
+        return listPanel;
     }
 }

@@ -1723,6 +1723,8 @@ public class StringMaster {
         return getAppendedImageFile(file, suffix, false);
     }
         public static String getAppendedImageFile(String file, String suffix, boolean returnNull) {
+        if (file==null )
+            return null;
         String format = getFormat(file);
         String newFile = cropFormat(file) + suffix + format;
         if (FileManager.isFile(PathFinder.getImagePath() + newFile)) {

@@ -1,9 +1,11 @@
 package eidolons.libgdx.gui.panels.headquarters.creation;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import main.content.enums.GenericEnums.ASPECT;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -11,17 +13,71 @@ import java.util.stream.Collectors;
 /**
  * Created by JustMe on 6/5/2018.
  */
-public class HeroCreationSequence extends ItemListPanel{
+public class HeroCreationSequence extends ItemListPanel {
+    private final HcControlPanel controlPanel;
+
+    public HeroCreationSequence() {
+        super();
+        add(controlPanel = new HcControlPanel()).center().row();
+    }
 
     @Override
     protected boolean clicked(TextButton textButton, SelectableItemData sub) {
-       HERO_CREATION_ITEM item=getSequenceItem(sub);
-       HeroCreationMaster.setCurrentItem(item);
+        return clicked(textButton, sub, false);
+    }
+    public boolean clicked(int i, boolean back) {
+        return clicked(buttons.get(i), items.get(i), back);
+    }
+        public boolean clicked(TextButton textButton, SelectableItemData sub, boolean back) {
+       if (isBlocked(sub))
+            return false;
+       HERO_CREATION_ITEM item = getSequenceItem(sub);
+       if (!back)
+        HeroCreationMaster.setCurrentItem(item);
         return super.clicked(textButton, sub);
     }
 
     private HERO_CREATION_ITEM getSequenceItem(SelectableItemData sub) {
-    return   new EnumMaster<HERO_CREATION_ITEM>().retrieveEnumConst(HERO_CREATION_ITEM.class, sub.getName());
+        return new EnumMaster<HERO_CREATION_ITEM>().retrieveEnumConst(HERO_CREATION_ITEM.class, sub.getName());
+    }
+
+    protected int getDefaultHeight() {
+        return GdxMaster.getHeight();
+    }
+
+    @Override
+    public void updateAct(float delta) {
+        if (buttons.isEmpty()) {
+            addButtons();
+        }
+        int i = 0;
+        for (SelectableItemData item : items) {
+            TextButton button = buttons.get(i++);
+            if (i > 1)
+                if (isBlocked(item)) {
+                    button.setDisabled(true);
+                    continue;
+                }
+            boolean done = HeroCreationMaster.checkItemIsDone(
+             new EnumMaster<HERO_CREATION_ITEM>().
+              retrieveEnumConst(HERO_CREATION_ITEM.class, item.getName()));
+
+            button.setDisabled(false);
+            button.setChecked(done);
+            if (i > 0)
+                if (!done)
+                    if (buttons.get(i - 2).isChecked())
+                        if (HeroCreationMaster.FAST_MODE) {
+//                            Eidolons.onThisOrNonGdxThread(() ->
+//                            {
+//                                WaitMaster.WAIT(250);
+//                                Gdx.app.postRunnable(() -> {
+                                    button.getClickListener().clicked(null, 0, 0 );
+//                                });
+//                            });
+
+                        }
+        }
     }
 
     @Override
@@ -32,10 +88,6 @@ public class HeroCreationSequence extends ItemListPanel{
     }
 
     private boolean isSelectZerothSubItem(SelectableItemData item) {
-        switch (getSequenceItem(item)) {
-            case DEITY:
-                return true;
-        }
         return false;
     }
 
@@ -43,38 +95,43 @@ public class HeroCreationSequence extends ItemListPanel{
     public boolean isBlocked(SelectableItemData item) {
         if (HeroCreationMaster.TEST_MODE)
             return false;
-        int i =getItems().indexOf(item);
-        int i1 = getItems().indexOf(
-         HeroCreationMaster.getCurrentItem());
+        int i = getItems().indexOf(item);
+        int i1 = getItems().stream().map(x -> getSequenceItem(x)).collect(Collectors.toList())
+         .indexOf(
+          HeroCreationMaster.getCurrentItem());
 
         int dif = i - i1;
-        if (dif<=0)
+        if (dif <= 0)
             return false;
-        if (dif==1)
-        if (HeroCreationMaster.isCurrentItemDone()){
-            return false;
-        }
+        if (dif == 1)
+            if (HeroCreationMaster.isCurrentItemDone()) {
+                return false;
+            }
         return true;
     }
 
     //additional controls?
     public enum HERO_CREATION_ITEM {
         INTRODUCTION,
-        RACE("Human","Elf","Dwarf","Hybrid" ),
-        GENDER("Male","Female" ),
+        RACE("Human", "Elf", "Dwarf", "Goblinoid", "Demon", "Vampire"),
+        GENDER(), //"Male", "Female" now w/o subpanel
         PORTRAIT,
         PERSONALITY,
         DEITY(Arrays.stream(ASPECT.values()).map(aspect -> aspect.toString())
          .collect(Collectors.toList()).toArray(new String[ASPECT.values().length])),
-//        STATS,
+        //        STATS,
         SKILLSET,
-        FINALIZE,
-        ;
+        FINALIZE,;
 
         String[] subItems;
 
         HERO_CREATION_ITEM(String... subItems) {
             this.subItems = subItems;
+        }
+
+        @Override
+        public String toString() {
+            return StringMaster.getWellFormattedString(name());
         }
 
         public String[] getSubItems() {

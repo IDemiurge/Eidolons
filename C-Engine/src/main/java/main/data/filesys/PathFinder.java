@@ -277,6 +277,9 @@ public class PathFinder {
         return getEnginePath() + jarName;
     }
 
+    public static String getEmblemsPath() {
+        return StrPathBuilder.build("ui", "emblems" ) + StringMaster.getPathSeparator();
+    }
     public static String getEmblemAutoFindPath() {
         return StrPathBuilder.build("ui", "emblems", "auto") + StringMaster.getPathSeparator();
     }
@@ -375,4 +378,15 @@ public class PathFinder {
          "icons");
     }
 
+    public static String getSketchPath() {
+        return StrPathBuilder.build(getEmblemsPath(), "sketches")+StringMaster.getPathSeparator();
+    }
+
+    public static String getPortraitPath() {
+        return StrPathBuilder.build(getImagePath(), "main" ,
+         "chars" ,
+         "std")+
+         StringMaster.getPathSeparator();
+
+    }
 }

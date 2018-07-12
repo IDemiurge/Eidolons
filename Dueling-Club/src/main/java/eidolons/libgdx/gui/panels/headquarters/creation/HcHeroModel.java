@@ -4,6 +4,9 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationSequence.HERO_CREATION_ITEM;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.ArrayList;
@@ -26,9 +29,11 @@ public class HcHeroModel extends HeroDataModel {
     public void rollback(HERO_CREATION_ITEM until) {
         List<HeroOperation> list =     new ArrayList<>() ;
         Map<HERO_CREATION_ITEM, List<HeroOperation>> newMap= new LinkedHashMap<>();
-        for (HERO_CREATION_ITEM item : operations.keySet()) {
+        for (HERO_CREATION_ITEM item : HERO_CREATION_ITEM.values()) {
             if (item==until)
                 break;
+            if (!operations.containsKey(item))
+                continue;
             list.addAll(operations.get(item));
             newMap.put(item, operations.get(item));
 
@@ -38,8 +43,20 @@ public class HcHeroModel extends HeroDataModel {
     }
 
     @Override
+    public ObjType getBackgroundType() {
+        if (getBackground()!=null )
+        backgroundType = DataManager.getType(getBackground().getMale().getTypeName(), DC_TYPE.CHARS);
+        return super.getBackgroundType();
+    }
+
+    @Override
     public HeroOperation modified(HERO_OPERATION operationType, Object... arg) {
         HeroOperation operation = super.modified(operationType, arg);
+        if (operationType==HERO_OPERATION.LEVEL_UP){
+            if (operations.get(operationType)!=null )
+            if (operations.get(operationType).
+             removeIf(item-> item.getOperation()==HERO_OPERATION.LEVEL_UP));
+        }
         MapMaster.addToListMap(operations, HeroCreationMaster.getCurrentItem(), operation);
         return operation;
     }

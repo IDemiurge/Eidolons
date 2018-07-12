@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.generic;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import eidolons.libgdx.bf.SuperActor;
@@ -65,8 +66,13 @@ public class SuperContainer extends SuperActor {
 
     @Override
     protected void alphaFluctuation(float delta) {
-        if (fluctuateAlpha)
+        if (isAlphaFluctuationOn())
             super.alphaFluctuation(content, delta);
+    }
+
+    @Override
+    public boolean isAlphaFluctuationOn() {
+        return fluctuateAlpha;
     }
 
     public void setFluctuateAlpha(boolean fluctuateAlpha) {
@@ -78,5 +84,15 @@ public class SuperContainer extends SuperActor {
             this.content.remove();
         this.content = contents;
         addActor(contents);
+    }
+
+    @Override
+    public void setColor(Color color) {
+        getContent().setColor(color);
+    }
+
+    @Override
+    public void setColor(float r, float g, float b, float a) {
+        getContent().setColor(r, g, b, a);
     }
 }

@@ -176,6 +176,9 @@ public class StyleHolder {
         return defaultTextButtonStyle;
     }
 
+    public static TextButtonStyle getHqTextButtonStyle(STD_BUTTON button, int size) {
+        return getTextButtonStyle(button, FONT.METAMORPH, DEFAULT_COLOR, size);
+    }
     public static TextButton.TextButtonStyle getHqTextButtonStyle(
        int size) {
         return getTextButtonStyle(FONT.METAMORPH, DEFAULT_COLOR, size);
@@ -270,4 +273,5 @@ public class StyleHolder {
     public static LabelStyle getHqLabelStyle(int fontSize) {
         return getSizedLabelStyle(FONT.METAMORPH,fontSize );
     }
+
 }

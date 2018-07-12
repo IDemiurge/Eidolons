@@ -42,7 +42,6 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         //TODO loader here, but need data!
         super();
         if (isLoadingWithVideo())
-            if (isVideoEnabled())
                 initVideo();
         looped = true;
         underText = new Label(LoadingStage.getBottonText(), StyleHolder.getHqLabelStyle(20));
@@ -63,6 +62,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     @Override
     protected boolean isTooltipsOn() {
+        if (HeroCreationMaster.isHeroCreationInProgress())
+            return false;
         if (selectionPanel != null)
             if (selectionPanel.isVisible())
                 return false;
@@ -133,13 +134,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         } else {
             HeroCreationMaster.setHeroCreationInProgress(true);
             Unit unit = (Unit) p.get();
-            HqDataMaster.getInstance(unit);
+            HqDataMaster.getInstance(unit); //init model
             if (hcPanel == null) {
                 overlayStage.addActor(hcPanel = HeroCreationPanel.getInstance());
             } else {
                 hcPanel.setVisible(true);
             }
-            hcPanel.setUserObject(hcPanel.getUserObject());
             //update
             overlayStage.setActive(true);
             updateInputController();
@@ -207,6 +207,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     protected void initVideo() {
+        if (isVideoEnabled())
         try {
             video = new VideoMaster();
         } catch (Exception e) {

@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.creation.preview;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import eidolons.libgdx.gui.panels.headquarters.tabs.HqTabs;
-import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellTab;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.classes.ClassTreeTab;
 import eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill.SkillTreeTab;
 
@@ -13,13 +13,20 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill.SkillTreeTab;
  */
 public class HcPreview extends HqTabs{
 
+    public HcPreview() {
+        setSize(300, 600);
+    }
+
+    protected Cell  addTabCell() {
+        return addElement(null).top().pad(20);
+    }
     @Override
     protected void initTabs() {
 
         addTab(new HcGeneralTab(), "General");
         addTab(new ClassTreeTab(), HQ_TAB.Class.name());
         addTab(new SkillTreeTab(), HQ_TAB.Skills.name());
-        addTab(new HqSpellTab(), HQ_TAB.Spells.name());
+//        addTab(new HqSpellTab(), HQ_TAB.Spells.name());
         resetCheckedTab();
     }
 }

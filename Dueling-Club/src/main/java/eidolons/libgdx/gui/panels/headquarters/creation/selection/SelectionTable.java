@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.panels.headquarters.creation.general;
+package eidolons.libgdx.gui.panels.headquarters.creation.selection;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -15,8 +15,16 @@ import main.system.GuiEventType;
  * Created by JustMe on 7/3/2018.
  */
 public abstract class SelectionTable<A extends Actor> extends ValueTable<SelectableItemData, A> {
+
+    protected A selectedItem;
+    protected SelectableItemData selectedData;
+
     public SelectionTable(int wrap, int size) {
         super(wrap, size);
+    }
+
+    public SelectionTable(int wrap, int size, int space) {
+        super(wrap, size, space);
     }
 
     protected EventListener getSelectionListener(A item, SelectableItemData data) {
@@ -24,8 +32,13 @@ public abstract class SelectionTable<A extends Actor> extends ValueTable<Selecta
             @Override
             protected void onTouchDown(InputEvent event, float x, float y) {
                 selected(data);
+                selectedItem=item;
             }
         };
+    }
+
+    public A getSelectedItem() {
+        return selectedItem;
     }
 
     public SelectableItemData select(int index) {

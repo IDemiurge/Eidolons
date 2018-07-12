@@ -31,6 +31,8 @@ import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
 
+import static main.content.enums.entity.HeroEnums.BACKGROUND.*;
+
 public class DC_ContentValsManager extends ContentValsManager {
     public static final PARAMETER[] DYNAMIC_PARAMETERS = {
      PARAMS.C_TOUGHNESS,
@@ -460,7 +462,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic) {
-        addDefaultValues(entity, dynamic,ContentValsManager.getValueList());
+        addDefaultValues(entity, dynamic, ContentValsManager.getValueList());
     }
 
     public static void addDefaultValues(Entity entity, boolean dynamic,
@@ -978,6 +980,58 @@ public class DC_ContentValsManager extends ContentValsManager {
         return C_OBJ_TYPE.ITEMS;
     }
 
+    public static BACKGROUND[] getSubraces(RACE race) {
+        switch (race) {
+            case HUMAN:
+                return new BACKGROUND[]{
+                 BACKGROUND.MAN_OF_KINGS_REALM,
+                 BACKGROUND.MAN_OF_EAGLE_REALM,
+                 BACKGROUND.MAN_OF_GRIFF_REALM,
+                 BACKGROUND.MAN_OF_RAVEN_REALM,
+                 BACKGROUND.MAN_OF_WOLF_REALM,
+                 BACKGROUND.MAN_OF_EAST_EMPIRE,
+                };
+            case ELF:
+                return new BACKGROUND[]{
+                 BACKGROUND.FEY_ELF,
+                 BACKGROUND.GREY_ELF,
+                 BACKGROUND.WOOD_ELF,
+                 BACKGROUND.HIGH_ELF,
+                };
+            case DWARF:
+                return new BACKGROUND[]{
+                 BACKGROUND.MOONSILVER_DWARF,
+                 BACKGROUND.STONESHIELD_DWARF,
+                 BACKGROUND.IRONHELM_DWARF,
+                 BACKGROUND.WOLFSBANE_DWARF,
+                 BACKGROUND.RUNESMITH_DWARF,
+                 BACKGROUND.GRIMBART_DWARF,
+
+                 //                 BACKGROUND.FROSTBEARD_DWARF,
+                 //                 BACKGROUND.WILDAXE_DWARF,
+                 //                 BACKGROUND.REDBLAZE_DWARF,
+                };
+            case GOBLINOID:
+                return new BACKGROUND[]{
+                 RED_ORC,
+                 BLACK_ORC,
+                 PALE_ORC,
+                 GREEN_ORC
+                };
+            case DEMON:
+                return new BACKGROUND[]{
+                 INFERI_CHAOSBORN,
+                 INFERI_HELLSPAWN,
+                 INFERI_WARPBORN
+                };
+            case VAMPIRE:
+                return new BACKGROUND[]{
+                 VAMPIRE,
+                };
+        }
+        return new BACKGROUND[0];
+    }
+
     public void init() {
         NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.GENERIC_DC_HEADER));
         NO_SHOW_NAME_VALUES.addAll(Arrays.asList(ValuePages.CHARS_HEADER));
@@ -1003,21 +1057,6 @@ public class DC_ContentValsManager extends ContentValsManager {
 
         EnumMaster.setALT_CONSTS_CLASS(DC_CONSTS.class);
         // initTypeDynamicValues(); TODO !
-    }
-
-    public static BACKGROUND[] getSubraces(RACE race) {
-        switch (race) {
-            case HUMAN:
-                return new BACKGROUND[]{
-                 BACKGROUND.MAN_OF_KINGS_REALM,
-                 BACKGROUND.MAN_OF_EAGLE_REALM,
-                 BACKGROUND.MAN_OF_GRIFF_REALM,
-                 BACKGROUND.MAN_OF_RAVEN_REALM,
-                 BACKGROUND.MAN_OF_WOLF_REALM,
-                 BACKGROUND.MAN_OF_EAST_EMPIRE,
-                };
-        }
-        return new BACKGROUND[0];
     }
 
     public enum ATTRIBUTE {

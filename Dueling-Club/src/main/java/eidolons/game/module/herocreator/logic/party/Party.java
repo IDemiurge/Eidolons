@@ -113,7 +113,7 @@ public class Party extends Obj {
             return;
         if (checkDuplicateHero(hero))
             return;
-        if (leader != null)
+        if (leader == null)
             setLeader(hero);
         members.add(hero);
         addProperty(PROPS.MEMBERS, hero.getName()); //no duplicates ?

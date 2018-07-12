@@ -41,7 +41,7 @@ public class PerkMaster {
         for (ObjType type : DataManager.getTypes(DC_TYPE.PERKS)) {
             if (isPerkProhibited(type, hero))
                 continue;
-            if (!type.getProperty(G_PROPS.PERK_GROUP).equalsIgnoreCase(PERK_TYPE.PARAMETER.toString())) {
+            if (!type.getProperty(G_PROPS.GROUP).equalsIgnoreCase(PERK_TYPE.PARAMETER.toString())) {
                 if (checkCustomPerkReqs(type, hero, c1, c2))
                     list.add(type);
             } else

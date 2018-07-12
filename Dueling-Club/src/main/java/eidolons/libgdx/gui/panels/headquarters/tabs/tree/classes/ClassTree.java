@@ -10,6 +10,9 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HeroTree;
  */
 public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
 
+    public ClassTree(boolean altBackground) {
+        super(altBackground);
+    }
 
     @Override
     protected int getLinkWidth() {
@@ -38,12 +41,12 @@ public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
 
     @Override
     protected int getMainSlotsPerTier(int tier) {
-        return 5-tier;
+        return 5 - tier;
     }
 
     @Override
     protected int getLinkSlotsPerTier(int tier) {
-        switch (tier){
+        switch (tier) {
             case 0:
                 return 4;
             case 1:
@@ -55,7 +58,7 @@ public class ClassTree extends HeroTree<ClassSlot, PerkSlot> {
             case 4:
                 return 2;
         }
-        return 4-tier;
+        return 4 - tier;
     }
 
     @Override

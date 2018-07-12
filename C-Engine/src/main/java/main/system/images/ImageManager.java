@@ -843,8 +843,12 @@ public class ImageManager {
 
     public static List<String> getPortraitsForBackground(String property, Boolean extended) {
         BACKGROUND bg = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, property);
-        List<String> list = getPortraitMap(extended).get(bg);
-        if (list != null) {
+        return getPortraitsForBackground(bg, extended);
+    }
+
+        public static List<String> getPortraitsForBackground(       BACKGROUND bg  , Boolean extended) {
+       List<String> list = getPortraitMap(extended).get(bg);
+        if (ListMaster.isNotEmpty(list)) {
             return list;
         }
         list = new ArrayList<>();
@@ -978,6 +982,7 @@ public class ImageManager {
             case GRIMBART_DWARF:
             case REDBLAZE_DWARF:
             case FROSTBEARD_DWARF:
+            case WOLFSBANE_DWARF:
             case MOONSILVER_DWARF:
                 paths.add(PORTRAIT_ROOT_PATH + "dwarf\\");
                 break;

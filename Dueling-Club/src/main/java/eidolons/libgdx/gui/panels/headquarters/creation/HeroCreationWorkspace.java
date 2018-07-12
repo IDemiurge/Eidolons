@@ -10,16 +10,14 @@ import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectableItemDisplayer;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationSequence.HERO_CREATION_ITEM;
-import eidolons.libgdx.gui.panels.headquarters.creation.general.HcDeitySelectionPanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.misc.HcNamePanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.misc.HcPortraitPanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.general.HcRaceSelectPanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.misc.HcPersonalityPanel;
-import eidolons.libgdx.gui.panels.headquarters.creation.preview.HcIntro;
 import eidolons.libgdx.gui.panels.headquarters.creation.preview.HcPreview;
-import eidolons.libgdx.gui.panels.headquarters.creation.skillset.HcSkillsetPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.selection.HcDeitySelectionPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.selection.misc.*;
+import eidolons.libgdx.gui.panels.headquarters.creation.selection.race.HcRaceSelectPanel;
+import eidolons.libgdx.gui.panels.headquarters.creation.selection.skillset.HcSkillsetPanel;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
@@ -38,16 +36,28 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
     private SelectableItemData previousItem;
     private Group displayed;
     private HcPreview preview;
-    private Map<HERO_CREATION_ITEM, Group> cache = new HashMap<>();
+    private Map<HERO_CREATION_ITEM, TablePanelX> cache = new HashMap<>();
+
+    public static final int WIDTH=1100;
+    public static final int PREVIEW_WIDTH=350;
+    public static final int PREVIEW_HEIGHT=800;
+    public static final int SELECTION_WIDTH=625;
+    public static final int SELECTION_HEIGHT=850;
+    public static final int HEIGHT=950;
+    private boolean newSelection;
 
     public HeroCreationWorkspace() {
-        super(1200, 900);
+        super(WIDTH, HEIGHT);
         addActor(
          new Image(TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
-          BACKGROUND_NINE_PATCH.PATTERN, 1200, 900)));
-        float w = 600;
-        displayableContainer = add(displayed = new HcIntro()).width(w);
-        add(preview = new HcPreview()).width(w);
+          BACKGROUND_NINE_PATCH.PATTERN, WIDTH, HEIGHT)));
+
+        displayableContainer = add(displayed = new HcIntro()).width(SELECTION_WIDTH)
+         .top().pad(50,20,20,20)
+        ;
+        add(preview = new HcPreview()).width(PREVIEW_WIDTH).height(PREVIEW_HEIGHT)
+         .top().pad(20,20,20,80);
+//        debug();
     }
 
     @Override
@@ -56,10 +66,13 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
         PROPERTY prop = null;
         HERO_CREATION_ITEM hcItem = new EnumMaster<HERO_CREATION_ITEM>().retrieveEnumConst(
          HERO_CREATION_ITEM.class, item.getName());
+        Object arg=sub ;
         switch (hcItem) {
             case RACE:
                 prop = G_PROPS.RACE;
                 eventType = GuiEventType.HC_RACE_CHOSEN;
+                arg = new EnumMaster<RACE>().retrieveEnumConst(
+                 RACE.class, sub);
                 break;
             case GENDER:
                 prop = G_PROPS.GENDER;
@@ -74,12 +87,13 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
             case FINALIZE:
                 break;
         }
+        if (prop!=null )
+            HeroCreationMaster.modified(prop, sub);
 
-        HeroCreationMaster.modified(prop, sub);
+        updateAct(0);
 
-        RACE race = new EnumMaster<RACE>().retrieveEnumConst(
-         RACE.class, sub);
-        EUtils.event(eventType, race);
+        if (eventType!=null )
+            EUtils.event(eventType, arg);
     }
 
     @Override
@@ -90,31 +104,44 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
         displayableContainer.setActor(displayed = getOrCreateDisplayable(new EnumMaster<HERO_CREATION_ITEM>().retrieveEnumConst(
          HERO_CREATION_ITEM.class, item.getName())));
         displayed.setUserObject(getUserObject());
+        preview.setUserObject(getUserObject());
+        newSelection = false;
     }
 
     private Group getOrCreateDisplayable(HERO_CREATION_ITEM item) {
-        Group panel = cache.get(item);
-        if (panel == null)
+        TablePanelX panel = cache.get(item);
+        if (panel == null) {
             panel = createDisplayable(item);
+            cache.put(item, panel);
+        } else {
+            if (newSelection) {
+                panel.update();
+            }
+        }
 
-        cache.put(item, panel);
         return panel;
     }
 
-    private Group createDisplayable(HERO_CREATION_ITEM item) {
+    private TablePanelX createDisplayable(HERO_CREATION_ITEM item) {
         switch (item) {
+            case INTRODUCTION:
+                return new HcIntro();
             case RACE:
                 return new HcRaceSelectPanel();
             case GENDER:
-                return new HcNamePanel();
+                return new HcNameAndGenderPanel();
             case PORTRAIT:
-                return new HcPortraitPanel();
+                return HcPortraitPanel.FULL_PORTRAITS
+                  ? new HcFullPortraitPanel():
+                 new HcPortraitPanel();
             case PERSONALITY:
                 return new HcPersonalityPanel();
             case DEITY:
                 return new HcDeitySelectionPanel();
             case SKILLSET:
                 return new HcSkillsetPanel();
+            case FINALIZE:
+                return new HcFinalizePanel();
         }
         return null;
     }
@@ -124,11 +151,14 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
         previousItem = this.item;
         this.item = sub;
         updateRequired = true;
+        newSelection = true;
         //        setUserObject(HqDataMaster.getHeroDataSource((Unit) sub.getEntity()));
     }
 
     @Override
     public void setUserObject(Object userObject) {
+        if (userObject==null )
+            return;
         super.setUserObject(userObject);
 
     }

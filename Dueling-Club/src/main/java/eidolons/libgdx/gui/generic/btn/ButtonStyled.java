@@ -65,12 +65,7 @@ public class ButtonStyled extends Image implements EventListener {
         MENU("UI/components/generic/buttons/button.png"),
         UNARMED("UI/components/dc/quick weapon/unarmed.png"),
 
-        HELP(VISUALS.QUESTION.getImgPath()) {
-            @Override
-            public boolean isVersioned() {
-                return false;
-            }
-        },
+        HELP("UI/components/generic/buttons/question.png") ,
         OPTIONS(VISUALS.MENU_BUTTON.getImgPath()) {
             @Override
             public boolean isVersioned() {

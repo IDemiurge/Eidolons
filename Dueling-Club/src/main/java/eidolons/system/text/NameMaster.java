@@ -78,7 +78,7 @@ public class NameMaster {
      + "Giflas Ester Menres Eumol Rolwim Adelwyn Rimlod Arnelion Lorwim Wolrim"
      + " Cenhed Adeilar Denuid Gwynros ";
     public static final String kingNamesFemale = "Menfa Juthira "
-     + "Elari Thinea Eonri Blauri Athna Lydia" + "Aithlin Mirona Nimore Seina Feluna Feina "
+     + "Elari Thinea Eonri Blauri Athna Lydia" + " Aithlin Mirona Nimore Seina Feluna Feina "
      + "Ansila Thide Haitha Lia Amaltha Theola";
     public static final String kingNamesSecond = "Bendaf Gorthiod Rolwain Limrod Irsilod Kalroin Ultath Kinter Elsen Drolem Galniod Irtheniod Adlarim Ginlung Arthenon Vaktiar Pirstag Aedainur Emrianor Naellid Esteniad Althair Murwaith Giothrim Maelsiur Firdlain Estariath Lundaine Merphim Barthair Aensulat Phermithas Leinleith Mardalu Gidseol Soamdath Diplard Evengil Fobbled Kaergraf Delnian Nelaigo";
     public static final String griffNames = "Jowaine Jurgon Severon Rutheos Raomir Raemir Sinarc Jemid Juraine Onsard Godric Theon Crigol Dagros Simdal "
@@ -315,6 +315,11 @@ public class NameMaster {
     public static String generateName(Entity hero) {
         RACE race = EntityCheckMaster.getRace(hero);
         BACKGROUND bg = EntityCheckMaster.getBackground(hero);
+        if (bg==null )
+            return "Nobackground";
+        return generateName(hero,race, bg);
+    }
+        public static String generateName(Entity hero, RACE race, BACKGROUND bg) {
         switch (race) {
             case HUMAN:
                 if (bg.toString().contains("Raven")) {

@@ -469,7 +469,6 @@ public abstract class Entity extends DataModel implements OBJ {
 
     public void setImage(String image) {
         setProperty(G_PROPS.IMAGE, image, true);
-        icon = new ImageIcon(getImagePath());
     }
 
     public ImageIcon getIcon() {

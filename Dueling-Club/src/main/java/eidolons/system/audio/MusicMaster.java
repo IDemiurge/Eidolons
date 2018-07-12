@@ -246,6 +246,9 @@ public class MusicMaster {
     }
 
     private void checkNewMusicToPlay() {
+
+        if (!isOn())
+            return;
         if (!interruptOnSet)
             if (playedMusic != null)
                 if (playedMusic.isPlaying())

@@ -12,7 +12,12 @@ import static main.content.enums.entity.HeroEnums.PERK_PARAM.*;
  */
 public class HeroEnums {
     public enum BACKGROUND {
-        MAN_OF_KINGS_REALM(RACE.HUMAN, SOUNDSET.ANGEL),
+        MAN_OF_KINGS_REALM(RACE.HUMAN, SOUNDSET.ANGEL){
+            @Override
+            public String getTypeName() {
+                return "Man of King's Realm";
+            }
+        },
         MAN_OF_EAGLE_REALM(RACE.HUMAN, SOUNDSET.ANGEL),
         MAN_OF_GRIFF_REALM(RACE.HUMAN, SOUNDSET.ANGEL),
         MAN_OF_RAVEN_REALM(RACE.HUMAN, SOUNDSET.WIZARD, SOUNDSET.ROGUE),
@@ -111,6 +116,9 @@ public class HeroEnums {
             this.race = race;
         }
 
+        public String getTypeName() {
+            return toString();
+        }
     }
 
     public enum CLASS_GROUP {

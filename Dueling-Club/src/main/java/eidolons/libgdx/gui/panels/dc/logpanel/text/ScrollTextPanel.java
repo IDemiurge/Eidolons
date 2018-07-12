@@ -16,19 +16,11 @@ public class ScrollTextPanel extends GroupX {
     protected boolean updatePos = false;
     protected float offsetX = 20;
     protected ScrollPanel<Message> scrollPanel;
-    float defaultHeight;
-    float defaultWidth;
-    int fontSize;
-    FONT fontStyle;
+    private float defaultHeight;
+    private float defaultWidth;
+    private int fontSize;
+    private FONT fontStyle;
     private Image bg;
-
-    public ScrollTextPanel(float defaultHeight, float defaultWidth, int fontSize, FONT fontStyle) {
-        this.defaultHeight = defaultHeight;
-        this.defaultWidth = defaultWidth;
-        this.fontSize = fontSize;
-        this.fontStyle = fontStyle;
-        init();
-    }
 
     public ScrollTextPanel(float defaultHeight, float defaultWidth) {
         this.defaultHeight = defaultHeight;
@@ -38,6 +30,41 @@ public class ScrollTextPanel extends GroupX {
 
     public ScrollTextPanel() {
         init();
+    }
+
+
+    public void init() {
+        if (getDefaultWidth() != 0)
+            setWidth(GdxMaster.adjustSize(getDefaultWidth(), 0.42f));
+        if (getDefaultHeight() != 0)
+            setHeight(GdxMaster.adjustSize(getDefaultHeight(), 0.42f));
+
+        initScrollPanel();
+        initBg();
+        if (bg != null)
+            bg.setZIndex(0);
+        updatePos = true;
+    }
+    protected void initScrollPanel() {
+        if (scrollPanel != null) {
+            scrollPanel.remove();
+        }
+        scrollPanel = new ScrollPanel() {
+            @Override
+            protected boolean isAlwaysScrolled() {
+                return isScrolledAlways();
+            }
+
+            @Override
+            public int getDefaultOffsetY() {
+                return getInitialYOffset();
+            }
+        };
+
+        scrollPanel.pad(1, 10, 1, 10);
+        scrollPanel.fill();
+
+        addActor(scrollPanel);
     }
 
     public void initBg() {
@@ -53,17 +80,6 @@ public class ScrollTextPanel extends GroupX {
         }
     }
 
-    public void init() {
-
-        setSize(GdxMaster.adjustSize(getDefaultWidth(), 0.42f),
-         GdxMaster.adjustSize(getDefaultHeight(), 0.40f));
-
-        initScrollPanel();
-        initBg();
-        if (bg != null)
-            bg.setZIndex(0);
-        updatePos = true;
-    }
 
 
     protected int getFontSize() {
@@ -103,15 +119,15 @@ public class ScrollTextPanel extends GroupX {
         scrollPanel.getInnerScrollContainer().getActor().clear();
         //TODO split?!
         for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
-            TextBuilder builder = getBuilder();
+            TextBuilder builder = getTextBuilder();
             Message message = builder.addString(substring).build(getWidth() * 0.92f);
             scrollPanel.addElement(message).width(getWidth());
         }
-//        outside.setTouchable(Touchable.enabled);
+
     }
 
 
-    protected TextBuilder getBuilder() {
+    protected TextBuilder getTextBuilder() {
         return new TextBuilder() {
             @Override
             protected FONT getFontStyle() {
@@ -129,29 +145,6 @@ public class ScrollTextPanel extends GroupX {
                 return GdxMaster.fontSizeAdjustCoef;
             }
         };
-    }
-
-
-    protected void initScrollPanel() {
-        if (scrollPanel != null) {
-            scrollPanel.remove();
-        }
-        scrollPanel = new ScrollPanel() {
-            @Override
-            protected boolean isAlwaysScrolled() {
-                return isScrolledAlways();
-            }
-
-            @Override
-            public int getDefaultOffsetY() {
-                return  getInitialYOffset();
-            }
-        };
-
-        scrollPanel.pad(1, 10, 1, 10);
-        scrollPanel.fill();
-
-        addActor(scrollPanel);
     }
 
     protected int getInitialYOffset() {

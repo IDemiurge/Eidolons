@@ -1,10 +1,11 @@
-package eidolons.libgdx.gui.panels.headquarters.creation.general;
+package eidolons.libgdx.gui.panels.headquarters.creation.selection.race;
 
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanelX;
+import eidolons.libgdx.gui.panels.headquarters.creation.selection.DescriptionScroll;
 import main.content.enums.entity.HeroEnums.RACE;
 import main.system.GuiEventType;
 
@@ -40,11 +41,18 @@ public class HcRaceSelectPanel extends TablePanelX {
             subraceLabel.setText(getSubraceText(data));
 
             backgroundPanel.setUserObject(data.getEntity());
+            backgroundPanel.updateAct(0);
             SelectableItemData item = backgroundPanel.select(0);
 
             backgroundLabel.setText(getBackgroundText(item));
+            scroll.setUserObject(data);
         });
 
+        EUtils.bind(GuiEventType.HC_BACKGROUND_CHOSEN, p -> {
+            SelectableItemData data = (SelectableItemData) p.get();
+            backgroundLabel.setText(getBackgroundText(data));
+            scroll.setUserObject(data);
+        });
     }
 
     private String getRaceText(RACE race) {
@@ -71,6 +79,5 @@ public class HcRaceSelectPanel extends TablePanelX {
 
     @Override
     public void setUserObject(Object userObject) {
-
     }
 }

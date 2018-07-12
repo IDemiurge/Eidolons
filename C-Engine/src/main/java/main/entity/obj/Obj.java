@@ -104,7 +104,7 @@ public class Obj extends Entity {
     }
 
     public void applyType(ObjType type) {
-        setType(type);
+        setType(new ObjType(type));
         cloneMaps(type);
         setOBJ_TYPE_ENUM(type.getOBJ_TYPE_ENUM());
         setName(type.getName());

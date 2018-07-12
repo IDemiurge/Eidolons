@@ -10,10 +10,15 @@ public class SkillTreeTab extends HqTreeTab {
     private final SkillSelectionMenu selectionMenu;
 
     public SkillTreeTab() {
-        super();
-        addActor(selectionMenu = new SkillSelectionMenu());
+        this(false);
 
         }
+
+    public SkillTreeTab(boolean altBackground) {
+        super(altBackground);
+        addActor(selectionMenu = new SkillSelectionMenu());
+
+    }
 
     @Override
     protected void update(float delta) {
@@ -22,6 +27,6 @@ public class SkillTreeTab extends HqTreeTab {
 
     @Override
     protected HeroTree createTree() {
-        return new SkillTree();
+        return new SkillTree(altBackground);
     }
 }

@@ -11,6 +11,9 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.tree.HeroTree;
  */
 public class SkillTree extends HeroTree<MasteryRankSlot, SkillSlot> {
 
+    public SkillTree(boolean altBackground) {
+        super(altBackground);
+    }
 
     @Override
     protected HeroTreeDataSource createTreeDataSource(HqHeroDataSource dataSource) {

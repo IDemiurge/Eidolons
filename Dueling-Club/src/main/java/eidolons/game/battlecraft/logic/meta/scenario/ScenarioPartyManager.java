@@ -116,10 +116,9 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         chooseOneHero = !randomOneHero;
 
         if (isCreateNewHero()) {
-            ObjType baseType;
             Unit hero = HeroCreationMaster.newHero();
-            type.setProperty(PROPS.MEMBERS, hero.getName());
-
+            party = new Party(type);
+            party.addMember(hero);
         } else if (isRandomOneHero() ||
          isChooseOneHero()) {
             List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
@@ -138,8 +137,9 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
                 type.setProperty(PROPS.MEMBERS, hero);
             }
         }
-
-        party = new Party(type);
+        if (party == null) {
+            party = new Party(type);
+        }
 
         getGame().getState().addObject(party);
         getGame().getDataKeeper().addUnitData(new UnitData(party));

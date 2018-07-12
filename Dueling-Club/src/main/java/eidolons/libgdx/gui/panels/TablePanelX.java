@@ -23,7 +23,23 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
     }
 
     @Override
+    public void setUserObject(Object userObject) {
+        if (userObject!=null )
+            if (getUserObjectClass() !=null )
+                if (userObject.getClass()!=getUserObjectClass())
+                    return;
+        super.setUserObject(userObject);
+    }
+
+    protected Class<? extends Object> getUserObjectClass() {
+        return null;
+    }
+
+    @Override
     public <T extends Actor> Cell<T> add(T actor) {
         return super.add(actor);
+    }
+
+    public void update() {
     }
 }

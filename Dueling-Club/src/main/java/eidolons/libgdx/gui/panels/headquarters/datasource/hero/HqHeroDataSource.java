@@ -151,7 +151,7 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
 
     @Override
     public String getParam(PARAMS param) {
-        return unitDataSource.getParam(param);
+        return getParam(param.getName());
     }
 
     @Override

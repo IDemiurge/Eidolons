@@ -43,7 +43,11 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
         super();
         GuiEventManager.bind(getEvent(), p -> {
             if (ExplorationMaster.isExplorationOn())
-                triggered(p);
+                try { //TODO HC trees can fail otherwise, fix properly!
+                    triggered(p);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
             else {
                 EUtils.showInfoText("Cannot do this while in combat!");
             }
@@ -63,28 +67,28 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
     @Override
     protected void adjustPosition() {
 
-//       TODO  if (activeNode == null) {
-//            return;
-//        }
-//        float w = activeNode.getWidth();
-//        float h = activeNode.getHeight();
-//
-//        float x = activeNode.getX() + w / 2;
-//        float y = activeNode.getY() + h / 2;
-//
-//        Vector2 v = activeNode.localToAscendantCoordinates(activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0,0));
-////        localToStageCoordinates(new Vector2(x, y));
-//
-//        w = getWidth();
-//        h = getHeight();
-//
-//        x = MathMaster.minMax(v.x,
-//         w / 2, GdxMaster.getWidth() - w);
-//        y = MathMaster.minMax(v.y,
-//         h / 2, GdxMaster.getHeight() - h);
-//
-//        v = stageToLocalCoordinates(new Vector2(x, y));
-//        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
+        //       TODO  if (activeNode == null) {
+        //            return;
+        //        }
+        //        float w = activeNode.getWidth();
+        //        float h = activeNode.getHeight();
+        //
+        //        float x = activeNode.getX() + w / 2;
+        //        float y = activeNode.getY() + h / 2;
+        //
+        //        Vector2 v = activeNode.localToAscendantCoordinates(activeNode.getFirstParentOfClass(HqTreeTab.class), new Vector2(0,0));
+        ////        localToStageCoordinates(new Vector2(x, y));
+        //
+        //        w = getWidth();
+        //        h = getHeight();
+        //
+        //        x = MathMaster.minMax(v.x,
+        //         w / 2, GdxMaster.getWidth() - w);
+        //        y = MathMaster.minMax(v.y,
+        //         h / 2, GdxMaster.getHeight() - h);
+        //
+        //        v = stageToLocalCoordinates(new Vector2(x, y));
+        //        ActorMaster.addMoveToAction(this, v.x, v.y, 1.5f);
 
     }
 
@@ -112,9 +116,9 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
             }
         });
         GuiEventManager.bind(RADIAL_MENU_CLOSE, obj -> {
-            if (HqPanel.getActiveInstance()!=null )
-            if (ready)
-                close();
+            if (HqPanel.getActiveInstance() != null)
+                if (ready)
+                    close();
         });
     }
 
@@ -199,9 +203,9 @@ public abstract class SlotSelectionRadialMenu extends RadialMenu {
               "\n" + type.getProperty(G_PROPS.TOOLTIP)
               + "\n" + type.getDescription(ref)
               + (isFree() ? "" :
-             (valid
-              ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
-              : ("\n" +reason))
+              (valid
+               ? "\nXp Cost:" + type.getIntParam(PARAMS.XP_COST)
+               : ("\n" + reason))
              )).getController()
             );
 

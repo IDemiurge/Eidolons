@@ -52,6 +52,10 @@ public class TextButtonX extends TextButton implements EventListener {
         this("", button, null);
     }
 
+    public TextButtonX(String text, Runnable runnable) {
+        this(text, StyleHolder.getHqTextButtonStyle(16), runnable);
+    }
+
     @Override
     public float getPrefWidth() {
         if (isFixedSize())

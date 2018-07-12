@@ -12,9 +12,11 @@ import eidolons.libgdx.gui.panels.headquarters.HqMaster;
  *
  */
 public abstract class HqTreeTab extends HqElement{
-   protected HeroTree tree;
+    protected boolean altBackground;
+    protected HeroTree tree;
 
-    public HqTreeTab() {
+    public HqTreeTab(boolean altBackground) {
+        this.altBackground = altBackground;
         add(tree = createTree()) ;
         setFixedSize(true);
         setSize(GDX.size(HqMaster.TAB_WIDTH) ,

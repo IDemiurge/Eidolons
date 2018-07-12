@@ -8,10 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
+import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationWorkspace;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.tree.HeroTreeDataSource;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
@@ -25,7 +27,14 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
     protected N[][] mainNodeRows;
     protected N2[][] linkNodeRows;
 
-    public HeroTree() {
+    public HeroTree( ) {
+        this(false);
+    }
+    public HeroTree(boolean altBackground) {
+        if (altBackground){
+            setSize(HeroCreationWorkspace.PREVIEW_WIDTH, HeroCreationWorkspace.SELECTION_HEIGHT);
+            setBackground(NinePatchFactory.getLightPanelDrawable());
+        } else
         setBackgroundAndSize(GdxImageMaster.
          getPanelBackground(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
           520, 735));

@@ -825,8 +825,14 @@ public class Unit extends DC_UnitModel {
     }
 
     public BACKGROUND getBackground() {
-        return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
+        BACKGROUND background = new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class,
          getProperty(G_PROPS.BACKGROUND));
+        if (getGender()!=null ){
+            return getGender() == GENDER.FEMALE
+             ? background.getFemale()
+             : background.getMale();
+        }
+        return background;
     }
 
     public DequeImpl<DC_JewelryObj> getJewelry() {
@@ -1074,7 +1080,7 @@ public class Unit extends DC_UnitModel {
     }
 
     public GENDER getGender() {
-        if (gender == null) {
+        if (gender == null || isSimulation()) {
             gender = new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class,
              getProperty(G_PROPS.GENDER));
         }

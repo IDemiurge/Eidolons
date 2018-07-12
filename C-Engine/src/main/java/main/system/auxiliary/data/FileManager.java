@@ -454,6 +454,8 @@ public class FileManager {
     }
 
     public static boolean isImageFile(String name) {
+        if (name==null )
+            return false;
         String format = StringMaster.getFormat(name);
         for (String f : ImageManager.STD_FORMATS) {
             if (format.replaceFirst(".", "").equalsIgnoreCase(f)) {

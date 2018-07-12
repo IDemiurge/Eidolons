@@ -339,7 +339,9 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     public void initDeity() {
         if (DataManager.isTypeName(getProperty(G_PROPS.DEITY), DC_TYPE.DEITIES)) {
             this.setDeity(DC_ContentValsManager.getDeity(this));
-        }
+            setProperty(G_PROPS.DEITY, deity.getName(), true);
+        } else
+            setDeity(null);
 
     }
 
@@ -364,7 +366,7 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
     }
 
     public Deity getDeity() {
-        if (deity == null) {
+        if (deity == null || isSimulation()) {
             initDeity();
         }
         return deity;
@@ -372,7 +374,6 @@ public abstract class DC_UnitModel extends BattleFieldObject implements Rotatabl
 
     public void setDeity(Deity deity) {
         this.deity = deity;
-        setProperty(G_PROPS.DEITY, deity.getName(), true);
     }
 
 

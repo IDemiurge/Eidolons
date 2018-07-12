@@ -1,5 +1,7 @@
 package eidolons.libgdx.texture;
 
+import eidolons.entity.Deity;
+import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -93,4 +95,89 @@ public class Images {
 
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
+    public static final String SEPARATOR = StrPathBuilder.build(
+     PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png"); ;
+
+    public static String getSketch(BACKGROUND background) {
+        if (background == null) {
+            return "";
+        }
+        String sketch=getSketchName(background);
+        return PathFinder.getSketchPath()+
+         sketch+
+         ".png";
+    }
+
+    private static String getSketchName(BACKGROUND sub) {
+        switch (sub) {
+            case MAN_OF_KINGS_REALM:
+            case WOMAN_OF_KINGS_REALM:
+                return "dragoncrest";
+            case MAN_OF_EAGLE_REALM:
+            case WOMAN_OF_EAGLE_REALM:
+                return "eagle";
+            case MAN_OF_GRIFF_REALM:
+            case WOMAN_OF_GRIFF_REALM:
+                return "griff";
+            case MAN_OF_RAVEN_REALM:
+            case WOMAN_OF_RAVEN_REALM:
+                return "raven";
+            case MAN_OF_WOLF_REALM:
+            case WOMAN_OF_WOLF_REALM:
+                return "wolf";
+            case DWARF:
+            case STONESHIELD_DWARF:
+            case IRONHELM_DWARF:
+            case MOONSILVER_DWARF:
+            case WILDAXE_DWARF:
+                 
+            case FROSTBEARD_DWARF:
+                 
+            case REDBLAZE_DWARF:
+                 
+            case GRIMBART_DWARF:
+                 
+            case WOLFSBANE_DWARF:
+                 
+            case RUNESMITH_DWARF:
+                 
+            case NORDHEIMER:
+                return "hammer";
+            case HIGH_ELF:
+                 
+            case FEY_ELF:
+                 
+            case GREY_ELF:
+                 
+            case DARK_ELF:
+                 
+            case WOOD_ELF:
+                 
+            case ELF:
+                return "tree";
+            case RED_ORC:
+
+            case BLACK_ORC:
+
+            case PALE_ORC:
+
+            case GREEN_ORC:
+            case VAMPIRE:
+            case MAN_OF_EAST_EMPIRE:
+                return "bats";
+            case INFERI_CHAOSBORN:
+                return "demon";
+            case INFERI_HELLSPAWN:
+                 
+            case INFERI_WARPBORN:
+                 
+
+                 
+        }
+        return null;
+    }
+
+    public static String getSketch(Deity deity) {
+        return null;
+    }
 }

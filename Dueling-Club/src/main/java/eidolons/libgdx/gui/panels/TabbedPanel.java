@@ -44,7 +44,11 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         add(buttonLayout).expand(0, 0).fill(0, 0).left();
 
         row();
-        panelLayout = addElement(null);
+        panelLayout = addTabCell();
+    }
+
+    protected Cell<T> addTabCell() {
+        return addElement(null);
     }
 
     @Override

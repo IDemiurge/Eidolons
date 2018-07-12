@@ -1,7 +1,9 @@
-package eidolons.libgdx.gui.panels.headquarters.creation.general;
+package eidolons.libgdx.gui.panels.headquarters.creation.selection.race;
 
 import eidolons.content.DC_ContentValsManager;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.panels.headquarters.creation.selection.SelectionImageTable;
+import eidolons.libgdx.texture.Images;
 import main.content.DC_TYPE;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.RACE;
@@ -19,7 +21,7 @@ import java.util.List;
  */
 public class HcSubracePanel extends SelectionImageTable {
     public HcSubracePanel( ) {
-        super(6, 6);
+        super(6, 6, 32);
     }
 
     @Override
@@ -27,6 +29,9 @@ public class HcSubracePanel extends SelectionImageTable {
         return GuiEventType.HC_SUBRACE_CHOSEN;
     }
 
+    public String getDisplayablePath(SelectableItemData data) {
+        return data.getEmblem();
+    }
     @Override
     protected SelectableItemData[] initDataArray() {
         RACE race = (RACE) getUserObject();
@@ -43,17 +48,24 @@ public class HcSubracePanel extends SelectionImageTable {
             String typename=StringMaster.getWellFormattedString(sub.name());
             if (sub==BACKGROUND.MAN_OF_EAST_EMPIRE)
                 typename = "Easterling";
+            if (sub==BACKGROUND.MAN_OF_KINGS_REALM)
+                typename = "Man of King's Realm";
             ObjType entity = DataManager.getType(typename, DC_TYPE.CHARS);
             String name = StringMaster.getWellFormattedString(sub.name().replace("MAN_OF", "")).trim();
             if (entity==null )
                 continue;
             String imagePath = entity.getImagePath();
             String description = entity.getDescription();
-            String previewImagePath = StringMaster.getAppendedImageFile(entity.getImagePath(), " full", true);
+
+            String previewImagePath = Images.getSketch(sub);
+
             String emblem = entity.getEmblemPath();
+
             SelectableItemData item = new SelectableItemData(name, description, previewImagePath, imagePath);
+            item.setBorderSelected(Images.WEAVE_LINK);
             item.setEmblem(emblem);
             item.setEntity(entity);
+            item.setSelectionUnderneath(true);
             filtered.add(item);
 
         }

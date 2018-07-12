@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters.datasource;
 
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_SpellObj;
 import eidolons.entity.item.DC_HeroItemObj;
@@ -21,6 +22,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPE
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HeroOperation;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
+import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
@@ -35,10 +37,7 @@ import main.entity.type.ObjType;
 import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by JustMe on 4/15/2018.
@@ -49,6 +48,7 @@ public class HqDataMaster {
     HeroDataModel heroModel;
     Stack<Pair<ParamMap, PropMap>> stack;
     private boolean dirty;
+    private Stack<List<HeroOperation>> undoStack=new Stack();
 
     public HqDataMaster(Unit hero) {
         this.hero = hero;
@@ -197,6 +197,9 @@ public class HqDataMaster {
     public static void undo(Unit hero) {
         map.get(hero).undo_();
     }
+    public static void redo(Unit hero) {
+        map.get(hero).redo_();
+    }
 
     public void save() {
         applyModifications();
@@ -214,7 +217,8 @@ public class HqDataMaster {
     public void undo_(boolean all) {
         if (heroModel.getModificationList().isEmpty())
             return;
-        List<HeroOperation> list = heroModel.getModificationList();
+        List<HeroOperation> list =new ArrayList<>( heroModel.getModificationList());
+
        if (all)
             list.clear();
         else
@@ -224,14 +228,26 @@ public class HqDataMaster {
     }
 
     public void undo_(List<HeroOperation> list) {
+        undoStack.add(heroModel.getModificationList());
+        setModificationList(list);
+    }
+        public void setModificationList(List<HeroOperation> list) {
         heroModel = createHeroDataModel(hero);
         heroModel.setModificationList(list);
         applyModifications(true);
         heroModel.reset();
-        if (HqPanel.getActiveInstance() != null)
+        if (HqPanel.getActiveInstance() != null) {
             HqPanel.getActiveInstance().setUserObject(new HqHeroDataSource(heroModel));
-        //       reset();
+        } else {
+            if (HeroCreationMaster.isHeroCreationInProgress())
+                HeroCreationPanel.getInstance().setUserObject(new HqHeroDataSource(heroModel));
+        }
     }
+    private void redo_() {
+        List<HeroOperation> list = undoStack.pop();
+        setModificationList(list);
+    }
+
 
     private HeroDataModel createHeroDataModel(Unit hero) {
         if (HeroCreationMaster.isHeroCreationInProgress())
@@ -305,8 +321,21 @@ public class HqDataMaster {
     public void applyOperation(Unit hero, HERO_OPERATION operation, Object... args) {
 
         switch (operation) {
+            case APPLY_TYPE:
+                String imagePath = hero.getImagePath();
+                hero.applyType((ObjType) args[0]);
+                for (PARAMETER item : DC_ContentValsManager.getAttributes()) {
+                    hero.getType(). modifyParameter((item), 5, null , true );
+                }
+                for (PARAMETER item : DC_ContentValsManager.DYNAMIC_PARAMETERS ) {
+                    hero.setParameter(DC_ContentValsManager.getPercentageParam(item),
+                     DC_MathManager.PERCENTAGE);
+                }
+                hero.setImage(imagePath);
+                hero.setGroup("Custom", true);
+                break;
             case SET_PROPERTY:
-                hero.setProperty((PROPERTY) args[0], args[1].toString());
+                hero.setProperty((PROPERTY) args[0], args[1].toString(), true);
                 break;
             case PICK_UP:
             case DROP:
@@ -351,7 +380,12 @@ public class HqDataMaster {
                 applySpellOperation(hero, operation, args);
                 break;
             case LEVEL_UP:
-                HeroLevelManager.levelUp(hero);
+                int i =1;
+                if (args.length>0)
+                    i = (int) args[0];
+                for (int j = 0; j < i; j++) {
+                    HeroLevelManager.levelUp(hero);
+                }
                 break;
         }
     }

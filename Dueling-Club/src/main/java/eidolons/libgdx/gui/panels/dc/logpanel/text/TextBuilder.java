@@ -31,7 +31,11 @@ public class TextBuilder {
         message = newMessage();
         message.setFillParent(true);
         message.align(Align.bottomLeft);
-        message.add(l).fill().width(w);
+        if (w != 0) {
+            message.add(l).fill().width(w);
+        } else {
+            message.add(l).fill().growX();
+        }
         message.setLayoutEnabled(true);
         message.pack();
         message.padTop(5);

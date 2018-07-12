@@ -11,7 +11,11 @@ public class ClassTreeTab extends HqTreeTab {
     private final PerkSelectionMenu perkSelectionMenu;
 
     public ClassTreeTab() {
-        super();
+        this(false);
+    }
+
+    public ClassTreeTab(boolean altBackground) {
+        super(altBackground);
         addActor(selectionMenu = new ClassSelectionMenu());
         addActor(perkSelectionMenu = new PerkSelectionMenu());
 
@@ -25,6 +29,6 @@ public class ClassTreeTab extends HqTreeTab {
 
     @Override
     protected HeroTree createTree() {
-        return new ClassTree();
+        return new ClassTree(altBackground);
     }
 }
