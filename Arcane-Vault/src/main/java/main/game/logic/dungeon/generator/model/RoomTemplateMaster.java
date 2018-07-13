@@ -9,7 +9,6 @@ import main.game.logic.dungeon.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import main.game.logic.dungeon.generator.LevelData;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 
@@ -113,7 +112,8 @@ public class RoomTemplateMaster {
             i++;
         }
         if (hor)
-            ArrayMaster.rotateMatrix_(cells);
+            main.system.auxiliary.log.LogMaster.log(1, "TODO hor " );
+//            ArrayMaster.rotateMatrix_(cells);
 
         RoomModel model = new RoomModel(cells, template, exit);
         main.system.auxiliary.log.LogMaster.log(1, template + " Model with exit "
@@ -153,7 +153,8 @@ public class RoomTemplateMaster {
 //         + template + ": " + model.getCellsString());
         model = clone(model);
 //        if (model.isHorizontal())
-        model.setRotated(rotations);
+//        model.setRotated(rotations);
+        main.system.auxiliary.log.LogMaster.log(1, "TODO hor setRotated" );
         return model;
     }
 
