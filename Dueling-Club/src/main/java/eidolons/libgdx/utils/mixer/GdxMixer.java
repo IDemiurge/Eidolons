@@ -1,4 +1,4 @@
-package eidolons.libgdx;
+package eidolons.libgdx.utils.mixer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import eidolons.libgdx.bf.SuperActor.BLENDING;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.shaders.GrayscaleShader;
-import eidolons.libgdx.texture.Images;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.launch.CoreEngine;
@@ -27,13 +26,13 @@ import java.util.function.Supplier;
 /**
  * Created by JustMe on 5/21/2018.
  */
-public class GdxMixer extends GdxUtil{
+public class GdxMixer extends GdxUtil {
 
     private final Supplier<ShaderProgram> shaderProgram;
     private final BLENDING blending;
     private final ArrayList<Actor> actors;
-    private   Float[] alpha=new Float[0];
     private final String pathRoot;
+    private Float[] alpha = new Float[0];
     private float m_fboScaler = 1.5f;
     private boolean m_fboEnabled = true;
     private FrameBuffer fbo = null;
@@ -41,13 +40,37 @@ public class GdxMixer extends GdxUtil{
     private SpriteBatch batch;
     private int size;
 
+    Runnable drawer;
 
+
+
+    public GdxMixer(Supplier<ShaderProgram> shaderProgram, BLENDING blending,
+                    String pathRoot, int size, Actor... actors) {
+        this.shaderProgram = shaderProgram;
+        this.blending = blending;
+        this.size = size;
+        this.pathRoot = pathRoot;
+        this.actors = new ArrayList<>(Arrays.asList(actors));
+        start();
+    }
+public enum MIXER_LAUNCH{
+    MASK,
+    SHADER,
+    EMITTER,
+
+
+}
     public static void main(String[] args) {
         CoreEngine.systemInit();
-        new GdxMixer(()->GrayscaleShader.getGrayscaleShader(), BLENDING.MULTIPLY,
-         Images.LOGO64,64
+        //swing dialogue init?
+        int size;
+        String rootPath;
+
+        new GdxMixer(() -> GrayscaleShader.getGrayscaleShader(), BLENDING.MULTIPLY,
+         PathFinder.getGeneratorRootPath() + "mixed.png", 64
         );
     }
+
     @Override
     protected void execute() {
         this.actors.add(new ImageContainer(pathRoot));
@@ -64,22 +87,13 @@ public class GdxMixer extends GdxUtil{
         if (shaderProgram != null) {
             batch.setShader(shaderProgram.get());
         }
-        int i=0;
+        int i = 0;
         batch.begin();
         for (Actor sub : actors) {
-            sub.draw(batch,alpha.length>i? alpha[i++]:1);
-//            batch.setBlendFunction(blending.blendSrcFunc, blending.blendDstFunc);
+            sub.draw(batch, alpha.length > i ? alpha[i++] : 1);
+            //            batch.setBlendFunction(blending.blendSrcFunc, blending.blendDstFunc);
         }
         batch.end();
-    }
-    public GdxMixer(Supplier<ShaderProgram> shaderProgram, BLENDING blending,
-                    String pathRoot,int size, Actor... actors) {
-        this.shaderProgram = shaderProgram;
-        this.blending = blending;
-        this.size = size;
-        this.pathRoot = pathRoot;
-        this.actors = new ArrayList<>(Arrays.asList(actors));
-        start();
     }
 
     @Override
@@ -95,17 +109,17 @@ public class GdxMixer extends GdxUtil{
     public void mix() {
 
         FileHandle handle = new FileHandle(
-         PathFinder.getImagePath()+
-         getPath());
+         PathFinder.getImagePath() +
+          getPath());
 
         // bind
-//        Gdx.gl20.glBindFramebuffer(GL20.GL_READ_FRAMEBUFFER, fbo.getFramebufferHandle());
-//        Gdx.gl20.glReadBuffer(GL20.GL_COLOR_ATTACHMENT0);
-// read content
-        Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, fbo.getWidth(), fbo.getHeight());
-// unbind
-//        Gdx.gl20.glBindFramebuffer(GL20.GL_READ_FRAMEBUFFER, 0);
-//           Gdx. gl20.glReadBuffer(GL20.GL_BACK);
+        //        Gdx.gl20.glBindFramebuffer(GL20.GL_READ_FRAMEBUFFER, fbo.getFramebufferHandle());
+        //        Gdx.gl20.glReadBuffer(GL20.GL_COLOR_ATTACHMENT0);
+        // read content
+        Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, getWidth(), getHeight());
+        // unbind
+        //        Gdx.gl20.glBindFramebuffer(GL20.GL_READ_FRAMEBUFFER, 0);
+        //           Gdx. gl20.glReadBuffer(GL20.GL_BACK);
 
         PixmapIO.writePNG(handle, pixmap);
     }
@@ -116,13 +130,13 @@ public class GdxMixer extends GdxUtil{
 
     @Override
     public void render() {
-        render(null );
+        render(null);
     }
 
     public void render(SpriteBatch spriteBatch) {
         if (spriteBatch == null)
             spriteBatch = new SpriteBatch();
-        this.batch =spriteBatch;
+        this.batch = spriteBatch;
 
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();

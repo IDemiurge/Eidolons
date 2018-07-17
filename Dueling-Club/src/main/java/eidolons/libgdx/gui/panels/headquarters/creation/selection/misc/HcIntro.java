@@ -38,6 +38,11 @@ public enum  SKETCHES{
         RAVEN,
     WOLF,
     BATS,
+    DRAGONCREST,
+    GRIFF,
+    EAGLE,
+    SHIP,
+    CASTLE,
     }
     private String getPreviewOne() {
         return PathFinder.getSketchPath() + SKETCHES.RAVEN.name() + ".png";

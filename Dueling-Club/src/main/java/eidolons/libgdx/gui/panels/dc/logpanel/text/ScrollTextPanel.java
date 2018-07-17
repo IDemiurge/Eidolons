@@ -120,10 +120,14 @@ public class ScrollTextPanel extends GroupX {
         //TODO split?!
         for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
             TextBuilder builder = getTextBuilder();
-            Message message = builder.addString(substring).build(getWidth() * 0.92f);
-            scrollPanel.addElement(message).width(getWidth());
+            Message message = builder.addString(substring).build(getTextLineWidth() * 0.92f);
+            scrollPanel.addElement(message).width(getTextLineWidth());
         }
 
+    }
+
+    protected float getTextLineWidth() {
+        return getWidth();
     }
 
 

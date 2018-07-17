@@ -116,6 +116,9 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         chooseOneHero = !randomOneHero;
 
         if (isCreateNewHero()) {
+            type =  new ObjType
+             (PartyManager.NEW_HERO_PARTY, DC_TYPE.PARTY);
+            getGame().initType(type);
             Unit hero = HeroCreationMaster.newHero();
             party = new Party(type);
             party.addMember(hero);

@@ -15,7 +15,12 @@ public class StrPathBuilder {
     }
 
     public static String build(String... strings) {
-        return new StrPathBuilder(strings).build_();
+        return build(true, strings);
+
+    }
+
+    public static String build(boolean cropLast, String... strings) {
+        return new StrPathBuilder().build_(cropLast, strings);
     }
 
     public static String build(List<String> list) {
@@ -28,6 +33,10 @@ public class StrPathBuilder {
     }
 
     public String build_(String... strings) {
+        return build_(true, strings);
+    }
+
+    public String build_(boolean cropLast, String... strings) {
         for (String s : strings) {
             if (s.endsWith(StringMaster.getPathSeparator()))
                 builder.append(s);
@@ -35,7 +44,8 @@ public class StrPathBuilder {
                 builder.append(s + StringMaster.getPathSeparator());
         }
         String result = builder.toString();
-        result = result.substring(0, result.length() - 1);
+        if (cropLast)
+            result = result.substring(0, result.length() - 1);
         return result;
     }
 

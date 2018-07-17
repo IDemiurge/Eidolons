@@ -41,9 +41,9 @@ public class WeaveUi extends GuiStage {
         buttonPanel.setPosition(GdxMaster.centerWidth(buttonPanel),
          50 );
 //        addActor(heroPreview = new WeaveHeroPreview());
-        addActor(viewModeBox = createViewModeBox());
-        viewModeBox.setPosition(GdxMaster.right(viewModeBox),
-         GdxMaster.top(viewModeBox)-100 );
+//        addActor(viewModeBox = createViewModeBox());
+//        viewModeBox.setPosition(GdxMaster.right(viewModeBox),
+//         GdxMaster.top(viewModeBox)-100 );
        init();
 
     }

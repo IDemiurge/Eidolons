@@ -33,7 +33,12 @@ public class HeroCreationSequence extends ItemListPanel {
             return false;
        HERO_CREATION_ITEM item = getSequenceItem(sub);
        if (!back)
-        HeroCreationMaster.setCurrentItem(item);
+       {
+           HeroCreationMaster.setCurrentItem(item);
+           if (HeroCreationMaster.HUMAN_ONLY) {
+               infoPanel.subItemClicked(sub, "Human");
+           }
+       }
         return super.clicked(textButton, sub);
     }
 
@@ -113,7 +118,15 @@ public class HeroCreationSequence extends ItemListPanel {
     //additional controls?
     public enum HERO_CREATION_ITEM {
         INTRODUCTION,
-        RACE("Human", "Elf", "Dwarf", "Goblinoid", "Demon", "Vampire"),
+        RACE("Human", "Elf", "Dwarf", "Goblinoid", "Demon", "Vampire"){
+            @Override
+            public String[] getSubItems() {
+                if (HeroCreationMaster.HUMAN_ONLY){
+                    return null;
+                }
+                return super.getSubItems();
+            }
+        },
         GENDER(), //"Male", "Female" now w/o subpanel
         PORTRAIT,
         PERSONALITY,

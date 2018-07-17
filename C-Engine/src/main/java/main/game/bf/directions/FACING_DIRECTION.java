@@ -13,6 +13,9 @@ public enum FACING_DIRECTION {
     NONE(null, false, false);
 
     public static final FACING_DIRECTION[] values = values();
+    public static final FACING_DIRECTION[] normalFacing = {
+     NORTH,     WEST, EAST, SOUTH
+    };
     private DIRECTION direction;
     private boolean vertical;
 

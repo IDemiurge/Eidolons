@@ -61,6 +61,7 @@ public class HqPanel extends TablePanel implements Blocking {
             super.draw(batch, 1);
         else
             ShaderMaster.drawWithCustomShader(this, batch, null );
+        debugAll();
     }
 
     public HqPanel() {

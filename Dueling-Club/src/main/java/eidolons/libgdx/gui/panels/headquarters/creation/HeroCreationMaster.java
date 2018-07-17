@@ -35,6 +35,7 @@ public class HeroCreationMaster {
     public static final boolean TEST_MODE = true;
     public static final boolean FAST_MODE = true;
     private static final int INITIAL_LEVEL = 2;
+    public static final boolean HUMAN_ONLY = true;
     static HcHeroModel model;
     private static HERO_CREATION_ITEM currentItem=HERO_CREATION_ITEM.values()[0];
     private static HERO_CREATION_ITEM previousItem;

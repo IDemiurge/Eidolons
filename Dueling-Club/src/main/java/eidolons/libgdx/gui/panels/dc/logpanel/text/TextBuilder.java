@@ -40,9 +40,14 @@ public class TextBuilder {
         message.pack();
         message.padTop(5);
         message.padBottom(5);
+        pad(message);
         addHoverObjects();
-
         return message;
+    }
+
+    protected void pad(Message message) {
+        message.padTop(5);
+        message.padBottom(5);
     }
 
     protected Message newMessage() {

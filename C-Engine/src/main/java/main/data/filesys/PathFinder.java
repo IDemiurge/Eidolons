@@ -2,6 +2,7 @@ package main.data.filesys;
 
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
 
 import java.io.File;
@@ -388,5 +389,10 @@ public class PathFinder {
          "std")+
          StringMaster.getPathSeparator();
 
+    }
+
+    public static String getGeneratorRootPath() {
+        return StrPathBuilder.build(false,
+         ImageManager.getValueIconsPath(), "generator");
     }
 }

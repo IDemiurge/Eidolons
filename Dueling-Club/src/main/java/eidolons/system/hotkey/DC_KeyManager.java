@@ -1,15 +1,20 @@
 package eidolons.system.hotkey;
 
+import eidolons.content.ValueHelper;
 import eidolons.entity.active.DC_ActionManager.ADDITIONAL_MOVE_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_ACTIONS;
 import eidolons.entity.active.DC_ActionManager.STD_MODE_ACTIONS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
+import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.libgdx.anims.controls.AnimController;
 import eidolons.libgdx.anims.controls.EmitterController;
 import eidolons.system.controls.Controller;
 import eidolons.system.controls.Controller.CONTROLLER;
 import eidolons.system.controls.GlobalController;
+import eidolons.system.options.ControlOptions.CONTROL_OPTION;
+import eidolons.system.options.OptionsMaster;
 import eidolons.test.debug.DebugController;
 import eidolons.test.debug.DebugMaster;
 import main.content.DC_TYPE;
@@ -17,10 +22,9 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
-import main.swing.generic.components.panels.G_PagePanel;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
-import eidolons.content.ValueHelper;
 import main.system.launch.CoreEngine;
 
 import java.awt.event.KeyEvent;
@@ -29,7 +33,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DC_KeyManager
-// extends KeyboardFocusManager
+ // extends KeyboardFocusManager
  implements KeyListener {
 
     public static final int DEFAULT_MODE = 2;
@@ -39,7 +43,6 @@ public class DC_KeyManager
     private static final int ACTION_MASK = KeyEvent.ALT_DOWN_MASK;
     private static final int ITEM_MASK = KeyEvent.ALT_DOWN_MASK + KeyEvent.CTRL_DOWN_MASK;
     public static CONTROLLER DEFAULT_CONTROLLER = CONTROLLER.DEBUG;
-    G_PagePanel<?> p;
     GlobalController globalController = new GlobalController();
     private Map<String, Integer> stdActionKeyMap;
     private Map<String, Integer> stdModeKeyMap;
@@ -164,7 +167,7 @@ public class DC_KeyManager
 
         char CHAR = (e.getKeyChar());
         int keyMod = e.getModifiers();
-//        arrowPressed(e); TODO
+        //        arrowPressed(e); TODO
         handleKeyTyped(keyMod, CHAR);
     }
 
@@ -173,10 +176,10 @@ public class DC_KeyManager
             selectController();
             return true;
         }
-//        if (e == 'G') {
-//            toggleGlobalController();
-//            return true;
-//        }
+        //        if (e == 'G') {
+        //            toggleGlobalController();
+        //            return true;
+        //        }
         return false;
     }
 
@@ -236,6 +239,9 @@ public class DC_KeyManager
                 }
             }
         }
+        if (OptionsMaster.getControlOptions().getBooleanValue(CONTROL_OPTION.WASD_INDEPENDENT_FROM_FACING)) {
+            CHAR = checkReplaceWasd(CHAR);
+        }
         int index = -1;
         String charString = CHAR + "";
         boolean preview = false;
@@ -282,6 +288,58 @@ public class DC_KeyManager
             }
         }
         return false;
+    }
+
+    public static  char checkReplaceWasd(char aChar) {
+        FACING_DIRECTION moveDirection = getAbsoluteDirectionForWasd(aChar);
+
+        if (moveDirection == null)
+            return aChar;
+
+        Unit unit = null;
+        try {
+            unit = Eidolons.getGame().getLoop().getActiveUnit();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        if (unit == null)
+            unit = Eidolons.getMainHero();
+        FACING_DIRECTION facing = unit.getFacing();
+        return getCorrectedWsad(facing, moveDirection);
+    }
+
+    public static  FACING_DIRECTION getAbsoluteDirectionForWasd(char aChar) {
+        switch (aChar) {
+            case 'w':
+                return FACING_DIRECTION.NORTH;
+            case 'a':
+                return FACING_DIRECTION.WEST;
+            case 's':
+                return FACING_DIRECTION.SOUTH;
+            case 'd':
+                return FACING_DIRECTION.EAST;
+        }
+        return null;
+    }
+
+
+
+
+    public static char getCorrectedWsad(FACING_DIRECTION facing,
+                                  FACING_DIRECTION moveDirection) {
+        int degrees = (moveDirection.getDirection().getDegrees()
+         - facing.getDirection().getDegrees() + 90) % 360;
+        switch (degrees) {
+            case 0:
+                return 'd';
+            case 90:
+                return 'w';
+            case 180:
+                return 'a';
+            case 270:
+                return 's';
+        }
+        return 0;
     }
 
 

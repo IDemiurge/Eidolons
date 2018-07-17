@@ -27,19 +27,19 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean uiAtlasOn = false;
-    private static TextureCache textureCache;
+    private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
     private static Map<TextureRegion, Drawable> drawableMap = new HashMap<>(300);
+    private static boolean returnEmptyOnFail = true;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
     private TextureAtlas textureAtlas;
     private Pattern pattern;
-    private static boolean returnEmptyOnFail=true;
 
 
     private TextureCache() {
@@ -55,8 +55,8 @@ public class TextureCache {
     private static void init() {
         try {
             creationLock.lock();
-            if (textureCache == null) {
-                textureCache = new TextureCache();
+            if (instance == null) {
+                instance = new TextureCache();
             }
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
@@ -66,31 +66,27 @@ public class TextureCache {
     }
 
     public static Texture getOrCreateGrayscale(String path) {
-        if (textureCache == null) {
-            init();
-        }
-
-        return textureCache._getOrCreateGrayScale(path);
+        return getInstance()._getOrCreateGrayScale(path);
     }
 
     public static Texture getOrCreateNonEmpty(String path) {
         Texture texture = getOrCreate(path);
-        if (texture==emptyTexture)
+        if (texture == emptyTexture)
             return null;
         return texture;
     }
-        public static Texture getOrCreate(String path) {
-        if (textureCache == null) {
-            init();
-        }
 
-        return textureCache._getOrCreate(path);
+    public static Texture getOrCreate(String path) {
+
+
+        return getInstance()._getOrCreate(path);
     }
 
     public static TextureRegion getOrCreateRoundedRegion(String path) {
         return getOrCreateRoundedRegion(path, true);
     }
-        public static TextureRegion getOrCreateRoundedRegion(String path, boolean write) {
+
+    public static TextureRegion getOrCreateRoundedRegion(String path, boolean write) {
         TextureRegion region = getOrCreateR(GdxImageMaster.getRoundedPath(path));
         if (!region.getTexture().equals(emptyTexture)) {
             return region;
@@ -100,22 +96,20 @@ public class TextureCache {
 
     public static TextureRegion getOrCreateR(String path) {
 
-        if (path==null ){
-            main.system.auxiliary.log.LogMaster.log(1,"EMPTY TEXTURE REGION REQUEST!" );
+        if (path == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
             return new TextureRegion(emptyTexture);
         }
-        if (textureCache == null) {
-            init();
-        }
+
         TextureRegion region = regionCache.get(path);
         if (region != null)
             return region;
 
-        final Matcher matcher = textureCache.pattern.matcher(path);
+        final Matcher matcher = getInstance().pattern.matcher(path);
 
         if (matcher.matches()) {
             String name = path.substring(
-//          1+path.indexOf(StringMaster.getPathSeparator())
+             //          1+path.indexOf(StringMaster.getPathSeparator())
              3
              , path.lastIndexOf("."));// matcher.group(1);
             name = StringMaster.constructStringContainer
@@ -123,7 +117,7 @@ public class TextureCache {
             name = name.substring(0, name.length() - 1);
 
             if (uiAtlasOn)
-                region = textureCache.textureAtlas.findRegion(name);
+                region = getInstance().textureAtlas.findRegion(name);
             if (region != null) {
                 regionCache.put(path, region);
                 counter.incrementAndGet();
@@ -132,7 +126,7 @@ public class TextureCache {
             }
         }
 
-        region = new TextureRegion(textureCache._getOrCreate(path));
+        region = new TextureRegion(getInstance()._getOrCreate(path));
         if (region.getTexture() != emptyTexture)
             regionCache.put(path, region);
         return region;
@@ -171,10 +165,8 @@ public class TextureCache {
     }
 
     public static Texture createTexture(String path, boolean putIntoCache) {
-        if (textureCache == null) {
-            init();
-        }
-        return textureCache._createTexture(path, putIntoCache);
+
+        return getInstance()._createTexture(path, putIntoCache);
     }
 
     public static Drawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
@@ -188,7 +180,7 @@ public class TextureCache {
     }
 
     public static Drawable getOrCreateTextureRegionDrawable(String imagePath) {
-        if (imagePath==null )
+        if (imagePath == null)
             return null;
         return getOrCreateTextureRegionDrawable(getOrCreateR(imagePath));
     }
@@ -203,7 +195,7 @@ public class TextureCache {
 
     public static TextureRegion getOrCreateSizedRegion(int iconSize, String path) {
         Texture sized = GdxImageMaster.size(path, iconSize, true);
-        if (sized==null)
+        if (sized == null)
             return new TextureRegion(getEmptyTexture());
         return new TextureRegion(sized);
     }
@@ -221,7 +213,22 @@ public class TextureCache {
         if (path == null)
             return null;
         String sized = StringMaster.getAppendedImageFile(path, " " + imageSize);
-        return         getRegion(sized, GdxImageMaster.size(sized, imageSize, true));
+        return getRegion(sized, GdxImageMaster.size(sized, imageSize, true));
+    }
+
+    public static boolean isReturnEmptyOnFail() {
+        return returnEmptyOnFail;
+    }
+
+    public static void setReturnEmptyOnFail(boolean returnEmptyOnFail) {
+        TextureCache.returnEmptyOnFail = returnEmptyOnFail;
+    }
+
+    public static TextureCache getInstance() {
+        if (instance == null) {
+            init();
+        }
+        return instance;
     }
 
     private String getAltTexturePath(String filePath) {
@@ -234,7 +241,7 @@ public class TextureCache {
             if (!normal.getTextureData().isPrepared()) {
                 normal.getTextureData().prepare();
             }
-//            Gdx2DPixmap. GDX2D_FORMAT_RGBA8888
+            //            Gdx2DPixmap. GDX2D_FORMAT_RGBA8888
             Pixmap pixmap2 = new Pixmap(normal.getWidth(), normal.getHeight(), Format.RGBA8888);
             Pixmap pixmap = normal.getTextureData().consumePixmap();
 
@@ -255,15 +262,11 @@ public class TextureCache {
     }
 
     private Texture _getOrCreate(String path) {
-if (path==null ){
-    main.system.auxiliary.log.LogMaster.log(1,"EMPTY TEXTURE REQUEST!" );
-    return emptyTexture;
-}
-        path = path
-         .toLowerCase();
-        if (!path.startsWith("/")) {
-            path = "/" + path;
+        if (path == null) {
+            main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REQUEST!");
+            return emptyTexture;
         }
+        path = getPathForCache(path);
 
         if (!this.cache.containsKey(path)) {
             Texture x = _createTexture(path);
@@ -272,6 +275,15 @@ if (path==null ){
         }
 
         return this.cache.get(path);
+    }
+
+    private String getPathForCache(String path) {
+        path = path
+         .toLowerCase();
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        return path;
     }
 
     public Texture _createTexture(String path) {
@@ -312,12 +324,19 @@ if (path==null ){
         return t;
     }
 
-    public static boolean isReturnEmptyOnFail() {
-        return returnEmptyOnFail;
+    public Texture createAndCacheTexture(String path, Pixmap pixmap) {
+        Texture texture = new Texture(pixmap);
+        cache.put(path, texture);
+        return texture;
     }
 
-    public static void setReturnEmptyOnFail(boolean returnEmptyOnFail) {
-        TextureCache.returnEmptyOnFail = returnEmptyOnFail;
+    public TextureRegion createAndCacheRegion(String path, Pixmap pixmap) {
+        path = getPathForCache(path);
+        Texture texture = new Texture(pixmap);
+        cache.put(path, texture);
+        TextureRegion r = new TextureRegion(texture);
+        regionCache.put(path, r);
+        return r;
     }
 }
 

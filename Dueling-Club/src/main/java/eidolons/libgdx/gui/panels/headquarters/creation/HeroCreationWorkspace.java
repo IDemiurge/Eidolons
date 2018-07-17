@@ -110,7 +110,7 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
 
     private Group getOrCreateDisplayable(HERO_CREATION_ITEM item) {
         TablePanelX panel = cache.get(item);
-        if (panel == null) {
+        if (panel == null || (HeroCreationMaster.TEST_MODE&&HeroCreationMaster.FAST_MODE)) {
             panel = createDisplayable(item);
             cache.put(item, panel);
         } else {
