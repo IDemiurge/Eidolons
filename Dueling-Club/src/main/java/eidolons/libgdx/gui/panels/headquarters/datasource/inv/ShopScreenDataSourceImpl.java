@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
+import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
@@ -24,6 +25,12 @@ public class ShopScreenDataSourceImpl implements
  EquipDataSource {
     ShopInterface shop;
     InventoryDataSource dataSource;
+    private ITEM_FILTERS filter;
+
+    @Override
+    public void setFilter(ITEM_FILTERS filter) {
+        this.filter = filter;
+    }
 
     public ShopScreenDataSourceImpl(ShopInterface shop, Unit unit) {
         this.shop = shop;

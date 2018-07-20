@@ -457,4 +457,7 @@ public class Coordinates {
     }
 
 
+    public Coordinates offset(Coordinates coordinates) {
+        return getOffsetByX(coordinates.x).getOffsetByY(coordinates.y);
+    }
 }

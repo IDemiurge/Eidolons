@@ -7,7 +7,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import eidolons.libgdx.anims.AnimData;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
-import eidolons.libgdx.anims.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.anims.sprite.SpriteAnimation;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.grid.BaseView;

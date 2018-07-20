@@ -234,7 +234,22 @@ public class TiledNinePatchGenerator implements ApplicationListener {
          "ninepatch", "background" , name().toLowerCase()+".png");
     }
 
-    public enum NINE_PATCH {
+    public enum NINE_PATCH_PADDING {
+        SAURON(40, 30, 20, 20),
+        ;
+        public int top;
+        public int bottom;
+        public int left;
+        public int right;
+
+        NINE_PATCH_PADDING(int top, int bottom, int left, int right) {
+            this.top = top;
+            this.bottom = bottom;
+            this.left = left;
+            this.right = right;
+        }
+    }
+        public enum NINE_PATCH {
         SAURON(-16, 60, -16, -34),
         FRAME(),
         DEMIURGE,

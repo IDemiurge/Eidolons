@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.NinePatchFactory;
 
@@ -86,6 +87,10 @@ public class TablePanel<T extends Actor> extends Table {
 
     public void afterUpdateAct(float delta) {
 
+    }
+
+    protected void pad(NINE_PATCH_PADDING patchPadding) {
+        pad(patchPadding.top, patchPadding.left, patchPadding.bottom, patchPadding.right);
     }
 
     public void updateAct(float delta) {

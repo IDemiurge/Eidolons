@@ -2,6 +2,8 @@ package eidolons.game.module.herocreator.logic.items;
 
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_QuickItemObj;
+import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
+import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.entity.ItemEnums;
 import main.content.enums.entity.ItemEnums.ITEM_MATERIAL_GROUP;
@@ -48,5 +50,24 @@ public class ItemMaster {
     public static boolean checkMaterial(ObjType type, ITEM_MATERIAL_GROUP group) {
         return StringMaster.compare(group.toString(),
          type.getProperty(G_PROPS.ITEM_MATERIAL_GROUP), true);
+    }
+
+    public static boolean checkFilter(DC_HeroItemObj item, ITEM_FILTERS filter) {
+        switch (filter) {
+            case ALL:
+                return true;
+            case WEAPON:
+                return item.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS;
+            case ARMOR:
+                return item.getOBJ_TYPE_ENUM() == DC_TYPE.ARMOR;
+            case USABLE:
+                return item.getOBJ_TYPE_ENUM() == DC_TYPE.ITEMS;
+            case JEWELRY:
+                return item.getOBJ_TYPE_ENUM() == DC_TYPE.JEWELRY;
+
+            case QUEST:
+                break;
+        }
+        return false;
     }
 }

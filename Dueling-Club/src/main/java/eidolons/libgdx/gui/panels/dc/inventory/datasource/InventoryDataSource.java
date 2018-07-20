@@ -5,6 +5,7 @@ import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.gui.panels.dc.inventory.*;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
+import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -21,6 +22,7 @@ public class InventoryDataSource implements QuickSlotDataSource,
     private InventoryFactory factory;
     private HeroDataModel unit;
     private InventoryClickHandler handler;
+    private ITEM_FILTERS filter;
 
     public InventoryDataSource(Unit unit) {
         if (HqPanel.getActiveInstance()==null )
@@ -80,8 +82,13 @@ public class InventoryDataSource implements QuickSlotDataSource,
     }
 
     @Override
+    public void setFilter(ITEM_FILTERS filter) {
+        this.filter=filter;
+    }
+
+    @Override
     public List<InventoryValueContainer> getInventorySlots() {
-        List<DC_HeroItemObj> inv = new ArrayList<>(  unit.getInventory());
+        List<DC_HeroItemObj> inv = applyFilter(unit.getInventory(), filter);
         ListMaster.fillWithNullElements(inv
          , InventorySlotsPanel.SIZE);
         List<InventoryValueContainer> list =

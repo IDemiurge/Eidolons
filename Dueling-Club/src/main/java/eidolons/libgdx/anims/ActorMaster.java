@@ -9,7 +9,7 @@ import eidolons.libgdx.anims.actions.AutoFloatAction;
 import eidolons.libgdx.anims.actions.FadeInAction;
 import eidolons.libgdx.anims.actions.FadeOutAction;
 import eidolons.libgdx.anims.actions.RotateByActionLimited;
-import eidolons.libgdx.anims.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.gui.generic.GearCluster;
 import main.system.auxiliary.ClassMaster;
 

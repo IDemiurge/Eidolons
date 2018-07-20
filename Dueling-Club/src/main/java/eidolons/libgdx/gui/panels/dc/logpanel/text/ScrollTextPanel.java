@@ -51,6 +51,11 @@ public class ScrollTextPanel extends GroupX {
         }
         scrollPanel = new ScrollPanel() {
             @Override
+            protected void pad(ScrollPanel scrollPanel) {
+                padScroll(scrollPanel);
+            }
+
+            @Override
             protected boolean isAlwaysScrolled() {
                 return isScrolledAlways();
             }
@@ -65,6 +70,9 @@ public class ScrollTextPanel extends GroupX {
         scrollPanel.fill();
 
         addActor(scrollPanel);
+    }
+
+    protected void padScroll(ScrollPanel scrollPanel) {
     }
 
     public void initBg() {

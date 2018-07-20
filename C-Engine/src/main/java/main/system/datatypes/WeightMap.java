@@ -1,6 +1,7 @@
 package main.system.datatypes;
 
 import main.data.XLinkedMap;
+import main.system.auxiliary.StringMaster;
 
 import java.util.Map;
 
@@ -12,6 +13,15 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
     public WeightMap() {
 
+    }
+
+    @Override
+    public String toString() {
+        String string = "";
+        for (E e : keySet()) {
+            string += e + StringMaster.wrapInParenthesis(StringMaster.toStringForm(get(e)));
+        }
+        return super.toString();
     }
 
     public WeightMap(Map<E, Integer> map) {

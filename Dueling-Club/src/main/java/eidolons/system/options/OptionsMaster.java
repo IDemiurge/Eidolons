@@ -14,7 +14,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.anims.FloatTextLayer;
-import eidolons.libgdx.anims.particles.ParticleManager;
+import eidolons.libgdx.particles.ParticleManager;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.mouse.InputController;

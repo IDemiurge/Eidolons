@@ -9,7 +9,7 @@ import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObjMaster;
 import eidolons.game.module.dungeoncrawl.objects.LockMaster;
-import eidolons.libgdx.anims.particles.ParticleManager;
+import eidolons.libgdx.particles.ParticleManager;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;

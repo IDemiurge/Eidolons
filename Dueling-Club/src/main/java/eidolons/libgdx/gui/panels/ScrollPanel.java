@@ -68,9 +68,12 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
         }
     }
 
+    protected void pad(ScrollPanel<T> tScrollPanel) {
+    }
     private void init() {
         this.setTouchable(Touchable.enabled);
         left().bottom();
+        pad(this);
         setClip(true);
 
         table = new TablePanel();
@@ -79,7 +82,6 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
         table.setLayoutEnabled(true);
         table.pack();
-
         innerScrollContainer = new InnerScrollContainer<>();
         innerScrollContainer.left().bottom();
         innerScrollContainer.setActor(table);
@@ -177,6 +179,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             }
         }
     }
+
 
     protected boolean isAlwaysScrolled() {
         return false;

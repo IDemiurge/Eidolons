@@ -2,11 +2,11 @@ package eidolons.libgdx.screens.map.layers;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import eidolons.libgdx.anims.particles.EmitterMaster;
-import eidolons.libgdx.anims.particles.ParticleEffectX;
+import eidolons.libgdx.particles.EmitterMaster;
+import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.macro.MacroGame;
-import eidolons.libgdx.anims.particles.EmitterActor;
-import eidolons.libgdx.anims.particles.EmitterPools;
+import eidolons.libgdx.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterPools;
 import eidolons.libgdx.screens.map.editor.EditorParticleMaster;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MAP_POINTS;
 import eidolons.libgdx.screens.map.layers.MapMoveLayers.MOVE_DIRECTION;

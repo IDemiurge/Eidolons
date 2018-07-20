@@ -8,7 +8,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.system.DC_Formulas;
-import eidolons.libgdx.anims.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.EMITTER_PRESET;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;

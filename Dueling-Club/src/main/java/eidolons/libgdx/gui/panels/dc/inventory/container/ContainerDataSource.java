@@ -8,6 +8,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandler.CELL_TYPE;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryValueContainer;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
+import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel.ITEM_FILTERS;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryTableDataSource;
 import main.system.auxiliary.data.ListMaster;
 
@@ -22,6 +23,7 @@ public class ContainerDataSource implements InventoryTableDataSource {
     private InventoryFactory factory;
     private DC_Obj obj;
     private ContainerClickHandler handler;
+    private ITEM_FILTERS filter;
 
     public ContainerDataSource(DC_Obj obj, Unit unit) {
         this.obj = obj;
@@ -38,6 +40,11 @@ public class ContainerDataSource implements InventoryTableDataSource {
 
     public ContainerClickHandler getHandler() {
         return handler;
+    }
+
+    @Override
+    public void setFilter(ITEM_FILTERS filter) {
+        this.filter=filter;
     }
 
     @Override

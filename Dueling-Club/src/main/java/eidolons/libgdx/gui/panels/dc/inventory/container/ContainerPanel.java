@@ -1,30 +1,32 @@
 package eidolons.libgdx.gui.panels.dc.inventory.container;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.libgdx.StyleHolder;
-import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
+import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 
 /**
@@ -33,9 +35,12 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 public class ContainerPanel extends TablePanel implements Blocking {
 
     Image portrait;
-    private Cell<Actor> takeAllButton;
     private InventorySlotsPanel inventorySlotsPanel;
     private InventorySlotsPanel containerSlotsPanel;
+    private Image container;
+    private TextButtonX takeAllButton;
+    private LabelX playerLabel;
+    private LabelX containerLabel;
 
     public ContainerPanel() {
         initListeners();
@@ -45,43 +50,62 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void clear() {
 
     }
-
+public enum ITEM_FILTERS{
+        ALL,
+    WEAPON,
+    ARMOR,
+    USABLE,
+    JEWELRY,
+    QUEST
+}
     private void initListeners() {
         clear();
-        TextureRegion textureRegion = new TextureRegion(getOrCreateR(
-         "UI/components/inventory_background.png"));
-        TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
-        setBackground(drawable);
+        setSize(800, 500);
+        addActor(
+         new Image(TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
+         BACKGROUND_NINE_PATCH.PATTERN, 800, 500)));
+
+        pad(NINE_PATCH_PADDING.SAURON);
 
         inventorySlotsPanel = new InventorySlotsPanel();
         containerSlotsPanel = new InventorySlotsPanel();
 
         portrait = new Image();
-        portrait.setSize(GridMaster.CELL_W, GridMaster.CELL_H);
-        addElement(portrait).top().height(GridMaster.CELL_H).width(GridMaster.CELL_W);
-        row();
+        container = new Image();
 
-        addElement(inventorySlotsPanel)
-         .height(340)
-         .pad(20, 20, 0, 20)
-         .top().expand(1, 0);
-        row();
+        TablePanelX upper = new TablePanelX<>();
+        TablePanelX middle= new TablePanelX<>();
+        TablePanelX lower = new TablePanelX<>();
+
+        addElement(upper).pad(0, 30, 20, 20).row();
+        addElement(middle).pad(0, 30, 20, 20).row();
+        addElement(lower).pad(0, 30, 20, 20).row();
+
+        TablePanelX upperLeft = new TablePanelX<>();
+        TablePanelX upperRight = new TablePanelX<>();
+
+        upper.add(upperLeft);
+        upper.add(upperRight);
+        upperLeft.add(portrait).left().left().top();
+        upperLeft.add(playerLabel=new LabelX("", 20)).top();
+
+        upperRight.add(container).left().right().top();
+        upperRight.add(containerLabel=new LabelX("", 20)).top();
+
+        TablePanelX filters = new TablePanelX<>();
+        for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
+            filters.add(new TextButtonX(getButtonStyle(filter),
+             () -> applyFilter(filter))).row();
+        }
+
+        middle.addElement(inventorySlotsPanel).left();
+        middle.addElement(filters).center();
+        middle.addElement(containerSlotsPanel).right();
 
 
-        addElement(containerSlotsPanel)
-         .height(340)
-         .pad(20, 30, 0, 20)
-         .top().expand(1, 0);
-//        initListeners();
-
-        final TablePanel<Actor> lower = new TablePanel<>();
-        addElement(lower).pad(0, 30, 20, 20);
-
-
-        takeAllButton = lower.addElement(new TextButton("Take All",
-         StyleHolder.getDefaultTextButtonStyle()))
-         .fill(false).expand(0, 0).right()
-         .pad(20, 10, 20, 10).size(50, 50);
+        takeAllButton =  new TextButtonX(
+         "Take All", StyleHolder.getHqTextButtonStyle(20), ()-> takeAll()) ;
+        add(takeAllButton);
 
         GuiEventManager.bind(SHOW_LOOT_PANEL, (obj) -> {
             final Pair<InventoryDataSource, ContainerDataSource> param = (Pair<InventoryDataSource, ContainerDataSource>) obj.get();
@@ -89,24 +113,18 @@ public class ContainerPanel extends TablePanel implements Blocking {
                 close();
             } else {
                 open();
-                inventorySlotsPanel.setUserObject(param.getKey());
+
+                ContainerDataSource dataSource =
+                 (ContainerDataSource) getUserObject();
+                setUserObject(dataSource);
+                inventorySlotsPanel.setUserObject(dataSource);
                 containerSlotsPanel.setUserObject(param.getValue());
                 if (containerSlotsPanel.getListeners().size > 0)
                     inventorySlotsPanel.addListener(containerSlotsPanel.getListeners().first());
 
-                TextButton button = (TextButton) takeAllButton.getActor();
-                button.getListeners().clear();
-                final ContainerDataSource source = param.getValue();
-                button.addListener(new ClickListener() {
-                                       @Override
-                                       public void clicked(InputEvent event, float x, float y) {
-                                           source.getHandler().takeAllClicked();
-                                       }
-                                   }
-                );
                 portrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
                  StringMaster.getAppendedImageFile(
-                  source.getHandler().getContainerImagePath(), ContainerMaster.OPEN)));
+                  dataSource.getHandler().getContainerImagePath(), ContainerMaster.OPEN)));
 
             }
         });
@@ -126,7 +144,31 @@ public class ContainerPanel extends TablePanel implements Blocking {
         });
     }
 
+    private void applyFilter(ITEM_FILTERS filter) {
 
+        InventoryDataSource dataSource =
+         (InventoryDataSource) getUserObject();
+        ContainerDataSource dataSource2 = (ContainerDataSource)
+         containerSlotsPanel.getUserObject();
+        final Pair<InventoryDataSource, ContainerDataSource> param =
+         new ImmutablePair<>(
+          dataSource, dataSource2);
+
+        dataSource.setFilter(filter);
+        dataSource2.setFilter(filter);
+
+        setUserObject(dataSource);
+    }
+
+    private STD_BUTTON getButtonStyle(ITEM_FILTERS filter) {
+        return new EnumMaster<STD_BUTTON>().retrieveEnumConst(STD_BUTTON.class, "ITEM_" + filter.name());
+    }
+
+    private void takeAll() {
+        ContainerDataSource dataSource =
+         (ContainerDataSource)containerSlotsPanel. getUserObject();
+        dataSource.getHandler().takeAllClicked();
+    }
 
 
     @Override
@@ -145,8 +187,6 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void updateAct(float delta) {
         clear();
         super.updateAct(delta);
-
-
     }
 
     @Override

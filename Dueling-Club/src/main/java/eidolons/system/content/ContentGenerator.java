@@ -5,6 +5,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.battlecraft.DC_Engine;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
@@ -27,11 +28,16 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.MACRO_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
+import main.data.XLinkedMap;
+import main.data.filesys.PathFinder;
+import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +46,65 @@ import java.util.Map;
 public class ContentGenerator {
 
     static PARAMS[] params = {PARAMS.TOUGHNESS, PARAMS.ENDURANCE, PARAMS.ARMOR,};
+
+    public static void generateUnitGroupsEnumsTxt() {
+        String contents = "";
+        loop: for (File file : FileManager.getFilesFromDirectory(PathFinder.getUnitGroupPath(), false, true)) {
+            for (char c : file.getName().toCharArray()) {
+                if (Character.isDigit(c))
+                    continue loop;
+            }
+            contents += StringMaster.getEnumFormat(
+             StringMaster.getEnumFormatSaveCase(
+              StringMaster.cropFormat(file.getName()))) + ",\n";
+
+        }
+        String text = "public enum " +
+         " {" + contents + ";\n}";
+        System.out.println(  text);
+
+    }
+
+    public static void main(String[] args) {
+        DC_Engine.mainMenuInit();
+        generateUnitGroupsEnumsTxt();
+        generateTypeEnumsTxt(true, new DC_TYPE[]{
+         DC_TYPE.UNITS,DC_TYPE.BF_OBJ
+        });
+
+    }
+
+    public static void generateTypeEnumsTxt(boolean perGroup, DC_TYPE... TYPES) {
+        for (DC_TYPE TYPE : TYPES) {
+            //auto find src path?
+            String contents = "";
+            Map<String, List<ObjType>> map = new XLinkedMap<>();
+            for (ObjType type : DataManager.getTypes(TYPE)) {
+                contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
+                if (perGroup)
+                {
+                    if (map.get(type.getGroup().toUpperCase())==null )
+                        map.put(type.getGroup().toUpperCase(), new ArrayList<>());
+                    map.get(type.getGroup().toUpperCase()).add(type);
+                }
+            }
+            String text = "public enum " + TYPE.name().toUpperCase() + "_TYPES" +
+             " {" + contents + ";\n}";
+            System.out.println(   text);
+            for (String group : map.keySet()) {
+                contents="";
+                for (ObjType type : map.get(group)) {
+                    contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
+                }
+                  text = "public enum " + TYPE.name().toUpperCase() +"_TYPES_" +
+                   StringMaster.toEnumFormat(group)+
+                 " {" + contents + ";\n}";
+               System.out.println(  text);
+
+            }
+        }
+
+    }
 
     public static void generatePlaces() {
         for (PLACE_SUBTYPE sub : PLACE_SUBTYPE.values()) {
@@ -51,8 +116,8 @@ public class ContentGenerator {
             type.setProperty(MACRO_PROPS.MAP_ICON, "global\\map\\icons\\places\\" + name + ".png");
             type.setProperty(G_PROPS.IMAGE, "global\\map\\icons\\places\\preview\\" + name + ".png");
             DataManager.addType(type);
-//            type = new ObjType(name+ " alt" ,type);
-//            DataManager.addType(type);
+            //            type = new ObjType(name+ " alt" ,type);
+            //            DataManager.addType(type);
         }
     }
 

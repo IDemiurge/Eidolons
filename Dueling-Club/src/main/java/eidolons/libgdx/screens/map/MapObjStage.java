@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.anims.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import eidolons.libgdx.screens.map.editor.EditorManager;
 import eidolons.libgdx.screens.map.obj.*;

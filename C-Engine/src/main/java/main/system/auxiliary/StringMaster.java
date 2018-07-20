@@ -8,6 +8,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.data.xml.XML_Formatter;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
@@ -814,8 +815,11 @@ public class StringMaster {
         return getEnumFormat(name);
     }
 
+    public static String getEnumFormatSaveCase(String name) {
+        return XML_Formatter.formatStringForXmlNodeName(name.replace(" ", "_"));
+    }
     public static String getEnumFormat(String name) {
-        return name.toUpperCase().replace(" ", "_");
+        return getEnumFormatSaveCase(name).toUpperCase();
     }
 
     public static String getPathSeparator() {

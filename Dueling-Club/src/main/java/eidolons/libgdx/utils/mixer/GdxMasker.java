@@ -9,6 +9,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  */
 public class GdxMasker {
 
+    String maskPath;
+
+    public GdxMasker(String maskPath) {
+        this.maskPath = maskPath;
+    }
+
     public void draw(Batch batch){
         //disable RGB color, only enable ALPHA to the frame buffer
         Gdx.gl.glColorMask(false, false, false, true);

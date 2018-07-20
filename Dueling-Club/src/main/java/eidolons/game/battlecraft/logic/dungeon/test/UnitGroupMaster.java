@@ -53,6 +53,8 @@ public class UnitGroupMaster {
     public static final int maxX = 3;
     public static final Integer LEADER_REQUIRED = 10;
     public static final String TYPE_LEVEL_SEPARATOR = "_";
+    public static final java.lang.String UNIT_SEPARATOR = "=";
+    public static final java.lang.String PAIR_SEPARATOR = ";";
     public static boolean factionLeaderRequired = false;
     public static boolean factionMode = false;
     private static boolean mirror;

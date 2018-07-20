@@ -7,6 +7,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.menu.selection.DescriptionPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
+import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.Message;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.TextBuilder;
@@ -57,7 +58,9 @@ public class DescriptionScroll extends TablePanelX {
                     return 0;
                 return DescriptionScroll.this.getWidth();
             }
-
+            protected void padScroll(ScrollPanel scrollPanel) {
+                scrollPanel.pad(30,10,50,150);
+            }
             @Override
             protected float getDefaultHeight() {
                 if (isFillText())

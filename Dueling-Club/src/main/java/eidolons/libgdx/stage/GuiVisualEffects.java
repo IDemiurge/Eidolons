@@ -3,7 +3,7 @@ package eidolons.libgdx.stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.anims.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -11,7 +11,7 @@ import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
-import eidolons.libgdx.anims.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.EMITTER_PRESET;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;

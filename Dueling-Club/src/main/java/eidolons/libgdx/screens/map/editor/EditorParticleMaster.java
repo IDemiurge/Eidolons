@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.macro.MacroGame;
-import eidolons.libgdx.anims.particles.EmitterActor;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.layers.MapParticles;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;

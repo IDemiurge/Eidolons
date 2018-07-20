@@ -6,7 +6,7 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.ScreenData;
 import eidolons.system.audio.DC_SoundMaster;
-import eidolons.libgdx.anims.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.EMITTER_PRESET;
 import main.system.EventCallback;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
