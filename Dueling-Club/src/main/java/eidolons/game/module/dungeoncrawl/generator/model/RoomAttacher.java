@@ -1,16 +1,15 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
-import main.game.bf.directions.FACING_DIRECTION;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
-import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
+import main.game.bf.directions.FACING_DIRECTION;
+import main.swing.PointX;
+import main.system.auxiliary.Loop;
 
 import java.awt.*;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -19,64 +18,12 @@ public class RoomAttacher {
 
     private final LevelData data;
     private final LevelModel model;
+    private final RoomTemplateMaster templateMaster;
 
-    public RoomAttacher(LevelData data, LevelModel model) {
+    public RoomAttacher(LevelData data, LevelModel model, RoomTemplateMaster templateMaster) {
         this.data = data;
         this.model = model;
-    }
-
-    public static FACING_DIRECTION[] getExits(LevelGraphNode node, LevelGraph graph) {
-        return new FACING_DIRECTION[0];
-    }
-
-    public static FACING_DIRECTION[] getExits(EXIT_TEMPLATE exitTemplate, Boolean[] rotated) {
-        FACING_DIRECTION[] exits = getExits(exitTemplate);
-        int i = 0;
-        if (rotated != null)
-            for (Boolean bool : rotated) {
-                i = 0;
-                for (FACING_DIRECTION exit : exits) {
-                    exits[i] = FacingMaster.rotate(exit, bool);
-                    i++;
-                }
-
-            }
-        return exits;
-    }
-
-    //WEST is default ENTRANCE
-    public static FACING_DIRECTION[] getExits(EXIT_TEMPLATE exitTemplate) {
-        switch (exitTemplate) {
-            case THROUGH:
-                return new FACING_DIRECTION[]{
-                 FACING_DIRECTION.EAST
-                };
-            case ANGLE:
-                return new FACING_DIRECTION[]{
-                 FACING_DIRECTION.SOUTH
-                };
-            case CROSSROAD:
-                return new FACING_DIRECTION[]{
-                 FACING_DIRECTION.NORTH, FACING_DIRECTION.EAST, FACING_DIRECTION.SOUTH
-                };
-            case FORK:
-                return new FACING_DIRECTION[]{
-                 FACING_DIRECTION.NORTH, FACING_DIRECTION.SOUTH
-                };
-            case CUL_DE_SAC:
-                break;
-        }
-        return new FACING_DIRECTION[0];
-    }
-
-    public static FACING_DIRECTION[] getExits(LevelGraphNode node, LevelGraph graph,
-                                              Set<LevelGraphEdge> links,
-                                              List<LevelGraphNode> linkedNodes) {
-        //can we have duplicates in linkedNodes?
-        FacingMaster.getRandomFacing();
-        //rotate? mirror?
-//        new ArrayMaster<FACING_DIRECTION>().getArray(FACING_DIRECTION.)
-        return new FACING_DIRECTION[0];
+        this.templateMaster = templateMaster;
     }
 
     public static Point getRoomPoint(Point entrancePoint, FACING_DIRECTION entrance, RoomModel model) {
@@ -90,23 +37,21 @@ public class RoomAttacher {
         int i = 1;
         if (getEntranceOrRoomPoint)
             i = -1;
-        if (side == FACING_DIRECTION.SOUTH) {
-            x -= i * parent.getWidth() / 2; //centered ...
-            y -= i * parent.getHeight();
-        } else if (side == FACING_DIRECTION.NORTH) {
-            x -= i * parent.getWidth() / 2;
-        } else if (side == FACING_DIRECTION.EAST) {
-            x -= i * parent.getWidth();
-            y -= i * parent.getHeight() / 2;
-        } else if (side == FACING_DIRECTION.WEST) {
-            y -= i * parent.getHeight() / 2;
-        }
-        return new Point(x, y);
-    }
+        int width = parent.getWidth();
+        int height = parent.getHeight();
 
-    public static Point getExitPoint(Room link, FACING_DIRECTION side) {
-        return adjust(link.getPoint(), side, link, true);
-//        +link.getWidth()
+        if (side == FACING_DIRECTION.SOUTH) {
+            x -= i * width / 2; //centered ...
+            y -= i * height;
+        } else if (side == FACING_DIRECTION.NORTH) {
+            x -= i * width / 2;
+        } else if (side == FACING_DIRECTION.EAST) {
+            x -= i * width;
+            y -= i * height / 2;
+        } else if (side == FACING_DIRECTION.WEST) {
+            y -= i * height / 2;
+        }
+        return new PointX(x, y);
     }
 
     public static Point getAttachPoint(Room parent, Room model, FACING_DIRECTION side
@@ -119,13 +64,84 @@ public class RoomAttacher {
 
     }
 
+    public static boolean canPlace(
+     RoomModel roomModel, Point p, java.util.List<Point> cells, int w, int h) {
+        for (int x = p.x + 1; x + 1 < p.x + roomModel.getWidth(); x++) {
+            for (int y = p.y + 1; y + 1 < p.y + roomModel.getHeight(); y++) {
+//                if (p.x < 0)
+//                    return false;
+//                if (p.y < 0)
+//                    return false;
+//                if (p.x >= w)
+//                    return false;
+//                if (p.y >= h)
+//                    return false;
+                if (cells.contains(new PointX(x, y)))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public Room findFittingAndAttach(Point entrancePoint, EXIT_TEMPLATE roomExitTemplate,
+                                     ROOM_TYPE roomType, FACING_DIRECTION parentExit, LevelZone zone) {
+        Loop loop = new Loop(5);
+        RoomModel roomModel = null;
+        templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
+
+        FACING_DIRECTION roomEntrance = FacingMaster.rotate180
+         (parentExit);
+        while (true) {
+            if (loop.ended())
+            {
+                main.system.auxiliary.log.LogMaster.log(1, "Failed to place " + roomType + " at " +
+                 entrancePoint + " with parent exit to the " + parentExit);
+                return null;
+            }
+            roomModel = templateMaster.getNextLargestRandomModel(roomType,
+             roomExitTemplate
+             , roomEntrance,zone.getTemplateGroup());
+            if (roomModel == null) {
+                templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
+                continue;
+            }
+
+            Point roomPoint = getRoomPoint(entrancePoint, roomEntrance, roomModel);
+            Room room = new Room(roomModel);
+            room.setPoint(roomPoint);
+            if (!canPlace(roomModel, roomPoint, model.getOccupiedCells(), data.getX(), data.getY())) {
+                main.system.auxiliary.log.LogMaster.log(1, "Cannot place " + roomModel + " at " +
+                 roomPoint + " with parent exit to the " + parentExit+ "; rooms N=" +
+                 model.getRoomMap().size());
+                  continue;
+            }
+            main.system.auxiliary.log.LogMaster.log(1, "Placing  " + room + " at " +
+             roomPoint + "; "+ " with parent exit to the " + parentExit);
+                model.addRoom(roomPoint, room);
+                return room;
+        }
+    }
+
+
     public void attach(Room to, Room attached, FACING_DIRECTION entrance) {
         Point p = getAttachPoint(to, attached, entrance);
         //check
-        Point newPoint = model.addRoom(p, attached).setNewEntrance(entrance);
-        model.getRoomMap().remove(p);
-        model.getRoomMap().put(newPoint, attached);
+        //        if (!RoomAttacher.canPlace(roomModel, p, getOccupiedCells(), data.getX(), data.getY())) {
+        //            main.system.auxiliary.log.LogMaster.log(1, "Cannot place " + roomModel + " at " +
+        //             x +
+        //             " " + y + "; total rooms=" + roomMap.size() + "; total cells=" + occupiedCells.size());
+        //            return null;
+        //        }
+        //        Point newPoint = model.addRoom(p, attached).setNewEntrance(entrance);
+        //        model.getRoomMap().remove(p);
+        //        model.getRoomMap().put(newPoint, attached);
 
     }
 
+
+    //        if (parentExit != null) {
+    //            Point newPoint = room.setNewEntrance(roomEntrance);
+    //            model.getRoomMap().remove(roomPoint);
+    //            model.getRoomMap().put(newPoint, room);
+    //        }
 }

@@ -150,7 +150,7 @@ public class XML_Formatter {
     }
 
     public static String formatStringForXmlNodeName(String s) {
-        if (s == null) {
+        if (StringMaster.isEmpty(s)) {
             return "";
         }
 

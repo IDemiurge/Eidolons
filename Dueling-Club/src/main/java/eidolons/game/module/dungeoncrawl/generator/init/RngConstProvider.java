@@ -1,8 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DECOR_STYLE;
-import main.content.enums.entity.BfObjEnums.BF_OBJ_TYPES;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_TYPES_STRUCTURES;
 import main.system.datatypes.WeightMap;
 
@@ -10,7 +9,7 @@ import main.system.datatypes.WeightMap;
  * Created by JustMe on 7/20/2018.
  */
 public class RngConstProvider {
-    public static String getWeightMap(ROOM_CELL cell, DECOR_STYLE style) {
+    public static String getWeightMap(ROOM_CELL cell, DUNGEON_STYLE style) {
 //objGroups like unitGroups?
         switch (cell) {
             case WALL:
@@ -55,8 +54,8 @@ public class RngConstProvider {
         return null;
     }
 
-    private static String getWallWeightMap(DECOR_STYLE style) {
-        WeightMap<String> map = new WeightMap<String>();
+    private static String getWallWeightMap(DUNGEON_STYLE style) {
+        WeightMap<String> map = new WeightMap<>();
 
         map.put(BF_OBJ_TYPES_STRUCTURES.DELAPIDATED_FENCE.getName(), 1);
 

@@ -12,10 +12,11 @@ import java.awt.*;
  * Created by JustMe on 2/15/2018.
  */
 public class TileMapper {
-     TileConverter converter;
-    LevelModel model;
-    LevelData data;
-    TileMap map;
+    private TileConverter converter;
+    private LevelModel model;
+    private LevelData data;
+    private TileMap map;
+    private ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
 
     public TileMapper(LevelModel model, LevelData data) {
         this.model = model;
@@ -23,24 +24,29 @@ public class TileMapper {
         this.converter = new TileConverter(model, data);
     }
 
+    public static void print(LevelModel model) {
+        main.system.auxiliary.log.LogMaster.log(1, model.toASCII_Map());
+    }
+
     public TileMap map() {
         //merge
         map = new TileMap(model.getCurrentWidth(), model.getCurrentHeight());
-//        build(model);
+        //        build(model);
         fill(model, map);
         return map;
     }
 
     public TileMap createLevel() {
         map();
-//         new Level
+        //         new Level
         return null;
     }
 
-    private void build(LevelModel model) {
+    public void build(LevelModel model) {
         int offsetX = -(model.getLeftMost());
         int offsetY = -(model.getTopMost());
         ROOM_CELL[][] cells = new ROOM_CELL[model.getCurrentWidth()][model.getCurrentHeight()];
+//        fillWithDefault(cells);
         for (Point point : model.getRoomMap().keySet()) {
             int x = point.x + offsetX;
             int y = point.y + offsetY;
@@ -48,14 +54,15 @@ public class TileMapper {
             for (String[] column : room.getCells()) {
                 for (String symbol : column) {
                     ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                    try {
-                        cells[x][y] = cell;
-                    } catch (Exception e) {
-//                        e.printStackTrace();
-                    }
+                    if (cell != null)
+                        try {
+                            cells[x][y] = cell;
+                        } catch (Exception e) {
+                            //                        e.printStackTrace();
+                        }
                     y++;
                 }
-                y=point.y + offsetY;
+                y = point.y + offsetY;
                 x++;
             }
 
@@ -63,24 +70,15 @@ public class TileMapper {
         model.setCells(cells);
     }
 
-    private void print(LevelModel model) {
-        ROOM_CELL[][] cells = model.getCells();
-        String string = "\n";
-        for (int x = 0; x < model.getCurrentWidth(); x++) {
-            for (int y = 0; y < model.getCurrentHeight(); y++) {
-                if (cells[x][y]==null )
-                    string += "X";
-                else
-                string += cells[x][y].getSymbol();
+    private void fillWithDefault(ROOM_CELL[][] cells) {
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[0].length; j++) {
+                cells[i][j] = DEFAULT_CELL;
             }
-            string += "\n";
-
         }
-        main.system.auxiliary.log.LogMaster.log(1, string);
-
     }
 
-    private void fill(LevelModel model, TileMap map) {
+    public void fill(LevelModel model, TileMap map) {
         build(model);
         print(model);
         if (true) return;
@@ -93,7 +91,7 @@ public class TileMapper {
             for (String[] column : room.getCells()) {
                 for (String symbol : column) {
                     ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                    Tile tile =converter.convert(cell, room, x, y++);
+                    Tile tile = converter.convert(cell, room, x, y++);
 
                     if (tile.getData().length == 0)
                         main.system.auxiliary.log.LogMaster.log(1, (x + offsetX) + "-" + (y + offsetY)
@@ -112,11 +110,9 @@ public class TileMapper {
             }
         }
         for (ROOM_CELL[] row : model.getCells()) {
-//            for (String sub: )
+            //            for (String sub: )
         }
     }
-
-
 
 
     //data functions - transform old, save/load

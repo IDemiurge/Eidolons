@@ -89,16 +89,16 @@ public class ContentGenerator {
                 }
             }
             String text = "public enum " + TYPE.name().toUpperCase() + "_TYPES" +
-             " {" + contents + ";\n}";
+             " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
             System.out.println(   text);
             for (String group : map.keySet()) {
                 contents="";
                 for (ObjType type : map.get(group)) {
                     contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
                 }
-                  text = "public enum " + TYPE.name().toUpperCase() +"_TYPES_" +
+                  text = "public enum  " + TYPE.name().toUpperCase() +"_TYPES_" +
                    StringMaster.toEnumFormat(group)+
-                 " {" + contents + ";\n}";
+                 " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
                System.out.println(  text);
 
             }

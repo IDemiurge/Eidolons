@@ -111,7 +111,7 @@ public class BfObjEnums {
         THICK_III,
     }
 
-    public enum BF_OBJ_TYPES {
+    public enum BF_OBJ_TYPES implements OBJ_TYPE_ENUM {
         AETHER_FONT,
         EYE_OF_THE_WARP,
         AETHER_SPHERE,
@@ -550,7 +550,7 @@ public class BfObjEnums {
         GREEN_LIMINESCENT_FUNGI,;
     }
 
-    public enum BF_OBJ_TYPES_ {
+    public enum BF_OBJ_TYPES_ implements OBJ_TYPE_ENUM {
         CASTLE_WINDOW,
         TEMPLE_WINDOWS,
         FALLEN_COLUMN,
@@ -599,7 +599,7 @@ public class BfObjEnums {
         ELDRITCH_SHRINE,;
     }
 
-    public enum BF_OBJ_TYPES_CONTAINER {
+    public enum BF_OBJ_TYPES_CONTAINER implements OBJ_TYPE_ENUM {
         CRATE,
         BARRELS,
         BARREL,
@@ -608,7 +608,7 @@ public class BfObjEnums {
         ENCHANTED_ASH_URN,;
     }
 
-    public enum BF_OBJ_TYPES_DOOR {
+    public enum BF_OBJ_TYPES_DOOR implements OBJ_TYPE_ENUM {
         DOOR,
         IRON_DOOR,
         STONE_DOOR,
@@ -640,7 +640,7 @@ public class BfObjEnums {
         CRIMSON_DOOR,;
     }
 
-    public enum BF_OBJ_TYPES_DUNGEON {
+    public enum BF_OBJ_TYPES_DUNGEON implements OBJ_TYPE_ENUM {
         STALAGMITE,
         STALACTITE,
         NATURAL_COLUMN,
@@ -660,14 +660,14 @@ public class BfObjEnums {
         GREEN_LIMINESCENT_FUNGI,;
     }
 
-    public enum BF_OBJ_TYPES_GEM {
+    public enum BF_OBJ_TYPES_GEM implements OBJ_TYPE_ENUM {
         AMETHYST,
         TOPAZ,
         RUBY,
         SAPPHIRE,;
     }
 
-    public enum BF_OBJ_TYPES_GRAVES {
+    public enum BF_OBJ_TYPES_GRAVES implements OBJ_TYPE_ENUM {
         GRAVESTONE,
         FRESH_GRAVE,
         DESECRATED_GRAVE,
@@ -683,7 +683,7 @@ public class BfObjEnums {
         TOMB_NICHE,;
     }
 
-    public enum BF_OBJ_TYPES_LIGHT_EMITTERS {
+    public enum BF_OBJ_TYPES_LIGHT_EMITTERS implements OBJ_TYPE_ENUM {
         BRAZIER,
         SKULL_TORCH,
         TORCH,
@@ -721,11 +721,11 @@ public class BfObjEnums {
         HOLY_FLAME_BRAZIER,;
     }
 
-    public enum BF_OBJ_TYPES_LOCK {
+    public enum BF_OBJ_TYPES_LOCK implements OBJ_TYPE_ENUM {
         PADLOCK,;
     }
 
-    public enum BF_OBJ_TYPES_MAGICAL {
+    public enum BF_OBJ_TYPES_MAGICAL implements OBJ_TYPE_ENUM {
         AETHER_FONT,
         EYE_OF_THE_WARP,
         AETHER_SPHERE,
@@ -742,7 +742,7 @@ public class BfObjEnums {
         CATHEDRAL_CLOCK,;
     }
 
-    public enum BF_OBJ_TYPES_PROP {
+    public enum BF_OBJ_TYPES_PROP implements OBJ_TYPE_ENUM {
         ALCHEMIST_SET,
         ALCHEMIST_LABORATORY,
         WIZARDRY_TOOLS,
@@ -869,7 +869,7 @@ public class BfObjEnums {
         PRISTINE_AMETHYST,;
     }
 
-    public enum BF_OBJ_TYPES_REMAINS {
+    public enum BF_OBJ_TYPES_REMAINS implements OBJ_TYPE_ENUM {
         REMAINS,
         OLD_BONES,
         DESECRATED_REMAINS,
@@ -886,7 +886,7 @@ public class BfObjEnums {
         ANCIENT_SKULL,;
     }
 
-    public enum BF_OBJ_TYPES_ROCKS {
+    public enum BF_OBJ_TYPES_ROCKS implements OBJ_TYPE_ENUM {
         ROCKS,
         MOSSY_BOULDER,
         SLEEK_ROCK,
@@ -896,7 +896,7 @@ public class BfObjEnums {
         RUNESTONE,;
     }
 
-    public enum BF_OBJ_TYPES_RUINS {
+    public enum BF_OBJ_TYPES_RUINS implements OBJ_TYPE_ENUM {
         RUINED_WALL,
         RUINED_STRUCTURE,
         RUINED_COLUMN,
@@ -905,7 +905,7 @@ public class BfObjEnums {
         SNOWCOVERED_RUINS,;
     }
 
-    public enum BF_OBJ_TYPES_STANDARD {
+    public enum BF_OBJ_TYPES_STANDARD implements OBJ_TYPE_ENUM {
         ALTAR,
         DRAGON_ALTAR,
         DARK_TUNNEL,
@@ -989,7 +989,7 @@ public class BfObjEnums {
         ICY_BROOK,;
     }
 
-    public enum BF_OBJ_TYPES_STRUCTURES implements OBJ_TYPE_ENUM{
+    public enum BF_OBJ_TYPES_STRUCTURES implements OBJ_TYPE_ENUM {
         IRON_FENCE,
         OVERGROWN_FENCE,
         DELAPIDATED_FENCE,
@@ -1001,7 +1001,7 @@ public class BfObjEnums {
         WAR_TENT,;
     }
 
-    public enum BF_OBJ_TYPES_TREASURE {
+    public enum BF_OBJ_TYPES_TREASURE implements OBJ_TYPE_ENUM {
         TREASURE_CHEST,
         RUSTY_CHEST,
         TREASURE_PILE,
@@ -1015,7 +1015,7 @@ public class BfObjEnums {
         FOCUS_VAULT,;
     }
 
-    public enum BF_OBJ_TYPES_TREES {
+    public enum BF_OBJ_TYPES_TREES implements OBJ_TYPE_ENUM {
         ANCIENT_OAK,
         TREE_SAPLING,
         DEAD_TREE,

@@ -1,9 +1,55 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
+import eidolons.system.options.Options.OPTION;
+
 /**
  * Created by JustMe on 2/14/2018.
  */
 public class GeneratorEnums {
+
+    public enum LEVEL_VALUES
+     //for manual skirmish generation; but we'll need more ad hoc values...
+     implements OPTION {
+//GRAPH
+
+        //MODEL
+
+        //RENDER
+        PREFERRED_STYLE_1,
+        DUNGEON_TYPE,
+        ZONES,
+
+        WIDTH,
+        HEIGHT,
+        Z_LEVEL,
+
+        WRAP_ROOMS;
+
+        @Override
+        public Integer getMin() {
+            return null;
+        }
+
+        @Override
+        public Integer getMax() {
+            return null;
+        }
+
+        @Override
+        public Object getDefaultValue() {
+            return null;
+        }
+
+        @Override
+        public Boolean isExclusive() {
+            return null;
+        }
+
+        @Override
+        public Object[] getOptions() {
+            return new Object[0];
+        }
+    }
     public  enum EXIT_TEMPLATE {
         THROUGH,
         ANGLE,

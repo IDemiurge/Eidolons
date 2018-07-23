@@ -1777,6 +1777,11 @@ public class StringMaster {
         return property;
     }
 
+    public static String[] splitLines(String data) {
+       return  data.trim().split(data.contains(NEW_LINE)? StringMaster.NEW_LINE
+       : "\n");
+    }
+
 
     public enum STD_DEITY_TYPE_NAMES {
         Faithless

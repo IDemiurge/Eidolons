@@ -1,12 +1,12 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
-import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
-import eidolons.game.module.dungeoncrawl.generator.model.LevelModelGenerator;
+import eidolons.game.module.dungeoncrawl.generator.model.LevelModelBuilder;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.Loop;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 public class LevelGenerator {
 
     public static void main(String[] args) {
-        Loop loop = new Loop(12);
+        Loop loop = new Loop(2);
         List<TileMap> maps = new ArrayList<>();
         while (true) {
             try {
@@ -40,9 +40,10 @@ public class LevelGenerator {
             }
         }
         int i=0;
-        for (TileMap sub : maps) {
-            main.system.auxiliary.log.LogMaster.log(1,i++ +": \n" + sub.toString());
-        }
+//        for (TileMap sub : maps) {
+//            main.system.auxiliary.log.LogMaster.log(1,i++ +": \n" +
+//             Arrays.deepToString(sub.getTiles()));
+//        }
     }
 
     public static LevelData getLevelData(
@@ -60,9 +61,9 @@ public class LevelGenerator {
 
     public static TileMap generateTileMap(LevelData data) {
         LevelGraph graph = new LevelGraphMaster(data).buildGraph();
-        LevelModel model = new LevelModelGenerator(data).buildModel(graph);
-        main.system.auxiliary.log.LogMaster.log(1, "model: " + model);
         main.system.auxiliary.log.LogMaster.log(1, "graph: " + graph);
+        LevelModel model = new LevelModelBuilder(data).buildModel(graph);
+        main.system.auxiliary.log.LogMaster.log(1, "model: " + model);
         TileMap map = new TileMapper(model, data).map();
         return map;
     }

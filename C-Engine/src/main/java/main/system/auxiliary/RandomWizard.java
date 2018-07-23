@@ -345,4 +345,9 @@ public class RandomWizard<E> {
     public E getRandomEnumConst(Class<E> CLASS) {
         return CLASS.getEnumConstants()[getRandomInt(CLASS.getEnumConstants().length)];
     }
+
+    public E getRandomArrayItem(E[] exits) {
+        int i = getRandomInt(exits.length);
+        return exits[i];
+    }
 }

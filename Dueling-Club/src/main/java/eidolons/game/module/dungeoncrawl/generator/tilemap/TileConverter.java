@@ -14,6 +14,8 @@ import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 import main.system.StreamMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
+import main.system.datatypes.WeightMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -33,50 +35,76 @@ public class TileConverter {
         this.model = model;
     }
 
-    private Pair<String, OBJ_TYPE>[] getWall(RoomModel room, int x, int y) {
+    private String getWall(RoomModel room, int x, int y) {
         String wallType = "Stone Wall"; //from block/zone!!!
-        return getBfObjPair(wallType);
+        return wallType;
     }
- 
 
-    private Pair<String, OBJ_TYPE>[] getBfObjPair(String name) {
+
+    private Pair<String, OBJ_TYPE>[] getBfObjPair(String... names) {
+        String string = StringMaster.join(";", names);
         return new Pair[]{
-         new ImmutablePair(name, DC_TYPE.BF_OBJ)
+         new ImmutablePair(string, DC_TYPE.BF_OBJ)
         };
     }
-public enum DECOR_STYLE{
 
-}
     private String getArtObj(LevelBlock block, int x, int y) {
-        DECOR_STYLE style = getStyle(metaData.getSubdungeonType(), block.getRoomType());
+        DUNGEON_STYLE style = getStyle(metaData.getSubdungeonType(), block.getRoomType());
 
-        String pool = RngConstProvider.getWeightMap(ROOM_CELL.ART_OBJ,style);
-        String pick =null;
+        String pool = RngConstProvider.getWeightMap(ROOM_CELL.ART_OBJ, style);
+        String pick = null;
         Coordinates c = new Coordinates(x, y);
         while (!checkObj(c, block, pool,
          pick = new RandomWizard<String>().getObjectByWeight(pool, String.class))) {
 
         }
         //check proximity
-        //randomize 
-        
+        //randomize
+
         switch (metaData.getSubdungeonType()) {
-            
+
         }
 
         return null;
     }
 
-    private DECOR_STYLE getStyle(SUBDUNGEON_TYPE subdungeonType, ROOM_TYPE roomType) {
+    private DUNGEON_STYLE getStyle(SUBDUNGEON_TYPE subdungeonType, ROOM_TYPE roomType) {
+        switch (subdungeonType) {
+            case CAVE:
+                break;
+            case HIVE:
+                break;
+            case DUNGEON:
+                break;
+            case CASTLE:
+                break;
+            case SEWER:
+                break;
+            case HELL:
+                break;
+            case ASTRAL:
+                break;
+            case ARCANE:
+                break;
+            case CRYPT:
+                break;
+            case DEN:
+                break;
+            case BARROW:
+                break;
+            case RUIN:
+                break;
+            case HOUSE:
+                break;
+        }
         return null;
     }
 
     private boolean checkObj(Coordinates c, LevelBlock block, String pool, String pick) {
         List<ObjAtCoordinate> objects = new ArrayList<>(block.getObjects());
         List<ObjAtCoordinate> adjacent =
-        new StreamMaster<ObjAtCoordinate>().filter(objects,
-         (object) -> object.getCoordinates().isAdjacent(c));
-
+         new StreamMaster<ObjAtCoordinate>().filter(objects,
+          (object) -> object.getCoordinates().isAdjacent(c));
 
 
         return false;
@@ -87,50 +115,86 @@ public enum DECOR_STYLE{
             return new Tile();
         LevelBlock block = model.getBlocks().get(room);
         switch (cell) {
-            case WALL:
-                return new Tile(getWall(room, x, y));
-            case FLOOR:
-                break;
-            case ENTRANCE:
-                break;
-            case EXIT:
-                break;
-            case CONTAINER:
-//                return new Tile(getContainer(room, x, y));
-            case DOOR:
-//                return new Tile(getDoor(room, x, y));
-            case ART_OBJ:
-                return new Tile(getBfObjPair(getArtObj(block, x, y)));
-            case DESTRUCTIBLE_WALL:
-                break;
-            case SECRET_DOOR:
-                break;
-            case TRAP:
-                break;
-            case GUARD:
-                //                return new Tile(getGuard(room, x, y));
-            case LIGHT_EMITTER:
-                //                return new Tile(getLightEmitter(room, x, y));
-            case WALL_WITH_LIGHT_OVERLAY:
-                break;
-            case WALL_WITH_DECOR_OVERLAY:
-                break;
-            case LOCAL_KEY:
-                break;
-            case GLOBAL_KEY:
-                break;
             case DESTRUCTIBLE:
                 break;
+
+            case WALL:
+            case DESTRUCTIBLE_WALL:
+                return new Tile(getBfObjPair(getWall(room, x, y)));
+            case ENTRANCE:
+            case EXIT:
+                return new Tile(getBfObjPair(getExitObj(block, x, y)));
+            case CONTAINER:
             case SPECIAL_CONTAINER:
-                break;
-            case SPECIAL_DOOR:
-                break;
+                return new Tile(getBfObjPair(getContainerObj(block, x, y)));
+            case DOOR:
+            case SECRET_DOOR:
+                return new Tile(getBfObjPair(getDoor(block, x, y)));
+            case ART_OBJ:
             case SPECIAL_ART_OBJ:
-                break;
+                return new Tile(getBfObjPair(getArtObj(block, x, y)));
+            case GUARD:
+                //                return new Tile(getGuard(block, x, y));
+            case LIGHT_EMITTER:
+                return new Tile(getBfObjPair(getLightEmitter(block, x, y)));
+            case WALL_WITH_LIGHT_OVERLAY:
+                return new Tile(getBfObjPair(
+                 getWall(room, x, y), getLightEmitterOverlaying(block, x, y)));
+            case WALL_WITH_DECOR_OVERLAY:
+                return new Tile(getBfObjPair(
+                 getWall(room, x, y), getDecorOverlaying(block, x, y)));
+
         }
         return new Tile();
     }
 
+    private String getDecorOverlaying(LevelBlock block, int x, int y) {
+        return null;
+    }
+
+    private String getLightEmitterOverlaying(LevelBlock block, int x, int y) {
+        return null;
+    }
+
+    private String getDoor(LevelBlock block, int x, int y) {
+        return null;
+    }
+
+    private String getContainerObj(LevelBlock block, int x, int y) {
+        return null;
+    }
+
+    private String getExitObj(LevelBlock block, int x, int y) {
+        return null;
+    }
+
+    private String getLightEmitter(LevelBlock block, int x, int y) {
+        DUNGEON_STYLE style=block. getStyle();
+        WeightMap<String> map = new WeightMap<>();
+        switch (style) {
+
+            case Brimstone:
+                break;
+            case Survivor:
+                break;
+            case DarkElegance:
+                break;
+            case Grimy:
+                break;
+            case Castle:
+//               map.put(BF_OBJ_TYPES_LIGHT_EMITTERS.BRAZIER.getName(), 5);
+                break;
+        }
+        return map.toString();
+    }
+
+    public enum DUNGEON_STYLE {
+        Brimstone,
+        Survivor,
+         DarkElegance,
+        Grimy,
+         Castle,
+        }
 
 
 }

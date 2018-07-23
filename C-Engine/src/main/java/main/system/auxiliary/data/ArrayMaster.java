@@ -81,14 +81,63 @@ public class ArrayMaster<T> {
         }
         return false;
     }
+    /**
+     * This method rotates the matrix 90 degrees counter clockwise without using extra buffer..
+     */
+    public static String[][] rotateMatrixInPlaceClockwise(String[][] matrix) {
 
-    public Object[][] rotateMatrix(Object[][] matrix, boolean clockwise) {
+
+        int n = matrix[0].length;
+        String tmp;
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = i; j < n - i - 1; j++) {
+                tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][n - i - 1];
+                matrix[j][n - i - 1] = matrix[n - i - 1][n - j - 1];
+                matrix[n - i - 1][n - j - 1] = matrix[n - j - 1][i];
+                matrix[n - j - 1][i] = tmp;
+            }
+
+        }
+        return matrix;
+    }
+
+    /**
+     * This method rotates the matrix 90 degrees counter clockwise without using extra buffer..
+     */
+    public static String[][] rotateMatrixInPlaceAnticlockwise(String[][] matrix)
+    {
+        int n = matrix.length;
+        String top;
+        for (int i = 0; i < n / 2; i++) {
+
+            for (int j = i; j < n - i - 1; j++) {
+
+                top = matrix[i][j];
+                matrix[i][j] = matrix[n - j - 1][i];
+                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
+                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+                matrix[j] [n - i - 1] = top;
+
+            }
+
+        }
+        return matrix;
+    }
+    public String[][] rotate2dStringArray(String[][] matrix, boolean clockwise) {
+        if (matrix.length==matrix[0].length)
+            return clockwise?  rotateMatrixInPlaceClockwise(matrix):
+             rotateMatrixInPlaceAnticlockwise(matrix);
+        return clockwise?  rotateMatrixClockwise(matrix):
+         rotateMatrixAnticlockwise(matrix);
+    }
+        public Object[][] rotateMatrix(Object[][] matrix, boolean clockwise) {
         if (matrix == null)
             return matrix;
         int w = matrix.length;
         int h = matrix[0].length;
         if (w != h) {
-            matrix = new String[h][w];
+            matrix = new String[h][w]; //how to deal with this?
         }
         if (clockwise)
             rotateAlongDiagonal(matrix);
@@ -111,7 +160,7 @@ public class ArrayMaster<T> {
 
     private void getTranspose(Object[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
-            for (int j = i + 1; j < matrix.length; j++) {
+            for (int j = i + 1; j < matrix[0].length; j++) {
                 Object temp = matrix[i][j];
                 matrix[i][j] = matrix[j][i];
                 matrix[j][i] = temp;
@@ -140,5 +189,38 @@ public class ArrayMaster<T> {
                 matrix[len - 1 - j][len - 1 - i] = temp;
             }
         }
+    }
+
+    /**
+     * This method rotates the matrix 90 degrees clockwise by using extra
+     * buffer.
+     */
+    public static String[][] rotateMatrixClockwise(String[][] matrix) {
+        String[][] rotated = new String[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix[0].length; ++i) {
+            for (int j = 0; j < matrix.length; ++j) {
+                rotated[i][j] = matrix[matrix.length - j - 1][i];
+
+            }
+        }
+
+        return rotated;
+    }
+
+    /**
+     * This method rotates the matrix 90 degrees counter clockwise by using extra
+     * buffer.
+     */
+    public static String[][] rotateMatrixAnticlockwise(String[][] matrix) {
+        String[][] rotated = new String[matrix[0].length][matrix.length];
+
+        for (int i = 0; i < matrix[0].length; ++i) {
+            for (int j = 0; j < matrix.length; ++j) {
+
+                rotated[i][j] = matrix[j][matrix[0].length - i - 1];
+            }
+        }
+
+        return rotated;
     }
 }

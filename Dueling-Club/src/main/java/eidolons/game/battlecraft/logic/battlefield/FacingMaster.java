@@ -104,6 +104,7 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION rotate180(FACING_DIRECTION side) {
+        if (side!=null )
         switch (side) {
             case EAST:
                 return main.game.bf.directions.FACING_DIRECTION.WEST;

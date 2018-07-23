@@ -29,13 +29,12 @@ public class RoomModel {
         this.rotated = rotated;
         if (getRotated()!=null )
             for (Boolean sub : getRotated()) {
-                main.system.auxiliary.log.LogMaster.log(1, sub+ "wise rotating: "
-                 +getCellsString() );
-                cells = (String[][])
-                 new ArrayMaster<String>().rotateMatrix ( getCells(), sub);
-
-                main.system.auxiliary.log.LogMaster.log(1, sub+"wise rotated: "
-                 +getCellsString() );
+//                main.system.auxiliary.log.LogMaster.log(1, sub+ "wise rotating: "
+//                 +getCellsString() );
+                cells =
+                 new ArrayMaster<String>().rotate2dStringArray ( getCells(), sub);
+//                main.system.auxiliary.log.LogMaster.log(1, sub+"wise rotated: "
+//                 +getCellsString() );
             }
     }
 
@@ -74,6 +73,6 @@ public class RoomModel {
     @Override
     public String toString() {
         return type + " Model with exit "
-         + exitTemplate + ": " + getCellsString();
+         + exitTemplate + ": \n" + getCellsString();
     }
 }

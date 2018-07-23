@@ -1,22 +1,24 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import main.content.enums.meta.MissionEnums.LOCATION_TYPE;
+import main.system.data.DataUnit;
 
 /**
  * Created by JustMe on 2/14/2018.
- *
+ * <p>
  * to create boss level crypt for a cemetery...
- *
- *
  */
-public class LevelData {
+public class LevelData extends DataUnit<LEVEL_VALUES> {
     SUBLEVEL_TYPE sublevelType; //determines room type too
     //per zone
-    ROOM_TEMPLATE_GROUP[] templateGroup;
+    ROOM_TEMPLATE_GROUP[] templateGroups = new ROOM_TEMPLATE_GROUP[]{
+     ROOM_TEMPLATE_GROUP.CRYPT
+    };
     DUNGEON_TEMPLATES[] templates;
     SUBDUNGEON_TYPE subdungeonType;
     LOCATION_TYPE locationType;
@@ -27,6 +29,11 @@ public class LevelData {
     int z; //the deeper, the <?>
 
     //for Fill - enemy type(s), ...
+
+    //so I will create these in a kind of options menu...
+    public LevelData(String data) {
+        super(data);
+    }
 
     public LevelData(SUBLEVEL_TYPE sublevelType, int x, int y, int z) {
         this.sublevelType = sublevelType;
@@ -47,12 +54,16 @@ public class LevelData {
         return locationType;
     }
 
-    public ROOM_TEMPLATE_GROUP[] getTemplateGroup() {
-        return templateGroup;
+    public ROOM_TEMPLATE_GROUP[] getTemplateGroups() {
+        return templateGroups;
     }
 
     public DUNGEON_TEMPLATES[] getTemplates() {
         return templates;
+    }
+
+    public void setTemplates(DUNGEON_TEMPLATES[] templates) {
+        this.templates = templates;
     }
 
     public int getX() {
@@ -65,13 +76,5 @@ public class LevelData {
 
     public int getZ() {
         return z;
-    }
-
-    public void setTemplateGroup(ROOM_TEMPLATE_GROUP[] templateGroup) {
-        this.templateGroup = templateGroup;
-    }
-
-    public void setTemplates(DUNGEON_TEMPLATES[] templates) {
-        this.templates = templates;
     }
 }

@@ -248,7 +248,7 @@ public class Location {
         DungeonPlan plan = new LocationBuilder().loadDungeonMap(data);
         adjustPlanToEntrance(plan, entranceLayout, file.getName());
 
-        new LocationBuilder().transformDungeonPlan(plan);
+//      TODO   new LocationBuilder().transformDungeonPlan(plan);
 
         Dungeon sublevel = new Dungeon(dungeonType);
 //        sublevel.setPlan(plan);

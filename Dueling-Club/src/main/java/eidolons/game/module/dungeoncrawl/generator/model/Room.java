@@ -1,11 +1,14 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
-import main.game.bf.directions.FACING_DIRECTION;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.PointX;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 2/16/2018.
@@ -14,6 +17,7 @@ public class Room extends RoomModel {
     private   FACING_DIRECTION[] exits;
     private   FACING_DIRECTION  entrance;
     private Point point; //upper-left?
+    private Point entrancePoint;
 
     public Room(FACING_DIRECTION  entrance, RoomModel model,FACING_DIRECTION... exits ) {
         this(model);
@@ -25,17 +29,20 @@ public class Room extends RoomModel {
         //TODO won't work for non-square!!!
 
     }
-    public void makeExit(FACING_DIRECTION exit){
-        Point p = RoomAttacher.adjust(new Point(0, 0),(exit), this, true);
-        if (p.y==getHeight())
-            p.y--;
-        if (p.x==getWidth())
-            p.x--;
-        cells[p.x][p.y] = ROOM_CELL.DOOR.getSymbol();
+        public void makeExit(FACING_DIRECTION exit, boolean door){
+          entrancePoint = RoomAttacher.adjust(new Point(0, 0),(exit), this, true);
+        if (entrancePoint.y==getHeight())
+            entrancePoint.y--;
+        if (entrancePoint.x==getWidth())
+            entrancePoint.x--;
+        //TODO check if this is necessary
+        cells[entrancePoint.x][entrancePoint.y] =door? ROOM_CELL.DOOR.getSymbol()
+        : ROOM_CELL.FLOOR.getSymbol()
+        ;
     }
     public FACING_DIRECTION[] getExits() {
         if (exits == null) {
-            FACING_DIRECTION[] exits=RoomAttacher. getExits( getExitTemplate(), rotated);
+            FACING_DIRECTION[] exits= ExitMaster. getExits( getExitTemplate(), rotated);
             setExits(exits);
         }
         return exits;
@@ -88,6 +95,21 @@ public class Room extends RoomModel {
          return point;
     }
 
+    @Override
+    public void setRotated(Boolean[] rotated) {
+        if (rotated==null){
+            //TODO reverse = this.rotated; rotate back!
+        }
+        super.setRotated(rotated);
+        exits = Arrays.stream(exits).map(exit-> {
+            FACING_DIRECTION newExit = exit;
+            for (Boolean clockwise : rotated) {
+                FacingMaster.rotate(exit, clockwise);
+            }
+            return newExit;
+        }).collect(Collectors.toList()).toArray(new FACING_DIRECTION[rotated.length]);
+    }
+
     public Point getPoint() {
         return point;
     }
@@ -98,5 +120,13 @@ public class Room extends RoomModel {
 
     public void setExitTemplate(EXIT_TEMPLATE exitTemplate) {
         this.exitTemplate = exitTemplate;
+    }
+
+    public Point getEntrancePoint() {
+        return entrancePoint;
+    }
+
+    public void setEntrancePoint(Point entrancePoint) {
+        this.entrancePoint = entrancePoint;
     }
 }

@@ -465,7 +465,7 @@ public final class UnitEnums {
         }
     }
 
-    public enum UNITS_TYPES  implements OBJ_TYPE_ENUM{
+    public enum UNITS_TYPES implements OBJ_TYPE_ENUM {
         TRICKSTER_RAVEN,
         VOID_EIDOLON,
         VOID_SPAWN,
@@ -824,11 +824,434 @@ public final class UnitEnums {
         RAVENGUARD_WITCHUNICODE45CODEENDKNIGHT,
         RAVENGUARD_TORTURER,
         ;
-
-
-
-
-    public enum UNIT_GROUPS{
+    }
+    public enum  UNITS_TYPES_FAMILIARS implements OBJ_TYPE_ENUM {
+        TRICKSTER_RAVEN,
+        ELDRITCH_STRIX,
+        DRAKELING,
+        MANTIS,
+        STAG_BEETLE,
+        RHINO_BEETLE,
+        ;
+    }
+    public enum  UNITS_TYPES_DEMO implements OBJ_TYPE_ENUM {
+        VOID_EIDOLON,
+        GARGANTUAN_BEAST,
+        GARGOYLE,
+        ANCIENT_AUTOMATA,
+        STONE_GOLEM,
+        APPRENTICE_ELEMENTALIST,
+        DEMON_GORGER,
+        POSSESSED,
+        FIEND,
+        AVENGER,
+        HELLUNICODE39CODEENDS_TYRANT,
+        TWILIGHT_LEGIONNAIRE,
+        BLACK_WOLF,
+        NIGHTMARE,
+        TROGLODYTE,
+        HARPY,
+        DEMONIO_NOCTURNO,
+        SHADOW_WOLF,
+        SHADE,
+        NIGHT_BAT,
+        SHADOW_DISCIPLE,
+        SHADOW_WEAVER,
+        HUNTED_WITCH,
+        TWILIGHT_DISCIPLE,
+        SKELETON,
+        VAMPIRE_BAT,
+        ZOMBIE,
+        COLONY_OVERSEER,
+        COLONY_HARVESTER,
+        COLONY_WARRIOR,
+        COLONY_DRONE,
+        SKELETON_ARCHER,
+        BONE_KNIGHT,
+        FIRE_ELEMENTAL,
+        EARTH_ELEMENTAL,
+        AIR_ELEMENTAL,
+        WATER_ELEMENTAL,
+        MOSS_SPAWN,
+        SKY_LION,
+        GREY_EAGLE,
+        FANATIC,
+        ROX,
+        SKY_LORD,
+        SQUIRE,
+        KNIGHT_ERRANT,
+        THUG,
+        BANDIT_LORD,
+        GRAVE_LOOTER,
+        CANNIBAL,
+        PLAGUE_BEARER,
+        RENEGADE_WIZARD,
+        RABID_DOG,
+        GOBLIN_AMBUSHER,
+        RAVENGUARD_OVERSEER,
+        RAVENGUARD_KNIGHT,
+        RAVENGUARD_ENFORCER,
+        RAVENGUARD_COMMANDER,
+        RAVENGUARD_LIEUTENANT,
+        RAVENGUARD_JAILOR,
+        RAVENGUARD_SPECIALIST,
+        RAVENGUARD_EXECUTIONER,
+        RAVENGUARD_WARDEN,
+        SHIELDMAN,
+        AXEMAN,
+        SOLDIER,
+        CROSSBOWMAN,
+        PEASANT,
+        SWORDSMAN,
+        PIKEMAN,
+        RAVENGUARD_WITCHUNICODE45CODEENDKNIGHT,
+        RAVENGUARD_TORTURER,
+        ;
+    }
+    public enum  UNITS_TYPES_NOCTURNAL implements OBJ_TYPE_ENUM {
+        VOID_SPAWN,
+        TWISTED_MUTANT,
+        IRON_GOLEM,
+        VOID_PHANTOM,
+        VOID_ARCHON,
+        VOID_WALKER,
+        AETHER_GOLEM,
+        RABID_MUTANT,
+        WEREWOLF,
+        ASH_EATER,
+        ;
+    }
+    public enum  UNITS_TYPES_ implements OBJ_TYPE_ENUM {
+        GARGOYLE_SENTINEL,
+        ELDRITCH_KNIGHT,
+        HORSESHOE_CRAB,
+        APPRENTICE_CONJURER,
+        APPRENTICE_ENCHANTER,
+        DEMON_PRINCE,
+        DEMON_CALLER,
+        DEMON_WORSHIPPER,
+        DEMON_LORD,
+        ABYSSAL_FIEND,
+        DEMON_VINDICATOR,
+        CHAOS_WARLOCK,
+        SUCCUBUS,
+        INFERI_SORCEROR,
+        SATYR_DEMONCALLER,
+        INCUBUS,
+        LORD_OF_TERROR,
+        WARP_HUNTER,
+        WARP_STALKER,
+        CERBERUS,
+        DARK_ANGEL,
+        WITCH,
+        DARK_FEY,
+        DARK_URUK,
+        POSSESSED_GARGOYLE,
+        SATYR_GLOOMWEAVER,
+        PALE_FIEND,
+        PSYCHIC_ABERRATION,
+        SHARADRIM,
+        DARK_SCALES,
+        MIST_EYE,
+        MURKBORN,
+        MURKBORN_DEFILER,
+        DEMENTED_PRISONER,
+        DEMENTED_WOMAN,
+        ABOMINATION,
+        MUZZLED_MAN,
+        FRENZIED_WOMAN,
+        FRENZIED_MAN,
+        RABID_MAN,
+        CRIMSON_MASKED_CULTIST,
+        WOLF_MASKED_CULTIST,
+        WORM_MASKED_CULTIST,
+        ONYX_MASKED_CULTIST,
+        STEEL_MASKED_CULTIST,
+        MURK_SPIDER,
+        MURK_WEAVER,
+        MISTBORN_GARGANTUAN,
+        ESCAPED_PRISONER,
+        SKULL_MASKED_CULTIST,
+        FERAL_CULTIST,
+        DEMON_CULTIST,
+        SCORCHED_CULTIST,
+        PLACEHOLDER_DUNGEON,
+        PLACEHOLDER_DUNGEON_CORRUPTED,
+        PLACEHOLDER_DUNGEON_MONSTER,
+        PLACEHOLDER_CRITTER,
+        COLONY_QUEEN,
+        ELEDARI_NECROMANCER,
+        ELEDARI_DARK_DRUID,
+        BLOODMAGE_APPRENTICE,
+        DEATH_WORSHIPPER,
+        PLAGUE_SERVANT,
+        WRAITH_WHISPERER,
+        PLAGUE_RAT,
+        LICH,
+        DEATH_ADEPT,
+        PLAGUE_BRINGER,
+        SATYR_DEATHUNICODE45CODEENDEATER,
+        PLACEHOLDER_UNDEAD,
+        PLACEHOLDER_UNDEAD_BOSS,
+        SHADOW_ELEMENTAL,
+        POISON_ELEMENTAL,
+        MAGIC_ELEMENTAL,
+        TREANT_SAPLING,
+        TREANT,
+        SLAAG,
+        WYVERN,
+        WILLUNICODE45CODEENDOUNICODE45CODEENDWISP,
+        ARMORED_WYVERN,
+        YOUNG_WYVERN,
+        ZOMBIFIED_WYVERN,
+        HERMIT,
+        FEY,
+        KAITHAR_DRUID,
+        LUCENT_WISP,
+        BATTLE_MONK,
+        CRUSADER,
+        INQUISITOR,
+        VINDICATOR,
+        LORD_CARDINAL,
+        DEFENDER_OF_LIGHT,
+        DEFENDER_OF_FAITH,
+        MARTYR,
+        RED_DAWN_PRIEST,
+        PRIEST_OF_THE_THREE,
+        SERVANT_OF_THE_THREE,
+        SHAMAN,
+        OGRE,
+        BASE_HUMAN_UNIT,
+        THIEF,
+        MARAUDER,
+        DESERTER,
+        CUTTHROAT,
+        GUARDSMAN,
+        ORC_RAIDER,
+        BARBARIAN,
+        FALLEN_KNIGHT,
+        PIRATE,
+        HUMAN_APOSTATE,
+        HUMAN_FIGHTER,
+        DARK_APOSTATE,
+        DARK_ADEPT,
+        BASE_DWARF_UNIT,
+        BASE_ELF_UNIT,
+        WARLOCK,
+        ENCHANTRESS,
+        BANDIT_ARCHER,
+        ORC_RAVAGER,
+        APOSTATE,
+        CHAOS_APOSTATE,
+        CHAOS_CULTIST,
+        FORSWORN_DWARF,
+        DWARF_GUARDSMAN,
+        GREY_ELF_SCOUT,
+        ANTIUNICODE45CODEENDPALADIN,
+        SORCERESS,
+        CONTAMINATED_DOG,
+        GOBLIN_POACHER,
+        GOBLIN_WATCHMAN,
+        GOBLIN_SKIRMISHER,
+        ORC_KHAN,
+        ORC_EXECUTIONER,
+        GOBLIN_SCOUT,
+        BOUNTY_HUNTER,
+        RONIN_BALLESTERO,
+        HALFUNICODE45CODEENDORC_BOUNCER,
+        ASSASSIN,
+        CONJURER,
+        ORC_CHAMPION,
+        DWARF_SHOOTER,
+        DWARVEN_MILITIA,
+        DWARF_WARRIOR,
+        FORSWORN_MINER,
+        HILL_GIANT,
+        MOUNTAIN_GIANT,
+        FROST_GIANT,
+        DOGGY,
+        STORM_GIANT,
+        GIANTESS,
+        DWARF_BRAWLER,
+        VALKYRIE,
+        DWARF_SHARPEYE,
+        TROLL,
+        DWARF_VETERAN,
+        EXILED_THANE,
+        NAGA_ASSAILANT,
+        SNIPER,
+        MERCENARY_RANGER,
+        GOBLIN_CREWUNICODE45CODEENDLEADER,
+        BARBARIAN_CHIEF,
+        BERSERKER,
+        RAVENGUARD_CROSSBOWMAN,
+        DARK_SHAMAN,
+        WAR_MAIDEN,
+        BALLESTERO,
+        SAVAGE_DWARF,
+        PIRATE_SABOTEUR,
+        PIRATE_BRUTE,
+        PIRATE_SKIRMISHER,
+        PIRATE_FIRST_MATE,
+        PIRATE_TASKMASTER,
+        PIRATE_CAPTAIN,
+        GLORY_SEEKER,
+        COLDSKIN_WARRIOR,
+        COLDSKIN_ELDER,
+        NORDHEIM_WARRIOR,
+        SLAYER,
+        NORDHEIM_CHAMPION,
+        BRAWLER,
+        ORC_ARCHER,
+        ;
+    }
+    public enum  UNITS_TYPES_CONSTRUCTS implements OBJ_TYPE_ENUM {
+        STEEL_GOLEM,
+        MECHANICUM_TITAN,
+        ;
+    }
+    public enum  UNITS_TYPES_TUTORIAL implements OBJ_TYPE_ENUM {
+        OLD_RUSTY_GOLEM,
+        PUNY_SPIDERLING,
+        VENOMOUS_HAIRY_SPIDER,
+        SMELLY_ZOMBIE,
+        UNSUSPECTING_GOBLIN_ARCHER,
+        DOOMED_GOBLIN_FODDER,
+        GROWLBELLY,
+        DESPERATE_ORC_SLAVE,
+        ;
+    }
+    public enum  UNITS_TYPES_LESSER_DEMON implements OBJ_TYPE_ENUM {
+        FAMILIAR,
+        DEMON_BRUTE,
+        HELLGUARD,
+        IMP,
+        CHAOS_LEGIONNAIRE,
+        ;
+    }
+    public enum  UNITS_TYPES_DEMON implements OBJ_TYPE_ENUM {
+        DEMON_CARNIFEX,
+        LORD_OF_DESPAIR,
+        DEMON_TORMENTOR,
+        MISTRESS,
+        DEVIL_MAGE,
+        LORD_OF_HATRED,
+        LORD_OF_PAIN,
+        ;
+    }
+    public enum  UNITS_TYPES_LESSERDEMON implements OBJ_TYPE_ENUM {
+        INFERNAL_GOLEM,
+        ;
+    }
+    public enum  UNITS_TYPES_GREATER_DEMON implements OBJ_TYPE_ENUM {
+        SCREAMER,
+        ;
+    }
+    public enum  UNITS_TYPES_CORRUPTED implements OBJ_TYPE_ENUM {
+        EVIL_EYE,
+        GUARDIAN_OF_THE_UNDERWORLD,
+        MIND_FLAYER,
+        CORRUPTED_MIND_FLAYER,
+        TROGLODYTE_MUTANT,
+        ;
+    }
+    public enum  UNITS_TYPES_MONSTER implements OBJ_TYPE_ENUM {
+        MANTICORE,
+        HYDRA,
+        MINOTAUR,
+        BLACK_DRAGON,
+        MINOTAUR_PRAETOR,
+        UNDEAD_BEAST,
+        SKELETAL_BEAST,
+        ZOMBIE_BEAST,
+        VAMPIRE_BEAST,
+        UNDEAD_MONSTROCITY,
+        BONE_DRAGON,
+        PLACEHOLDER_UNDEAD_MONSTER,
+        ;
+    }
+    public enum  UNITS_TYPES_SPIDERS implements OBJ_TYPE_ENUM {
+        DEADLY_SPIDER,
+        PALE_WEAVER,
+        MYCOSA,
+        BLACK_WIDOW,
+        SPIDERLING,
+        SPIDERITE,
+        PLACEHOLDER_CRITTER_SPIDERS,
+        ;
+    }
+    public enum  UNITS_TYPES_SHADOW implements OBJ_TYPE_ENUM {
+        SHADOW,
+        MALEFIC_SHADE,
+        ;
+    }
+    public enum  UNITS_TYPES_PLAGUE implements OBJ_TYPE_ENUM {
+        HUSK,
+        CORPSEBORN,
+        GHOUL,
+        INFESTED_HUSK,
+        PLAGUE_ZOMBIE,
+        HEADLESS_HORSEMAN,
+        PLACEHOLDER_UNDEAD_PLAGUE,
+        ;
+    }
+    public enum  UNITS_TYPES_CRIMSON implements OBJ_TYPE_ENUM {
+        BLOOD_GHAST,
+        BLOOD_REVENANT,
+        VAMPIRE,
+        VAMPIRE_LORD,
+        VAMPIRE_MISTRESS,
+        GHAST_ZOMBIE,
+        CRIMSON_CHAMPION,
+        AFFLICTED_NOBLEMAN,
+        PLACEHOLDER_UNDEAD_CRIMSON,
+        ;
+    }
+    public enum  UNITS_TYPES_WRAITH implements OBJ_TYPE_ENUM {
+        GHOST,
+        WRAITH_BEAST,
+        WRAITH,
+        KING_OF_THE_DEAD,
+        GHAST_WRAITH,
+        PLACEHOLDER_UNDEAD_WRAITH,
+        ;
+    }
+    public enum  UNITS_TYPES_PALE implements OBJ_TYPE_ENUM {
+        REVENANT,
+        WRAITH_KNIGHT,
+        ;
+    }
+    public enum  UNITS_TYPES_DEATH implements OBJ_TYPE_ENUM {
+        DEATH_LORD,
+        HUORN,
+        DEATH_KNIGHT,
+        CORPSE_SLUG,
+        ;
+    }
+    public enum  UNITS_TYPES_WILD_ANIMAL implements OBJ_TYPE_ENUM {
+        GREY_WOLF,
+        WARG,
+        DIRE_WARG,
+        ;
+    }
+    public enum  UNITS_TYPES_DIRE_ANIMAL implements OBJ_TYPE_ENUM {
+        DIRE_GRIZZLY,
+        BLACK_PANTHER,
+        GRIFF,
+        ;
+    }
+    public enum  UNITS_TYPES_PET_MONSTER implements OBJ_TYPE_ENUM {
+        DRAKE,
+        BASILISK,
+        GIANT_DRAGONFLY,
+        ;
+    }
+    public enum  UNITS_TYPES_SKY implements OBJ_TYPE_ENUM {
+        CLOUD_TITAN,
+        AYRIE,
+        ;
+    }
+    public enum UNIT_GROUPS  implements OBJ_TYPE_ENUM {
         //generate!
         ANIMALS,
         APOSTATES,
@@ -876,7 +1299,6 @@ public final class UnitEnums {
         WILD,
         WOADS,
         WOLVES,
-;
+        ;
     }
-}
 }
