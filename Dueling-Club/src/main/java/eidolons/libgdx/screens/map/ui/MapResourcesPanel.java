@@ -17,8 +17,8 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager.STD_IMAGES;
 
@@ -66,7 +66,7 @@ public class MapResourcesPanel extends TablePanel {
                 return VISUALS.XP.getImgPath();
         }
         return PathFinder.getMacroUiPath() + "values"
-         + StringMaster.getPathSeparator()
+         + PathUtils.getPathSeparator()
          + resource.toString();
     }
 

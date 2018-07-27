@@ -3,12 +3,14 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.macro.map.Place;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUPS;
 import main.data.DataManager;
 import main.entity.type.ObjAtCoordinate;
@@ -28,12 +30,24 @@ import static main.content.enums.entity.UnitEnums.UNIT_GROUPS.*;
 /**
  * Created by JustMe on 7/20/2018.
  */
-public class RngLevelPopulator {
+public class RngLevelPopulator  {
 
     private static final float BLOCK_FILL_COEF = 3;
     LevelModel model;
     TileMap tileMap;
     private float requiredFill;
+    int powerLevel;
+
+    public static void populate(DungeonLevel level, Place place) {
+        int powerLevel=100;
+        new RngLevelPopulator(level.getModel(), level.getTileMap(), powerLevel).populate();
+    }
+
+    public RngLevelPopulator(LevelModel model, TileMap tileMap, int powerLevel) {
+        this.model = model;
+        this.tileMap = tileMap;
+        this.powerLevel = powerLevel;
+    }
 
     public void populate() {
         //via groups/encounters?
@@ -117,7 +131,7 @@ public class RngLevelPopulator {
     }
     private UNIT_GROUPS chooseGroup(LevelBlock block, float maxFillIncrement) {
         boolean elite = isElite(block.getRoomType(), maxFillIncrement);
-        List<UNIT_GROUPS> basePool = new ArrayList<>(Arrays.asList(getPool(model.getData().getSubdungeonType(), elite)));
+        List<UNIT_GROUPS> basePool = new ArrayList<>(Arrays.asList(getPool(model.getData().getLocationType(), elite)));
        return  new RandomWizard<UNIT_GROUPS>().getRandomListItem(basePool);
     }
 
@@ -135,7 +149,7 @@ public class RngLevelPopulator {
         return false;
     }
 
-    private UNIT_GROUPS[] getPool(SUBDUNGEON_TYPE subdungeonType, boolean elite) {
+    private UNIT_GROUPS[] getPool(LOCATION_TYPE subdungeonType, boolean elite) {
         switch (subdungeonType) {
             case CAVE:
                 return elite ? new UNIT_GROUPS[]{DUNGEON, CRITTERS, }
@@ -208,6 +222,7 @@ public class RngLevelPopulator {
         List<ObjAtCoordinate> units = block.getUnits();
         return BLOCK_FILL_COEF * units.size() / square;
     }
+
 
     public enum BOSS_SPAWN_TYPE {
         SINGLE,

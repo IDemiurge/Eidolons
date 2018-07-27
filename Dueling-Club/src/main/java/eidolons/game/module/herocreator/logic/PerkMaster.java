@@ -12,6 +12,7 @@ import main.content.enums.entity.HeroEnums.PERK_PARAM;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -68,7 +69,7 @@ public class PerkMaster {
     private static boolean checkCustomPerkReqs(ObjType type, Unit hero, HeroClass c1, HeroClass c2) {
         String string = type.getProperty(G_PROPS.PERK_CLASS_REQUIREMENTS);
         //syntax: OR== class1;class2 AND == class1+class2;class3+class2;...
-        for (String substring : StringMaster.openContainer(string)) {
+        for (String substring : ContainerUtils.openContainer(string)) {
             if (substring.contains("+")) {
                 if (checkAliasForClass(substring, c1) && checkAliasForClass(substring, c2)) {
                     return true;

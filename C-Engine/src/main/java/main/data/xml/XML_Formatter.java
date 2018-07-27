@@ -4,7 +4,9 @@ import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.DataModel;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
@@ -38,7 +40,7 @@ public class XML_Formatter {
     static {
         int i = 0;
         for (char key : (replaced).toCharArray()) {
-            String value = StringMaster.getCodeFromChar("" + key);
+            String value = NumberUtils.getCodeFromChar("" + key);
             xmlFormatReplacements.put(("" + key), value);
         }
     }
@@ -53,13 +55,13 @@ public class XML_Formatter {
     }
 
     public static String getStringFromCode(String key) {
-        List<String> list = StringMaster.openContainer(key);
+        List<String> list = ContainerUtils.openContainer(key);
         String result = "";
         for (String o : list) {
             o = StringMaster.getSubStringBetween(o, ASCII_OPEN, ASCII_CLOSE);
             try {
                 // Character.toChars((int) StringMaster.getInteger(o)).
-                result += Character.toString((char) (int) StringMaster.getInteger(o));
+                result += Character.toString((char) (int) NumberUtils.getInteger(o));
             } catch (Exception e) {
                 return result;
             }
@@ -80,7 +82,7 @@ public class XML_Formatter {
     }
 
     public static String formatXmlTextContent(String string, VALUE value) {
-        String result = string.replace(replacedTextContent, StringMaster
+        String result = string.replace(replacedTextContent, NumberUtils
          .getCodeFromChar(replacedTextContent));
         result = encodeNonASCII(result);
         if (isRepairMode())
@@ -122,7 +124,7 @@ public class XML_Formatter {
             String code = StringMaster.getSubStringBetween(s, ASCII_OPEN,
              ASCII_CLOSE);
             try {
-                s = s.replace(ASCII_OPEN + code + ASCII_CLOSE, StringMaster
+                s = s.replace(ASCII_OPEN + code + ASCII_CLOSE, NumberUtils
                  .getStringFromCode(code));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
@@ -135,7 +137,7 @@ public class XML_Formatter {
     public static String restoreXmlNodeName(String s) {
         for (String x : xmlFormatReplacements.keySet()) {
             String code = xmlFormatReplacements.get(x);
-            s = s.replace(code, StringMaster.getStringFromCode(code));
+            s = s.replace(code, NumberUtils.getStringFromCode(code));
         }
         if (s.startsWith(FIRST_CHAR)) {
             s = s.substring(FIRST_CHAR.length());
@@ -183,7 +185,7 @@ public class XML_Formatter {
     }
 
     private static String restoreXmlTextContent(String string) {
-        return string.replace(StringMaster.getCodeFromChar(replacedTextContent),
+        return string.replace(NumberUtils.getCodeFromChar(replacedTextContent),
          replacedTextContent);
     }
 

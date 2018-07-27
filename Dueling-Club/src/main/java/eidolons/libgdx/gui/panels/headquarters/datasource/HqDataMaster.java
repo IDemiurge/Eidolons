@@ -34,7 +34,8 @@ import main.data.DataManager;
 import main.data.xml.XML_Writer;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -100,10 +101,10 @@ public class HqDataMaster {
         for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
             String val = model.getProperty(sub);
             String newVal = "";
-            for (String substring : StringMaster.openContainer(val)) {
-                if (!StringMaster.isInteger(substring))
+            for (String substring : ContainerUtils.openContainer(val)) {
+                if (!NumberUtils.isInteger(substring))
                     continue;
-                Integer id = StringMaster.getInteger(substring);
+                Integer id = NumberUtils.getInteger(substring);
                 if (id != 0) {
                     Obj obj = model.getGame().getObjectById(id);
                     if (obj == null)

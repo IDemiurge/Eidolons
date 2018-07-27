@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.G_Panel.VISUALS;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
 /**
@@ -63,7 +63,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
             path = getPath(ninePatch, backgroundNinePatch, maxWidth, maxHeight);
 
         String partPath = StrPathBuilder.build(ninePatch.path,
-         "parts") + StringMaster.getPathSeparator();
+         "parts") + PathUtils.getPathSeparator();
 
 
       return   generate(
@@ -97,7 +97,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
     private static String getPath(NINE_PATCH ninePatch, BACKGROUND_NINE_PATCH
      backgroundNinePatch, int maxWidth, int maxHeight) {
      return    ninePatch.path +
-         StringMaster.getPathSeparator() +
+         PathUtils.getPathSeparator() +
          backgroundNinePatch.name().toLowerCase() + " " +
          maxWidth + " " + maxHeight + ".png";
     }

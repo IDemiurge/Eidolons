@@ -6,7 +6,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.VALUE;
 import main.content.values.properties.G_PROPS;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.MapMaster;
 
@@ -87,7 +87,7 @@ public class ValuePageManager {
             if (pages == null) {
                 continue;
             }
-            List<String> pageNames = StringMaster.openContainer(PAGE_NAMES[i]);
+            List<String> pageNames = ContainerUtils.openContainer(PAGE_NAMES[i]);
 
             List<List<VALUE>> pageList = new ArrayMaster<VALUE>().get2dList(pages);
             Map<String, List<VALUE>> map = new MapMaster<String, List<VALUE>>().constructMap(
@@ -312,7 +312,7 @@ public class ValuePageManager {
         if (TYPE.getCode() >= pageNames.length) {
             return null;
         }
-        List<String> stringList = StringMaster.openContainer(pageNames[TYPE.getCode()]);
+        List<String> stringList = ContainerUtils.openContainer(pageNames[TYPE.getCode()]);
         if (stringList.isEmpty()) {
             return null;
         }

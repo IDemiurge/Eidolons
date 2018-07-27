@@ -9,7 +9,7 @@ import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 /**
  * Created by JustMe on 11/24/2017.
@@ -21,7 +21,7 @@ public class PlaceholderGenerator {
         unit subgroups
          */
         for (UNIT_GROUP group : UnitEnums.UNIT_GROUP.values()) {
-            for (String sub : StringMaster.openContainer(group.getSubgroups(), ",")) {
+            for (String sub : ContainerUtils.openContainer(group.getSubgroups(), ",")) {
                 for (PLACEHOLDER_AI_TYPE aiType : PLACEHOLDER_AI_TYPE.values()) {
                     ObjType type = generate(group, sub, aiType.name());
                     type.setProperty(PROPS.AI_TYPE, aiType.name());

@@ -32,6 +32,7 @@ import main.elements.conditions.StringComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -166,7 +167,7 @@ divination?
         String periodicValues = mode.getPeriodicValues();
         if (periodicValues == null)
             return;
-        for (String substring : StringMaster.openContainer(periodicValues)) {
+        for (String substring : ContainerUtils.openContainer(periodicValues)) {
             String amount = VariableManager.getVar(substring, 0);
             String maxAmount = VariableManager.getVar(substring, 1);
             String periodicValue = VariableManager.removeVarPart(substring);
@@ -229,7 +230,7 @@ divination?
             string = "";
         }
         // "Custom Parameters" of old...
-        for (String s : StringMaster.open(ref.getSourceObj().getProperty(
+        for (String s : ContainerUtils.open(ref.getSourceObj().getProperty(
          G_PROPS.CUSTOM_PROPS))) {
             if (StringMaster.contains(s, mode.getBuffName(), true, false)) {
                 if (StringMaster.contains(s, mod ? PARAM_MOD : PARAM_BONUS, true, false)) {

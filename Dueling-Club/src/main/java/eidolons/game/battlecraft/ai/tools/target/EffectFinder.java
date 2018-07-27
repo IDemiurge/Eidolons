@@ -24,6 +24,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Attachment;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ClassMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -312,7 +313,7 @@ public class EffectFinder {
         if (!abilName.contains(separator)) {
             separator = StringMaster.AND_SEPARATOR;
         }
-        for (String s : StringMaster.open(abilName, separator)) {
+        for (String s : ContainerUtils.open(abilName, separator)) {
             effects.addAll(EffectFinder.getEffectsFromAbilityType(s, ref));
         }
         return effects;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.macro.map.Route;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.texture.TextureCache;
+import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -31,9 +32,9 @@ public class RouteActor extends ImageContainer {
 
     private static String getHighlightImgPath(Route sub) {
         try {
-            return StringMaster.cropLastPathSegment(sub.getRouteImage()) + StringMaster.getPathSeparator() +
+            return StringMaster.cropLastPathSegment(sub.getRouteImage()) + PathUtils.getPathSeparator() +
              HIGHLIGHT.trim()
-             + StringMaster.getPathSeparator() +
+             + PathUtils.getPathSeparator() +
              StringMaster.getLastPathSegment(
               StringMaster.cropFormat(sub.getRouteImage())) + HIGHLIGHT + ".png";
         } catch (Exception e) {

@@ -23,10 +23,7 @@ import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.FilterMaster;
@@ -65,7 +62,7 @@ public class Shop extends TownPlace implements ShopInterface {
 
     private void initItems() {
         if (!getProperty(MACRO_PROPS.SHOP_ITEMS).isEmpty()) {
-            DataManager.toTypeList(StringMaster
+            DataManager.toTypeList(ContainerUtils
               .openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
              C_OBJ_TYPE.ITEMS);
         }
@@ -208,7 +205,7 @@ public class Shop extends TownPlace implements ShopInterface {
 
     @Override
     public List<String> getTabs() {
-        return StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS));
+        return ContainerUtils.openContainer(getProperty(MACRO_PROPS.SHOP_ITEM_GROUPS));
     }
 
     @Override
@@ -233,7 +230,7 @@ public class Shop extends TownPlace implements ShopInterface {
     }
 
     public List<ObjType> getItems(DC_TYPE TYPE) {
-        return DataManager.toTypeList(StringMaster.openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
+        return DataManager.toTypeList(ContainerUtils.openContainer(getProperty(MACRO_PROPS.SHOP_ITEMS)),
          TYPE);
     }
 
@@ -287,7 +284,7 @@ public class Shop extends TownPlace implements ShopInterface {
     public void toBase() {
         super.toBase();
         setProperty(MACRO_PROPS.SHOP_ITEMS,
-         StringMaster.constructContainer(DataManager
+         ContainerUtils.constructContainer(DataManager
           .toStringList(getItems())));
 
     }

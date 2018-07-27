@@ -33,6 +33,7 @@ import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -454,9 +455,9 @@ public class TestLauncher //extends MetaGameMaster
 
     protected String getEnemiesFromWave(ObjType type) {
         Integer power = EncounterMaster.getPower(type, null);
-        if (power < EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY))) {
+        if (power < EncounterMaster.getPower(ContainerUtils.openContainer(PLAYER_PARTY))) {
             return (type.getProperty(PROPS.EXTENDED_PRESET_GROUP));
-        } else if (power > 2 * EncounterMaster.getPower(StringMaster.openContainer(PLAYER_PARTY))) {
+        } else if (power > 2 * EncounterMaster.getPower(ContainerUtils.openContainer(PLAYER_PARTY))) {
             return (type.getProperty(PROPS.SHRUNK_PRESET_GROUP));
         } else {
             return (type.getProperty(PROPS.PRESET_GROUP));

@@ -5,7 +5,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.system.options.GameplayOptions.LOGGING_DETAIL_LEVEL;
 import main.system.GuiEventManager;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import static main.system.GuiEventType.INITIATIVE_CHANGED;
@@ -38,7 +38,7 @@ public class AtbUnitImpl implements AtbUnit {
     @Override
     public float getAtbReadiness() {
 
-        return StringMaster.getFloat(unit.getParam(PARAMS.C_INITIATIVE))
+        return NumberUtils.getFloat(unit.getParam(PARAMS.C_INITIATIVE))
          /AtbController.TIME_LOGIC_MODIFIER;
     }
 

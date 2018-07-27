@@ -19,7 +19,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -165,7 +165,7 @@ public class StackingRule implements ActionRule {
             }
         }
         // no passable/overlaying!
-        int space = StringMaster.getInteger(PARAMS.SPACE.getDefaultValue());
+        int space = NumberUtils.getInteger(PARAMS.SPACE.getDefaultValue());
         if (c != null) {
             if (!game.isSimulation()) {
                 space = cell.getIntParam(PARAMS.SPACE);
@@ -188,7 +188,7 @@ public class StackingRule implements ActionRule {
         }
         // [QUICK FIX]
         if (unit.getIntParam(PARAMS.GIRTH) == 0) {
-            girth += StringMaster.getInteger(PARAMS.GIRTH.getDefaultValue());
+            girth += NumberUtils.getInteger(PARAMS.GIRTH.getDefaultValue());
         } else {
             girth += unit.getIntParam(PARAMS.GIRTH);
         }

@@ -31,8 +31,8 @@ import eidolons.test.frontend.FAST_DC;
 import main.content.enums.system.MetaEnums.WORKSPACE_GROUP;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.data.DataUnit;
 import main.system.launch.CoreEngine;
@@ -331,7 +331,7 @@ public class PresetLauncher {
     }
 
     private static void initOptions(String value) {
-        for (String optionString : StringMaster.open(value)) {
+        for (String optionString : ContainerUtils.open(value)) {
             PRESET_OPTION option = new EnumMaster<PRESET_OPTION>().retrieveEnumConst(
              PRESET_OPTION.class, optionString);
             switch (option) {
@@ -394,7 +394,7 @@ public class PresetLauncher {
     }
 
     private static void initDungeonsList(String value) {
-        for (String name : StringMaster.open(value)) {
+        for (String name : ContainerUtils.open(value)) {
             // else TODO
             // DungeonMaster.getPendingDungeons().add(name);
 

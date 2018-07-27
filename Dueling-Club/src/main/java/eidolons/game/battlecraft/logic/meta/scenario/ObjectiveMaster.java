@@ -17,8 +17,8 @@ import main.entity.Ref.KEYS;
 import main.game.bf.Coordinates;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 
 public class ObjectiveMaster {
     private static final String KEY = KEYS.OBJECTIVE.toString();
@@ -52,7 +52,7 @@ public class ObjectiveMaster {
     }
 
     public static void initObjectives(String types, String data, Location location) {
-        for (String s : StringMaster.open(types)) {
+        for (String s : ContainerUtils.open(types)) {
             // main objective - victory?
             OBJECTIVE_TYPE type = new EnumMaster<OBJECTIVE_TYPE>().retrieveEnumConst(
              OBJECTIVE_TYPE.class, s);

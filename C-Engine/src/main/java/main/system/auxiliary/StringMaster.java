@@ -2,29 +2,26 @@ package main.system.auxiliary;
 
 import main.content.ContentValsManager;
 import main.content.VALUE;
-import main.content.values.parameters.PARAMETER;
-import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.entity.Entity;
-import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
+import main.system.PathUtils;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.data.ListMaster;
-import main.system.math.Formula;
 
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StringMaster {
-
+    public static final String DIAMOND = "♦";
     public static final String SEPARATOR = ";";
     public static final String VAR_STRING = "^VAR";
     public static final String VAR_SEPARATOR = ",";
@@ -114,11 +111,8 @@ public class StringMaster {
     public static final String IDENTITY = " Identity";
     public static final String ALIGNMENT = " Alignment";
     public static final String MAP_VALUE_KEY_SEPARATOR = null;
-    private static final String UNICODE = "UNICODE";
-    private static final String CODEEND = "CODEEND";
     private static final String COORDINATES_SEPARATOR = "-";
     private static final String ALT_SEPARATOR = ",";
-    private static final String PATH_SEPARATOR = System.getProperty("file.separator");
     private static final String standard_symbols = "'-(),";
     private static final String PREFIX_SEPARATOR = "::";
     static Pattern pattern_ = Pattern.compile("_");
@@ -135,20 +129,6 @@ public class StringMaster {
             return string;
         }
         return Character.toUpperCase(c) + string.substring(1);
-
-    }
-
-    public static boolean checkContainer(String container, String string) {
-        return checkContainer(container, string, false);
-    }
-
-    public static boolean checkContainer(String container, String string, boolean strict) {
-        for (String s1 : StringMaster.open(container)) {
-            if (compareByChar(s1, string, strict)) {
-                return true;
-            }
-        }
-        return false;
 
     }
 
@@ -204,9 +184,9 @@ public class StringMaster {
         }
 
         if (anotherString.length() != string.length()) {
-//            if (strict) {
-//                return false;
-//            }
+            //            if (strict) {
+            //                return false;
+            //            }
             // anotherString.replace("_", " "); costly!
             // string.replace("_", " ");
 
@@ -279,8 +259,8 @@ public class StringMaster {
 
     public static boolean compareContainersIdentical(String val1, String val2,
                                                      boolean strictContents, String delimiter) {
-        List<String> container = StringMaster.openContainer(val1, delimiter);
-        List<String> container2 = StringMaster.openContainer(val2, delimiter);
+        List<String> container = ContainerUtils.openContainer(val1, delimiter);
+        List<String> container2 = ContainerUtils.openContainer(val2, delimiter);
 
         if (container.size() != container2.size()) {
             return false;
@@ -302,8 +282,8 @@ public class StringMaster {
 
     public static boolean compareContainers(String val1, String val2, boolean strictContents,
                                             String delimiter) {
-        for (String s1 : StringMaster.open(val1, delimiter)) {
-            for (String s : StringMaster.open(val2, delimiter)) {
+        for (String s1 : ContainerUtils.open(val1, delimiter)) {
+            for (String s : ContainerUtils.open(val2, delimiter)) {
                 if (StringMaster.compareByChar(s1, s, strictContents)) {
                     return true;
                 }
@@ -495,78 +475,6 @@ public class StringMaster {
         return ALT_SEPARATOR;
     }
 
-    public static List<String> split(String subString, String delimiter) {
-        return split(subString, delimiter, true);
-
-    }
-
-    public static List<String> split(String containerString, String delimiter, boolean strict) {
-        if (isEmpty(containerString)) {
-            return Collections.emptyList();
-        }
-        if (!containerString.contains(delimiter)) {
-            if (strict) {
-                ArrayList<String> ArrayList = new ArrayList<>();
-                ArrayList.add(containerString);
-                return ArrayList;
-            } else {
-                delimiter = delimiter.toUpperCase();
-                if (!containerString.contains(delimiter)) {
-                    delimiter = delimiter.toLowerCase();
-                }
-                if (!containerString.contains(delimiter)) {
-                    delimiter = getWellFormattedString(delimiter);
-                }
-            }
-        }
-        List<String> list = new ArrayList<>(Arrays
-         .asList(containerString.split(Pattern.quote(delimiter))));
-        list.removeIf(s -> isEmpty(s));
-        return list;
-    }
-
-    public static List<String> openContainer(String containerString, String separator) {
-        return split(containerString, separator);
-    }
-
-    public static List<String> openFormattedContainer(String containerString) {
-        return split(containerString, getFormattedContainerSeparator());
-    }
-
-    public static String[] open(String containerString) {
-        return open(containerString, getSeparator());
-    }
-
-    public static String[] open(String containerString, String separator) {
-        if (containerString == null)
-            return new String[]{""};
-
-        String[] array = containerString.split(Pattern.quote(separator));
-        int n = 0;
-        for (String sub : array) {
-            if (!sub.isEmpty())
-                n++;
-        }
-        String[] result = new String[n];
-        n = 0;
-        for (String sub : array) {
-            if (!sub.isEmpty()) {
-                result[n] = sub;
-                n++;
-            }
-        }
-
-        return result;
-    }
-
-    public static List<String> openContainer(String containerString) {
-        return openContainer(containerString, CONTAINER_SEPARATOR);
-    }
-
-    public static String getContainerSeparator() {
-        return getSeparator();
-    }
-
     public static boolean isEmptyOrZero(String string) {
         if (string == null) {
             return true;
@@ -591,28 +499,6 @@ public class StringMaster {
         return string.equals(ContentValsManager.OLD_EMPTY_VALUE);
     }
 
-    public static void formatList(List<String> listData) {
-        int i = 0;
-        for (String item : listData) {
-
-            listData.set(i, getWellFormattedString(item));
-            i++;
-        }
-    }
-
-    public static void formatResList(List<String> listData) {
-        int i = 0;
-        for (String item : listData) {
-            item = item.substring(item.indexOf("\\", item.length()));
-            listData.set(i, item);
-            i++;
-        }
-    }
-
-    public static String getNegativeFormula(String formula) {
-        return "-1* (" + formula + ")";
-    }
-
     public static String getPercentageAppend(int amount) {
         // TODO Auto-generated method stub
         return "*(100+" + amount + ")/100";
@@ -628,166 +514,6 @@ public class StringMaster {
 
     public static String wrapInParenthesis(String value) {
         return "(" + value + ")";
-    }
-
-    public static boolean isNumber(String value, boolean integer) {
-        if (value == null) {
-            return false;
-        }
-        if (value.isEmpty()) {
-            return false;
-        }
-        int i = 0;
-        boolean _float = false;
-        for (char c : value.toCharArray()) {
-            if (_float) {
-                if (integer) {
-                    if (c != '0') {
-                        return false;
-                    }
-                }
-            }
-            if (!Character.isDigit(c)) {
-                if (c == '-') {
-                    if (i == 0) {
-                        continue;
-                    }
-                }
-                if (c == '.') {
-                    if (_float) // no two periods
-                    {
-                        return false;
-                    }
-                    if (i > 0) {
-                        _float = true;
-                        continue;
-                    } else if (integer) {
-                        return false;
-                    }
-                }
-
-                return false;
-            }
-
-            i++;
-        }
-        return true;
-    }
-
-    public static Boolean isIntegerOrNumber(String value) {
-        boolean result = isNumber(value, true);
-        if (result) {
-            return true;
-        }
-        result = isNumber(value, false);
-        if (result) {
-            return false;
-        }
-        return null;
-
-    }
-
-    public static boolean isInteger(String value) {
-        return isNumber(value, true);
-    }
-
-    public static Integer getInteger(char value) {
-        switch (value) {
-            case '0':
-                return 0;
-            case '1':
-                return 1;
-            case '2':
-                return 2;
-            case '3':
-                return 3;
-            case '4':
-                return 4;
-            case '5':
-                return 5;
-            case '6':
-                return 6;
-            case '7':
-                return 7;
-            case '8':
-                return 8;
-            case '9':
-                return 9;
-        }
-        return null;
-    }
-
-    public static Integer getInteger(String value) {
-        return getInteger(value, null);
-    }
-
-    public static Integer getInteger(String value, Ref ref) {
-        if (value == null)
-            return 0;
-        if (!isInteger(value)) {
-            return new Formula(value).getInt(ref == null ? new Ref() : ref);
-        }
-        if (value.contains(".")) {
-            value = value.split(Pattern.quote("."))[0];
-        }
-
-        if (isFAST_INTEGER_MODE()) {
-            int result = 0;
-            boolean negative = false;
-            for (int i = 0; i < value.length(); i++) {
-                char c = value.toCharArray()[i];
-                if (c == ('.')) {
-                    break;
-                }
-                if (c == ('-')) {
-                    negative = true;
-                } else {
-                    result += getInteger(c) * Math.pow(10, value.length() - i - 1);
-                }
-            }
-            if (negative) {
-                result = -result; // for length
-            }
-            return result;
-        } else {
-            String result = "";
-            for (char c : value.toCharArray()) {
-                if (c == ('.')) {
-                    break;
-                }
-                if (c == ('-') || Character.isDigit(c)) {
-
-                    result += c;
-                }
-            }
-            if (!result.isEmpty()) {
-                return Integer.valueOf(result);
-            }
-        }
-
-        return 0;
-    }
-
-    private static boolean isFAST_INTEGER_MODE() {
-        return true;
-    }
-
-    public static String getOrdinal(int number) {
-        return number + getOrdinalEnding(number);
-    }
-
-    public static String getOrdinalEnding(int number) {
-        int lastDigit = number % 10;
-        if (lastDigit == 1) {
-            return "st";
-        }
-        if (lastDigit == 2) {
-            return "nd";
-        }
-        if (lastDigit == 3) {
-            return "rd";
-        }
-        return "th";
     }
 
     // public static String getOrdinal(int i) {
@@ -818,12 +544,9 @@ public class StringMaster {
     public static String getEnumFormatSaveCase(String name) {
         return XML_Formatter.formatStringForXmlNodeName(name.replace(" ", "_"));
     }
+
     public static String getEnumFormat(String name) {
         return getEnumFormatSaveCase(name).toUpperCase();
-    }
-
-    public static String getPathSeparator() {
-        return PATH_SEPARATOR;
     }
 
     public static String clipEnding(String str, String CHAR) {
@@ -891,41 +614,8 @@ public class StringMaster {
         return str.substring(str.lastIndexOf("."));
     }
 
-    public static String joinStringList(List<String> list, String divider, boolean cropLastDivider) {
-        if (list == null) {
-            return "";
-        }
-        if (list.isEmpty()) {
-            return "";
-        }
-        StringBuilder builder = new StringBuilder();
-
-        for (String str : list) {
-            if (str != null)
-                builder.append(str + divider);
-        }
-        String result = builder.toString();
-        return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
-    }
-
-    public static String join(String s, String... parts) {
-        return joinStringList(new ArrayList<>(Arrays.asList(parts)), s, true);
-    }
-
-    public static String joinList(List list) {
-        return joinList(list, SEPARATOR);
-    }
-
-    public static String joinList(List list, String divider) {
-        return joinStringList(convertToStringList(list), divider);
-    }
-
-    public static String joinStringList(List<String> list, String divider) {
-        return joinStringList(list, divider, true);
-    }
-
     public static String getValueRefs(KEYS objRef, VALUE... valRef) {
-        return build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))
+        return ContainerUtils.build(Arrays.stream(valRef).map(val -> getValueRef(objRef, val))
          .collect(Collectors.toList()));
     }
 
@@ -936,89 +626,6 @@ public class StringMaster {
     public static String getValueRef(String objRef, String valRef) {
         return FORMULA_REF_OPEN_CHAR + objRef + FORMULA_REF_SEPARATOR + valRef
          + FORMULA_REF_CLOSE_CHAR;
-    }
-
-    public static String constructContainer(List<String> list) {
-        return joinStringList(list, getContainerSeparator(), false);
-    }
-
-    public static String constructStringContainer(List<?> list) {
-        return constructStringContainer(list, getContainerSeparator());
-    }
-
-    public static String constructStringContainer(List<?> list, String separator) {
-        return joinStringList(ListMaster.toStringList(list.toArray()), separator, false);
-    }
-
-    public static String constructEntityNameContainer(List<? extends Entity> list
-
-    ) {
-        return joinStringList(ListMaster.toStringList(true, list.toArray()),
-         getContainerSeparator(), false);
-    }
-
-    public static List<String> convertToStringList(Collection<?> values) {
-        List<String> list = new ArrayList<>();
-        for (Object object : values) {
-            if (object != null) {
-                list.add(object.toString());
-            }
-        }
-
-        return list;
-    }
-
-    public static List<String> convertToIdList(Collection<?> list) {
-
-        List<String> idList = new ArrayList<>();
-        if (list != null) {
-            for (Object object : list) {
-                if (object != null) {
-                    idList.add(((Entity) object).getId() + "");
-                }
-            }
-        }
-
-        return idList;
-    }
-
-    public static List<String> toNameList(List<? extends Entity> list) {
-        return toNameList(false, list);
-    }
-
-    public static List<String> toNameList(boolean base, List<? extends Entity> list) {
-        List<String> nameList = new ArrayList<>();
-        if (list != null) {
-            for (Entity object : list) {
-                if (object != null) {
-                    nameList.add(base ? object.getProperty(G_PROPS.NAME, true) : object.getName());
-                }
-            }
-        }
-        return nameList;
-    }
-
-    public static Collection<Integer> convertToIdIntList(Collection<? extends Entity> list) {
-        List<Integer> idList = new ArrayList<>();
-        for (Entity object : list) {
-            if (object != null) {
-                idList.add(object.getId());
-            }
-        }
-
-        return idList;
-    }
-
-    public static String getFormattedContainerString(String container) {
-        if (container.endsWith(StringMaster.getContainerSeparator())) {
-            container = container.substring(0, container.length() - 1);
-        }
-        return container.replace(StringMaster.getContainerSeparator(),
-         getFormattedContainerSeparator());
-    }
-
-    public static String getFormattedContainerSeparator() {
-        return ", ";
     }
 
     public static String getSubString(String string, String open, String close) {
@@ -1157,7 +764,7 @@ public class StringMaster {
     }
 
     public static String getLastPathSegment(String path) {
-        LinkedList<String> segments = new LinkedList<>(splitPath(path));
+        LinkedList<String> segments = new LinkedList<>(PathUtils.splitPath(path));
         return segments.getLast();
     }
 
@@ -1196,22 +803,6 @@ public class StringMaster {
             return replaceLast(name, name.substring(lastIndexOf), "");
         }
         return name;
-    }
-
-    public static List<String> splitPath(String path) {
-        if (path.charAt(0) == '/') {
-            path = path.substring(1);
-        }
-        if (path.contains("/")) {
-            if (!path.contains(Pattern.quote(PATH_SEPARATOR))) {
-                return Arrays.asList(path.split("/"));
-            }
-        }
-        return Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
-    }
-
-    public static List<String> getPathSegments(String path) {
-        return splitPath(path);
     }
 
     public static String replaceLast(String string, String regex, String replacement) {
@@ -1285,33 +876,6 @@ public class StringMaster {
         return string;
     }
 
-    public static String buildPath(String... strings) {
-        String result = "";
-        for (String s : strings) {
-            result += s + PATH_SEPARATOR;
-        }
-        return result.substring(0, result.length() - 1);
-    }
-
-
-    public static String build(String... strings) {
-
-        return build(false, strings);
-    }
-
-    public static String build(List<String> list) {
-        return build(list.toArray(new String[list.size()]));
-    }
-
-    public static String build(boolean whitespaces, String... strings) {
-        StringBuilder builder = new StringBuilder();
-        Arrays.stream(strings).forEach(s -> {
-            builder.append(s);
-            if (whitespaces)
-                builder.append(" ");
-        });
-        return builder.toString();
-    }
 
     public static String cropLast(String str1, int i, String suffix) {
         while (i > 0 && str1.endsWith(suffix)) {
@@ -1386,9 +950,9 @@ public class StringMaster {
 
     public static Integer getWeight(String string, boolean inverse) {
         if (inverse) {
-            return getInteger(getWeightItem(string, false));
+            return NumberUtils.getInteger(getWeightItem(string, false));
         }
-        return getInteger(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
+        return NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager.getVarPartLast(string)));
     }
 
     public static String getWeightItem(String string, boolean inverse) {
@@ -1461,7 +1025,7 @@ public class StringMaster {
     }
 
     public static String getStringBeforeNumerals(String name) {
-        int firstNumberIndex = getFirstNumberIndex(name);
+        int firstNumberIndex = NumberUtils.getFirstNumberIndex(name);
         if (firstNumberIndex == -1) {
             firstNumberIndex = name.length() - 1;
         }
@@ -1469,37 +1033,7 @@ public class StringMaster {
     }
 
     public static String getStringBeforeNumeralsAndSymbols(String name) {
-        return name.substring(0, getLastAlphabeticIndex(name));
-    }
-
-    public static int getLastAlphabeticIndex(String name) {
-        int i = 0;
-        for (char l : name.toCharArray()) {
-            if (!Character.isAlphabetic(l)) {
-                return i;
-            }
-            i++;
-        }
-        return name.length() - 1;
-    }
-
-    public static int getFirstNumberIndex(String name) {
-        int i = 0;
-        for (char l : name.toCharArray()) {
-            if (Character.isDigit(l)) {
-                return i;
-            }
-            i++;
-        }
-        return -1;
-    }
-
-    public static String getSegment(int i, String str, String delimiter) {
-        String[] array = str.split(delimiter);
-        if (array.length < i) {
-            return null;
-        }
-        return array[i];
+        return name.substring(0, NumberUtils.getLastAlphabeticIndex(name));
     }
 
     public static String getFormattedTypeName(String typeName) {
@@ -1510,76 +1044,9 @@ public class StringMaster {
         return typeName;
     }
 
-    public static String getXmlNode(String xml, String nodeName) {
-        String closeXmlFormatted = XML_Converter.closeXmlFormatted(nodeName);
-        xml = xml.substring(xml.indexOf(XML_Converter.openXmlFormatted(nodeName)),
-         closeXmlFormatted.length() + xml.lastIndexOf(closeXmlFormatted));
-        return xml;
-    }
-
-    public static Double getDouble(String doubleParam) {
-        if (isEmpty(doubleParam)) {
-            return 0.0;
-        }
-        doubleParam = doubleParam.replace("(", "").replace(")", "");
-        try {
-            return Double.valueOf(doubleParam);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        return 0.0;
-    }
-
-    public static Float getFloat(String floatParam) {
-        if (isEmpty(floatParam)) {
-            return 0f;
-        }
-        floatParam = floatParam.replace("(", "").replace(")", "");
-        try {
-            return Float.valueOf(floatParam);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        return 0.0f;
-    }
-
-    public static String getCodeFromChar(String key) {
-        return UNICODE + key.codePointAt(0) + CODEEND;
-        // Character.toChars(int).
-    }
-
-    public static String getStringFromCode(String key) {
-        List<String> list = StringMaster.openContainer(key);
-        String result = "";
-        for (String o : list) {
-            o = StringMaster.getSubStringBetween(o, UNICODE, CODEEND);
-            try {
-                // Character.toChars((int) StringMaster.getInteger(o)).
-                result += Character.toString((char) (int) StringMaster.getInteger(o));
-            } catch (Exception e) {
-                return result;
-            }
-        }
-        return result;
-    }
-
-    public static String getFormattedTimeString(int number, int digits) {
-        String result = "" + number;
-        if (digits < result.length()) {
-            while (digits < result.length()) {
-                result = result.substring(1);
-            }
-        } else {
-            while (digits > result.length()) {
-                result = "0" + result;
-            }
-        }
-        return result;
-    }
-
     public static String getFirstConsonants(String name, int n) {
         String string = "";
-        for (String sub : StringMaster.open(name, " ")) {
+        for (String sub : ContainerUtils.open(name, " ")) {
             string += ("" + sub.charAt(0));
         }
         return string.toUpperCase();
@@ -1593,7 +1060,7 @@ public class StringMaster {
 
     public static String getAbbreviation(String name) {
         String string = "";
-        for (String sub : StringMaster.open(name, " ")) {
+        for (String sub : ContainerUtils.open(name, " ")) {
             string += ("" + sub.charAt(0));
         }
         return string.toUpperCase();
@@ -1611,7 +1078,7 @@ public class StringMaster {
     }
 
     public static String getStringFromEntityList(Collection<? extends Obj> engagers) {
-        return constructContainer(DataManager.convertObjToStringList(engagers));
+        return ContainerUtils.constructContainer(DataManager.convertObjToStringList(engagers));
     }
 
     public static String getFirstItem(String string) {
@@ -1622,88 +1089,13 @@ public class StringMaster {
         if (isEmpty(string)) {
             return "";
         }
-        return openContainer(string, separator).get(0);
+        return ContainerUtils.openContainer(string, separator).get(0);
     }
 
     public static String formatComparedProperty(String property) {
         return property.replace(";", "");
     }
 
-
-    public static String removePreviousPathSegments(String string, String path) {
-        String p = string.toLowerCase();
-
-        path = path.toLowerCase();
-        String prefix = "";
-        if (p.contains(path)) {
-            prefix = path;
-        } else {
-            for (String sub : getPathSegments(path)) {
-                if (p.contains(path)) {
-                    prefix = path;
-                    break;
-                }
-
-                path = cropFirstSegment(path, PATH_SEPARATOR);
-
-            }
-        }
-
-
-//        for (String sub : getPathSegments(path)) {
-//            if (portrait.startsWith(sub)) {
-//                break;
-//            }
-//            prefix += sub + PATH_SEPARATOR;
-//        }
-
-
-//        if (string.startsWith(PATH_SEPARATOR)) {
-//            string = string.substring(1);
-//        }
-//        final String portrait = string.toLowerCase();
-//        path = path.toLowerCase();
-//        final List<String> segments = getPathSegments(path);
-//        String prefix = buildPartsIf(segments,
-//         PATH_SEPARATOR, false, (String sub) ->
-//          getPathSegments(portrait).indexOf(sub) < 0
-//           ||
-//           getPathSegments(portrait).indexOf(sub) < segments.indexOf(sub)
-//         //TODO THIS IS NOT GUARANTEED TO WORK!!
-//
-//        );
-
-        return p.replace(prefix, "");
-
-    }
-
-    public static String addMissingPathSegments(String string, String path) {
-        final String p = string.toLowerCase();
-        path = path.toLowerCase();
-        String prefix = buildPartsIf(getPathSegments(path),
-         PATH_SEPARATOR, true, (String sub) -> p.startsWith(sub));
-
-        return prefix + p;
-    }
-
-    private static String buildPartsIf(List<String> segments,
-                                       String separator,
-                                       boolean breakOnFalse,
-                                       Predicate<String> predicate) {
-        StringBuilder builder = new StringBuilder(50);
-        for (String sub : segments) {
-            if (sub.isEmpty()) continue;
-            if (predicate.test(sub)) {
-                if (breakOnFalse) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
-            builder.append(sub + separator);
-        }
-        return builder.toString();
-    }
 
     public static String wrap(String wrap, String string) {
         return wrap + string + wrap;
@@ -1721,13 +1113,15 @@ public class StringMaster {
 
     public static String getAppendedFile(String file, String suffix) {
         String format = getFormat(file);
-       return  cropFormat(file) + suffix + format;
+        return cropFormat(file) + suffix + format;
     }
-        public static String getAppendedImageFile(String file, String suffix) {
+
+    public static String getAppendedImageFile(String file, String suffix) {
         return getAppendedImageFile(file, suffix, false);
     }
-        public static String getAppendedImageFile(String file, String suffix, boolean returnNull) {
-        if (file==null )
+
+    public static String getAppendedImageFile(String file, String suffix, boolean returnNull) {
+        if (file == null)
             return null;
         String format = getFormat(file);
         String newFile = cropFormat(file) + suffix + format;
@@ -1739,38 +1133,12 @@ public class StringMaster {
         return file;
     }
 
-    public static String getRoman(int level) {
-        int x = level / 10;
-        int v = level / 5;
-        int i = level % 5;
-        String result = "";
-        result += getStringXTimes(x, "X");
-        result += getStringXTimes(v, "V");
-        if (i == 4)
-            result += "IV";
-        else
-            result += getStringXTimes(i, "I");
-        return result;
-    }
-
-    public static String getCurrentOutOfBaseVal(Entity entity, PARAMETER parameter) {
-        return entity.getIntParam(ContentValsManager.getCurrentParam(parameter)) + "/"
-         + entity.getIntParam(parameter);
-    }
-
-
-        public static String formatFloat(int digitsAfterPeriod, float v) {
-        return
-         String.format(java.util.Locale.US, "%." +
-         digitsAfterPeriod +
-          "f", v);
-    }
 
     public static String getNameFromId(String property, Game game) {
-        if (isInteger(property)) {
-            Obj obj = game.getObjectById(getInteger(property));
+        if (NumberUtils.isInteger(property)) {
+            Obj obj = game.getObjectById(NumberUtils.getInteger(property));
             if (obj == null) {
-                return wrapInBraces("invalid id "+property);
+                return wrapInBraces("invalid id " + property);
             }
             return obj.getName();
         }
@@ -1778,8 +1146,27 @@ public class StringMaster {
     }
 
     public static String[] splitLines(String data) {
-       return  data.trim().split(data.contains(NEW_LINE)? StringMaster.NEW_LINE
-       : "\n");
+        return splitLines(data, false);
+    }
+
+    public static String[] splitLines(String data, boolean allowEmptyLines) {
+        return splitLines(data, allowEmptyLines, "\\r?\\n");
+    }
+
+    public static String[] splitLines(String data, boolean allowEmptyLines, String separator) {
+        if (allowEmptyLines)
+            return data.trim().split(separator);
+        //        data.contains(NEW_LINE)? StringMaster.NEW_LINE
+        //       : "\n");
+        List<String> list = Arrays.stream(data.trim().split(separator)).
+         filter(line -> !line.isEmpty()).collect(Collectors.toList());
+        return list.toArray(new String[list.size()]);
+    }
+
+    public static String trimNewlines(String s) {
+        while (s.startsWith(NEW_LINE))
+            s = s.replaceFirst(NEW_LINE, "");
+        return s;
     }
 
 

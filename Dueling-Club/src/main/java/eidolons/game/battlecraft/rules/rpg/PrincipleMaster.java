@@ -10,9 +10,7 @@ import main.content.values.properties.G_PROPS;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.TextParser;
 
@@ -68,7 +66,7 @@ public class PrincipleMaster {
         String prop = type.getProperty(G_PROPS.PRINCIPLES);
         prop = prop.replaceAll("3", "2");
         prop = prop.replaceAll("4", "2");
-        for (String substring : StringMaster.open(prop)) {
+        for (String substring : ContainerUtils.open(prop)) {
             if (prop.contains("(0)")) {
                 prop = prop.replace(substring + ";", "");
             }
@@ -131,7 +129,7 @@ public class PrincipleMaster {
             // string = TextParser.parse(string, ref,
             // TextParser.INFO_PARSING_CODE);
             // Ref.setInfoObject(type); TODO support {n} or is it useless?
-            int amount = StringMaster.getInteger(TextParser.parse(string, ref,
+            int amount = NumberUtils.getInteger(TextParser.parse(string, ref,
              TextParser.INFO_PARSING_CODE));
             // if (param.getName().contains(StringMaster.ALIGNMENT)) {
             //
@@ -156,8 +154,8 @@ public class PrincipleMaster {
         }
 
         String newValue = "";
-        int i = Math.min(3, StringMaster.openContainer(prop).size());
-        for (String substring : StringMaster.open(prop)) {
+        int i = Math.min(3, ContainerUtils.openContainer(prop).size());
+        for (String substring : ContainerUtils.open(prop)) {
             newValue += substring + StringMaster.wrapInParenthesis(i + "") + ";";
             PRINCIPLES principle = new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class,
              substring);

@@ -14,6 +14,7 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.NumericCondition;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class LibraryManager {
 
         String known = "";
         for (ObjType type : list) {
-            known += type.getName() + StringMaster.getContainerSeparator();
+            known += type.getName() + ContainerUtils.getContainerSeparator();
         }
         hero.setProperty(PROPS.KNOWN_SPELLS, known, true);
 
@@ -57,7 +58,7 @@ public class LibraryManager {
         for (ObjType type : list) {
             if (!hero.checkProperty(PROPS.MEMORIZED_SPELLS, type.getName())) {
                 if (!hero.checkProperty(PROPS.VERBATIM_SPELLS, type.getName())) {
-                    spellbook += type.getName() + StringMaster.getContainerSeparator();
+                    spellbook += type.getName() + ContainerUtils.getContainerSeparator();
                 }
             }
         }
@@ -90,7 +91,7 @@ public class LibraryManager {
     }
 
     public static void checkNewAutoVerbatim(Unit hero) {
-        for (String spell : StringMaster.open(hero.getProperty(PROPS.LEARNED_SPELLS))) {
+        for (String spell : ContainerUtils.open(hero.getProperty(PROPS.LEARNED_SPELLS))) {
             boolean result = false;
             ObjType type = DataManager.getType(spell, DC_TYPE.SPELLS);
             if (type == null) {

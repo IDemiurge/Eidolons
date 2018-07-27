@@ -19,7 +19,7 @@ import eidolons.libgdx.screens.map.layers.AlphaMap;
 import eidolons.libgdx.screens.map.layers.AlphaMap.ALPHA_MAP;
 import main.data.XLinkedMap;
 import main.system.SortMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
@@ -286,7 +286,7 @@ public class PixmapPathBuilder {
         if (list == null) {
             list = new ArrayList<>();
             String string = FileManager.readFile(AlphaMap.getPointsPath(map));
-            for (String substring : StringMaster.openContainer(string)) {
+            for (String substring : ContainerUtils.openContainer(string)) {
                 String[] parts = substring.split("-");
                 Float x = Float.valueOf(parts[0]);
                 Float y = Float.valueOf(parts[1]);

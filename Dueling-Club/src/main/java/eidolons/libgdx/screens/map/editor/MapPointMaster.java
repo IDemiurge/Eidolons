@@ -16,6 +16,7 @@ import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -94,7 +95,7 @@ public class MapPointMaster {
 
     private void load() {
         map = new LinkedHashMap<>();
-        for (String substring : StringMaster.openContainer(FileManager.readFile(getPath()))) {
+        for (String substring : ContainerUtils.openContainer(FileManager.readFile(getPath()))) {
             map.put(VariableManager.removeVarPart(substring),
              new Coordinates(true, VariableManager.getVar(substring)));
         }

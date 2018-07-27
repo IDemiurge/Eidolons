@@ -4,8 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
 import eidolons.libgdx.anims.Assets;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.launch.CoreEngine;
 
@@ -96,7 +96,7 @@ public class EmitterPools {
     public static List<EmitterActor> getEmitters(String data) {
         List<EmitterActor> list = new ArrayList<>();
         for (String path :
-         StringMaster.openContainer(data)) {
+         ContainerUtils.openContainer(data)) {
 
             Chronos.mark("emitter " + path);
             EmitterActor emitter = null;

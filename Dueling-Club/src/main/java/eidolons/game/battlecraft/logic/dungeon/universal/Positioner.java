@@ -15,9 +15,9 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.DirectionMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
@@ -117,7 +117,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     public List<String> getCoordinates(List<String> types, DC_Player owner, SPAWN_MODE mode) {
         return
-         StringMaster.convertToStringList(
+         ContainerUtils.convertToStringList(
           getPartyCoordinates(null, owner.isMe(), types));
     }
 

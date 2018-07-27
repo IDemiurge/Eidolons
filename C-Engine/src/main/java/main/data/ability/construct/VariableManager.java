@@ -14,6 +14,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -257,7 +258,7 @@ public class VariableManager {
                                                               List<Object> varTypes) {
         String varPart = "(";
         int i = 0;
-        for (String var : StringMaster.open(variables)) {
+        for (String var : ContainerUtils.open(variables)) {
             String value;
             if (varTypes == null) {
                 value = promptStringInput(var);
@@ -267,7 +268,7 @@ public class VariableManager {
                 if (value == null) {
                     return null;
                 }
-                value = value.replace(StringMaster.getContainerSeparator(), StringMaster
+                value = value.replace(ContainerUtils.getContainerSeparator(), StringMaster
                  .getVarSeparator());
                 prevValue = value;
             }

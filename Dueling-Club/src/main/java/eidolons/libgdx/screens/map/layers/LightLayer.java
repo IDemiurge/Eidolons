@@ -13,9 +13,9 @@ import eidolons.libgdx.screens.map.layers.LightLayer.LightContainer;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
+import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class LightLayer extends MapTimedLayer<LightContainer> {
 
     public static String getPath() {
         return
-         StrPathBuilder.build("global", "map", "layers", "light") + StringMaster.getPathSeparator();
+         StrPathBuilder.build("global", "map", "layers", "light") + PathUtils.getPathSeparator();
     }
 
     @Override

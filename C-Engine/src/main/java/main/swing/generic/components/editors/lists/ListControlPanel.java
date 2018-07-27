@@ -9,6 +9,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.list.G_List;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
@@ -268,7 +269,7 @@ public class ListControlPanel<E> extends JPanel implements ActionListener {
         if (StringMaster.isEmpty(containerString)) {
             return null;
         }
-        return StringMaster.openContainer(containerString);
+        return ContainerUtils.openContainer(containerString);
     }
 
     private void initVarTypes(E element) {

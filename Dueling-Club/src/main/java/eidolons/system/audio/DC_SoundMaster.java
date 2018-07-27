@@ -32,6 +32,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -344,7 +345,7 @@ public class DC_SoundMaster extends SoundMaster {
         } else {
             identifier = spell.getName();
             path = getSpellSoundPath();
-            path = StringMaster.buildPath(path, spell.getAspect().toString(),
+            path = PathUtils.buildPath(path, spell.getAspect().toString(),
              spell.getSpellGroup().toString(), part.toString());
         }
         int i = 0;

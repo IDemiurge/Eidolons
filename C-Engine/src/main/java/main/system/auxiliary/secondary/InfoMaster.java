@@ -9,6 +9,7 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.DataModel;
 import main.entity.Entity;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Parameter;
@@ -110,7 +111,7 @@ public class InfoMaster {
         }
 
         String string = "";
-        for (String s : StringMaster.open(value)) {
+        for (String s : ContainerUtils.open(value)) {
             string += s + OR;
         }
         string = string.substring(0, string.length() - OR.length());

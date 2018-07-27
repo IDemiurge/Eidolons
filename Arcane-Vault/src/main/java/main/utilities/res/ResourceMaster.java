@@ -8,6 +8,7 @@ import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
@@ -97,7 +98,7 @@ public class ResourceMaster {
     }
 
     private static void writeToUnused(File f, Image image) {
-        List<String> segments = StringMaster.getPathSegments(f.getPath().replace(
+        List<String> segments = PathUtils.getPathSegments(f.getPath().replace(
          ImageManager.getImageFolderPath(), ""));
         String pathPart = segments.get(1) + "\\";
         if (!segments.get(2).contains(".")) {

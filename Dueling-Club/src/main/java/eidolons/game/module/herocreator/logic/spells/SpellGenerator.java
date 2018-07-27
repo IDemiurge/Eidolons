@@ -8,6 +8,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
@@ -35,7 +36,7 @@ public class SpellGenerator {
 
     public static void generateSpellUpgrades() {
         for (ObjType t : DataManager.getTypes(DC_TYPE.SPELLS)) {
-            List<String> groups = StringMaster.openContainer(t
+            List<String> groups = ContainerUtils.openContainer(t
              .getProperty(G_PROPS.SPELL_UPGRADE_GROUPS));
             // ++ spell_upgrade_modification_exceptions
             if (groups.isEmpty()) {

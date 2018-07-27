@@ -35,8 +35,8 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.List;
@@ -501,7 +501,7 @@ public class InitiativePanel extends Group {
     private String getPreviewPath() {
         return StrPathBuilder.build(PathFinder.getComponentsPath()
          , "dc", "atb pos preview.png"
-        ) + StringMaster.getPathSeparator();
+        ) + PathUtils.getPathSeparator();
     }
 
     private float relToPixPos(int pos) {

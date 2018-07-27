@@ -25,7 +25,8 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.GuiEventManager;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.MathMaster;
@@ -123,7 +124,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             String level = data.getContainerValue(PARTY_VALUE.LEVEL, i);
             if (!owner.isMe())
                 if (owner.isAi())
-                    if (StringMaster.getInteger(level) == 0) {
+                    if (NumberUtils.getInteger(level) == 0) {
                         level = getMinLevel(type) + "";
                     }
             units.add(spawnUnit(type, c, owner, facing, level));
@@ -155,7 +156,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         ObjType type = DataManager.getType(typeName, C_OBJ_TYPE.UNITS_CHARS);
         //TODO chars or units?!
         if (level != null) {
-            int levelUps = StringMaster.getInteger(level);
+            int levelUps = NumberUtils.getInteger(level);
             if (levelUps > 0) {
                 type = new UnitLevelManager().getLeveledType(type, levelUps);
             }
@@ -173,7 +174,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public void spawnCustomParty(Coordinates origin, Boolean me, ObjType party) {
         // from entrances, from sides, by default, by event, by test - useful!
         // positioner.getCoordinatesForUnitGroup(presetGroupTypes, wave);
-        List<String> partyTypes = StringMaster.openContainer(party.getProperty(PROPS.MEMBERS));
+        List<String> partyTypes = ContainerUtils.openContainer(party.getProperty(PROPS.MEMBERS));
         List<Coordinates> c = getPositioner().getPartyCoordinates(origin, me, partyTypes);
         String partyData = DC_ObjInitializer.getObj_CoordinateString(partyTypes, c);
         spawnCustomParty(me, partyData);

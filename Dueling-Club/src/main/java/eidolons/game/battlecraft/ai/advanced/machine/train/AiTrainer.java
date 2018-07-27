@@ -11,6 +11,7 @@ import eidolons.libgdx.launch.ScenarioLauncher;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.threading.WaitMaster;
@@ -29,7 +30,7 @@ public class AiTrainer {
 
     public static String getDefaultDungeonData() {
         ObjType type = DataManager.getType(ScenarioLauncher.DEFAULT, DC_TYPE.SCENARIOS);
-        ObjType mission = DataManager.getType(StringMaster.openContainer(type.getProperty(
+        ObjType mission = DataManager.getType(ContainerUtils.openContainer(type.getProperty(
          PROPS.SCENARIO_MISSIONS)).get(0),
          DC_TYPE.MISSIONS);
         return mission.getProperty(PROPS.MISSION_FILE_PATH);

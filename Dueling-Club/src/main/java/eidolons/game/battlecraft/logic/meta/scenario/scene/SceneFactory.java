@@ -9,6 +9,7 @@ import eidolons.libgdx.DialogScenario;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.dialogue.DataString.SPEECH_VALUE;
 import main.data.dialogue.SpeechData;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.util.Refactor;
 
@@ -43,7 +44,7 @@ public class SceneFactory implements Supplier<List<DialogScenario>> {
 
     public static List<DialogScenario> getScenes(String data) {
         List<SpeechData> list =
-         StringMaster.openContainer(data).stream().map(s ->
+         ContainerUtils.openContainer(data).stream().map(s ->
           new SpeechData(s)).collect(Collectors.toList());
         return getScenes(list);
     }

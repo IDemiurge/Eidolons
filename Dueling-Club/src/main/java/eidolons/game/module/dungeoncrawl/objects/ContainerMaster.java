@@ -32,6 +32,7 @@ import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -395,7 +396,7 @@ public class ContainerMaster extends DungeonObjMaster<CONTAINER_ACTION> {
         String list = getItemGroups(c, TYPE);
         if (list == null)
             return null;
-        return new RandomWizard<String>().getRandomListItem(StringMaster.openContainer(list));
+        return new RandomWizard<String>().getRandomListItem(ContainerUtils.openContainer(list));
     }
 
     private String getItemGroups(CONTAINER_CONTENTS c, DC_TYPE TYPE) {

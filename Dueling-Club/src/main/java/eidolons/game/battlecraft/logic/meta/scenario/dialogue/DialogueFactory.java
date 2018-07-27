@@ -6,7 +6,9 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.system.text.TextMaster;
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.math.MathMaster;
 import main.system.util.Refactor;
@@ -30,14 +32,14 @@ public class DialogueFactory {
     public void constructDialogues
      (String path) {
         String data = FileManager.readFile(path);
-        for (String contents : StringMaster.open(
+        for (String contents : ContainerUtils.open(
          data, DIALOGUE_SEPARATOR)) {
             String[] array = contents.split(ID_SEPARATOR);
             String name = array[0];
-            int firstId = StringMaster.getInteger(array[1]);
-            int lastId = StringMaster.getInteger(array[2]);
+            int firstId = NumberUtils.getInteger(array[1]);
+            int lastId = NumberUtils.getInteger(array[2]);
             List<Integer> ids = MathMaster.getIntsInRange(firstId, lastId);
-            GameDialogue dialogue = createDialogue(name, StringMaster.joinList(ids));
+            GameDialogue dialogue = createDialogue(name, ContainerUtils.joinList(ids));
             map.put(name, dialogue);
 
         }
@@ -52,10 +54,10 @@ public class DialogueFactory {
 
     protected String getFileRootPath() {
         return
-         StringMaster.buildPath(
+         PathUtils.buildPath(
           master.getMetaDataManager().getDataPath()
           , TextMaster.getLocale(),
-          StringMaster.getPathSeparator());
+          PathUtils.getPathSeparator());
     }
 
     protected String getFileName() {
@@ -74,8 +76,8 @@ public class DialogueFactory {
      (String name, String idSequence) {
         Speech parent = null;
         Speech root = null;
-        for (String ID : StringMaster.open(idSequence)) {
-            Speech speech = getSpeech(StringMaster.getInteger(ID));
+        for (String ID : ContainerUtils.open(idSequence)) {
+            Speech speech = getSpeech(NumberUtils.getInteger(ID));
 
             String pathRoot = getFileRootPath();
 //                PathFinder.getScenariosPath() +p +StringMaster.getPathSeparator()+

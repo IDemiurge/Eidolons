@@ -9,7 +9,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.Scenario;
 import eidolons.macro.map.Place;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_LAYOUT;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
@@ -20,9 +20,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.secondary.BooleanMaster;
 
@@ -131,26 +129,26 @@ public class Location {
             // new RandomWizard<>().constructStringWeightMapInversed(scenario
             // .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS), SUBDUNGEON_TYPE)
             List<String> list = new ArrayList<>();
-            for (String stretch : StringMaster.open(scenario
+            for (String stretch : ContainerUtils.open(scenario
              .getProperty(MACRO_PROPS.RANDOM_SUBLEVELS))) {
                 int i = 0;
-                if (StringMaster.isInteger(stretch)) {
+                if (NumberUtils.isInteger(stretch)) {
                     // for (int i = 0; i < StringMaster.getInteger(stretch);
                     // i++) {
                     // dungeon = dungeon.getSubLevels().getOrCreate(0); // TODO unsafe
                     // }
-                    i = StringMaster.getInteger(stretch);
+                    i = NumberUtils.getInteger(stretch);
                     continue;
                 }
                 String typeName;
                 if (stretch.contains(StringMaster.OR)) {
-                    List<String> names = StringMaster.openContainer(stretch, StringMaster.OR);
+                    List<String> names = ContainerUtils.openContainer(stretch, StringMaster.OR);
                     stretch = names.get(RandomWizard.getRandomListIndex(names));
                 }
                 typeName = VariableManager.removeVarPart(stretch);
-                int depth = (StringMaster.getInteger(VariableManager.getVarPart(stretch)));
-                SUBDUNGEON_TYPE type = new EnumMaster<SUBDUNGEON_TYPE>().retrieveEnumConst(
-                 SUBDUNGEON_TYPE.class, typeName);
+                int depth = (NumberUtils.getInteger(VariableManager.getVarPart(stretch)));
+                LOCATION_TYPE type = new EnumMaster<LOCATION_TYPE>().retrieveEnumConst(
+                 LOCATION_TYPE.class, typeName);
 
                 String element = i + "=" + typeName + StringMaster.wrapInParenthesis("" + depth);
                 list.add(element);
@@ -158,13 +156,13 @@ public class Location {
 
             }
             Dungeon dungeon = root;
-            for (String stretch : StringMaster.open(scenario.getProperty(PROPS.SUBLEVELS))) {
+            for (String stretch : ContainerUtils.open(scenario.getProperty(PROPS.SUBLEVELS))) {
 
                 // create a map for random sublevels... lvlN=dngType(n)
                 // inverse... find... generate... link
 
                 for (String s : list) {
-                    int i = StringMaster.getInteger(s.split("=")[0]);
+                    int i = NumberUtils.getInteger(s.split("=")[0]);
 
                     VariableManager.removeVarPart((s.split("=")[1]));
                     VariableManager.getVarPart((s.split("=")[1]));
@@ -173,7 +171,7 @@ public class Location {
 
 
             String stretch = null;
-            int depth = RandomWizard.getRandomInt(StringMaster.getInteger(VariableManager
+            int depth = RandomWizard.getRandomInt(NumberUtils.getInteger(VariableManager
              .getVarPart(stretch)));
             for (int level = 0; level < depth; level++) {
                 z = (up) ? z++ : z--;

@@ -33,7 +33,9 @@ import main.game.bf.Coordinates;
 import main.game.logic.event.Event;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 
@@ -84,7 +86,7 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     @Override
     public String readScriptsFile() {
         String text = FileManager.readFile(
-         StringMaster.buildPath(
+         PathUtils.buildPath(
           getMaster().getMissionResourceFolderPath()
           , ScriptGenerator.SCRIPTS_FILE_NAME));
 //        text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
@@ -250,11 +252,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         List<String> units = new ArrayList<>();
 //        if (args[i].contains(ScriptSyntax.SPAWN_ARG_UNITS_WAVE))
         String unitString = args[i];
-        int level = StringMaster.getInteger(VariableManager.getVars(unitString));
+        int level = NumberUtils.getInteger(VariableManager.getVars(unitString));
         unitString = VariableManager.removeVarPart(unitString);
         ObjType wave = DataManager.getType(unitString, DC_TYPE.ENCOUNTERS);
         if (wave != null) {
-            for (String sub : StringMaster.open(
+            for (String sub : ContainerUtils.open(
              wave.getProperty(PROPS.PRESET_GROUP))) {
                 if (level > 0)
                     units.add(UnitLevelManager.getLeveledTypeName(level, sub));
@@ -267,11 +269,11 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
 
         boolean group = false;
         if (units.isEmpty()) {
-            units.addAll(StringMaster.openContainer(UnitGroupMaster.
+            units.addAll(ContainerUtils.openContainer(UnitGroupMaster.
              getUnitGroupData(unitString, level)));
         }
         if (units.isEmpty()) { //DataManager.gettypes
-            units.addAll(StringMaster.openContainer(unitString));
+            units.addAll(ContainerUtils.openContainer(unitString));
         } else group = true;
         if (units.isEmpty())
             return false;
@@ -292,10 +294,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
         String data = "";
         data +=
          DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-          PARTY_VALUE.COORDINATES, StringMaster.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+          PARTY_VALUE.COORDINATES, ContainerUtils.joinList(coordinates, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
         data +=
          DataUnitFactory.getKeyValueString(UnitData.FORMAT,
-          PARTY_VALUE.MEMBERS, StringMaster.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
+          PARTY_VALUE.MEMBERS, ContainerUtils.joinStringList(units, DataUnitFactory.getContainerSeparator(UnitData.FORMAT)));
 
         UnitData unitData = new UnitData(data);
 
@@ -318,10 +320,10 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
     private Coordinates getCoordinates(String arg, Ref ref) {
 //TODO have an arg for N of Units
         Coordinates origin = null;
-        if (arg.contains(ScriptSyntax.SPAWN_POINT) || StringMaster.isInteger(arg)) {
+        if (arg.contains(ScriptSyntax.SPAWN_POINT) || NumberUtils.isInteger(arg)) {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
-            Integer i = StringMaster.getInteger(arg) - 1;
-            List<String> spawnPoints = StringMaster.openContainer(
+            Integer i = NumberUtils.getInteger(arg) - 1;
+            List<String> spawnPoints = ContainerUtils.openContainer(
              getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
             origin = new Coordinates(spawnPoints.get(i));
             origin = getMaster().getDungeon().getPoint(arg);

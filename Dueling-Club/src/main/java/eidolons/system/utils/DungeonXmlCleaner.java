@@ -1,7 +1,7 @@
 package eidolons.system.utils;
 
 import main.data.filesys.PathFinder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
@@ -48,7 +48,7 @@ public class DungeonXmlCleaner {
         String objectsNode = content.substring(begin, finish);
         String cleanedObjectsNode = objectsNode;
         List<String> list = new ArrayList<>();
-        for (String substring : StringMaster.open(cleanedObjectsNode, ",")) {
+        for (String substring : ContainerUtils.open(cleanedObjectsNode, ",")) {
 
             if (list.contains(substring)) {
                 cleanedObjectsNode = cleanedObjectsNode.replaceFirst(substring + ",", "");

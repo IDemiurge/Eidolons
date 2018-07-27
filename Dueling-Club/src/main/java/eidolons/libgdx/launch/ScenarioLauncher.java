@@ -7,7 +7,7 @@ import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 /**
  * Created by JustMe on 5/22/2017.
@@ -27,7 +27,7 @@ public class ScenarioLauncher {
 
 
         if (args.length > 1)
-            missionIndex = StringMaster.getInteger(args[1]);
+            missionIndex = NumberUtils.getInteger(args[1]);
         if (args.length > 0) {
             if (args[0] != null)
                 launch(CRAWL);

@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.enums.entity.BfObjEnums.BF_OBJ_TYPES_DUNGEON;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_TYPES_STRUCTURES;
 import main.system.datatypes.WeightMap;
 
@@ -9,40 +10,42 @@ import main.system.datatypes.WeightMap;
  * Created by JustMe on 7/20/2018.
  */
 public class RngConstProvider {
-    public static String getWeightMap(ROOM_CELL cell, DUNGEON_STYLE style) {
-//objGroups like unitGroups?
+
+    public static String getWeightString(ROOM_CELL cell, DUNGEON_STYLE style) {
+        //objGroups like unitGroups?
+        WeightMap<String> map = getWeightMap(cell, style);
+
+        return map.toString();
+    }
+
+    private static WeightMap<String> getWeightMap(ROOM_CELL cell, DUNGEON_STYLE style) {
+
         switch (cell) {
             case WALL:
                 return getWallWeightMap(style);
+            case FLOOR:
+                break;
             case ENTRANCE:
                 break;
             case EXIT:
                 break;
             case CONTAINER:
-                break;
+                return getWallWeightMap(style);
             case DOOR:
-                break;
+                return getWallWeightMap(style);
             case ART_OBJ:
-                break;
+                return getWallWeightMap(style);
             case DESTRUCTIBLE_WALL:
-                break;
-            case SECRET_DOOR:
-                break;
-            case TRAP:
-                break;
-            case GUARD:
-                break;
+                return getWallWeightMap(style);
+
             case LIGHT_EMITTER:
-                break;
+                return getWallWeightMap(style);
             case WALL_WITH_LIGHT_OVERLAY:
                 break;
             case WALL_WITH_DECOR_OVERLAY:
                 break;
-            case LOCAL_KEY:
-                break;
-            case GLOBAL_KEY:
-                break;
-            case DESTRUCTIBLE:
+
+            case SECRET_DOOR:
                 break;
             case SPECIAL_CONTAINER:
                 break;
@@ -54,11 +57,29 @@ public class RngConstProvider {
         return null;
     }
 
-    private static String getWallWeightMap(DUNGEON_STYLE style) {
+
+    private static String getDecorWeightString(DUNGEON_STYLE style) {
         WeightMap<String> map = new WeightMap<>();
 
-        map.put(BF_OBJ_TYPES_STRUCTURES.DELAPIDATED_FENCE.getName(), 1);
+        map.put(BF_OBJ_TYPES_DUNGEON.GIANT_MUSHROOM.getName(), 1);
 
         return map.toString();
+    }
+
+    private static WeightMap<String> getWallWeightMap(DUNGEON_STYLE style) {
+        switch (style) {
+            case Brimstone:
+                break;
+            case Survivor:
+                break;
+            case DarkElegance:
+                break;
+            case Grimy:
+                break;
+            case Castle:
+                break;
+        }
+       return new WeightMap<String>().putChain(BF_OBJ_TYPES_STRUCTURES.
+        DELAPIDATED_FENCE.getName(), 1);
     }
 }

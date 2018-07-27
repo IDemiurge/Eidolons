@@ -7,7 +7,7 @@ import eidolons.game.core.game.DC_Game.GAME_MODES;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -82,7 +82,7 @@ public class FacingAdjuster<E extends DungeonWrapper> extends DungeonHandler<E> 
         }
         MAP_ZONES zone = null;
         for (MAP_ZONES z : MAP_ZONES.values()) {
-            for (String s : StringMaster.open(z.getCoordinates(), ",")) {
+            for (String s : ContainerUtils.open(z.getCoordinates(), ",")) {
                 if (c.toString().equals(s)) {
                     zone = z;
                     break;

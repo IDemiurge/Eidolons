@@ -16,7 +16,7 @@ import main.data.DataManager;
 import main.entity.handlers.EntityCalculator;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.math.MathMaster;
 
 /**
@@ -50,7 +50,7 @@ public class UnitCalculator extends EntityCalculator<Unit> {
 
     public int calculateUsedMemory() {
         int memory = 0;
-        for (ObjType type : DataManager.toTypeList(StringMaster
+        for (ObjType type : DataManager.toTypeList(ContainerUtils
          .openContainer(getProperty(PROPS.MEMORIZED_SPELLS)), DC_TYPE.SPELLS)) {
             memory += type.getIntParam(PARAMS.SPELL_DIFFICULTY);
         }
@@ -157,11 +157,11 @@ public class UnitCalculator extends EntityCalculator<Unit> {
 
         if (false) {
 //        TODO when is this necessary?    if (!getEntity().isItemsInitialized()) {
-            for (ObjType type : DataManager.toTypeList(StringMaster
+            for (ObjType type : DataManager.toTypeList(ContainerUtils
              .openContainer(getProperty(PROPS.INVENTORY)), C_OBJ_TYPE.ITEMS)) {
                 weight += type.getIntParam(PARAMS.WEIGHT);
             }
-            for (ObjType type : DataManager.toTypeList(StringMaster
+            for (ObjType type : DataManager.toTypeList(ContainerUtils
              .openContainer(getProperty(PROPS.QUICK_ITEMS)), C_OBJ_TYPE.ITEMS)) {
                 weight += type.getIntParam(PARAMS.WEIGHT);
             }

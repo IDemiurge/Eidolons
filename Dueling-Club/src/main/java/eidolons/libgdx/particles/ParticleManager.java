@@ -9,7 +9,7 @@ import main.data.ability.construct.VariableManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class ParticleManager extends GroupX {
                 int showChance = dataSource.getShowChance();
                 if (!VariableManager.getVarPart(sub).isEmpty()) {
                     sub = VariableManager.removeVarPart(sub);
-                    showChance = StringMaster.getInteger(VariableManager.getVarPart(sub));
+                    showChance = NumberUtils.getInteger(VariableManager.getVarPart(sub));
                 }
                 EmitterMap emitterMap = cache.get(sub);
                 if (emitterMap == null) {

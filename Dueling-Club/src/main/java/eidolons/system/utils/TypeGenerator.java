@@ -8,7 +8,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.launch.CoreEngine;
 
 /**
@@ -37,9 +37,9 @@ public class TypeGenerator {
          G_PROPS.VARIABLES
         };
         String typesGenerated="";
-        for (String part : StringMaster.openContainer(inputData,
+        for (String part : ContainerUtils.openContainer(inputData,
          "\n")) {
-            for (String substring : StringMaster.openContainer(inputData, TYPE_SEPARATOR)) {
+            for (String substring : ContainerUtils.openContainer(inputData, TYPE_SEPARATOR)) {
             ObjType type =generateType(baseType, substring, specifiedValues);
             processType(type, part);
             typesGenerated +=type.getName()+" \n";

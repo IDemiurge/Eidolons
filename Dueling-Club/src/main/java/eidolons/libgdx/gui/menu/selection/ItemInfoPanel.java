@@ -170,7 +170,7 @@ public class ItemInfoPanel extends TablePanel implements SelectableItemDisplayer
 
     public void setItem(SelectableItemData item) {
         this.item = item;
-        updateRequired = true;
+        setUserObject(item);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import eidolons.libgdx.bf.GridMaster;
 import main.content.values.parameters.PARAMETER;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.images.ImageManager;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -144,14 +145,14 @@ public class TextureManager {
         String y = StringMaster.getLastPart(path, " ");
 
         if (!xOrY) {
-            if (StringMaster.isNumber(y, true)) {
-                return StringMaster.getInteger(y);
+            if (NumberUtils.isNumber(y, true)) {
+                return NumberUtils.getInteger(y);
             }
         }
         path = StringMaster.cropLast(path, y);
         String x = StringMaster.getLastPart(path, " ");
-        if (StringMaster.isNumber(x, true)) {
-            return StringMaster.getInteger(x);
+        if (NumberUtils.isNumber(x, true)) {
+            return NumberUtils.getInteger(x);
         }
         return xOrY ?
          getXY(origPath).getKey() :

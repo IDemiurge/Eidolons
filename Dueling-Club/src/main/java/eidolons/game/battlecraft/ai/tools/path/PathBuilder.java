@@ -19,6 +19,7 @@ import main.content.enums.entity.ActionEnums.ACTION_TYPE;
 import main.elements.costs.Costs;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.log.LogMaster;
@@ -135,7 +136,7 @@ public class PathBuilder extends AiHandler {
         }
         main.system.auxiliary.log.LogMaster.log(1,
          targetAction.getActive().getOwnerObj().getNameAndCoordinate()
-          + "'s Paths: " + StringMaster.joinList(paths, StringMaster.NEW_LINE));
+          + "'s Paths: " + ContainerUtils.joinList(paths, StringMaster.NEW_LINE));
 
         try {
             filterPaths();
@@ -393,7 +394,7 @@ public class PathBuilder extends AiHandler {
             filteredPaths.add(p);
         }
         main.system.auxiliary.log.LogMaster.log(1, targetAction + "'s Filtered Paths: " +
-         StringMaster.joinList(filteredPaths, StringMaster.NEW_LINE));
+         ContainerUtils.joinList(filteredPaths, StringMaster.NEW_LINE));
 
     }
 

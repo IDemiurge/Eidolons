@@ -15,6 +15,7 @@ import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.data.ability.OmittedConstructor;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
@@ -104,7 +105,7 @@ public class DealDamageEffect extends DC_Effect implements OneshotEffect {
 
     private void saveDamageModsToRef() {
         if (damage_mods != null) {
-            ref.setValue(KEYS.DAMAGE_MODS, StringMaster.constructStringContainer(Arrays.asList(damage_mods)));
+            ref.setValue(KEYS.DAMAGE_MODS, ContainerUtils.constructStringContainer(Arrays.asList(damage_mods)));
         } else if (damage_mod != null) {
             ref.setValue(KEYS.DAMAGE_MODS, damage_mod.toString());
         }

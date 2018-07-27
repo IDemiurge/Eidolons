@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 public class ScrollPanel<T extends Actor> extends Container<Container> {
 
@@ -162,7 +162,7 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             }
 
             float step =
-             new Float(StringMaster.formatFloat(2,
+             new Float(NumberUtils.formatFloat(2,
               (float) Math.sqrt(Math.abs(offsetY)))) * 5;
 
             if (offsetY < 0) {

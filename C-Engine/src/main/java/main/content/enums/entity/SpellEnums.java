@@ -1,6 +1,7 @@
 package main.content.enums.entity;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.images.ImageManager;
@@ -263,14 +264,14 @@ public class SpellEnums {
             this.imgSuffix = imgSuffix;
             this.costMod = costMod;
             this.spellDifficultyMod = spellDifficultyMod;
-            this.addPropMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(addProps), StringMaster.openContainer(addPropValues));
-            this.setPropMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(setProps), StringMaster.openContainer(setPropValues));
-            this.paramModMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(modParams), StringMaster.openContainer(modParamValues));
-            this.paramBonusMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(bonusParams), StringMaster.openContainer(bonusParamVals,
+            this.addPropMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(addProps), ContainerUtils.openContainer(addPropValues));
+            this.setPropMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(setProps), ContainerUtils.openContainer(setPropValues));
+            this.paramModMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(modParams), ContainerUtils.openContainer(modParamValues));
+            this.paramBonusMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(bonusParams), ContainerUtils.openContainer(bonusParamVals,
              StringMaster.UPGRADE_SEPARATOR));
         }
 

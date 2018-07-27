@@ -11,6 +11,7 @@ import eidolons.test.Preset;
 import eidolons.test.Preset.PRESET_DATA;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnitFactory;
 import main.system.data.PlayerData;
@@ -85,7 +86,7 @@ public class LaunchDataKeeper {
         String coordinates = "";
         String data = "";
         if (dataString != null)
-            for (String substring : StringMaster.open(dataString)) {
+            for (String substring : ContainerUtils.open(dataString)) {
                 if (dataString.contains("=")) {
                     coordinates += substring.split("=")[0] + StringMaster.SEPARATOR;
                     units += substring.split("=")[1] + StringMaster.SEPARATOR;
@@ -98,9 +99,9 @@ public class LaunchDataKeeper {
 
         if (positioner != null)
             if (coordinates.isEmpty()) {
-                StringMaster.joinStringList(
-                 StringMaster.convertToStringList(
-                  positioner.getPlayerPartyCoordinates(StringMaster.openContainer(units))), ",");
+                ContainerUtils.joinStringList(
+                 ContainerUtils.convertToStringList(
+                  positioner.getPlayerPartyCoordinates(ContainerUtils.openContainer(units))), ",");
 //                List<Coordinates> coordinatesList =
 //                 positioner.getCoordinates(player, spawnAt, units);
 //                coordinates = StringMaster.joinStringList(

@@ -29,8 +29,10 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.ZCoordinates;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 
@@ -180,7 +182,7 @@ public class DC_ObjInitializer {
             boolean excludeCoordinate = false;
             if (mapBlockMode) {
                 if (item.contains("%")) {
-                    Integer chance = StringMaster.getInteger(VariableManager.getVarPart(item)
+                    Integer chance = NumberUtils.getInteger(VariableManager.getVarPart(item)
                      .replace("%", " "));
                     if (chance < 0) {
                         chance = -chance;
@@ -206,7 +208,7 @@ public class DC_ObjInitializer {
             }
             int level = 0;
             if (typeName.contains(UnitGroupMaster.TYPE_LEVEL_SEPARATOR)) {
-                level = StringMaster.getInteger(StringMaster.getLastPart(typeName,
+                level = NumberUtils.getInteger(StringMaster.getLastPart(typeName,
                  UnitGroupMaster.TYPE_LEVEL_SEPARATOR));
 
             }
@@ -466,7 +468,7 @@ public class DC_ObjInitializer {
 
     public static String convertVarStringToObjCoordinates(String partyData) {
         String reformatted = "";
-        for (String subString : StringMaster.open(partyData)) {
+        for (String subString : ContainerUtils.open(partyData)) {
             Coordinates c = new Coordinates(VariableManager.getVar(subString));
             if (c == null) {
                 LogMaster.log(1, subString + " coordinate BLAST!!!");

@@ -2,6 +2,7 @@ package main.elements.conditions;
 
 import main.data.ability.AE_ConstrArgs;
 import main.entity.Ref;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Property;
 
@@ -41,7 +42,7 @@ public class StringComparison extends ConditionImpl {
         val2 = arg2.getStr(ref);
         boolean result;
         if (val2.contains(StringMaster.AND_SEPARATOR)) {
-            for (String s : StringMaster.open(val2,
+            for (String s : ContainerUtils.open(val2,
              StringMaster.AND_SEPARATOR)) {
                 if (compare(val1, s, strict)) {
                     return true;
@@ -50,7 +51,7 @@ public class StringComparison extends ConditionImpl {
         }
         if (val1.contains(StringMaster.AND_SEPARATOR))// shouldn't happen
         {
-            for (String s : StringMaster.open(val1,
+            for (String s : ContainerUtils.open(val1,
              StringMaster.AND_SEPARATOR)) {
                 if (compare(s, val2, strict)) {
                     return true;

@@ -4,7 +4,7 @@ import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.macro.map.Route;
 import eidolons.macro.map.area.MacroGroup;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class Encounter {
         this.groups = groups;
         // for (MacroGroup group: groups)
         // typeNames+= group.getGroupName()
-        this.typeNames = StringMaster.constructStringContainer(groups);
+        this.typeNames = ContainerUtils.constructStringContainer(groups);
 
     }
 

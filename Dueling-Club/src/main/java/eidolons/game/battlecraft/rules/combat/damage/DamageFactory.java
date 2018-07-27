@@ -8,7 +8,7 @@ import main.content.enums.GenericEnums.DAMAGE_CASE;
 import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public class DamageFactory {
     public static Damage getDamageForBonusEffect
      (BonusDamageEffect effect) {
         Damage damage;
-        if (StringMaster.isInteger(effect.getFormula().toString())) {
+        if (NumberUtils.isInteger(effect.getFormula().toString())) {
             damage = new Damage();
             damage.setAmount(effect.getFormula().getInt(effect.getRef()));
         } else {

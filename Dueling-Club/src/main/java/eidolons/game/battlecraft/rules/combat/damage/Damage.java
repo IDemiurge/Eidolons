@@ -7,7 +7,7 @@ import main.content.enums.GenericEnums.DAMAGE_MODIFIER;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.Arrays;
 
@@ -69,7 +69,7 @@ public class Damage {
     public void setModifiers(DAMAGE_MODIFIER[] modifiers) {
         this.modifiers = modifiers;
         if (ref != null) {
-            ref.setValue(KEYS.DAMAGE_MODS, StringMaster
+            ref.setValue(KEYS.DAMAGE_MODS, ContainerUtils
              .constructStringContainer(Arrays.asList(modifiers)));
         }
     }

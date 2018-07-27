@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.images.ImageManager;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class Deity extends Entity {
         if (enemyDeities == null) {
             enemyDeities = new ArrayList<>();
         }
-        for (String type : StringMaster.open(getProperty(PROPS.ENEMY_DEITIES))) {
+        for (String type : ContainerUtils.open(getProperty(PROPS.ENEMY_DEITIES))) {
             Deity deity = DC_ContentValsManager.getDeity(ref, type);
             if (deity != null) {
                 enemyDeities.add(deity);
@@ -99,7 +99,7 @@ public class Deity extends Entity {
         if (friendDeities == null) {
             friendDeities = new ArrayList<>();
         }
-        for (String type : StringMaster.open(getProperty(PROPS.FRIEND_DEITIES))) {
+        for (String type : ContainerUtils.open(getProperty(PROPS.FRIEND_DEITIES))) {
             Deity deity = DC_ContentValsManager.getDeity(ref, type);
             if (deity != null) {
                 friendDeities.add(deity);
@@ -112,7 +112,7 @@ public class Deity extends Entity {
         if (alliedDeities == null) {
             alliedDeities = new ArrayList<>();
         }
-        for (String type : StringMaster.open(getProperty(PROPS.ALLIED_DEITIES))) {
+        for (String type : ContainerUtils.open(getProperty(PROPS.ALLIED_DEITIES))) {
             Deity deity = DC_ContentValsManager.getDeity(ref, type);
             if (deity != null) {
                 alliedDeities.add(deity);

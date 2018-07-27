@@ -6,13 +6,10 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
-import main.swing.PointX;
+import main.game.bf.Coordinates;
+import main.game.bf.directions.FACING_DIRECTION;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -23,9 +20,9 @@ public class LevelModel {
     ROOM_CELL[][] cells; //enum?
     List<LevelZone> zones;
     Map<Room, LevelBlock> blocks;
-    Map<Point, Room> roomMap = new LinkedHashMap<>();
+    Map<Coordinates, Room> roomMap = new LinkedHashMap<>();
     LevelData data;
-    private List<Point> occupiedCells = new ArrayList<>();
+    private Set<Coordinates> occupiedCells = new LinkedHashSet<>();
     private Integer leftMost;
     private Integer rightMost;
     private Integer topMost;
@@ -35,9 +32,7 @@ public class LevelModel {
         this.data = data;
     }
 
-    public LevelModel(Map<Room, LevelBlock> blocks) {
-        this.blocks = blocks;
-    }
+
 
     @Override
     public String toString() {
@@ -49,7 +44,7 @@ public class LevelModel {
 
     }
 
-    private void addCapes(Point p, RoomModel roomModel) {
+    private void addCapes(Coordinates p, RoomModel roomModel) {
         int x = p.x;
         int x1 = p.x + roomModel.getWidth();
         int y = p.y;
@@ -82,38 +77,49 @@ public class LevelModel {
         return Math.abs(topMost - bottomMost) + 1;
     }
 
-    public void addRoom(Point point, Room room) {
-        addRoom(point.x, point.y, room);
-    }
 
-    public void addRoom(int x, int y, Room room) {
-        Point p = new PointX(x, y);
+    public void addRoom(  Room room) {
+        Coordinates p = room.getCoordinates();
 
         roomMap.put(p, room);
         addOccupied(p, room);
         addCapes(p, room);
-        new TileMapper(this, data).build(this);
+        setCells(new TileMapper(this, data).build(this));
 
         main.system.auxiliary.log.LogMaster.log(1, "Placed " + room + " at " +
-         x +
-         " " + y + "; " + toString());
+         p.x +" " + p.y + "; " + toString());
 
     }
 
 
-    private void addOccupied(Point p, RoomModel roomModel) { //check wrap?
+    private void addOccupied(Coordinates p, RoomModel roomModel) {
+        occupied(false, p, roomModel);
+    }
+        private void occupied(boolean remove, Coordinates p, RoomModel roomModel) { //check wrap?
         for (int x = p.x ; x  < p.x + roomModel.getWidth(); x++) {
             for (int y = p.y ; y  < p.y + roomModel.getHeight(); y++) {
-                Point point = new PointX(x, y);
-                if (occupiedCells.contains(point)) {
-                    throw new RuntimeException();
-                }
-                occupiedCells.add(point);
+                Coordinates point = new AbstractCoordinates(x, y);
+                if (remove)
+                    occupiedCells.remove(point);
+                else
+                    occupiedCells.add(point);
             }
         }
     }
+    public   void shearWallsFromSide(Room room, FACING_DIRECTION entrance) {
+        remove(room );
+        Coordinates newCoordinates = room.shearWallsFromSide(entrance);
+        room.setCoordinates(newCoordinates);
+        //TODO can lead to path blocking!!!
+        addRoom(room);
+    }
 
-    public List<Point> getOccupiedCells() {
+    private void remove(Room room) {
+        roomMap.remove(room.getCoordinates());
+        occupied(true, room.getCoordinates(), room);
+    }
+
+    public Set<Coordinates> getOccupiedCells() {
         return occupiedCells;
     }
 
@@ -125,7 +131,7 @@ public class LevelModel {
         this.cells = cells;
     }
 
-    public Map<Point, Room> getRoomMap() {
+    public Map<Coordinates, Room> getRoomMap() {
         return roomMap;
     }
 
@@ -195,7 +201,12 @@ public class LevelModel {
     }
 
 
-    public LevelZone getZone(LevelGraphNode node) {
-        return new LevelZone(data.getTemplateGroups()[0]);
+        public LevelZone getZone(LevelGraphNode node) {
+        return
+         zones.toArray(new LevelZone[zones.size()])[node.getZoneIndex()];
+    }
+
+    public void setZones(List<LevelZone> zones) {
+        this.zones = zones;
     }
 }

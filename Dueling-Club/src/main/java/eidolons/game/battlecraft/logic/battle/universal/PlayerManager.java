@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.battle.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -55,7 +56,7 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
         unusedPlayerColorsList = new ListMaster<FLAG_COLOR>()
          .getList(playerColors);
         int i = 0;
-        for (String substring : StringMaster.open(data)) {
+        for (String substring : ContainerUtils.open(data)) {
             DC_Player player = initPlayerFromString(substring);
             if (player.getAllegiance() == ALLEGIENCE.NEUTRAL)
                 Player.NEUTRAL = player;

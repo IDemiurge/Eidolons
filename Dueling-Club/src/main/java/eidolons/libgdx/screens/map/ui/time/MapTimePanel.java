@@ -22,8 +22,8 @@ import main.data.filesys.PathFinder;
 import main.swing.PointX;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class MapTimePanel extends GroupX {
     }
 
     public String getPath() {
-        return StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel") + StringMaster.getPathSeparator();
+        return StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel") + PathUtils.getPathSeparator();
     }
 
     public void init() {

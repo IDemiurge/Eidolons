@@ -19,7 +19,7 @@ import main.data.xml.XML_Writer;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 /*
 Double perks - combine two !
@@ -136,7 +136,7 @@ public class PerkGenerator {
     private static String getName(PERK_PARAM sub, int level) {
         if (level==0)
             return  sub.name;
-        return sub.name+ " " + StringMaster.getRoman(level+1);
+        return sub.name+ " " + NumberUtils.getRoman(level+1);
     }
 
     public enum PERK_ABILITY {

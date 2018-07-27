@@ -4,8 +4,10 @@ import eidolons.game.core.game.DC_Game;
 import main.content.ContentValsManager;
 import main.content.ValueManager;
 import main.content.values.parameters.PARAMETER;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +35,11 @@ public class DC_ValueManager implements ValueManager {
     }
 
     public static boolean isCentimalModParam(PARAMS p) {
-        return StringMaster.getInteger(p.getDefaultValue()) == 100;
+        return NumberUtils.getInteger(p.getDefaultValue()) == 100;
     }
 
     public static int getMod(Integer mod, PARAMS p) {
-        if (StringMaster.getInteger(p.getDefaultValue()) == 0) {
+        if (NumberUtils.getInteger(p.getDefaultValue()) == 0) {
             return 100 + mod;
         }
         return mod;
@@ -62,7 +64,7 @@ public class DC_ValueManager implements ValueManager {
 
     @Override
     public PARAMETER[] getParamsFromContainer(String sparam) {
-        List<String> container = StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR);
+        List<String> container = ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR);
         ArrayList<PARAMETER> params = new ArrayList<>();
         for (String s : container) {
             PARAMETER param = ContentValsManager.getPARAM(s);

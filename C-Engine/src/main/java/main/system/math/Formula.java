@@ -6,6 +6,7 @@ import com.graphbuilder.math.FuncMap;
 import com.graphbuilder.math.VarMap;
 import main.entity.Ref;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 
 /**
@@ -37,11 +38,11 @@ public class Formula {
         if (StringMaster.isEmpty(formula)) {
             return 0;
         }
-        if (StringMaster.isInteger(formula)) {
-            return StringMaster.getInteger(formula);
+        if (NumberUtils.isInteger(formula)) {
+            return NumberUtils.getInteger(formula);
         }
 
-        if (StringMaster.isNumber(formula, false)) {
+        if (NumberUtils.isNumber(formula, false)) {
             return new Double(formula);
         }
 

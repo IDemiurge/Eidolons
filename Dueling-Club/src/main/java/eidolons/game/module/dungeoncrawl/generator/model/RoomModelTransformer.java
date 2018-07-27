@@ -1,6 +1,5 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
-import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import main.system.auxiliary.data.ArrayMaster;
 
 import java.util.Arrays;
@@ -9,36 +8,36 @@ import java.util.Arrays;
  * Created by JustMe on 2/14/2018.
  */
 public class RoomModelTransformer {
-    public static void wrapInWalls(String[][] cells) {
+    public static void wrapInWalls(String[][] cells, int wrapWidth, String wrapType) {
         int rows = cells[0].length;
         int cols = cells.length;
         //add wall lines above and below
-        cells[0] = getWallLine(rows);
-        cells[cols - 1] = getWallLine(rows);
+        for (int i = 0; i < wrapWidth; i++) {
+            cells[i] = getWallLine(rows, wrapType);
+            cells[cols - 1-i] = getWallLine(rows, wrapType);
+        }
         //wrap other lines left and right
-        for (int n = 1; n+1 < cells.length; n++) {
-            cells[n] = getWallModifiedArray(cells[n]);
+        for (int n = wrapWidth; n+wrapWidth < cells.length; n++) {
+            cells[n] = getModifiedArray(cells[n], wrapWidth, wrapType);
         }
     }
 
-    private static String[] getWallModifiedArray(String[] sub) {
-        String[] newArray = Arrays.copyOf(sub, sub.length + 2);
+    private static String[] getModifiedArray(String[] sub, int wrapWidth, String wrapType) {
+        String[] newArray = Arrays.copyOf(sub, sub.length + wrapWidth*2);
         //shift 1 forward
-        for (int j = 1; j <= sub.length; j++) {
-            newArray[j] = sub[j - 1];
+        for (int j = wrapWidth; j <= sub.length; j++) {
+            newArray[j] = sub[j - wrapWidth];
         }
-        newArray[0] = getWallSymbol();
-        newArray[newArray.length-1] = getWallSymbol();
+        for (int i = 0; i < wrapWidth; i++) {
+            newArray[i] = wrapType;
+            newArray[newArray.length-i-1] = wrapType;
+        }
         return newArray;
     }
 
-    private static String getWallSymbol() {
-        return ROOM_CELL.WALL.getSymbol();
-    }
-
-    private static String[] getWallLine(int rows) {
+    private static String[] getWallLine(int rows, String wrapType) {
         String[] array = new String[rows];
-        Arrays.fill(array, getWallSymbol());
+        Arrays.fill(array, wrapType);
         return array;
     }
 
@@ -48,7 +47,11 @@ public class RoomModelTransformer {
             main.system.auxiliary.log.LogMaster.log(1,model+" rotated: "
              +model.getCellsString() );
         }
-        model.setRotated(rotations);
+        model.setRotations(rotations);
         return model;
+    }
+    private RoomModel createMirrorRoomModel(RoomModel roomModel) {
+
+        return roomModel;
     }
 }

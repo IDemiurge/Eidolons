@@ -16,6 +16,7 @@ import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -133,7 +134,7 @@ public class RollMaster {
                 break;
 
         }
-        return StringMaster.openContainer(formulas).get(success ? 1 : 0);
+        return ContainerUtils.openContainer(formulas).get(success ? 1 : 0);
     }
 
     private static String initStdSuccess(ROLL_TYPES roll_type) {
@@ -420,7 +421,7 @@ public class RollMaster {
         if (!or) {
             separator = StringMaster.AND;
         }
-        for (String s : StringMaster.open(rollString, separator)) {
+        for (String s : ContainerUtils.open(rollString, separator)) {
             String varPart = VariableManager.getVarPart(s);
             if (StringMaster.isEmpty(varPart)) {
                 rolls.add(new Roll(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class,
@@ -429,8 +430,8 @@ public class RollMaster {
             }
             s = s.replace(varPart, "");
             varPart = StringMaster.cropParenthesises(varPart);
-            String success = StringMaster.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(0);
-            String fail = StringMaster.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(1);
+            String success = ContainerUtils.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(0);
+            String fail = ContainerUtils.openContainer(varPart, StringMaster.VAR_SEPARATOR).get(1);
             ROLL_TYPES type = new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, s);
             rolls.add(new Roll(type, success, fail));
         }

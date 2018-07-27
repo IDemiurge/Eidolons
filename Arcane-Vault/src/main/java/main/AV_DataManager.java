@@ -5,7 +5,7 @@ import eidolons.content.ValuePageManager;
 import main.content.*;
 import main.content.values.properties.G_PROPS;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.*;
 
@@ -45,7 +45,7 @@ public class AV_DataManager {
             if (values == null) {
                 return ContentValsManager.getArcaneVaultValueNames(key);
             }
-            List<String> list = StringMaster.convertToStringList(values);
+            List<String> list = ContainerUtils.convertToStringList(values);
             return list;
         } catch (Exception e) {
             // main.system.ExceptionMaster.printStackTrace(e);

@@ -17,6 +17,8 @@ import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -77,7 +79,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
              @Override
              public String readScriptsFile() {
                  String text = FileManager.readFile(
-                  StringMaster.buildPath(
+                  PathUtils.buildPath(
                    getMaster().getMetaMaster().getMetaDataManager().getDataPath()
                    , ScriptGenerator.SCRIPTS_FILE_NAME));
                  text = StringMaster.getLastPart(text, ScriptSyntax.COMMENT_CLOSE);
@@ -85,7 +87,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
              }
          };
         text = genericScriptsExecutor.readScriptsFile();
-        for (String script : StringMaster.open(text,
+        for (String script : ContainerUtils.open(text,
          ScriptSyntax.SCRIPTS_SEPARATOR)) {
             addTrigger(ScriptParser.parseScript(
              script,
@@ -99,7 +101,7 @@ public class TestScriptExecutor extends ScriptManager<TestBattle, TEST_SCRIPT> {
     protected String readScriptsFile() {
 
         String text = FileManager.readFile(
-         StringMaster.buildPath(
+         PathUtils.buildPath(
           getMaster().getMetaMaster().getMetaDataManager().getDataPath()
           , "tutorial " + ScriptGenerator.SCRIPTS_FILE_NAME));
         return text;

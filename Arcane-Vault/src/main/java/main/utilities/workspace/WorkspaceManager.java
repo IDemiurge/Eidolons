@@ -15,6 +15,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.launch.ArcaneVault;
 import main.swing.generic.components.G_Panel;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.StringMaster;
@@ -63,13 +64,13 @@ public class WorkspaceManager {
     public void newWorkspaceForParty() {
         ObjType party = ArcaneVault.getSelectedType();
         Set<ObjType> set = new HashSet<>();
-        for (String sub : StringMaster.open(party.getProperty(PROPS.MEMBERS))) {
+        for (String sub : ContainerUtils.open(party.getProperty(PROPS.MEMBERS))) {
             ObjType type = DataManager.getType(sub, DC_TYPE.CHARS);
 
-            for (String item : StringMaster.open(type.getProperty(PROPS.SKILLS))) {
+            for (String item : ContainerUtils.open(type.getProperty(PROPS.SKILLS))) {
                 set.add(DataManager.getType(item, DC_TYPE.SKILLS));
             }
-            for (String item : StringMaster.open(type.getProperty(PROPS.CLASSES))) {
+            for (String item : ContainerUtils.open(type.getProperty(PROPS.CLASSES))) {
                 set.add(DataManager.getType(item, DC_TYPE.CLASSES));
             }
 
@@ -152,7 +153,7 @@ public class WorkspaceManager {
             return null;
         }
         String xml = FileManager.readFile(file);
-        List<String> parts = StringMaster.openContainer(xml, METADATA);
+        List<String> parts = ContainerUtils.openContainer(xml, METADATA);
         xml = parts.get(0);
         List<ObjType> typeList = null;
         try {

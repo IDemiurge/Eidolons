@@ -4,8 +4,8 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.enums.entity.SkillEnums.MASTERY;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -34,7 +34,7 @@ public class SkillsDataSource extends HeroTreeDataSource {
     public List<MASTERY> getMasteryRanks(int tier) {
         List<MASTERY> list = new ArrayList<>();
 
-        for (String sub : StringMaster.openContainer(
+        for (String sub : ContainerUtils.openContainer(
          hero.getProperty(SkillMaster.getMasteryRankProp(tier)))) {
             list.add(new EnumMaster<MASTERY>().retrieveEnumConst(MASTERY.class,
              sub));

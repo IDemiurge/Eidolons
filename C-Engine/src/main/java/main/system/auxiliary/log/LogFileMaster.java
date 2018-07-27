@@ -2,6 +2,7 @@ package main.system.auxiliary.log;
 
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
@@ -117,7 +118,7 @@ public class LogFileMaster {
     }
 
     private static void write(List<String> entries, String string) {
-        String fullContent = StringMaster.constructStringContainer(entries, StringMaster.NEW_LINE);
+        String fullContent = ContainerUtils.constructStringContainer(entries, StringMaster.NEW_LINE);
         String folder = getLogFilePath();
         String fileName = string + " log.txt";
         folder += getGameSubfolder();

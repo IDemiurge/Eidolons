@@ -11,10 +11,10 @@ import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.values.parameters.G_PARAMS;
-import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class Location extends DungeonWrapper {
             setProperty(PROPS.SUBLEVELS, DungeonLevelMaster.TEST_ENTRANCE_DATA, true);
         }
         subLevels = new ArrayList<>();
-        for (String sublevel : StringMaster.open(getProperty(PROPS.SUBLEVELS))) {
+        for (String sublevel : ContainerUtils.open(getProperty(PROPS.SUBLEVELS))) {
             Dungeon dungeon = new Dungeon(VariableManager.removeVarPart(sublevel), true);
 //            getMaster().getDungeons().add(dungeon);
             addSublevel(sublevel, dungeon);
@@ -148,7 +148,7 @@ public class Location extends DungeonWrapper {
     }
 
     public boolean isUnderground() {
-        return checkProperty(G_PROPS.DUNGEON_TYPE, DungeonEnums.DUNGEON_TYPE.UNDERGROUND + "");
+        return checkProperty(PROPS.DUNGEON_TAGS, DungeonEnums.DUNGEON_TAGS.UNDERGROUND + "");
     }
 
     public DungeonPlan getPlan() {

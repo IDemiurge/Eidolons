@@ -5,6 +5,7 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
 
@@ -245,7 +246,7 @@ public class Costs extends CostImpl {
     public String getReasonsString() {
         if (getReasonList().size() < 2)
             return getReason();
-        return StringMaster.joinStringList(getReasonList(), ", ");
+        return ContainerUtils.joinStringList(getReasonList(), ", ");
     }
 
     public void removeCost(PARAMETER param) {

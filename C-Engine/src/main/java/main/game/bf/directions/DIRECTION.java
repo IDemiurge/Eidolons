@@ -14,6 +14,9 @@ public enum DIRECTION {
     DOWN_LEFT(true, 315, true, false, true),;
 
     public static final DIRECTION[] values = DIRECTION.values();
+    public static final DIRECTION[] clockwise = {
+     UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT
+    };
     public Boolean growX;
     public Boolean growY;
     private boolean vertical;

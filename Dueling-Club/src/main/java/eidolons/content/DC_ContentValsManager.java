@@ -25,6 +25,7 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.EDITOR;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -620,7 +621,7 @@ public class DC_ContentValsManager extends ContentValsManager {
         if (param != null) {
             return new PARAMETER[]{param};
         }
-        if (StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
+        if (ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
             return DC_Game.game.getValueManager().getParamsFromContainer(sparam);
         } else {
             return DC_Game.game.getValueManager().getValueGroupParams(sparam);
@@ -818,7 +819,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static PRINCIPLES getPrinciple(PARAMETER param) {
-        return new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class, StringMaster
+        return new EnumMaster<PRINCIPLES>().retrieveEnumConst(PRINCIPLES.class, ContainerUtils
          .openContainer(param.getName(), " ").get(0));
     }
 
@@ -829,7 +830,7 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static String getStandardDeitiesString(String separator) {
-        return StringMaster.constructStringContainer(getStandardDeities(), separator);
+        return ContainerUtils.constructStringContainer(getStandardDeities(), separator);
     }
 
     public static String getMainAttributeForClass(DC_FeatObj classObj) {

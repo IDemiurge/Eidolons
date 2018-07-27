@@ -2,6 +2,7 @@ package main.system.auxiliary.data;
 
 import main.data.XLinkedMap;
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
@@ -83,7 +84,7 @@ public class MapMaster<E, T> {
             values.put(name, value);
             return;
         }
-        val += StringMaster.getContainerSeparator() + value;
+        val += ContainerUtils.getContainerSeparator() + value;
         values.put(name, val);
     }
 

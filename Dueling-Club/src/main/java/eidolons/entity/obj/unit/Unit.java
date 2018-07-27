@@ -70,9 +70,7 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.SearchMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
@@ -289,7 +287,7 @@ public class Unit extends DC_UnitModel {
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (isPlayerCharacter()) {
-            Integer integer = StringMaster.getInteger(value);
+            Integer integer = NumberUtils.getInteger(value);
             if (param.getName().contains("Percentage")) {
                 if (integer < 0) {
                     return;
@@ -310,7 +308,7 @@ public class Unit extends DC_UnitModel {
             if (!getGame().getState().getManager().isResetting())
             //this is gross!
             if (!isBeingReset()){
-                    getValidParams().put(param, StringMaster.getInteger(value));
+                    getValidParams().put(param, NumberUtils.getInteger(value));
                 }
 
         super.putParameter(param, value);
@@ -508,7 +506,7 @@ public class Unit extends DC_UnitModel {
                                   boolean potential, OBJ_TYPE TYPE) {
         // at least one item with NAME as PROP
 
-        for (String item : StringMaster.open(getProperty(prop))) {
+        for (String item : ContainerUtils.open(getProperty(prop))) {
 
             ObjType type = DataManager.getType(item, TYPE);
             if (type == null) {
@@ -556,7 +554,7 @@ public class Unit extends DC_UnitModel {
 
     public boolean isQuickSlotsFull() {
         if (game.isSimulation()) {
-            return getIntParam(PARAMS.QUICK_SLOTS) <= StringMaster.openContainer(
+            return getIntParam(PARAMS.QUICK_SLOTS) <= ContainerUtils.openContainer(
              getProperty(PROPS.QUICK_ITEMS)).size();
         }
         if (quickItems == null) {
@@ -662,7 +660,7 @@ public class Unit extends DC_UnitModel {
 
     protected int getContainerSize(PROPS prop) { // class-upgrade logic
         // deprecated?
-        return StringMaster.openContainer(getProperty(prop)).size();
+        return ContainerUtils.openContainer(getProperty(prop)).size();
     }
 
     public DequeImpl<HeroClass> getClasses() {

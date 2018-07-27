@@ -27,10 +27,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.system.SortMaster;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.WeightMap;
 import main.system.math.Formula;
@@ -183,7 +180,7 @@ public class UnitShop {
         // ++ attr jewelry ++ passive enchantment
         // quality level range?
 
-        for (String trait : StringMaster.open(prop)) {
+        for (String trait : ContainerUtils.open(prop)) {
             // DataManager.getTypesSubGroup(OBJ_TYPES.JEWELRY, subgroup);
             ObjType type = DataManager.findType(VariableManager.removeVarPart(trait),
              DC_TYPE.JEWELRY);
@@ -445,7 +442,7 @@ public class UnitShop {
                 shopLevel = SHOP_LEVEL.POOR;
             }
             List<MATERIAL> levelMaterials = ShopMaster.getMaterialsForShopLevel(shopLevel);
-            property = StringMaster.constructStringContainer(levelMaterials);
+            property = ContainerUtils.constructStringContainer(levelMaterials);
         }
         return StringMaster.compare(type.getProperty(G_PROPS.MATERIAL), property, false);
     }
@@ -550,7 +547,7 @@ public class UnitShop {
         QUALITY_LEVEL quality = ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(itemProperty));
         int index = Arrays.asList(ItemEnums.QUALITY_LEVEL.values()).indexOf(quality);
 
-        List<String> range = StringMaster.openContainer(property);
+        List<String> range = ContainerUtils.openContainer(property);
 
         int min = Arrays.asList(ItemEnums.QUALITY_LEVEL.values()).indexOf(
          ItemEnums.QUALITY_LEVEL.valueOf(StringMaster.getEnumFormat(range.get(0))));

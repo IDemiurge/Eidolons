@@ -27,8 +27,10 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.GuiEventManager;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -111,7 +113,7 @@ public abstract class DataModel {
     public String getCustomProperty(String value_ref) {
         if (!StringMaster.isEmpty(getProperty(G_PROPS.CUSTOM_PROPS))) {
             // this must be custom container!
-            for (String subString : StringMaster.open(getProperty(G_PROPS.CUSTOM_PROPS))) {
+            for (String subString : ContainerUtils.open(getProperty(G_PROPS.CUSTOM_PROPS))) {
 
             }
         }
@@ -243,7 +245,7 @@ public abstract class DataModel {
         if (doubleParam.isEmpty()) {
             return 0.0;
         }
-        return StringMaster.getDouble(getDoubleParam(param, false));
+        return NumberUtils.getDouble(getDoubleParam(param, false));
     }
 
     public Float getParamFloat(PARAMETER param) {
@@ -251,13 +253,13 @@ public abstract class DataModel {
         if (doubleParam.isEmpty()) {
             return 0.0f;
         }
-        return StringMaster.getFloat(getDoubleParam(param, false));
+        return NumberUtils.getFloat(getDoubleParam(param, false));
     }
 
     public Double getParamDouble(PARAMETER param, boolean base) {
         String string = getDoubleParam(param, base);
-        if (StringMaster.isNumber(string, false)) {
-            return StringMaster.getDouble(string);
+        if (NumberUtils.isNumber(string, false)) {
+            return NumberUtils.getDouble(string);
         }
         return new Formula(string).evaluate(getRef()).doubleValue();
     }
@@ -273,11 +275,11 @@ public abstract class DataModel {
         String string = paramMap.get(param);
         int index = string.indexOf('.');
         if (index != -1) {
-            if (StringMaster.isNumber(string, false)) {
-                if (StringMaster.isInteger(string)) {
+            if (NumberUtils.isNumber(string, false)) {
+                if (NumberUtils.isInteger(string)) {
                     return string.substring(0, index);
                 } else {
-                    Double val = StringMaster.getDouble(string);
+                    Double val = NumberUtils.getDouble(string);
                     if (C == null) {
                         C = Math.pow(10, MathMaster.NUMBERS_AFTER_PERIOD);
                     }
@@ -334,8 +336,8 @@ public abstract class DataModel {
         if (string.equals("")) {
             return 0;
         }
-        if (StringMaster.isInteger(string)) {
-            result = StringMaster.getInteger(string);
+        if (NumberUtils.isInteger(string)) {
+            result = NumberUtils.getInteger(string);
         } else
             result = FormulaMaster.getInt(string, ref);
 
@@ -434,7 +436,7 @@ public abstract class DataModel {
         if (value.isEmpty()) {
             return true;
         }
-        Integer val2 = StringMaster.getInteger(value);
+        Integer val2 = NumberUtils.getInteger(value);
         if (val2 == null)
             return false;
         return checkParameter(param, val2);
@@ -492,13 +494,13 @@ public abstract class DataModel {
         boolean result = false;
         List<String> list = ListMaster.toStringList(value);
         if (any) {
-            list = StringMaster.openContainer(value);
+            list = ContainerUtils.openContainer(value);
         }
 
         for (String sub : list) {
-            for (String item : StringMaster.open(getProperty(PROP))) {
+            for (String item : ContainerUtils.open(getProperty(PROP))) {
                 String variable = VariableManager.getVar(item);
-                if (StringMaster.isInteger(variable)) {
+                if (NumberUtils.isInteger(variable)) {
                     item = VariableManager.removeVarPart(item);
                 }
                 if (StringMaster.compareByChar(sub, item, false)) {
@@ -619,15 +621,15 @@ public abstract class DataModel {
             return true;
         }
         Number amount = null;
-        if (!StringMaster.isNumber(amountString, false))
+        if (!NumberUtils.isNumber(amountString, false))
             amount = new Formula(amountString).evaluate(ref);
-        else if (StringMaster.isInteger(amountString)) {
-            amount = StringMaster.getInteger(amountString);
+        else if (NumberUtils.isInteger(amountString)) {
+            amount = NumberUtils.getInteger(amountString);
             if (amount.equals(0)) {
                 return false;
             }
         } else {
-            amount = StringMaster.getDouble(amountString);
+            amount = NumberUtils.getDouble(amountString);
             if (amount.equals(0.0))
                 return false;
         }
@@ -743,7 +745,7 @@ public abstract class DataModel {
     }
 
     public int getContainerCount(PROPERTY p) {
-        return StringMaster.openContainer(getProperty(p)).size();
+        return ContainerUtils.openContainer(getProperty(p)).size();
 
     }
 
@@ -897,13 +899,13 @@ public abstract class DataModel {
 
     public void modifyParameter(String param, String string) {
         PARAMETER p = ContentValsManager.getPARAM(param);
-        int perc = StringMaster.getInteger(string);
+        int perc = NumberUtils.getInteger(string);
         modifyParameter(p, perc);
     }
 
     public void modifyParamByPercent(String param, String string) {
         PARAMETER p = ContentValsManager.getPARAM(param);
-        int perc = StringMaster.getInteger(string);
+        int perc = NumberUtils.getInteger(string);
         modifyParamByPercent(p, perc);
     }
 
@@ -1068,7 +1070,7 @@ public abstract class DataModel {
          + getName() + "'s " + prop.getName());
 
         if (value.contains(StringMaster.AND_PROPERTY_SEPARATOR)) {
-            for (String s : StringMaster.open(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
+            for (String s : ContainerUtils.open(value, StringMaster.AND_PROPERTY_SEPARATOR)) {
                 addProperty(prop, s, noDuplicates);
             }
             return true;
@@ -1088,12 +1090,12 @@ public abstract class DataModel {
         }
         String prevValue = propMap.get(prop);
         if (!StringMaster.isEmpty(prevValue)) {
-            if (!prevValue.endsWith(StringMaster.getContainerSeparator())) {
-                prevValue = prevValue + StringMaster.getContainerSeparator();
+            if (!prevValue.endsWith(ContainerUtils.getContainerSeparator())) {
+                prevValue = prevValue + ContainerUtils.getContainerSeparator();
             }
         }
 
-        value = value + StringMaster.getContainerSeparator();
+        value = value + ContainerUtils.getContainerSeparator();
 
         if (!StringMaster.isEmpty(prevValue)) {
             if (addInFront) {
@@ -1192,9 +1194,9 @@ public abstract class DataModel {
     protected boolean removeMultiProp(String prop, String value, boolean all) {
         boolean result = true;
         String prevValue = propMap.get(prop);
-        String strToReplace = value + StringMaster.getContainerSeparator();
+        String strToReplace = value + ContainerUtils.getContainerSeparator();
         if (!prevValue.contains(strToReplace)) {
-            strToReplace = StringMaster.getContainerSeparator() + value;
+            strToReplace = ContainerUtils.getContainerSeparator() + value;
         } // TODO well-formatted?
         if (!prevValue.contains(strToReplace)) {
             strToReplace = value;
@@ -1236,7 +1238,7 @@ public abstract class DataModel {
             if (!base) {
                 setParam((PARAMETER) valName, value);
             } else {
-                setParam((PARAMETER) valName, StringMaster.getInteger(value), false, base);
+                setParam((PARAMETER) valName, NumberUtils.getInteger(value), false, base);
             }
         }
         setDirty(true);
@@ -1288,7 +1290,7 @@ public abstract class DataModel {
     }
 
     public void addParam(PARAMETER parameter, String param, boolean base) {
-        modifyParameter(parameter, StringMaster.getInteger(param), base);
+        modifyParameter(parameter, NumberUtils.getInteger(param), base);
 
     }
 
@@ -1626,7 +1628,7 @@ public abstract class DataModel {
     }
 
     public int getTypeId() {
-        return StringMaster.getInteger(getProperty(G_PROPS.ID));
+        return NumberUtils.getInteger(getProperty(G_PROPS.ID));
     }
 
     public List<ObjType> getListFromProperty(OBJ_TYPE TYPE, PROPERTY prop) {
@@ -1635,7 +1637,7 @@ public abstract class DataModel {
 
     public void resetPropertyFromList(PROPERTY prop, List<? extends Entity> list) {
         if (ListMaster.isNotEmpty(list)) {
-            setProperty(prop, StringMaster.constructContainer(ListMaster.toNameList(list)),
+            setProperty(prop, ContainerUtils.constructContainer(ListMaster.toNameList(list)),
              isTypeLinked());
         } else {
             removeProperty(prop);
@@ -1685,16 +1687,16 @@ public abstract class DataModel {
 
     public void shuffleContainerProperty(PROPERTY property) {
         String value = getProperty(property);
-        List<String> list = StringMaster.openContainer(value);
+        List<String> list = ContainerUtils.openContainer(value);
         Collections.shuffle(list);
-        setProperty(property, StringMaster.constructContainer(list));
+        setProperty(property, ContainerUtils.constructContainer(list));
     }
 
     public void reverseContainerProperty(PROPERTY property) {
         String value = getProperty(property);
-        List<String> list = StringMaster.openContainer(value);
+        List<String> list = ContainerUtils.openContainer(value);
         Collections.reverse(list);
-        setProperty(property, StringMaster.constructContainer(list));
+        setProperty(property, ContainerUtils.constructContainer(list));
     }
 
     public boolean isSimulation() {

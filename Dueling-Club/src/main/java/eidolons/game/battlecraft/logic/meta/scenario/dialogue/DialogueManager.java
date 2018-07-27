@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.libgdx.DialogScenario;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -48,7 +48,7 @@ public class DialogueManager extends MetaGameHandler<ScenarioMeta> {
     }
 
     public void startDialogues(String data) {
-        for (String substring : StringMaster.open(data)) {
+        for (String substring : ContainerUtils.open(data)) {
 //            GameDialogue dialogue=  getDialogueFactory().getDialogue(substring, (ScenarioMetaMaster) master);
 //            startDialogue(dialogue);
         }

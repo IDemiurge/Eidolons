@@ -42,8 +42,10 @@ import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
 import main.game.logic.generic.ActionManager;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -346,7 +348,7 @@ public class DC_ActionManager implements ActionManager {
 
     private List<DC_ActiveObj> getSpecialModesFromUnit(Unit unit) {
         List<DC_ActiveObj> subActions = new ArrayList<>();
-        for (String mode : StringMaster.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
+        for (String mode : ContainerUtils.open(unit.getProperty(PROPS.SPECIAL_ACTION_MODES))) {
             DC_UnitAction baseAction = unit.getAction(VariableManager.getVar(mode));
             DC_UnitAction subAction;
             if (DataManager.getType(VariableManager.removeVarPart(mode), DC_TYPE.ACTIONS) != null) {
@@ -480,7 +482,7 @@ public class DC_ActionManager implements ActionManager {
                 if (type.getIntParam(param) == 0) {
                     type.setParam(param, param.getDefaultValue());
                 }
-                type.modifyParamByPercent(param, StringMaster.getInteger(mode.getParamModMap().get(
+                type.modifyParamByPercent(param, NumberUtils.getInteger(mode.getParamModMap().get(
                  s)), false);
             }
         }
@@ -547,7 +549,7 @@ public class DC_ActionManager implements ActionManager {
         addSpecialActions(unit, actives);
 
         String activesProp = entity.getProperty(ACTIVES);
-        for (String typeName : StringMaster.open(activesProp)) {
+        for (String typeName : ContainerUtils.open(activesProp)) {
             ObjType type = DataManager.getType(typeName, DC_TYPE.ACTIONS);
             DC_UnitAction action;
             if (type == null) {
@@ -615,7 +617,7 @@ public class DC_ActionManager implements ActionManager {
             return new ArrayList<>(list);
         }
         list = new ArrayList<>();
-        for (String typeName : StringMaster.open(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
+        for (String typeName : ContainerUtils.open(weapon.getProperty(PROPS.WEAPON_ATTACKS))) {
             if (!weapon.isMainHand()) {
                 typeName = ActionGenerator.getOffhandActionName(typeName);
             }

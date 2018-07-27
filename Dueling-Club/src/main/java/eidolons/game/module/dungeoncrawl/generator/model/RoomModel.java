@@ -12,7 +12,7 @@ public class RoomModel {
     protected final ROOM_TYPE type;
     protected   String[][] cells;
     protected String cellsString;
-    protected Boolean[] rotated;
+    protected Boolean[] rotations;
 
     public RoomModel(String[][] cells, ROOM_TYPE type, EXIT_TEMPLATE exitTemplate) {
         this.cells = cells;
@@ -20,15 +20,15 @@ public class RoomModel {
         this.exitTemplate = exitTemplate;
     }
 
-    public Boolean[] getRotated() {
-        return rotated;
+    public Boolean[] getRotations() {
+        return rotations;
     }
     //allow other rooms to carve into this room's wall space
 
-    public void setRotated(Boolean[] rotated) {
-        this.rotated = rotated;
-        if (getRotated()!=null )
-            for (Boolean sub : getRotated()) {
+    public void setRotations(Boolean[] rotations) {
+        this.rotations = rotations;
+        if (getRotations()!=null )
+            for (Boolean sub : getRotations()) {
 //                main.system.auxiliary.log.LogMaster.log(1, sub+ "wise rotating: "
 //                 +getCellsString() );
                 cells =

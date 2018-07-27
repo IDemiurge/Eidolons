@@ -4,14 +4,12 @@ import eidolons.content.PROPS;
 import eidolons.game.module.adventure.map.travel.old.TravelMasterOld;
 import eidolons.macro.map.MacroCoordinates;
 import eidolons.macro.map.Region;
-import eidolons.macro.map.area.Area;
-import eidolons.macro.map.area.AreaManager;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class MacroGroup { // macro obj type?
 
     private void initTravelSpeed() {
         travelSpeed = 0;
-        List<String> types = StringMaster.openContainer(encounterType
+        List<String> types = ContainerUtils.openContainer(encounterType
          .getProperty(PROPS.PRESET_GROUP));
         int size = types.size();
         for (String s : types) { // PROPS.UNIT_TYPES - all possible types?

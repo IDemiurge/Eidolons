@@ -10,7 +10,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class SkillSlot extends HtNode {
 
     @Override
     protected String getTextPrefix() {
-        return "Tier " + StringMaster.getRoman(tier) + " Skill";
+        return "Tier " + NumberUtils.getRoman(tier) + " Skill";
     }
 
     @Override

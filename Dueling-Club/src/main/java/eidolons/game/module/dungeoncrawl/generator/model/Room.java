@@ -1,13 +1,15 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.swing.PointX;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -16,33 +18,36 @@ import java.util.stream.Collectors;
 public class Room extends RoomModel {
     private   FACING_DIRECTION[] exits;
     private   FACING_DIRECTION  entrance;
-    private Point point; //upper-left?
-    private Point entrancePoint;
+    private Coordinates point; //upper-left?
+    private Coordinates entranceCoordinates;
+    private LevelZone zone;
+    private List<Coordinates> exitCoordinatess;
 
-    public Room(FACING_DIRECTION  entrance, RoomModel model,FACING_DIRECTION... exits ) {
-        this(model);
-        this.entrance = entrance;
-        this.exits = exits;
-    }
-    public Room(RoomModel model) {
+    public Room(Coordinates roomCoordinates, RoomModel model) {
         super(model.cells, model.type, model.exitTemplate);
+        setCoordinates(roomCoordinates);
+//        rotateExits(model.getRotated());
         //TODO won't work for non-square!!!
 
     }
         public void makeExit(FACING_DIRECTION exit, boolean door){
-          entrancePoint = RoomAttacher.adjust(new Point(0, 0),(exit), this, true);
-        if (entrancePoint.y==getHeight())
-            entrancePoint.y--;
-        if (entrancePoint.x==getWidth())
-            entrancePoint.x--;
+          entranceCoordinates = RoomAttacher.adjust(new AbstractCoordinates(0, 0),(exit), this, true);
+        if (entranceCoordinates.y==getHeight())
+            entranceCoordinates.y--;
+        if (entranceCoordinates.x==getWidth())
+            entranceCoordinates.x--;
         //TODO check if this is necessary
-        cells[entrancePoint.x][entrancePoint.y] =door? ROOM_CELL.DOOR.getSymbol()
-        : ROOM_CELL.FLOOR.getSymbol()
-        ;
+        cells[entranceCoordinates.x][entranceCoordinates.y] =door? ROOM_CELL.DOOR.getSymbol()
+        : ROOM_CELL.EXIT.getSymbol();
+
+        if (exitCoordinatess==null )
+            exitCoordinatess = new ArrayList<>();
+        if (!exitCoordinatess.contains(new AbstractCoordinates(entranceCoordinates.x, entranceCoordinates.y)))
+         this.exitCoordinatess.add(new AbstractCoordinates(entranceCoordinates.x, entranceCoordinates.y));
     }
     public FACING_DIRECTION[] getExits() {
         if (exits == null) {
-            FACING_DIRECTION[] exits= ExitMaster. getExits( getExitTemplate(), rotated);
+            FACING_DIRECTION[] exits= ExitMaster. getExits( getExitTemplate(), rotations);
             setExits(exits);
         }
         return exits;
@@ -56,14 +61,15 @@ public class Room extends RoomModel {
         return entrance;
     }
 
-    public Point setNewEntrance(FACING_DIRECTION entrance) {
+    public Coordinates setNewEntrance(FACING_DIRECTION entrance) {
         this.entrance = entrance;
 //        makeExit(FacingMaster.rotate180(entrance));
 
          return shearWallsFromSide(entrance);
     }
 
-    private Point shearWallsFromSide(FACING_DIRECTION entrance) {
+
+        public Coordinates shearWallsFromSide(FACING_DIRECTION entrance) {
         int offsetX=0;
         int offsetY=0;
         int cropX=0;
@@ -85,22 +91,26 @@ public class Room extends RoomModel {
         int w=getWidth()-offsetX-cropX;
         int h=getHeight()-offsetY-cropY;
         String[][]  newCells = new String[w][h];
-        for (int x = 0; x < w-cropX-offsetX ; x++) {
-            for (int y = 0; y < h-cropY-offsetY ; y++) {
+        for (int x = 0; x < w ; x++) {
+            for (int y = 0; y < h ; y++) {
                 newCells[x][y] = cells[x + offsetX][y + offsetY];
             }
         }
         cells= newCells;
-        point = new PointX(point.x - offsetX+cropX, point.y - offsetY+cropY);
+        point = new AbstractCoordinates(point.x - offsetX+cropX, point.y - offsetY+cropY);
          return point;
     }
 
     @Override
-    public void setRotated(Boolean[] rotated) {
-        if (rotated==null){
+    public void setRotations(Boolean[] rotations) {
+        if (rotations ==null){
             //TODO reverse = this.rotated; rotate back!
         }
-        super.setRotated(rotated);
+        super.setRotations(rotations);
+        rotateExits(rotations);
+        }
+
+    private void rotateExits(Boolean[] rotated) {
         exits = Arrays.stream(exits).map(exit-> {
             FACING_DIRECTION newExit = exit;
             for (Boolean clockwise : rotated) {
@@ -110,11 +120,11 @@ public class Room extends RoomModel {
         }).collect(Collectors.toList()).toArray(new FACING_DIRECTION[rotated.length]);
     }
 
-    public Point getPoint() {
+    public Coordinates getCoordinates() {
         return point;
     }
 
-    public void setPoint(Point point) {
+    public void setCoordinates(Coordinates point) {
         this.point = point;
     }
 
@@ -122,11 +132,27 @@ public class Room extends RoomModel {
         this.exitTemplate = exitTemplate;
     }
 
-    public Point getEntrancePoint() {
-        return entrancePoint;
+    public Coordinates getEntranceCoordinates() {
+        return entranceCoordinates;
     }
 
-    public void setEntrancePoint(Point entrancePoint) {
-        this.entrancePoint = entrancePoint;
+    public void setEntranceCoordinates(Coordinates entranceCoordinates) {
+        this.entranceCoordinates = entranceCoordinates;
+    }
+
+    public LevelZone getZone() {
+        return zone;
+    }
+
+    public void setZone(LevelZone zone) {
+        this.zone = zone;
+    }
+
+    public List<Coordinates> getExitCoordinatess() {
+        return exitCoordinatess;
+    }
+
+    public void setExitCoordinatess(List<Coordinates> exitCoordinatess) {
+        this.exitCoordinatess = exitCoordinatess;
     }
 }

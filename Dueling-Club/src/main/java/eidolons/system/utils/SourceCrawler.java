@@ -1,6 +1,7 @@
 package eidolons.system.utils;
 
 import main.data.filesys.PathFinder;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -35,7 +36,7 @@ public class SourceCrawler {
     public String modifyFile(String className, String text) {
 
         String separator = className + "(";
-        List<String> replacedParts = StringMaster.openContainer(text, separator);
+        List<String> replacedParts = ContainerUtils.openContainer(text, separator);
         if (replacedParts.size() < 2) return null;
         replacedParts = replacedParts.subList(1, replacedParts.size());
 

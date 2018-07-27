@@ -2,8 +2,8 @@ package main.elements.conditions;
 
 import main.content.enums.entity.HeroEnums.PRINCIPLES;
 import main.entity.Ref;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 
 public class PrinciplesCondition extends StringComparison {
     private Boolean exclusive;
@@ -17,8 +17,8 @@ public class PrinciplesCondition extends StringComparison {
     public boolean check(Ref ref) {
         super.check(ref);
 
-        for (String s : StringMaster.open(val1)) {
-            for (String s2 : StringMaster.open(val2)) {
+        for (String s : ContainerUtils.open(val1)) {
+            for (String s2 : ContainerUtils.open(val2)) {
                 PRINCIPLES p1 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(
                  PRINCIPLES.class, s);
                 PRINCIPLES p2 = new EnumMaster<PRINCIPLES>().retrieveEnumConst(

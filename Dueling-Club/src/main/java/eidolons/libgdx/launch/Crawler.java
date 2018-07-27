@@ -21,6 +21,8 @@ import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
@@ -52,7 +54,7 @@ public class Crawler {
         List<String> parts = null;
         if (index == 0) {
             String data = FileManager.readFile(launchDataPath);
-            parts = StringMaster.openContainer(data);
+            parts = ContainerUtils.openContainer(data);
             index = 1;
         }
         if (index == 2) {
@@ -81,7 +83,7 @@ public class Crawler {
         String dungeon = parts == null ? "crawl" + new FileChooser(PathFinder.getDungeonLevelFolder() + "crawl").launch("", "")
          : parts.get(0);
         launchData += dungeon;
-        dungeon = StringMaster.removePreviousPathSegments(dungeon, PathFinder.getDungeonLevelFolder());
+        dungeon = PathUtils.removePreviousPathSegments(dungeon, PathFinder.getDungeonLevelFolder());
         ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,
          dungeon
         );

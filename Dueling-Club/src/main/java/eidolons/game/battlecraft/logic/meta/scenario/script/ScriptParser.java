@@ -10,6 +10,7 @@ import main.data.xml.XML_Converter;
 import main.elements.conditions.Condition;
 import main.entity.Ref;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster.CONDITION_TEMPLATES;
@@ -125,7 +126,7 @@ public class ScriptParser {
             //TODO for multiple scripts, need another SEPARATOR!
             String separator = executor.getSeparator(func);
             List<String> strings =
-             StringMaster.openContainer(VariableManager.getVars(script),
+             ContainerUtils.openContainer(VariableManager.getVars(script),
               separator);
             String[] args = strings.toArray(new String[strings.size()]);
             abilities = new AbilityImpl() {

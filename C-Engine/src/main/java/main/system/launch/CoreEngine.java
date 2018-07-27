@@ -6,6 +6,7 @@ import main.data.ability.ARGS;
 import main.data.ability.Mapper;
 import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.6.6";
+    public static final String VERSION = "0.6.7";
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -118,14 +119,14 @@ public class CoreEngine {
     public static boolean checkReadNecessary(String name) {
 
         if (selectivelyReadTypes != null) {
-            return StringMaster.checkContainer(
+            return ContainerUtils.checkContainer(
              selectivelyReadTypes,
              StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
              false);
         }
 
         if (exceptionTypes != null) {
-            if (StringMaster.checkContainer(
+            if (ContainerUtils.checkContainer(
              exceptionTypes,
              StringMaster.cropFormat(StringMaster.cropLast(name, "-")),
              false

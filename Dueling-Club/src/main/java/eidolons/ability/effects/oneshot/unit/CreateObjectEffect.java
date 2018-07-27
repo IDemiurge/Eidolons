@@ -8,6 +8,7 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 public class CreateObjectEffect extends SummonEffect {
@@ -37,7 +38,7 @@ public class CreateObjectEffect extends SummonEffect {
 
     private void applyParamBuff() {
         Effects param_effects = new Effects();
-        for (String s : StringMaster.open(param_mods)) {
+        for (String s : ContainerUtils.open(param_mods)) {
             String varPart = VariableManager.getVarPart(s);
             String valueName = s.replace(varPart, "");
             String formula = StringMaster.cropParenthesises(varPart)

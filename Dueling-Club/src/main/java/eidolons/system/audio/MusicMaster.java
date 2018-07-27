@@ -13,6 +13,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
@@ -374,7 +375,7 @@ public class MusicMaster {
     }
 
     public void playMusic(String path) {
-        path = StringMaster.addMissingPathSegments(path, PathFinder.getMusicPath());
+        path = PathUtils.addMissingPathSegments(path, PathFinder.getMusicPath());
         //TODO save!
         if (playedMusic != null)
             playedMusic.stop();

@@ -7,6 +7,7 @@ import main.content.enums.entity.ActionEnums;
 import main.content.enums.entity.ActionEnums.ACTION_TYPE_GROUPS;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -134,7 +135,7 @@ public class CONTENT_CONSTS2 {
         }
 
         public String getAllyFactions() {
-            return StringMaster.constructContainer(ListMaster.toStringList(allies));
+            return ContainerUtils.constructContainer(ListMaster.toStringList(allies));
         }
 
         public String getGroup() {
@@ -466,14 +467,14 @@ public class CONTENT_CONSTS2 {
                 defaultActionGroups = Arrays.asList(groups);
             }
             this.description = description;
-            this.addPropMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(addProps), StringMaster.openContainer(addPropValues));
-            this.setPropMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(setProps), StringMaster.openContainer(setPropValues));
-            this.paramModMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(modParams), StringMaster.openContainer(modParamValues));
-            this.paramBonusMap = new MapMaster<String, String>().constructMap(StringMaster
-             .openContainer(bonusParams), StringMaster.openContainer(bonusParamVals,
+            this.addPropMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(addProps), ContainerUtils.openContainer(addPropValues));
+            this.setPropMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(setProps), ContainerUtils.openContainer(setPropValues));
+            this.paramModMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(modParams), ContainerUtils.openContainer(modParamValues));
+            this.paramBonusMap = new MapMaster<String, String>().constructMap(ContainerUtils
+             .openContainer(bonusParams), ContainerUtils.openContainer(bonusParamVals,
              StringMaster.UPGRADE_SEPARATOR));
         }
 

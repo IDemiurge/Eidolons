@@ -37,7 +37,7 @@ import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.MathMaster;
 
@@ -293,14 +293,14 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.C_TOUGHNESS) {
-            if (StringMaster.getInteger(value) >
+            if (NumberUtils.getInteger(value) >
              getIntParam(PARAMS.TOUGHNESS)) {
                 main.system.auxiliary.log.LogMaster.log(1, "gotcha dwarf " + this + value);
             }
         }
         if (param == PARAMS.C_N_OF_ACTIONS) {
             Integer prev = getIntParam(param);
-            int diff = StringMaster.getInteger(value) - prev;
+            int diff = NumberUtils.getInteger(value) - prev;
             if (diff==0)
                 return;
             int mod = AtbController.ATB_READINESS_PER_AP * diff;
@@ -313,12 +313,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 //            modifyParameter(PARAMS.N_OF_ACTIONS, diff);
         } else if (param == PARAMS.C_INITIATIVE_BONUS) {
             Integer prev = getIntParam(param);
-            int diff = StringMaster.getInteger(value) - prev;
+            int diff = NumberUtils.getInteger(value) - prev;
             modifyParameter(PARAMS.C_INITIATIVE, diff);
         } else if (param == PARAMS.INITIATIVE_BONUS) {
             super.putParameter(param, value);
         } else if (param == PARAMS.C_INITIATIVE) {
-            Integer val = StringMaster.getInteger(value);
+            Integer val = NumberUtils.getInteger(value);
             val = MathMaster.getMinMax(val, 0, 100);
             super.putParameter(param, val+"");
         } else

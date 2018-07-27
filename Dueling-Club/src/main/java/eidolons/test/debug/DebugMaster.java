@@ -60,12 +60,12 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.logic.battle.player.Player;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
@@ -254,9 +254,9 @@ public class DebugMaster {
             }
 
         }
-        if (StringMaster.isInteger(funcName)) {
+        if (NumberUtils.isInteger(funcName)) {
             try {
-                Integer integer = StringMaster.getInteger(funcName);
+                Integer integer = NumberUtils.getInteger(funcName);
                 if (integer >= DEBUG_FUNCTIONS.values().length) {
                     executeDebugFunctionNewThread(HIDDEN_DEBUG_FUNCTIONS.values()[integer
                      - DEBUG_FUNCTIONS.values().length]);

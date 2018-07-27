@@ -6,6 +6,7 @@ import main.ability.effects.Effects;
 import main.ability.effects.MicroEffect;
 import main.data.ability.AE_ConstrArgs;
 import main.data.ability.OmittedConstructor;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -42,7 +43,7 @@ public class RandomEffect extends MicroEffect {
     @AE_ConstrArgs(argNames = {"abilityNames, separated by ' OR '"})
     public RandomEffect(String abilityNames) { // TODO support ^VAR;... by
         // excluding ";"'s from split!
-        this(StringMaster.split(abilityNames, StringMaster.OR));
+        this(ContainerUtils.split(abilityNames, StringMaster.OR));
     }
 
     @OmittedConstructor

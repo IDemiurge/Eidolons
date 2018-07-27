@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
@@ -112,8 +114,8 @@ public class TextureCache {
              //          1+path.indexOf(StringMaster.getPathSeparator())
              3
              , path.lastIndexOf("."));// matcher.group(1);
-            name = StringMaster.constructStringContainer
-             (StringMaster.getPathSegments(name), "/");
+            name = ContainerUtils.constructStringContainer
+             (PathUtils.getPathSegments(name), "/");
             name = name.substring(0, name.length() - 1);
 
             if (uiAtlasOn)

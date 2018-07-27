@@ -40,6 +40,8 @@ import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.Event;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -152,7 +154,7 @@ public class AnimationConstructor {
                                               String partPath, String size,
                                               PROPERTY[] props, String pathRoot,
                                               boolean closest) {
-        String path = StringMaster.buildPath(
+        String path = PathUtils.buildPath(
          pathRoot, partPath);
 //        spell.getTargeting();
         String file = null;
@@ -407,7 +409,7 @@ public class AnimationConstructor {
         boolean exists = false;
         List<SpriteAnimation> sprites = new ArrayList<>();
         for (String path :
-         StringMaster.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
+         ContainerUtils.openContainer(data.getValue(ANIM_VALUES.SPRITES))) {
             if (path.isEmpty()) {
                 continue;
             }
@@ -593,16 +595,16 @@ public class AnimationConstructor {
                     }
             }
         if (sprite != null) {
-            String val = StringMaster.buildPath(
-             partPath, StringMaster.removePreviousPathSegments(sprite, pathRoot));
+            String val = PathUtils.buildPath(
+             partPath, PathUtils.removePreviousPathSegments(sprite, pathRoot));
             LogMaster.log(LogMaster.ANIM_DEBUG,
              "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part +
               ": " + ANIM_VALUES.SPRITES + " is set automatically to " + val);
             data.setValue(ANIM_VALUES.SPRITES, val);
         }
         if (emitter != null) {
-            String val = StringMaster.buildPath(
-             partPath, StringMaster.removePreviousPathSegments(emitter, pathRoot));
+            String val = PathUtils.buildPath(
+             partPath, PathUtils.removePreviousPathSegments(emitter, pathRoot));
             LogMaster.log(LogMaster.ANIM_DEBUG,
              "AUTO ANIM CONSTRUCTION FOR " + spell + "-" + part +
               ": " + ANIM_VALUES.PARTICLE_EFFECTS + " is set automatically to " + val);

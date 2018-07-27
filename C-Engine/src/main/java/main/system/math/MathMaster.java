@@ -6,8 +6,10 @@ import main.entity.Ref;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public abstract class MathMaster {
 
     // public abstract Integer getStartingFocus(Obj obj);
     public static float getFloatWithDigitsAfterPeriod(int digitsAfterPeriod, float v) {
-        return Float.parseFloat(StringMaster.formatFloat(digitsAfterPeriod, v));
+        return Float.parseFloat(NumberUtils.formatFloat(digitsAfterPeriod, v));
     }
     public static Integer getAverage(Integer... integers) {
         Integer sum = 0;
@@ -139,8 +141,8 @@ public abstract class MathMaster {
 
     public static int getMaxCoordinateFromUnitGroupData(boolean x_y, String data) {
         int max = 0; // x-y=name;
-        for (String substring : StringMaster.open(data, ",")) {
-            Integer c = StringMaster.getInteger(substring.split("=")[x_y ? 0 : 1]);
+        for (String substring : ContainerUtils.open(data, ",")) {
+            Integer c = NumberUtils.getInteger(substring.split("=")[x_y ? 0 : 1]);
             if (c > max) {
                 max = c;
             }
@@ -157,7 +159,7 @@ public abstract class MathMaster {
         if (param.isMod()) {
             return true;
         }
-        Integer i = StringMaster.getInteger(param.getDefaultValue());
+        Integer i = NumberUtils.getInteger(param.getDefaultValue());
         return i == 100;
     }
 

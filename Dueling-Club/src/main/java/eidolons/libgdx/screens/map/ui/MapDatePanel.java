@@ -11,7 +11,7 @@ import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.TablePanel;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -61,7 +61,7 @@ public class MapDatePanel extends TablePanel {
     }
 
     private String getSecondLabelText() {
-        return date.getDayTime().getText() + ", " + StringMaster.getOrdinal(date.getDay()) + " of " +
+        return date.getDayTime().getText() + ", " + NumberUtils.getOrdinal(date.getDay()) + " of " +
          date.getMonth().getName();
     }
 

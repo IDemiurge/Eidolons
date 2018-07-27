@@ -36,6 +36,7 @@ import main.data.xml.XML_Converter;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -162,7 +163,7 @@ public class OptionsMaster {
               gameplayOptions.getValues().get(sub).toString());
             GAMEPLAY_OPTION key = gameplayOptions.getKey((sub.toString()));
             String value = gameplayOptions.getValue(key);
-            if (!StringMaster.isInteger(value)) {
+            if (!NumberUtils.isInteger(value)) {
                 switch (key) {
                     case GHOST_MODE:
                         if (!CoreEngine.isFastMode())
@@ -202,7 +203,7 @@ public class OptionsMaster {
               soundOptions.getValues().get(sub).toString());
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
             String value = soundOptions.getValue(key);
-            if (!StringMaster.isInteger(value)) {
+            if (!NumberUtils.isInteger(value)) {
                 switch (key) {
                     case SOUNDS_OFF:
                         SoundMaster.setOn(false);

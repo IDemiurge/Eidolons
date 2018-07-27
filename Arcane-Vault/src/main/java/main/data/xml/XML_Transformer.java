@@ -16,6 +16,7 @@ import main.elements.conditions.*;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.gui.components.controls.ModelManager;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.datatypes.DequeImpl;
 import org.w3c.dom.Document;
@@ -162,7 +163,7 @@ public class XML_Transformer {
             return;
         }
 
-        List<String> container = StringMaster.openContainer(attrString);
+        List<String> container = ContainerUtils.openContainer(attrString);
         int i = 0;
         Map<String, Integer> map = new HashMap<>();
         for (String s : container) {
@@ -256,7 +257,7 @@ public class XML_Transformer {
         if (!changed) {
             return;
         }
-        newContents = StringMaster.joinStringList(list, divider);
+        newContents = ContainerUtils.joinStringList(list, divider);
         file.setContents(newContents);
         if (write) {
             XML_Writer.write(file);

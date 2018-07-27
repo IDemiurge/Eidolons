@@ -15,6 +15,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Reader;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
@@ -122,7 +123,7 @@ public class TextMaster {
         for (OBJ_TYPE k : extractedTypes) {
             List<String> value = null;
             if (extractedTypeGroups.length > i) {
-                value = StringMaster.openContainer(extractedTypeGroups[i]);
+                value = ContainerUtils.openContainer(extractedTypeGroups[i]);
             }
             extractedTypesMap.put(k, value);
             i++;
@@ -319,7 +320,7 @@ public class TextMaster {
         if (beforeNumeralsAndSymbols.isEmpty()) {
             return false;
         }
-        for (String substring : StringMaster.open(stdFileNames, ",")) {
+        for (String substring : ContainerUtils.open(stdFileNames, ",")) {
             if (beforeNumeralsAndSymbols.equalsIgnoreCase(substring)) {
                 return false;
             }

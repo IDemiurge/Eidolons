@@ -13,6 +13,7 @@ import main.entity.type.ObjType;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.Collections;
@@ -224,12 +225,12 @@ public class SortMaster<T> {
         String id1 = o1.getValue(p);
         String id2 = o2.getValue(p);
 
-        if (StringMaster.isInteger(id1)) {
-            if (StringMaster.getInteger(id1) > StringMaster.getInteger(id2)) {
+        if (NumberUtils.isInteger(id1)) {
+            if (NumberUtils.getInteger(id1) > NumberUtils.getInteger(id2)) {
                 int i = descending ? -1 : 1;
                 return i;
             }
-            if (StringMaster.getInteger(id1) == StringMaster.getInteger(id2)) {
+            if (NumberUtils.getInteger(id1) == NumberUtils.getInteger(id2)) {
                 return 0;
             }
             return descending ? 1 : -1;

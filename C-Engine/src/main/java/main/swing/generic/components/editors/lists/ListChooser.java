@@ -15,8 +15,8 @@ import main.swing.listeners.ListChooserFilterOptionListener;
 import main.swing.listeners.ListChooserSortOptionListener;
 import main.swing.listeners.ListChooserSortOptionListener.SORT_TEMPLATE;
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.GuiManager;
@@ -476,7 +476,7 @@ public class ListChooser extends GenericListChooser<String> {
             if (getSelectedItems(list).isEmpty()) {
                 return "";
             } else {
-                return StringMaster.constructContainer(list.getSelectedValuesList());
+                return ContainerUtils.constructContainer(list.getSelectedValuesList());
             }
         }
         List<String> values = new ArrayList<>();
@@ -484,7 +484,7 @@ public class ListChooser extends GenericListChooser<String> {
             values.add(elements.nextElement());
             // string += elements.nextElement() + StringMaster.getSeparator();
         }
-        return StringMaster.constructContainer(values);
+        return ContainerUtils.constructContainer(values);
     }
 
     public enum SELECTION_MODE {

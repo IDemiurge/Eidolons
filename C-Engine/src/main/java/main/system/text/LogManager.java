@@ -16,6 +16,7 @@ import main.game.core.game.Game;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -385,7 +386,7 @@ public abstract class LogManager {
     public abstract boolean logMovement(Ref ref);
 
     public void logValueMod(PARAMETER param, Number i, Obj obj) {
-        Integer amount = StringMaster.getInteger(i.toString());
+        Integer amount = NumberUtils.getInteger(i.toString());
         if (amount.toString().equals("0")) {
             return;
         }

@@ -5,7 +5,7 @@ import eidolons.game.battlecraft.rules.RuleKeeper.RULE_SCOPE;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 /**
  * Created by JustMe on 7/31/2017.
@@ -46,7 +46,7 @@ public class AiTrainingParameters {
                         partyData = args[i];
                         break;
                     case ROUND_LIMIT:
-                        roundsMax = StringMaster.getInteger(args[i]);
+                        roundsMax = NumberUtils.getInteger(args[i]);
                         break;
                     case RULE_SCOPE:
                         ruleScope = RULE_SCOPE.valueOf(args[i]);

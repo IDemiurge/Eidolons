@@ -13,6 +13,7 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
@@ -133,7 +134,7 @@ public class EncounterMaster {
         // String string="It appears you have been ambushed!";
         String string = "It appears you have run into hostiles...";
         String enemies = " Among the spotted enemies: \n";
-        for (String wave : StringMaster.open(e.getTypeNames())) {
+        for (String wave : ContainerUtils.open(e.getTypeNames())) {
             enemies += wave + ", ";
         }
         enemies = StringMaster.cropLast(enemies, 2);
@@ -150,7 +151,7 @@ public class EncounterMaster {
         if (min_max_normal != null) {
             prop = min_max_normal ? PROPS.SHRUNK_PRESET_GROUP : PROPS.EXTENDED_PRESET_GROUP;
         }
-        List<String> list = StringMaster.openContainer(type.getProperty(prop));
+        List<String> list = ContainerUtils.openContainer(type.getProperty(prop));
         return getPower(list);
     }
 

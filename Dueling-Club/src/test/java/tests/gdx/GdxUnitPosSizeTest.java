@@ -11,7 +11,7 @@ import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import org.junit.Test;
@@ -65,7 +65,7 @@ public class GdxUnitPosSizeTest extends LibgdxTest {
         int offset = container.getUnitViewOffset();
         int size = (int) container.getUnitViewSize();
 //        container.getUnitViewsVisible()
-        String expected = StringMaster.getOrdinal(i) + " view of " + n
+        String expected = NumberUtils.getOrdinal(i) + " view of " + n
          + " must have "
          + container.getViewX(offset, i) + " x; "
          + container.getViewY(offset, i, n) + " y; "

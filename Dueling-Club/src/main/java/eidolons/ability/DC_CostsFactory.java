@@ -9,7 +9,9 @@ import main.elements.conditions.Requirement;
 import main.elements.costs.*;
 import main.entity.Entity;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.secondary.InfoMaster;
 import main.system.math.Formula;
 
@@ -97,7 +99,7 @@ public class DC_CostsFactory {
             return;
         }
 
-        for (String subString : StringMaster.open(spell
+        for (String subString : ContainerUtils.open(spell
          .getSpecialRequirements())) {
             Requirement req = DC_ConditionMaster
              .getSpecialReq(subString, spell);
@@ -115,7 +117,7 @@ public class DC_CostsFactory {
         Formula formula;
 
         boolean var;
-        int amount = StringMaster.getInteger(paramValue);
+        int amount = NumberUtils.getInteger(paramValue);
         if (amount == 0) {
             return null;
         }

@@ -4,8 +4,8 @@ import com.badlogic.gdx.utils.StringBuilder;
 import main.data.filesys.PathFinder;
 import main.game.core.game.Game;
 import main.swing.generic.services.DialogMaster;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.threading.WaitMaster;
@@ -138,7 +138,7 @@ public class SpecialLogger implements FileLogger {
                 LogMaster.log(string);
 
         FileManager.write(string,
-         PathFinder.getLogPath() + logName + StringMaster.getPathSeparator() +
+         PathFinder.getLogPath() + logName + PathUtils.getPathSeparator() +
           logName +
           " log from" +
           getTimeStamp() +

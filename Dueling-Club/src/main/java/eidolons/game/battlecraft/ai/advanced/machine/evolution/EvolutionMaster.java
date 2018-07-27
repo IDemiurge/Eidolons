@@ -1,8 +1,8 @@
 package eidolons.game.battlecraft.ai.advanced.machine.evolution;
 
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
 
 import java.util.*;
@@ -117,7 +117,7 @@ public class EvolutionMaster<T extends Evolvable> {
 
         generation++;
         main.system.auxiliary.log.LogMaster.log(
-         LOG_CHANNEL.AI_TRAINING, generation + " generation: " + StringMaster.build("population=", ""
+         LOG_CHANNEL.AI_TRAINING, generation + " generation: " + ContainerUtils.build("population=", ""
            + population, "maxFitness=", "" + maxFitness, "fittest=",
           "nChildren" + nChildren, "nParents" + nParents, "nMutations" + nMutations,
           "fittest" + fittest));

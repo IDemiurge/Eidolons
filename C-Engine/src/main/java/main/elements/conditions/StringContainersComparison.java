@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 import main.entity.Ref;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 public class StringContainersComparison extends StringComparison {
@@ -38,8 +39,8 @@ public class StringContainersComparison extends StringComparison {
         boolean result = !negative & !strictContents;
         // result = StringMaster.compareContainers(val1, val2, strictContents);
 
-        for (String s1 : StringMaster.open(val1)) {
-            for (String s : StringMaster.open(val2)) {
+        for (String s1 : ContainerUtils.open(val1)) {
+            for (String s : ContainerUtils.open(val2)) {
                 result = negative;
                 if (strictContents) {
                     if (StringMaster.compareByChar(s1, s, strictContents)) {

@@ -9,6 +9,8 @@ import eidolons.libgdx.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -61,7 +63,7 @@ public class EmitterMaster extends GdxUtil {
 
             if (writeImage)
                 try {
-                    for (String s : StringMaster.openContainer(imagePath, "\n")) {
+                    for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                         Texture texture = new Texture(s);
                      if (sizeImages)
                          if (texture.getHeight()>MAX_IMAGE_SIZE || texture.getWidth()>MAX_IMAGE_SIZE)
@@ -88,13 +90,13 @@ public class EmitterMaster extends GdxUtil {
             String imagesData="\n";
 
             try {
-                    for (String s : StringMaster.openContainer(imagePath, "\n")) {
+                    for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                        String imageName=StringMaster.getLastPathSegment(s);
                         imagesData+= imageName+"\n";
 
                         String newPath = map.get(imageName);
                         if (newPath == null) {
-                            newPath = imagesPath + StringMaster.getPathSeparator() + imageName  ;
+                            newPath = imagesPath + PathUtils.getPathSeparator() + imageName  ;
                             map.put(imageName, newPath);
                         }
                         if (writeImage)
@@ -111,7 +113,7 @@ public class EmitterMaster extends GdxUtil {
                 String data = EmitterPresetMaster.getInstance().getModifiedData(path,
                  EMITTER_VALUE_GROUP.Image_Path,imagesData);
 
-                FileManager.write(data, PathFinder.getVfxPath() + StringMaster.getPathSeparator() + "atlas" + StringMaster.getPathSeparator() + path);
+                FileManager.write(data, PathFinder.getVfxPath() + PathUtils.getPathSeparator() + "atlas" + PathUtils.getPathSeparator() + path);
 
                 main.system.auxiliary.log.LogMaster.log(1,
                  path + " vfx preset written  "  );

@@ -7,9 +7,7 @@ import main.ability.effects.container.SpecialTargetingEffect;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
@@ -201,8 +199,8 @@ public class CoordinatesMaster {
         int[] array = new int[4];
         int i = 0;
         for (String s : string.split(";")) {
-            array[i++] = StringMaster.getInteger(s.split("-")[0].trim().substring(1));
-            array[i++] = StringMaster.getInteger(s.split("-")[1]);
+            array[i++] = NumberUtils.getInteger(s.split("-")[0].trim().substring(1));
+            array[i++] = NumberUtils.getInteger(s.split("-")[1]);
         }
         return array;
     }
@@ -454,7 +452,7 @@ public class CoordinatesMaster {
 
     public static List<Coordinates> getCoordinatesFromString(String textContent) {
         List<Coordinates> list = new ArrayList<>();
-        for (String s : StringMaster.open(textContent)) {
+        for (String s : ContainerUtils.open(textContent)) {
             list.add(new Coordinates(true, s));
         }
         return list;

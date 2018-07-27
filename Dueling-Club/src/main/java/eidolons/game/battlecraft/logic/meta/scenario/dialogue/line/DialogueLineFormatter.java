@@ -7,6 +7,8 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.data.xml.XML_Writer;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
@@ -58,7 +60,7 @@ public class DialogueLineFormatter {
             }
         }
         String path = PathFinder.getEnginePath()
-         + "tutorial" + StringMaster.getPathSeparator()
+         + "tutorial" + PathUtils.getPathSeparator()
          + TextMaster.getLocale()
          + dialogueTextPath;
         parseDocs(path);
@@ -66,7 +68,7 @@ public class DialogueLineFormatter {
 
     public static String getDialogueTextPath(String fileName) {
         return PathFinder.getEnginePath() + PathFinder.getScenariosPath()
-         + fileName + StringMaster.getPathSeparator()
+         + fileName + PathUtils.getPathSeparator()
          + TextMaster.getLocale()
          ;
     }
@@ -97,9 +99,9 @@ public class DialogueLineFormatter {
 ...
  */
     public static void parseDialogueFile(String contents) {
-        for (String dialogueContents : StringMaster.open(contents, DIALOGUE_SEPARATOR)) {
+        for (String dialogueContents : ContainerUtils.open(contents, DIALOGUE_SEPARATOR)) {
             boolean dialogue = true;
-            for (String lineText : StringMaster.open(dialogueContents, LINE_SEPARATOR)) {
+            for (String lineText : ContainerUtils.open(dialogueContents, LINE_SEPARATOR)) {
                 boolean intro = lineText.contains(INTRO_IDENTIFIER);
                 if (dialogue) {
                     //TODO check intro!

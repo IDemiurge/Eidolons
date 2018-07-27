@@ -11,7 +11,9 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.core.game.Game;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 import main.system.math.Parameter;
@@ -202,12 +204,12 @@ public class TextParser {
     private static String parseVarRef(String ref_substring) {
         String value = (xmlParsing) ? StringMaster.cropVarRef(ref_substring) : StringMaster
          .cropRef(ref_substring);
-        if (!StringMaster.isInteger(value)) {
+        if (!NumberUtils.isInteger(value)) {
             return ref_substring;
         }
-        int index = StringMaster.getInteger(value) - 1;
+        int index = NumberUtils.getInteger(value) - 1;
         String varProp = entity.getProperty(G_PROPS.VARIABLES);
-        return StringMaster.openContainer(varProp).get(index);
+        return ContainerUtils.openContainer(varProp).get(index);
     }
 
     // perhaps I should refactor into method per parse_type!
@@ -216,7 +218,7 @@ public class TextParser {
             return parseVarRef(ref_substring);
         }
         String value = StringMaster.cropRef(ref_substring);
-        if (!StringMaster.isInteger(value)) {
+        if (!NumberUtils.isInteger(value)) {
             if (isAbilityParsing()) {
                 return ref_substring;
             }
@@ -255,8 +257,8 @@ public class TextParser {
         if (entity instanceof AbilityObj) {
             entity = entity.getType();
         }
-        if (StringMaster.isInteger(value)) {
-            int index = StringMaster.getInteger(value) - 1;
+        if (NumberUtils.isInteger(value)) {
+            int index = NumberUtils.getInteger(value) - 1;
             String varProp = entity.getProperty(G_PROPS.VARIABLES);
             if (StringMaster.isEmpty(varProp)) {
                 varProp = DEFAULT_VARS;
@@ -270,7 +272,7 @@ public class TextParser {
                 containerFormula = true;
             }
 
-            List<String> openContainer = StringMaster.openContainer(varProp);
+            List<String> openContainer = ContainerUtils.openContainer(varProp);
 
             if (openContainer.size() > index) {
                 VALUE val = null;
@@ -281,7 +283,7 @@ public class TextParser {
                     replacement = openContainer.get(index);
                 }
                 if (containerFormula || val instanceof PARAMETER) {
-                    if (StringMaster.isInteger(replacement)) {
+                    if (NumberUtils.isInteger(replacement)) {
                         return replacement;
                     }
                     try {
@@ -324,7 +326,7 @@ public class TextParser {
             }
         } else {
             if (!isAbilityParsing()) {
-                if (StringMaster.isInteger(replacement)) {
+                if (NumberUtils.isInteger(replacement)) {
                     return replacement;
                 }
                 if (game.isSimulation() && !tooltipParsing) {

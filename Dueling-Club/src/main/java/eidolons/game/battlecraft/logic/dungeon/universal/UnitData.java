@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.module.herocreator.logic.party.Party;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
 
@@ -16,7 +16,7 @@ public class UnitData extends DataUnit<PARTY_VALUE> {
     public UnitData(Party party) {
         this(PARTY_VALUE.MEMBERS +
          DataUnitFactory.getPairSeparator(FORMAT) +
-         StringMaster.joinList(party.getMembers().stream().
+         ContainerUtils.joinList(party.getMembers().stream().
            map(s -> s.getName()).collect(Collectors.toList())
 //         ,
          ) + DataUnitFactory.getSeparator(FORMAT));

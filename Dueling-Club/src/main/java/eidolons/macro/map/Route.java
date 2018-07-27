@@ -12,7 +12,7 @@ import main.content.values.parameters.MACRO_PARAMS;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.datatypes.DequeImpl;
 
 import java.util.List;
@@ -203,7 +203,7 @@ public class Route extends Place {
     }
 
     public List<String> getAmbushingGroups() {
-        return StringMaster
+        return ContainerUtils
          .openContainer(getProperty(MACRO_PROPS.AMBUSHING_GROUPS));
     }
 

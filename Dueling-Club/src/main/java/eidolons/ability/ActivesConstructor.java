@@ -41,6 +41,7 @@ import main.entity.Entity;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Active;
 import main.entity.obj.ActiveObj;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -59,7 +60,7 @@ public class ActivesConstructor {
         // TODO
         ArrayList<ROLL_TYPES> rolls = new ArrayList<>();
         ArrayList<String> vars = new ArrayList<>();
-        for (String roll : StringMaster.open(saveRoll, StringMaster.AND_SEPARATOR)) {
+        for (String roll : ContainerUtils.open(saveRoll, StringMaster.AND_SEPARATOR)) {
             String varArgs = VariableManager.getVarPart(roll);
             roll = roll.replace(varArgs, "");
             rolls.add(new EnumMaster<ROLL_TYPES>().retrieveEnumConst(ROLL_TYPES.class, roll));
@@ -78,7 +79,7 @@ public class ActivesConstructor {
     }
 
     public static Effect wrapInRoll(Effect e, ROLL_TYPES roll, String argString) {
-        List<String> args = StringMaster.openContainer(argString, ",");
+        List<String> args = ContainerUtils.openContainer(argString, ",");
         String success = args.get(0);
         String fail = null;
         if (args.size() > 1) {
@@ -316,7 +317,7 @@ public class ActivesConstructor {
             return;
         }
 
-        for (String mod : StringMaster.open(property)) {
+        for (String mod : ContainerUtils.open(property)) {
             Condition targetingModConditions;
             TARGETING_MODIFIERS MOD = new EnumMaster<TARGETING_MODIFIERS>().retrieveEnumConst(
              TARGETING_MODIFIERS.class, mod);

@@ -2,7 +2,7 @@ package eidolons.libgdx.screens.map.town;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.macro.entity.town.Town;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class TownDataSource {
 
     private void init() {
         String points = FileManager.readFile(getDataFilePath());
-        for (String substring : StringMaster.openContainer(points)) {
+        for (String substring : ContainerUtils.openContainer(points)) {
 
         }
     }

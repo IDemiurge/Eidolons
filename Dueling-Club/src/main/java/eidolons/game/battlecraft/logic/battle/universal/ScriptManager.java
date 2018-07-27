@@ -4,7 +4,7 @@ import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptExecutor;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptParser;
 import eidolons.game.battlecraft.logic.meta.scenario.script.ScriptSyntax;
 import main.elements.triggers.Trigger;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 /**
  * Created by JustMe on 6/2/2017.
@@ -23,7 +23,7 @@ public abstract class ScriptManager<T extends Battle, E> extends BattleHandler<T
     public void parseScripts(String scripts) {
 
         //syntax: new_round->equals({amount}, 2)->spawn(Vampires,5-5);
-        for (String script : StringMaster.open(scripts,
+        for (String script : ContainerUtils.open(scripts,
          ScriptSyntax.SCRIPTS_SEPARATOR)) {
             try {
                 addTrigger(ScriptParser.parseScript(script, getMaster().getGame(), this,

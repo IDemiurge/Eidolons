@@ -15,10 +15,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.SearchMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
@@ -261,7 +258,7 @@ public class DataManager {
             return null;
         }
         int i = 0;
-        List<String> parts = StringMaster.openContainer(typeName, " ");
+        List<String> parts = ContainerUtils.openContainer(typeName, " ");
         String qualityName = parts.get(0);
         QUALITY_LEVEL q = new EnumMaster<QUALITY_LEVEL>().retrieveEnumConst(QUALITY_LEVEL.class,
          qualityName);
@@ -678,7 +675,7 @@ public class DataManager {
     }
 
     public static List<ObjType> toTypeList(String string, OBJ_TYPE TYPE) {
-        return toTypeList(StringMaster.openContainer(string), TYPE);
+        return toTypeList(ContainerUtils.openContainer(string), TYPE);
     }
 
     public static List<ObjType> toTypeList(List<String> strings, OBJ_TYPE TYPE) {
@@ -689,10 +686,10 @@ public class DataManager {
         for (String string : strings) {
             ObjType type = getType(string, TYPE);
             if (type == null) {
-                if (StringMaster.isInteger(string)) {
-                    type = Game.game.getTypeById(StringMaster.getInteger(string));
+                if (NumberUtils.isInteger(string)) {
+                    type = Game.game.getTypeById(NumberUtils.getInteger(string));
                     if (type == null) {
-                        Obj obj = Game.game.getObjectById(StringMaster.getInteger(string));
+                        Obj obj = Game.game.getObjectById(NumberUtils.getInteger(string));
                         if (obj != null) {
                             type = obj.getType();
                         }
@@ -715,7 +712,7 @@ public class DataManager {
     }
 
     public static String toString(Collection<? extends Entity> listTypeData) {
-        return StringMaster.constructContainer(toStringList(listTypeData));
+        return ContainerUtils.constructContainer(toStringList(listTypeData));
     }
 
     public static List<String> toStringList(Collection<? extends Entity> listTypeData) {

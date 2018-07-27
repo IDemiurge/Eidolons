@@ -15,6 +15,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.BuffType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.math.Formula;
@@ -117,7 +118,7 @@ public class RaiseEffect extends SummonEffect {
         // TODO gotta make sure that the corpse is *RESET* well and has
         // *ACTUAL* values!
 
-        for (String s : StringMaster.open(getModifiedParam())) {
+        for (String s : ContainerUtils.open(getModifiedParam())) {
             String varPart = VariableManager.getVarPart(s);
             String valueName = s.replace(varPart, "");
             String formula = StringMaster.cropParenthesises(varPart) + "*"

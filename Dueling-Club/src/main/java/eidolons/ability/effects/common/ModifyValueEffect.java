@@ -19,6 +19,7 @@ import main.entity.obj.HeroItem;
 import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
@@ -230,7 +231,7 @@ public class ModifyValueEffect extends DC_Effect implements ResistibleEffect, Re
             }
 
             if (param == null) {
-                if (StringMaster.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
+                if (ContainerUtils.openContainer(sparam, StringMaster.AND_SEPARATOR).size() > 1) {
                     params = game.getValueManager().getParamsFromContainer(sparam);
                 } else {
                     params = game.getValueManager().getValueGroupParams(sparam);

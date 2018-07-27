@@ -9,7 +9,7 @@ import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.threading.WaitMaster;
 
 import java.util.Comparator;
@@ -152,7 +152,7 @@ public class AtbController implements Comparator<Unit> {
 
     private String getTimeString(float v) {
         return
-         StringMaster.formatFloat(1, v)  + " seconds";
+         NumberUtils.formatFloat(1, v)  + " seconds";
     }
 
     private void updateTurnOrder() {

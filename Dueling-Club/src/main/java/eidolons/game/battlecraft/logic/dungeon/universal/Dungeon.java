@@ -11,7 +11,7 @@ import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.DUNGEON_TAGS;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
-import main.content.enums.DungeonEnums.SUBDUNGEON_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.xml.XML_Converter;
@@ -19,10 +19,7 @@ import main.entity.LightweightEntity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.SearchMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.data.DataUnitFactory;
 import main.system.launch.TypeBuilder;
 
@@ -35,7 +32,7 @@ public class Dungeon extends LightweightEntity {
     private DUNGEON_TYPE dungeonType;
     private DUNGEON_TEMPLATES template;
     private String levelFilePath;
-    private SUBDUNGEON_TYPE dungeonSubtype;
+    private LOCATION_TYPE dungeonSubtype;
 
     /*
      * Encounters Levels Rewards Loot
@@ -101,9 +98,9 @@ public class Dungeon extends LightweightEntity {
         return dungeonType;
     }
 
-    public SUBDUNGEON_TYPE getDungeonSubtype() {
+    public LOCATION_TYPE getDungeonSubtype() {
         if (dungeonSubtype == null) {
-            dungeonSubtype = new EnumMaster<SUBDUNGEON_TYPE>().retrieveEnumConst(SUBDUNGEON_TYPE.class,
+            dungeonSubtype = new EnumMaster<LOCATION_TYPE>().retrieveEnumConst(LOCATION_TYPE.class,
              getProperty(PROPS.SUBDUNGEON_TYPE));
         }
         return dungeonSubtype;
@@ -230,10 +227,10 @@ public class Dungeon extends LightweightEntity {
 
     public Coordinates getPoint(String arg) {
         Coordinates c = null;
-        if (arg.contains(ScriptSyntax.SPAWN_POINT) || StringMaster.isInteger(arg)) {
+        if (arg.contains(ScriptSyntax.SPAWN_POINT) || NumberUtils.isInteger(arg)) {
             arg = arg.replace(ScriptSyntax.SPAWN_POINT, "");
-            Integer i = StringMaster.getInteger(arg) - 1;
-            List<String> spawnPoints = StringMaster.openContainer(
+            Integer i = NumberUtils.getInteger(arg) - 1;
+            List<String> spawnPoints = ContainerUtils.openContainer(
              getProperty(PROPS.COORDINATE_POINTS));
             c = new Coordinates(spawnPoints.get(i));
         } else {

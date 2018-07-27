@@ -7,7 +7,7 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,13 +28,13 @@ public class Scenario extends LightweightEntity {
 
     private List<Mission> initAvailableMissions() {
         List<String> missions =
-         StringMaster.openContainer(getProperty(PROPS.SCENARIO_MISSIONS));
+         ContainerUtils.openContainer(getProperty(PROPS.SCENARIO_MISSIONS));
         String currentMission = getGame().getMetaMaster().
          getMissionName();
         int index = missions.indexOf(currentMission);
         //show future missions?
 //        getGame().getBattleMaster().getConstructor().getOrCreate(mission)
-        List<String> available = StringMaster.openContainer(missions.get(index));
+        List<String> available = ContainerUtils.openContainer(missions.get(index));
         return available.stream().map(mission ->
          new Mission(DataManager.getType(
           mission, DC_TYPE.PARTY),

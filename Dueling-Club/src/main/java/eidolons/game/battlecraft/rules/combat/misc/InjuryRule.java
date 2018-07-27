@@ -8,8 +8,8 @@ import main.ability.effects.Effects;
 import main.content.CONTENT_CONSTS2.INJURY;
 import main.content.CONTENT_CONSTS2.INJURY_TYPE;
 import main.entity.Ref;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 
 public class InjuryRule {
     // dynamic reset to support cure?
@@ -26,7 +26,7 @@ public class InjuryRule {
 
     public static void applyOldWounds(Unit hero) {
         Effects effects = new Effects();
-        for (String substring : StringMaster.open(hero.getProperty(PROPS.INJURIES))) {
+        for (String substring : ContainerUtils.open(hero.getProperty(PROPS.INJURIES))) {
             INJURY template = new EnumMaster<INJURY>().retrieveEnumConst(INJURY.class, substring);
             effects.add(new InjuryEffect(template, true));
         }

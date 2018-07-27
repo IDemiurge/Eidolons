@@ -19,7 +19,9 @@ import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.entity.ConditionMaster;
 import main.system.images.ImageManager.BORDER;
 import main.system.math.Formula;
@@ -112,7 +114,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             return true;
         }
 
-        for (String s : StringMaster.open(getProperty(PROPS.APPLY_REQS))) {
+        for (String s : ContainerUtils.open(getProperty(PROPS.APPLY_REQS))) {
             Condition condition = ConditionMaster.toConditions(s);
             if (!condition.preCheck(ref)) {
                 return false;
@@ -128,7 +130,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
             prop = prop + ";";
         }
         prop = prop + getProperty(PROPS.ATTRIBUTE_BONUSES);
-        for (String substring : StringMaster.open(prop)) {
+        for (String substring : ContainerUtils.open(prop)) {
             // String[] array = substring.split(" ");
             String bonus = // array[array.length - 1];
              VariableManager.getVar(substring);
@@ -174,7 +176,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
     private void addParamBonuses() {
         float quotientSum = 0;
         for (PARAMETER param : getBonusMap().keySet()) {
-            Integer amount = StringMaster.getInteger(getBonusMap().get(param), getRef());
+            Integer amount = NumberUtils.getInteger(getBonusMap().get(param), getRef());
             float d = new Float(amount * getRankTotalFormulaMod()) / 100;
 
             if (param.isAttribute()) {
@@ -194,7 +196,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
                     quotientSum = quotientSum / paramName.split(StringMaster.AND).length;
                 }
             } else {
-                paramName = StringMaster.openContainer(
+                paramName = ContainerUtils.openContainer(
                  VariableManager.removeVarPart(getProperty(PROPS.ATTRIBUTE_BONUSES))).get(0);
             }
 
@@ -206,7 +208,7 @@ public class DC_FeatObj extends DC_HeroAttachedObj {
 
     private void applyParamMods() {
         for (PARAMETER param : getModMap().keySet()) {
-            Integer amount = StringMaster.getInteger(modMap.get(param));
+            Integer amount = NumberUtils.getInteger(modMap.get(param));
             amount += amount * getRankTotalFormulaMod();
             getHero().modifyParamByPercent(param, amount); // TODO feat name for
             // valModMap!

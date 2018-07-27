@@ -12,8 +12,8 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class HeroClassMaster {
 //        String notChosenPerks = hero.getProperty(PROPS.PENDING_PERKS);
 
         String chosenPerks = hero.getProperty(PROPS.PERKS);
-        for (String sub : StringMaster.openContainer(
+        for (String sub : ContainerUtils.openContainer(
          hero.getProperty(ContentValsManager.getPROP("CLASSES_TIER_" + tier)))) {
 
         }

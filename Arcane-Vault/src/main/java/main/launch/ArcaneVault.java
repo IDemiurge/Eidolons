@@ -25,6 +25,7 @@ import main.gui.components.tree.AV_Tree;
 import main.simulation.SimulationManager;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -145,7 +146,7 @@ public class ArcaneVault {
                                 enumList.remove(sub);
                             }
                         }
-                        types = StringMaster.constructStringContainer(enumList);
+                        types = ContainerUtils.constructStringContainer(enumList);
                         break;
                     case "Last":
                         types = FileManager.readFile(getLastTypesFilePath());

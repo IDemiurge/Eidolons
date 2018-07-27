@@ -1,16 +1,27 @@
 package eidolons.macro.generation;
 
 import eidolons.content.PROPS;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
+import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.macro.map.Place;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums.DUNGEON_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 3/10/2018.
@@ -18,6 +29,9 @@ import main.system.auxiliary.data.FileManager;
 public class ScenarioGenerator {
 
     public static ObjType generateScenarioType(Place place) {
+        if (isRandomGenerationOn()){
+            return generateRandomLevelScenario(place);
+        }
         //dungeon level
 
         //missions
@@ -58,7 +72,7 @@ public class ScenarioGenerator {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-            mission = StringMaster.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
+            mission = PathUtils.removePreviousPathSegments(mission, PathFinder.getDungeonLevelFolder());
             ObjType missionType = new ObjType("", DC_TYPE.MISSIONS);
             missionType.setProperty(PROPS.MISSION_FILE_PATH, mission);
             DataManager.addType(missionType);
@@ -77,5 +91,70 @@ public class ScenarioGenerator {
         //place types
         //        scenarioType.setpr
         return scenarioType;
+    }
+
+    private static boolean isRandomGenerationOn() {
+        return true;
+    }
+
+    public static ObjType generateRandomLevelScenario(Place place){
+        ObjType templateType =
+         DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
+
+        ObjType scenarioType= new ObjType(
+         NameMaster.getUniqueVersionedName(place.getName(), DC_TYPE.SCENARIOS), templateType);
+
+
+        LOCATION_TYPE locationType =  new EnumMaster<LOCATION_TYPE>().
+         retrieveEnumConst(LOCATION_TYPE.class, place.getProperty(PROPS.SUBDUNGEON_TYPE));
+
+      int n = 3;
+        List<SUBLEVEL_TYPE > types =
+        createSublevelTypes(n, locationType);
+
+        String levelPaths="";
+        for (SUBLEVEL_TYPE type : types) {
+
+            DungeonLevel level = new LevelGenerator().generateLevel(type, locationType
+             );
+
+            RngLevelPopulator.populate(level,place);
+
+            String stringData = level.toXml();
+           String  name =locationType+" "+ type;
+            name =   NameMaster.getUniqueVersionedFileName(name,
+             StrPathBuilder.build( PathFinder.getDungeonLevelFolder(),
+             "generated", type.name()));
+
+            String path = StrPathBuilder.build(PathFinder.getDungeonLevelFolder(),
+             "generated", type.name(), name);
+            FileManager.write(stringData,path);
+            levelPaths+=(path)+ ContainerUtils.getContainerSeparator();
+        }
+        scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
+
+        return scenarioType;
+    }
+
+    private static List<SUBLEVEL_TYPE> createSublevelTypes(int n, LOCATION_TYPE locationType) {
+        List<SUBLEVEL_TYPE> list =    new ArrayList<>() ;
+        for (int i = 0; i < n; i++) {
+            switch(i){
+                case 0:
+                    list.add(SUBLEVEL_TYPE.COMMON);
+                    break;
+                case 1:
+                    list.add(SUBLEVEL_TYPE.BOSS);
+                    break;
+                case 2:
+                    list.add(SUBLEVEL_TYPE.PRE_BOSS);
+                    break;
+                default:
+                    list.add(SUBLEVEL_TYPE.COMMON);
+                    break;
+            }
+
+        }
+        return list;
     }
 }

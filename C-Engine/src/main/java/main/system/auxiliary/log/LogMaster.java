@@ -1,9 +1,9 @@
 package main.system.auxiliary.log;
 
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
@@ -514,7 +514,7 @@ public class LogMaster {
         if (fullPrintStream == null) {
             try {
                 fullPrintStream = new PrintStream(
-                 new FileOutputStream(PathFinder.getEnginePath()+ StringMaster.getPathSeparator()+ getLogFilePath(), true));
+                 new FileOutputStream(PathFinder.getEnginePath()+ PathUtils.getPathSeparator()+ getLogFilePath(), true));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -525,7 +525,7 @@ public class LogMaster {
         if (exceptionPrintStream == null) {
             try {
                 exceptionPrintStream= new PrintStream(
-                 new FileOutputStream(PathFinder.getEnginePath()+ StringMaster.getPathSeparator()+getCriticalLogFilePath(), true));
+                 new FileOutputStream(PathFinder.getEnginePath()+ PathUtils.getPathSeparator()+getCriticalLogFilePath(), true));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

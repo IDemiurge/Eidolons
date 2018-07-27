@@ -130,14 +130,14 @@ public class TimeMaster {
     }
 
     public static String getDateString() {
-        return StringMaster.getFormattedTimeString(getDay(), 2) + "."
-         + StringMaster.getFormattedTimeString(getMonth() + 1, 2);
+        return NumberUtils.getFormattedTimeString(getDay(), 2) + "."
+         + NumberUtils.getFormattedTimeString(getMonth() + 1, 2);
 
     }
 
     public static String getDayText() {
         int day = getDay();
-        return day + StringMaster.getOrdinalEnding(getDay()) + " of " + getMonthName();
+        return day + NumberUtils.getOrdinalEnding(getDay()) + " of " + getMonthName();
     }
 
     public static Integer getDaysInMonth(Integer month) {

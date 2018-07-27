@@ -14,9 +14,8 @@ import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
-import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
@@ -124,7 +123,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
             party.addMember(hero);
         } else if (isRandomOneHero() ||
          isChooseOneHero()) {
-            List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
+            List<String> members = ContainerUtils.openContainer(type.getProperty(PROPS.MEMBERS));
             if (isRandomOneHero()
              || members.size() == 1) {
                 String hero = new RandomWizard<String>().getRandomListItem(
@@ -148,7 +147,7 @@ public class ScenarioPartyManager extends PartyManager<ScenarioMeta> {
         getGame().getDataKeeper().addUnitData(new UnitData(party));
 
         party.setProperty(PROPS.PARTY_MISSION,
-         StringMaster.openContainer(getMetaGame().getScenario().
+         ContainerUtils.openContainer(getMetaGame().getScenario().
           getProperty(PROPS.SCENARIO_MISSIONS)).get(0), true);
         return party;
 

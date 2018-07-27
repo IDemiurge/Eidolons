@@ -10,7 +10,7 @@ import eidolons.system.math.roll.RollMaster;
 import main.content.DC_TYPE;
 import main.content.values.properties.G_PROPS;
 import main.entity.Ref.KEYS;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.BORDER;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -137,7 +137,7 @@ public class DC_ImageMaster {
 
     public static Image getImageDynamic(MOD_IDENTIFIER mod, Object... values) {
         Image image = null;
-        int value = StringMaster.getInteger((values.length == 0 ? 0 : values[0]).toString());
+        int value = NumberUtils.getInteger((values.length == 0 ? 0 : values[0]).toString());
         Attack attack = (Attack) (values.length < 2 ? null : values[1]);
         switch (mod) {
             case AMMO:

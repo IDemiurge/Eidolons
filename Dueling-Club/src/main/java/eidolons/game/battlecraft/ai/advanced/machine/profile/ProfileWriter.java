@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingCriteria.CR
 import eidolons.game.battlecraft.ai.advanced.machine.train.AiTrainingResult;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
 
 /**
  * Created by JustMe on 8/3/2017.
@@ -35,7 +35,7 @@ public class ProfileWriter {
 //        for (CRITERIA_TYPE_BOOLEAN typeBoolean: CRITERIA_TYPE_BOOLEAN.values()){
 //            builder.append(typeBoolean.getDefaultValue() + AiTrainingRunner.getSegmentSeparator());
 //        }
-        String path = StringMaster.buildPath(PathFinder.getXML_PATH(), dataRoot, DEFAULT_CRITERIA);
+        String path = PathUtils.buildPath(PathFinder.getXML_PATH(), dataRoot, DEFAULT_CRITERIA);
         XML_Writer.write(builder.toString(), path);
     }
 
@@ -51,7 +51,7 @@ public class ProfileWriter {
         profile.getConstants().stream().forEach(f -> {
             builder.append(f + separator);
         });
-        String path = StringMaster.buildPath(root, type, preset, name);
+        String path = PathUtils.buildPath(root, type, preset, name);
         XML_Writer.write(builder.toString(), path);
     }
 }

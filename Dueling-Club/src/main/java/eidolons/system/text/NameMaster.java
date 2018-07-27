@@ -11,13 +11,13 @@ import main.entity.EntityCheckMaster;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
+import main.system.auxiliary.data.FileManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NameMaster {
     /*
@@ -178,7 +178,7 @@ public class NameMaster {
         boolean female = EntityCheckMaster.getGender(hero) == HeroEnums.GENDER.FEMALE;
         String name = null;
 
-        for (String nameGroup : StringMaster.open(backgroundNameGroups, " ")) {
+        for (String nameGroup : ContainerUtils.open(backgroundNameGroups, " ")) {
             while (true) {
                 if (name != null) {
                     break;
@@ -360,13 +360,13 @@ public class NameMaster {
     }
 
     private static String getRandomHeroName(Entity hero, String namePool) {
-        List<String> pool = StringMaster.openContainer(namePool);
+        List<String> pool = ContainerUtils.openContainer(namePool);
         if (pool.isEmpty()) {
             return NO_NAME;
         }
         List<String> names = new ArrayList<>();
         for (String s : pool) {
-            for (String newname : StringMaster.open(s, " ")) {
+            for (String newname : ContainerUtils.open(s, " ")) {
                 if (!newname.isEmpty()) {
                     if (!usedNames.contains(newname)) {
                         names.add(newname);
@@ -386,15 +386,15 @@ public class NameMaster {
     }
 
     public static String pickName(Entity hero) {
-        List<String> nameGroups = StringMaster.openContainer(getNamesGroups(getBg(hero)), " ");
+        List<String> nameGroups = ContainerUtils.openContainer(getNamesGroups(getBg(hero)), " ");
         List<String> list = new ArrayList<>();
         for (String nameGroup : nameGroups) {
-            list.addAll(StringMaster.openContainer(getNamesForGroup(nameGroup, EntityCheckMaster
+            list.addAll(ContainerUtils.openContainer(getNamesForGroup(nameGroup, EntityCheckMaster
              .getGender(hero) == HeroEnums.GENDER.FEMALE), " "));
         }
         String name = new ListChooser(SELECTION_MODE.MULTIPLE, list, false).choose();
         if (name != null) {
-            return StringMaster.joinStringList(StringMaster.openContainer(name), " ", true);
+            return ContainerUtils.joinStringList(ContainerUtils.openContainer(name), " ", true);
         }
         return null;
     }
@@ -414,7 +414,7 @@ public class NameMaster {
 
     public static String appendVersionToName(String name, Integer i) {
         if (name.contains(VERSION)) {
-            if (StringMaster.isInteger("" + name.charAt(name.length() - 1))) {
+            if (NumberUtils.isInteger("" + name.charAt(name.length() - 1))) {
                 name = name.substring(0, name.lastIndexOf(" "));
             }
         }
@@ -433,18 +433,20 @@ public class NameMaster {
     }
 
     public static String getUniqueVersionedName(String name, OBJ_TYPE T) {
-        return getUniqueVersionedName(DataManager.getTypes(T), name);
+        return getUniqueVersionedName(DataManager.getTypes(T)
+         .stream().map(type -> type.getName()).collect(Collectors.toList())
+         , name);
     }
 
-    public static String getUniqueVersionedName(List<ObjType> types, String name) {
+    public static String getUniqueVersionedName(List<String> names, String name) {
         int i = 0;
         String newName=name;
         loop:
         while (true) {
             i++;
 
-            for (ObjType t : types) {
-                if (t.getName().equals(newName)) {
+            for (String t : names) {
+                if (t.equals(newName)) {
                     newName = name + StringMaster.VERSION_SEPARATOR + i;
                     continue loop;
                 }
@@ -452,6 +454,14 @@ public class NameMaster {
             break;
         }
         return newName;
+    }
+
+    public static String getUniqueVersionedFileName(String name, String path) {
+        List<File> files = FileManager.getFilesFromDirectory(path, false, false);
+        String format = StringMaster.getFormat(name);
+        return getUniqueVersionedName(files
+          .stream().map(type -> StringMaster.cropFormat(type.getName())).collect(Collectors.toList())
+         , name)+format;
     }
 
     public enum HERO_NAME_GROUPS {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StreamUtils;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -49,7 +50,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
             imagePath = StringMaster.cropLastPathSegment(imagePath);
         }
         load(Gdx.files.internal(
-         StringMaster.addMissingPathSegments(
+         PathUtils.addMissingPathSegments(
           path, PathFinder.getParticlePresetPath())),
          Gdx.files.internal(imagePath));
 

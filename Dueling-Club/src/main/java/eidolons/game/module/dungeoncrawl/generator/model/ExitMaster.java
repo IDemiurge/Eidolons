@@ -5,36 +5,30 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
+import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.RandomWizard;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Set;
-
-import static eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE.THRONE_ROOM;
 
 /**
  * Created by JustMe on 7/21/2018.
  */
 public class ExitMaster {
-    public static EXIT_TEMPLATE getExitTemplate(boolean mergeLinks, LevelGraphNode node,
-                                                int toLink) {
+    public static EXIT_TEMPLATE getExitTemplateToLinks(
+                                                       int links) {
 
-        if (mergeLinks) {
-            return getRandomSingleExitTemplate();
-        } else {
-            if (node.getRoomType() == THRONE_ROOM)
-                return EXIT_TEMPLATE.THROUGH;
-            else if (toLink == 0)
+
+            if (links == 0)
                 return EXIT_TEMPLATE.CUL_DE_SAC;
-            else if (toLink == 2)
+            else if (links == 2)
                 return EXIT_TEMPLATE.FORK;
-            else if (toLink >= 3)
+            else if (links >= 3)
                 return EXIT_TEMPLATE.CROSSROAD;
             else return EXIT_TEMPLATE.THROUGH;
-        }
     }
 
     public static FACING_DIRECTION getExit(EXIT_TEMPLATE roomExitTemplate,
@@ -48,7 +42,7 @@ public class ExitMaster {
 
     public static EXIT_TEMPLATE getRandomSingleExitTemplate() {
         return
-//         RandomWizard.random() ? EXIT_TEMPLATE.ANGLE :
+         RandomWizard.random() ? EXIT_TEMPLATE.ANGLE :
           EXIT_TEMPLATE.THROUGH;
     }
 
@@ -106,8 +100,8 @@ public class ExitMaster {
         return new FACING_DIRECTION[0];
     }
 
-    public static Point getExitPoint(Room link, FACING_DIRECTION side) {
-        return RoomAttacher.adjust(link.getPoint(), side, link, true);
+    public static Coordinates getExitCoordinates(Room link, FACING_DIRECTION side) {
+        return RoomAttacher.adjust(link.getCoordinates(), side, link, true);
         //        +link.getWidth()
     }
 }

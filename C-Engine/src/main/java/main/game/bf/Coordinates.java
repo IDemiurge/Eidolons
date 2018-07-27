@@ -3,6 +3,7 @@ package main.game.bf;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
@@ -42,36 +43,40 @@ public class Coordinates {
     }
 
     public Coordinates(boolean allowinvalid, int x, int y) {
-        if (!allowinvalid) {
-            if (x >= GuiManager.getCurrentLevelCellsX()) {
-                x = GuiManager.getCurrentLevelCellsX() - 1;
-                this.setInvalid(true);
-            }
-            if (x < 0) {
-                x = 0;
-                this.setInvalid(true);
-            }
-            if (y >= GuiManager.getCurrentLevelCellsY()) {
-                y = GuiManager.getCurrentLevelCellsY() - 1;
-                this.setInvalid(true);
-            }
-            if (y < 0) {
-                y = 0;
-                this.setInvalid(true);
-            }
-        }
         this.x = x;
         this.y = y;
+        if (!allowinvalid) {
+            checkInvalid();
+        }
         if (flipX) {
-            x = GuiManager.getCurrentLevelCellsX() - x;
+            this.x = GuiManager.getCurrentLevelCellsX() - this.x;
         }
         if (flipY) {
-            y = GuiManager.getCurrentLevelCellsY() - y;
+            this.y = GuiManager.getCurrentLevelCellsY() - this.y;
         }
         if (rotate) {
             int buffer = x;
-            x = y;
-            y = buffer;
+            this.x = y;
+            this.y = buffer;
+        }
+    }
+
+    protected void checkInvalid() {
+        if (x >= GuiManager.getCurrentLevelCellsX()) {
+            x = GuiManager.getCurrentLevelCellsX() - 1;
+            this.setInvalid(true);
+        }
+        if (x < 0) {
+            x = 0;
+            this.setInvalid(true);
+        }
+        if (y >= GuiManager.getCurrentLevelCellsY()) {
+            y = GuiManager.getCurrentLevelCellsY() - 1;
+            this.setInvalid(true);
+        }
+        if (y < 0) {
+            y = 0;
+            this.setInvalid(true);
         }
     }
 
@@ -84,7 +89,7 @@ public class Coordinates {
     }
 
     public Coordinates(boolean custom, String s) {
-        this(custom, StringMaster.getInteger(splitCoordinateString(s)[0].trim()), StringMaster
+        this(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
          .getInteger(splitCoordinateString(s)[1].trim()));
     }
 
@@ -279,45 +284,49 @@ public class Coordinates {
         Coordinates c = this;
         Coordinates e;
         if (!diagonal) {
-            e = new Coordinates(false, c.x, c.y - 1);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x, c.y - 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
 
-            e = new Coordinates(false, c.x - 1, c.y);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x - 1, c.y);
             if (!e.isInvalid()) {
                 list.add(e);
             }
-            e = new Coordinates(false, c.x + 1, c.y);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x + 1, c.y);
             if (!e.isInvalid()) {
                 list.add(e);
             }
 
-            e = new Coordinates(false, c.x, c.y + 1);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x, c.y + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
         } else {
-            e = new Coordinates(false, c.x - 1, c.y + 1);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x - 1, c.y + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
-            e = new Coordinates(false, c.x + 1, c.y - 1);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
-
-            e = new Coordinates(false, c.x - 1, c.y - 1);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x + 1, c.y - 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
 
-            e = new Coordinates(false, c.x + 1, c.y + 1);
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x - 1, c.y - 1);
+            if (!e.isInvalid()) {
+                list.add(e);
+            }
+
+            e = new Coordinates(isAllowInvalidAdjacent(), c.x + 1, c.y + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
         }
         return list;
+    }
+
+    protected boolean isAllowInvalidAdjacent() {
+        return false;
     }
 
     public List<Coordinates> getAdjacentOrthagonal() {

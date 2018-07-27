@@ -22,6 +22,7 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.data.PlayerData.ALLEGIENCE;
@@ -54,7 +55,7 @@ public class WorldGenerator {
 
     public static List<Region> generateRegions(MacroRef ref) {
         List<Region> regions = new ArrayList<>();
-        for (String s : StringMaster.open(world
+        for (String s : ContainerUtils.open(world
          .getProperty(MACRO_PROPS.REGIONS))) {
             ObjType type = DataManager.getType(s, MACRO_OBJ_TYPES.REGION);
             region = createRegion(type, ref);
@@ -74,13 +75,13 @@ public class WorldGenerator {
 
         region = new Region(game, type, ref);
         // init default towns/places ; then add randomized
-        for (String s : StringMaster.open(region
+        for (String s : ContainerUtils.open(region
          .getProperty(MACRO_PROPS.AREAS))) {
             type = DataManager.getType(s, MACRO_OBJ_TYPES.AREA);
             Area area = new Area(ref.getGame(), type, ref);
             region.getAreas().add(area);
         }
-        for (String s : StringMaster.open(region
+        for (String s : ContainerUtils.open(region
          .getProperty(MACRO_PROPS.PARTIES))) {
             try {
                 MacroParty party = createParty(ref, s);
@@ -89,13 +90,13 @@ public class WorldGenerator {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        for (String s : StringMaster.open(region
+        for (String s : ContainerUtils.open(region
          .getProperty(MACRO_PROPS.PLACES))) {
             Place place = createPlace(ref, s);
             if (place != null)
                 region.addPlace(place);
         }
-        for (String s : StringMaster.open(region
+        for (String s : ContainerUtils.open(region
          .getProperty(MACRO_PROPS.TOWNS))) {
             Town town = createTown(ref, s);
             region.addTown(town);
@@ -113,7 +114,7 @@ public class WorldGenerator {
     }
 
     private static void generateFactions() {
-        for (String sub : StringMaster.openContainer(world.getProperty(MACRO_PROPS.FACTIONS))) {
+        for (String sub : ContainerUtils.openContainer(world.getProperty(MACRO_PROPS.FACTIONS))) {
             boolean me = world.checkProperty(MACRO_PROPS.PLAYER_FACTION, sub);
             ObjType type = DataManager.getType(sub, MACRO_OBJ_TYPES.FACTIONS);
             FLAG_COLOR color =
@@ -176,7 +177,7 @@ public class WorldGenerator {
     private static void generateRoutes() {
         // TODO external routes
         String property = region.getProperty(MACRO_PROPS.INTERNAL_ROUTES);
-        for (String routeTypeName : StringMaster.open(property)) {
+        for (String routeTypeName : ContainerUtils.open(property)) {
             ObjType routeType = DataManager.getType(routeTypeName,
              MACRO_OBJ_TYPES.ROUTE);
             Route r;
@@ -241,15 +242,15 @@ public class WorldGenerator {
         // // }
         // }
         for (Route r : region.getRoutes()) {
-            for (String p : StringMaster.open(r
+            for (String p : ContainerUtils.open(r
              .getProperty(MACRO_PROPS.LINKED_PLACES))) {
                 r.addLinkedPlace(region.getPlace(p));
             }
-            for (String p : StringMaster.open(r
+            for (String p : ContainerUtils.open(r
              .getProperty(MACRO_PROPS.LINKED_TOWNS))) {
                 r.addLinkedTown(region.getTown(p));
             }
-            for (String p : StringMaster.open(r
+            for (String p : ContainerUtils.open(r
              .getProperty(MACRO_PROPS.LINKED_ROUTES))) {
                 r.addLinkedRoute(region.getRoute(p));
             }

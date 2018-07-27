@@ -10,8 +10,8 @@ import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 3/4/2018.
@@ -176,8 +176,8 @@ public class SunActor extends GroupX {
 
     private String getPath() {
         return StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "suns") + StringMaster.getPathSeparator()
-         + getNameRoot() + StringMaster.getPathSeparator();
+         , "component", "time panel", "suns") + PathUtils.getPathSeparator()
+         + getNameRoot() + PathUtils.getPathSeparator();
 
     }
 }

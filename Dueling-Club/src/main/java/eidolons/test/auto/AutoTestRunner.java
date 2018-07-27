@@ -8,8 +8,8 @@ import eidolons.test.auto.AutoTest.TEST_ARGS;
 import main.content.C_OBJ_TYPE;
 import main.data.DataManager;
 import main.entity.Ref;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 
 public class AutoTestRunner {
 
@@ -52,11 +52,11 @@ public class AutoTestRunner {
         String actionNames = test.getArgMap().get(TEST_ARGS.ACTION_NAMES);
         Ref ref = test.getRef();
         Unit unit = master.getSource();
-        for (String actionName : StringMaster.open(actionNames)) {
+        for (String actionName : ContainerUtils.open(actionNames)) {
             actionTest(actionName, ref, unit);
         }
         addTestTypes(unit);
-        for (String actionName : StringMaster.open(actionNames)) {
+        for (String actionName : ContainerUtils.open(actionNames)) {
             actionTest(actionName, ref, unit);
         }
     }
@@ -69,7 +69,7 @@ public class AutoTestRunner {
     }
 
     private void addTestTypes(Unit unit) {
-        for (String typeName : StringMaster.open(test.getArgMap().get(
+        for (String typeName : ContainerUtils.open(test.getArgMap().get(
          TEST_ARGS.TEST_SKILLS))) {
             // ObjType type = DataManager.getType(typeName, OBJ_TYPES.SKILLS);
             // DC_FeatObj feat;

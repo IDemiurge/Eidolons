@@ -25,6 +25,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
@@ -67,7 +68,7 @@ public class Party extends Obj {
 
     public void initMembers() {
         members.clear();
-        for (String heroName : StringMaster.openContainer
+        for (String heroName : ContainerUtils.openContainer
          (type.getProperty(PROPS.MEMBERS))) {
             //TODO refactor
             if (DC_Game.game.getMetaMaster() != null)
@@ -86,7 +87,7 @@ public class Party extends Obj {
     }
 
     public String getMemberString() {
-        return StringMaster.constructContainer(ListMaster.toNameList(getMembers()));
+        return ContainerUtils.constructContainer(ListMaster.toNameList(getMembers()));
     }
 
     public void addFallenHeroes(Collection<Entity> fallenHeroes) {

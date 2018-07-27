@@ -12,7 +12,7 @@ import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -66,7 +66,7 @@ public class PerkSlot extends HtNode {
 
     @Override
     protected String getTextPrefix() {
-        return "Tier " + StringMaster.getRoman(tier) + " Perk";
+        return "Tier " + NumberUtils.getRoman(tier) + " Perk";
     }
 
     @Override

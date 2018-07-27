@@ -35,9 +35,7 @@ import main.data.ability.construct.AbilityConstructor;
 import main.data.ability.construct.VariableManager;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
@@ -278,14 +276,14 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
     public void initFeatContainer(PROPERTY PROP, DC_TYPE TYPE,
                                   DequeImpl<? extends DC_FeatObj> list) {
         // TODO make it dynamic and clean!
-        List<String> feats = StringMaster.openContainer(getProperty(PROP));
+        List<String> feats = ContainerUtils.openContainer(getProperty(PROP));
         for (String feat : feats) {
             DC_FeatObj featObj = null;
             int rank = 0;
             // or special separator!
-            if (StringMaster.isInteger(StringMaster.cropParenthesises(VariableManager
+            if (NumberUtils.isInteger(StringMaster.cropParenthesises(VariableManager
              .getVarPart(feat)))) {
-                rank = StringMaster.getInteger(StringMaster.cropParenthesises(VariableManager
+                rank = NumberUtils.getInteger(StringMaster.cropParenthesises(VariableManager
                  .getVarPart(feat)));
                 feat = VariableManager.removeVarPart(feat);
             }

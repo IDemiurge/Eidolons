@@ -112,8 +112,10 @@ public class DungeonEnums {
         INTERIOR, UNDERGROUND, SURFACE, NIGHT, PERMA_DUSK,
     }
 
-    public enum DUNGEON_TYPE {
-        GLORY, MINOR, LOOT, AVERAGE, BOSS, UNDERGROUND
+
+        public enum DUNGEON_TYPE {
+
+        GLORY, TREASURE_HOARD, SUBLEVEL, BOSS, MAIN,
     }
 
     public enum MAP_BACKGROUND {
@@ -184,9 +186,24 @@ public class DungeonEnums {
             return peripheryObjects;
         }
     }
+    public enum DUNGEON_CLASS {
+        CAVE,
+        DUNGEON,
+        BUILDING,
+        SURFACE,
+        FOREST,
+    }
 
-    public enum SUBDUNGEON_TYPE {
-        CAVE, HIVE, DUNGEON, CASTLE, SEWER, HELL, ASTRAL, ARCANE, CRYPT, DEN, BARROW, RUIN, HOUSE,
+    public enum DUNGEON_POPULATION {
+        Cult,
+    }
+        public enum LOCATION_TYPE {
+        CAVE, CEMETERY, CRYPT, BARROW,
+        HIVE, DUNGEON,
+        SEWER, HELL, ASTRAL,
+         ARCANE, RUIN,
+        CAMP, TEMPLE,
+        CASTLE, DEN, HOUSE,
     }
 
     public enum SUBLEVEL_TYPE {

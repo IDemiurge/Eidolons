@@ -7,54 +7,36 @@ import eidolons.system.options.Options.OPTION;
  */
 public class GeneratorEnums {
 
-    public enum LEVEL_VALUES
-     //for manual skirmish generation; but we'll need more ad hoc values...
-     implements OPTION {
-//GRAPH
-
-        //MODEL
-
-        //RENDER
-        PREFERRED_STYLE_1,
-        DUNGEON_TYPE,
-        ZONES,
-
-        WIDTH,
-        HEIGHT,
-        Z_LEVEL,
-
-        WRAP_ROOMS;
-
-        @Override
-        public Integer getMin() {
-            return null;
-        }
-
-        @Override
-        public Integer getMax() {
-            return null;
-        }
-
-        @Override
-        public Object getDefaultValue() {
-            return null;
-        }
-
-        @Override
-        public Boolean isExclusive() {
-            return null;
-        }
-
-        @Override
-        public Object[] getOptions() {
-            return new Object[0];
-        }
-    }
-    public  enum EXIT_TEMPLATE {
+    public enum EXIT_TEMPLATE {
+        /*
+#####
+OOOOE
+#####
+         */
         THROUGH,
+        /*
+#####
+OOO##
+##E##
+         */
         ANGLE,
-        CROSSROAD,
+        /*
+##E##
+OOOO#
+##E##
+         */
         FORK,
+        /*
+##E##
+OOOOE
+##E##
+         */
+        CROSSROAD,
+        /*
+#####
+OOO##
+#####
+         */
         CUL_DE_SAC,
     }
 
@@ -74,6 +56,90 @@ public class GeneratorEnums {
 
     public enum LEVEL_GRAPH_LINK_TYPE {
         NORMAL, AMBUSH, LONG, LOCKED,
+    }
+
+    public enum LEVEL_VALUES
+     //for manual skirmish generation; but we'll need more ad hoc values...
+     implements OPTION {
+        //GRAPH
+
+        //MODEL
+        ZONES,
+
+        //RENDER
+        PREFERRED_STYLE_1,
+
+        //GENERAL
+        DUNGEON_TYPE,
+
+        WIDTH,
+        HEIGHT,
+        Z_LEVEL,
+
+        DOOR_CHANCE_COMMON(75, 0, 100),
+        WRAP_ROOMS(1, 0, 2),
+        WRAP_CELL_TYPE(ROOM_CELL.DESTRUCTIBLE.getSymbol(), ROOM_CELL.WALL.getSymbol()),
+
+        TREASURE_ROOM_COEF(3, 0, 10),
+        THRONE_ROOM_COEF(1, 0, 3),
+        DEATH_ROOM_COEF(2, 0, 10),
+        GUARD_ROOM_COEF(4, 0, 7),
+        COMMON_ROOM_COEF(6, 0, 12),
+        SECRET_ROOM_COEF(1, 0, 10),
+
+        SIZE_MODE(100, 50, 300);
+        private Boolean exclusive;
+        private Integer min;
+        private Integer max;
+        private Object[] options;
+        private Object defaultValue;
+
+        LEVEL_VALUES(Boolean exclusive) {
+            this.exclusive = exclusive;
+            defaultValue = exclusive;
+        }
+
+        LEVEL_VALUES(Object... options) {
+            this.options = options;
+            if (options.length > 0)
+                defaultValue = options[0];
+        }
+
+        LEVEL_VALUES(Integer defaultValue, Integer min, Integer max) {
+            this.min = min;
+            this.max = max;
+            this.defaultValue = defaultValue;
+
+        }
+
+        @Override
+        public Integer getMin() {
+            return min;
+        }
+
+        @Override
+        public Integer getMax() {
+            return max;
+        }
+
+        @Override
+        public Object getDefaultValue() {
+            return defaultValue;
+        }
+
+        public void setDefaultValue(Object defaultValue) {
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public Boolean isExclusive() {
+            return exclusive;
+        }
+
+        @Override
+        public Object[] getOptions() {
+            return options;
+        }
     }
 
     public enum PATH_TYPE {
@@ -101,11 +167,27 @@ public class GeneratorEnums {
         GLOBAL_KEY("K"),
         DESTRUCTIBLE("X"),
 
+
+        //ROOM_TYPES*
+        TREASURE_ROOM("t"),
+        THRONE_ROOM("h"),
+        DEATH_ROOM("d"),
+        GUARD_ROOM("g"),
+        COMMON_ROOM("c"),
+        EXIT_ROOM("x"),
+        SECRET_ROOM("s"),
+        ENTRANCE_ROOM("n"),
+        CORRIDOR("l") {
+            @Override
+            public String toString() {
+                return name();
+            }
+        },
+
+        TRAP("T"),
         SPECIAL_CONTAINER("c"),
         SPECIAL_DOOR("d"),
         SPECIAL_ART_OBJ("a"),
-
-        TRAP("T"),
             /*
         false_wall,
         BUTTON,
@@ -130,6 +212,8 @@ public class GeneratorEnums {
 
         @Override
         public String toString() {
+            if (name().endsWith("ROOM"))
+                return super.toString();
             return getSymbol();
         }
 
@@ -140,13 +224,21 @@ public class GeneratorEnums {
 
     public enum ROOM_TEMPLATE_GROUP {
         CRYPT,
-        CAVERN,
-        TUNNEL,
+        CAVE,
+        MAZE,
         CASTLE,
+        TEMPLE,
         TOWER,
         DUNGEON,
         RANDOM,
         RANDOM_INTERIOR,
 
+    }
+
+    public enum ZONE_TYPE {
+        BOSS_AREA,
+        OUTSKIRTS,
+        MAIN_AREA,
+        ENTRANCE,
     }
 }

@@ -3,6 +3,7 @@ package main.swing.generic.components.editors.lists;
 import main.entity.Entity;
 import main.swing.generic.components.editors.lists.GenericListChooser.LC_MODS;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
@@ -42,7 +43,7 @@ public class ListObjChooser<T> {
         // }
         // }
         ArrayList<T> items = new ArrayList<>(list);
-        for (String substring : StringMaster.open(result)) {
+        for (String substring : ContainerUtils.open(result)) {
             for (T item : new ArrayList<>(items)) {
                 if (StringMaster.compare(substring, item.toString(), true)) {
                     selection.add(item);

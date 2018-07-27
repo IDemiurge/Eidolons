@@ -17,7 +17,9 @@ import main.data.DataManager;
 import main.entity.handlers.EntityInitializer;
 import main.entity.handlers.EntityMaster;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
@@ -82,15 +84,15 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
             }
         }
         if (list == null || (getEntity().isItemsInitialized())) {
-            setProperty(prop, StringMaster.constructContainer(StringMaster.convertToIdList(list)));
+            setProperty(prop, ContainerUtils.constructContainer(ContainerUtils.convertToIdList(list)));
         } else {
 
             List<String> idList = new ArrayList<>();
             Collection<DC_HeroItemObj> items = new ArrayList<>();
-            for (String subString : StringMaster.open(getProperty(prop))) {
+            for (String subString : ContainerUtils.open(getProperty(prop))) {
                 DC_HeroItemObj item = null;
-                if (StringMaster.isInteger(subString)) {
-                    Integer id = StringMaster
+                if (NumberUtils.isInteger(subString)) {
+                    Integer id = NumberUtils
                      .getInteger(subString);
                     item = (DC_HeroItemObj) game.getObjectById(id);
                     if (game.isSimulation()) {
@@ -128,7 +130,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
 
             }
             list = new DequeImpl<>(items);
-            setProperty(prop, StringMaster.constructContainer(idList));
+            setProperty(prop, ContainerUtils.constructContainer(idList));
         }
         if (list == null) {
             return new DequeImpl<>();

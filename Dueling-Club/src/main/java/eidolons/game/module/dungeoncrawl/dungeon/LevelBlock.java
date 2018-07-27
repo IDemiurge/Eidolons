@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 
@@ -18,12 +19,15 @@ public class LevelBlock  extends LevelLayer<LevelBlock>{
     private List<ObjAtCoordinate> units=    new ArrayList<>() ;
     private List<ObjAtCoordinate> objects=    new ArrayList<>() ;
     private List<Coordinates> coordinates;
-    private DUNGEON_STYLE style;
+    private TileMap tileMap;
+    private LevelZone zone;
 
-    public LevelBlock(ROOM_TYPE roomType, int width, int height) {
+    public LevelBlock(LevelZone zone,ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
         this.width = width;
         this.height = height;
+        this.tileMap = tileMap;
+        this.zone = zone;
     }
 
     public ROOM_TYPE getRoomType() {
@@ -60,10 +64,15 @@ public class LevelBlock  extends LevelLayer<LevelBlock>{
     }
 
     public DUNGEON_STYLE getStyle() {
-        return style;
+        return zone.getStyle();
     }
 
-    public void setStyle(DUNGEON_STYLE style) {
-        this.style = style;
+
+    public TileMap getTileMap() {
+        return tileMap;
+    }
+
+    public void setTileMap(TileMap tileMap) {
+        this.tileMap = tileMap;
     }
 }

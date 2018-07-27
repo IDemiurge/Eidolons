@@ -1,5 +1,7 @@
 package main.system.auxiliary;
 
+import main.system.PathUtils;
+
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public class StrPathBuilder {
 
     public StringBuilder append(String str) {
         if (str == null) return builder;
-        return builder.append(str + StringMaster.getPathSeparator());
+        return builder.append(str + PathUtils.getPathSeparator());
     }
 
     public String build_(String... strings) {
@@ -38,10 +40,10 @@ public class StrPathBuilder {
 
     public String build_(boolean cropLast, String... strings) {
         for (String s : strings) {
-            if (s.endsWith(StringMaster.getPathSeparator()))
+            if (s.endsWith(PathUtils.getPathSeparator()))
                 builder.append(s);
             else
-                builder.append(s + StringMaster.getPathSeparator());
+                builder.append(s + PathUtils.getPathSeparator());
         }
         String result = builder.toString();
         if (cropLast)

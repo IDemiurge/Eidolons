@@ -10,6 +10,7 @@ import main.content.VALUE;
 import main.content.enums.system.MetaEnums;
 import main.entity.Ref.KEYS;
 import main.game.core.game.GenericGame;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 import java.util.Arrays;
@@ -30,9 +31,9 @@ public class WeightBuffRule extends DC_BuffRule {
     public static final String[] formulas = {getCarryingCapacity() + "*2",
      getCarryingCapacity() + "*3/2", getCarryingCapacity(),};
     private static final String PARAMETERS_MODIFIED_1 =
-     StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
+     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MOVE), StringMaster.AND_SEPARATOR);
     private static final String PARAMETERS_MODIFIED_2 =
-     StringMaster.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
+     ContainerUtils.constructStringContainer(Arrays.asList(ValuePages.PENALTIES_MAIN), StringMaster.AND_SEPARATOR);
 
 
     public WeightBuffRule(GenericGame game) {

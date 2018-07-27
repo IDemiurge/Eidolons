@@ -16,6 +16,7 @@ import main.entity.type.ObjType;
 import main.swing.generic.components.editors.FileChooser;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
@@ -159,7 +160,7 @@ public class PresetMaster {
                 lc = new ListChooser(SELECTION_MODE.MULTIPLE, PRESET_OPTION.class);
                 listData = ListMaster.toStringList(PRESET_OPTION.values());
                 lc.setListData(listData);
-                listData2 = StringMaster.openContainer(getPreset().getValue(OPTIONS));
+                listData2 = ContainerUtils.openContainer(getPreset().getValue(OPTIONS));
                 lc.setSecondListData(listData2);
                 return lc.choose();
 //            case PLAYER_PARTY:

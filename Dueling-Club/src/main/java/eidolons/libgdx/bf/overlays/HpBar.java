@@ -25,7 +25,7 @@ import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.graphics.FontMaster.FONT;
 import main.system.math.MathMaster;
 
@@ -153,7 +153,7 @@ public class HpBar extends SuperActor {
         lastOfferedEndurance = getEndurancePerc();
 
         toughnessDeathBarrier = new Float(UnconsciousRule.DEFAULT_DEATH_BARRIER) / 100;
-        Integer mod = StringMaster.getInteger(dataSource.getParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
+        Integer mod = NumberUtils.getInteger(dataSource.getParam(PARAMS.TOUGHNESS_DEATH_BARRIER_MOD));
         if (mod != 0) {
             toughnessDeathBarrier = toughnessDeathBarrier * mod / 100;
         }

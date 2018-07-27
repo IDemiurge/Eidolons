@@ -18,7 +18,7 @@ public class SearchMaster<T> {
 
     public static String getPropPart(String s, PROPERTY property,
                                      Entity entity, String separator) {
-        for (String substring : StringMaster.open(entity.getProperty(property), separator)) {
+        for (String substring : ContainerUtils.open(entity.getProperty(property), separator)) {
             if (StringMaster.contains(substring, s)) {
                 return substring;
             }

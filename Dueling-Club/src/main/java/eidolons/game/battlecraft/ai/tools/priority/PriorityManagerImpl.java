@@ -81,6 +81,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.logic.action.context.Context;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -837,7 +838,7 @@ public class PriorityManagerImpl extends AiHandler implements PriorityManager {
         boolean valid = false;
         for (Effect e : effects) {
             ModifyValueEffect valueEffect = (ModifyValueEffect) e;
-            for (String sparam : StringMaster.open(valueEffect.getParamString())) {
+            for (String sparam : ContainerUtils.open(valueEffect.getParamString())) {
                 for (PARAMETER param : DC_ContentValsManager.getParams(sparam)) {
                     //TODO apply generic fix!
                     if (param == PARAMS.C_INITIATIVE_BONUS)

@@ -15,8 +15,8 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Err;
 
@@ -105,7 +105,7 @@ public class ListEditor implements EDITOR {
                         ENUM_CLASS = EnumMaster.getEnumClass(name, MACRO_CONTENT_CONSTS.class);
                     }
                     listData = EnumMaster.getEnumConstantNames(ENUM_CLASS);
-                    StringMaster.formatList(listData);
+                    ContainerUtils.formatList(listData);
                 }
             } else {
                 if (TYPE == null) {

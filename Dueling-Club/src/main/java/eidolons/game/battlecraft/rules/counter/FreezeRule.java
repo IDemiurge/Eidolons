@@ -14,7 +14,7 @@ import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.COUNTER;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.system.MetaEnums;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 /*
  Water damage per Moist counter? Or just multiply? Stamina reduction? Costs penalties? 
@@ -99,7 +99,7 @@ public class FreezeRule extends DC_CounterRule {
     }
 
     private boolean checkIsFrozen(BattleFieldObject unit) {
-        return unit.getIntParam(PARAMS.INITIATIVE_MODIFIER) <= StringMaster
+        return unit.getIntParam(PARAMS.INITIATIVE_MODIFIER) <= NumberUtils
          .getInteger(INITIATIVE_PER_COUNTER)
          * -getNumberOfCounters(unit);
     }

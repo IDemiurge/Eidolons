@@ -5,7 +5,6 @@ import eidolons.content.PROPS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.core.game.DC_Game.GAME_MODES;
 import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
@@ -20,12 +19,10 @@ import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Reader;
 import main.data.xml.XML_Writer;
-import main.elements.conditions.Condition;
-import main.elements.conditions.Conditions;
-import main.elements.conditions.PrinciplesCondition;
 import main.entity.type.ObjType;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -268,7 +265,7 @@ public class PartyHelper {
             File file = getPartyFile(typeName);
             String xml = FileManager.readFile(file);
             if (xml.contains(XML_Converter.openXmlFormatted(typeName))) {
-                String partyTypeData = StringMaster.getXmlNode(xml, typeName);
+                String partyTypeData = NumberUtils.getXmlNode(xml, typeName);
                 XML_Reader.createCustomTypeList(partyTypeData, DC_TYPE.PARTY, game, true);
             }
             XML_Reader.readCustomTypeFile(file, DC_TYPE.CHARS, game);

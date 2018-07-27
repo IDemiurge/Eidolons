@@ -6,7 +6,7 @@ import eidolons.macro.map.MacroCoordinates;
 import main.content.values.properties.MACRO_PROPS;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class Area extends MacroObj {
     }
 
     public List<String> getWanderingGroups() {
-        return StringMaster
+        return ContainerUtils
          .openContainer(getProperty(MACRO_PROPS.WANDERING_GROUPS));
     }
 
@@ -39,7 +39,7 @@ public class Area extends MacroObj {
     public List<MacroCoordinates> getBoundaries() {
         if (boundaries == null) {
             boundaries = new ArrayList<>();
-            for (String boundary : StringMaster
+            for (String boundary : ContainerUtils
              .openContainer(getProperty(MACRO_PROPS.AREA_BOUNDARIES))) {
                 boundaries.add(new MacroCoordinates(boundary));
             }

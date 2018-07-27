@@ -14,8 +14,8 @@ import main.entity.Ref;
 import main.entity.obj.MicroObj;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class SpellMaster extends Master {
         String spellList = obj.getProperty(PROP);
         List<String> spellpool;
 
-        spellpool = StringMaster.openContainer(spellList);
+        spellpool = ContainerUtils.openContainer(spellList);
 
         for (String typeName : spellpool) {
             Ref ref = Ref.getCopy(obj.getRef());

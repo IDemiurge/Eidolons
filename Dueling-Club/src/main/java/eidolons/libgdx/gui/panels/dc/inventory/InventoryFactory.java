@@ -18,6 +18,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.images.ImageManager;
 import main.system.text.TextParser;
 
@@ -122,7 +123,7 @@ public class InventoryFactory {
                         text += "\n" + PARAMS.ATTACK_MOD.getName() + ": " + entity.getIntParam(PARAMS.ATTACK_MOD);
 
                         text += "\n" + PARAMS.DURABILITY.getName() + ": " +
-                         StringMaster.getCurrentOutOfBaseVal(entity, PARAMS.DURABILITY);
+                         NumberUtils.getCurrentOutOfBaseVal(entity, PARAMS.DURABILITY);
                         break;
                     case ARMOR:
                         text += "\n" + PARAMS.ARMOR.getName() + ": " +
@@ -131,7 +132,7 @@ public class InventoryFactory {
                          entity.getIntParam(PARAMS.COVER_PERCENTAGE)+"%";
 
                         text += "\n" + PARAMS.DURABILITY.getName() + ": " +
-                         StringMaster.getCurrentOutOfBaseVal(entity, PARAMS.DURABILITY);
+                         NumberUtils.getCurrentOutOfBaseVal(entity, PARAMS.DURABILITY);
                         break;
                 }
 

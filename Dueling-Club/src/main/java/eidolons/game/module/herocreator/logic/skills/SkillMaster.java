@@ -19,6 +19,7 @@ import main.data.XLinkedMap;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
@@ -54,7 +55,7 @@ public class SkillMaster {
 
     private static void addMasteryRank(Unit hero, PARAMETER mastery, int tier) {
         PROPERTY prop = getMasteryRankProp(tier);
-        if (StringMaster.openContainer(hero.getProperty(prop)).size() >= getSlotsForTier(tier))
+        if (ContainerUtils.openContainer(hero.getProperty(prop)).size() >= getSlotsForTier(tier))
             return;
         hero.addProperty(prop, mastery.getName(), false);
         hero.getType().addProperty(prop, mastery.getName(), false);

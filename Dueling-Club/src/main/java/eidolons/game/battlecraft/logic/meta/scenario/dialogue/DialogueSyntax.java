@@ -9,7 +9,7 @@ import main.ability.effects.Effects;
 import main.elements.conditions.Condition;
 import main.elements.targeting.FixedTargeting;
 import main.elements.targeting.Targeting;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 /**
  * Created by JustMe on 5/30/2017.
@@ -44,7 +44,7 @@ public class DialogueSyntax {
 
     private static Effects getParamModEffects(String text) {
         Effects e = new Effects();
-        for (String substring : StringMaster.open(text, item_separator)) {
+        for (String substring : ContainerUtils.open(text, item_separator)) {
             //TODO permanent for non-dynamic? base?
             MOD mod = MOD.MODIFY_BY_CONST;
             String param = text.split(pair_separator)[0];

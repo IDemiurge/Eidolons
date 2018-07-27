@@ -165,7 +165,6 @@ public abstract class ItemListPanel extends TablePanel {
 
     protected boolean clicked(TextButton textButton, SelectableItemData sub) {
         currentItem = (sub);
-//        getParent().setUserObject(sub); what for?
         infoPanel.setItem(sub);
         if (lastChecked != null)
             lastChecked.setChecked(false);
@@ -213,7 +212,7 @@ public abstract class ItemListPanel extends TablePanel {
 
     protected void addButtons() {
         buttons.forEach(button->  button.remove());
-        buttons.clear();
+        buttons.clear(); clear();
         for (SelectableItemData sub : items) {
             //            boolean selected = sub == currentItem;
             TextButton element = getOrCreateElement(sub);

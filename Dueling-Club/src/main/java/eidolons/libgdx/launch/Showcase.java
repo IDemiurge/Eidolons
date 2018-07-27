@@ -7,6 +7,7 @@ import eidolons.swing.generic.services.dialog.DialogMaster;
 import eidolons.test.frontend.FAST_DC;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.editors.FileChooser;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.graphics.FontMaster;
@@ -64,7 +65,7 @@ public class Showcase {
         }
         if (index == 1) {
             String data = FileManager.readFile(launchDataPath);
-            List<String> parts = StringMaster.openContainer(data);
+            List<String> parts = ContainerUtils.openContainer(data);
             index = 2;
 //            index = StringMaster.getInteger(parts.get(0));
 //            if (parts.size()>0)

@@ -10,6 +10,7 @@ public class LevelGraphNode {
     int index;
     ROOM_TYPE roomType;
     GRAPH_NODE_ATTRIBUTE[] appendices;
+    private int zoneIndex;
 
     public LevelGraphNode(ROOM_TYPE roomType, GRAPH_NODE_ATTRIBUTE... appendices) {
         this.roomType = roomType;
@@ -38,5 +39,13 @@ public class LevelGraphNode {
     public String toString() {
         return roomType+" node #"+index;
 
+    }
+
+    public int getZoneIndex() {
+        return zoneIndex;
+    }
+
+    public void setZoneIndex(int zoneIndex) {
+        this.zoneIndex = zoneIndex;
     }
 }

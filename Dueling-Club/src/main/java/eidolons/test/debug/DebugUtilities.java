@@ -10,7 +10,7 @@ import main.data.DataManager;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +70,7 @@ public class DebugUtilities {
     }
 
     private static void setGodActions(Entity entity) {
-        String actions = StringMaster.constructContainer(DataManager
+        String actions = ContainerUtils.constructContainer(DataManager
          .getTypeNames(DC_TYPE.ACTIONS));
         entity.setProperty(G_PROPS.ACTIVES, actions);
 

@@ -10,6 +10,7 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.PROPERTY;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.images.ImageManager;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public abstract class TooltipFactory<T, A extends Actor> {
     }
 
     protected ValueContainer getValueContainer(BattleFieldObject hero, PARAMS cur, PARAMS max) {
-        final Integer cv = StringMaster.getInteger(hero.getCachedValue(max));
+        final Integer cv = NumberUtils.getInteger(hero.getCachedValue(max));
         final Integer v = hero.getIntParam(cur);
         final String name = max.getDisplayedName();
         final TextureRegion iconTexture =

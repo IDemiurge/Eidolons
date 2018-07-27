@@ -3,8 +3,9 @@ package eidolons.libgdx.launch;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.screens.menu.MainMenu;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -44,8 +45,8 @@ public class MainLauncher extends GenericLauncher {
                 if (item != null)
                     MainMenu.getInstance().getHandler().handle(item);
                 else {
-                    if (StringMaster.isInteger(command)) {
-                    int i =StringMaster.getInteger(command);
+                    if (NumberUtils.isInteger(command)) {
+                    int i = NumberUtils.getInteger(command);
                         if (i<0){
                             i =getLast();
                         }
@@ -60,10 +61,10 @@ public class MainLauncher extends GenericLauncher {
     private static int getLast() {
 if (lastChoiceStack == null ){
     lastChoiceStack = new Stack<>();
-    lastChoiceStack.addAll(StringMaster.openContainer(
+    lastChoiceStack.addAll(ContainerUtils.openContainer(
      FileManager.readFile(LAST_CHOICE_FILE)));
 }
-        return StringMaster.getInteger(lastChoiceStack.remove(0));
+        return NumberUtils.getInteger(lastChoiceStack.remove(0));
     }
 
     @Override

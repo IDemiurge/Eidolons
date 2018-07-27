@@ -15,7 +15,9 @@ import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
 import main.game.core.game.Game;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.datatypes.DequeImpl;
 
 import java.util.*;
@@ -224,7 +226,7 @@ public class Filter<T extends Entity> extends ReferredElement {
 
     private Collection<Integer> getFilteredIdSet(Collection<Integer> pool) {
         Collection<Obj> objects = getFilteredObjectPool();
-        return StringMaster.convertToIdIntList(objects);
+        return ContainerUtils.convertToIdIntList(objects);
     }
 
     public Conditions getConditions() {
@@ -305,7 +307,7 @@ public class Filter<T extends Entity> extends ReferredElement {
             }
 
             if (filterValue instanceof PARAMETER) {
-                if (t.getIntParam((PARAMETER) filterValue) == StringMaster.getInteger(value)) {
+                if (t.getIntParam((PARAMETER) filterValue) == NumberUtils.getInteger(value)) {
                     list.add(t);
                 }
             }

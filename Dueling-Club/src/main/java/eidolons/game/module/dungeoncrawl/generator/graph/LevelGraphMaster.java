@@ -1,11 +1,14 @@
 package eidolons.game.module.dungeoncrawl.generator.graph;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.GRAPH_RULE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_GRAPH_LINK_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.PATH_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
@@ -39,26 +42,75 @@ public class LevelGraphMaster {
     }
 
     private void createNodes(LevelGraph graph, LevelData data) {
-        float sizeMode = new Float(data.getX()) * data.getY() / 500;
+        float sizeMode = new Float(data.getIntValue(LEVEL_VALUES.SIZE_MODE)) / 10000;
 
         graph.addNode(ROOM_TYPE.THRONE_ROOM);
-        int n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
+
+        int n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.TREASURE_ROOM_COEF));
         graph.addNodes(ROOM_TYPE.TREASURE_ROOM, n);
-        n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
+
+        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.GUARD_ROOM_COEF));
         graph.addNodes(ROOM_TYPE.GUARD_ROOM, n);
-        n = Math.round(sizeMode * RandomWizard.getRandomInt(4));//data.getRoomCoef(GUARD)
+
+        n = Math.round(sizeMode * RandomWizard.getRandomInt(1 + data.getIntValue(LEVEL_VALUES.DEATH_ROOM_COEF)));
         graph.addNodes(ROOM_TYPE.DEATH_ROOM, n);
-        n = Math.round(sizeMode * RandomWizard.getRandomInt(4));
+
+        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.SECRET_ROOM_COEF));
         graph.addNodes(ROOM_TYPE.SECRET_ROOM, n);
+
         unconnected = new ArrayList<>(graph.getNodes());
         unconnected.removeIf(node -> ListMaster.isNotEmpty(graph.getAdjList().get(node)));
-
+        assignZonesIndices();
         //        for (DUNGEON_TEMPLATES sub : data.getTemplates()) {
         //            //zones!.. force links?
         //            switch (sub) {
         //
         //            }
         //        }
+    }
+
+    private void assignZonesIndices() {
+        /**
+         * TODO
+         * from the start of each path, start building zone by adjMap
+         * ignore overwrite - just let them grow for their radius
+         * each step goes through all zones
+         *
+         * but where is each zone root located?
+         */
+        List<LevelZone> zones = ZoneCreator.createZones(data);
+        //sort
+//        List<LevelGraphNode> unallocated = new ArrayList<>(graph.getNodes());
+//        for (LevelZone zone : zones) {
+//            //radius?
+//            List<LevelGraphNode> nodes = getNodesForZone(zone);
+//            unallocated.removeAll(nodes);
+//            //            nodes.forEach(node-> node.setZoneIndex(i));
+//        }
+        graph.setZones(zones);
+    }
+
+    private List<LevelGraphNode> getNodesForZone(LevelZone zone) {
+        int radius = 4;
+        switch (zone.getType()) {
+            case BOSS_AREA:
+                break;
+            case OUTSKIRTS:
+                break;
+            case MAIN_AREA:
+                break;
+            case ENTRANCE:
+                break;
+        }
+        List<LevelGraphNode> list = new ArrayList<>();
+        for (GraphPath graphPath : graph.getPaths()) {
+            for (LevelGraphNode node : graphPath.getNodes().values()) {
+                list.add(node);
+
+                graph.getAdjList().get(node);
+            }
+        }
+        return list;
     }
 
     private void buildMainPaths() {
@@ -88,9 +140,9 @@ public class LevelGraphMaster {
             unconnected.remove(exitNode);
             unconnected.removeIf(
              n ->
-             new DequeImpl<>(graph.getAdjList().get(n)).size() > 1 || //don't need more links
-              n.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM ||
-              n.getRoomType() == ROOM_TYPE.EXIT_ROOM
+              new DequeImpl<>(graph.getAdjList().get(n)).size() > 1 || //don't need more links
+               n.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM ||
+               n.getRoomType() == ROOM_TYPE.EXIT_ROOM
             );
             //TODO refactor!
 
@@ -120,7 +172,7 @@ public class LevelGraphMaster {
             steps--;
             //            fromEnd = !fromEnd; how to?
             LevelGraphNode node = (fromEnd) ? tip2 : tip1;
-            LevelGraphNode node2 = getOrCreateLinkNode(node);
+            LevelGraphNode node2 = getOrCreateLinkNode(node, i);
             unconnected.remove(node2);
             connect(node, node2);
             if (fromEnd)
@@ -183,15 +235,18 @@ public class LevelGraphMaster {
     }
 
 
-    private LevelGraphNode getOrCreateLinkNode(LevelGraphNode node) {
+    private LevelGraphNode getOrCreateLinkNode(LevelGraphNode node, int i) {
         if (unconnected.size() > 0) {
             return unconnected.iterator().next();
         }
-        ROOM_TYPE type = createLinkNode(node);
+        ROOM_TYPE type = getLinkNodeType(node, i);
         return graph.addNode(type);
     }
 
-    private ROOM_TYPE createLinkNode(LevelGraphNode node) {
+    private ROOM_TYPE getLinkNodeType(LevelGraphNode node, int i) {
+        if (node.getRoomType() == ROOM_TYPE.COMMON_ROOM) {
+            return RandomWizard.random() ? ROOM_TYPE.GUARD_ROOM : ROOM_TYPE.DEATH_ROOM;
+        }
         return ROOM_TYPE.COMMON_ROOM;
     }
 

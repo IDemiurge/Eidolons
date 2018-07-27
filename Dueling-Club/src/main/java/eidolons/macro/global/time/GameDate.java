@@ -5,6 +5,7 @@ import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.data.DataUnit;
 
 import static eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON.*;
@@ -42,7 +43,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
 
     public String getShortString() {
         return
-       dayTime + " on the " + day + StringMaster.getOrdinalEnding(day)
+       dayTime + " on the " + day + NumberUtils.getOrdinalEnding(day)
           + " of " + month.toString();
     }
 
@@ -79,7 +80,7 @@ public class GameDate extends DataUnit<TIME_UNITS> {
     }
 
     public void setEra(int era) {
-        this.era = era + StringMaster.getOrdinalEnding(era) + " Era";
+        this.era = era + NumberUtils.getOrdinalEnding(era) + " Era";
     }
 
     public void setEra(String era) {

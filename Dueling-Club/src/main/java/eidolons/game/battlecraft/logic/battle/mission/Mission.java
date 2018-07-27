@@ -8,7 +8,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
 
 /**
  * Created by JustMe on 5/17/2017.
@@ -31,7 +31,7 @@ public class Mission extends LightweightEntity {
     }
 
     public String getMissionResourceFolderPath() {
-        return StringMaster.buildPath(PathFinder.getScenariosPath(),
+        return PathUtils.buildPath(PathFinder.getScenariosPath(),
          getScenario().getName(),
          getName());
 

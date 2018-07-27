@@ -9,10 +9,10 @@ import eidolons.libgdx.texture.TextureCache;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 
@@ -52,7 +52,7 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
                             continue;
                         String path = img.getPath();
                         try {
-                            path = StringMaster.removePreviousPathSegments(img.getPath(), PathFinder.getImagePath());
+                            path = PathUtils.removePreviousPathSegments(img.getPath(), PathFinder.getImagePath());
                         } catch (Exception e) {
                             main.system.ExceptionMaster.printStackTrace(e);
                         }

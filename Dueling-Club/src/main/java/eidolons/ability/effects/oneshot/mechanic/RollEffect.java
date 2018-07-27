@@ -6,6 +6,7 @@ import eidolons.system.math.roll.Rolls;
 import main.ability.effects.*;
 import main.content.enums.GenericEnums.ROLL_TYPES;
 import main.data.ability.construct.VariableManager;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -153,7 +154,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
         if (elseAbilityName != null) {
             elseEffect = new Effects();
         }
-        for (String s : StringMaster.open(elseAbilityName,
+        for (String s : ContainerUtils.open(elseAbilityName,
          StringMaster.AND_SEPARATOR)) {
             ((Effects) effect).addAll(EffectFinder
              .getEffectsFromAbilityType(VariableManager.getVarType(s,
@@ -168,7 +169,7 @@ public class RollEffect extends MicroEffect implements OneshotEffect, ContainerE
     public Effect getEffect() {
         if (effect == null) {
             effect = new Effects();
-            for (String s : StringMaster.open(abilityName,
+            for (String s : ContainerUtils.open(abilityName,
              StringMaster.AND_SEPARATOR)) {
                 ((Effects) effect).addAll(EffectFinder
                  .getEffectsFromAbilityType(VariableManager.getVarType(

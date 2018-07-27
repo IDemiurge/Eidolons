@@ -17,6 +17,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.type.ObjType;
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -59,7 +60,7 @@ public class AutoTestFactory {
 
     private String[] getWorkspaceTypes() {
         String xml = FileManager.readFile(PathFinder.getWorkspacePath() + getTYPE() + ".xml");
-        List<String> parts = StringMaster.openContainer(xml, "METADATA: ");
+        List<String> parts = ContainerUtils.openContainer(xml, "METADATA: ");
         xml = parts.get(0);
         try {
             testTypes = XML_Converter.getTypeListFromXML(xml, false);
@@ -110,7 +111,7 @@ public class AutoTestFactory {
         List<String> list = new ArrayList<>();
         list.add(TEST_ARGS.NAME + ":" + type.getName());
         initArgList(list, type);
-        String args = new StringMaster().constructContainer(list);
+        String args = ContainerUtils.constructContainer(list);
         AUTO_TEST_TYPE t = new EnumMaster<AUTO_TEST_TYPE>().retrieveEnumConst(AUTO_TEST_TYPE.class,
          type.getProperty(PROPS.AUTO_TEST_TYPE));
         if (t == null) {
@@ -129,10 +130,10 @@ public class AutoTestFactory {
             }
 
             searchLoop:
-            for (String part : StringMaster.open(testType
+            for (String part : ContainerUtils.open(testType
              .getProperty(G_PROPS.PASSIVES))) {
                 if (part.contains("ActionMod(")) {
-                    for (String s : StringMaster.open(StringMaster.getSubString(false,
+                    for (String s : ContainerUtils.open(StringMaster.getSubString(false,
                      part, "ActionMod(", ",", null), StringMaster.AND_SEPARATOR)) {
                         actionNames += s + ";";
                     }
@@ -140,7 +141,7 @@ public class AutoTestFactory {
                     // ALT: find base specialization?
                     loop:
                     for (ObjType t : DataManager.getTypes(DC_TYPE.WEAPONS)) {
-                        for (String s : StringMaster.open(actionNames)) {
+                        for (String s : ContainerUtils.open(actionNames)) {
 
                             String actions = t.getProperty(PROPS.WEAPON_ATTACKS);
                             if (!actions.contains(s)) {

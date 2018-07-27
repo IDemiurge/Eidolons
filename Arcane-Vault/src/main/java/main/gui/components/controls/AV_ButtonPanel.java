@@ -27,6 +27,7 @@ import main.launch.ArcaneVault;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ButtonPanel;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.threading.Weaver;
@@ -177,7 +178,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 String toAdd = ListChooser.chooseEnum(ENUM_CLASS,
                  SELECTION_MODE.MULTIPLE);
 
-                for (String sub : StringMaster.open(toAdd)) {
+                for (String sub : ContainerUtils.open(toAdd)) {
                     ArcaneVault.getMainBuilder().getTabBuilder().addTab(
                      ENUM_CLASS, sub);
                 }
@@ -273,9 +274,9 @@ public class AV_ButtonPanel extends G_ButtonPanel {
                 if (input == null) {
                     break;
                 }
-                for (String typeName : StringMaster.open(input)) {
+                for (String typeName : ContainerUtils.open(input)) {
                     DC_TYPE TYPE = DC_TYPE.getType(typeName);
-                    for (String valName : StringMaster.open(values)) {
+                    for (String valName : ContainerUtils.open(values)) {
                         VALUE val = ContentValsManager.getValue(valName);
                         boolean emptyOnly = JOptionPane.showConfirmDialog(null, "Empty only?") == JOptionPane.YES_OPTION;
                         XML_Transformer.removeValue(val, XML_Reader.getFile(TYPE), true, emptyOnly);
@@ -366,7 +367,7 @@ public class AV_ButtonPanel extends G_ButtonPanel {
          .getSelectedType().getSubGroupingKey();
         List<String> types = (result) ? DataManager.getTypesGroupNames(TYPE, subgroup)
          : DataManager.getTypesSubGroupNames(TYPE, subgroup);
-        List<String> retained = StringMaster.openContainer(new ListChooser(SELECTION_MODE.MULTIPLE,
+        List<String> retained = ContainerUtils.openContainer(new ListChooser(SELECTION_MODE.MULTIPLE,
          types, TYPE).choose());
         for (String t : types) {
             if (retained.contains(t)) {

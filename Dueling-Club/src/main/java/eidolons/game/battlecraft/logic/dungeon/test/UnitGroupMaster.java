@@ -32,7 +32,9 @@ import main.swing.generic.components.G_Panel;
 import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.swing.generic.components.panels.G_ListPanel;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.entity.FilterMaster;
@@ -354,7 +356,7 @@ public class UnitGroupMaster {
     private static Map<ObjType, Integer> initPool(ObjType factionType) {
         Map<ObjType, Integer> map = new XLinkedMap<>();
         addUnits(factionType, map, factionType);
-        for (String f : StringMaster.open(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
+        for (String f : ContainerUtils.open(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
             ObjType allyFactionType = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
             addUnits(factionType, map, allyFactionType);
         }
@@ -363,7 +365,7 @@ public class UnitGroupMaster {
 
     private static void addUnits(ObjType factionType, Map<ObjType, Integer> map,
                                  ObjType allyFactionType) {
-        for (String unit : StringMaster.open(allyFactionType.getProperty(PROPS.UNIT_POOL))) {
+        for (String unit : ContainerUtils.open(allyFactionType.getProperty(PROPS.UNIT_POOL))) {
             ObjType type = DataManager.getType(unit, DC_TYPE.UNITS);
             map.put(type, getUnitCost(type, factionType));
         }
@@ -373,7 +375,7 @@ public class UnitGroupMaster {
         int costMod = 100;
         if (!factionType.getProperty(PROPS.UNIT_POOL).contains(unit.getName())) {
             costMod += 10;
-            for (String f : StringMaster
+            for (String f : ContainerUtils
              .openContainer(factionType.getProperty(PROPS.ALLY_FACTIONS))) {
                 costMod += 5;
                 ObjType allyFactionType = DataManager.getType(f.toString(), MACRO_OBJ_TYPES.FACTIONS);
@@ -406,7 +408,7 @@ public class UnitGroupMaster {
 
     public static String getGroupForLevel(String groups, int level) {
         String suffix = StringMaster.getLastPart(groups, " ");
-        if (StringMaster.isInteger(suffix)) {
+        if (NumberUtils.isInteger(suffix)) {
             groups = groups.substring(0, groups.lastIndexOf(" "));
         }
         return groups + " " + translateLevel(level);

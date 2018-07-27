@@ -4,7 +4,7 @@ import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.mission.Mission;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGame;
 import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.launch.CoreEngine;
 
 /**
@@ -51,7 +51,7 @@ public class ScenarioMeta extends MetaGame {
     }
 
     public boolean isFinalLevel() {
-        return getMissionIndex() + 1 >= StringMaster.openContainer(getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).size();
+        return getMissionIndex() + 1 >= ContainerUtils.openContainer(getScenario().getProperty(PROPS.SCENARIO_MISSIONS)).size();
     }
 
     public boolean isPartyRespawn() {

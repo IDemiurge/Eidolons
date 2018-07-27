@@ -21,6 +21,8 @@ import main.system.launch.CoreEngine;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class EnumMaster<T> {
     public static final String ENUM_FOLDER = "main.content.enums";
@@ -256,12 +258,12 @@ public class EnumMaster<T> {
 
     public static List<String> getParamEnumConstantList() {
 
-        return StringMaster.convertToStringList(ContentValsManager.getParamList());
+        return ContainerUtils.convertToStringList(ContentValsManager.getParamList());
     }
 
     public static List<String> getPropEnumConstantList() {
 
-        return StringMaster.convertToStringList(ContentValsManager.getPropList());
+        return ContainerUtils.convertToStringList(ContentValsManager.getPropList());
     }
 
     public static Object[] getPropEnumConstants() {
@@ -308,6 +310,13 @@ public class EnumMaster<T> {
 
     public T retrieveEnumConst(Class<? extends T> clazz, String name, boolean findClosest) {
         return retrieveEnumConst(clazz, name, false, findClosest);
+    }
+    public T retrieveEnumConst(Class<? extends T> clazz, String name, Function<T, String> nameFunction) {
+        List<? extends T> matches = Arrays.stream(clazz.getEnumConstants()).filter(
+         c -> nameFunction.apply(c).equalsIgnoreCase(name)).collect(Collectors.toList());
+        if (matches.isEmpty())
+            return null;
+        return matches.get(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -395,7 +404,7 @@ public class EnumMaster<T> {
 
     public List<T> getEnumList(Class<T> CLASS, String property, String separator) {
         List<T> list = new ArrayList<>();
-        for (String subString : StringMaster.open(property, separator)) {
+        for (String subString : ContainerUtils.open(property, separator)) {
             T ENUM = retrieveEnumConst(CLASS, subString);
             if (ENUM != null) {
                 list.add(ENUM);
@@ -501,8 +510,8 @@ public class EnumMaster<T> {
                 int index2 = ListMaster.getIndexString(ListMaster.toStringList(ENUM
                  .getEnumConstants()), name, true);
                 if (index == index2) {
-                    index = StringMaster.getInteger(type1.getProperty(G_PROPS.ID));
-                    index2 = StringMaster.getInteger(type2.getProperty(G_PROPS.ID));
+                    index = NumberUtils.getInteger(type1.getProperty(G_PROPS.ID));
+                    index2 = NumberUtils.getInteger(type2.getProperty(G_PROPS.ID));
 
                 }
                 if (index2 == -1) {

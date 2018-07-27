@@ -9,6 +9,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.entity.CounterMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster;
@@ -127,7 +128,7 @@ public class ValueHelper {
                     // if (getEntity() instanceof DC_HeroObj ) //set items
                     // initialized false!
                 } else {
-                    getEntity().setCounter(valueName, StringMaster.getInteger(input));
+                    getEntity().setCounter(valueName, NumberUtils.getInteger(input));
                 }
                 game.getManager().reset();
                 game.getManager().refreshAll();

@@ -4,6 +4,7 @@ import eidolons.entity.obj.unit.Unit;
 import main.content.DC_TYPE;
 import main.elements.conditions.Condition;
 import main.entity.obj.Obj;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 
@@ -25,7 +26,7 @@ public class ActionModifyingEffect extends HeroObjectModifyingEffect {
         Unit hero = (Unit) ref.getSourceObj();
         if (objName.contains(StringMaster.AND_SEPARATOR)) {
             List<Obj> list = new ArrayList<>();
-            for (String sub : StringMaster.open(objName)) {
+            for (String sub : ContainerUtils.open(objName)) {
                 list.add(hero.getAction(sub));
             }
             return list;

@@ -36,7 +36,7 @@ import main.game.core.game.Game;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
@@ -176,10 +176,10 @@ public class Eidolons {
         String[] parts = resolution.toString().substring(1).
          split("x");
         Integer w =
-         StringMaster.getInteger(
+         NumberUtils.getInteger(
           parts[0]);
         Integer h =
-         StringMaster.getInteger(parts[1]);
+         NumberUtils.getInteger(parts[1]);
         if (!fullscreen) {
             w = w * 95 / 100;
             h = h * 90 / 100;

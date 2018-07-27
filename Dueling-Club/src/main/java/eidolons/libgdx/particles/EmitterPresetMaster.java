@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Writer;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.log.LogMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -65,7 +68,7 @@ public class EmitterPresetMaster {
         } else {
             String buffer = suffix;
             suffix = " ";
-            for (String substring : StringMaster.open(buffer, value_separator)) {
+            for (String substring : ContainerUtils.open(buffer, value_separator)) {
                 suffix += StringMaster.cropFormat(
                  StringMaster.getLastPathSegment(substring)) + " ";
             }
@@ -204,7 +207,7 @@ public class EmitterPresetMaster {
         if (value == null) {
             return text.trim();
         }
-        for (String substring : StringMaster.open(text, "\n")) {
+        for (String substring : ContainerUtils.open(text, "\n")) {
             if (substring.split(value_separator)[0].equalsIgnoreCase(value)) {
                 return substring.split(value_separator)[1].trim();
             }
@@ -224,7 +227,7 @@ public class EmitterPresetMaster {
                                            boolean write, String modvals) {
         EmitterActor actor = EmitterPools.getEmitterActor(path);
 
-        for (String sub : StringMaster.open(modvals)) {
+        for (String sub : ContainerUtils.open(modvals)) {
             String name = sub.split(value_separator)[0];
             String val = sub.split(value_separator)[1];
             EMITTER_VALUE_GROUP group = new EnumMaster<EMITTER_VALUE_GROUP>().retrieveEnumConst(EMITTER_VALUE_GROUP.class, name);
@@ -252,7 +255,7 @@ public class EmitterPresetMaster {
 
     private String setValue(EMITTER_VALUE_GROUP group, String val, String data) {
         String text = getGroupText(data, group);
-        for (String substring : StringMaster.open(text, "\n")) {
+        for (String substring : ContainerUtils.open(text, "\n")) {
 //            if (predicate())
 //                data = producer()
             if (substring.split(value_separator)[0].equalsIgnoreCase(group.name)) {
@@ -269,7 +272,7 @@ public class EmitterPresetMaster {
         List<Pair<String, String>> entryList = getGroupEntries(text);
         for (Pair<String, String> p : entryList) {
             if (lowHighMinMax.contains(p.getKey().toString())) {
-                double newValue = StringMaster.getDouble(p.getValue()) + offset;
+                double newValue = NumberUtils.getDouble(p.getValue()) + offset;
                 text = text.replace(p.getKey() + value_separator + p.getValue(),
                  p.getKey() + value_separator + String.valueOf(
                   newValue));
@@ -281,7 +284,7 @@ public class EmitterPresetMaster {
 
     private List<Pair<String, String>> getGroupEntries(String text) {
         List<Pair<String, String>> list = new ArrayList<>();
-        for (String substring : StringMaster.open(text, "\n")) {
+        for (String substring : ContainerUtils.open(text, "\n")) {
             String[] parts = substring.split(value_separator);
             list.add(new ImmutablePair<>(parts[0], parts[1]));
         }
@@ -337,7 +340,7 @@ public class EmitterPresetMaster {
     }
     private String getData(String path) {
         path = path.toLowerCase();
-        path = StringMaster.addMissingPathSegments(path, PathFinder.getVfxPath());
+        path = PathUtils.addMissingPathSegments(path, PathFinder.getVfxPath());
         String data = map.get(path);
         if (data == null) {
             data = FileManager.readFile(path);

@@ -26,7 +26,9 @@ import main.elements.conditions.*;
 import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -194,7 +196,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         String altBases = type.getProperty(PROPS.ALT_BASE_TYPES);
         if (!altBases.isEmpty()) {
             OrConditions orCondition = new OrConditions(condition);
-            for (String s : StringMaster.open(altBases)) {
+            for (String s : ContainerUtils.open(altBases)) {
                 orCondition.add(new PropCondition(PROPS.ALT_BASE_TYPES, s, false));
             }
             condition = orCondition;
@@ -207,7 +209,7 @@ public class DC_RequirementsManager implements RequirementsManager {
 
     private Requirements toRequirements(String string) {
         Requirements requirements = new Requirements();
-        for (String subString : StringMaster.open(string)) {
+        for (String subString : ContainerUtils.open(string)) {
 
             subString = subString.trim();
             if (StringMaster.isEmpty(subString)) {
@@ -217,7 +219,7 @@ public class DC_RequirementsManager implements RequirementsManager {
             Conditions c;
             if (StringMaster.contains(subString, StringMaster.OR)) {
                 // REFACTOR
-                List<String> parts = StringMaster.split(subString, StringMaster.OR, false);
+                List<String> parts = ContainerUtils.split(subString, StringMaster.OR, false);
                 c = new OrConditions();
                 for (String part : parts) {
                     // String valRef = part
@@ -262,7 +264,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private String getReasonString(String valRef, String value) {
-        if (StringMaster.isInteger(value)) {
+        if (NumberUtils.isInteger(value)) {
             return InfoMaster.getParamReasonString(valRef, value);
         }
         return InfoMaster.getPropReasonString(valRef, value);
@@ -353,7 +355,7 @@ public class DC_RequirementsManager implements RequirementsManager {
         String str1 = "";
         if (valRef.contains(StringMaster.VAR_SEPARATOR)) {
             params = new ArrayList<>();
-            for (String s : StringMaster.open(valRef, StringMaster.VAR_SEPARATOR)) {
+            for (String s : ContainerUtils.open(valRef, StringMaster.VAR_SEPARATOR)) {
 
                 PARAMETER p = ContentValsManager.getPARAM(s);
                 if (p == null) {
@@ -379,7 +381,7 @@ public class DC_RequirementsManager implements RequirementsManager {
     }
 
     private Condition getCondition(String valRef, String value) {
-        if (StringMaster.isInteger(value)) {
+        if (NumberUtils.isInteger(value)) {
             return ConditionMaster.getParamCondition(valRef, value);
         }
         return new StringComparison("{SOURCE_" + valRef + "}", value, false);

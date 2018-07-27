@@ -19,7 +19,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.launch.CoreEngine;
 import main.system.math.MathMaster;
 import main.system.threading.WaitMaster;
@@ -53,9 +53,9 @@ public class ExplorationTimeMaster extends ExplorationHandler {
 
 
     public String getDisplayedTime() {
-        return StringMaster.getFormattedTimeString(((int) time / 3600), 2)
-         + ":" + StringMaster.getFormattedTimeString(((int) time / 60), 2)
-         + ":" + StringMaster.getFormattedTimeString(((int) time % 60), 2);
+        return NumberUtils.getFormattedTimeString(((int) time / 3600), 2)
+         + ":" + NumberUtils.getFormattedTimeString(((int) time / 60), 2)
+         + ":" + NumberUtils.getFormattedTimeString(((int) time % 60), 2);
 //        return TimeMaster.getFormattedTime((long) time, true, false);
     }
 

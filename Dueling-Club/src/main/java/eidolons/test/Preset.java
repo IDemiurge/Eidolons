@@ -2,6 +2,7 @@ package eidolons.test;
 
 import eidolons.test.Preset.PRESET_DATA;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.data.DataUnit;
 
@@ -64,7 +65,7 @@ public class Preset extends DataUnit<PRESET_DATA> {
         if (!StringMaster.isEmpty(getValue(PRESET_DATA.FIRST_DUNGEON))) {
             return getValue(PRESET_DATA.FIRST_DUNGEON);
         }
-        return StringMaster.openContainer(getValue(PRESET_DATA.DUNGEONS)).get(0);
+        return ContainerUtils.openContainer(getValue(PRESET_DATA.DUNGEONS)).get(0);
     }
 
     public String getPath() {

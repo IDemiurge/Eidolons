@@ -7,6 +7,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 
@@ -68,7 +69,7 @@ public class ListMaster<E> {
                 } else {
                     if (v instanceof Object[]) {
                         Object[] objects = (Object[]) v;
-                        string = StringMaster.constructContainer(toStringList(objects));
+                        string = ContainerUtils.constructContainer(toStringList(objects));
                     } else {
                         string = v.toString();
                     }

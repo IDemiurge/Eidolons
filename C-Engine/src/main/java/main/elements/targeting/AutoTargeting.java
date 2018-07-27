@@ -12,7 +12,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.group.GroupImpl;
 import main.entity.obj.Obj;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.math.Formula;
 
 import java.util.ArrayList;
@@ -98,7 +98,7 @@ public class AutoTargeting extends TargetingImpl {
         filter.setTYPE(TYPE);
         if (TYPES != null) {
             ArrayList<OBJ_TYPE> types = new ArrayList<>();
-            for (String s : StringMaster.open(TYPES)) {
+            for (String s : ContainerUtils.open(TYPES)) {
                 types.add(ContentValsManager.getOBJ_TYPE(s));
             }
             filter.setTYPES(types);

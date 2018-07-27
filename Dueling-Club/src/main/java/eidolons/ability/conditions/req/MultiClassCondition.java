@@ -7,7 +7,7 @@ import main.elements.conditions.StringContainersComparison;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 public class MultiClassCondition extends MicroCondition {
 
@@ -37,7 +37,7 @@ public class MultiClassCondition extends MicroCondition {
         // if (type.checkProperty(G_PROPS.BASE_TYPE)) {
         // return true;
         // }
-        for (String className : StringMaster
+        for (String className : ContainerUtils
          .openContainer(type.getProperty(PROPS.BASE_CLASSES_ONE))) {
             if (!new ClassTreeCondition(className).preCheck(ref))
             // setReason()
@@ -45,7 +45,7 @@ public class MultiClassCondition extends MicroCondition {
                 return false;
             }
         }
-        for (String className : StringMaster
+        for (String className : ContainerUtils
          .openContainer(type.getProperty(PROPS.BASE_CLASSES_TWO))) {
             if (!new ClassTreeCondition(className).preCheck(ref)) {
                 return false;

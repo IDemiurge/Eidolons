@@ -13,6 +13,7 @@ import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -45,7 +46,7 @@ public class EditorParticleMaster extends Group {
     }
 
     public static String getPath() {
-        return StrPathBuilder.build(PathFinder.getMacroImgPath(), "emitters", "main") + StringMaster.getPathSeparator();
+        return StrPathBuilder.build(PathFinder.getMacroImgPath(), "emitters", "main") + PathUtils.getPathSeparator();
     }
 
     public void setTime(DAY_TIME time) {

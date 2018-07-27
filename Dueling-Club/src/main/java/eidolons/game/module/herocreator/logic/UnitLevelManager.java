@@ -12,6 +12,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -142,7 +143,7 @@ public class UnitLevelManager {
             newType.setProperty((attrs) ? PROPS.ATTRIBUTE_PROGRESSION
              : PROPS.MASTERY_PROGRESSION, progression); // type?
         }
-        List<String> list = StringMaster.openContainer(progression);
+        List<String> list = ContainerUtils.openContainer(progression);
         PARAMS pointsParam = (attrs) ? PARAMS.ATTR_POINTS
          : PARAMS.MASTERY_POINTS;
 
@@ -259,7 +260,7 @@ public class UnitLevelManager {
     }
 
     private void upPlanItems(ObjType newType, int i, boolean xp) {
-        List<String> array = StringMaster.openContainer(newType
+        List<String> array = ContainerUtils.openContainer(newType
          .getProperty((xp) ? PROPS.GOLD_PLAN : PROPS.XP_PLAN));
         boolean success = false;
         for (String item : array) { // getOrCreate all the xp items next in line while

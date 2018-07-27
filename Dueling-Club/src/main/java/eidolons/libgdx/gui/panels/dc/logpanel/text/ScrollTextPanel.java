@@ -6,6 +6,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.texture.TextureCache;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 
@@ -126,7 +127,7 @@ public class ScrollTextPanel extends GroupX {
 
         scrollPanel.getInnerScrollContainer().getActor().clear();
         //TODO split?!
-        for (String substring : StringMaster.openContainer(text, StringMaster.NEW_LINE)) {
+        for (String substring : ContainerUtils.openContainer(text, StringMaster.NEW_LINE)) {
             TextBuilder builder = getTextBuilder();
             Message message = builder.addString(substring).build(getTextLineWidth() * 0.92f);
             scrollPanel.addElement(message).width(getTextLineWidth());

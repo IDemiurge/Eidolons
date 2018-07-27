@@ -14,6 +14,7 @@ import main.elements.Filter;
 import main.entity.type.ObjType;
 import main.swing.generic.components.G_Panel;
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TreeMaster;
@@ -202,7 +203,7 @@ public class AV_Tree extends G_Panel {
 //                }
 //                list = new ArrayList<>(c);
 //                list.removeIf(t-> t==null );
-                list =  StringMaster.toNameList(
+                list =  ContainerUtils.toNameList(
                  main.system.entity.FilterMaster.
                   getFilteredTypeList(type, type.getSubGroupingKey(), subGroup));
 

@@ -16,6 +16,7 @@ import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.elements.conditions.RequirementsManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -128,7 +129,7 @@ public class UnitLibrary {
     private static void initPool(LEARN_CASE lc) {
         LibraryManager.initSpellbook(unit);
         spellPool = new XLinkedMap<>();
-        for (String substring : StringMaster.open(unit.getProperty(getSourceProp(lc)))) {
+        for (String substring : ContainerUtils.open(unit.getProperty(getSourceProp(lc)))) {
             ObjType type = DataManager.getType(VariableManager.removeVarPart(substring),
              DC_TYPE.SPELLS);
             if (checkCanLearnSpell(type, lc)) {

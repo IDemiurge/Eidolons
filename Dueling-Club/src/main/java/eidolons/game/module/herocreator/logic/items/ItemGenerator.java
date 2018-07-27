@@ -26,6 +26,7 @@ import main.entity.type.ObjType;
 import main.game.core.game.GenericGame;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.Chronos;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -531,7 +532,7 @@ public class ItemGenerator implements GenericItemGenerator {
         String baseImg = type.getImagePath();
         String format = StringMaster.getFormat(baseImg);
         String path = StringMaster.cropFormat(baseImg);
-        if (StringMaster.isInteger("" + path.charAt(path.length() - 1))) {
+        if (NumberUtils.isInteger("" + path.charAt(path.length() - 1))) {
             path = path.substring(0, path.length() - 1);
         }
 

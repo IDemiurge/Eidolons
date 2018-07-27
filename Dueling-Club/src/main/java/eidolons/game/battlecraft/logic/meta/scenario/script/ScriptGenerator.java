@@ -6,7 +6,8 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.FileManager;
 import org.junit.Test;
 
@@ -28,10 +29,10 @@ public class ScriptGenerator {
     public void generateTemplatesForMissions() {
         DC_Engine.mainMenuInit();
         for (ObjType scenario : DataManager.getTypes(DC_TYPE.SCENARIOS)) {
-            String root = StringMaster.buildPath(
+            String root = PathUtils.buildPath(
              PathFinder.getScenariosPath(), scenario.getName());
-            for (String sub : StringMaster.open(scenario.getProperty(PROPS.SCENARIO_MISSIONS))) {
-                String path = StringMaster.buildPath(root, sub, SCRIPTS_FILE_NAME);
+            for (String sub : ContainerUtils.open(scenario.getProperty(PROPS.SCENARIO_MISSIONS))) {
+                String path = PathUtils.buildPath(root, sub, SCRIPTS_FILE_NAME);
                 File scriptFile = FileManager.getFile(PathFinder.getEnginePath() + path);
                 if (scriptFile.exists()) {
                     //save scripts <?>

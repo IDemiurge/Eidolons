@@ -9,9 +9,6 @@ public class MissionEnums {
         STANDOFF, CRAWL, ASSAULT, BOSS, REWARD,
     }
 
-    public enum LOCATION_TYPE {
-
-    }
 
     public enum MAIN_QUEST_TYPE {
 

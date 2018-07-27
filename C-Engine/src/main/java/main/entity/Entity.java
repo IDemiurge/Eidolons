@@ -18,7 +18,7 @@ import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -218,7 +218,7 @@ public abstract class Entity extends DataModel implements OBJ {
 
             if (!value.equals(baseValue)) {
                 if (isValidMapStored(p)){
-                    getValidParams().put(p, StringMaster.getInteger(value));
+                    getValidParams().put(p, NumberUtils.getInteger(value));
                 }
                 String amount = getType().getParam(p);
                 putParameter(p, amount);

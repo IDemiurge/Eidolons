@@ -45,6 +45,7 @@ import main.game.logic.action.context.Context.IdKey;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -870,7 +871,7 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     @Override
     protected void putParameter(PARAMETER param, String value) {
         if (param == PARAMS.AP_COST) {
-            int v = StringMaster.getInteger(value);
+            int v = NumberUtils.getInteger(value);
             if (v > type.getIntParam(param) * 2) {
                 return;
             }

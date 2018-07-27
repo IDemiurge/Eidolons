@@ -19,6 +19,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.system.auxiliary.ClassMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -374,7 +375,7 @@ public class ConditionMaster {
     public static Condition toConditions(String string) {
         Conditions conditions = new Conditions();
         for (String conditionString :
-         StringMaster.openContainer(string, StringMaster.AND)) {
+         ContainerUtils.openContainer(string, StringMaster.AND)) {
             Condition c;
             if (conditionString.contains(StringMaster.OR)) {
                 String[] parts = conditionString.split(StringMaster.OR);

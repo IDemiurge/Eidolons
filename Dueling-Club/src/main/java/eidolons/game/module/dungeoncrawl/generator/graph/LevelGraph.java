@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.graph;
 
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 
 import java.util.*;
 
@@ -13,10 +14,11 @@ import java.util.*;
 public class LevelGraph {
 
     protected static int index = 0;
+    Set<GraphPath> paths;
     private Set<LevelGraphNode> nodes;
     private Set<LevelGraphEdge> edges;
     private Map<LevelGraphNode, Set<LevelGraphEdge>> adjList;
-    Set<GraphPath> paths;
+    private List<LevelZone> zones;
 
     public LevelGraph() {
         index = 0;
@@ -29,10 +31,10 @@ public class LevelGraph {
 
     @Override
     public String toString() {
-        return "LevelGraph: \n"+paths.size()+" paths: "+paths +
-         "\n"+nodes.size()+" nodes: "+nodes +
-         "\n"+edges.size()+" edges: "+edges +
-         "\n" ;
+        return "LevelGraph: \n" + paths.size() + " paths: " + paths +
+         "\n" + nodes.size() + " nodes: " + nodes +
+         "\n" + edges.size() + " edges: " + edges +
+         "\n";
     }
 
     public Set<GraphPath> getPaths() {
@@ -47,7 +49,7 @@ public class LevelGraph {
     }
 
     public void addNodes(ROOM_TYPE roomType, int n) {
-        while(n>0){
+        while (n > 0) {
             n--;
             addNode(roomType);
         }
@@ -55,10 +57,10 @@ public class LevelGraph {
 
     public LevelGraphNode getNodeById(int i) {
         for (LevelGraphNode sub : nodes) {
-            if (sub.getIndex()==i)
+            if (sub.getIndex() == i)
                 return sub;
         }
-        return null ;
+        return null;
     }
 
     public boolean addNode(LevelGraphNode v) {
@@ -85,6 +87,7 @@ public class LevelGraph {
 
         return true;
     }
+
     public Set<LevelGraphNode> getNodes() {
         return Collections.unmodifiableSet(nodes);
     }
@@ -97,16 +100,23 @@ public class LevelGraph {
         return Collections.unmodifiableMap(adjList);
     }
 
+    public List<LevelZone> getZones() {
+        return zones;
+    }
+
+    public void setZones(List<LevelZone> zones) {
+        this.zones = zones;
+    }
 
 
     //     String TREASURE_ROOM = "T";
-//     String THRONE_ROOM = "M";
-//     String DEATH_ROOM = "D";
-//     String GUARD_ROOM = "G";
-//     String COMMON_ROOM = "O";
-//     String ENTRANCE_ROOM = "E";
-//     String EXIT_ROOM = "X";
-//     String SECRET_ROOM = "S";
-//     String BATTLEFIELD     =     "B";
-//     String CORRIDOR =     "R";
+    //     String THRONE_ROOM = "M";
+    //     String DEATH_ROOM = "D";
+    //     String GUARD_ROOM = "G";
+    //     String COMMON_ROOM = "O";
+    //     String ENTRANCE_ROOM = "E";
+    //     String EXIT_ROOM = "X";
+    //     String SECRET_ROOM = "S";
+    //     String BATTLEFIELD     =     "B";
+    //     String CORRIDOR =     "R";
 }

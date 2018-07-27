@@ -9,7 +9,7 @@ import eidolons.game.core.state.Saver;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.libgdx.launch.DemoLauncher;
 import main.data.ability.construct.VariableManager;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.Chronos;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.launch.CoreEngine;
@@ -57,8 +57,8 @@ public class FAST_DC {
         if (args.length > 0) {
             if (args[0].equals("-GT")) {
                 forceRunGT = true;
-            } else if (StringMaster.isInteger(args[0])) {
-                PresetLauncher.PRESET_OPTION = StringMaster.getInteger(args[0]);
+            } else if (NumberUtils.isInteger(args[0])) {
+                PresetLauncher.PRESET_OPTION = NumberUtils.getInteger(args[0]);
             } else {
                 PresetLauncher.PRESET_LAUNCH = args[0];
             }
@@ -94,7 +94,7 @@ public class FAST_DC {
         }
         if (skipChoice) {
             if (args[0] == PRESET_OPTION_ARG) {
-                PresetLauncher.PRESET_OPTION = StringMaster.getInteger(
+                PresetLauncher.PRESET_OPTION = NumberUtils.getInteger(
                  VariableManager.getVar(args[0]));
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
                 CoreEngine.setExe(true);

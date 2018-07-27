@@ -39,9 +39,7 @@ import main.game.core.game.Game;
 import main.gui.builders.TabBuilder;
 import main.launch.ArcaneVault;
 import main.simulation.SimulationManager;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.TreeMaster;
+import main.system.auxiliary.*;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.launch.CoreEngine;
@@ -589,7 +587,7 @@ public class ModelManager {
         if (idSet.contains(type)) {
             return;
         }
-        int id = StringMaster.getInteger(type.getProperty(G_PROPS.ID));
+        int id = NumberUtils.getInteger(type.getProperty(G_PROPS.ID));
         if (id % 2 != 1) {
             type.setProperty(G_PROPS.ID, "" + classId);
             classId += 2;
@@ -609,7 +607,7 @@ public class ModelManager {
         String altBases = type.getProperty(PROPS.ALT_BASE_LINKS);
         if (!altBases.isEmpty()) {
             String altBaseNames = "";
-            for (String s : StringMaster.open(altBases)) {
+            for (String s : ContainerUtils.open(altBases)) {
                 altBaseNames += VariableManager.removeVarPart(s) + ";";
             }
             type.setProperty(PROPS.ALT_BASE_TYPES, "" + altBaseNames);
@@ -633,7 +631,7 @@ public class ModelManager {
         String reqs = type.getProperty(PROPS.REQUIREMENTS);
         if (reqs.contains("Principles")) {
             String cleanedReqs = reqs;
-            for (String sub : StringMaster.open(reqs)) {
+            for (String sub : ContainerUtils.open(reqs)) {
                 if (!sub.contains("Principles")) {
                     continue;
                 }

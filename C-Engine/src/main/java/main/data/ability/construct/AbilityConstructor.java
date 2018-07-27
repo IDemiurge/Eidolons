@@ -17,6 +17,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
 import main.entity.type.XmlHoldingType;
 import main.game.core.game.Game;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.Chronos;
@@ -183,7 +184,7 @@ public class AbilityConstructor {
     private static void checkAbilsMerge(Entity entity, boolean PASSIVES) {
         G_PROPS property = PASSIVES ? G_PROPS.PASSIVES : G_PROPS.ACTIVES;
         String prop = entity.getProperty(property);
-        List<String> list = StringMaster.openContainer(prop);
+        List<String> list = ContainerUtils.openContainer(prop);
         List<String> addList = new ArrayList<>();
         List<String> removeList = new ArrayList<>();
         for (String s : list) {
@@ -197,7 +198,7 @@ public class AbilityConstructor {
             String abilName = VariableManager.removeVarPart(s);
             // TODO WHAT IF THERE ARE SOME NON-PARAMETER ARGUMENTS OR JUST 2+ OF
             // THEM?
-            for (String s1 : StringMaster.open(prop.replaceFirst(abilName, ""))) {
+            for (String s1 : ContainerUtils.open(prop.replaceFirst(abilName, ""))) {
                 if (!VariableManager.removeVarPart(s1).equalsIgnoreCase(abilName)) {
                     continue;
                 }
@@ -222,7 +223,7 @@ public class AbilityConstructor {
         }
         if (list.isEmpty())
             entity.removeProperty(property);
-        else entity.setProperty(property, StringMaster.constructContainer(list));
+        else entity.setProperty(property, ContainerUtils.constructContainer(list));
 
     }
 
@@ -246,7 +247,7 @@ public class AbilityConstructor {
         Chronos.mark("construct passives for " + entity.getName());
         List<AbilityObj> passives = new ArrayList<>();
 
-        for (String passive : StringMaster.open(entity.getProperty(G_PROPS.PASSIVES))) {
+        for (String passive : ContainerUtils.open(entity.getProperty(G_PROPS.PASSIVES))) {
             AbilityObj abil = getPassive(passive, entity);
             if (abil != null) {
                 passives.add(abil);
@@ -296,7 +297,7 @@ public class AbilityConstructor {
         }
         List<ActiveObj> list = new ArrayList<>();
 
-        for (String abilTypeName : StringMaster.open(entity.getProperty(prop))) {
+        for (String abilTypeName : ContainerUtils.open(entity.getProperty(prop))) {
             if (abilTypeName.isEmpty()) continue;
             ActiveObj ability;
             ability = newAbility(abilTypeName, entity, passive);
@@ -310,7 +311,7 @@ public class AbilityConstructor {
 
     public static Abilities getAbilities(String data, Ref ref) {
         Abilities a = new Abilities();
-        for (String abilTypeName : StringMaster.open(
+        for (String abilTypeName : ContainerUtils.open(
          data)) {
             a.add(new AbilityObj(VariableManager.getVarType(abilTypeName), ref));
         }

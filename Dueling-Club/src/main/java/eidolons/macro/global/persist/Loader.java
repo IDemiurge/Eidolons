@@ -19,7 +19,9 @@ import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
 import main.system.GuiEventType;
 import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.TypeBuilder;
@@ -90,7 +92,7 @@ public class Loader {
             PROPERTY prop = ContentValsManager.getPROP(propNode.getNodeName());
             for (Node sub : XML_Converter.getNodeList(propNode)) {
                 Node typeNode = sub.getFirstChild();
-                int id = StringMaster.getInteger(StringMaster.getLastPart(sub.getNodeName(), "_"));
+                int id = NumberUtils.getInteger(StringMaster.getLastPart(sub.getNodeName(), "_"));
                 String name = StringMaster.getWellFormattedString(sub.getNodeName().replace("" + id, ""));
                 OBJ_TYPE TYPE = DC_ContentValsManager.getTypeForProperty(prop);
                 ObjType type = DataManager.getType(name, TYPE);
@@ -120,10 +122,10 @@ public class Loader {
     private static void updateItemIds(Unit hero) {
         for (PROPERTY sub : InventoryTransactionManager.INV_PROPS) {
             String newValue = "";
-            for (String substring : StringMaster.openContainer(hero.getProperty(sub))) {
-                if (!StringMaster.isInteger(substring))
+            for (String substring : ContainerUtils.openContainer(hero.getProperty(sub))) {
+                if (!NumberUtils.isInteger(substring))
                     continue;
-                int id = StringMaster.getInteger(substring);
+                int id = NumberUtils.getInteger(substring);
                 newValue += itemMap.get(id).getId() + ";";
             }
             hero.setProperty(sub, newValue);
@@ -141,8 +143,8 @@ public class Loader {
     getLoadedItemContainer(T entity, PROPS prop) {
         DequeImpl<DC_HeroItemObj> container = new DequeImpl<>();
 
-        for (String substring : StringMaster.openContainer(entity.getProperty(prop))) {
-            container.add(itemMap.get(StringMaster.getInteger(substring)));
+        for (String substring : ContainerUtils.openContainer(entity.getProperty(prop))) {
+            container.add(itemMap.get(NumberUtils.getInteger(substring)));
         }
 
         return container;
@@ -150,7 +152,7 @@ public class Loader {
 
     public static DC_HeroItemObj getLoadedItem(Unit entity, G_PROPS prop) {
         return
-         itemMap.get(StringMaster.getInteger(entity.getProperty(prop)));
+         itemMap.get(NumberUtils.getInteger(entity.getProperty(prop)));
     }
 
     public static String getLoadedMainHeroName() {

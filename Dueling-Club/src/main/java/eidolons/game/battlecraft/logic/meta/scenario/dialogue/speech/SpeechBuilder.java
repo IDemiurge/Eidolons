@@ -8,7 +8,7 @@ import main.data.dialogue.SpeechData;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.elements.conditions.Condition;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -78,7 +78,7 @@ public class SpeechBuilder {
         Document doc = XML_Converter.getDoc(xml);
         for (Node node : XML_Converter.getNodeList(doc.getFirstChild())) {
             String idString = node.getNodeName();
-            int id = StringMaster.getInteger(idString.replace(DialogueLineFormatter.ID, ""));
+            int id = NumberUtils.getInteger(idString.replace(DialogueLineFormatter.ID, ""));
 
             if (node.hasChildNodes()) {
                 SpeechData data = new SpeechData();

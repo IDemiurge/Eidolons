@@ -9,7 +9,7 @@ import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class ClassSlot extends HtNode {
     }
     @Override
     protected String getTextPrefix() {
-        return "Tier " + StringMaster.getRoman(tier) + " Class";
+        return "Tier " + NumberUtils.getRoman(tier) + " Class";
     }
 
     @Override

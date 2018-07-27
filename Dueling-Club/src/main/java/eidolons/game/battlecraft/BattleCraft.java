@@ -6,8 +6,10 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.swing.generic.services.dialog.DialogMaster;
 import main.content.values.parameters.PARAMETER;
 import main.data.ability.construct.VariableManager;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,13 +51,13 @@ public class BattleCraft {
         } else if (!weapon_magic_misc) {
             tip = " had studied... ";
         }
-        for (String item : StringMaster.open(hero.getProperty(prop))) {
+        for (String item : ContainerUtils.open(hero.getProperty(prop))) {
             if (item.contains(StringMaster.OR)) {
                 String[] options = item.split(StringMaster.OR);
                 int index = DialogMaster.askOptionsAndWait(hero.getName() + tip, false, options);
                 item = options[index];
             }
-            int amount = StringMaster.getInteger(VariableManager.getVarPart(item));
+            int amount = NumberUtils.getInteger(VariableManager.getVarPart(item));
             PARAMETER[] masteries = VALUE_GROUP.valueOf(
              StringMaster.toEnumFormat(VariableManager.removeVarPart(item))).getParams();
             List<String> options = new ArrayList<>();

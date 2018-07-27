@@ -13,7 +13,7 @@ import main.data.DataManager;
 import main.entity.Ref.KEYS;
 import main.entity.type.ObjType;
 import main.swing.generic.components.editors.lists.ListChooser;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.Formula;
 
@@ -72,16 +72,16 @@ public class CreateItemEffect extends MicroEffect implements OneshotEffect {
 
             TYPE = DC_TYPE.ARMOR;
 
-            typeList = StringMaster.openContainer(STD_ARMOR_ITEMS);
+            typeList = ContainerUtils.openContainer(STD_ARMOR_ITEMS);
             if (extended) {
-                typeList.addAll(StringMaster
+                typeList.addAll(ContainerUtils
                  .openContainer(EXTENDED_ARMOR_ITEMS));
             }
         } else {
             TYPE = DC_TYPE.WEAPONS;
-            typeList = StringMaster.openContainer(STD_WEAPON_ITEMS);
+            typeList = ContainerUtils.openContainer(STD_WEAPON_ITEMS);
             if (extended) {
-                typeList.addAll(StringMaster
+                typeList.addAll(ContainerUtils
                  .openContainer(EXTENDED_WEAPON_ITEMS));
             }
         }

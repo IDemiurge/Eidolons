@@ -18,10 +18,7 @@ import main.data.DataManager;
 import main.elements.conditions.PropCondition;
 import main.entity.LightweightEntity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.Loop;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.*;
 import main.system.entity.FilterMaster;
 import main.system.math.MathMaster;
 
@@ -51,7 +48,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
 
     @Override
     public List<String> getTabs() {
-        return StringMaster.openContainer(getProperty(PROPS.SHOP_ITEM_GROUPS));
+        return ContainerUtils.openContainer(getProperty(PROPS.SHOP_ITEM_GROUPS));
     }
 
     @Override
@@ -78,7 +75,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
     }
 
     public List<ObjType> getItems(DC_TYPE TYPE) {
-        return DataManager.toTypeList(StringMaster.openContainer(getProperty(PROPS.SHOP_ITEMS)),
+        return DataManager.toTypeList(ContainerUtils.openContainer(getProperty(PROPS.SHOP_ITEMS)),
          TYPE);
     }
 
@@ -152,12 +149,12 @@ public class HqShop extends LightweightEntity implements ShopInterface {
 
         items = new ArrayList<>();
         if (isPreset()) {
-            items = DataManager.toTypeList(StringMaster
+            items = DataManager.toTypeList(ContainerUtils
               .openContainer(getProperty(PROPS.SHOP_ITEMS)),
              C_OBJ_TYPE.ITEMS);
             return;
         }
-        List<ObjType> templates = DataManager.toTypeList(StringMaster
+        List<ObjType> templates = DataManager.toTypeList(ContainerUtils
           .openContainer(getProperty(PROPS.SHOP_ITEM_TEMPLATES)),
          C_OBJ_TYPE.ITEMS);
         items = getItemsFromTemplates(templates);

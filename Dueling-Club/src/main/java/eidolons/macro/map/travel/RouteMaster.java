@@ -11,8 +11,8 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.MapEvent;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.io.File;
@@ -50,7 +50,7 @@ public class RouteMaster {
             ObjType type = DataManager.getType(parts[1], MACRO_OBJ_TYPES.ROUTE);
             String dest = parts[2];
             Coordinates coordinates = new Coordinates(true, parts[3]);
-            String img = StringMaster.removePreviousPathSegments(sub.getPath(), PathFinder.getImagePath());
+            String img = PathUtils.removePreviousPathSegments(sub.getPath(), PathFinder.getImagePath());
             new Route(type, img, orig, dest, coordinates);
 
         }

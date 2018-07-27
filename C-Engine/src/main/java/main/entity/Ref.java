@@ -14,6 +14,7 @@ import main.game.logic.event.Event;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.SearchMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 
 import java.io.Serializable;
@@ -314,7 +315,7 @@ public class Ref implements Cloneable, Serializable {
         Ref ref = checkForRefReplacement();
 
         String value = ((ref == null) ? this : ref).getValue(getStr());
-        if (StringMaster.isInteger(value)) {
+        if (NumberUtils.isInteger(value)) {
             if (value.contains("."))
                 return Integer.valueOf(value.split(Pattern.quote("."))[0]);
             return Integer.valueOf(value);
@@ -442,7 +443,7 @@ public class Ref implements Cloneable, Serializable {
 
     public Obj getLastRemovedObj(KEYS key) {
         try {
-            return game.getObjectById(StringMaster.getInteger(getRemovedValues()
+            return game.getObjectById(NumberUtils.getInteger(getRemovedValues()
              .get(key)));
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

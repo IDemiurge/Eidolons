@@ -2,9 +2,8 @@ package main.system.auxiliary.data;
 
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
-import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.SearchMaster;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
+import main.system.auxiliary.*;
 import main.system.auxiliary.log.LogMaster;
 import main.system.images.ImageManager;
 import main.system.launch.CoreEngine;
@@ -33,7 +32,7 @@ public class FileManager {
 
     public static List<String> readFileLines(File file) {
         String string = readFile(file, "\n");
-        return StringMaster.openContainer(string, "\n");
+        return ContainerUtils.openContainer(string, "\n");
     }
 
     public static String readFile(File file) {
@@ -213,7 +212,7 @@ public class FileManager {
 
     private static String formatPath(String path) {
         String formatted = "";
-        for (String sub : StringMaster.splitPath(path)) {
+        for (String sub : PathUtils.splitPath(path)) {
             formatted += StringMaster.replace(true, sub, "\\", "") + "\\";
         }
         return formatted;
@@ -304,7 +303,7 @@ public class FileManager {
         String format = StringMaster.getFormat(fileName);
         String name = StringMaster.cropFormat(fileName);
         if (name.lastIndexOf(getFileVersionSeparator()) > 0) {
-            if (StringMaster.isInteger(name.substring(
+            if (NumberUtils.isInteger(name.substring(
              name.lastIndexOf(getFileVersionSeparator()), name.length() - 1
             ))) {
                 name = name.substring(0, name.lastIndexOf(getFileVersionSeparator()));
@@ -445,7 +444,7 @@ public class FileManager {
 
     public static boolean isMusicFile(File sub) {
         String format = StringMaster.getFormat(sub.getName()).replace(".", "");
-        for (String f : StringMaster.open(SoundMaster.STD_FORMATS)) {
+        for (String f : ContainerUtils.open(SoundMaster.STD_FORMATS)) {
             if (format.equalsIgnoreCase(f)) {
                 return true;
             }

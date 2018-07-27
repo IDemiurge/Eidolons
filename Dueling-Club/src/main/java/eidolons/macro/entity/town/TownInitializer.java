@@ -9,8 +9,8 @@ import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public class TownInitializer {
         if (min == 0) {
             min = default_shop_min;
         }
-        for (String shopTypeName : StringMaster.open(town
+        for (String shopTypeName : ContainerUtils.open(town
          .getProperty(MACRO_PROPS.SHOPS))) {
             i++;
             if (i > max) {

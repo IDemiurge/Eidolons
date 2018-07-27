@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.ai.elements.actions.Action;
 import eidolons.game.battlecraft.ai.elements.actions.AiUnitActionMaster;
 import main.ability.effects.Effect;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +75,7 @@ public class Choice {
         if (actions.size() == 1) {
             return actions.get(0).getActive().getName() + " to " + coordinates;
         }
-        return StringMaster.joinStringList(StringMaster.toNameList(AiUnitActionMaster
+        return ContainerUtils.joinStringList(ContainerUtils.toNameList(AiUnitActionMaster
          .getActionObjectList(actions)), ", ")
          + " to " + coordinates;
     }

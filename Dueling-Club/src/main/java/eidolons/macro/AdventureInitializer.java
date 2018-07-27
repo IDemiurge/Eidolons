@@ -16,7 +16,7 @@ import eidolons.system.text.TextMaster;
 import main.system.EventCallbackParam;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
+import main.system.PathUtils;
 import main.system.launch.CoreEngine;
 
 import java.util.List;
@@ -54,11 +54,11 @@ public class AdventureInitializer {
                 return new DialogueFactory(){
                     protected String getFileRootPath() {
                         return
-                         StringMaster.buildPath(
+                         PathUtils.buildPath(
                          "adventure" ,
                           "dialogue"
                           , TextMaster.getLocale(),
-                          StringMaster.getPathSeparator());
+                          PathUtils.getPathSeparator());
                     }
                 };
             }

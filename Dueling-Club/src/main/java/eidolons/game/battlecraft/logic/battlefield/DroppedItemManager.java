@@ -9,7 +9,8 @@ import main.content.enums.entity.ItemEnums;
 import main.entity.Entity;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
@@ -90,8 +91,8 @@ public class DroppedItemManager {
 
     private List<DC_HeroItemObj> getItems(Obj cell) {
         List<DC_HeroItemObj> list = new ArrayList<>();
-        for (String id : StringMaster.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
-            Obj item = game.getObjectById(StringMaster.getInteger(id));
+        for (String id : ContainerUtils.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
+            Obj item = game.getObjectById(NumberUtils.getInteger(id));
             if (item != null) {
                 list.add((DC_HeroItemObj) item);
             }

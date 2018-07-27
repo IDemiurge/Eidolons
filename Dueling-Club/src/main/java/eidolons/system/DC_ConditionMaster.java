@@ -38,6 +38,7 @@ import main.entity.Entity;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.game.bf.directions.UNIT_DIRECTION;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
@@ -494,7 +495,7 @@ public class DC_ConditionMaster extends ConditionMaster {
     }
 
     public Condition getDynamicCondition(String s) {
-        List<String> list = StringMaster.openContainer(s);
+        List<String> list = ContainerUtils.openContainer(s);
         String name = list.get(0);
         String arg = null;
         if (list.size() > 1) {

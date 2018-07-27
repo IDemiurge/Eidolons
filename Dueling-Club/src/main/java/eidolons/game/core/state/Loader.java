@@ -36,7 +36,8 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 import main.system.launch.TypeBuilder;
@@ -161,7 +162,7 @@ public class Loader {
                 Ref ref = new Ref(game);
                 Node refNode = XML_Converter.findNode(sub, Saver.OBJ_NODE);
                 if (refNode != null)
-                    for (String substring : StringMaster.open(
+                    for (String substring : ContainerUtils.open(
                      refNode.getTextContent())) {
                         ref.setValue(KEYS.valueOf(
                          substring.split("=")[0].toUpperCase()),
@@ -178,7 +179,7 @@ public class Loader {
 
                 object.getPropMap().putAll(props);
                 object.getParamMap().putAll(params);
-                object.setId(StringMaster.getInteger(props.get(G_PROPS.ID)));
+                object.setId(NumberUtils.getInteger(props.get(G_PROPS.ID)));
                 objects.add(object);
                 init(object);
 

@@ -10,6 +10,7 @@ import main.data.ConcurrentMap;
 import main.data.filesys.PathFinder;
 import main.entity.obj.Obj;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
@@ -30,7 +31,7 @@ public class MacroActionManager {
     public static String getMacroPartyActionImagePathPrefix() {
 
         return
-         StrPathBuilder.build(PathFinder.getMacroPath(), "actions", "party") + StringMaster.getPathSeparator();
+         StrPathBuilder.build(PathFinder.getMacroPath(), "actions", "party") + PathUtils.getPathSeparator();
     }
 
     public static String getMacroModeImagePathPrefix() {

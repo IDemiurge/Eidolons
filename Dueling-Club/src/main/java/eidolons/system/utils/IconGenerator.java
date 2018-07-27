@@ -8,6 +8,8 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.texture.Images;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -30,6 +32,7 @@ public class IconGenerator extends GdxUtil {
     private static final String BACKGROUND_OVERLAYS = "Background overlays";
     private static final String OVERLAYS = "overlays";
     private static final String OUTPUT_DEFAULT = "generated";
+
 
     private static IconGenerator generator;
     private static boolean rounded;
@@ -157,7 +160,7 @@ public class IconGenerator extends GdxUtil {
 
         String underlaysPath = StrPathBuilder.
          build(PathFinder.getImagePath(), path, "underlays") +
-         StringMaster.getPathSeparator();
+         PathUtils.getPathSeparator();
         gen(path, imagesPath, underlaysPath, subdirs);
     }
 
@@ -173,7 +176,7 @@ public class IconGenerator extends GdxUtil {
 
         String underlaysPath = StrPathBuilder.
          build(PathFinder.getImagePath(), path, "underlays") +
-         StringMaster.getPathSeparator();
+         PathUtils.getPathSeparator();
         gen(path, imagesPath, underlaysPath, true);
     }
 
@@ -201,7 +204,7 @@ public class IconGenerator extends GdxUtil {
         return StrPathBuilder.build(
          PathFinder.getImagePath(), path, OUTPUT_DEFAULT,
          (folderPerUnderlay ? StringMaster.cropFormat(sub.getName()) : "")) +
-         StringMaster.getPathSeparator();
+         PathUtils.getPathSeparator();
     }
 
     public static IconGenerator getGenerator() {
@@ -212,7 +215,7 @@ public class IconGenerator extends GdxUtil {
         String path = StrPathBuilder.build(PathFinder.getImagePath(),
          ImageManager.getValueIconsPath());
         String output = StrPathBuilder.build(path, "generated") +
-         StringMaster.getPathSeparator();
+         PathUtils.getPathSeparator();
         new IconGenerator(path, Images.EMPTY_RANK_SLOT, output, true);
     }
 
@@ -342,7 +345,7 @@ public class IconGenerator extends GdxUtil {
         if (folderPerUnderlay) {
             return imageFile.getName() + (i++);
         } else {
-            return StringMaster.cropFormat(imageFile.getName()) + (folderPerImage ? StringMaster.getPathSeparator() : "_") + StringMaster.join("_",
+            return StringMaster.cropFormat(imageFile.getName()) + (folderPerImage ? PathUtils.getPathSeparator() : "_") + ContainerUtils.join("_",
              Arrays.stream(suffixes).map(suffix ->
               StringMaster.cropFormat(StringMaster.getLastPathSegment(suffix.toString()))).collect(Collectors.toList()).toArray(
               new String[suffixes.length]));

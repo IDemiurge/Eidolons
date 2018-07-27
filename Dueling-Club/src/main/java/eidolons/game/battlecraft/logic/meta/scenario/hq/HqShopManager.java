@@ -6,7 +6,7 @@ import eidolons.game.battlecraft.logic.meta.universal.MetaGameMaster;
 import eidolons.game.battlecraft.logic.meta.universal.ShopManager;
 import main.content.DC_TYPE;
 import main.data.DataManager;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class HqShopManager extends ShopManager<ScenarioMeta> {
     @Override
     public void init() {
         shops = new ArrayList<>();
-        for (String substring : StringMaster.open(getMetaGame().getMission().getMissionLocation().getProperty(PROPS.PLACE_SHOPS))) {
+        for (String substring : ContainerUtils.open(getMetaGame().getMission().getMissionLocation().getProperty(PROPS.PLACE_SHOPS))) {
             HqShop shop = new HqShop(DataManager.getType(substring, DC_TYPE.SHOPS));
             shops.add(shop);
         }

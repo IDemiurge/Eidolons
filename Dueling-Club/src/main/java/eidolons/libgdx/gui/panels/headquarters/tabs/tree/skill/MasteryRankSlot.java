@@ -8,6 +8,7 @@ import main.content.values.parameters.PARAMETER;
 import main.entity.type.ObjType;
 import main.system.EventType;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.images.ImageManager;
 
 import java.util.List;
@@ -56,8 +57,8 @@ public class MasteryRankSlot extends HtNode {
     @Override
     protected String getTextPrefix() {
         if (data == null)
-            return "Mastery Slot, Rank " + StringMaster.getRoman(tier);
-        return StringMaster.getWellFormattedString(data.name()) + " Rank " + StringMaster.getRoman(tier);
+            return "Mastery Slot, Rank " + NumberUtils.getRoman(tier);
+        return StringMaster.getWellFormattedString(data.name()) + " Rank " + NumberUtils.getRoman(tier);
     }
     @Override
     protected EventType getSelectionEvent() {

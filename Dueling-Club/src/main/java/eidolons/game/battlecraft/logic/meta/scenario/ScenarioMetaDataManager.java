@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.meta.scenario;
 import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.meta.universal.MetaDataManager;
 import eidolons.libgdx.launch.ScenarioLauncher;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
 
 /**
@@ -41,11 +42,11 @@ public class ScenarioMetaDataManager extends MetaDataManager<ScenarioMeta> {
 
             getMetaGame().setMissionIndex(missionIndex);
 
-            setMissionName(StringMaster.openContainer(getMetaGame().getScenario().
+            setMissionName(ContainerUtils.openContainer(getMetaGame().getScenario().
              getProperty(PROPS.SCENARIO_MISSIONS)).get(missionIndex));
 
         } else {
-            getMetaGame().setMissionIndex(StringMaster.openContainer(getMetaGame().getScenario().
+            getMetaGame().setMissionIndex(ContainerUtils.openContainer(getMetaGame().getScenario().
              getProperty(PROPS.SCENARIO_MISSIONS)).indexOf(missionName));
         }
     }

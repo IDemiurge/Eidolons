@@ -3,10 +3,10 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
-import main.content.OBJ_TYPE;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.Tile;
-import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
-import org.apache.commons.lang3.tuple.Pair;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import main.entity.type.ObjAtCoordinate;
+import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -20,38 +20,44 @@ import org.apache.commons.lang3.tuple.Pair;
  * string - placeholder? variable? definition? group alias?
  */
 public class RngLevelInitializer {
+    DungeonLevel dungeonLevel;
+    public   void init(DungeonLevel level) {
+        this.dungeonLevel = level;
+        for (LevelZone levelZone : level.getSubParts()) {
+            for (LevelBlock block : levelZone.getSubParts()) {
+                initTileMapBlock( block );
 
-    public void initTileMap(TileMap tileMap) {
-        DungeonLevel level = createLevel(tileMap);
-
-    }
-
-    private DungeonLevel createLevel(TileMap tileMap) {
-        return null;
-    }
-
-    public void initTileMapBlock(TileMap tileMap, LevelBlock block, LevelZone zone) {
-
-
-        for (int i = 0; i < tileMap.getTiles().length; i++) {
-            for (int j = 0; j < tileMap.getTiles()[i].length; j++) {
-                Tile tile = tileMap.getTiles()[i][j];
-                for (Pair<String, OBJ_TYPE> pair : tile.getData()) {
-                    createEntity(pair.getKey(), pair.getValue());
-
-                }
             }
         }
+//        level.addCustomValue(G_PROPS.BACKGROUND, bgImagePath);
+
+
+    }
+
+    public  void initTileMapBlock( LevelBlock block ) {
+        for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
+
+            createEntity(coordinates, block.getTileMap().getMap().get(coordinates), block);
+        }
+
         addLightEmitters();
 //        addLocks();
 //        setupAiGroups();
 //        saveLevel();
     }
-
-    private void addLightEmitters() {
+    private  void createEntity(Coordinates c, ROOM_CELL value, LevelBlock block) {
+        //just write into new xml?
+        ObjType type = chooseType(c, value, block);
+        ObjAtCoordinate objAt=  new ObjAtCoordinate(type, c);
+        block.getObjects().add( 0, objAt);
     }
 
-    private void createEntity(String key, OBJ_TYPE value) {
-//just write into new xml?
+    private  ObjType chooseType(Coordinates c, ROOM_CELL value, LevelBlock block) {
+        return RngTypeChooser.chooseType(c, value, block, dungeonLevel);
     }
+
+    private  void addLightEmitters() {
+    }
+
+
 }

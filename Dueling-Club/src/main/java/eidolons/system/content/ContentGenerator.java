@@ -30,12 +30,13 @@ import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
-import main.data.xml.XML_Converter;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,33 +80,44 @@ public class ContentGenerator {
             //auto find src path?
             String contents = "";
             Map<String, List<ObjType>> map = new XLinkedMap<>();
+            Map<String, List<ObjType>> subMap = new XLinkedMap<>();
             for (ObjType type : DataManager.getTypes(TYPE)) {
                 contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
-                if (perGroup)
-                {
-                    if (map.get(type.getGroup().toUpperCase())==null )
-                        map.put(type.getGroup().toUpperCase(), new ArrayList<>());
-                    map.get(type.getGroup().toUpperCase()).add(type);
+                if (perGroup) {
+                    MapMaster.addToListMap(subMap, type.getSubGroupingKey().toUpperCase(),
+                     type);
+                    MapMaster.addToListMap(map, type.getGroup().toUpperCase(),
+                     type);
                 }
             }
             String text = "public enum " + TYPE.name().toUpperCase() + "_TYPES" +
              " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
-            System.out.println(   text);
+            System.out.println(text);
             for (String group : map.keySet()) {
-                contents="";
+                contents = "";
                 for (ObjType type : map.get(group)) {
                     contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
                 }
-                  text = "public enum  " + TYPE.name().toUpperCase() +"_TYPES_" +
-                   StringMaster.toEnumFormat(group)+
+                text = "public enum  " + TYPE.name().toUpperCase() + "_TYPES_" +
+                 StringMaster.toEnumFormat(group) +
                  " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
-               System.out.println(  text);
+                System.out.println(text);
 
             }
+            for (String group : subMap.keySet()) {
+                contents = "";
+                for (ObjType type : subMap.get(group)) {
+                    contents += StringMaster.getEnumFormat(type.getName()) + ",\n";
+                }
+                text = "public enum  " + TYPE.name().toUpperCase() + "_SUB_TYPES_" +
+                 StringMaster.toEnumFormat(group) +
+                 " implements OBJ_TYPE_ENUM {\n" + contents + ";\n}";
+                System.out.println(text);
+
+            }
+
         }
-
     }
-
     public static void generatePlaces() {
         for (PLACE_SUBTYPE sub : PLACE_SUBTYPE.values()) {
             String name = StringMaster.getWellFormattedString(sub.name());
@@ -165,7 +177,7 @@ public class ContentGenerator {
         for (ObjType type : DataManager.getTypes(DC_TYPE.PARTY)) {
             ObjType leader = DataManager.getType(type.getProperty(PROPS.LEADER), DC_TYPE.CHARS);
             if (leader == null) {
-                List<String> members = StringMaster.openContainer(type.getProperty(PROPS.MEMBERS));
+                List<String> members = ContainerUtils.openContainer(type.getProperty(PROPS.MEMBERS));
                 if (members.isEmpty()) {
                     continue;
                 }
@@ -183,7 +195,7 @@ public class ContentGenerator {
 
     public static void generateWaveUnitTypes(ObjType t) {
         List<String> list = new ArrayList<>();
-        for (String u : StringMaster.open(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
+        for (String u : ContainerUtils.open(t.getProperty(PROPS.SHRUNK_PRESET_GROUP))) {
             if (!list.contains(u)) {
                 list.add(u);
             }
@@ -197,7 +209,7 @@ public class ContentGenerator {
     }
 
     public static void convertSkillStrings(ObjType type) {
-        for (String s : StringMaster.open(type.getProp("passives"))) {
+        for (String s : ContainerUtils.open(type.getProp("passives"))) {
             switch (s) {
                 case "ParamBonus":
                     type.addProperty(PROPS.PARAMETER_BONUSES, s);
@@ -495,94 +507,94 @@ public class ContentGenerator {
     private static String getDefaultWeaponActions(WEAPON_GROUP group) {
         switch (group) {
             case AXES:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop, WEAPON_ATTACKS.Hack,
                  WEAPON_ATTACKS.Hook));
             case POLLAXES:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Spike_Stab, WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Chop,
                  WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Hook));
 
             case FLAILS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Heavy_Swing, WEAPON_ATTACKS.Chain_Thrust,
                  WEAPON_ATTACKS.Head_Smash));
             case HAMMERS:
-                return StringMaster
+                return ContainerUtils
                  .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
                   WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
             case MACES:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Heavy_Swing));
             case CLUBS:
-                return StringMaster
+                return ContainerUtils
                  .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Heavy_Swing,
                   WEAPON_ATTACKS.Head_Smash, WEAPON_ATTACKS.Slam));
 
             case GREAT_SWORDS:
             case LONG_SWORDS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Sword_Swing, WEAPON_ATTACKS.Slash,
                  WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Hilt_Smash));
             case SHORT_SWORDS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash,
                  WEAPON_ATTACKS.Hilt_Smash, WEAPON_ATTACKS.Stab));
             case DAGGERS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Blade_Thrust, WEAPON_ATTACKS.Slash, WEAPON_ATTACKS.Stab));
 
             case SCYTHES:
-                return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook,
+                return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook,
                  WEAPON_ATTACKS.Axe_Swing, WEAPON_ATTACKS.Hack, WEAPON_ATTACKS.Pole_Push,
                  WEAPON_ATTACKS.Pole_Smash));
             case SPEARS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Spear_Poke, WEAPON_ATTACKS.Impale,
                  WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Push));
             case STAVES:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Pole_Smash, WEAPON_ATTACKS.Pole_Thrust,
                  WEAPON_ATTACKS.Pole_Push));
             case SHIELDS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Shield_Push, WEAPON_ATTACKS.Shield_Bash));
             case CLAWS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Rip));
             case FISTS:
-                return StringMaster.constructStringContainer(ListMaster
+                return ContainerUtils.constructStringContainer(ListMaster
                  .toList(WEAPON_ATTACKS.Punch, WEAPON_ATTACKS.Fist_Swing,
                   WEAPON_ATTACKS.Elbow_Smash));
             case FEET:
-                return StringMaster
+                return ContainerUtils
                  .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
             case MAWS:
-                return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
+                return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
                  WEAPON_ATTACKS.Dig_Into, WEAPON_ATTACKS.Tear));
             case FANGS:
-                return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
+                return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
                  WEAPON_ATTACKS.Dig_Into));
             case TAILS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Tail_Smash, WEAPON_ATTACKS.Tail_Sting));
             case HORNS:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Tear));
             case INSECTOID:
-                return StringMaster.constructStringContainer(ListMaster.toList(
+                return ContainerUtils.constructStringContainer(ListMaster.toList(
                  WEAPON_ATTACKS.Pierce, WEAPON_ATTACKS.Slice, WEAPON_ATTACKS.Stab));
             case HOOVES:
-                return StringMaster.constructStringContainer(ListMaster
+                return ContainerUtils.constructStringContainer(ListMaster
                  .toList(WEAPON_ATTACKS.Hoof_Slam));
             case BEAKS:
-                return StringMaster.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
+                return ContainerUtils.constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Bite,
                  WEAPON_ATTACKS.Tear, WEAPON_ATTACKS.Dig_Into));
             case EYES:
-                return StringMaster
+                return ContainerUtils
                  .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
             case FORCE:
-                return StringMaster
+                return ContainerUtils
                  .constructStringContainer(ListMaster.toList(WEAPON_ATTACKS.Hook));
 
         }

@@ -199,22 +199,21 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         GREAT_ROOM, STAR, RING, CROSS, LABYRINTH, PROMENADE, SERPENT, CLASSIC, PRISON_CELLS,
     }
 
-    public enum ROOM_TEMPLATE {
-        // DARK_STUDY("0-0=Bookshelf;"),;
-    }
+
 
     // how to support more loose building for, say, natural caverns?
 
     public enum ROOM_TYPE {
-        TREASURE_ROOM(25, 15, 3, 7, 2, 6),
         THRONE_ROOM(60, 45, 3, 0, 4, 0),
+        COMMON_ROOM(25, 25),
+        CORRIDOR(15, 15, 1, 4, 3, 6),
+        TREASURE_ROOM(25, 15, 3, 7, 2, 6),
         DEATH_ROOM(30, 15, 2, 4, 3, 5),
         GUARD_ROOM(25, 25, 3, 6, 2, 4),
-        COMMON_ROOM(25, 25),
         ENTRANCE_ROOM(15, 35),
         EXIT_ROOM(35, 15),
         SECRET_ROOM(15, 15, 1, 4, 3, 6),
-        BATTLEFIELD(100, 100, 3, 0, 4, 0), CORRIDOR(15, 15, 1, 4, 3, 6);
+        BATTLEFIELD(100, 100, 3, 0, 4, 0);
 
         private int heightMod;
         private int widthMod;

@@ -11,6 +11,7 @@ import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
 import main.data.ability.construct.VariableManager;
 import main.entity.Entity;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -106,7 +107,7 @@ public class SpellUpgradeMaster {
 
     public static List<SPELL_UPGRADE> getUpgradesFromSpell(Entity spell, boolean active) {
         List<SPELL_UPGRADE> list = new ArrayList<>();
-        for (String s : StringMaster.open(spell
+        for (String s : ContainerUtils.open(spell
          .getProperty(((active ? PROPS.SPELL_UPGRADES : PROPS.SPELL_UPGRADE_GROUPS))))) {
 
             SPELL_UPGRADE su = new EnumMaster<SPELL_UPGRADE>().retrieveEnumConst(
@@ -133,7 +134,7 @@ public class SpellUpgradeMaster {
         if (TEST_MODE) {
             return true;
         }
-        if (spell.getIntParam(PARAMS.MAX_SPELL_UPGRADES) < StringMaster.openContainer(
+        if (spell.getIntParam(PARAMS.MAX_SPELL_UPGRADES) < ContainerUtils.openContainer(
          spell.getProperty(PROPS.SPELL_UPGRADES)).size()) {
             return false;
         }
@@ -160,7 +161,7 @@ public class SpellUpgradeMaster {
     }
 
     public static void initSpellUpgrades(Unit hero) {
-        List<String> list = StringMaster.openContainer(hero.getProperty(PROPS.SPELL_UPGRADES));
+        List<String> list = ContainerUtils.openContainer(hero.getProperty(PROPS.SPELL_UPGRADES));
         if (list.isEmpty()) {
             return;
         }

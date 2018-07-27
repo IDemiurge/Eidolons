@@ -11,8 +11,8 @@ import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.screens.map.ui.time.MapTimePanel.MOON;
 import main.data.filesys.PathFinder;
+import main.system.PathUtils;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 2/27/2018.
@@ -40,9 +40,9 @@ public class MoonActor extends Group {
         circle = new ImageContainer(getPath() +
 //         moon.name() +
          "circle.png");
-        underlay = new ImageContainer(getPath() + "under" + StringMaster.getPathSeparator() +
+        underlay = new ImageContainer(getPath() + "under" + PathUtils.getPathSeparator() +
          moon.name() + ".png");
-        overlay = new ImageContainer(getPath() + "over" + StringMaster.getPathSeparator() +
+        overlay = new ImageContainer(getPath() + "over" + PathUtils.getPathSeparator() +
          moon.name() + ".png");
 
         circle.setAlphaTemplate(ALPHA_TEMPLATE.MOON);
@@ -148,7 +148,7 @@ public class MoonActor extends Group {
 
     private String getPath() {
         return StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "moons") + StringMaster.getPathSeparator();
+         , "component", "time panel", "moons") + PathUtils.getPathSeparator();
     }
 
     public void setActive(boolean active) {

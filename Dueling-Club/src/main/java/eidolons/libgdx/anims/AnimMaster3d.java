@@ -27,9 +27,9 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.launch.CoreEngine;
 
@@ -191,7 +191,7 @@ public class AnimMaster3d {
                                                   Boolean offhand) {
         StringBuilder s = new StringBuilder();
         s.append(
-         StringMaster.join(SEPARATOR,
+         ContainerUtils.join(SEPARATOR,
           weaponName,
           actionName, ANIM, projection
          ));

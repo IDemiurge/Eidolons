@@ -15,6 +15,8 @@ import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.system.PathUtils;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
@@ -146,7 +148,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
     }
 
     private float getSpeed(String path) {
-        List<String> paths = StringMaster.getPathSegments(path);
+        List<String> paths = PathUtils.getPathSegments(path);
         if (paths.size() > 1) {
             switch (paths.get(1)) {
                 case "leaves":
@@ -173,7 +175,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
     }
 
     public void load(String data, DAY_TIME time) {
-        for (String sub : StringMaster.openContainer(data)) {
+        for (String sub : ContainerUtils.openContainer(data)) {
             if (broken.contains(sub))
                 continue;
             String pos = VariableManager.getVarPart(sub);

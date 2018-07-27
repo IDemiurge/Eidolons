@@ -8,7 +8,7 @@ import eidolons.game.battlecraft.logic.dungeon.universal.UnitData;
 import eidolons.game.battlecraft.logic.dungeon.universal.UnitData.PARTY_VALUE;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.FileManager;
 import main.system.data.DataUnitFactory;
 
@@ -55,7 +55,7 @@ public class TestSpawner extends Spawner<TestDungeon> {
     }
 
     public void spawnUnitsAt(List<Unit> units, Coordinates coordinates) {
-        List<String> partyTypes = StringMaster.toNameList(units);
+        List<String> partyTypes = ContainerUtils.toNameList(units);
         List<Coordinates> coordinateList = ((TestPositioner) getPositioner())
          .initPartyCoordinates(partyTypes, null);
         int index = 0;

@@ -4,6 +4,7 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
 import main.system.text.TextParser;
 
@@ -97,7 +98,7 @@ public class DynamicValueParser {
             obj_ref = null;
             param = StringMaster.getSubString(ref_substring, "" + '{', "" + '}', false);
         }
-        if (StringMaster.isInteger(param)) {
+        if (NumberUtils.isInteger(param)) {
             String parsedString = TextParser.parse(ref_substring, ref);
             if (!TextParser.isRef(parsedString)) {
                 return new Formula(parsedString).getInt(ref);

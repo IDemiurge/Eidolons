@@ -42,6 +42,7 @@ import main.entity.obj.BuffObj;
 import main.entity.type.ObjType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.launch.CoreEngine;
@@ -294,7 +295,7 @@ public class HeroManager {
     public static WEAPON_CLASS getWeaponClass(String type) {
         ObjType objType = DataManager.getType(type, DC_TYPE.WEAPONS);
         if (objType == null) {
-            objType = Eidolons.game.getObjectById(StringMaster.getInteger(type)).getType();
+            objType = Eidolons.game.getObjectById(NumberUtils.getInteger(type)).getType();
         }
         return getWeaponClass(objType);
     }

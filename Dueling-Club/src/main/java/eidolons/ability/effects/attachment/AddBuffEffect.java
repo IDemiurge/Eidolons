@@ -24,6 +24,7 @@ import main.entity.Ref.KEYS;
 import main.entity.obj.BuffObj;
 import main.entity.obj.Obj;
 import main.entity.type.BuffType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.entity.ConditionMaster;
@@ -223,7 +224,7 @@ public class AddBuffEffect extends MultiEffect implements OneshotEffect, Resisti
             return;
         }
         String prop = ref.getActive().getProperty(PROPS.RETAIN_CONDITIONS, false);
-        for (String s : StringMaster.open(prop)) {
+        for (String s : ContainerUtils.open(prop)) {
             RETAIN_CONDITIONS template = new EnumMaster<RETAIN_CONDITIONS>().retrieveEnumConst(
              RETAIN_CONDITIONS.class, s);
             Condition condition;
