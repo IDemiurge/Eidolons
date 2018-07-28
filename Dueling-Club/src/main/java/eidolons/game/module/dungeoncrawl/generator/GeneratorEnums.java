@@ -78,7 +78,7 @@ OOO##
 
         DOOR_CHANCE_COMMON(75, 0, 100),
         WRAP_ROOMS(1, 0, 2),
-        WRAP_CELL_TYPE(ROOM_CELL.DESTRUCTIBLE.getSymbol(), ROOM_CELL.WALL.getSymbol()),
+        WRAP_CELL_TYPE(ROOM_CELL.VOID.getSymbol(), ROOM_CELL.DESTRUCTIBLE.getSymbol(), ROOM_CELL.WALL.getSymbol()),
 
         TREASURE_ROOM_COEF(3, 0, 10),
         THRONE_ROOM_COEF(1, 0, 3),
@@ -188,12 +188,14 @@ OOO##
         SPECIAL_CONTAINER("c"),
         SPECIAL_DOOR("d"),
         SPECIAL_ART_OBJ("a"),
-            /*
-        false_wall,
-        BUTTON,
-        SHRINE,
+        /*
+    false_wall,
+    BUTTON,
+    SHRINE,
 
-         */;
+     */
+        VOID(".")
+        ;
         static ROOM_CELL[] vals = ROOM_CELL.values();
         public final String symbol;
 

@@ -31,7 +31,7 @@ public class RoomAttacher {
     }
 
     public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
-                               boolean getEntranceOrRoomCoordinates) {
+                                     boolean getEntranceOrRoomCoordinates) {
         int x = point.x;
         int y = point.y;
         int i = 1;
@@ -41,14 +41,27 @@ public class RoomAttacher {
         int height = parent.getHeight();
 
         if (side == FACING_DIRECTION.SOUTH) {
-            x -= i * width / 2; //centered ...
+            //  otherwise it is already compensated
+            if (parent.isDisplaced())
+                if (width % 2 == 0)
+                    width++;
+            x -= i * width / 2;
             y -= i * height;
         } else if (side == FACING_DIRECTION.NORTH) {
+            if (parent.isDisplaced())
+                if (width % 2 == 0)
+                    width++;
             x -= i * width / 2;
         } else if (side == FACING_DIRECTION.EAST) {
             x -= i * width;
+            if (!parent.isDisplaced())
+                if (height % 2 == 0)
+                    height--;
             y -= i * height / 2;
         } else if (side == FACING_DIRECTION.WEST) {
+            if (!parent.isDisplaced())
+                if (height % 2 == 0)
+                    height -= 1;
             y -= i * height / 2;
         }
         return new AbstractCoordinates(x, y);

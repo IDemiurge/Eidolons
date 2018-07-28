@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
@@ -39,7 +40,7 @@ public class RoomTemplateMaster {
     public static final boolean SINGLE_FILE_DATA = true;
     public static final boolean MERGE_SINGLE_FILE_DATA = false;
     private static final String MODEL_SPLITTER = "=";
-    private static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.EAST;
+    private static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     private static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
     private static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
     private final LevelData levelData;
@@ -182,14 +183,20 @@ public class RoomTemplateMaster {
          ROOM_TEMPLATE_GROUP group, ROOM_TYPE type,boolean merged) {
         if (merged) {
             try {
-                return preloadedData.get(group).get(type).get(exitTemplate);
+                return
+                 processRoomData(preloadedData.get(group).get(type).get(exitTemplate));
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         String path = getRoomPath(exitTemplate, group, type);
         File sub = new File(path);
-        return FileManager.readFile(sub).trim();
+            return
+             processRoomData(FileManager.readFile(sub).trim());
+    }
+
+    private String processRoomData(String s) {
+        return s.replace("0", "O");
     }
 
     private String getRoomPath(EXIT_TEMPLATE exitTemplate, ROOM_TEMPLATE_GROUP group, ROOM_TYPE type) {
@@ -256,9 +263,11 @@ public class RoomTemplateMaster {
                 return null;
             return getNextLargestRandomModel(roomType, template, entrance, templateGroup);
         }
-
+        FACING_DIRECTION exit =entrance!=null && entrance.isVertical()&& template == EXIT_TEMPLATE.THROUGH ? FacingMaster.rotate180(entrance)
+         : entrance; //why is this required?!
         Boolean[] rotations =
-         RotationMaster.getRotations(entrance, DEFAULT_ENTRANCE_SIDE);
+         RotationMaster.getRotations(
+          exit, DEFAULT_ENTRANCE_SIDE);
         RoomModel model = new RandomWizard<RoomModel>().getRandomListItem(models);
         model = clone(model);
         if (rotations != null) {

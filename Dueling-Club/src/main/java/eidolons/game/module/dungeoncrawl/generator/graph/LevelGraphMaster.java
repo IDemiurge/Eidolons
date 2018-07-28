@@ -8,6 +8,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_GRAPH_LI
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.PATH_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
@@ -46,17 +47,19 @@ public class LevelGraphMaster {
 
         graph.addNode(ROOM_TYPE.THRONE_ROOM);
 
-        int n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.TREASURE_ROOM_COEF));
-        graph.addNodes(ROOM_TYPE.TREASURE_ROOM, n);
-
-        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.GUARD_ROOM_COEF));
-        graph.addNodes(ROOM_TYPE.GUARD_ROOM, n);
-
-        n = Math.round(sizeMode * RandomWizard.getRandomInt(1 + data.getIntValue(LEVEL_VALUES.DEATH_ROOM_COEF)));
-        graph.addNodes(ROOM_TYPE.DEATH_ROOM, n);
-
-        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.SECRET_ROOM_COEF));
-        graph.addNodes(ROOM_TYPE.SECRET_ROOM, n);
+        int n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.COMMON_ROOM_COEF));
+        graph.addNodes(ROOM_TYPE.COMMON_ROOM, n);
+        //         n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.TREASURE_ROOM_COEF));
+        //        graph.addNodes(ROOM_TYPE.TREASURE_ROOM, n);
+        //
+        //        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.GUARD_ROOM_COEF));
+        //        graph.addNodes(ROOM_TYPE.GUARD_ROOM, n);
+        //
+        //        n = Math.round(sizeMode * RandomWizard.getRandomInt(1 + data.getIntValue(LEVEL_VALUES.DEATH_ROOM_COEF)));
+        //        graph.addNodes(ROOM_TYPE.DEATH_ROOM, n);
+        //
+        //        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.SECRET_ROOM_COEF));
+        //        graph.addNodes(ROOM_TYPE.SECRET_ROOM, n);
 
         unconnected = new ArrayList<>(graph.getNodes());
         unconnected.removeIf(node -> ListMaster.isNotEmpty(graph.getAdjList().get(node)));
@@ -80,13 +83,13 @@ public class LevelGraphMaster {
          */
         List<LevelZone> zones = ZoneCreator.createZones(data);
         //sort
-//        List<LevelGraphNode> unallocated = new ArrayList<>(graph.getNodes());
-//        for (LevelZone zone : zones) {
-//            //radius?
-//            List<LevelGraphNode> nodes = getNodesForZone(zone);
-//            unallocated.removeAll(nodes);
-//            //            nodes.forEach(node-> node.setZoneIndex(i));
-//        }
+        //        List<LevelGraphNode> unallocated = new ArrayList<>(graph.getNodes());
+        //        for (LevelZone zone : zones) {
+        //            //radius?
+        //            List<LevelGraphNode> nodes = getNodesForZone(zone);
+        //            unallocated.removeAll(nodes);
+        //            //            nodes.forEach(node-> node.setZoneIndex(i));
+        //        }
         graph.setZones(zones);
     }
 
@@ -245,7 +248,8 @@ public class LevelGraphMaster {
 
     private ROOM_TYPE getLinkNodeType(LevelGraphNode node, int i) {
         if (node.getRoomType() == ROOM_TYPE.COMMON_ROOM) {
-            return RandomWizard.random() ? ROOM_TYPE.GUARD_ROOM : ROOM_TYPE.DEATH_ROOM;
+            if (!LevelGenerator.TEST_MODE)
+                return RandomWizard.random() ? ROOM_TYPE.GUARD_ROOM : ROOM_TYPE.DEATH_ROOM;
         }
         return ROOM_TYPE.COMMON_ROOM;
     }

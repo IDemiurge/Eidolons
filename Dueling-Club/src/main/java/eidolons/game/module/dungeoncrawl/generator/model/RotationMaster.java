@@ -19,7 +19,9 @@ public class RotationMaster {
     }
 
     public static  Boolean[] getRotations(FACING_DIRECTION from, FACING_DIRECTION to) {
-        if (from == null)
+        if (from == null){
+            if (!isRotateNull())
+                return new Boolean[0];
             //for default entrance! full random...
             return new Boolean[]{
              RandomWizard.random(),
@@ -27,6 +29,7 @@ public class RotationMaster {
              RandomWizard.random(),
              RandomWizard.random()
             };
+        }
         if (to == null)
             return new Boolean[0];
         int dif = from.getDirection().getDegrees() - to.getDirection().getDegrees();
@@ -37,5 +40,9 @@ public class RotationMaster {
         Boolean[] bools = new Boolean[Math.abs(turns)];
         Arrays.fill(bools, clockwise);
         return bools;
+    }
+
+    private static boolean isRotateNull() {
+        return false;
     }
 }

@@ -25,7 +25,7 @@ public class ExitMaster {
             if (links == 0)
                 return EXIT_TEMPLATE.CUL_DE_SAC;
             else if (links == 2)
-                return EXIT_TEMPLATE.FORK;
+                return RandomWizard.random()?  EXIT_TEMPLATE.FORK : EXIT_TEMPLATE.CROSSROAD;
             else if (links >= 3)
                 return EXIT_TEMPLATE.CROSSROAD;
             else return EXIT_TEMPLATE.THROUGH;
@@ -42,7 +42,7 @@ public class ExitMaster {
 
     public static EXIT_TEMPLATE getRandomSingleExitTemplate() {
         return
-         RandomWizard.random() ? EXIT_TEMPLATE.ANGLE :
+         RandomWizard.random() ? RandomWizard.random() ?EXIT_TEMPLATE.THROUGH: EXIT_TEMPLATE.ANGLE :
           EXIT_TEMPLATE.THROUGH;
     }
 

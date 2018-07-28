@@ -13,11 +13,16 @@ public class RoomModel {
     protected   String[][] cells;
     protected String cellsString;
     protected Boolean[] rotations;
+    protected boolean displaced;
 
     public RoomModel(String[][] cells, ROOM_TYPE type, EXIT_TEMPLATE exitTemplate) {
         this.cells = cells;
         this.type = type;
         this.exitTemplate = exitTemplate;
+    }
+
+    public boolean isDisplaced() {
+        return displaced;
     }
 
     public Boolean[] getRotations() {

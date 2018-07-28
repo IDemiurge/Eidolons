@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
  * Created by JustMe on 2/16/2018.
  */
 public class Room extends RoomModel {
-    private   FACING_DIRECTION[] exits;
-    private   FACING_DIRECTION  entrance;
+    private FACING_DIRECTION[] exits;
+    private FACING_DIRECTION entrance;
     private Coordinates point; //upper-left?
     private Coordinates entranceCoordinates;
     private LevelZone zone;
@@ -26,28 +26,31 @@ public class Room extends RoomModel {
     public Room(Coordinates roomCoordinates, RoomModel model) {
         super(model.cells, model.type, model.exitTemplate);
         setCoordinates(roomCoordinates);
-//        rotateExits(model.getRotated());
+        this.rotations = model.getRotations();
+        rotateExits(model.getRotations());
         //TODO won't work for non-square!!!
 
     }
-        public void makeExit(FACING_DIRECTION exit, boolean door){
-          entranceCoordinates = RoomAttacher.adjust(new AbstractCoordinates(0, 0),(exit), this, true);
-        if (entranceCoordinates.y==getHeight())
+
+    public void makeExit(FACING_DIRECTION exit, boolean door) {
+        entranceCoordinates = RoomAttacher.adjust(new AbstractCoordinates(0, 0), (exit), this, true);
+        if (entranceCoordinates.y == getHeight())
             entranceCoordinates.y--;
-        if (entranceCoordinates.x==getWidth())
+        if (entranceCoordinates.x == getWidth())
             entranceCoordinates.x--;
         //TODO check if this is necessary
-        cells[entranceCoordinates.x][entranceCoordinates.y] =door? ROOM_CELL.DOOR.getSymbol()
-        : ROOM_CELL.EXIT.getSymbol();
+        cells[entranceCoordinates.x][entranceCoordinates.y] = door ? ROOM_CELL.DOOR.getSymbol()
+         : ROOM_CELL.EXIT.getSymbol();
 
-        if (exitCoordinatess==null )
+        if (exitCoordinatess == null)
             exitCoordinatess = new ArrayList<>();
         if (!exitCoordinatess.contains(new AbstractCoordinates(entranceCoordinates.x, entranceCoordinates.y)))
-         this.exitCoordinatess.add(new AbstractCoordinates(entranceCoordinates.x, entranceCoordinates.y));
+            this.exitCoordinatess.add(new AbstractCoordinates(entranceCoordinates.x, entranceCoordinates.y));
     }
+
     public FACING_DIRECTION[] getExits() {
         if (exits == null) {
-            FACING_DIRECTION[] exits= ExitMaster. getExits( getExitTemplate(), rotations);
+            FACING_DIRECTION[] exits = ExitMaster.getExits(getExitTemplate());
             setExits(exits);
         }
         return exits;
@@ -63,61 +66,68 @@ public class Room extends RoomModel {
 
     public Coordinates setNewEntrance(FACING_DIRECTION entrance) {
         this.entrance = entrance;
-//        makeExit(FacingMaster.rotate180(entrance));
+        //        makeExit(FacingMaster.rotate180(entrance));
 
-         return shearWallsFromSide(entrance);
+        return shearWallsFromSide(entrance);
     }
 
 
-        public Coordinates shearWallsFromSide(FACING_DIRECTION entrance) {
-        int offsetX=0;
-        int offsetY=0;
-        int cropX=0;
-        int cropY=0;
+    public Coordinates shearWallsFromSide(FACING_DIRECTION entrance) {
+        int offsetX = 0;
+        int offsetY = 0;
+        int cropX = 0;
+        int cropY = 0;
         switch (entrance) {
             case NORTH:
-                offsetY=1;
+                offsetY = 1;
                 break;
             case EAST:
-                cropX=1;
+                cropX = 1;
                 break;
             case WEST:
-                offsetX=1;
+                offsetX = 1;
                 break;
             case SOUTH:
-                cropY=1;
+                cropY = 1;
                 break;
         }
-        int w=getWidth()-offsetX-cropX;
-        int h=getHeight()-offsetY-cropY;
-        String[][]  newCells = new String[w][h];
-        for (int x = 0; x < w ; x++) {
-            for (int y = 0; y < h ; y++) {
+        int w = getWidth() - offsetX - cropX;
+        int h = getHeight() - offsetY - cropY;
+        String[][] newCells = new String[w][h];
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
                 newCells[x][y] = cells[x + offsetX][y + offsetY];
             }
         }
-        cells= newCells;
-        point = new AbstractCoordinates(point.x - offsetX+cropX, point.y - offsetY+cropY);
-         return point;
+        cells = newCells;
+
+        //only ever increase Y and decrease X
+        displaced = cropX > 0 || cropY > 0;
+        if (displaced)
+            point = new AbstractCoordinates(
+             point.x +cropX,
+             point.y +cropY
+            );
+        return point;
     }
 
     @Override
     public void setRotations(Boolean[] rotations) {
-        if (rotations ==null){
+        if (rotations == null) {
             //TODO reverse = this.rotated; rotate back!
         }
         super.setRotations(rotations);
         rotateExits(rotations);
-        }
+    }
 
     private void rotateExits(Boolean[] rotated) {
-        exits = Arrays.stream(exits).map(exit-> {
+        exits = Arrays.stream(getExits()).map(exit -> {
             FACING_DIRECTION newExit = exit;
             for (Boolean clockwise : rotated) {
-                FacingMaster.rotate(exit, clockwise);
+                newExit = FacingMaster.rotate(newExit, clockwise);
             }
             return newExit;
-        }).collect(Collectors.toList()).toArray(new FACING_DIRECTION[rotated.length]);
+        }).collect(Collectors.toList()).toArray(new FACING_DIRECTION[getExits().length]);
     }
 
     public Coordinates getCoordinates() {

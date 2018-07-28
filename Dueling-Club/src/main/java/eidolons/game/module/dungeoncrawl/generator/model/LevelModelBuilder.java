@@ -45,15 +45,15 @@ public class LevelModelBuilder {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        new ModelFinalizer(templateMaster, attacher).finalize(model, data);
+        new ModelFinalizer(templateMaster, attacher).finalize(model, data, this);
         return model;
     }
 
     public void build() {
         build(false, graph.getNodeById(0), getBaseCoordinates(), null);
-        if (isBuildFromExit()) {
-            build(true, graph.getNodeById(1), getExitCoordinates(), FacingMaster.getRandomFacing());
-        }
+//        if (isBuildFromExit()) {
+//            build(true, graph.getNodeById(1), getExitCoordinates(), FacingMaster.getRandomFacing());
+//        }
     }
 
     private Coordinates getExitCoordinates() {
@@ -76,7 +76,7 @@ public class LevelModelBuilder {
             return false;
         if (links.size() == 1)
             return false;
-        return true;
+        return isMergeLinksAllowed();
         //        return RandomWizard.random();
     }
 
@@ -281,7 +281,13 @@ public class LevelModelBuilder {
         return true;
     }
 
-    private Room findFittingAndAttach(Room parent, EXIT_TEMPLATE roomExitTemplate,
+    public Room findFittingAndAttach(Room room,
+                                     EXIT_TEMPLATE exitTemplate, ROOM_TYPE type,
+                                     FACING_DIRECTION parentExit, LevelZone zone) {
+        this.zone=zone;
+        return findFittingAndAttach(room, exitTemplate, type, parentExit);
+    }
+    public Room findFittingAndAttach(Room parent, EXIT_TEMPLATE roomExitTemplate,
                                       ROOM_TYPE roomType, FACING_DIRECTION parentExit) {
         Coordinates entranceCoordinates;
         if (parent != null)
@@ -315,6 +321,9 @@ public class LevelModelBuilder {
 
     private boolean isAltExitsAllowed() {
         return false;
+    }
+    private boolean isMergeLinksAllowed() {
+        return true;
     }
 
 

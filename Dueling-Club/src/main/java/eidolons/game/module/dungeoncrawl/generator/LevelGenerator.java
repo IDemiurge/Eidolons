@@ -35,6 +35,8 @@ import java.util.Set;
  */
 public class LevelGenerator {
 
+    public static final boolean TEST_MODE = true;
+
     public static void main(String[] args) {
         Loop loop = new Loop(7);
         List<TileMap> maps = new ArrayList<>();

@@ -31,11 +31,11 @@ public class ModelFinalizer {
         this.attacher = attacher;
     }
 
-    public void finalize(LevelModel model, LevelData data) {
-        List<Room> beans = model.getRoomMap().values().stream().filter(room -> ModelMaster.isRoomOnEdge(room, model)).collect(
-         Collectors.toList());
+    public void finalize(LevelModel model, LevelData data, LevelModelBuilder builder) {
+        List<Room> beans = model.getRoomMap().values().stream().filter(
+         room -> ModelMaster.isRoomOnEdge(room, model)).collect(Collectors.toList());
 
-        //identify where there is the most empty space... to filter beans on each loop
+        //identify where there is the most empty space... to sort beans on each loop
         Boolean N_S = false;
         Boolean W_E = false;
         while (true) {
@@ -48,7 +48,7 @@ public class ModelFinalizer {
             if (N_S==null )
                 roomExit = BooleanMaster.isTrue(W_E) ? FACING_DIRECTION.WEST : FACING_DIRECTION.EAST;
 
-            Room newRoom = attacher.findFitting(p, EXIT_TEMPLATE.CUL_DE_SAC, ROOM_TYPE.TREASURE_ROOM,
+            Room newRoom =builder.findFittingAndAttach(room,  EXIT_TEMPLATE.CUL_DE_SAC, ROOM_TYPE.TREASURE_ROOM,
              roomExit, room.getZone());
 
             int n = ModelMaster.getAdjacentToVoid(model, room, roomExit);
