@@ -1,7 +1,10 @@
 package eidolons.game.module.dungeoncrawl.generator.fill;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.List;
 
@@ -10,11 +13,15 @@ import java.util.List;
  */
 public interface RngFillerInterface {
 
-    int getMaxAdjacency(ROOM_CELL filler);
+    default int getMaxAdjacency(ROOM_CELL filler) {
+        return 1;
+    }
 
     boolean isNoAdjacencyLimits();
 
-    List<ROOM_TYPE> getMandatoryTypes();
+    default List<ROOM_TYPE> getMandatoryTypes() {
+        return new ListMaster<ROOM_TYPE>().toList_(ROOM_TYPE.values());
+    }
 
     boolean isNeverBlock();
 
@@ -22,11 +29,49 @@ public interface RngFillerInterface {
 
     boolean isFloorOrWallFiller();
 
-    float getFillCoef(ROOM_TYPE type);
+    default float getFillCoef(ROOM_TYPE type) {
+        return 1;
+    }
 
-    float getMinMandatoryFill();
+    default float getFillCoef() {
+        return 1;
+    }
 
-    float getMaxMandatoryFill();
+    default float getFillCoef_() {
+        if (getFillCoefConst() != null)
+            return getFillCoef() * getData().getIntValue(getFillCoefConst())/100;
+        return getFillCoef();
+    }
 
-      float getMinAdditionalFill();
+    LEVEL_VALUES getFillCoefConst();
+
+    LevelData getData();
+
+    default float getRequiredFillDefault() {
+        return 0.5f * getFillCoef();
+    }
+
+    default float getMinMandatoryFill() {
+        return 0.25f * getFillCoef_();
+    }
+
+    default float getMaxMandatoryFill() {
+        return 0.5f * getFillCoef();
+    }
+
+    default float getMinAdditionalFill() {
+        return 0.2f * getFillCoef();
+    }
+
+    default float getMaxDistanceFromEdge() {
+        return -1;
+    }
+
+    default boolean isAlternativeCenterDistance() {
+        return false;
+    }
+
+    default float getMaxDistanceFromCenter() {
+        return -1;
+    }
 }

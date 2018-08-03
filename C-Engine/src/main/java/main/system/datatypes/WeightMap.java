@@ -1,6 +1,7 @@
 package main.system.datatypes;
 
 import main.data.XLinkedMap;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 
@@ -19,7 +20,11 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
     }
 
-    public WeightMap<E> putChain(E key, Integer value) {
+    public WeightMap<E> chain(Object key, Integer value) {
+        super.put((E) key.toString(), value);
+        return  this;
+    }
+        public WeightMap<E> putChain(E key, Integer value) {
           super.put(key, value);
           return  this;
     }
@@ -28,9 +33,10 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
     public String toString() {
         String string = "";
         for (E e : keySet()) {
-            string += e + StringMaster.wrapInParenthesis(StringMaster.toStringForm(get(e)));
+            string += e + StringMaster.wrapInParenthesis(StringMaster.toStringForm(get(e)))
+            + ContainerUtils.getContainerSeparator();
         }
-        return super.toString();
+        return string;
     }
 
     public WeightMap(Map<E, Integer> map) {

@@ -7,12 +7,12 @@ import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.macro.map.Place;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
-import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
+import main.entity.Entity;
 import main.entity.type.ObjType;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
@@ -97,7 +97,7 @@ public class ScenarioGenerator {
         return true;
     }
 
-    public static ObjType generateRandomLevelScenario(Place place){
+    public static ObjType generateRandomLevelScenario(Entity place){
         ObjType templateType =
          DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
 
@@ -106,7 +106,7 @@ public class ScenarioGenerator {
 
 
         LOCATION_TYPE locationType =  new EnumMaster<LOCATION_TYPE>().
-         retrieveEnumConst(LOCATION_TYPE.class, place.getProperty(PROPS.SUBDUNGEON_TYPE));
+         retrieveEnumConst(LOCATION_TYPE.class, place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
 
       int n = 3;
         List<SUBLEVEL_TYPE > types =
@@ -123,8 +123,7 @@ public class ScenarioGenerator {
             String stringData = level.toXml();
            String  name =locationType+" "+ type;
             name =   NameMaster.getUniqueVersionedFileName(name,
-             StrPathBuilder.build( PathFinder.getDungeonLevelFolder(),
-             "generated", type.name()));
+             StrPathBuilder.build( PathFinder.getRandomLevelPath(), type.name()));
 
             String path = StrPathBuilder.build(PathFinder.getDungeonLevelFolder(),
              "generated", type.name(), name);

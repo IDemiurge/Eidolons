@@ -11,6 +11,9 @@ import main.system.auxiliary.Loop;
 
 import java.util.Collection;
 
+import static main.game.bf.directions.FACING_DIRECTION.*;
+import static main.system.auxiliary.log.LogMaster.log;
+
 /**
  * Created by JustMe on 2/13/2018.
  */
@@ -40,31 +43,54 @@ public class RoomAttacher {
         int width = parent.getWidth();
         int height = parent.getHeight();
 
-        if (side == FACING_DIRECTION.SOUTH) {
+        if (side == SOUTH) {
             //  otherwise it is already compensated
-            if (parent.isDisplaced())
-                if (width % 2 == 0)
-                    width++;
+            if (width % 2 == 0)
+                width = adjustDimension(width, true, parent);
             x -= i * width / 2;
             y -= i * height;
-        } else if (side == FACING_DIRECTION.NORTH) {
-            if (parent.isDisplaced())
-                if (width % 2 == 0)
-                    width++;
+        } else if (side == NORTH) {
+            if (width % 2 == 0)
+                width = adjustDimension(width, true, parent);
             x -= i * width / 2;
-        } else if (side == FACING_DIRECTION.EAST) {
+        } else if (side == EAST) {
             x -= i * width;
-            if (!parent.isDisplaced())
-                if (height % 2 == 0)
-                    height--;
+            if (height % 2 == 0)
+                height = adjustDimension(height, false, parent);
             y -= i * height / 2;
-        } else if (side == FACING_DIRECTION.WEST) {
-            if (!parent.isDisplaced())
-                if (height % 2 == 0)
-                    height -= 1;
+        } else if (side == WEST) {
+            height = adjustDimension(height, false, parent);
             y -= i * height / 2;
         }
         return new AbstractCoordinates(x, y);
+    }
+
+    private static int adjustDimension(int value, boolean xOrY, RoomModel parent) {
+        if (!parent.isDisplaced())
+            if (isAdjustDisplacedOnly())
+                return value;
+        if (xOrY) {
+            if (!isEvenDimensionAdjustedX())
+                return value;
+            value--;
+        } else {
+            if (!isEvenDimensionAdjustedY())
+                return value;
+            value--;
+        }
+        return value;
+    }
+
+    private static boolean isAdjustDisplacedOnly() {
+        return true;
+    }
+
+    private static boolean isEvenDimensionAdjustedX() {
+        return true;
+    }
+
+    private static boolean isEvenDimensionAdjustedY() {
+        return true;
     }
 
     public static Coordinates getAttachCoordinates(Room parent, Room model, FACING_DIRECTION side
@@ -96,6 +122,22 @@ public class RoomAttacher {
         return true;
     }
 
+    public void alignExits(Room parent,
+                           Room child) {
+        if (child.getType() != ROOM_TYPE.EXIT_ROOM && parent.getExitTemplate() != EXIT_TEMPLATE.ANGLE)
+            return;
+        int offset = Traverser.getExitsOffset(parent, child);
+        if (offset == 0)
+            return;
+        if (Math.abs(offset) > 2)
+            return;
+        FACING_DIRECTION to = child.getEntrance().isVertical() ? EAST : SOUTH;
+        if (offset < 0)
+            to = child.getEntrance().isVertical() ? WEST : NORTH;
+        log(1, "ROOM OFFSET: " + child + " to the " + to);
+        model.offset(child, to);
+    }
+
     public Room findFitting(Coordinates entranceCoordinates, EXIT_TEMPLATE roomExitTemplate,
                             ROOM_TYPE roomType, FACING_DIRECTION parentExit, LevelZone zone) {
         Loop loop = new Loop(40); //model.getGenerator().getGeneratorData()
@@ -106,7 +148,7 @@ public class RoomAttacher {
          (parentExit);
         while (true) {
             if (loop.ended()) {
-                main.system.auxiliary.log.LogMaster.log(1, "Failed to place " + roomType + " at " +
+                log(1, "Failed to place " + roomType + " at " +
                  entranceCoordinates + " with parent exit to the " + parentExit);
                 return null;
             }
@@ -119,10 +161,10 @@ public class RoomAttacher {
             }
 
             Coordinates roomCoordinates = getRoomCoordinates(entranceCoordinates, roomEntrance, roomModel);
-            Room room = new Room(roomCoordinates, roomModel);
+            Room room = new Room(roomCoordinates, roomModel, roomEntrance);
             room.setZone(zone);
             if (!canPlace(roomModel, roomCoordinates, model.getOccupiedCells(), data.getX(), data.getY())) {
-                main.system.auxiliary.log.LogMaster.log(1, "Cannot place " + roomModel + " at " +
+                log(1, "Cannot place " + roomModel + " at " +
                  roomCoordinates + " with parent exit to the " + parentExit + "; rooms N=" +
                  model.getRoomMap().size());
 

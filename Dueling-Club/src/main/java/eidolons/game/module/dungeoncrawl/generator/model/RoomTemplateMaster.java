@@ -39,11 +39,11 @@ import java.util.List;
 public class RoomTemplateMaster {
     public static final boolean SINGLE_FILE_DATA = true;
     public static final boolean MERGE_SINGLE_FILE_DATA = false;
+    public static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     private static final String MODEL_SPLITTER = "=";
-    private static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     private static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
     private static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
-    private final LevelData levelData;
+    private final LevelData data;
     private final ROOM_TEMPLATE_GROUP[] groups;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();
     private String wrapType;
@@ -53,11 +53,11 @@ public class RoomTemplateMaster {
     private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> preloadedData;
 
     public RoomTemplateMaster(LevelData data, LevelModel model) {
-        levelData = data;
-        groups = levelData.getTemplateGroups();
+        this.data = data;
+        groups = this.data.getTemplateGroups();
         templateMap = new XLinkedMap<>();
-        wrapType = levelData.getValue(LEVEL_VALUES.WRAP_CELL_TYPE);
-        wrapWidth = levelData.getIntValue(LEVEL_VALUES.WRAP_ROOMS);
+        wrapType = this.data.getValue(LEVEL_VALUES.WRAP_CELL_TYPE);
+        wrapWidth = this.data.getIntValue(LEVEL_VALUES.WRAP_ROOMS);
         if (MERGE_SINGLE_FILE_DATA) {
             mergeData(ROOM_TEMPLATE_GROUP.CRYPT);
             mergeData(ROOM_TEMPLATE_GROUP.CAVE);
@@ -77,7 +77,7 @@ public class RoomTemplateMaster {
         for (ROOM_TEMPLATE_GROUP group : ROOM_TEMPLATE_GROUP.values()) {
             String data = FileManager.readFile(
              getMergedPath(group));
-            String[] byRoom =StringMaster.splitLines(data, false, ROOM_TYPE_SEPARATOR);
+            String[] byRoom = StringMaster.splitLines(data, false, ROOM_TYPE_SEPARATOR);
             Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> submap = new HashMap<>();
             map.put(group, submap);
 
@@ -85,11 +85,11 @@ public class RoomTemplateMaster {
                 roomData = StringMaster.trimNewlines(roomData);
                 ROOM_TYPE roomType = new EnumMaster<ROOM_TYPE>().retrieveEnumConst(ROOM_TYPE.class,
                  StringMaster.splitLines(roomData)[0].trim());
-                if (roomType==null )
+                if (roomType == null)
                     continue;
                 roomData = StringMaster.cropFirstSegment(roomData, StringMaster.NEW_LINE);
 
-                String[] byExit =StringMaster.splitLines(roomData,false,EXIT_TEMPLATE_SEPARATOR);
+                String[] byExit = StringMaster.splitLines(roomData, false, EXIT_TEMPLATE_SEPARATOR);
                 Map<EXIT_TEMPLATE, String> exitMap = new HashMap<>();
                 submap.put(roomType, exitMap);
 
@@ -100,9 +100,9 @@ public class RoomTemplateMaster {
                 for (String part : byExit) {
                     EXIT_TEMPLATE exit = new EnumMaster<EXIT_TEMPLATE>().retrieveEnumConst(EXIT_TEMPLATE.class,
                      StringMaster.splitLines(part)[0].trim());
-                    String text=StringMaster.cropFirstSegment(part, StringMaster.NEW_LINE);
-                    if (!StringMaster.contains(text, ROOM_CELL.FLOOR.getSymbol())){
-                        text = getRoomData(exit,group, roomType, false);
+                    String text = StringMaster.cropFirstSegment(part, StringMaster.NEW_LINE);
+                    if (!StringMaster.contains(text, ROOM_CELL.FLOOR.getSymbol())) {
+                        text = getRoomData(exit, group, roomType, false);
                     }
                     exitMap.put(exit,
                      text);
@@ -130,7 +130,7 @@ public class RoomTemplateMaster {
     private String getMergedPath(ROOM_TEMPLATE_GROUP group) {
         return
          PathFinder.getRoomTemplatesFolder() + group + PathUtils.getPathSeparator()
-          + group.name().toLowerCase()+ " merged.txt";
+          + group.name().toLowerCase() + " merged.txt";
     }
 
     private String getROOM_TYPE_SEPARATOR(ROOM_TYPE type) {
@@ -145,7 +145,7 @@ public class RoomTemplateMaster {
     private void fillTemplateMap(ROOM_TEMPLATE_GROUP group) {
         for (ROOM_TYPE sub : ROOM_TYPE.values()) {
             Map<EXIT_TEMPLATE, List<RoomModel>> map = new HashMap<>();
-            List<RoomModel> common = sub == ROOM_TYPE.CORRIDOR||SINGLE_FILE_DATA
+            List<RoomModel> common = sub == ROOM_TYPE.CORRIDOR || SINGLE_FILE_DATA
              ? new ArrayList<>()
              : loadModels(group, sub, null);
             for (EXIT_TEMPLATE exitTemplate : EXIT_TEMPLATE.values()) {
@@ -165,7 +165,7 @@ public class RoomTemplateMaster {
         List<RoomModel> list = new ArrayList<>();
         String text = getRoomData(exitTemplate, group, type);
         if (text != null) {
-            if (!text.contains(MODEL_SPLITTER)){
+            if (!text.contains(MODEL_SPLITTER)) {
                 return list;
             }
             for (String string : StringMaster.splitLines(text, false, MODEL_SPLITTER))
@@ -179,8 +179,9 @@ public class RoomTemplateMaster {
                                ROOM_TEMPLATE_GROUP group, ROOM_TYPE type) {
         return getRoomData(exitTemplate, group, type, SINGLE_FILE_DATA);
     }
-        private String getRoomData(EXIT_TEMPLATE exitTemplate,
-         ROOM_TEMPLATE_GROUP group, ROOM_TYPE type,boolean merged) {
+
+    private String getRoomData(EXIT_TEMPLATE exitTemplate,
+                               ROOM_TEMPLATE_GROUP group, ROOM_TYPE type, boolean merged) {
         if (merged) {
             try {
                 return
@@ -191,8 +192,8 @@ public class RoomTemplateMaster {
         }
         String path = getRoomPath(exitTemplate, group, type);
         File sub = new File(path);
-            return
-             processRoomData(FileManager.readFile(sub).trim());
+        return
+         processRoomData(FileManager.readFile(sub).trim());
     }
 
     private String processRoomData(String s) {
@@ -263,18 +264,37 @@ public class RoomTemplateMaster {
                 return null;
             return getNextLargestRandomModel(roomType, template, entrance, templateGroup);
         }
-        FACING_DIRECTION exit =entrance!=null && entrance.isVertical()&& template == EXIT_TEMPLATE.THROUGH ? FacingMaster.rotate180(entrance)
-         : entrance; //why is this required?!
+        FACING_DIRECTION exit = entrance;
+        if (entrance != null && entrance.isVertical() &&
+         template == EXIT_TEMPLATE.THROUGH)
+            exit = FacingMaster.rotate180(entrance);
+        //        exit =entrance!=null && !entrance.isVertical()&&
+        //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
+        //         : exit;
+        //why is this required?!
+
         Boolean[] rotations =
-         RotationMaster.getRotations(
+         data.isRandomRotation() ?
+          RotationMaster.getRandomPossibleParentRotations(entrance, template)
+          : RotationMaster.getRotations(
           exit, DEFAULT_ENTRANCE_SIDE);
+
+
         RoomModel model = new RandomWizard<RoomModel>().getRandomListItem(models);
         model = clone(model);
         if (rotations != null) {
             model.setRotations(rotations);
         }
+
+        //        exit =entrance!=null && !entrance.isVertical()&&
+        //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
+        //         : exit;
+        if (entrance != null && !entrance.isVertical() &&
+         template == EXIT_TEMPLATE.ANGLE)
+            model.setFlip(false, true);
         return model;
     }
+
 
     private RoomModel clone(RoomModel model) {
         return new RoomModel(model.getCells(), model.getType(), model.getExitTemplate());
@@ -310,7 +330,8 @@ public class RoomTemplateMaster {
         }
         Collections.sort(dimensions,
          new SortMaster<Dimension>().getSorterByExpression_((Dimension dim)
-          -> (int) -(dim.getHeight() * dim.getWidth())));
+          -> (int) -(dim.getHeight() * dim.getWidth()
+          * (data.isRandomizedSizeSort() ? RandomWizard.getRandomIntBetween(65, 100) : 1))));
 
         for (Dimension dimension : dimensions) {
             roomPoolStack.add(pools.get(dimension));

@@ -12,12 +12,17 @@ public class BlockCreator {
 
     public void createBlocks(LevelModel model) {
         for (Room room : model.getRoomMap().values()) {
+            LevelBlock block =  null   ;
 
-            LevelBlock block = new LevelBlock(room.getZone(),
-             room.getType(), room.getWidth(), room.getHeight(),  TileMapper.createTileMap(room));
-
+            if (model.getMerged() != null) {
+//TODO
+            }
+            block = new LevelBlock(room.getCoordinates(), room.getZone(),
+                 room.getType(), room.getWidth(), room.getHeight(), TileMapper.createTileMap(room));
+            model.getBlocks().put(room, block);
             room.getZone().getSubParts().add(block);
 
         }
+        return;
     }
 }

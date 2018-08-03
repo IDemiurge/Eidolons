@@ -5,6 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.system.auxiliary.RandomWizard;
 import main.system.data.DataUnit;
 
 /**
@@ -32,12 +33,6 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
         super(data);
     }
 
-    public LevelData(SUBLEVEL_TYPE sublevelType, int x, int y, int z) {
-        this.sublevelType = sublevelType;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
 
     public SUBLEVEL_TYPE getSublevelType() {
         return sublevelType;
@@ -75,4 +70,29 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     }
 
 
+    public  boolean isRandomRotation() {
+        return RandomWizard.chance(getIntValue(LEVEL_VALUES.
+        RANDOM_ROTATION_CHANCE));
+    }
+    public boolean isMergeLinksAllowed() {
+        return true;
+    }
+
+    public boolean isFinalizerOn() {
+        return false;
+    }
+
+    public boolean isBuildFromExitAllowed() {
+        return false;
+    }
+
+    public boolean isRandomizedSizeSort() {
+        return false;
+    }
+//    public boolean isShearDisplacedOnly() {
+//        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);
+//    }
+//    public boolean isJoinAllowed() {
+//        return getBooleanValue(LEVEL_VALUES.JoinAllowed);
+//    }
 }

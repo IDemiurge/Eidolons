@@ -10,7 +10,7 @@ public class LevelGraphNode {
     int index;
     ROOM_TYPE roomType;
     GRAPH_NODE_ATTRIBUTE[] appendices;
-    private int zoneIndex;
+    private int zoneIndex=-1;
 
     public LevelGraphNode(ROOM_TYPE roomType, GRAPH_NODE_ATTRIBUTE... appendices) {
         this.roomType = roomType;

@@ -18,15 +18,17 @@ public class LevelBlock  extends LevelLayer<LevelBlock>{
     private int height;
     private List<ObjAtCoordinate> units=    new ArrayList<>() ;
     private List<ObjAtCoordinate> objects=    new ArrayList<>() ;
-    private List<Coordinates> coordinates;
+    private List<Coordinates> coordinatesList;
     private TileMap tileMap;
     private LevelZone zone;
+    Coordinates coordinates;
 
-    public LevelBlock(LevelZone zone,ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
+    public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
         this.width = width;
         this.height = height;
         this.tileMap = tileMap;
+        this.coordinates = coordinates;
         this.zone = zone;
     }
 
@@ -55,24 +57,24 @@ public class LevelBlock  extends LevelLayer<LevelBlock>{
         return objects;
     }
 
-    public List<Coordinates> getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(List<Coordinates> coordinates) {
-        this.coordinates = coordinates;
+    public List<Coordinates> getCoordinatesList() {
+        return coordinatesList;
     }
 
     public DUNGEON_STYLE getStyle() {
         return zone.getStyle();
     }
 
-
     public TileMap getTileMap() {
         return tileMap;
     }
 
-    public void setTileMap(TileMap tileMap) {
-        this.tileMap = tileMap;
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public LevelZone getZone() {
+        return zone;
     }
 }

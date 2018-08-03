@@ -12,4 +12,7 @@ public interface OBJ_TYPE_ENUM {
             return XML_Formatter.restoreXmlNodeName(StringMaster.
              getWellFormattedString(toString()));
     }
+    default String name(){
+        return getName();
+    }
 }

@@ -18,7 +18,7 @@ public class RngTypeChooser {
                                      ROOM_CELL value,
                                      LevelBlock block, DungeonLevel dungeonLevel) {
         DUNGEON_STYLE style= block.getStyle();
-        String mapString=RngConstProvider.getWeightString(value, style);
+        String mapString= RngBfObjProvider.getWeightString(value, style);
         mapString=filter(mapString, c, block, dungeonLevel);
         OBJ_TYPE T= DC_TYPE.BF_OBJ;
         ObjType type = RandomWizard.getObjTypeByWeight(mapString, T);

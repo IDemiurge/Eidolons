@@ -13,7 +13,8 @@ public class RoomModel {
     protected   String[][] cells;
     protected String cellsString;
     protected Boolean[] rotations;
-    protected boolean displaced;
+    protected boolean flipX;
+    protected boolean flipY;
 
     public RoomModel(String[][] cells, ROOM_TYPE type, EXIT_TEMPLATE exitTemplate) {
         this.cells = cells;
@@ -22,7 +23,7 @@ public class RoomModel {
     }
 
     public boolean isDisplaced() {
-        return displaced;
+        return false;
     }
 
     public Boolean[] getRotations() {
@@ -66,7 +67,8 @@ public class RoomModel {
 
     public String getCellsString() {
         cellsString = "";
-        for (String[] sub : cells) {
+        String[][] toDisplay = ArrayMaster.rotateMatrixClockwise(cells);
+        for (String[] sub : toDisplay) {
             for (String sub1 : sub) {
                 cellsString += sub1;
             }
@@ -79,5 +81,12 @@ public class RoomModel {
     public String toString() {
         return type + " Model with exit "
          + exitTemplate + ": \n" + getCellsString();
+    }
+
+    public void setFlip(boolean x, boolean y) {
+        flipX=x;
+        flipY=y;
+        cells = ArrayMaster.flip(cells, x, y);
+
     }
 }

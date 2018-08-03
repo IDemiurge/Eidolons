@@ -1,6 +1,9 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
+import eidolons.content.PROPS;
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
@@ -8,14 +11,18 @@ import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModelBuilder;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import eidolons.macro.generation.ScenarioGenerator;
 import eidolons.macro.map.Place;
 import main.content.enums.DungeonEnums.DUNGEON_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
 import main.data.DataManager;
+import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
+import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
+import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -36,13 +43,19 @@ import java.util.Set;
 public class LevelGenerator {
 
     public static final boolean TEST_MODE = true;
+    private static final boolean REAL = false;
 
     public static void main(String[] args) {
-        Loop loop = new Loop(7);
+        if (REAL){
+            realGeneration();
+            return;
+        }
+        Loop loop = new Loop(5);
+//        KotlinTestKt.max()
         List<TileMap> maps = new ArrayList<>();
         List<LevelModel> models = new ArrayList<>();
         LevelGenerator generator = new LevelGenerator();
-        while (true) {
+        while (loop.continues()) {
             LevelData data = LevelDataMaker.generateData(SUBLEVEL_TYPE.COMMON, LOCATION_TYPE.CRYPT);
             try {
                 LevelModel model = generator.generateLevelModel(data);
@@ -52,22 +65,54 @@ public class LevelGenerator {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (loop.ended()) {
-                break;
-            }
+
         }
         int i = 0;
-        for (LevelModel sub : models) {
+        for (LevelModel model : models) {
             main.system.auxiliary.log.LogMaster.log(1, i++ + ": \n" +
-             sub.toString());
+             model.toString());
+        }
+        for (int j = 0; j < 10; j++) {
+            main.system.auxiliary.log.LogMaster.log(1," " );
+        }
+        for (LevelModel model : models) {
+            RngFillMaster.fill(model,model.getData());
+            main.system.auxiliary.log.LogMaster.log(1, i++ + ": \n" +
+             model.toString());
+
+        }
+
+//        realGeneration();
+    }
+
+    private static void realGeneration() {
+        DC_Engine.mainMenuInit();
+        DC_Engine.dataInit(true);
+//        DataManager.getTypesSubGroup()
+        ObjType placeType = DataManager.getType("Dungeon", MACRO_OBJ_TYPES.PLACE);
+        ObjType scenarioType = ScenarioGenerator.generateRandomLevelScenario(placeType);
+
+        int i = 0;
+        for (String path : ContainerUtils.open(scenarioType.getProperty(PROPS.SCENARIO_MISSIONS))) {
+            String contents =
+             PathFinder.getRandomLevelPath()+ FileManager.readFile(path);
+            main.system.auxiliary.log.LogMaster.log(1, i++ + ": \n" +contents);
+
         }
     }
+
     public  DungeonLevel generateLevel(SUBLEVEL_TYPE sublevelType,
                                        LOCATION_TYPE locationType) {
         LevelData data = LevelDataMaker.generateData(sublevelType,  locationType);
+        return generateLevel(data);
+    }
+
+        public  DungeonLevel generateLevel(LevelData data) {
         LevelModel model =  generateLevelModel(data);
         TileMap tileMap = generateTileMap(model, data);
-        DungeonLevel level = new DungeonLevel(tileMap, model, sublevelType, locationType);
+        DungeonLevel level = new DungeonLevel(tileMap, model, data.getSublevelType(), data.getLocationType());
+
+        RngFillMaster.fill(model,data);
 
         new RngLevelInitializer().init(level);
         return level;
@@ -124,6 +169,10 @@ public class LevelGenerator {
 
 
         return null;
+    }
+
+    public static DungeonLevel generateForData(LevelData data) {
+     return new LevelGenerator().generateLevel(data);
     }
     //    public static void generate(Mission currentMission, Level level) {
     //        Dungeon dungeon = level.getDungeon();

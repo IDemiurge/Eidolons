@@ -73,7 +73,7 @@ public class PathFinder {
         RES_PATH = RES_FOLDER_NAME + File.separator;
         IMG_PATH = ENGINE_PATH + RES_PATH + "img" + PathUtils.getPathSeparator();
 
-        System.out.println(  "IMG_PATH PATH= " + IMG_PATH);
+        System.out.println("IMG_PATH PATH= " + IMG_PATH);
         SND_PATH = ENGINE_PATH + RES_PATH + "sound" + PathUtils.getPathSeparator();
 
         FONT_PATH = ENGINE_PATH + RES_PATH + "Fonts" + PathUtils.getPathSeparator();
@@ -127,6 +127,7 @@ public class PathFinder {
     public static String getSavesPath() {
         return getXML_PATH() + PathUtils.getPathSeparator() + "saves" + PathUtils.getPathSeparator();
     }
+
     public static String getScenariosPath() {
         init();
         return RES_PATH + PathUtils.getPathSeparator() + "text" + PathUtils.getPathSeparator() + "scenario" + PathUtils.getPathSeparator();
@@ -183,8 +184,8 @@ public class PathFinder {
 
     public static String getModulePath() {
         init();
-//        if (CoreEngine.isJar())
-//            return ENGINE_PATH;
+        //        if (CoreEngine.isJar())
+        //            return ENGINE_PATH;
         return StringMaster.cropLastPathSegment(ENGINE_PATH);
     }
 
@@ -240,7 +241,7 @@ public class PathFinder {
 
     public static String getVfxPath() {
         init();
-        return getImagePath() +  "mini" + PathUtils.getPathSeparator() + "sfx"+ PathUtils.getPathSeparator() ;
+        return getImagePath() + "mini" + PathUtils.getPathSeparator() + "sfx" + PathUtils.getPathSeparator();
     }
 
     public static String getSpritesPath() {
@@ -280,8 +281,9 @@ public class PathFinder {
     }
 
     public static String getEmblemsPath() {
-        return StrPathBuilder.build("ui", "emblems" ) + PathUtils.getPathSeparator();
+        return StrPathBuilder.build("ui", "emblems") + PathUtils.getPathSeparator();
     }
+
     public static String getEmblemAutoFindPath() {
         return StrPathBuilder.build("ui", "emblems", "auto") + PathUtils.getPathSeparator();
     }
@@ -352,8 +354,8 @@ public class PathFinder {
 
     public static String getSkinPath() {
         return
-         getImagePath()+
-         "UI\\components\\skin\\neutralizer-ui.json";
+         getImagePath() +
+          "UI\\components\\skin\\neutralizer-ui.json";
     }
 
     public static String getPerkImagePath() {
@@ -367,12 +369,14 @@ public class PathFinder {
          "weapon",
          "icons");
     }
+
     public static String getJewelryIconPath() {
         return StrPathBuilder.build("main",
          "item",
          "Jewelry",
          "icons");
     }
+
     public static String getArmorIconPath() {
         return StrPathBuilder.build("main",
          "item",
@@ -381,13 +385,13 @@ public class PathFinder {
     }
 
     public static String getSketchPath() {
-        return StrPathBuilder.build(getEmblemsPath(), "sketches")+ PathUtils.getPathSeparator();
+        return StrPathBuilder.build(getEmblemsPath(), "sketches") + PathUtils.getPathSeparator();
     }
 
     public static String getPortraitPath() {
-        return StrPathBuilder.build(getImagePath(), "main" ,
-         "chars" ,
-         "std")+
+        return StrPathBuilder.build(getImagePath(), "main",
+         "chars",
+         "std") +
          PathUtils.getPathSeparator();
 
     }
@@ -398,8 +402,13 @@ public class PathFinder {
     }
 
     public static String getRoomTemplatesFolder() {
-        return StrPathBuilder.build(PathFinder.getXML_PATH() , "Level Editor" ,
-         "room templates")+
+        return StrPathBuilder.build(PathFinder.getXML_PATH(), "Level Editor",
+         "room templates") +
          PathUtils.getPathSeparator();
+    }
+
+    public static String getRandomLevelPath() {
+        return StrPathBuilder.build(PathFinder.getDungeonLevelFolder(),
+         "generated") + PathUtils.getPathSeparator();
     }
 }

@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.tilemap;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
@@ -31,16 +32,28 @@ public class TileMapper {
         main.system.auxiliary.log.LogMaster.log(1, model.toASCII_Map());
     }
 
-    public static TileMap createTileMap(Room room) {
-        TileMap tileMap = new TileMap(room.getWidth(), room.getHeight());
+    public static ROOM_CELL[][] toCellArray(String[][] symbols ) {
+        ROOM_CELL[][] cells = new ROOM_CELL[symbols.length][symbols[0].length];
+        int x = 0;
+        for (String[] column : symbols) {
+            for (int y = 0; y < column.length; y++) {
+                String symbol = column[y];
+                cells[x][y] = ROOM_CELL.getBySymbol(symbol);
+            }
+            x++;
+        }
+        return cells;
+    }
+
+        public static TileMap createTileMap(Room room) {    TileMap tileMap = new TileMap(room.getWidth(), room.getHeight());
 
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
-        int x=0;
+        int x = 0;
         for (String[] column : room.getCells()) {
             for (int y = 0; y < column.length; y++) {
                 String symbol = column[y];
                 ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                map.put(new AbstractCoordinates(x,y), cell);
+                map.put(new AbstractCoordinates(x, y), cell);
             }
             x++;
         }
@@ -87,8 +100,12 @@ public class TileMapper {
                     ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
                     if (i == room.getWidth() / 2)
                         if (j == room.getHeight() / 2) {
-                            cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
-                             map.get(point).getType().name());
+                            if (ZoneCreator.TEST_MODE)
+                                cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
+                                ""+ room.getZone().getIndex() );
+                            else
+                                cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
+                                 map.get(point).getType().name());
                         }
                     if (cell != null)
                         try {

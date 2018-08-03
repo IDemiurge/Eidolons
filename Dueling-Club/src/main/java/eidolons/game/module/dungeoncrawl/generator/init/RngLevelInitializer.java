@@ -4,6 +4,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.fill.RngOverlayManager;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -29,6 +30,7 @@ public class RngLevelInitializer {
 
             }
         }
+        new RngOverlayManager().initDirectionMap(level);
 //        level.addCustomValue(G_PROPS.BACKGROUND, bgImagePath);
 
 
@@ -50,6 +52,8 @@ public class RngLevelInitializer {
         ObjType type = chooseType(c, value, block);
         ObjAtCoordinate objAt=  new ObjAtCoordinate(type, c);
         block.getObjects().add( 0, objAt);
+        dungeonLevel.getObjects().add(new ObjAtCoordinate(type,
+         c.getOffset(block.getCoordinates())));
     }
 
     private  ObjType chooseType(Coordinates c, ROOM_CELL value, LevelBlock block) {

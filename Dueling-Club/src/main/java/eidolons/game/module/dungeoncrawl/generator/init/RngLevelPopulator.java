@@ -6,13 +6,14 @@ import eidolons.game.battlecraft.logic.dungeon.test.UnitGroupMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
-import eidolons.macro.map.Place;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUPS;
 import main.data.DataManager;
+import main.entity.Entity;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -38,7 +39,7 @@ public class RngLevelPopulator  {
     private float requiredFill;
     int powerLevel;
 
-    public static void populate(DungeonLevel level, Place place) {
+    public static void populate(DungeonLevel level, Entity place) {
         int powerLevel=100;
         new RngLevelPopulator(level.getModel(), level.getTileMap(), powerLevel).populate();
     }
@@ -51,29 +52,7 @@ public class RngLevelPopulator  {
 
     public void populate() {
         //via groups/encounters?
-
-        //some meta data to take from?
-        spawnBoss();
-        spawnObjective();
-        spawnGuards();
         fillOut();
-    }
-
-    private void spawnBoss() {
-        //find the throne room?
-
-        BOSS_SPAWN_TYPE spawnType;
-        for (LevelBlock levelBlock : model.getBlocks().values()) {
-            ROOM_TYPE type = levelBlock.getRoomType();
-
-        }
-    }
-
-    private void spawnObjective() {
-    }
-
-    private void spawnGuards() {
-
     }
 
     private void fillOut() {
@@ -183,14 +162,14 @@ public class RngLevelPopulator  {
     }
 
     private void spawnUnitGroup(UNIT_GROUPS group, LevelBlock block, int level) {
-        Coordinates at = CoordinatesMaster.getCenterCoordinate(block.getCoordinates());
+        Coordinates at = CoordinatesMaster.getCenterCoordinate(block.getCoordinatesList());
 
         String data = UnitGroupMaster.getUnitGroupData(StringMaster.getWellFormattedString(group.name()), level);
         for (String unitData : data.split(UnitGroupMaster.PAIR_SEPARATOR)) {
             String[] parts = unitData.split(UnitGroupMaster.UNIT_SEPARATOR);
-            Coordinates offset = new Coordinates(parts[0]);
+            Coordinates offset = new AbstractCoordinates(parts[0]);
             ObjType type = DataManager.getType(parts[1], DC_TYPE.UNITS);
-            Coordinates coordinates = offset.offset(at);
+            Coordinates coordinates = offset.getOffset(at);
             ObjAtCoordinate unit = new ObjAtCoordinate(type, coordinates);
             //relative or abs?
             block.getUnits().add(0, unit);

@@ -53,4 +53,8 @@ public class LevelZone extends LevelLayer<LevelBlock>{
     public void setTemplateGroup(ROOM_TEMPLATE_GROUP templateGroup) {
         this.templateGroup = templateGroup;
     }
+
+    public int getIndex() {
+        return id;
+    }
 }

@@ -54,4 +54,5 @@ public abstract class LevelLayer<T> {
     public void setGlobalIllumination(int globalIllumination) {
         this.globalIllumination = globalIllumination;
     }
+
 }

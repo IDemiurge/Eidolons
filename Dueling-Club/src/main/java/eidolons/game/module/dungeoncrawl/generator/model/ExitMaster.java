@@ -104,4 +104,17 @@ public class ExitMaster {
         return RoomAttacher.adjust(link.getCoordinates(), side, link, true);
         //        +link.getWidth()
     }
+
+    public static Coordinates findExit(Room room, FACING_DIRECTION direction) {
+        int i =0;
+        for (FACING_DIRECTION exit : room.getExits()) {
+            if (exit==direction)
+                if (room.getExitCoordinates().size()>i)
+                    return room.getExitCoordinates().get(i);
+            i++;
+        }
+        return null ;
+
+
+    }
 }

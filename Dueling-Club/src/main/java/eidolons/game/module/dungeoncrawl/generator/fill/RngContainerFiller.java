@@ -2,7 +2,6 @@ package eidolons.game.module.dungeoncrawl.generator.fill;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.WeightMap;
 
@@ -11,19 +10,33 @@ import java.util.List;
 /**
  * Created by JustMe on 7/25/2018.
  */
-public class RngContainerFiller extends RngFiller{
-    public RngContainerFiller(LevelModel model, WeightMap<ROOM_CELL> fillerMap) {
-        super(model, fillerMap);
+public class RngContainerFiller extends RngFiller {
+
+    public RngContainerFiller(WeightMap<ROOM_CELL> fillerMap) {
+        super(fillerMap);
     }
 
     @Override
-    protected float getRequiredFillDefault() {
+    public float getFillCoef() {
+        return 0.3f;
+    }
+
+    public float getFillCoef(ROOM_TYPE type) {
+        switch (type) {
+            case TREASURE_ROOM:
+                return 1.5f;
+        }
+        return 0.5f;
+    }
+
+    @Override
+    public float getRequiredFillDefault() {
         return 0;
     }
 
     @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -33,42 +46,26 @@ public class RngContainerFiller extends RngFiller{
 
     @Override
     public List<ROOM_TYPE> getMandatoryTypes() {
-        return new ListMaster<ROOM_TYPE>().toList_(ROOM_TYPE.TREASURE_ROOM,
+        return new ListMaster<ROOM_TYPE>().toList_(
+         ROOM_TYPE.COMMON_ROOM,
+         ROOM_TYPE.TREASURE_ROOM,
          ROOM_TYPE.SECRET_ROOM);
     }
 
     @Override
     public boolean isNeverBlock() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCornersOnly() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isFloorOrWallFiller() {
-        return false;
+        return true;
     }
 
-    @Override
-    public float getFillCoef(ROOM_TYPE type) {
-        return 0;
-    }
 
-    @Override
-    public float getMinMandatoryFill() {
-        return 0;
-    }
-
-    @Override
-    public float getMaxMandatoryFill() {
-        return 0;
-    }
-
-    @Override
-    public float getMinAdditionalFill() {
-        return 0;
-    }
 }

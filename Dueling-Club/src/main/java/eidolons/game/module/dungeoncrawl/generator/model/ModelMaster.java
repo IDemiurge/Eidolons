@@ -4,7 +4,6 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +64,7 @@ public class ModelMaster {
                 y = i;
                 x = side.isCloserToZero() ? 0 : room.getWidth() - 1;
             }
-            wall[i] = new Coordinates(x, y);
+            wall[i] = new AbstractCoordinates(x, y);
         }
 
         return wall;
@@ -80,7 +79,7 @@ public class ModelMaster {
         } else {
             Coordinates[] wall = getWallCoordinatesArray(room, side);
             n= (int) Arrays.stream(wall).filter(point -> {
-                Coordinates offset = new Coordinates(true, point.x, point.y).getOffsetByX(
+                Coordinates offset = new AbstractCoordinates(  point.x, point.y).getOffsetByX(
                  room.getCoordinates().x).getOffsetByY(room.getCoordinates().y);
                 int x= offset.x;
                 int y= offset.y;

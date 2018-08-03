@@ -49,4 +49,19 @@ public enum FACING_DIRECTION {
     }
 
 
+    public FACING_DIRECTION flip() {
+                switch (this) {
+                    case EAST:
+                        return WEST;
+                    case NORTH:
+                        return SOUTH;
+                    case SOUTH:
+                        return NORTH;
+                    case WEST:
+                        return EAST;
+                    case NONE:
+                        return this;
+                }
+            return this;
+        }
 }

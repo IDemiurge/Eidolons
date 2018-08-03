@@ -8,6 +8,7 @@ import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
 
@@ -19,7 +20,8 @@ import java.util.*;
 public class LevelModel {
     ROOM_CELL[][] cells; //enum?
     List<LevelZone> zones;
-    Map<Room, LevelBlock> blocks;
+    Map<Room, LevelBlock> blocks=    new LinkedHashMap<>() ;
+    Map<Room, Room> merged=    new LinkedHashMap<>() ;
     Map<Coordinates, Room> roomMap = new LinkedHashMap<>();
     LevelData data;
     private Set<Coordinates> occupiedCells = new LinkedHashSet<>();
@@ -27,9 +29,11 @@ public class LevelModel {
     private Integer rightMost;
     private Integer topMost;
     private Integer bottomMost;
+    private LevelModelBuilder builder;
 
-    public LevelModel(LevelData data) {
+    public LevelModel(LevelData data,LevelModelBuilder builder) {
         this.data = data;
+        this.builder = builder;
     }
 
 
@@ -106,15 +110,43 @@ public class LevelModel {
             }
         }
     }
-    public   void shearWallsFromSide(Room room, FACING_DIRECTION entrance) {
+    //TODO ambitious...
+    public   void merge(Room room,  Room room2) {
+//        model = new RoomModel(cells, ROOM_TYPE.MERGED, EXIT_TEMPLATE.CROSSROAD);
+//        Room merged = new Room(p, model, room.getEntrance());
+
+        // just make them close and mark as merged for Blocks
+
+        room2.setZone(room.getZone());
+
+        FACING_DIRECTION side=room2.getEntrance().flip();
+        shearWallsFromSide(room, side);
+        side=room2.getEntrance();
+        shearWallsFromSide(room2, side);
+
+        merged.put(room, room2);
+        merged.put(room2, room);
+    }
+
+    public Map<Room, Room> getMerged() {
+        return merged;
+    }
+
+    public   void offset(Room room, FACING_DIRECTION to) {
+        shearWallsFromSide(room,to, true);
+    }
+    public   void shearWallsFromSide(Room room, FACING_DIRECTION entrance ) {
+        shearWallsFromSide(room, entrance, false);
+    }
+        public   void shearWallsFromSide(Room room, FACING_DIRECTION entrance, boolean offsetOnly) {
         remove(room );
-        Coordinates newCoordinates = room.shearWallsFromSide(entrance);
+        Coordinates newCoordinates = room.shearWallsFromSide(entrance, offsetOnly);
         room.setCoordinates(newCoordinates);
         //TODO can lead to path blocking!!!
         addRoom(room);
     }
 
-    private void remove(Room room) {
+    public void remove(Room room) {
         roomMap.remove(room.getCoordinates());
         occupied(true, room.getCoordinates(), room);
     }
@@ -208,5 +240,17 @@ public class LevelModel {
 
     public void setZones(List<LevelZone> zones) {
         this.zones = zones;
+    }
+
+    public Room getRoom(LevelBlock block) {
+        return (Room) MapMaster.getKeyForValue_(blocks, block);
+    }
+
+    public LevelModelBuilder getBuilder() {
+        return builder;
+    }
+
+    public void setBuilder(LevelModelBuilder builder) {
+        this.builder = builder;
     }
 }

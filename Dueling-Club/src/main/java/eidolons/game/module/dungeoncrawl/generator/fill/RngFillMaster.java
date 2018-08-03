@@ -10,32 +10,46 @@ import main.system.datatypes.WeightMap;
  * Created by JustMe on 7/25/2018.
  */
 public class RngFillMaster {
-public enum FILLER_TYPE{
-    DECOR,
-    CONTAINER,
-    DESTRUCTIBLE,
-}
-    public void fill(LevelModel model, LevelData data){
+    public static void fill(LevelModel model, LevelData data) {
         new BlockCreator().createBlocks(model);
 
-       WeightMap<ROOM_CELL> weightMap = getMap(FILLER_TYPE.DECOR, data);
+        WeightMap<ROOM_CELL> weightMap = getMap(FILLER_TYPE.OVERLAYING_LIGHT_EMITTERS, data);
+        new RngWallLightFiller(weightMap).fill(model);
 
-        new RngDecorFiller(model, weightMap);
+        weightMap = getMap(FILLER_TYPE.LIGHT_EMITTERS, data);
+        new RngLightFiller(weightMap).fill(model);
 
-//        new RngContainerFiller();
-//        new RngDestructibleFiller();
+        weightMap = getMap(FILLER_TYPE.CONTAINER, data);
+        new RngContainerFiller(weightMap).fill(model);
+
+        weightMap = getMap(FILLER_TYPE.DECOR, data);
+        new RngDecorFiller(weightMap).fill(model);
+
+        main.system.auxiliary.log.LogMaster.log(1, " " + model);
     }
 
-    private WeightMap<ROOM_CELL> getMap(FILLER_TYPE type, LevelData data) {
+    private static WeightMap<ROOM_CELL> getMap(FILLER_TYPE type, LevelData data) {
         WeightMap<ROOM_CELL> map = new WeightMap<>("", ROOM_CELL.class);
         switch (type) {
+            case LIGHT_EMITTERS:
+                map.put(ROOM_CELL.LIGHT_EMITTER, 1);
+                break;
+            case OVERLAYING_LIGHT_EMITTERS:
+                map.put(ROOM_CELL.WALL_WITH_LIGHT_OVERLAY, 1);
+                break;
             case DECOR:
                 map.put(ROOM_CELL.ART_OBJ, 3);
                 map.put(ROOM_CELL.SPECIAL_ART_OBJ, 1);
                 break;
+            case OVERLAYING_DECOR:
+                break;
             case CONTAINER:
                 map.put(ROOM_CELL.CONTAINER, 3);
                 map.put(ROOM_CELL.SPECIAL_CONTAINER, 1);
+                break;
+            case GUARDS:
+                break;
+            case TRAPS:
                 break;
             case DESTRUCTIBLE:
                 map.put(ROOM_CELL.DESTRUCTIBLE_WALL, 3);
@@ -43,6 +57,17 @@ public enum FILLER_TYPE{
                 break;
         }
         return map;
+    }
+
+    public enum FILLER_TYPE {
+        LIGHT_EMITTERS,
+        OVERLAYING_LIGHT_EMITTERS,
+        DECOR,
+        OVERLAYING_DECOR,
+        CONTAINER,
+        GUARDS,
+        TRAPS,
+        DESTRUCTIBLE,
     }
 
 }

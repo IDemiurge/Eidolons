@@ -28,7 +28,7 @@ public class Loop {
 
     public boolean ended() {
         loopCounter -= 1;
-        return loopCounter <= 0;
+        return loopCounter < 0;
     }
 
     public void start(int i) {

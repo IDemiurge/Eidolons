@@ -1,46 +1,50 @@
 package eidolons.game.module.dungeoncrawl.generator.fill;
 
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
-import main.system.auxiliary.data.ListMaster;
 import main.system.datatypes.WeightMap;
-
-import java.util.List;
 
 /**
  * Created by JustMe on 7/25/2018.
  */
 public class RngDecorFiller extends RngFiller {
 
-
-    public RngDecorFiller(LevelModel model, WeightMap<ROOM_CELL> fillerMap) {
-        super(model, fillerMap);
+    public RngDecorFiller(WeightMap<ROOM_CELL> fillerMap) {
+        super( fillerMap);
     }
 
     @Override
-    protected float getRequiredFillDefault() {
-        return 0;
+    public float getFillCoef() {
+        return 0.6f;
     }
 
     @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
-        return 0;
+        return 2;
     }
 
+    @Override
+    public float getMaxDistanceFromEdge() {
+        return 2.5f;
+    }
+
+    @Override
+    public boolean isAlternativeCenterDistance() {
+        return true;
+    }
+
+    @Override
+    public float getMaxDistanceFromCenter() {
+        return 1.5f;
+    }
     @Override
     public boolean isNoAdjacencyLimits() {
         return false;
     }
 
-    @Override
-    public List<ROOM_TYPE> getMandatoryTypes() {
-        return new ListMaster<ROOM_TYPE>().toList_(ROOM_TYPE.values());
-    }
 
     @Override
     public boolean isNeverBlock() {
-        return false;
+        return true;
     }
 
     @Override
@@ -53,25 +57,6 @@ public class RngDecorFiller extends RngFiller {
         return true;
     }
 
-    @Override
-    public float getFillCoef(ROOM_TYPE type) {
-        return 0;
-    }
-
-    @Override
-    public float getMinMandatoryFill() {
-        return 0;
-    }
-
-    @Override
-    public float getMaxMandatoryFill() {
-        return 0;
-    }
-
-    @Override
-    public float getMinAdditionalFill() {
-        return 0;
-    }
 
 
 }

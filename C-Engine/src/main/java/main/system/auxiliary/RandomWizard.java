@@ -105,6 +105,7 @@ public class RandomWizard<E> {
     }
 
     public static int getRandomListIndex(Collection list) {
+        //TODO lock? finally?
         boolean bool = averaged;
         averaged = false;
         int index = getRandomListIndex(list, randomGenerator);

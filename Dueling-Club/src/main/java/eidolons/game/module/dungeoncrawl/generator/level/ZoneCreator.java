@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class ZoneCreator {
 
+    public static final boolean TEST_MODE = false;
     private static DUNGEON_STYLE lastStyle;
 
     public static List<LevelZone> createZones(LevelData data ) {

@@ -223,7 +223,6 @@ public class Coordinates {
         Coordinates c = null;
         if (map == null) {
             map = new HashMap<>();
-            getAdjacenctDirectionMap().put(this, map);
         } else {
             c = map.get(direction);
             if (c != null) {
@@ -265,17 +264,23 @@ public class Coordinates {
             default:
                 break;
         }
+        if (!isAllowInvalidAdjacent())
         if (!allowInvalid) {
             if (!withinBounds(x1, y1)) {
                 return null;
             }
         }
-        c = new Coordinates(allowInvalid, x1, y1);
+        c =create(allowInvalid, x1, y1);
         map.put(direction, c);
+        getAdjacenctDirectionMap().put(this, map);
         return c;
     }
 
-    private List<Coordinates> getAdjacentDiagonal() {
+    protected Coordinates create(boolean allowInvalid, int x1, int y1) {
+        return new Coordinates(allowInvalid, x1, y1);
+    }
+
+    protected List<Coordinates> getAdjacentDiagonal() {
         return getAdjacent(true);
     }
 
@@ -466,7 +471,16 @@ public class Coordinates {
     }
 
 
-    public Coordinates offset(Coordinates coordinates) {
+    public void offset(Coordinates coordinates) {
+        Coordinates c = getOffset(coordinates);
+        setX(c.getX());
+        setY(c.getY());
+    }
+        public Coordinates getOffset(Coordinates coordinates) {
         return getOffsetByX(coordinates.x).getOffsetByY(coordinates.y);
+    }
+
+    public float dist(Coordinates coordinates) {
+        return PositionMaster.getDistance(this, coordinates);
     }
 }

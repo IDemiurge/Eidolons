@@ -87,7 +87,12 @@ OOO##
         COMMON_ROOM_COEF(6, 0, 12),
         SECRET_ROOM_COEF(1, 0, 10),
 
-        SIZE_MODE(100, 50, 300);
+        SIZE_MODE(50, 25, 300), MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
+        MAIN_PATH_LENGTH(4, 2, 20),
+        BONUS_PATH_LENGTH(3, 1, 15), RANDOM_ROTATION_CHANCE(65, 0, 100),
+        FILL_LIGHT_COEF(100, 0, 500)
+
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -188,6 +193,10 @@ OOO##
         SPECIAL_CONTAINER("c"),
         SPECIAL_DOOR("d"),
         SPECIAL_ART_OBJ("a"),
+        ZONE_0("0"),
+        ZONE_1("1"),
+        ZONE_2("2"),
+        ZONE_3("3"),
         /*
     false_wall,
     BUTTON,

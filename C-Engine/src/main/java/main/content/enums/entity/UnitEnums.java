@@ -440,6 +440,17 @@ public final class UnitEnums {
     public enum UNIT_GROUP {
         ELEMENTALS(""),
         RAVENGUARD("Traitor,Corrupted,Royal"),
+PRISONERS,
+        DEATH_CULT,
+        DARK_CULT,
+        CHAOS_CULT,
+        CRUSADERS,
+        CONSTRUCTS,
+        DARK_ONES,
+        MUTANTS,
+        PIRATES,
+        CELESTIALS,
+        BARBARIANS,
 
         HUMANS("Militia,Scum,Guards,Army,"),
         GREENSKINS("goblins,orcs"),
@@ -448,6 +459,9 @@ public final class UnitEnums {
         DWARVES("forsworn,clansmen,"),
         NORTH("norse,woads,brutes,north"),
         UNDEAD("Plague,Crimson,Wraith,Pale"),
+        UNDEAD_PLAGUE("Plague,Crimson,Wraith,Pale"),
+        UNDEAD_CRIMSON("Plague,Crimson,Wraith,Pale"),
+        UNDEAD_WRAITH("Plague,Crimson,Wraith,Pale"),
         DEMONS("chaos,abyss,demons,demon worshippers"),
         ANIMALS("Animals,Wolves,Wargs,wild,"),
         MAGI("constructs,apostates,magi,,"),
@@ -458,6 +472,9 @@ public final class UnitEnums {
 
         UNIT_GROUP(String groups) {
             this.subgroups = groups;
+        }
+        UNIT_GROUP( ) {
+            this.subgroups = name();
         }
 
         public String getSubgroups() {

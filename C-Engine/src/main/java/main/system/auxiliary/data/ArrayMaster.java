@@ -68,14 +68,14 @@ public class ArrayMaster<T> {
         return list;
     }
 
-    public boolean contains(T[] damage_mods, T unblockable) {
-        for (T d : damage_mods) {
-            if (unblockable == null) {
+    public boolean contains(T[] array, T t) {
+        for (T d : array) {
+            if (t == null) {
                 if (d == null) {
                     return true;
                 }
             }
-            if (unblockable.equals(d)) {
+            if (t.equals(d)) {
                 return true;
             }
         }
@@ -191,6 +191,23 @@ public class ArrayMaster<T> {
         }
     }
 
+    public static String[][] flip(String[][] matrix, boolean hor, boolean vert) {
+        String[][] flipped = new String[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; ++i) {
+            for (int j = 0; j < matrix[0].length; ++j) {
+                int i1= i;
+                int j1= j;
+                if (hor){
+                    i1 = matrix.length - i - 1;
+                }
+                if (vert)
+                    j1 = matrix[0].length - j -1;
+
+                flipped[i1][j1] = matrix[i][j];
+            }
+        }
+        return flipped;
+    }
     /**
      * This method rotates the matrix 90 degrees clockwise by using extra
      * buffer.
@@ -222,5 +239,16 @@ public class ArrayMaster<T> {
         }
 
         return rotated;
+    }
+
+    public static String[][] cloneMatrix(String[][] matrix) {
+        String[][] clone = new String[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; ++i) {
+            for (int j = 0; j < matrix[0].length; ++j) {
+                clone[i][j] = matrix[i][j];
+            }
+        }
+
+        return clone;
     }
 }

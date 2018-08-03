@@ -3,7 +3,8 @@ package eidolons.game.module.dungeoncrawl.generator.tilemap;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.init.RngConstProvider;
+import eidolons.game.module.dungeoncrawl.generator.init.RngBfObjProvider;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import main.content.DC_TYPE;
@@ -20,6 +21,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE.*;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -43,67 +46,67 @@ public class TileConverter {
         switch (subdungeonType) {
             case CAVE:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.Cold : DUNGEON_STYLE.Brimstone;
-                return DUNGEON_STYLE.Grimy;
+                    return RandomWizard.random() ? Cold : Brimstone;
+                return Grimy;
             case HIVE:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.Somber : DUNGEON_STYLE.Brimstone;
-                return DUNGEON_STYLE.Grimy;
+                    return RandomWizard.random() ? Somber : Brimstone;
+                return Grimy;
             case CASTLE:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.Arcane : DUNGEON_STYLE.DarkElegance;
-                return DUNGEON_STYLE.Castle;
+                    return RandomWizard.random() ? Arcane : DarkElegance;
+                return Castle;
             case SEWER:
                 if (alt)
                     return RandomWizard.random() ?
-                     DUNGEON_STYLE.Survivor : DUNGEON_STYLE.Somber;
-                return DUNGEON_STYLE.Grimy;
+                     Survivor : Somber;
+                return Grimy;
             case HELL:
                 if (alt)
-                    return DUNGEON_STYLE.PureEvil;
-                return DUNGEON_STYLE.Brimstone;
+                    return PureEvil;
+                return Brimstone;
             case ASTRAL:
                 if (alt)
-                    return DUNGEON_STYLE.PureEvil;
-                return DUNGEON_STYLE.Arcane;
+                    return PureEvil;
+                return Arcane;
             case ARCANE:
-                return DUNGEON_STYLE.Arcane;
+                return Arcane;
             case CEMETERY:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.DarkElegance : DUNGEON_STYLE.PureEvil;
-                return DUNGEON_STYLE.Cold;
+                    return RandomWizard.random() ? DarkElegance : PureEvil;
+                return Cold;
             case CRYPT:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.DarkElegance : DUNGEON_STYLE.PureEvil;
-                return DUNGEON_STYLE.Somber;
+                    return RandomWizard.random() ? DarkElegance : PureEvil;
+                return Somber;
             case BARROW:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.Brimstone : DUNGEON_STYLE.Cold;
-                return DUNGEON_STYLE.Somber;
+                    return RandomWizard.random() ? Brimstone : Cold;
+                return Somber;
             case DUNGEON:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.DarkElegance : DUNGEON_STYLE.Cold;
-                return DUNGEON_STYLE.Somber;
+                    return RandomWizard.random() ? DarkElegance : Cold;
+                return Somber;
             case RUIN:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.DarkElegance : DUNGEON_STYLE.Somber;
-                return DUNGEON_STYLE.Cold;
+                    return RandomWizard.random() ? DarkElegance : Somber;
+                return Cold;
             case DEN:
-                return DUNGEON_STYLE.Pagan;
+                return Pagan;
             case HOUSE:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.DarkElegance : DUNGEON_STYLE.Somber;
-                return DUNGEON_STYLE.Survivor;
+                    return RandomWizard.random() ? DarkElegance : Somber;
+                return Survivor;
             case CAMP:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.Pagan : DUNGEON_STYLE.Somber;
-                return DUNGEON_STYLE.Survivor;
+                    return RandomWizard.random() ? Pagan : Somber;
+                return Survivor;
             case TEMPLE:
                 if (alt)
-                    return RandomWizard.random() ? DUNGEON_STYLE.DarkElegance : DUNGEON_STYLE.Somber;
-                return DUNGEON_STYLE.Holy;
+                    return RandomWizard.random() ? DarkElegance : Somber;
+                return Holy;
         }
-        return DUNGEON_STYLE.DarkElegance;
+        return DarkElegance;
     }
 
     private String getWall(RoomModel room, int x, int y) {
@@ -121,9 +124,9 @@ public class TileConverter {
     private String getArtObj(LevelBlock block, int x, int y) {
         DUNGEON_STYLE style = getStyle(metaData.getLocationType());
 
-        String pool = RngConstProvider.getWeightString(ROOM_CELL.ART_OBJ, style);
+        String pool = RngBfObjProvider.getWeightString(ROOM_CELL.ART_OBJ, style);
         String pick = null;
-        Coordinates c = new Coordinates(x, y);
+        Coordinates c = new AbstractCoordinates(x, y);
         while (!checkObj(c, block, pool,
          pick = new RandomWizard<String>().getObjectByWeight(pool, String.class))) {
 

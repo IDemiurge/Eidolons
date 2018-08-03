@@ -7,11 +7,16 @@ import main.ability.effects.container.SpecialTargetingEffect;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.auxiliary.*;
+import main.system.SortMaster;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.math.PositionMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CoordinatesMaster {
 
@@ -511,6 +516,11 @@ public class CoordinatesMaster {
                 return c;
         }
         return coordinates;
+    }
+
+    public static Coordinates getClosestTo(Coordinates coordinates, List<Coordinates> collect) {
+        return collect.stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
+         c -> (int) -(100 * c.dist(coordinates)))).collect(Collectors.toList()).get(0);
     }
 
     public boolean isOnEdge(Coordinates c, int border) {
