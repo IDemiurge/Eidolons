@@ -6,6 +6,7 @@ import main.system.auxiliary.data.ListMaster;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/24/2018.
@@ -154,6 +155,13 @@ public class ContainerUtils {
 
     public static String constructStringContainer(List<?> list) {
         return constructStringContainer(list, getContainerSeparator());
+    }
+    public static String toStringContainer(Collection<?> list) {
+        return toStringContainer(list, getContainerSeparator());
+    }
+        public static String toStringContainer(Collection<?> list, String divider) {
+        return joinStringList(list.stream().map(obj-> obj.toString()).collect(Collectors.toList())
+       ,divider );
     }
 
     public static String constructStringContainer(List<?> list, String separator) {

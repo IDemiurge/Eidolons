@@ -439,7 +439,7 @@ public final class UnitEnums {
     // PERHAPS ENCOUNTERS COULD HAVE DEITY PROPERTY AS WELL;
     public enum UNIT_GROUP {
         ELEMENTALS(""),
-        RAVENGUARD("Traitor,Corrupted,Royal"),
+        Ravenguard("Traitor,Corrupted,Royal"),
 PRISONERS,
         DEATH_CULT,
         DARK_CULT,
@@ -454,6 +454,7 @@ PRISONERS,
 
         HUMANS("Militia,Scum,Guards,Army,"),
         GREENSKINS("goblins,orcs"),
+        PALE_ORCS,
         BANDITS("Pirates,Thieves Guild,Robbers,"),
         KNIGHTS("ravenguard,holy,"),
         DWARVES("forsworn,clansmen,"),
@@ -463,7 +464,11 @@ PRISONERS,
         UNDEAD_CRIMSON("Plague,Crimson,Wraith,Pale"),
         UNDEAD_WRAITH("Plague,Crimson,Wraith,Pale"),
         DEMONS("chaos,abyss,demons,demon worshippers"),
+        DEMONS_HELLFIRE("chaos,abyss,demons,demon worshippers"),
+        DEMONS_ABYSS("chaos,abyss,demons,demon worshippers"),
+        DEMONS_WARPED("chaos,abyss,demons,demon worshippers"),
         ANIMALS("Animals,Wolves,Wargs,wild,"),
+        REPTILES,
         MAGI("constructs,apostates,magi,,"),
         CRITTERS("critters,spiders,nocturnal"),
         DUNGEON("chaos,demons,worshippers,"),
@@ -840,6 +845,9 @@ PRISONERS,
         DESPERATE_ORC_SLAVE,
         RAVENGUARD_WITCHUNICODE45CODEENDKNIGHT,
         RAVENGUARD_TORTURER,
+
+        SILVERLANCE_COMMANDER,
+        SILVERLANCE_KNIGHT,
         ;
     }
     public enum  UNITS_TYPES_FAMILIARS implements OBJ_TYPE_ENUM {

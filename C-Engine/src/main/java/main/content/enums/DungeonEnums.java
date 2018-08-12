@@ -4,6 +4,14 @@ package main.content.enums;
  * Created by JustMe on 2/14/2017.
  */
 public class DungeonEnums {
+    public enum DUNGEON_CLASS {
+        CAVE,
+        DUNGEON,
+        BUILDING,
+        SURFACE,
+        FOREST,
+    }
+
     public enum DUNGEON_DIFFICULTY {
 
     }
@@ -97,6 +105,11 @@ public class DungeonEnums {
 
     }
 
+    public enum DUNGEON_POPULATION {
+        Cult,
+    }
+
+
     public enum DUNGEON_SUBFOLDER {
         // ARCADE,
         BATTLE,
@@ -112,10 +125,37 @@ public class DungeonEnums {
         INTERIOR, UNDERGROUND, SURFACE, NIGHT, PERMA_DUSK,
     }
 
-
-        public enum DUNGEON_TYPE {
+    public enum DUNGEON_TYPE {
 
         GLORY, TREASURE_HOARD, SUBLEVEL, BOSS, MAIN,
+    }
+
+    public enum LOCATION_TYPE {
+        CAVE, CEMETERY(true), CRYPT, BARROW,
+        HIVE, DUNGEON,
+        SEWER, HELL, ASTRAL,
+        ARCANE, DEN, RUIN(true),
+        CAMP(true), TEMPLE(true),
+        CASTLE(true),  HOUSE(true),
+        GROVE(true),
+        ;
+
+        private boolean surface;
+
+        LOCATION_TYPE(boolean surface) {
+            this.surface = surface;
+        }
+
+        LOCATION_TYPE() {
+        }
+
+        public boolean isSurface() {
+            return surface;
+        }
+
+        public void setSurface(boolean surface) {
+            this.surface = surface;
+        }
     }
 
     public enum MAP_BACKGROUND {
@@ -185,25 +225,6 @@ public class DungeonEnums {
         public String getPeripheryObjects() {
             return peripheryObjects;
         }
-    }
-    public enum DUNGEON_CLASS {
-        CAVE,
-        DUNGEON,
-        BUILDING,
-        SURFACE,
-        FOREST,
-    }
-
-    public enum DUNGEON_POPULATION {
-        Cult,
-    }
-        public enum LOCATION_TYPE {
-        CAVE, CEMETERY, CRYPT, BARROW,
-        HIVE, DUNGEON,
-        SEWER, HELL, ASTRAL,
-         ARCANE, RUIN,
-        CAMP, TEMPLE,
-        CASTLE, DEN, HOUSE,
     }
 
     public enum SUBLEVEL_TYPE {

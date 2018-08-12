@@ -178,6 +178,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         plan.setZones(zones);
     }
 
+
     public DungeonPlan loadDungeonMap(String data) {
         return buildDungeon(data, nodeList).getPlan();
     }

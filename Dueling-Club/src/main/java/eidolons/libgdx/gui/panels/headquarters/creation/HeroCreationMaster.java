@@ -32,9 +32,9 @@ import static main.system.threading.WaitMaster.waitForInput;
 public class HeroCreationMaster {
 
 
-    public static final boolean NEW_ON_LAUNCH = false;
-    public static final boolean TEST_MODE = true;
-    public static final boolean FAST_MODE = true;
+    public static final boolean NEW_ON_LAUNCH = true;
+    public static final boolean TEST_MODE = false;
+    public static final boolean FAST_MODE = false;
     private static final int INITIAL_LEVEL = 2;
     public static final boolean HUMAN_ONLY = true;
     static HcHeroModel model;

@@ -160,10 +160,9 @@ public class TileConverter {
                 break;
 
             case WALL:
-            case DESTRUCTIBLE_WALL:
                 return new Tile(getBfObjPair(getWall(room, x, y)));
             case ENTRANCE:
-            case EXIT:
+            case ROOM_EXIT:
                 return new Tile(getBfObjPair(getExitObj(block, x, y)));
             case CONTAINER:
             case SPECIAL_CONTAINER:

@@ -37,18 +37,14 @@ public interface RngFillerInterface {
         return 1;
     }
 
-    default float getFillCoef_() {
-        if (getFillCoefConst() != null)
-            return getFillCoef() * getData().getIntValue(getFillCoefConst())/100;
-        return getFillCoef();
-    }
+      float getFillCoef_();
 
     LEVEL_VALUES getFillCoefConst();
 
     LevelData getData();
 
     default float getRequiredFillDefault() {
-        return 0.5f * getFillCoef();
+        return 0.5f * getFillCoef_();
     }
 
     default float getMinMandatoryFill() {
@@ -56,11 +52,11 @@ public interface RngFillerInterface {
     }
 
     default float getMaxMandatoryFill() {
-        return 0.5f * getFillCoef();
+        return 0.5f * getFillCoef_();
     }
 
     default float getMinAdditionalFill() {
-        return 0.2f * getFillCoef();
+        return 0.2f * getFillCoef_();
     }
 
     default float getMaxDistanceFromEdge() {

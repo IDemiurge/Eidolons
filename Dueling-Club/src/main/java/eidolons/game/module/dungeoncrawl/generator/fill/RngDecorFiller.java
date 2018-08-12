@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.fill;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import main.system.datatypes.WeightMap;
 
 /**
@@ -57,6 +58,17 @@ public class RngDecorFiller extends RngFiller {
         return true;
     }
 
-
+    protected int getFillCornersChance(Room room) {
+        switch (room.getType()) {
+            case THRONE_ROOM:
+                return 80;
+            case COMMON_ROOM:
+                return 30;
+            case ENTRANCE_ROOM:
+            case EXIT_ROOM:
+                return 40;
+        }
+        return 0;
+    }
 
 }

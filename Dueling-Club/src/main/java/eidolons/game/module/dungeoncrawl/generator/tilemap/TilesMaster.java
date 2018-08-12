@@ -77,7 +77,7 @@ public class TilesMaster {
     }
 
     public static boolean isEntranceCell(Coordinates c, Room room) {
-        if (room.getCells()[c.x][c.y].equals(ROOM_CELL.EXIT.getSymbol()))
+        if (room.getCells()[c.x][c.y].equals(ROOM_CELL.ROOM_EXIT.getSymbol()))
             return true;
         List<Coordinates> list = room.getExitCoordinates();
         if (list.contains(c))

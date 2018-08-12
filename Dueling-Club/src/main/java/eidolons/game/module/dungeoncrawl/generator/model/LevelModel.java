@@ -4,6 +4,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.game.bf.Coordinates;
@@ -11,6 +12,8 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -20,8 +23,8 @@ import java.util.*;
 public class LevelModel {
     ROOM_CELL[][] cells; //enum?
     List<LevelZone> zones;
-    Map<Room, LevelBlock> blocks=    new LinkedHashMap<>() ;
-    Map<Room, Room> merged=    new LinkedHashMap<>() ;
+    Map<Room, LevelBlock> blocks = new LinkedHashMap<>();
+    Map<Room, Room> merged = new LinkedHashMap<>();
     Map<Coordinates, Room> roomMap = new LinkedHashMap<>();
     LevelData data;
     private Set<Coordinates> occupiedCells = new LinkedHashSet<>();
@@ -31,11 +34,10 @@ public class LevelModel {
     private Integer bottomMost;
     private LevelModelBuilder builder;
 
-    public LevelModel(LevelData data,LevelModelBuilder builder) {
+    public LevelModel(LevelData data, LevelModelBuilder builder) {
         this.data = data;
         this.builder = builder;
     }
-
 
 
     @Override
@@ -82,16 +84,16 @@ public class LevelModel {
     }
 
 
-    public void addRoom(  Room room) {
+    public void addRoom(Room room) {
         Coordinates p = room.getCoordinates();
 
         roomMap.put(p, room);
         addOccupied(p, room);
         addCapes(p, room);
         setCells(new TileMapper(this, data).build(this));
-
-        main.system.auxiliary.log.LogMaster.log(1, "Placed " + room + " at " +
-         p.x +" " + p.y + "; " + toString());
+        if (!LevelGenerator.LOGGING_OFF)
+            log(1, "Placed " + room + " at " +
+             p.x + " " + p.y + "; " + toString());
 
     }
 
@@ -99,9 +101,10 @@ public class LevelModel {
     private void addOccupied(Coordinates p, RoomModel roomModel) {
         occupied(false, p, roomModel);
     }
-        private void occupied(boolean remove, Coordinates p, RoomModel roomModel) { //check wrap?
-        for (int x = p.x ; x  < p.x + roomModel.getWidth(); x++) {
-            for (int y = p.y ; y  < p.y + roomModel.getHeight(); y++) {
+
+    private void occupied(boolean remove, Coordinates p, RoomModel roomModel) { //check wrap?
+        for (int x = p.x; x < p.x + roomModel.getWidth(); x++) {
+            for (int y = p.y; y < p.y + roomModel.getHeight(); y++) {
                 Coordinates point = new AbstractCoordinates(x, y);
                 if (remove)
                     occupiedCells.remove(point);
@@ -110,18 +113,19 @@ public class LevelModel {
             }
         }
     }
+
     //TODO ambitious...
-    public   void merge(Room room,  Room room2) {
-//        model = new RoomModel(cells, ROOM_TYPE.MERGED, EXIT_TEMPLATE.CROSSROAD);
-//        Room merged = new Room(p, model, room.getEntrance());
+    public void merge(Room room, Room room2) {
+        //        model = new RoomModel(cells, ROOM_TYPE.MERGED, EXIT_TEMPLATE.CROSSROAD);
+        //        Room merged = new Room(p, model, room.getEntrance());
 
         // just make them close and mark as merged for Blocks
 
         room2.setZone(room.getZone());
 
-        FACING_DIRECTION side=room2.getEntrance().flip();
+        FACING_DIRECTION side = room2.getEntrance().flip();
         shearWallsFromSide(room, side);
-        side=room2.getEntrance();
+        side = room2.getEntrance();
         shearWallsFromSide(room2, side);
 
         merged.put(room, room2);
@@ -132,14 +136,16 @@ public class LevelModel {
         return merged;
     }
 
-    public   void offset(Room room, FACING_DIRECTION to) {
-        shearWallsFromSide(room,to, true);
+    public void offset(Room room, FACING_DIRECTION to) {
+        shearWallsFromSide(room, to, true);
     }
-    public   void shearWallsFromSide(Room room, FACING_DIRECTION entrance ) {
+
+    public void shearWallsFromSide(Room room, FACING_DIRECTION entrance) {
         shearWallsFromSide(room, entrance, false);
     }
-        public   void shearWallsFromSide(Room room, FACING_DIRECTION entrance, boolean offsetOnly) {
-        remove(room );
+
+    public void shearWallsFromSide(Room room, FACING_DIRECTION entrance, boolean offsetOnly) {
+        remove(room);
         Coordinates newCoordinates = room.shearWallsFromSide(entrance, offsetOnly);
         room.setCoordinates(newCoordinates);
         //TODO can lead to path blocking!!!
@@ -191,6 +197,10 @@ public class LevelModel {
         return zones;
     }
 
+    public void setZones(List<LevelZone> zones) {
+        this.zones = zones;
+    }
+
     public Map<Room, LevelBlock> getBlocks() {
         return blocks;
     }
@@ -200,46 +210,13 @@ public class LevelModel {
     }
 
     public String toASCII_Map(boolean nullToX) {
+        return TileMapper.toASCII_String(cells, nullToX);
 
-        ROOM_CELL[][] cells = getCells();
-        String string = "\n";
-        String columns = "\nX    ";
-        String separator = "\n      ";
-
-        for (int x = 0; x < getCurrentWidth(); x++) {
-            columns += x + "|";
-            if (x < 10) columns += " ";
-            separator += "___";
-        }
-        for (int y = 0; y < getCurrentHeight(); y++) {
-            if (y < 10)
-                string += y + "  | ";
-            else
-                string += y + " | ";
-            for (int x = 0; x < getCurrentWidth(); x++) {
-                if (cells[x][y] == null) {
-                    if (nullToX)
-                        string += "  X";
-                    else
-                        string += "  -";
-                } else
-                    string += "  " + cells[x][y].getSymbol();
-            }
-            string += "\n";
-
-        }
-        separator += "\n";
-        return columns + separator + string + separator + columns;
     }
 
-
-        public LevelZone getZone(LevelGraphNode node) {
+    public LevelZone getZone(LevelGraphNode node) {
         return
          zones.toArray(new LevelZone[zones.size()])[node.getZoneIndex()];
-    }
-
-    public void setZones(List<LevelZone> zones) {
-        this.zones = zones;
     }
 
     public Room getRoom(LevelBlock block) {

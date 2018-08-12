@@ -41,7 +41,8 @@ public class RngLevelPopulator  {
 
     public static void populate(DungeonLevel level, Entity place) {
         int powerLevel=100;
-        new RngLevelPopulator(level.getModel(), level.getTileMap(), powerLevel).populate();
+        new RngMainSpawner().spawn(level);
+//        new RngLevelPopulator(level.getModel(), level.getTileMap(), powerLevel).populate();
     }
 
     public RngLevelPopulator(LevelModel model, TileMap tileMap, int powerLevel) {

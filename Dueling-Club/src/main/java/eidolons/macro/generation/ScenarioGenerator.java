@@ -117,7 +117,8 @@ public class ScenarioGenerator {
 
             DungeonLevel level = new LevelGenerator().generateLevel(type, locationType
              );
-
+            int power = 300;//DC_Game.game.getMetaMaster().getPartyManager().getParty().getParamSum(PARAMS.POWER);
+            level.setPowerLevel(power);
             RngLevelPopulator.populate(level,place);
 
             String stringData = level.toXml();

@@ -37,7 +37,8 @@ public class LevelGraphMaster {
         createNodes(graph, data);
         //TODO shortcuts!
         buildBonusPaths();
-        List<LevelGraphNode> list = graph.getNodes().stream().filter(node -> graph.getAdjList().get(node).size() ==2).collect(Collectors.toList());
+        List<LevelGraphNode> list = graph.getNodes().stream().filter(
+         node -> graph.getAdjList().get(node).size() ==2).collect(Collectors.toList());
         list.addAll(unconnected);
         connectNodesRandomly(graph, data, list); //the remainder
         //        applyRules(graph, data);

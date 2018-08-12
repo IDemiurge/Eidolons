@@ -320,20 +320,22 @@ public class RandomWizard<E> {
             }
             string = StringMaster.getWeightItem(string, inverse);
             E object;
-
-            if (CLASS != ObjType.class) {
-                object = new EnumMaster<E>().retrieveEnumConst(CLASS, string);
-            } else {
-                object = (E) DataManager.getType(string, TYPE);
-                if (object == null) {
-                    object = (E) DataManager.findType(string, TYPE);
+            if (CLASS != null) {
+                if (CLASS != ObjType.class) {
+                    object = new EnumMaster<E>().retrieveEnumConst(CLASS, string);
+                } else {
+                    object = (E) DataManager.getType(string, TYPE);
+                    if (object == null) {
+                        object = (E) DataManager.findType(string, TYPE);
+                    }
+                }
+                map.put(object, value);
+                if (inverse) {
+                    invertedMap.put(value, object);
                 }
             }
             // if (object != null) //EMPTY option allowed!
-            map.put(object, value);
-            if (inverse) {
-                invertedMap.put(value, object);
-            }
+
         }
 
         return map;

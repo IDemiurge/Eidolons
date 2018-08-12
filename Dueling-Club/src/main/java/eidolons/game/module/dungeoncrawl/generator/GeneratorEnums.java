@@ -87,10 +87,21 @@ OOO##
         COMMON_ROOM_COEF(6, 0, 12),
         SECRET_ROOM_COEF(1, 0, 10),
 
-        SIZE_MODE(50, 25, 300), MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
-        MAIN_PATH_LENGTH(4, 2, 20),
-        BONUS_PATH_LENGTH(3, 1, 15), RANDOM_ROTATION_CHANCE(65, 0, 100),
-        FILL_LIGHT_COEF(100, 0, 500)
+        SIZE_MODE(25, 10, 300), MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
+        MAIN_PATH_LENGTH(3, 2, 20),
+        BONUS_PATH_LENGTH(2, 1, 15), RANDOM_ROTATION_CHANCE(65, 0, 100),
+        FILL_LIGHT_COEF(100, 0, 500),
+
+        //                                       <><><><><>
+
+        SPAWN_GROUP_COEF_IDLERS(200, 0, 500),
+        SPAWN_GROUP_COEF_CROWD(150, 0, 500),
+        SPAWN_GROUP_COEF_GUARDS(100, 0, 500),
+        SPAWN_GROUP_COEF_AMBUSH(50, 0, 500),
+        SPAWN_GROUP_COEF_PATROL(50, 0, 500),
+        SPAWN_GROUP_COEF_STALKER(20, 0, 500),
+        SPAWN_GROUP_COEF_BOSS(10, 0, 500),
+
 
         ;
         private Boolean exclusive;
@@ -155,11 +166,12 @@ OOO##
         WALL("#"),
         FLOOR("O"),
         ENTRANCE("E"),
-        EXIT("e"),
+        EXIT("X"),
+        ROOM_EXIT("e"),
         CONTAINER("C"),
         DOOR("D"),
         ART_OBJ("A"),
-        DESTRUCTIBLE_WALL("@"),
+        DESTRUCTIBLE_WALL("*"),
         SECRET_DOOR("S"),
         GUARD("G"),
         MINI_BOSS("b"),
@@ -170,7 +182,7 @@ OOO##
         WALL_WITH_DECOR_OVERLAY("$"),
         LOCAL_KEY("k"),
         GLOBAL_KEY("K"),
-        DESTRUCTIBLE("X"),
+        DESTRUCTIBLE("%"),
 
 
         //ROOM_TYPES*

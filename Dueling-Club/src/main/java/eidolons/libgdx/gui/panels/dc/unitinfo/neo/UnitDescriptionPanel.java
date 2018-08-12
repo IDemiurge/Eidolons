@@ -2,6 +2,8 @@ package eidolons.libgdx.gui.panels.dc.unitinfo.neo;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.DescriptionPanel;
+import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
+import eidolons.system.text.HelpMaster;
 import main.system.graphics.FontMaster.FONT;
 
 /**
@@ -30,30 +32,12 @@ public class UnitDescriptionPanel extends DescriptionPanel{
     }
     @Override
     protected void updateAct() {
-//        HqHeroDataSource dataSource = getUserObject();
-        setText("Weave\n" +
-         "X is not right \n" +
-         "Examine the notion\n" +
-         "Turn on debug\n" +
-         "\n" +
-         "Issues\n" +
-         "Why clustering ? \n" +
-         "And some skills are in hell \n" +
-         "no link \n" +
-         "why highlight failed\n" +
-         "\n" +
-         "Ideas \n" +
-         "dummy icons for skills for now? \n" +
-         "Display their numeric values (circle, n, …) \n" +
-         "\n" +
-         "Solutions \n" +
-         "Build one weave at a time…\n" +
-         "\n" +
-         "Add some background to weave / tree \n" +
-         "\n" +
-         "Add some bigger recognizable symbol for each Group \n" +
-         "\n" +
-         "\n");
+        HqHeroDataSource dataSource = (HqHeroDataSource) getUserObject();
+        String text = dataSource.getDescription();
+        if (text.isEmpty()) {
+            text = HelpMaster.getHelpText();
+        }
+        setText(text);
         super.updateAct();
     }
 }

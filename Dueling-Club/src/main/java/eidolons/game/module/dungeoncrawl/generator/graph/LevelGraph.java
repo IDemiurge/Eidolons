@@ -64,11 +64,13 @@ public class LevelGraph {
     }
 
     public boolean addNode(LevelGraphNode v) {
+        adjList.putIfAbsent(v, new HashSet<>());
         return nodes.add(v);
     }
 
     public boolean addNodes(Collection<LevelGraphNode> vertices) {
-        return this.nodes.addAll(vertices);
+         vertices.forEach(node-> addNode(node));
+        return true;
     }
 
 

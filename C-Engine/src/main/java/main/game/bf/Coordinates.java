@@ -471,10 +471,11 @@ public class Coordinates {
     }
 
 
-    public void offset(Coordinates coordinates) {
+    public Coordinates offset(Coordinates coordinates) {
         Coordinates c = getOffset(coordinates);
         setX(c.getX());
         setY(c.getY());
+        return this;
     }
         public Coordinates getOffset(Coordinates coordinates) {
         return getOffsetByX(coordinates.x).getOffsetByY(coordinates.y);

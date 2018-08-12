@@ -43,14 +43,15 @@ import java.util.Set;
 public class LevelGenerator {
 
     public static final boolean TEST_MODE = true;
-    private static final boolean REAL = false;
+    public static final boolean REAL = true;
+    public static final boolean LOGGING_OFF = true;
 
     public static void main(String[] args) {
         if (REAL){
             realGeneration();
             return;
         }
-        Loop loop = new Loop(5);
+        Loop loop = new Loop(1);
 //        KotlinTestKt.max()
         List<TileMap> maps = new ArrayList<>();
         List<LevelModel> models = new ArrayList<>();

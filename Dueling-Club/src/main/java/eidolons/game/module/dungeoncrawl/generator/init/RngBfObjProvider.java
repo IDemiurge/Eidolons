@@ -16,7 +16,8 @@ public class RngBfObjProvider {
     public static String getWeightString(ROOM_CELL cell, DUNGEON_STYLE style) {
         //objGroups like unitGroups?
         WeightMap<String> map = getWeightMap(cell, style);
-
+        if (map == null)
+            return null;
         return map.toString();
     }
 
@@ -29,7 +30,7 @@ public class RngBfObjProvider {
                 break;
             case ENTRANCE:
                 return getEntranceWeightMap(style, false);
-            case EXIT:
+            case ROOM_EXIT:
                 return getEntranceWeightMap(style, true);
             case SPECIAL_CONTAINER:
                 return getContainerWeightMap(style, true);
@@ -45,8 +46,6 @@ public class RngBfObjProvider {
                 return getDecorWeightMap(style, false);
             case WALL_WITH_DECOR_OVERLAY:
                 return getDecorWeightMap(style, true);
-            case DESTRUCTIBLE_WALL:
-                return getWallWeightMap(style);
 
             case LIGHT_EMITTER:
                 return getLightEmitterWeightMap(style, false);
@@ -123,6 +122,20 @@ public class RngBfObjProvider {
     }
 
     private static WeightMap<String> getSpecDecorWeightMap(DUNGEON_STYLE style, boolean overlaying) {
+        //usable? supposedly rare...
+        switch (style) {
+            case Somber:
+                return overlaying
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_HANGING.GLOWING_GLYPH, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.RUNE_INSCRIPTION, 10)
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_STATUES.OCCULT_STATUE, 10).
+                 chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 6).
+                 chain(BF_OBJ_SUB_TYPES_STATUES.ELVEN_STATUE, 4).
+                 chain(BF_OBJ_SUB_TYPES_STATUES.TWILIGHT_ANGEL, 1)
+                 ;
+        }
         return getDecorWeightMap(style, overlaying);
     }
     //TODO
@@ -132,7 +145,24 @@ public class RngBfObjProvider {
             case Somber:
                 return overlaying
                  ? new WeightMap<String>().
-                 chain(BF_OBJ_SUB_TYPES_HANGING.HANGING_SHIELD, 10)
+                 chain(BF_OBJ_SUB_TYPES_HANGING.ELDRITCH_RUNE, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.MAGIC_CIRCLES, 10)
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_COLUMNS.MARBLE_COLUMN, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONSTRUCT.OBELISK, 5).
+                 chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 10)
+                 ;
+            case PureEvil:
+
+            case Grimy:
+                return overlaying
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_HANGING.ELDRITCH_RUNE, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.MAGIC_CIRCLES, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.GLOWING_GLYPH, 10).
+                 chain(BF_OBJ_SUB_TYPES_HANGING.RUNE_INSCRIPTION, 10)
                  : new WeightMap<String>().
                  chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 6).
                  chain(BF_OBJ_SUB_TYPES_STATUES.ELVEN_STATUE, 4).
@@ -142,11 +172,40 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 10)
                  ;
         }
-        return null;
+        return overlaying ? new WeightMap<String>().
+         chain(BF_OBJ_SUB_TYPES_HANGING.HANGING_SHIELD, 10)
+         : new WeightMap<String>().
+         chain(BF_OBJ_SUB_TYPES_STATUES.TWILIGHT_ANGEL, 10);
     }
 
     private static WeightMap<String> getContainerWeightMap(DUNGEON_STYLE style, boolean special) {
         switch (style) {
+            case Survivor:
+            case Pagan:
+                return special
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.AXE_RACK, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.HALBERT_RACK, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.HAMMER_RACK, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.SWORD_RACK, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.SPEAR_RACK, 10).
+                 //decor too?
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.CRATE, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.BARREL, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.BARRELS, 10)
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.GREATSWORD_RACK, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.WEAPONS_RACK, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 5)
+                 ;
+            case Grimy:
+
+            case DarkElegance:
+
+
             case Somber:
                 return special
                  ? new WeightMap<String>().
@@ -181,6 +240,7 @@ public class RngBfObjProvider {
         }
         return null;
     }
+
     private static WeightMap<String> getEntranceWeightMap(DUNGEON_STYLE style, boolean exit) {
         switch (style) {
             case Somber:
@@ -195,6 +255,7 @@ public class RngBfObjProvider {
         }
         return null;
     }
+
     private static WeightMap<String> getWallWeightMap(DUNGEON_STYLE style) {
         //TODO check surface! cemetery etc
         switch (style) {

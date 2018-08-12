@@ -1,8 +1,10 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.RandomWizard;
@@ -21,6 +23,8 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     };
     DUNGEON_TEMPLATES[] templates;
 
+    DataUnit<LEVEL_GEN_FLAG> flags=LevelDataMaker.getDefaultLevelFlags();
+
     int x;
     int y;
     int z; //the deeper, the <?>
@@ -33,7 +37,9 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
         super(data);
     }
 
-
+public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type){
+    return LEVEL_VALUES.valueOf(type.name() + "_COEF");
+}
     public SUBLEVEL_TYPE getSublevelType() {
         return sublevelType;
     }
@@ -75,7 +81,7 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
         RANDOM_ROTATION_CHANCE));
     }
     public boolean isMergeLinksAllowed() {
-        return true;
+        return false;
     }
 
     public boolean isFinalizerOn() {
@@ -89,7 +95,14 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     public boolean isRandomizedSizeSort() {
         return false;
     }
-//    public boolean isShearDisplacedOnly() {
+
+    public boolean isShearWallsAllowed() {
+        return false;
+    }
+    public boolean isShearLinkWallsAllowed() {
+        return flags.getBooleanValue(LEVEL_GEN_FLAG.isShearLinkWallsAllowed);
+    }
+    //    public boolean isShearDisplacedOnly() {
 //        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);
 //    }
 //    public boolean isJoinAllowed() {

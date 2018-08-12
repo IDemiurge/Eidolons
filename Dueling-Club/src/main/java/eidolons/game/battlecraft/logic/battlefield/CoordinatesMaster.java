@@ -340,7 +340,7 @@ public class CoordinatesMaster {
         return getClosestEdge(c, cellsX, cellsY, null);
     }
 
-    public static Coordinates getCenterCoordinate(List<Coordinates> coordinates) {
+    public static Coordinates getCenterCoordinate(Collection<Coordinates> coordinates) {
         int x1 = getMinX(coordinates);
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);

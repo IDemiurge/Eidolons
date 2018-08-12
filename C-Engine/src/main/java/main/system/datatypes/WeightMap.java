@@ -1,5 +1,6 @@
 package main.system.datatypes;
 
+import main.content.enums.entity.OBJ_TYPE_ENUM;
 import main.data.XLinkedMap;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
-    private  Class<E> clazz;
+    private Class<E> clazz;
 
     public WeightMap(String data, Class<E> clazz) {
         super(new RandomWizard<E>().constructWeightMap(data, clazz));
@@ -20,13 +21,26 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
 
     }
 
-    public WeightMap<E> chain(Object key, Integer value) {
-        super.put((E) key.toString(), value);
-        return  this;
+    public WeightMap(Class<E> clazz) {
+        this.clazz = clazz;
     }
-        public WeightMap<E> putChain(E key, Integer value) {
-          super.put(key, value);
-          return  this;
+
+    public WeightMap(Map<E, Integer> map) {
+        putAll(map);
+    }
+
+    public WeightMap<E> chain(Object key, Integer value) {
+        if (key.getClass() == clazz)
+            return putChain((E) key, value);
+        if (key instanceof OBJ_TYPE_ENUM) {
+            return putChain((E)((OBJ_TYPE_ENUM) key).getName(), value);
+        }
+        return putChain((E) key.toString(), value);
+    }
+
+    public WeightMap<E> putChain(E key, Integer value) {
+        super.put(key, value);
+        return this;
     }
 
     @Override
@@ -34,19 +48,17 @@ public class WeightMap<E> extends XLinkedMap<E, Integer> {
         String string = "";
         for (E e : keySet()) {
             string += e + StringMaster.wrapInParenthesis(StringMaster.toStringForm(get(e)))
-            + ContainerUtils.getContainerSeparator();
+             + ContainerUtils.getContainerSeparator();
         }
         return string;
     }
 
-    public WeightMap(Map<E, Integer> map) {
-        putAll(map);
+    public E getRandomByWeight() {
+
+        return new RandomWizard<E>().getObjectByWeight(this);
     }
 
-    public E getRandomByWeight() {
-       return  new RandomWizard<E>().getObjectByWeight(toString(), clazz);
-    }
-        public E getGreatest() {
+    public E getGreatest() {
         E greatest = null;
         Integer greatestN = 0;
         for (E key : keySet()) {

@@ -6,12 +6,13 @@ import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";

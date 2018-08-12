@@ -212,7 +212,7 @@ public abstract class ItemListPanel extends TablePanel {
 
     protected void addButtons() {
         buttons.forEach(button->  button.remove());
-        buttons.clear(); clear();
+        buttons.clear();
         for (SelectableItemData sub : items) {
             //            boolean selected = sub == currentItem;
             TextButton element = getOrCreateElement(sub);

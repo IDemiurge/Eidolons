@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats;
 
@@ -22,18 +23,19 @@ public class LevelValidator {
         this.stats = stats;
     }
 
-    public static void validateForTester(GenerationStats stats, DungeonLevel level) {
+    public static boolean validateForTester(GenerationStats stats, DungeonLevel level) {
         LevelValidator instance = new LevelValidator(stats);
         boolean valid = instance.isLevelValid(level);
 
-
+//        valid = new Traverser().test(level);
+return valid;
     }
     private void initRequirements(DungeonLevel level) {
         this.level =  level;
         this.model = level.getModel();
 
         minFillRatio= 0.65f;
-
+//level.getModel().getData().getROOM_COEF()
         switch (level.getModel().getData().getSublevelType()) {
             case COMMON:
                 minRooms=12;
@@ -46,6 +48,11 @@ public class LevelValidator {
                 break;
         }
     }
+
+    public static boolean validateModel(LevelGraph graph, LevelModel model) {
+        return false;
+    }
+
     public enum RNG_FAIL{
         NO_EXIT,
         SIZE,

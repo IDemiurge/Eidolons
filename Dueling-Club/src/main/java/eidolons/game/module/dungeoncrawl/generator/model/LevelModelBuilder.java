@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
@@ -16,7 +17,7 @@ import main.system.auxiliary.RandomWizard;
 
 import java.util.*;
 
-import static main.system.auxiliary.log.LogMaster.*;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -63,6 +64,8 @@ public class LevelModelBuilder {
             }
             if (!isCheckTraverse())
                 return;
+            if (!LevelValidator.validateModel(graph,model))
+                return;
             if (new Traverser().test(graph, model, data, nodeModelMap, edgeMap)) {
                 return;
             }
@@ -71,7 +74,7 @@ public class LevelModelBuilder {
     }
 
     private boolean isCheckTraverse() {
-        return false;
+        return true;
     }
 
 
@@ -101,9 +104,11 @@ public class LevelModelBuilder {
     }
 
     private boolean isShearWalls(Room newRoom) {
-        if (newRoom.isDisplaced())
+        if (newRoom.isSheared())
             return false;
-        return true;
+        if (newRoom.getType()==ROOM_TYPE.CORRIDOR)
+            return data.isShearLinkWallsAllowed();
+        return data.isShearWallsAllowed();
         //       TODO  return RandomWizard.random();
     }
 
@@ -136,7 +141,7 @@ public class LevelModelBuilder {
 
         //into 1 corridor with multiple exits if need be
         boolean mergeLinks = isMergeLinks(node, links, linkedNodes);
-        EXIT_TEMPLATE exitTemplate = ExitMaster.getExitTemplateToLinks(links.size());
+        EXIT_TEMPLATE exitTemplate = ExitMaster.getExitTemplateToLinks(links.size(), entrance, node.getRoomType());
         EXIT_TEMPLATE roomExitTemplate = mergeLinks
          ? ExitMaster.getRandomSingleExitTemplate()
          : exitTemplate;
@@ -209,20 +214,21 @@ public class LevelModelBuilder {
                         }
                 }
                 link = findFittingAndAttach(room,
-                 mergeLinks ? ExitMaster.getExitTemplateToLinks(graph.getAdjList().get(edge.getNodeOne()).size())
+                 mergeLinks ? ExitMaster.getExitTemplateToLinks(
+                  graph.getAdjList().get(edge.getNodeOne()).size(), roomExit.flip(), edge.getNodeTwo().getRoomType())
                   : ExitMaster.getRandomSingleExitTemplate(),
                  ROOM_TYPE.CORRIDOR, linkExit);
                 if (buildLink(room, edge, roomExit, linkExit, link) == null) {
                     if (link != null) {
-                        if (loop.ended()) {
-                            log(1,"LINKING A DEADEND: " +link+ " to " + link.getEntrance());
-                            model.shearWallsFromSide(link, link.getEntrance());
-                            link.makeExit(link.getEntrance(), false, false);
-                            room.makeExit(link.getEntrance().flip(), false, true);
-                        } else {
-                            log(1,"REMOVING A DEADEND: " +link);
-                            model.remove(link);
-                        }
+                        //                        if (loop.ended()) {
+                        //                            log(1,"LINKING A DEADEND: " +link+ " to " + link.getEntrance());
+                        //                            model.shearWallsFromSide(link, link.getEntrance());
+                        //                            link.makeExit(link.getEntrance(), false, false);
+                        //                            room.makeExit(link.getEntrance().flip(), false, true);
+                        //                        } else {
+                        log(1, "REMOVING A DEADEND: " + link);
+                        model.remove(link);
+                        //                        }
                     }
                     continue;
                 }
@@ -258,21 +264,24 @@ public class LevelModelBuilder {
         }
         Room newRoom =
          getOrCreateRoomForNode(edge.getNodeTwo(), link == null ? room : link,
-          linkExit, ExitMaster.getExitTemplateToLinks(graph.getAdjList().get(edge.getNodeTwo()).size()));
+          linkExit, ExitMaster.getExitTemplateToLinks(graph.getAdjList().get(edge.getNodeTwo()).size(), roomExit.flip(), edge.getNodeTwo().getRoomType()));
         if (newRoom == null) {
             return null;
         }
-
+        if (!newRoom.getUsedExits().isEmpty()) {
+            return null;
+        }
         if (link != null) {
             door = RandomWizard.chance(data.getIntValue(LEVEL_VALUES.DOOR_CHANCE_COMMON));
 
             if (isShearWalls(link)) {
                 model.shearWallsFromSide(link, roomExit.flip());
-                if (!newRoom.isDisplaced())
-                    model.offset(newRoom, roomExit.flip());
+                //                if (!newRoom.isDisplaced())
             }
+//            else
+//                model.offset(newRoom, linkExit.flip());
             //else  ?
-            link.makeExit(roomExit.flip(), !door ? false : door, false);
+            link.makeExit(linkExit, !door ? false : door, false);
         }
 
         room.makeExit(roomExit, door ? false : door, true);
@@ -300,7 +309,11 @@ public class LevelModelBuilder {
             } else
                 newRoom.makeExit(FacingMaster.rotate180(roomExit), !door ? false : door, false);
 
-            attacher.alignExits(room, newRoom);
+            try {
+                attacher.alignExits(room, newRoom);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         } else {
             door = RandomWizard.chance(data.getIntValue(LEVEL_VALUES.DOOR_CHANCE_COMMON));
             //door only on one end at most; or at none
@@ -310,7 +323,11 @@ public class LevelModelBuilder {
                 newRoom.makeExit(FacingMaster.rotate180(linkExit), !door ? false : door, false);
             link.makeExit(linkExit, door ? false : door, true);
 
-            attacher.alignExits(link, newRoom);
+            try {
+                attacher.alignExits(link, newRoom);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         }
     }
 

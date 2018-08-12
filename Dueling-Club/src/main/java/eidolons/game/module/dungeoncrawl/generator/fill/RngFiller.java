@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.ModelMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
@@ -13,6 +14,9 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
+import main.game.bf.directions.FACING_DIRECTION;
 import main.system.SortMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -48,6 +52,7 @@ public abstract class RngFiller implements RngFillerInterface {
     public void fill(LevelModel model) {
         this.model = model;
         fillRequired = getRequiredFillDefault();
+        manualFill();
         List<Room> mandatoryFillRooms = getMandatoryFillRooms();
         for (Room room : mandatoryFillRooms) {
             fillMandatory(room);
@@ -79,7 +84,11 @@ public abstract class RngFiller implements RngFillerInterface {
         return false;
     }
 
-
+    public final float getFillCoef_() {
+        if (getFillCoefConst() != null)
+            return getFillCoef() * getData().getIntValue(getFillCoefConst())/100;
+        return getFillCoef();
+    }
     protected List<Room> getMandatoryFillRooms() {
         return model.getRoomMap().values().stream().filter(room -> getMandatoryTypes().contains(room.getType())).collect(Collectors.toList());
     }
@@ -117,34 +126,8 @@ public abstract class RngFiller implements RngFillerInterface {
 
 
     protected List<Coordinates> getPointsToFill(TileMap map, Room room, float max) {
-        List<Coordinates> fullList = ModelMaster.getCoordinateList(room);
-
-        fullList.removeIf(c -> map.getMap().get(c) != getFilledRoomCellType());
-
-        if (isCornersOnly()) {
-            fullList.removeIf(c -> !TilesMaster.isCornerCell(c, map));
-        }
-        if (isNeverBlock()) {
-            fullList.removeIf(c -> TilesMaster.isEntranceCell(c, room));
-            fullList.removeIf(c -> TilesMaster.isEntranceCell(c, room));
-        }
-        if (getMaxDistanceFromEdge() >= 0) {
-            if (isAlternativeCenterDistance()) {
-                fullList.removeIf(c ->
-                 TilesMaster.getDistanceFromEdge(c, room.getWidth(), room.getHeight()) >
-                  getMaxDistanceFromEdge() &&
-                  TilesMaster.getDistanceFromCenter(c, room.getWidth(), room.getHeight()) >
-                   getMaxDistanceFromCenter()
-                );
-            } else {
-                fullList.removeIf(c -> TilesMaster.getDistanceFromEdge(c, room.getWidth(), room.getHeight()) >
-                 getMaxDistanceFromEdge());
-                if (getMaxDistanceFromCenter() >= 0)
-                    fullList.removeIf(c -> TilesMaster.getDistanceFromCenter(c, room.getWidth(), room.getHeight()) >
-                     getMaxDistanceFromCenter());
-            }
-
-        }
+        List<Coordinates> fullList =
+        filterCoordinates(map, room, ModelMaster.getCoordinateList(room));
 
         Collections.shuffle(fullList);
 
@@ -152,6 +135,37 @@ public abstract class RngFiller implements RngFillerInterface {
         if (limit >= fullList.size())
             return fullList;
         return fullList.subList(0, limit);
+    }
+
+    private List<Coordinates> filterCoordinates(TileMap map, Room room, List<Coordinates> coordinateList) {
+
+        coordinateList.removeIf(c -> map.getMap().get(c) != getFilledRoomCellType());
+
+        if (isCornersOnly()) {
+            coordinateList.removeIf(c -> !TilesMaster.isCornerCell(c, map));
+        }
+        if (isNeverBlock()) {
+            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(c, room));
+            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(c, room));
+        }
+        if (getMaxDistanceFromEdge() >= 0) {
+            if (isAlternativeCenterDistance()) {
+                coordinateList.removeIf(c ->
+                 TilesMaster.getDistanceFromEdge(c, room.getWidth(), room.getHeight()) >
+                  getMaxDistanceFromEdge() &&
+                  TilesMaster.getDistanceFromCenter(c, room.getWidth(), room.getHeight()) >
+                   getMaxDistanceFromCenter()
+                );
+            } else {
+                coordinateList.removeIf(c -> TilesMaster.getDistanceFromEdge(c, room.getWidth(), room.getHeight()) >
+                 getMaxDistanceFromEdge());
+                if (getMaxDistanceFromCenter() >= 0)
+                    coordinateList.removeIf(c -> TilesMaster.getDistanceFromCenter(c, room.getWidth(), room.getHeight()) >
+                     getMaxDistanceFromCenter());
+            }
+
+        }
+        return coordinateList;
     }
 
 
@@ -195,7 +209,7 @@ public abstract class RngFiller implements RngFillerInterface {
             ROOM_CELL filler = null;
             Loop loop = new Loop(fillerMap.size() * 5);
             while (loop.continues()) {
-                filler = fillerMap.getRandomByWeight();
+                filler = getFillerRandomized();
                 if (!isNoAdjacencyLimits())
                     if (getMaxAdjacency(filler) <= getAdjacent(coordinates, filler, block)) {
                         filler = null;
@@ -208,17 +222,21 @@ public abstract class RngFiller implements RngFillerInterface {
         }
     }
 
+    private ROOM_CELL getFillerRandomized() {
+        return fillerMap.getRandomByWeight();
+    }
+
     protected void placeFiller(Coordinates coordinates, LevelBlock block, ROOM_CELL filler) {
         block.getTileMap().getMap().put(coordinates, filler);
         Room room = (Room) MapMaster.getKeyForValue_(model.getBlocks(), block);
         room.getCells()[coordinates.x][coordinates.y] = filler.getSymbol();
-//        if (isOverlaying()) {
-//            DIRECTION direction = model.getBuilder().
-//             getOverlayManager().getDirection(coordinates, block, filler);
-//            //when populating only?
-//            //offset coords
-//            model.getBuilder().getOverlayManager().saveDirection(direction, coordinates, filler);
-//        }
+        //        if (isOverlaying()) {
+        //            DIRECTION direction = model.getBuilder().
+        //             getOverlayManager().getDirection(coordinates, block, filler);
+        //            //when populating only?
+        //            //offset coords
+        //            model.getBuilder().getOverlayManager().saveDirection(direction, coordinates, filler);
+        //        }
         //        block.getTileMap().update();
     }
 
@@ -247,7 +265,7 @@ public abstract class RngFiller implements RngFillerInterface {
     protected float calculateFill(LevelZone zone) {
         if (zone.getSubParts().isEmpty())
             return 0;
-        int n = 0;
+        float n = 0;
         for (LevelBlock block : zone.getSubParts()) {
             n += calculateFill(block);
         }
@@ -256,13 +274,13 @@ public abstract class RngFiller implements RngFillerInterface {
     }
 
     protected float calculateFill(LevelBlock block) {
-        int fillable =
+        float fillable =
          getPointsToFill(block.getTileMap(), model.getRoom(block), Integer.MAX_VALUE).size();
         if (fillable == 0)
-            return 0;
-        int filled =
+            return 1;
+        float filled =
          (int) block.getTileMap().getMap().values().stream().filter(cell ->
-          fillerMap.values().contains(cell)).count();
+          fillerMap.keySet().contains(cell)).count();
         return filled / fillable;
     }
 
@@ -270,4 +288,101 @@ public abstract class RngFiller implements RngFillerInterface {
     public LEVEL_VALUES getFillCoefConst() {
         return null;
     }
+
+    public void manualFill() {
+        //before auto fill?
+        wrapExits();
+        fillSymmetry();
+
+    }
+
+    protected void fillSymmetry() {
+        //symmetry, ...
+        fillCorners();
+    }
+
+    private void fillCorners() {
+
+        loop:
+        for (Room room : model.getBlocks().keySet()) {
+            Coordinates[] corners = new Coordinates[]{
+             new AbstractCoordinates(0, 0),
+             new AbstractCoordinates(room.getWidth(), 0),
+             new AbstractCoordinates(0, room.getHeight()),
+             new AbstractCoordinates(room.getWidth(), room.getHeight()),
+            };
+            for (Coordinates corner : corners) {
+                if (!room.getCells()[corner.x][corner.y].equals(getFilledRoomCellType().getSymbol())) {
+                    continue loop;
+                }
+            }
+            if (!RandomWizard.chance(getFillCornersChance(room))){
+                continue loop;
+            }
+            LevelBlock block = model.getBlocks().get(room);
+            tryFillWithBound(block, corners);
+        }
+
+    }
+
+    protected int getFillCornersChance(Room room) {
+        return 0;
+    }
+
+    protected void wrapExits() {
+        for (Room room : model.getBlocks().keySet()) {
+            int i = 0;
+            for (Coordinates exit : room.getExitCoordinates()) {
+                FACING_DIRECTION side = room.getUsedExits().get(i++);
+                LevelBlock block = model.getBlocks().get(room);
+                if (RandomWizard.chance(getWrapPreExitChance(room))) {
+                    int degrees = side.flip().getDirection().getDegrees();
+                    DIRECTION d = DirectionMaster.getDirectionByDegree(degrees - 45);
+                    Coordinates c1 = exit.getAdjacentCoordinate(d);
+                    d = DirectionMaster.getDirectionByDegree(degrees + 45);
+                    Coordinates c2 = exit.getAdjacentCoordinate(d);
+                    tryFillWithBound(block, c1, c2);
+                } else
+                if (RandomWizard.chance(getWrapByExitChance(room))) {
+                    int degrees = side.getDirection().getDegrees();
+                    DIRECTION d = DirectionMaster.getDirectionByDegree(degrees - 90);
+                    Coordinates c1 = exit.getAdjacentCoordinate(d);
+                    d = DirectionMaster.getDirectionByDegree(degrees + 90);
+                    Coordinates c2 = exit.getAdjacentCoordinate(d);
+                    tryFillWithBound(block, c1, c2);
+                }
+            }
+        }
+    }
+
+    protected int getWrapByExitChance(Room room) {
+        return 0;
+    }
+
+    protected int getWrapPreExitChance(Room room) {
+        return 0;
+    }
+
+    private void tryFillWithBound(LevelBlock block, Coordinates... c) {
+        for (Coordinates coordinates : c) {
+            if (block.getTileMap().getMap().get(coordinates)
+             != getFilledRoomCellType())
+                return;
+        }
+
+        ROOM_CELL filler = getFillerRandomized();
+        for (Coordinates coordinates : c) {
+            placeFiller(coordinates, block, filler);
+        }
+
+        for (Coordinates c1 : c) {
+            for (Coordinates c2 : c) {
+                if (c1 != c2) {
+                    block.getBoundCells().put(c2, c1);
+                    block.getBoundCells().put(c1, c2);
+                }
+            }
+        }
+    }
+
 }

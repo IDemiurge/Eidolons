@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.fill;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import main.system.datatypes.WeightMap;
 
 /**
@@ -12,6 +13,13 @@ public class RngLightFiller extends RngFiller {
         super(fillerMap);
     }
 
+    protected int getWrapByExitChance(Room room) {
+        return 50;
+    }
+
+    protected int getWrapPreExitChance(Room room) {
+        return 80;
+    }
     @Override
     public LEVEL_VALUES getFillCoefConst() {
         return LEVEL_VALUES.FILL_LIGHT_COEF;
@@ -42,9 +50,23 @@ public class RngLightFiller extends RngFiller {
         return true;
     }
 
+    @Override
+    protected int getFillCornersChance(Room room) {
+        switch (room.getType()) {
+            case THRONE_ROOM:
+            case COMMON_ROOM:
+                return 50;
+            case TREASURE_ROOM:
+            case GUARD_ROOM:
+                return 50;
+            case ENTRANCE_ROOM:
+            case EXIT_ROOM:
+                return 80;
+        }
+        return 0;
+    }
 
-
-//    @Override
+    //    @Override
 //    public boolean isAlternativeCenterDistance() {
 //        return true;
 //    }

@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.tilemap;
 
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
@@ -32,7 +33,7 @@ public class TileMapper {
         main.system.auxiliary.log.LogMaster.log(1, model.toASCII_Map());
     }
 
-    public static ROOM_CELL[][] toCellArray(String[][] symbols ) {
+    public static ROOM_CELL[][] toCellArray(String[][] symbols) {
         ROOM_CELL[][] cells = new ROOM_CELL[symbols.length][symbols[0].length];
         int x = 0;
         for (String[] column : symbols) {
@@ -45,7 +46,8 @@ public class TileMapper {
         return cells;
     }
 
-        public static TileMap createTileMap(Room room) {    TileMap tileMap = new TileMap(room.getWidth(), room.getHeight());
+    public static TileMap createTileMap(Room room) {
+        TileMap tileMap = new TileMap(room.getWidth(), room.getHeight());
 
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         int x = 0;
@@ -62,6 +64,63 @@ public class TileMapper {
         return tileMap;
     }
 
+    public static ROOM_CELL[][] getCells(TileMap map) {
+        ROOM_CELL[][] cells = new ROOM_CELL[map.getWidth()][map.getHeight()];
+        for (Coordinates point : map.getMap().keySet()) {
+            ROOM_CELL val = map.getMap().get(point);
+            if (val==null )
+                continue;
+            try {
+                cells[point.x][point.y] = val;
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
+        return cells;
+    }
+
+    public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX) {
+        String string = "\n";
+        String columns = "\nX    ";
+        String separator = "\n      ";
+
+        for (int x = 0; x < cells.length; x++) {
+            columns += x + "|";
+            if (x < 10) columns += " ";
+            separator += "___";
+        }
+        for (int y = 0; y < cells[0].length; y++) {
+            if (y < 10)
+                string += y + "  | ";
+            else
+                string += y + " | ";
+            for (int x = 0; x < cells.length; x++) {
+                if (cells[x][y] == null) {
+                    if (nullToX)
+                        string += "  X";
+                    else
+                        string += "  -";
+                } else
+                    string += "  " + cells[x][y].getSymbol();
+            }
+            string += "\n";
+
+        }
+        separator += "\n";
+        return columns + separator + string + separator + columns;
+    }
+
+    public TileMap joinTileMaps() {
+        TileMap tileMap = new TileMap(model.getCurrentWidth(), model.getCurrentHeight());
+        for (LevelBlock block : model.getBlocks().values()) {
+            for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
+                tileMap.getMap().put(coordinates.getOffset(block.getCoordinates().getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))),
+                 block.getTileMap().getMap().get(coordinates));
+            }
+        }
+        return tileMap;
+    }
+
     public TileMap map() {
         //merge
         TileMap map = new TileMap(model.getCurrentWidth(), model.getCurrentHeight());
@@ -75,7 +134,6 @@ public class TileMapper {
         //         new Level
         return null;
     }
-
 
     public ROOM_CELL[][] build(LevelModel model) {
         int offsetX = -(model.getLeftMost());
@@ -102,7 +160,7 @@ public class TileMapper {
                         if (j == room.getHeight() / 2) {
                             if (ZoneCreator.TEST_MODE)
                                 cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
-                                ""+ room.getZone().getIndex() );
+                                 "" + room.getZone().getIndex());
                             else
                                 cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
                                  map.get(point).getType().name());

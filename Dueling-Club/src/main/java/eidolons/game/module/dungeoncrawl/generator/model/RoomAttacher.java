@@ -30,36 +30,48 @@ public class RoomAttacher {
     }
 
     public static Coordinates getRoomCoordinates(Coordinates entranceCoordinates, FACING_DIRECTION entrance, RoomModel model) {
-        return adjust(entranceCoordinates, entrance, model, false);
+        return adjust(entranceCoordinates, entrance, model, false, false);
     }
 
     public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
                                      boolean getEntranceOrRoomCoordinates) {
+        return adjust(point, side, parent, getEntranceOrRoomCoordinates, true);
+    }
+
+    public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
+                                     boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
         int x = point.x;
         int y = point.y;
-        int i = 1;
+        int i ;
         if (getEntranceOrRoomCoordinates)
             i = -1;
+        else
+            i=1;
         int width = parent.getWidth();
         int height = parent.getHeight();
 
         if (side == SOUTH) {
             //  otherwise it is already compensated
-            if (width % 2 == 0)
-                width = adjustDimension(width, true, parent);
+            if (canAdjustEven)
+                if (width % 2 == 0)
+                    width = adjustDimension(width, true, parent);
             x -= i * width / 2;
             y -= i * height;
         } else if (side == NORTH) {
-            if (width % 2 == 0)
+            if (canAdjustEven)
+                if (width % 2 == 0)
                 width = adjustDimension(width, true, parent);
             x -= i * width / 2;
         } else if (side == EAST) {
             x -= i * width;
-            if (height % 2 == 0)
-                height = adjustDimension(height, false, parent);
+            if (canAdjustEven)
+                if (height % 2 == 0)
+                    height = adjustDimension(height, false, parent);
             y -= i * height / 2;
         } else if (side == WEST) {
-            height = adjustDimension(height, false, parent);
+            if (canAdjustEven)
+                if (height % 2 == 0)
+                    height = adjustDimension(height, false, parent);
             y -= i * height / 2;
         }
         return new AbstractCoordinates(x, y);
@@ -82,7 +94,7 @@ public class RoomAttacher {
     }
 
     private static boolean isAdjustDisplacedOnly() {
-        return true;
+        return false;
     }
 
     private static boolean isEvenDimensionAdjustedX() {
@@ -93,15 +105,6 @@ public class RoomAttacher {
         return true;
     }
 
-    public static Coordinates getAttachCoordinates(Room parent, Room model, FACING_DIRECTION side
-    ) {
-        return
-         adjust(
-          adjust(parent.getCoordinates(), side, parent, true),
-          FacingMaster.rotate180(side), model, false)
-         ;
-
-    }
 
     public static boolean canPlace(
      RoomModel roomModel, Coordinates p, Collection<Coordinates> cells, int w, int h) {
@@ -124,8 +127,8 @@ public class RoomAttacher {
 
     public void alignExits(Room parent,
                            Room child) {
-        if (child.getType() != ROOM_TYPE.EXIT_ROOM && parent.getExitTemplate() != EXIT_TEMPLATE.ANGLE)
-            return;
+//        if (child.getType() != ROOM_TYPE.EXIT_ROOM && parent.getExitTemplate() != EXIT_TEMPLATE.ANGLE)
+//            return;
         int offset = Traverser.getExitsOffset(parent, child);
         if (offset == 0)
             return;
@@ -160,7 +163,8 @@ public class RoomAttacher {
                 continue;
             }
 
-            Coordinates roomCoordinates = getRoomCoordinates(entranceCoordinates, roomEntrance, roomModel);
+            Coordinates roomCoordinates = getRoomCoordinates(entranceCoordinates, roomEntrance,
+             roomModel);
             Room room = new Room(roomCoordinates, roomModel, roomEntrance);
             room.setZone(zone);
             if (!canPlace(roomModel, roomCoordinates, model.getOccupiedCells(), data.getX(), data.getY())) {
@@ -175,25 +179,4 @@ public class RoomAttacher {
     }
 
 
-    public void attach(Room to, Room attached, FACING_DIRECTION entrance) {
-        Coordinates p = getAttachCoordinates(to, attached, entrance);
-        //check
-        //        if (!RoomAttacher.canPlace(roomModel, p, getOccupiedCells(), data.getX(), data.getY())) {
-        //            main.system.auxiliary.log.LogMaster.log(1, "Cannot place " + roomModel + " at " +
-        //             x +
-        //             " " + y + "; total rooms=" + roomMap.size() + "; total cells=" + occupiedCells.size());
-        //            return null;
-        //        }
-        //        Coordinates newCoordinates = model.addRoom(p, attached).setNewEntrance(entrance);
-        //        model.getRoomMap().remove(p);
-        //        model.getRoomMap().put(newCoordinates, attached);
-
-    }
-
-
-    //        if (parentExit != null) {
-    //            Coordinates newCoordinates = room.setNewEntrance(roomEntrance);
-    //            model.getRoomMap().remove(roomCoordinates);
-    //            model.getRoomMap().put(newCoordinates, room);
-    //        }
 }

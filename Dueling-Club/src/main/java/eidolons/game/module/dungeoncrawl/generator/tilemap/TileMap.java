@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.tilemap;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 
 import java.util.Map;
@@ -11,9 +12,13 @@ import java.util.Map;
 public class TileMap {
     Tile[][] tiles;
 
-    Map<Coordinates, ROOM_CELL> map;
+    Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
+    private int width;
+    private int height;
 
     public TileMap(int width, int height) {
+        this.width = width;
+        this.height = height;
         tiles = new Tile[width][height];
     }
 
@@ -21,13 +26,27 @@ public class TileMap {
         return tiles;
     }
 
+    public Map<Coordinates, ROOM_CELL> getMap() {
+        return map;
+    }
+
     public void setMap(Map<Coordinates, ROOM_CELL> map) {
         this.map = map;
     }
 
-    public Map<Coordinates, ROOM_CELL> getMap() {
-        return map;
+    @Override
+    public String toString() {
+        return TileMapper.toASCII_String(TileMapper.getCells(this), false);
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     //zones/blocks?
     //ready to transform into Level / DungeonPlan / Dungeon
 }

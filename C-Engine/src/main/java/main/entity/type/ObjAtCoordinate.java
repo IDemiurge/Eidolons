@@ -1,5 +1,7 @@
 package main.entity.type;
 
+import main.content.OBJ_TYPE;
+import main.data.DataManager;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 
@@ -10,6 +12,11 @@ public class ObjAtCoordinate {
     public ObjAtCoordinate(ObjType type, Coordinates coordinates) {
         this.type = type;
         this.coordinates = coordinates;
+    }
+
+    public ObjAtCoordinate(String typeName, String s, OBJ_TYPE TYPE) {
+        type = DataManager.getType(typeName, TYPE);
+        coordinates = new Coordinates(true, s);
     }
 
     @Override

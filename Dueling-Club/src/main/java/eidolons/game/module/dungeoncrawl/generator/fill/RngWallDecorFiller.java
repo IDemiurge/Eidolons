@@ -5,29 +5,21 @@ import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import main.system.datatypes.WeightMap;
 
 /**
- * Created by JustMe on 7/30/2018.
+ * Created by JustMe on 8/11/2018.
  */
-public class RngWallLightFiller extends RngFiller{
-    public RngWallLightFiller(WeightMap<ROOM_CELL> weightMap) {
-        super(weightMap);
-    }
-
-
-    protected int getWrapByExitChance(Room room) {
-        return 50;
-    }
-
-    protected int getWrapPreExitChance(Room room) {
-        return 80;
-    }
-    @Override
-    protected boolean isOverlaying() {
-        return true;
+public class RngWallDecorFiller extends RngFiller {
+    public RngWallDecorFiller(WeightMap<ROOM_CELL> fillerMap) {
+        super(fillerMap);
     }
 
     @Override
     public float getFillCoef() {
-        return 0.25f;
+        return 0.3f;
+    }
+
+    @Override
+    public int getMaxAdjacency(ROOM_CELL filler) {
+        return 0;
     }
 
     @Override
@@ -51,17 +43,29 @@ public class RngWallLightFiller extends RngFiller{
     }
 
     @Override
+    public float getMaxDistanceFromEdge() {
+        return 0;
+    }
+
+    @Override
+    public boolean isAlternativeCenterDistance() {
+        return false;
+    }
+
+    @Override
+    public float getMaxDistanceFromCenter() {
+        return 0;
+    }
+    @Override
     protected int getFillCornersChance(Room room) {
         switch (room.getType()) {
             case THRONE_ROOM:
+                return 80;
             case COMMON_ROOM:
-                return 50;
-            case TREASURE_ROOM:
-            case GUARD_ROOM:
-                return 50;
+                return 30;
             case ENTRANCE_ROOM:
             case EXIT_ROOM:
-                return 80;
+                return 40;
         }
         return 0;
     }

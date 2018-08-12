@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
@@ -19,8 +20,18 @@ import java.util.Set;
  */
 public class ExitMaster {
     public static EXIT_TEMPLATE getExitTemplateToLinks(
-                                                       int links) {
-
+     int links, FACING_DIRECTION entrance, ROOM_TYPE type) {
+if (type==ROOM_TYPE.EXIT_ROOM){
+    switch (entrance){
+        case NORTH:
+        case SOUTH:
+            return RandomWizard.random()?  EXIT_TEMPLATE.FORK : EXIT_TEMPLATE.CROSSROAD;
+        case WEST:
+            return RandomWizard.random()? EXIT_TEMPLATE.ANGLE : EXIT_TEMPLATE.THROUGH;
+        case EAST:
+            return EXIT_TEMPLATE.CROSSROAD;
+    }
+}
 
             if (links == 0)
                 return EXIT_TEMPLATE.CUL_DE_SAC;

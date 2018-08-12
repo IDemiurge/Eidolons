@@ -1,8 +1,10 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
+import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
 
 import java.util.Arrays;
@@ -23,6 +25,17 @@ public class LevelDataMaker {
          new String[LEVEL_VALUES.values().length]
         ));
         return new LevelData(factory.constructDataString());
+    }
+    public static DataUnit<LEVEL_GEN_FLAG> getDefaultLevelFlags(
+    ) {
+        DataUnitFactory<LevelData> factory = new DataUnitFactory();
+        factory.setValueNames(LEVEL_GEN_FLAG.values());
+        factory.setValues(Arrays.stream(LEVEL_GEN_FLAG.values()).map(
+         value -> value.getDefaultValue() + "").
+         collect(Collectors.toList()).toArray(
+         new String[LEVEL_VALUES.values().length]
+        ));
+        return new DataUnit(factory.constructDataString());
     }
 
 

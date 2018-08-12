@@ -43,7 +43,8 @@ public class Room extends RoomModel {
                 break;
             }
         }
-
+        if (entrance != null)
+            makeExit(entrance, false, false);
     }
 
     @Override
@@ -54,9 +55,9 @@ public class Room extends RoomModel {
 
     public void makeExit(FACING_DIRECTION exit, boolean door, boolean exitOrEntrance) {
         Coordinates coordinates = RoomAttacher.adjust(
-        isExitsOffset()? new AbstractCoordinates(
-         exit.isVertical()? -offset.x : 0, !exit.isVertical()? offset.y : 0)
-         : new AbstractCoordinates(0, 0), (exit), this, true);
+         isExitsOffset() ? new AbstractCoordinates(
+          exit.isVertical() ? -offset.x : 0, !exit.isVertical() ? -offset.y : 0)
+          : new AbstractCoordinates(0, 0), (exit), this, true, isCanAdjustEvenExit());
         if (coordinates.y == getHeight())
             coordinates.y--;
         if (coordinates.x == getWidth())
@@ -75,7 +76,7 @@ public class Room extends RoomModel {
             entrance = exit;
         }
         String s = door ? ROOM_CELL.DOOR.getSymbol()
-         : ROOM_CELL.EXIT.getSymbol();
+         : ROOM_CELL.ROOM_EXIT.getSymbol();
         if (isExitsLogical()) {
             if (exitOrEntrance) {
                 exitCells.add(s);
@@ -87,12 +88,16 @@ public class Room extends RoomModel {
     }
 
     private boolean isExitsOffset() {
+        return true;
+    }
+
+    private boolean isCanAdjustEvenExit() {
         return false;
     }
 
     @Override
     public boolean isDisplaced() {
-        return offset.x!=0 || offset.y!=0;
+        return offset.x != 0 || offset.y != 0;
     }
 
     private boolean isExitsLogical() {
@@ -105,8 +110,8 @@ public class Room extends RoomModel {
             return super.getCells();
         String[][] modified = ArrayMaster.cloneMatrix(cells);
         int i = 0;
-        if (isOffsetAlways() )
-//         || getType() == ROOM_TYPE.CORRIDOR&&getExitTemplate() == EXIT_TEMPLATE.ANGLE)
+        if (isOffsetAlways())
+        //         || getType() == ROOM_TYPE.CORRIDOR&&getExitTemplate() == EXIT_TEMPLATE.ANGLE)
         {
             if (entranceCoordinates != null)
                 entranceCoordinates = entranceCoordinates.getOffset(offset);
@@ -159,6 +164,7 @@ public class Room extends RoomModel {
                 break;
         }
         if (!offsetOnly) {
+            sheared = true;
             int w = getWidth() - offsetX - cropX;
             int h = getHeight() - offsetY - cropY;
             String[][] newCells = new String[w][h];
@@ -170,9 +176,9 @@ public class Room extends RoomModel {
             cells = newCells;
         }
         //only ever increase Y and decrease X
-        Coordinates offset =offsetOnly? new AbstractCoordinates(
-           - offsetX + cropX,
-           - offsetY + cropY)
+        Coordinates offset = offsetOnly ? new AbstractCoordinates(
+         -offsetX + cropX,
+         -offsetY + cropY)
          : new AbstractCoordinates(cropX, cropY);
 
         point.offset(offset);
@@ -181,10 +187,11 @@ public class Room extends RoomModel {
             point = new AbstractCoordinates(
              point.x - offsetX + cropX,
              point.y - offsetY + cropY);
-        } else if (cropX > 0 || cropY > 0) {
-            point = point.getOffset(offset);
-            sheared = true;
-            //           TODO is it right?
+        } else {
+            if (cropX > 0 || cropY > 0) {
+                point = point.getOffset(offset);
+                //           TODO is it right?
+            }
         }
         return point;
     }

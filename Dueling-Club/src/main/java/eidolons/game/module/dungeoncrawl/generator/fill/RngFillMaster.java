@@ -25,6 +25,12 @@ public class RngFillMaster {
         weightMap = getMap(FILLER_TYPE.DECOR, data);
         new RngDecorFiller(weightMap).fill(model);
 
+        weightMap = getMap(FILLER_TYPE.DESTRUCTIBLE, data);
+        new RngDestructibleFiller(weightMap).fill(model);
+
+        weightMap = getMap(FILLER_TYPE.OVERLAYING_DECOR, data);
+        new RngWallDecorFiller(weightMap).fill(model);
+
         main.system.auxiliary.log.LogMaster.log(1, " " + model);
     }
 
@@ -42,6 +48,7 @@ public class RngFillMaster {
                 map.put(ROOM_CELL.SPECIAL_ART_OBJ, 1);
                 break;
             case OVERLAYING_DECOR:
+                map.put(ROOM_CELL.WALL_WITH_DECOR_OVERLAY, 1);
                 break;
             case CONTAINER:
                 map.put(ROOM_CELL.CONTAINER, 3);
@@ -52,7 +59,6 @@ public class RngFillMaster {
             case TRAPS:
                 break;
             case DESTRUCTIBLE:
-                map.put(ROOM_CELL.DESTRUCTIBLE_WALL, 3);
                 map.put(ROOM_CELL.DESTRUCTIBLE, 1);
                 break;
         }
