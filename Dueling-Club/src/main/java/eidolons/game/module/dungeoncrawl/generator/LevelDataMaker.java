@@ -45,6 +45,7 @@ public class LevelDataMaker {
 
         LevelData data = getDefaultLevelData(0);
         data.setLocationType(locationType);
+        data.setSublevelType(subType);
         switch (subType) {
             case COMMON:
                 data.setValue(LEVEL_VALUES.ZONES, "4");

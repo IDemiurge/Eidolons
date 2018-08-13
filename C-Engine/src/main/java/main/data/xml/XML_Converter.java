@@ -387,7 +387,10 @@ public class XML_Converter {
         return null;
     }
 
-    private static Node findNode(List<Node> nodes, String nodeName) {
+    public static Node find(Node parent, String nodeName) {
+        return findNode(getNodeList(parent), nodeName);
+    }
+        private static Node findNode(List<Node> nodes, String nodeName) {
         for (Node sub : nodes) {
             if (sub.getNodeName().equalsIgnoreCase(nodeName)) {
                 return sub;

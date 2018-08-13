@@ -59,7 +59,7 @@ public class GenericLauncher extends Game {
 
         MusicMaster.preload(MUSIC_SCOPE.MENU);
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
-        GuiEventManager.bind(SWITCH_SCREEN, this::screenSwitcher);
+        GuiEventManager.bind(SWITCH_SCREEN, this::trySwitchScreen);
         GuiEventManager.bind(SCREEN_LOADED, this::onScreenLoadDone);
         OrthographicCamera camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
@@ -83,7 +83,7 @@ public class GenericLauncher extends Game {
 
     protected void screenInit() {
         ScreenData data = new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading...");
-        screenSwitcher(new EventCallbackParam(data));
+        trySwitchScreen(new EventCallbackParam(data));
         WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
 
@@ -237,17 +237,17 @@ public class GenericLauncher extends Game {
         newScreen.setData(meta);
         final Screen oldScreen = getScreen();
         setScreen(newScreen);
-//        if (oldScreen instanceof MapScreen) {
-//            // ?
-//        } else
-            {
+        //        if (oldScreen instanceof MapScreen) {
+        //            // ?
+        //        } else
+        {
             if (oldScreen != null)
                 oldScreen.dispose();
         }
 
-//        if (newScreen instanceof MapScreen) {
-//            return;
-//        }
+        //        if (newScreen instanceof MapScreen) {
+        //            return;
+        //        }
         triggerLoaded(meta);
     }
 
@@ -278,6 +278,20 @@ public class GenericLauncher extends Game {
             default:
                 GuiEventManager.trigger(SCREEN_LOADED,
                  new ScreenData(data.getType(), null));
+        }
+    }
+
+    protected void trySwitchScreen(EventCallbackParam param) {
+        if (CoreEngine.isIDE()) {
+            try {
+                screenSwitcher(param);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                screenSwitcher(new EventCallbackParam(new ScreenData(
+                 Eidolons.getPreviousScreenType(), "")));
+            }
+        } else {
+            screenSwitcher(param);
         }
     }
 

@@ -42,6 +42,7 @@ public class LevelModelBuilder {
         this.graph = graph;
         try {
             build();
+            model.offsetCoordinates();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }

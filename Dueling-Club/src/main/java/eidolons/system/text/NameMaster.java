@@ -460,8 +460,9 @@ public class NameMaster {
         List<File> files = FileManager.getFilesFromDirectory(path, false, false);
         String format = StringMaster.getFormat(name);
         return getUniqueVersionedName(files
-          .stream().map(type -> StringMaster.cropFormat(type.getName())).collect(Collectors.toList())
-         , name)+format;
+          .stream().map(type -> StringMaster.cropFormat(type.getName()))
+          .collect(Collectors.toList())
+         , StringMaster.cropFormat(name))+format;
     }
 
     public enum HERO_NAME_GROUPS {

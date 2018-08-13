@@ -20,7 +20,7 @@ public class SimulationGame extends DC_Game {
     private DC_Game realGame;
 
     public SimulationGame() {
-        super(true);
+        super(true, false);
         idManager = new DC_IdManager(){
             @Override
             public Integer getNewId() {
@@ -32,6 +32,7 @@ public class SimulationGame extends DC_Game {
 
     @Override
     public void init() {
+        initMasters();
         super.init();
     }
 

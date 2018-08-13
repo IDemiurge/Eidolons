@@ -230,4 +230,20 @@ public class LevelModel {
     public void setBuilder(LevelModelBuilder builder) {
         this.builder = builder;
     }
+
+    public void offsetCoordinates() {
+        AbstractCoordinates offset = new AbstractCoordinates(
+         -getLeftMost(),
+         -getTopMost());
+        LinkedHashSet<Coordinates> set = new LinkedHashSet<>(roomMap.keySet());
+        Map<Coordinates, Room> newMap = new LinkedHashMap<>();
+        for (Coordinates coordinates : set) {
+            Room room = roomMap.get(coordinates);
+            room.getCoordinates().offset(offset);
+            newMap.put(room.getCoordinates(), room);
+        }
+        roomMap = newMap;
+
+
+    }
 }

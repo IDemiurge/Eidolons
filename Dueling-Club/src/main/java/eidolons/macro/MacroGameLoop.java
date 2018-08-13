@@ -13,10 +13,12 @@ import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
+import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
 /**
@@ -153,7 +155,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     }
 
     private boolean isAutoEnterCombat() {
-        return false;
+        return CoreEngine.isFastMode();
     }
 
     public void tryEnter(Place sub) {
@@ -174,7 +176,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     private void startBattle(Place entered) {
         ObjType type = ScenarioGenerator.generateScenarioType(entered);
         main.system.auxiliary.log.LogMaster.log(1,"gen Scenario for dungeon:" +type.getName());
-
+        DataManager.addType(type);
 
         String name =type.getName();
         ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,name );

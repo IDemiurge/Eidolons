@@ -28,7 +28,14 @@ public class MissionConstructor extends BattleConstructor<MissionBattle> {
         ObjType type = DataManager.getType(name, DC_TYPE.MISSIONS);
         if (type == null) {
             if (!StringMaster.getFormat(name).equalsIgnoreCase(".xml")) {
-                name = "crawl\\" + name + ".xml";
+                if (getGame().getMetaMaster().isRngDungeon())
+                {
+                    name = "generated\\" + name + ".xml";
+                }
+                else {
+                    name = "crawl\\" + name + ".xml";
+
+                }
             } //TODO temporary
             type = new ObjType(StringMaster.getLastPathSegment(StringMaster.cropFormat(name)),
              DC_TYPE.MISSIONS);

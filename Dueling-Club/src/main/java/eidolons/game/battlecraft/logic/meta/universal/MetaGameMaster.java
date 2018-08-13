@@ -83,7 +83,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         game = Eidolons.game;
         if (game == null)
         {
-            Simulation.init();
+            Simulation.init(false, this);
             game = createGame();
             Simulation.setRealGame(game);
         }
@@ -183,5 +183,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         AnimMaster.getInstance().cleanUp();
         Coordinates.clearCaches();
 
+    }
+
+    public boolean isRngDungeon() {
+        return false;
     }
 }

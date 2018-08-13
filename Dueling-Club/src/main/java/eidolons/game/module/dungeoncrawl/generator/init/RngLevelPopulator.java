@@ -13,7 +13,6 @@ import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUPS;
 import main.data.DataManager;
-import main.entity.Entity;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -39,7 +38,7 @@ public class RngLevelPopulator  {
     private float requiredFill;
     int powerLevel;
 
-    public static void populate(DungeonLevel level, Entity place) {
+    public static void populate(DungeonLevel level ) {
         int powerLevel=100;
         new RngMainSpawner().spawn(level);
 //        new RngLevelPopulator(level.getModel(), level.getTileMap(), powerLevel).populate();

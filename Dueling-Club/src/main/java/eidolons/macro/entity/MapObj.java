@@ -21,7 +21,7 @@ public abstract class MapObj extends MacroObj {
     protected Area area;
     private boolean detected;
     private boolean hidden;
-    private MAP_OBJ_INFO_LEVEL infoLevel;
+    private MAP_OBJ_INFO_LEVEL infoLevel=MAP_OBJ_INFO_LEVEL.UNKNOWN;
 
     public MapObj(ObjType type, MacroRef ref) {
         super(type, ref);

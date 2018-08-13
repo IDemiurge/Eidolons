@@ -12,9 +12,10 @@ import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 public class ScenarioGame extends DC_Game {
 
     public ScenarioGame(ScenarioMetaMaster scenarioMetaMaster) {
-        super(false);
+        super(false, false);
         metaMaster = scenarioMetaMaster;
         setGameMode(GAME_MODES.DUNGEON_CRAWL);
+        firstInit();
     }
 
     @Override

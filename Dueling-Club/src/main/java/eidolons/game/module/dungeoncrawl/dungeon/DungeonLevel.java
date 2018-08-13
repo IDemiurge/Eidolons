@@ -1,7 +1,11 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
+import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
@@ -10,9 +14,11 @@ import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +31,7 @@ import java.util.stream.Collectors;
 public class DungeonLevel extends LevelLayer<LevelZone> {
     TileMap tileMap;
     LevelModel model;
-    SUBLEVEL_TYPE type;
+    SUBLEVEL_TYPE sublevelType;
     LOCATION_TYPE locationType;
     List<ObjAtCoordinate> objects=     new ArrayList<>() ;
     List<ObjAtCoordinate> units=     new ArrayList<>() ;
@@ -33,35 +39,52 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private int powerLevel;
     private Map<String, DIRECTION> directionMap;
     private Map<String, FLIP> flipMap;
+    private ObjType dungeonType;
 
     public DungeonLevel(TileMap tileMap, LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         this.tileMap = tileMap;
         this.model = model;
-        this.type = type;
+        this.sublevelType = type;
         this.locationType = locationType;
     }
 
     @Override
     public String toXml() {
         //TODO save original model map!
+        String xml="";
         tileMap= new TileMapper(model,model.getData()).joinTileMaps();
-        String xml =XML_Converter.wrap("Map",  tileMap.toString());
+         xml +=XML_Converter.wrap(RngXmlMaster.TILEMAP_NODE,  tileMap.toString());
 
+
+        String values="";
+        values +="\n"+ XML_Converter.wrap(RngXmlMaster.LOCATION_TYPE_NODE, locationType.toString());
+        values +="\n"+ XML_Converter.wrap(RngXmlMaster.SUBLEVEL_TYPE_NODE, sublevelType.toString());
+        values +="\n"+ XML_Converter.wrap(PARAMS.BF_HEIGHT.name(), tileMap.getHeight()+"");
+        values +="\n"+ XML_Converter.wrap(PARAMS.BF_WIDTH.name(), tileMap.getWidth()+"");
+        values = XML_Converter.wrap( RngXmlMaster.VALUES_NODE, values);
+        xml+="\n"+ values;
         //props
 //entrances
         List<Coordinates> entrances =
          tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE).collect(Collectors.toList());
         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
-        xml += XML_Converter.wrap(LocationBuilder.ENTRANCE_NODE, ContainerUtils.constructStringContainer(entrances));
+        xml +="\n"+ XML_Converter.wrap(LocationBuilder.ENTRANCE_NODE, ContainerUtils.constructStringContainer(entrances));
 
         List<Coordinates> exits =
          tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
-        xml += XML_Converter.wrap(LocationBuilder.EXIT_NODE, ContainerUtils.constructStringContainer(exits));
+        xml +="\n"+ XML_Converter.wrap(LocationBuilder.EXIT_NODE, ContainerUtils.constructStringContainer(exits));
+
+        String z="";
 
         for (LevelZone levelZone : getSubParts()) {
-            xml += levelZone.toXml();
+            z +="\n"+ levelZone.toXml();
         }
-        xml = XML_Converter.wrap(LocationBuilder.ZONES_NODE, xml);
+        xml +="\n"+ XML_Converter.wrap(LocationBuilder.ZONES_NODE, z);
+        xml +="\n"+ XML_Converter.wrap(RngXmlMaster.LEVEL_DATA_NODE, getData().toString());
+        xml +="\n"+ XML_Converter.wrap(RngXmlMaster.DIRECTION_MAP_NODE, directionMapData==null ?
+        "" //TODO
+         : directionMapData);
+
         xml = XML_Converter.wrap("Level", xml);
         return xml;
     }
@@ -79,8 +102,8 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         return model;
     }
 
-    public SUBLEVEL_TYPE getType() {
-        return type;
+    public SUBLEVEL_TYPE getSublevelType() {
+        return sublevelType;
     }
 
     public LOCATION_TYPE getLocationType() {
@@ -88,10 +111,22 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public List<ObjAtCoordinate> getObjects() {
+        if (!ListMaster.isNotEmpty(objects)) {
+            objects = new ArrayList<>();
+            for (LevelBlock block : getBlocks()) {
+                objects.addAll(block.getObjects());
+            }
+        }
         return objects;
     }
 
     public List<ObjAtCoordinate> getUnits() {
+        if (!ListMaster.isNotEmpty(units)) {
+            units = new ArrayList<>();
+            for (LevelBlock block : getBlocks()) {
+                units.addAll(block.getUnits());
+            }
+        }
         return units;
     }
 
@@ -100,6 +135,16 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             for (LevelBlock block : zone.getSubParts()) {
                 if (block.getCoordinatesList().contains(coordinates))
                     return block;
+            }
+        }
+        if (model!=null )
+        {
+            coordinates = coordinates.getOffset(new AbstractCoordinates(model.getLeftMost(), model.getTopMost()));
+            for (LevelZone zone : getSubParts()) {
+                for (LevelBlock block : zone.getSubParts()) {
+                    if (block.getCoordinatesList().contains(coordinates))
+                        return block;
+                }
             }
         }
         return null;
@@ -135,5 +180,41 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public Map<String, FLIP> getFlipMap() {
         return flipMap;
+    }
+
+    public ObjType getDungeonType() {
+        return dungeonType;
+    }
+
+    public void setDungeonType(ObjType dungeonType) {
+        this.dungeonType = dungeonType;
+    }
+
+    public void setLocationType(LOCATION_TYPE locationType) {
+        this.locationType = locationType;
+    }
+
+    public void setSublevelType(SUBLEVEL_TYPE sublevelType) {
+        this.sublevelType = sublevelType;
+    }
+
+    public void setTileMap(TileMap tileMap) {
+        this.tileMap = tileMap;
+    }
+
+    public LevelData getData() {
+        return model.getData();
+    }
+
+    public void setData(LevelData data) {
+        throw new RuntimeException();
+    }
+
+    public List<LevelBlock> getBlocks() {
+         List<LevelBlock> list = new ArrayList<>();
+        for (LevelZone zone : getSubParts()) {
+            list.addAll(zone.getSubParts());
+        }
+        return list;
     }
 }

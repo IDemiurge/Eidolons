@@ -41,8 +41,15 @@ public class RngOverlayManager {
         map = new XLinkedMap<>();
         for (ObjAtCoordinate obj : level.getObjects()) {
             if (EntityCheckMaster.isOverlaying(obj.getType())) {
+                LevelBlock block = level.getBlockForCoordinate(obj.getCoordinates());
+                if (block==null ){
+                    //TODO ???
+                    continue;
+                }
                 DIRECTION direction = getDirection(obj.getCoordinates(),
                  level.getBlockForCoordinate(obj.getCoordinates()));
+                if (direction == null)
+                    continue;
 
                 Pair<String, DIRECTION> pair = new ImmutablePair<>(obj.getType().getName(),
                  direction);
@@ -70,7 +77,7 @@ public class RngOverlayManager {
         boolean orthogonalOnly;
         boolean diagonalOnly;
         try {
-            WeightMap<DIRECTION> map =new WeightMap<>(
+            WeightMap<DIRECTION> map = new WeightMap<>(
              ContainerUtils.constructContainer(Arrays.stream(DIRECTION.clockwise).
               map(direction -> direction + StringMaster.wrapInParenthesis(
                TilesMaster.getInSpectrum(c, block.getTileMap(), true, direction) + ""))

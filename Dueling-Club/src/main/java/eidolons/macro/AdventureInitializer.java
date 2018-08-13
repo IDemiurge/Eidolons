@@ -45,6 +45,11 @@ public class AdventureInitializer {
         }
         metaMaster = new ScenarioMetaMaster(scenario) {
             @Override
+            public boolean isRngDungeon() {
+                return true;
+            }
+
+            @Override
             protected PartyManager createPartyManager() {
                 return new AdventurePartyManager(this, load);
             }

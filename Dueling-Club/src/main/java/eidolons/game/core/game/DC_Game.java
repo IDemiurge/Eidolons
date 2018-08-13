@@ -132,14 +132,23 @@ public class DC_Game extends GenericGame {
     }
 
     public DC_Game(boolean simulation) {
+        this(simulation, true);
+    }
+    public DC_Game(boolean simulation, boolean readyToInit) {
         Game.game = this;
         game = this;
-        this.simulation = true;
         this.simulation = simulation;
 
         setGameMode((isSimulation()) ? GAME_MODES.SIMULATION : GAME_MODES.ARENA);
 
         setState(new DC_GameState(this));
+        if (readyToInit) {
+            firstInit();
+
+        }
+    }
+
+    protected void firstInit() {
         initMasters();
         if (CoreEngine.isCombatGame())
             initGameLoops();

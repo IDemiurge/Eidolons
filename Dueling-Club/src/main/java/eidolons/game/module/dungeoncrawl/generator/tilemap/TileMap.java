@@ -27,7 +27,7 @@ public class TileMap {
     }
 
     public Map<Coordinates, ROOM_CELL> getMap() {
-        return map;
+        return  (map);
     }
 
     public void setMap(Map<Coordinates, ROOM_CELL> map) {

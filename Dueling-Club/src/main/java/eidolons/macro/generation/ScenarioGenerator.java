@@ -20,8 +20,10 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 3/10/2018.
@@ -108,32 +110,60 @@ public class ScenarioGenerator {
         LOCATION_TYPE locationType =  new EnumMaster<LOCATION_TYPE>().
          retrieveEnumConst(LOCATION_TYPE.class, place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
 
-      int n = 3;
+      int n = 1;
         List<SUBLEVEL_TYPE > types =
         createSublevelTypes(n, locationType);
 
         String levelPaths="";
+        if (isUsePregenerated()) {
+            for (SUBLEVEL_TYPE type : types) {
+                String path =
+                 StrPathBuilder.build(
+                  getPath(locationType), choosePregenLevel(type, locationType));
+                levelPaths+=(path)+ ContainerUtils.getContainerSeparator();
+            }
+        } else
         for (SUBLEVEL_TYPE type : types) {
 
             DungeonLevel level = new LevelGenerator().generateLevel(type, locationType
              );
             int power = 300;//DC_Game.game.getMetaMaster().getPartyManager().getParty().getParamSum(PARAMS.POWER);
             level.setPowerLevel(power);
-            RngLevelPopulator.populate(level,place);
+            RngLevelPopulator.populate(level );
 
             String stringData = level.toXml();
-           String  name =locationType+" "+ type;
+           String  name =getLevelName(locationType, type)+".xml";
             name =   NameMaster.getUniqueVersionedFileName(name,
              StrPathBuilder.build( PathFinder.getRandomLevelPath(), type.name()));
 
-            String path = StrPathBuilder.build(PathFinder.getDungeonLevelFolder(),
-             "generated", type.name(), name);
+            String path = StrPathBuilder.build(getPath(locationType), name);
             FileManager.write(stringData,path);
             levelPaths+=(path)+ ContainerUtils.getContainerSeparator();
         }
         scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
 
         return scenarioType;
+    }
+
+    private static boolean isUsePregenerated() {
+        return false;
+    }
+
+    private static String getPath(LOCATION_TYPE locationType) {
+    return     StrPathBuilder.build(PathFinder.getRandomLevelPath(),
+         locationType.name());
+    }
+
+    private static String getLevelName(LOCATION_TYPE locationType, SUBLEVEL_TYPE type) {
+        return locationType + " " + type;
+    }
+
+    private static String choosePregenLevel(SUBLEVEL_TYPE type,
+                                            LOCATION_TYPE locationType) {
+        List<File> levels = FileManager.getFilesFromDirectory(getPath(locationType), false);
+        levels= levels.stream().filter(file -> file.getName()
+         .startsWith(getLevelName(locationType, type))).collect(Collectors.toList()) ;
+        return FileManager.getRandomFile(levels).getName();
     }
 
     private static List<SUBLEVEL_TYPE> createSublevelTypes(int n, LOCATION_TYPE locationType) {

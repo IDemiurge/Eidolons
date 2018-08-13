@@ -527,6 +527,21 @@ public class CoordinatesMaster {
         return false;
     }
 
+    public static int getWidth(Collection<Coordinates> list) {
+        int x = getMinX(list);
+        int x1 = getMaxX(list);
+        return x1 - x;
+    }
+    public static int getHeight(Collection<Coordinates> list) {
+        int y = getMinY(list);
+        int y1 = getMaxY(list);
+        return y1 - y;
+    }
+
+    public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> coordinatesList) {
+        return getCornerCoordinates(coordinatesList).get(0);
+    }
+
 
     // public boolean isOnEdgeX(Coordinates coordinates, int border) {
     // return coordinates.getX() - getOffsetX() == 0

@@ -33,11 +33,16 @@ public class UnitDescriptionPanel extends DescriptionPanel{
     @Override
     protected void updateAct() {
         HqHeroDataSource dataSource = (HqHeroDataSource) getUserObject();
-        String text = dataSource.getDescription();
+        String text =dataSource==null  ?"" : dataSource.getDescription();
         if (text.isEmpty()) {
             text = HelpMaster.getHelpText();
         }
         setText(text);
         super.updateAct();
+    }
+
+    @Override
+    public void setUserObject(Object userObject) {
+        super.setUserObject(userObject);
     }
 }

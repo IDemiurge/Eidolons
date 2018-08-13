@@ -42,6 +42,11 @@ public class HeroDataModel extends Unit {
         //        cacheSimItems();
     }
 
+    @Override
+    public boolean isSimulation() {
+        return true;
+    }
+
     public HeroDataModel(ObjType type, Pair<ParamMap, PropMap> pair) {
         super(type);
         cloneMaps(pair.getRight(), pair.getLeft());

@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.generator.tilemap;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
@@ -11,6 +12,7 @@ import eidolons.game.module.dungeoncrawl.generator.model.RoomModel;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
+import main.system.launch.CoreEngine;
 
 import java.util.Map;
 
@@ -45,6 +47,18 @@ public class TileMapper {
         }
         return cells;
     }
+    public static String[][] toSymbolArray(ROOM_CELL[][] symbols) {
+        String[][] cells = new String[symbols.length][symbols[0].length];
+        int x = 0;
+        for (ROOM_CELL[] column : symbols) {
+            for (int y = 0; y < column.length; y++) {
+                ROOM_CELL symbol = column[y];
+                cells[x][y] = symbol.getSymbol();
+            }
+            x++;
+        }
+        return cells;
+    }
 
     public static TileMap createTileMap(Room room) {
         TileMap tileMap = new TileMap(room.getWidth(), room.getHeight());
@@ -55,7 +69,7 @@ public class TileMapper {
             for (int y = 0; y < column.length; y++) {
                 String symbol = column[y];
                 ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                map.put(new AbstractCoordinates(x, y), cell);
+                map.put(new AbstractCoordinates(x, y).offset(room.getCoordinates()), cell);
             }
             x++;
         }
@@ -68,12 +82,13 @@ public class TileMapper {
         ROOM_CELL[][] cells = new ROOM_CELL[map.getWidth()][map.getHeight()];
         for (Coordinates point : map.getMap().keySet()) {
             ROOM_CELL val = map.getMap().get(point);
-            if (val==null )
+            if (val == null)
                 continue;
             try {
                 cells[point.x][point.y] = val;
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                if (!CoreEngine.isMacro())
+                    main.system.ExceptionMaster.printStackTrace(e);
             }
         }
         return cells;
@@ -85,7 +100,7 @@ public class TileMapper {
         String separator = "\n      ";
 
         for (int x = 0; x < cells.length; x++) {
-            columns += x + "|";
+            columns += x + RngXmlMaster.TILEMAP_ROW_SEPARATOR;
             if (x < 10) columns += " ";
             separator += "___";
         }
@@ -114,7 +129,9 @@ public class TileMapper {
         TileMap tileMap = new TileMap(model.getCurrentWidth(), model.getCurrentHeight());
         for (LevelBlock block : model.getBlocks().values()) {
             for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
-                tileMap.getMap().put(coordinates.getOffset(block.getCoordinates().getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))),
+                tileMap.getMap().put(coordinates
+//                  .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
+                 ,
                  block.getTileMap().getMap().get(coordinates));
             }
         }

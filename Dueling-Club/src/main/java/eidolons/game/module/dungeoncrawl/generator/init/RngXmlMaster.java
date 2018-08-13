@@ -10,4 +10,18 @@ public class RngXmlMaster {
     public static final String COORDINATES_NODE = "COORDINATES";
     public static final String SEPARATOR = ";";
     public static final String BLOCKS_NODE ="BLOCKS" ;
+    public static final String ZONES_NODE = "ZONES";
+    public static final String LOCATION_TYPE_NODE = "LOCATION_TYPE";
+    public static final String VALUES_NODE = "VALUES";
+    public static final String SUBLEVEL_TYPE_NODE = "SUBLEVEL_TYPE";
+    public static final java.lang.String TILEMAP_NODE = "TILEMAP";
+    public static final java.lang.String TILEMAP_ROW_SEPARATOR = "|" ;
+    public static final int SKIPPED_LINES = 2;
+    public static final String ZONE_STYLE_NODE = "ZONE_STYLE";
+    public static final String ZONE_TYPE_NODE = "ZONE_TYPE";
+    public static final String ZONE_TEMPLATE_GROUP_NODE = "TEMPLATE_GROUP";
+    public static final java.lang.String ENTRANCES_NODE ="ENTRANCES" ;
+    public static final java.lang.String LEVEL_DATA_NODE = "LEVEL_DATA";
+    public static final String DIRECTION_MAP_NODE ="DIRECTION_MAP" ;
+    public static final String BLOCK_ROOM_TYPE_NODE = "BLOCK_ROOM_TYPE";
 }

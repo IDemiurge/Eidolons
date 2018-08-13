@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
@@ -48,6 +49,11 @@ public class LevelZone extends LevelLayer<LevelBlock>{
             xml +=XML_Converter.wrap("Block"+n++, block.toXml());
         }
         xml = XML_Converter.wrap("Blocks", xml);
+        String values="";
+        values+=XML_Converter.wrap(RngXmlMaster.ZONE_STYLE_NODE, style.name());
+        values+=XML_Converter.wrap(RngXmlMaster.ZONE_TYPE_NODE, type.name());
+        values+=XML_Converter.wrap(RngXmlMaster.ZONE_TEMPLATE_GROUP_NODE, templateGroup.name());
+        xml+= XML_Converter.wrap(RngXmlMaster.VALUES_NODE, values);
         xml = XML_Converter.wrap("Zone_"+id, xml);
         return xml;
     }
@@ -82,5 +88,9 @@ public class LevelZone extends LevelLayer<LevelBlock>{
 
     public WeightMap<UNIT_GROUP> getUnitGroupWeightMap() {
         return unitGroupWeightMap;
+    }
+
+    public void setType(ZONE_TYPE type) {
+        this.type = type;
     }
 }

@@ -166,12 +166,17 @@ public class RngMainSpawner {
     public void spawn(DungeonLevel level) {
         //via groups/encounters?
         this.level = level;
-        this.data = level.getModel().getData();
+        this.data = level.getData();
         //some meta data to take from?
         spawnGroups();
 
     }
 
+    private float calculateFill(LevelBlock block) {
+        float square = block.getWidth() * block.getHeight();
+        List<ObjAtCoordinate> units = block.getUnits();
+        return   units.size() / square;
+    }
     private void spawnGroups() {
         //control power level
 
@@ -183,12 +188,11 @@ public class RngMainSpawner {
             List<LevelBlock> spawnedOfType = new ArrayList<>();
             for (LevelZone zone : level.getSubParts()) {
                 int limit = getLimit(groupType, zone);
-                List<LevelBlock> blocks = level.getModel().getBlocks().values().stream()
-                 .filter(block -> isBlockForGroup(block, groupType)).sorted(
-                  (o1, o2) -> RandomWizard.getRandomInt(10)).limit(limit).collect(Collectors.toList());
+                List<LevelBlock> blocks =getBlocksForSpawn(groupType, zone, limit );
 
                 if (blocks.size() < limit) {
                 //TODO ?
+
                 }
                 blocks.removeAll(spawnedOfType);
                 List<LevelBlock> filtered = new ArrayList<>(blocks);
@@ -211,6 +215,16 @@ public class RngMainSpawner {
         }
     }
 
+    private List<LevelBlock> getBlocksForSpawn(SPAWN_GROUP_TYPE groupType, LevelZone zone, int limit) {
+        return
+         level.getBlocks().stream()
+          .filter(block-> block.getZone()==zone)
+          .filter(block -> isBlockForGroup(block, groupType)).sorted(
+          new SortMaster<LevelBlock>().getSorterByExpression_(block->
+           (int) (-100*calculateFill(block)+RandomWizard.getRandomIntBetween(0,5))))
+          .limit(limit).collect(Collectors.toList());
+    }
+
     private float getPowerCoef(LevelBlock block) {
         float coef = 1f;
 //       peaks and slopes
@@ -223,7 +237,7 @@ public class RngMainSpawner {
     private int getLimit(SPAWN_GROUP_TYPE group, LevelZone zone) {
         int max =
          data.getIntValue(LEVEL_VALUES.valueOf("SPAWN_GROUP_COEF_" + group.name())) *
-          level.getModel().getBlocks().size() / SPAWN_GROUP_TYPE.values().length / 100;
+          level.getBlocks().size() / SPAWN_GROUP_TYPE.values().length / 100;
         return RandomWizard.getRandomIntBetween(max / 2, max * 3 / 2);
     }
 
@@ -316,7 +330,6 @@ public class RngMainSpawner {
             if (!iterator.hasNext())
                 iterator = emptyCells.listIterator();
             Coordinates c = iterator.next();
-            c= c.getOffset(levelBlock.getCoordinates());
             ObjAtCoordinate at = new ObjAtCoordinate(unit, c);
             addUnit(at, levelBlock);
             list.add(at);

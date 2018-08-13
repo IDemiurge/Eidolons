@@ -29,6 +29,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static main.system.auxiliary.log.LogMaster.*;
+
 /**
  * Created by JustMe on 2/13/2018.
  * <p>
@@ -70,15 +72,15 @@ public class LevelGenerator {
         }
         int i = 0;
         for (LevelModel model : models) {
-            main.system.auxiliary.log.LogMaster.log(1, i++ + ": \n" +
+            log(1, i++ + ": \n" +
              model.toString());
         }
         for (int j = 0; j < 10; j++) {
-            main.system.auxiliary.log.LogMaster.log(1," " );
+            log(1," " );
         }
         for (LevelModel model : models) {
             RngFillMaster.fill(model,model.getData());
-            main.system.auxiliary.log.LogMaster.log(1, i++ + ": \n" +
+            log(1, i++ + ": \n" +
              model.toString());
 
         }
@@ -97,7 +99,7 @@ public class LevelGenerator {
         for (String path : ContainerUtils.open(scenarioType.getProperty(PROPS.SCENARIO_MISSIONS))) {
             String contents =
              PathFinder.getRandomLevelPath()+ FileManager.readFile(path);
-            main.system.auxiliary.log.LogMaster.log(1, i++ + ": \n" +contents);
+            log(1, i++ + ": \n" +contents);
 
         }
     }
@@ -122,9 +124,9 @@ public class LevelGenerator {
 
     public LevelModel generateLevelModel(LevelData data) {
         LevelGraph graph = new LevelGraphMaster(data).buildGraph();
-        main.system.auxiliary.log.LogMaster.log(1, "graph: " + graph);
+        log(1, "graph: " + graph);
         LevelModel model = new LevelModelBuilder(data).buildModel(graph);
-        main.system.auxiliary.log.LogMaster.log(1, "model: " + model);
+        log(1, "model: " + model);
         return model;
     }
 

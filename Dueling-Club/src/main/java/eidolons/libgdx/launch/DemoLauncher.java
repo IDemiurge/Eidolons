@@ -60,7 +60,7 @@ public class DemoLauncher extends GenericLauncher {
     @Override
     protected void screenInit() {
         ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE, "Loading...");
-        screenSwitcher(new EventCallbackParam(data));
+        trySwitchScreen(new EventCallbackParam(data));
 
 
     }

@@ -102,6 +102,10 @@ public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type){
     public boolean isShearLinkWallsAllowed() {
         return flags.getBooleanValue(LEVEL_GEN_FLAG.isShearLinkWallsAllowed);
     }
+
+    public void setSublevelType(SUBLEVEL_TYPE sublevelType) {
+        this.sublevelType = sublevelType;
+    }
     //    public boolean isShearDisplacedOnly() {
 //        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);
 //    }
