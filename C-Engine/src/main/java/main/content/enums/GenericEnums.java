@@ -326,6 +326,7 @@ public class GenericEnums {
         SPECIAL_ITEM,
         SELF_DAMAGE,
         INDESTRUCTIBLE,
+        INVULNERABLE,
         INVERT_ON_ENEMY,
         BROAD_REACH,
         LEAVES_NO_CORPSE,
@@ -339,7 +340,7 @@ public class GenericEnums {
         SPECTRUM_LIGHT,
         CANCEL_FOR_FALSE,
         BUCKLER_THROWER,
-        LEFT_RIGHT_REACH,
+        LEFT_RIGHT_REACH,;
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.

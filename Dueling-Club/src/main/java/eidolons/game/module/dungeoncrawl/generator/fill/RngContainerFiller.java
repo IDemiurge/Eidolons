@@ -18,11 +18,17 @@ public class RngContainerFiller extends RngFiller {
 
     @Override
     public float getFillCoef() {
-        return 0.3f;
+        return 0.5f;
+    }
+
+    @Override
+    public float getRequiredFillDefault() {
+        return 0; //disable additional fill
     }
 
     public float getFillCoef(ROOM_TYPE type) {
         switch (type) {
+            case SECRET_ROOM:
             case TREASURE_ROOM:
                 return 1.5f;
         }
@@ -30,8 +36,19 @@ public class RngContainerFiller extends RngFiller {
     }
 
     @Override
-    public float getRequiredFillDefault() {
-        return 0;
+    protected int getMinFilledCells(ROOM_TYPE roomType) {
+        switch (roomType) {
+            case TREASURE_ROOM:
+            case SECRET_ROOM:
+                return 2;
+            case THRONE_ROOM:
+                return 3;
+            case DEATH_ROOM:
+                return 1;
+            case EXIT_ROOM:
+                return 1;
+        }
+        return 0 ;
     }
 
     @Override

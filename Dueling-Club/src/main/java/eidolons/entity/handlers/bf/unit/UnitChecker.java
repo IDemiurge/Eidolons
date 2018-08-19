@@ -151,7 +151,7 @@ public class UnitChecker extends EntityChecker<Unit> {
         if (checkPassive(UnitEnums.STANDARD_PASSIVES.IMMATERIAL)) {
             return true;
         }
-        return checkPassive(UnitEnums.STANDARD_PASSIVES.TRANSPARENT);
+        return false; //checkPassive(UnitEnums.STANDARD_PASSIVES.TRANSPARENT);
     }
 
     public boolean isTall() {

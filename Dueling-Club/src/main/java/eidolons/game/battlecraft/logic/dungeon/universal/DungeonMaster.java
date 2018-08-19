@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
 import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
@@ -34,6 +35,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private DoorMaster doorMaster;
     private LockMaster lockMaster;
     private ContainerMaster containerMaster;
+    private DungeonLevel dungeonLevel;
 
 
     public DungeonMaster(DC_Game game) {
@@ -164,5 +166,13 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
                 return containerMaster;
         }
         return null;
+    }
+
+    public DungeonLevel getDungeonLevel() {
+        return dungeonLevel;
+    }
+
+    public void setDungeonLevel(DungeonLevel dungeonLevel) {
+        this.dungeonLevel = dungeonLevel;
     }
 }

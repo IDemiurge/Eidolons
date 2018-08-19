@@ -3,6 +3,7 @@ package eidolons.ability.effects.common;
 import eidolons.ability.effects.DC_Effect;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.game.battlecraft.ai.tools.target.EffectFinder;
 import main.ability.effects.Effect;
 import main.ability.effects.Effects;
@@ -118,7 +119,10 @@ public class SpectrumEffect extends DC_Effect {
              getGame().getDungeon().getZ(), c, null, true, applyThrough));
 
             if (applyThrough) {
-                objects.addCast(getGame().getCellByCoordinate(c));
+                DC_Cell cell = getGame().getCellByCoordinate(c);
+                if (cell != null) {
+                    objects.addCast(cell);
+                }
             }
 
             for (Obj o : objects) {

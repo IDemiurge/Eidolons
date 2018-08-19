@@ -19,6 +19,7 @@ import java.util.List;
 
 public class DroppedItemManager {
 
+    private static final List<DC_HeroItemObj> VOID =     new ArrayList<>();
     List<DC_HeroItemObj>[][] itemMap;
     private DC_Game game;
 
@@ -90,6 +91,9 @@ public class DroppedItemManager {
     }
 
     private List<DC_HeroItemObj> getItems(Obj cell) {
+        if (cell == null) {
+            return     VOID ;
+        }
         List<DC_HeroItemObj> list = new ArrayList<>();
         for (String id : ContainerUtils.open(cell.getProperty(PROPS.DROPPED_ITEMS))) {
             Obj item = game.getObjectById(NumberUtils.getInteger(id));

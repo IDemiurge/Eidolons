@@ -100,8 +100,8 @@ public abstract class RngFiller implements RngFillerInterface {
         currentFill = calculateFill();
         float dif = 0;
 
-
-        while (true) {
+        Loop loop = new Loop(zone.getSubParts().size()*100);
+        while (loop.continues()) {
             if (!(!checkDone() && ((dif = fillRequired - currentFill) > 0.05f)))
                 break;
             Stack<Room> prioritySpawnLocations = createPrioritySpawnLocations(zone);
@@ -145,22 +145,22 @@ public abstract class RngFiller implements RngFillerInterface {
             coordinateList.removeIf(c -> !TilesMaster.isCornerCell(c, map));
         }
         if (isNeverBlock()) {
-            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(c, room));
-            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(c, room));
+            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(room.relative(c), room));
+            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(room.relative(c), room));
         }
         if (getMaxDistanceFromEdge() >= 0) {
             if (isAlternativeCenterDistance()) {
                 coordinateList.removeIf(c ->
-                 TilesMaster.getDistanceFromEdge(c, room.getWidth(), room.getHeight()) >
+                 TilesMaster.getDistanceFromEdge(room.relative(c), room.getWidth(), room.getHeight()) >
                   getMaxDistanceFromEdge() &&
-                  TilesMaster.getDistanceFromCenter(c, room.getWidth(), room.getHeight()) >
+                  TilesMaster.getDistanceFromCenter(room.relative(c), room.getWidth(), room.getHeight()) >
                    getMaxDistanceFromCenter()
                 );
             } else {
-                coordinateList.removeIf(c -> TilesMaster.getDistanceFromEdge(c, room.getWidth(), room.getHeight()) >
+                coordinateList.removeIf(c -> TilesMaster.getDistanceFromEdge(room.relative(c), room.getWidth(), room.getHeight()) >
                  getMaxDistanceFromEdge());
                 if (getMaxDistanceFromCenter() >= 0)
-                    coordinateList.removeIf(c -> TilesMaster.getDistanceFromCenter(c, room.getWidth(), room.getHeight()) >
+                    coordinateList.removeIf(c -> TilesMaster.getDistanceFromCenter(room.relative(c), room.getWidth(), room.getHeight()) >
                      getMaxDistanceFromCenter());
             }
 
@@ -200,7 +200,8 @@ public abstract class RngFiller implements RngFillerInterface {
 
 
     protected void fillCells(List<Coordinates> toFill, LevelBlock block, float minimumPerc) {
-        int min = Math.round(toFill.size() * minimumPerc);
+        int min =Math.max(getMinFilledCells(block.getRoomType()),
+         Math.round(toFill.size() * minimumPerc));
         int i = 0;
         for (Coordinates coordinates : toFill) {
             if (i++ > min) //avrg result = min+(max-min)/2
@@ -222,14 +223,21 @@ public abstract class RngFiller implements RngFillerInterface {
         }
     }
 
+    protected int getMinFilledCells(ROOM_TYPE roomType) {
+        return 0;
+    }
+
     private ROOM_CELL getFillerRandomized() {
         return fillerMap.getRandomByWeight();
     }
 
     protected void placeFiller(Coordinates coordinates, LevelBlock block, ROOM_CELL filler) {
-        block.getTileMap().getMap().put(coordinates, filler);
+        block.getTileMap().put(coordinates, filler);
         Room room = (Room) MapMaster.getKeyForValue_(model.getBlocks(), block);
-        room.getCells()[coordinates.x][coordinates.y] = filler.getSymbol();
+        Coordinates relative = room.relative(coordinates);
+        room.getCells()[relative .x]
+         [relative.y] = filler.getSymbol();
+
         //        if (isOverlaying()) {
         //            DIRECTION direction = model.getBuilder().
         //             getOverlayManager().getDirection(coordinates, block, filler);
@@ -311,13 +319,16 @@ public abstract class RngFiller implements RngFillerInterface {
              new AbstractCoordinates(0, room.getHeight()),
              new AbstractCoordinates(room.getWidth(), room.getHeight()),
             };
-            for (Coordinates corner : corners) {
-                if (!room.getCells()[corner.x][corner.y].equals(getFilledRoomCellType().getSymbol())) {
-                    continue loop;
-                }
-            }
             if (!RandomWizard.chance(getFillCornersChance(room))){
                 continue loop;
+            }
+            for (Coordinates corner : corners) {
+                if (!room.getCells()[corner.x][corner.y].equals(getFilledRoomCellType().getSymbol())) {
+                    if (!RandomWizard.chance(getFillCornersChance(room))){
+                        continue loop;
+                    } else
+                        break;
+                }
             }
             LevelBlock block = model.getBlocks().get(room);
             tryFillWithBound(block, corners);

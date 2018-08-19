@@ -5,11 +5,16 @@ import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.entity.type.ObjType;
 
+import javax.swing.*;
+
 /**
  * Created by JustMe on 5/17/2017.
  * Supposed to be used as 'singleton' one per ObjType
  */
 public class LightweightEntity extends DataModel {
+
+    protected ImageIcon customIcon;
+    protected ImageIcon icon;
 
     public LightweightEntity(ObjType type) {
         this.type = type;

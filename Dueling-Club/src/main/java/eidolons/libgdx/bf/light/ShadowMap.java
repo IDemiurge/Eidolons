@@ -4,7 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.bf.GridMaster;
+import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.grid.GridPanel;
+import eidolons.libgdx.gui.generic.GroupX;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StrPathBuilder;
@@ -12,12 +14,20 @@ import main.system.auxiliary.StrPathBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT.*;
+
 /**
  * Created by JustMe on 8/16/2017.
  */
-public class ShadowMap {
+public class ShadowMap extends GroupX {
 
-    public static final SHADE_LIGHT[] SHADE_LIGHT_VALUES = SHADE_LIGHT.values();
+    public static final SHADE_LIGHT[] SHADE_LIGHT_VALUES = {
+     GAMMA_SHADOW,
+     GAMMA_LIGHT,
+     LIGHT_EMITTER,
+     BLACKOUT,
+     HIGLIGHT
+    };
     private static boolean on = true;
     private GridPanel grid;
     private Map<SHADE_LIGHT, ShadeLightCell[][]> cells = new LinkedHashMap<>();
@@ -30,26 +40,35 @@ public class ShadowMap {
     public static boolean isOn() {
         return on;
     }
-//TODO act -> fluctuate alpha
+    //TODO act -> fluctuate alpha
 
     public static void setOn(boolean on) {
         ShadowMap.on = on;
     }
 
+    public static boolean isColoringSupported() {
+        return false;
+    }
+
     private void init() {
+        setSize(grid.getWidth(), grid.getHeight());
         for (SHADE_LIGHT type : SHADE_LIGHT_VALUES) {
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
-                    ShadeLightCell cell = new ShadeLightCell(type, x, y);
+                    ShadeLightCell cell = new ShadeLightCell(type );
+                    if (grid.getCells()[x][y] == null) {
+                        if (type == GAMMA_SHADOW)
+                            cell.setVoid(true);
+                        else
+                            continue;
+                    }
                     getCells(type)[x][y] = cell;
-                    grid.addActor(cell);
+                    addActor(cell);
                     float offsetX = (GridMaster.CELL_W - cell.getWidth()) / 2;
                     float offsetY = (GridMaster.CELL_H - cell.getHeight()) / 2;
 
-                    cell.setPosition(
-                     grid.getCells()[x][grid.getRows() - 1 - y].getX() + offsetX,
-                     grid.getCells()[x][grid.getRows() - 1 - y].getY() + offsetY);
+                    cell.setPosition(x * GridMaster.CELL_W + offsetX, y * GridMaster.CELL_H + offsetY);
 
                     cell.setColor(1, 1, 1, type.defaultAlpha);
                     cell.addListener(new EventListener() {
@@ -62,7 +81,7 @@ public class ShadowMap {
             }
         }
         bindEvents();
-//        update();
+        //        update();
 
     }
 
@@ -75,23 +94,25 @@ public class ShadowMap {
     }
 
     public void update() {
-        for (int x = 0; x < grid.getCols(); x++) {
-            for (int y = 0; y < grid.getRows(); y++) {
-                for (SHADE_LIGHT type : SHADE_LIGHT_VALUES) {
+        for (SHADE_LIGHT type : SHADE_LIGHT_VALUES) {
+            for (int x = 0; x < grid.getCols(); x++) {
+                for (int y = 0; y < grid.getRows(); y++) {
+                    ShadeLightCell cell = getCells(type)[x][y];
+                    if (cell == null) {
+                        continue;
+                    }
                     float alpha = 0;
                     if (isOn())
-                        try {
-                            alpha = DC_Game.game.getVisionMaster().
-                             getGammaMaster().getAlphaForShadowMapCell(x, y, type);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
-                    if (getCells(type)[x][y].getColor().a != alpha) {
-                        getCells(type)[x][y].setBaseAlpha(alpha);
-                        getCells(type)[x][y].setColor(1, 1, 1, alpha);
+                        alpha = DC_Game.game.getVisionMaster().
+                         getGammaMaster().getAlphaForShadowMapCell(x, y, type);
+                    if (cell.getColor().a != alpha) {
+                        cell.setBaseAlpha(alpha);
+
+                        if (type == LIGHT_EMITTER)
+                            cell.setColor(1, 1, 1, alpha); //was this the reason for the light-glitches?
                     }
                     if (type == SHADE_LIGHT.LIGHT_EMITTER)
-                        getCells(type)[x][y].adjustPosition(x, y);
+                        cell.adjustPosition(x, y);
                 }
             }
 
@@ -111,11 +132,30 @@ public class ShadowMap {
         for (int x = 0; x < array.length; x++) {
             for (int y = 0; y < array[x].length; y++) {
                 ShadeLightCell cell = array[x][y];
-                if (cell.getColor().a != 0)
-                    cell.setZIndex(Integer.MAX_VALUE);
+                if (cell != null)
+                    if (!cell.isIgnored())
+                        if (cell.getColor().a != 0)
+                            cell.setZIndex(Integer.MAX_VALUE);
             }
         }
 
+    }
+
+    public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_LIGHT type) {
+        switch (type) {
+            case GAMMA_SHADOW:
+            case GAMMA_LIGHT:
+                break;
+            case LIGHT_EMITTER:
+                break;
+            case CONCEALMENT:
+                break;
+            case BLACKOUT:
+                break;
+            case HIGLIGHT:
+                break;
+        }
+        return ALPHA_TEMPLATE.HIGHLIGHT_MAP;
     }
 
     public enum SHADE_LIGHT {

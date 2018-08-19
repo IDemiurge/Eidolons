@@ -11,6 +11,7 @@ import main.entity.obj.ActiveObj;
 import main.entity.obj.BfObj;
 import main.game.bf.Coordinates;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ import java.util.List;
  */
 public class UnitDataModelSnapshot extends DataModel implements BfObj {
 
+    protected ImageIcon customIcon;
+    protected ImageIcon icon;
     private boolean unconscious;
     private boolean mine;
     private int x;

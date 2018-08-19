@@ -81,7 +81,14 @@ public class GammaMaster {
             return 0;
         }
         float alpha = 0;
-        float gamma = getGammaForCell(x, y);
+        DC_Cell cell = Eidolons.game.getCellByCoordinate(
+         new Coordinates(x, y));
+        if (cell==null ){
+            if (type == SHADE_LIGHT.GAMMA_SHADOW)
+                return 1;
+            return 0;
+        }
+        float gamma = getGammaForCell(cell);
 //        if (Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
 //            gamma = 0;
 //        }
@@ -131,8 +138,7 @@ public class GammaMaster {
 //             Eidolons.game.getCellByCoordinate(
 //              new Coordinates(x, y)).getIntParam(
 //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
-                 master.getIlluminationMaster().getConcealment(unit, Eidolons.game.getCellByCoordinate(
-                  new Coordinates(x, y))) * CONCEALMENT_ALPHA_FACTOR;
+                 master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
                     alpha += getAlphaForShadowMapCell(x, y, SHADE_LIGHT.LIGHT_EMITTER) / 3;
                 break;
@@ -160,9 +166,12 @@ public class GammaMaster {
     }
 
 
-
     public float getGammaForCell(int x, int y) {
-        DC_Cell cell = Eidolons.game.getCellByCoordinate(new Coordinates(x, y));
+        return getGammaForCell(Eidolons.game.getCellByCoordinate(new Coordinates(x, y)));
+    }
+
+    public float getGammaForCell( DC_Cell cell  ) {
+
         if (cell == null) {
             return 0;
         }
@@ -179,6 +188,7 @@ public class GammaMaster {
                 }
 
             }
+            if (isBlockedGammaOn())
         if (cell.getUnitVisionStatus() == UNIT_VISION.BLOCKED)
             return getBlockedGamma(cell);
 
@@ -187,6 +197,10 @@ public class GammaMaster {
         return CELL_GAMMA_MODIFIER * (float)
          cell.getGamma();
 //        return new Random().nextInt(50)/100 + 0.5f;
+    }
+
+    private boolean isBlockedGammaOn() {
+        return true;
     }
 
     private float getBlockedGamma(DC_Cell cell) {

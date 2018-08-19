@@ -6,11 +6,13 @@ import eidolons.content.PROPS;
 import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.libgdx.bf.overlays.WallMap;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
+import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_TYPE;
 import main.content.enums.entity.HeroEnums;
@@ -50,7 +52,8 @@ public class ContentGenerator {
 
     public static void generateUnitGroupsEnumsTxt() {
         String contents = "";
-        loop: for (File file : FileManager.getFilesFromDirectory(PathFinder.getUnitGroupPath(), false, true)) {
+        loop:
+        for (File file : FileManager.getFilesFromDirectory(PathFinder.getUnitGroupPath(), false, true)) {
             for (char c : file.getName().toCharArray()) {
                 if (Character.isDigit(c))
                     continue loop;
@@ -62,7 +65,7 @@ public class ContentGenerator {
         }
         String text = "public enum " +
          " {" + contents + ";\n}";
-        System.out.println(  text);
+        System.out.println(text);
 
     }
 
@@ -70,7 +73,7 @@ public class ContentGenerator {
         DC_Engine.mainMenuInit();
         generateUnitGroupsEnumsTxt();
         generateTypeEnumsTxt(true, new DC_TYPE[]{
-         DC_TYPE.UNITS,DC_TYPE.BF_OBJ
+         DC_TYPE.UNITS, DC_TYPE.BF_OBJ
         });
 
     }
@@ -118,6 +121,7 @@ public class ContentGenerator {
 
         }
     }
+
     public static void generatePlaces() {
         for (PLACE_SUBTYPE sub : PLACE_SUBTYPE.values()) {
             String name = StringMaster.getWellFormattedString(sub.name());
@@ -130,6 +134,20 @@ public class ContentGenerator {
             DataManager.addType(type);
             //            type = new ObjType(name+ " alt" ,type);
             //            DataManager.addType(type);
+        }
+    }
+
+    public static final void afterRead() {
+        generateIndestructibleWalls();
+    }
+
+    public static void generateIndestructibleWalls() {
+        for (ObjType type : DataManager.getTypesGroup(DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
+
+            ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
+            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
+            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
+            DataManager.addType(newType);
         }
     }
 

@@ -144,7 +144,7 @@ public abstract class StateManager {
 
         OBJ_TYPE TYPE = obj.getOBJ_TYPE_ENUM();
         if (TYPE == null) {
-            LogMaster.log(1, obj.getNameAndId() + " has no TYPE!");
+//            LogMaster.log(1, obj.getNameAndId() + " has no TYPE!");
             return;
         }
         Map<Integer, Obj> map = state.getObjMaps().get(TYPE);

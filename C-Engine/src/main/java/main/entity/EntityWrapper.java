@@ -697,13 +697,6 @@ public class EntityWrapper<E extends DataModel> {
         entity.setOriginalName(originalName);
     }
 
-    public ImageIcon getCustomIcon() {
-        return entity.getCustomIcon();
-    }
-
-    public void setCustomIcon(ImageIcon customIcon) {
-        entity.setCustomIcon(customIcon);
-    }
 
     public WORKSPACE_GROUP getWorkspaceGroup() {
         return entity.getWorkspaceGroup();

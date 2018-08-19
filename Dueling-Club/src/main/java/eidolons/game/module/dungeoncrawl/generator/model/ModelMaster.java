@@ -1,8 +1,10 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.SortMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,9 +131,77 @@ public class ModelMaster {
         List<Coordinates> list=     new ArrayList<>() ;
         for (int x = 0; x < room.getWidth(); x++) {
             for (int y = 0; y < room.getHeight(); y++) {
-                list.add(new AbstractCoordinates(x, y));
+                list.add(new AbstractCoordinates(x, y).offset(room.getCoordinates()));
             }
         }
         return list;
+    }
+
+    public static boolean isBetween(Room r, Room room, Room room2, boolean xOrY) {
+        Room closerToZero = room.getCoordinates().getXorY(xOrY)<room.getCoordinates().getXorY(xOrY)
+         ? room
+         : room2;
+        int start = closerToZero.getCoordinates().getXorY(xOrY) +
+         (xOrY? room.getWidth() : room.getHeight());
+        int end = (closerToZero == room ? room2 : room).getCoordinates().getXorY(xOrY);
+
+        int n = r.getCoordinates().getXorY(xOrY);
+        return n > start && n < end;
+
+    }
+
+    public static  List<Room> getEdgeRooms(LevelModel model) {
+        return model.getRoomMap().values().stream()
+         .filter(room -> room.getExitCoordinates().size() < room.getExits().length)
+         .filter(room -> isRoomOnEdge(room, model))
+         .sorted(new SortMaster<Room>().getSorterByExpression_(r -> getSorterEdgeValue(r, model)))
+         .collect(Collectors.toList());
+    }
+
+    public static  Integer getSorterEdgeValue(Room r, LevelModel model) {
+        int val = 3 * r.getUsedExits().size();
+        int dst = CoordinatesMaster.getMinDistanceFromEdge(r.getCoordinates(), model.getCurrentWidth() - r.getWidth(),
+         model.getCurrentHeight() - r.getHeight());
+        switch (r.getType()) {
+            case TREASURE_ROOM:
+            case EXIT_ROOM:
+                val *= 2;
+            case DEATH_ROOM:
+            case GUARD_ROOM:
+                val /= 2;
+        }
+        return dst - val;
+    }
+
+    public static  Integer getExitSortValue(FACING_DIRECTION side, Room r, LevelModel model) {
+        Coordinates coordinates = RoomAttacher.adjust(
+         r.getCoordinates(), side, r, true, false);
+        switch (side) {
+            case NORTH:
+                return model.getCurrentHeight() - coordinates.y;
+            case WEST:
+                return model.getCurrentWidth() - coordinates.x;
+            case EAST:
+                return coordinates.x;
+            case SOUTH:
+                return coordinates.y;
+        }
+        return null;
+    }
+
+    public static  Integer getSorterValue(LevelModel model, Coordinates point, boolean n_s, boolean w_e) {
+        //        transformed =         model.getOccupiedCells().stream().map(c->
+        //         new Coordinates(true, c.x, c.y)).collect(Collectors.toList());
+
+        //        roomExit = room.getExits()[room.getExitCoordinates().size()];
+        //        getPrioritizedDirection(room);
+        //        int n = ModelMaster.getAdjacentToVoid(model, room, side);
+        return model.getTopMost();
+
+        //try to make more square
+        // prioritized direction
+
+        //        CoordinatesMaster.getFarmostCoordinateInDirection()
+        //         CoordinatesMaster.getEdgeCoordinatesFromSquare()
     }
 }

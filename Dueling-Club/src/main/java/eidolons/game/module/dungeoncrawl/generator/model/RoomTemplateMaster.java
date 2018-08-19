@@ -14,6 +14,7 @@ import main.game.bf.directions.FACING_DIRECTION;
 import main.system.PathUtils;
 import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
@@ -38,13 +39,12 @@ import java.util.List;
  */
 public class RoomTemplateMaster {
     public static final boolean SINGLE_FILE_DATA = true;
-    public static final boolean MERGE_SINGLE_FILE_DATA = false;
     public static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     private static final String MODEL_SPLITTER = "=";
     private static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
     private static final String ROOM_TYPE_SEPARATOR = "<>" + StringMaster.NEW_LINE;
     private final LevelData data;
-    private final ROOM_TEMPLATE_GROUP[] groups;
+    private ROOM_TEMPLATE_GROUP[] groups;
     Stack<List<RoomModel>> roomPoolStack = new Stack<>();
     private String wrapType;
     private int wrapWidth;
@@ -58,14 +58,12 @@ public class RoomTemplateMaster {
         templateMap = new XLinkedMap<>();
         wrapType = this.data.getValue(LEVEL_VALUES.WRAP_CELL_TYPE);
         wrapWidth = this.data.getIntValue(LEVEL_VALUES.WRAP_ROOMS);
-        if (MERGE_SINGLE_FILE_DATA) {
-            mergeData(ROOM_TEMPLATE_GROUP.CRYPT);
-            mergeData(ROOM_TEMPLATE_GROUP.CAVE);
-        }
+
         if (SINGLE_FILE_DATA) {
             preloadedData = loadMergedData();
         }
         for (ROOM_TEMPLATE_GROUP group : groups) {
+
             templateMap.put(group, new HashMap<>());
             models.put(group, new HashSet<>());
             fillTemplateMap(group);
@@ -104,8 +102,9 @@ public class RoomTemplateMaster {
                     if (!StringMaster.contains(text, ROOM_CELL.FLOOR.getSymbol())) {
                         text = getRoomData(exit, group, roomType, false);
                     }
-                    exitMap.put(exit,
-                     text);
+                    if (!text.isEmpty())
+                        exitMap.put(exit,
+                         text);
                 }
 
             }
@@ -123,6 +122,7 @@ public class RoomTemplateMaster {
             }
 
         }
+
         FileManager.write(contents,
          getMergedPath(group));
     }
@@ -168,8 +168,11 @@ public class RoomTemplateMaster {
             if (!text.contains(MODEL_SPLITTER)) {
                 return list;
             }
-            for (String string : StringMaster.splitLines(text, false, MODEL_SPLITTER))
+            for (String string : StringMaster.splitLines(text, false, MODEL_SPLITTER)) {
+                if (string.isEmpty())
+                    continue;
                 list.add(createRoomModel(string, exitTemplate, type));
+            }
         }
         //        }
         return list;
@@ -250,8 +253,8 @@ public class RoomTemplateMaster {
     }
 
 
-    public RoomModel getNextLargestRandomModel(ROOM_TYPE roomType, EXIT_TEMPLATE template,
-                                               FACING_DIRECTION entrance, ROOM_TEMPLATE_GROUP templateGroup) {
+    public RoomModel getNextRandomModel(ROOM_TYPE roomType, EXIT_TEMPLATE template,
+                                        FACING_DIRECTION entrance, ROOM_TEMPLATE_GROUP templateGroup) {
 
         if (roomPoolStack.isEmpty())
             resetSizedRandomRoomPools(templateGroup);
@@ -262,7 +265,7 @@ public class RoomTemplateMaster {
         if (models.isEmpty()) {
             if (roomPoolStack.isEmpty())
                 return null;
-            return getNextLargestRandomModel(roomType, template, entrance, templateGroup);
+            return getNextRandomModel(roomType, template, entrance, templateGroup);
         }
         FACING_DIRECTION exit = entrance;
         if (entrance != null && entrance.isVertical() &&
@@ -273,26 +276,48 @@ public class RoomTemplateMaster {
         //         : exit;
         //why is this required?!
 
-        Boolean[] rotations =
-         data.isRandomRotation() ?
-          RotationMaster.getRandomPossibleParentRotations(entrance, template)
-          : RotationMaster.getRotations(
-          exit, DEFAULT_ENTRANCE_SIDE);
 
 
         RoomModel model = new RandomWizard<RoomModel>().getRandomListItem(models);
+
+        while (model.getCells().length<3 ||model.getCells()[0].length<3 && new Loop(20).continues()){
+            model = new RandomWizard<RoomModel>().getRandomListItem(models);
+        }
         model = clone(model);
+        checkRotations(template, entrance,exit, model);
+
+        checkFlipping(template, entrance, model);
+        //        exit =entrance!=null && !entrance.isVertical()&&
+        //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
+        //         : exit;
+        return model;
+    }
+
+    private void checkRotations(EXIT_TEMPLATE template, FACING_DIRECTION exit, FACING_DIRECTION entrance, RoomModel model) {
+        Boolean[] rotations =
+         data.isRandomRotation()&& template!=EXIT_TEMPLATE.ANGLE ?
+          RotationMaster.getRandomPossibleParentRotations(entrance, template)
+          : RotationMaster.getRotations(
+          exit, DEFAULT_ENTRANCE_SIDE);
         if (rotations != null) {
             model.setRotations(rotations);
         }
 
-        //        exit =entrance!=null && !entrance.isVertical()&&
-        //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
-        //         : exit;
-        if (entrance != null && !entrance.isVertical() &&
-         template == EXIT_TEMPLATE.ANGLE)
-            model.setFlip(false, true);
-        return model;
+    }
+
+    private void checkFlipping(EXIT_TEMPLATE template, FACING_DIRECTION entrance, RoomModel model) {
+        if (template == EXIT_TEMPLATE.ANGLE)
+            if (entrance != null && !entrance.isVertical())
+                model.setFlip(false, true);
+        if (template == EXIT_TEMPLATE.CROSSROAD) {
+            model.setFlip(RandomWizard.random(), RandomWizard.random());
+        }
+        if (template == EXIT_TEMPLATE.FORK) {
+            model.setFlip(false, RandomWizard.random());
+        }
+        if (template == EXIT_TEMPLATE.THROUGH) {
+            model.setFlip( RandomWizard.random(), false);
+        }
     }
 
 

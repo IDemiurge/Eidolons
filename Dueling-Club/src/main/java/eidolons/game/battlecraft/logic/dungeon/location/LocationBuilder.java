@@ -216,6 +216,14 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         SECRET_ROOM(15, 15, 1, 4, 3, 6),
         BATTLEFIELD(100, 100, 3, 0, 4, 0);
 
+        public static ROOM_TYPE[] mainRoomTypes={
+         THRONE_ROOM,
+         COMMON_ROOM,
+         TREASURE_ROOM,
+         DEATH_ROOM,
+         GUARD_ROOM,
+         SECRET_ROOM
+        };
         private int heightMod;
         private int widthMod;
         private int minX;

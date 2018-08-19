@@ -14,7 +14,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -27,6 +26,7 @@ import java.util.Set;
  * Created by JustMe on 9/12/2017.
  */
 public class WallMap extends SuperActor {
+    private static final String INDESTRUCTIBLE = " Indestructible";
     private static boolean on = true;
     private Map<Coordinates, List<DIRECTION>> wallMap;
     private Map<Coordinates, List<DIRECTION>> diagonalJoints;
@@ -305,6 +305,10 @@ public class WallMap extends SuperActor {
         float offsetY = v.y;
         return !DungeonScreen.getInstance().controller.
          isWithinCamera(getX() + offsetX, getY() + offsetY, 128, 128);
+    }
+
+    public static String v(boolean indestructible) {
+        return indestructible? WallMap.INDESTRUCTIBLE : "";
     }
 
     public enum WALL_STYLE {

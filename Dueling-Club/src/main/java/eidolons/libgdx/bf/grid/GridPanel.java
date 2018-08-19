@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.entity.obj.BattleFieldObject;
+import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
@@ -28,7 +29,6 @@ import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.TargetRunnable;
 import eidolons.libgdx.bf.light.ShadowMap;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.bf.overlays.OverlaysManager;
 import eidolons.libgdx.bf.overlays.WallMap;
@@ -93,24 +93,48 @@ public class GridPanel extends Group {
     }
 
     public GridPanel init(DequeImpl<BattleFieldObject> units) {
+        units.removeIf(unit->
+         {
+             if (unit.getCoordinates().x<0)
+                 return true;
+             if (unit.getCoordinates().y<0)
+                 return true;
+             if (unit.getCoordinates().x>=cols)
+                 return true;
+             if (unit.getCoordinates().y>=rows)
+                 return true;
+             return false;
+         }
+        );
         this.viewMap = new HashMap<>();
         manager=new GridManager(this);
         emptyImage = TextureCache.getOrCreateR(getCellImagePath());
         cornerRegion = TextureCache.getOrCreateR(GridMaster.gridCornerElementPath);
         cells = new GridCellContainer[cols][rows];
 
-
         int rows1 = rows - 1;
+        boolean hasVoid=false;
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
+                DC_Cell cell = DC_Game.game.getCellByCoordinate(new Coordinates(x, rows1 - y));
+                if (cell == null)
+                {
+                    hasVoid = true;
+                    continue;
+                }
                 cells[x][y] = new GridCellContainer(emptyImage, x, rows1 - y);
                 cells[x][y].setX(x * GridMaster.CELL_W);
                 cells[x][y].setY(y * GridMaster.CELL_H);
                 addActor(cells[x][y].init());
-                checkAddBorder(x, y);
-                cells[x][y].setUserObject(units.getFirst().
-                 getGame().getCellByCoordinate(new Coordinates(x, rows1 - y)));
+                cells[x][y].setUserObject(cell);
             }
+        }
+        if (!hasVoid){
+            for (int x = 0; x < cols; x++) {
+                for (int y = 0; y < rows; y++) {
+                    checkAddBorder(x, y);
+                    }
+                }
         }
         if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON))
             TextureManager.addCellsToCache(cols, rows);
@@ -121,8 +145,8 @@ public class GridPanel extends Group {
 
         createUnitsViews(units);
 
-        setHeight(cells[0][0].getHeight() * rows);
-        setWidth(cells[0][0].getWidth() * cols);
+        setHeight(GridMaster.CELL_W * rows);
+        setWidth(GridMaster.CELL_H * cols);
 
         addListener(new BattleClickListener() {
             @Override
@@ -482,6 +506,8 @@ public class GridPanel extends Group {
     private void setVisible(BattleFieldObject sub, boolean b) {
         BaseView view = viewMap.get(sub);
         //TODO refactor this quick fix!
+        if (view==null )
+        return ;
         if (sub.isWall()){
             if (!b) {
                 if (view.isVisible()){
@@ -564,7 +590,6 @@ public class GridPanel extends Group {
 
         for (Coordinates coordinates : map.keySet()) {
             List<BaseView> views = new ArrayList<>();
-            List<OverlayView> overlays = new ArrayList<>();
 
             if (map.get(coordinates) == null) {
                 continue;
@@ -585,11 +610,13 @@ public class GridPanel extends Group {
                 }
             }
 
-            final GridCellContainer gridCellContainer = cells[coordinates.getX()][rows - 1 - coordinates.getY()];
+            final GridCellContainer gridCellContainer = cells[coordinates.getX()]
+             [rows - 1 - coordinates.getY()];
             views.forEach(gridCellContainer::addActor);
         }
 
         shadowMap = new ShadowMap(this);
+        addActor(shadowMap);
         wallMap = new WallMap();
         addActor(wallMap);
 
@@ -765,6 +792,9 @@ public class GridPanel extends Group {
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 GridCellContainer cell = cells[x][y];
+                if (cell == null) {
+                    continue ;
+                }
                 cell.setHovered(false);
                 List<GenericGridView> views = cell.getUnitViewsVisible();
                 if (views.isEmpty()) {
@@ -784,26 +814,29 @@ public class GridPanel extends Group {
                         }
                     }
                 }
+//                cell.resetZIndices();
             }
         }
         wallMap.setVisible(WallMap.isOn());
         boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
-        if (ctrl) {
-            if (ShadowMap.isOn())
-                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-                    shadowMap.setZtoMax(sub);
-                }
-        }
+//        if (ctrl) { was necessary when shadeLightCells were added to Grid directly
+//            if (ShadowMap.isOn())
+//                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+//                    shadowMap.setZtoMax(sub);
+//                }
+//        }
         wallMap.setZIndex(Integer.MAX_VALUE);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-        if (!ctrl) {
-            if (ShadowMap.isOn())
-                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-                    shadowMap.setZtoMax(sub);
-                }
-        }
+//        if (!ctrl) {
+//            if (ShadowMap.isOn())
+//                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
+//                    shadowMap.setZtoMax(sub);
+//                }
+//        }
 
         overlayManager.setZIndex(Integer.MAX_VALUE);
+
+        shadowMap.setZIndex(Integer.MAX_VALUE);
 
         animMaster.setZIndex(Integer.MAX_VALUE);
     }

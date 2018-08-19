@@ -70,7 +70,7 @@ public class DamageDealer {
     private static boolean checkDamageImmune(Damage damage) {
         if (damage.getTarget() instanceof Entrance)
             return true;
-        return damage.getTarget().isWall();
+        return damage.getTarget().isInvulnerable();
     }
 
     public static int dealDamage(Damage damage, BattleFieldObject target) {

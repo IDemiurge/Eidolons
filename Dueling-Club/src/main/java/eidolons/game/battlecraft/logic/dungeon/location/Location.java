@@ -5,6 +5,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.BuildHelper.Bui
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonWrapper;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevelMaster.ENTRANCE_POINT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
@@ -13,6 +14,7 @@ import main.content.enums.DungeonEnums;
 import main.content.values.parameters.G_PARAMS;
 import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
@@ -46,7 +48,7 @@ public class Location extends DungeonWrapper {
         if (!sublevel) {
             generateSublevels();
         }
-//        initEntrances();
+        //        initEntrances();
     }
 
     public Coordinates getPlayerSpawnCoordinates() {
@@ -70,7 +72,7 @@ public class Location extends DungeonWrapper {
         subLevels = new ArrayList<>();
         for (String sublevel : ContainerUtils.open(getProperty(PROPS.SUBLEVELS))) {
             Dungeon dungeon = new Dungeon(VariableManager.removeVarPart(sublevel), true);
-//            getMaster().getDungeons().add(dungeon);
+            //            getMaster().getDungeons().add(dungeon);
             addSublevel(sublevel, dungeon);
         }
 
@@ -92,11 +94,11 @@ public class Location extends DungeonWrapper {
     public void addSublevel(String sublevel, Dungeon dungeon) {
         subLevels.add(dungeon); // mark if can go
         // deeper
-//        dungeon.setEntranceData(StringMaster
-//                .cropParenthesises(VariableManager.getVarPart(sublevel)));
-//        if (!dungeon.getEntranceData().contains(StringMaster.VAR_SEPARATOR)) {
-//            DungeonLevelMaster.generateEntranceData(dungeon);
-//        }
+        //        dungeon.setEntranceData(StringMaster
+        //                .cropParenthesises(VariableManager.getVarPart(sublevel)));
+        //        if (!dungeon.getEntranceData().contains(StringMaster.VAR_SEPARATOR)) {
+        //            DungeonLevelMaster.generateEntranceData(dungeon);
+        //        }
         int z = dungeon.getIntParam(G_PARAMS.Z_LEVEL);
         if (z == 0) {
             z = getNextZ();
@@ -114,7 +116,7 @@ public class Location extends DungeonWrapper {
         }
         String enterData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[0];
         String name = VariableManager.removeVarPart(enterData);
-        Coordinates c = new Coordinates(true, VariableManager.getVar(enterData));
+        Coordinates c = new Coordinates(true, VariableManager.getVarIfExists(enterData));
 
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
@@ -124,7 +126,11 @@ public class Location extends DungeonWrapper {
             }
         }
         if (getMainEntrance() == null) {
-            setMainEntrance(new Entrance(c.x, c.y, DataManager.getType(name, DC_TYPE.BF_OBJ),
+            ObjType type = DataManager.getType(name, DC_TYPE.BF_OBJ);
+            if (type == null) {
+                type = getEntranceType();
+            }
+            setMainEntrance(new Entrance(c.x, c.y, type,
              getDungeon(), getDungeon()));
         }
         if (entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR).length < 2) {
@@ -132,7 +138,7 @@ public class Location extends DungeonWrapper {
         }
         String exitData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[1];
         name = VariableManager.removeVarPart(exitData);
-        c = new Coordinates(true, VariableManager.getVar(exitData));
+        c = new Coordinates(true, VariableManager.getVarIfExists(exitData));
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
                 if (e.getName().equals(name)) {
@@ -142,9 +148,28 @@ public class Location extends DungeonWrapper {
         }
 
         if (getMainExit() == null) {
-            setMainExit(new Entrance(c.x, c.y, DataManager.getType(name, DC_TYPE.BF_OBJ),
+            ObjType type = DataManager.getType(name, DC_TYPE.BF_OBJ);
+            if (type == null) {
+                type = getExitType();
+            }
+            setMainExit(new Entrance(c.x, c.y, type,
              getDungeon(), getDungeon()));
         }
+    }
+
+    private ObjType getEntranceType() {
+        return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
+         getDungeonLevel().getEntranceType(), DC_TYPE.BF_OBJ);
+    }
+
+    private ObjType getExitType() {
+        return DataManager.getType(getGame().getMetaMaster().getDungeonMaster().
+         getDungeonLevel().getExitType(), DC_TYPE.BF_OBJ);
+    }
+
+    @Override
+    public DC_Game getGame() {
+        return (DC_Game) super.getGame();
     }
 
     public boolean isUnderground() {

@@ -298,10 +298,14 @@ public class OverlaysManager extends SuperActor {
     private void drawOverlays(Batch batch) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
+                GridCellContainer cell = cells[i][j];
+                if (cell == null) {
+                    continue;
+                }
                 int x = i;
                 int y = cells[i].length - j - 1;
 
-                for (Actor c : cells[i][j].getChildren()) {
+                for (Actor c : cell.getChildren()) {
                     if (c instanceof GridUnitView) {
                         if (c.isVisible())
                             drawOverlaysForView(((GenericGridView) c), batch, x, y);

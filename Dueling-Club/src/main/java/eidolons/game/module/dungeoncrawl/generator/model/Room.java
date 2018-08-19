@@ -10,6 +10,7 @@ import main.system.auxiliary.data.ArrayMaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +101,7 @@ public class Room extends RoomModel {
         return offset.x != 0 || offset.y != 0;
     }
 
-    private boolean isExitsLogical() {
+    public static boolean isExitsLogical() {
         return false;
     }
 
@@ -231,9 +232,7 @@ public class Room extends RoomModel {
         return entranceCoordinates;
     }
 
-    public void setEntranceCoordinates(Coordinates entranceCoordinates) {
-        this.entranceCoordinates = entranceCoordinates;
-    }
+
 
     public LevelZone getZone() {
         return zone;
@@ -263,4 +262,17 @@ public class Room extends RoomModel {
         return sheared;
     }
 
+    public Coordinates relative(Coordinates c) {
+        return c.getOffset(getCoordinates().negative());
+    }
+
+    public FACING_DIRECTION getSortedUnusedExit(Comparator<? super FACING_DIRECTION> sorter ) {
+        List<FACING_DIRECTION> list = Arrays.stream(getExits()).filter(e ->
+         !getUsedExits().contains(e)). sorted(sorter).
+         collect(Collectors.toList());
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 }

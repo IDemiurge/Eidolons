@@ -6,7 +6,6 @@ import main.data.DataManager;
 import main.data.ability.construct.VariableManager;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.WeightMap;
 import main.system.math.MathMaster;
 
@@ -100,7 +99,6 @@ public class RandomWizard<E> {
             return false;
         }
         int res = getRandomIntBetween(0, 100, random);
-        LogMaster.log(0, i + " chance hits " + res);
         return res < i;
     }
 

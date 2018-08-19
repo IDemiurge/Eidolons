@@ -48,7 +48,7 @@ public class LevelGraphMaster {
     }
 
     private void createNodes(LevelGraph graph, LevelData data) {
-        float sizeMode = new Float(data.getIntValue(LEVEL_VALUES.SIZE_MODE)) / 10000;
+        float sizeMode = new Float(data.getIntValue(LEVEL_VALUES.SIZE_MOD)) / 10000;
 
         graph.addNode(ROOM_TYPE.THRONE_ROOM);
 

@@ -15,10 +15,7 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.secondary.BooleanMaster;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ClearShotCondition extends MicroCondition {
@@ -70,20 +67,12 @@ public class ClearShotCondition extends MicroCondition {
 
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
-        boolean obstructing = false;
         for (BattleFieldObject obj :
          target.getGame().getMaster().getObjects(x_, y_)) {
-            if (
-                //!isVision() ||
-             !obj.isTransparent()) {
-                obstructing = obj.isObstructing(source, target);
+            if (!obj.isTransparent()) {
+                if (obj.isObstructing(source, target))
+                    return true;
             }
-            if (obstructing) {
-                break;
-            }
-        }
-        if (obstructing) {
-            return true;
         }
         return checkWallObstruction(source, target, new Coordinates(x_, y_));
     }
@@ -121,7 +110,7 @@ public class ClearShotCondition extends MicroCondition {
                 }
             }
         }
-        wallObstruction=false;
+        wallObstruction = false;
         Coordinates c1 = source.getCoordinates();
         boolean toCheck = true;
         boolean result = true;
@@ -195,14 +184,14 @@ public class ClearShotCondition extends MicroCondition {
         }
 
         Boolean[][] array = new Boolean[x - 1][y + 1];
-//        log("Checking Clear Shot for " + source + " on " + target + "; mirrored = "
-//         + mirrorRectangle + "; flippedX = " + flippedX + "; flippedY = " + flippedY);
+        for (Boolean[] booleans : array) {
+            Arrays.fill(booleans, false);
+        }
         boolean toCheck = false;
         for (int i = 0; i + 1 < x; i++)            // don't preCheck source
         {
             for (int j = 0; j <= y; j++) { // don't preCheck target
                 int x_ = source.getX(); // greater mirrorRectangle ?
-                // source.getY() :
                 if (mirrorRectangle) {
                     x_ = x_ + (flippedX ? -(i + 1) : i + 1);
                 } else {
@@ -214,49 +203,43 @@ public class ClearShotCondition extends MicroCondition {
                 } else {
                     y_ = y_ + (flippedY ? -(i + 1) : i + 1);
                 }
-
+                if (i + j >= 1)
+                    toCheck = true;
                 if (isBlocking(source, target,
                  x_, y_)) {
-                    toCheck = true;
                     array[i][j] = true;
-                } else {
-                    array[i][j] = false;
+                    if (toCheck)
+                        //check if this much blocking is sufficient already...
+                        if (!checkClearShot(x, y, array)) {
+                            return false;
+                        }
                 }
             }
         }
-        if (!toCheck) {
-            return true;
-        }
-//        log("Checking Clear Shot for " + source + " on " + target + "; obstruction array = "
-//         + new ArrayMaster<Boolean>().get2dList(array));
-        return checkClearShot(x, y, array);
+        return true;
     }
 
     /**
      * Checks if there is a diagonal wall block that obstructs clearshot between source and target
+     *
      * @param source
      * @param target
      * @param coordinates
      * @return
      */
     private boolean checkWallObstruction(DC_Obj source, DC_Obj target, Coordinates coordinates) {
-
-        Boolean result =  source.getGame().getVisionMaster().getVisionController().
+        Boolean result = source.getGame().getVisionMaster().getVisionController().
          getWallObstructionMapper().get(source.getCoordinates(),
          source.getGame().getCellByCoordinate(target.getCoordinates()));
         if (result != null) {
             return result;
         }
         DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
-//        target.setBlockingCoordinate(coordinates);
         float angle = getAngle(source.getCoordinates(), target.getCoordinates());
-
-        // and distance!
-
-        // diagonal adjacent
         // difference from <?> no greater than... on both/either axis?
 
-        for (Coordinates c : coordinates.getAdjacent()) { // c
+        for (Coordinates c : coordinates.getAdjacent()) {
+            //            isCoordinateWallObstructing(c, source, target, coordinates, direction, angle);
 
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
              .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
@@ -268,15 +251,13 @@ public class ClearShotCondition extends MicroCondition {
                 continue;
             }
             double distance = PositionMaster.getDistanceToLine(
-             c.x,c.y, source.getX(),source.getY(),
-             target.getX(),target.getY() );
+             c.x, c.y, source.getX(), source.getY(),
+             target.getX(), target.getY());
             if (distance > 1) {
                 continue;
             }
             if (coordinates.equals(target.getCoordinates())
              || !target.getCoordinates().isAdjacent(source.getCoordinates(), false)
-                // && !coordinates.equals(target.getCoordinates())
-                // && target.getCoordinates().isAdjacent(source.getCoordinates())
              ) {
                 double d = PositionMaster
                  .getExactDistance(source.getCoordinates(), target.getCoordinates())
@@ -292,8 +273,6 @@ public class ClearShotCondition extends MicroCondition {
                 }
 
             }
-//            DIRECTION d1 = DirectionMaster.getRelativeDirection(source.getCoordinates(), c);
-//            DIRECTION d2 = DirectionMaster.getRelativeDirection(target.getCoordinates(), c);
             boolean left = false;
             if (source.getY() != c.y) {
                 left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) < angle;
@@ -328,7 +307,7 @@ public class ClearShotCondition extends MicroCondition {
                         continue; // TODO does X/Y interchange?
                     }
                 }
-                wallObstruction=true;
+                wallObstruction = true;
                 return true;
 
 
@@ -355,7 +334,7 @@ public class ClearShotCondition extends MicroCondition {
             return false;
         }
         if (secondDimension > 0) {
-            wallObstruction=false;
+            wallObstruction = false;
             return checkClearShot(source, target, !mirrorRectangle);
         }
         return true;
@@ -386,7 +365,7 @@ public class ClearShotCondition extends MicroCondition {
 
     private double LineY(double slope, double k, double x) {
         double y = slope * x + k;
-//        log("y= " + y);
+        //        log("y= " + y);
         return y;
     }
 

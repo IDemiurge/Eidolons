@@ -23,7 +23,9 @@ import main.game.logic.battle.player.Player;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.graphics.GuiManager;
 import main.system.launch.TypeBuilder;
+import main.system.math.PositionMaster;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -72,9 +74,18 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
         List<Node> nodeList = XML_Converter.getNodeList(levelNode);
         Node planNode = XML_Converter.getChildByName(levelNode, "Plan");
         nodeList.addAll(XML_Converter.getNodeList(planNode));
-        E dungeon = buildDungeon(data, nodeList);
-        dungeon.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
-        return dungeon;
+        E dungeonWrapper = buildDungeon(data, nodeList);
+
+        dungeonWrapper.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
+        initWidthAndHeight(dungeonWrapper);
+        return getDungeon();
+    }
+
+    protected void initWidthAndHeight(E dungeonWrapper) {
+        GuiManager.setBattleFieldCellsY(dungeonWrapper.getDungeon().getCellsY());
+        GuiManager.setBattleFieldCellsX(dungeonWrapper.getDungeon().getCellsX());
+        PositionMaster.initDistancesCache();
+
     }
 
     public E buildDungeon(String path, List<Node> nodeList) {

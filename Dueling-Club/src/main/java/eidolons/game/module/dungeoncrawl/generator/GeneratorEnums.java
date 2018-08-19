@@ -41,7 +41,8 @@ OOO##
     }
 
     public enum GRAPH_NODE_ATTRIBUTE {
-        LOCK,
+        LOCK_MAIN, KEY_MAIN,
+        LOCK, KEY ,
     }
 
     public enum GRAPH_RULE {
@@ -76,31 +77,43 @@ OOO##
         HEIGHT,
         Z_LEVEL,
 
-        DOOR_CHANCE_COMMON(75, 0, 100),
-        WRAP_ROOMS(1, 0, 2),
-        WRAP_CELL_TYPE(ROOM_CELL.VOID.getSymbol(), ROOM_CELL.DESTRUCTIBLE.getSymbol(), ROOM_CELL.WALL.getSymbol()),
+        RANDOM_EXIT_CHANCE(35, 0, 100),
+        DOOR_CHANCE_MOD(100, 0, 100),
+        DOOR_CHANCE_THRONE_ROOM(75, 0, 100),
+        DOOR_CHANCE_COMMON_ROOM(75, 0, 100),
+        DOOR_CHANCE_CORRIDOR(75, 0, 100),
+        DOOR_CHANCE_TREASURE_ROOM(75, 0, 100),
+        DOOR_CHANCE_DEATH_ROOM(75, 0, 100),
+        DOOR_CHANCE_GUARD_ROOM(75, 0, 100),
+        DOOR_CHANCE_ENTRANCE_ROOM(75, 0, 100),
+        DOOR_CHANCE_EXIT_ROOM(75, 0, 100),
+        DOOR_CHANCE_SECRET_ROOM(75, 0, 100),
 
-        TREASURE_ROOM_COEF(3, 0, 10),
+        WRAP_ROOMS(1, 0, 2),
+        WRAP_CELL_TYPE(ROOM_CELL.INDESTRUCTIBLE.getSymbol(), ROOM_CELL.DESTRUCTIBLE.getSymbol(), ROOM_CELL.WALL.getSymbol()),
+        VOID_CELL_TYPE(ROOM_CELL.INDESTRUCTIBLE.getSymbol(), ROOM_CELL.DESTRUCTIBLE.getSymbol(), ROOM_CELL.WALL.getSymbol()),
+
+        TREASURE_ROOM_COEF(2, 0, 10),
         THRONE_ROOM_COEF(1, 0, 3),
         DEATH_ROOM_COEF(2, 0, 10),
-        GUARD_ROOM_COEF(4, 0, 7),
-        COMMON_ROOM_COEF(6, 0, 12),
+        GUARD_ROOM_COEF(3, 0, 7),
+        COMMON_ROOM_COEF(5, 0, 12),
         SECRET_ROOM_COEF(1, 0, 10),
 
-        SIZE_MODE(25, 10, 300), MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
+        SIZE_MOD(15, 10, 300), MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
         MAIN_PATH_LENGTH(3, 2, 20),
         BONUS_PATH_LENGTH(2, 1, 15), RANDOM_ROTATION_CHANCE(65, 0, 100),
         FILL_LIGHT_COEF(100, 0, 500),
 
         //                                       <><><><><>
 
-        SPAWN_GROUP_COEF_IDLERS(200, 0, 500),
-        SPAWN_GROUP_COEF_CROWD(150, 0, 500),
+        SPAWN_GROUP_COEF_IDLERS(50, 0, 500),
+        SPAWN_GROUP_COEF_CROWD(50, 0, 500),
         SPAWN_GROUP_COEF_GUARDS(100, 0, 500),
-        SPAWN_GROUP_COEF_AMBUSH(50, 0, 500),
-        SPAWN_GROUP_COEF_PATROL(50, 0, 500),
+        SPAWN_GROUP_COEF_AMBUSH(40, 0, 500),
+        SPAWN_GROUP_COEF_PATROL(30, 0, 500),
         SPAWN_GROUP_COEF_STALKER(20, 0, 500),
-        SPAWN_GROUP_COEF_BOSS(10, 0, 500),
+        SPAWN_GROUP_COEF_BOSS(100, 0, 500),
 
 
         ;
@@ -163,6 +176,7 @@ OOO##
     }
 
     public enum ROOM_CELL { //water, void
+        INDESTRUCTIBLE("."),
         WALL("#"),
         FLOOR("O"),
         ENTRANCE("E"),
@@ -173,7 +187,14 @@ OOO##
         ART_OBJ("A"),
         DESTRUCTIBLE_WALL("*"),
         SECRET_DOOR("S"),
-        GUARD("G"),
+        SECRET_DOOR_BUTTON("!"),
+
+        GUARDS("G"),
+        PATROL("G"),
+        AMBUSH("G"),
+        CROWD("G"),
+        IDLERS("G"),
+        STALKER("G") ,
         MINI_BOSS("b"),
         BOSS("B"),
 
@@ -215,7 +236,6 @@ OOO##
     SHRINE,
 
      */
-        VOID(".")
         ;
         static ROOM_CELL[] vals = ROOM_CELL.values();
         public final String symbol;
@@ -246,16 +266,26 @@ OOO##
     }
 
     public enum ROOM_TEMPLATE_GROUP {
-        CRYPT,
-        CAVE,
-        MAZE,
-        CASTLE,
-        TEMPLE,
-        TOWER,
-        DUNGEON,
-        RANDOM,
-        RANDOM_INTERIOR,
+        CRYPT, //claustrophobic
+        CAVE, //narrow and snaking
+        CASTLE, //square square square
+        TEMPLE, //diamond preference
+        TOWER, //narrow and stylish
+        DUNGEON, //classic and simple
+        MAZE, //always spinning, fractal like
+        GROVE, //chaos...
+        CEMETERY, //enclosed areas
+        RANDOM, //will mix all
+        RANDOM_INTERIOR, //except cave/grove...
 
+        CAVE_MAZE, //60/40 chance
+        CASTLE_TEMPLE,
+        CASTLE_TOWER,
+        TEMPLE_DUNGEON,
+        TEMPLE_CRYPT,
+        TOWER_TEMPLE,
+        DUNGEON_CASTLE,
+        CRYPT_TOWER,
     }
 
     public enum ZONE_TYPE {

@@ -276,6 +276,10 @@ public class GuiManager {
         GuiManager.battleFieldCellsY = battleFieldCellsY;
     }
 
+    public static void setBattleFieldCellsX(int battleFieldCellsX) {
+        GuiManager.battleFieldCellsX = battleFieldCellsX;
+    }
+
     public static boolean isFullScreen() {
         return isFullscreen();
     }

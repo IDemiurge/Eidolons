@@ -29,6 +29,12 @@ public class MapMaster<E, T> {
             map.put(key, new Float(i + n));
         }
     }
+    public static void removeFromListMap(Map map, Object key, Object value) {
+        Object o = map.get(key);
+        if (o instanceof Collection){
+            ((Collection) o).remove(value);
+        }
+    }
 
     public static void addToListMap(Map map, Object key, Object value) {
         if (value == null) {
@@ -225,4 +231,5 @@ public class MapMaster<E, T> {
         }
         return sortedMap;
     }
+
 }

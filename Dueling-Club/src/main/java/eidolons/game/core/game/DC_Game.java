@@ -183,10 +183,10 @@ public class DC_Game extends GenericGame {
 
         rules = new DC_Rules(this);
 
-        dungeonMaster = createDungeonMaster();
-        battleMaster = createBattleMaster();
         if (!CoreEngine.isCombatGame())
             return;
+        dungeonMaster = createDungeonMaster();
+        battleMaster = createBattleMaster();
         musicMaster = MusicMaster.getInstance();
     }
 

@@ -99,7 +99,7 @@ public class PositionMaster {
     }
 
     public static double getExactDistance(Coordinates coordinates1, Coordinates coordinates2) {
-        if (coordinates1.x<0||coordinates1.y<0||coordinates2.x<0||coordinates2.y<0)
+        if (coordinates1.x < 0 || coordinates1.y < 0 || coordinates2.x < 0 || coordinates2.y < 0)
             return 0;
         Double result = distances[coordinates1.x][coordinates1.y][coordinates2.x][coordinates2.y];
         if (result != null)
@@ -157,7 +157,7 @@ public class PositionMaster {
 
     public static int getDistance(Obj obj1, Obj obj2, boolean roundMathematically) {
         double d = getExactDistance(obj1, obj2);
-        return  ((int) ((roundMathematically) ? Math.round(d) : d));
+        return ((int) ((roundMathematically) ? Math.round(d) : d));
     }
 
     public static boolean isToTheLeft(Obj obj1, Obj obj2) {
@@ -218,15 +218,16 @@ public class PositionMaster {
         int x2 = xLine.getX2();
         int y1 = xLine.getY1();
         int y2 = xLine.getY2();
-        return getDistanceToLine(x, y, x1, y1, x2,  y2);
+        return getDistanceToLine(x, y, x1, y1, x2, y2);
     }
-        public static double getDistanceToLine(
-        int x ,
-        int y ,
-        int x1 ,
-        int y1 ,
-        int x2 ,
-        int y2){
+
+    public static double getDistanceToLine(
+     int x,
+     int y,
+     int x1,
+     int y1,
+     int x2,
+     int y2) {
         double result = Math.abs((y2 - y1) * x - (x2 - x1) * y - y2 * x1 + x2 * y1)
          / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
         return result;
@@ -269,6 +270,14 @@ public class PositionMaster {
     public static float getAngle(Coordinates c, Coordinates c2) {
         return new Vector2(c.x, c.y).angle(new Vector2(c2.x, c2.y));
 
+    }
+
+    public static void initDistancesCache( ) {
+        initDistancesCache(GuiManager.getBF_CompDisplayedCellsX(),
+         GuiManager.getBF_CompDisplayedCellsY());
+    }
+        public static void initDistancesCache(int w, int h) {
+        distances = new Double[w][h][w][h];
     }
 
     public enum SHAPES {

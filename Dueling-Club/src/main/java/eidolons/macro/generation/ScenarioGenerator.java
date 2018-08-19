@@ -14,6 +14,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.game.bf.Coordinates;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -125,7 +126,7 @@ public class ScenarioGenerator {
         } else
         for (SUBLEVEL_TYPE type : types) {
 
-            DungeonLevel level = new LevelGenerator().generateLevel(type, locationType
+            DungeonLevel level = new LevelGenerator(100).generateLevel(type, locationType
              );
             int power = 300;//DC_Game.game.getMetaMaster().getPartyManager().getParty().getParamSum(PARAMS.POWER);
             level.setPowerLevel(power);
@@ -139,6 +140,8 @@ public class ScenarioGenerator {
             String path = StrPathBuilder.build(getPath(locationType), name);
             FileManager.write(stringData,path);
             levelPaths+=(path)+ ContainerUtils.getContainerSeparator();
+
+            Coordinates.resetCaches();
         }
         scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
 
@@ -149,12 +152,12 @@ public class ScenarioGenerator {
         return false;
     }
 
-    private static String getPath(LOCATION_TYPE locationType) {
+    public static String getPath(LOCATION_TYPE locationType) {
     return     StrPathBuilder.build(PathFinder.getRandomLevelPath(),
          locationType.name());
     }
 
-    private static String getLevelName(LOCATION_TYPE locationType, SUBLEVEL_TYPE type) {
+    public static String getLevelName(LOCATION_TYPE locationType, SUBLEVEL_TYPE type) {
         return locationType + " " + type;
     }
 

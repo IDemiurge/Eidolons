@@ -173,7 +173,7 @@ public class TileConverter {
             case ART_OBJ:
             case SPECIAL_ART_OBJ:
                 return new Tile(getBfObjPair(getArtObj(block, x, y)));
-            case GUARD:
+            case GUARDS:
                 //                return new Tile(getGuard(block, x, y));
             case LIGHT_EMITTER:
                 return new Tile(getBfObjPair(getLightEmitter(block, x, y)));

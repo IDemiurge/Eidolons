@@ -43,15 +43,14 @@ public class ShadeLightCell extends SuperContainer {
     private final Float width;
     private final Float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
-    private int x;
-    private int y;
     private SHADE_LIGHT type;
-    private float baseAlpha = 0;
+    private float baseAlpha = 0; //real alpha fluctuates around this value
     private Float originalX;
     private Float originalY;
+    private boolean voidCell;
 
 
-    public ShadeLightCell(SHADE_LIGHT type, int x, int y) {
+    public ShadeLightCell(SHADE_LIGHT type ) {
         super(new Image(TextureCache.getOrCreateR(getTexturePath(type))));
         this.type = type;
         transform();
@@ -60,25 +59,21 @@ public class ShadeLightCell extends SuperContainer {
             if (getTeamColor() != null)
                 getContent().setColor(getTeamColor());
         }
-        this.x = x;
-        this.y = y;
         width = getContent().getWidth();
         height = getContent().getHeight();
-        getContent().setOrigin( getContent().getWidth()/2,getContent().getHeight()/2);
+        getContent().setOrigin(getContent().getWidth() / 2, getContent().getHeight() / 2);
+
+        setAlphaTemplate(ShadowMap.getTemplateForShadeLight(type));
     }
 
     private static String getTexturePath(SHADE_LIGHT type) {
-        switch (type) {
-//            case GAMMA_SHADOW:
-//               return  FileManager.getRandomFilePathVariant(
-//                PathFinder.getImagePath() ,
-//                type.getTexturePath(), ".png", false, false) ;
-        }
+//        switch (type) {  TODO varied enough already?
+            //            case GAMMA_SHADOW:
+            //               return  FileManager.getRandomFilePathVariant(
+            //                PathFinder.getImagePath() ,
+            //                type.getTexturePath(), ".png", false, false) ;
+//        }
         return type.getTexturePath();
-    }
-
-    public static void setAlphaFluctuation(boolean alphaFluctuation) {
-        ShadeLightCell.alphaFluctuation = alphaFluctuation;
     }
 
     private void transform() {
@@ -98,7 +93,7 @@ public class ShadeLightCell extends SuperContainer {
         switch (type) {
             case GAMMA_LIGHT:
             case LIGHT_EMITTER:
-                return true;
+                return ShadowMap.isColoringSupported();
             case CONCEALMENT:
             case GAMMA_SHADOW:
                 break;
@@ -109,30 +104,15 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public float getWidth() {
         return width;
-//        if (type == SHADE_LIGHT.GAMMA_SHADOW)
-//            return super.getWidth();
-//        if (type == SHADE_LIGHT.HIGLIGHT)
-//            return super.getWidth();
-//        return GridConst.CELL_W;
     }
 
     @Override
     public float getHeight() {
         return height;
-//        if (type == SHADE_LIGHT.GAMMA_SHADOW)
-//            return super.getHeight();
-//        if (type == SHADE_LIGHT.HIGLIGHT)
-//            return super.getHeight();
-//        return GridConst.CELL_H;
-    }
-
-    public float getBaseAlpha() {
-        return baseAlpha;
     }
 
     public void setBaseAlpha(float baseAlpha) {
         if (isAnimated()) {
-//            removeAction(alphaAction);
             alphaAction.reset();
             alphaAction.setStart(this.baseAlpha);
             alphaAction.setEnd(baseAlpha);
@@ -155,34 +135,11 @@ public class ShadeLightCell extends SuperContainer {
     public void draw(Batch batch, float parentAlpha) {
         if (isIgnored())
             return;
-        storeBlendingFuncData(batch);
-//        initBlending(batch);
+        //        if (isBlendingOn())
+        //        storeBlendingFuncData(batch);
+        //        initBlending(batch);
         super.draw(batch, parentAlpha);
-        restoreBlendingFuncData(batch);
-    }
-
-    private void initBlending(Batch batch) {
-        BLENDING mode = null;
-        switch (type) {
-            case GAMMA_LIGHT:
-            case LIGHT_EMITTER:
-
-                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                 ? BLENDING.OVERLAY
-                 : BLENDING.SATURATE;
-                break;
-            case CONCEALMENT:
-            case GAMMA_SHADOW:
-                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
-                 ? BLENDING.OVERLAY
-                 : BLENDING.MULTIPLY;
-            case BLACKOUT:
-                break;
-            case HIGLIGHT:
-                break;
-        }
-        if (mode != null)
-            batch.setBlendFunction(mode.blendSrcFunc, mode.blendDstFunc);
+        //        restoreBlendingFuncData(batch);
     }
 
 
@@ -207,17 +164,16 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     public Color initTeamColor() {
-//for each coordinate?
+        //for each coordinate?
         //default per dungeon
-//        Eidolons.getGame().getMaster().getObjCache()
-//        IlluminationRule.
-
+        //        Eidolons.getGame().getMaster().getObjCache()
+        //        IlluminationRule.
 
         COLOR_THEME colorTheme = null;
         if (type == SHADE_LIGHT.LIGHT_EMITTER) {
             for (Structure sub : Eidolons.game.getStructures()) {
                 if (sub.isLightEmitter()) {
-//                    if (sub.getCoordinates().equals(new Coordinates(x,y)))
+                    //                    if (sub.getCoordinates().equals(new Coordinates(x,y)))
                     colorTheme = new EnumMaster<COLOR_THEME>().
                      retrieveEnumConst(COLOR_THEME.class, sub.getProperty(PROPS.COLOR_THEME, true));
                     if (colorTheme != null)
@@ -258,7 +214,8 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationPerDelta() {
-        return new Float(RandomWizard.getRandomInt((int) (super.getAlphaFluctuationPerDelta() * 50))) / 100;
+        return super.getAlphaFluctuationPerDelta() / 10;
+        //        return new Float(RandomWizard.getRandomInt((int) (super.getAlphaFluctuationPerDelta() * 50))) / 100;
     }
 
     @Override
@@ -267,7 +224,7 @@ public class ShadeLightCell extends SuperContainer {
             if (!DungeonScreen.getInstance().controller.
              isWithinCamera(
               this
-//              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
+              //              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
              )) {
                 return;
             }
@@ -280,7 +237,8 @@ public class ShadeLightCell extends SuperContainer {
 
     private void rotate(float delta) {
         if (type == SHADE_LIGHT.LIGHT_EMITTER) {
-            getContent().setRotation(getContent().getRotation() + delta * 2.5f);
+            if (getContent().getColor().a>0)
+                getContent().setRotation(getContent().getRotation() + delta * 2.5f);
         }
     }
 
@@ -295,6 +253,30 @@ public class ShadeLightCell extends SuperContainer {
         if (originalY == null)
             originalY = y;
         super.setPosition(x, y);
+    }
+
+    private void initBlending(Batch batch) {
+        BLENDING mode = null;
+        switch (type) {
+            case GAMMA_LIGHT:
+            case LIGHT_EMITTER:
+
+                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
+                 ? BLENDING.OVERLAY
+                 : BLENDING.SATURATE;
+                break;
+            case CONCEALMENT:
+            case GAMMA_SHADOW:
+                mode = (!Gdx.input.isButtonPressed(Keys.SHIFT_LEFT))
+                 ? BLENDING.OVERLAY
+                 : BLENDING.MULTIPLY;
+            case BLACKOUT:
+                break;
+            case HIGLIGHT:
+                break;
+        }
+        if (mode != null)
+            batch.setBlendFunction(mode.blendSrcFunc, mode.blendDstFunc);
     }
 
     public void adjustPosition(int x, int y) {
@@ -341,4 +323,10 @@ public class ShadeLightCell extends SuperContainer {
 
         setPosition(originalX + offsetX / 3, originalY + offsetY / 3);
     }
+
+    public void setVoid(boolean aVoid) {
+        this.voidCell = aVoid;
+    }
+
+
 }

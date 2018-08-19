@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.battlecraft.logic.dungeon.location.RestoredDungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
@@ -9,12 +10,14 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.fill.RngOverlayManager;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -32,6 +35,7 @@ public class RngLevelInitializer {
 
     public void init(DungeonLevel level) {
         this.dungeonLevel = level;
+        initEntrances();
         if (level instanceof RestoredDungeonLevel) {
             assignBlockTileMaps(level);
             return;
@@ -48,6 +52,19 @@ public class RngLevelInitializer {
 
     }
 
+    private void initEntrances() {
+        boolean upward; //towers!..
+        LevelBlock entrance = dungeonLevel.getBlocks().stream().filter(block -> block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM).collect(Collectors.toList()).get(0);
+        dungeonLevel.setEntranceType(RngBfObjProvider.getWeightMap(ROOM_CELL.ENTRANCE,
+         entrance.getZone().getStyle()).getRandomByWeight());
+
+
+        entrance = dungeonLevel.getBlocks().stream().filter(block -> block.getRoomType()
+         == ROOM_TYPE.EXIT_ROOM).collect(Collectors.toList()).get(0);
+        dungeonLevel.setExitType(RngBfObjProvider.getWeightMap(ROOM_CELL.EXIT,
+         entrance.getZone().getStyle()).getRandomByWeight());
+    }
+
     private void assignBlockTileMaps(DungeonLevel level) {
         TileMap map = level.getTileMap();
         ROOM_CELL[][] cells = TileMapper.getCells(map);
@@ -55,7 +72,6 @@ public class RngLevelInitializer {
             for (LevelBlock block : zone.getSubParts()) {
                 int w = CoordinatesMaster.getWidth(block.getCoordinatesList());
                 int h = CoordinatesMaster.getHeight(block.getCoordinatesList());
-                TileMap subMap = new TileMap(w, h);
                 Map<Coordinates, ROOM_CELL> cellMap = new LinkedHashMap<>();
                 for (Coordinates coordinates : block.getCoordinatesList()) {
                     try {
@@ -64,13 +80,13 @@ public class RngLevelInitializer {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                 }
+                TileMap subMap = new TileMap(cellMap);
 
-                subMap.setMap(cellMap);
                 block.setTileMap(subMap);
-                                block.setWidth(w);
-                                block.setHeight(h);
-                                block.setCoordinates(CoordinatesMaster.
-                                 getUpperLeftCornerCoordinates(block.getCoordinatesList()));
+                block.setWidth(w);
+                block.setHeight(h);
+                block.setCoordinates(CoordinatesMaster.
+                 getUpperLeftCornerCoordinates(block.getCoordinatesList()));
             }
         }
     }
@@ -93,19 +109,49 @@ public class RngLevelInitializer {
         //just write into new xml?
         if (value == null)
             return;
-        ObjType type = chooseType(c, value, block);
-        if (type == null)
+        if (!isCellTranslated(value))
             return;
+        ObjType type = chooseType(c, value, block);
+        if (type == null) {
+            main.system.auxiliary.log.LogMaster.log(1, value + " at " + c +
+             " can't be translated to obj!");
+            return;
+        }
+        if (EntityCheckMaster.isOverlaying(type)){
+            createEntity(c, ROOM_CELL.WALL, block);
+        }
         addObj(block, type, c);
         if (block.getBoundCells().get(c) != null) {
             addObj(block, type, block.getBoundCells().get(c));
         }
+        main.system.auxiliary.log.LogMaster.log(1, value + " at " + c +
+         " translated to obj: " + type);
+    }
+
+    private boolean isCellTranslated(ROOM_CELL value) {
+        switch (value) {
+
+            case FLOOR:
+            case ROOM_EXIT:
+            case TREASURE_ROOM:
+            case THRONE_ROOM:
+            case DEATH_ROOM:
+            case GUARD_ROOM:
+            case COMMON_ROOM:
+            case EXIT_ROOM:
+            case SECRET_ROOM:
+            case ENTRANCE_ROOM:
+            case CORRIDOR:
+                return false;
+        }
+        return true;
     }
 
     private void addObj(LevelBlock block, ObjType type, Coordinates c) {
         ObjAtCoordinate objAt = new ObjAtCoordinate(type, c);
         block.getObjects().add(0, objAt);
         dungeonLevel.getObjects().add(objAt);
+
 
     }
 

@@ -1,6 +1,7 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.content.PARAMS;
+import eidolons.content.PROPS;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
@@ -14,6 +15,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
+import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
@@ -21,6 +23,7 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
@@ -66,12 +69,16 @@ public class RngLocationBuilder extends LocationBuilder {
             data = path;
         }
         DungeonLevel level = loadLevel(path);
+        master.setDungeonLevel(level);
         new RngLevelInitializer().init(level);
         Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
         location.setEntranceData(entranceData);
-//        RngLevelPopulator.populate(level);
+        RngLevelPopulator.populate(level);
         spawnLevel(level);
+        initWidthAndHeight(location);
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
+        location.initEntrances();
+//        initDynamicObjData();
         return location;
     }
 
@@ -80,10 +87,12 @@ public class RngLocationBuilder extends LocationBuilder {
         for (ObjAtCoordinate at : level.getObjects()) {
             //            DC_ObjInitializer.initMapBlockObjects()
             game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y, DC_Player.NEUTRAL);
+       main.system.auxiliary.log.LogMaster.log(1,at+" spawed" );
         }
         for (ObjAtCoordinate at : level.getUnits()) {
             game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
              game.getPlayer(false));
+            main.system.auxiliary.log.LogMaster.log(1,at+" unit spawed" );
         }
 
 
@@ -208,10 +217,11 @@ public class RngLocationBuilder extends LocationBuilder {
         Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
         String[] lines = StringMaster.splitLines(data);
         for (String line : lines) {
-            if (lineN++ < RngXmlMaster.SKIPPED_LINES ||
-             lineN >= lines.length - RngXmlMaster.SKIPPED_LINES)
+            if (lineN++ < RngXmlMaster.SKIPPED_LINES)
                 continue;
-            {
+            if (lineN   > lines.length - RngXmlMaster.SKIPPED_LINES) {
+                break;
+            }
                 String row = line.split(Pattern.quote(RngXmlMaster.TILEMAP_ROW_SEPARATOR))[1];
                 row = row.replace(" ", "");
                 int i = 0;
@@ -226,10 +236,8 @@ public class RngLocationBuilder extends LocationBuilder {
                 }
                 if (i > w)
                     w = i;
-            }
         }
-        TileMap tileMap = new TileMap(w, lineN);
-        tileMap.setMap(map);
+        TileMap tileMap = new TileMap(map);
         //        String[][] cells = TileMapper.toSymbolArray(TileMapper.getCells(tileMap));
         //        ArrayMaster.
         level.setTileMap(tileMap);
@@ -252,7 +260,9 @@ public class RngLocationBuilder extends LocationBuilder {
          DC_TYPE.DUNGEONS);
         if (type == null) {
             type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
+            type.setProperty(PROPS.MAP_BACKGROUND, MAP_BACKGROUND.DUNGEON.getBackgroundFilePath());
         }
+
         node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
         if (node != null) {
             type.setValue(PARAMS.BF_HEIGHT.name(), node.getTextContent());

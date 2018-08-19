@@ -438,41 +438,54 @@ public final class UnitEnums {
 
     // PERHAPS ENCOUNTERS COULD HAVE DEITY PROPERTY AS WELL;
     public enum UNIT_GROUP {
-        ELEMENTALS(""),
         Ravenguard("Traitor,Corrupted,Royal"),
-PRISONERS,
-        DEATH_CULT,
-        DARK_CULT,
-        CHAOS_CULT,
-        CRUSADERS,
-        CONSTRUCTS,
-        DARK_ONES,
-        MUTANTS,
-        PIRATES,
-        CELESTIALS,
-        BARBARIANS,
-
+        PRISONERS,
         HUMANS("Militia,Scum,Guards,Army,"),
-        GREENSKINS("goblins,orcs"),
-        PALE_ORCS,
-        BANDITS("Pirates,Thieves Guild,Robbers,"),
-        KNIGHTS("ravenguard,holy,"),
+        HUMANS_BANDITS("Pirates,Thieves Guild,Robbers,"),
+        HUMANS_KNIGHTS("ravenguard,holy,"),
+        HUMANS_CRUSADERS,
+        HUMANS_PIRATES,
+        HUMANS_BARBARIANS,
+
         DWARVES("forsworn,clansmen,"),
         NORTH("norse,woads,brutes,north"),
+
+        ORCS("goblins,orcs"),
+        PALE_ORCS,
+
         UNDEAD("Plague,Crimson,Wraith,Pale"),
         UNDEAD_PLAGUE("Plague,Crimson,Wraith,Pale"),
         UNDEAD_CRIMSON("Plague,Crimson,Wraith,Pale"),
         UNDEAD_WRAITH("Plague,Crimson,Wraith,Pale"),
+
         DEMONS("chaos,abyss,demons,demon worshippers"),
         DEMONS_HELLFIRE("chaos,abyss,demons,demon worshippers"),
         DEMONS_ABYSS("chaos,abyss,demons,demon worshippers"),
         DEMONS_WARPED("chaos,abyss,demons,demon worshippers"),
+
+        MAGI,
+        CULT_CERBERUS("constructs,apostates,magi,,"),
+        CULT_DEATH,
+        CULT_DARK,
+        CULT_CHAOS,
+
+        ELEMENTALS(""),
+        CONSTRUCTS,
+        DARK_ONES,
+        MUTANTS,
+        CELESTIALS,
+
+        CRITTERS("critters,spiders,nocturnal"),
+        CRITTERS_SPIDERS("critters,spiders,nocturnal"),
+        CRITTERS_COLONY,
+        DUNGEON("chaos,demons,worshippers,"),
+
+
+        FOREST("greenies,creatures"),
         ANIMALS("Animals,Wolves,Wargs,wild,"),
         REPTILES,
-        MAGI("constructs,apostates,magi,,"),
-        CRITTERS("critters,spiders,nocturnal"),
-        DUNGEON("chaos,demons,worshippers,"),
-        FOREST("greenies,creatures"),;
+
+        ;
         private String subgroups;
 
         UNIT_GROUP(String groups) {

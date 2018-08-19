@@ -139,6 +139,12 @@ public class VariableManager {
         return StringMaster.cropParenthesises(getVarPart(typeName));
     }
 
+    public static String getVarIfExists(String data) {
+        String var = getVarPart(data);
+        if (var.isEmpty())
+            var = data;
+        return StringMaster.cropParenthesises(var);
+    }
     public static String getVar(String typeName, int i) {
         String[] parts = StringMaster.cropParenthesises(getVarPart(typeName)).split(",");
         if (parts.length > i)
@@ -410,6 +416,7 @@ public class VariableManager {
         return StringMaster.cropParenthesises(getVarPart(varString));
 
     }
+
 
     public enum AUTOVAR {
         // at construction time or runtime?

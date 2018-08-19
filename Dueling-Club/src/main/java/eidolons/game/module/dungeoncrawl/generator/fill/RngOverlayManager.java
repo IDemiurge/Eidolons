@@ -42,7 +42,7 @@ public class RngOverlayManager {
         for (ObjAtCoordinate obj : level.getObjects()) {
             if (EntityCheckMaster.isOverlaying(obj.getType())) {
                 LevelBlock block = level.getBlockForCoordinate(obj.getCoordinates());
-                if (block==null ){
+                if (block == null) {
                     //TODO ???
                     continue;
                 }
@@ -60,7 +60,7 @@ public class RngOverlayManager {
                         pair = new ImmutablePair<>(obj.getType().getName(),
                          direction);
                     }
-
+                main.system.auxiliary.log.LogMaster.log(1, "Direction chosen: " + pair);
                 MapMaster.addToListMap(map, obj.getCoordinates(), pair);
             }
         }

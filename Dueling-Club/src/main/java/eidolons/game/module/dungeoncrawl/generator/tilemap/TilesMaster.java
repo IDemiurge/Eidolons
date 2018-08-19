@@ -67,7 +67,7 @@ public class TilesMaster {
 
     public static boolean isPassable(ROOM_CELL type) {
         switch (type) {
-            case VOID:
+            case INDESTRUCTIBLE:
             case WALL:
             case WALL_WITH_DECOR_OVERLAY:
             case WALL_WITH_LIGHT_OVERLAY:
@@ -109,5 +109,14 @@ public class TilesMaster {
         int distX = Math.abs( width/2 - c.x);
         int distY  = Math.abs( height/2 - c.y);
         return (float) Math.sqrt(distX * distX + distY * distY);
+    }
+
+    public static boolean isEdgeCell(Coordinates c, Room room) {
+        if (c.x==0)
+            return true;
+        if (c.y==0)
+            return true;
+        return c.x==room.getWidth()-1 ||
+         c.y==room.getHeight()-1 ;
     }
 }

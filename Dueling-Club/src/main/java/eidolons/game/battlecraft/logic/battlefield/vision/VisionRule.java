@@ -86,7 +86,8 @@ public class VisionRule {
             for (int j = 0; j < array[0].length; j++) {
                 BattleFieldObject[] objects = master.getGame().getMaster().getObjects(i, j, true);
                 DC_Cell cell = master.getGame().getCellByCoordinate(new Coordinates(i, j));
-
+                if (cell == null)
+                    continue;
                 for (Unit observer : observers) {
                     if (!isResetRequired(observer, cell))
                         continue;
@@ -101,10 +102,10 @@ public class VisionRule {
                             continue;
                         if (isGammaResetRequired(observer, sub))
                             sub.setGamma(observer, master.getGammaMaster().getGamma(observer, sub));
-//                    master.getSightMaster().resetSightStatuses(observer);
+                        //                    master.getSightMaster().resetSightStatuses(observer);
                         master.getSightMaster().resetUnitVision(observer, sub);
-//                        controller.getUnitVisionMapper()
-//                        sub.setUnitVisionStatus(observer, master.getUnitVisibilityStatus(sub, observer));
+                        //                        controller.getUnitVisionMapper()
+                        //                        sub.setUnitVisionStatus(observer, master.getUnitVisibilityStatus(sub, observer));
                         controller.getVisibilityLevelMapper().set(observer, sub, visibility(observer, sub));
                         controller.getOutlineMapper().set(observer, sub, outline(observer, sub));
                         controller.getPlayerVisionMapper().set(observer.getOwner(), sub, playerVision(observer, sub));
@@ -151,9 +152,9 @@ public class VisionRule {
     public VISIBILITY_LEVEL visibility(Unit source, BattleFieldObject object) {
         UNIT_VISION sight = controller.getUnitVisionMapper().get(source, object);
         boolean landmark = object instanceof Structure;
-//        if (object instanceof BattleFieldObject) {
-//            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
-//        }
+        //        if (object instanceof BattleFieldObject) {
+        //            landmark = ((BattleFieldObject) object).isWall() || ((BattleFieldObject) object).isLandscape();
+        //        }
 
         if (master.getGame().getRules().getStealthRule().
          checkInvisible(source.getOwner(), object))
@@ -181,8 +182,8 @@ public class VisionRule {
                 }
         }
         return VISIBILITY_LEVEL.UNSEEN;
-//            TODO case CONCEALED:
-//                break;
+        //            TODO case CONCEALED:
+        //                break;
 
     }
 
@@ -193,11 +194,11 @@ public class VisionRule {
 
             }
         }
-//        if (object instanceof Unit) { TODO now in visibility!
-//            if (StealthRule.checkInvisible(object)) {
-//                return (PLAYER_VISION.INVISIBLE);
-//            }
-//        }
+        //        if (object instanceof Unit) { TODO now in visibility!
+        //            if (StealthRule.checkInvisible(object)) {
+        //                return (PLAYER_VISION.INVISIBLE);
+        //            }
+        //        }
 
         VISIBILITY_LEVEL visibilityLevel = controller.getVisibilityLevelMapper().
          get(source, object);
@@ -218,8 +219,8 @@ public class VisionRule {
             case UNSEEN:
                 hide(source, object);
                 return PLAYER_VISION.INVISIBLE;
-//                case VAGUE_OUTLINE:
-//                    break;
+            //                case VAGUE_OUTLINE:
+            //                    break;
         }
 
         return null;
@@ -327,12 +328,12 @@ public class VisionRule {
             if (isResetRequired(unit, hero))
                 return true;
             else {
-                main.system.auxiliary.log.LogMaster.log(1,"  TODO beta quick fix..." );
+                main.system.auxiliary.log.LogMaster.log(1, "  TODO beta quick fix...");
             }
         }
 
-//        if (isDisplayedOnGrid(unit, hero))
-//            return true;
+        //        if (isDisplayedOnGrid(unit, hero))
+        //            return true;
 
         return false;
     }

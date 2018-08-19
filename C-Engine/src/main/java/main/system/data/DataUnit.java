@@ -12,7 +12,6 @@ import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DataUnit<T extends Enum<T>> {
     public static final String TRUE = "TRUE";
@@ -62,6 +61,16 @@ public class DataUnit<T extends Enum<T>> {
         if (!NumberUtils.isInteger(val))
             return 0;
         return NumberUtils.getInteger(val);
+    }
+
+    public float getFloatValue(T value) {
+        float val;
+        try {
+            val = Float.parseFloat(getValue(value));
+        } catch (Exception e) {
+            val = new Float(getIntValue(value));
+        }
+        return val;
     }
 
     public int getIntValue(T value) {

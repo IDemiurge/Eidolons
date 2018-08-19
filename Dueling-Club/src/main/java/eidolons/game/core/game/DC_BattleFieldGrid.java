@@ -46,13 +46,20 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         resetObjCells();
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
+                if (game.getMetaMaster().getDungeonMaster().getDungeonLevel() != null) {
+                    if (game.getMetaMaster().getDungeonMaster().getDungeonLevel().isVoid(i, j))
+                        continue;
+                }
                 cellsSet.add(cells[i][j] = new DC_Cell( i, j, game));
                 coordinates.add(new Coordinates(i, j));
             }
         }
 
     }
-        public BattleFieldObject[] getObjects(int x_, int y_) {
+
+
+
+    public BattleFieldObject[] getObjects(int x_, int y_) {
             return getObjects(x_, y_, true);
         }
 

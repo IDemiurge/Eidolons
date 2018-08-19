@@ -1,22 +1,23 @@
 package eidolons.game.module.dungeoncrawl.generator.test;
 
+import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_STAT;
 import eidolons.system.options.Options.OPTION;
+import main.system.data.DataUnit;
 
 /**
  * Created by JustMe on 8/2/2018.
  */
-public class LevelStats {
+public class LevelStats extends DataUnit<LEVEL_STAT> {
 
     public enum LEVEL_GEN_FLAG implements OPTION {
-        isRandomRotation,
-        isMergeLinksAllowed,
-        isBuildFromExitAllowed,
+        isMergeLinksAllowed(true),
         isRandomizedSizeSort,
         isAdjustEvenRoomX,
         isAdjustEvenRoomY,
         //        isAltExitsAllowed,
         isShearDisplacedOnly,
-        isJoinAllowed, isShearLinkWallsAllowed,;
+        isJoinAllowed,
+        isShearLinkWallsAllowed(false),;
         private final Boolean defaultValue;
 
         LEVEL_GEN_FLAG() {
@@ -59,6 +60,7 @@ public class LevelStats {
         ROOMS,
         FILL_PERCENTAGE,
         GRAPH_ADHERENCE,
+
 
     }
 }

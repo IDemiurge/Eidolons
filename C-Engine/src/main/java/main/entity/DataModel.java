@@ -19,7 +19,6 @@ import main.data.XLinkedMap;
 import main.data.ability.construct.VariableManager;
 import main.data.xml.XML_Formatter;
 import main.entity.Ref.KEYS;
-import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
@@ -29,8 +28,8 @@ import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
@@ -54,38 +53,41 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class DataModel {
     public static final boolean integerCacheOn = true;
-    protected PropMap propMap = new PropMap();
-    protected ParamMap paramMap = new ParamMap();
-    protected Map<PARAMETER, Map<String, Double>> modifierMaps;
-    protected Map<VALUE, Boolean> booleanMap = new HashMap<>();
-    protected Ref ref;
+    protected String name;
+    protected String originalName;
+    protected OBJ_TYPE TYPE_ENUM;
     protected ObjType type;
     protected Game game;
+    protected Ref ref;
     protected Player owner;
     protected Integer id;
-    protected boolean constructed = false;
-    protected boolean var = false;
-    protected boolean dirty = false;
+
+    protected PropMap propMap = new PropMap();
+    protected ParamMap paramMap = new ParamMap();
+
+    protected Map<PARAMETER, Map<String, Double>> modifierMaps;
+    protected Map<VALUE, Boolean> booleanMap = new HashMap<>();
     protected Map<String, String> customParamMap;
-    protected OBJ_TYPE TYPE_ENUM;
     protected Map<String, String> customPropMap;
     protected XLinkedMap<VALUE, String> rawValues;
-    protected boolean initialized;
-    protected boolean constructing;
-    protected boolean defaultValuesInitialized;
-    protected String name;
-    protected Double C;
-    protected String originalName;
-    protected ImageIcon customIcon;
-    protected String modifierKey;
-    protected Map<Obj, Map<String, ImageIcon>> customIconCache;
-    protected ImageIcon icon;
-    protected boolean passivesReady = false;
-    protected boolean activesReady = false;
+
+
     private HashMap<PROPERTY, Map<String, Boolean>> propCache;
     private Map<PARAMETER, Integer> integerMap = new HashMap<>();
+
+    protected boolean constructed = false;
+    protected boolean constructing;
+    protected boolean var = false;
+    protected boolean dirty = false;
+    protected boolean initialized;
+    protected boolean passivesReady = false;
+    protected boolean activesReady = false;
+    protected boolean defaultValuesInitialized;
     private boolean beingReset;
     private boolean loaded;
+
+    protected String modifierKey;
+    protected Double C;
 
     public String getToolTip() {
         return getType().getDisplayedName();
@@ -1582,41 +1584,6 @@ public abstract class DataModel {
         this.originalName = originalName;
     }
 
-    public ImageIcon getCustomIcon() {
-        if (customIcon == null) {
-            if (game != null) {
-                if (getGame().isSimulation()) {
-                    if (ref != null) {
-                        Map<String, ImageIcon> cache = ImageManager.getCustomIconCache().get(
-                         ref.getSourceObj());
-                        if (cache == null) {
-                            return null;
-                        }
-                        return cache.get(getName()); // modified name for
-                        // upgrades?
-                        // or
-                        // displayed only?
-
-                    }
-                }
-            }
-        }
-
-        return customIcon;
-    }
-
-    public void setCustomIcon(ImageIcon customIcon) {
-        if (getGame().isSimulation()) {
-            Map<String, ImageIcon> cache = ImageManager.getCustomIconCache()
-             .get(ref.getSourceObj());
-            if (cache == null) {
-                cache = new HashMap<>();
-                ImageManager.getCustomIconCache().put(ref.getSourceObj(), cache);
-            }
-            cache.put(getName(), customIcon);
-        }
-        this.customIcon = customIcon;
-    }
 
     public WORKSPACE_GROUP getWorkspaceGroup() {
         return new EnumMaster<WORKSPACE_GROUP>().retrieveEnumConst(WORKSPACE_GROUP.class,

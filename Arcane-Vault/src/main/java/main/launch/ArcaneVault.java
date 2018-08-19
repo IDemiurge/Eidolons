@@ -284,6 +284,9 @@ if (macroMode)
         if (!testMode) {
             SimulationManager.init();
         }
+
+        ContentGenerator.afterRead();
+
         CharacterCreator.setAV(true);
     }
 

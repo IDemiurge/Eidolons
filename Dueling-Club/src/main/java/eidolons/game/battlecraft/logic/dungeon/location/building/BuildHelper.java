@@ -189,7 +189,7 @@ public class BuildHelper {
     }
 
     private Boolean checkCulDeSacEnds(FACING_DIRECTION originalDirection, Coordinates c, int length) {
-        // if (CoordinatesMaster.getDistanceFromEdge(c, params.WALL_WIDTH,
+        // if (CoordinatesMaster.getMinDistanceFromEdge(c, params.WALL_WIDTH,
         // originalDirection,dungeon) == 1)
         // return true;
 

@@ -1,14 +1,17 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
-import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.DUNGEON_TEMPLATES;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.RandomWizard;
 import main.system.data.DataUnit;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by JustMe on 2/14/2018.
@@ -18,17 +21,15 @@ import main.system.data.DataUnit;
 public class LevelData extends DataUnit<LEVEL_VALUES> {
     SUBLEVEL_TYPE sublevelType; //determines room type too
     //per zone
-    ROOM_TEMPLATE_GROUP[] templateGroups = new ROOM_TEMPLATE_GROUP[]{
-     ROOM_TEMPLATE_GROUP.CRYPT
-    };
-    DUNGEON_TEMPLATES[] templates;
+    ROOM_TEMPLATE_GROUP[] templateGroups;
 
-    DataUnit<LEVEL_GEN_FLAG> flags=LevelDataMaker.getDefaultLevelFlags();
-
+    DataUnit<LEVEL_GEN_FLAG> flags = LevelDataMaker.getDefaultLevelFlags();
+    DataUnit<LEVEL_REQUIREMENTS> reqs;
     int x;
     int y;
     int z; //the deeper, the <?>
     private LOCATION_TYPE locationType;
+    private Map<ROOM_TYPE, Integer> doorChanceMap = new HashMap<>();
 
     //for Fill - enemy type(s), ...
 
@@ -37,16 +38,43 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
         super(data);
     }
 
-public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type){
-    return LEVEL_VALUES.valueOf(type.name() + "_COEF");
-}
+    @Override
+    public float getFloatValue(LEVEL_VALUES value) {
+        return super.getFloatValue(value);
+    }
+
+    public DataUnit<LEVEL_GEN_FLAG> getFlags() {
+        return flags;
+    }
+
+    public DataUnit<LEVEL_REQUIREMENTS> getReqs() {
+        return reqs;
+    }
+
+    public void setReqs(DataUnit<LEVEL_REQUIREMENTS> reqs) {
+        this.reqs = reqs;
+    }
+
+    public int getRoomCoeF(ROOM_TYPE type) {
+        return getIntValue(getROOM_COEF(type));
+    }
+
+    public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type) {
+        return LEVEL_VALUES.valueOf(type.name() + "_COEF");
+    }
+
     public SUBLEVEL_TYPE getSublevelType() {
         return sublevelType;
+    }
+
+    public void setSublevelType(SUBLEVEL_TYPE sublevelType) {
+        this.sublevelType = sublevelType;
     }
 
     public LOCATION_TYPE getLocationType() {
         return locationType;
     }
+
     public void setLocationType(LOCATION_TYPE locationType) {
         this.locationType = locationType;
     }
@@ -55,12 +83,8 @@ public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type){
         return templateGroups;
     }
 
-    public DUNGEON_TEMPLATES[] getTemplates() {
-        return templates;
-    }
-
-    public void setTemplates(DUNGEON_TEMPLATES[] templates) {
-        this.templates = templates;
+    public void setTemplateGroups(ROOM_TEMPLATE_GROUP[] templateGroups) {
+        this.templateGroups = templateGroups;
     }
 
     public int getX() {
@@ -75,17 +99,17 @@ public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type){
         return z;
     }
 
-
-    public  boolean isRandomRotation() {
+    public boolean isRandomRotation() {
         return RandomWizard.chance(getIntValue(LEVEL_VALUES.
-        RANDOM_ROTATION_CHANCE));
+         RANDOM_ROTATION_CHANCE));
     }
+
     public boolean isMergeLinksAllowed() {
         return false;
     }
 
     public boolean isFinalizerOn() {
-        return false;
+        return true;
     }
 
     public boolean isBuildFromExitAllowed() {
@@ -99,17 +123,33 @@ public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type){
     public boolean isShearWallsAllowed() {
         return false;
     }
+
     public boolean isShearLinkWallsAllowed() {
         return flags.getBooleanValue(LEVEL_GEN_FLAG.isShearLinkWallsAllowed);
     }
 
-    public void setSublevelType(SUBLEVEL_TYPE sublevelType) {
-        this.sublevelType = sublevelType;
+    public boolean isAlignExitsAllowed() {
+        return false;
     }
+
+    public int getDoorChance(ROOM_TYPE type) {
+        Integer c = doorChanceMap.get(type);
+        if (c == null) {
+            c = getIntValue("DOOR_CHANCE_"
+             + type.name())* getIntValue(LEVEL_VALUES.DOOR_CHANCE_MOD) /100;
+            doorChanceMap.put(type, c);
+        }
+        return c;
+    }
+
+    public boolean isSurface() {
+        return false;
+    }
+
     //    public boolean isShearDisplacedOnly() {
-//        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);
-//    }
-//    public boolean isJoinAllowed() {
-//        return getBooleanValue(LEVEL_VALUES.JoinAllowed);
-//    }
+    //        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);
+    //    }
+    //    public boolean isJoinAllowed() {
+    //        return getBooleanValue(LEVEL_VALUES.JoinAllowed);
+    //    }
 }

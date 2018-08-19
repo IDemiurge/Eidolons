@@ -1,6 +1,7 @@
 package main.entity;
 
 import main.content.enums.entity.BfObjEnums;
+import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
 import main.content.enums.entity.HeroEnums.BACKGROUND;
 import main.content.enums.entity.HeroEnums.GENDER;
 import main.content.enums.entity.HeroEnums.RACE;
@@ -39,6 +40,9 @@ public class EntityCheckMaster {
          || entity.checkProperty(G_PROPS.CLASSIFICATIONS, "" + UnitEnums.CLASSIFICATIONS.ATTACHED);
     }
 
+    public static boolean isWall(Entity entity) {
+        return entity.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL.toString());
+    }
     public static BACKGROUND getBackground(Entity hero) {
         return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, hero
          .getProperty(G_PROPS.BACKGROUND));
@@ -53,4 +57,5 @@ public class EntityCheckMaster {
         return new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, hero
          .getProperty(G_PROPS.GENDER));
     }
+
 }

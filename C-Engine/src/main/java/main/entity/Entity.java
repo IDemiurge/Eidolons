@@ -60,6 +60,8 @@ public abstract class Entity extends DataModel implements OBJ {
 
     protected boolean added;
     protected Map<VALUE, String> valueCache = new HashMap<>(); //to cache valid tooltip values
+    protected ImageIcon customIcon;
+    protected ImageIcon icon;
     EntityMaster master;
     protected Map<PARAMETER, Integer> validParams;
 
@@ -558,4 +560,39 @@ public abstract class Entity extends DataModel implements OBJ {
         getResetter().reset();
     }
 
+    public ImageIcon getCustomIcon() {
+        if (customIcon == null) {
+            if (game != null) {
+                if (getGame().isSimulation()) {
+                    if (ref != null) {
+                        Map<String, ImageIcon> cache = ImageManager.getCustomIconCache().get(
+                         ref.getSourceObj());
+                        if (cache == null) {
+                            return null;
+                        }
+                        return cache.get(getName()); // modified name for
+                        // upgrades?
+                        // or
+                        // displayed only?
+
+                    }
+                }
+            }
+        }
+
+        return customIcon;
+    }
+
+    public void setCustomIcon(ImageIcon customIcon) {
+        if (getGame().isSimulation()) {
+            Map<String, ImageIcon> cache = ImageManager.getCustomIconCache()
+             .get(ref.getSourceObj());
+            if (cache == null) {
+                cache = new HashMap<>();
+                ImageManager.getCustomIconCache().put(ref.getSourceObj(), cache);
+            }
+            cache.put(getName(), customIcon);
+        }
+        this.customIcon = customIcon;
+    }
 }

@@ -16,6 +16,7 @@ import eidolons.system.math.DC_MathManager;
 import main.ability.effects.Effect.SPECIAL_EFFECTS_CASE;
 import main.content.ContentValsManager;
 import main.content.DC_TYPE;
+import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
@@ -568,5 +569,12 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
 
     public ObjType getOriginalType() {
         return originalType;
+    }
+
+    public boolean isIndestructible() {
+        return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
+    }
+    public boolean isInvulnerable() {
+        return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
     }
 }

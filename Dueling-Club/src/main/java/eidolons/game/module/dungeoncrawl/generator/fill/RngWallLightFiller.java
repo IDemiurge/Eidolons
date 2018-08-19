@@ -27,7 +27,7 @@ public class RngWallLightFiller extends RngFiller{
 
     @Override
     public float getFillCoef() {
-        return 0.25f;
+        return 0.5f;
     }
 
     @Override

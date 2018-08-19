@@ -2,8 +2,8 @@ package main.game.bf;
 
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
@@ -61,25 +61,6 @@ public class Coordinates {
         }
     }
 
-    protected void checkInvalid() {
-        if (x >= GuiManager.getCurrentLevelCellsX()) {
-            x = GuiManager.getCurrentLevelCellsX() - 1;
-            this.setInvalid(true);
-        }
-        if (x < 0) {
-            x = 0;
-            this.setInvalid(true);
-        }
-        if (y >= GuiManager.getCurrentLevelCellsY()) {
-            y = GuiManager.getCurrentLevelCellsY() - 1;
-            this.setInvalid(true);
-        }
-        if (y < 0) {
-            y = 0;
-            this.setInvalid(true);
-        }
-    }
-
     public Coordinates(String s) {
         this(false, s);
     }
@@ -91,6 +72,13 @@ public class Coordinates {
     public Coordinates(boolean custom, String s) {
         this(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
          .getInteger(splitCoordinateString(s)[1].trim()));
+    }
+
+    public static void resetCaches() {
+        adjacenctDirectionMap = new HashMap<>();
+        adjacenctMap = new HashMap<>();
+        adjacenctMapNoDiags = new HashMap<>();
+        adjacenctMapDiagsOnly = new HashMap<>();
     }
 
     public static void clearCaches() {
@@ -158,6 +146,25 @@ public class Coordinates {
     public static void setRotated(boolean rotated) {
         rotate = rotated;
 
+    }
+
+    protected void checkInvalid() {
+        if (x >= GuiManager.getCurrentLevelCellsX()) {
+            x = GuiManager.getCurrentLevelCellsX() - 1;
+            this.setInvalid(true);
+        }
+        if (x < 0) {
+            x = 0;
+            this.setInvalid(true);
+        }
+        if (y >= GuiManager.getCurrentLevelCellsY()) {
+            y = GuiManager.getCurrentLevelCellsY() - 1;
+            this.setInvalid(true);
+        }
+        if (y < 0) {
+            y = 0;
+            this.setInvalid(true);
+        }
     }
 
     public int hashCode() {
@@ -265,12 +272,12 @@ public class Coordinates {
                 break;
         }
         if (!isAllowInvalidAdjacent())
-        if (!allowInvalid) {
-            if (!withinBounds(x1, y1)) {
-                return null;
+            if (!allowInvalid) {
+                if (!withinBounds(x1, y1)) {
+                    return null;
+                }
             }
-        }
-        c =create(allowInvalid, x1, y1);
+        c = create(allowInvalid, x1, y1);
         map.put(direction, c);
         getAdjacenctDirectionMap().put(this, map);
         return c;
@@ -477,11 +484,17 @@ public class Coordinates {
         setY(c.getY());
         return this;
     }
-        public Coordinates getOffset(Coordinates coordinates) {
+
+    public Coordinates getOffset(Coordinates coordinates) {
         return getOffsetByX(coordinates.x).getOffsetByY(coordinates.y);
     }
 
     public float dist(Coordinates coordinates) {
         return PositionMaster.getDistance(this, coordinates);
     }
+
+    public Coordinates negative() {
+        return create(true, -x, -y);
+    }
+
 }

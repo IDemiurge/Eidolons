@@ -426,8 +426,13 @@ public class CoordinatesMaster {
         return new Coordinates(RandomWizard.getRandomInt(cellsX), RandomWizard.getRandomInt(cellsY));
     }
 
-    public static int getDistanceFromEdge(Coordinates c, int border) {
-        return Math.min(border - c.x, c.x);
+    public static int getMinDistanceFromEdge(Coordinates c, int dimension, boolean xOrY) {
+        return xOrY? Math.min(dimension - c.x, c.x):Math.min(dimension - c.y, c.y);
+    }
+        public static int getMinDistanceFromEdge(Coordinates c, int w, int h) {
+        int dstX = Math.min(w - c.x, c.x);
+        int dstY = Math.min(h - c.y, c.y);
+        return Math.min(dstX, dstY);
     }
 
     public static int getRangeY(List<Coordinates> coordinates) {
@@ -530,12 +535,12 @@ public class CoordinatesMaster {
     public static int getWidth(Collection<Coordinates> list) {
         int x = getMinX(list);
         int x1 = getMaxX(list);
-        return x1 - x;
+        return Math.abs(x1 - x)+1;
     }
     public static int getHeight(Collection<Coordinates> list) {
         int y = getMinY(list);
         int y1 = getMaxY(list);
-        return y1 - y;
+        return Math.abs(y1 - y)+1;
     }
 
     public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> coordinatesList) {

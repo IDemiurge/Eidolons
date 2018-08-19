@@ -5,7 +5,6 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
-import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
@@ -21,6 +20,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.data.ListMaster;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,6 +40,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private Map<String, DIRECTION> directionMap;
     private Map<String, FLIP> flipMap;
     private ObjType dungeonType;
+    private Map<Coordinates, LevelBlock> cache= new HashMap<>();
+    private String exitType;
+    private String entranceType;
 
     public DungeonLevel(TileMap tileMap, LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
         this.tileMap = tileMap;
@@ -51,10 +54,13 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     @Override
     public String toXml() {
         //TODO save original model map!
+        model.offsetCoordinates();
         String xml="";
         tileMap= new TileMapper(model,model.getData()).joinTileMaps();
-         xml +=XML_Converter.wrap(RngXmlMaster.TILEMAP_NODE,  tileMap.toString());
-
+         xml +=
+          XML_Converter.wrap(RngXmlMaster.TILEMAP_NODE,
+//           tileMap.toString()
+        TileMapper.toASCII_String(model.getCells(), false ));
 
         String values="";
         values +="\n"+ XML_Converter.wrap(RngXmlMaster.LOCATION_TYPE_NODE, locationType.toString());
@@ -66,13 +72,16 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         //props
 //entrances
         List<Coordinates> entrances =
-         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE).collect(Collectors.toList());
+         tileMap.getMap().keySet().stream().filter(c ->
+          tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE ||
+          tileMap.getMap().get(c) == ROOM_CELL.EXIT
+         ).collect(Collectors.toList());
         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
         xml +="\n"+ XML_Converter.wrap(LocationBuilder.ENTRANCE_NODE, ContainerUtils.constructStringContainer(entrances));
 
-        List<Coordinates> exits =
-         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
-        xml +="\n"+ XML_Converter.wrap(LocationBuilder.EXIT_NODE, ContainerUtils.constructStringContainer(exits));
+//        List<Coordinates> exits =
+//         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
+//        xml +="\n"+ XML_Converter.wrap(LocationBuilder.EXIT_NODE, ContainerUtils.constructStringContainer(exits));
 
         String z="";
 
@@ -131,19 +140,14 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public LevelBlock getBlockForCoordinate(Coordinates coordinates) {
+        if (cache.containsKey(coordinates))
+            return cache.get(coordinates);
         for (LevelZone zone : getSubParts()) {
             for (LevelBlock block : zone.getSubParts()) {
                 if (block.getCoordinatesList().contains(coordinates))
+                {
+                    cache.put(coordinates, block);
                     return block;
-            }
-        }
-        if (model!=null )
-        {
-            coordinates = coordinates.getOffset(new AbstractCoordinates(model.getLeftMost(), model.getTopMost()));
-            for (LevelZone zone : getSubParts()) {
-                for (LevelBlock block : zone.getSubParts()) {
-                    if (block.getCoordinatesList().contains(coordinates))
-                        return block;
                 }
             }
         }
@@ -216,5 +220,25 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
             list.addAll(zone.getSubParts());
         }
         return list;
+    }
+
+    public boolean isVoid(int i, int j) {
+        return getBlockForCoordinate(new Coordinates(i, j))==null ;
+    }
+
+    public void setExitType(String exitType) {
+        this.exitType = exitType;
+    }
+
+    public String getExitType() {
+        return exitType;
+    }
+
+    public void setEntranceType(String entranceType) {
+        this.entranceType = entranceType;
+    }
+
+    public String getEntranceType() {
+        return entranceType;
     }
 }

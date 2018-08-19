@@ -162,7 +162,7 @@ public class DungeonEnums {
         // CITY_OF_GODS("big\\death combat\\city of gods.jpg"),
         SHEOTH("big\\death combat\\sheoth.jpg"),
         PIRATE_BAY("big\\Pirate Bay3.jpg"),
-        DUNGEON("big\\dungeon.jpg"),
+        DUNGEON("main\\background\\dungeon.png"),
         DARK_FOREST("big\\dark forest.jpg"),
         LABYRINTH("big\\dungeons\\labyrinth.jpg"),
         CAVE("big\\dungeons\\cave.jpg"),

@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
@@ -9,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.Loop;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
@@ -90,11 +92,15 @@ public class LevelModel {
         roomMap.put(p, room);
         addOccupied(p, room);
         addCapes(p, room);
-        setCells(new TileMapper(this, data).build(this));
+        rebuildCells();
         if (!LevelGenerator.LOGGING_OFF)
             log(1, "Placed " + room + " at " +
              p.x + " " + p.y + "; " + toString());
 
+    }
+
+    public void rebuildCells() {
+        setCells(new TileMapper(this, data).build(this));
     }
 
 
@@ -155,6 +161,9 @@ public class LevelModel {
     public void remove(Room room) {
         roomMap.remove(room.getCoordinates());
         occupied(true, room.getCoordinates(), room);
+        rebuildCells();
+        if (!LevelGenerator.LOGGING_OFF)
+            log(1, "Removed " + room + "\n" + toString());
     }
 
     public Set<Coordinates> getOccupiedCells() {
@@ -232,9 +241,12 @@ public class LevelModel {
     }
 
     public void offsetCoordinates() {
+        if (!(leftMost != 0 || topMost != 0))
+         return;
         AbstractCoordinates offset = new AbstractCoordinates(
          -getLeftMost(),
          -getTopMost());
+        main.system.auxiliary.log.LogMaster.log(1,toASCII_Map()+ "\n Model is Offset by " +offset);
         LinkedHashSet<Coordinates> set = new LinkedHashSet<>(roomMap.keySet());
         Map<Coordinates, Room> newMap = new LinkedHashMap<>();
         for (Coordinates coordinates : set) {
@@ -244,6 +256,15 @@ public class LevelModel {
         }
         roomMap = newMap;
 
+        occupiedCells.forEach(c -> c.offset(offset));
+        leftMost = CoordinatesMaster. getMinX(occupiedCells);
+        rightMost = CoordinatesMaster. getMaxX(occupiedCells);
+        topMost = CoordinatesMaster. getMinY(occupiedCells);
+        bottomMost = CoordinatesMaster. getMaxY(occupiedCells);
+        while (leftMost != 0 || topMost != 0 && new Loop(5).continues()) {
+            offsetCoordinates();
+        }
+        main.system.auxiliary.log.LogMaster.log(1,toASCII_Map()+ "\n Model after Offset by " +offset);
 
     }
 }

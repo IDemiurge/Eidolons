@@ -55,10 +55,6 @@ public class LevelTester {
         return null;
     }
 
-    public enum GEN_STAT {
-        PASS_PERCENTAGE,
-        CRITICAL_FAIL_PERCENTAGE,
 
-    }
 
 }

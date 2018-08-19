@@ -40,6 +40,15 @@ public class RoomAttacher {
 
     public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
                                      boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
+
+        return adjust(point, side,parent.getWidth(), parent.getHeight(),getEntranceOrRoomCoordinates,canAdjustEven);
+    }
+    public static Coordinates adjust(Coordinates key, FACING_DIRECTION parentExit,
+                                     int w, int h, boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
+       return adjust(key, parentExit, null , w, h, getEntranceOrRoomCoordinates, false);
+    }
+    public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
+                                     int width, int height,  boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
         int x = point.x;
         int y = point.y;
         int i ;
@@ -47,8 +56,6 @@ public class RoomAttacher {
             i = -1;
         else
             i=1;
-        int width = parent.getWidth();
-        int height = parent.getHeight();
 
         if (side == SOUTH) {
             //  otherwise it is already compensated
@@ -155,7 +162,7 @@ public class RoomAttacher {
                  entranceCoordinates + " with parent exit to the " + parentExit);
                 return null;
             }
-            roomModel = templateMaster.getNextLargestRandomModel(roomType,
+            roomModel = templateMaster.getNextRandomModel(roomType,
              roomExitTemplate
              , roomEntrance, zone.getTemplateGroup());
             if (roomModel == null) {
@@ -168,12 +175,14 @@ public class RoomAttacher {
             Room room = new Room(roomCoordinates, roomModel, roomEntrance);
             room.setZone(zone);
             if (!canPlace(roomModel, roomCoordinates, model.getOccupiedCells(), data.getX(), data.getY())) {
-                log(1, "Cannot place " + roomModel + " at " +
+                log(1, "Cannot place " + roomModel.getType() + " at " +
                  roomCoordinates + " with parent exit to the " + parentExit + "; rooms N=" +
                  model.getRoomMap().size());
 
             } else
+            {
                 return room;
+            }
 
         }
     }

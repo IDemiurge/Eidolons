@@ -11,11 +11,14 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.FACING_DIRECTION;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -31,15 +34,15 @@ public class Traverser {
     public static int getExitsOffset(Room room, Room room2) {
         boolean xOrY = room2.getEntrance().isVertical();
         Coordinates c = ExitMaster.findExit(room, room2.getEntrance().flip());
-        if (c==null )
+        if (c == null)
             return 0;
         c = c.getOffset(room.getCoordinates());
         Coordinates c2 = room2.getEntranceCoordinates().getOffset(room2.getCoordinates());
         int dif = c.getXorY(xOrY) - c2.getXorY(xOrY);
-//        if (xOrY) { this seems wrong
-//            return dif - (room.getWidth() / 2 - room2.getWidth() / 2);
-//        }
-//        return dif - (room.getHeight() / 2 - room2.getHeight() / 2);
+        //        if (xOrY) { this seems wrong
+        //            return dif - (room.getWidth() / 2 - room2.getWidth() / 2);
+        //        }
+        //        return dif - (room.getHeight() / 2 - room2.getHeight() / 2);
         return dif;
     }
 
@@ -153,7 +156,7 @@ public class Traverser {
         end = end.getOffset(new AbstractCoordinates(room1.getCoordinates().x -
          topLeft.x, room.getCoordinates().y -
          topLeft.y));
-//        return new LevelPathFinder().findPath(start, end, cells);
+        //        return new LevelPathFinder().findPath(start, end, cells);
         /*
         #o#o
         ##o#
@@ -164,5 +167,74 @@ public class Traverser {
         return false;
     }
 
+/*
+Fail example:
+#  #  #  #  #  #  #  .  -
+.  .  .  .  e  .  .  .  .  -
+.  .  .  .  e  .  .  .  .  -
+.  #  #  #  C  #  @  #  .  -
+.  #  O  @  c  #  O  #  .  -
+.  %  O  C  c  C  O  c  .  -
+.  #  O  @  c  #  O  #  .  -
+.  #  #  %  c  L  #  #  .
+ */
 
+    //write a test for it?!
+    public boolean checkTraversable(Room parent, FACING_DIRECTION parentExit) {
+        return checkTraversable(parent.getCoordinates(), TileMapper.createTileMap(parent), parentExit
+         , parent.getWidth(), parent.getHeight(), new AbstractCoordinates(0, 0));
+    }
+
+        public boolean checkTraversable(Room parent, FACING_DIRECTION parentExit, Coordinates offset) {
+            return checkTraversable(parent.getCoordinates(), TileMapper.createTileMap(parent), parentExit
+             , parent.getWidth(), parent.getHeight(), offset);
+        }
+    public boolean checkTraversable(Coordinates roomCoordinates, TileMap tileMap,
+                                    FACING_DIRECTION parentExit, int w, int h, Coordinates offset) {
+        //not only on default centered exits...
+
+        Coordinates exitOffset = getExitOffset(parentExit);
+        Coordinates key = roomCoordinates;
+        key = RoomAttacher.adjust(key, parentExit, w, h, true, false);
+        key.offset(offset);
+        final Coordinates key_ = new AbstractCoordinates(key.x, key.y).offset(exitOffset);
+
+        Map<Coordinates, ROOM_CELL> checkCells =
+         tileMap.getMap().keySet().stream().filter(
+          c -> Math.abs(key_.x - c.x) < 2 && Math.abs(key_.y - c.y) < 2  //we need to take the 3x3 around 'one after the exit'
+         ).collect(Collectors.toMap(Function.identity(),
+          c -> tileMap.getMap().get((c).getOffset(roomCoordinates.negative())
+          )));
+
+        offset = CoordinatesMaster.getFarmostCoordinateInDirection(
+         DIRECTION.UP_LEFT, new ArrayList<>(checkCells.keySet()), true);
+
+        key = exitOffset.negative().offset(offset); //?
+        if (!TilesMaster.isPassable(checkCells.get(key)))
+            return false;
+
+        for (Coordinates coordinates : key.getAdjacenctNoDiags()) {
+            ROOM_CELL val = checkCells.get(coordinates);
+            if (val == ROOM_CELL.ROOM_EXIT)
+                continue; //?
+            if (TilesMaster.isPassable(checkCells.get(coordinates)))
+                return true;
+
+        }
+        return false;
+    }
+
+    private Coordinates getExitOffset(FACING_DIRECTION parentExit) {
+        switch (parentExit) {
+            case NORTH:
+                return new AbstractCoordinates(0, 1);
+            case WEST:
+                return new AbstractCoordinates(1, 0);
+            case SOUTH:
+                return new AbstractCoordinates(0, -1);
+            case EAST:
+                return new AbstractCoordinates(-1, 0);
+        }
+        return null;
+    }
 }
