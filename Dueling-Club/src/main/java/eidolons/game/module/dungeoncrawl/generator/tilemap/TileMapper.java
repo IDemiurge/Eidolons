@@ -46,12 +46,16 @@ public class TileMapper {
         }
         return cells;
     }
+
     public static String[][] toSymbolArray(ROOM_CELL[][] symbols) {
         String[][] cells = new String[symbols.length][symbols[0].length];
         int x = 0;
         for (ROOM_CELL[] column : symbols) {
             for (int y = 0; y < column.length; y++) {
                 ROOM_CELL symbol = column[y];
+                if (symbol==null )
+                    cells[x][y] = "-";
+                else
                 cells[x][y] = symbol.getSymbol();
             }
             x++;
@@ -59,14 +63,24 @@ public class TileMapper {
         return cells;
     }
 
+    public static TileMap createTileMap(LevelModel model) {
+        ROOM_CELL[][] cells = TileMapper.build(model);
+        return TileMapper.createTileMap(TileMapper.toSymbolArray(cells),
+         new AbstractCoordinates(0, 0));
+    }
+
     public static TileMap createTileMap(Room room) {
+        return createTileMap(room.getCells(), room.getCoordinates());
+    }
+
+    public static TileMap createTileMap(String[][] cells, Coordinates offset) {
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         int x = 0;
-        for (String[] column : room.getCells()) {
+        for (String[] column : cells) {
             for (int y = 0; y < column.length; y++) {
                 String symbol = column[y];
                 ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                map.put(new AbstractCoordinates(x, y).offset(room.getCoordinates()), cell);
+                map.put(new AbstractCoordinates(x, y).offset(offset), cell);
             }
             x++;
         }
@@ -89,8 +103,12 @@ public class TileMapper {
         }
         return cells;
     }
-
     public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX) {
+        return toASCII_String(cells, nullToX, true);
+    }
+
+    public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
+     , boolean OtoDot) {
         String string = "\n";
         String columns = "\nX     ";
         String separator = "\n      ";
@@ -118,22 +136,13 @@ public class TileMapper {
 
         }
         separator += "\n";
+        if (OtoDot) {
+            return (columns + separator + string + separator + columns).replace(
+             "O", "."
+            );
+        }
         return columns + separator + string + separator + columns;
     }
-
-    public TileMap joinTileMaps() {
-        Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
-        for (LevelBlock block : model.getBlocks().values()) {
-            for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
-                map.put(coordinates
-//                  .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
-                 ,
-                 block.getTileMap().getMap().get(coordinates));
-            }
-        }
-        return new TileMap(map);
-    }
-
 
     public static ROOM_CELL[][] build(LevelModel model) {
         int offsetX = -(model.getLeftMost());
@@ -143,7 +152,7 @@ public class TileMapper {
     }
 
     public static ROOM_CELL[][] build(Map<Coordinates, Room> map, int offsetX, int offsetY,
-                               int currentWidth, int currentHeight) {
+                                      int currentWidth, int currentHeight) {
 
         ROOM_CELL[][] cells = new ROOM_CELL[currentWidth][currentHeight];
         //        fillWithDefault(cells);
@@ -181,41 +190,55 @@ public class TileMapper {
         return cells;
     }
 
+    public TileMap joinTileMaps() {
+        Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
+        for (LevelBlock block : model.getBlocks().values()) {
+            for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
+                map.put(coordinates
+                 //                  .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
+                 ,
+                 block.getTileMap().getMap().get(coordinates));
+            }
+        }
+        return new TileMap(map);
+    }
+
     public TileMap map() {
         model.setCells(build(model));
         print(model);
-//        int offsetX = -(model.getLeftMost());
-//        int offsetY = -(model.getTopMost());
-//        for (Coordinates point : model.getRoomMap().keySet()) {
-//            RoomModel room = model.getRoomMap().get(point); //block/zone
-//            int x = point.x;
-//            int y = point.y;
-//            for (String[] column : room.getCells()) {
-//                for (String symbol : column) {
-//                    ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-//                    Tile tile = converter.convert(cell, room, x, y++);
-//
-//                    if (tile.getData().length == 0)
-//                        main.system.auxiliary.log.LogMaster.log(1, (x + offsetX) + "-" + (y + offsetY)
-//                         + " is empty");
-//                    else
-//                        main.system.auxiliary.log.LogMaster.log(1, (x + offsetX) + "-" + (y + offsetY)
-//                         + "= " + tile.getData()[0].getKey());
-//
-//                    try {
-//                        map.getTiles()[x + offsetX][y + offsetY] = tile;
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                x++;
-//            }
-//        }
-//        for (ROOM_CELL[] row : model.getCells()) {
-//            //            for (String sub: )
-//        }
+        //        int offsetX = -(model.getLeftMost());
+        //        int offsetY = -(model.getTopMost());
+        //        for (Coordinates point : model.getRoomMap().keySet()) {
+        //            RoomModel room = model.getRoomMap().get(point); //block/zone
+        //            int x = point.x;
+        //            int y = point.y;
+        //            for (String[] column : room.getCells()) {
+        //                for (String symbol : column) {
+        //                    ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
+        //                    Tile tile = converter.convert(cell, room, x, y++);
+        //
+        //                    if (tile.getData().length == 0)
+        //                        main.system.auxiliary.log.LogMaster.log(1, (x + offsetX) + "-" + (y + offsetY)
+        //                         + " is empty");
+        //                    else
+        //                        main.system.auxiliary.log.LogMaster.log(1, (x + offsetX) + "-" + (y + offsetY)
+        //                         + "= " + tile.getData()[0].getKey());
+        //
+        //                    try {
+        //                        map.getTiles()[x + offsetX][y + offsetY] = tile;
+        //                    } catch (Exception e) {
+        //                        e.printStackTrace();
+        //                    }
+        //                }
+        //                x++;
+        //            }
+        //        }
+        //        for (ROOM_CELL[] row : model.getCells()) {
+        //            //            for (String sub: )
+        //        }
         return new TileMap(new XLinkedMap<>());
     }
+
     private void fillWithDefault(ROOM_CELL[][] cells) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[0].length; j++) {

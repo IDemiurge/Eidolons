@@ -5,6 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.GRAPH_NODE_ATTRIBUTE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
 import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
 import eidolons.game.module.dungeoncrawl.generator.graph.GraphPath;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
@@ -46,23 +47,24 @@ public class ModelFinalizer {
 
     public void loopBack(LevelModel model) {
         //ensure graph paths
-        for (GraphPath path : builder.graph.getPaths()) {
-            Room room = getLastBuiltRoom(path);
-            if (room == builder.nodeModelMap.get(path.getEndNode())) {
-                continue;
-            }
-            Room room2 = chooseAltRoom(path, room, model); //closest?
-            connect(room, room2);
-            // choose randomly adjacent rooms to connect
-        }
+        //        for (GraphPath path : builder.graph.getPaths()) {
+        //            Room room = getLastBuiltRoom(path);
+        //            if (room == builder.nodeModelMap.get(path.getEndNode())) {
+        //                continue;
+        //            }
+        //            Room room2 = chooseAltRoom(path, room, model); //closest?
+        //            connect(room, room2);
+        //            // choose randomly adjacent rooms to connect
+        //        }
 
         //geometrically - try to find low-exit rooms that have a lot of void adjacent in between
 
         for (Room room : model.getRoomMap().values()) {
             for (Room room2 : model.getRoomMap().values()) {
-                if (checkLoopBack(room, room2, model)) {
-                    connect(room, room2);
-                }
+                if (room != room2)
+                    if (checkLoopBack(room, room2, model)) {
+                        connect(room, room2);
+                    }
 
             }
         }
@@ -122,7 +124,10 @@ public class ModelFinalizer {
         }
 
         Room link =
-         builder.findFitting(room, EXIT_TEMPLATE.CUL_DE_SAC, ROOM_TYPE.CORRIDOR, side,  false);
+         builder.findFitting(room, EXIT_TEMPLATE.THROUGH, ROOM_TYPE.CORRIDOR, side, false);
+        if (link == null) {
+            return;
+        }
         Coordinates c = link.getCoordinates();
         Coordinates offset = new AbstractCoordinates(0, 0);
         while (true) {
@@ -167,15 +172,20 @@ public class ModelFinalizer {
     }
 
 
-    public void finalize(LevelModel model ) {
+    public void finalize(LevelModel model) {
         log(1, "FINALIZING: \n" + model);
-        maxRooms = model.getRoomMap().size() + 4;
-
+        maxRooms =
+         //model.getRoomMap().size() + 4;
+         model.getData().getReqs().getIntValue(LEVEL_REQUIREMENTS.maxRooms);
         tryBuildUnbuiltGraphNodes(builder, model);
 
         tryAdditionalBuild(model);
 
-        loopBack(model);
+        try {
+            loopBack(model);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
     }
 
@@ -191,7 +201,11 @@ public class ModelFinalizer {
         LevelValidator validator = new LevelValidator(false);
         log(1, "tryAdditionalBuild: edgeRooms=" + edgeRooms);
         Loop loop = new Loop(500);
-        while (!validator.validateModel(builder.graph, model) && loop.continues()) {
+//        (!validator.validateModel(builder.graph, model) TODO
+//         || !checkBuildDone(model, model.getData()))
+//         &&
+        while ( loop.continues()) {
+
             if (checkBuildDone(model, model.getData()))
                 break;
             Room room = new RandomWizard<Room>().getRandomListItem(edgeRooms);
@@ -240,6 +254,22 @@ public class ModelFinalizer {
 
     }
 
+    public Integer getAttachRoomSortValue(Room room, LevelGraphNode node, LevelModel model) {
+        int value = RandomWizard.getRandomInt(20);
+        value += ModelMaster.getSorterEdgeValue(room, model);
+        for (FACING_DIRECTION exit : room.getExits()) {
+            if (room.getUsedExits().contains(exit))
+                continue;
+            value += ModelMaster.getExitSortValue(exit, room, model) / room.getExits().length;
+        }
+
+        if (builder.graph.getAdjList().get(node).iterator().next().getOtherNode(node).getRoomType() ==
+         room.getType())
+            value += 10000;
+
+        return value;
+    }
+
     private void buildNodes(LevelModel model, List<Room> edgeRooms, List<LevelGraphNode> unbuiltNodes
     ) {
         Boolean N_S = false;
@@ -248,7 +278,7 @@ public class ModelFinalizer {
         for (LevelGraphNode node : unbuiltNodes) {
 
             Collections.sort(edgeRooms, new SortMaster<Room>()
-             .getSorterByExpression_(room -> ModelMaster.getSorterValue(model, room.getCoordinates(), N_S, W_E)));
+             .getSorterByExpression_(room -> getAttachRoomSortValue(room, node, model)));
 
             Room room = new RandomWizard<Room>().getRandomListItem(edgeRooms);
             edgeRooms = ModelMaster.getEdgeRooms(model);

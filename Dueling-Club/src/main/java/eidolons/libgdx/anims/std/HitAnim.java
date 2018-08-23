@@ -41,7 +41,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.images.ImageManager;
 
 import static main.system.GuiEventType.HP_BAR_UPDATE;
@@ -193,10 +193,10 @@ public class HitAnim extends ActionAnim {
 
         int dx = d.isVertical() ? 5 : 30;
         int dy = !d.isVertical() ? 5 : 30;
-        if (BooleanMaster.isFalse(d.growX)) {
+        if (Bools.isFalse(d.growX)) {
             dx = -dx;
         }
-        if (BooleanMaster.isTrue(d.growY)) {
+        if (Bools.isTrue(d.growY)) {
             dy = -dy;
         }
 //DungeonScreen.getInstance().getGridPanel().detachUnitView()

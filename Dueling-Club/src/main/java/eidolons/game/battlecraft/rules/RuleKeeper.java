@@ -7,7 +7,7 @@ import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.data.XLinkedMap;
 import main.system.auxiliary.EnumMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -138,7 +138,7 @@ public class RuleKeeper implements Controller {
     }
 
     public static boolean isRuleTestOn(RULE rule) {
-        return BooleanMaster.isTrue(mapTest.get(rule));
+        return Bools.isTrue(mapTest.get(rule));
     }
 
     public static boolean isRuleOn(RULE rule) {

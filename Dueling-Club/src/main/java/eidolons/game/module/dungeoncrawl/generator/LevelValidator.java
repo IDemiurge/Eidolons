@@ -4,20 +4,28 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYP
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats;
+import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
+import main.game.bf.Coordinates;
 import main.system.data.DataUnit;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/27/2018.
  */
 public class LevelValidator {
-    GenerationStats stats;
+    LevelStats stats;
     boolean logFail = true;
     private LevelModel model;
     private int minRooms;
@@ -35,12 +43,9 @@ public class LevelValidator {
         this.logFail = logFail;
     }
 
-    public LevelValidator(GenerationStats stats) {
-        this.stats = stats;
-    }
 
     public static boolean validateForTester(GenerationStats stats, DungeonLevel level) {
-        LevelValidator instance = new LevelValidator(stats);
+        LevelValidator instance = new LevelValidator();
         boolean valid = instance.isLevelValid(level);
         //        valid = new Traverser().test(level);
         return valid;
@@ -67,16 +72,45 @@ public class LevelValidator {
     public boolean isLevelValid(DungeonLevel level) {
         this.level = level;
         initRequirements(level.getData(), level.getModel());
-
+        stats = new LevelStats(level);
+        main.system.auxiliary.log.LogMaster.log(1, "Validating stats: " + stats);
         if (!checkExit())
             return fail(RNG_FAIL.NO_EXIT);
         if (!checkModel())
             return false;
+        if (!checkZones())
+            return fail(RNG_FAIL.ZONES);
         if (!checkBlocks())
             return false;
         if (!checkObjects())
             return false;
+        if (!checkTileMap())
+            return false;
         //check population
+        return true;
+    }
+
+    private boolean checkTileMap() {
+        TileMap map = TileMapper.createTileMap(model);
+        List<Coordinates> toClear = map.getMap().keySet().stream().filter(c -> {
+            ROOM_CELL cell = map.getMap().get(c);
+            if (cell == ROOM_CELL.DOOR) {
+                for (Coordinates c1 : c.getAdjacentCoordinates()) {
+                    if (map.getMap().get(c1) == ROOM_CELL.DOOR)
+                        return true;
+                }
+            }
+            if (cell == ROOM_CELL.ENTRANCE) {
+
+            }
+            if (cell == ROOM_CELL.ROOM_EXIT) {
+
+            }
+            return false;
+        }).collect(Collectors.toList());
+
+        if (!toClear.isEmpty())
+            return false;
         return true;
     }
 
@@ -87,8 +121,6 @@ public class LevelValidator {
             return fail(RNG_FAIL.FILL_RATIO);
         if (!checkRooms())
             return fail(RNG_FAIL.ROOMS);
-        if (!checkZones())
-            return fail(RNG_FAIL.ZONES);
         return true;
     }
 
@@ -162,8 +194,13 @@ public class LevelValidator {
     }
 
     private boolean checkFillRatio() {
-        float fillRatio = new Float(model.getOccupiedCells().size()) / (model.getCurrentWidth() * model.getCurrentHeight());
-        return fillRatio > minFillRatio;
+        try {
+            float fillRatio = new Float(model.getOccupiedCells().size()) / (model.getCurrentWidth() * model.getCurrentHeight());
+            return fillRatio > minFillRatio;
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+        return false;
     }
 
     public enum RNG_FAIL {

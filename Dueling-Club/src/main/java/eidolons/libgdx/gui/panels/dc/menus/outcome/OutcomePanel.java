@@ -26,7 +26,7 @@ import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.graphics.FontMaster.FONT;
 import main.system.graphics.MigMaster;
 import main.system.launch.CoreEngine;
@@ -158,7 +158,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
                     if (!ExplorationMaster.isExplorationOn())
                         Eidolons.getGame().getMaster().nextLevel();
 
-                    if (!BooleanMaster.isTrue(outcome))
+                    if (!Bools.isTrue(outcome))
                         Eidolons.restart();
                     else
                     {

@@ -52,6 +52,7 @@ public abstract class RngFiller implements RngFillerInterface {
     public void fill(LevelModel model) {
         this.model = model;
         fillRequired = getRequiredFillDefault();
+        main.system.auxiliary.log.LogMaster.log(1,getClass().getSimpleName()+ " is filling... Model before:\n "+model );
         manualFill();
         List<Room> mandatoryFillRooms = getMandatoryFillRooms();
         for (Room room : mandatoryFillRooms) {
@@ -62,6 +63,7 @@ public abstract class RngFiller implements RngFillerInterface {
             fill(zone);
         }
         model.setCells(new TileMapper(model, model.getData()).build(model));
+        main.system.auxiliary.log.LogMaster.log(1,getClass().getSimpleName()+ " is done filling, Model after:\n "+model );
     }
 
     protected boolean checkTypeIsFilled(ROOM_TYPE type) {
@@ -100,6 +102,7 @@ public abstract class RngFiller implements RngFillerInterface {
         currentFill = calculateFill();
         float dif = 0;
 
+        main.system.auxiliary.log.LogMaster.log(1,zone+" being filled; now there's fill of %" +currentFill);
         Loop loop = new Loop(zone.getSubParts().size()*100);
         while (loop.continues()) {
             if (!(!checkDone() && ((dif = fillRequired - currentFill) > 0.05f)))
@@ -110,6 +113,7 @@ public abstract class RngFiller implements RngFillerInterface {
             fill(prioritySpawnLocations, dif);
             currentFill = calculateFill();
         }
+        main.system.auxiliary.log.LogMaster.log(1,zone+" filled up to %" +currentFill);
     }
 
     protected Stack<Room> createPrioritySpawnLocations(LevelZone zone) {
@@ -300,6 +304,7 @@ public abstract class RngFiller implements RngFillerInterface {
     public void manualFill() {
         //before auto fill?
         wrapExits();
+//        wrapDoors();
         fillSymmetry();
 
     }
@@ -307,33 +312,35 @@ public abstract class RngFiller implements RngFillerInterface {
     protected void fillSymmetry() {
         //symmetry, ...
         fillCorners();
+        //around center?
     }
 
     private void fillCorners() {
-
-        loop:
         for (Room room : model.getBlocks().keySet()) {
-            Coordinates[] corners = new Coordinates[]{
-             new AbstractCoordinates(0, 0),
-             new AbstractCoordinates(room.getWidth(), 0),
-             new AbstractCoordinates(0, room.getHeight()),
-             new AbstractCoordinates(room.getWidth(), room.getHeight()),
-            };
-            if (!RandomWizard.chance(getFillCornersChance(room))){
-                continue loop;
-            }
-            for (Coordinates corner : corners) {
-                if (!room.getCells()[corner.x][corner.y].equals(getFilledRoomCellType().getSymbol())) {
-                    if (!RandomWizard.chance(getFillCornersChance(room))){
-                        continue loop;
-                    } else
-                        break;
-                }
-            }
-            LevelBlock block = model.getBlocks().get(room);
-            tryFillWithBound(block, corners);
+            if (!tryFillCorners(room, 0, 0))
+                tryFillCorners(room, 1, 1);
         }
+    }
 
+    private boolean tryFillCorners(Room room, int x, int y) {
+        Coordinates[] corners = new Coordinates[]{
+         new AbstractCoordinates(x, y),
+         new AbstractCoordinates(room.getWidth()-x, y),
+         new AbstractCoordinates(x, room.getHeight()-y),
+         new AbstractCoordinates(room.getWidth()-x, room.getHeight()-y),
+        };
+        if (!RandomWizard.chance(getFillCornersChance(room))){
+            return false;
+        }
+        for (Coordinates corner : corners) {
+            if (!room.getCells()[corner.x][corner.y].equals(getFilledRoomCellType().getSymbol())) {
+                //                    if (!RandomWizard.chance(getFillCornersChance(room))){
+               return false;
+            }
+        }
+        LevelBlock block = model.getBlocks().get(room);
+        tryFillWithBound(block, corners);
+        return true;
     }
 
     protected int getFillCornersChance(Room room) {
@@ -376,6 +383,9 @@ public abstract class RngFiller implements RngFillerInterface {
 
     private void tryFillWithBound(LevelBlock block, Coordinates... c) {
         for (Coordinates coordinates : c) {
+            coordinates.offset(block.getCoordinates());
+        }
+        for (Coordinates coordinates : c) {
             if (block.getTileMap().getMap().get(coordinates)
              != getFilledRoomCellType())
                 return;
@@ -389,8 +399,7 @@ public abstract class RngFiller implements RngFillerInterface {
         for (Coordinates c1 : c) {
             for (Coordinates c2 : c) {
                 if (c1 != c2) {
-                    block.getBoundCells().put(c2, c1);
-                    block.getBoundCells().put(c1, c2);
+                    RngFillMaster.bindCoordinates(block, c1, c2);
                 }
             }
         }

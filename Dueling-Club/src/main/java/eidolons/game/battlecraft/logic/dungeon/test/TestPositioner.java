@@ -9,7 +9,7 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class TestPositioner<E extends DungeonWrapper> extends Positioner<E> {
 
         }
         if (coordinates == null) {
-            coordinates = getPartyCoordinates(null, BooleanMaster
+            coordinates = getPartyCoordinates(null, Bools
              .isTrue(mine_enemy_third), partyTypes);
         }
 

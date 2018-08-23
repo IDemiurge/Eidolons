@@ -42,7 +42,7 @@ import eidolons.system.options.OptionsMaster;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -452,7 +452,7 @@ public class DungeonScreen extends GameScreen {
 
     public void centerCameraOn(BattleFieldObject hero, Boolean force) {
         if (!isCenterAlways())
-            if (!BooleanMaster.isTrue(force))
+            if (!Bools.isTrue(force))
                 if (centerCameraOnAlliesOnly)
                     if (!hero.isMine())
                         return;

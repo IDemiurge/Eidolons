@@ -36,7 +36,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.FuncMaster;
 import main.system.math.PositionMaster;
 
@@ -237,7 +237,7 @@ public class AtomicAi extends AiHandler {
         for (Coordinates c : ai.getUnit().getCoordinates().getAdjacentCoordinates()) {
             float i = 0;
             i += getCellPriority(c, ai);
-            if (BooleanMaster.isFalse(approach_retreat_search)) {
+            if (Bools.isFalse(approach_retreat_search)) {
                 for (Unit a : allies) {
                     i += getAllyPriority(c, a, ai, logic) + RandomWizard.getRandomInt(10);
                 }

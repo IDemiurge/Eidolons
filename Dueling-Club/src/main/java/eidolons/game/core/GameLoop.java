@@ -26,7 +26,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.LogMaster;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
@@ -289,7 +289,7 @@ public class GameLoop {
             }
         }
 
-        if (BooleanMaster.isTrue(endTurn)) {
+        if (Bools.isTrue(endTurn)) {
             return true;
         } else {
             game.getTurnManager().

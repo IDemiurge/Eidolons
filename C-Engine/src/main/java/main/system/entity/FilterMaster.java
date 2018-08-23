@@ -23,7 +23,7 @@ import main.game.core.game.Game;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.Formula;
 
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class FilterMaster {
                      strict_or_greater_less_equal == null);
                 } else {
                     result = StringMaster.compareByChar(entity.getProperty(property), value,
-                     BooleanMaster.isTrue(strict_or_greater_less_equal));
+                     Bools.isTrue(strict_or_greater_less_equal));
                 }
                 // entity.checkProperty();
             } else {

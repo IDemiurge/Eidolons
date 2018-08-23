@@ -13,7 +13,7 @@ import main.entity.Ref;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class CollisionRule {
             // any action
             Boolean incomerAlive = AttackOfOpportunityRule.collisionAoO(moveObj.getDummyAction(),
              collideObj);
-            if (!BooleanMaster.isFalse(incomerAlive)) {
+            if (!Bools.isFalse(incomerAlive)) {
                 InstantAttackRule.checkCollisionAttack(moveObj, activeObj, collideObj);
             }
             // if (incomerAlive == null) {

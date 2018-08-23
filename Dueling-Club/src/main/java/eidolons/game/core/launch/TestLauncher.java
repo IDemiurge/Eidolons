@@ -37,7 +37,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.auxiliary.secondary.WorkspaceMaster;
 import main.system.launch.CoreEngine;
 
@@ -80,8 +80,8 @@ public class TestLauncher //extends MetaGameMaster
 
     public TestLauncher(DC_Game game, Boolean FAST_MODE, Boolean SUPER_FAST_MODE) {
         this.game = game;
-        this.FAST_MODE = BooleanMaster.isTrue(FAST_MODE);
-        this.SUPER_FAST_MODE = BooleanMaster.isTrue(SUPER_FAST_MODE);
+        this.FAST_MODE = Bools.isTrue(FAST_MODE);
+        this.SUPER_FAST_MODE = Bools.isTrue(SUPER_FAST_MODE);
     }
 
 
@@ -169,7 +169,7 @@ public class TestLauncher //extends MetaGameMaster
         try {
             if (PresetMaster.getPreset() == null // &&
                     // !BooleanMaster.isTrue(FAST_MODE)
-                    && BooleanMaster.isFalse(SUPER_FAST_MODE)) {
+                    && Bools.isFalse(SUPER_FAST_MODE)) {
                 createPreset();
                 //                autosavePreset();
             }

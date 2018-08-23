@@ -16,7 +16,7 @@ import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
 
@@ -247,7 +247,7 @@ public class VisionRule {
     }
 
     private void reveal(Unit source, BattleFieldObject object) {
-        if (BooleanMaster.isTrue(controller.getDetectionMapper()
+        if (Bools.isTrue(controller.getDetectionMapper()
          .get(source.getOwner(), object)))
             return;
         controller.getDetectionMapper().set(source.getOwner(), object, true);
@@ -267,7 +267,7 @@ public class VisionRule {
     }
 
     private void hide(Unit source, BattleFieldObject object) {
-        if (BooleanMaster.isFalse(controller.getDetectionMapper()
+        if (Bools.isFalse(controller.getDetectionMapper()
          .get(source.getOwner(), object)))
             return;
         if (object.isWall()) {

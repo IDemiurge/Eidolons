@@ -38,7 +38,8 @@ public class RngLevelInitializer {
         initEntrances();
         if (level instanceof RestoredDungeonLevel) {
             assignBlockTileMaps(level);
-            return;
+            if (!level.getObjects().isEmpty())
+                return;
         }
         for (LevelZone levelZone : level.getSubParts()) {
             for (LevelBlock block : levelZone.getSubParts()) {
@@ -117,7 +118,7 @@ public class RngLevelInitializer {
              " can't be translated to obj!");
             return;
         }
-        if (EntityCheckMaster.isOverlaying(type)){
+        if (EntityCheckMaster.isOverlaying(type)) {
             createEntity(c, ROOM_CELL.WALL, block);
         }
         addObj(block, type, c);

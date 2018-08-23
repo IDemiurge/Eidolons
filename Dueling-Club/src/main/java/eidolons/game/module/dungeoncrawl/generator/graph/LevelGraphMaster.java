@@ -8,12 +8,16 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_GRAPH_LI
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.PATH_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
+import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
+import main.system.SortMaster;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
+import main.system.data.DataUnitFactory;
 import main.system.datatypes.DequeImpl;
+import main.system.datatypes.WeightMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,48 +37,45 @@ public class LevelGraphMaster {
     public LevelGraph buildGraph() {
         graph = new LevelGraph();
         unconnected = new ArrayList<>(graph.getNodes());
+        createNodes();
         buildMainPaths();
-        createNodes(graph, data);
         //TODO shortcuts!
         buildBonusPaths();
-        List<LevelGraphNode> list = graph.getNodes().stream().filter(
-         node -> graph.getAdjList().get(node).size() == 2).collect(Collectors.toList());
-        list.addAll(unconnected);
-        connectNodesRandomly(graph, data, list); //the remainder
+        connectNodesRandomly(); //the remainder
         //        applyRules(graph, data);
-        list.forEach(node -> graph.removeLevelGraphNode(node));
         assignZonesIndices();
         return graph;
     }
 
-    private void createNodes(LevelGraph graph, LevelData data) {
-        float sizeMode = new Float(data.getIntValue(LEVEL_VALUES.SIZE_MOD)) / 10000;
+    private void createNodes() {
 
-        graph.addNode(ROOM_TYPE.THRONE_ROOM);
+        DataUnitFactory factory = new DataUnitFactory();
+        factory.setValueNames(ROOM_TYPE.mainRoomTypes);
+        factory.setValues(Arrays.stream(ROOM_TYPE.mainRoomTypes).map(
+         type -> "" + data.getIntValue(data.getROOM_COEF(type))
+        ).collect(Collectors.toList()).toArray(new String[ROOM_TYPE.mainRoomTypes.length]));
 
-        int n = Math.round(sizeMode * 100 * data.getIntValue(LEVEL_VALUES.COMMON_ROOM_COEF));
-        graph.addNodes(ROOM_TYPE.COMMON_ROOM, n);
-        //         n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.TREASURE_ROOM_COEF));
-        //        graph.addNodes(ROOM_TYPE.TREASURE_ROOM, n);
-        //
-        //        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.GUARD_ROOM_COEF));
-        //        graph.addNodes(ROOM_TYPE.GUARD_ROOM, n);
-        //
-        //        n = Math.round(sizeMode * RandomWizard.getRandomInt(1 + data.getIntValue(LEVEL_VALUES.DEATH_ROOM_COEF)));
-        //        graph.addNodes(ROOM_TYPE.DEATH_ROOM, n);
-        //
-        //        n = Math.round(sizeMode * 1 + data.getIntValue(LEVEL_VALUES.SECRET_ROOM_COEF));
-        //        graph.addNodes(ROOM_TYPE.SECRET_ROOM, n);
+        WeightMap<ROOM_TYPE> weightMap
+         = new WeightMap<>(factory.constructDataString(), ROOM_TYPE.class);
+
+        int n =
+         data.getReqs().getIntValue(LEVEL_REQUIREMENTS.maxRooms) - graph.getNodes().size();
+
+        while (n > 0) {
+            ROOM_TYPE roomType = weightMap.getRandomByWeight();
+            graph.addNodes(roomType, 1);
+            if (graph.getNodes().stream().filter(
+             node -> node.getRoomType() == roomType
+            ).count() > data.getIntValue(data.getROOM_COEF(roomType)) * 3 / 2) {
+                weightMap.remove(roomType);
+            }
+            //other checks? min max for each room type...
+            n--;
+        }
 
         unconnected = new ArrayList<>(graph.getNodes());
         unconnected.removeIf(node -> ListMaster.isNotEmpty(graph.getAdjList().get(node)));
 
-        //        for (DUNGEON_TEMPLATES sub : data.getTemplates()) {
-        //            //zones!.. force links?
-        //            switch (sub) {
-        //
-        //            }
-        //        }
     }
 
     private void assignZonesIndices() {
@@ -91,22 +92,41 @@ public class LevelGraphMaster {
         List<LevelZone> zones = ZoneCreator.createZones(data);
 
         List<LevelGraphNode> unallocated = new ArrayList<>(graph.getNodes());
-        List<LevelGraphNode> candidates = new ArrayList<>();
+        Set<LevelGraphNode> candidates = new HashSet<>();
         for (GraphPath path : graph.getPaths()) {
             candidates.add(path.startNode);
             candidates.add(path.endNode);
             candidates.add(path.getNodes().get(path.getNodes().size() / 2));
         }
-        Collections.shuffle(candidates);
+        candidates.removeIf(node -> node == null);
+        candidates.removeIf(node -> {
+
+            for (LevelGraphNode candidate : candidates) {
+                for (LevelGraphEdge edge : graph.getAdjList().get(candidate)) {
+                    if (edge.getOtherNode(candidate) == node)
+                        return true;
+                }
+            }
+            return false;
+        });
+        //        Collections.shuffle(candidates);
+
         LevelGraphNode[] tipNodes = candidates.stream().distinct().limit(zones.size())
          .collect(Collectors.toList()).toArray(new LevelGraphNode[zones.size()]);
-        while (true) {
+        for (int i = 0; i < tipNodes.length; i++) {
+            tipNodes[i].setZoneIndex(i);
+        }
+        Loop loop = new Loop(graph.getNodes().size() * 2);
+        while (loop.continues()) {
+            //each zone's tipNode crawls through node web and greedily grabs more nodes!
             int i = 0;
+            boolean newAcquired = false;
             for (LevelGraphNode tipNode : tipNodes) {
                 if (tipNode == null)
                     continue;
                 LevelGraphNode tip = tipNode;
                 final int index = i;
+                i++;
                 List<LevelGraphNode> nodes = graph.getAdjList().get(tipNode).stream().
                  filter(edge -> {
                      if (edge.getNodeOne() == null)
@@ -117,32 +137,63 @@ public class LevelGraphMaster {
                  })
                  .map(
                   edge -> tip == edge.getNodeOne() ? edge.getNodeTwo() : edge.getNodeOne()).collect(Collectors.toList());
+                nodes.removeIf(n -> n.getZoneIndex() != -1 && n.getZoneIndex() != index);
+                if (nodes.isEmpty())
+                    continue;
+
                 tipNode = new RandomWizard<LevelGraphNode>()
                  .getRandomListItem(nodes);
-                if (tipNode.getZoneIndex() != -1) {
-                    tipNodes[i] = null;
-                    continue;
-                }
-                nodes.forEach(node -> node.setZoneIndex(index));
+                tipNode.setZoneIndex(index);
+                nodes.forEach(node -> {
+                     if (node.getZoneIndex() == -1)
+                         node.setZoneIndex(index);
+                 }
+                );
                 unallocated.removeAll(nodes);
-                tipNodes[i++] = tipNode;
+                tipNodes[index] = tipNode;
+                newAcquired = true;
             }
-            if (i == 0)
+            if (!newAcquired) //no one has acquired new nodes
                 break;
             if (unallocated.isEmpty())
                 break;
         }
+
+        try {
+            checkNodesZoneIndices(zones);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            checkNodesZoneIndices(zones);
+        }
+
+        graph.setZones(zones);
+        for (LevelZone zone : zones) {
+            main.system.auxiliary.log.LogMaster.log(1, zone + " has nodes: " + zone.getNodeCount());
+        }
+    }
+
+    private void checkNodesZoneIndices(List<LevelZone> zones) {
         for (LevelGraphNode node : graph.getNodes()) {
             if (node.getZoneIndex() == -1) {
                 //                graph.getAdjList().get(node)
-                LevelGraphNode closest = findClosestZoneAssignedNode(node, null);
-                if (closest.getZoneIndex() == -1) {
-                    node.setZoneIndex(0);
-                } else
-                    node.setZoneIndex(closest.getZoneIndex());
+                if (isLeastAssignedZoneForMissing()){
+                  node.setZoneIndex(zones.stream().sorted(new SortMaster<LevelZone>().getSorterByExpression_(
+                     z -> -z.getNodeCount()
+                    )).findFirst().get().getIndex());
+                } else {
+                    LevelGraphNode closest = findClosestZoneAssignedNode(node, null);
+                    if (closest==null || closest.getZoneIndex() == -1) {
+                        node.setZoneIndex(0);
+                    } else
+                        node.setZoneIndex(closest.getZoneIndex());
+                }
             }
+            zones.get(node.getZoneIndex()).nodeAdded(node);
         }
-        graph.setZones(zones);
+    }
+
+    private boolean isLeastAssignedZoneForMissing() {
+        return true;
     }
 
     private LevelGraphNode findClosestZoneAssignedNode(LevelGraphNode node, LevelGraphNode prevNode) {
@@ -157,7 +208,11 @@ public class LevelGraphMaster {
         }
         nodes.removeIf(n -> n == prevNode);
         for (LevelGraphNode graphNode : nodes) {
-            node = findClosestZoneAssignedNode(graphNode, node);
+            try {
+                node = findClosestZoneAssignedNode(graphNode, node);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
             if (node != null)
                 return node;
         }
@@ -196,13 +251,24 @@ public class LevelGraphMaster {
 
     private void buildBonusPaths() {
         int numberOfTreasurePaths = data.getIntValue(LEVEL_VALUES.BONUS_PATHS);
-        GraphPath path = getPaths().iterator().next();
-        LevelGraphNode startNode = path.getNodes().get(path.getNodes().size() / 2);
-        LevelGraphNode exitNode = graph.addNode(ROOM_TYPE.TREASURE_ROOM);
+        GraphPath mainPath = getPaths().iterator().next();
+
         while (numberOfTreasurePaths > 0) {
+            LevelGraphNode startNode =
+             (checkBonusPathFromEntrance(numberOfTreasurePaths))
+              ? getOrCreateNodeOfType(ROOM_TYPE.ENTRANCE_ROOM)
+              : mainPath.getNodes().get(mainPath.getNodes().size() / 2);
+            LevelGraphNode exitNode = getOrCreateNodeOfType(ROOM_TYPE.TREASURE_ROOM);
+
             buildPaths(1, startNode, exitNode, false);
             numberOfTreasurePaths--;
         }
+    }
+
+    private boolean checkBonusPathFromEntrance(int n) {
+        if (n == 0)
+            return true;
+        return false;
     }
 
     private void buildPaths(int numberOfPaths, LevelGraphNode startNode,
@@ -211,6 +277,7 @@ public class LevelGraphMaster {
         while (numberOfPaths-- > 0) {//TODO can try reverse path too
             int steps = RandomWizard.getRandomIntBetween(66, 150) * data.getIntValue(
              main ? LEVEL_VALUES.MAIN_PATH_LENGTH : LEVEL_VALUES.BONUS_PATH_LENGTH) / 100;
+
             unconnected = new ArrayList<>(graph.getNodes());
             unconnected.remove(startNode);
             unconnected.remove(exitNode);
@@ -224,7 +291,7 @@ public class LevelGraphMaster {
 
             GraphPath path = createPath(
              startNode, exitNode, steps// ,PATH_TYPE.easy
-            );
+             , main);
             if (path == null) {
                 break;
             } else
@@ -235,7 +302,7 @@ public class LevelGraphMaster {
 
 
     private GraphPath createPath(LevelGraphNode startNode,
-                                 LevelGraphNode endNode, int steps) {
+                                 LevelGraphNode endNode, int steps, boolean main) {
         LevelGraphNode tip1 = startNode;
         LevelGraphNode tip2 = endNode;
 
@@ -244,11 +311,11 @@ public class LevelGraphMaster {
         boolean fromEnd = false;
         //what for? perhaps just from end?
         int i = 2;
-        while (steps > 0) {
-            steps--;
+        while (steps > i - 2) {
+
             //            fromEnd = !fromEnd; how to?
             LevelGraphNode node = (fromEnd) ? tip2 : tip1;
-            LevelGraphNode node2 = getOrCreateLinkNode(node, i);
+            LevelGraphNode node2 = getOrCreateLinkNode(node, steps, i - 2, main);
             unconnected.remove(node2);
             connect(node, node2);
             if (fromEnd)
@@ -275,11 +342,18 @@ public class LevelGraphMaster {
         return graph.getPaths();
     }
 
-    private void connectNodesRandomly(LevelGraph graph, LevelData data, Collection<LevelGraphNode> unconnected) {
+    private void connectNodesRandomly() {
+        List<LevelGraphNode> list = graph.getNodes().stream().filter(
+         node -> !unconnected.contains(node) &&
+          graph.getAdjList().get(node).size() <= 2).collect(Collectors.toList());
+        unconnected.addAll(list);
         //create a path from start to exit in N steps
-        unconnected.removeIf(n -> n.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM || n.getRoomType() == ROOM_TYPE.EXIT_ROOM);
+        unconnected.removeIf(n ->
+         //         n.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM ||
+         n.getRoomType() == ROOM_TYPE.EXIT_ROOM);
+
         while (true) {
-            LevelGraphEdge link = connectTwoRandomNodes(graph, data, unconnected);
+            LevelGraphEdge link = connectTwoRandomNodes();
             if (link == null)
                 break;
         }
@@ -289,16 +363,40 @@ public class LevelGraphMaster {
     }
 
 
-    private LevelGraphEdge connectTwoRandomNodes(LevelGraph graph, LevelData data, Collection<LevelGraphNode> unconnected) {
+    private LevelGraphEdge connectTwoRandomNodes() {
         if (unconnected.size() < 2) {
             //            getRandomLinkNode
             return null;
         }
         int n = RandomWizard.getRandomInt(unconnected.size());
         LevelGraphNode node = (LevelGraphNode) unconnected.toArray()[n];
-        unconnected.remove(node);
         LevelGraphNode nodeTwo = chooseLinkNode(node, unconnected);
         return connect(node, nodeTwo);
+    }
+
+    private int getConnectPriority(LevelGraphNode to, LevelGraphNode node) {
+        if (to == node)
+            return 0;
+        int val = RandomWizard.getRandomInt(10) + 5;
+
+        val = val * getTypeConnectPriorityMod(node) / 100;
+        return val;
+    }
+
+    private int getTypeConnectPriorityMod(LevelGraphNode node) {
+        switch (node.getRoomType()) {
+            case THRONE_ROOM:
+                return 200;
+            case TREASURE_ROOM:
+            case DEATH_ROOM:
+                return 50;
+
+            case EXIT_ROOM:
+            case ENTRANCE_ROOM:
+                return 20;
+
+        }
+        return 100;
     }
 
     private LevelGraphEdge connect(LevelGraphNode node, LevelGraphNode nodeTwo) {
@@ -307,32 +405,66 @@ public class LevelGraphMaster {
         graph.addEdge(link);
         main.system.auxiliary.log.LogMaster.log(1, "Connected: " + node
          + " with " + nodeTwo);
+
+        if (graph.getAdjList().get(node).size() >= getMaxLinksForNode(nodeTwo)
+         || RandomWizard.chance(getNodeLinksEndChance(nodeTwo)))
+            unconnected.remove(nodeTwo);
+        if (graph.getAdjList().get(node).size() >= getMaxLinksForNode(node)
+         || RandomWizard.chance(getNodeLinksEndChance(node)))
+            unconnected.remove(node);
         return link;
     }
 
+    private int getNodeLinksEndChance(LevelGraphNode node) {
+        return 25 + graph.getAdjList().get(node).size() * 15;
+    }
 
-    private LevelGraphNode getOrCreateLinkNode(LevelGraphNode node, int i) {
-        if (unconnected.size() > 0) {
-            return unconnected.iterator().next();
+    private int getMaxLinksForNode(LevelGraphNode node) {
+        switch (node.getRoomType()) {
+            case EXIT_ROOM:
+                return 2;
+            case ENTRANCE_ROOM:
+                return 3;
         }
-        ROOM_TYPE type = getLinkNodeType(node, i);
+        return 4;
+    }
+
+    private LevelGraphNode getOrCreateNodeOfType(ROOM_TYPE type) {
+        LevelGraphNode node = unconnected.stream().filter(
+         n -> n.getRoomType() == type).findFirst().orElse(null);
+        if (node == null)
+            node = graph.addNode(type);
+        return node;
+    }
+
+    private LevelGraphNode getOrCreateLinkNode(LevelGraphNode node, int n, int i, boolean main) {
+        if (n - i > 1 || !main)
+            if (unconnected.size() > 0) {
+                return unconnected.iterator().next();
+            }
+        ROOM_TYPE type = getLinkNodeType(node, n, i, main);
         return graph.addNode(type);
     }
 
-    private ROOM_TYPE getLinkNodeType(LevelGraphNode node, int i) {
+    private ROOM_TYPE getLinkNodeType(LevelGraphNode node, int n, int i, boolean main) {
+        if (main) {
+            if (n - i <= 1) {
+                return ROOM_TYPE.THRONE_ROOM;
+            }
+        }
         if (node.getRoomType() == ROOM_TYPE.COMMON_ROOM) {
-            if (!LevelGenerator.TEST_MODE)
-                return RandomWizard.random() ? ROOM_TYPE.GUARD_ROOM : ROOM_TYPE.DEATH_ROOM;
+            return RandomWizard.random() ? ROOM_TYPE.GUARD_ROOM
+             : ROOM_TYPE.DEATH_ROOM;
         }
         return ROOM_TYPE.COMMON_ROOM;
     }
 
-    private LevelGraphNode chooseLinkNode(LevelGraphNode node,
+    private LevelGraphNode chooseLinkNode(LevelGraphNode to,
                                           Collection<LevelGraphNode> unconnected) {
-        Map<ROOM_TYPE, Integer> weighMap = new HashMap<>();
-        //      TODO smart choice!  RandomWizard.getObjTypeByWeight()
-        int n = RandomWizard.getRandomInt(unconnected.size());
-        return (LevelGraphNode) unconnected.toArray()[n];
+        List<LevelGraphNode> list = new ArrayList<>(unconnected);
+        new SortMaster<LevelGraphNode>().sortByExpression_(list,
+         node -> getConnectPriority(node, to));
+        return list.get(0);
     }
 
     private void applyRules(LevelGraph graph, LevelData data) {

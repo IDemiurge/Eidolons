@@ -214,7 +214,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
         ENTRANCE_ROOM(15, 35),
         EXIT_ROOM(35, 15),
         SECRET_ROOM(15, 15, 1, 4, 3, 6),
-        BATTLEFIELD(100, 100, 3, 0, 4, 0);
+        OUTSIDE(60, 45, 3, 0, 4, 0 );
 
         public static ROOM_TYPE[] mainRoomTypes={
          THRONE_ROOM,

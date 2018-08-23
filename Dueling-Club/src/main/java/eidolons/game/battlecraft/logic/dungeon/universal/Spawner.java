@@ -28,7 +28,7 @@ import main.system.GuiEventManager;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.MathMaster;
 import main.system.sound.SoundMaster.SOUNDS;
 import main.system.util.Refactor;
@@ -189,7 +189,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
     public void spawnCustomParty(boolean me, String partyData) {
 
         DC_Player player = game.getPlayer(me);
-        if (BooleanMaster.isTrue(me)) {
+        if (Bools.isTrue(me)) {
             Party party = PartyHelper.getParty();
             if (party != null) {
                 DC_SoundMaster.playEffectSound(SOUNDS.READY, party.getLeader());

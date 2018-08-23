@@ -8,7 +8,7 @@ import main.content.enums.rules.VisionEnums.VISIBILITY_LEVEL;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
 
 //check distance !
         if (blocked) {
-            if (BooleanMaster.isTrue(clearshot)) {
+            if (Bools.isTrue(clearshot)) {
                 fail("Fail: " + sub + "'s clearshot = " + clearshot);
             }
             if (playerVision == PLAYER_VISION.DETECTED) {

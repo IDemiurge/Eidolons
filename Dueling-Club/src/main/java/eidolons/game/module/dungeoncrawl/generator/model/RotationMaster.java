@@ -5,7 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +43,7 @@ public class RotationMaster {
             return null;
         entrance = entrance.flip();
         List<Boolean[]> list = new ArrayList<>();
-        for (Boolean clockwise : BooleanMaster.TRUE_FALSE) {
+        for (Boolean clockwise : Bools.TRUE_FALSE) {
             for (int i = 1; i < 4; i++) {
                 Boolean[] rotations = new Boolean[i];
                 Arrays.fill(rotations, clockwise);

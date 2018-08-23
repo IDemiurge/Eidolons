@@ -16,7 +16,7 @@ import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.io.File;
 import java.util.*;
@@ -93,7 +93,7 @@ public class XML_Writer {
                 // .confirm("Xml wasn't read properly, block writing Types' xml?");
             }
         }
-        if (BooleanMaster.isTrue(writingBlocked)) {
+        if (Bools.isTrue(writingBlocked)) {
             return false;
         }
         if (group == null) {

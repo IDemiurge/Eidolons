@@ -30,6 +30,7 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     int z; //the deeper, the <?>
     private LOCATION_TYPE locationType;
     private Map<ROOM_TYPE, Integer> doorChanceMap = new HashMap<>();
+    private boolean initializeRequired;
 
     //for Fill - enemy type(s), ...
 
@@ -105,7 +106,7 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     }
 
     public boolean isMergeLinksAllowed() {
-        return false;
+        return flags.getBooleanValue(LEVEL_GEN_FLAG.isMergeLinksAllowed);
     }
 
     public boolean isFinalizerOn() {
@@ -143,8 +144,17 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     }
 
     public boolean isSurface() {
-        return false;
+        return getBooleanValue(LEVEL_VALUES.SURFACE);
     }
+
+    public boolean isInitializeRequired() {
+        return initializeRequired;
+    }
+
+    public void setInitializeRequired(boolean initializeRequired) {
+        this.initializeRequired = initializeRequired;
+    }
+
 
     //    public boolean isShearDisplacedOnly() {
     //        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);

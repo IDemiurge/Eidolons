@@ -22,7 +22,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -188,7 +188,7 @@ public class PresetMaster {
     public static Preset createPreset(String PLAYER_PARTY, String ENEMY_PARTY,
                                       String levelFilePath, Boolean auto) {
         String name = generateName(PLAYER_PARTY, ENEMY_PARTY, levelFilePath);
-        if (BooleanMaster.isFalse(auto)) {
+        if (Bools.isFalse(auto)) {
             name = DialogMaster.inputText("Input preset name!", name);
             if (name == null) {
                 name = generateName(PLAYER_PARTY, ENEMY_PARTY, levelFilePath);
@@ -262,7 +262,7 @@ public class PresetMaster {
         }
 
         // TODO autosaves should be further sorted by type/...
-        if (BooleanMaster.isFalse(auto)) {
+        if (Bools.isFalse(auto)) {
             File file = FileManager.getFile(path + name + getFormat());
             if (file.isFile()) {
                 Boolean result;
@@ -437,7 +437,7 @@ public class PresetMaster {
                 list.addAll(getPresetFiles(sub, auto));
             }
         } else if (file.isFile()) {
-            if (BooleanMaster.isTrue(auto) || !file.getPath().contains(AUTO + "\\")) {
+            if (Bools.isTrue(auto) || !file.getPath().contains(AUTO + "\\")) {
                 list.add((file));
             }
         }
@@ -455,7 +455,7 @@ public class PresetMaster {
                 list.addAll(loadPresets(sub, auto));
             }
         } else if (file.isFile()) {
-            if (BooleanMaster.isTrue(auto) || !file.getPath().contains(AUTO + "\\")) {
+            if (Bools.isTrue(auto) || !file.getPath().contains(AUTO + "\\")) {
                 list.add(loadPreset(file));
             }
         }

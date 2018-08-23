@@ -44,6 +44,7 @@ public class LevelGenerator {
     public static final boolean TEST_MODE = true;
     public static final boolean REAL = true;
     public static final boolean LOGGING_OFF = false;
+    private static final java.lang.String REAL_TEST_PLACE_TYPE_NAME = "Cemetery";
     private int maxTries;
 
     public LevelGenerator(int maxTries) {
@@ -97,7 +98,7 @@ public class LevelGenerator {
         DC_Engine.mainMenuInit();
         DC_Engine.dataInit(true);
         //        DataManager.getTypesSubGroup()
-        ObjType placeType = DataManager.getType("Dungeon", MACRO_OBJ_TYPES.PLACE);
+        ObjType placeType = DataManager.getType(REAL_TEST_PLACE_TYPE_NAME, MACRO_OBJ_TYPES.PLACE);
         ObjType scenarioType = ScenarioGenerator.generateRandomLevelScenario(placeType);
 
         int i = 0;
@@ -128,7 +129,8 @@ public class LevelGenerator {
                 TileMap tileMap = generateTileMap(model, data);
                 DungeonLevel level = new DungeonLevel(tileMap, model, data.getSublevelType(), data.getLocationType());
                 RngFillMaster.fill(model, data);
-                new RngLevelInitializer().init(level);
+                if (data.isInitializeRequired())
+                    new RngLevelInitializer().init(level);
 
                 if (new LevelValidator().isLevelValid(level))
                     return level;

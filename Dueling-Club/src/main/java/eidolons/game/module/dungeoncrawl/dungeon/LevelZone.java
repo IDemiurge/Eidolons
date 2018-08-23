@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import eidolons.system.audio.MusicMaster.AMBIENCE;
@@ -20,6 +21,7 @@ public class LevelZone extends LevelLayer<LevelBlock>{
     private DUNGEON_STYLE style;
     int id;
     private WeightMap<UNIT_GROUP> unitGroupWeightMap;
+    private int nodeCount;
 
     public LevelZone(DUNGEON_STYLE style, AMBIENCE ambience,
                      COLOR_THEME colorTheme, int globalIllumination, int id) {
@@ -92,5 +94,14 @@ public class LevelZone extends LevelLayer<LevelBlock>{
 
     public void setType(ZONE_TYPE type) {
         this.type = type;
+    }
+
+    public void nodeAdded(LevelGraphNode node) {
+        nodeCount++;
+
+    }
+
+    public int getNodeCount() {
+        return nodeCount;
     }
 }

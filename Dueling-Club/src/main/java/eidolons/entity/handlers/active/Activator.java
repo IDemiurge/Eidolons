@@ -15,7 +15,7 @@ import main.entity.Ref;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 /**
  * Created by JustMe on 2/25/2017.
@@ -32,7 +32,7 @@ public class Activator extends ActiveHandler {
     }
 
     public String getStatusString() {
-        return (BooleanMaster.isTrue(canActivate)) ? "Activate " : "" +
+        return (Bools.isTrue(canActivate)) ? "Activate " : "" +
          getAction().getCosts().getReasonsString() + " to activate ";
     }
 

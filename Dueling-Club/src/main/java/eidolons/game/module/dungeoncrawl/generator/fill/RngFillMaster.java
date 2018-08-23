@@ -1,14 +1,26 @@
 package eidolons.game.module.dungeoncrawl.generator.fill;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.level.BlockCreator;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
+import eidolons.game.module.dungeoncrawl.generator.model.Room;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.system.SortMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +30,10 @@ public class RngFillMaster {
     public static void fill(LevelModel model, LevelData data) {
         new BlockCreator().createBlocks(model);
 
+        if (isFillVoid())
+            if (data.isSurface()) {
+                fillSurfaceVoid(model);
+            }
         WeightMap<ROOM_CELL> weightMap = getMap(FILLER_TYPE.OVERLAYING_LIGHT_EMITTERS, data);
         new RngWallLightFiller(weightMap).fill(model);
 
@@ -39,28 +55,153 @@ public class RngFillMaster {
         weightMap = getMap(FILLER_TYPE.OVERLAYING_DECOR, data);
         new RngWallDecorFiller(weightMap).fill(model);
 
-        cleanUp(model);
-        if (data.isSurface()) {
-            fillSurfaceVoid();
+        try {
+            cleanUp(model);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
-        main.system.auxiliary.log.LogMaster.log(1, " " + model);
+        checkBoundFillers(model);
+        model.rebuildCells();
+        main.system.auxiliary.log.LogMaster.log(1, " " + TileMapper.createTileMap(model));
+
     }
 
-    private static void fillSurfaceVoid() {
+    private static boolean isFillVoid() {
+        return false;
+    }
+
+    private static void checkBoundFillers(LevelModel model) {
+        for (LevelBlock block : model.getBlocks().values()) {
+            Map<Coordinates, ROOM_CELL> map = block.getTileMap().getMap();
+            List<Coordinates> candidates = block.getTileMap().getMap().keySet().stream().filter(
+             c -> canBeBoundFiller(map.get(c))
+            ).collect(Collectors.toList());
+
+            for (Coordinates c : candidates) {
+                for (Coordinates c1 : candidates) {
+                    if (map.get(c) == map.get(c1))
+                        if (c.dst_(c1) == 2) {
+                            //check no wall between
+                            Coordinates between = c.getAdjacentCoordinate(FacingMaster.getRelativeFacing(c, c1).getDirection());
+                            if (TilesMaster.isPassable(map.get(between)))
+                                bindCoordinates(block, c, c1);
+                            //clear other adjacent?
+                            //will it stack for 2+
+                        }
+                }
+
+            }
+        }
+    }
+
+    public static void bindCoordinates(LevelBlock block, Coordinates c1, Coordinates c2) {
+        if (!block.getBoundCells().containsKey(c1)
+         && !block.getBoundCells().containsKey(c2))
+            main.system.auxiliary.log.LogMaster.log(1, block + " has " + c1 + " BOUND TO " + c2);
+       //overwrite though...
+        block.getBoundCells().put(c2, c1);
+        block.getBoundCells().put(c1, c2);
+    }
+
+    private static boolean canBeBoundFiller(ROOM_CELL cell) {
+        if (cell == null) {
+            return false;
+        }
+        switch (cell) {
+            case ART_OBJ:
+            case LIGHT_EMITTER:
+            case DESTRUCTIBLE:
+            case SPECIAL_CONTAINER:
+            case SPECIAL_ART_OBJ:
+                return true;
+
+        }
+        return false;
+    }
+
+    private static void fillSurfaceVoid(LevelModel model) {
+        //        String fill = model.getData().getValue(LEVEL_VALUES.VOID_CELL_TYPE);
+        for (LevelZone zone : model.getZones()) {
+            if (zone.getSubParts().isEmpty()) {
+                continue;
+            }
+            List<Coordinates> list = new ArrayList<>();
+            for (LevelBlock block : zone.getSubParts()) {
+                list.addAll(block.getCoordinatesList());
+            }
+            Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, list);
+            int w = CoordinatesMaster.getWidth(list);
+            int h = CoordinatesMaster.getHeight(list);
+            Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
+            for (int x = c.x; x < c.x + w; x++) {
+                for (int y = c.y; y < c.y + h; y++) {
+                    AbstractCoordinates c1 = new AbstractCoordinates(x, y);
+                    if (!list.contains(c1))
+                        map.put(c1, ROOM_CELL.FLOOR);
+                }
+
+            }
+            w = CoordinatesMaster.getWidth(map.keySet());
+            h = CoordinatesMaster.getHeight(map.keySet());
+            LevelBlock outside = new LevelBlock(c, zone,
+             ROOM_TYPE.OUTSIDE, w, h, new TileMap(map));
+            zone.getSubParts().add(outside);
+            model.getBlocks().put(new Room(), outside);
+
+        }
     }
 
     private static void cleanUp(LevelModel model) {
-        float minFloorPercentage;
+        float minFloorPercentage = 0.3f;
 
         for (LevelBlock block : model.getBlocks().values()) {
-            List<Coordinates> filledCells = block.getTileMap().getMap().keySet().stream().filter(
-             c -> true).collect(Collectors.toList());
+            Map<Coordinates, ROOM_CELL> map = block.getTileMap().getMap();
+            List<Coordinates> filledCells = map.keySet().stream().
+             filter(c -> map.get(c) != ROOM_CELL.FLOOR).
+             sorted(getFilledCellsSorter(map)).
+             collect(Collectors.toList());
 
-            float ratio=filledCells.size()/(block.getWidth()*block.getHeight());
+            int wallCells = 0;
+            int freeCells = block.getSquare() - wallCells - filledCells.size();
+            float ratio = freeCells / (block.getWidth() * block.getHeight());
+            float ratioDif = minFloorPercentage - ratio;
+
+            int toClear = Math.round(block.getSquare() * ratioDif);
+
             for (Coordinates c : filledCells) {
-//                clearFill(block, c);
+                if (toClear <= 0)
+                    break;
+                clearFill(block, c);
+                toClear--;
             }
         }
+    }
+
+    private static Comparator<? super Coordinates> getFilledCellsSorter(
+     Map<Coordinates,
+      ROOM_CELL> map) {
+        return new SortMaster<Coordinates>().getSorterByExpression_(
+         c -> {
+             switch (map.get(c)) {
+                 case CONTAINER:
+                     return RandomWizard.getRandomInt(6) + 4;
+                 case LIGHT_EMITTER:
+                     return RandomWizard.getRandomInt(4) + 3;
+                 case DESTRUCTIBLE:
+                 case SPECIAL_CONTAINER:
+                 case SPECIAL_ART_OBJ:
+                 case ART_OBJ:
+                     return RandomWizard.getRandomInt(10) + 5;
+
+             }
+             return 0;
+         });
+
+
+    }
+
+    private static void clearFill(LevelBlock block, Coordinates c) {
+        block.getTileMap().put(c, ROOM_CELL.FLOOR);
     }
 
     private static WeightMap<ROOM_CELL> getMap(FILLER_TYPE type, LevelData data) {

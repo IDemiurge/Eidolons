@@ -30,10 +30,10 @@ public class LevelModel {
     Map<Coordinates, Room> roomMap = new LinkedHashMap<>();
     LevelData data;
     private Set<Coordinates> occupiedCells = new LinkedHashSet<>();
-    private Integer leftMost;
-    private Integer rightMost;
-    private Integer topMost;
-    private Integer bottomMost;
+    private int leftMost;
+    private int rightMost;
+    private int topMost;
+    private int bottomMost;
     private LevelModelBuilder builder;
 
     public LevelModel(LevelData data, LevelModelBuilder builder) {
@@ -45,7 +45,7 @@ public class LevelModel {
     @Override
     public String toString() {
 
-        return "LevelModel: \n" + "; total rooms=" + roomMap.size() + "; occupied cells= " + occupiedCells
+        return "LevelModel: \n" + "; total rooms=" + roomMap.size()
          + "; " +
          toASCII_Map();
         //                 new ArrayMaster<ROOM_CELL>().getCellsString(cells);
@@ -57,31 +57,22 @@ public class LevelModel {
         int x1 = p.x + roomModel.getWidth();
         int y = p.y;
         int y1 = p.y + roomModel.getHeight();
-        if (leftMost == null || x < leftMost)
+        if (roomMap.isEmpty() || x < leftMost)
             leftMost = x;
-        if (rightMost == null || x1 > rightMost)
+        if (roomMap.isEmpty()|| x1 > rightMost)
             rightMost = x1;
-        if (topMost == null || y < topMost)
+        if (roomMap.isEmpty() || y < topMost)
             topMost = y;
-        if (bottomMost == null || y1 > bottomMost)
+        if (roomMap.isEmpty() || y1 > bottomMost)
             bottomMost = y1;
 
     }
 
     public int getCurrentWidth() {
-
-        if (leftMost == null)
-            return data.getX();
-        if (rightMost == null)
-            return data.getX();
         return Math.abs(leftMost - rightMost) + 1;
     }
 
     public int getCurrentHeight() {
-        if (bottomMost == null)
-            return data.getY();
-        if (topMost == null)
-            return data.getY();
         return Math.abs(topMost - bottomMost) + 1;
     }
 
@@ -89,9 +80,9 @@ public class LevelModel {
     public void addRoom(Room room) {
         Coordinates p = room.getCoordinates();
 
+        addCapes(p, room);
         roomMap.put(p, room);
         addOccupied(p, room);
-        addCapes(p, room);
         rebuildCells();
         if (!LevelGenerator.LOGGING_OFF)
             log(1, "Placed " + room + " at " +

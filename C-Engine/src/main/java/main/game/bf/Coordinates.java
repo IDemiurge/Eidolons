@@ -474,9 +474,12 @@ public class Coordinates {
     }
 
     public int dst(Coordinates c) {
-        return (int) Math.round(Math.sqrt((x - c.x) * (x - c.x) + (y - c.y) * (y - c.y)));
+        return (int) Math.round(dst_(c));
     }
 
+    public double dst_(Coordinates c) {
+        return Math.sqrt((x - c.x) * (x - c.x) + (y - c.y) * (y - c.y));
+    }
 
     public Coordinates offset(Coordinates coordinates) {
         Coordinates c = getOffset(coordinates);

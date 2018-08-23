@@ -149,6 +149,11 @@ public class SortMaster<T> {
         Collections.sort(list, getSorterByExpression(ascending, function));
     }
 
+    public   void sortByExpression_
+     (  List<? extends T> list, Function<T, Integer> function) {
+        Collections.sort(list, getSorterByExpression_(  function));
+    }
+
     public static Comparator<? super Object> getSorterByExpression
      (Function<Object, Integer> function) {
         return getSorterByExpression(false, function);

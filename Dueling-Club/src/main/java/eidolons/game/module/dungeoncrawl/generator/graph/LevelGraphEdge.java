@@ -40,4 +40,8 @@ public class LevelGraphEdge {
         return " link: "+nodeOne+" with "+nodeTwo;
 
     }
+
+    public LevelGraphNode getOtherNode(LevelGraphNode node) {
+        return getNodeOne() == node ? getNodeTwo() : getNodeOne();
+    }
 }

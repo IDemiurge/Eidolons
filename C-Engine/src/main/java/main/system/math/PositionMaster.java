@@ -6,7 +6,7 @@ import main.game.bf.BattleFieldGrid;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.XLine;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.graphics.GuiManager;
 
 import java.util.List;
@@ -244,7 +244,7 @@ public class PositionMaster {
                 return false;
             }
         } else if (aboveOr) { // strict - permit null?
-            if (!BooleanMaster.isTrue(north_or_south)) {
+            if (!Bools.isTrue(north_or_south)) {
                 return false;
             }
         }
@@ -254,7 +254,7 @@ public class PositionMaster {
                 return false;
             }
         } else if (toTheLeftOr) {
-            if (!BooleanMaster.isTrue(west_or_east)) {
+            if (!Bools.isTrue(west_or_east)) {
                 return false;
             }
         }

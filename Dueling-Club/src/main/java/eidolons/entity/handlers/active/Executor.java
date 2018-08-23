@@ -36,7 +36,7 @@ import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
@@ -104,7 +104,7 @@ public class Executor extends ActiveHandler {
             targeter.setForcePresetTarget(false);
         this.context = context;
         activate();
-        return !BooleanMaster.isTrue(isCancelled());
+        return !Bools.isTrue(isCancelled());
     }
 
     public void activateOn(Ref ref) {
@@ -176,7 +176,7 @@ public class Executor extends ActiveHandler {
             return interrupted();
         }
         resolve();
-        if (!BooleanMaster.isTrue(cancelled)) {
+        if (!Bools.isTrue(cancelled)) {
             if (getChecker().isCancellable()) {
                 setResult(checkExtraAttacksDoNotInterrupt(getLogger().getEntryType()));
             }

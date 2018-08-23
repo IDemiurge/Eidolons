@@ -20,6 +20,7 @@ import main.system.SortMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,10 +47,11 @@ public class LevelModelBuilder {
 
     public LevelModelBuilder(LevelData data) {
         this.data = data;
-        randomExitChance= data.getIntValue(LEVEL_VALUES.RANDOM_EXIT_CHANCE);
+        randomExitChance = data.getIntValue(LEVEL_VALUES.RANDOM_EXIT_CHANCE);
     }
 
     public LevelModel buildModel(LevelGraph graph) {
+        ModelMaster.resetExitCounterMap();
         this.graph = graph;
         build();
         model.offsetCoordinates();
@@ -67,7 +69,7 @@ public class LevelModelBuilder {
             build(false, graph.getNodeById(0), null);
 
             if (data.isFinalizerOn())
-                new ModelFinalizer(templateMaster, attacher, this).finalize(model );
+                new ModelFinalizer(templateMaster, attacher, this).finalize(model);
             if (isBuildFromExit()) {
                 build(true, graph.getNodeById(1), FacingMaster.getRandomFacing());
             }
@@ -115,7 +117,7 @@ public class LevelModelBuilder {
                 Coordinates c = room.relative(exit);
                 if (!TilesMaster.isEdgeCell(c, room))
                     continue loop;
-                ROOM_CELL cleanedCell =getCleanUpCell(room);
+                ROOM_CELL cleanedCell = getCleanUpCell(room);
                 if (room.getEntranceCoordinates() != null && room.getEntranceCoordinates().equals(c))
                     continue loop;
                 for (Coordinates coordinates : room.getExitCoordinates()) {
@@ -133,7 +135,7 @@ public class LevelModelBuilder {
     }
 
     private ROOM_CELL getCleanUpCell(Room room) {
-        return RandomWizard.random()? RandomWizard.random()? ROOM_CELL.LIGHT_EMITTER :ROOM_CELL.SPECIAL_CONTAINER :
+        return RandomWizard.random() ? RandomWizard.random() ? ROOM_CELL.LIGHT_EMITTER : ROOM_CELL.SPECIAL_CONTAINER :
          ROOM_CELL.ART_OBJ;
     }
 
@@ -171,7 +173,8 @@ public class LevelModelBuilder {
         if (newRoom.isSheared())
             return false;
         if (newRoom.getType() == ROOM_TYPE.CORRIDOR)
-            return data.isShearLinkWallsAllowed();
+            if (newRoom.getExitTemplate() == EXIT_TEMPLATE.THROUGH)
+                return data.isShearLinkWallsAllowed();
         return data.isShearWallsAllowed();
         //       TODO  return RandomWizard.random();
     }
@@ -236,12 +239,11 @@ public class LevelModelBuilder {
                                        EXIT_TEMPLATE roomExitTemplate) {
         Room room = nodeModelMap.get(node);
         //if we already built this node by following another path ...
-       if (cache)
-       {
-           if (room != null) return room;
-       }else {
-           if (room != null) return null  ;
-       }
+        if (cache) {
+            if (room != null) return room;
+        } else {
+            if (room != null) return null;
+        }
 
 
         room = findFittingAndAttach(parent, roomExitTemplate, node.getRoomType()
@@ -257,60 +259,84 @@ public class LevelModelBuilder {
     public Set<LevelGraphNode> buildLinks(
      Room room, Set<LevelGraphEdge> links, boolean mergeLinks) {
         Set<LevelGraphNode> nextToBuild = new LinkedHashSet<>();
-        Loop loop = new Loop(30);
+
         loop:
-        while (true) {
-            if (loop.ended()) {
-                break;
-            }
-            for (LevelGraphEdge edge : new ArrayList<>(links)) {
+        for (LevelGraphEdge edge : new HashSet<>(links)) {
+            Loop loop = new Loop(30); //try random exits and stuff for this node
+            LevelGraphNode nodeToBuildFrom = edge.getNodeTwo();
+            while (true) {
+                if (loop.ended()) {
+                    continue loop;
+                }
                 if (room.getUsedExits().size() == room.getExits().length) {
-                    break loop;
+                    break  ;
                 }
-                FACING_DIRECTION roomExit =getExit(room);
+                if (nodeModelMap.containsKey(nodeToBuildFrom)) {
+                    log(1, ">>>> Already built " + nodeToBuildFrom);
+                    continue;
+                }
+                FACING_DIRECTION roomExit = getExit(room);
                 FACING_DIRECTION linkExit = roomExit;
-                //exit side?
-                //just a boolean on merge links
-                Room link = mergeLinks ? getLinkToReuse(edge) : null;
-                if (link != null) {
-                    linkExit = link.getRandomUnusedExit();
-                    if (linkExit != null)
-                        if (buildLink(room, edge, roomExit, linkExit, link) != null) {
-                            nextToBuild.add(edge.getNodeTwo());
-                            links.remove(edge);
-                            continue;
-                        }
+
+                Room link = null;
+
+                if (mergeLinks) {
+                    //TODO make mergeLinks work!
+                    link = getLinkToReuse(edge);
+                    if (link != null) {
+                        linkExit = link.getRandomUnusedExit();
+                        if (linkExit != null)
+                            if (buildLink(room, edge, roomExit, linkExit, link) != null) {
+                                nextToBuild.add(nodeToBuildFrom);
+                                 log(1,link+" is a MERGED LINK  FOR "+ nodeToBuildFrom);
+                                continue loop;
+                            }
+                    }
+
                 }
-                link = findFittingAndAttach(room,
-                 mergeLinks ? ExitMaster.getExitTemplateToLinks(
-                  graph.getAdjList().get(edge.getNodeOne()).size(), roomExit.flip(), edge.getNodeTwo().getRoomType())
-                  : ExitMaster.getRandomSingleExitTemplate(),
-                 ROOM_TYPE.CORRIDOR, linkExit);
+                boolean linkless = checkLinkless(room, edge);
+                if (!linkless)
+                    link = findFittingAndAttach(room,
+                     mergeLinks ? ExitMaster.getExitTemplateToLinks(
+                      graph.getAdjList().get(edge.getNodeOne()).size(), roomExit.flip(), nodeToBuildFrom.getRoomType())
+                      : ExitMaster.getRandomSingleExitTemplate(),
+                     ROOM_TYPE.CORRIDOR, linkExit);
                 if (buildLink(room, edge, roomExit, linkExit, link) == null) {
                     if (link != null) {
-                        //                        if (loop.ended()) {
-                        //                            log(1,"LINKING A DEADEND: " +link+ " to " + link.getEntrance());
-                        //                            model.shearWallsFromSide(link, link.getEntrance());
-                        //                            link.makeExit(link.getEntrance(), false, false);
-                        //                            room.makeExit(link.getEntrance().flip(), false, true);
-                        //                        } else {
+                        //TODO do away with it
                         log(1, "REMOVING A DEADEND: " + link);
                         model.remove(link);
                         MapMaster.removeFromListMap(roomLinkMap, room, link);
-                        //                        }
                     }
                     continue;
                 }
-                nextToBuild.add(edge.getNodeTwo());
-                links.remove(edge);
+                nextToBuild.add(nodeToBuildFrom);
+                break;
             }
         }
         return nextToBuild;
     }
 
+    private boolean checkLinkless(Room room, LevelGraphEdge edge) {
+        if (edge.getNodeTwo().getRoomType() == ROOM_TYPE.EXIT_ROOM) {
+            return true;
+        }
+        int chance = data.getIntValue(LEVEL_VALUES.CHANCE_LINKLESS);
+        chance += 10 * room.getUsedExits().size();
+
+        switch (room.getType()) {
+            case TREASURE_ROOM:
+            case GUARD_ROOM:
+            case DEATH_ROOM:
+                chance *= 2;
+        }
+
+        return RandomWizard.chance(chance);
+    }
+
     private FACING_DIRECTION getExit(Room room) {
-        boolean random = 
-        RandomWizard.chance(randomExitChance);
+        boolean random =
+         RandomWizard.chance(randomExitChance);
         return random ? room.getRandomUnusedExit()
          : room.getSortedUnusedExit(
          new SortMaster<FACING_DIRECTION>().getSorterByExpression_(
@@ -332,7 +358,7 @@ public class LevelModelBuilder {
 
     public Room buildLink(Room room, LevelGraphEdge edge, FACING_DIRECTION roomExit,
                           FACING_DIRECTION linkExit, Room link) {
-        boolean door = false;
+        Boolean door = false;
         if (link == null) {
             //TODO link-less attach, same point... ?!
         } else {
@@ -350,42 +376,52 @@ public class LevelModelBuilder {
             return null;//already linked that room before...
         }
         if (link != null) {
-            door = RandomWizard.chance(data.getDoorChance(room.getType()));
-
+            door =isDoor(room); 
+             
             if (isShearWalls(link)) {
-                model.shearWallsFromSide(link, roomExit.flip());
+                if (!link.isDisplaced())
+                    if (!newRoom.isDisplaced()) {
+                        model.shearWallsFromSide(link, roomExit.flip());
+                        model.offset(newRoom, roomExit.flip());
+                    }
                 //                if (!newRoom.isDisplaced())
             }
             //            else
             //                model.offset(newRoom, linkExit.flip());
             //else  ?
-            link.makeExit(linkExit, !door ? false : door, true);
+            link.makeExit(linkExit, Bools.isTrue(door) ? new Boolean(false) : door, true);
         }
 
-        room.makeExit(roomExit, door ? false : door, true);
+        room.makeExit(roomExit, Bools.isTrue(door) ? new Boolean(false) : door, true);
 
         makeExits(roomExit, linkExit, room, link, newRoom, door, false);
         return newRoom;
     }
 
+    private Boolean isDoor(Room room) {
+        if (data.isSurface())
+            return null; //TODO improve! 
+        return RandomWizard.chance(data.getDoorChance(room.getType()));
+    }
+
     public void makeExits(FACING_DIRECTION roomExit, FACING_DIRECTION linkExit,
                           Room room, Room link, Room newRoom, boolean mergedLinks) {
-        boolean door = RandomWizard.chance(data.getDoorChance(room.getType()));
+        Boolean door = isDoor(room);
         makeExits(roomExit, linkExit, room, link, newRoom, door, mergedLinks);
 
     }
 
-    public void makeExits(FACING_DIRECTION roomExit, FACING_DIRECTION linkExit, Room room, Room link, Room newRoom, boolean door, boolean mergedLinks) {
+    public void makeExits(FACING_DIRECTION roomExit, FACING_DIRECTION linkExit, Room room, Room link, Room newRoom, Boolean door, boolean mergedLinks) {
         if (link == null) {
-            if (!door)
-                door = RandomWizard.chance(data.getDoorChance(room.getType()));
+            if (Bools.isFalse(door) )
+                door = isDoor(room);
             else door = false;
             //door only on one end at most; or at none
-            room.makeExit(roomExit, door ? false : door, true);
+            room.makeExit(roomExit, Bools.isTrue(door) ? new Boolean(false) : door, true);
             if (isShearWalls(newRoom)) {
                 model.shearWallsFromSide(newRoom, FacingMaster.rotate180(roomExit));
             } else
-                newRoom.makeExit(FacingMaster.rotate180(roomExit), !door ? false : door, false);
+                newRoom.makeExit(FacingMaster.rotate180(roomExit), Bools.isFalse(door) ? new Boolean(false) : door, false);
             if (data.isAlignExitsAllowed())
                 try {
                     attacher.alignExits(room, newRoom);
@@ -393,13 +429,13 @@ public class LevelModelBuilder {
                     main.system.ExceptionMaster.printStackTrace(e);
                 }
         } else {
-            door = RandomWizard.chance(data.getDoorChance(room.getType()));
+            door = isDoor(room);
             //door only on one end at most; or at none
             if (isShearWalls(newRoom)) {
                 model.shearWallsFromSide(newRoom, FacingMaster.rotate180(linkExit));
             } else
-                newRoom.makeExit(FacingMaster.rotate180(linkExit), !door ? false : door, false);
-            link.makeExit(linkExit, door ? false : door, true);
+                newRoom.makeExit(FacingMaster.rotate180(linkExit), Bools.isFalse(door) ? new Boolean(false) : door, false);
+            link.makeExit(linkExit, Bools.isTrue(door) ? new Boolean(false) : door, true);
 
             if (data.isAlignExitsAllowed())
                 try {
@@ -421,8 +457,9 @@ public class LevelModelBuilder {
                                      ROOM_TYPE roomType, FACING_DIRECTION parentExit) {
         return findFitting(parent, roomExitTemplate, roomType, parentExit, true);
     }
-        public Room findFitting(Room parent, EXIT_TEMPLATE roomExitTemplate,
-         ROOM_TYPE roomType, FACING_DIRECTION parentExit, boolean attach) {
+
+    public Room findFitting(Room parent, EXIT_TEMPLATE roomExitTemplate,
+                            ROOM_TYPE roomType, FACING_DIRECTION parentExit, boolean attach) {
         Coordinates entranceCoordinates = null;
         if (parent != null)
             entranceCoordinates = RoomAttacher.adjust(parent.getCoordinates(), parentExit, parent, true);
@@ -432,19 +469,20 @@ public class LevelModelBuilder {
         Room room = attacher.findFitting(entranceCoordinates,
          roomExitTemplate, roomType, parentExit, zone);
         if (attach)
-        if (room != null) {
-            if (parentExit != null) {
-                if (isCheckTraverse()) {
-                    if (parent != null)
-                        if (!traverser.checkTraversable(parent, parentExit))
+            if (room != null) {
+                if (parentExit != null) {
+                    if (isCheckTraverse()) {
+                        if (parent != null)
+                            if (!traverser.checkTraversable(parent, parentExit))
+                                return null;
+                        //link?!
+                        if (!traverser.checkTraversable(room, parentExit.flip()))
                             return null;
-                    //link?!
-                    if (!traverser.checkTraversable(room, parentExit.flip()))
-                        return null;
+                    }
                 }
+                ModelMaster.exitChosen(parentExit);
+                addRoom(room, parent);
             }
-            addRoom(room, parent);
-        }
         return room;
     }
 
@@ -528,7 +566,7 @@ public class LevelModelBuilder {
 //             graph.getAdjList().get(linkedNode).size());
 //            Room newRoom =
 //             getOrCreateRoomForNode(linkedNode, link, p, FacingMaster.rotate180(exit), roomExitTemplate);
-//            boolean door = RandomWizard.chance(data.getDoorChance(room.getType()));
+//            Boolean door = RandomWizard.chance(data.getDoorChance(room.getType()));
 //
 //            makeExits(null, exit, room, link, newRoom, door, true);
 //

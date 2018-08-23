@@ -151,4 +151,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+
+    public int getSquare() {
+        return getWidth() *  getHeight();
+    }
 }

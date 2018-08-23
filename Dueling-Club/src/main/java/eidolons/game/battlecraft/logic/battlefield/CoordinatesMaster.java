@@ -35,8 +35,13 @@ public class CoordinatesMaster {
         }
         return new Coordinates(true, x, y);
     }
-
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
+                                                              List<Coordinates> coordinates) {
+        return getFarmostCoordinateInDirection(d, coordinates, true);
+    }
+
+
+        public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates, final Boolean prefLessMoreMiddle) {
         coordinates = getSortedByProximityToEdge(d, coordinates, prefLessMoreMiddle);
         if (!ListMaster.isNotEmpty(coordinates))
@@ -52,11 +57,7 @@ public class CoordinatesMaster {
         final int x2 = getMaxX(coordinates);
         final int y1 = getMinY(coordinates);
         final int y2 = getMaxY(coordinates);
-        Collections.sort(coordinates, new Comparator<Coordinates>() {
-            public int compare(Coordinates o1, Coordinates o2) {
-                return compare_(x1, x2, y1, y2, prefLessMoreMiddle, x_more, y_more, o1, o2);
-            }
-        });
+        Collections.sort(coordinates, (o1, o2) -> compare_(x1, x2, y1, y2, prefLessMoreMiddle, x_more, y_more, o1, o2));
         return coordinates;
     }
 

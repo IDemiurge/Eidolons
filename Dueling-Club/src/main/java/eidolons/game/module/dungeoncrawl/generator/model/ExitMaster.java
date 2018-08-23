@@ -21,25 +21,29 @@ import java.util.Set;
 public class ExitMaster {
     public static EXIT_TEMPLATE getExitTemplateToLinks(
      int links, FACING_DIRECTION entrance, ROOM_TYPE type) {
-if (type==ROOM_TYPE.EXIT_ROOM){
-    switch (entrance){
-        case NORTH:
-        case SOUTH:
-            return RandomWizard.random()?  EXIT_TEMPLATE.FORK : EXIT_TEMPLATE.CROSSROAD;
-        case WEST:
-            return RandomWizard.random()? EXIT_TEMPLATE.ANGLE : EXIT_TEMPLATE.THROUGH;
-        case EAST:
-            return EXIT_TEMPLATE.CROSSROAD;
-    }
-}
+        if (type == ROOM_TYPE.EXIT_ROOM) {
+            switch (entrance) {
+                case NORTH:
+                case SOUTH:
+                    return RandomWizard.random() ? EXIT_TEMPLATE.FORK : EXIT_TEMPLATE.CROSSROAD;
+                case WEST:
+                    return RandomWizard.random() ? EXIT_TEMPLATE.ANGLE : EXIT_TEMPLATE.THROUGH;
+                case EAST:
+                    return EXIT_TEMPLATE.CROSSROAD;
+            }
+        }
 
-            if (links == 0)
-                return EXIT_TEMPLATE.CUL_DE_SAC;
-            else if (links == 2)
-                return RandomWizard.random()?  EXIT_TEMPLATE.FORK : EXIT_TEMPLATE.CROSSROAD;
-            else if (links >= 3)
-                return EXIT_TEMPLATE.CROSSROAD;
-            else return EXIT_TEMPLATE.THROUGH;
+        if (links == 0)
+            return EXIT_TEMPLATE.CUL_DE_SAC;
+        else if (links >= 2)
+            return EXIT_TEMPLATE.FORK;
+        else if (links >= 3)
+            return RandomWizard.random() ?EXIT_TEMPLATE.CROSSROAD:  EXIT_TEMPLATE.FORK;
+        else if (links >= 4)
+            return EXIT_TEMPLATE.CROSSROAD;
+
+        return
+             RandomWizard.random() ? EXIT_TEMPLATE.ANGLE : EXIT_TEMPLATE.THROUGH;
     }
 
     public static FACING_DIRECTION getExit(EXIT_TEMPLATE roomExitTemplate,
@@ -53,7 +57,7 @@ if (type==ROOM_TYPE.EXIT_ROOM){
 
     public static EXIT_TEMPLATE getRandomSingleExitTemplate() {
         return
-         RandomWizard.random() ? RandomWizard.random() ?EXIT_TEMPLATE.THROUGH: EXIT_TEMPLATE.ANGLE :
+         RandomWizard.random() ? RandomWizard.random() ? EXIT_TEMPLATE.THROUGH : EXIT_TEMPLATE.ANGLE :
           EXIT_TEMPLATE.THROUGH;
     }
 
@@ -96,7 +100,7 @@ if (type==ROOM_TYPE.EXIT_ROOM){
                  FACING_DIRECTION.NORTH, FACING_DIRECTION.SOUTH
                 };
             case CUL_DE_SAC:
-                break;
+                return new FACING_DIRECTION[0];
         }
         return new FACING_DIRECTION[0];
     }
@@ -117,14 +121,14 @@ if (type==ROOM_TYPE.EXIT_ROOM){
     }
 
     public static Coordinates findExit(Room room, FACING_DIRECTION direction) {
-        int i =0;
+        int i = 0;
         for (FACING_DIRECTION exit : room.getExits()) {
-            if (exit==direction)
-                if (room.getExitCoordinates().size()>i)
+            if (exit == direction)
+                if (room.getExitCoordinates().size() > i)
                     return room.getExitCoordinates().get(i);
             i++;
         }
-        return null ;
+        return null;
 
 
     }

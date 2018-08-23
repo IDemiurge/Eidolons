@@ -77,7 +77,7 @@ OOO##
         HEIGHT,
         Z_LEVEL,
 
-        RANDOM_EXIT_CHANCE(35, 0, 100),
+        RANDOM_EXIT_CHANCE(0, 0, 100),
         DOOR_CHANCE_MOD(100, 0, 100),
         DOOR_CHANCE_THRONE_ROOM(75, 0, 100),
         DOOR_CHANCE_COMMON_ROOM(75, 0, 100),
@@ -100,7 +100,9 @@ OOO##
         COMMON_ROOM_COEF(5, 0, 12),
         SECRET_ROOM_COEF(1, 0, 10),
 
-        SIZE_MOD(15, 10, 300), MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
+        SIZE_MOD(100, 10, 300),
+        ROOM_COUNT_MOD(100, 10, 300),
+        MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
         MAIN_PATH_LENGTH(3, 2, 20),
         BONUS_PATH_LENGTH(2, 1, 15), RANDOM_ROTATION_CHANCE(65, 0, 100),
         FILL_LIGHT_COEF(100, 0, 500),
@@ -116,7 +118,10 @@ OOO##
         SPAWN_GROUP_COEF_BOSS(100, 0, 500),
 
 
-        ;
+        RANDOMIZED_SIZE_SORT_CHANCE(35, 0, 100),
+        CHANCE_LINKLESS(35, 0, 100),
+        CHANCE_LINKLESS_MOD(100, 0, 500),
+        SURFACE();
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -176,7 +181,7 @@ OOO##
     }
 
     public enum ROOM_CELL { //water, void
-        INDESTRUCTIBLE("."),
+        INDESTRUCTIBLE("I"),
         WALL("#"),
         FLOOR("O"),
         ENTRANCE("E"),
@@ -276,7 +281,7 @@ OOO##
         GROVE, //chaos...
         CEMETERY, //enclosed areas
         RANDOM, //will mix all
-        RANDOM_INTERIOR, //except cave/grove...
+//        RANDOM_INTERIOR, //except cave/grove...
 
         CAVE_MAZE, //60/40 chance
         CASTLE_TEMPLE,
@@ -285,7 +290,18 @@ OOO##
         TEMPLE_CRYPT,
         TOWER_TEMPLE,
         DUNGEON_CASTLE,
-        CRYPT_TOWER,
+        CRYPT_TOWER,;
+
+        public boolean isMultiGroup() {
+            return name().contains("_");
+        }
+
+        public ROOM_TEMPLATE_GROUP getMultiGroupOne() {
+            return valueOf(name().split("_")[0]);
+        }
+        public ROOM_TEMPLATE_GROUP getMultiGroupTwo() {
+            return valueOf(name().split("_")[1]);
+        }
     }
 
     public enum ZONE_TYPE {

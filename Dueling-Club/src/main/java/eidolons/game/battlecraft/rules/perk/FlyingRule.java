@@ -2,7 +2,7 @@ package eidolons.game.battlecraft.rules.perk;
 
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.MathMaster;
 
 public class FlyingRule {
@@ -14,7 +14,7 @@ public class FlyingRule {
 
     public static int getAttackBonus(int attack, Boolean flying_mod) {
 
-        if (BooleanMaster.isTrue(flying_mod)) {
+        if (Bools.isTrue(flying_mod)) {
             return MathMaster.getFractionValueCentimal(attack, FLYING_ATTACK_MOD);
         } else {
             return -MathMaster.getFractionValueCentimal(attack, FLYING_ATTACK_MOD);

@@ -15,7 +15,7 @@ import main.swing.XDimension;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.data.DataUnit;
 import main.system.math.MathMaster;
 
@@ -80,12 +80,12 @@ public class BuildHelper {
 
         int y = (location.getCellsY() - height) / 2;
         if (corner) {
-            y = BooleanMaster.random() ? params.WALL_WIDTH : plan.getBorderY();
+            y = Bools.random() ? params.WALL_WIDTH : plan.getBorderY();
         }
 
         if (!plan.isRotated()) {
             if (corner) {
-                x = BooleanMaster.random() ? params.WALL_WIDTH : plan.getBorderX();
+                x = Bools.random() ? params.WALL_WIDTH : plan.getBorderX();
             } else {
                 x = (location.getCellsX() - width) / 2;
             }
@@ -416,7 +416,7 @@ public class BuildHelper {
         }
         Boolean prefLessMoreMiddle = null;
         if (block.getRoomType() != ROOM_TYPE.THRONE_ROOM) {
-            prefLessMoreMiddle = BooleanMaster.random();
+            prefLessMoreMiddle = Bools.random();
         }
         Coordinates coord = CoordinatesMaster.getFarmostCoordinateInDirection(direction.getDirection(),
          block.getCoordinates(), prefLessMoreMiddle);

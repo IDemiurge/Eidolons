@@ -44,7 +44,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.data.ListMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.Formula;
 import main.system.sound.SoundMaster.STD_SOUNDS;
@@ -288,7 +288,7 @@ public class HeroManager {
          " for " +
          newItem.getName() + "?", true, null);
         return
-         BooleanMaster.isTrue(
+         Bools.isTrue(
           (Boolean) WaitMaster.waitForInput(WAIT_OPERATIONS.CONFIRM));
     }
 

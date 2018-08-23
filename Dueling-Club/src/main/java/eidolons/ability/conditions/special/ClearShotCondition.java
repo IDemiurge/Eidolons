@@ -12,7 +12,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
 
 import java.util.*;
@@ -244,10 +244,10 @@ public class ClearShotCondition extends MicroCondition {
             DIRECTION relativeDirection = c.isAdjacent(source.getCoordinates()) ? DirectionMaster
              .getRelativeDirection(c, coordinates) : DirectionMaster.getRelativeDirection(
              coordinates, c);
-            if (BooleanMaster.areOpposite(relativeDirection.growX, direction.growX)) {
+            if (Bools.areOpposite(relativeDirection.growX, direction.growX)) {
                 continue;
             }
-            if (BooleanMaster.areOpposite(relativeDirection.growY, direction.growY)) {
+            if (Bools.areOpposite(relativeDirection.growY, direction.growY)) {
                 continue;
             }
             double distance = PositionMaster.getDistanceToLine(
@@ -292,18 +292,18 @@ public class ClearShotCondition extends MicroCondition {
                 }
 
                 if (left) {
-                    if (BooleanMaster.areOpposite(d.growX, direction.growX)) {
+                    if (Bools.areOpposite(d.growX, direction.growX)) {
                         continue;
                     }
-                    if (!BooleanMaster.areOpposite(d.growY, direction.growY)) {
+                    if (!Bools.areOpposite(d.growY, direction.growY)) {
                         continue;
                     }
                 }
                 if (!left) {
-                    if (BooleanMaster.areOpposite(d.growY, direction.growY)) {
+                    if (Bools.areOpposite(d.growY, direction.growY)) {
                         continue; // TODO does X/Y interchange?
                     }
-                    if (!BooleanMaster.areOpposite(d.growX, direction.growX)) {
+                    if (!Bools.areOpposite(d.growX, direction.growX)) {
                         continue; // TODO does X/Y interchange?
                     }
                 }

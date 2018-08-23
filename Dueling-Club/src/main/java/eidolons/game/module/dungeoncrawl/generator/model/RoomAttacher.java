@@ -158,16 +158,15 @@ public class RoomAttacher {
          (parentExit);
         while (true) {
             if (loop.ended()) {
-                log(1, "Failed to place " + roomType + " at " +
-                 entranceCoordinates + " with parent exit to the " + parentExit);
-                return null;
+               break;
             }
             roomModel = templateMaster.getNextRandomModel(roomType,
              roomExitTemplate
              , roomEntrance, zone.getTemplateGroup());
             if (roomModel == null) {
-                templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
-                continue;
+//                templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
+//                continue;
+                break;
             }
 
             Coordinates roomCoordinates = getRoomCoordinates(entranceCoordinates, roomEntrance,
@@ -185,6 +184,10 @@ public class RoomAttacher {
             }
 
         }
+
+        log(1, "Failed to place " + roomType + " at " +
+         entranceCoordinates + " with parent exit to the " + parentExit);
+        return null;
     }
 
 

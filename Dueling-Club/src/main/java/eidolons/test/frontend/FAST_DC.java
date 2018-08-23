@@ -11,7 +11,7 @@ import eidolons.libgdx.launch.DemoLauncher;
 import main.data.ability.construct.VariableManager;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.log.Chronos;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public class FAST_DC {
                 SUPER_FAST_MODE = true;
             } else {
                 FAST_MODE = PresetLauncher.chooseLaunchOption();
-                if (BooleanMaster.isFalse(FAST_MODE)) {
+                if (Bools.isFalse(FAST_MODE)) {
                     SUPER_FAST_MODE = true;
                 }
             }

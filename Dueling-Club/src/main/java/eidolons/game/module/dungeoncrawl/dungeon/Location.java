@@ -22,7 +22,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.*;
 import main.system.auxiliary.data.FileManager;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -268,9 +268,9 @@ public class Location {
             transformLoop:
             while (true) {
                 // Rotate
-                for (Boolean b : BooleanMaster.FALSE_TRUE_NULL) {
+                for (Boolean b : Bools.FALSE_TRUE_NULL) {
                     flipX = b;
-                    for (Boolean b1 : BooleanMaster.FALSE_TRUE_NULL) {
+                    for (Boolean b1 : Bools.FALSE_TRUE_NULL) {
                         flipY = b1;
                         entranceLayout = DungeonLevelMaster.transformLayout(entranceLayout, flipX,
                          flipY, rotate);

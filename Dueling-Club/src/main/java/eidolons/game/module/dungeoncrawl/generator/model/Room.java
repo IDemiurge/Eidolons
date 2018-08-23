@@ -1,8 +1,10 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
@@ -48,13 +50,18 @@ public class Room extends RoomModel {
             makeExit(entrance, false, false);
     }
 
+    //faux room for outside!
+    public Room() {
+        super(null, null, null);
+    }
+
     @Override
     public void setFlip(boolean x, boolean y) {
         super.setFlip(x, y);
         //TODO exit/entrance
     }
 
-    public void makeExit(FACING_DIRECTION exit, boolean door, boolean exitOrEntrance) {
+    public void makeExit(FACING_DIRECTION exit, Boolean door, boolean exitOrEntrance) {
         Coordinates coordinates = RoomAttacher.adjust(
          isExitsOffset() ? new AbstractCoordinates(
           exit.isVertical() ? -offset.x : 0, !exit.isVertical() ? -offset.y : 0)
@@ -76,6 +83,9 @@ public class Room extends RoomModel {
             }
             entrance = exit;
         }
+        if (door==null ){
+            door = checkDoor(coordinates);
+        }
         String s = door ? ROOM_CELL.DOOR.getSymbol()
          : ROOM_CELL.ROOM_EXIT.getSymbol();
         if (isExitsLogical()) {
@@ -88,12 +98,32 @@ public class Room extends RoomModel {
             cells[coordinates.x][coordinates.y] = s;
     }
 
+    private boolean checkDoor(Coordinates coordinates) {
+        if (getType()== ROOM_TYPE.CORRIDOR)
+            return false;
+        int n =0;
+        for (Coordinates c : coordinates.getAdjacenctNoDiags()) {
+            if (c.x>=cells.length || c.y>=cells[0].length||
+             c.x<0 || c.y<0
+             )
+                continue;
+            if (!TilesMaster.isPassable(cells[c.x][c.y])){
+                n++;
+            }
+
+        }
+        if (n<2)
+            return false;
+
+        return true;
+    }
+
     private boolean isExitsOffset() {
         return true;
     }
 
     private boolean isCanAdjustEvenExit() {
-        return false;
+        return true;
     }
 
     @Override
@@ -102,7 +132,7 @@ public class Room extends RoomModel {
     }
 
     public static boolean isExitsLogical() {
-        return false;
+        return true;
     }
 
     @Override
@@ -273,6 +303,7 @@ public class Room extends RoomModel {
         if (list.isEmpty()) {
             return null;
         }
-        return list.get(0);
+        FACING_DIRECTION exit = list.get(0);
+        return exit;
     }
 }

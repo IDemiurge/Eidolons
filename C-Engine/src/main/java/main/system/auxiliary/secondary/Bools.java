@@ -2,7 +2,7 @@ package main.system.auxiliary.secondary;
 
 import main.system.auxiliary.RandomWizard;
 
-public class BooleanMaster {
+public class Bools {
 
     public static final Boolean[] FALSE_TRUE = {false, true};
     public static final Boolean[] TRUE_FALSE = {true, false};

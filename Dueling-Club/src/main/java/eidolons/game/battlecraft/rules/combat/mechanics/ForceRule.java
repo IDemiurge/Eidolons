@@ -32,7 +32,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
-import main.system.auxiliary.secondary.BooleanMaster;
+import main.system.auxiliary.secondary.Bools;
 import main.system.math.Formula;
 import main.system.math.MathMaster;
 
@@ -115,7 +115,7 @@ public class ForceRule {
         //TODO DEXTERITY ROLL TO AVOID ALL?
         if (target.getIntParam(PARAMS.TOTAL_WEIGHT) < getMinWeightKnock(action)) {
             result = RollMaster.rollForceKnockdown(target, action, force);
-            if (BooleanMaster.isFalse(result)) {
+            if (Bools.isFalse(result)) {
                 result = null; //ALWAYS INTERRUPT AT LEAST
             }
         } else if (target.getIntParam(PARAMS.TOTAL_WEIGHT) > getMaxWeightKnock(action)) {
@@ -300,8 +300,8 @@ public class ForceRule {
         // if (distance == 0)
         // distance = RandomWizard.chance(force * 100 / weight) ? 1 : 0; // TODO
 
-        int x_displacement = BooleanMaster.isTrue(d.growX) ? distance : -distance;
-        int y_displacement = BooleanMaster.isTrue(d.growY) ? distance : -distance;
+        int x_displacement = Bools.isTrue(d.growX) ? distance : -distance;
+        int y_displacement = Bools.isTrue(d.growY) ? distance : -distance;
         if (!d.isDiagonal()) {
             if (d.isVertical()) {
                 x_displacement = 0;
