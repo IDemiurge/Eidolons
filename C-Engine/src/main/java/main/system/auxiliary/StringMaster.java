@@ -80,10 +80,6 @@ public class StringMaster {
     public static final String STANDARD = "Standard";
     public static final String AND_SEPARATOR = "|";
     public static final String AND_PROPERTY_SEPARATOR = "]|[";
-    public static final String DOUBLE_OR_SEPARATOR = "||";
-    public static final String XOR_SEPARATOR = "xor";
-    public static final String CONDITION_SEPARATOR = "//";
-    public static final String NET_DATA_SEPARATOR = ">><<";
     public static final String UPGRADE_SEPARATOR = ">|<";
     public static final String SCORE = " Score";
     public static final String AND = " AND ";

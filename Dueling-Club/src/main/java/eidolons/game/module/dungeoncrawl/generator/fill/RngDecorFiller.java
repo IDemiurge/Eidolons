@@ -14,6 +14,10 @@ public class RngDecorFiller extends RngFiller {
     }
 
     @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.DESTRUCTIBLE;
+    }
+    @Override
     public float getFillCoef() {
         return 0.6f;
     }

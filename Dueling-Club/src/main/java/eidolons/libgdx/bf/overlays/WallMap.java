@@ -306,7 +306,7 @@ public class WallMap extends SuperActor {
         return !DungeonScreen.getInstance().controller.
          isWithinCamera(getX() + offsetX, getY() + offsetY, 128, 128);
     }
-
+//saving space...
     public static String v(boolean indestructible) {
         return indestructible? WallMap.INDESTRUCTIBLE : "";
     }

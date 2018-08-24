@@ -19,6 +19,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.SwingMaster;
+import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
@@ -44,24 +45,25 @@ import java.util.Map;
 public class ImageManager {
 
     public final static String[] STD_FORMATS = {"jpg", "png",};
-    public static final String DEFAULT_EMBLEM = "UI\\deities.png";
+    public static final String separator = PathUtils.getPathSeparator();
+    public static final String DEFAULT_EMBLEM = "UI"+separator+"deities.png";
     public static final String DEFAULT_ENTITY_IMAGE_FORMAT = ".jpg";
     public static final int CENTERED = -999;
-    public static final String VALUE_ICONS_PATH = "UI\\value icons\\";
-    public static final String DEAD_ICON = "UI\\dead.png";
-    private static final String EMPTY_LIST_ITEM = "UI\\EMPTY_ITEM.jpg";
-    private static final String EMPTY_LIST_ITEM_ALT = "UI\\EMPTY_ITEM_ALT.jpg";
-    private static final String EMPTY_LIST_ITEM_SMALL = "UI\\EMPTY_ITEM_SMALL.jpg";
-    private static final String HL_CELL = "UI\\HIGHLIGHTED_CELL.png";
-    private static final String CONCEALED_CELL = "UI\\HIDDEN_CELL.png";
-    private static final String UNSEEN_CELL = "UI\\UNDETECTED_CELL.png";
-    private static final String CELL = "UI\\EMPTY CELL2.png";
-    private static final String DEFAULT_IMAGE_PATH = "UI\\Empty1.jpg";
+    public static final String VALUE_ICONS_PATH = "UI"+separator+"value icons"+separator;
+    public static final String DEAD_ICON = "UI"+separator+"dead.png";
+    private static final String EMPTY_LIST_ITEM = "UI"+separator+"EMPTY_ITEM.jpg";
+    private static final String EMPTY_LIST_ITEM_ALT = "UI"+separator+"EMPTY_ITEM_ALT.jpg";
+    private static final String EMPTY_LIST_ITEM_SMALL = "UI"+separator+"EMPTY_ITEM_SMALL.jpg";
+    private static final String HL_CELL = "UI"+separator+"HIGHLIGHTED_CELL.png";
+    private static final String CONCEALED_CELL = "UI"+separator+"HIDDEN_CELL.png";
+    private static final String UNSEEN_CELL = "UI"+separator+"UNDETECTED_CELL.png";
+    private static final String CELL = "UI"+separator+"EMPTY CELL2.png";
+    private static final String DEFAULT_IMAGE_PATH = "UI"+separator+"Empty1.jpg";
     private static final int MAX_TYPE_ICON_SIZE = 256;
     public static final int LARGE_ICON = MAX_TYPE_ICON_SIZE;
-    private static final String DEFAULT_CURSOR = "UI\\cursor.png";
-    private static final String PORTRAIT_ROOT_PATH = "\\mini\\char\\std\\";
-    private static final String EMBLEM_PATH = "UI\\emblems\\std\\";
+    private static final String DEFAULT_CURSOR = "UI"+separator+"cursor.png";
+    private static final String PORTRAIT_ROOT_PATH = separator+"mini"+separator+"char"+separator+"std"+separator;
+    private static final String EMBLEM_PATH = "UI"+separator+"emblems"+separator+"std"+separator;
     private static String PATH;
     private static String DEFAULT;
     private static ImageObserver observer = new ImageObserver() {
@@ -82,7 +84,7 @@ public class ImageManager {
 
     public static void init() {
         setPATH(PathFinder.getImagePath());
-        DEFAULT = "chars\\";
+        DEFAULT = "chars"+separator;
         colorImgCache = new HashMap<>();
         COLOR_THEME[] values = COLOR_THEME.values();
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
@@ -137,24 +139,24 @@ public class ImageManager {
     }
 
     public static ImageIcon getEmptyIcon(int obj_size) {
-        return new ImageIcon(getImageFolderPath() + "UI\\empty" + obj_size + ".jpg");
+        return new ImageIcon(getImageFolderPath() + "UI"+separator+"empty" + obj_size + ".jpg");
     }
 
 
     public static String getEmptyItemIconPath(boolean alt) {
         if (alt) {
-            return "UI\\EMPTY_ITEM_ALT.jpg";
+            return "UI"+separator+"EMPTY_ITEM_ALT.jpg";
         }
-        return "UI\\EMPTY_ITEM.jpg";
+        return "UI"+separator+"EMPTY_ITEM.jpg";
 
     }
 
     public static String getEmptyUnitIconPath() {
-        return "UI\\Empty.jpg";
+        return "UI"+separator+"Empty.jpg";
     }
 
     public static String getEmptyUnitIconFullSizePath() {
-        return "UI\\Empty Full.jpg";
+        return "UI"+separator+"Empty Full.jpg";
     }
 
     public static ImageIcon getEmptyUnitIcon() {
@@ -381,7 +383,7 @@ public class ImageManager {
 
     public static String getArrowImagePath(boolean vertical, boolean forward, int version) {
         String compVersion = (version == 1) ? "" : "" + version;
-        String path = "UI\\components\\";
+        String path = "UI"+separator+"components"+separator;
         if (forward) {
             path += vertical ? "up" : "right";
         } else
@@ -501,7 +503,7 @@ public class ImageManager {
     }
 
     public static Image getDeadIconBig() {
-        return getImage("UI\\Empty1.jpg");
+        return getImage("UI"+separator+"Empty1.jpg");
     }
 
     public static Image getEmblem(String property) {
@@ -599,17 +601,17 @@ public class ImageManager {
 
     public static Image getPrincipleImage(PRINCIPLES principle) {
         if (principle == null) {
-            return getImage(VALUE_ICONS_PATH + "Principles\\principles.jpg");
+            return getImage(VALUE_ICONS_PATH + "Principles"+separator+"principles.jpg");
         }
-        return getImage(VALUE_ICONS_PATH + "Principles\\" + principle.toString() + ".jpg");
+        return getImage(VALUE_ICONS_PATH + "Principles"+separator + principle.toString() + ".jpg");
     }
 
     public static String getMasteryGroupPath(String title) {
-        return VALUE_ICONS_PATH + "masteries\\groups\\" + title + ".png";
+        return VALUE_ICONS_PATH + "masteries"+separator+"groups"+separator + title + ".png";
     }
 
     public static String getClassGroupPath(String title) {
-        return VALUE_ICONS_PATH + "Class groups\\" + title + ".png";
+        return VALUE_ICONS_PATH + "Class groups"+separator + title + ".png";
     }
     public static ImageIcon getMasteryGroupIcon(String title) {
         String imgPath = getMasteryGroupPath(title);
@@ -647,7 +649,7 @@ public class ImageManager {
 
         boolean mastery = false;
         if (value instanceof MACRO_PARAMS) {
-            imgPath = VALUE_ICONS_PATH + "macro\\";
+            imgPath = VALUE_ICONS_PATH + "macro"+separator;
         } else if (value instanceof PARAMETER) {
             PARAMETER parameter = (PARAMETER) value;
             if (parameter.getName().contains(" Durability Mod")) {
@@ -659,10 +661,10 @@ public class ImageManager {
 
             if (parameter.isMastery()) {
                 mastery = true;
-                imgPath += "masteries\\";
+                imgPath += "masteries"+separator;
                 name = name.replace(" mastery", "");
             } else if (parameter.isAttribute()) {
-                imgPath += "attributes\\";
+                imgPath += "attributes"+separator;
             }
 
         }
@@ -684,7 +686,7 @@ public class ImageManager {
 
         boolean mastery = false;
         if (value instanceof MACRO_PARAMS) {
-            imgPath = VALUE_ICONS_PATH + "macro\\";
+            imgPath = VALUE_ICONS_PATH + "macro"+separator;
         } else if (value instanceof PARAMETER) {
             PARAMETER parameter = (PARAMETER) value;
             if (parameter.getName().contains(" Durability Mod")) {
@@ -696,10 +698,10 @@ public class ImageManager {
 
             if (parameter.isMastery()) {
                 mastery = true;
-                imgPath += "masteries\\";
+                imgPath += "masteries"+separator;
                 name = name.replace(" mastery", "");
             } else if (parameter.isAttribute()) {
-                imgPath += "attributes\\";
+                imgPath += "attributes"+separator;
             }
             if (glowIconForDynamicIfAvailable) {
                 if (parameter.isDynamic()) {
@@ -735,12 +737,12 @@ public class ImageManager {
 
     public static String getDamageTypeImagePath(String enumConstName, boolean alpha) {
         if (alpha)
-            return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + " alpha.png");
-        return (VALUE_ICONS_PATH + "damage types\\" + enumConstName + ".png");
+            return (VALUE_ICONS_PATH + "damage types"+separator + enumConstName + " alpha.png");
+        return (VALUE_ICONS_PATH + "damage types"+separator + enumConstName + ".png");
     }
 
     public static Image getModeImage(String mode, Boolean on_off, boolean blocked) {
-        Image image = getImage("ui\\actions\\modes\\" + mode + ".png");
+        Image image = getImage("ui"+separator+"actions"+separator+"modes"+separator + mode + ".png");
         if (image == null) {
             ObjType type = DataManager.getType(mode, DC_TYPE.ACTIONS);
             if (type != null) {
@@ -857,122 +859,122 @@ public class ImageManager {
 
         switch (bg) {
             case DARK_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\dark");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\drow");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"dark");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"drow");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"grey");
                 break;
             case FEY_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\fey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"fey");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\wood");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\ice");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"wood");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"ice");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"grey");
                 break;
             case GREY_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"grey");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\ice");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\fey");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\dark");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"ice");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"fey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"dark");
                 break;
             case HIGH_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\high");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\ice");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"high");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"ice");
                 break;
             case WOOD_ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\wood");
-                // paths.add(PORTRAIT_ROOT_PATH + "elf\\grey");
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\fey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"wood");
+                // paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"grey");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator+"fey");
                 break;
 
             case ELF:
-                paths.add(PORTRAIT_ROOT_PATH + "elf\\");
+                paths.add(PORTRAIT_ROOT_PATH + "elf"+separator);
                 break;
             case VAMPIRE:
-                paths.add(PORTRAIT_ROOT_PATH + "vampire\\");
+                paths.add(PORTRAIT_ROOT_PATH + "vampire"+separator);
                 break;
 
             case INFERI_WARPBORN:
-                paths.add(PORTRAIT_ROOT_PATH + "demon\\succubus");
+                paths.add(PORTRAIT_ROOT_PATH + "demon"+separator+"succubus");
                 break;
             case INFERI_HELLSPAWN:
-                paths.add(PORTRAIT_ROOT_PATH + "demon\\SPAWN");
+                paths.add(PORTRAIT_ROOT_PATH + "demon"+separator+"SPAWN");
                 break;
             case INFERI_CHAOSBORN:
-                paths.add(PORTRAIT_ROOT_PATH + "demon\\guard");
+                paths.add(PORTRAIT_ROOT_PATH + "demon"+separator+"guard");
                 break;
             case NORDHEIMER:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Nordheim");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Nordheim");
                 break;
             case MAN_OF_EAST_EMPIRE:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\East");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"East");
                 break;
 
             case WOMAN_OF_EAGLE_REALM:
             case MAN_OF_EAGLE_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Eagle Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Eagle Realm");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\4arcane");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\1misc");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"4arcane");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"1misc");
                 break;
             case WOMAN_OF_GRIFF_REALM:
             case MAN_OF_GRIFF_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Griff Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Griff Realm");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\3warrior");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\1misc");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"3warrior");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"1misc");
                 break;
             case WOMAN_OF_KINGS_REALM:
             case MAN_OF_KINGS_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\King Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"King Realm");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\1misc");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\3warrior");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\4arcane");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"1misc");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"3warrior");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"4arcane");
                 break;
             case WOMAN_OF_RAVEN_REALM:
             case MAN_OF_RAVEN_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Raven Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Raven Realm");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\4arcane");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\6dark");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\2rogue");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"4arcane");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"6dark");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"2rogue");
                 break;
             case WOMAN_OF_WOLF_REALM:
             case MAN_OF_WOLF_REALM:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Wolf Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Wolf Realm");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\6dark");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\2rogue");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic\\3warrior");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"6dark");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"2rogue");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic"+separator+"3warrior");
                 break;
             case STRANGER:
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Generic");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Generic");
                 if (!extended) {
                     break;
                 }
-                paths.add(PORTRAIT_ROOT_PATH + "human\\King Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Griff Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Eagle Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Raven Realm");
-                paths.add(PORTRAIT_ROOT_PATH + "human\\Wolf Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"King Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Griff Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Eagle Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Raven Realm");
+                paths.add(PORTRAIT_ROOT_PATH + "human"+separator+"Wolf Realm");
                 break;
 
             case DWARF:
@@ -984,23 +986,23 @@ public class ImageManager {
             case FROSTBEARD_DWARF:
             case WOLFSBANE_DWARF:
             case MOONSILVER_DWARF:
-                paths.add(PORTRAIT_ROOT_PATH + "dwarf\\");
+                paths.add(PORTRAIT_ROOT_PATH + "dwarf"+separator);
                 break;
             case RED_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\red");
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\orc");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"red");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"orc");
                 break;
             case BLACK_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\black");
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\orc");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"black");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"orc");
                 break;
             case PALE_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\pale");
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\orc");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"pale");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"orc");
                 break;
             case GREEN_ORC:
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\green");
-                paths.add(PORTRAIT_ROOT_PATH + "orc\\orc");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"green");
+                paths.add(PORTRAIT_ROOT_PATH + "orc"+separator+"orc");
                 break;
 
             default:
@@ -1010,7 +1012,7 @@ public class ImageManager {
 
         for (String path : paths) {
             folder = new File(getImageFolderPath() + path);
-            path += "\\";
+            path += ""+separator;
             for (String file : FileManager.listFiles(folder)) {
                 if (new File(getImageFolderPath() + path + file).isFile()) {
                     if (!ListMaster.contains(list, file, false)) {
@@ -1019,7 +1021,7 @@ public class ImageManager {
                 } else if (new File(getImageFolderPath() + path + file).isDirectory()) {
                     for (String subfile : new File(getImageFolderPath() + path + file).list()) {
                         if (!ListMaster.contains(list, subfile, false)) {
-                            list.add(path + file + "\\" + subfile);
+                            list.add(path + file + ""+separator + subfile);
                         } else {
                             continue;
                         }
@@ -1054,7 +1056,7 @@ public class ImageManager {
             path = EMBLEM_PATH + (a.toString().toLowerCase());
             File folder = new File(PATH + path);
 
-            path += "\\";
+            path += ""+separator;
             for (String file : FileManager.listFiles(folder)) {
                 list.add(path + file);
             }
@@ -1117,7 +1119,7 @@ public class ImageManager {
     }
 
     public static Image getGlowFrame(FLAG_COLOR flagColor, int size) {
-        return getImage("UI\\Borders\\neo\\color flag\\" + flagColor.toString() + " " + size);
+        return getImage("UI"+separator+"Borders"+separator+"neo"+separator+"color flag"+separator + flagColor.toString() + " " + size);
     }
 
     public static Image applyGlowFrame(Image image, Image frameImage) {
@@ -1134,7 +1136,7 @@ public class ImageManager {
         if (luck != null) {
             luckVariant = luck ? "good" : "bad";
         }
-        String imgPath = "UI\\Components\\small\\dice " + luckVariant;
+        String imgPath = "UI"+separator+"Components"+separator+"small"+separator+"dice " + luckVariant;
         if (glow) {
             imgPath += " glow";
         }
@@ -1225,7 +1227,7 @@ public class ImageManager {
     }
 
     public static String getRadialSpellIconPath() {
-        return "UI\\Spellbook.png";
+        return "UI"+separator+"Spellbook.png";
     }
 
     public static String getFullSizeImage(Entity entity) {
@@ -1288,40 +1290,40 @@ public class ImageManager {
         SPEC_DEAD2("1d2.png"),
         SPEC_Q("1q.png"),
         SPEC_SEARCH("1s.png"),
-        BACKGROUND_HIGHLIGHT_32("small\\BACKGROUND_HIGHLIGHT_32.png"),
-        DARKENING_32("small\\DARKENING_32.png"),
-        DARKENING_CIRCLE_50("circle\\DARKENING_50.png"),
-        NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64("neo\\info select 64.png"),
-        NEO_INFO_SELECT_HIGHLIGHT("neo\\info select.png"),
-        NEO_INFO_SELECT_HIGHLIGHT_SQUARE_96("neo\\info select square 96.png"),
-        NEO_INFO_SELECT_HIGHLIGHT_SQUARE_128("neo\\info select square.png"),
+        BACKGROUND_HIGHLIGHT_32("small"+separator+"BACKGROUND_HIGHLIGHT_32.png"),
+        DARKENING_32("small"+separator+"DARKENING_32.png"),
+        DARKENING_CIRCLE_50("circle"+separator+"DARKENING_50.png"),
+        NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64("neo"+separator+"info select 64.png"),
+        NEO_INFO_SELECT_HIGHLIGHT("neo"+separator+"info select.png"),
+        NEO_INFO_SELECT_HIGHLIGHT_SQUARE_96("neo"+separator+"info select square 96.png"),
+        NEO_INFO_SELECT_HIGHLIGHT_SQUARE_128("neo"+separator+"info select square.png"),
 
-        NEO_ACTIVE_SELECT_HIGHLIGHT("neo\\active select.png"),
-        NEO_ACTIVE_SELECT_HIGHLIGHT_SQUARE_96("neo\\active select 96.png"),
-        NEO_ACTIVE_SELECT_HIGHLIGHT_SQUARE_64("neo\\active select 64.png"),
+        NEO_ACTIVE_SELECT_HIGHLIGHT("neo"+separator+"active select.png"),
+        NEO_ACTIVE_SELECT_HIGHLIGHT_SQUARE_96("neo"+separator+"active select 96.png"),
+        NEO_ACTIVE_SELECT_HIGHLIGHT_SQUARE_64("neo"+separator+"active select 64.png"),
 
-        NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT("neo\\active enemy select.png"),
-        NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_96("neo\\active enemy select 96.png"),
-        NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_64("neo\\active enemy select 64.png"),
+        NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT("neo"+separator+"active enemy select.png"),
+        NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_96("neo"+separator+"active enemy select 96.png"),
+        NEO_ACTIVE_ENEMY_SELECT_HIGHLIGHT_SQUARE_64("neo"+separator+"active enemy select 64.png"),
 
-        NEO_PATH_HIGHLIGHT_SQUARE_64("neo\\semihighlight 64.png"),
-        NEO_BLUE_HIGHLIGHT_SQUARE_64("neo\\blue 64.png"),
-        NEO_CYAN_HIGHLIGHT_SQUARE_64("neo\\cyan 64.png"),
-        NEO_PURPLE_HIGHLIGHT_SQUARE_64("neo\\purple 64.png"),
-        NEO_WHITE_HIGHLIGHT_SQUARE_64("neo\\white 64.png"),
-        NEO_GREEN_HIGHLIGHT_SQUARE_64("neo\\green 64.png"),
-        NEO_RED_HIGHLIGHT_SQUARE_64("neo\\red 64.png"),
-        RANK_II("neo\\RANK_II.png"),
-        RANK_III("neo\\RANK_III.png"),
-        RANK_IV("neo\\RANK_IV.png"),
-        RANK_V("neo\\RANK_V.png"),
+        NEO_PATH_HIGHLIGHT_SQUARE_64("neo"+separator+"semihighlight 64.png"),
+        NEO_BLUE_HIGHLIGHT_SQUARE_64("neo"+separator+"blue 64.png"),
+        NEO_CYAN_HIGHLIGHT_SQUARE_64("neo"+separator+"cyan 64.png"),
+        NEO_PURPLE_HIGHLIGHT_SQUARE_64("neo"+separator+"purple 64.png"),
+        NEO_WHITE_HIGHLIGHT_SQUARE_64("neo"+separator+"white 64.png"),
+        NEO_GREEN_HIGHLIGHT_SQUARE_64("neo"+separator+"green 64.png"),
+        NEO_RED_HIGHLIGHT_SQUARE_64("neo"+separator+"red 64.png"),
+        RANK_II("neo"+separator+"RANK_II.png"),
+        RANK_III("neo"+separator+"RANK_III.png"),
+        RANK_IV("neo"+separator+"RANK_IV.png"),
+        RANK_V("neo"+separator+"RANK_V.png"),
 
-        SHADOW_64("neo\\shadow 64.png"),
-        CIRCLE_GLOW_50("circle\\circle glow 50.png"),
-        CIRCLE_GLOW_64("circle\\circle glow 64.png"),
-        CIRCLE_GLOW_40("circle\\circle glow 40.png"),
-        CIRCLE_GLOW_32("circle\\circle glow 32.png"),
-        CIRCLE_BEVEL("circle\\circle frame selected.png"),
+        SHADOW_64("neo"+separator+"shadow 64.png"),
+        CIRCLE_GLOW_50("circle"+separator+"circle glow 50.png"),
+        CIRCLE_GLOW_64("circle"+separator+"circle glow 64.png"),
+        CIRCLE_GLOW_40("circle"+separator+"circle glow 40.png"),
+        CIRCLE_GLOW_32("circle"+separator+"circle glow 32.png"),
+        CIRCLE_BEVEL("circle"+separator+"circle frame selected.png"),
 
         // SILVER("silver.png")
         ;
@@ -1329,7 +1331,7 @@ public class ImageManager {
         private Image img;
 
         BORDER(String filename) {
-            this.setFilename("UI\\Borders\\" + filename);
+            this.setFilename("UI"+separator+"Borders"+separator + filename);
 
         }
 
@@ -1394,103 +1396,103 @@ public class ImageManager {
     }
 
     public enum STD_IMAGES {
-        LIGHT("UI\\outlines\\shadows\\light emitter.png"),
-        SCROLL_ATTACK_CHOICE("UI\\components\\neo\\attack choice scroll.png"),
-        SCROLL_ATTACK_TEXT("UI\\components\\neo\\choose attack.png"),
-        SCROLL_END_HORIZONTAL_DOUBLE("UI\\components\\neo\\scroll.png"),
+        LIGHT("UI"+separator+"outlines"+separator+"shadows"+separator+"light emitter.png"),
+        SCROLL_ATTACK_CHOICE("UI"+separator+"components"+separator+"neo"+separator+"attack choice scroll.png"),
+        SCROLL_ATTACK_TEXT("UI"+separator+"components"+separator+"neo"+separator+"choose attack.png"),
+        SCROLL_END_HORIZONTAL_DOUBLE("UI"+separator+"components"+separator+"neo"+separator+"scroll.png"),
 
-        EYE("UI\\bf\\eye.png"),
-        THROW("UI\\components\\small\\throw.png"),
-        ATTACK_OF_OPPORTUNITY("ui\\actions\\modes\\misc\\ATTACK OF OPPORTUNITY.png"),
-        COUNTER_ATTACK("ui\\actions\\modes\\misc\\COUNTER ATTACK.png"),
-        INSTANT_ATTACK("ui\\actions\\modes\\misc\\INSTANT ATTACK.png"),
-        WATCHER("ui\\bf\\WATCHER.png"),
-        WATCHED("ui\\bf\\WATCHED.png"),
-        GUARDIAN("ui\\components\\HC\\GUARDIAN.png"),
-        ALIGNMENT("ui\\value icons\\alignment.png"),
-        BLOCKED_SIGHT("ui\\bf\\blocked sight.png"),
-        COIN("ui\\components\\small\\coin.png"),
-        GUARD("ui\\components\\level editor\\guard.png"),
-        HAND("ui\\components\\level editor\\hand.png"),
-        DEATH("ui\\components\\level editor\\dead.png"),
-        SECRET("ui\\components\\level editor\\secret.png"),
+        EYE("UI"+separator+"bf"+separator+"eye.png"),
+        THROW("UI"+separator+"components"+separator+"small"+separator+"throw.png"),
+        ATTACK_OF_OPPORTUNITY("ui"+separator+"actions"+separator+"modes"+separator+"misc"+separator+"ATTACK OF OPPORTUNITY.png"),
+        COUNTER_ATTACK("ui"+separator+"actions"+separator+"modes"+separator+"misc"+separator+"COUNTER ATTACK.png"),
+        INSTANT_ATTACK("ui"+separator+"actions"+separator+"modes"+separator+"misc"+separator+"INSTANT ATTACK.png"),
+        WATCHER("ui"+separator+"bf"+separator+"WATCHER.png"),
+        WATCHED("ui"+separator+"bf"+separator+"WATCHED.png"),
+        GUARDIAN("ui"+separator+"components"+separator+"HC"+separator+"GUARDIAN.png"),
+        ALIGNMENT("ui"+separator+"value icons"+separator+"alignment.png"),
+        BLOCKED_SIGHT("ui"+separator+"bf"+separator+"blocked sight.png"),
+        COIN("ui"+separator+"components"+separator+"small"+separator+"coin.png"),
+        GUARD("ui"+separator+"components"+separator+"level editor"+separator+"guard.png"),
+        HAND("ui"+separator+"components"+separator+"level editor"+separator+"hand.png"),
+        DEATH("ui"+separator+"components"+separator+"level editor"+separator+"dead.png"),
+        SECRET("ui"+separator+"components"+separator+"level editor"+separator+"secret.png"),
 
-        SEARCH("ui\\macro\\filter.png"),
-        FOOT("ui\\macro\\foot.png"),
-        MOVES("ui\\special\\moves.png"),
-        ACTIONS("ui\\special\\actions.png"),
-        ATTACKS("ui\\special\\attacks.png"),
-        COUNTERS("ui\\special\\counter2.png"),
-        TRAP("ui\\special\\trap.jpg"),
-        WING("ui\\special\\WING.png"),
-        FLAG("ui\\special\\FLAG.png"),
-        NORTH("ui\\DIRECTION POINTER NORTH.png"),
-        WEST("ui\\DIRECTION POINTER WEST.png"),
-        EAST("ui\\DIRECTION POINTER EAST.png"),
-        NONE("ui\\DIRECTION POINTER NONE.png"),
-        DIRECTION_POINTER("ui\\DIRECTION POINTER.png"),
-        SOUTH("ui\\DIRECTION POINTER SOUTH.png"),
-        UNKNOWN_UNIT("ui\\Empty.jpg"),
+        SEARCH("ui"+separator+"macro"+separator+"filter.png"),
+        FOOT("ui"+separator+"macro"+separator+"foot.png"),
+        MOVES("ui"+separator+"special"+separator+"moves.png"),
+        ACTIONS("ui"+separator+"special"+separator+"actions.png"),
+        ATTACKS("ui"+separator+"special"+separator+"attacks.png"),
+        COUNTERS("ui"+separator+"special"+separator+"counter2.png"),
+        TRAP("ui"+separator+"special"+separator+"trap.jpg"),
+        WING("ui"+separator+"special"+separator+"WING.png"),
+        FLAG("ui"+separator+"special"+separator+"FLAG.png"),
+        NORTH("ui"+separator+"DIRECTION POINTER NORTH.png"),
+        WEST("ui"+separator+"DIRECTION POINTER WEST.png"),
+        EAST("ui"+separator+"DIRECTION POINTER EAST.png"),
+        NONE("ui"+separator+"DIRECTION POINTER NONE.png"),
+        DIRECTION_POINTER("ui"+separator+"DIRECTION POINTER.png"),
+        SOUTH("ui"+separator+"DIRECTION POINTER SOUTH.png"),
+        UNKNOWN_UNIT("ui"+separator+"Empty.jpg"),
         UNKNOWN_CELL(UNSEEN_CELL),
         KNOWN_CELL(CELL),
         HIGHLIGHTED_CELL(HL_CELL),
         HIDDEN_CELL(CONCEALED_CELL),
-        BAG("ui\\components\\small\\bag2.png"),
-        MAP_PLACE("ui\\macro\\place3.png"),
-        MAP_PLACE_HIGHLIGHTED("ui\\macro\\place3 highlight.png"),
-        MAP_PLACE_ALT("ui\\macro\\place2.png"),
-        MAP_PLACE_HIGHLIGHTED_ALT("ui\\macro\\place2 highlight.png"),
+        BAG("ui"+separator+"components"+separator+"small"+separator+"bag2.png"),
+        MAP_PLACE("ui"+separator+"macro"+separator+"place3.png"),
+        MAP_PLACE_HIGHLIGHTED("ui"+separator+"macro"+separator+"place3 highlight.png"),
+        MAP_PLACE_ALT("ui"+separator+"macro"+separator+"place2.png"),
+        MAP_PLACE_HIGHLIGHTED_ALT("ui"+separator+"macro"+separator+"place2 highlight.png"),
 
-        BF_BORDER_UP("ui\\custom\\border up.png"),
-        BF_BORDER_UP_DARKENED("ui\\custom\\border up.png"),
+        BF_BORDER_UP("ui"+separator+"custom"+separator+"border up.png"),
+        BF_BORDER_UP_DARKENED("ui"+separator+"custom"+separator+"border up.png"),
 
-        BF_BORDER_DOWN("ui\\custom\\border down.png"),
-        BF_BORDER_DOWN_DARKENED("ui\\custom\\border down.png"),
+        BF_BORDER_DOWN("ui"+separator+"custom"+separator+"border down.png"),
+        BF_BORDER_DOWN_DARKENED("ui"+separator+"custom"+separator+"border down.png"),
 
-        BF_BORDER_DOWN_LEFT("ui\\custom\\border DOWN_LEFT.png"),
-        BF_BORDER_DOWN_LEFT_DARKENED("ui\\custom\\border DOWN_LEFT.png"),
+        BF_BORDER_DOWN_LEFT("ui"+separator+"custom"+separator+"border DOWN_LEFT.png"),
+        BF_BORDER_DOWN_LEFT_DARKENED("ui"+separator+"custom"+separator+"border DOWN_LEFT.png"),
 
-        BF_BORDER_DOWN_RIGHT("ui\\custom\\border DOWN_RIGHT.png"),
-        BF_BORDER_DOWN_RIGHT_DARKENED("ui\\custom\\border DOWN_RIGHT.png"),
+        BF_BORDER_DOWN_RIGHT("ui"+separator+"custom"+separator+"border DOWN_RIGHT.png"),
+        BF_BORDER_DOWN_RIGHT_DARKENED("ui"+separator+"custom"+separator+"border DOWN_RIGHT.png"),
 
-        BF_BORDER_LEFT("ui\\custom\\border LEFT.png"),
-        BF_BORDER_LEFT_DARKENED("ui\\custom\\border LEFT.png"),
+        BF_BORDER_LEFT("ui"+separator+"custom"+separator+"border LEFT.png"),
+        BF_BORDER_LEFT_DARKENED("ui"+separator+"custom"+separator+"border LEFT.png"),
 
-        BF_BORDER_RIGHT("ui\\custom\\border RIGHT.png"),
-        BF_BORDER_RIGHT_DARKENED("ui\\custom\\border RIGHT.png"),
+        BF_BORDER_RIGHT("ui"+separator+"custom"+separator+"border RIGHT.png"),
+        BF_BORDER_RIGHT_DARKENED("ui"+separator+"custom"+separator+"border RIGHT.png"),
 
-        BF_BORDER_UP_RIGHT("ui\\custom\\border UP_RIGHT.png"),
-        BF_BORDER_UP_RIGHT_DARKENED("ui\\custom\\border UP_RIGHT.png"),
+        BF_BORDER_UP_RIGHT("ui"+separator+"custom"+separator+"border UP_RIGHT.png"),
+        BF_BORDER_UP_RIGHT_DARKENED("ui"+separator+"custom"+separator+"border UP_RIGHT.png"),
 
-        BF_BORDER_UP_LEFT("ui\\custom\\border UP_LEFT.png"),
-        BF_BORDER_UP_LEFT_DARKENED("ui\\custom\\border UP_LEFT.png"),
-        ZONE_NODE("ui\\components\\new\\zone.jpg"),
-        BLINDING_LIGHT("ui\\outlines\\BLINDING_LIGHT.jpg"),
-        THICK_DARKNESS("ui\\outlines\\DEEPER_DARKNESS.jpg"),
-        ENGAGER("ui\\components\\new\\exclam2.png"),
-        ENGAGEMENT_TARGET("ui\\components\\new\\swords.png"),
-        HT_LINK_VERTICAL("ui\\components\\ht\\LINK_VERTICAL.png"),
-        RANK_COMP("ui\\components\\ht\\rank comp.png"),
-        RANK_COMP_DARKENED("ui\\components\\ht\\rank comp dark.png"),
-        CROSS("ui\\components\\small\\cross.png"),
-        REQ_BLOCKED("ui\\Borders\\neo\\blocked mid.png"),
-        REQ_MASTERY("ui\\Borders\\neo\\no rank mid.png"),
-        REQ_XP("ui\\Borders\\neo\\no xp mid.png"),
-        WALL_DIAGONAL_DOWN_RIGHT("ui\\BF\\WALL_DOWN_RIGHT.png"),
-        WALL_DIAGONAL_DOWN_LEFT("ui\\BF\\WALL_DOWN_LEFT.png"),
-        WALL_DIAGONAL_UP_RIGHT("ui\\BF\\WALL_UP_RIGHT.png"),
-        WALL_DIAGONAL_UP_LEFT("ui\\BF\\WALL_UP_LEFT.png"),
-        WALL_HORIZONTAL_LEFT("ui\\BF\\WALL_LEFT.png"),
-        WALL_HORIZONTAL_RIGHT("ui\\BF\\WALL_RIGHT.png"),
-        WALL_VERTICAL_UP("ui\\BF\\WALL_UP.png"),
-        WALL_VERTICAL_DOWN("ui\\BF\\WALL_DOWN.png"),
-        WALL_CORNER("ui\\BF\\CORNER SQUARE.png"),
-        WALL_CORNER_ROUND("ui\\BF\\CORNER ROUND.png"),
-        WALL_CORNER_ALMOND("ui\\BF\\CORNER ALMOND.png"),
-        WALL_CORNER_ALMOND_H("ui\\BF\\CORNER ALMOND h.png"),
-        WALL_CORNER_ALMOND_V("ui\\BF\\CORNER ALMOND v.png"),
-        WALL_CORNER_MESH("ui\\BF\\CORNER MESH.png"),
-        WALL_CORNER_DIAMOND("ui\\BF\\CORNER diamond.png"),;
+        BF_BORDER_UP_LEFT("ui"+separator+"custom"+separator+"border UP_LEFT.png"),
+        BF_BORDER_UP_LEFT_DARKENED("ui"+separator+"custom"+separator+"border UP_LEFT.png"),
+        ZONE_NODE("ui"+separator+"components"+separator+"new"+separator+"zone.jpg"),
+        BLINDING_LIGHT("ui"+separator+"outlines"+separator+"BLINDING_LIGHT.jpg"),
+        THICK_DARKNESS("ui"+separator+"outlines"+separator+"DEEPER_DARKNESS.jpg"),
+        ENGAGER("ui"+separator+"components"+separator+"new"+separator+"exclam2.png"),
+        ENGAGEMENT_TARGET("ui"+separator+"components"+separator+"new"+separator+"swords.png"),
+        HT_LINK_VERTICAL("ui"+separator+"components"+separator+"ht"+separator+"LINK_VERTICAL.png"),
+        RANK_COMP("ui"+separator+"components"+separator+"ht"+separator+"rank comp.png"),
+        RANK_COMP_DARKENED("ui"+separator+"components"+separator+"ht"+separator+"rank comp dark.png"),
+        CROSS("ui"+separator+"components"+separator+"small"+separator+"cross.png"),
+        REQ_BLOCKED("ui"+separator+"Borders"+separator+"neo"+separator+"blocked mid.png"),
+        REQ_MASTERY("ui"+separator+"Borders"+separator+"neo"+separator+"no rank mid.png"),
+        REQ_XP("ui"+separator+"Borders"+separator+"neo"+separator+"no xp mid.png"),
+        WALL_DIAGONAL_DOWN_RIGHT("ui"+separator+"BF"+separator+"WALL_DOWN_RIGHT.png"),
+        WALL_DIAGONAL_DOWN_LEFT("ui"+separator+"BF"+separator+"WALL_DOWN_LEFT.png"),
+        WALL_DIAGONAL_UP_RIGHT("ui"+separator+"BF"+separator+"WALL_UP_RIGHT.png"),
+        WALL_DIAGONAL_UP_LEFT("ui"+separator+"BF"+separator+"WALL_UP_LEFT.png"),
+        WALL_HORIZONTAL_LEFT("ui"+separator+"BF"+separator+"WALL_LEFT.png"),
+        WALL_HORIZONTAL_RIGHT("ui"+separator+"BF"+separator+"WALL_RIGHT.png"),
+        WALL_VERTICAL_UP("ui"+separator+"BF"+separator+"WALL_UP.png"),
+        WALL_VERTICAL_DOWN("ui"+separator+"BF"+separator+"WALL_DOWN.png"),
+        WALL_CORNER("ui"+separator+"BF"+separator+"CORNER SQUARE.png"),
+        WALL_CORNER_ROUND("ui"+separator+"BF"+separator+"CORNER ROUND.png"),
+        WALL_CORNER_ALMOND("ui"+separator+"BF"+separator+"CORNER ALMOND.png"),
+        WALL_CORNER_ALMOND_H("ui"+separator+"BF"+separator+"CORNER ALMOND h.png"),
+        WALL_CORNER_ALMOND_V("ui"+separator+"BF"+separator+"CORNER ALMOND v.png"),
+        WALL_CORNER_MESH("ui"+separator+"BF"+separator+"CORNER MESH.png"),
+        WALL_CORNER_DIAMOND("ui"+separator+"BF"+separator+"CORNER diamond.png"),;
 
         private String path;
         private Image image;
@@ -1518,7 +1520,7 @@ public class ImageManager {
                 return getImage();
             }
             String name = StringMaster.getLastPathSegment(path);
-            return ImageManager.getImage(path.replace(name, "") + pathPrefix + "\\" + name);
+            return ImageManager.getImage(path.replace(name, "") + pathPrefix + ""+separator + name);
         }
 
         public Image getSuffixedImage(String suffix) {

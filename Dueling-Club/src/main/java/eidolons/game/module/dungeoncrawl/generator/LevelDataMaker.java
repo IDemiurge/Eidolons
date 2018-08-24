@@ -42,9 +42,29 @@ public class LevelDataMaker {
         initSublevelType(data, subType);
         initLocationType(data, locationType);
 
+
         data.setReqs(getDefaultReqs(data));
 
         return data;
+    }
+    public static LEVEL_DATA_MODIFICATION[] getMods(LOCATION_TYPE locationType) {
+        switch (locationType) {
+            case CRYPT:
+                return new LEVEL_DATA_MODIFICATION[]{
+
+                };
+        }
+        return new LEVEL_DATA_MODIFICATION[0];
+    }
+
+    public enum LEVEL_DATA_MODIFICATION{
+        LENGTHEN_MAIN_PATH,
+        NO_DOORS,
+        WRAP_ROOMS,
+        WRAP_TYPE,
+        ;
+        Object arg;
+
     }
 
     private static void initSublevelType(LevelData data, SUBLEVEL_TYPE subType) {
@@ -132,7 +152,7 @@ public class LevelDataMaker {
 
     private static ROOM_TEMPLATE_GROUP[] getTemplatesForLocationType(LOCATION_TYPE locationType) {
         if (LevelGenerator.TEST_MODE)
-            locationType = LOCATION_TYPE.CEMETERY;
+            locationType =LevelGenerator.TEST_LOCATION_TYPE;
         //        return new ROOM_TEMPLATE_GROUP[]{
         //         ROOM_TEMPLATE_GROUP.CRYPT,
         //        };
@@ -153,11 +173,13 @@ public class LevelDataMaker {
             case CRYPT:
                 return new ROOM_TEMPLATE_GROUP[]{
                  ROOM_TEMPLATE_GROUP.CRYPT,
+                 ROOM_TEMPLATE_GROUP.CRYPT_TOWER,
                  ROOM_TEMPLATE_GROUP.TOWER,
                  ROOM_TEMPLATE_GROUP.TEMPLE,
                 };
             case BARROW:
                 return new ROOM_TEMPLATE_GROUP[]{
+                 ROOM_TEMPLATE_GROUP.CAVE_MAZE,
                  ROOM_TEMPLATE_GROUP.CRYPT,
                  ROOM_TEMPLATE_GROUP.CAVE,
                  ROOM_TEMPLATE_GROUP.MAZE,
@@ -165,7 +187,12 @@ public class LevelDataMaker {
             case HIVE:
                 break;
             case DUNGEON:
-                return new ROOM_TEMPLATE_GROUP[]{ROOM_TEMPLATE_GROUP.CRYPT};
+                return new ROOM_TEMPLATE_GROUP[]{
+                 ROOM_TEMPLATE_GROUP.DUNGEON,
+                 ROOM_TEMPLATE_GROUP.DUNGEON_CASTLE,
+                 ROOM_TEMPLATE_GROUP.TEMPLE_DUNGEON,
+                 ROOM_TEMPLATE_GROUP.CRYPT,
+                };
             case SEWER:
                 break;
             case HELL:
@@ -173,15 +200,30 @@ public class LevelDataMaker {
             case ASTRAL:
                 break;
             case ARCANE:
-                break;
+                return new ROOM_TEMPLATE_GROUP[]{
+                 ROOM_TEMPLATE_GROUP.TOWER,
+                 ROOM_TEMPLATE_GROUP.TOWER_TEMPLE,
+                 ROOM_TEMPLATE_GROUP.CRYPT_TOWER,
+                 ROOM_TEMPLATE_GROUP.CASTLE_TEMPLE,
+                };
             case DEN:
                 break;
             case RUIN:
                 break;
             case TEMPLE:
-                break;
+                return new ROOM_TEMPLATE_GROUP[]{
+                 ROOM_TEMPLATE_GROUP.TEMPLE,
+                 ROOM_TEMPLATE_GROUP.TEMPLE_DUNGEON,
+                 ROOM_TEMPLATE_GROUP.TEMPLE_CRYPT,
+                 ROOM_TEMPLATE_GROUP.CASTLE_TEMPLE,
+                };
             case CASTLE:
-                break;
+                return new ROOM_TEMPLATE_GROUP[]{
+                 ROOM_TEMPLATE_GROUP.CASTLE,
+                 ROOM_TEMPLATE_GROUP.DUNGEON_CASTLE,
+                 ROOM_TEMPLATE_GROUP.CASTLE_TEMPLE,
+                 ROOM_TEMPLATE_GROUP.TEMPLE,
+                };
             case HOUSE:
                 break;
             case GROVE:

@@ -298,8 +298,11 @@ public abstract class RngFiller implements RngFillerInterface {
 
     @Override
     public LEVEL_VALUES getFillCoefConst() {
-        return null;
+
+        return LevelData.getFillCoefValue(getFillCellType());
     }
+
+    protected abstract ROOM_CELL getFillCellType();
 
     public void manualFill() {
         //before auto fill?

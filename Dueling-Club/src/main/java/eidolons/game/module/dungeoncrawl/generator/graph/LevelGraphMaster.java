@@ -114,6 +114,9 @@ public class LevelGraphMaster {
         LevelGraphNode[] tipNodes = candidates.stream().distinct().limit(zones.size())
          .collect(Collectors.toList()).toArray(new LevelGraphNode[zones.size()]);
         for (int i = 0; i < tipNodes.length; i++) {
+            if (tipNodes[i]==null) {
+                tipNodes[i]=unallocated.remove(RandomWizard.getRandomListIndex(unallocated));
+            }
             tipNodes[i].setZoneIndex(i);
         }
         Loop loop = new Loop(graph.getNodes().size() * 2);
@@ -359,7 +362,8 @@ public class LevelGraphMaster {
         }
         //apply rules that connect arbitrary nodes
         //TODO if enter/exit room is unconnected, it's a fail!
-        unconnected.forEach(node -> graph.removeLevelGraphNode(node));
+        unconnected.removeIf(node -> ListMaster.isNotEmpty(graph.getAdjList().get(node)));
+         unconnected.forEach(node -> graph.removeLevelGraphNode(node));
     }
 
 
@@ -379,13 +383,15 @@ public class LevelGraphMaster {
             return 0;
         int val = RandomWizard.getRandomInt(10) + 5;
 
-        val = val * getTypeConnectPriorityMod(node) / 100;
+        val = val * getTypeConnectPriorityMod(to, node) / 100;
         return val;
     }
 
-    private int getTypeConnectPriorityMod(LevelGraphNode node) {
+    private int getTypeConnectPriorityMod(LevelGraphNode to, LevelGraphNode node) {
         switch (node.getRoomType()) {
             case THRONE_ROOM:
+                if (to.getRoomType()==ROOM_TYPE.ENTRANCE_ROOM)
+                    return 0;
                 return 200;
             case TREASURE_ROOM:
             case DEATH_ROOM:

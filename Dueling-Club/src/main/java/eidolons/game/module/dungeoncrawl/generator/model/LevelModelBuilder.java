@@ -253,6 +253,7 @@ public class LevelModelBuilder {
         }
         nodeModelMap.put(node, room);
         room.setExitTemplate(roomExitTemplate);
+        room.setZone(model.getZone(node));
         return room;
     }
 
@@ -264,6 +265,7 @@ public class LevelModelBuilder {
         for (LevelGraphEdge edge : new HashSet<>(links)) {
             Loop loop = new Loop(30); //try random exits and stuff for this node
             LevelGraphNode nodeToBuildFrom = edge.getNodeTwo();
+            zone = model.getZone(nodeToBuildFrom);
             while (true) {
                 if (loop.ended()) {
                     continue loop;

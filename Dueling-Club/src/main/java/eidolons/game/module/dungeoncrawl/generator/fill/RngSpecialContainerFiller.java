@@ -25,6 +25,10 @@ public class RngSpecialContainerFiller extends RngFiller {
     }
 
     @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.SPECIAL_CONTAINER;
+    }
+    @Override
     public boolean isCornersOnly() {
         return RandomWizard.random();
     }

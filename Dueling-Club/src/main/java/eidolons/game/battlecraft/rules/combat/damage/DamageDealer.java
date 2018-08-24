@@ -13,6 +13,7 @@ import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
+import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.ActionEnums;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Ref;
@@ -390,6 +391,9 @@ public class DamageDealer {
         boolean annihilated = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkUnitAnnihilated((Unit) attacked);
         boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
 
+        if (!dead) {
+            dead = attacked.checkBool(STD_BOOLS.FAUX);
+        }
         if (dead) {
             // will start new entry... a good preCheck
             try {

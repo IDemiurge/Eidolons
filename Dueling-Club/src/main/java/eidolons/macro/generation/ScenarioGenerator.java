@@ -101,6 +101,9 @@ public class ScenarioGenerator {
     }
 
     public static ObjType generateRandomLevelScenario(Entity place){
+        return generateRandomLevelScenario(100, place);
+    }
+        public static ObjType generateRandomLevelScenario(int tries, Entity place){
         ObjType templateType =
          DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
 
@@ -126,7 +129,7 @@ public class ScenarioGenerator {
         } else
         for (SUBLEVEL_TYPE type : types) {
 
-            DungeonLevel level = new LevelGenerator(100).generateLevel(type, locationType
+            DungeonLevel level = new LevelGenerator(tries).generateLevel(type, locationType
              );
             int power = 300;//DC_Game.game.getMetaMaster().getPartyManager().getParty().getParamSum(PARAMS.POWER);
             level.setPowerLevel(power);

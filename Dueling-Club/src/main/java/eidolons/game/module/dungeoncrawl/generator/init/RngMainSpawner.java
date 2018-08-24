@@ -118,7 +118,7 @@ public class RngMainSpawner {
                   .chain(UNIT_GROUP.UNDEAD_WRAITH, 6)
                   .chain(UNIT_GROUP.PALE_ORCS, 5)
                   .getRandomByWeight();
-            case Survivor:
+            case Stony:
                 return surface ?
                  new WeightMap<>(UNIT_GROUP.class)
                   .chain(UNIT_GROUP.HUMANS_BANDITS, 10)
@@ -130,8 +130,8 @@ public class RngMainSpawner {
                   .getRandomByWeight()
                  :
                  new WeightMap<>(UNIT_GROUP.class)
-                  .chain(UNIT_GROUP.DWARVES, 15)
-                  .chain(UNIT_GROUP.DUNGEON, 10)
+                  .chain(UNIT_GROUP.DUNGEON, 20)
+                  .chain(UNIT_GROUP.DWARVES, 12)
                   .chain(UNIT_GROUP.MUTANTS, 6)
                   .chain(UNIT_GROUP.PALE_ORCS, 6)
                   .chain(UNIT_GROUP.CRITTERS, 6)

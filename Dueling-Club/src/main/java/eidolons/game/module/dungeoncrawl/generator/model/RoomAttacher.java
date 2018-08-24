@@ -166,7 +166,9 @@ public class RoomAttacher {
             if (roomModel == null) {
 //                templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
 //                continue;
+                if (roomExitTemplate==EXIT_TEMPLATE.CROSSROAD)
                 break;
+                else return findFitting(entranceCoordinates, EXIT_TEMPLATE.CROSSROAD, roomType, parentExit, zone);
             }
 
             Coordinates roomCoordinates = getRoomCoordinates(entranceCoordinates, roomEntrance,

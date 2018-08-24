@@ -22,9 +22,13 @@ public class RngLightFiller extends RngFiller {
     }
     @Override
     public LEVEL_VALUES getFillCoefConst() {
-        return LEVEL_VALUES.FILL_LIGHT_COEF;
+        return LEVEL_VALUES.FILL_LIGHT_EMITTER_COEF;
     }
 
+    @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.LIGHT_EMITTER;
+    }
     @Override
     public float getFillCoef() {
         return 0.5f;

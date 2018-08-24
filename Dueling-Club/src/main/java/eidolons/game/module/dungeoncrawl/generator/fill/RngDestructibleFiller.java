@@ -12,6 +12,10 @@ public class RngDestructibleFiller extends RngFiller {
     }
 
     @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.DESTRUCTIBLE;
+    }
+    @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
         return 2;
     }

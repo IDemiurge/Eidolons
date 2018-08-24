@@ -139,9 +139,18 @@ public class ContentGenerator {
 
     public static final void afterRead() {
         generateIndestructibleWalls();
+        generateFalseWalls();
     }
 
-    public static void generateIndestructibleWalls() {
+    public static void generateFalseWalls() {
+        for (ObjType type : DataManager.getTypesGroup(
+         DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
+            ObjType newType = new ObjType("Strange " +type.getName() , type);
+            newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.FAUX.name());
+            DataManager.addType(newType);
+        }
+    }
+        public static void generateIndestructibleWalls() {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
 
             ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);

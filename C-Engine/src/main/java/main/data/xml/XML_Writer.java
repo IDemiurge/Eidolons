@@ -11,6 +11,7 @@ import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.entity.Entity;
 import main.entity.type.ObjType;
+import main.system.PathUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.TimeMaster;
 import main.system.auxiliary.data.FileManager;
@@ -24,9 +25,10 @@ import java.util.*;
 public class XML_Writer {
 
     public static final int STR_CAPACITY = 15000;
+    public static final String separator = PathUtils.getPathSeparator();
     private static final String XML = "XML";
-    private static final String BACK_UP = "\\backup";
-    private static final String RESERVE = "\\reserve";
+    private static final String BACK_UP = separator+"backup";
+    private static final String RESERVE = separator+"reserve";
     private static final String EMPTY_XML = "<XML></XML>";
     static Map<String, ObjType> map;
     static String subgroup = "";
@@ -445,7 +447,7 @@ public class XML_Writer {
                 return false;
             }
         }
-        return FileManager.write(content, path + "\\" + fileName);
+        return FileManager.write(content, path + separator+"" + fileName);
     }
 
     public static synchronized void setBackUpMode(boolean b) {

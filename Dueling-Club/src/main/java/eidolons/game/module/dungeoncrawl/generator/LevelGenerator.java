@@ -1,6 +1,5 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
-import eidolons.content.PROPS;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
@@ -11,17 +10,10 @@ import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModelBuilder;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
-import eidolons.macro.generation.ScenarioGenerator;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
-import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.data.DataManager;
 import main.data.XLinkedMap;
-import main.data.filesys.PathFinder;
-import main.entity.type.ObjType;
-import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.Loop;
-import main.system.auxiliary.data.FileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +33,19 @@ import static main.system.auxiliary.log.LogMaster.log;
  */
 public class LevelGenerator {
 
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public static final boolean REAL = true;
     public static final boolean LOGGING_OFF = false;
     private static final java.lang.String REAL_TEST_PLACE_TYPE_NAME = "Cemetery";
+    public static LOCATION_TYPE TEST_LOCATION_TYPE = LOCATION_TYPE.CEMETERY;
+    public static LOCATION_TYPE[] TEST_LOCATION_TYPES = {
+     LOCATION_TYPE.CRYPT,
+     LOCATION_TYPE.ARCANE,
+     LOCATION_TYPE.TEMPLE,
+     LOCATION_TYPE.CASTLE,
+     LOCATION_TYPE.DUNGEON,
+     LOCATION_TYPE.CEMETERY,
+    };
     private int maxTries;
 
     public LevelGenerator(int maxTries) {
@@ -94,18 +95,35 @@ public class LevelGenerator {
         //        realGeneration();
     }
 
+    private static void scenarioTypeGeneration() {
+        //        ObjType placeType = DataManager.getType(REAL_TEST_PLACE_TYPE_NAME, MACRO_OBJ_TYPES.PLACE);
+        //        ScenarioGenerator.generateRandomLevelScenario(
+        //         TEST_MODE ? 1 : 10, placeType);
+    }
+
     private static void realGeneration() {
         DC_Engine.mainMenuInit();
         DC_Engine.dataInit(true);
         //        DataManager.getTypesSubGroup()
-        ObjType placeType = DataManager.getType(REAL_TEST_PLACE_TYPE_NAME, MACRO_OBJ_TYPES.PLACE);
-        ObjType scenarioType = ScenarioGenerator.generateRandomLevelScenario(placeType);
+        List<DungeonLevel> levels = new ArrayList<>();
+        for (LOCATION_TYPE type : TEST_LOCATION_TYPES) {
+            TEST_LOCATION_TYPE = type; // java sucks
+            try {
+                LevelData data = LevelDataMaker.generateData(SUBLEVEL_TYPE.COMMON, type);
+                DungeonLevel level = new LevelGenerator(5).generateLevel(
+                 data, false);
+                levels.add(level);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
 
-        int i = 0;
-        for (String path : ContainerUtils.open(scenarioType.getProperty(PROPS.SCENARIO_MISSIONS))) {
-            String contents =
-             PathFinder.getRandomLevelPath() + FileManager.readFile(path);
-            log(1, i++ + ": \n" + contents);
+
+        }
+        for (DungeonLevel level : levels) {
+            main.system.auxiliary.log.LogMaster.log(1, "\n" +
+             "\n" +
+             level.getLocationType() +
+             "\n " + level);
 
         }
     }
@@ -122,6 +140,10 @@ public class LevelGenerator {
     }
 
     public DungeonLevel generateLevel(LevelData data) {
+        return generateLevel(data, false);
+    }
+
+    public DungeonLevel generateLevel(LevelData data, boolean allowInvalid) {
         Loop loop = new Loop(maxTries);
         while (loop.continues()) {
             try {
@@ -132,7 +154,7 @@ public class LevelGenerator {
                 if (data.isInitializeRequired())
                     new RngLevelInitializer().init(level);
 
-                if (new LevelValidator().isLevelValid(level))
+                if (new LevelValidator().isLevelValid(level) || allowInvalid)
                     return level;
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);

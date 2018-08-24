@@ -104,8 +104,18 @@ OOO##
         ROOM_COUNT_MOD(100, 10, 300),
         MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
         MAIN_PATH_LENGTH(3, 2, 20),
-        BONUS_PATH_LENGTH(2, 1, 15), RANDOM_ROTATION_CHANCE(65, 0, 100),
-        FILL_LIGHT_COEF(100, 0, 500),
+        BONUS_PATH_LENGTH(2, 1, 15),
+
+        RANDOM_ROTATION_CHANCE(65, 0, 100),
+
+        FILL_LIGHT_EMITTER_COEF(100, 0, 500),
+        FILL_WALL_WITH_LIGHT_OVERLAY_COEF(100, 0, 500),
+        FILL_DESTRUCTIBLE_COEF(100, 0, 500),
+        FILL_CONTAINER_COEF(100, 0, 500),
+        FILL_SPECIAL_CONTAINER_COEF(100, 0, 500),
+        FILL_ART_OBJ_COEF(100, 0, 500),
+        FILL_SPECIAL_ART_OBJ_COEF(100, 0, 500),
+        FILL_OVERLAY_COEF(100, 0, 500),
 
         //                                       <><><><><>
 
@@ -196,10 +206,10 @@ OOO##
 
         GUARDS("G"),
         PATROL("G"),
-        AMBUSH("G"),
-        CROWD("G"),
-        IDLERS("G"),
-        STALKER("G") ,
+        AMBUSH("M"),
+        CROWD("W"),
+        IDLERS("i"),
+        STALKER("T") ,
         MINI_BOSS("b"),
         BOSS("B"),
 
@@ -209,6 +219,12 @@ OOO##
         LOCAL_KEY("k"),
         GLOBAL_KEY("K"),
         DESTRUCTIBLE("%"),
+
+//RANDOM
+
+        RANDOM_PASSAGE("p"),
+        RANDOM_SPAWN_GROUP("c"),
+        RANDOM_OBJECT("r"),
 
 
         //ROOM_TYPES*

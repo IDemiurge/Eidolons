@@ -69,6 +69,10 @@ public class LevelValidator {
         return true;
     }
 
+    public LevelStats getStats() {
+        return stats;
+    }
+
     public boolean isLevelValid(DungeonLevel level) {
         this.level = level;
         initRequirements(level.getData(), level.getModel());
@@ -163,7 +167,7 @@ public class LevelValidator {
                 return false;
         }
         for (LevelZone levelZone : model.getZones()) {
-            if (levelZone.getSubParts().size() < 3)
+            if (levelZone.getSubParts().size() < 1)
                 return false;
 
         }

@@ -13,7 +13,7 @@ import static main.content.enums.entity.UnitEnums.UNITS_TYPES.*;
 public class RngUnitProvider {
     public static WeightMap<String> getGroupWeightMap(DUNGEON_STYLE style, boolean underground) {
         switch (style) {
-            case Castle:
+            case Knightly:
                 break;
             case Holy:
                 break;
@@ -25,7 +25,7 @@ public class RngUnitProvider {
                 break;
             case Brimstone:
                 break;
-            case Survivor:
+            case Stony:
                 break;
             case Grimy:
                 return underground ? new WeightMap<String>()

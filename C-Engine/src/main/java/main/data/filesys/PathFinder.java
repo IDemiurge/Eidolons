@@ -14,11 +14,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PathFinder {
 
-    private static final String BG_PATH = "big" + PathUtils.getPathSeparator();
+    public static final String PATH_SEPARATOR = PathUtils.getPathSeparator();
+    private static final String BG_PATH = "big" + PATH_SEPARATOR;
     private static final String PRESENTATION = "presentation" + PathUtils.getPathSeparator();
     private static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
-    private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + "//templates";
+    private static final String ABILITY_TEMPLATES_PATH = MICRO_MODULE_NAME + PathUtils.getPathSeparator() +
+     "templates";
     private static String MACRO_MODULE_NAME = "macro";
     private static String XML_PATH;
     private static String ENGINE_PATH;
@@ -353,9 +355,12 @@ public class PathFinder {
     }
 
     public static String getSkinPath() {
-        return
-         getImagePath() +
-          "UI\\components\\skin\\neutralizer-ui.json";
+        return StrPathBuilder.build(
+         getImagePath() ,
+          "UI",
+           "components" ,
+           "skin" ,
+           "neutralizer-ui.json");
     }
 
     public static String getPerkImagePath() {

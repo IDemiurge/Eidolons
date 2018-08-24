@@ -340,7 +340,9 @@ public class GenericEnums {
         SPECTRUM_LIGHT,
         CANCEL_FOR_FALSE,
         BUCKLER_THROWER,
-        LEFT_RIGHT_REACH,;
+        LEFT_RIGHT_REACH,
+        FAUX,
+        ;
 
         // TODO performance would be enhanced of course if I had real booleans
         // instead of a container to be checked.

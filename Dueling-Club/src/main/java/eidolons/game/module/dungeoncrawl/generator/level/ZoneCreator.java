@@ -88,7 +88,7 @@ public class ZoneCreator {
                 break;
         }
         DUNGEON_STYLE style = TileConverter.getStyle(subdungeonType, alt);
-        while (lastStyle == style) {
+        while (lastStyle == style && RandomWizard.chance(80)) {
             style = TileConverter.getStyle(subdungeonType, true);
         }
         lastStyle = style;

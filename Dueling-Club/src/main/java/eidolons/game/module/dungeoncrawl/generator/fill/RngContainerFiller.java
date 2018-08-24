@@ -52,6 +52,11 @@ public class RngContainerFiller extends RngFiller {
     }
 
     @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.CONTAINER;
+    }
+
+    @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
         return 2;
     }

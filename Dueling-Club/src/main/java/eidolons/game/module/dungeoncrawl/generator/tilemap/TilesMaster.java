@@ -66,6 +66,9 @@ public class TilesMaster {
     }
 
     public static boolean isPassable(ROOM_CELL type) {
+        if (type == null) {
+            return false;
+        }
         switch (type) {
             case INDESTRUCTIBLE:
             case WALL:

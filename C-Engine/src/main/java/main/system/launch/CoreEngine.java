@@ -4,7 +4,6 @@ import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.data.ability.ARGS;
 import main.data.ability.Mapper;
-import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
@@ -69,7 +68,6 @@ public class CoreEngine {
 
         }
         SoundMaster.initialize();
-        ResourceManager.init();
         DataManager.init();
         Chronos.logTimeElapsedForMark("SYSTEM INIT");
     }

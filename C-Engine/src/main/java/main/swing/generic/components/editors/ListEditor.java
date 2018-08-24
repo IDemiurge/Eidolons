@@ -5,7 +5,6 @@ import main.content.DC_TYPE;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS;
 import main.data.DataManager;
-import main.data.filesys.ResourceManager;
 import main.data.xml.XML_Reader;
 import main.elements.Filter;
 import main.elements.conditions.Condition;
@@ -17,6 +16,7 @@ import main.swing.generic.components.editors.lists.ListChooser;
 import main.swing.generic.components.editors.lists.ListChooser.SELECTION_MODE;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.Err;
 
@@ -90,7 +90,7 @@ public class ListEditor implements EDITOR {
     public String launch(String value, String name) {
         if (listData == null && !listDataSet) {
             if (res_name != null) {
-                listData = ResourceManager.getFilesInFolder(res_name);
+                listData = FileManager.getFileNames(FileManager.getFilesFromDirectory(res_name, false));
                 // StringMaster.formatResList(listData);
                 Collections.sort(listData);
             } else if (ENUM) {

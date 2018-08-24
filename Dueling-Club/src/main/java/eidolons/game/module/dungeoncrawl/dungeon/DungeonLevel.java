@@ -52,6 +52,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     @Override
+    public String toString() {
+        return toXml();
+    }
+
+    @Override
     public String toXml() {
         //TODO save original model map!
         model.offsetCoordinates();

@@ -12,6 +12,10 @@ public class RngWallLightFiller extends RngFiller{
         super(weightMap);
     }
 
+    @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.WALL_WITH_LIGHT_OVERLAY;
+    }
 
     protected int getWrapByExitChance(Room room) {
         return 50;

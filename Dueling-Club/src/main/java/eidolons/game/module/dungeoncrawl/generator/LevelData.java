@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
@@ -141,6 +142,13 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
             doorChanceMap.put(type, c);
         }
         return c;
+    }
+    public int getFillPercentage(ROOM_CELL type) {
+         return getIntValue (getFillCoefValue(type));
+    }
+
+    public static LEVEL_VALUES getFillCoefValue(ROOM_CELL type) {
+        return LEVEL_VALUES.valueOf("FILL_" + type.name() + "_COEF");
     }
 
     public boolean isSurface() {

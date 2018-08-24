@@ -270,6 +270,7 @@ public class Room extends RoomModel {
 
     public void setZone(LevelZone zone) {
         this.zone = zone;
+        main.system.auxiliary.log.LogMaster.log(1,this+ " setZone " +zone);
     }
 
     public List<Coordinates> getExitCoordinates() {

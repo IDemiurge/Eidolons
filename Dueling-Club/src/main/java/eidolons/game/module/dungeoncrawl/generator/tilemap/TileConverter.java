@@ -55,11 +55,11 @@ public class TileConverter {
             case CASTLE:
                 if (alt)
                     return RandomWizard.random() ? Arcane : DarkElegance;
-                return Castle;
+                return Knightly;
             case SEWER:
                 if (alt)
                     return RandomWizard.random() ?
-                     Survivor : Somber;
+                     Stony : Somber;
                 return Grimy;
             case HELL:
                 if (alt)
@@ -96,11 +96,11 @@ public class TileConverter {
             case HOUSE:
                 if (alt)
                     return RandomWizard.random() ? DarkElegance : Somber;
-                return Survivor;
+                return Pagan;
             case CAMP:
                 if (alt)
-                    return RandomWizard.random() ? Pagan : Somber;
-                return Survivor;
+                    return RandomWizard.random() ? Stony : Somber;
+                return Pagan;
             case TEMPLE:
                 if (alt)
                     return RandomWizard.random() ? DarkElegance : Somber;
@@ -215,13 +215,13 @@ public class TileConverter {
 
             case Brimstone:
                 break;
-            case Survivor:
+            case Stony:
                 break;
             case DarkElegance:
                 break;
             case Grimy:
                 break;
-            case Castle:
+            case Knightly:
                 //               map.put(BF_OBJ_TYPES_LIGHT_EMITTERS.BRAZIER.getName(), 5);
                 break;
         }
@@ -232,9 +232,9 @@ public class TileConverter {
      * Encapsulates Ambience, decor, illumination
      */
     public enum DUNGEON_STYLE {
-        Castle,
+        Knightly,
         Holy,
-        Survivor,
+        Stony,
         Pagan,
         DarkElegance,
         PureEvil,

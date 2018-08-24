@@ -30,6 +30,15 @@ public class LevelZone extends LevelLayer<LevelBlock>{
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Zone #"+id+":" +
+         type +
+         " with style "+ style + ", " +
+         getSubParts().size() +
+         "blocks";
+    }
+
     public LevelZone(ZONE_TYPE type, ROOM_TEMPLATE_GROUP templateGroup, DUNGEON_STYLE style, int id) {
         this.type = type;
         this.templateGroup = templateGroup;

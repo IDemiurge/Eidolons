@@ -18,6 +18,10 @@ public class RngWallDecorFiller extends RngFiller {
     }
 
     @Override
+    protected ROOM_CELL getFillCellType() {
+        return ROOM_CELL.WALL_WITH_DECOR_OVERLAY;
+    }
+    @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
         return 0;
     }

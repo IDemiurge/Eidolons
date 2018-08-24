@@ -75,58 +75,69 @@ public class RngBfObjProvider {
             case DarkElegance:
                 return overlaying
                  ? new WeightMap<String>().
-                 putChain(HANGING_WITCHFIRE_BRAZIER.getName(), 10).
-                 putChain(ELVEN_LANTERN.getName(), 1).
-                 putChain(HANGING_NETHERFLAME_BRAZIER.getName(), 1).
-                 putChain(HANGING_COLDFIRE_BRAZIER.getName(), 1).
-                 putChain(AMETHYST_LANTERN.getName(), 1).
-                 putChain(SAPPHIRE_LANTERN.getName(), 1).
-                 putChain(EMERALD_LANTERN.getName(), 1)
+                 chain(HANGING_WITCHFIRE_BRAZIER, 10).
+                 chain(ELVEN_LANTERN, 1).
+                 chain(HANGING_NETHERFLAME_BRAZIER, 1).
+                 chain(HANGING_COLDFIRE_BRAZIER, 1).
+                 chain(AMETHYST_LANTERN, 1).
+                 chain(SAPPHIRE_LANTERN, 1).
+                 chain(EMERALD_LANTERN, 1)
                  : new WeightMap<String>().
-                 putChain(WITCHFIRE_BRAZIER.getName(), 10).
-                 putChain(ELVEN_BRAZIER.getName(), 1).
-                 putChain(NETHERFLAME_BRAZIER.getName(), 1).
-                 putChain(COLDFIRE_BRAZIER.getName(), 1);
+                 chain(WITCHFIRE_BRAZIER, 10).
+                 chain(ELVEN_BRAZIER, 1).
+                 chain(NETHERFLAME_BRAZIER, 1).
+                 chain(COLDFIRE_BRAZIER, 1);
             case Somber:
                 return overlaying
                  ? new WeightMap<String>().
-                 putChain(HANGING_NETHERFLAME_BRAZIER.getName(), 10).
-                 putChain(HANGING_BRAZIER.getName(), 1).
-                 putChain(HANGING_WITCHFIRE_BRAZIER.getName(), 1).
-                 putChain(HANGING_COLDFIRE_BRAZIER.getName(), 1).
-                 putChain(AMETHYST_LANTERN.getName(), 1).
-                 putChain(SAPPHIRE_LANTERN.getName(), 1).
-                 putChain(EMERALD_LANTERN.getName(), 1)
+                 chain(HANGING_NETHERFLAME_BRAZIER, 10).
+                 chain(HANGING_BRAZIER, 1).
+                 chain(HANGING_WITCHFIRE_BRAZIER, 1).
+                 chain(HANGING_COLDFIRE_BRAZIER, 1).
+                 chain(AMETHYST_LANTERN, 1).
+                 chain(SAPPHIRE_LANTERN, 1).
+                 chain(EMERALD_LANTERN, 1)
                  : new WeightMap<String>().
-                 putChain(NETHERFLAME_BRAZIER.getName(), 10).
-                 putChain(ELDRITCH_ROD.getName(), 1).
-                 putChain(WITCHFIRE_BRAZIER.getName(), 1).
-                 putChain(COLDFIRE_BRAZIER.getName(), 1);
+                 chain(NETHERFLAME_BRAZIER, 10).
+                 chain(ELDRITCH_ROD, 1).
+                 chain(WITCHFIRE_BRAZIER, 1).
+                 chain(COLDFIRE_BRAZIER, 1);
 
             case Arcane:
                 return overlaying
                  ? new WeightMap<String>().
-                 putChain(HANGING_WITCHFIRE_BRAZIER.getName(), 10).
-                 putChain(ELVEN_LANTERN.getName(), 1).
-                 putChain(HANGING_NETHERFLAME_BRAZIER.getName(), 1).
-                 putChain(HANGING_COLDFIRE_BRAZIER.getName(), 1)
+                 chain(HANGING_WITCHFIRE_BRAZIER, 10).
+                 chain(ELVEN_LANTERN, 1).
+                 chain(HANGING_NETHERFLAME_BRAZIER, 1).
+                 chain(HANGING_COLDFIRE_BRAZIER, 1)
                  : new WeightMap<String>().
-                 putChain(WITCHFIRE_BRAZIER.getName(), 10).
-                 putChain(ELVEN_BRAZIER.getName(), 1).
-                 putChain(NETHERFLAME_BRAZIER.getName(), 1).
-                 putChain(COLDFIRE_BRAZIER.getName(), 1);
+                 chain(WITCHFIRE_BRAZIER, 10).
+                 chain(ELVEN_BRAZIER, 1).
+                 chain(NETHERFLAME_BRAZIER, 1).
+                 chain(COLDFIRE_BRAZIER, 1);
             case Cold:
                 return overlaying
                  ? new WeightMap<String>().
-                 putChain(HANGING_COLDFIRE_BRAZIER.getName(), 10).
-                 putChain(HANGING_BRAZIER.getName(), 1).
-                 putChain(HANGING_WITCHFIRE_BRAZIER.getName(), 1).
-                 putChain(HANGING_NETHERFLAME_BRAZIER.getName(), 1)
+                 chain(HANGING_COLDFIRE_BRAZIER, 10).
+                 chain(HANGING_BRAZIER, 1).
+                 chain(HANGING_WITCHFIRE_BRAZIER, 1).
+                 chain(HANGING_NETHERFLAME_BRAZIER, 1)
                  : new WeightMap<String>().
-                 putChain(COLDFIRE_BRAZIER.getName(), 10).
-                 putChain(BRAZIER.getName(), 1).
-                 putChain(WITCHFIRE_BRAZIER.getName(), 1).
-                 putChain(NETHERFLAME_BRAZIER.getName(), 1);
+                 chain(COLDFIRE_BRAZIER, 10).
+                 chain(BRAZIER, 1).
+                 chain(WITCHFIRE_BRAZIER, 1).
+                 chain(NETHERFLAME_BRAZIER, 1);
+            case Stony:
+                return overlaying
+                 ?
+                 new WeightMap<String>().
+                  chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LIMINESCENT_FUNGI, 10).
+                  chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LIMINESCENT_FUNGI, 10).
+                  chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LIMINESCENT_FUNGI, 10) 
+                 
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_LUMINESCENT_MUSHROOM, 10).
+                 chain(BF_OBJ_SUB_TYPES_CRYSTAL.LUCENT_CRYSTAL, 3) ;
         }
         return null;
     }
@@ -145,7 +156,7 @@ public class RngBfObjProvider {
             case Pagan:
             case Grimy:
 
-            case Survivor:
+            case Stony:
 
             case DarkElegance:
         }
@@ -165,6 +176,18 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 6).
                  chain(BF_OBJ_SUB_TYPES_STATUES.ELVEN_STATUE, 4).
                  chain(BF_OBJ_SUB_TYPES_STATUES.TWILIGHT_ANGEL, 1)
+                 ;
+
+            case Stony:
+                return overlaying
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.IMP_STOOL, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LIMINESCENT_FUNGI, 10)
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.IMP_STOOL, 10).
+                 chain(BF_OBJ_SUB_TYPES_CRYSTAL.DARK_CRYSTAL, 6).
+                 chain(BF_OBJ_SUB_TYPES_ROCKS.ROCKS, 4).
+                 chain(BF_OBJ_SUB_TYPES_MAGICAL.ALTAR, 1)
                  ;
         }
         return null;
@@ -188,23 +211,26 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_CONSTRUCT.DARK_FONTAIN, 10).
                  chain(BF_OBJ_SUB_TYPES_CONSTRUCT.OBELISK, 5).
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 10)
-                 ;
-            case PureEvil:
-
-            case Grimy:
+                 ; 
+            case Stony:
+ 
                 return overlaying
                  ? new WeightMap<String>().
-                 chain(BF_OBJ_SUB_TYPES_HANGING.ELDRITCH_RUNE, 10).
-                 chain(BF_OBJ_SUB_TYPES_HANGING.ANCIENT_RUNE, 10).
-                 chain(BF_OBJ_SUB_TYPES_HANGING.MAGIC_CIRCLES, 10).
-                 chain(BF_OBJ_SUB_TYPES_HANGING.GLOWING_GLYPH, 10).
-                 chain(BF_OBJ_SUB_TYPES_HANGING.RUNE_INSCRIPTION, 10)
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.AMETHYST, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.TOPAZ, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.RUBY, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.SAPPHIRE, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.TRANSLUCENT_FUNGI, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.YELLOW_LIMINESCENT_FUNGI, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.GREEN_LIMINESCENT_FUNGI, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.PURPLE_LIMINESCENT_FUNGI, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.FUNGI_VERDE, 10)
                  : new WeightMap<String>().
-                 chain(BF_OBJ_SUB_TYPES_STATUES.ANGEL_STATUE, 6).
-                 chain(BF_OBJ_SUB_TYPES_STATUES.ELVEN_STATUE, 4).
-                 chain(BF_OBJ_SUB_TYPES_STATUES.TWILIGHT_ANGEL, 1).
-                 chain(BF_OBJ_SUB_TYPES_COLUMNS.MARBLE_COLUMN, 10).
-                 chain(BF_OBJ_SUB_TYPES_CONSTRUCT.OBELISK, 5).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.NATURAL_COLUMN, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.STALACTITE, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.STALAGMITE, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.GIANT_MUSHROOM, 10).
+                 chain(BF_OBJ_SUB_TYPES_DUNGEON.UNDERGROUND_COLUMN, 10).
                  chain(BF_OBJ_SUB_TYPES_RUINS.RUINED_COLUMN, 10)
                  ;
         }
@@ -213,7 +239,6 @@ public class RngBfObjProvider {
 
     private static WeightMap<String> getContainerWeightMap(DUNGEON_STYLE style, boolean special) {
         switch (style) {
-            case Survivor:
             case Pagan:
                 return special
                  ? new WeightMap<String>().
@@ -235,7 +260,48 @@ public class RngBfObjProvider {
                  chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 5)
                  ;
             case Grimy:
+                return special
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.CRATE, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.BARREL, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.BARRELS, 10).
+                 chain(BF_OBJ_SUB_TYPES_CONTAINER.COBWEBBED_CRATE, 10).
+                 
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.CHARRED_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.DECOMPOSING_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.DESECRATED_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.OLD_BONES, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_SKULL, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.PUTRID_REMAINS, 10)
 
+                 : new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.IRON_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 5)
+                 ;
+            case Stony:
+
+                return special
+                 ? new WeightMap<String>().
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.CHARRED_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.DECOMPOSING_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.DESECRATED_REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.OLD_BONES, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.REMAINS, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.ANCIENT_SKULL, 10).
+                 chain(BF_OBJ_SUB_TYPES_REMAINS.PUTRID_REMAINS, 10) 
+                 
+                 : new WeightMap<String>(). 
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.IRON_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.OLD_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.RUSTY_CHEST, 10).
+                 chain(BF_OBJ_SUB_TYPES_TREASURE.TREASURE_PILE, 15)
+                 ;
             case DarkElegance:
 
 
@@ -297,48 +363,48 @@ public class RngBfObjProvider {
         switch (style) {
             case Brimstone:
                 return new WeightMap<String>().
-                 putChain(VOLCANIC_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(JAGGED_STONE_WALL.getName()+ WallMap.v(b), 1).
-                 putChain(WALL_OF_SKULLS.getName()+ WallMap.v(b), 1).
-                 putChain(BONE_WALL.getName()+ WallMap.v(b), 1);
+                 chain(VOLCANIC_WALL+ WallMap.v(b), 10).
+                 chain(JAGGED_STONE_WALL+ WallMap.v(b), 1).
+                 chain(WALL_OF_SKULLS+ WallMap.v(b), 1).
+                 chain(BONE_WALL+ WallMap.v(b), 1);
             case Holy:
                 break;
             case Pagan:
                 return new WeightMap<String>().
-                 putChain(WOODEN_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(WOODEN_PLANKS.getName()+ WallMap.v(b), 1).
-                 putChain(ROTTEN_PLANKS.getName()+ WallMap.v(b), 1);
-            case Survivor:
+                 chain(WOODEN_WALL+ WallMap.v(b), 10).
+                 chain(WOODEN_PLANKS+ WallMap.v(b), 1).
+                 chain(ROTTEN_PLANKS+ WallMap.v(b), 1);
+            case Stony:
                 return new WeightMap<String>().
-                 putChain(CAVE_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(VOLCANIC_WALL.getName()+ WallMap.v(b), 1).
-                 putChain(SOLID_ROCK.getName()+ WallMap.v(b), 1).
-                 putChain(INSCRIBED_WALL.getName()+ WallMap.v(b), 1);
+                 chain(CAVE_WALL+ WallMap.v(b), 10).
+                 chain(VOLCANIC_WALL+ WallMap.v(b), 1).
+                 chain(SOLID_ROCK+ WallMap.v(b), 1).
+                 chain(INSCRIBED_WALL+ WallMap.v(b), 1);
             case DarkElegance:
                 return new WeightMap<String>().
-                 putChain(ANCIENT_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(CRUMBLING_WALL.getName()+ WallMap.v(b), 1).
-                 putChain(OLD_STONE_WALL.getName()+ WallMap.v(b), 1);
+                 chain(ANCIENT_WALL+ WallMap.v(b), 10).
+                 chain(CRUMBLING_WALL+ WallMap.v(b), 1).
+                 chain(OLD_STONE_WALL+ WallMap.v(b), 1);
             case Grimy:
                 return new WeightMap<String>().
-                 putChain(CRUMBLING_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(ANCIENT_WALL.getName()+ WallMap.v(b), 1).
-                 putChain(OLD_STONE_WALL.getName()+ WallMap.v(b), 1);
-            case Castle:
+                 chain(CRUMBLING_WALL+ WallMap.v(b), 10).
+                 chain(ANCIENT_WALL+ WallMap.v(b), 1).
+                 chain(OLD_STONE_WALL+ WallMap.v(b), 1);
+            case Knightly:
                 return new WeightMap<String>().
-                 putChain(STONE_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(BRICK_WALL.getName()+ WallMap.v(b), 1).
-                 putChain(OLD_STONE_WALL.getName()+ WallMap.v(b), 1);
+                 chain(STONE_WALL+ WallMap.v(b), 10).
+                 chain(BRICK_WALL+ WallMap.v(b), 1).
+                 chain(OLD_STONE_WALL+ WallMap.v(b), 1);
             case PureEvil:
                 return new WeightMap<String>().
-                 putChain(BONE_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(WALL_OF_SKULLS.getName()+ WallMap.v(b), 1).
-                 putChain(BLACK_MARBLE_WALL.getName()+ WallMap.v(b), 1);
+                 chain(BONE_WALL+ WallMap.v(b), 10).
+                 chain(WALL_OF_SKULLS+ WallMap.v(b), 1).
+                 chain(BLACK_MARBLE_WALL+ WallMap.v(b), 1);
             case Somber:
                 return new WeightMap<String>().
-                 putChain(OLD_STONE_WALL.getName()+ WallMap.v(b), 10).
-                 putChain(CRUMBLING_WALL.getName()+ WallMap.v(b), 1).
-                 putChain(ANCIENT_WALL.getName()+ WallMap.v(b), 1);
+                 chain(OLD_STONE_WALL+ WallMap.v(b), 10).
+                 chain(CRUMBLING_WALL+ WallMap.v(b), 1).
+                 chain(ANCIENT_WALL+ WallMap.v(b), 1);
             case Arcane:
                 break;
             case Cold:

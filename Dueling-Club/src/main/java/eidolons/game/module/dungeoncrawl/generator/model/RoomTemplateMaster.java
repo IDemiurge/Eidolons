@@ -26,6 +26,8 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 
+import static main.system.auxiliary.log.LogMaster.*;
+
 /**
  * Created by JustMe on 2/13/2018.
  * <p>
@@ -203,7 +205,7 @@ public class RoomTemplateMaster {
                 return
                  processRoomData(preloadedData.get(group).get(type).get(exitTemplate));
             } catch (Exception e) {
-               main.system.auxiliary.log.LogMaster.log(1,group+ " has no " + type
+               log(1,group+ " has no " + type
                + exitTemplate);
             }
         }
@@ -241,6 +243,11 @@ public class RoomTemplateMaster {
                                       EXIT_TEMPLATE exit,
                                       ROOM_TYPE template) {
         String[] array = StringMaster.splitLines(data);
+        if (array.length<1)
+        {
+            log(1,"EMPTY ROOM FOR " +template+exit );
+            return null;
+        }
         int wrapWidth = getWrapWidthForRoomModel(exit, template);
 
         String[][] cells = new String[array[0].length() + wrapWidth * 2][array.length + wrapWidth * 2];
