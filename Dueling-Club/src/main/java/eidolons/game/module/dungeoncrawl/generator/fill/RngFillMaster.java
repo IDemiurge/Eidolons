@@ -16,7 +16,6 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
-import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
 
@@ -98,7 +97,7 @@ public class RngFillMaster {
         if (!block.getBoundCells().containsKey(c1)
          && !block.getBoundCells().containsKey(c2))
             main.system.auxiliary.log.LogMaster.log(1, block + " has " + c1 + " BOUND TO " + c2);
-       //overwrite though...
+        //overwrite though...
         block.getBoundCells().put(c2, c1);
         block.getBoundCells().put(c1, c2);
     }
@@ -119,89 +118,68 @@ public class RngFillMaster {
         return false;
     }
 
-    private static void fillSurfaceVoid(LevelModel model) {
-        //        String fill = model.getData().getValue(LEVEL_VALUES.VOID_CELL_TYPE);
-        for (LevelZone zone : model.getZones()) {
-            if (zone.getSubParts().isEmpty()) {
-                continue;
-            }
-            List<Coordinates> list = new ArrayList<>();
-            for (LevelBlock block : zone.getSubParts()) {
-                list.addAll(block.getCoordinatesList());
-            }
-            Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, list);
-            int w = CoordinatesMaster.getWidth(list);
-            int h = CoordinatesMaster.getHeight(list);
-            Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
-            for (int x = c.x; x < c.x + w; x++) {
-                for (int y = c.y; y < c.y + h; y++) {
-                    AbstractCoordinates c1 = new AbstractCoordinates(x, y);
-                    if (!list.contains(c1))
-                        map.put(c1, ROOM_CELL.FLOOR);
-                }
-
-            }
-            w = CoordinatesMaster.getWidth(map.keySet());
-            h = CoordinatesMaster.getHeight(map.keySet());
-            LevelBlock outside = new LevelBlock(c, zone,
-             ROOM_TYPE.OUTSIDE, w, h, new TileMap(map));
-            zone.getSubParts().add(outside);
-            model.getBlocks().put(new Room(), outside);
-
-        }
-    }
 
     private static void cleanUp(LevelModel model) {
-        float minFloorPercentage = 0.3f;
 
         for (LevelBlock block : model.getBlocks().values()) {
+            float minFloorPercentage = model.getData().getMinFloorPercentage(block.getRoomType());
+
             Map<Coordinates, ROOM_CELL> map = block.getTileMap().getMap();
             List<Coordinates> filledCells = map.keySet().stream().
              filter(c -> map.get(c) != ROOM_CELL.FLOOR).
-             sorted(getFilledCellsSorter(map)).
              collect(Collectors.toList());
 
-            int wallCells = 0;
-            int freeCells = block.getSquare() - wallCells - filledCells.size();
+            float wallCells = 0;
+            float freeCells = block.getSquare() - wallCells - filledCells.size();
             float ratio = freeCells / (block.getWidth() * block.getHeight());
             float ratioDif = minFloorPercentage - ratio;
 
             int toClear = Math.round(block.getSquare() * ratioDif);
 
+            filledCells.removeIf(c -> !isClearable(map.get(c)));
+            Collections.shuffle(filledCells);
+
             for (Coordinates c : filledCells) {
-                if (toClear <= 0)
+                if (toClear == 0)
                     break;
-                clearFill(block, c);
-                toClear--;
+                if (RandomWizard.chance(getClearChanceForCell(map.get(c)))) {
+                    clearFill(model, block, c);
+                    toClear--;
+                }
             }
+
         }
+//        for (int i = 0; i < toClear && filledCells.size()>0; ) {
+//            Coordinates c = filledCells.get(RandomWizard.getRandomListIndex(filledCells));
     }
 
-    private static Comparator<? super Coordinates> getFilledCellsSorter(
-     Map<Coordinates,
-      ROOM_CELL> map) {
-        return new SortMaster<Coordinates>().getSorterByExpression_(
-         c -> {
-             switch (map.get(c)) {
-                 case CONTAINER:
-                     return RandomWizard.getRandomInt(6) + 4;
-                 case LIGHT_EMITTER:
-                     return RandomWizard.getRandomInt(4) + 3;
-                 case DESTRUCTIBLE:
-                 case SPECIAL_CONTAINER:
-                 case SPECIAL_ART_OBJ:
-                 case ART_OBJ:
-                     return RandomWizard.getRandomInt(10) + 5;
+    private static boolean isClearable(ROOM_CELL cell) {
+        return getClearChanceForCell(cell) != 0;
+    }
 
-             }
-             return 0;
-         });
+    private static int getClearChanceForCell(
+     ROOM_CELL c) {
+        switch ((c)) {
+            case CONTAINER:
+                return 45;
+            case LIGHT_EMITTER:
+                return 35;
+            case DESTRUCTIBLE:
+                return 75;
+            case SPECIAL_CONTAINER:
+                return 65;
+            case SPECIAL_ART_OBJ:
+            case ART_OBJ:
+                return 55;
+
+        }
+        return 0;
 
 
     }
 
-    private static void clearFill(LevelBlock block, Coordinates c) {
-        block.getTileMap().put(c, ROOM_CELL.FLOOR);
+    private static void clearFill(LevelModel model, LevelBlock block, Coordinates c) {
+        model.placeCell(c, block, ROOM_CELL.FLOOR);
     }
 
     private static WeightMap<ROOM_CELL> getMap(FILLER_TYPE type, LevelData data) {
@@ -237,6 +215,38 @@ public class RngFillMaster {
                 break;
         }
         return map;
+    }
+
+    private static void fillSurfaceVoid(LevelModel model) {
+        //        String fill = model.getData().getValue(LEVEL_VALUES.VOID_CELL_TYPE);
+        for (LevelZone zone : model.getZones()) {
+            if (zone.getSubParts().isEmpty()) {
+                continue;
+            }
+            List<Coordinates> list = new ArrayList<>();
+            for (LevelBlock block : zone.getSubParts()) {
+                list.addAll(block.getCoordinatesList());
+            }
+            Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, list);
+            int w = CoordinatesMaster.getWidth(list);
+            int h = CoordinatesMaster.getHeight(list);
+            Map<Coordinates, ROOM_CELL> map = new LinkedHashMap<>();
+            for (int x = c.x; x < c.x + w; x++) {
+                for (int y = c.y; y < c.y + h; y++) {
+                    AbstractCoordinates c1 = new AbstractCoordinates(x, y);
+                    if (!list.contains(c1))
+                        map.put(c1, ROOM_CELL.FLOOR);
+                }
+
+            }
+            w = CoordinatesMaster.getWidth(map.keySet());
+            h = CoordinatesMaster.getHeight(map.keySet());
+            LevelBlock outside = new LevelBlock(c, zone,
+             ROOM_TYPE.OUTSIDE, w, h, new TileMap(map));
+            zone.getSubParts().add(outside);
+            model.getBlocks().put(new Room(), outside);
+
+        }
     }
 
     public enum FILLER_TYPE {

@@ -7,7 +7,6 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
-import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
@@ -42,7 +41,6 @@ public class LevelModelBuilder {
     Map<LevelGraphNode, Room> nodeModelMap = new HashMap<>();
     Map<Room, List<Room>> roomLinkMap = new HashMap<>();
     Map<LevelGraphEdge, Room> edgeMap = new HashMap<>();
-    private Traverser traverser;
     private int randomExitChance;
 
     public LevelModelBuilder(LevelData data) {
@@ -59,14 +57,11 @@ public class LevelModelBuilder {
     }
 
     public void build() {
-        Loop loop = new Loop(10);
-        while (loop.continues()) {
             model = new LevelModel(data, this);
             model.setZones(graph.getZones());
             templateMaster = new RoomTemplateMaster(data, model);
             this.attacher = new RoomAttacher(data, model, templateMaster);
-            traverser = new Traverser();
-            build(false, graph.getNodeById(0), null);
+            build(false, graph.findFirstNodeOfType(ROOM_TYPE.ENTRANCE_ROOM), null);
 
             if (data.isFinalizerOn())
                 new ModelFinalizer(templateMaster, attacher, this).finalize(model);
@@ -74,14 +69,7 @@ public class LevelModelBuilder {
                 build(true, graph.getNodeById(1), FacingMaster.getRandomFacing());
             }
             cleanUp();
-            if (new LevelValidator().validateModel(graph, model))
-                return;
-            if (!isCheckTraverse())
-                return;
-            if (traverser.test(graph, model, data, nodeModelMap, edgeMap)) {
-                return;
-            }
-        }
+
     }
 
     private void cleanUp() {
@@ -138,11 +126,6 @@ public class LevelModelBuilder {
         return RandomWizard.random() ? RandomWizard.random() ? ROOM_CELL.LIGHT_EMITTER : ROOM_CELL.SPECIAL_CONTAINER :
          ROOM_CELL.ART_OBJ;
     }
-
-    private boolean isCheckTraverse() {
-        return false;
-    }
-
 
     private Coordinates getExitCoordinates() {
         return new AbstractCoordinates(model.getCurrentWidth() / 2, model.getTopMost());
@@ -306,11 +289,17 @@ public class LevelModelBuilder {
                 if (buildLink(room, edge, roomExit, linkExit, link) == null) {
                     if (link != null) {
                         //TODO do away with it
-                        log(1, "REMOVING A DEADEND: " + link);
-                        model.remove(link);
-                        MapMaster.removeFromListMap(roomLinkMap, room, link);
+
+                        if (data.isRemoveDeadendLinks()) {
+                            log(1, "REMOVING A DEADEND: " + link);
+                            model.remove(link);
+                            MapMaster.removeFromListMap(roomLinkMap, room, link);
+                            continue;
+                        } else {
+                            link.makeExit(roomExit.flip(), false, false);
+                            room.makeExit(roomExit, false, true);
+                        }
                     }
-                    continue;
                 }
                 nextToBuild.add(nodeToBuildFrom);
                 break;
@@ -472,16 +461,16 @@ public class LevelModelBuilder {
          roomExitTemplate, roomType, parentExit, zone);
         if (attach)
             if (room != null) {
-                if (parentExit != null) {
-                    if (isCheckTraverse()) {
-                        if (parent != null)
-                            if (!traverser.checkTraversable(parent, parentExit))
-                                return null;
-                        //link?!
-                        if (!traverser.checkTraversable(room, parentExit.flip()))
-                            return null;
-                    }
-                }
+//                if (parentExit != null) {   now only level-wide after
+//                     if (isCheckTraverse()) {
+//                        if (parent != null)
+//                            if (!traverser.checkTraversable(parent, parentExit))
+//                                return null;
+//                        //link?!
+//                        if (!traverser.checkTraversable(room, parentExit.flip()))
+//                            return null;
+//                    }
+//                }
                 ModelMaster.exitChosen(parentExit);
                 addRoom(room, parent);
             }
@@ -493,7 +482,17 @@ public class LevelModelBuilder {
         MapMaster.addToListMap(roomLinkMap, parent, room);
     }
 
+    public LevelGraph getGraph() {
+        return graph;
+    }
 
+    public Map<LevelGraphEdge, Room> getEdgeMap() {
+        return edgeMap;
+    }
+
+    public Map<LevelGraphNode, Room> getNodeModelMap() {
+        return nodeModelMap;
+    }
 }
 
 

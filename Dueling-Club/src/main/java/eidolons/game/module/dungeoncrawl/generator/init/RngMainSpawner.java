@@ -185,6 +185,7 @@ public class RngMainSpawner {
                  map.get(c).name());
                 List<ObjType> units = getUnitsForGroup(getPowerCoef(block, type), type,
                  getUnitGroup(level.getLocationType(), block.getZone(), type), 3, 1);
+                //will space them out in-game already
                 units.forEach(unit -> addUnit(new ObjAtCoordinate(unit, c), block));
 
             });

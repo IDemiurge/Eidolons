@@ -110,6 +110,11 @@ public class LevelGraph {
         this.zones = zones;
     }
 
+    public LevelGraphNode findFirstNodeOfType(ROOM_TYPE type) {
+        return getNodes().stream().filter(
+         n -> n.getRoomType() == type).findFirst().orElse(null);
+    }
+
 
     //     String TREASURE_ROOM = "T";
     //     String THRONE_ROOM = "M";

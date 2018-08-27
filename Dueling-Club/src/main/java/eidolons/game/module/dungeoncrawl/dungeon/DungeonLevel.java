@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
+import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.CONTENT_CONSTS.FLIP;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by JustMe on 7/20/2018.
@@ -43,12 +43,28 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private Map<Coordinates, LevelBlock> cache= new HashMap<>();
     private String exitType;
     private String entranceType;
+    private float rate;
+    private Coordinates entranceCoordinates;
+    private Coordinates exitCoordinates;
+    private LevelStats stats;
 
-    public DungeonLevel(TileMap tileMap, LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
-        this.tileMap = tileMap;
+    public DungeonLevel(  LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
+        this.tileMap = TileMapper.createTileMap(model);
         this.model = model;
         this.sublevelType = type;
         this.locationType = locationType;
+        initEntranceAndExit();
+    }
+
+    private void initEntranceAndExit() {
+
+
+        entranceCoordinates =  tileMap.getMap().keySet().stream().filter(c ->
+         tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE).findFirst().get();
+
+        exitCoordinates =  tileMap.getMap().keySet().stream().filter(c ->
+         tileMap.getMap().get(c) == ROOM_CELL.EXIT).findFirst().get();
+
     }
 
     @Override
@@ -65,7 +81,7 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
          xml +=
           XML_Converter.wrap(RngXmlMaster.TILEMAP_NODE,
 //           tileMap.toString()
-        TileMapper.toASCII_String(model.getCells(), false ));
+        TileMapper.toASCII_String(model.getCells(), false , true, true));
 
         String values="";
         values +="\n"+ XML_Converter.wrap(RngXmlMaster.LOCATION_TYPE_NODE, locationType.toString());
@@ -76,13 +92,11 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
         xml+="\n"+ values;
         //props
 //entrances
-        List<Coordinates> entrances =
-         tileMap.getMap().keySet().stream().filter(c ->
-          tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE ||
-          tileMap.getMap().get(c) == ROOM_CELL.EXIT
-         ).collect(Collectors.toList());
-        tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
-        xml +="\n"+ XML_Converter.wrap(LocationBuilder.ENTRANCE_NODE, ContainerUtils.constructStringContainer(entrances));
+        List<Coordinates> entrances =new ListMaster<Coordinates>()
+         .asList(entranceCoordinates, exitCoordinates);
+
+        xml +="\n"+ XML_Converter.wrap(LocationBuilder.ENTRANCE_NODE,
+         ContainerUtils.constructStringContainer(entrances));
 
 //        List<Coordinates> exits =
 //         tileMap.getMap().keySet().stream().filter(c -> tileMap.getMap().get(c) == ROOM_CELL.ROOM_EXIT).collect(Collectors.toList());
@@ -245,5 +259,29 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
     public String getEntranceType() {
         return entranceType;
+    }
+
+    public void setRate(float rate) {
+        this.rate = rate;
+    }
+
+    public float getRate() {
+        return rate;
+    }
+
+    public Coordinates getEntranceCoordinates() {
+        return entranceCoordinates;
+    }
+
+    public Coordinates getExitCoordinates() {
+        return exitCoordinates;
+    }
+
+    public void setStats(LevelStats stats) {
+        this.stats = stats;
+    }
+
+    public LevelStats getStats() {
+        return stats;
     }
 }

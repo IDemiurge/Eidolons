@@ -10,6 +10,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.NumberUtils;
+import main.system.datatypes.WeightMap;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -311,4 +312,16 @@ public abstract class MathMaster {
     public abstract Integer calculateEssenceRegenBonus(Obj dc_HeroObj);
 
     public abstract Integer evaluateSummonEnergyCost(Entity obj, String s);
+
+    public static float getBalanceCoef(WeightMap map) {
+        //average difference, min/max difference TODO
+        for (Object o : map.keySet()) {
+            Integer val = (Integer) map.get(o);
+
+        }
+
+        return 0;
+    }
+
+
 }

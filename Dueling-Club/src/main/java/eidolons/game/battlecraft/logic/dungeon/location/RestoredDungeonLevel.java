@@ -19,11 +19,11 @@ public class RestoredDungeonLevel extends DungeonLevel {
     private LevelData data;
 
     public RestoredDungeonLevel(TileMap tileMap, LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
-        super(tileMap, model, type, locationType);
+        super(  model, type, locationType);
     }
 
     public RestoredDungeonLevel(List<LevelZone> zones) {
-        super(null, null, null, null);
+        super(  null, null, null);
         this.zones = zones;
     }
 

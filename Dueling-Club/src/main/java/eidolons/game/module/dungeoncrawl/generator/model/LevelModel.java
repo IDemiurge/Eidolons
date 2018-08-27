@@ -258,4 +258,19 @@ public class LevelModel {
         main.system.auxiliary.log.LogMaster.log(1,toASCII_Map()+ "\n Model after Offset by " +offset);
 
     }
+
+    public void placeCell(Coordinates coordinates, LevelBlock block, ROOM_CELL filler) {
+        Room room = (Room) MapMaster.getKeyForValue_(getBlocks(), block);
+        Coordinates relative = room.relative(coordinates);
+        if (room.getCells()[relative .x]
+         [relative.y].equals(ROOM_CELL.EXIT.getSymbol()))
+            return;
+        if (room.getCells()[relative .x]
+         [relative.y].equals(ROOM_CELL.ENTRANCE.getSymbol()))
+            return;
+        room.getCells()[relative .x]
+         [relative.y] = filler.getSymbol();
+        block.getTileMap().put(coordinates, filler);
+
+    }
 }

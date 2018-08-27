@@ -1,6 +1,5 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
-import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
@@ -19,14 +18,14 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.awt.*;
-import java.io.File;
 import java.util.*;
 import java.util.List;
 
-import static main.system.auxiliary.log.LogMaster.*;
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 2/13/2018.
@@ -40,7 +39,7 @@ import static main.system.auxiliary.log.LogMaster.*;
  * perhaps the whole map will be modeled via this logic before real filling?
  */
 public class RoomTemplateMaster {
-    public static final boolean SINGLE_FILE_DATA = true;
+    public static final boolean SINGLE_FILE_DATA = false;
     public static final FACING_DIRECTION DEFAULT_ENTRANCE_SIDE = FACING_DIRECTION.WEST;
     private static final String MODEL_SPLITTER = "=";
     private static final String EXIT_TEMPLATE_SEPARATOR = "><" + StringMaster.NEW_LINE;
@@ -61,9 +60,7 @@ public class RoomTemplateMaster {
         wrapType = this.data.getValue(LEVEL_VALUES.WRAP_CELL_TYPE);
         wrapWidth = this.data.getIntValue(LEVEL_VALUES.WRAP_ROOMS);
 
-        if (SINGLE_FILE_DATA) {
-            preloadedData = loadMergedData();
-        }
+        preloadedData = loadMergedData(SINGLE_FILE_DATA);
         for (ROOM_TEMPLATE_GROUP group : groups) {
 
             templateMap.put(group, new HashMap<>());
@@ -72,18 +69,33 @@ public class RoomTemplateMaster {
         }
     }
 
-    private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> loadMergedData() {
+    private Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>>
+    loadMergedData(boolean singleFile) {
         Map<ROOM_TEMPLATE_GROUP, Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>>> map = new HashMap<>();
-        for (ROOM_TEMPLATE_GROUP group : ROOM_TEMPLATE_GROUP.values()) {
-            Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> submap = createMap(group);
+        if (singleFile) {
+
+        }
+        for (ROOM_TEMPLATE_GROUP group : groups) {
+
+            String data = singleFile ? "" : FileManager.readFile(
+             getMergedPath(group));
+            Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> submap = createMap(group, data);
             map.put(group, submap);
         }
-        for (ROOM_TEMPLATE_GROUP group : ROOM_TEMPLATE_GROUP.values()) {
+        for (ROOM_TEMPLATE_GROUP group : groups) {
             if (group.isMultiGroup()) {
                 Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> merged
                  = new HashMap<>();
-                merged.putAll(map.get(group.getMultiGroupOne()));
-                merged.putAll(map.get(group.getMultiGroupTwo()));
+                Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> sub =
+                 map.get(group.getMultiGroupOne());
+                if (sub == null)
+                    sub = createMap(group);
+                merged.putAll(sub);
+
+                sub = map.get(group.getMultiGroupTwo());
+                if (sub == null)
+                    sub = createMap(group);
+                merged.putAll(sub);
                 map.put(group, merged);
             }
         }
@@ -93,6 +105,11 @@ public class RoomTemplateMaster {
     private Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> createMap(ROOM_TEMPLATE_GROUP group) {
         String data = FileManager.readFile(
          getMergedPath(group));
+        return createMap(group, data);
+    }
+
+    private Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> createMap(ROOM_TEMPLATE_GROUP group
+     , String data) {
         String[] byRoom = StringMaster.splitLines(data, false, ROOM_TYPE_SEPARATOR);
         Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> submap = new HashMap<>();
 
@@ -117,7 +134,7 @@ public class RoomTemplateMaster {
                  StringMaster.splitLines(part)[0].trim());
                 String text = StringMaster.cropFirstSegment(part, StringMaster.NEW_LINE);
                 if (!StringMaster.contains(text, ROOM_CELL.FLOOR.getSymbol())) {
-                    text = getRoomData(exit, group, roomType, false);
+                    text = getRoomData(exit, group, roomType);
                 }
                 if (!text.isEmpty())
                     exitMap.put(exit,
@@ -125,21 +142,6 @@ public class RoomTemplateMaster {
             }
         }
         return submap;
-    }
-
-    public void mergeData(ROOM_TEMPLATE_GROUP group) {
-        String contents = "";
-        for (ROOM_TYPE type : ROOM_TYPE.values()) {
-            contents += getROOM_TYPE_SEPARATOR(type) + StringMaster.NEW_LINE;
-            for (EXIT_TEMPLATE exit : EXIT_TEMPLATE.values()) {
-                String data = getRoomData(exit, group, type, false);
-                contents += getEXIT_TEMPLATE_SEPARATOR(exit) + StringMaster.NEW_LINE + data + StringMaster.NEW_LINE;
-            }
-
-        }
-
-        FileManager.write(contents,
-         getMergedPath(group));
     }
 
     private String getMergedPath(ROOM_TEMPLATE_GROUP group) {
@@ -194,25 +196,18 @@ public class RoomTemplateMaster {
     }
 
     private String getRoomData(EXIT_TEMPLATE exitTemplate,
-                               ROOM_TEMPLATE_GROUP group, ROOM_TYPE type) {
-        return getRoomData(exitTemplate, group, type, SINGLE_FILE_DATA);
-    }
+                               ROOM_TEMPLATE_GROUP group, ROOM_TYPE type
+    ) {
 
-    private String getRoomData(EXIT_TEMPLATE exitTemplate,
-                               ROOM_TEMPLATE_GROUP group, ROOM_TYPE type, boolean merged) {
-        if (merged) {
-            try {
-                return
-                 processRoomData(preloadedData.get(group).get(type).get(exitTemplate));
-            } catch (Exception e) {
-               log(1,group+ " has no " + type
-               + exitTemplate);
-            }
+        try {
+            return
+             processRoomData(preloadedData.get(group).get(type).get(exitTemplate));
+        } catch (Exception e) {
+            log(1, group + " has no " + type
+             + exitTemplate);
         }
-        String path = getRoomPath(exitTemplate, group, type);
-        File sub = new File(path);
-        return
-         processRoomData(FileManager.readFile(sub).trim());
+
+        return "";
     }
 
     private String processRoomData(String s) {
@@ -243,9 +238,8 @@ public class RoomTemplateMaster {
                                       EXIT_TEMPLATE exit,
                                       ROOM_TYPE template) {
         String[] array = StringMaster.splitLines(data);
-        if (array.length<1)
-        {
-            log(1,"EMPTY ROOM FOR " +template+exit );
+        if (array.length < 1) {
+            log(1, "EMPTY ROOM FOR " + template + exit);
             return null;
         }
         int wrapWidth = getWrapWidthForRoomModel(exit, template);
@@ -277,8 +271,8 @@ public class RoomTemplateMaster {
     private int getWrapWidthForRoomModel(EXIT_TEMPLATE exit, ROOM_TYPE template) {
         if (wrapWidth > 1) {
             if (template == ROOM_TYPE.CORRIDOR
-//             || template == ROOM_TYPE.DEATH_ROOM
-//             || template == ROOM_TYPE.GUARD_ROOM
+                //             || template == ROOM_TYPE.DEATH_ROOM
+                //             || template == ROOM_TYPE.GUARD_ROOM
              )
                 return 0;
         }
@@ -300,10 +294,10 @@ public class RoomTemplateMaster {
                 return null;
             return getNextRandomModel(roomType, template, entrance, templateGroup);
         }
-        FACING_DIRECTION exit = entrance;
-        if (entrance != null && entrance.isVertical() &&
-         template == EXIT_TEMPLATE.THROUGH)
-            exit = FacingMaster.rotate180(entrance);
+        //        FACING_DIRECTION exit = entrance;
+        //        if (entrance != null && entrance.isVertical() &&
+        //         template == EXIT_TEMPLATE.THROUGH)
+        //            exit = FacingMaster.rotate180(entrance);
         //        exit =entrance!=null && !entrance.isVertical()&&
         //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
         //         : exit;
@@ -316,7 +310,7 @@ public class RoomTemplateMaster {
             model = new RandomWizard<RoomModel>().getRandomListItem(models);
         }
         model = clone(model);
-        checkRotations(template, entrance, exit, model);
+        checkRotations(template, entrance, model);
 
         checkFlipping(template, entrance, model);
         //        exit =entrance!=null && !entrance.isVertical()&&
@@ -325,12 +319,43 @@ public class RoomTemplateMaster {
         return model;
     }
 
-    private void checkRotations(EXIT_TEMPLATE template, FACING_DIRECTION exit, FACING_DIRECTION entrance, RoomModel model) {
+    private void checkRotations(EXIT_TEMPLATE template, FACING_DIRECTION entrance, RoomModel model) {
+        boolean random = data.isRandomRotation() && template != EXIT_TEMPLATE.ANGLE;
+        FACING_DIRECTION requiredEntranceSide = DEFAULT_ENTRANCE_SIDE;
+
+        //can specify required entrance side with 'e' symbol
+        if (data.isPresetEntrancesAllowed())
+            if (random) {
+                for (String s : model.getCells()[model.getCells().length - 1]) {
+                    if (s.equals(ROOM_CELL.ROOM_EXIT.getSymbol())) {
+                        requiredEntranceSide = FACING_DIRECTION.EAST;
+                    }
+                }
+                if (requiredEntranceSide == DEFAULT_ENTRANCE_SIDE) {
+                    String[][] rotated = ArrayMaster.rotateMatrixClockwise(model.getCells());
+                    for (String s : rotated[0]) {
+                        if (s.equals(ROOM_CELL.ROOM_EXIT.getSymbol())) {
+                            requiredEntranceSide = FACING_DIRECTION.SOUTH;
+                        }
+                    }
+                    if (requiredEntranceSide == DEFAULT_ENTRANCE_SIDE) {
+                        for (String s : rotated[rotated.length - 1]) {
+                            if (s.equals(ROOM_CELL.ROOM_EXIT.getSymbol())) {
+                                requiredEntranceSide = FACING_DIRECTION.NORTH;
+                            }
+                        }
+                    }
+                }
+            }
         Boolean[] rotations =
-         data.isRandomRotation() && template != EXIT_TEMPLATE.ANGLE ?
+         random ?
           RotationMaster.getRandomPossibleParentRotations(entrance, template)
           : RotationMaster.getRotations(
-          exit, DEFAULT_ENTRANCE_SIDE);
+          entrance, requiredEntranceSide);
+        //        if (template==EXIT_TEMPLATE.ANGLE){
+        //            if (rotations.length==3)
+        //                TODO something cheesy there...
+        //        }
         if (rotations != null) {
             model.setRotations(rotations);
         }
@@ -397,6 +422,43 @@ public class RoomTemplateMaster {
         for (Dimension dimension : dimensions) {
             roomPoolStack.add(pools.get(dimension));
         }
+    }
+
+    public RoomModel getRandomModelToSubstitute(int width, int height, EXIT_TEMPLATE template,
+                                                ROOM_TYPE type, FACING_DIRECTION entrance, ROOM_TEMPLATE_GROUP templateGroup,
+                                                List<FACING_DIRECTION> usedExits) {
+        List<RoomModel> pool = new ArrayList<>(models.get(templateGroup));
+
+        pool.removeIf(r -> {
+            if (r.getExitTemplate() != template) {
+                return true;
+            }
+            if (r.getType() != type) {
+                return true;
+            }
+            if (r.getWidth() == width && r.getHeight() == height)
+                return false;
+            if (r.getWidth() == height && r.getHeight() == width)
+                return false;
+            return true;
+        });
+
+        RoomModel model = null;
+        while (!pool.isEmpty()) {
+            model = clone(pool.remove(RandomWizard.getRandomListIndex(pool)));
+            //for culdesac?
+
+            checkRotations(template, entrance, model);
+            //        checkFlipping(template, entrance, model);
+
+            if (new ListMaster().compare(usedExits,
+             Arrays.asList(RotationMaster.getRotatedExits(model.getRotations(),
+              ExitMaster.getExits(template))))) {
+                return model;
+            }
+        }
+
+        return null;
     }
     //TODO multiple objects on cell?
 

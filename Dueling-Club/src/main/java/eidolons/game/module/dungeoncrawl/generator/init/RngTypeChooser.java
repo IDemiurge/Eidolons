@@ -9,6 +9,7 @@ import main.content.OBJ_TYPE;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
+import main.system.datatypes.WeightMap;
 
 /**
  * Created by JustMe on 7/26/2018.
@@ -17,6 +18,9 @@ public class RngTypeChooser {
     public static ObjType chooseType(Coordinates c,
                                      ROOM_CELL value,
                                      LevelBlock block, DungeonLevel dungeonLevel) {
+
+        value = checkRandomCellResolves(value);
+
         DUNGEON_STYLE style= block.getStyle();
         String mapString= RngBfObjProvider.getWeightString(value, style);
         if (mapString==null )
@@ -25,6 +29,14 @@ public class RngTypeChooser {
         OBJ_TYPE T= DC_TYPE.BF_OBJ;
         ObjType type = RandomWizard.getObjTypeByWeight(mapString, T);
         return type;
+    }
+
+    private static ROOM_CELL checkRandomCellResolves(ROOM_CELL value) {
+        if (value.getRandomWeightMap() == null) {
+            return null;
+        }
+        WeightMap<ROOM_CELL> map = new WeightMap(value.getRandomWeightMap(),ROOM_CELL.class );
+        return map.getRandomByWeight();
     }
 
     private static String filter(String mapString, Coordinates c,

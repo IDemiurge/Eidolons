@@ -40,7 +40,7 @@ public class Room extends RoomModel {
         this.rotations = model.getRotations();
         rotateExits(model.getRotations());
         this.entrance = roomEntrance;
-        for (int i = 0; i < exits.length; i++) {
+        for (int i = 0; i < getExits().length; i++) {
             if (exits[i] == entrance) {
                 exits[i] = RotationMaster.rotate(DEFAULT_ENTRANCE_SIDE, rotations);
                 break;
@@ -53,6 +53,10 @@ public class Room extends RoomModel {
     //faux room for outside!
     public Room() {
         super(null, null, null);
+    }
+
+    public static boolean isExitsLogical() {
+        return false;
     }
 
     @Override
@@ -83,7 +87,7 @@ public class Room extends RoomModel {
             }
             entrance = exit;
         }
-        if (door==null ){
+        if (door == null) {
             door = checkDoor(coordinates);
         }
         String s = door ? ROOM_CELL.DOOR.getSymbol()
@@ -99,20 +103,20 @@ public class Room extends RoomModel {
     }
 
     private boolean checkDoor(Coordinates coordinates) {
-        if (getType()== ROOM_TYPE.CORRIDOR)
+        if (getType() == ROOM_TYPE.CORRIDOR)
             return false;
-        int n =0;
+        int n = 0;
         for (Coordinates c : coordinates.getAdjacenctNoDiags()) {
-            if (c.x>=cells.length || c.y>=cells[0].length||
-             c.x<0 || c.y<0
+            if (c.x >= cells.length || c.y >= cells[0].length ||
+             c.x < 0 || c.y < 0
              )
                 continue;
-            if (!TilesMaster.isPassable(cells[c.x][c.y])){
+            if (!TilesMaster.isPassable(cells[c.x][c.y])) {
                 n++;
             }
 
         }
-        if (n<2)
+        if (n < 2)
             return false;
 
         return true;
@@ -129,10 +133,6 @@ public class Room extends RoomModel {
     @Override
     public boolean isDisplaced() {
         return offset.x != 0 || offset.y != 0;
-    }
-
-    public static boolean isExitsLogical() {
-        return true;
     }
 
     @Override
@@ -239,6 +239,9 @@ public class Room extends RoomModel {
         super.setRotations(rotations);
         rotateExits(rotations);
     }
+    public void setRotationsOnly(Boolean[] rotations) {
+        super.setRotations(rotations);
+    }
 
     private void rotateExits(Boolean[] rotated) {
         exits = RotationMaster.getRotatedExits(rotated, getExits());
@@ -263,14 +266,13 @@ public class Room extends RoomModel {
     }
 
 
-
     public LevelZone getZone() {
         return zone;
     }
 
     public void setZone(LevelZone zone) {
         this.zone = zone;
-        main.system.auxiliary.log.LogMaster.log(1,this+ " setZone " +zone);
+        main.system.auxiliary.log.LogMaster.log(1, this + " setZone " + zone);
     }
 
     public List<Coordinates> getExitCoordinates() {
@@ -297,14 +299,26 @@ public class Room extends RoomModel {
         return c.getOffset(getCoordinates().negative());
     }
 
-    public FACING_DIRECTION getSortedUnusedExit(Comparator<? super FACING_DIRECTION> sorter ) {
+    public FACING_DIRECTION getSortedUnusedExit(Comparator<? super FACING_DIRECTION> sorter) {
         List<FACING_DIRECTION> list = Arrays.stream(getExits()).filter(e ->
-         !getUsedExits().contains(e)). sorted(sorter).
+         !getUsedExits().contains(e)).sorted(sorter).
          collect(Collectors.toList());
         if (list.isEmpty()) {
             return null;
         }
         FACING_DIRECTION exit = list.get(0);
         return exit;
+    }
+
+    public void resetExitCells() {
+        cells[entranceCoordinates.x][entranceCoordinates.y] = entranceCell;
+        int i = 0;
+        for (String exitCell : exitCells) {
+            if (exitCoordinates.size()<=i) {
+                break;
+            }
+            cells[exitCoordinates.get(i).x][exitCoordinates.get(i).y] = exitCell;
+            i++;
+        }
     }
 }

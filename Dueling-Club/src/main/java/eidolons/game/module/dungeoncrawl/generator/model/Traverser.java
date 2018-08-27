@@ -3,7 +3,6 @@ package eidolons.game.module.dungeoncrawl.generator.model;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
@@ -17,7 +16,6 @@ import main.game.bf.directions.FACING_DIRECTION;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -27,9 +25,18 @@ import java.util.stream.Collectors;
 public class Traverser {
     private static final boolean ALLOW_NULL = true;
     private static final boolean SIMPLE = true;
-    Map<LevelGraphNode, Room> map;
-    private Map<LevelGraphEdge, Room> edgeMap;
-    private LevelModel model;
+    private final Map<LevelGraphEdge, Room> edgeMap;
+    private final Map<LevelGraphNode, Room> map;
+    private final  LevelModel model;
+    private final LevelGraph graph;
+    private List<LevelGraphEdge> failed;
+
+    public Traverser(Map<LevelGraphNode, Room> map, LevelModel model, LevelGraph graph, Map<LevelGraphEdge, Room> edgeMap) {
+        this.map = map;
+        this.model = model;
+        this.graph = graph;
+        this.edgeMap = edgeMap;
+    }
 
     public static int getExitsOffset(Room room, Room room2) {
         boolean xOrY = room2.getEntrance().isVertical();
@@ -46,18 +53,12 @@ public class Traverser {
         return dif;
     }
 
-    public boolean test(LevelGraph graph, LevelModel model, LevelData data,
-                        Map<LevelGraphNode, Room> nodeModelMap,
-                        Map<LevelGraphEdge, Room> edgeMap) {
-        this.map = nodeModelMap;
-        this.edgeMap = edgeMap;
-        this.model = model;
-        //        TileMap map = new LevelGenerator().generateTileMap(LevelDataMaker.getDefaultLevelData(0));
+    public boolean test( ) {
+        failed = getFailedEdges( );
+        return failed.isEmpty();
+    }
 
-        for (LevelGraphNode node : graph.getAdjList().keySet()) {
-            Set<LevelGraphEdge> edges = graph.getAdjList().get(node);
-
-        }
+    public List<LevelGraphEdge> getFailedEdges( ) {
         List<LevelGraphEdge> failed = new ArrayList<>();
         for (LevelGraphEdge edge : graph.getEdges()) {
             if (!checkCanPass(edge.getNodeOne(),
@@ -66,8 +67,14 @@ public class Traverser {
 
             }
         }
-        return failed.isEmpty();
+        return failed;
     }
+
+//    public String getFailReason() {
+//        String reason = "Cannot traverse: \n";
+//        failedEdges = getFailedEdges();
+//        return reason;
+//    }
 
     private boolean checkCanPass(LevelGraphNode nodeOne, LevelGraphNode nodeTwo, Room link) {
         return canPass(map.get(nodeOne), map.get(nodeTwo), link);
@@ -79,6 +86,13 @@ public class Traverser {
     }
 
     private boolean simpleCheck(Room room, Room room1, Room link) {
+        if (!checkEntrancesPassables(room, room1, link)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkEntrancesPassables(Room room, Room room1, Room link) {
         if (!checkEntrancesPassable(room))
             return false;
         if (!checkEntrancesPassable(room1))
@@ -108,7 +122,7 @@ public class Traverser {
             return true;
         TileMap tileMap = TileMapper.createTileMap(room);
         long blocked = TileMapper.createTileMap(room).getMap().keySet().stream()
-         .filter(c -> TilesMaster.isEntranceCell(c, room))
+         .filter(c -> TilesMaster.isEntranceCell(room.relative(c), room))
          .filter(c -> !TilesMaster.isPassable(tileMap.getMap().get(c))).count();
         return blocked == 0;
     }
@@ -185,10 +199,11 @@ Fail example:
          , parent.getWidth(), parent.getHeight(), new AbstractCoordinates(0, 0));
     }
 
-        public boolean checkTraversable(Room parent, FACING_DIRECTION parentExit, Coordinates offset) {
-            return checkTraversable(parent.getCoordinates(), TileMapper.createTileMap(parent), parentExit
-             , parent.getWidth(), parent.getHeight(), offset);
-        }
+    public boolean checkTraversable(Room parent, FACING_DIRECTION parentExit, Coordinates offset) {
+        return checkTraversable(parent.getCoordinates(), TileMapper.createTileMap(parent), parentExit
+         , parent.getWidth(), parent.getHeight(), offset);
+    }
+
     public boolean checkTraversable(Coordinates roomCoordinates, TileMap tileMap,
                                     FACING_DIRECTION parentExit, int w, int h, Coordinates offset) {
         //not only on default centered exits...
@@ -236,5 +251,14 @@ Fail example:
                 return new AbstractCoordinates(-1, 0);
         }
         return null;
+    }
+
+    public String[] getFailArgs() {
+        String[] array=new String[failed.size()];
+        for (int i = 0; i < failed.size(); i++) {
+            array[i] = failed.get(i).toString();
+        }
+
+        return array;
     }
 }

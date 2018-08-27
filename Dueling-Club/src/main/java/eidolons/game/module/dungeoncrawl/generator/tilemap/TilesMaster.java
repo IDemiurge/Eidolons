@@ -5,6 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
+import main.system.auxiliary.data.ArrayMaster;
 
 import java.util.List;
 
@@ -37,6 +38,21 @@ public class TilesMaster {
         return false;
     }
 
+    public static boolean isCellAdjacentTo(Coordinates c,
+                                           Room room, Boolean diags_no_only, ROOM_CELL ... types) {
+
+        for (Coordinates c1 : c.getAdjacentCoordinates(diags_no_only)) {
+            for (ROOM_CELL type : types) {
+                if (ArrayMaster.within2D(room.getCells(),c1.x ,c1.y))
+                if (room.getCells()[c1.x][c1.y].equals(type.getSymbol())) {
+                    return true;
+                }
+
+            }
+
+        }
+        return false;
+    }
     public static int getInSpectrum(Coordinates c, TileMap tileMap,
                                     boolean passableOrNot, DIRECTION d) {
         return getInSpectrum(c, tileMap, passableOrNot, d, 2, 0);
@@ -122,4 +138,5 @@ public class TilesMaster {
         return c.x==room.getWidth()-1 ||
          c.y==room.getHeight()-1 ;
     }
+
 }

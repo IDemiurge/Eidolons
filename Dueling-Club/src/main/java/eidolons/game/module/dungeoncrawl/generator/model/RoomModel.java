@@ -56,6 +56,9 @@ public class RoomModel {
         return cells;
     }
 
+    public void setCells(String[][] cells) {
+        this.cells = cells;
+    }
 
     public int getHeight() {
         return cells[0].length;
@@ -84,6 +87,8 @@ public class RoomModel {
     }
 
     public void setFlip(boolean x, boolean y) {
+        if (flipX==x && flipY==y)
+            return;
         flipX=x;
         flipY=y;
         cells = ArrayMaster.flip(cells, x, y);

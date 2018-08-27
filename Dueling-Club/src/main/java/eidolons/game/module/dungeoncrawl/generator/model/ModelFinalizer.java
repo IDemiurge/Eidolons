@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.GRAPH_NODE_ATTRIBUTE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
@@ -9,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREM
 import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
 import eidolons.game.module.dungeoncrawl.generator.graph.GraphPath;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
+import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -43,6 +45,48 @@ public class ModelFinalizer {
         this.templateMaster = templateMaster;
         this.attacher = attacher;
         this.builder = builder;
+    }
+
+    public void substituteRoomModels(LevelModel model) {
+        //alternative - remove rooms if their linkcount fails to be met
+        for (Room room : model.getRoomMap().values()) {
+            if (room.getUsedExits().size() == ExitMaster.getExitCount(room.getExitTemplate()))
+                continue;
+            EXIT_TEMPLATE template = ExitMaster.getExitTemplateToLinks(room.getUsedExits().size(),
+             room.getEntrance(), room.getType());
+
+            if (template == EXIT_TEMPLATE.ANGLE || template == EXIT_TEMPLATE.THROUGH) {
+                if (room.getUsedExits().get(0) == room.getEntrance().flip()) {
+                    template = EXIT_TEMPLATE.THROUGH;
+                } else template = EXIT_TEMPLATE.ANGLE;
+            }
+
+            log(1,"Substituting cells for " +room+ " with "
+            + template);
+
+            RoomModel roomModel = templateMaster.getRandomModelToSubstitute(room.getWidth(),
+             room.getHeight(), template, room.getType(), room.getEntrance(
+             ), room.getZone().getTemplateGroup(),
+             room.getUsedExits());
+
+            if (roomModel==null )
+                continue;
+
+            room.setCells(roomModel.getCells());
+            room.setRotationsOnly(roomModel.getRotations());
+            room.resetExitCells();
+            room.setExitTemplate(template);
+            room.setExits(RotationMaster.getRotatedExits( //TODO this is wrong
+             roomModel.getRotations(), room.getExits()));
+
+
+            log(1,"New cells for " +room);
+            if (ZoneCreator.TEST_MODE){
+                room.setZone(new LevelZone(9));
+            }
+            //TODO block?
+        }
+
     }
 
     public void loopBack(LevelModel model) {
@@ -131,11 +175,11 @@ public class ModelFinalizer {
         Coordinates c = link.getCoordinates();
         Coordinates offset = new AbstractCoordinates(0, 0);
         while (true) {
-            if (new Traverser().checkTraversable(link, side, offset))
-                if (new Traverser().checkTraversable(room, side, offset)) {
-                    builder.addRoom(link, room);
-                    break;
-                }
+//           TODO  if (new Traverser().checkTraversable(link, side, offset))
+//                if (new Traverser().checkTraversable(room, side, offset)) {
+//                    builder.addRoom(link, room);
+//                    break;
+//                }
             int x = side.isVertical() ? 0 : 1;
             int y = !side.isVertical() ? 0 : 1;
             offset.offset(new AbstractCoordinates(x, y));
@@ -181,12 +225,18 @@ public class ModelFinalizer {
 
         tryAdditionalBuild(model);
 
+        if (model.getData().isLoopBackAllowed())
         try {
             loopBack(model);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-
+        if (model.getData().isSubstituteRoomsAllowed())
+        try {
+            substituteRoomModels(model);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     private boolean checkBuildDone(LevelModel model, LevelData data) {
@@ -201,10 +251,10 @@ public class ModelFinalizer {
         LevelValidator validator = new LevelValidator(false);
         log(1, "tryAdditionalBuild: edgeRooms=" + edgeRooms);
         Loop loop = new Loop(500);
-//        (!validator.validateModel(builder.graph, model) TODO
-//         || !checkBuildDone(model, model.getData()))
-//         &&
-        while ( loop.continues()) {
+        //        (!validator.validateModel(builder.graph, model) TODO
+        //         || !checkBuildDone(model, model.getData()))
+        //         &&
+        while (loop.continues()) {
 
             if (checkBuildDone(model, model.getData()))
                 break;

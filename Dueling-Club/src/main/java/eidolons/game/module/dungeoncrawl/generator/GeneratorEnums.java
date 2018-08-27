@@ -110,6 +110,7 @@ OOO##
 
         FILL_LIGHT_EMITTER_COEF(100, 0, 500),
         FILL_WALL_WITH_LIGHT_OVERLAY_COEF(100, 0, 500),
+        FILL_WALL_WITH_DECOR_OVERLAY_COEF(100, 0, 500),
         FILL_DESTRUCTIBLE_COEF(100, 0, 500),
         FILL_CONTAINER_COEF(100, 0, 500),
         FILL_SPECIAL_CONTAINER_COEF(100, 0, 500),
@@ -205,11 +206,11 @@ OOO##
         SECRET_DOOR_BUTTON("!"),
 
         GUARDS("G"),
-        PATROL("G"),
+        PATROL("P"),
         AMBUSH("M"),
         CROWD("W"),
         IDLERS("i"),
-        STALKER("T") ,
+        STALKER("K") ,
         MINI_BOSS("b"),
         BOSS("B"),
 
@@ -222,9 +223,9 @@ OOO##
 
 //RANDOM
 
-        RANDOM_PASSAGE("p"),
+        RANDOM_PASSAGE("p", "D(5);floor(5);"),
         RANDOM_SPAWN_GROUP("c"),
-        RANDOM_OBJECT("r"),
+        RANDOM_OBJECT("r", ""),
 
 
         //ROOM_TYPES*
@@ -260,6 +261,12 @@ OOO##
         ;
         static ROOM_CELL[] vals = ROOM_CELL.values();
         public final String symbol;
+        private String randomWeightMap;
+
+        ROOM_CELL(String symbol, String randomWeightMap) {
+            this.symbol = symbol;
+            this.randomWeightMap = randomWeightMap;
+        }
 
         ROOM_CELL(String symbol) {
             this.symbol = symbol;
@@ -284,6 +291,11 @@ OOO##
         public String getSymbol() {
             return symbol;
         }
+
+        public String getRandomWeightMap() {
+            return randomWeightMap;
+        }
+
     }
 
     public enum ROOM_TEMPLATE_GROUP {

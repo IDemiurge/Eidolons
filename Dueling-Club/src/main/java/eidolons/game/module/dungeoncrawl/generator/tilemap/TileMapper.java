@@ -23,6 +23,7 @@ public class TileMapper {
     private LevelModel model;
     private LevelData data;
     private ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
+    private static boolean loggingOff;
 
     public TileMapper(LevelModel model, LevelData data) {
         this.model = model;
@@ -109,6 +110,14 @@ public class TileMapper {
 
     public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
      , boolean OtoDot) {
+        return toASCII_String(cells, nullToX, OtoDot, false);
+    }
+
+    public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
+     , boolean OtoDot, boolean overrideBlock) {
+        if (!overrideBlock)
+            if (loggingOff)
+                return "";
         String string = "\n";
         String columns = "\nX     ";
         String separator = "\n      ";
@@ -188,6 +197,14 @@ public class TileMapper {
 
         }
         return cells;
+    }
+
+    public static void setLoggingOff(boolean loggingOff) {
+        TileMapper.loggingOff = loggingOff;
+    }
+
+    public static boolean isLoggingOff() {
+        return loggingOff;
     }
 
     public TileMap joinTileMaps() {

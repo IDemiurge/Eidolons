@@ -34,6 +34,15 @@ public class ListMaster<E> {
         return list;
     }
 
+    public   List<E> asList(E... values) {
+        List<E> list = new ArrayList<>();
+        for (E v : values) {
+            if (v != null) {
+                list.add(v);
+            }
+        }
+        return list;
+    }
     public static List<Object> toList(Object... values) {
         List<Object> list = new ArrayList<>();
         for (Object v : values) {

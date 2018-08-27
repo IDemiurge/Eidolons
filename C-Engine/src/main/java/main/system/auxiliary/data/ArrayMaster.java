@@ -251,4 +251,17 @@ public class ArrayMaster<T> {
 
         return clone;
     }
+
+    public static boolean within2D(Object[][] cells, int x, int y) {
+        if (x<0)
+            return false;
+        if (y<0)
+            return false;
+        if (cells.length<=x)
+            return false;
+        if (cells[x].length<=y)
+            return false;
+
+        return true;
+    }
 }

@@ -34,10 +34,20 @@ public class LevelStats extends DataUnit<LEVEL_STAT> {
         setValue(LEVEL_STAT.FILL_PERCENTAGE, fill+"");
 
 
+        int distance;
+
+      int  zoneBalance;
+        //max difference
+        //avrg difference  1 5 12 = 4+11+7)/3
+
+        setValue(LEVEL_STAT.FILL_PERCENTAGE, fill+"");
+
+
+        level.setStats(this);
     }
 
     public enum LEVEL_GEN_FLAG implements OPTION {
-        isMergeLinksAllowed(true),
+        isMergeLinksAllowed(false),
         isRandomizedSizeSort,
         isAdjustEvenRoomX,
         isAdjustEvenRoomY,
@@ -89,8 +99,7 @@ public class LevelStats extends DataUnit<LEVEL_STAT> {
         GRAPH_ADHERENCE,
         EXIT_TEMPLATE_COUNT,
         ROOM_TYPE_COUNT,
-
-        FLOOR_PERCENTAGE,
+        FLOOR_PERCENTAGE, FAIL_REASON,
 
 
     }

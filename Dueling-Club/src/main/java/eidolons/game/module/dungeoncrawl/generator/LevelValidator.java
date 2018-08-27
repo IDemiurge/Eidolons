@@ -9,13 +9,16 @@ import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREM
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
+import eidolons.game.module.dungeoncrawl.generator.model.Traverser;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
+import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_STAT;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.ContainerUtils;
 import main.system.data.DataUnit;
 
 import java.util.List;
@@ -35,6 +38,7 @@ public class LevelValidator {
     private float maxSquare;
     private float maxDimension;
     private DataUnit<LEVEL_REQUIREMENTS> reqs;
+    private Traverser traverser;
 
     public LevelValidator() {
     }
@@ -73,6 +77,10 @@ public class LevelValidator {
         return stats;
     }
 
+    public void setStats(LevelStats stats) {
+        this.stats = stats;
+    }
+
     public boolean isLevelValid(DungeonLevel level) {
         this.level = level;
         initRequirements(level.getData(), level.getModel());
@@ -80,6 +88,13 @@ public class LevelValidator {
         main.system.auxiliary.log.LogMaster.log(1, "Validating stats: " + stats);
         if (!checkExit())
             return fail(RNG_FAIL.NO_EXIT);
+        if (!checkEntrace())
+            return fail(RNG_FAIL.NO_ENTRACE);
+        if (traverser!=null ){
+            if (!traverser.test()){
+               return  fail(RNG_FAIL.CANNOT_TRAVERSE, traverser.getFailArgs());
+            }
+        }
         if (!checkModel())
             return false;
         if (!checkZones())
@@ -90,6 +105,7 @@ public class LevelValidator {
             return false;
         if (!checkTileMap())
             return false;
+
         //check population
         return true;
     }
@@ -146,9 +162,9 @@ public class LevelValidator {
         return true;
     }
 
-    private boolean fail(RNG_FAIL fail) {
+    private boolean fail(RNG_FAIL fail, Object... args) {
         if (stats != null) {
-            //            stats.addFail(fail);
+            stats.setValue(LEVEL_STAT.FAIL_REASON, fail + ContainerUtils.joinArray(" ", args));
         }
         if (logFail)
             main.system.auxiliary.log.LogMaster.log(1, "VALIDATION OF: \n" + model + "\n FAILED ON " + fail);
@@ -160,6 +176,10 @@ public class LevelValidator {
          room -> room.getType() == ROOM_TYPE.EXIT_ROOM).count() > 0;
     }
 
+    private boolean checkEntrace() {
+        return model.getRoomMap().values().stream().filter(
+         room -> room.getType() == ROOM_TYPE.ENTRANCE_ROOM).count() > 0;
+    }
 
     private boolean checkZones() {
         for (Room room : model.getRoomMap().values()) {
@@ -207,12 +227,20 @@ public class LevelValidator {
         return false;
     }
 
+    public void setTraverser(Traverser traverser) {
+        this.traverser = traverser;
+    }
+
+    public Traverser getTraverser() {
+        return traverser;
+    }
+
     public enum RNG_FAIL {
         NO_EXIT,
         SIZE,
         FILL,
         ROOMS,
-        ZONES, FILL_RATIO,
+        ZONES, FILL_RATIO, NO_ENTRACE, CANNOT_TRAVERSE,
 
     }
 

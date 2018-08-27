@@ -133,6 +133,9 @@ public class ContainerUtils {
         return (cropLastDivider) ? result.substring(0, result.lastIndexOf(divider)) : result;
     }
 
+    public static String joinArray(String s, Object[] args) {
+        return joinStringList(ListMaster.toStringList(args)  , s, true);
+    }
     public static String join(String s, String... parts) {
         return joinStringList(new ArrayList<>(Arrays.asList(parts)), s, true);
     }
@@ -257,4 +260,5 @@ public class ContainerUtils {
         });
         return builder.toString();
     }
+
 }

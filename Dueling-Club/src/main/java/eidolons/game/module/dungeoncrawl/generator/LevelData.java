@@ -163,6 +163,26 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
         this.initializeRequired = initializeRequired;
     }
 
+    public boolean isRemoveDeadendLinks() {
+        return false;
+    }
+
+    public boolean isSubstituteRoomsAllowed() {
+        return false;
+    }
+
+    public float getMinFloorPercentage(ROOM_TYPE roomType) {
+        return 0.5f;
+    }
+
+    public boolean isLoopBackAllowed() {
+        return false;
+    }
+
+    public boolean isPresetEntrancesAllowed() {
+        return false;
+    }
+
 
     //    public boolean isShearDisplacedOnly() {
     //        return getBooleanValue(LEVEL_VALUES.ShearDisplacedOnly);

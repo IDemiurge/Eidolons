@@ -6,7 +6,6 @@ import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
-import eidolons.game.module.dungeoncrawl.generator.model.Traverser;
 import main.game.bf.Coordinates;
 import org.junit.Test;
 
@@ -46,7 +45,6 @@ public class JUnitRngPathsTraversable extends JUnitRng{
 
     }
         private void canPass(Room room, Room room1, Room link) {
-        new Traverser();
 
         List<Coordinates> passage;
         ROOM_CELL[][] cells;

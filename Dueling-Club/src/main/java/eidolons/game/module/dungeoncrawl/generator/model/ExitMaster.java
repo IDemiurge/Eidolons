@@ -122,7 +122,7 @@ public class ExitMaster {
 
     public static Coordinates findExit(Room room, FACING_DIRECTION direction) {
         int i = 0;
-        for (FACING_DIRECTION exit : room.getExits()) {
+        for (FACING_DIRECTION exit : room.getUsedExits()) {
             if (exit == direction)
                 if (room.getExitCoordinates().size() > i)
                     return room.getExitCoordinates().get(i);
@@ -131,5 +131,20 @@ public class ExitMaster {
         return null;
 
 
+    }
+
+    public static int getExitCount(EXIT_TEMPLATE exitTemplate) {
+        switch (exitTemplate) {
+            case THROUGH:
+            case ANGLE:
+                return 1;
+            case FORK:
+                return 2;
+            case CROSSROAD:
+                return 3;
+            case CUL_DE_SAC:
+                return 0;
+        }
+        return 0;
     }
 }
