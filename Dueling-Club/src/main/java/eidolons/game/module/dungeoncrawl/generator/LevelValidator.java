@@ -84,15 +84,16 @@ public class LevelValidator {
     public boolean isLevelValid(DungeonLevel level) {
         this.level = level;
         initRequirements(level.getData(), level.getModel());
-        stats = new LevelStats(level);
+        if (stats == null)
+            stats = new LevelStats(level);
         main.system.auxiliary.log.LogMaster.log(1, "Validating stats: " + stats);
         if (!checkExit())
             return fail(RNG_FAIL.NO_EXIT);
         if (!checkEntrace())
             return fail(RNG_FAIL.NO_ENTRACE);
-        if (traverser!=null ){
-            if (!traverser.test()){
-               return  fail(RNG_FAIL.CANNOT_TRAVERSE, traverser.getFailArgs());
+        if (traverser != null) {
+            if (!traverser.test()) {
+                return fail(RNG_FAIL.CANNOT_TRAVERSE , traverser.getFailArgs());
             }
         }
         if (!checkModel())
@@ -164,7 +165,9 @@ public class LevelValidator {
 
     private boolean fail(RNG_FAIL fail, Object... args) {
         if (stats != null) {
-            stats.setValue(LEVEL_STAT.FAIL_REASON, fail + ContainerUtils.joinArray(" ", args));
+            stats.setValue(LEVEL_STAT.FAIL_REASON, fail
+             +": "
+             + ContainerUtils.joinArray(" ", args));
         }
         if (logFail)
             main.system.auxiliary.log.LogMaster.log(1, "VALIDATION OF: \n" + model + "\n FAILED ON " + fail);
@@ -172,8 +175,16 @@ public class LevelValidator {
     }
 
     private boolean checkExit() {
-        return model.getRoomMap().values().stream().filter(
-         room -> room.getType() == ROOM_TYPE.EXIT_ROOM).count() > 0;
+        Room room = model.getRoomMap().values().stream().filter(
+         r -> r.getType() == ROOM_TYPE.EXIT_ROOM).findFirst().orElse(null);
+
+        if (room == null )
+            return false;
+
+        if (!TileMapper.createTileMap(room).getMap().values().stream().anyMatch(c -> c == ROOM_CELL.EXIT)) {
+            return false;
+        }
+        return true;
     }
 
     private boolean checkEntrace() {
@@ -227,12 +238,12 @@ public class LevelValidator {
         return false;
     }
 
-    public void setTraverser(Traverser traverser) {
-        this.traverser = traverser;
-    }
-
     public Traverser getTraverser() {
         return traverser;
+    }
+
+    public void setTraverser(Traverser traverser) {
+        this.traverser = traverser;
     }
 
     public enum RNG_FAIL {
@@ -240,8 +251,10 @@ public class LevelValidator {
         SIZE,
         FILL,
         ROOMS,
-        ZONES, FILL_RATIO, NO_ENTRACE, CANNOT_TRAVERSE,
-
+        ZONES, FILL_RATIO, NO_ENTRACE,
+        CANNOT_TRAVERSE,
+        ERROR_MODEL,
+        LOW_RATING,
     }
 
 }

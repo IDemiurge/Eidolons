@@ -8,7 +8,9 @@ import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModelBuilder;
+import eidolons.game.module.dungeoncrawl.generator.model.ModelFinalizer;
 import eidolons.game.module.dungeoncrawl.generator.model.Traverser;
+import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.Loop;
@@ -37,10 +39,10 @@ public class LevelGenerator {
     private static final java.lang.String REAL_TEST_PLACE_TYPE_NAME = "Cemetery";
     public static LOCATION_TYPE TEST_LOCATION_TYPE = LOCATION_TYPE.CEMETERY;
     public static LOCATION_TYPE[] TEST_LOCATION_TYPES = {
-     LOCATION_TYPE.DUNGEON,
-     LOCATION_TYPE.CRYPT,
      LOCATION_TYPE.CEMETERY,
+     LOCATION_TYPE.CRYPT,
      LOCATION_TYPE.ARCANE,
+     LOCATION_TYPE.DUNGEON,
      LOCATION_TYPE.TEMPLE,
      LOCATION_TYPE.CASTLE,
     };
@@ -115,8 +117,10 @@ public class LevelGenerator {
         while (loop.continues()) {
             try {
                 LevelModel model = generateLevelModel(data);
-                DungeonLevel level = new DungeonLevel(model, data.getSublevelType(), data.getLocationType());
                 RngFillMaster.fill(model, data);
+                if (data.isNatural())
+                    ModelFinalizer.randomizeEdges(model);
+                DungeonLevel level = new DungeonLevel(model, data.getSublevelType(), data.getLocationType());
                 if (data.isInitializeRequired())
                     new RngLevelInitializer().init(level);
 
@@ -130,10 +134,11 @@ public class LevelGenerator {
 
                 return level;
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
+                if (Pregenerator.TEST_MODE)
+                    main.system.ExceptionMaster.printStackTrace(e);
             }
         }
-        return null;
+        throw new RuntimeException();
     }
 
     public LevelModel generateLevelModel(LevelData data) {

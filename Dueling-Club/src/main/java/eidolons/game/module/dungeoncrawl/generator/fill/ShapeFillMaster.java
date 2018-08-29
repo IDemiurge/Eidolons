@@ -1,9 +1,14 @@
 package eidolons.game.module.dungeoncrawl.generator.fill;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.system.SortMaster;
+import main.system.auxiliary.secondary.GeometryMaster;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,68 +31,146 @@ public class ShapeFillMaster {
          .collect(Collectors.toList()).subList(0, limit);
     }
 
-    public static Function<Coordinates,Integer> getSorterForShape(
-     FILL_SHAPE shape, Coordinates seed, int arg ) {
-
+    public static Function<Coordinates, Integer> getSorterForShape(
+     FILL_SHAPE shape, Coordinates seed, int arg) {
+        //
+//        shape.getMaxDistance(arg);
         //fullList.stream().
         switch (shape) {
 
             case TRIANGLE:
-                return c-> {
-
-                    return 0;
-                } ;
+                return c -> {
+                    if (seed.dst_(c) == new AbstractCoordinates(0, 0).dst_(new AbstractCoordinates(1, 2))) {
+                        return 100 - c.x - c.y;
+                    }
+                    return -c.x - c.y;
+                };
 
             case SQUARE:
-                return c-> {
-
+                return c -> {
+                    if (seed.dst_(c) <= GeometryMaster.hyp(arg+1, arg+1))
+                        return 100;
                     return 0;
-                } ;
+                };
             case TRIPLE:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case PAIR_VERTICAL:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case PAIR:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case DIAGONAL_PAIR:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case CROSS:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case X_CROSS:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case CROSS_HOLLOW:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
             case X_CROSS_HOLLOW:
-                return c-> {
+                return c -> {
 
                     return 0;
-                } ;
+                };
         }
         return null;
     }
 
-    public static boolean checkShape(FILL_SHAPE shape, List<Coordinates> coords) {
+    public static boolean checkShape(FILL_SHAPE shape, List<Coordinates> coords, int arg) {
+        Coordinates topLeft = CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, coords);
+        Collections.sort(coords, new SortMaster<Coordinates>()
+         .getSorterByExpression_(c ->
+          -c.x * 100 - c.y * 101)); //x difference goes first
+        coords = coords.stream().map(c -> c.getOffset(topLeft.negative())).collect(Collectors.toList());
+//relative to 0-0 ALWAYS!
+
+
+        //try all rotations and flips
+//        Boolean[] rotations = {true};
+//        coords = RotationMaster.rotateCoordinates(rotations, coords);
+
+        switch (shape) {
+            case TRIANGLE:
+                if (coords.get(1).x != -1)
+                    return false;
+                if (coords.get(1).y != 2)
+                    return false;
+                if (coords.get(2).x != 1)
+                    return false;
+                if (coords.get(2).y != 2)
+                    return false;
+
+                return true;
+            case PAIR:
+                if (coords.get(1).x != 1 + arg)
+                    return false;
+                if (coords.get(1).y != 0)
+                    return false;
+
+                return true;
+            case PAIR_VERTICAL:
+                if (coords.get(1).x != 0)
+                    return false;
+                if (coords.get(1).y != 1 + arg)
+                    return false;
+
+                return true;
+            case TRIPLE_VERTICA:
+                if (coords.get(1).x != 1)
+                    return false;
+                if (coords.get(1).y != 0)
+                    return false;
+                if (coords.get(2).x != 2)
+                    return false;
+                if (coords.get(2).y != 0)
+                    return false;
+
+                return true;
+            case TRIPLE:
+                if (coords.get(1).x != 1)
+                    return false;
+                if (coords.get(1).y != 0)
+                    return false;
+                if (coords.get(2).x != 2)
+                    return false;
+                if (coords.get(2).y != 0)
+                    return false;
+
+                return true;
+            case CORNER:
+                //check for 'normal case', then apply rotations and see if any matches
+
+                if (coords.get(1).x != 1)
+                    return false;
+                if (coords.get(1).y != 0)
+                    return false;
+                if (coords.get(2).x != 0)
+                    return false;
+                if (coords.get(2).y != 1)
+                    return false;
+
+                return true;
+        }
         return false;
     }
 
@@ -153,12 +236,14 @@ public class ShapeFillMaster {
         X0X
         OXO
          */
-        X_CROSS_HOLLOW(4),;
+        X_CROSS_HOLLOW(4), TRIPLE_VERTICA;
     /*
     XOX
     O0O
     XOX
      */
+
+        private int minPoints;
 
         FILL_SHAPE() {
             this(2);
@@ -167,8 +252,6 @@ public class ShapeFillMaster {
         FILL_SHAPE(int minPoints) {
             this.minPoints = minPoints;
         }
-
-        private int minPoints;
 
         public int getMinPoints() {
             return minPoints;

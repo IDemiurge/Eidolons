@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.pregeneration;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
@@ -51,7 +52,7 @@ public class LevelRater {
          */
     public float rateLevel() {
         float rate = 0;
-
+//make sure all room templates are used
         rate += getParametersRate();
         rate += getDistancesRate();
         rate += getGraphRate();
@@ -79,9 +80,29 @@ public class LevelRater {
                     pen += 1;
             }
         }
+
         return 100 - pen * 10;
     }
 
+    private float getGraphRate() {
+
+        return 0;
+    }
+
+    private float getZoneBalanceRate() {
+        WeightMap<String> map = new WeightMap<>(
+         );
+        for (LevelZone zone : model.getZones()) {
+            map.put(zone.getIndex() + "", zone.getSubParts().size());
+        }
+        return MathMaster.getBalanceCoef(map);
+    }
+    private float getVariety() {
+        WeightMap<EXIT_TEMPLATE> map = new WeightMap<>(stats.getValue(LEVEL_STAT.EXIT_TEMPLATE_COUNT), EXIT_TEMPLATE.class);
+        return MathMaster.getBalanceCoef(map);
+
+        //exit templates?
+    }
     private float getParametersRate() {
         float rate = stats.getIntValue(LEVEL_STAT.FILL_PERCENTAGE);
         return rate;
@@ -99,21 +120,7 @@ public class LevelRater {
         return 0.6f;
     }
 
-    private float getGraphRate() {
 
-        return 0;
-    }
-
-    private float getVariety() {
-        WeightMap<EXIT_TEMPLATE> map = new WeightMap<>(stats.getValue(LEVEL_STAT.EXIT_TEMPLATE_COUNT), EXIT_TEMPLATE.class);
-        return MathMaster.getBalanceCoef(map);
-
-        //exit templates?
-    }
-
-    private float getZoneBalanceRate() {
-        return 0;
-    }
 
     private float getRoomBalanceRate() {
         float diff = 0;

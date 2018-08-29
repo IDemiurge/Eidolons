@@ -24,7 +24,7 @@ public class TileMap {
         return  Collections.unmodifiableMap(map);
     }
 
-    private Map<Coordinates, ROOM_CELL> getMapModifiable() {
+    public Map<Coordinates, ROOM_CELL> getMapModifiable() {
         return map;
     }
 

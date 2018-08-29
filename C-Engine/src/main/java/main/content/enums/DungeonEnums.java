@@ -129,7 +129,15 @@ public class DungeonEnums {
 
         GLORY, TREASURE_HOARD, SUBLEVEL, BOSS, MAIN,
     }
-
+    public enum
+    LOCATION_TYPE_GROUP{
+        SURFACE,
+        WIDE,
+        AVERAGE,
+        NARROW,
+        NATURAL,
+        NATURAL_SURFACE,
+    }
     public enum LOCATION_TYPE {
         CAVE, CEMETERY(true), CRYPT, BARROW,
         HIVE, DUNGEON,
@@ -156,6 +164,37 @@ public class DungeonEnums {
         public void setSurface(boolean surface) {
             this.surface = surface;
         }
+
+        public LOCATION_TYPE_GROUP getGroup() {
+                switch (this) {
+                    case BARROW:
+                    case CAVE:
+                    case DEN:
+                    case HIVE:
+                        return LOCATION_TYPE_GROUP.NATURAL;
+                    case CRYPT:
+                    case ARCANE:
+                    case SEWER:
+                        return LOCATION_TYPE_GROUP.NARROW;
+
+                    case ASTRAL:
+                    case DUNGEON:
+                    case HELL:
+                        return LOCATION_TYPE_GROUP.AVERAGE;
+
+                    case TEMPLE:
+                    case CASTLE:
+                        return LOCATION_TYPE_GROUP.WIDE;
+
+                    case CAMP:
+                    case RUIN:
+                    case HOUSE:
+                    case GROVE:
+                    case CEMETERY:
+                        return LOCATION_TYPE_GROUP.SURFACE;
+                }
+                return LOCATION_TYPE_GROUP.NARROW;
+            }
     }
 
     public enum MAP_BACKGROUND {

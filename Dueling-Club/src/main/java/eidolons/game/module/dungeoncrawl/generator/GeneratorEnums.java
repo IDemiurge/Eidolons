@@ -55,27 +55,51 @@ OOO##
         CIRCLE_BACK,
     }
 
+
     public enum LEVEL_GRAPH_LINK_TYPE {
         NORMAL, AMBUSH, LONG, LOCKED,
     }
+    public enum LEVEL_DATA_MODIFICATION{
+        DOUBLE_ROOM_CHANCE,
+        HALF_ROOM_CHANCE,
+        NO_FILL,
+        DOUBLE_FILL,
+        HALF_FILL,
 
+        NO_RANDOM_EXITS,
+        NO_LINKLESS,
+        NO_LINKS,
+        NO_DOORS,
+
+        WRAP_ROOMS,
+        WRAP_TYPE,
+
+
+        LENGTHEN_MAIN_PATHS,
+        LENGTHEN_BONUS_PATHS,
+        SHORTEN_MAIN_PATHS,
+        SHORTEN_BONUS_PATHS,
+
+        DOUBLE_MAIN_PATHS,
+        HALF_BONUS_PATHS,
+        DOUBLE_BONUS_PATHS,
+
+        HALF_ZONES,
+        SINGLE_ZONE,
+
+
+        INCREASE_SIZE,
+        INCREASE_ROOM_COUNT,
+        DECREASE_SIZE,
+        DECREASE_ROOM_COUNT,
+        NO_ROOM_CHANCE, NO_RANDOM_ROTATIONS;
+    }
     public enum LEVEL_VALUES
      //for manual skirmish generation; but we'll need more ad hoc values...
      implements OPTION {
-        //GRAPH
 
         //MODEL
         ZONES,
-
-        //RENDER
-        PREFERRED_STYLE_1,
-
-        //GENERAL
-        DUNGEON_TYPE,
-
-        WIDTH,
-        HEIGHT,
-        Z_LEVEL,
 
         RANDOM_EXIT_CHANCE(0, 0, 100),
         DOOR_CHANCE_MOD(100, 0, 100),
@@ -102,7 +126,8 @@ OOO##
 
         SIZE_MOD(100, 10, 300),
         ROOM_COUNT_MOD(100, 10, 300),
-        MAIN_PATHS(1, 0, 5), BONUS_PATHS(2, 0, 10),
+        MAIN_PATHS(1, 0, 5),
+        BONUS_PATHS(2, 0, 10),
         MAIN_PATH_LENGTH(3, 2, 20),
         BONUS_PATH_LENGTH(2, 1, 15),
 
@@ -132,7 +157,20 @@ OOO##
         RANDOMIZED_SIZE_SORT_CHANCE(35, 0, 100),
         CHANCE_LINKLESS(35, 0, 100),
         CHANCE_LINKLESS_MOD(100, 0, 500),
-        SURFACE();
+        SURFACE(),
+
+        //RENDER
+        PREFERRED_STYLE_1,
+
+        //GENERAL
+        DUNGEON_TYPE,
+
+        //GRAPH
+        WIDTH,
+        HEIGHT,
+        Z_LEVEL,
+
+        ;
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -192,6 +230,7 @@ OOO##
     }
 
     public enum ROOM_CELL { //water, void
+        VOID("-"),
         INDESTRUCTIBLE("I"),
         WALL("#"),
         FLOOR("O"),

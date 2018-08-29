@@ -7,6 +7,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_
 import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.RandomWizard;
 import main.system.data.DataUnit;
@@ -61,7 +62,7 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
         return getIntValue(getROOM_COEF(type));
     }
 
-    public LEVEL_VALUES getROOM_COEF(ROOM_TYPE type) {
+    public static LEVEL_VALUES getROOM_COEF(ROOM_TYPE type) {
         return LEVEL_VALUES.valueOf(type.name() + "_COEF");
     }
 
@@ -153,6 +154,10 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
 
     public boolean isSurface() {
         return getBooleanValue(LEVEL_VALUES.SURFACE);
+    }
+    public boolean isNatural() {
+        return locationType.getGroup()== LOCATION_TYPE_GROUP.NATURAL||
+         locationType.getGroup()== LOCATION_TYPE_GROUP.NATURAL_SURFACE;
     }
 
     public boolean isInitializeRequired() {

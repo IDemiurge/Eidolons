@@ -2,6 +2,7 @@ package eidolons.game.module.dungeoncrawl.generator.model;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.system.auxiliary.data.ArrayMaster;
 
 /**
@@ -69,15 +70,14 @@ public class RoomModel {
     }
 
     public String getCellsString() {
-        cellsString = "";
-        String[][] toDisplay = ArrayMaster.rotateMatrixClockwise(cells);
-        for (String[] sub : toDisplay) {
-            for (String sub1 : sub) {
-                cellsString += sub1;
-            }
-            cellsString += "\n";
-        }
-        return cellsString;
+//        cellsString = "";
+//        for (String[] sub : cells) {
+//            for (String sub1 : sub) {
+//                cellsString += sub1;
+//            }
+//            cellsString += "\n";
+//        }
+        return TileMapper.createTileMap(cells).toString();
     }
 
     @Override

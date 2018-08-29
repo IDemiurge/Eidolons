@@ -146,12 +146,18 @@ public class LevelGraphMaster {
 
                 tipNode = new RandomWizard<LevelGraphNode>()
                  .getRandomListItem(nodes);
-                tipNode.setZoneIndex(index);
+                zones.get(index).nodeAdded(tipNode);
+                nodes.remove(tipNode);
                 nodes.forEach(node -> {
                      if (node.getZoneIndex() == -1)
-                         node.setZoneIndex(index);
+                         if (RandomWizard.chance(50+50/(1+zones.get(index).getNodeCount())))
+                         {
+                             zones.get(index).nodeAdded(node);
+                         }
                  }
                 );
+                nodes.removeIf(n -> n.getZoneIndex() == -1  );
+
                 unallocated.removeAll(nodes);
                 tipNodes[index] = tipNode;
                 newAcquired = true;
@@ -190,8 +196,8 @@ public class LevelGraphMaster {
                     } else
                         node.setZoneIndex(closest.getZoneIndex());
                 }
+                zones.get(node.getZoneIndex()).nodeAdded(node);
             }
-            zones.get(node.getZoneIndex()).nodeAdded(node);
         }
     }
 

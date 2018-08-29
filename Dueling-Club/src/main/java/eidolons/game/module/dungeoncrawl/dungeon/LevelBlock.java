@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.SPAWN_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
@@ -11,6 +12,7 @@ import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.data.MapMaster;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -27,6 +29,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private List<ObjAtCoordinate> objects = new ArrayList<>();
     private Set<Coordinates> coordinatesList;
     private TileMap tileMap;
+    private TileMap originalTileMap;
     private LevelZone zone;
     private Map<Coordinates, Coordinates> boundCells;
     private List aiGroups;
@@ -36,6 +39,9 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.width = width;
         this.height = height;
         this.tileMap = tileMap;
+        this.originalTileMap = new TileMap(
+         new MapMaster<Coordinates, ROOM_CELL>().cloneHashMap(
+         tileMap.getMap()));
         this.coordinates = coordinates;
         this.zone = zone;
     }
@@ -154,5 +160,9 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
 
     public int getSquare() {
         return getWidth() *  getHeight();
+    }
+
+    public TileMap getOriginalTileMap() {
+        return originalTileMap;
     }
 }

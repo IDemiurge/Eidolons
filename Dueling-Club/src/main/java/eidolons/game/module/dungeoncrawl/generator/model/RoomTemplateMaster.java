@@ -89,12 +89,12 @@ public class RoomTemplateMaster {
                 Map<ROOM_TYPE, Map<EXIT_TEMPLATE, String>> sub =
                  map.get(group.getMultiGroupOne());
                 if (sub == null)
-                    sub = createMap(group);
+                    sub = createMap(group.getMultiGroupOne());
                 merged.putAll(sub);
 
                 sub = map.get(group.getMultiGroupTwo());
                 if (sub == null)
-                    sub = createMap(group);
+                    sub = createMap(group.getMultiGroupTwo());
                 merged.putAll(sub);
                 map.put(group, merged);
             }
@@ -237,17 +237,17 @@ public class RoomTemplateMaster {
     private RoomModel createRoomModel(String data,
                                       EXIT_TEMPLATE exit,
                                       ROOM_TYPE template) {
-        String[] array = StringMaster.splitLines(data);
+        String[] array = StringMaster.splitLines(data.trim());
         if (array.length < 1) {
             log(1, "EMPTY ROOM FOR " + template + exit);
             return null;
         }
         int wrapWidth = getWrapWidthForRoomModel(exit, template);
 
-        String[][] cells = new String[array[0].length() + wrapWidth * 2][array.length + wrapWidth * 2];
-        boolean hor = array[0].length() + wrapWidth * 2 > array.length + wrapWidth * 2;
-        if (hor)
-            cells = new String[array.length + wrapWidth * 2][array[0].length() + wrapWidth * 2];
+        String[][] cells = new String[array.length + wrapWidth * 2][array[0].length() + wrapWidth * 2];
+        //        boolean hor = array[0].length() + wrapWidth * 2 > array.length + wrapWidth * 2;
+        //        if (hor)
+        //            cells = new String[array.length + wrapWidth * 2][array[0].length() + wrapWidth * 2];
 
         int i = wrapWidth;
         for (String row : array) {
@@ -259,10 +259,18 @@ public class RoomTemplateMaster {
         if (wrapWidth > 0)
             RoomModelTransformer.wrapInWalls(cells, wrapWidth, wrapType); //TODO could wrap in empty cells for outdoors!
 
-        if (hor) {
-            //            main.system.auxiliary.log.LogMaster.log(1, "TODO hor ");
-            cells = ArrayMaster.rotateMatrixClockwise(cells);
+        //        if (hor) {
+        //                   TODO setRotations or leave it be!
+        //            cells = ArrayMaster.rotateStringMatrixClockwise(cells);
+        //        } else {
+        try {
+            String[][] fixedForRows = ArrayMaster.flip(cells, false, true);
+            fixedForRows = ArrayMaster.rotateStringMatrixAnticlockwise(fixedForRows);
+            cells = fixedForRows;
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
         }
+        //        }
 
         RoomModel model = new RoomModel(cells, template, exit);
         return model;
@@ -294,15 +302,6 @@ public class RoomTemplateMaster {
                 return null;
             return getNextRandomModel(roomType, template, entrance, templateGroup);
         }
-        //        FACING_DIRECTION exit = entrance;
-        //        if (entrance != null && entrance.isVertical() &&
-        //         template == EXIT_TEMPLATE.THROUGH)
-        //            exit = FacingMaster.rotate180(entrance);
-        //        exit =entrance!=null && !entrance.isVertical()&&
-        //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
-        //         : exit;
-        //why is this required?!
-
 
         RoomModel model = new RandomWizard<RoomModel>().getRandomListItem(models);
 
@@ -310,17 +309,17 @@ public class RoomTemplateMaster {
             model = new RandomWizard<RoomModel>().getRandomListItem(models);
         }
         model = clone(model);
-        checkRotations(template, entrance, model);
 
         checkFlipping(template, entrance, model);
-        //        exit =entrance!=null && !entrance.isVertical()&&
-        //         template == EXIT_TEMPLATE.ANGLE ? FacingMaster.rotate180(entrance)
-        //         : exit;
+
+        checkRotations(template, entrance, model);
+
+
         return model;
     }
 
     private void checkRotations(EXIT_TEMPLATE template, FACING_DIRECTION entrance, RoomModel model) {
-        boolean random = data.isRandomRotation() && template != EXIT_TEMPLATE.ANGLE;
+        boolean random = data.isRandomRotation() && template != EXIT_TEMPLATE.FORK&& template != EXIT_TEMPLATE.ANGLE;
         FACING_DIRECTION requiredEntranceSide = DEFAULT_ENTRANCE_SIDE;
 
         //can specify required entrance side with 'e' symbol
@@ -332,7 +331,7 @@ public class RoomTemplateMaster {
                     }
                 }
                 if (requiredEntranceSide == DEFAULT_ENTRANCE_SIDE) {
-                    String[][] rotated = ArrayMaster.rotateMatrixClockwise(model.getCells());
+                    String[][] rotated = ArrayMaster.rotateStringMatrixClockwise(model.getCells());
                     for (String s : rotated[0]) {
                         if (s.equals(ROOM_CELL.ROOM_EXIT.getSymbol())) {
                             requiredEntranceSide = FACING_DIRECTION.SOUTH;
@@ -347,11 +346,19 @@ public class RoomTemplateMaster {
                     }
                 }
             }
+        FACING_DIRECTION exit = entrance;
+        //        if (entrance != null && entrance.isVertical() &&
+        //         template == EXIT_TEMPLATE.THROUGH)
+        //            exit = FacingMaster.rotate180(entrance);
+        exit = entrance != null && entrance.isVertical() &&
+         template == EXIT_TEMPLATE.ANGLE ? exit.flip()
+         : exit;
+
         Boolean[] rotations =
          random ?
           RotationMaster.getRandomPossibleParentRotations(entrance, template)
           : RotationMaster.getRotations(
-          entrance, requiredEntranceSide);
+          exit, requiredEntranceSide);
         //        if (template==EXIT_TEMPLATE.ANGLE){
         //            if (rotations.length==3)
         //                TODO something cheesy there...
@@ -382,7 +389,8 @@ public class RoomTemplateMaster {
 
 
     private RoomModel clone(RoomModel model) {
-        return new RoomModel(model.getCells(), model.getType(), model.getExitTemplate());
+        return new RoomModel(ArrayMaster.cloneString2d(
+         model.getCells()), model.getType(), model.getExitTemplate());
     }
 
 

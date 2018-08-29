@@ -1,5 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.tilemap;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
@@ -74,6 +75,9 @@ public class TileMapper {
         return createTileMap(room.getCells(), room.getCoordinates());
     }
 
+    public static TileMap createTileMap(String[][] cells ) {
+        return createTileMap(cells, new AbstractCoordinates(0, 0));
+    }
     public static TileMap createTileMap(String[][] cells, Coordinates offset) {
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         int x = 0;
@@ -90,9 +94,11 @@ public class TileMapper {
     }
 
     public static ROOM_CELL[][] getCells(TileMap map) {
+        Coordinates offset = CoordinatesMaster.getUpperLeftCornerCoordinates(map.getMap().keySet());
         ROOM_CELL[][] cells = new ROOM_CELL[map.getWidth()][map.getHeight()];
         for (Coordinates point : map.getMap().keySet()) {
             ROOM_CELL val = map.getMap().get(point);
+            point = point.getOffset(offset.negative());
             if (val == null)
                 continue;
             try {
@@ -208,6 +214,7 @@ public class TileMapper {
     }
 
     public TileMap joinTileMaps() {
+        model.offsetCoordinates();
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         for (LevelBlock block : model.getBlocks().values()) {
             for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
@@ -216,6 +223,10 @@ public class TileMapper {
                  ,
                  block.getTileMap().getMap().get(coordinates));
             }
+        }
+        for (Coordinates coordinates : model.getAdditionalCells().keySet()) {
+            map.put(coordinates, model.getAdditionalCells().get(coordinates));
+            model.getCells()[coordinates.x][coordinates.y] = model.getAdditionalCells().get(coordinates);
         }
         return new TileMap(map);
     }

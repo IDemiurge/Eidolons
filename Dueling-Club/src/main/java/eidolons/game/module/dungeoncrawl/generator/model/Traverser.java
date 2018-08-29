@@ -27,7 +27,7 @@ public class Traverser {
     private static final boolean SIMPLE = true;
     private final Map<LevelGraphEdge, Room> edgeMap;
     private final Map<LevelGraphNode, Room> map;
-    private final  LevelModel model;
+    private final LevelModel model;
     private final LevelGraph graph;
     private List<LevelGraphEdge> failed;
 
@@ -39,6 +39,8 @@ public class Traverser {
     }
 
     public static int getExitsOffset(Room room, Room room2) {
+        if (room2.getEntrance() == null)
+            return 0;
         boolean xOrY = room2.getEntrance().isVertical();
         Coordinates c = ExitMaster.findExit(room, room2.getEntrance().flip());
         if (c == null)
@@ -53,12 +55,83 @@ public class Traverser {
         return dif;
     }
 
-    public boolean test( ) {
-        failed = getFailedEdges( );
+    public static boolean simpleCheck(Room room, Room room1, Room link) {
+        if (!checkEntrancesPassable(room, room1, link)) {
+
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean checkEntrancesPassable(Room room, Room room1, Room link) {
+        if (!checkEntrancesPassable(room)) {
+            System.out.println("CANNOT TRAVERSE " + room );
+            return false;
+        }
+        if (!checkEntrancesPassable(room1)) {
+            System.out.println("CANNOT TRAVERSE " + room1);
+            return false;
+        }
+        if (link != null) {
+            if (!checkEntrancesPassable(link)) {
+                System.out.println("CANNOT TRAVERSE " + "\n" + link + "\n");
+                return false;
+            }
+            if (!checkExitsAligned(room, link)) {
+                System.out.println("NOT ALIGNED" + "\n" + link + "\n" + room);
+                return false;
+            }
+            if (!checkExitsAligned(link, room1)) {
+                System.out.println("NOT ALIGNED" + "\n" + link + "\n" + room1);
+                return false;
+            }
+        } else {
+//            if (!checkExitsAligned(room, room1)) {
+//                System.out.println("NOT ALIGNED" + "\n" + room + "\n" + room1);
+//                return false;
+//            }
+        }
+        //entrances are aligned
+
+        return true;
+    }
+
+    //    public String getFailReason() {
+    //        String reason = "Cannot traverse: \n";
+    //        failedEdges = getFailedEdges();
+    //        return reason;
+    //    }
+
+    public static boolean checkExitsAligned(Room room, Room room2) {
+        return getExitsOffset(room, room2) == 0;
+    }
+
+    public static boolean checkEntrancesPassable(Room room) {
+        return checkEntrancesPassable(room, room.getEntrance());
+    }
+
+    public static boolean checkEntrancesPassable(Room room, FACING_DIRECTION entrance) {
+        Coordinates coordinates =
+         room.getEntranceCoordinates() != null ? room.getEntranceCoordinates() :
+          RoomAttacher.adjust(new AbstractCoordinates(0, 0), entrance, room, true);
+        if (room.getType() == ROOM_TYPE.ENTRANCE_ROOM)
+            return true;
+        TileMap tileMap = TileMapper.createTileMap(room);
+        long blocked = TileMapper.createTileMap(room).getMap().keySet().stream()
+         .filter(c -> TilesMaster.isEntranceCell(room.relative(c), room, coordinates, entrance))
+         .filter(c -> !TilesMaster.isPassable(tileMap.getMap().get(c))).count();
+        if (blocked > 0)
+            return false;
+
+        return true;
+    }
+
+    public boolean test() {
+        failed = getFailedEdges();
         return failed.isEmpty();
     }
 
-    public List<LevelGraphEdge> getFailedEdges( ) {
+    public List<LevelGraphEdge> getFailedEdges() {
         List<LevelGraphEdge> failed = new ArrayList<>();
         for (LevelGraphEdge edge : graph.getEdges()) {
             if (!checkCanPass(edge.getNodeOne(),
@@ -70,12 +143,6 @@ public class Traverser {
         return failed;
     }
 
-//    public String getFailReason() {
-//        String reason = "Cannot traverse: \n";
-//        failedEdges = getFailedEdges();
-//        return reason;
-//    }
-
     private boolean checkCanPass(LevelGraphNode nodeOne, LevelGraphNode nodeTwo, Room link) {
         return canPass(map.get(nodeOne), map.get(nodeTwo), link);
 
@@ -85,49 +152,7 @@ public class Traverser {
 
     }
 
-    private boolean simpleCheck(Room room, Room room1, Room link) {
-        if (!checkEntrancesPassables(room, room1, link)) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkEntrancesPassables(Room room, Room room1, Room link) {
-        if (!checkEntrancesPassable(room))
-            return false;
-        if (!checkEntrancesPassable(room1))
-            return false;
-        if (link != null) {
-            if (!checkEntrancesPassable(link))
-                return false;
-            if (!checkExitsAligned(room, link))
-                return false;
-            if (!checkExitsAligned(link, room1))
-                return false;
-        } else {
-            if (!checkExitsAligned(room, room1))
-                return false;
-        }
-        //entrances are aligned
-
-        return true;
-    }
-
-    private boolean checkExitsAligned(Room room, Room room2) {
-        return getExitsOffset(room, room2) == 0;
-    }
-
-    private boolean checkEntrancesPassable(Room room) {
-        if (room.getType() == ROOM_TYPE.ENTRANCE_ROOM)
-            return true;
-        TileMap tileMap = TileMapper.createTileMap(room);
-        long blocked = TileMapper.createTileMap(room).getMap().keySet().stream()
-         .filter(c -> TilesMaster.isEntranceCell(room.relative(c), room))
-         .filter(c -> !TilesMaster.isPassable(tileMap.getMap().get(c))).count();
-        return blocked == 0;
-    }
-
-    private boolean canPass(Room room, Room room1, Room link) {
+    public boolean canPass(Room room, Room room1, Room link) {
         if (room == null)
             return ALLOW_NULL;
         if (room1 == null)
@@ -254,7 +279,7 @@ Fail example:
     }
 
     public String[] getFailArgs() {
-        String[] array=new String[failed.size()];
+        String[] array = new String[failed.size()];
         for (int i = 0; i < failed.size(); i++) {
             array[i] = failed.get(i).toString();
         }

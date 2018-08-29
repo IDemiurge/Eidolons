@@ -11,7 +11,7 @@ import main.system.datatypes.WeightMap;
 /**
  * Created by JustMe on 8/2/2018.
  */
-public class GenerationStats extends DataUnit<GEN_STAT>{
+public class GenerationStats extends DataUnit<GEN_STAT> {
     LOCATION_TYPE locationType;
     SUBLEVEL_TYPE type;
 
@@ -21,22 +21,30 @@ public class GenerationStats extends DataUnit<GEN_STAT>{
     }
 
     public void addCount(GEN_STAT stat, String val) {
-        GEN_STAT mapVal = new EnumMaster<GEN_STAT>().retrieveEnumConst(GEN_STAT.class, stat + "_MAP");
-        WeightMap<String> map = new WeightMap<>( getValue(mapVal), String.class);
-        MapMaster.addToIntegerMap(map, val, 1);
-        setValue(mapVal, map.toString());
         addValue(stat, val);
+        if (val.contains(": ")) {
+            val = val.split(": ")[0];
+        }
+        GEN_STAT mapVal = new EnumMaster<GEN_STAT>().retrieveEnumConst(GEN_STAT.class, stat + "_MAP");
+        WeightMap<String> map = new WeightMap<>(getValue(mapVal), String.class);
+        MapMaster.addToIntegerMap(map, val, 1);
+
+        setValue(mapVal, map.toString());
 
     }
 
     @Override
     public String toString() {
-        String data = "Generation stats for "+type+" "+locationType+":\n";
+        String data = "Generation stats for " + type + " " + locationType + ":\n";
         for (String v : getValues().keySet()) {
             data += v + "="
              + values.get(v) + "\n";
         }
         return data;
+    }
+
+    public int rate() {
+        return 0;
     }
 
     public enum GEN_STAT {
@@ -75,8 +83,5 @@ rooms added via finalizer
         AVRG_FILL_RATIO,
         AVRG_RATE, SUCCESS_RATE,
 
-    }
-    public int rate() {
-        return 0;
     }
 }

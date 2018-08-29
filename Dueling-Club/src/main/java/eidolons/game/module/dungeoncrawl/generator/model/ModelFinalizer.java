@@ -12,6 +12,8 @@ import eidolons.game.module.dungeoncrawl.generator.graph.GraphPath;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
+import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.SortMaster;
@@ -47,6 +49,49 @@ public class ModelFinalizer {
         this.builder = builder;
     }
 
+    public static void randomizeEdges(LevelModel model) {
+        model.offsetCoordinates();
+        Map<Coordinates, ROOM_CELL> modelMap = TileMapper.createTileMap(model).getMapModifiable();
+        for (Room room : model.getRoomMap().values()) {
+            Map<Coordinates, ROOM_CELL> map = TileMapper.createTileMap(room).getMap();
+            List<Coordinates> edgeCells = map.keySet().stream()
+             .filter(c -> map.get(c) == ROOM_CELL.INDESTRUCTIBLE)
+             .filter(c -> TilesMaster.getAdjacentCount(modelMap, c, ROOM_CELL.VOID) > 2)
+             .collect(Collectors.toList());
+            int last =0;
+            for (Coordinates edgeCell : edgeCells) {
+
+                List<Coordinates> voidCells = TilesMaster.getAdjacentCells(modelMap,false, edgeCell, ROOM_CELL.VOID);
+
+//                if (RandomWizard.chance(84))
+                    if (RandomWizard.chance(50+last)) {
+                        last-=25;
+                    Coordinates cell = new RandomWizard<Coordinates>().getRandomListItem(voidCells);
+                    model.getAdditionalCells().put(cell, ROOM_CELL.INDESTRUCTIBLE);
+                    modelMap.put(cell, ROOM_CELL.INDESTRUCTIBLE);
+                        if (RandomWizard.chance(65))
+                    if (edgeCell.x == cell.x || edgeCell.y == cell.y) {
+                        Coordinates c = room.relative(edgeCell);
+                        room.getCells()[c.x][c.y] = ROOM_CELL.FLOOR.getSymbol();
+                    }
+                }
+                else last += 25;
+//                    for (Coordinates cell : voidCells) {
+//                        if (RandomWizard.chance(89)) {
+//                            continue;
+//                        }
+//                        model.getAdditionalCells().put(cell, ROOM_CELL.INDESTRUCTIBLE);
+//                        modelMap.put(cell, ROOM_CELL.INDESTRUCTIBLE);
+//                        if (edgeCell.x == cell.x || edgeCell.y == cell.y) {
+//                            Coordinates c = room.relative(edgeCell);
+//                            room.getCells()[c.x][c.y] = ROOM_CELL.FLOOR.getSymbol();
+//                        }
+//                    }
+
+            }
+        }
+    }
+
     public void substituteRoomModels(LevelModel model) {
         //alternative - remove rooms if their linkcount fails to be met
         for (Room room : model.getRoomMap().values()) {
@@ -61,15 +106,15 @@ public class ModelFinalizer {
                 } else template = EXIT_TEMPLATE.ANGLE;
             }
 
-            log(1,"Substituting cells for " +room+ " with "
-            + template);
+            log(1, "Substituting cells for " + room + " with "
+             + template);
 
             RoomModel roomModel = templateMaster.getRandomModelToSubstitute(room.getWidth(),
              room.getHeight(), template, room.getType(), room.getEntrance(
              ), room.getZone().getTemplateGroup(),
              room.getUsedExits());
 
-            if (roomModel==null )
+            if (roomModel == null)
                 continue;
 
             room.setCells(roomModel.getCells());
@@ -80,8 +125,8 @@ public class ModelFinalizer {
              roomModel.getRotations(), room.getExits()));
 
 
-            log(1,"New cells for " +room);
-            if (ZoneCreator.TEST_MODE){
+            log(1, "New cells for " + room);
+            if (ZoneCreator.TEST_MODE) {
                 room.setZone(new LevelZone(9));
             }
             //TODO block?
@@ -175,11 +220,11 @@ public class ModelFinalizer {
         Coordinates c = link.getCoordinates();
         Coordinates offset = new AbstractCoordinates(0, 0);
         while (true) {
-//           TODO  if (new Traverser().checkTraversable(link, side, offset))
-//                if (new Traverser().checkTraversable(room, side, offset)) {
-//                    builder.addRoom(link, room);
-//                    break;
-//                }
+            //           TODO  if (new Traverser().checkTraversable(link, side, offset))
+            //                if (new Traverser().checkTraversable(room, side, offset)) {
+            //                    builder.addRoom(link, room);
+            //                    break;
+            //                }
             int x = side.isVertical() ? 0 : 1;
             int y = !side.isVertical() ? 0 : 1;
             offset.offset(new AbstractCoordinates(x, y));
@@ -191,7 +236,6 @@ public class ModelFinalizer {
         //make exits
 
     }
-
 
     private Room chooseAltRoom(GraphPath path, Room room, LevelModel model) {
         List<Coordinates> sortedCandidates = model.getRoomMap().keySet().stream().sorted(new SortMaster<Coordinates>().getSorterByExpression_(
@@ -215,7 +259,6 @@ public class ModelFinalizer {
         return lastRoom;
     }
 
-
     public void finalize(LevelModel model) {
         log(1, "FINALIZING: \n" + model);
         maxRooms =
@@ -226,16 +269,21 @@ public class ModelFinalizer {
         tryAdditionalBuild(model);
 
         if (model.getData().isLoopBackAllowed())
-        try {
-            loopBack(model);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
+            try {
+                loopBack(model);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         if (model.getData().isSubstituteRoomsAllowed())
-        try {
-            substituteRoomModels(model);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
+            try {
+                substituteRoomModels(model);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+        if (model.getData().getLocationType().getGroup() == LOCATION_TYPE_GROUP.NATURAL
+         ) {
+            randomizeEdges(model);
         }
     }
 

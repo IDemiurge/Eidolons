@@ -65,8 +65,18 @@ public class LevelModelBuilder {
 
             if (data.isFinalizerOn())
                 new ModelFinalizer(templateMaster, attacher, this).finalize(model);
+
+        if (model.getRoomMap().values().stream().filter(c ->
+         c.getType() == ROOM_TYPE.EXIT_ROOM).count() > 0) {
+//    TODO         main.system.auxiliary.log.LogMaster.log(1,"NO EXIT in ROOM " );
+        } else {
+            System.out.println( "NO EXIT ROOM ");
+
+        }
+
+
             if (isBuildFromExit()) {
-                build(true, graph.getNodeById(1), FacingMaster.getRandomFacing());
+                build(true, graph.findFirstNodeOfType(ROOM_TYPE.EXIT_ROOM), FacingMaster.getRandomFacing());
             }
             cleanUp();
 

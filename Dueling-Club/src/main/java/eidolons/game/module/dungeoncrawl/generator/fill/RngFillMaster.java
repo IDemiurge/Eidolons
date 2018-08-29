@@ -137,6 +137,9 @@ public class RngFillMaster {
             int toClear = Math.round(block.getSquare() * ratioDif);
 
             filledCells.removeIf(c -> !isClearable(map.get(c)));
+            filledCells.removeIf(c -> block.getOriginalTileMap().
+             getMap().get(c)!=ROOM_CELL.FLOOR);
+
             Collections.shuffle(filledCells);
 
             for (Coordinates c : filledCells) {

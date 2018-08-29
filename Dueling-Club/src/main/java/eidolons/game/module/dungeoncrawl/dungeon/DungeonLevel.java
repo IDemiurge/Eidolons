@@ -49,8 +49,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     private LevelStats stats;
 
     public DungeonLevel(  LevelModel model, SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
-        this.tileMap = TileMapper.createTileMap(model);
+//        this.tileMap = TileMapper.createTileMap(model);
         this.model = model;
+        this.tileMap= new TileMapper(model,model.getData()).joinTileMaps();
         this.sublevelType = type;
         this.locationType = locationType;
         initEntranceAndExit();
@@ -60,10 +61,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
 
 
         entranceCoordinates =  tileMap.getMap().keySet().stream().filter(c ->
-         tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE).findFirst().get();
+         tileMap.getMap().get(c) == ROOM_CELL.ENTRANCE).findFirst().orElse(null );
 
         exitCoordinates =  tileMap.getMap().keySet().stream().filter(c ->
-         tileMap.getMap().get(c) == ROOM_CELL.EXIT).findFirst().get();
+         tileMap.getMap().get(c) == ROOM_CELL.EXIT).findFirst().orElse(null );
 
     }
 
@@ -75,7 +76,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     @Override
     public String toXml() {
         //TODO save original model map!
-        model.offsetCoordinates();
         String xml="";
         tileMap= new TileMapper(model,model.getData()).joinTileMaps();
          xml +=

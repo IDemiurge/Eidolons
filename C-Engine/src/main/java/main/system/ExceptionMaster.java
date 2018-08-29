@@ -16,7 +16,7 @@ public class ExceptionMaster {
     public static void printStackTrace(Exception e) {
 //
         {
-            if (CoreEngine.isJar())
+            if (CoreEngine.isJar() || LogMaster.isOff())
                 if (printed.contains(e.getMessage()))
                     return;
             LogMaster.getExceptionList().add(e);

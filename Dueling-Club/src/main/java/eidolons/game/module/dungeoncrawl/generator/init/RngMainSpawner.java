@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 public class RngMainSpawner {
 
     private static final float SINGLE_UNIT_BONUS_COEF = 1.3f;
+    private static final boolean TEST_MODE = true;
+    private static final int TEST_POWER = 150;
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
@@ -372,7 +374,7 @@ public class RngMainSpawner {
     private List<ObjType> getUnitsForGroup(float powerCoef,
                                            SPAWN_GROUP_TYPE groupType,
                                            UNIT_GROUP group, int max, int minPreferred ) {
-        int powerLevel = Math.round(level.getPowerLevel() * powerCoef);
+        int powerLevel =TEST_MODE? TEST_POWER : Math.round(level.getPowerLevel() * powerCoef);
 
         List<ObjType> units = new ArrayList<>();
         Loop loop = new Loop(50 + minPreferred * 10);

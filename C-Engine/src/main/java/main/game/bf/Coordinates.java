@@ -4,6 +4,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
@@ -498,6 +499,28 @@ public class Coordinates {
 
     public Coordinates negative() {
         return create(true, -x, -y);
+    }
+
+    public Coordinates rotate(Boolean rotation, int w, int h) {
+        Integer[][] mat = new Integer[w][h];
+        for (int x = 0; x < w; x++) {
+        for (int y = 0; y < h; y++)
+            mat[x][y]=Integer.MIN_VALUE;
+        }
+        mat[x][0] = getX();
+        mat[0][y] = getY();
+
+       mat = ArrayMaster.rotate(rotation, mat);
+        //rotate
+
+        for (int x = 0; x < mat.length; x++) {
+            for (int y = 0; y < mat[0].length; y++)
+                if (mat[x][y]== getX())
+                    setX(y);
+                if (mat[x][y]== getY())
+                    setY(x);
+        }
+    return this;
     }
 
 }

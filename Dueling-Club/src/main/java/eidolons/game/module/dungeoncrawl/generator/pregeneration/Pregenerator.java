@@ -5,6 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker;
 import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
 import eidolons.game.module.dungeoncrawl.generator.LevelValidator;
+import eidolons.game.module.dungeoncrawl.generator.LevelValidator.RNG_FAIL;
 import eidolons.game.module.dungeoncrawl.generator.pregeneration.PregeneratorData.PREGENERATOR_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.GEN_STAT;
@@ -15,9 +16,13 @@ import eidolons.macro.generation.ScenarioGenerator;
 import eidolons.system.text.NameMaster;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
 import main.system.threading.WaitMaster;
@@ -26,11 +31,10 @@ import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static eidolons.game.module.dungeoncrawl.generator.LevelGenerator.TEST_LOCATION_TYPES;
-import static main.system.auxiliary.log.LogMaster.log;
-import static main.system.auxiliary.log.LogMaster.setOff;
+import static eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MODIFICATION.HALF_ZONES;
 
 /**
  * Created by JustMe on 8/17/2018.
@@ -44,20 +48,30 @@ public class Pregenerator implements Runnable {
      {SUBLEVEL_TYPE.BOSS,}
     };
 
+    public static LOCATION_TYPE[] LOCATION_TYPES = {
+     LOCATION_TYPE.ARCANE,
+     LOCATION_TYPE.CAVE,
+     LOCATION_TYPE.DUNGEON,
+     LOCATION_TYPE.CEMETERY,
+     LOCATION_TYPE.CRYPT,
+     LOCATION_TYPE.TEMPLE,
+     LOCATION_TYPE.CASTLE,
+    };
     public static final boolean TEST_MODE = true;
-    public static final LOCATION_TYPE[] GENERATED_LOCATIONS = TEST_LOCATION_TYPES;
+    public static final boolean NO_VALIDATION = false;
+    public static final LOCATION_TYPE[] GENERATED_LOCATIONS = LOCATION_TYPES;
     public static final GEN_STAT[] averageValues = {
 
     };
     private static final int THREADS = 3;
-    private static final float RATE_MIN_DEFAULT = 100;
     private static List<Pregenerator> running = new ArrayList<>();
-    private static List<GenerationStats> analysisStats = new ArrayList<>();
+    private static Map<PregeneratorData,List<GenerationStats>> analysisStats = new XLinkedMap<>();
     private PregeneratorData data;
-    private List<DungeonLevel> generated = new ArrayList<>();
+    private int generated ;
     private List<DungeonLevel> successful = new ArrayList<>();
     private LevelGenerator generator;
     private GenerationStats stats;
+    private float randomizationMod;
 
     public Pregenerator(PregeneratorData data) {
         this.data = data;
@@ -65,7 +79,7 @@ public class Pregenerator implements Runnable {
 
     public static void main(String[] args) {
         //logging off - or into a file...
-        setOff(!LevelGenerator.TEST_MODE);
+      LogMaster.setOff(!LevelGenerator.TEST_MODE);
         TileMapper.setLoggingOff(true);
         if (TEST_MODE) {
             new Pregenerator(Pregenerator.getData(0)).run();
@@ -81,9 +95,37 @@ public class Pregenerator implements Runnable {
     }
 
     private static void printAnalysis() {
-        //to file too...
+
+        String text = "Generation analysis: \n";
+        for (PregeneratorData data : analysisStats.keySet())
+            for (GenerationStats stat :  analysisStats.get(data)){
+            text += "Generation with data: \n";
+            text += data.toString() + "\n";
+            text += stat.toString() + "\n\n\n";
+        }
+
+        String path = StrPathBuilder.build(PathFinder.getRandomLevelPath(),
+         "pregenerated", "reports");
+        String name = NameMaster.getUniqueVersionedFileName("report.txt",
+         path);
+        FileManager.write(text, StrPathBuilder.build(path, name));
+        System.out.println( " " + text);
+        //pregen data
     }
 
+    private void logResults(GenerationStats stat ) {
+        String text = "Generation with data: \n";
+        text += data.toString() + "\n";
+        text += stat.toString() + "\n\n\n";
+
+        String path = StrPathBuilder.build(PathFinder.getRandomLevelPath(),
+         "pregenerated", "reports");
+        String name = NameMaster.getUniqueVersionedFileName("single report.txt",
+         path);
+        FileManager.write(text, StrPathBuilder.build(path, name));
+        System.out.println( " " + text);
+        //pregen data
+    }
     private static PregeneratorData getData(int i) {
         DataUnitFactory<DataUnit<PREGENERATOR_VALUES>> factory = new DataUnitFactory();
         factory.setValueNames(PregeneratorData.PREGENERATOR_VALUES.values());
@@ -100,20 +142,38 @@ public class Pregenerator implements Runnable {
 
     @Override
     public void run() {
-
+        randomizationMod = data.getFloatValue(
+         PREGENERATOR_VALUES.RANDOMIZATION_MOD)/100;
         for (SUBLEVEL_TYPE type : data.sublevelTypes) {
             for (LOCATION_TYPE locationType : data.locationTypes) {
                 stats = new GenerationStats(locationType, type);
                 successful = new ArrayList<>();
-                generated = new ArrayList<>();
+                generated =0;
                 while (true) { //TODO max failed  // time
-                    DungeonLevel level = generateLevel(locationType, type);
-                    generated.add(level);
+                    DungeonLevel level = null ;
+                    try {
+                        level = generateLevel(locationType, type);
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        error(locationType, type);
+                        continue;
+                    }
+                    generated++;
+
+                    System.out.println( generated + "th created");
                     LevelStats levelStats = new LevelStats(level);
                     LevelValidator validator = generator.getValidator();
                     validator.setStats(levelStats);
-                    if (validator.isLevelValid(level))
-                        if (checkRate(level)) {
+
+                    if (validator.isLevelValid(level)||NO_VALIDATION)
+                        if (!checkRate(level)) {
+                            levelStats.setValue( LEVEL_STAT.FAIL_REASON, RNG_FAIL.LOW_RATING.name());
+                        }
+                        else {
+                        System.out.println( successful.size()+"th Success: \n" +
+                         "Rate =" + level.getRate()+
+                         "\n" +
+                         "" +level);
                             successful.add(level);
                             saveLevel(level);
                         }
@@ -123,18 +183,30 @@ public class Pregenerator implements Runnable {
                         break;
                 }
 
-                stats.setValue(GEN_STAT.SUCCESS_RATE, ""+(successful.size() * 100 / generated.size()));
-                analysisStats.add(stats);
+                stats.setValue(GEN_STAT.SUCCESS_RATE, "" + (successful.size() * 100 /
+                 generated ));
+                logResults(stats);
+                MapMaster.addToListMap(analysisStats, data, stats);
                 //successMap.put(locationType)
             }
         }
         //        logResults(stats);
 
-        logResults();
         running.remove(this);
         if (running.isEmpty()) {
             WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED, true);
         }
+    }
+
+    private DungeonLevel generateLevel(LOCATION_TYPE locationType, SUBLEVEL_TYPE type) {
+        int tries = this.data.getIntValue(PREGENERATOR_VALUES.MAX_ATTEMPTS_PER_LEVEL);
+        generator = new LevelGenerator(tries);
+        LevelData data = LevelDataMaker.generateData(type, locationType);
+        //change data?
+         LevelDataMaker.randomize(randomizationMod, data);
+//        LevelDataMaker.applyMod(randomizationMod, data, NO_RANDOM_ROTATIONS, null );
+        LevelDataMaker.applyMod(randomizationMod, data, HALF_ZONES, null );
+        return generator.generateLevel(data, true);
     }
 
     private boolean checkRate(DungeonLevel level) {
@@ -151,6 +223,9 @@ public class Pregenerator implements Runnable {
 
         //check max min
         String failReason = levelStats.getValue(LEVEL_STAT.FAIL_REASON);
+        if (StringMaster.isEmpty(failReason))
+            failReason = RNG_FAIL.ERROR_MODEL.toString();
+
         stats.addCount(GEN_STAT.FAIL_REASONS, failReason);
 
         for (GEN_STAT item : averageValues) {
@@ -168,40 +243,7 @@ public class Pregenerator implements Runnable {
         return 0;
     }
 
-    private DungeonLevel generateLevel(LOCATION_TYPE locationType, SUBLEVEL_TYPE type) {
-        int tries = data.getIntValue(PREGENERATOR_VALUES.MAX_ATTEMPTS_PER_LEVEL);
-        generator = new LevelGenerator(tries);
 
-        LevelData data = LevelDataMaker.generateData(type, locationType);
-        //change data?
-        DungeonLevel level = null;
-        try {
-            level = generator.generateLevel(data, true);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-            error(locationType, type);
-            return level;
-        }
-
-        return level;
-
-    }
-
-    private void logResults() {
-        String text = "Generation with data: \n";
-        text += data.toString() + "\n";
-
-        for (GenerationStats stat : analysisStats) {
-            text += stat.toString() + "\n\n\n";
-        }
-        String path = StrPathBuilder.build(PathFinder.getRandomLevelPath(),
-         "pregenerated", "reports");
-        String name = NameMaster.getUniqueVersionedFileName("report ",
-         path);
-        FileManager.write(text, StrPathBuilder.build(path,name));
-        log(1, " "+text);
-        //pregen data
-    }
 
     private void saveLevel(DungeonLevel level) {
 
@@ -224,7 +266,9 @@ public class Pregenerator implements Runnable {
          "pregenerated", locationType.name());
     }
 
+public class AttemptsExceeded extends RuntimeException{
 
+}
     public void generateMainLevelPool() {
 
 

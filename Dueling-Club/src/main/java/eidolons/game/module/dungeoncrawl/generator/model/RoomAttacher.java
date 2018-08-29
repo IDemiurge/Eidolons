@@ -9,6 +9,7 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.Loop;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import static main.game.bf.directions.FACING_DIRECTION.*;
@@ -41,21 +42,23 @@ public class RoomAttacher {
     public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
                                      boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
 
-        return adjust(point, side,parent.getWidth(), parent.getHeight(),getEntranceOrRoomCoordinates,canAdjustEven);
+        return adjust(point, side, parent.getWidth(), parent.getHeight(), getEntranceOrRoomCoordinates, canAdjustEven);
     }
+
     public static Coordinates adjust(Coordinates key, FACING_DIRECTION parentExit,
                                      int w, int h, boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
-       return adjust(key, parentExit, null , w, h, getEntranceOrRoomCoordinates, false);
+        return adjust(key, parentExit, null, w, h, getEntranceOrRoomCoordinates, false);
     }
+
     public static Coordinates adjust(Coordinates point, FACING_DIRECTION side, RoomModel parent,
-                                     int width, int height,  boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
+                                     int width, int height, boolean getEntranceOrRoomCoordinates, boolean canAdjustEven) {
         int x = point.x;
         int y = point.y;
-        int i ;
+        int i;
         if (getEntranceOrRoomCoordinates)
             i = -1;
         else
-            i=1;
+            i = 1;
 
         if (side == SOUTH) {
             //  otherwise it is already compensated
@@ -67,7 +70,7 @@ public class RoomAttacher {
         } else if (side == NORTH) {
             if (canAdjustEven)
                 if (width % 2 == 0)
-                width = adjustDimension(width, true, parent);
+                    width = adjustDimension(width, true, parent);
             x -= i * width / 2;
         } else if (side == EAST) {
             x -= i * width;
@@ -134,8 +137,8 @@ public class RoomAttacher {
 
     public void alignExits(Room parent,
                            Room child) {
-//        if (child.getType() != ROOM_TYPE.EXIT_ROOM && parent.getExitTemplate() != EXIT_TEMPLATE.ANGLE)
-//            return;
+        //        if (child.getType() != ROOM_TYPE.EXIT_ROOM && parent.getExitTemplate() != EXIT_TEMPLATE.ANGLE)
+        //            return;
         int offset = Traverser.getExitsOffset(parent, child);
         if (offset == 0)
             return;
@@ -158,16 +161,16 @@ public class RoomAttacher {
          (parentExit);
         while (true) {
             if (loop.ended()) {
-               break;
+                break;
             }
             roomModel = templateMaster.getNextRandomModel(roomType,
              roomExitTemplate
              , roomEntrance, zone.getTemplateGroup());
             if (roomModel == null) {
-//                templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
-//                continue;
-                if (roomExitTemplate==EXIT_TEMPLATE.CROSSROAD)
-                break;
+                //                templateMaster.resetSizedRandomRoomPools(zone.getTemplateGroup());
+                //                continue;
+                if (roomExitTemplate == EXIT_TEMPLATE.CROSSROAD)
+                    break;
                 else return findFitting(entranceCoordinates, EXIT_TEMPLATE.CROSSROAD, roomType, parentExit, zone);
             }
 
@@ -179,11 +182,19 @@ public class RoomAttacher {
                 log(1, "Cannot place " + roomModel.getType() + " at " +
                  roomCoordinates + " with parent exit to the " + parentExit + "; rooms N=" +
                  model.getRoomMap().size());
-
-            } else
-            {
-                return room;
+                continue;
             }
+            if (room.getType() != ROOM_TYPE.ENTRANCE_ROOM && roomEntrance != null)
+                if (!Traverser.checkEntrancesPassable(room)) {
+                    log(1, "Cannot traverse\n " + roomModel.getType() + "\n from " +
+                     roomEntrance + "\n rotations: " + Arrays.deepToString(room.getRotations()));
+                    if (room.getRotations() == null || room.getRotations().length == 0)
+                        continue;
+                    continue;
+                }
+
+            return room;
+
 
         }
 

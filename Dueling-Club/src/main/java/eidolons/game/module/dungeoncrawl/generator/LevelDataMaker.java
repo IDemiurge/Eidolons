@@ -1,11 +1,14 @@
 package eidolons.game.module.dungeoncrawl.generator;
 
+import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MODIFICATION;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModelTransformer;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
@@ -14,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MODIFICATION.*;
 
 /**
  * Created by JustMe on 7/21/2018.
@@ -47,25 +52,325 @@ public class LevelDataMaker {
 
         return data;
     }
-    public static LEVEL_DATA_MODIFICATION[] getMods(LOCATION_TYPE locationType) {
-        switch (locationType) {
-            case CRYPT:
+
+    public static LEVEL_DATA_MODIFICATION[] getRandomizedMods(SUBLEVEL_TYPE type) {
+        switch (type) {
+
+            case COMMON:
                 return new LEVEL_DATA_MODIFICATION[]{
 
+                };
+            case PRE_BOSS:
+                break;
+            case BOSS:
+                return new LEVEL_DATA_MODIFICATION[]{
+                 DECREASE_ROOM_COUNT,
+                 DECREASE_ROOM_COUNT,
+                 DECREASE_SIZE,
                 };
         }
         return new LEVEL_DATA_MODIFICATION[0];
     }
 
-    public enum LEVEL_DATA_MODIFICATION{
-        LENGTHEN_MAIN_PATH,
-        NO_DOORS,
-        WRAP_ROOMS,
-        WRAP_TYPE,
-        ;
-        Object arg;
+    public static LEVEL_DATA_MODIFICATION[] getCommonMods( ) {
+        return new LEVEL_DATA_MODIFICATION[]{
+         NO_FILL,
+         HALF_FILL,
+         DOUBLE_FILL,
+
+         NO_ROOM_CHANCE,
+         HALF_ROOM_CHANCE,
+         DOUBLE_ROOM_CHANCE,
+
+
+        };
+    }
+    public static LEVEL_DATA_MODIFICATION[] getMods(LOCATION_TYPE_GROUP locationType) {
+          List<LEVEL_DATA_MODIFICATION >  mods = new ArrayList<>();
+        for (LEVEL_DATA_MODIFICATION mod : getModsForGroup(locationType)) {
+            mods.add(mod);
+        }
+        for (LEVEL_DATA_MODIFICATION mod : getCommonMods()) {
+            mods.add(mod);
+        }
+        return mods.toArray(new LEVEL_DATA_MODIFICATION[mods.size()]);
+    }
+        public static LEVEL_DATA_MODIFICATION[] getModsForGroup(LOCATION_TYPE_GROUP locationType) {
+        switch (locationType) {
+            case NARROW:
+                return new LEVEL_DATA_MODIFICATION[]{
+
+                };
+            case NATURAL:
+                return new LEVEL_DATA_MODIFICATION[]{
+                 NO_DOORS,
+
+                };
+        }
+
+            return new LEVEL_DATA_MODIFICATION[0];
+        }
+    //break locationTypes into groups for this!!!
+
+
+    public static Object[] getRandomizedModArgs(LEVEL_DATA_MODIFICATION[] mods,
+                                                LOCATION_TYPE_GROUP group) {
+
+        Object[] args = new Object[mods.length];
+        for (int i = 0; i < mods.length; i++) {
+            Integer n = 1;
+//            TODO RandomWizard.getRandomFloatBetween()
+            switch (mods[i]) {
+
+                case LENGTHEN_MAIN_PATHS:
+                    break;
+                case LENGTHEN_BONUS_PATHS:
+                    break;
+                case SHORTEN_MAIN_PATHS:
+                    break;
+                case SHORTEN_BONUS_PATHS:
+                    break;
+
+                case DOUBLE_MAIN_PATHS:
+                    break;
+                case HALF_BONUS_PATHS:
+                    break;
+                case DOUBLE_BONUS_PATHS:
+                    break;
+
+                case INCREASE_SIZE:
+                    break;
+                case INCREASE_ROOM_COUNT:
+                    break;
+                case DECREASE_SIZE:
+                    break;
+                case DECREASE_ROOM_COUNT:
+                    break;
+
+
+                case NO_FILL:
+                    n = 0;
+                case DOUBLE_FILL:
+                    if (n != 0)
+                        n = 2;
+                case HALF_FILL:
+                    args[i] = getFillerMod(group, n);
+                    break;
+
+                case NO_ROOM_CHANCE:
+                    n = 0;
+                case DOUBLE_ROOM_CHANCE:
+                    if (n != 0)
+                        n = 2;
+                case HALF_ROOM_CHANCE:
+                    args[i] = getRoomMod(group, n);
+                    break;
+
+            }
+        }
+
+        return args;
+    }
+
+    private static Object getFillerMod(LOCATION_TYPE_GROUP locationType, Integer n) {
+        switch (locationType) {
+            case SURFACE:
+            case NATURAL_SURFACE:
+                switch (n) {
+                    case 0:
+                        return ROOM_CELL.WALL_WITH_LIGHT_OVERLAY;
+                    case 1:
+                        return ROOM_CELL.LIGHT_EMITTER;
+                    case 2:
+                        return ROOM_CELL.DESTRUCTIBLE;
+                }
+                break;
+            case WIDE:
+                switch (n) {
+                    case 0:
+                        return null;
+                    case 1:
+                        return ROOM_CELL.CONTAINER;
+                    case 2:
+                        return ROOM_CELL.DESTRUCTIBLE;
+                }
+            case NARROW:
+                switch (n) {
+                    case 0:
+                        return ROOM_CELL.DESTRUCTIBLE;
+                    case 1:
+                        return ROOM_CELL.LIGHT_EMITTER;
+                    case 2:
+                        return ROOM_CELL.WALL_WITH_LIGHT_OVERLAY;
+                }
+            case NATURAL:
+                switch (n) {
+                    case 0:
+                        return ROOM_CELL.SPECIAL_CONTAINER;
+                    case 1:
+                        return ROOM_CELL.DESTRUCTIBLE;
+                    case 2:
+                        return ROOM_CELL.WALL_WITH_DECOR_OVERLAY;
+                }
+        }
+        return null;
+    }
+
+    private static Object getRoomMod(LOCATION_TYPE_GROUP locationType, Integer n) {
+        switch (locationType) {
+            case SURFACE:
+                break;
+            case WIDE:
+                break;
+            case AVERAGE:
+                break;
+            case NARROW:
+                break;
+            case NATURAL:
+                break;
+            case NATURAL_SURFACE:
+                switch (n) {
+                    case 0:
+                        return ROOM_CELL.SPECIAL_CONTAINER;
+                    case 1:
+                        return ROOM_CELL.DESTRUCTIBLE;
+                    case 2:
+                        return ROOM_CELL.WALL_WITH_DECOR_OVERLAY;
+                }
+                return ROOM_TYPE.SECRET_ROOM;
+        }
+        return null ;
 
     }
+
+    public static void applyMod(float randomizationMod, LevelData data, LEVEL_DATA_MODIFICATION mod, Object arg) {
+        float n = 0.5f;
+        switch (mod) {
+            case NO_ROOM_CHANCE:
+                n = 0;
+            case DOUBLE_ROOM_CHANCE:
+                if (n != 0)
+                    n = 2;
+            case HALF_ROOM_CHANCE:
+                if (arg==null )
+                    return;
+                LEVEL_VALUES val = LevelData.getROOM_COEF((ROOM_TYPE) arg);
+                data.setValue(val, Math.round(data.getIntValue(val)
+                 * getMod(n, randomizationMod)) + "");
+                break;
+
+            case NO_FILL:
+                n = 2;
+            case DOUBLE_FILL:
+                if (n != 0)
+                    n = 2;
+            case HALF_FILL:
+                if (arg==null )
+                    return;
+                val = LevelData.getFillCoefValue((ROOM_CELL) arg);
+                data.setValue(val, Math.round(data.getIntValue(val)
+                 * getMod(n, randomizationMod)) + "");
+                break;
+
+            case NO_RANDOM_EXITS:
+                data.setValue(LEVEL_VALUES.RANDOM_EXIT_CHANCE, "0");
+                break;
+            case NO_RANDOM_ROTATIONS:
+                data.setValue(LEVEL_VALUES.RANDOM_ROTATION_CHANCE, "0");
+                break;
+            case NO_LINKLESS:
+                data.setValue(LEVEL_VALUES.CHANCE_LINKLESS_MOD, "0");
+                break;
+            case NO_LINKS:
+                data.setValue(LEVEL_VALUES.CHANCE_LINKLESS, "100");
+                break;
+            case NO_DOORS:
+                data.setValue(LEVEL_VALUES.DOOR_CHANCE_MOD, "0");
+                break;
+
+
+            case WRAP_ROOMS:
+                break;
+            case WRAP_TYPE:
+                break;
+
+            case LENGTHEN_MAIN_PATHS:
+                n = 2;
+            case SHORTEN_MAIN_PATHS:
+                if (arg instanceof Float)
+                    n = (float) arg;
+                data.setValue(LEVEL_VALUES.MAIN_PATH_LENGTH,
+                 Math.round(data.getIntValue(LEVEL_VALUES.MAIN_PATH_LENGTH) * n) + "");
+
+                break;
+
+            case LENGTHEN_BONUS_PATHS:
+                n = 2;
+            case SHORTEN_BONUS_PATHS:
+                if (arg instanceof Float)
+                    n = (float) arg;
+                data.setValue(LEVEL_VALUES.BONUS_PATH_LENGTH,
+                 Math.round(data.getIntValue(LEVEL_VALUES.BONUS_PATH_LENGTH)
+                  * getMod(n, randomizationMod)) + "");
+
+                break;
+
+            case DOUBLE_BONUS_PATHS:
+                n = 2;
+            case HALF_BONUS_PATHS:
+                if (arg instanceof Float)
+                    n = (float) arg;
+                data.setValue(LEVEL_VALUES.BONUS_PATHS,
+                 Math.round(data.getIntValue(LEVEL_VALUES.BONUS_PATHS) * getMod(n, randomizationMod)) + "");
+
+                break;
+
+            case DOUBLE_MAIN_PATHS:
+                n = 2;
+                if (arg instanceof Float)
+                    n = (float) arg;
+                data.setValue(LEVEL_VALUES.MAIN_PATHS,
+                 Math.round(data.getIntValue(LEVEL_VALUES.MAIN_PATHS) * getMod(n, randomizationMod)) + "");
+                break;
+
+            case HALF_ZONES:
+                data.setValue(LEVEL_VALUES.ZONES,
+             Math.round(data.getIntValue(LEVEL_VALUES.ZONES) * n) + "");
+
+                break;
+            case SINGLE_ZONE:
+                data.setValue(LEVEL_VALUES.ZONES, 1 + "");
+
+                break;
+            case INCREASE_SIZE:
+                n = 2;
+            case DECREASE_SIZE:
+                if (arg instanceof Float)
+                    n = (float) arg;
+                data.setValue(LEVEL_VALUES.SIZE_MOD,
+                 Math.round(data.getIntValue(LEVEL_VALUES.SIZE_MOD) * getMod(n, randomizationMod)) + "");
+
+                break;
+            case INCREASE_ROOM_COUNT:
+                n = 2;
+            case DECREASE_ROOM_COUNT:
+                if (arg instanceof Float)
+                    n = (float) arg;
+                data.setValue(LEVEL_VALUES.ROOM_COUNT_MOD,
+                 Math.round(data.getIntValue(LEVEL_VALUES.SIZE_MOD) * getMod(n, randomizationMod)) + "");
+                break;
+        }
+    }
+
+    private static float getMod(float n, float randomizationMod) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n > 1)
+            return 1 + (n - 1) * randomizationMod;
+        return (1 - (1 - n) * randomizationMod);
+    }
+
 
     private static void initSublevelType(LevelData data, SUBLEVEL_TYPE subType) {
         data.setSublevelType(subType);
@@ -119,7 +424,7 @@ public class LevelDataMaker {
                 break;
 
             case CEMETERY:
-                                data.setValue(LEVEL_VALUES.DOOR_CHANCE_MOD, "150");
+                data.setValue(LEVEL_VALUES.DOOR_CHANCE_MOD, "150");
             case RUIN:
             case CAMP:
             case GROVE:
@@ -138,8 +443,8 @@ public class LevelDataMaker {
     private static void initSurfaceData(LevelData data) {
 
         data.setValue(LEVEL_VALUES.WRAP_CELL_TYPE,
-         ROOM_CELL.INDESTRUCTIBLE.getSymbol()+
-          RoomModelTransformer.WRAP_SEPARATOR+
+         ROOM_CELL.INDESTRUCTIBLE.getSymbol() +
+          RoomModelTransformer.WRAP_SEPARATOR +
           ROOM_CELL.FLOOR.getSymbol());
         data.setValue(LEVEL_VALUES.VOID_CELL_TYPE,
          ROOM_CELL.FLOOR.getSymbol());
@@ -152,7 +457,7 @@ public class LevelDataMaker {
 
     private static ROOM_TEMPLATE_GROUP[] getTemplatesForLocationType(LOCATION_TYPE locationType) {
         if (LevelGenerator.TEST_MODE)
-            locationType =LevelGenerator.TEST_LOCATION_TYPE;
+            locationType = LevelGenerator.TEST_LOCATION_TYPE;
         //        return new ROOM_TEMPLATE_GROUP[]{
         //         ROOM_TEMPLATE_GROUP.CRYPT,
         //        };
@@ -269,23 +574,23 @@ public class LevelDataMaker {
             case maxRooms:
                 switch (sublevelType) {
                     case COMMON:
-                        return Math.round(18 *roomMod);
+                        return Math.round(18 * roomMod);
                     case PRE_BOSS:
-                        return Math.round(12 *roomMod);
+                        return Math.round(12 * roomMod);
                     case BOSS:
-                        return Math.round(8 *roomMod);
+                        return Math.round(8 * roomMod);
                 }
             case minRooms:
                 switch (sublevelType) {
                     case COMMON:
-                        return Math.round(12 *roomMod);
+                        return Math.round(12 * roomMod);
                     case PRE_BOSS:
-                        return Math.round(6 *roomMod);
+                        return Math.round(6 * roomMod);
                     case BOSS:
-                        return Math.round(4 *roomMod);
+                        return Math.round(4 * roomMod);
                 }
             case minFillRatio:
-                return 0.3f;
+                return 0.5f;
             case minDimensionRatio:
                 switch (sublevelType) {
                     case COMMON:
@@ -302,15 +607,33 @@ public class LevelDataMaker {
                 //level.getModel().getData().getROOM_COEF()
                 switch (sublevelType) {
                     case COMMON:
-                        return Math.round(60 *sizeMod);
+                        return Math.round(60 * sizeMod);
                     case PRE_BOSS:
-                        return Math.round(45 *sizeMod);
+                        return Math.round(45 * sizeMod);
                     case BOSS:
-                        return Math.round(30 *sizeMod);
+                        return Math.round(30 * sizeMod);
                 }
         }
         return null;
     }
+
+    public static void randomize(float randomizationMod, LevelData data) {
+        LOCATION_TYPE_GROUP group =data.getLocationType(). getGroup();
+        LEVEL_DATA_MODIFICATION[] mods = getMods(group);
+        Object[] args = getRandomizedModArgs(mods, group);
+        int i = 0;
+        for (LEVEL_DATA_MODIFICATION mod : mods) {
+            applyMod(randomizationMod, data, mod, args[i++]);
+        }
+        mods = getRandomizedMods(data.getSublevelType());
+        args = getRandomizedModArgs(mods, group);
+        i = 0;
+        for (LEVEL_DATA_MODIFICATION mod : mods) {
+            applyMod(randomizationMod, data, mod, args[i++]);
+        }
+    }
+
+
     public enum LEVEL_REQUIREMENTS {
         minRooms, maxRooms, minFillRatio, minDimensionRatio, maxDimension, maxSquare;
     }

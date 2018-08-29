@@ -14,6 +14,10 @@ public class AbstractCoordinates extends Coordinates {
         super(s);
     }
 
+    public AbstractCoordinates(Coordinates c) {
+        this(c.x, c.y);
+    }
+
     public Coordinates getOffsetByX(int i) {
         return new AbstractCoordinates(x + i, y);
     }

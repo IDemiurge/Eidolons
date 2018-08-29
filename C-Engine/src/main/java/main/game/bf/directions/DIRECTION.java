@@ -17,6 +17,12 @@ public enum DIRECTION {
     public static final DIRECTION[] clockwise = {
      UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, LEFT, UP_LEFT
     };
+    public static final DIRECTION[] DIAGONAL = {
+       UP_RIGHT , DOWN_RIGHT,  DOWN_LEFT,  UP_LEFT
+    };
+    public static final DIRECTION[] ORTHOGONAL = {
+     UP,  RIGHT,  DOWN,   LEFT,
+    };
     public Boolean growX;
     public Boolean growY;
     private boolean vertical;
@@ -96,4 +102,10 @@ public enum DIRECTION {
         return DirectionMaster.flip(this);
     }
 
+    public static DIRECTION[] getAdjacencyDirections(Boolean diags_no_only) {
+        if (diags_no_only == null) {
+            return DIAGONAL;
+        }
+        return diags_no_only ? clockwise : ORTHOGONAL;
+    }
 }

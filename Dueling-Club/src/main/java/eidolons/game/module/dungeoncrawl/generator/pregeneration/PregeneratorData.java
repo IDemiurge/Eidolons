@@ -22,10 +22,10 @@ public class PregeneratorData extends DataUnit<PREGENERATOR_VALUES> {
     public enum PREGENERATOR_VALUES implements Options.OPTION {
         MAX_ATTEMPTS_PER_LEVEL(50, 1, 200),
         MAX_TIME,
-        MIN_RATING(100, -100, 1000),
+        MIN_RATING(200, -100, 1000),
         GLOBAL_RANDOMNESS,
         LEVELS_REQUIRED(10, 1, 100),
-        ;
+        RANDOMIZATION_MOD(100, 0, 200);
 
         private Boolean exclusive;
         private Integer min;

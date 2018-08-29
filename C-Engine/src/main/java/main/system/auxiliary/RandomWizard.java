@@ -317,27 +317,29 @@ public class RandomWizard<E> {
                 value = 1;
             }
             string = StringMaster.getWeightItem(string, inverse);
-            E object;
-            if (CLASS != null) {
-                if (CLASS != ObjType.class) {
-                    object = new EnumMaster<E>().retrieveEnumConst(CLASS, string);
-                } else {
-                    object = (E) DataManager.getType(string, TYPE);
-                    if (object == null) {
-                        object = (E) DataManager.findType(string, TYPE);
+            E object = null;
+            if (CLASS != null)
+                if (CLASS == String.class)
+                    object = (E) string;
+                else {
+                    if (CLASS == ObjType.class) {
+                        object = (E) DataManager.getType(string, TYPE);
+                        if (object == null) {
+                            object = (E) DataManager.findType(string, TYPE);
+                        }
+                    } else {
+                        object = new EnumMaster<E>().retrieveEnumConst(CLASS, string);
                     }
                 }
-                map.put(object, value);
-                if (inverse) {
-                    invertedMap.put(value, object);
-                }
+            map.put(object, value);
+            if (inverse) {
+                invertedMap.put(value, object);
             }
-            // if (object != null) //EMPTY option allowed!
-
         }
+        // if (object != null) //EMPTY option allowed!
 
         return map;
-    }
+}
 
     public LinkedHashMap<Integer, E> getInvertedMap() {
         return invertedMap;

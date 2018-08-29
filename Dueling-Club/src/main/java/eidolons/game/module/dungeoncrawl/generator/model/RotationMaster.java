@@ -1,9 +1,13 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
+import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ArrayMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.secondary.Bools;
 
@@ -39,7 +43,7 @@ public class RotationMaster {
     private static List<Boolean[]> getParentRotationsPossible(FACING_DIRECTION entrance,
                                                               FACING_DIRECTION[] exits) {
         //preserve all prev links, return new exit
-        if (entrance==null )
+        if (entrance == null)
             return null;
         entrance = entrance.flip();
         List<Boolean[]> list = new ArrayList<>();
@@ -100,4 +104,34 @@ public class RotationMaster {
         return newExit;
     }
 
+    public static List<Coordinates> rotateCoordinates(Boolean[] rotations,
+                                                      List<Coordinates> coords) {
+        Coordinates offset = new AbstractCoordinates(CoordinatesMaster.getFarmostCoordinateInDirection(DIRECTION.UP_LEFT, coords));
+        if (!offset.equals(new AbstractCoordinates(0, 0)))
+            coords = coords.stream().map(c -> c.getOffset(offset.negative())).collect(Collectors.toList());
+
+        int w = CoordinatesMaster.getWidth(coords);
+        int h = CoordinatesMaster.getHeight(coords);
+        Integer[][] mat = new Integer[w][h];
+
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++)
+                mat[x][y] = 0;
+        }
+        for (Coordinates coord : coords) {
+            mat[coord.x][coord.y] = 1;
+        }
+        for (Boolean rotation : rotations) {
+            ArrayMaster.rotate(rotation, mat);
+        }
+        List<Coordinates> list = new ArrayList<>();
+        for (int x = 0; x < mat.length; x++) {
+            for (int y = 0; y < mat[0].length; y++)
+                if (mat[x][y] == 1)
+                    list.add(new AbstractCoordinates(x, y));
+        }
+
+        return list;
+
+    }
 }

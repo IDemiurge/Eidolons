@@ -94,7 +94,7 @@ public abstract class RngFiller implements RngFillerInterface {
 
     public final float getFillCoef_() {
         if (getFillCoefConst() != null)
-            return getFillCoef() * getData().getIntValue(getFillCoefConst()) / 100;
+            return getFillCoef() * getData().getFloatValue(getFillCoefConst()) / 100;
         return getFillCoef();
     }
 
@@ -176,11 +176,11 @@ public abstract class RngFiller implements RngFillerInterface {
         DIRECTION d=DIRECTION.UP_LEFT; //TODO cycle thru?
         Coordinates seed = CoordinatesMaster.getFarmostCoordinateInDirection(d, fullList);
         FILL_SHAPE shape=ShapeFillMaster.getRandomShape(limit);
-        int arg=1;
-        List<Coordinates> coords;
+        int arg=0;
+         List<Coordinates> coords;
         while (new Loop(100*limit).continues()){
              coords = ShapeFillMaster.getCoordinatesForShape(shape, seed, arg, fullList, limit);
-             if (ShapeFillMaster.checkShape(shape, coords))
+             if (ShapeFillMaster.checkShape(shape, coords, arg))
                  return coords;
          }
          return new ArrayList<>();
@@ -190,14 +190,18 @@ public abstract class RngFiller implements RngFillerInterface {
 
         coordinateList.removeIf(c -> map.getMap().get(c) != getFilledRoomCellType());
 
+        coordinateList.removeIf(c -> TilesMaster.isEnclosedCell(room.relative(c), room));
+
         if (isCornersOnly()) {
             coordinateList.removeIf(c -> !TilesMaster.isCornerCell(c, map));
         }
         if (isNeverBlock()) {
             coordinateList.removeIf(c -> TilesMaster.isEntranceCell(room.relative(c), room));
-            coordinateList.removeIf(c -> TilesMaster.isEntranceCell(room.relative(c), room));
+            coordinateList.removeIf(c -> TilesMaster.isPassageCell(room.relative(c), room));
             coordinateList.removeIf(c -> TilesMaster.isCellAdjacentTo(
              room.relative(c), room, false, ROOM_CELL.DOOR));
+            coordinateList.removeIf(c -> TilesMaster.isCellAdjacentTo(
+             room.relative(c), room, false, ROOM_CELL.ROOM_EXIT));
         }
         if (getMaxDistanceFromEdge() >= 0) {
             if (isAlternativeCenterDistance()) {
@@ -318,7 +322,7 @@ public abstract class RngFiller implements RngFillerInterface {
 
     protected float calculateFill(LevelBlock block) {
         float fillable =
-         getPointsToFill(block.getTileMap(), model.getRoom(block), Integer.MAX_VALUE).size();
+         getPointsToFill(block.getTileMap(), model.getRoom(block), 1).size();
         if (fillable == 0)
             return 1;
         float filled =
@@ -359,9 +363,9 @@ public abstract class RngFiller implements RngFillerInterface {
     private boolean tryFillCorners(Room room, int x, int y) {
         Coordinates[] corners = new Coordinates[]{
          new AbstractCoordinates(x, y),
-         new AbstractCoordinates(room.getWidth() - x, y),
-         new AbstractCoordinates(x, room.getHeight() - y),
-         new AbstractCoordinates(room.getWidth() - x, room.getHeight() - y),
+         new AbstractCoordinates(room.getWidth() - x-1, y),
+         new AbstractCoordinates(x, room.getHeight()-1 - y),
+         new AbstractCoordinates(room.getWidth()-1 - x, room.getHeight()-1 - y),
         };
         if (!RandomWizard.chance(getFillCornersChance(room))) {
             return false;
