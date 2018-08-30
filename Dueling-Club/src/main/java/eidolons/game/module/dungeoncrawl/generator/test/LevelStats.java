@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.generator.test;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_STAT;
 import eidolons.system.options.Options.OPTION;
@@ -20,12 +21,17 @@ public class LevelStats extends DataUnit<LEVEL_STAT> {
     public LevelStats(DungeonLevel level) {
         WeightMap<EXIT_TEMPLATE> templateMap = new WeightMap();
         WeightMap<ROOM_TYPE> typeMap = new WeightMap();
+        WeightMap<ROOM_CELL> map = new WeightMap();
         for (Room room : level.getModel().getBlocks().keySet()) {
             EXIT_TEMPLATE template = room.getExitTemplate();
             ROOM_TYPE type = room.getType();
             MapMaster.addToIntegerMap(templateMap, template, 1);
             MapMaster.addToIntegerMap(typeMap, type, 1);
+            for (ROOM_CELL roomCell : level.getModel().getBlocks().get(room).getTileMap().getMap().values()) {
+                MapMaster.addToIntegerMap(map, roomCell, 1);
+            }
         }
+        setValue(LEVEL_STAT.FILLER_MAP, map+"");
         setValue(LEVEL_STAT.EXIT_TEMPLATE_COUNT, templateMap.toString());
         setValue(LEVEL_STAT.ROOM_TYPE_COUNT, typeMap.toString());
         int fill = Math.round(
@@ -44,6 +50,8 @@ public class LevelStats extends DataUnit<LEVEL_STAT> {
 
 
         level.setStats(this);
+
+
     }
 
     public enum LEVEL_GEN_FLAG implements OPTION {
@@ -99,7 +107,7 @@ public class LevelStats extends DataUnit<LEVEL_STAT> {
         GRAPH_ADHERENCE,
         EXIT_TEMPLATE_COUNT,
         ROOM_TYPE_COUNT,
-        FLOOR_PERCENTAGE, FAIL_REASON,
+        FLOOR_PERCENTAGE, FAIL_REASON, FILLER_MAP,
 
 
     }

@@ -33,7 +33,7 @@ public class RngTypeChooser {
 
     private static ROOM_CELL checkRandomCellResolves(ROOM_CELL value) {
         if (value.getRandomWeightMap() == null) {
-            return null;
+            return value;
         }
         WeightMap<ROOM_CELL> map = new WeightMap(value.getRandomWeightMap(),ROOM_CELL.class );
         return map.getRandomByWeight();

@@ -27,6 +27,7 @@ import java.util.Set;
  */
 public class WallMap extends SuperActor {
     private static final String INDESTRUCTIBLE = " Indestructible";
+    private static final String STRANGE_WALL = " Marked";
     private static boolean on = true;
     private Map<Coordinates, List<DIRECTION>> wallMap;
     private Map<Coordinates, List<DIRECTION>> diagonalJoints;
@@ -76,6 +77,14 @@ public class WallMap extends SuperActor {
             return TextureCache.getOrCreateR(path);
         }
         return TextureCache.getOrCreateR(images.getPath());
+    }
+
+    //saving space...
+    public static String v(Boolean indestructible_nullForSecret) {
+        if (indestructible_nullForSecret == null) {
+            return WallMap.STRANGE_WALL;
+        }
+        return indestructible_nullForSecret ? WallMap.INDESTRUCTIBLE : "";
     }
 
     private void bindEvents() {
@@ -287,16 +296,15 @@ public class WallMap extends SuperActor {
 
                 String suffix = flipped ? " flipped" : null;
                 TextureRegion image = getRegion(STD_IMAGES.WALL_CORNER_ALMOND, suffix);
-//            if (flipped) {
-//            // TODO      image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
-//            }
+                //            if (flipped) {
+                //            // TODO      image = ImageTransformer.flipHorizontally(ImageManager.getBufferedImage(image));
+                //            }
 
 
                 batch.draw(image, x1 - image.getRegionWidth() / 2, y1 - image.getRegionHeight() / 2);
             }
         }
     }
-
 
     private boolean checkCoordinateIgnored(Coordinates coordinates) {
         Vector2 v = GridMaster.getVectorForCoordinate(coordinates, false, false);
@@ -305,10 +313,6 @@ public class WallMap extends SuperActor {
         float offsetY = v.y;
         return !DungeonScreen.getInstance().controller.
          isWithinCamera(getX() + offsetX, getY() + offsetY, 128, 128);
-    }
-//saving space...
-    public static String v(boolean indestructible) {
-        return indestructible? WallMap.INDESTRUCTIBLE : "";
     }
 
     public enum WALL_STYLE {

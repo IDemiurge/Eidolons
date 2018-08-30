@@ -3,7 +3,6 @@ package eidolons.game.module.dungeoncrawl.generator.fill;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
-import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
 
 /**
@@ -30,7 +29,7 @@ public class RngSpecialContainerFiller extends RngFiller {
     }
     @Override
     public boolean isCornersOnly() {
-        return RandomWizard.random();
+        return false;
     }
     @Override
     protected int getMinFilledCells(ROOM_TYPE roomType) {

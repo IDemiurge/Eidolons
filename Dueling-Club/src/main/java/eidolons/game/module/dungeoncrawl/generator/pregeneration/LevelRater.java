@@ -6,6 +6,10 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.LevelDataMaker.LEVEL_REQUIREMENTS;
+import eidolons.game.module.dungeoncrawl.generator.graph.GraphPath;
+import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
+import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphEdge;
+import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
@@ -26,12 +30,14 @@ public class LevelRater {
     private final LevelModel model;
     private final DataUnit<LEVEL_REQUIREMENTS> reqs;
     private final LevelStats stats;
-    DungeonLevel level;
+    private final LevelGraph graph;
+    private final DungeonLevel level;
 
     public LevelRater(DungeonLevel level) {
         this.level = level;
         this.data = level.getData();
         this.model = level.getModel();
+        this.graph = model.getGraph();
         this.reqs = level.getData().getReqs();
         this.stats = new LevelStats(level);
     }
@@ -55,7 +61,7 @@ public class LevelRater {
 //make sure all room templates are used
         rate += getParametersRate();
         rate += getDistancesRate();
-        rate += getGraphRate();
+//        rate += getGraphRate();
         rate += getVariety();
         rate += getZoneBalanceRate();
         rate += getRoomBalanceRate();
@@ -81,11 +87,19 @@ public class LevelRater {
             }
         }
 
-        return 100 - pen * 10;
+        return model.getRoomMap().size()*2+100 - pen * 10;
     }
 
     private float getGraphRate() {
+        for (GraphPath path : graph.getPaths()) {
 
+        }
+        LevelGraphNode tip = graph.findFirstNodeOfType(ROOM_TYPE.ENTRANCE_ROOM);
+//        model.findFirstRoomOfType(ROOM_TYPE.ENTRANCE_ROOM)
+        for (LevelGraphEdge edge : graph.getAdjList().get(tip)) {
+//            model.getRoomLinkMap().
+//            graph.getAdjList().get(node)
+        }
         return 0;
     }
 

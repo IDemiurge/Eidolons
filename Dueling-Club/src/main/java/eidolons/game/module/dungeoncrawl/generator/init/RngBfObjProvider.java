@@ -32,6 +32,8 @@ public class RngBfObjProvider {
     public static WeightMap<String> getWeightMap(ROOM_CELL cell, DUNGEON_STYLE style) {
 
         switch (cell) {
+            case SECRET_DOOR:
+                return getWallWeightMap(style, null );
             case WALL:
                 return getWallWeightMap(style, false);
             case INDESTRUCTIBLE:
@@ -357,54 +359,55 @@ public class RngBfObjProvider {
         return getEntranceWeightMap(DUNGEON_STYLE.Somber, exit);
     }
 
-    private static WeightMap<String> getWallWeightMap(DUNGEON_STYLE style, boolean indestructible) {
+    private static WeightMap<String> getWallWeightMap(DUNGEON_STYLE style,
+                                                      Boolean indestructible_nullForSecret) {
         //TODO check surface! cemetery etc WallMap.getWallVersion(
-        boolean b= indestructible;
+        Boolean b= indestructible_nullForSecret;
         switch (style) {
             case Brimstone:
                 return new WeightMap<String>().
-                 chain(VOLCANIC_WALL+ WallMap.v(b), 10).
-                 chain(JAGGED_STONE_WALL+ WallMap.v(b), 1).
-                 chain(WALL_OF_SKULLS+ WallMap.v(b), 1).
-                 chain(BONE_WALL+ WallMap.v(b), 1);
+                 chain(VOLCANIC_WALL.getName()+ WallMap.v(b), 10).
+                 chain(JAGGED_STONE_WALL.getName()+ WallMap.v(b), 1).
+                 chain(WALL_OF_SKULLS.getName()+ WallMap.v(b), 1).
+                 chain(BONE_WALL.getName()+ WallMap.v(b), 1);
             case Holy:
                 break;
             case Pagan:
                 return new WeightMap<String>().
-                 chain(WOODEN_WALL+ WallMap.v(b), 10).
-                 chain(WOODEN_PLANKS+ WallMap.v(b), 1).
-                 chain(ROTTEN_PLANKS+ WallMap.v(b), 1);
+                 chain(WOODEN_WALL.getName()+ WallMap.v(b), 10).
+                 chain(WOODEN_PLANKS.getName()+ WallMap.v(b), 1).
+                 chain(ROTTEN_PLANKS.getName()+ WallMap.v(b), 1);
             case Stony:
                 return new WeightMap<String>().
-                 chain(CAVE_WALL+ WallMap.v(b), 10).
-                 chain(VOLCANIC_WALL+ WallMap.v(b), 1).
-                 chain(SOLID_ROCK+ WallMap.v(b), 1).
-                 chain(INSCRIBED_WALL+ WallMap.v(b), 1);
+                 chain(CAVE_WALL.getName()+ WallMap.v(b), 10).
+                 chain(VOLCANIC_WALL.getName()+ WallMap.v(b), 1).
+                 chain(SOLID_ROCK.getName()+ WallMap.v(b), 1).
+                 chain(INSCRIBED_WALL.getName()+ WallMap.v(b), 1);
             case DarkElegance:
                 return new WeightMap<String>().
-                 chain(ANCIENT_WALL+ WallMap.v(b), 10).
-                 chain(CRUMBLING_WALL+ WallMap.v(b), 1).
-                 chain(OLD_STONE_WALL+ WallMap.v(b), 1);
+                 chain(ANCIENT_WALL.getName()+ WallMap.v(b), 10).
+                 chain(CRUMBLING_WALL.getName()+ WallMap.v(b), 1).
+                 chain(OLD_STONE_WALL.getName()+ WallMap.v(b), 1);
             case Grimy:
                 return new WeightMap<String>().
-                 chain(CRUMBLING_WALL+ WallMap.v(b), 10).
-                 chain(ANCIENT_WALL+ WallMap.v(b), 1).
-                 chain(OLD_STONE_WALL+ WallMap.v(b), 1);
+                 chain(CRUMBLING_WALL.getName()+ WallMap.v(b), 10).
+                 chain(ANCIENT_WALL.getName()+ WallMap.v(b), 1).
+                 chain(OLD_STONE_WALL.getName()+ WallMap.v(b), 1);
             case Knightly:
                 return new WeightMap<String>().
-                 chain(STONE_WALL+ WallMap.v(b), 10).
-                 chain(BRICK_WALL+ WallMap.v(b), 1).
-                 chain(OLD_STONE_WALL+ WallMap.v(b), 1);
+                 chain(STONE_WALL.getName()+ WallMap.v(b), 10).
+                 chain(BRICK_WALL.getName()+ WallMap.v(b), 1).
+                 chain(OLD_STONE_WALL.getName()+ WallMap.v(b), 1);
             case PureEvil:
                 return new WeightMap<String>().
-                 chain(BONE_WALL+ WallMap.v(b), 10).
-                 chain(WALL_OF_SKULLS+ WallMap.v(b), 1).
-                 chain(BLACK_MARBLE_WALL+ WallMap.v(b), 1);
+                 chain(BONE_WALL.getName()+ WallMap.v(b), 10).
+                 chain(WALL_OF_SKULLS.getName()+ WallMap.v(b), 1).
+                 chain(BLACK_MARBLE_WALL.getName()+ WallMap.v(b), 1);
             case Somber:
                 return new WeightMap<String>().
-                 chain(OLD_STONE_WALL+ WallMap.v(b), 10).
-                 chain(CRUMBLING_WALL+ WallMap.v(b), 1).
-                 chain(ANCIENT_WALL+ WallMap.v(b), 1);
+                 chain(OLD_STONE_WALL.getName()+ WallMap.v(b), 10).
+                 chain(CRUMBLING_WALL.getName()+ WallMap.v(b), 1).
+                 chain(ANCIENT_WALL.getName()+ WallMap.v(b), 1);
             case Arcane:
                 break;
             case Cold:

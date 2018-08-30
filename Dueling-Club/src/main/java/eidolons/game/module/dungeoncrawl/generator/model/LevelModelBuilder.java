@@ -59,6 +59,7 @@ public class LevelModelBuilder {
     public void build() {
             model = new LevelModel(data, this);
             model.setZones(graph.getZones());
+            model.setGraph(graph);
             templateMaster = new RoomTemplateMaster(data, model);
             this.attacher = new RoomAttacher(data, model, templateMaster);
             build(false, graph.findFirstNodeOfType(ROOM_TYPE.ENTRANCE_ROOM), null);
@@ -79,6 +80,8 @@ public class LevelModelBuilder {
                 build(true, graph.findFirstNodeOfType(ROOM_TYPE.EXIT_ROOM), FacingMaster.getRandomFacing());
             }
             cleanUp();
+
+        model.setRoomLinkMap(roomLinkMap);
 
     }
 

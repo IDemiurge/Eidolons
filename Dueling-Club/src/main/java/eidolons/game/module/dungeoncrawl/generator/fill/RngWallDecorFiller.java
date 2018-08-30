@@ -23,7 +23,7 @@ public class RngWallDecorFiller extends RngFiller {
     }
     @Override
     public int getMaxAdjacency(ROOM_CELL filler) {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -47,19 +47,19 @@ public class RngWallDecorFiller extends RngFiller {
     }
 
     @Override
-    public float getMaxDistanceFromEdge() {
+    protected int getWrapByExitChance(Room room) {
+        switch (room.getType()) {
+            case THRONE_ROOM:
+                return 80;
+            case COMMON_ROOM:
+                return 30;
+            case ENTRANCE_ROOM:
+            case EXIT_ROOM:
+                return 40;
+        }
         return 0;
     }
 
-    @Override
-    public boolean isAlternativeCenterDistance() {
-        return false;
-    }
-
-    @Override
-    public float getMaxDistanceFromCenter() {
-        return 0;
-    }
     @Override
     protected int getFillCornersChance(Room room) {
         switch (room.getType()) {

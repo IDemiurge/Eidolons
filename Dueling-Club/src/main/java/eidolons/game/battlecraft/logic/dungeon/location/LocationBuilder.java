@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.building.MapZone;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonBuilder;
 import eidolons.game.battlecraft.logic.dungeon.universal.DungeonMaster;
+import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import main.data.xml.XML_Converter;
 import main.data.xml.XML_Formatter;
 import main.entity.obj.Obj;
@@ -27,11 +28,11 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String BLOCK_TYPE_NODE = "Block Type";
     public static final String BLOCKS_NODE = "Blocks";
     public static final String ROOM_TYPE_NODE = "Room Type";
-    public static final String COORDINATES_NODE = "Coordinates";
+    public static final String COORDINATES_NODE = RngXmlMaster.COORDINATES_NODE;
     public static final String OBJ_NODE = "Objects";
     public static final String ENTRANCE_NODE = "Entrances";
     public static final String EXIT_NODE = "Exits";
-    public static final String ZONES_NODE = "Zones";
+    public static final String ZONES_NODE = RngXmlMaster.ZONES_NODE;
     public static final String AI_GROUPS_NODE = StringMaster
      .getWellFormattedString("ai groups node");
     @Refactor

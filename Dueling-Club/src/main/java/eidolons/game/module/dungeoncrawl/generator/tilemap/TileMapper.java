@@ -9,6 +9,7 @@ import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.Room;
+import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
 import main.data.XLinkedMap;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.EnumMaster;
@@ -20,11 +21,11 @@ import java.util.Map;
  * Created by JustMe on 2/15/2018.
  */
 public class TileMapper {
+    private static boolean loggingOff;
     private TileConverter converter;
     private LevelModel model;
     private LevelData data;
     private ROOM_CELL DEFAULT_CELL = ROOM_CELL.WALL;
-    private static boolean loggingOff;
 
     public TileMapper(LevelModel model, LevelData data) {
         this.model = model;
@@ -55,10 +56,10 @@ public class TileMapper {
         for (ROOM_CELL[] column : symbols) {
             for (int y = 0; y < column.length; y++) {
                 ROOM_CELL symbol = column[y];
-                if (symbol==null )
+                if (symbol == null)
                     cells[x][y] = "-";
                 else
-                cells[x][y] = symbol.getSymbol();
+                    cells[x][y] = symbol.getSymbol();
             }
             x++;
         }
@@ -75,9 +76,10 @@ public class TileMapper {
         return createTileMap(room.getCells(), room.getCoordinates());
     }
 
-    public static TileMap createTileMap(String[][] cells ) {
+    public static TileMap createTileMap(String[][] cells) {
         return createTileMap(cells, new AbstractCoordinates(0, 0));
     }
+
     public static TileMap createTileMap(String[][] cells, Coordinates offset) {
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         int x = 0;
@@ -110,6 +112,7 @@ public class TileMapper {
         }
         return cells;
     }
+
     public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX) {
         return toASCII_String(cells, nullToX, true);
     }
@@ -180,15 +183,17 @@ public class TileMapper {
                 for (int j = 0; j < column.length; j++) {
                     String symbol = column[j];
                     ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                    if (i == room.getWidth() / 2)
-                        if (j == room.getHeight() / 2) {
-                            if (ZoneCreator.TEST_MODE)
-                                cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
-                                 "" + room.getZone().getIndex());
-                            else
-                                cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
-                                 map.get(point).getType().name());
-                        }
+                    if (Pregenerator.TEST_MODE) {
+                        if (i == room.getWidth() / 2)
+                            if (j == room.getHeight() / 2) {
+                                if (ZoneCreator.TEST_MODE)
+                                    cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
+                                     "" + room.getZone().getIndex());
+                                else
+                                    cell = new EnumMaster<ROOM_CELL>().retrieveEnumConst(ROOM_CELL.class,
+                                     map.get(point).getType().name());
+                            }
+                    }
                     if (cell != null)
                         try {
                             cells[x][y] = cell;
@@ -205,12 +210,12 @@ public class TileMapper {
         return cells;
     }
 
-    public static void setLoggingOff(boolean loggingOff) {
-        TileMapper.loggingOff = loggingOff;
-    }
-
     public static boolean isLoggingOff() {
         return loggingOff;
+    }
+
+    public static void setLoggingOff(boolean loggingOff) {
+        TileMapper.loggingOff = loggingOff;
     }
 
     public TileMap joinTileMaps() {

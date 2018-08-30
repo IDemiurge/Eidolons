@@ -131,7 +131,20 @@ public class RngLevelInitializer {
 
     private boolean isCellTranslated(ROOM_CELL value) {
         switch (value) {
-
+            case TRAP:
+            case GUARDS:
+            case PATROL:
+            case AMBUSH:
+            case CROWD:
+            case IDLERS:
+            case STALKER:
+            case MINI_BOSS:
+            case BOSS:
+            case LOCAL_KEY:
+            case GLOBAL_KEY:
+            case RANDOM_PASSAGE:
+            case RANDOM_SPAWN_GROUP:
+            case RANDOM_OBJECT:
             case FLOOR:
             case ROOM_EXIT:
             case TREASURE_ROOM:
@@ -144,6 +157,7 @@ public class RngLevelInitializer {
             case ENTRANCE_ROOM:
             case CORRIDOR:
                 return false;
+
         }
         return true;
     }

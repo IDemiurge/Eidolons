@@ -206,7 +206,6 @@ public class RngFillMaster {
                 map.put(ROOM_CELL.SPECIAL_CONTAINER, 1);
                 break;
             case SPECIAL_CONTAINER:
-                map.put(ROOM_CELL.CONTAINER, 1);
                 map.put(ROOM_CELL.SPECIAL_CONTAINER, 5);
                 break;
             case GUARDS:

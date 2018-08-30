@@ -14,12 +14,14 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
+import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -78,7 +80,7 @@ public class RngLocationBuilder extends LocationBuilder {
         initWidthAndHeight(location);
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
-//        initDynamicObjData();
+        //        initDynamicObjData();
         return location;
     }
 
@@ -87,12 +89,12 @@ public class RngLocationBuilder extends LocationBuilder {
         for (ObjAtCoordinate at : level.getObjects()) {
             //            DC_ObjInitializer.initMapBlockObjects()
             game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y, DC_Player.NEUTRAL);
-       main.system.auxiliary.log.LogMaster.log(1,at+" spawed" );
+            main.system.auxiliary.log.LogMaster.log(1, at + " spawed");
         }
         for (ObjAtCoordinate at : level.getUnits()) {
             game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
              game.getPlayer(false));
-            main.system.auxiliary.log.LogMaster.log(1,at+" unit spawed" );
+            main.system.auxiliary.log.LogMaster.log(1, at + " unit spawed");
         }
 
 
@@ -117,7 +119,11 @@ public class RngLocationBuilder extends LocationBuilder {
         String xml = FileManager.readFile(path);
         //        TODO
         DungeonLevel level = new RestoredDungeonLevel();
-        level.setPowerLevel(getGame().getMetaMaster().getPartyManager().getParty().getParamSum(PARAMS.POWER));
+        Party party = getGame().getMetaMaster().getPartyManager().
+         getParty();
+        level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
+         getParty().getParamSum(PARAMS.POWER)*(2+party.getMembers().size())/party.getMembers().size());
+
         List<LevelZone> zones = new ArrayList<>();
         int n = 0;
 
@@ -160,6 +166,12 @@ public class RngLocationBuilder extends LocationBuilder {
 
         if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.LEVEL_DATA_NODE)) {
             initData(n, level);
+        } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.BOUND_NODE)) {
+            try {
+                initBound(n, level);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.ENTRANCES_NODE)) {
             initEntrances(n, level);
         } else if (StringMaster.compareByChar(n.getNodeName(), RngXmlMaster.TILEMAP_NODE)) {
@@ -180,6 +192,15 @@ public class RngLocationBuilder extends LocationBuilder {
         //        } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PROPS_NODE))) {
         //            TypeBuilder.setProps(type, n);
         //        }
+    }
+
+    private void initBound(Node n, DungeonLevel level) {
+        for (String s : ContainerUtils.openContainer(n.getTextContent())) {
+            AbstractCoordinates c = new AbstractCoordinates(s.split("=")[0]);
+            AbstractCoordinates c2 = new AbstractCoordinates(s.split("=")[1]);
+            LevelBlock b = level.getBlockForCoordinate(c);
+            RngFillMaster.bindCoordinates(b, c, c2);
+        }
     }
 
     private void initData(Node n, DungeonLevel level) {
@@ -219,23 +240,23 @@ public class RngLocationBuilder extends LocationBuilder {
         for (String line : lines) {
             if (lineN++ < RngXmlMaster.SKIPPED_LINES)
                 continue;
-            if (lineN   > lines.length - RngXmlMaster.SKIPPED_LINES) {
+            if (lineN > lines.length - RngXmlMaster.SKIPPED_LINES) {
                 break;
             }
-                String row = line.split(Pattern.quote(RngXmlMaster.TILEMAP_ROW_SEPARATOR))[1];
-                row = row.replace(" ", "");
-                int i = 0;
-                for (char c : row.toCharArray()) {
-                    ROOM_CELL cell = ROOM_CELL.getBySymbol(c + "");
-                    i++;
-                    if (cell != null) {
-                        map.put(new AbstractCoordinates(i - 1, lineN - RngXmlMaster.SKIPPED_LINES - 1), cell);
-                    } else {
-                        continue;
-                    }
+            String row = line.split(Pattern.quote(RngXmlMaster.TILEMAP_ROW_SEPARATOR))[1];
+            row = row.replace(" ", "");
+            int i = 0;
+            for (char c : row.toCharArray()) {
+                ROOM_CELL cell = ROOM_CELL.getBySymbol(c + "");
+                i++;
+                if (cell != null) {
+                    map.put(new AbstractCoordinates(i - 1, lineN - RngXmlMaster.SKIPPED_LINES - 1), cell);
+                } else {
+                    continue;
                 }
-                if (i > w)
-                    w = i;
+            }
+            if (i > w)
+                w = i;
         }
         TileMap tileMap = new TileMap(map);
         //        String[][] cells = TileMapper.toSymbolArray(TileMapper.getCells(tileMap));
@@ -280,6 +301,9 @@ public class RngLocationBuilder extends LocationBuilder {
 
         for (Node subNode : XML_Converter.getNodeList(node)) {
             if (StringMaster.compareByChar(subNode.getNodeName(), COORDINATES_NODE)) {
+                //                if (subNode.getTextContent().isEmpty()){
+                //              TODO     b.initDefaultCoordinatesList();
+                //                } else
                 b.setCoordinatesList(CoordinatesMaster.
                  getCoordinatesFromString(subNode.getTextContent()));
             } else if (StringMaster.compareByChar(subNode.getNodeName(), OBJ_NODE)) {

@@ -5,11 +5,14 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MOD
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_TEMPLATE_GROUP;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.model.RoomModelTransformer;
+import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_GEN_FLAG;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
+import main.system.auxiliary.RandomWizard;
 import main.system.data.DataUnit;
 import main.system.data.DataUnitFactory;
 
@@ -24,6 +27,8 @@ import static eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_D
  * Created by JustMe on 7/21/2018.
  */
 public class LevelDataMaker {
+    private static Boolean random;
+
     public static LevelData getDefaultLevelData(
      int sublevel
     ) {
@@ -49,8 +54,81 @@ public class LevelDataMaker {
 
 
         data.setReqs(getDefaultReqs(data));
-
+        data.setInitializeRequired(RngMainSpawner.TEST_MODE);
         return data;
+    }
+
+
+    public static LEVEL_DATA_MODIFICATION[] getCommonMods() {
+        return new LEVEL_DATA_MODIFICATION[]{
+         NO_FILL,
+         HALF_FILL,
+         DOUBLE_FILL,
+
+         NO_ROOM_CHANCE,
+         HALF_ROOM_CHANCE,
+         DOUBLE_ROOM_CHANCE,
+
+
+        };
+    }
+
+    public static LEVEL_DATA_MODIFICATION[] getMods(LOCATION_TYPE_GROUP locationType) {
+        List<LEVEL_DATA_MODIFICATION> mods = new ArrayList<>();
+        for (LEVEL_DATA_MODIFICATION mod : getModsForGroup(locationType)) {
+            mods.add(mod);
+        }
+        for (LEVEL_DATA_MODIFICATION mod : getCommonMods()) {
+            mods.add(mod);
+        }
+        return mods.toArray(new LEVEL_DATA_MODIFICATION[mods.size()]);
+    }
+
+    public static LEVEL_DATA_MODIFICATION[] getModsForGroup(LOCATION_TYPE_GROUP locationType) {
+        if (random == null)
+            random = RandomWizard.random();
+        switch (locationType) {
+            case SURFACE:
+                return random
+                 ? new LEVEL_DATA_MODIFICATION[0]
+                 : new LEVEL_DATA_MODIFICATION[]{
+                 NO_LINKS,
+                 DECREASE_ROOM_COUNT,
+                 INCREASE_SIZE,
+                };
+            case WIDE:
+                return new LEVEL_DATA_MODIFICATION[0];
+            case AVERAGE:
+                return random
+                 ? new LEVEL_DATA_MODIFICATION[]{
+                 SHORTEN_MAIN_PATHS,
+                 LENGTHEN_BONUS_PATHS,
+                 DOUBLE_MAIN_PATHS,
+                 HALF_BONUS_PATHS,
+                }
+                 : new LEVEL_DATA_MODIFICATION[]{
+                 LENGTHEN_MAIN_PATHS,
+                 SHORTEN_BONUS_PATHS,
+                 DOUBLE_BONUS_PATHS,
+                };
+            case NARROW:
+                return random
+                 ? new LEVEL_DATA_MODIFICATION[]{
+                 NO_LINKLESS,
+                 LENGTHEN_MAIN_PATHS,
+                 INCREASE_ROOM_COUNT,
+                }
+                 : new LEVEL_DATA_MODIFICATION[]{
+
+                };
+            case NATURAL:
+            case NATURAL_SURFACE:
+                return new LEVEL_DATA_MODIFICATION[]{
+                 NO_DOORS,
+
+                };
+        }
+        return new LEVEL_DATA_MODIFICATION[0];
     }
 
     public static LEVEL_DATA_MODIFICATION[] getRandomizedMods(SUBLEVEL_TYPE type) {
@@ -72,54 +150,13 @@ public class LevelDataMaker {
         return new LEVEL_DATA_MODIFICATION[0];
     }
 
-    public static LEVEL_DATA_MODIFICATION[] getCommonMods( ) {
-        return new LEVEL_DATA_MODIFICATION[]{
-         NO_FILL,
-         HALF_FILL,
-         DOUBLE_FILL,
-
-         NO_ROOM_CHANCE,
-         HALF_ROOM_CHANCE,
-         DOUBLE_ROOM_CHANCE,
-
-
-        };
-    }
-    public static LEVEL_DATA_MODIFICATION[] getMods(LOCATION_TYPE_GROUP locationType) {
-          List<LEVEL_DATA_MODIFICATION >  mods = new ArrayList<>();
-        for (LEVEL_DATA_MODIFICATION mod : getModsForGroup(locationType)) {
-            mods.add(mod);
-        }
-        for (LEVEL_DATA_MODIFICATION mod : getCommonMods()) {
-            mods.add(mod);
-        }
-        return mods.toArray(new LEVEL_DATA_MODIFICATION[mods.size()]);
-    }
-        public static LEVEL_DATA_MODIFICATION[] getModsForGroup(LOCATION_TYPE_GROUP locationType) {
-        switch (locationType) {
-            case NARROW:
-                return new LEVEL_DATA_MODIFICATION[]{
-
-                };
-            case NATURAL:
-                return new LEVEL_DATA_MODIFICATION[]{
-                 NO_DOORS,
-
-                };
-        }
-
-            return new LEVEL_DATA_MODIFICATION[0];
-        }
-    //break locationTypes into groups for this!!!
-
-
     public static Object[] getRandomizedModArgs(LEVEL_DATA_MODIFICATION[] mods,
                                                 LOCATION_TYPE_GROUP group) {
 
         Object[] args = new Object[mods.length];
         for (int i = 0; i < mods.length; i++) {
             Integer n = 1;
-//            TODO RandomWizard.getRandomFloatBetween()
+            //            TODO RandomWizard.getRandomFloatBetween()
             switch (mods[i]) {
 
                 case LENGTHEN_MAIN_PATHS:
@@ -239,7 +276,7 @@ public class LevelDataMaker {
                 }
                 return ROOM_TYPE.SECRET_ROOM;
         }
-        return null ;
+        return null;
 
     }
 
@@ -252,7 +289,7 @@ public class LevelDataMaker {
                 if (n != 0)
                     n = 2;
             case HALF_ROOM_CHANCE:
-                if (arg==null )
+                if (arg == null)
                     return;
                 LEVEL_VALUES val = LevelData.getROOM_COEF((ROOM_TYPE) arg);
                 data.setValue(val, Math.round(data.getIntValue(val)
@@ -265,7 +302,7 @@ public class LevelDataMaker {
                 if (n != 0)
                     n = 2;
             case HALF_FILL:
-                if (arg==null )
+                if (arg == null)
                     return;
                 val = LevelData.getFillCoefValue((ROOM_CELL) arg);
                 data.setValue(val, Math.round(data.getIntValue(val)
@@ -335,7 +372,7 @@ public class LevelDataMaker {
 
             case HALF_ZONES:
                 data.setValue(LEVEL_VALUES.ZONES,
-             Math.round(data.getIntValue(LEVEL_VALUES.ZONES) * n) + "");
+                 Math.round(data.getIntValue(LEVEL_VALUES.ZONES) * n) + "");
 
                 break;
             case SINGLE_ZONE:
@@ -617,20 +654,24 @@ public class LevelDataMaker {
         return null;
     }
 
-    public static void randomize(float randomizationMod, LevelData data) {
-        LOCATION_TYPE_GROUP group =data.getLocationType(). getGroup();
+    public static void randomize(float randomizationMod, Boolean setRandom, LevelData data, GenerationStats stats) {
+        random = setRandom;
+        LOCATION_TYPE_GROUP group = data.getLocationType().getGroup();
         LEVEL_DATA_MODIFICATION[] mods = getMods(group);
         Object[] args = getRandomizedModArgs(mods, group);
         int i = 0;
         for (LEVEL_DATA_MODIFICATION mod : mods) {
+            stats.modAdded(mod, args[i]);
             applyMod(randomizationMod, data, mod, args[i++]);
         }
         mods = getRandomizedMods(data.getSublevelType());
         args = getRandomizedModArgs(mods, group);
         i = 0;
         for (LEVEL_DATA_MODIFICATION mod : mods) {
+            stats.modAdded(mod, args[i]);
             applyMod(randomizationMod, data, mod, args[i++]);
         }
+
     }
 
 

@@ -1,9 +1,11 @@
 package eidolons.game.module.dungeoncrawl.generator.test;
 
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MODIFICATION;
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.GEN_STAT;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.data.DataUnit;
 import main.system.datatypes.WeightMap;
@@ -20,7 +22,18 @@ public class GenerationStats extends DataUnit<GEN_STAT> {
         this.type = type;
     }
 
-    public void addCount(GEN_STAT stat, String val) {
+    public void modAdded(LEVEL_DATA_MODIFICATION mod, Object arg) {
+        addValue(GEN_STAT.LEVEL_DATA_MODIFICATIONS,
+         mod+ StringMaster.wrapInParenthesis(arg+""));
+    }
+
+    public void addAverage(GEN_STAT stat, int val, int count) {
+        int prev = getIntValue(stat);
+        int newVal = (prev*(count-1)+val)/count;
+        setValue(stat, newVal+"");
+
+    }
+        public void addCount(GEN_STAT stat, String val) {
         addValue(stat, val);
         if (val.contains(": ")) {
             val = val.split(": ")[0];
@@ -52,7 +65,7 @@ public class GenerationStats extends DataUnit<GEN_STAT> {
         CRITICAL_FAIL_PERCENTAGE,
         FAIL_REASONS,
         FAIL_REASONS_MAP,
-
+        LEVEL_DATA_MODIFICATIONS,
         /*
         info on the whole gen process for a batch
         averages

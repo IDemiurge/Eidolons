@@ -136,12 +136,14 @@ public abstract class RngFiller implements RngFillerInterface {
     }
 
 
-    protected List<Coordinates> getPointsToFill(TileMap map, Room room, float max) {
-        List<Coordinates> fullList =
+    protected List<Coordinates> getPointsToFill(TileMap map, Room room, float maxCoef, int min) {
+        List<Coordinates> fullList = filterByCellType(map, ModelMaster.getCoordinateList(room));
+        List<Coordinates> filterCoordinates =
          filterCoordinates(map, room, ModelMaster.getCoordinateList(room));
-        int limit = Math.round(fullList.size() * max);
 
-        return selectPointsToFill(fullList, limit);
+        int limit = Math.max(min, Math.round(fullList.size() * maxCoef));
+
+        return selectPointsToFill(filterCoordinates, limit);
 
     }
 
@@ -173,17 +175,22 @@ public abstract class RngFiller implements RngFillerInterface {
     }
 
     private List<Coordinates> findShape(List<Coordinates> fullList, int limit) {
-        DIRECTION d=DIRECTION.UP_LEFT; //TODO cycle thru?
+        DIRECTION d = DIRECTION.UP_LEFT; //TODO cycle thru?
         Coordinates seed = CoordinatesMaster.getFarmostCoordinateInDirection(d, fullList);
-        FILL_SHAPE shape=ShapeFillMaster.getRandomShape(limit);
-        int arg=0;
-         List<Coordinates> coords;
-        while (new Loop(100*limit).continues()){
-             coords = ShapeFillMaster.getCoordinatesForShape(shape, seed, arg, fullList, limit);
-             if (ShapeFillMaster.checkShape(shape, coords, arg))
-                 return coords;
-         }
-         return new ArrayList<>();
+        FILL_SHAPE shape = ShapeFillMaster.getRandomShape(limit);
+        int arg = 0;
+        List<Coordinates> coords;
+        while (new Loop(100 * limit).continues()) {
+            coords = ShapeFillMaster.getCoordinatesForShape(shape, seed, arg, fullList, limit);
+            if (ShapeFillMaster.checkShape(shape, coords, arg))
+                return coords;
+        }
+        return new ArrayList<>();
+    }
+
+    private List<Coordinates> filterByCellType(TileMap map, List<Coordinates> coordinateList) {
+        coordinateList.removeIf(c -> map.getMap().get(c) != getFilledRoomCellType());
+        return coordinateList;
     }
 
     private List<Coordinates> filterCoordinates(TileMap map, Room room, List<Coordinates> coordinateList) {
@@ -230,29 +237,31 @@ public abstract class RngFiller implements RngFillerInterface {
 
     protected void fillMandatory(Room room) {
         LevelBlock block = model.getBlocks().get(room);
+        int min = getMinFilledCells(block.getRoomType());
+        // TODO getMinMandatoryFill() *
         List<Coordinates> toFill =
-         getPointsToFill(block.getTileMap(), room, getMaxMandatoryFill() * getFillCoef(room.getType()));
+         getPointsToFill(block.getTileMap(), room, getMaxMandatoryFill() * getFillCoef(room.getType()), min);
 
-        fillCells(toFill, block, getMinMandatoryFill() * getFillCoef(room.getType()));
+        fillCells(toFill, block, min);
     }
 
     protected void fill(Stack<Room> prioritySpawnLocations, float dif) {
         Room room = prioritySpawnLocations.pop();
         LevelBlock block = model.getBlocks().get(room);
 
+        int min = getMinFilledCells(block.getRoomType());
+
         List<Coordinates> toFill =
-         getPointsToFill(block.getTileMap(), room, BLOCK_FILL_COEF * dif);
+         getPointsToFill(block.getTileMap(), room, BLOCK_FILL_COEF * dif, min);
         /*
         choose spots or filler first?
         could choose spots for maximum fill...
          */
-        fillCells(toFill, block, getMinAdditionalFill());
+        fillCells(toFill, block, min);
 
     }
 
-    protected void fillCells(List<Coordinates> toFill, LevelBlock block, float minimumPerc) {
-        int min = Math.max(getMinFilledCells(block.getRoomType()),
-         Math.round(toFill.size() * minimumPerc));
+    protected void fillCells(List<Coordinates> toFill, LevelBlock block, int min) {
         int i = 0;
         for (Coordinates coordinates : toFill) {
             if (i++ > min) //avrg result = min+(max-min)/2
@@ -283,9 +292,14 @@ public abstract class RngFiller implements RngFillerInterface {
     }
 
     protected void placeFiller(Coordinates coordinates, LevelBlock block, ROOM_CELL filler) {
+        if (isCornersOnly()) {
+            if (!TilesMaster.isCornerCell(coordinates, block.getTileMap()))
+                return;
+        }
         model.placeCell(coordinates, block, filler);
 
     }
+
 
     protected boolean isOverlaying() {
         return false;
@@ -322,7 +336,7 @@ public abstract class RngFiller implements RngFillerInterface {
 
     protected float calculateFill(LevelBlock block) {
         float fillable =
-         getPointsToFill(block.getTileMap(), model.getRoom(block), 1).size();
+         getPointsToFill(block.getTileMap(), model.getRoom(block), 1, 0).size();
         if (fillable == 0)
             return 1;
         float filled =
@@ -363,9 +377,9 @@ public abstract class RngFiller implements RngFillerInterface {
     private boolean tryFillCorners(Room room, int x, int y) {
         Coordinates[] corners = new Coordinates[]{
          new AbstractCoordinates(x, y),
-         new AbstractCoordinates(room.getWidth() - x-1, y),
-         new AbstractCoordinates(x, room.getHeight()-1 - y),
-         new AbstractCoordinates(room.getWidth()-1 - x, room.getHeight()-1 - y),
+         new AbstractCoordinates(room.getWidth() - x - 1, y),
+         new AbstractCoordinates(x, room.getHeight() - 1 - y),
+         new AbstractCoordinates(room.getWidth() - 1 - x, room.getHeight() - 1 - y),
         };
         if (!RandomWizard.chance(getFillCornersChance(room))) {
             return false;

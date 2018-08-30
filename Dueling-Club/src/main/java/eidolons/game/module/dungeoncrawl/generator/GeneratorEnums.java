@@ -157,6 +157,7 @@ OOO##
         RANDOMIZED_SIZE_SORT_CHANCE(35, 0, 100),
         CHANCE_LINKLESS(35, 0, 100),
         CHANCE_LINKLESS_MOD(100, 0, 500),
+        POWER_PER_SQUARE_MAX_MOD(100, 0, 500),
         SURFACE(),
 
         //RENDER
@@ -168,9 +169,7 @@ OOO##
         //GRAPH
         WIDTH,
         HEIGHT,
-        Z_LEVEL,
-
-        ;
+        Z_LEVEL;
         private Boolean exclusive;
         private Integer min;
         private Integer max;
@@ -263,7 +262,7 @@ OOO##
 //RANDOM
 
         RANDOM_PASSAGE("p", "D(5);floor(5);"),
-        RANDOM_SPAWN_GROUP("c"),
+        RANDOM_SPAWN_GROUP("u"),
         RANDOM_OBJECT("r", ""),
 
 
@@ -272,7 +271,7 @@ OOO##
         THRONE_ROOM("h"),
         DEATH_ROOM("d"),
         GUARD_ROOM("g"),
-        COMMON_ROOM("c"),
+        COMMON_ROOM("m"),
         EXIT_ROOM("x"),
         SECRET_ROOM("s"),
         ENTRANCE_ROOM("n"),
@@ -312,6 +311,8 @@ OOO##
         }
 
         public static ROOM_CELL getBySymbol(String symbol) {
+            if (symbol.equals("."))
+                return FLOOR; //TODO better replace O's en masse...
             for (ROOM_CELL sub : vals) {
                 if (sub.getSymbol().equals(symbol)) {
                     return sub;

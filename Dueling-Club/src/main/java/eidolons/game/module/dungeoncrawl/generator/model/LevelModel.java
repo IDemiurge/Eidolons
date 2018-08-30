@@ -6,6 +6,7 @@ import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
+import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.data.XLinkedMap;
@@ -37,6 +38,8 @@ public class LevelModel {
     private int bottomMost;
     private LevelModelBuilder builder;
     private Map<Coordinates, ROOM_CELL> additionalCells = new XLinkedMap<>();
+    private LevelGraph graph;
+    private Map<Room, List<Room>> roomLinkMap;
 
     public LevelModel(LevelData data, LevelModelBuilder builder) {
         this.data = data;
@@ -282,5 +285,21 @@ public class LevelModel {
 
     public void setAdditionalCells(Map<Coordinates, ROOM_CELL> additionalCells) {
         this.additionalCells = additionalCells;
+    }
+
+    public void setGraph(LevelGraph graph) {
+        this.graph = graph;
+    }
+
+    public LevelGraph getGraph() {
+        return graph;
+    }
+
+    public void setRoomLinkMap(Map<Room, List<Room>> roomLinkMap) {
+        this.roomLinkMap = roomLinkMap;
+    }
+
+    public Map<Room, List<Room>> getRoomLinkMap() {
+        return roomLinkMap;
     }
 }

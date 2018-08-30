@@ -24,4 +24,5 @@ public class RngXmlMaster {
     public static final java.lang.String LEVEL_DATA_NODE = "LEVEL_DATA";
     public static final String DIRECTION_MAP_NODE ="DIRECTION_MAP" ;
     public static final String BLOCK_ROOM_TYPE_NODE = "BLOCK_ROOM_TYPE";
+    public static final String BOUND_NODE = "BOUND";
 }

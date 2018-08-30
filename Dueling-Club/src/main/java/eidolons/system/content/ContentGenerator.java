@@ -9,6 +9,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.bf.overlays.WallMap;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.GenericEnums;
 import main.content.enums.GenericEnums.DAMAGE_TYPE;
 import main.content.enums.GenericEnums.RESIST_GRADE;
@@ -138,24 +139,42 @@ public class ContentGenerator {
     }
 
     public static final void afterRead() {
-        generateIndestructibleWalls();
-        generateFalseWalls();
+        if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
+            generateIndestructibleWalls();
+        if (!DataManager.getTypes(DC_TYPE.BF_OBJ).isEmpty())
+            generateFalseWalls();
+        if (!DataManager.getTypes(DC_TYPE.SCENARIOS).isEmpty())
+            generateRngScenarios();
     }
 
     public static void generateFalseWalls() {
         for (ObjType type : DataManager.getTypesGroup(
          DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
-            ObjType newType = new ObjType("Strange " +type.getName() , type);
+            if (type.checkBool(STD_BOOLS.INDESTRUCTIBLE))
+                continue;
+            ObjType newType = new ObjType(type.getName() + WallMap.v(null), type);
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.FAUX.name());
             DataManager.addType(newType);
+            newType.setGenerated(false);
         }
     }
-        public static void generateIndestructibleWalls() {
+
+    public static void generateIndestructibleWalls() {
         for (ObjType type : DataManager.getTypesGroup(DC_TYPE.BF_OBJ, BF_OBJECT_GROUP.WALL.name())) {
 
             ObjType newType = new ObjType(type.getName() + WallMap.v(true), type);
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
             newType.addProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INDESTRUCTIBLE.name());
+            DataManager.addType(newType);
+            newType.setGenerated(false);
+        }
+    }
+
+    public static void generateRngScenarios() {
+        for (LOCATION_TYPE type : LOCATION_TYPE.values()) {
+            ObjType newType = new ObjType(StringMaster.getWellFormattedString(type.name()),
+             DC_TYPE.SCENARIOS);
+            newType.setGroup("Random", true);
             DataManager.addType(newType);
         }
     }

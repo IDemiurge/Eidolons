@@ -6,11 +6,13 @@ import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraph;
 import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngLevelInitializer;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModelBuilder;
 import eidolons.game.module.dungeoncrawl.generator.model.ModelFinalizer;
 import eidolons.game.module.dungeoncrawl.generator.model.Traverser;
 import eidolons.game.module.dungeoncrawl.generator.pregeneration.Pregenerator;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.Loop;
@@ -60,6 +62,7 @@ public class LevelGenerator {
     }
 
     public static void main(String[] args) {
+        TileMapper.setLoggingOff(true);
         realGeneration();
 
     }
@@ -123,6 +126,10 @@ public class LevelGenerator {
                 DungeonLevel level = new DungeonLevel(model, data.getSublevelType(), data.getLocationType());
                 if (data.isInitializeRequired())
                     new RngLevelInitializer().init(level);
+
+                if (RngMainSpawner.TEST_MODE){
+                    new RngMainSpawner().spawn(level);
+                }
 
                 if (isCheckTraverse())
                     validator.setTraverser(new Traverser(builder.getNodeModelMap(),

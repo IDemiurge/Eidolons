@@ -45,8 +45,13 @@ public class RngLightFiller extends RngFiller {
     }
 
     @Override
+    public int getMaxAdjacency(ROOM_CELL filler) {
+        return 1;
+    }
+
+    @Override
     public boolean isCornersOnly() {
-        return true;
+        return false;
     }
 
     @Override

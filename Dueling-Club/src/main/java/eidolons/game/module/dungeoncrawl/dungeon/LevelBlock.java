@@ -33,6 +33,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private LevelZone zone;
     private Map<Coordinates, Coordinates> boundCells;
     private List aiGroups;
+    private boolean customCoordinateList;
+    private Map<List<ObjAtCoordinate>, SPAWN_GROUP_TYPE> unitGroups;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -59,11 +61,20 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     }
 
     @Override
+    public String toString() {
+        return getRoomType() + " block of " + zone
+         + "\n" + tileMap.toString();
+    }
+
+    @Override
     public String toXml() {
         String xml = "";
         xml += XML_Converter.wrap(RngXmlMaster.BLOCK_ROOM_TYPE_NODE, roomType.name());
-        xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
-         toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
+
+//     TODO    if (isCustomCoordinateList())
+            xml += XML_Converter.wrap(RngXmlMaster.COORDINATES_NODE, ContainerUtils.
+             toStringContainer(getCoordinatesList(), RngXmlMaster.SEPARATOR));
+
         xml += XML_Converter.wrap(RngXmlMaster.UNITS_NODE, ContainerUtils.
          toStringContainer(units, RngXmlMaster.SEPARATOR));
         xml += XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, ContainerUtils.
@@ -165,4 +176,20 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     public TileMap getOriginalTileMap() {
         return originalTileMap;
     }
+
+    public boolean isCustomCoordinateList() {
+        return customCoordinateList;
+    }
+
+    public void setCustomCoordinateList(boolean customCoordinateList) {
+        this.customCoordinateList = customCoordinateList;
+    }
+
+    public Map<List<ObjAtCoordinate>, SPAWN_GROUP_TYPE> getUnitGroups() {
+        if (unitGroups == null) {
+            unitGroups = new XLinkedMap<>();
+        }
+        return unitGroups;
+    }
+
 }

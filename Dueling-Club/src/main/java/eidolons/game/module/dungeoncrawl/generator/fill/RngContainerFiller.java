@@ -30,9 +30,9 @@ public class RngContainerFiller extends RngFiller {
         switch (type) {
             case SECRET_ROOM:
             case TREASURE_ROOM:
-                return 1.5f;
+                return 0.5f;
         }
-        return 0.5f;
+        return 0.25f;
     }
 
     @Override
