@@ -179,7 +179,7 @@ public class MapParticles extends MapTimedLayer<EmitterActor> {
             if (broken.contains(sub))
                 continue;
             String pos = VariableManager.getVarPart(sub);
-            Coordinates c = new Coordinates(true, pos);
+            Coordinates c = Coordinates.get(true, pos);
             try {
                 create( getPresetPath(sub), c.x, c.y, time);
             } catch (Exception e) {

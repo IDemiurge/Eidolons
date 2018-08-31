@@ -57,15 +57,15 @@ public class Pregenerator implements Runnable {
      //     AVRG_EXITS_DISTANCE,
     };
     private static final int THREADS = 3;
-    private static final Boolean RANDOM = false;
+    private static final Boolean RANDOM = null ;
     public static LOCATION_TYPE[] LOCATION_TYPES = {
      LOCATION_TYPE.CAVE,
      LOCATION_TYPE.DUNGEON,
      LOCATION_TYPE.CEMETERY,
-     LOCATION_TYPE.ARCANE,
+     LOCATION_TYPE.TOWER,
      LOCATION_TYPE.CRYPT,
-     LOCATION_TYPE.TEMPLE,
-     LOCATION_TYPE.CASTLE,
+//     LOCATION_TYPE.TEMPLE,
+//     LOCATION_TYPE.CASTLE,
     };
     public static final LOCATION_TYPE[] GENERATED_LOCATIONS = LOCATION_TYPES;
     private static List<Pregenerator> running = new ArrayList<>();

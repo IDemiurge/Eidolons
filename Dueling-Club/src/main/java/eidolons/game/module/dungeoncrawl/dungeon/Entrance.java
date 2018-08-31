@@ -69,7 +69,7 @@ public class Entrance extends Structure { //ScenarioUnit
         if (y < 0) {
             y = 0;
         }
-        return new Coordinates(x, y);
+        return Coordinates.get(x, y);
     }
 
     public boolean isOpen() {

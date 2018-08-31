@@ -88,7 +88,7 @@ public class Shop extends TownPlace implements ShopInterface {
             item_groups = new String[MAX_ITEM_GROUPS];
             int j = 0;
             while (j < MAX_ITEM_GROUPS) {
-                String e = list.get(RandomWizard.getRandomListIndex(list));
+                String e = list.get(RandomWizard.getRandomIndex(list));
                 list.remove(e);
                 item_groups[j] = e;
                 j++;
@@ -113,7 +113,7 @@ public class Shop extends TownPlace implements ShopInterface {
             // some params from Shop ObjType?
             Loop.startLoop(ShopMaster.getMaxItemsPerGroup(this));
             while (!Loop.loopEnded() && !pool.isEmpty()) {
-                int randomListIndex = RandomWizard.getRandomListIndex(pool);
+                int randomListIndex = RandomWizard.getRandomIndex(pool);
                 ObjType t = pool.get(randomListIndex);
                 if (t == null) {
                     continue;

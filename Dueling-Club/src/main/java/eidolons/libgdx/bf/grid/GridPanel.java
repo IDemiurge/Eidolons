@@ -116,7 +116,7 @@ public class GridPanel extends Group {
         boolean hasVoid=false;
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
-                DC_Cell cell = DC_Game.game.getCellByCoordinate(new Coordinates(x, rows1 - y));
+                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(x, rows1 - y));
                 if (cell == null)
                 {
                     hasVoid = true;

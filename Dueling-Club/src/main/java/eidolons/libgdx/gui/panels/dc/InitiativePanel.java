@@ -24,7 +24,7 @@ import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.QueueView;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.gui.generic.GearCluster;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
@@ -158,7 +158,7 @@ public class InitiativePanel extends Group {
         addActor(panelImage = new ValueContainer(textureRegion));
         panelImage.addListener(tooltip.getController());
 
-        addActor(light = new FadeImageContainer(SHADE_LIGHT.LIGHT_EMITTER.getTexturePath()));
+        addActor(light = new FadeImageContainer(SHADE_CELL.LIGHT_EMITTER.getTexturePath()));
 
         addActor(clock =  new ClockActor());
         clock.addListener(getClockListener());

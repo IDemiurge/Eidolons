@@ -77,7 +77,7 @@ public class ObjectiveMaster {
             case BOSS:
                 eventType = STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_KILLED;
                 Coordinates c = DC_ObjInitializer.getCoordinatesFromObjString(objectiveData);
-                // new Coordinates(s);
+                // Coordinates.get(s);
                 name = DC_ObjInitializer.getNameFromObjString(objectiveData);
 //                for (Unit u : DC_Game.game.getObjectsOnCoordinate(dungeon.getZ(), c, false,
 //                        false, false)) {

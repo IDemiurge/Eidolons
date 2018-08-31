@@ -49,7 +49,7 @@ public class RouteMaster {
             String orig = parts[0]; //POINT!
             ObjType type = DataManager.getType(parts[1], MACRO_OBJ_TYPES.ROUTE);
             String dest = parts[2];
-            Coordinates coordinates = new Coordinates(true, parts[3]);
+            Coordinates coordinates = Coordinates.get(true, parts[3]);
             String img = PathUtils.removePreviousPathSegments(sub.getPath(), PathFinder.getImagePath());
             new Route(type, img, orig, dest, coordinates);
 

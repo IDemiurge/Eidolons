@@ -12,10 +12,12 @@ import main.game.logic.battle.player.Player;
  */
 public class Door extends DungeonObj {
 
+    private   boolean obstructing=true;
     DOOR_STATE state;
 
     public Door(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         super(type, x, y, owner, game, ref);
+          obstructing =  checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING);
     }
 
     public DOOR_STATE getState() {
@@ -45,6 +47,6 @@ public class Door extends DungeonObj {
             return false;
         if (getState() == DOOR_STATE.OPEN)
             return false;
-        return !checkPassive(UnitEnums.STANDARD_PASSIVES.NON_OBSTRUCTING);
+        return !obstructing;
     }
 }

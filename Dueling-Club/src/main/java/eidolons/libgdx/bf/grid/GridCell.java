@@ -71,7 +71,7 @@ public class GridCell extends Group implements Borderable {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(new Coordinates(getGridX(), getGridY()));
+                DC_Obj dc_cell = Eidolons.gameMaster.getCellByCoordinate(Coordinates.get(getGridX(), getGridY()));
                 if (button == Input.Buttons.RIGHT && !event.isHandled()) {
                     event.handle();
                     GuiEventManager.trigger(CREATE_RADIAL_MENU, dc_cell);
@@ -152,7 +152,7 @@ public class GridCell extends Group implements Borderable {
                 cordsText.setVisible(true);
             }
             if (GammaMaster.DEBUG_MODE) {
-                DC_Cell cell = DC_Game.game.getCellByCoordinate(new Coordinates(gridX, gridY));
+                DC_Cell cell = DC_Game.game.getCellByCoordinate(Coordinates.get(gridX, gridY));
                 cordsText.setText(getGridX() + ":" + getGridY() + "\n gamma="
                   + DC_Game.game.getVisionMaster().getGammaMaster().
                   getGammaForCell(getGridX(), getGridY())

@@ -37,7 +37,7 @@ public class SelectableImageItem extends FadeImageContainer{
         highlight.setZIndex(0);
         highlight.setTouchable(Touchable.disabled);
         addListener(new ValueTooltip("Select " + data.getName()).getController());
-            debug();
+//            debug();
     }
 
     @Override

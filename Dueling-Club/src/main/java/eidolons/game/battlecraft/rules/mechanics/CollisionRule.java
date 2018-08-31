@@ -16,7 +16,7 @@ import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.secondary.Bools;
 import main.system.math.PositionMaster;
 
-import java.util.List;
+import java.util.Set;
 
 public class CollisionRule {
     /*
@@ -61,7 +61,7 @@ public class CollisionRule {
                 y = (above ? -1 : 1);
             }
 
-            final_coordinate = new Coordinates(dest.x + x, dest.y + y);
+            final_coordinate = Coordinates.get(dest.x + x, dest.y + y);
             if (!canBeOn(moveObj, final_coordinate)) {
                 final_coordinate = adjustCoordinateRandomly(dest, moveObj);
             }
@@ -112,10 +112,10 @@ public class CollisionRule {
     }
 
     private static Coordinates adjustCoordinateRandomly(Coordinates dest, Unit moveObj) {
-        List<Coordinates> adjacent = dest.getAdjacentCoordinates();
+        Set<Coordinates> adjacent = dest.getAdjacentCoordinates();
         Loop.startLoop(adjacent.size());
         while (!Loop.loopEnded()) {
-            dest = new RandomWizard<Coordinates>().getRandomListItem(adjacent);
+            dest = new RandomWizard<Coordinates>().getRandomSetItem(adjacent);
             // dest.getAdjacentCoordinate(FacingManager.getRandomFacing().getDirection());
             if (canBeOn(moveObj, dest)) {
                 return dest;

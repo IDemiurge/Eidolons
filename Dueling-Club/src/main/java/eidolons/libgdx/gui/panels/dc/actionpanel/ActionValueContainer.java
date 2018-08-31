@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.gui.UiMaster;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
@@ -23,7 +23,7 @@ import static eidolons.libgdx.gui.UiMaster.UI_ACTIONS.SCALE_ACTION_ICON;
 public class ActionValueContainer extends ValueContainer {
 
     protected static TextureRegion lightUnderlay = TextureCache.getOrCreateR(
-     SHADE_LIGHT.LIGHT_EMITTER.getTexturePath());
+     SHADE_CELL.LIGHT_EMITTER.getTexturePath());
     static TextureRegion overlay = TextureCache.getOrCreateR
      (BORDER.NEO_INFO_SELECT_HIGHLIGHT_SQUARE_64.getImagePath());
     private static ActionValueContainer lastPressed;

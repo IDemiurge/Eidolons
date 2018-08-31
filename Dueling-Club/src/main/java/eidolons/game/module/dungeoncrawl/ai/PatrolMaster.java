@@ -228,7 +228,7 @@ public class PatrolMaster {
 
             // preCheck valid coordinates? limit!
 
-            c = new Coordinates(c.x + offsetX, c.y + offsetY);
+            c = Coordinates.get(c.x + offsetX, c.y + offsetY);
 
         }
         return c;

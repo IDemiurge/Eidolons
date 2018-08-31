@@ -15,7 +15,6 @@ import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
-import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -54,11 +53,8 @@ public class SightMaster {
                                                          FACING_DIRECTION facing,
                                                          boolean extended) {
         DequeImpl<Coordinates> list = new DequeImpl<>();
-        BattleFieldObject unit = null;
+        BattleFieldObject unit = source;
         Coordinates orig = source.getCoordinates();
-        if (source instanceof BattleFieldObject) {
-            unit = (BattleFieldObject) source;
-        }
         if (facing == null) {
             if (unit != null) {
                 facing = unit.getFacing();
@@ -131,12 +127,13 @@ public class SightMaster {
     private Boolean isBlocked(DC_Obj target, BattleFieldObject source) {
         Boolean clearShot = master.getVisionController().getClearshotMapper().get(source,
          target);
-        if (clearShot == null) {
+        if (clearShot != null) {
+            return !clearShot;
+        }
             Ref ref = new Ref(source);
             ref.setMatch(target.getId());
             clearShot = getClearShotCondition().preCheck(ref);
             master.getVisionController().getClearshotMapper().set(source, target, clearShot);
-        }
         return !clearShot;
     }
 
@@ -164,8 +161,6 @@ public class SightMaster {
             if (c != null) {
                 if (remove) {
                     list.remove(c);
-                    LogMaster.log(LogMaster.VISIBILITY_DEBUG, "Coordinate shadowed from vision: "
-                     + c);
                 } else {
                     list.add(c);
                 }
@@ -314,7 +309,7 @@ public class SightMaster {
         }
         Boolean result = coordinates.contains(target.getCoordinates());
         if (result) {
-            LogMaster.log(0, target + " is visible: " + coordinates);
+//            LogMaster.log(0, target + " is visible: " + coordinates);
         } else {
             coordinates = cacheSecondary.get(source);
             if (coordinates == null || coordinates.isEmpty()) {
@@ -323,7 +318,7 @@ public class SightMaster {
             }
             result = coordinates.contains(target.getCoordinates());
             if (result) {
-                LogMaster.log(0, target + " is half-visible: " + coordinates);
+//                LogMaster.log(0, target + " is half-visible: " + coordinates);
                 return false;
             } else {
                 return null;

@@ -204,7 +204,7 @@ public class ModelMaster {
 
     public static Integer getSorterValue(LevelModel model, Coordinates point, boolean n_s, boolean w_e) {
         //        transformed =         model.getOccupiedCells().stream().map(c->
-        //         new Coordinates(true, c.x, c.y)).collect(Collectors.toList());
+        //         Coordinates.get(true, c.x, c.y)).collect(Collectors.toList());
 
         //        roomExit = room.getExits()[room.getExitCoordinates().size()];
         //        getPrioritizedDirection(room);

@@ -41,7 +41,7 @@ public class CellPrioritizer extends AiHandler {
         return getPriorityForCell(unit, cell, null);
     }
 
-    public List<? extends DC_Obj> getApproachCells(UnitAI ai) {
+    public Set<? extends DC_Obj> getApproachCells(UnitAI ai) {
         /*
          * TODO
 		 * 

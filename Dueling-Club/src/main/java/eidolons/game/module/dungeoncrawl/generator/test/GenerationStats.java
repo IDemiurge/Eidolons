@@ -4,11 +4,8 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_DATA_MOD
 import eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.GEN_STAT;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
-import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
-import main.system.auxiliary.data.MapMaster;
 import main.system.data.DataUnit;
-import main.system.datatypes.WeightMap;
 
 /**
  * Created by JustMe on 8/2/2018.
@@ -27,24 +24,6 @@ public class GenerationStats extends DataUnit<GEN_STAT> {
          mod+ StringMaster.wrapInParenthesis(arg+""));
     }
 
-    public void addAverage(GEN_STAT stat, int val, int count) {
-        int prev = getIntValue(stat);
-        int newVal = (prev*(count-1)+val)/count;
-        setValue(stat, newVal+"");
-
-    }
-        public void addCount(GEN_STAT stat, String val) {
-        addValue(stat, val);
-        if (val.contains(": ")) {
-            val = val.split(": ")[0];
-        }
-        GEN_STAT mapVal = new EnumMaster<GEN_STAT>().retrieveEnumConst(GEN_STAT.class, stat + "_MAP");
-        WeightMap<String> map = new WeightMap<>(getValue(mapVal), String.class);
-        MapMaster.addToIntegerMap(map, val, 1);
-
-        setValue(mapVal, map.toString());
-
-    }
 
     @Override
     public String toString() {

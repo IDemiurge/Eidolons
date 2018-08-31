@@ -2,13 +2,13 @@ package main.game.bf.directions;
 
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.game.bf.directions.FACING_DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.math.PositionMaster;
 
 public class DirectionMaster {
     public static final DIRECTION FLIP_DIRECTION = DIRECTION.LEFT;
+    private static DIRECTION[][][][] relative_directions;
 
     public static DIRECTION getDirectionByFacing(FACING_DIRECTION f, UNIT_DIRECTION d) {
         return getDirectionByDegree(f.getDirection().getDegrees() + d.getDegrees());
@@ -82,6 +82,23 @@ public class DirectionMaster {
     }
 
     public static DIRECTION getRelativeDirection(Coordinates source, Coordinates target) {
+        if (relative_directions == null) {
+            return getRelativeDirectionNoCache(source, target);
+        }
+        DIRECTION d = relative_directions[source.x][source.y][target.x][target.y];
+        if (d != null) {
+            return d;
+        }
+        d = relative_directions[target.x][target.y][source.x][source.y];
+        if (d != null) {
+            return d.flip();
+        }
+        d = getRelativeDirectionNoCache(source, target);
+        relative_directions[source.x][source.y][target.x][target.y] = d;
+        return d;
+    }
+        public static DIRECTION getRelativeDirectionNoCache(Coordinates source, Coordinates target) {
+
         if (PositionMaster.isAbove(source, target)) {
             if (PositionMaster.isToTheLeft(source, target)) {
                 return DIRECTION.DOWN_RIGHT;
@@ -149,4 +166,8 @@ public class DirectionMaster {
         return new EnumMaster<DIRECTION>().getRandomEnumConst(DIRECTION.class);
     }
 
+    public static void initCache(Integer cellsX, Integer cellsY) {
+        //save over TODO
+        relative_directions = new DIRECTION[cellsX][cellsY][cellsX][cellsY];
+    }
 }

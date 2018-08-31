@@ -19,7 +19,7 @@ public class MissionDataSourceImpl implements MissionDataSource {
 
     @Override
     public ValueContainer getPosition() {
-        Coordinates c = new Coordinates(true,
+        Coordinates c = Coordinates.get(true,
          mission.getMissionLocation().getProperty(PROPS.PLACE_COORDINATES));
         return new ValueContainer("" + c.x, "" + c.y);
     }

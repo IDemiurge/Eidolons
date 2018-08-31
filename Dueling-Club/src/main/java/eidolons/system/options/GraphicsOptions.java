@@ -40,6 +40,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         RESOLUTION(eidolons.system.graphics.RESOLUTION.values()),
 //        PERFORMANCE_BOOST(PERFORMANCE_BOOST_LEVEL.values()),
         VSYNC(true),
+        SHADOW_MAP_OFF(false),
         UI_EMITTERS(false),
         SPRITE_CACHE_ON(false){
             @Override

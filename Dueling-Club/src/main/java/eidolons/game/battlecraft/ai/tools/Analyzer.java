@@ -38,6 +38,7 @@ import main.system.math.PositionMaster;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Analyzer extends AiHandler {
@@ -487,7 +488,7 @@ public class Analyzer extends AiHandler {
     public static List<DC_Cell> getSummonCells(UnitAI ai, DC_ActiveObj action) {
 
         if (EffectFinder.check(action, RaiseEffect.class)) {
-            return getCorpseCells(ai.getUnit());
+            return new ArrayList<>(getCorpseCells(ai.getUnit()));
         }
         List<DC_Cell> cells = getCells(ai, true, true, true);
         boolean melee = true;
@@ -513,8 +514,7 @@ public class Analyzer extends AiHandler {
         return cells;
     }
 
-    private static List<DC_Cell> getCorpseCells(Unit unit) {
-
+    private static Set<DC_Cell> getCorpseCells(Unit unit) {
         return unit.getGame().getCellsForCoordinates(
          unit.getGame().getGraveyardManager().getCorpseCells());
     }
@@ -550,7 +550,7 @@ public class Analyzer extends AiHandler {
          .getUnit()
          .getGame()
          .getCellByCoordinate(
-          new RandomWizard<Coordinates>().getRandomListItem(ai
+          new RandomWizard<Coordinates>().getRandomSetItem(ai
            .getUnit().getCoordinates()
            .getAdjacentCoordinates())));
         // List<DC_Cell> list = new ArrayList<>();

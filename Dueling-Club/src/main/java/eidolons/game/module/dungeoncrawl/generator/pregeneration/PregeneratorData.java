@@ -24,7 +24,7 @@ public class PregeneratorData extends DataUnit<PREGENERATOR_VALUES> {
         MAX_TIME,
         MIN_RATING(250, -100, 1000),
         GLOBAL_RANDOMNESS,
-        LEVELS_REQUIRED(10, 1, 100),
+        LEVELS_REQUIRED(5, 1, 100),
         RANDOMIZATION_MOD(100, 0, 200);
 
         private Boolean exclusive;

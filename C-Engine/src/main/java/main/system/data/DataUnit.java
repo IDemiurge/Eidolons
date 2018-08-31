@@ -10,6 +10,7 @@ import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.datatypes.WeightMap;
 
 import java.util.*;
 
@@ -149,12 +150,39 @@ public class DataUnit<T extends Enum<T>> {
         }
     }
 
+    public void addAverage(T stat, int val, int count) {
+        int prev = getIntValue(stat);
+        int newVal = (prev * (count - 1) + val) / count;
+        setValue(stat, newVal + "");
+
+    }
+
+    public void addCount(T stat, String val) {
+        addCount(stat, val, 0);
+    }
+
+    public void addCount(T stat, String val, int max) {
+        addValue(stat, val);
+        if (val.contains(": ")) {
+            val = val.split(": ")[0];
+        }
+        T mapVal = getEnumConst(stat + "_MAP");
+        WeightMap<String> map = new WeightMap<>(getValue(mapVal), String.class);
+        MapMaster.addToIntegerMap(map, val, 1);
+        if (max != 0)
+            if (map.get(val) > max)
+                map.put(val, 0);
+
+        setValue(mapVal, map.toString());
+
+    }
+
     public Map<Coordinates, ObjType> buildObjCoordinateMapFromString(String string) {
 
         Map<Coordinates, ObjType> objMap = new LinkedHashMap<>();
         for (String item : string.split(StringMaster.getAltSeparator())) {
 
-            Coordinates c = new Coordinates(item.split(StringMaster.getAltPairSeparator())[0]);
+            Coordinates c = Coordinates.get(item.split(StringMaster.getAltPairSeparator())[0]);
             String objTypeName = item.split(StringMaster.getAltPairSeparator())[1];
             ObjType objType = DataManager.getType(objTypeName);
             objMap.put(c, objType);
@@ -242,6 +270,10 @@ public class DataUnit<T extends Enum<T>> {
             }
         }
         return false;
+    }
+
+    public WeightMap getWeightMapValue(T val) {
+        return new WeightMap(getValue(val), String.class);
     }
 
     public enum GAME_VALUES {

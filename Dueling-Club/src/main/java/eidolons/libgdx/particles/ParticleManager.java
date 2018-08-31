@@ -100,7 +100,7 @@ public class ParticleManager extends GroupX {
                 return AMBIENCE_TEMPLATE.CAVE;
             case DUNGEON:
             case SEWER:
-            case ARCANE:
+            case TOWER:
             case CASTLE:
             case DEN:
             case HOUSE:

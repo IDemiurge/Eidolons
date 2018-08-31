@@ -145,7 +145,7 @@ public class RngLevelPopulator  {
                 break;
             case ASTRAL:
                 break;
-            case ARCANE:
+            case TOWER:
                 break;
             case CRYPT:
                 break;

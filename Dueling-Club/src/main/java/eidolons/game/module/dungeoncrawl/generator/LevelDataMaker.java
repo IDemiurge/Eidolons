@@ -122,10 +122,19 @@ public class LevelDataMaker {
 
                 };
             case NATURAL:
+                return random
+                 ? new LEVEL_DATA_MODIFICATION[]{
+                 NO_DOORS,
+                 DOUBLE_FILL
+                }:
+                 new LEVEL_DATA_MODIFICATION[]{
+                  NO_DOORS,
+                  DOUBLE_FILL,
+                  HALF_FILL
+                 };
             case NATURAL_SURFACE:
                 return new LEVEL_DATA_MODIFICATION[]{
                  NO_DOORS,
-
                 };
         }
         return new LEVEL_DATA_MODIFICATION[0];
@@ -217,9 +226,9 @@ public class LevelDataMaker {
                     case 0:
                         return ROOM_CELL.WALL_WITH_LIGHT_OVERLAY;
                     case 1:
-                        return ROOM_CELL.LIGHT_EMITTER;
-                    case 2:
                         return ROOM_CELL.DESTRUCTIBLE;
+                    case 2:
+                        return ROOM_CELL.LIGHT_EMITTER;
                 }
                 break;
             case WIDE:
@@ -449,7 +458,7 @@ public class LevelDataMaker {
                 break;
             case ASTRAL:
                 break;
-            case ARCANE:
+            case TOWER:
                 break;
             case HOUSE:
                 break;
@@ -541,7 +550,7 @@ public class LevelDataMaker {
                 break;
             case ASTRAL:
                 break;
-            case ARCANE:
+            case TOWER:
                 return new ROOM_TEMPLATE_GROUP[]{
                  ROOM_TEMPLATE_GROUP.TOWER,
                  ROOM_TEMPLATE_GROUP.TOWER_TEMPLE,

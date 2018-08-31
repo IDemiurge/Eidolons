@@ -325,14 +325,14 @@ public class CombatScriptExecutor extends ScriptManager<MissionBattle, COMBAT_SC
             Integer i = NumberUtils.getInteger(arg) - 1;
             List<String> spawnPoints = ContainerUtils.openContainer(
              getMaster().getDungeon().getProperty(PROPS.ENEMY_SPAWN_COORDINATES));
-            origin = new Coordinates(spawnPoints.get(i));
+            origin = Coordinates.get(spawnPoints.get(i));
             origin = getMaster().getDungeon().getPoint(arg);
 //            getUnit(arg).getCoordinates()
             //another units' coordinates
             //closest point
         } else {
             try {
-                origin = new Coordinates(arg);
+                origin = Coordinates.get(arg);
             } catch (Exception e) {
                 main.system.ExceptionMaster.printStackTrace(e);
             }

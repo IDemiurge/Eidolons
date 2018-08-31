@@ -52,7 +52,7 @@ public class MicroObj extends Obj {
 
     public Coordinates getCoordinates() {
         if (coordinates == null) {
-            coordinates = new Coordinates(getX(), getY());
+            coordinates = Coordinates.get(getX(), getY());
         } else {
 //            coordinates.setX(getX());
 //            coordinates.setY(getY());

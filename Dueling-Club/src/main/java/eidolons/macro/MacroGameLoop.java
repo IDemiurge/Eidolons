@@ -176,7 +176,7 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     private void startBattle(Place entered) {
         ObjType type = ScenarioGenerator.generateScenarioType(entered);
         main.system.auxiliary.log.LogMaster.log(1,"gen Scenario for dungeon:" +type.getName());
-        DataManager.addType(type);
+
 
         String name =type.getName();
         ScreenData data = new ScreenData(SCREEN_TYPE.BATTLE,name );

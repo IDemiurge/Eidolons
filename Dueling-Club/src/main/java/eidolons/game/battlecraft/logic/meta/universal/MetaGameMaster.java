@@ -12,6 +12,9 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
+import main.content.DC_TYPE;
+import main.data.DataManager;
+import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
@@ -37,6 +40,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DC_Game game;
     DialogueManager dialogueManager;
     DialogueActorMaster dialogueActorMaster;
+    private boolean rngDungeon;
 
 
     public MetaGameMaster(String data) {
@@ -185,7 +189,17 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     }
 
+    public void setRngDungeon(boolean rngDungeon) {
+        this.rngDungeon = rngDungeon;
+    }
+
     public boolean isRngDungeon() {
-        return false;
+        ObjType type = DataManager.getType(getData(), DC_TYPE.SCENARIOS);
+        if (type != null) {
+            return
+             type.getGroup().equalsIgnoreCase("Random");
+        }
+        //        getMetaGame().isRestarted()
+        return rngDungeon;
     }
 }

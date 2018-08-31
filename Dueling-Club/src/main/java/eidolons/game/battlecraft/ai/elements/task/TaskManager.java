@@ -144,7 +144,7 @@ public class TaskManager extends AiHandler {
                 // ai.getGroup().getKnownEnemies
                 break;
             case APPROACH:
-                targets = getCellPrioritizer().getApproachCells(ai);
+                targets = new ArrayList<>(getCellPrioritizer().getApproachCells(ai));
                 break;
 
             case SEARCH:
@@ -236,7 +236,7 @@ public class TaskManager extends AiHandler {
             return new ArrayList<>();
         }
         if (behaviorMode == AiEnums.BEHAVIOR_MODE.CONFUSED) {
-            DC_Obj target = targets.get(new RandomWizard<>().getRandomListIndex(targets));
+            DC_Obj target = targets.get(new RandomWizard<>().getRandomIndex(targets));
             List<Task> tasks = new ArrayList<>();
             tasks.add(new Task(forced, ai, goal, target.getId()));
             return tasks;

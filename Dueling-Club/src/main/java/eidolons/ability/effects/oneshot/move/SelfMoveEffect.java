@@ -44,7 +44,7 @@ public class SelfMoveEffect extends MoveEffect {
     @Override
     public boolean applyThis() {
         BattleFieldObject obj = (BattleFieldObject) ref.getSourceObj();
-        origin = new Coordinates(obj.getCoordinates().getX(), obj.getCoordinates().getY());
+        origin = Coordinates.get(obj.getCoordinates().getX(), obj.getCoordinates().getY());
         destination = getCoordinates();
         if (destination == null) // if selective?
         {

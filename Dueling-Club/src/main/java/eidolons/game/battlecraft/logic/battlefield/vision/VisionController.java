@@ -1,7 +1,6 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battlefield.vision.mapper.*;
 import eidolons.game.core.game.DC_Game;
@@ -52,6 +51,7 @@ public class VisionController {
     LastSeenMapper lastSeenMapper;
     List<GenericMapper> mappers;
     private StealthMapper stealthMapper;
+    private DiagObstructMapper diagObstructMapper;
 
 
     public VisionController(VisionMaster visionMaster) {
@@ -130,7 +130,7 @@ public class VisionController {
         checkPlayerVisionStatus();
 
         //for debug/logging, which is best practice here?
-        List<Structure> list = game.getMaster().getWalls();
+//        List<Structure> list = game.getMaster().getWalls();
 
     }
 
@@ -188,6 +188,14 @@ public class VisionController {
 
     public StealthMapper getStealthMapper() {
         return stealthMapper;
+    }
+
+    public DiagObstructMapper getDiagObstructMapper() {
+        return diagObstructMapper;
+    }
+
+    public void setDiagObstructMapper(DiagObstructMapper diagObstructMapper) {
+        this.diagObstructMapper = diagObstructMapper;
     }
 
 

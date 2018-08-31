@@ -38,7 +38,7 @@ public class FreeTravelMaster {
     }
 
     public TravelAction travelTo(PartyActor actor, int x, int y, float speed) {
-        float dur = actor.getParty().getCoordinates().dst(new Coordinates(true, x, y))
+        float dur = actor.getParty().getCoordinates().dst(Coordinates.get(true, x, y))
          / speed;
         TravelAction action = new TravelAction(this);
         action.setPosition(x, y);

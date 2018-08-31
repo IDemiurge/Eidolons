@@ -9,23 +9,25 @@ import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Coordinates {
 
-    static Coordinates[][] coordinates;
+    private static final int MAX_WIDTH = 200;
+    private static final int MAX_HEIGHT = 200;
+    static Coordinates[][] coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT];
     private static int h;
     private static int w;
     private static boolean flipX;
     private static boolean flipY;
     private static boolean rotate;
     private static Map<Coordinates, Map<DIRECTION, Coordinates>> adjacenctDirectionMap = new HashMap<>();
-    private static Map<Coordinates, List<Coordinates>> adjacenctMap = new HashMap<>();
-    private static Map<Coordinates, List<Coordinates>> adjacenctMapNoDiags = new HashMap<>();
-    private static Map<Coordinates, List<Coordinates>> adjacenctMapDiagsOnly = new HashMap<>();
+    private static Map<Coordinates, Set<Coordinates>> adjacenctMap = new HashMap<>();
+    private static Map<Coordinates, Set<Coordinates>> adjacenctMapNoDiags = new HashMap<>();
+    private static Map<Coordinates, Set<Coordinates>> adjacenctMapDiagsOnly = new HashMap<>();
     public int x;
     public int y;
     protected int z = 0;
@@ -47,7 +49,7 @@ public class Coordinates {
         this.x = x;
         this.y = y;
         if (!allowinvalid) {
-            checkInvalid();
+            checkInvalid( );
         }
         if (flipX) {
             this.x = GuiManager.getCurrentLevelCellsX() - this.x;
@@ -76,17 +78,18 @@ public class Coordinates {
     }
 
     public static void resetCaches() {
-        adjacenctDirectionMap = new HashMap<>();
-        adjacenctMap = new HashMap<>();
-        adjacenctMapNoDiags = new HashMap<>();
-        adjacenctMapDiagsOnly = new HashMap<>();
-    }
-
-    public static void clearCaches() {
         adjacenctDirectionMap.clear();
         adjacenctMap.clear();
         adjacenctMapNoDiags.clear();
         adjacenctMapDiagsOnly.clear();
+        w = GuiManager.getBF_CompDisplayedCellsX();
+        h = GuiManager.getBF_CompDisplayedCellsY();
+        coordinates = new Coordinates[MAX_WIDTH][MAX_HEIGHT]; //just in case... memory be damned
+
+    }
+
+    public static void clearCaches() {
+        resetCaches();
 
     }
 
@@ -94,7 +97,7 @@ public class Coordinates {
         return adjacenctDirectionMap;
     }
 
-    public static Map<Coordinates, List<Coordinates>> getAdjacenctMap(Boolean diags) {
+    public static Map<Coordinates, Set<Coordinates>> getAdjacenctMap(Boolean diags) {
         if (diags != null)
             return diags ? adjacenctMap : adjacenctMapNoDiags;
         return adjacenctMapDiagsOnly;
@@ -125,7 +128,7 @@ public class Coordinates {
         Coordinates[] coordinates = new Coordinates[string.split(",").length];
         int i = 0;
         for (String s : string.split(",")) {
-            Coordinates c = new Coordinates(s);
+            Coordinates c = Coordinates.get(s);
             coordinates[i] = c;
             i++;
         }
@@ -149,23 +152,73 @@ public class Coordinates {
 
     }
 
-    protected void checkInvalid() {
+    protected   void checkInvalid() {
+        Coordinates.checkInvalid(this);
+    }
+        protected static boolean checkInvalid(Coordinates c) {
+        if (c.x >= GuiManager.getCurrentLevelCellsX()) {
+            c.x = GuiManager.getCurrentLevelCellsX() - 1;
+            c.setInvalid(true);
+        }
+        if (c.x < 0) {
+            c.x = 0;
+            c.setInvalid(true);
+        }
+        if (c.y >= GuiManager.getCurrentLevelCellsY()) {
+            c.y = GuiManager.getCurrentLevelCellsY() - 1;
+            c.setInvalid(true);
+        }
+        if (c.y < 0) {
+            c.y = 0;
+            c.setInvalid(true);
+        }
+        return c.isInvalid();
+    }
+
+    protected static boolean checkInvalid(int x, int y) {
         if (x >= GuiManager.getCurrentLevelCellsX()) {
-            x = GuiManager.getCurrentLevelCellsX() - 1;
-            this.setInvalid(true);
+            return true;
         }
         if (x < 0) {
-            x = 0;
-            this.setInvalid(true);
+            return true;
         }
         if (y >= GuiManager.getCurrentLevelCellsY()) {
-            y = GuiManager.getCurrentLevelCellsY() - 1;
-            this.setInvalid(true);
+            return true;
         }
         if (y < 0) {
-            y = 0;
-            this.setInvalid(true);
+            return true;
         }
+        return false;
+    }
+
+    public static Coordinates get(String s) {
+        return get(false, s);
+    }
+
+    public static Coordinates get(double x, double y) {
+        return get((int) x, (int) y);
+    }
+
+    public static Coordinates get(boolean custom, String s) {
+        return get(custom, NumberUtils.getInteger(splitCoordinateString(s)[0].trim()), NumberUtils
+         .getInteger(splitCoordinateString(s)[1].trim()));
+    }
+
+    public static Coordinates get(int x, int y) {
+        return get(false, x, y);
+    }
+
+    public static Coordinates get(boolean allowInvalid, int x, int y) {
+        Coordinates c =
+         //         null ;
+         //        if (coordinates!=null )
+         //            c =
+         coordinates[x][y];
+        if (c == null) {
+            c = new Coordinates(allowInvalid, x, y);
+            coordinates[x][y] = c;
+        }
+        return c;
     }
 
     public int hashCode() {
@@ -175,15 +228,15 @@ public class Coordinates {
 
     @Override
     public boolean equals(Object arg0) {
-        if (arg0 instanceof ZCoordinates) {
-            if (this instanceof ZCoordinates) {
-                ZCoordinates z1 = (ZCoordinates) this;
-                ZCoordinates z2 = (ZCoordinates) arg0;
-                if (z1.z != z2.z) {
-                    return false;
-                }
-            }
-        }
+//        if (arg0 instanceof ZCoordinates) {
+//            if (this instanceof ZCoordinates) {
+//                ZCoordinates z1 = (ZCoordinates) this;
+//                ZCoordinates z2 = (ZCoordinates) arg0;
+//                if (z1.z != z2.z) {
+//                    return false;
+//                }
+//            }
+//        }
         if (arg0 instanceof Coordinates) {
             Coordinates c = (Coordinates) arg0;
             return c.x == x && c.y == y && c.z == z;
@@ -288,51 +341,49 @@ public class Coordinates {
         return new Coordinates(allowInvalid, x1, y1);
     }
 
-    protected List<Coordinates> getAdjacentDiagonal() {
+    protected Set<Coordinates> getAdjacentDiagonal() {
         return getAdjacent(true);
     }
 
-    public List<Coordinates> getAdjacent(boolean diagonal) {
-        List<Coordinates> list = new ArrayList<>();
+    public Set<Coordinates> getAdjacent(boolean diagonal) {
+        Set<Coordinates> list = new HashSet<>();
         Coordinates c = this;
-        Coordinates e;
+        boolean allowInvalidAdjacent = isAllowInvalidAdjacent();
         if (!diagonal) {
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x, c.y - 1);
-            if (!e.isInvalid()) {
-                list.add(e);
+            if (allowInvalidAdjacent) {
+                list.add(new Coordinates(true, c.x + 1, c.y));
+                list.add(new Coordinates(true, c.x - 1, c.y));
+                list.add(new Coordinates(true, c.x, c.y + 1));
+                list.add(new Coordinates(true, c.x, c.y - 1));
+            } else {
+                if (!checkInvalid(c.x + 1, c.y))
+                    list.add(Coordinates.get(true, c.x + 1, c.y));
+                if (!checkInvalid(c.x - 1, c.y))
+                    list.add(Coordinates.get(true, c.x - 1, c.y));
+                if (!checkInvalid(c.x, c.y + 1))
+                    list.add(Coordinates.get(true, c.x, c.y + 1));
+                if (!checkInvalid(c.x, c.y - 1))
+                    list.add(Coordinates.get(true, c.x, c.y - 1));
             }
 
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x - 1, c.y);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x + 1, c.y);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
-
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x, c.y + 1);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
         } else {
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x - 1, c.y + 1);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x + 1, c.y - 1);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
+            if (allowInvalidAdjacent) {
+                list.add(new Coordinates(true, c.x - 1, c.y - 1));
+                list.add(new Coordinates(true, c.x - 1, c.y + 1));
+                list.add(new Coordinates(true, c.x + 1, c.y - 1));
+                list.add(new Coordinates(true, c.x + 1, c.y + 1));
+            } else {
+                if (!checkInvalid(c.x + 1, c.y - 1))
+                    list.add(Coordinates.get(true, c.x + 1, c.y - 1));
 
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x - 1, c.y - 1);
-            if (!e.isInvalid()) {
-                list.add(e);
-            }
+                if (!checkInvalid(c.x + 1, c.y + 1))
+                    list.add(Coordinates.get(true, c.x + 1, c.y + 1));
 
-            e = new Coordinates(isAllowInvalidAdjacent(), c.x + 1, c.y + 1);
-            if (!e.isInvalid()) {
-                list.add(e);
+                if (!checkInvalid(c.x - 1, c.y + 1))
+                    list.add(Coordinates.get(true, c.x - 1, c.y + 1));
+
+                if (!checkInvalid(c.x - 1, c.y - 1))
+                    list.add(Coordinates.get(true, c.x - 1, c.y - 1));
             }
         }
         return list;
@@ -342,11 +393,11 @@ public class Coordinates {
         return false;
     }
 
-    public List<Coordinates> getAdjacentOrthagonal() {
+    public Set<Coordinates> getAdjacentOrthagonal() {
         return getAdjacent(false);
     }
 
-    public List<Coordinates> getAdjacentCoordinates() {
+    public Set<Coordinates> getAdjacentCoordinates() {
         return getAdjacentCoordinates(true);
     }
 
@@ -374,12 +425,12 @@ public class Coordinates {
         return adjacenctDiagsOnly;
     }
 
-    public List<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
+    public Set<Coordinates> getAdjacentCoordinates(Boolean diagonals_included_not_only) {
 
-        List<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
+        Set<Coordinates> list = getAdjacenctMap(diagonals_included_not_only).get(this);
         if (list != null)
             return list;
-        list = new ArrayList<>();
+        list = new HashSet<>();
 
         if (diagonals_included_not_only != null) {
             if (diagonals_included_not_only) {
@@ -447,11 +498,11 @@ public class Coordinates {
     }
 
     public Coordinates getOffsetByX(int i) {
-        return new Coordinates(x + i, y);
+        return Coordinates.get(x + i, y);
     }
 
     public Coordinates getOffsetByY(int i) {
-        return new Coordinates(x, y + i);
+        return Coordinates.get(x, y + i);
     }
 
     public int getX() {
@@ -504,23 +555,23 @@ public class Coordinates {
     public Coordinates rotate(Boolean rotation, int w, int h) {
         Integer[][] mat = new Integer[w][h];
         for (int x = 0; x < w; x++) {
-        for (int y = 0; y < h; y++)
-            mat[x][y]=Integer.MIN_VALUE;
+            for (int y = 0; y < h; y++)
+                mat[x][y] = Integer.MIN_VALUE;
         }
         mat[x][0] = getX();
         mat[0][y] = getY();
 
-       mat = ArrayMaster.rotate(rotation, mat);
+        mat = ArrayMaster.rotate(rotation, mat);
         //rotate
 
         for (int x = 0; x < mat.length; x++) {
             for (int y = 0; y < mat[0].length; y++)
-                if (mat[x][y]== getX())
+                if (mat[x][y] == getX())
                     setX(y);
-                if (mat[x][y]== getY())
-                    setY(x);
+            if (mat[x][y] == getY())
+                setY(x);
         }
-    return this;
+        return this;
     }
 
 }

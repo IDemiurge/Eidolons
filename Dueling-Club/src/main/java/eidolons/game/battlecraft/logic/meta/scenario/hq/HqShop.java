@@ -192,7 +192,7 @@ public class HqShop extends LightweightEntity implements ShopInterface {
             // some params from Shop ObjType?
             Loop.startLoop(ShopMaster.getMaxItemsPerGroup(this));
             while (!Loop.loopEnded() && !pool.isEmpty()) {
-                int randomListIndex = RandomWizard.getRandomListIndex(pool);
+                int randomListIndex = RandomWizard.getRandomIndex(pool);
                 ObjType t = pool.get(randomListIndex);
                 if (t == null) {
                     continue;

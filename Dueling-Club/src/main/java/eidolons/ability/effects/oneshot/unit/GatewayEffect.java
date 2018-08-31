@@ -85,7 +85,7 @@ public class GatewayEffect extends SummonEffect {
         }
 
         if (random) {
-            unitType = typeList.get(RandomWizard.getRandomListIndex(typeList)).getName();
+            unitType = typeList.get(RandomWizard.getRandomIndex(typeList)).getName();
         } else {
             if (!getGame().isOffline()) {
                 if (!obj.isMine()) {

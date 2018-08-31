@@ -90,7 +90,7 @@ public abstract class DungeonInitializer<E extends DungeonWrapper> extends Dunge
             FilterMaster.filterByProp(list, G_PROPS.WORKSPACE_GROUP.getName(),
              MetaEnums.WORKSPACE_GROUP.FOCUS + "");
         }
-        type = list.get(RandomWizard.getRandomListIndex(list));
+        type = list.get(RandomWizard.getRandomIndex(list));
         return type;
     }
 

@@ -191,8 +191,8 @@ public class FacingMaster {
         return null;
 
 //        List<Coordinates> list = c.getAdjacent(false);
-//       return getRelativeFacing( list.get(RandomWizard.getRandomListIndex(list)), c2);
-//        new Coordinates(c.x, c.y+(RandomWizard.random() ? 1 : -1))
+//       return getRelativeFacing( list.get(RandomWizard.getRandomIndex(list)), c2);
+//        Coordinates.get(c.x, c.y+(RandomWizard.random() ? 1 : -1))
     }
 
     public static FACING_DIRECTION getRandomFacing() {
@@ -268,7 +268,7 @@ public class FacingMaster {
     }
 
     public static FACING_DIRECTION getOptimalFacingTowardsEmptySpaces(Unit unit) {
-        List<Coordinates> coordinates = unit.getCoordinates().getAdjacentCoordinates();
+        Set<Coordinates> coordinates = unit.getCoordinates().getAdjacentCoordinates();
         return getOptimalFacing(unit, coordinates, (c) -> {
             if (StackingRule.checkCanPlace(c, unit, null))
                 return 1;
@@ -277,7 +277,7 @@ public class FacingMaster {
 
     }
 
-    public static FACING_DIRECTION getOptimalFacing(Unit unit, List<Coordinates> coordinates,
+    public static FACING_DIRECTION getOptimalFacing(Unit unit, Set<Coordinates> coordinates,
                                                     Function<Coordinates, Integer> function) {
         HashMap<FACING_DIRECTION, Double> map = new LinkedHashMap<>();
 

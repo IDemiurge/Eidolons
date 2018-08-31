@@ -121,8 +121,9 @@ public class RngLocationBuilder extends LocationBuilder {
         DungeonLevel level = new RestoredDungeonLevel();
         Party party = getGame().getMetaMaster().getPartyManager().
          getParty();
+
         level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
-         getParty().getParamSum(PARAMS.POWER)*(2+party.getMembers().size())/party.getMembers().size());
+         getParty().getParamSum(PARAMS.POWER)*(1+party.getMembers().size())/party.getMembers().size());
 
         List<LevelZone> zones = new ArrayList<>();
         int n = 0;

@@ -189,7 +189,7 @@ public class DC_Map {
         }
 
         for (int i = randomGateways; i > 0; i--) {
-            Coordinates c = new Coordinates(100 + i, 0);
+            Coordinates c = Coordinates.get(100 + i, 0);
             gateways.put(c, BF_OBJ_OWNER.RANDOM);
         }
 
@@ -226,7 +226,7 @@ public class DC_Map {
         }
 
         for (int i = randomCrystals; i > 0; i--) {
-            Coordinates c = new Coordinates(100 + i, 0);
+            Coordinates c = Coordinates.get(100 + i, 0);
             crystals.put(c, BF_OBJ_OWNER.RANDOM);
         }
 

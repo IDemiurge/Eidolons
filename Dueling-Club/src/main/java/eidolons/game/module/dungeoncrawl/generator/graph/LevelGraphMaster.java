@@ -115,7 +115,7 @@ public class LevelGraphMaster {
          .collect(Collectors.toList()).toArray(new LevelGraphNode[zones.size()]);
         for (int i = 0; i < tipNodes.length; i++) {
             if (tipNodes[i]==null) {
-                tipNodes[i]=unallocated.remove(RandomWizard.getRandomListIndex(unallocated));
+                tipNodes[i]=unallocated.remove(RandomWizard.getRandomIndex(unallocated));
             }
             tipNodes[i].setZoneIndex(i);
         }

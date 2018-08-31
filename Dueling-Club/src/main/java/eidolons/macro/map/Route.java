@@ -46,7 +46,7 @@ public class Route extends Place {
         if (getArea() == null) {
             setArea(orig.getArea());
         }
-        setCoordinates(new Coordinates(true, getRouteImage().split("_")[1]));
+        setCoordinates(Coordinates.get(true, getRouteImage().split("_")[1]));
     }
 
     public Route(ObjType type, String img, String orig, String dest, Coordinates coordinates) {

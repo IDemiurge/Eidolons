@@ -79,7 +79,7 @@ public class EmitterMap extends Group {
             for (int y = 0; y + getDistanceY() <=
              DungeonScreen.getInstance().getGridPanel().getCols(); y += getDistanceY()) {
 
-                add(new Coordinates(x, y));
+                add(Coordinates.get(x, y));
 
             }
 

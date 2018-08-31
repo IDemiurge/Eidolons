@@ -3,7 +3,6 @@ package eidolons.game.battlecraft.logic.battlefield;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.GenericEnums;
 import main.content.values.parameters.G_PARAMS;
-import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
 import main.game.bf.GraveyardManager;
@@ -105,14 +104,14 @@ public class DC_GraveyardManager implements GraveyardManager {
     }
 
     @Override
-    public List<Coordinates> getCorpseCells() {
-        List<Coordinates> list = new ArrayList<>();
+    public Set<Coordinates> getCorpseCells() {
+        Set<Coordinates> set = new LinkedHashSet<>();
         for (Coordinates l : graveMap.keySet()) {
             if (!graveMap.get(l).isEmpty()) {
-                list.add(l);
+                set.add(l);
             }
         }
-        return list;
+        return set;
     }
 
     @Override

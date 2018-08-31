@@ -591,7 +591,7 @@ public class UnitGroupMaster {
     }
 
     private static Coordinates getMiddleCoordinate() {
-        return new Coordinates(maxX / 2, maxY / 2);
+        return Coordinates.get(maxX / 2, maxY / 2);
     }
 
 

@@ -254,7 +254,10 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     }
 
     public boolean isVoid(int i, int j) {
-        return getBlockForCoordinate(new Coordinates(i, j)) == null;
+        Coordinates c = Coordinates.get(i, j);
+        if (tileMap.getMap().get(c)!=ROOM_CELL.VOID)
+            return false;
+        return getBlockForCoordinate(c) == null;
     }
 
     public String getExitType() {

@@ -67,7 +67,7 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         if (hero == null) {
             return super.getCoordinates();
         }
-        // new Coordinates(0,0);
+        // Coordinates.get(0,0);
         return hero.getCoordinates();
     }
 

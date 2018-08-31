@@ -937,7 +937,7 @@ public class DataManager {
 
     public static ObjType getRandomType(DC_TYPE TYPE, String group) {
         List<ObjType> list = getTypesGroup(TYPE, group);
-        return list.get(RandomWizard.getRandomListIndex(list));
+        return list.get(RandomWizard.getRandomIndex(list));
     }
 
     public static List<ObjType> getUpgradedTypes(ObjType baseType) {

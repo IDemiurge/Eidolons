@@ -32,6 +32,8 @@ public class ScenarioInitializer extends MetaInitializer<ScenarioMeta> {
             type = new ObjType(type);
             type.shuffleContainerProperty(PROPS.SCENARIO_MISSIONS);
         }
+        //     TODO better solution needed
+        //   getMaster().setRngDungeon(type.getGroup().equalsIgnoreCase("Random"));
         return new ScenarioMeta(
          new Scenario(type), master);
     }

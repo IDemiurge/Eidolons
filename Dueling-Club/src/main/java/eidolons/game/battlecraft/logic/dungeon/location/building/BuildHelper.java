@@ -62,10 +62,10 @@ public class BuildHelper {
         boolean corner = false;
 //        switch (type) {
 //            case BATTLEFIELD:
-//                return new Coordinates(0, 0);
+//                return Coordinates.get(0, 0);
 //            case ENTRANCE_ROOM:
 //                if (location.getMainEntrance() == null) {
-//                    return new Coordinates(1, 1);
+//                    return Coordinates.get(1, 1);
 //                }
 //                return location.getMainEntrance().getCoordinates();
 //            case EXIT_ROOM:
@@ -93,7 +93,7 @@ public class BuildHelper {
             y = !plan.isFlippedY() ? params.WALL_WIDTH : location.getCellsY() - params.WALL_WIDTH;
         }
 
-        return new Coordinates(true, x, y);
+        return Coordinates.get(true, x, y);
     }
 
     public XDimension getRoomSize(ROOM_TYPE room) {
@@ -201,7 +201,7 @@ public class BuildHelper {
 
     private Coordinates getAdjacentPassage(Coordinates c, List<Coordinates> exceptions,
                                            Boolean diagonal) {
-        List<Coordinates> coordinates = c.getAdjacentCoordinates(diagonal);
+        List<Coordinates> coordinates = new ArrayList<>(c.getAdjacentCoordinates(diagonal));
         for (Coordinates c1 : coordinates) {
             if (exceptions.contains(c1)) {
                 continue;
@@ -384,8 +384,8 @@ public class BuildHelper {
     }
 
     public boolean checkCoordinateValid(MapZone zone, int x, int y) {
-        // map new Coordinates(x, y) to block - if not null...
-        Coordinates coordinates = new Coordinates(x, y);
+        // map Coordinates.get(x, y) to block - if not null...
+        Coordinates coordinates = Coordinates.get(x, y);
         if (coordinates.isInvalid()) {
             return false;
         }
@@ -623,7 +623,7 @@ public class BuildHelper {
     // horizontal = directionPrefX; // (Boolean) args[0]
     // int corridorWidth = 1;
     // // (Integer) args[1];
-    // // Coordinates dest = new Coordinates(x2, y2);
+    // // Coordinates dest = Coordinates.get(x2, y2);
     // length = (horizontal) ? maxX : maxY;
     // // continue up to next block!
     // coordinates = DC_PositionMaster.getRectangle(

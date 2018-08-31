@@ -31,7 +31,7 @@ public class GroupManager {
             for (int x = 0; x < blockWidth; x++) {
                 for (int y = 0; y < blockWidth; y++) {
                     i++;
-                    coordinates[i] = new Coordinates(n * blockWidth + x, n * blockHeight + y);
+                    coordinates[i] = Coordinates.get(n * blockWidth + x, n * blockHeight + y);
                 }
             }
 

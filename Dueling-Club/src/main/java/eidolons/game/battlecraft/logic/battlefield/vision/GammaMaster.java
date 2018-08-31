@@ -7,7 +7,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
@@ -61,12 +61,12 @@ public class GammaMaster {
          -master.getIlluminationMaster().getConcealment(source, target);
     }
 
-    public float getAlphaForShadowMapCell(int x, int y, SHADE_LIGHT type) {
+    public float getAlphaForShadowMapCell(int x, int y, SHADE_CELL type) {
 
-        if (type == SHADE_LIGHT.BLACKOUT) {
+        if (type == SHADE_CELL.BLACKOUT) {
             return getBlackoutAlpha(x, y);
         }
-        if (type == SHADE_LIGHT.HIGLIGHT) {
+        if (type == SHADE_CELL.HIGLIGHT) {
             return getHiglightAlpha(x, y);
         }
         Unit unit = Eidolons.game.getManager().getMainHero();
@@ -82,14 +82,14 @@ public class GammaMaster {
         }
         float alpha = 0;
         DC_Cell cell = Eidolons.game.getCellByCoordinate(
-         new Coordinates(x, y));
+         Coordinates.get(x, y));
         if (cell==null ){
-            if (type == SHADE_LIGHT.GAMMA_SHADOW)
+            if (type == SHADE_CELL.GAMMA_SHADOW)
                 return 1;
             return 0;
         }
         float gamma = getGammaForCell(cell);
-//        if (Eidolons.game.getCellByCoordinate(new Coordinates(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
+//        if (Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
 //            gamma = 0;
 //        }
 
@@ -136,11 +136,11 @@ public class GammaMaster {
             case CONCEALMENT:
                 alpha =
 //             Eidolons.game.getCellByCoordinate(
-//              new Coordinates(x, y)).getIntParam(
+//              Coordinates.get(x, y)).getIntParam(
 //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
                  master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
-                    alpha += getAlphaForShadowMapCell(x, y, SHADE_LIGHT.LIGHT_EMITTER) / 3;
+                    alpha += getAlphaForShadowMapCell(x, y, SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
         }
 
@@ -167,7 +167,7 @@ public class GammaMaster {
 
 
     public float getGammaForCell(int x, int y) {
-        return getGammaForCell(Eidolons.game.getCellByCoordinate(new Coordinates(x, y)));
+        return getGammaForCell(Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)));
     }
 
     public float getGammaForCell( DC_Cell cell  ) {

@@ -18,15 +18,15 @@ public class PositionMaster {
     public static Coordinates getMiddleCoordinate(FACING_DIRECTION side) {
         switch (side) {
             case EAST:
-                return new Coordinates(0, getMiddleIndex(true));
+                return Coordinates.get(0, getMiddleIndex(true));
             case NONE:
-                return new Coordinates(getMiddleIndex(false), getMiddleIndex(true));
+                return Coordinates.get(getMiddleIndex(false), getMiddleIndex(true));
             case NORTH:
-                return new Coordinates(getMiddleIndex(false), 0);
+                return Coordinates.get(getMiddleIndex(false), 0);
             case SOUTH:
-                return new Coordinates(getMiddleIndex(false), getY());
+                return Coordinates.get(getMiddleIndex(false), getY());
             case WEST:
-                return new Coordinates(getX(), getMiddleIndex(true));
+                return Coordinates.get(getX(), getMiddleIndex(true));
         }
         return null;
     }

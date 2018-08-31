@@ -419,15 +419,15 @@ public class DC_Game extends GenericGame {
         return getMaster().getObjectByCoordinate(z, c, cellsIncluded, passableIncluded, overlayingIncluded);
     }
 
-    public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
+    public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getMaster().getOverlayingObjects(c);
     }
 
-    public List<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c, Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
         return getMaster().getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
     }
 
-    public List<DC_Cell> getCellsForCoordinates(List<Coordinates> coordinates) {
+    public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
         return getMaster().getCellsForCoordinates(coordinates);
     }
 
@@ -447,12 +447,8 @@ public class DC_Game extends GenericGame {
         return getMaster().getCells();
     }
 
-    public DequeImpl<Unit> getUnits() {
+    public Set<Unit> getUnits() {
         return getMaster().getUnits();
-    }
-
-    public Map<Coordinates, List<Unit>> getUnitMap() {
-        return getMaster().getUnitMap();
     }
 
     @Override
@@ -662,7 +658,7 @@ public class DC_Game extends GenericGame {
         this.dummyPlus = dummyPlus;
     }
 
-    public DequeImpl<Structure> getStructures() {
+    public Set<Structure> getStructures() {
         return getMaster().getStructures();
     }
 
@@ -672,7 +668,7 @@ public class DC_Game extends GenericGame {
         return list;
     }
 
-    public List<BattleFieldObject> getObjectsAt(Coordinates c) {
+    public Set<BattleFieldObject> getObjectsAt(Coordinates c) {
         return getMaster().getObjectsOnCoordinate(getDungeon().getZ(), c, null, true, false);
     }
 
@@ -683,7 +679,8 @@ public class DC_Game extends GenericGame {
     @Deprecated
     @Override
     public List<Unit> getObjectsOnCoordinate(Coordinates c) {
-        return getMaster().getObjectsOnCoordinate(c);
+//        return getMaster().getObjectsOnCoordinate(c);
+        return null;
     }
 
     public Obj getObjectByCoordinate(Coordinates

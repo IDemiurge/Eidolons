@@ -68,13 +68,16 @@ public class ClearShotCondition extends MicroCondition {
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
         for (BattleFieldObject obj :
-         target.getGame().getMaster().getObjects(x_, y_)) {
+         target.getGame().getMaster().getObjectsOnCoordinate(
+          Coordinates.get(x_, y_), null ))
+//         target.getGame().getMaster().getObjects(x_, y_))
+        {
             if (!obj.isTransparent()) {
                 if (obj.isObstructing(source, target))
                     return true;
             }
         }
-        return checkWallObstruction(source, target, new Coordinates(x_, y_));
+        return checkWallObstruction(source, target,Coordinates.get(x_, y_));
     }
 
 
@@ -115,6 +118,9 @@ public class ClearShotCondition extends MicroCondition {
         boolean toCheck = true;
         boolean result = true;
         if (PositionMaster.inLine(c1, c2)) {
+//            result = source.getGame().getVisionMaster().getVisionController().getDiagObstructMapper().
+//             get(source, target);
+
             result = PositionMaster.noObstaclesInLine(source, target, game
              .getGrid());
             toCheck = false;
@@ -235,7 +241,7 @@ public class ClearShotCondition extends MicroCondition {
             return result;
         }
         DIRECTION direction = DirectionMaster.getRelativeDirection(source, target);
-        float angle = getAngle(source.getCoordinates(), target.getCoordinates());
+
         // difference from <?> no greater than... on both/either axis?
 
         for (Coordinates c : coordinates.getAdjacent()) {
@@ -275,7 +281,9 @@ public class ClearShotCondition extends MicroCondition {
             }
             boolean left = false;
             if (source.getY() != c.y) {
-                left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) < angle;
+//                PositionMaster.isToTheLeft(Coordinates.get())
+                left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) <
+                 getAngle(source.getCoordinates(), target.getCoordinates());
 
             }
 

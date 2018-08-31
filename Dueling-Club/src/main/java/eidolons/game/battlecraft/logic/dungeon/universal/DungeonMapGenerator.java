@@ -145,7 +145,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //            try {
 //                ObjType objType = DataManager.getType(VariableManager.removeVarPart(s),
 //                        DC_TYPE.BF_OBJ);
-//                Coordinates coordinates = new Coordinates(VariableManager.getVarPart(s));
+//                Coordinates coordinates = Coordinates.get(VariableManager.getVarPart(s));
 //                if (objType != null) {
 //                    objMap.put(coordinates, objType);
 //                }
@@ -167,7 +167,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
 //        // StringMaster.AND_SEPARATOR)
 //        // .getOrCreate(index)
 //        // for ( s s StringMaster.openContainer(mod.getPresetObjects) ){
-//        // c = new Coordinates(s);TODO
+//        // c = Coordinates.get(s);TODO
 //        //
 //        // }
 //        // objMap.put(c, obj);
@@ -215,7 +215,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
             for (int i = z.getX1(); i < z.getX2(); i++) {
                 coordinateLoop:
                 for (int j = z.getY1(); j < z.getY2(); j++) {
-                    Coordinates c = new Coordinates(i, j);
+                    Coordinates c = Coordinates.get(i, j);
                     if (linkCells.contains(c)) {
                         continue;
                     } // builder.getHelper().getUsedCoordinates()
@@ -344,7 +344,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
     }
 
     private Coordinates getRandomCoordinate() {
-        return new Coordinates(RandomWizard.getRandomInt(getWidth()), RandomWizard
+        return Coordinates.get(RandomWizard.getRandomInt(getWidth()), RandomWizard
          .getRandomInt(getHeight()));
     }
 
@@ -396,7 +396,7 @@ public class DungeonMapGenerator<E extends DungeonWrapper> extends DungeonHandle
         {
             return false;
         }
-        Coordinates c2 = new Coordinates(c.x + (west_east ? 1 : -1), c.y + (north_south ? -1 : 1));
+        Coordinates c2 = Coordinates.get(c.x + (west_east ? 1 : -1), c.y + (north_south ? -1 : 1));
         if ((c2.x + c2.y) % 2 == 0) {
             return false;
         }

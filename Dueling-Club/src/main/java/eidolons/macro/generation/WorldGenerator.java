@@ -140,7 +140,7 @@ public class WorldGenerator {
     }
 
     private static MacroParty createParty(MacroRef ref, String s) {
-        Coordinates coordinates = new Coordinates(true,
+        Coordinates coordinates = Coordinates.get(true,
          Integer.valueOf(VariableManager.getVar(s, 0)),
          Integer.valueOf(VariableManager.getVar(s, 1)));
         String string = (VariableManager.getVar(s, 2));
@@ -280,7 +280,7 @@ public class WorldGenerator {
         }
         Place place = new Place(game, t, ref);
         if (VariableManager.getVarPart(s).contains("-")) {
-            Coordinates c = new Coordinates(true, VariableManager.getVarPart(s));
+            Coordinates c = Coordinates.get(true, VariableManager.getVarPart(s));
             place.setCoordinates(c);
         } else {
             place.resetCoordinates();
@@ -296,7 +296,7 @@ public class WorldGenerator {
          MACRO_OBJ_TYPES.TOWN);
         Town town = new Town(game, t, ref);
         if (VariableManager.getVarPart(s).contains("-")) {
-            Coordinates c = new Coordinates(true, VariableManager.getVarPart(s));
+            Coordinates c = Coordinates.get(true, VariableManager.getVarPart(s));
             town.setCoordinates(c);
         } else {
             town.resetCoordinates();

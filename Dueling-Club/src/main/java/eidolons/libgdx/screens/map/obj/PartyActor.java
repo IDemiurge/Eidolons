@@ -164,7 +164,7 @@ public class PartyActor extends MapActor {
 //        FreeTravelMaster.getInstance(). check(this);
         super.act(delta);
         if (!marker)
-            party.setCoordinates(new Coordinates(getX() + getWidth() / 2, getY() + getHeight() / 2));
+            party.setCoordinates(Coordinates.get(getX() + getWidth() / 2, getY() + getHeight() / 2));
 //        party.getCoordinates().setX(); Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
         if (steerableParty != null)
             steerableParty.act(delta);
@@ -173,7 +173,7 @@ public class PartyActor extends MapActor {
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        party.setCoordinates(new Coordinates(getX() + getWidth() / 2, getY() + getHeight() / 2));
+        party.setCoordinates(Coordinates.get(getX() + getWidth() / 2, getY() + getHeight() / 2));
     }
 
     @Override

@@ -24,7 +24,7 @@ public class JUnitPartyCreated extends EidolonsTest {
     @Override
     public void init() {
         super.init();
-        unit = game.getUnits().get(0);
+        unit = game.getUnits().iterator().next();
     }
 
     /**

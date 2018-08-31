@@ -15,13 +15,11 @@ import main.game.logic.battle.player.Player;
 import main.system.SortMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
-import main.system.datatypes.DequeImpl;
 import main.system.math.PositionMaster;
 import main.system.threading.WaitMaster;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -29,29 +27,30 @@ import java.util.stream.Collectors;
  */
 public class DC_GameObjMaster extends GameObjMaster {
 
-    protected DequeImpl<Unit> units;
-    protected DequeImpl<Structure> structures;
-    private Map<Coordinates, List<Unit>> unitMap;
-    private Map<Coordinates, List<Unit>> unitCache = new HashMap<>();
-    private Map<Coordinates, List<BattleFieldObject>> objCache = new HashMap<>();
-    private Map<Coordinates, List<BattleFieldObject>> noOverlayingCache = new HashMap<>();
-    private Map<Coordinates, List<BattleFieldObject>> overlayingCache = new HashMap<>();
+    protected Set<Unit> units;
+    protected Set<Structure> structures;
+    private Map<Coordinates, Set<Unit>> unitMap;
+    private Map<Coordinates, Set<Unit>> unitCache = new HashMap<>();
+    private Map<Coordinates, Set<BattleFieldObject>> objCache = new HashMap<>();
+    private Map<Coordinates, Set<BattleFieldObject>> noOverlayingCache = new HashMap<>();
+    private Map<Coordinates, Set<BattleFieldObject>> overlayingCache = new HashMap<>();
     private Unit[] unitsArray;
     private Structure[] structuresArray;
 
 
     public DC_GameObjMaster(DC_Game game) {
         super(game);
-        structures = new DequeImpl<>();
+        structures = new HashSet<>();
 
-        units = new DequeImpl<Unit>() {
-            public boolean add(Unit e) {
-                if (e.isHidden()) {
-                    return false;
-                }
-                return super.add(e);
-            }
-        };
+        units = new HashSet<>();
+        //         new DequeImpl<Unit>() {
+        //            public boolean add(Unit e) {
+        //                if (e.isHidden()) {
+        //                    return false;
+        //                }
+        //                return super.add(e);
+        //            }
+        //        };
     }
 
     @Override
@@ -85,121 +84,118 @@ public class DC_GameObjMaster extends GameObjMaster {
         if (c == null) {
             return null;
         }
-        List<BattleFieldObject> list = getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
+        Set<BattleFieldObject> list = getObjectsOnCoordinate(z, c, overlayingIncluded, passableIncluded, cellsIncluded);
         if (list.isEmpty()) {
             if (cellsIncluded) {
                 return getCellByCoordinate(c);
             }
             return null;
         }
-        return list.get(0);
+        return list.iterator().next();
     }
 
-    @Deprecated
-    public List<Unit> getObjectsOnCoordinate(Coordinates c) {
-        // [QUICK FIX] - consider no-reset coordinate changes for AI etc
-        //        List<Unit> units = getUnitCache().get(c);
-        //        if (units != null) {
-        //            return units;
-        //        }
-        //        units = getObjectsOnCoordinate(null, c, null, true, false);
-        //        getUnitCache().put(c, units);
-        //        return units;
-        return new XList<Unit>().addAllCast(getObjectsOnCoordinate(c, null));
-        //        return
-        //         getUnits().stream().filter(u -> u.getCoordinates().equals(c)).collect(Collectors.toList());
-    }
+    //    @Deprecated
+    //    public Set<Unit> getObjectsOnCoordinate(Coordinates c) {
+    //        // [QUICK FIX] - consider no-reset coordinate changes for AI etc
+    //        //        Set<Unit> units = getUnitCache().get(c);
+    //        //        if (units != null) {
+    //        //            return units;
+    //        //        }
+    //        //        units = getObjectsOnCoordinate(null, c, null, true, false);
+    //        //        getUnitCache().put(c, units);
+    //        //        return units;
+    //        Set<Unit> set = new HashSet<>();
+    //        for (BattleFieldObject object : getObjectsOnCoordinate(c, null)) {
+    //            if (object instanceof Unit)
+    //                set.add((Unit) object);
+    //        }
+    //        return set;
+    //        return
+    //         getUnits().stream().filter(u -> u.getCoordinates().equals(c)).collect(Collectors.toSet());
+    //    }
 
-    public List<BattleFieldObject> getOverlayingObjects(Coordinates c) {
+    public Set<BattleFieldObject> getOverlayingObjects(Coordinates c) {
         return getObjectsOnCoordinate(null, c, true, true, false);
 
     }
 
-    public List<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
-                                                          Boolean overlayingIncluded) {
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Coordinates c,
+                                                         Boolean overlayingIncluded) {
         return getObjectsOnCoordinate(null, c, overlayingIncluded, true, false);
     }
 
-    public List<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
-                                                          Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
+    public Set<BattleFieldObject> getObjectsOnCoordinate(Integer z, Coordinates c,
+                                                         Boolean overlayingIncluded, boolean passableIncluded, boolean cellsIncluded) {
         // TODO auto adding cells won't work!
-        if (c == null) {
-            return null;
-        }
-
-        //        if (z == null) {
-        //            z = getGame().getDungeon().getZ();
+        //        if (c == null) {
+        //            return null;
         //        }
+        //        = null;
+        //        if (getCache(overlayingIncluded) != null)
+        //            set =
+        Set<BattleFieldObject> set = getCache(overlayingIncluded).get(c);
 
-
-        List<BattleFieldObject> list = null;
-
-        //        if (z == 0) //TODO support multi-z?
-
-        if (getCache(overlayingIncluded) != null)
-            list = getCache(overlayingIncluded).get(c);
-        if (list != null) {
-            return list;
+        if (set != null) {
+            if (!isCacheForStructures())
+                return set;
+            set = new HashSet<>(set);
         }
 
-        if (isStreamImpl()) {
-            list = getGame().getBfObjects().stream().filter(object -> {
-                if (object instanceof Structure) {
-                    if (overlayingIncluded != null) {
-                        if (overlayingIncluded) {
-                            if (!object.isOverlaying()) {
-                                return false;
-                            }
-                        } else {
-                            if (object.isOverlaying()) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-                return object.getCoordinates().equals(c);
-            }).collect(Collectors.toList());
 
-        } else {
-            list =
-             new XList<>();
-
+        if (!isCacheForStructures() || set==null ) {
+            set = new HashSet<>();
             for (BattleFieldObject object : getGame().getStructures()) {
                 if (overlayingIncluded != null) {
                     if (overlayingIncluded) {
-                        if (!object.isOverlaying()) {
+                        if (!object.isOverlaying())
                             continue;
-                        }
-                    } else {
-                        if (object.isOverlaying()) {
-                            continue;
-                        }
-                    }
+                    } else if (object.isOverlaying())
+                        continue;
                 }
-                //            if (object.getZ() != z) {
-                //                continue;
-                //            }
-                if (object.getCoordinates().equals(c)) {
-                    list.add(object);
-                }
+                if (object.getCoordinates().equals(c))
+                    set.add(object);
             }
-            for (BattleFieldObject object : getGame().getUnits()) {
-                if (object.getCoordinates().equals(c)) {
-                    list.add(object);
-                }
+            if (isCacheForStructures())
+                getCache(overlayingIncluded).put(c, set);
+        }
+        if (set == null) {
+            set = new HashSet<>();
+        }
+        for (BattleFieldObject object : getGame().getUnits()) {
+            if (object.getCoordinates().equals(c)) {
+                set.add(object);
             }
         }
         //        if (overlayingIncluded == null)
         //        if (z == 0)
-
-        if (getCache(overlayingIncluded) != null) {
-            getCache(overlayingIncluded).put(c, list);
-        }
-        return list;
+        if (!isCacheForStructures())
+            if (getCache(overlayingIncluded) != null) {
+                getCache(overlayingIncluded).put(c, set);
+            }
+        return set;
     }
 
     private boolean isStreamImpl() {
         return getGame().isDebugMode();
+        //        if (isStreamImpl()) {
+        //            set = getGame().getBfObjects().stream().filter(object -> {
+        //                if (object instanceof Structure) {
+        //                    if (overlayingIncluded != null) {
+        //                        if (overlayingIncluded) {
+        //                            if (!object.isOverlaying()) {
+        //                                return false;
+        //                            }
+        //                        } else {
+        //                            if (object.isOverlaying()) {
+        //                                return false;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                return object.getCoordinates().equals(c);
+        //            }).collect(Collectors.toSet());
+        //
+        //        } else {
     }
 
 
@@ -218,13 +214,6 @@ public class DC_GameObjMaster extends GameObjMaster {
         return getGame().getGrid().getCell(coordinates);
     }
 
-    public List<DC_Cell> getCellsForCoordinates(List<Coordinates> coordinates) {
-        List<DC_Cell> list = new ArrayList<>();
-        for (Coordinates c : coordinates) {
-            list.add(getCellByCoordinate(c));
-        }
-        return list;
-    }
 
     public Unit getUnitByCoordinate(Coordinates coordinates) {
         Collection<Unit> list = getUnitsOnCoordinates(coordinates);
@@ -241,7 +230,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     public Collection<Unit> getUnitsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Unit> list = new ArrayList<>();
+        Collection<Unit> list = new HashSet<>();
         for (Coordinates c : coordinates) {
             for (Unit unit : getUnits()) {
                 if (unit.getCoordinates().equals(c)) {
@@ -252,29 +241,42 @@ public class DC_GameObjMaster extends GameObjMaster {
         return list; // TODO z-coordinate?
     }
 
-    public Collection<? extends Obj> getCellsForCoordinates(Set<Coordinates> coordinates) {
-        Collection<Obj> list = new ArrayList<>();
+    public Set<DC_Cell> getCellsForCoordinates(Set<Coordinates> coordinates) {
+        Set<DC_Cell> list = new HashSet<>();
         for (Coordinates c : coordinates) {
-            for (Obj cell : getCells()) {
-                if (cell.getCoordinates().equals(c)) {
-                    list.add(cell);
-                }
-            }
+            list.add(getCellByCoordinate(c));
         }
         return list;
     }
+    //    public Collection<? extends Obj> getCellsForCoordinates(Set<Coordinates> coordinates) {
+    //        Collection<Obj> list = new HashSet<>();
+    //        for (Coordinates c : coordinates) {
+    //            for (Obj cell : getCells()) {
+    //                if (cell.getCoordinates().equals(c)) {
+    //                    list.add(cell);
+    //                }
+    //            }
+    //        }
+    //        return list;
+    //    }
 
     public void removeUnit(Unit unit) {
         getUnits().remove(unit);
     }
 
     public void clearCaches() {
-        getCache(false).clear();
-        getCache(true).clear();
-        getCache(null).clear();
+        if (!isCacheForStructures()) {
+            getCache(false).clear();
+            getCache(true).clear();
+            getCache(null).clear();
+            getGame().getGrid().resetObjCells();
+            structuresArray = null;
+        }
         unitsArray = null;
-        structuresArray = null;
-        getGame().getGrid().resetObjCells();
+    }
+
+    private boolean isCacheForStructures() {
+        return true;
     }
 
 
@@ -287,16 +289,16 @@ public class DC_GameObjMaster extends GameObjMaster {
         return new LinkedHashSet<>(getGame().getGrid().getCellsSet());
     }
 
-    public DequeImpl<Unit> getUnits() {
+    public Set<Unit> getUnits() {
         return units;
     }
 
-    public DequeImpl<Structure> getStructures() {
+    public Set<Structure> getStructures() {
         return structures;
     }
 
     @Deprecated
-    public Map<Coordinates, List<Unit>> getUnitMap() {
+    public Map<Coordinates, Set<Unit>> getUnitMap() {
         if (unitMap == null) {
             unitMap = new HashMap<>();
         }
@@ -304,7 +306,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     }
 
     @Deprecated
-    public Map<Coordinates, List<Unit>> getUnitCache() {
+    public Map<Coordinates, Set<Unit>> getUnitCache() {
         return unitCache;
     }
 
@@ -335,7 +337,7 @@ public class DC_GameObjMaster extends GameObjMaster {
     public Unit getUnitByName(String name
      , Boolean ally_or_enemy_only, Boolean distanceSort, Boolean powerSort
      , Player owner, Obj source) {
-        List<Unit> matched = new ArrayList<>();
+        List<Unit> matched = new XList<>();
         for (Unit unit : getUnits()) {
             if (ally_or_enemy_only != null) {
                 if (unit.getOwner() == owner)
@@ -372,21 +374,21 @@ public class DC_GameObjMaster extends GameObjMaster {
 
     }
 
-    public Map<Coordinates, List<BattleFieldObject>> getCache(Boolean overlaying) {
+    public Map<Coordinates, Set<BattleFieldObject>> getCache(Boolean overlaying) {
         if (overlaying == null)
             return objCache;
         return overlaying ? overlayingCache : noOverlayingCache;
     }
 
-    public Map<Coordinates, List<BattleFieldObject>> getNoOverlayingCache() {
+    public Map<Coordinates, Set<BattleFieldObject>> getNoOverlayingCache() {
         return noOverlayingCache;
     }
 
-    public Map<Coordinates, List<BattleFieldObject>> getOverlayingCache() {
+    public Map<Coordinates, Set<BattleFieldObject>> getOverlayingCache() {
         return overlayingCache;
     }
 
-    public Map<Coordinates, List<BattleFieldObject>> getObjCache() {
+    public Map<Coordinates, Set<BattleFieldObject>> getObjCache() {
         return objCache;
     }
 
@@ -426,8 +428,8 @@ public class DC_GameObjMaster extends GameObjMaster {
         return getGame().getGrid().getObjects(x_, y_, overlayingIncluded_Not_Only);
     }
 
-    public List<Structure> getWalls() {
-        ArrayList<Structure> list = new ArrayList<>(getStructures());
+    public Set<Structure> getWalls() {
+        HashSet<Structure> list = new HashSet<>(getStructures());
         list.removeIf(obj -> !obj.isWall());
         return list;
     }

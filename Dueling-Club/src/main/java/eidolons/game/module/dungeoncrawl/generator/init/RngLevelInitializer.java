@@ -165,6 +165,11 @@ public class RngLevelInitializer {
     private void addObj(LevelBlock block, ObjType type, Coordinates c) {
         ObjAtCoordinate objAt = new ObjAtCoordinate(type, c);
         block.getObjects().add(0, objAt);
+        if (EntityCheckMaster.isWall(type)){
+            if (dungeonLevel.getObjects().stream().anyMatch(at-> at.getCoordinates().equals(c))) {
+                return ;
+            }
+        }
         dungeonLevel.getObjects().add(objAt);
 
 

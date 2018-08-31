@@ -10,6 +10,7 @@ import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * After each Action, recalculates Initiative for each unit,
@@ -21,7 +22,7 @@ public abstract class GenericTurnManager implements TurnManager {
     protected DequeImpl<Unit> unitQueue;
     protected DequeImpl<Unit> displayedUnitQueue;
     protected DC_Game game;
-    protected DequeImpl<Unit> unitGroup;
+    protected Set<Unit> unitGroup;
     protected boolean retainActiveUnit;
 
     public GenericTurnManager(DC_Game game) {
@@ -81,7 +82,7 @@ public abstract class GenericTurnManager implements TurnManager {
         return result;
     }
 
-    public DequeImpl<Unit> getUnits() {
+    public Set<Unit> getUnits() {
         if (unitGroup != null)
             return unitGroup;
         return game.getUnits();

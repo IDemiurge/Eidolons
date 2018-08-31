@@ -3,6 +3,7 @@ package eidolons.libgdx.screens;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
+import eidolons.libgdx.gui.menu.selection.rng.RngSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.saves.SaveSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.libgdx.screens.menu.MainMenu;
@@ -55,8 +56,20 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
     @Override
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {
         List<? extends Entity> list = (List<? extends Entity>) p.get();
-        if (isLoadGame(list)){
+            if (isLoadGame(list)){
             return new SaveSelectionPanel(() -> list) {
+                @Override
+                public void closed(Object selection) {
+                    if (selection == null) {
+                        if (mainMenu != null)
+                            mainMenu.setVisible(true);
+                    }
+                    super.closed(selection);
+                }
+            };
+        }
+        if (isRngScenario(list)){
+            return new RngSelectionPanel(() -> (List<? extends Entity>) p.get()) {
                 @Override
                 public void closed(Object selection) {
                     if (selection == null) {
@@ -83,6 +96,9 @@ public class AnimatedMenuScreen extends ScreenWithVideoLoader {
         return p.get(0).getOBJ_TYPE_ENUM()== DC_TYPE.CHARS;
     }
 
+    private boolean isRngScenario(List<? extends Entity> p) {
+        return p.get(0).getGroupingKey().equalsIgnoreCase("Random");
+    }
     @Override
     protected void preLoad() {
         super.preLoad();

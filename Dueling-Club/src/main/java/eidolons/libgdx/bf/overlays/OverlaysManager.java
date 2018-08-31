@@ -346,7 +346,7 @@ public class OverlaysManager extends SuperActor {
     private void drawOverlaysForCell(GridCellContainer container, int x, int y,
                                      Batch batch) {
         if (sightInfoDisplayed) {
-            DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
+            DC_Cell cell = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
 
             UNIT_VISION vision = cell.getUnitVisionStatus(observer);
             if (vision == null) {
@@ -367,7 +367,7 @@ public class OverlaysManager extends SuperActor {
                     break;
             }
         }
-        Object data = getOverlayDataForCell(BAG, new Coordinates(x, y));
+        Object data = getOverlayDataForCell(BAG, Coordinates.get(x, y));
         if (data != null) {
             drawOverlay(container, BAG, batch, null, x, y);
         }
@@ -406,7 +406,7 @@ public class OverlaysManager extends SuperActor {
         Rectangle rect = null;
         if (isTooltipRequired(overlay)) {
             if (obj == null) {
-                obj = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
+                obj = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
             Map<Rectangle, Tooltip> map = tooltipMap.get(obj);
             if (map == null) {
@@ -429,7 +429,7 @@ public class OverlaysManager extends SuperActor {
 
         if (isClickListenerRequired(overlay)) {
             if (obj == null) {
-                obj = Eidolons.getGame().getMaster().getCellByCoordinate(new Coordinates(x, y));
+                obj = Eidolons.getGame().getMaster().getCellByCoordinate(Coordinates.get(x, y));
             }
             Map<OVERLAY, Rectangle> map2 = getOverlayMap(obj);
             rect = map2.get(overlay);

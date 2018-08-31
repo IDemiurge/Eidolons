@@ -18,14 +18,15 @@ import main.entity.Ref;
 import main.entity.obj.ActiveObj;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LogMaster;
 import main.system.datatypes.DequeImpl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class StackingRule implements ActionRule {
 
@@ -71,7 +72,7 @@ public class StackingRule implements ActionRule {
             return;
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
-        List<BattleFieldObject> units = action.getGame().getObjectsAt(
+        Set<BattleFieldObject> units = action.getGame().getObjectsAt(
          action.getOwnerObj().getCoordinates());
         units.addAll(action.getGame().getObjectsAt(
          target.getCoordinates()));
@@ -118,8 +119,9 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
+                if ( u.isDead())
+                    continue;
                 if (u.isWall())
-                    if (!u.isDead())
                         return false;
                 if (!u.isNeutral() && !u.isMine())
                     if (game.getVisionMaster().checkInvisible(u)) {

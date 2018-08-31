@@ -134,13 +134,13 @@ public class PlayerManager<E extends Battle> extends BattleHandler<E> {
 
     private FLAG_COLOR getRandomColorFlag(boolean enemy) {
         List<FLAG_COLOR> list = new ArrayList<>(Arrays.asList(enemy ? enemyColors : allyColors));
-        int index = RandomWizard.getRandomListIndex(list);
+        int index = RandomWizard.getRandomIndex(list);
         return list.get(index);
     }
 
 
     private FLAG_COLOR getRandomColorFlag() {
-        int index = RandomWizard.getRandomListIndex(unusedPlayerColorsList);
+        int index = RandomWizard.getRandomIndex(unusedPlayerColorsList);
         return unusedPlayerColorsList.remove(index);
     }
 

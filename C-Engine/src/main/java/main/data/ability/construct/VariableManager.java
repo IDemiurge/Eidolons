@@ -486,7 +486,7 @@ public class VariableManager {
         },
         RANDOM_ATTRIBUTE {
             public Object evaluate(Entity obj, String s) {
-                int index = RandomWizard.getRandomListIndex(ContentValsManager.getAttributes());
+                int index = RandomWizard.getRandomIndex(ContentValsManager.getAttributes());
                 return ContentValsManager.getAttributes().get(index).getName();
             }
         },

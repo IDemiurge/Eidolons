@@ -12,7 +12,6 @@ import main.game.bf.Coordinates;
 import main.system.math.PositionMaster;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,7 +50,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                         continue;
                 }
                 cellsSet.add(cells[i][j] = new DC_Cell( i, j, game));
-                coordinates.add(new Coordinates(i, j));
+                coordinates.add(Coordinates.get(i, j));
             }
         }
 
@@ -66,16 +65,16 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
         BattleFieldObject[] array = getObjCells( )[x_][y_];
         if (array == null) {
-            List<BattleFieldObject> list =game.getMaster().getObjectsOnCoordinate(
-             new Coordinates(x_, y_), null );
+            Set<BattleFieldObject> set =game.getMaster().getObjectsOnCoordinate(
+             Coordinates.get(x_, y_), null );
 //            list.addAll(
 //            game.getMaster().getObjectsOnCoordinate(
-//             new Coordinates(x_, y_), true));
+//             Coordinates.get(x_, y_), true));
 
-            if (list.isEmpty())
+            if (set.isEmpty())
                 array = new BattleFieldObject[0];
             else
-                array = list.toArray(new BattleFieldObject[list.size()]);
+                array = set.toArray(new BattleFieldObject[set.size()]);
             getObjCells( )[x_][y_] = array;
         }
         return array;
@@ -134,6 +133,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     @Override
     public boolean noObstaclesOnDiagonal(Coordinates c1, Coordinates c2, Obj source) {
+
         boolean above = PositionMaster.isAbove(c1, c2);
         boolean left = PositionMaster.isToTheLeft(c1, c2);
         int X = c1.x;
@@ -153,8 +153,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             if (X == c2.x || Y == c2.y) {
                 break;
             }
-            Coordinates c = new Coordinates(X, Y);
-            List<BattleFieldObject> objects = game.getMaster().
+            Coordinates c = Coordinates.get(X, Y);
+            Set<BattleFieldObject> objects = game.getMaster().
              getObjectsOnCoordinate(c, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
@@ -167,6 +167,14 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
 
     }
 
+    /**
+     * @param xy source x or y
+     * @param xy1 line start
+     * @param xy2 line end
+     * @param source obj
+     * @param x_y
+     * @return
+     */
     private boolean noObstacles(int xy, int xy1, int xy2, Obj source, boolean x_y) {
 
         int max = xy2;
@@ -176,8 +184,8 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             min = xy2;
         }
         for (int i = min + 1; i < max; i++) {
-            Coordinates c = (x_y) ? new Coordinates(xy, i) : new Coordinates(i, xy);
-            List<BattleFieldObject> objects = game.getMaster().getObjectsOnCoordinate(getZ(), c, false, false, false);
+            Coordinates c = (x_y) ? Coordinates.get(xy, i) : Coordinates.get(i, xy);
+            Set<BattleFieldObject> objects = game.getMaster().getObjectsOnCoordinate(getZ(), c, false, false, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;

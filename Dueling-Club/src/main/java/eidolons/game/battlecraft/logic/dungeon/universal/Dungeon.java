@@ -232,7 +232,7 @@ public class Dungeon extends LightweightEntity {
             Integer i = NumberUtils.getInteger(arg) - 1;
             List<String> spawnPoints = ContainerUtils.openContainer(
              getProperty(PROPS.COORDINATE_POINTS));
-            c = new Coordinates(spawnPoints.get(i));
+            c = Coordinates.get(spawnPoints.get(i));
         } else {
             Map<String, String> map = new DataUnitFactory(true).
              deconstructDataString(getProperty(PROPS.NAMED_COORDINATE_POINTS));
@@ -242,7 +242,7 @@ public class Dungeon extends LightweightEntity {
                 Object key = new SearchMaster<>().findClosest(arg, map.keySet());
                 string = map.get(key);
             }
-            return new Coordinates(string);
+            return Coordinates.get(string);
         }
         return c;
 //        getProperty(PROPS.ENCOUNTER_SPAWN_POINTS)

@@ -19,6 +19,7 @@ import main.entity.obj.Obj;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.game.logic.battle.player.Player;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StringMaster;
@@ -82,10 +83,12 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
     protected void initWidthAndHeight(E dungeonWrapper) {
-        GuiManager.setBattleFieldCellsY(dungeonWrapper.getDungeon().getCellsY());
         GuiManager.setBattleFieldCellsX(dungeonWrapper.getDungeon().getCellsX());
+        GuiManager.setBattleFieldCellsY(dungeonWrapper.getDungeon().getCellsY());
         PositionMaster.initDistancesCache();
-
+        DirectionMaster.initCache(dungeonWrapper.getDungeon().getCellsX(),
+         dungeonWrapper.getDungeon().getCellsY());
+        Coordinates.resetCaches();
     }
 
     public E buildDungeon(String path, List<Node> nodeList) {

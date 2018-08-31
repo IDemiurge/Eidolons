@@ -24,7 +24,7 @@ public class TestDungeon extends DungeonWrapper {
         if (prop.isEmpty()) {
             return getDefaultEnemyCoordinates();
         }
-        return new Coordinates(prop);
+        return Coordinates.get(prop);
     }
 
     public Coordinates getDefaultEnemyCoordinates() {
@@ -50,7 +50,7 @@ public class TestDungeon extends DungeonWrapper {
                     continue;
                 }
             }
-            return new Coordinates(x, y);
+            return Coordinates.get(x, y);
         }
         return null;
     }

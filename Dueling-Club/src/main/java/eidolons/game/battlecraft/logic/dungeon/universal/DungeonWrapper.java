@@ -26,7 +26,7 @@ public class DungeonWrapper<E extends DungeonWrapper> extends EntityWrapper<Dung
         if (prop.isEmpty()) {
             return Coordinates.getMiddleCoordinate(main.game.bf.directions.FACING_DIRECTION.NONE);
         }
-        return new Coordinates(prop);
+        return Coordinates.get(prop);
     }
 
     public DungeonMaster<E> getDungeonMaster() {

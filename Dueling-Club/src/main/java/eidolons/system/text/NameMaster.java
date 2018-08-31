@@ -379,7 +379,7 @@ public class NameMaster {
             return getRandomHeroName(hero, namePool);
         }
 
-        String name = names.get(RandomWizard.getRandomListIndex(names));
+        String name = names.get(RandomWizard.getRandomIndex(names));
 
         usedNames.add(name);
         return name;

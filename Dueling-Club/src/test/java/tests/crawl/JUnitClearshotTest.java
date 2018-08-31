@@ -137,7 +137,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
         int y2 = y1 + getInnerHeight();
         for (int x = x1; x < x2; x++)
             for (int y = y1; y < y2; y++) {
-                list.add(new Coordinates(x, y));
+                list.add(Coordinates.get(x, y));
             }
         return list;
     }
@@ -164,7 +164,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
             i++;
             for (int x = game.getGrid().getWidth() / 2 - i;
                  x <= game.getGrid().getWidth() / 2 + i; x++) {
-                list.add(new Coordinates(x, y));
+                list.add(Coordinates.get(x, y));
             }
         }
         i = -1;
@@ -173,7 +173,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
             i++;
             for (int x = game.getGrid().getWidth() / 2 - i;
                  x <= game.getGrid().getWidth() / 2 + i; x++) {
-                list.add(new Coordinates(x, y));
+                list.add(Coordinates.get(x, y));
             }
         }
         return list;
@@ -205,7 +205,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
         ClearShotCondition.setUnitTestBreakMode(breakMode);
         for (int x = 0; x < game.getGrid().getWidth(); x++)
             for (int y = 0; y < game.getGrid().getHeight(); y++) {
-                Coordinates c = new Coordinates((x), y);
+                Coordinates c = Coordinates.get((x), y);
                 if (!checkCoordinate(c))
                     continue;
                 boolean heroInside = isInside(c);

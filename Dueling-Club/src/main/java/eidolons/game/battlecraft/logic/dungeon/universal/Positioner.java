@@ -58,7 +58,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             return null;
         }
         Loop loop = new Loop(50);
-        Coordinates coordinate = new Coordinates(c.x, c.y);
+        Coordinates coordinate = Coordinates.get(c.x, c.y);
         while (loop.continues()) { // TODO remove from adj. list to limit
             // iterations to 8!
             DIRECTION direction = getRandomSpawnAdjustDirection();
@@ -128,7 +128,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         List<Coordinates> list = new ArrayList<>();
         // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
-            origin = new Coordinates(PositionMaster.getMiddleIndex(false), PositionMaster
+            origin = Coordinates.get(PositionMaster.getMiddleIndex(false), PositionMaster
              .getMiddleIndex(true));
         } else {
             if (me != null) {
@@ -193,7 +193,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
         Coordinates playerC = getPlayerSpawnCoordinates();
         if (true) //TODO sometimes not?
-            return new Coordinates(playerC.x, playerC.y - (
+            return Coordinates.get(playerC.x, playerC.y - (
              TestSpawner.isPlayerUnitGroupMode() ? 1 : 3));
         if (playerC == null) {
             playerC = getPlayerSpawnCoordinates();// Coordinates.getMiddleCoordinate(ArenaPositioner.DEFAULT_PLAYER_SIDE);
@@ -214,7 +214,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
             if (x <= 0) {
                 continue;
             }
-            return new Coordinates(x, y);
+            return Coordinates.get(x, y);
         }
         return null;
     }

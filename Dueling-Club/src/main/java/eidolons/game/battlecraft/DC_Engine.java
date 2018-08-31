@@ -79,4 +79,8 @@ public class DC_Engine extends CoreEngine {
     public static void setTrainingOff(boolean trainingOff) {
         DC_Engine.trainingOff = trainingOff;
     }
+
+    public static boolean isRngSupported() {
+        return true;
+    }
 }

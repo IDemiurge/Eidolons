@@ -116,7 +116,7 @@ public class Location extends DungeonWrapper {
         }
         String enterData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[0];
         String name = VariableManager.removeVarPart(enterData);
-        Coordinates c = new Coordinates(true, VariableManager.getVarIfExists(enterData));
+        Coordinates c = Coordinates.get(true, VariableManager.getVarIfExists(enterData));
 
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
@@ -138,7 +138,7 @@ public class Location extends DungeonWrapper {
         }
         String exitData = entranceData.split(DungeonLevelMaster.ENTRANCE_SEPARATOR)[1];
         name = VariableManager.removeVarPart(exitData);
-        c = new Coordinates(true, VariableManager.getVarIfExists(exitData));
+        c = Coordinates.get(true, VariableManager.getVarIfExists(exitData));
         for (Entrance e : getEntrances()) {
             if (e.getCoordinates().equals(c)) {
                 if (e.getName().equals(name)) {

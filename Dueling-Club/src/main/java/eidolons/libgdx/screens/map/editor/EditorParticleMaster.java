@@ -140,7 +140,7 @@ public class EditorParticleMaster extends Group {
         String contents = "";
         for (EmitterActor sub : emitterActors) {
             String s = sub.getPath() + StringMaster.wrapInParenthesis(
-             new Coordinates(true, (int) sub.getX(), (int) sub.getY()).toString()) + ";\n";
+             Coordinates.get(true, (int) sub.getX(), (int) sub.getY()).toString()) + ";\n";
             contents += s;
         }
         String s;

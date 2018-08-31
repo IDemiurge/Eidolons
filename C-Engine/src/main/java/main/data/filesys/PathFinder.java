@@ -403,7 +403,7 @@ public class PathFinder {
 
     public static String getGeneratorRootPath() {
         return StrPathBuilder.build(false,
-         ImageManager.getValueIconsPath(), "generator");
+         ImageManager.getImageFolderPath(), "generator");
     }
 
     public static String getRoomTemplatesFolder() {
@@ -415,5 +415,10 @@ public class PathFinder {
     public static String getRandomLevelPath() {
         return StrPathBuilder.build(PathFinder.getDungeonLevelFolder(),
          "generated") + PathUtils.getPathSeparator();
+    }
+
+    public static String getMetaDataUnitPath() {
+        return StrPathBuilder.build(PathFinder.getXML_PATH(),
+         "meta data.txt");
     }
 }

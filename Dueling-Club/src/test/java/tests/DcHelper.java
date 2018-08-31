@@ -131,7 +131,7 @@ public class DcHelper implements JUnitHelper {
 
     @Override
     public void move(Obj source, int x, int y) {
-        Coordinates c = new Coordinates(x, y);
+        Coordinates c = Coordinates.get(x, y);
         game.getCombatMaster().getMovementManager().move(source,
          c);
         assertTrue(source.getCoordinates().equals(c));

@@ -293,7 +293,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
                 break;
             list.add(c);
         }
-        Coordinates c = list.get(RandomWizard.getRandomListIndex(list));
+        Coordinates c = list.get(RandomWizard.getRandomIndex(list));
         spawn(container, c.x, c.y, DEFAULT_AREA_SIZE, DEFAULT_AREA_SIZE);
     }
 

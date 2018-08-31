@@ -32,7 +32,6 @@ public class HqSpellScroll extends HqElement {
          displayedRows* UiMaster.getHqSpellIconSize());
 //        scroll.addElement(container);
         this.displayedRows = displayedRows;
-        debugAll();
     }
 
     @Override

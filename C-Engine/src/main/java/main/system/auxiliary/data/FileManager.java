@@ -507,7 +507,7 @@ public class FileManager {
     }
 
     public static File getRandomFile(List<File> files) {
-        int randomListIndex = RandomWizard.getRandomListIndex(files);
+        int randomListIndex = RandomWizard.getRandomIndex(files);
         if (randomListIndex == -1) {
             return null;
         }

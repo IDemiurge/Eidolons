@@ -97,11 +97,11 @@ public class MapPointMaster {
         map = new LinkedHashMap<>();
         for (String substring : ContainerUtils.openContainer(FileManager.readFile(getPath()))) {
             map.put(VariableManager.removeVarPart(substring),
-             new Coordinates(true, VariableManager.getVar(substring)));
+             Coordinates.get(true, VariableManager.getVar(substring)));
         }
         for (MAP_POINTS sub : MAP_POINTS.values()) {
             map.put(StringMaster.getWellFormattedString(sub.name()),
-             new Coordinates(true, sub.x, sub.y));
+             Coordinates.get(true, sub.x, sub.y));
         }
     }
 
@@ -121,7 +121,7 @@ public class MapPointMaster {
                 String name = DialogMaster.inputText("Enter location's name", last);
                 if (name != null) last = name;
                 else return;
-                map.put(name, new Coordinates(true, x, y));
+                map.put(name, Coordinates.get(true, x, y));
                 GuiEventManager.trigger(MapEvent.LOCATION_ADDED, new ImmutablePair(name, map.get(name)));
             }
         }, " thread").start();

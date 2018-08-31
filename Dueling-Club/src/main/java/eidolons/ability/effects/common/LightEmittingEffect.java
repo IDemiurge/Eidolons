@@ -27,11 +27,16 @@ public class LightEmittingEffect extends SpectrumEffect {
         this.effects.setFormula(this.formula);
         this.effects.setOriginalFormula(this.formula);
         setQuietMode(true);
-        lastCoordinates = new Coordinates(0, 0);
+        lastCoordinates = Coordinates.get(0, 0);
     }
 
     public LightEmittingEffect(String formula) {
         this(formula, true);
+    }
+
+    @Override
+    protected boolean isCoordinatesCached() {
+        return true;
     }
 
     private Effect createEffect() {

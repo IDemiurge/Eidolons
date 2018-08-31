@@ -334,16 +334,15 @@ public class MusicMaster {
          new Thread(() -> {
              while (true) {
                  checkAmbience();
-                 if (stopped)
-                     continue;
-                 if (playedMusic != null) {
-                     if (!playedMusic.isPlaying()) {
+                 if (!stopped) {
+                     if (playedMusic != null) {
+                         if (!playedMusic.isPlaying()) {
+                             checkNewMusicToPlay();
+                         }
+                     } else {
                          checkNewMusicToPlay();
                      }
-                 } else {
-                     checkNewMusicToPlay();
                  }
-
                  try {
                      WaitMaster.WAIT(PERIOD);
                  } catch (Exception e) {

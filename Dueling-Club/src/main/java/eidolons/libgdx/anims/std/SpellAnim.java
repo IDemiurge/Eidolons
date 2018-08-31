@@ -10,7 +10,7 @@ import main.entity.Entity;
 import main.game.bf.Coordinates;
 import main.system.Producer;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by JustMe on 1/24/2017.
@@ -38,12 +38,12 @@ public class SpellAnim extends ActionAnim {
          active.getRef().getTargetObj().getCoordinates().
           getAdjacentCoordinates().size()),
         SPRAY(300, 0, active -> {
-            List<Coordinates> list = active.getOwnerObj().getCoordinates().
+            Set<Coordinates> set = active.getOwnerObj().getCoordinates().
              getAdjacentCoordinates();
-            list.removeIf(coordinates ->
+            set.removeIf(coordinates ->
              FacingMaster.getSingleFacing(active.getOwnerObj().getFacing(),
               active.getOwnerObj().getCoordinates(), coordinates) != UnitEnums.FACING_SINGLE.IN_FRONT);
-            return list.size();
+            return set.size();
         }
         ) {
             @Override

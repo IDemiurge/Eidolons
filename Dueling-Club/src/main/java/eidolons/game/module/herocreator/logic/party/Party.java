@@ -214,7 +214,7 @@ public class Party extends Obj {
 
     public Unit getRandomMember() {
 
-        return members.get(RandomWizard.getRandomListIndex(members));
+        return members.get(RandomWizard.getRandomIndex(members));
     }
 
     public Unit getMiddleHero() {

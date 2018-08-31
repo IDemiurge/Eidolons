@@ -102,16 +102,16 @@ public class RandomWizard<E> {
         return res < i;
     }
 
-    public static int getRandomListIndex(Collection list) {
+    public static int getRandomIndex(Collection list) {
         //TODO lock? finally?
         boolean bool = averaged;
         averaged = false;
-        int index = getRandomListIndex(list, randomGenerator);
+        int index = getRandomIndex(list, randomGenerator);
         averaged = bool;
         return index;
     }
 
-    public static int getRandomListIndex(Collection list, Random random) {
+    public static int getRandomIndex(Collection list, Random random) {
         if (list == null) {
             return -1;
         }
@@ -201,7 +201,7 @@ public class RandomWizard<E> {
             types = DataManager.getTypes(TYPE);
         }
 
-        return types.get(getRandomListIndex(types));
+        return types.get(getRandomIndex(types));
 
     }
 
@@ -214,7 +214,7 @@ public class RandomWizard<E> {
     }
 
     public static Object getRandomListObject(List list) {
-        return list.get(getRandomListIndex(list));
+        return list.get(getRandomIndex(list));
     }
 
     public static float getRandomFloat() {
@@ -230,8 +230,11 @@ public class RandomWizard<E> {
         return getObjectByWeight(constructWeightMap(string, CLASS));
     }
 
+    public E getRandomSetItem(Set<E> set) {
+        return (E) set.toArray()[getRandomIndex(set)];
+    }
     public E getRandomListItem(List<E> list) {
-        return list.get(getRandomListIndex(list));
+        return list.get(getRandomIndex(list));
     }
 
     public E getObjectByWeight(Map<E, Integer> map) {

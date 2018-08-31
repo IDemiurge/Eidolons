@@ -1,5 +1,6 @@
 package eidolons.libgdx.screens.menu;
 
+import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -8,11 +9,12 @@ import eidolons.macro.global.persist.Loader;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 
@@ -32,7 +34,16 @@ public class MainMenuHandler {
     public static Boolean startMicro(List<ObjType> scenarioTypes, Boolean random_preset_select) {
         if (random_preset_select != null) {
             if (random_preset_select) {
-                MainLauncher.presetNumbers.add(0, RandomWizard.getRandomInt(scenarioTypes.size()));
+                scenarioTypes.removeIf(type ->
+                {
+                    if (type.isGenerated()) {
+                        return true;
+                    }
+                    LOCATION_TYPE locationType =
+                     new EnumMaster<LOCATION_TYPE>().retrieveEnumConst(LOCATION_TYPE.class, type.getName());
+                    return !isRngLocationSupported(locationType);
+                });
+                //                MainLauncher.presetNumbers.add(0, RandomWizard.getRandomInt(scenarioTypes.size()));
             } else {
                 int n = OptionsMaster.getGameplayOptions().
                  getIntValue(GAMEPLAY_OPTION.NEXT_SCENARIO_INDEX);
@@ -44,13 +55,30 @@ public class MainMenuHandler {
         return null;
     }
 
-    public static List<ObjType> getScenarioTypes() {
-        return getScenarioTypes(getScenarioGroup());
+    private static boolean isRngLocationSupported(LOCATION_TYPE locationType) {
+        switch (locationType) {
+            case CEMETERY:
+            case CRYPT:
+            case CAVE:
+            case DUNGEON:
+            case TOWER:
+                return true;
+
+            case TEMPLE:
+                break;
+            case CASTLE:
+                break;
+        }
+        return false;
     }
 
-    private static String getScenarioGroup() {
+    public static List<ObjType> getScenarioTypes() {
+        return getScenarioTypes(getScenarioGroup(false));
+    }
+
+    private static String getScenarioGroup(boolean rng) {
         //        return "Crawl";
-        return "Beta";
+        return rng ? "Random" : "Beta";
     }
 
     public static List<ObjType> getScenarioTypes(String scenarioGroup) {
@@ -64,16 +92,18 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(),
                  false);
             case RANDOM_SCENARIO:
-                return startMicro(getScenarioTypes(),
+                return startMicro(getScenarioTypes(getScenarioGroup(true)),
                  true);
             case SELECT_SCENARIO:
             case PLAY:
                 //          TODO   case STANDOFF:
                 //            case SKIRMISH:
-                return startMicro(getScenarioTypes(),
-                 null);
+                if (!DC_Engine.isRngSupported())
+                    return startMicro(getScenarioTypes(),
+                     null);
+                break;
             case MAP_PREVIEW:
-                AdventureInitializer.launchAdventureGame(null );
+                AdventureInitializer.launchAdventureGame(null);
                 return null;
             case LOAD:
                 try {

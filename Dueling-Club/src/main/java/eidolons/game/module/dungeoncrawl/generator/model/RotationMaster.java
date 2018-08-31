@@ -23,7 +23,7 @@ public class RotationMaster {
 
     public static Boolean[] getRandomPossibleParentRotations(Room parent) {
         List<Boolean[]> list = getParentRotationsPossible(parent);
-        return list.get(RandomWizard.getRandomListIndex(list));
+        return list.get(RandomWizard.getRandomIndex(list));
     }
 
     public static Boolean[] getRandomPossibleParentRotations(FACING_DIRECTION entrance,
@@ -31,7 +31,7 @@ public class RotationMaster {
 
         List<Boolean[]> list = getParentRotationsPossible(entrance, ExitMaster.getExits(template));
         if (ListMaster.isNotEmpty(list))
-            return list.get(RandomWizard.getRandomListIndex(list));
+            return list.get(RandomWizard.getRandomIndex(list));
         return new Boolean[0];
     }
 

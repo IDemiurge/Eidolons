@@ -15,6 +15,7 @@ public class Ambience extends EmitterActor {
     Vector2 velocity;
     Vector2 acceleration;
     Vector2 originPos;
+    private boolean blocked;
 
     public Ambience(String path) {
         super(path);
@@ -42,7 +43,7 @@ public class Ambience extends EmitterActor {
                 }
 
         super.act(delta);
-        if (! isMoveOn()) {
+        if (!isMoveOn()) {
             return;
         }
         float angle = acceleration.angle();
@@ -54,7 +55,7 @@ public class Ambience extends EmitterActor {
         velocity.add(acceleration);
         velocity = velocity.limit(3);
 
-        setPosition(getX()+velocity.x*delta, getY()+velocity.y*delta);
+        setPosition(getX() + velocity.x * delta, getY() + velocity.y * delta);
     }
 
     protected boolean isMoveOn() {
@@ -69,9 +70,9 @@ public class Ambience extends EmitterActor {
 
     @Override
     public float getWidth() {
-//        FuncMaster.getGreatest()
-//        getEffect().getEmitters().forEach(e->
-//        e.getSpawnWidth().getHighMax());
+        //        FuncMaster.getGreatest()
+        //        getEffect().getEmitters().forEach(e->
+        //        e.getSpawnWidth().getHighMax());
         return 400;
     }
 
@@ -82,7 +83,8 @@ public class Ambience extends EmitterActor {
 
     @Override
     public void draw(Batch spriteBatch, float delta) {
-
+        if (blocked)
+            return;
         if (!ParticleManager.isAmbienceOn())
             return;
         if (isCullingOn())
@@ -94,7 +96,13 @@ public class Ambience extends EmitterActor {
         if (modifyParticles) {
             getEffect().modifyParticles();
         }
-        super.draw(spriteBatch, delta);
+        try {
+            super.draw(spriteBatch, delta);
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+            main.system.auxiliary.log.LogMaster.log(1, "AMBIENCE FAILED: " + getPath());
+            blocked = true;
+        }
     }
 
     protected boolean isCullingOn() {

@@ -833,7 +833,7 @@ public class ImageManager {
                 String bg = HeroEnums.BACKGROUND.values()[RandomWizard.getRandomIntBetween(0, HeroEnums.BACKGROUND
                  .values().length - 1)].toString();
                 List<String> portraitsForBackground = ImageManager.getPortraitsForBackground(bg);
-                int index = RandomWizard.getRandomListIndex(portraitsForBackground);
+                int index = RandomWizard.getRandomIndex(portraitsForBackground);
                 String image = portraitsForBackground.get(index);
                 return image;
             } catch (Exception e) {

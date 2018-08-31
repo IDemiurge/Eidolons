@@ -95,7 +95,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
             case MOVE_TO:
                 //via a path!
                 ActionPath path = getPathSequenceConstructor().getOptimalPathSequence(unit.getAI(),
-                 new Coordinates(arg.toString()));
+                 Coordinates.get(arg.toString()));
                 sequence = new ActionSequence(path.getActions(), task, unit.getAI());
                 break;
             case TURN_TO:
@@ -103,7 +103,7 @@ public class AiScriptExecutor extends AiHandler implements ScriptExecutor<COMBAT
                 sequence = new ActionSequence(
                  getTurnSequenceConstructor().
                   getTurnSequence(FACING_SINGLE.IN_FRONT, unit,
-                   new Coordinates(arg.toString())), task, unit.getAI());
+                   Coordinates.get(arg.toString())), task, unit.getAI());
                 break;
             case ACTION:
                 Action action = AiActionFactory.newAction(arg.toString(), ai);

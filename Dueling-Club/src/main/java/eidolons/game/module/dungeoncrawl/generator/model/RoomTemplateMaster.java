@@ -453,7 +453,7 @@ public class RoomTemplateMaster {
 
         RoomModel model = null;
         while (!pool.isEmpty()) {
-            model = clone(pool.remove(RandomWizard.getRandomListIndex(pool)));
+            model = clone(pool.remove(RandomWizard.getRandomIndex(pool)));
             //for culdesac?
 
             checkRotations(template, entrance, model);

@@ -50,7 +50,7 @@ public class GridCellContainer extends GridCell {
         graveyard.setHeight(getHeight());
 
         setUserObject(new GridCellDataSource(
-         new Coordinates(getGridX(), getGridY())
+         Coordinates.get(getGridX(), getGridY())
         ));
         return this;
     }
@@ -59,7 +59,7 @@ public class GridCellContainer extends GridCell {
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
         graveyard.setUserObject(new GridCellDataSource(
-         new Coordinates(getGridX(), getGridY())
+         Coordinates.get(getGridX(), getGridY())
         ));
     }
 

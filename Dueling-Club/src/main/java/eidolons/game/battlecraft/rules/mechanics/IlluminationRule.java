@@ -8,6 +8,7 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import main.content.C_OBJ_TYPE;
 import main.content.enums.GenericEnums;
 import main.entity.EntityCheckMaster;
@@ -73,6 +74,17 @@ public class IlluminationRule {
             unit.setParam(PARAMS.ILLUMINATION, 0);
         });
         applied = false;
+
+        for (Obj obj : effectCache.keySet()) {
+            if (!ExplorationMaster.isExplorationOn()|| isSpectrumResetRequired(obj)){
+                effectCache.get(obj).resetCache();
+            }
+
+        }
+    }
+
+    private boolean isSpectrumResetRequired(Obj obj) {
+        return obj.getCoordinates().dst_(Eidolons.getMainHero().getCoordinates())<8;
     }
 
     public Map<Obj, LightEmittingEffect> getEffectCache() {

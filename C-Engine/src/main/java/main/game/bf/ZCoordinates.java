@@ -13,4 +13,18 @@ public class ZCoordinates extends Coordinates {
     public void setZ(int z) {
         this.z = z;
     }
+
+    @Override
+    public boolean equals(Object arg0) {
+        if (arg0 instanceof ZCoordinates) {
+            if (this instanceof ZCoordinates) {
+                ZCoordinates z1 = this;
+                ZCoordinates z2 = (ZCoordinates) arg0;
+                if (z1.z != z2.z) {
+                    return false;
+                }
+            }
+        }
+        return super.equals(arg0);
+    }
 }

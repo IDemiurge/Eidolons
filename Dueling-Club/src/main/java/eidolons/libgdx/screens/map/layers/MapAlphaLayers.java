@@ -68,7 +68,7 @@ public class MapAlphaLayers extends MapTimedLayer<ImageContainer> {
                         container.setFluctuatingAlphaRandomness(type.randomness);
                         if (img.getName().split("_").length < 2)
                             continue;
-                        Coordinates c = new Coordinates(true, img.getName().split("_")[1]);
+                        Coordinates c = Coordinates.get(true, img.getName().split("_")[1]);
                         container.setPosition(c.x,
                          MapScreen.defaultSize -
                           c.y);

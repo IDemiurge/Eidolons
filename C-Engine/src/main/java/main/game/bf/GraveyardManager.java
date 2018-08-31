@@ -1,9 +1,9 @@
 package main.game.bf;
 
-import main.entity.obj.BfObj;
 import main.entity.obj.Obj;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Death Logic Store the dead: automatically; accessibility (for selecting and
@@ -32,7 +32,7 @@ public interface GraveyardManager {
 
     Obj getTopDeadUnit(Coordinates c);
 
-    List<Coordinates> getCorpseCells();
+    Set<Coordinates> getCorpseCells();
 
     List<Obj> getDeadUnits(Coordinates c);
 

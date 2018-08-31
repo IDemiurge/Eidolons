@@ -107,7 +107,7 @@ public class Place extends MapObj {
     public void resetCoordinates() {
         int x = getIntParam(MACRO_PARAMS.MAP_POS_X);
         int y = getIntParam(MACRO_PARAMS.MAP_POS_Y);
-        setCoordinates(new Coordinates(true, x, y));
+        setCoordinates(Coordinates.get(true, x, y));
 
     }
 

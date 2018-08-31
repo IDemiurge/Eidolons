@@ -47,7 +47,7 @@ public class TileConverter {
             case CAVE:
                 if (alt)
                     return RandomWizard.random() ? Cold : Brimstone;
-                return Grimy;
+                return Stony;
             case HIVE:
                 if (alt)
                     return RandomWizard.random() ? Somber : Brimstone;
@@ -69,7 +69,7 @@ public class TileConverter {
                 if (alt)
                     return PureEvil;
                 return Arcane;
-            case ARCANE:
+            case TOWER:
                 return Arcane;
             case CEMETERY:
                 if (alt)

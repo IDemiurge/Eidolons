@@ -139,10 +139,10 @@ public class DungeonEnums {
         NATURAL_SURFACE,
     }
     public enum LOCATION_TYPE {
-        CAVE, CEMETERY(true), CRYPT, BARROW,
+        CEMETERY(true), CAVE, CRYPT, BARROW,
         HIVE, DUNGEON,
         SEWER, HELL, ASTRAL,
-        ARCANE, DEN, RUIN(true),
+        TOWER, DEN, RUIN(true),
         CAMP(true), TEMPLE(true),
         CASTLE(true),  HOUSE(true),
         GROVE(true),
@@ -173,7 +173,7 @@ public class DungeonEnums {
                     case HIVE:
                         return LOCATION_TYPE_GROUP.NATURAL;
                     case CRYPT:
-                    case ARCANE:
+                    case TOWER:
                     case SEWER:
                         return LOCATION_TYPE_GROUP.NARROW;
 

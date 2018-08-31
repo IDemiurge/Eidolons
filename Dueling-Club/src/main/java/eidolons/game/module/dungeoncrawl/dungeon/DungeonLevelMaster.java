@@ -143,7 +143,7 @@ public class DungeonLevelMaster {
         int x = sublevel.getCellsX();
         int y = sublevel.getCellsY();
         // if (isSublevelTestOn())
-        // return new Coordinates(x / 2, y / 2);
+        // return Coordinates.get(x / 2, y / 2);
         if (t == null) {
             t = ENTRANCE_POINT_TEMPLATE.ZONE_RANDOM;
         }
@@ -151,35 +151,35 @@ public class DungeonLevelMaster {
         switch (t) {
             case CENTER:
             case CENTER_OFFSET:
-                return new Coordinates(x / 2 + getOffset(t, x, side), y / 2 + getOffset(t, y, side));
+                return Coordinates.get(x / 2 + getOffset(t, x, side), y / 2 + getOffset(t, y, side));
             case CORNER:
                 switch (side) {
                     case EAST:
-                        return new Coordinates(x - 1, y - 1);
+                        return Coordinates.get(x - 1, y - 1);
                     case NORTH:
-                        return new Coordinates(x - 1, 0);
+                        return Coordinates.get(x - 1, 0);
                     case SOUTH:
-                        return new Coordinates(0, y - 1);
+                        return Coordinates.get(0, y - 1);
                     case WEST:
-                        return new Coordinates(0, 0);
+                        return Coordinates.get(0, 0);
                 }
             case MIDDLE:
                 switch (side) {
                     case EAST:
-                        return new Coordinates(x - 1, y / 2);
+                        return Coordinates.get(x - 1, y / 2);
                     case NORTH:
-                        return new Coordinates(x / 2, 0);
+                        return Coordinates.get(x / 2, 0);
                     case SOUTH:
-                        return new Coordinates(x / 2, y - 1);
+                        return Coordinates.get(x / 2, y - 1);
                     case WEST:
-                        return new Coordinates(0, y / 2);
+                        return Coordinates.get(0, y / 2);
                 }
             case SIDE:
-                return new Coordinates(x / 2, y / 2);
+                return Coordinates.get(x / 2, y / 2);
             case ZONE_RANDOM:
-                return new Coordinates(x / 2, y / 2);
+                return Coordinates.get(x / 2, y / 2);
             case ZONE_SIDE:
-                return new Coordinates(x / 2, y / 2);
+                return Coordinates.get(x / 2, y / 2);
         }
 
         return null;
@@ -308,13 +308,13 @@ public class DungeonLevelMaster {
                 break;
 
         }
-        // return new Coordinates(x - 1, y - 1);
+        // return Coordinates.get(x - 1, y - 1);
         // case NORTH:
-        // return new Coordinates(x - 1, 0);
+        // return Coordinates.get(x - 1, 0);
         // case SOUTH:
-        // return new Coordinates(0, y - 1);
+        // return Coordinates.get(0, y - 1);
         // case WEST:
-        // return new Coordinates(0, 0);
+        // return Coordinates.get(0, 0);
         side = main.game.bf.directions.FACING_DIRECTION.SOUTH;
         return getEntranceCoordinates(side, template, dungeon);
     }

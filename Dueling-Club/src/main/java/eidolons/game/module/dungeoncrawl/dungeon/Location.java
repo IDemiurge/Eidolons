@@ -143,7 +143,7 @@ public class Location {
                 String typeName;
                 if (stretch.contains(StringMaster.OR)) {
                     List<String> names = ContainerUtils.openContainer(stretch, StringMaster.OR);
-                    stretch = names.get(RandomWizard.getRandomListIndex(names));
+                    stretch = names.get(RandomWizard.getRandomIndex(names));
                 }
                 typeName = VariableManager.removeVarPart(stretch);
                 int depth = (NumberUtils.getInteger(VariableManager.getVarPart(stretch)));

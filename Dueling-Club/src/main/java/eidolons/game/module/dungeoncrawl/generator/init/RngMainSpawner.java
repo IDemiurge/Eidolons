@@ -193,6 +193,43 @@ public class RngMainSpawner {
         log(1, "Spawning  Additional ");
         spawnAdditional();
 
+        reportSpawning();
+
+    }
+
+    private void reportSpawning() {
+        int groups = 0;
+        int units = 0;
+        int power = 0;
+        for (LevelBlock block : level.getBlocks()) {
+            if (block.getUnitGroups().isEmpty()) {
+                main.system.auxiliary.log.LogMaster.log(1, block.getRoomType() + " has NO groups: ");
+                continue;
+            } else
+                main.system.auxiliary.log.LogMaster.log(1, block.getRoomType() + " has groups: ");
+            for (List<ObjAtCoordinate> unitGroup : block.getUnitGroups().keySet()) {
+                groups++;
+                String text = "";
+                for (ObjAtCoordinate objAtCoordinate : unitGroup) {
+                    text += objAtCoordinate.getType().getName() + "; ";
+                    units++;
+                    //TODO lvls?
+                    power += objAtCoordinate.getType().getIntParam(PARAMS.POWER);
+                }
+                main.system.auxiliary.log.LogMaster.log(1, block.getUnitGroups().get(unitGroup) +
+                 ": " + text + "\n");
+
+            }
+
+        }
+        //        System.out.format(
+        main.system.auxiliary.log.LogMaster.log(1,
+         "\n\n\n SPAWNED: \n Total of " +
+          groups +
+          "groups with " +
+          units +
+          " units and " +
+          power + " power " + "\n");
     }
 
 
@@ -202,17 +239,39 @@ public class RngMainSpawner {
             blocks:
             for (LevelBlock block : level.getBlocks()) {
                 if (!isBlockForGroup(block, groupType)) {
-                    continue;
+                    continue blocks;
                 }
-                for (SPAWN_GROUP_TYPE group_type : block.getUnitGroups().values()) {
-                    if (group_type == groupType)
-                        continue blocks;
-                }
+                if (block.getUnitGroups().size() > getMaxGroupsForBlock(block))
+                    for (SPAWN_GROUP_TYPE group_type : block.getUnitGroups().values()) {
+                        if (group_type == groupType)
+                            continue blocks;
+                    }
+                if (calculatePowerFill(block) > getMaxPowerFill(block))
+                    continue blocks;
                 float powerCoef = getPowerCoef(block, groupType);
                 UNIT_GROUP group = getUnitGroup(level.getLocationType(), block.getZone(), groupType);
                 spawnForGroup(block, groupType, group, powerCoef);
             }
         }
+    }
+
+    private float getMaxPowerFill(LevelBlock block) {
+        switch (block.getRoomType()) {
+            case DEATH_ROOM:
+            case GUARD_ROOM:
+                return 1.25f;
+            case THRONE_ROOM:
+                return 1.5f;
+        }
+        return 1;
+    }
+
+    private int getMaxGroupsForBlock(LevelBlock block) {
+        switch (block.getRoomType()) {
+            case THRONE_ROOM:
+                return 2;
+        }
+        return 1;
     }
 
     private void spawnForSymbols() {
@@ -279,7 +338,7 @@ public class RngMainSpawner {
     }
 
     private boolean checkDone() {
-        return calculatePowerFill( ) >
+        return calculatePowerFill() >
          POWER_FILL_COEF *
           data.getFloatValue(LEVEL_VALUES.POWER_PER_SQUARE_MAX_MOD) / 100;
     }
@@ -294,7 +353,7 @@ public class RngMainSpawner {
           .collect(Collectors.toList());
     }
 
-    private float calculatePowerFill( ) {
+    private float calculatePowerFill() {
         int n = 0;
         for (LevelZone levelZone : level.getZones()) {
             n += calculatePowerFill(levelZone);

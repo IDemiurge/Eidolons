@@ -17,11 +17,10 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.grid.BaseView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
-import eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT;
+import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.texture.TextureCache;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
@@ -43,17 +42,17 @@ public class ShadeLightCell extends SuperContainer {
     private final Float width;
     private final Float height;
     FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
-    private SHADE_LIGHT type;
+    private SHADE_CELL type;
     private float baseAlpha = 0; //real alpha fluctuates around this value
     private Float originalX;
     private Float originalY;
     private boolean voidCell;
 
 
-    public ShadeLightCell(SHADE_LIGHT type ) {
+    public ShadeLightCell(SHADE_CELL type) {
         super(new Image(TextureCache.getOrCreateR(getTexturePath(type))));
         this.type = type;
-        transform();
+        randomize();
         if (isColored()) {
             teamColor = initTeamColor();
             if (getTeamColor() != null)
@@ -64,20 +63,27 @@ public class ShadeLightCell extends SuperContainer {
         getContent().setOrigin(getContent().getWidth() / 2, getContent().getHeight() / 2);
 
         setAlphaTemplate(ShadowMap.getTemplateForShadeLight(type));
+        if (isTransformDisabled())
+            setTransform(false);
     }
 
-    private static String getTexturePath(SHADE_LIGHT type) {
-//        switch (type) {  TODO varied enough already?
-            //            case GAMMA_SHADOW:
-            //               return  FileManager.getRandomFilePathVariant(
-            //                PathFinder.getImagePath() ,
-            //                type.getTexturePath(), ".png", false, false) ;
-//        }
+    @Override
+    protected boolean isTransformDisabled() {
+        return super.isTransformDisabled();
+    }
+
+    private static String getTexturePath(SHADE_CELL type) {
+        //        switch (type) {  TODO varied enough already?
+        //            case GAMMA_SHADOW:
+        //               return  FileManager.getRandomFilePathVariant(
+        //                PathFinder.getImagePath() ,
+        //                type.getTexturePath(), ".png", false, false) ;
+        //        }
         return type.getTexturePath();
     }
 
-    private void transform() {
-        if (type == SHADE_LIGHT.GAMMA_SHADOW) {
+    private void randomize() {
+        if (type == SHADE_CELL.GAMMA_SHADOW) {
             int rotation = 90 * RandomWizard.getRandomInt(4);
             getContent().setOrigin(Align.center);
             getContent().setRotation(rotation);
@@ -146,13 +152,17 @@ public class ShadeLightCell extends SuperContainer {
     @Override
     public boolean isIgnored() {
         // check cell is visible TODO
-        return super.isIgnored();
+        if (withinCamera != null)
+            return withinCamera;
+        withinCamera = getController().isWithinCamera(this);
+        getController().addCachedPositionActor(this);
+        return withinCamera;
     }
 
     @Override
     public boolean isAlphaFluctuationOn() {
         if (!alphaFluctuationOn) {
-            if (type == SHADE_LIGHT.LIGHT_EMITTER || type == SHADE_LIGHT.GAMMA_LIGHT)
+            if (type == SHADE_CELL.LIGHT_EMITTER || type == SHADE_CELL.GAMMA_LIGHT)
                 return false;
         }
         return alphaFluctuation;
@@ -170,10 +180,10 @@ public class ShadeLightCell extends SuperContainer {
         //        IlluminationRule.
 
         COLOR_THEME colorTheme = null;
-        if (type == SHADE_LIGHT.LIGHT_EMITTER) {
+        if (type == SHADE_CELL.LIGHT_EMITTER) {
             for (Structure sub : Eidolons.game.getStructures()) {
                 if (sub.isLightEmitter()) {
-                    //                    if (sub.getCoordinates().equals(new Coordinates(x,y)))
+                    //                    if (sub.getCoordinates().equals(Coordinates.get(x,y)))
                     colorTheme = new EnumMaster<COLOR_THEME>().
                      retrieveEnumConst(COLOR_THEME.class, sub.getProperty(PROPS.COLOR_THEME, true));
                     if (colorTheme != null)
@@ -200,14 +210,14 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected float getAlphaFluctuationMin() {
-        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+        if (type == SHADE_CELL.GAMMA_SHADOW)
             return baseAlpha / 2;
         return baseAlpha * 3 / 5;
     }
 
     @Override
     protected float getAlphaFluctuationMax() {
-        if (type == SHADE_LIGHT.GAMMA_SHADOW)
+        if (type == SHADE_CELL.GAMMA_SHADOW)
             return baseAlpha * 5 / 6;
         return baseAlpha;
     }
@@ -220,12 +230,7 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     public void act(float delta) {
-        if (!SuperActor.isCullingOff())
-            if (!DungeonScreen.getInstance().controller.
-             isWithinCamera(
-              this
-              //              getX() +3*GridConst.CELL_W, getY() + getHeight(), 2 * getWidth(), 2 * getHeight()
-             )) {
+        if (isIgnored()) {
                 return;
             }
         if (isAnimated()) {
@@ -236,8 +241,8 @@ public class ShadeLightCell extends SuperContainer {
     }
 
     private void rotate(float delta) {
-        if (type == SHADE_LIGHT.LIGHT_EMITTER) {
-            if (getContent().getColor().a>0)
+        if (type == SHADE_CELL.LIGHT_EMITTER) {
+            if (getContent().getColor().a > 0)
                 getContent().setRotation(getContent().getRotation() + delta * 2.5f);
         }
     }

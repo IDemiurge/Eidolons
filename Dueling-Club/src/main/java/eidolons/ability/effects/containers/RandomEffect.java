@@ -55,14 +55,14 @@ public class RandomEffect extends MicroEffect {
     public boolean applyThis() {
         if (effects != null) {
             return (effects.getEffects().get(RandomWizard
-             .getRandomListIndex(effects.getEffects()))).apply(ref);
+             .getRandomIndex(effects.getEffects()))).apply(ref);
         }
         if (abilityList != null) {
             return new AbilityEffect(abilityList.get(RandomWizard
-             .getRandomListIndex(abilityList))).apply(ref);
+             .getRandomIndex(abilityList))).apply(ref);
         }
         String abilName = abilityNames.get(RandomWizard
-         .getRandomListIndex(abilityNames));
+         .getRandomIndex(abilityNames));
         return new AbilityEffect(abilName).apply(ref);
 
         // if (abilityList == null) {
@@ -84,7 +84,7 @@ public class RandomEffect extends MicroEffect {
         // }
         // // TODO targeting???
         // Ability ability = abilityList.getOrCreate(RandomWizard
-        // .getRandomListIndex(abilityList));
+        // .getRandomIndex(abilityList));
         // return ability.activate(ref);
     }
 

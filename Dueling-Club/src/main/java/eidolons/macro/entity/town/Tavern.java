@@ -166,7 +166,7 @@ public class Tavern extends TownPlace {
     private void checkRemoveHeroes() {
         int removeChance = 25;
         while (RandomWizard.chance(removeChance)) {
-            heroes.remove(RandomWizard.getRandomListIndex(heroes));
+            heroes.remove(RandomWizard.getRandomIndex(heroes));
         }
     }
 

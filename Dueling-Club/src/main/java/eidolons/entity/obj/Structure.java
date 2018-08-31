@@ -31,7 +31,7 @@ public class Structure extends BattleFieldObject {
 
     public Structure(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         this(type, owner, game, ref);
-        setCoordinates(new Coordinates(x, y));
+        setCoordinates(Coordinates.get(x, y));
     }
 
     public boolean isWall() {

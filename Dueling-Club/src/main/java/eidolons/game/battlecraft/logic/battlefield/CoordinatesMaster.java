@@ -33,7 +33,7 @@ public class CoordinatesMaster {
             x += x_offset;
             y += y_offset;
         }
-        return new Coordinates(true, x, y);
+        return Coordinates.get(true, x, y);
     }
     public static Coordinates getFarmostCoordinateInDirection(DIRECTION d,
                                                               List<Coordinates> coordinates) {
@@ -185,10 +185,10 @@ public class CoordinatesMaster {
     public static List<Coordinates> getCornerCoordinates(Collection<Coordinates> list) {
         int[] array = getMinMaxCoordinates(list);
         List<Coordinates> corners = new ArrayList<>();
-        corners.add(new Coordinates(array[0], array[2]));
-        corners.add(new Coordinates(array[0], array[3]));
-        corners.add(new Coordinates(array[1], array[3]));
-        corners.add(new Coordinates(array[1], array[2]));
+        corners.add(Coordinates.get(array[0], array[2]));
+        corners.add(Coordinates.get(array[0], array[3]));
+        corners.add(Coordinates.get(array[1], array[3]));
+        corners.add(Coordinates.get(array[1], array[2]));
         return corners;
     }
 
@@ -258,21 +258,21 @@ public class CoordinatesMaster {
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
         for (int x = x1 - 1; x < x2 + 1; x++) {
-            Coordinates c = new Coordinates(x, y1 - 1);
+            Coordinates c = Coordinates.get(x, y1 - 1);
             if (!c.isInvalid()) {
                 list.add(c);
             }
-            Coordinates e = new Coordinates(x, y2 + 1);
+            Coordinates e = Coordinates.get(x, y2 + 1);
             if (!e.isInvalid()) {
                 list.add(e);
             }
         }
         for (int y = y1 - 2; y < y2; y++) {
-            Coordinates e = new Coordinates(x1 - 1, y);
+            Coordinates e = Coordinates.get(x1 - 1, y);
             if (!e.isInvalid()) {
                 list.add(e);
             }
-            Coordinates e2 = new Coordinates(x2 + 1, y);
+            Coordinates e2 = Coordinates.get(x2 + 1, y);
             if (!e2.isInvalid()) {
                 list.add(e2);
             }
@@ -297,7 +297,7 @@ public class CoordinatesMaster {
         List<Coordinates> list = new ArrayList<>();
         for (; x1 > x; x1--) {
             for (int y_ = y1; y_ > y; y_--) {
-                list.add(new Coordinates(x1, y_));
+                list.add(Coordinates.get(x1, y_));
             }
         }
         return list;
@@ -346,7 +346,7 @@ public class CoordinatesMaster {
         int x2 = getMaxX(coordinates);
         int y1 = getMinY(coordinates);
         int y2 = getMaxY(coordinates);
-        return new Coordinates((x1 + x2) / 2, (y1 + y2) / 2);
+        return Coordinates.get((x1 + x2) / 2, (y1 + y2) / 2);
 
     }
 
@@ -424,7 +424,7 @@ public class CoordinatesMaster {
     }
 
     public static Coordinates getRandomCoordinate(Integer cellsX, Integer cellsY) {
-        return new Coordinates(RandomWizard.getRandomInt(cellsX), RandomWizard.getRandomInt(cellsY));
+        return Coordinates.get(RandomWizard.getRandomInt(cellsX), RandomWizard.getRandomInt(cellsY));
     }
 
     public static int getMinDistanceFromEdge(Coordinates c, int dimension, boolean xOrY) {
@@ -464,7 +464,7 @@ public class CoordinatesMaster {
     public static List<Coordinates> getCoordinatesFromString(String textContent) {
         List<Coordinates> list = new ArrayList<>();
         for (String s : ContainerUtils.open(textContent)) {
-            list.add(new Coordinates(true, s));
+            list.add(Coordinates.get(true, s));
         }
         return list;
     }
@@ -486,7 +486,7 @@ public class CoordinatesMaster {
                                                              int offsetX, int offsetY) {
         List<Coordinates> list = new ArrayList<>();
         for (Coordinates c : coordinates) {
-            Coordinates e = new Coordinates(c.x + offsetX, c.y + offsetY);
+            Coordinates e = Coordinates.get(c.x + offsetX, c.y + offsetY);
             if (e.isInvalid()) {
                 continue;
             }

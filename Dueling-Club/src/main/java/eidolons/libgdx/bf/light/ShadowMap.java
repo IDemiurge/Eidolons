@@ -1,5 +1,6 @@
 package eidolons.libgdx.bf.light;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import eidolons.game.core.game.DC_Game;
@@ -14,14 +15,14 @@ import main.system.auxiliary.StrPathBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static eidolons.libgdx.bf.light.ShadowMap.SHADE_LIGHT.*;
+import static eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL.*;
 
 /**
  * Created by JustMe on 8/16/2017.
  */
 public class ShadowMap extends GroupX {
 
-    public static final SHADE_LIGHT[] SHADE_LIGHT_VALUES = {
+    public static final SHADE_CELL[] SHADE_CELL_VALUES = {
      GAMMA_SHADOW,
      GAMMA_LIGHT,
      LIGHT_EMITTER,
@@ -30,7 +31,7 @@ public class ShadowMap extends GroupX {
     };
     private static boolean on = true;
     private GridPanel grid;
-    private Map<SHADE_LIGHT, ShadeLightCell[][]> cells = new LinkedHashMap<>();
+    private Map<SHADE_CELL, ShadeLightCell[][]> cells = new LinkedHashMap<>();
 
     public ShadowMap(GridPanel grid) {
         this.grid = grid;
@@ -42,6 +43,20 @@ public class ShadowMap extends GroupX {
     }
     //TODO act -> fluctuate alpha
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (!on)
+            return;
+        super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public void act(float delta) {
+        if (!on)
+            return;
+        super.act(delta);
+    }
+
     public static void setOn(boolean on) {
         ShadowMap.on = on;
     }
@@ -52,7 +67,7 @@ public class ShadowMap extends GroupX {
 
     private void init() {
         setSize(grid.getWidth(), grid.getHeight());
-        for (SHADE_LIGHT type : SHADE_LIGHT_VALUES) {
+        for (SHADE_CELL type : SHADE_CELL_VALUES) {
             getCells().put(type, new ShadeLightCell[grid.getCols()][grid.getRows()]);
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
@@ -94,7 +109,7 @@ public class ShadowMap extends GroupX {
     }
 
     public void update() {
-        for (SHADE_LIGHT type : SHADE_LIGHT_VALUES) {
+        for (SHADE_CELL type : SHADE_CELL_VALUES) {
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
                     ShadeLightCell cell = getCells(type)[x][y];
@@ -111,7 +126,7 @@ public class ShadowMap extends GroupX {
                         if (type == LIGHT_EMITTER)
                             cell.setColor(1, 1, 1, alpha); //was this the reason for the light-glitches?
                     }
-                    if (type == SHADE_LIGHT.LIGHT_EMITTER)
+                    if (type == SHADE_CELL.LIGHT_EMITTER)
                         cell.adjustPosition(x, y);
                 }
             }
@@ -119,15 +134,15 @@ public class ShadowMap extends GroupX {
         }
     }
 
-    public Map<SHADE_LIGHT, ShadeLightCell[][]> getCells() {
+    public Map<SHADE_CELL, ShadeLightCell[][]> getCells() {
         return cells;
     }
 
-    public ShadeLightCell[][] getCells(SHADE_LIGHT type) {
+    public ShadeLightCell[][] getCells(SHADE_CELL type) {
         return cells.get(type);
     }
 
-    public void setZtoMax(SHADE_LIGHT sub) {
+    public void setZtoMax(SHADE_CELL sub) {
         ShadeLightCell[][] array = getCells().get(sub);
         for (int x = 0; x < array.length; x++) {
             for (int y = 0; y < array[x].length; y++) {
@@ -141,7 +156,7 @@ public class ShadowMap extends GroupX {
 
     }
 
-    public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_LIGHT type) {
+    public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
         switch (type) {
             case GAMMA_SHADOW:
             case GAMMA_LIGHT:
@@ -158,7 +173,7 @@ public class ShadowMap extends GroupX {
         return ALPHA_TEMPLATE.HIGHLIGHT_MAP;
     }
 
-    public enum SHADE_LIGHT {
+    public enum SHADE_CELL {
         GAMMA_SHADOW(0.75f, StrPathBuilder.build("UI", "outlines", "shadows", "shadow neu.png")),
         GAMMA_LIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "light.png")),
         LIGHT_EMITTER(0, StrPathBuilder.build("UI", "outlines", "shadows", "light emitter.png")),
@@ -168,7 +183,7 @@ public class ShadowMap extends GroupX {
         public float defaultAlpha;
         private String texturePath;
 
-        SHADE_LIGHT(float alpha, String texturePath) {
+        SHADE_CELL(float alpha, String texturePath) {
             defaultAlpha = alpha;
             this.texturePath = texturePath;
         }

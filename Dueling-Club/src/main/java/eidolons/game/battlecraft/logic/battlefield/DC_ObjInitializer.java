@@ -95,7 +95,7 @@ public class DC_ObjInitializer {
     }
 
     public static Coordinates getCoordinatesFromObjStringAlt(String item) {
-        return new Coordinates(true, VariableManager.getVar(item));
+        return Coordinates.get(true, VariableManager.getVar(item));
     }
 
     public static Coordinates getCoordinatesFromObjString(String item, boolean alt) {
@@ -103,9 +103,9 @@ public class DC_ObjInitializer {
             return getCoordinatesFromObjStringAlt(item);
         }
         try {
-            return new Coordinates(true, item.split(COORDINATES_OBJ_SEPARATOR)[0]);
+            return Coordinates.get(true, item.split(COORDINATES_OBJ_SEPARATOR)[0]);
         } catch (Exception e) {
-            return new Coordinates(0, 0);
+            return Coordinates.get(0, 0);
         }
     }
 
@@ -469,7 +469,7 @@ public class DC_ObjInitializer {
     public static String convertVarStringToObjCoordinates(String partyData) {
         String reformatted = "";
         for (String subString : ContainerUtils.open(partyData)) {
-            Coordinates c = new Coordinates(VariableManager.getVar(subString));
+            Coordinates c = Coordinates.get(VariableManager.getVar(subString));
             if (c == null) {
                 LogMaster.log(1, subString + " coordinate BLAST!!!");
             }

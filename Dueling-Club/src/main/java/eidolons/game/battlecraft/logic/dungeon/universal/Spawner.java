@@ -149,7 +149,7 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
         if (coordinates == null) {
 //          TODO  getPositioner().getcoo
         }
-        Coordinates c = new Coordinates(coordinates);
+        Coordinates c = Coordinates.get(coordinates);
         FACING_DIRECTION facing_direction = facing == null
          ? getFacingAdjuster().getFacingForEnemy(c)
          : FacingMaster.getFacing(facing);

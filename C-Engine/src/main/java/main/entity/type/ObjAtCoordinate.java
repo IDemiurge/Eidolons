@@ -16,7 +16,7 @@ public class ObjAtCoordinate {
 
     public ObjAtCoordinate(String typeName, String s, OBJ_TYPE TYPE) {
         type = DataManager.getType(typeName, TYPE);
-        coordinates = new Coordinates(true, s);
+        coordinates = Coordinates.get(true, s);
     }
 
     @Override

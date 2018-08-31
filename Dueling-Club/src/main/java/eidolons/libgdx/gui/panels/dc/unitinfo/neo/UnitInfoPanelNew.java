@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Array;
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
@@ -27,7 +26,6 @@ import eidolons.libgdx.gui.panels.headquarters.hero.HqVerticalValueTable;
 import eidolons.libgdx.gui.panels.headquarters.tabs.stats.HqAttributeTable;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
-import main.content.values.properties.G_PROPS;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -157,7 +155,7 @@ public class UnitInfoPanelNew extends HqElement implements Blocking {
          BACKGROUND_NINE_PATCH.TRANSPARENT, WIDTH, HEIGHT))));
         setVisible(false);
 
-        debugAll();
+//        debugAll();
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

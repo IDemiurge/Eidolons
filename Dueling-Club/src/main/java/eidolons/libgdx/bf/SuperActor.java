@@ -43,7 +43,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     private float fluctuatingAlphaPauseDuration;
     private float fluctuatingFullAlphaDuration;
     private float fluctuatingAlphaRandomness, fluctuatingAlphaMin, fluctuatingAlphaMax;
-    private Boolean withinCamera;
+    protected Boolean withinCamera;
 
     public enum BLENDING{
         SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),

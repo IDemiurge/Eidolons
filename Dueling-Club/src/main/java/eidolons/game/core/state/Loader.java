@@ -174,7 +174,7 @@ public class Loader {
                 if (owner == null) {
                     owner = DC_Player.NEUTRAL;
                 }
-                Coordinates c = new Coordinates(params.get(G_PARAMS.POS_X) + "-" + params.get(G_PARAMS.POS_Y));
+                Coordinates c = Coordinates.get(params.get(G_PARAMS.POS_X) + "-" + params.get(G_PARAMS.POS_Y));
                 Obj object = createObj(type, c.x, c.y, owner, game, ref);
 
                 object.getPropMap().putAll(props);

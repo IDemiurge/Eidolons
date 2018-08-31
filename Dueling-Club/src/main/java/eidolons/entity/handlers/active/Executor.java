@@ -424,7 +424,8 @@ public class Executor extends ActiveHandler {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
-        getGame().getManager().applyActionRules(getAction()); if (isResult())
+        getGame().getManager().applyActionRules(getAction());
+        if (isResult())
         try {
             checkPendingAttacksOfOpportunity();
         } catch (Exception e) {

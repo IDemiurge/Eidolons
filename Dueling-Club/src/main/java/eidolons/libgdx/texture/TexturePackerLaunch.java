@@ -48,9 +48,9 @@ public class TexturePackerLaunch {
     };
 
     static String mainFolders[] = {
-//     "gen",
-     "ui",
-//     "main",
+     "gen",
+//     "ui",
+     "main",
     };
 
     static String mainFoldersExceptions[] = {
@@ -58,7 +58,10 @@ public class TexturePackerLaunch {
     };
 
     public static void main(String[] args) {
-//        packImages(mainFolders);
+        if (DialogMaster.confirm("Pack ui?")) {
+                    packImages(mainFolders);
+            return;
+        }
         String[] chosen = packs;
         GuiManager.init();
         if (CoreEngine.isExe() || CoreEngine.isJar())
@@ -90,15 +93,15 @@ public class TexturePackerLaunch {
 
     private static Settings getSetting() {
         Settings settings = new Settings();
-        settings.maxHeight = (int) Math.pow(2, 14);
-        settings.maxWidth = (int) Math.pow(2, 14);
+        settings.maxHeight = (int) Math.pow(2, 13);
+        settings.maxWidth = (int) Math.pow(2, 13);
         settings.atlasExtension = ATLAS_EXTENSION;
         settings.stripWhitespaceY = TRIM;
         settings.stripWhitespaceX = TRIM;
         settings.square = false;
         settings.format = Format.RGBA4444;
         settings.limitMemory = false;
-//        settings.jpegQuality = 0.7f;
+        settings.jpegQuality = 0.9f;
         return settings;
     }
 

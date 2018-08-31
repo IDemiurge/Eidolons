@@ -153,7 +153,7 @@ public class RngFillMaster {
 
         }
 //        for (int i = 0; i < toClear && filledCells.size()>0; ) {
-//            Coordinates c = filledCells.get(RandomWizard.getRandomListIndex(filledCells));
+//            Coordinates c = filledCells.get(RandomWizard.getRandomIndex(filledCells));
     }
 
     private static boolean isClearable(ROOM_CELL cell) {

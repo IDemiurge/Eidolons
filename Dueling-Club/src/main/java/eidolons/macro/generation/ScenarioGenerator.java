@@ -3,8 +3,9 @@ package eidolons.macro.generation;
 import eidolons.content.PROPS;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.generator.LevelGenerator;
-import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
 import eidolons.macro.map.Place;
+import eidolons.system.data.MetaDataUnit;
+import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -20,6 +21,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
+import main.system.datatypes.WeightMap;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ import java.util.stream.Collectors;
 public class ScenarioGenerator {
 
     public static ObjType generateScenarioType(Place place) {
-        if (isRandomGenerationOn()){
+        if (isRandomGenerationOn()) {
             return generateRandomLevelScenario(place);
         }
         //dungeon level
@@ -70,7 +72,7 @@ public class ScenarioGenerator {
             try {
                 mission = FileManager.getRandomFilePath(path);
             } catch (Exception e) {
-                mission = FileManager.getRandomFilePath( StrPathBuilder.build(
+                mission = FileManager.getRandomFilePath(StrPathBuilder.build(
                  PathFinder.getDungeonLevelFolder(), "place dungeons", "default"));
                 main.system.ExceptionMaster.printStackTrace(e);
             }
@@ -100,63 +102,65 @@ public class ScenarioGenerator {
         return true;
     }
 
-    public static ObjType generateRandomLevelScenario(Entity place){
+    public static ObjType generateRandomLevelScenario(Entity place) {
         return generateRandomLevelScenario(100, place);
     }
-        public static ObjType generateRandomLevelScenario(int tries, Entity place){
+
+    public static ObjType generateRandomLevelScenario(int tries, Entity place) {
+        return generateRandomLevelScenario(tries, place.getName(),
+         place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
+    }
+
+    public static ObjType generateRandomLevelScenario(int tries, String scenarioName, String locationTypeName) {
         ObjType templateType =
          DataManager.getRandomType(DC_TYPE.SCENARIOS, "Crawl");
 
-        ObjType scenarioType= new ObjType(
-         NameMaster.getUniqueVersionedName(place.getName(), DC_TYPE.SCENARIOS), templateType);
+        ObjType scenarioType = new ObjType(
+         NameMaster.getUniqueVersionedName(scenarioName, DC_TYPE.SCENARIOS), templateType);
 
 
-        LOCATION_TYPE locationType =  new EnumMaster<LOCATION_TYPE>().
-         retrieveEnumConst(LOCATION_TYPE.class, place.getProperty(MACRO_PROPS.PLACE_SUBTYPE));
+        LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
+         retrieveEnumConst(LOCATION_TYPE.class, locationTypeName);
 
-      int n = 1;
-        List<SUBLEVEL_TYPE > types =
-        createSublevelTypes(n, locationType);
+        int n = 1;
+        List<SUBLEVEL_TYPE> types =
+         createSublevelTypes(n, locationType);
 
-        String levelPaths="";
+        String levelPaths = "";
         if (isUsePregenerated()) {
             for (SUBLEVEL_TYPE type : types) {
                 String path =
                  StrPathBuilder.build(
                   getPath(locationType), choosePregenLevel(type, locationType));
-                levelPaths+=(path)+ ContainerUtils.getContainerSeparator();
+                levelPaths += (path) + ContainerUtils.getContainerSeparator();
             }
         } else
-        for (SUBLEVEL_TYPE type : types) {
+            for (SUBLEVEL_TYPE type : types) {
+                DungeonLevel level = new LevelGenerator(tries).generateLevel(type, locationType);
 
-            DungeonLevel level = new LevelGenerator(tries).generateLevel(type, locationType
-             );
-            int power = 300;//DC_Game.game.getMetaMaster().getPartyManager().getParty().getParamSum(PARAMS.POWER);
-            level.setPowerLevel(power);
-            RngLevelPopulator.populate(level );
+                String stringData = level.toXml();
+                String name = getLevelName(locationType, type) + ".xml";
+                name = NameMaster.getUniqueVersionedFileName(name,
+                 StrPathBuilder.build(PathFinder.getRandomLevelPath(), type.name()));
 
-            String stringData = level.toXml();
-           String  name =getLevelName(locationType, type)+".xml";
-            name =   NameMaster.getUniqueVersionedFileName(name,
-             StrPathBuilder.build( PathFinder.getRandomLevelPath(), type.name()));
+                String path = StrPathBuilder.build(getPath(locationType), name);
+                FileManager.write(stringData, path);
+                levelPaths += (path) + ContainerUtils.getContainerSeparator();
 
-            String path = StrPathBuilder.build(getPath(locationType), name);
-            FileManager.write(stringData,path);
-            levelPaths+=(path)+ ContainerUtils.getContainerSeparator();
-
-            Coordinates.resetCaches();
-        }
+                Coordinates.resetCaches();
+            }
         scenarioType.setProperty(PROPS.SCENARIO_MISSIONS, levelPaths);
-
+        DataManager.addType(scenarioType);
+        scenarioType.setGroup("Random", false);
         return scenarioType;
     }
 
     private static boolean isUsePregenerated() {
-        return false;
+        return true;
     }
 
     public static String getPath(LOCATION_TYPE locationType) {
-    return     StrPathBuilder.build(PathFinder.getRandomLevelPath(),
+        return StrPathBuilder.build(PathFinder.getRandomLevelPath(),
          locationType.name());
     }
 
@@ -167,15 +171,32 @@ public class ScenarioGenerator {
     private static String choosePregenLevel(SUBLEVEL_TYPE type,
                                             LOCATION_TYPE locationType) {
         List<File> levels = FileManager.getFilesFromDirectory(getPath(locationType), false);
-        levels= levels.stream().filter(file -> file.getName()
-         .startsWith(getLevelName(locationType, type))).collect(Collectors.toList()) ;
+        levels = levels.stream().filter(file -> file.getName()
+         .startsWith(getLevelName(locationType, type))).collect(Collectors.toList());
+        if (isSequentialPregenChoice()){
+            int index=getNextSequentialPregenIndex(locationType, type, levels.size());
+            return levels.get(index).getName();
+        } else
         return FileManager.getRandomFile(levels).getName();
     }
 
+    private static int getNextSequentialPregenIndex(LOCATION_TYPE locationType, SUBLEVEL_TYPE type, int size) {
+        MetaDataUnit data = MetaDataUnit.getInstance();
+        WeightMap map = data.getWeightMapValue(META_DATA.LAST_PREGEN_LVL_INDEX_MAP);
+        String val=type+" " +locationType;
+        data.addCount(META_DATA.LAST_PREGEN_LVL_INDEX_MAP, val, size);
+        int index = (int) map.get(val);
+        return index;
+    }
+
+    private static boolean isSequentialPregenChoice() {
+        return false; //TODO options
+    }
+
     private static List<SUBLEVEL_TYPE> createSublevelTypes(int n, LOCATION_TYPE locationType) {
-        List<SUBLEVEL_TYPE> list =    new ArrayList<>() ;
+        List<SUBLEVEL_TYPE> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            switch(i){
+            switch (i) {
                 case 0:
                     list.add(SUBLEVEL_TYPE.COMMON);
                     break;

@@ -334,7 +334,7 @@ public class Player {
         }
 
         int volume = getVolume()*checkAdditionalVolume(sound_type)/100;
-        File file = files.get(RandomWizard.getRandomListIndex(files, new Random()));
+        File file = files.get(RandomWizard.getRandomIndex(files, new Random()));
         try {
             play(file.getAbsolutePath(), volume , getDelay());
         } catch (Exception e) {

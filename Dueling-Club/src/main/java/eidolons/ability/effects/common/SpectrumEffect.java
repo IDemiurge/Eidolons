@@ -18,8 +18,8 @@ import main.system.datatypes.DequeImpl;
 import main.system.math.Formula;
 import main.system.math.PositionMaster;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SpectrumEffect extends DC_Effect {
     protected static final String X = "x";
@@ -38,6 +38,7 @@ public class SpectrumEffect extends DC_Effect {
     int defaultSidePenalty = 1;
     // String reductionForDistance = "(x)/distance+sqrt(x)";
     String reductionForDistance = "-(x)/10*(2+distance*1.5)"; // *sqrt(distance)
+    private Set<Coordinates> cache;
 
     public SpectrumEffect(Effect effects, String rangeFormula, Boolean circular) {
         if (effects != null)
@@ -71,6 +72,10 @@ public class SpectrumEffect extends DC_Effect {
         return ref.getSourceObj() + "'s Spectrum effect with " + effects;
     }
 
+    public void resetCache() {
+        cache = null;
+    }
+
     public boolean applyThis() {
         if (range == null)
             range = new Formula(rangeFormula).getInt(ref);
@@ -96,13 +101,17 @@ public class SpectrumEffect extends DC_Effect {
         } else {
             sidePenalty = 1;
         }
-        List<Coordinates> coordinates = new ArrayList<>(getGame().getVisionMaster().getSightMaster()
-         .getSpectrumCoordinates(
-          range, sidePenalty, backwardRange, bfObj,
-          vision, facing));
+        Set<Coordinates> coordinates = null;
+        if (isCoordinatesCached()) {
+            coordinates = cache;
+        }
+        if (coordinates == null)
+            coordinates =
+             getCoordinates(sidePenalty, backwardRange, facing);
+        cache = coordinates;
 
 
-//        main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
+        //        main.system.auxiliary.log.LogMaster.log(1, this + " applied on " + coordinates);
         // boolean x-ray ++ tall/short/etc
         if (effects == null) {
             initEffects();
@@ -171,6 +180,17 @@ public class SpectrumEffect extends DC_Effect {
             }
         }
         return true;
+    }
+
+    protected boolean isCoordinatesCached() {
+        return false;
+    }
+
+    private Set<Coordinates> getCoordinates(Integer sidePenalty, Integer backwardRange, FACING_DIRECTION facing) {
+        return new HashSet<>(getGame().getVisionMaster().getSightMaster()
+         .getSpectrumCoordinates(
+          range, sidePenalty, backwardRange, bfObj,
+          vision, facing));
     }
 
     // public Object getAppliedEffects() {

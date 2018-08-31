@@ -4,9 +4,12 @@ import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
-import eidolons.libgdx.screens.ScreenData;
 import eidolons.libgdx.screens.SCREEN_TYPE;
+import eidolons.libgdx.screens.ScreenData;
+import main.content.DC_TYPE;
+import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
@@ -37,13 +40,14 @@ public class ScenarioSelectionPanel extends SelectionPanel {
         if (selection == null) {
             return;
         }
-//        new Thread(new Runnable() {
-//            public void run() {
-//                Eidolons.initScenario(new ScenarioMetaMaster(selection.toString()));
-//            }
-//        }, " thread").start();
+
+        scenarioChosen(  DataManager.getType(selection.toString(), DC_TYPE.SCENARIOS));
+
+    }
+
+    protected void scenarioChosen(ObjType type) {
         GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN,
-         new ScreenData(SCREEN_TYPE.BATTLE, selection.toString()
+         new ScreenData(SCREEN_TYPE.BATTLE, type.getName()
          ));
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -28,7 +27,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextureCache {
-    private static final boolean uiAtlasOn = false;
+    private static final boolean atlasesOn = false;
+    private static final boolean uiAtlasesOn = true;
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -40,7 +40,9 @@ public class TextureCache {
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
     private String imagePath;
-    private TextureAtlas textureAtlas;
+    private SmartTextureAtlas uiAtlas;
+    private SmartTextureAtlas mainAtlas;
+    private SmartTextureAtlas genAtlas;
     private Pattern pattern;
 
 
@@ -48,8 +50,15 @@ public class TextureCache {
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
         this.greyscaleCache = new HashMap<>();
-        if (uiAtlasOn)
-            textureAtlas = new SmartTextureAtlas(imagePath + "/ui//ui.txt");
+        if (atlasesOn) {
+            uiAtlas = new SmartTextureAtlas(imagePath + "/ui//ui.txt");
+            mainAtlas = new SmartTextureAtlas(imagePath + "/main//main.txt");
+            genAtlas = new SmartTextureAtlas(imagePath + "/gen//gen.txt");
+        } else {
+            if (uiAtlasesOn) {
+                uiAtlas = new SmartTextureAtlas(imagePath + "/ui//ui.txt");
+            }
+        }
 
         pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
     }
@@ -118,8 +127,20 @@ public class TextureCache {
              (PathUtils.getPathSegments(name), "/");
             name = name.substring(0, name.length() - 1);
 
-            if (uiAtlasOn)
-                region = getInstance().textureAtlas.findRegion(name);
+            if (atlasesOn)
+            {
+                region = getInstance().uiAtlas.findRegion(name);
+                if (region == null) {
+                    region = getInstance().mainAtlas.findRegion(name);
+                }
+                if (region == null) {
+                    region = getInstance().genAtlas.findRegion(name);
+                }
+            } else {
+                if (uiAtlasesOn) {
+                    region = getInstance().uiAtlas.findRegion(name);
+                }
+            }
             if (region != null) {
                 regionCache.put(path, region);
                 counter.incrementAndGet();

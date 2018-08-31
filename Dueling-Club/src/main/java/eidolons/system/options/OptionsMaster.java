@@ -14,6 +14,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.AnimMaster3d;
 import eidolons.libgdx.anims.FloatTextLayer;
+import eidolons.libgdx.bf.light.ShadowMap;
 import eidolons.libgdx.particles.ParticleManager;
 import eidolons.libgdx.anims.std.HitAnim;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
@@ -289,6 +290,9 @@ public class OptionsMaster {
                 break;
             case RESOLUTION:
                 Eidolons.setResolution(value);
+                break;
+            case SHADOW_MAP_OFF:
+                ShadowMap.setOn(bool);
                 break;
         }
     }

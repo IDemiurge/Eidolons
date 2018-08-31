@@ -7,6 +7,7 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.mechanics.ConcealmentRule;
 import eidolons.game.battlecraft.rules.mechanics.IlluminationRule;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -19,6 +20,9 @@ import main.game.bf.Coordinates;
 import main.system.auxiliary.secondary.Bools;
 import main.system.launch.CoreEngine;
 import main.system.math.PositionMaster;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by JustMe on 4/1/2018.
@@ -82,13 +86,21 @@ public class VisionRule {
 
     public void fullReset(Unit... observers) {
         BattleFieldObject[][][] array = master.getGame().getMaster().getObjCells();
+       Set<Unit> filteredObserver = new HashSet<>();
+        for (Unit observer : observers) {
+            if (isObserverResetRequired(observer))
+                filteredObserver.add(observer);
+        }
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
-                BattleFieldObject[] objects = master.getGame().getMaster().getObjects(i, j, true);
-                DC_Cell cell = master.getGame().getCellByCoordinate(new Coordinates(i, j));
+                Set<BattleFieldObject> objects =
+                 master.getGame().getMaster().getObjectsOnCoordinate(
+                  Coordinates.get(i, j), null );
+//                 master.getGame().getMaster().getObjects(i, j, true);
+                DC_Cell cell = master.getGame().getCellByCoordinate(Coordinates.get(i, j));
                 if (cell == null)
                     continue;
-                for (Unit observer : observers) {
+                for (Unit observer : filteredObserver) {
                     if (!isResetRequired(observer, cell))
                         continue;
                     if (isGammaResetRequired(observer, cell)) {
@@ -116,6 +128,26 @@ public class VisionRule {
 
     }
 
+    private boolean isObserverResetRequired(Unit observer) {
+        if (observer.isDead())
+            return false;
+        if (observer.isPlayerCharacter())
+            return true;
+        if (observer.isUnconscious())
+            return false;
+        else if (getPlayerUnseenMode()) {
+            return false;
+        }
+        double dst = PositionMaster.getExactDistance(observer, Eidolons.getMainHero());
+        if (
+//         dst >          Eidolons.getMainHero().getMaxVisionDistance()&&
+          dst > observer.getMaxVisionDistance()) {
+            return false;
+        }
+
+        return true;
+    }
+
     private boolean isGammaResetRequired(Unit observer, DC_Obj sub) {
         return true;
     }
@@ -135,8 +167,13 @@ public class VisionRule {
         //is hostile
         if (observer.isDead())
             return false;
-        if (observer.isPlayerCharacter())
+        if (observer.isPlayerCharacter()) {
+            if (PositionMaster.getExactDistance(observer, cell) >
+            1+ observer.getMaxVisionDistance()) {
+                return false;
+            }
             return true;
+        }
         if (observer.isUnconscious())
             return false;
         else if (getPlayerUnseenMode()) {

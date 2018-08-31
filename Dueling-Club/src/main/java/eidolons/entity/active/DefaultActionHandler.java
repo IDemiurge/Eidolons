@@ -82,7 +82,7 @@ public class DefaultActionHandler {
             return false;
         if (source.isAiControlled())
             return false;
-        Coordinates c = new Coordinates(gridX, gridY);
+        Coordinates c = Coordinates.get(gridX, gridY);
 
         if (turn) {
             return turnToMotion(source, c);

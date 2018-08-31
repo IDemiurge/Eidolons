@@ -30,10 +30,10 @@ import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.game.bf.MovementManager;
+import main.game.bf.directions.DirectionMaster;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.game.bf.directions.UNIT_DIRECTION;
-import main.game.bf.directions.DirectionMaster;
-import main.game.bf.MovementManager;
 import main.game.logic.action.context.Context;
 import main.game.logic.event.Event;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
@@ -201,7 +201,7 @@ public class DC_MovementManager implements MovementManager {
 
 
     public boolean canMove(Obj obj, Coordinates c) {
-        return game.getRules().getStackingRule().canBeMovedOnto(obj,c);
+        return game.getRules().getStackingRule().canBeMovedOnto(obj, c);
     }
 
     @Override
@@ -212,14 +212,15 @@ public class DC_MovementManager implements MovementManager {
 
     @Override
     public boolean move(Obj obj, Coordinates c, boolean free, MOVE_MODIFIER mod, Ref ref) {
-        return move((Unit) obj,   getGrid().getCell(c), free,  mod, ref);
+        return move((Unit) obj, getGrid().getCell(c), free, mod, ref);
     }
 
     @Override
     public boolean move(Obj obj, Coordinates c) {
-        return move((Unit) obj,   getGrid().getCell(c), false,  MOVE_MODIFIER.NONE, obj.getRef());
+        return move((Unit) obj, getGrid().getCell(c), false, MOVE_MODIFIER.NONE, obj.getRef());
     }
-    public boolean move(Unit obj, DC_Cell cell, boolean free,   MOVE_MODIFIER mod,
+
+    public boolean move(Unit obj, DC_Cell cell, boolean free, MOVE_MODIFIER mod,
                         Ref ref) {
         Ref REF = new Ref(obj.getGame());
         REF.setTarget(cell.getId());
@@ -255,9 +256,11 @@ public class DC_MovementManager implements MovementManager {
             return false;
         }
         if (game.getObjectByCoordinate(c) instanceof BattleFieldObject) {
-            if (((BattleFieldObject) game.getObjectByCoordinate(c)).isWall()) {
-                return false;
-            }
+            BattleFieldObject bfObj = (BattleFieldObject) game.getObjectByCoordinate(c);
+            if (!bfObj.isDead())
+                if (bfObj.isWall()) {
+                    return false;
+                }
         }
 
         if (!game.getRules().getEngagedRule().unitMoved(obj, c.x, c.y)) {

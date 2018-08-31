@@ -15,6 +15,7 @@ import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats.LEVEL_STAT;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
+import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
@@ -216,6 +217,10 @@ public class LevelValidator {
         float h = model.getCurrentHeight();
 
         float sizeGap = 0.2f;
+        if (model.getData().getSublevelType()== SUBLEVEL_TYPE.BOSS)
+            sizeGap=0.5f;
+        if (model.getData().getSublevelType()== SUBLEVEL_TYPE.PRE_BOSS)
+            sizeGap=0.35f;
         if (h / maxDimension - 1 >= sizeGap)
             return false;
         if (w / maxDimension - 1 >= sizeGap)

@@ -126,7 +126,7 @@ public class Weapon3dAnim extends ActionAnim {
          a.isThrow() ||
           a.getActiveWeapon() != getActive().getActiveWeapon());
         Array<AtlasRegion> newRegions = AnimMaster3d.getRegions(
-         WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomListIndex(subactions))
+         WEAPON_ANIM_CASE.NORMAL, subactions.get(RandomWizard.getRandomIndex(subactions))
          , getProjection().bool);
 
         newRegions.removeRange(0, newRegions.size / 2);
