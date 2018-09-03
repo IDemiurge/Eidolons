@@ -1,5 +1,6 @@
 package eidolons.game.battlecraft.ai;
 
+import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.elements.actions.Action;
@@ -13,12 +14,15 @@ import eidolons.game.battlecraft.ai.tools.priority.DC_PriorityManager;
 import eidolons.game.battlecraft.ai.tools.priority.PriorityManager;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.PLAYER_AI_TYPE;
+import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
+import main.system.SortMaster;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
 import main.system.launch.CoreEngine;
@@ -29,7 +33,7 @@ import java.util.List;
 
 public class AI_Manager extends AiMaster {
     public static final boolean BRUTE_AI_MODE = false;
-    public static final boolean DEV_MODE =false ;
+    public static final boolean DEV_MODE = false;
     private static boolean running;
     private static boolean off;
     private static List<DC_ActiveObj> brokenActions = new ArrayList<>();
@@ -40,7 +44,7 @@ public class AI_Manager extends AiMaster {
 
     public AI_Manager(DC_Game game) {
         super(game);
-//        logic = initLogic();
+        //        logic = initLogic();
         priorityManager = DC_PriorityManager.init(this);
     }
 
@@ -154,7 +158,7 @@ public class AI_Manager extends AiMaster {
                 getUnitAI().getUsedActions().add(action.getActive());
                 getMessageBuilder().append("Task: " + action.getTaskDescription());
                 if (!CoreEngine.isGraphicsOff()) {
-                    if (game.isDebugMode()  )
+                    if (game.isDebugMode())
                         FloatingTextMaster.getInstance().
                          createFloatingText(TEXT_CASES.BATTLE_COMMENT,
                           getMessageBuilder().toString(), getUnit());
@@ -236,7 +240,7 @@ public class AI_Manager extends AiMaster {
                     //wait until clear that they're unassigned?
                 }
             }
-// join
+        // join
         for (GroupAI group : groups)
             for (Unit unit : group.getMembers()) {
                 double distance = PositionMaster.getExactDistance(
@@ -249,19 +253,54 @@ public class AI_Manager extends AiMaster {
             }
     }
 
+    private void initGroups() {
+        groups = new ArrayList<>();
+        for (LevelBlock block : game.getDungeonMaster().getDungeonLevel().getBlocks()) {
+            for (List<ObjAtCoordinate> list : block.getUnitGroups().keySet()) {
+                GroupAI group = new GroupAI();
+                group.setType(block.getUnitGroups().get(list));
+                for (ObjAtCoordinate at : list) {
+                    Unit member = game.getUnits().
+                     stream().filter(u -> u.getCoordinates().equals(at.getCoordinates())
+                     && u.getName().equals(at.getType().getName())).findFirst().orElse(null);
+                    if (member == null) {
+                        continue;
+                    }
+                    group.add(member);
+
+                }
+                Unit leader = group.getMembers().stream().sorted(SortMaster.getObjSorterByExpression(
+                 unit -> unit.getIntParam(PARAMS.POWER)
+                )).findFirst().get();
+                group.setLeader(leader);
+                groups.add(group);
+            }
+        }
+    return;
+    }
+
     private void resetGroups() {
+        if (isAutoGroups()) {
+            if (groups == null)
+                initGroups();
+            return;
+        }
         //by proximity... not all mobs will be part of a group
 
-//        if (groups!=null ){
-//            if (!groups.isEmpty()) {
-//            }
-//        }
+        //        if (groups!=null ){
+        //            if (!groups.isEmpty()) {
+        //            }
+        //        }
         if (groups == null)
             groups = new ArrayList<>();
 
         for (Object sub : game.getBattleMaster().getPlayerManager().getPlayers()) {
             DC_Player player = (DC_Player) sub;
             for (Unit unit : player.getControlledUnits_()) {
+                //if (unit.getAI().getGroupAI()!=null )
+                //    continue;
+
+
                 GroupAI group = unit.getAI().getGroup();
                 if (group == null)
                     group = new GroupAI(unit);
@@ -289,6 +328,10 @@ public class AI_Manager extends AiMaster {
             return;
         else
             return;
+    }
+
+    private boolean isAutoGroups() {
+        return game.getDungeonMaster().getDungeonLevel() != null;
     }
 
     public Action getDefaultAction(Unit activeUnit) {

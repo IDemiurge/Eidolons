@@ -185,10 +185,10 @@ public class CoordinatesMaster {
     public static List<Coordinates> getCornerCoordinates(Collection<Coordinates> list) {
         int[] array = getMinMaxCoordinates(list);
         List<Coordinates> corners = new ArrayList<>();
-        corners.add(Coordinates.get(array[0], array[2]));
-        corners.add(Coordinates.get(array[0], array[3]));
-        corners.add(Coordinates.get(array[1], array[3]));
-        corners.add(Coordinates.get(array[1], array[2]));
+        corners.add(Coordinates.get(true, array[0], array[2]));
+        corners.add(Coordinates.get(true, array[0], array[3]));
+        corners.add(Coordinates.get(true, array[1], array[3]));
+        corners.add(Coordinates.get(true, array[1], array[2]));
         return corners;
     }
 
@@ -546,6 +546,22 @@ public class CoordinatesMaster {
 
     public static Coordinates getUpperLeftCornerCoordinates(Set<Coordinates> coordinatesList) {
         return getCornerCoordinates(coordinatesList).get(0);
+    }
+
+    public static float getMinDistanceBetweenGroups(Collection<Coordinates> list, Collection<Coordinates> list2,
+                                                    float requiredMin) {
+        float min=Integer.MAX_VALUE;
+        for (Coordinates c : list) {
+            for (Coordinates c2 : list2) {
+                double dst = c.dst_(c2);
+                if (dst<min)
+                    min= (float) dst;
+                if (dst<requiredMin)
+                    return (float) dst;
+            }
+
+        }
+        return min;
     }
 
 

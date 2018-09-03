@@ -47,21 +47,20 @@ public class RngOverlayManager {
                     continue;
                 }
                 DIRECTION direction = getDirection(obj.getCoordinates(),
-                 level.getBlockForCoordinate(obj.getCoordinates()));
-                if (direction == null)
-                    continue;
+                block);
 
                 Pair<String, DIRECTION> pair = new ImmutablePair<>(obj.getType().getName(),
                  direction);
                 if (map.get(obj.getCoordinates()) != null)
                     while (map.get(obj.getCoordinates()).contains(pair)) {
                         direction = getDirection(obj.getCoordinates(),
-                         level.getBlockForCoordinate(obj.getCoordinates()));
+                         block);
                         pair = new ImmutablePair<>(obj.getType().getName(),
                          direction);
                     }
                 main.system.auxiliary.log.LogMaster.log(1, "Direction chosen: " + pair);
-                MapMaster.addToListMap(map, obj.getCoordinates(), pair);
+                if (direction != null)
+                    MapMaster.addToListMap(map, obj.getCoordinates(), pair);
             }
         }
         level.setDirectionMapData(getDirectionMapData());
@@ -80,8 +79,12 @@ public class RngOverlayManager {
             WeightMap<DIRECTION> map = new WeightMap<>(
              ContainerUtils.constructContainer(Arrays.stream(DIRECTION.clockwise).
               map(direction -> direction + StringMaster.wrapInParenthesis(
+
                TilesMaster.getInSpectrum(c, block.getTileMap(), true, direction) + ""))
+              .filter(s-> !StringMaster.isEmptyOrZero(s))
               .collect(Collectors.toList())), DIRECTION.class);
+
+
             return map.getRandomByWeight();
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);

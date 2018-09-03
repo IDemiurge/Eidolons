@@ -64,22 +64,45 @@ public class ClearShotCondition extends MicroCondition {
         eidolons.ability.conditions.special.ClearShotCondition.unitTestBreakMode = unitTestBreakMode;
     }
 
+    public static final boolean isOverlayingWithinSightAngle(BattleFieldObject target,
+                                                             BattleFieldObject source) {
+        return isOverlayingWithinSightAngle(target.getCoordinates(), target.getDirection(), source.getCoordinates());
+
+    }
+
+    //    ###
+    //    ##D
+    //    ###U
+    //== 45 == OK
+    //    D##
+    //    ###
+    //    ###U
+    //== 45 == NO TODO could customize 90 angle!
+    public static final boolean isOverlayingWithinSightAngle(Coordinates c, DIRECTION d, Coordinates c1) {
+        DIRECTION d1 = DirectionMaster.getRelativeDirection(c, c1);
+        if (d != null) {
+            if ((Math.abs(d.getDegrees() - d1.getDegrees()) + 360) % 360 <= 90)
+                return true;
+            if (Math.abs(d.getDegrees() % 360 - d1.getDegrees() % 360) <= 90)
+                return true;
+        }
+        return false;
+    }
 
     private boolean isBlocking(DC_Obj source, DC_Obj target,
                                int x_, int y_) {
         for (BattleFieldObject obj :
          target.getGame().getMaster().getObjectsOnCoordinate(
-          Coordinates.get(x_, y_), null ))
-//         target.getGame().getMaster().getObjects(x_, y_))
+          Coordinates.get(x_, y_), null))
+        //         target.getGame().getMaster().getObjects(x_, y_))
         {
             if (!obj.isTransparent()) {
                 if (obj.isObstructing(source, target))
                     return true;
             }
         }
-        return checkWallObstruction(source, target,Coordinates.get(x_, y_));
+        return checkWallObstruction(source, target, Coordinates.get(x_, y_));
     }
-
 
     @Override
     public boolean check(Ref ref) {
@@ -102,15 +125,9 @@ public class ClearShotCondition extends MicroCondition {
 
         if (target.isOverlaying()) {
             if (target instanceof BattleFieldObject) {
-                DIRECTION d = ((BattleFieldObject) target).getDirection();
-                DIRECTION d1 = DirectionMaster.getRelativeDirection(target, source);
-                if (d != null) {
-                    if (d1 != d) {
-                        if (Math.abs(d.getDegrees() - d1.getDegrees()) > 90)
-                            return false;
-                    }
+                if (isOverlayingWithinSightAngle((BattleFieldObject) target, source))
+                    return false;
 
-                }
             }
         }
         wallObstruction = false;
@@ -118,8 +135,8 @@ public class ClearShotCondition extends MicroCondition {
         boolean toCheck = true;
         boolean result = true;
         if (PositionMaster.inLine(c1, c2)) {
-//            result = source.getGame().getVisionMaster().getVisionController().getDiagObstructMapper().
-//             get(source, target);
+            //            result = source.getGame().getVisionMaster().getVisionController().getDiagObstructMapper().
+            //             get(source, target);
 
             result = PositionMaster.noObstaclesInLine(source, target, game
              .getGrid());
@@ -281,7 +298,7 @@ public class ClearShotCondition extends MicroCondition {
             }
             boolean left = false;
             if (source.getY() != c.y) {
-//                PositionMaster.isToTheLeft(Coordinates.get())
+                //                PositionMaster.isToTheLeft(Coordinates.get())
                 left = (float) Math.abs(source.getX() - c.x) / Math.abs(source.getY() - c.y) <
                  getAngle(source.getCoordinates(), target.getCoordinates());
 

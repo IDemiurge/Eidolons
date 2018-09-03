@@ -1,6 +1,6 @@
 package eidolons.game.module.dungeoncrawl.generator.init;
 
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.SPAWN_GROUP_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
 import main.system.auxiliary.RandomWizard;
@@ -633,7 +633,7 @@ public class RngUnitProvider {
          chain(VENOMOUS_HAIRY_SPIDER, 10);
     }
 
-    public static WeightMap<String> getWeightMap(UNIT_GROUP group, SPAWN_GROUP_TYPE groupType
+    public static WeightMap<String> getWeightMap(UNIT_GROUP group, UNIT_GROUP_TYPE groupType
      , boolean alt) {
         Boolean elite_boss_regular = null;
         switch (groupType) {

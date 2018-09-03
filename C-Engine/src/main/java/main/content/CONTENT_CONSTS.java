@@ -16,7 +16,9 @@ public class CONTENT_CONSTS {
             public String getSuffix() {
                 return " v";
             }
-        };
+        }
+        , ORANGE,PINK,CRIMSON,CYAN,
+        ;
 
         COLOR_THEME() {
             // path suffixes

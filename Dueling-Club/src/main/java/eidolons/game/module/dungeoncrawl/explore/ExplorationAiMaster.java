@@ -85,18 +85,19 @@ public class ExplorationAiMaster extends ExplorationHandler {
     }
 
     private boolean tryMoveAi(UnitAI ai) {
+        ActionSequence orders = ai.getStandingOrders();
         if (ai.getStandingOrders() == null) {
-            ai.setStandingOrders(getOrders(ai));
+            ai.setStandingOrders(orders =getOrders(ai));
         }
-        if (ai.getStandingOrders() == null) {
-            return false;
+        if (orders == null) {
+            return false; //TODO concurrency fail - someone set orders outside this thread!
         }
-        Double cost = ai.getStandingOrders().getCurrentAction().getActive().
+        Double cost = orders.getCurrentAction().getActive().
          getParamDouble(PARAMS.AP_COST);
         int timePassed = master.getTimeMaster().getTimePassedSinceAiActions(ai);
         //ai.getExplorationTimePassed()
         if (timePassed >= Math.round(cost *
-         ExplorationTimeMaster.secondsPerAP)) {
+         ExplorationTimeMaster.secondsPerAP * ai.getExplorationMoveSpeedMod())) {
             aiMoves(ai);
             return true;
         }

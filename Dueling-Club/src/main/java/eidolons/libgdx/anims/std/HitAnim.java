@@ -117,14 +117,6 @@ public class HitAnim extends ActionAnim {
         HitAnim.bloodOff = bloodOff;
     }
 
-    public static String getHitSpritesPath() {
-        if (spritesPath == null)
-            spritesPath = StrPathBuilder.build("main",
-             "sprites",
-             "hit");
-        return spritesPath;
-    }
-
     public static void setDisplacementOn(boolean displacementOn) {
         HitAnim.displacementOn = displacementOn;
     }
@@ -138,7 +130,7 @@ public class HitAnim extends ActionAnim {
         sprites.clear();
         spriteType = getSpriteType((BattleFieldObject) getRef().getTargetObj());
         hitType = getHitType(getActive(), spriteType);
-        String spritePath = StrPathBuilder.build(getHitSpritesPath(), spriteType.name(), hitType.spritePath)
+        String spritePath = StrPathBuilder.build(PathFinder.getHitSpritesPath(), spriteType.name(), hitType.spritePath)
          + ".txt";
 //         + ".png";
 //        SpriteAnimation sprite = SpriteAnimationFactory.getSpriteAnimation(spritePath);

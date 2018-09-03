@@ -327,7 +327,7 @@ public class DC_KeyManager
 
     public static char getCorrectedWsad(FACING_DIRECTION facing,
                                   FACING_DIRECTION moveDirection) {
-        int degrees = (moveDirection.getDirection().getDegrees()
+        int degrees =  (360+moveDirection.getDirection().getDegrees()
          - facing.getDirection().getDegrees() + 90) % 360;
         switch (degrees) {
             case 0:

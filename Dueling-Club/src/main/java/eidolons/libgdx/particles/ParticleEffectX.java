@@ -60,7 +60,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     public static  boolean isEmitterAtlasesOn() {
-        return false;//!CoreEngine.isFastMode();
+        return true;//!CoreEngine.isFastMode();
     }
 
     private TextureAtlas getEmitterAtlas() {

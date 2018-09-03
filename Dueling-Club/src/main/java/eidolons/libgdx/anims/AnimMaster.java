@@ -143,7 +143,7 @@ public class AnimMaster extends Group {
 
     public void bindEvents() {
         DC_SoundMaster.bindEvents();
-
+        floatTextLayer.bindEvents();
         GuiEventManager.bind(GuiEventType.MOUSE_HOVER, p -> {
             if (!isOn()) {
                 return;

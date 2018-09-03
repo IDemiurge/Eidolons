@@ -122,7 +122,11 @@ public class TileMapper {
         return toASCII_String(cells, nullToX, OtoDot, false);
     }
 
-    public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
+    public static String toASCII_String(TileMap map, boolean nullToX
+     , boolean OtoDot, boolean overrideBlock) {
+        return toASCII_String(getCells(map), nullToX, OtoDot, overrideBlock);
+    }
+        public static String toASCII_String(ROOM_CELL[][] cells, boolean nullToX
      , boolean OtoDot, boolean overrideBlock) {
         if (!overrideBlock)
             if (loggingOff)
@@ -183,7 +187,7 @@ public class TileMapper {
                 for (int j = 0; j < column.length; j++) {
                     String symbol = column[j];
                     ROOM_CELL cell = ROOM_CELL.getBySymbol(symbol);
-                    if (Pregenerator.TEST_MODE) {
+                    if (Pregenerator.TEST_MODE || !Pregenerator.isRunning()) {
                         if (i == room.getWidth() / 2)
                             if (j == room.getHeight() / 2) {
                                 if (ZoneCreator.TEST_MODE)
@@ -220,6 +224,7 @@ public class TileMapper {
 
     public TileMap joinTileMaps() {
         model.offsetCoordinates();
+//        model.assignAdditionalCoordinates();
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         for (LevelBlock block : model.getBlocks().values()) {
             for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
@@ -229,10 +234,7 @@ public class TileMapper {
                  block.getTileMap().getMap().get(coordinates));
             }
         }
-        for (Coordinates coordinates : model.getAdditionalCells().keySet()) {
-            map.put(coordinates, model.getAdditionalCells().get(coordinates));
-            model.getCells()[coordinates.x][coordinates.y] = model.getAdditionalCells().get(coordinates);
-        }
+
         return new TileMap(map);
     }
 

@@ -49,7 +49,7 @@ public class Coordinates {
         this.x = x;
         this.y = y;
         if (!allowinvalid) {
-            checkInvalid( );
+            checkInvalid();
         }
         if (flipX) {
             this.x = GuiManager.getCurrentLevelCellsX() - this.x;
@@ -152,10 +152,7 @@ public class Coordinates {
 
     }
 
-    protected   void checkInvalid() {
-        Coordinates.checkInvalid(this);
-    }
-        protected static boolean checkInvalid(Coordinates c) {
+    protected static boolean checkInvalid(Coordinates c) {
         if (c.x >= GuiManager.getCurrentLevelCellsX()) {
             c.x = GuiManager.getCurrentLevelCellsX() - 1;
             c.setInvalid(true);
@@ -196,7 +193,7 @@ public class Coordinates {
     }
 
     public static Coordinates get(double x, double y) {
-        return get((int) x, (int) y);
+        return get(true, (int) x, (int) y);
     }
 
     public static Coordinates get(boolean custom, String s) {
@@ -204,21 +201,21 @@ public class Coordinates {
          .getInteger(splitCoordinateString(s)[1].trim()));
     }
 
-    public static Coordinates get(int x, int y) {
-        return get(false, x, y);
+    public static Coordinates get(boolean allowInvalid, int x, int y) {
+        return new Coordinates(allowInvalid, x, y);
     }
 
-    public static Coordinates get(boolean allowInvalid, int x, int y) {
-        Coordinates c =
-         //         null ;
-         //        if (coordinates!=null )
-         //            c =
-         coordinates[x][y];
+    public static Coordinates get(int x, int y) {
+        Coordinates c = coordinates[x][y];
         if (c == null) {
-            c = new Coordinates(allowInvalid, x, y);
+            c = new Coordinates(true, x, y);
             coordinates[x][y] = c;
         }
         return c;
+    }
+
+    protected void checkInvalid() {
+        Coordinates.checkInvalid(this);
     }
 
     public int hashCode() {
@@ -228,15 +225,15 @@ public class Coordinates {
 
     @Override
     public boolean equals(Object arg0) {
-//        if (arg0 instanceof ZCoordinates) {
-//            if (this instanceof ZCoordinates) {
-//                ZCoordinates z1 = (ZCoordinates) this;
-//                ZCoordinates z2 = (ZCoordinates) arg0;
-//                if (z1.z != z2.z) {
-//                    return false;
-//                }
-//            }
-//        }
+        //        if (arg0 instanceof ZCoordinates) {
+        //            if (this instanceof ZCoordinates) {
+        //                ZCoordinates z1 = (ZCoordinates) this;
+        //                ZCoordinates z2 = (ZCoordinates) arg0;
+        //                if (z1.z != z2.z) {
+        //                    return false;
+        //                }
+        //            }
+        //        }
         if (arg0 instanceof Coordinates) {
             Coordinates c = (Coordinates) arg0;
             return c.x == x && c.y == y && c.z == z;
@@ -251,7 +248,13 @@ public class Coordinates {
          ;
     }
 
-    public Coordinates invert() {
+    public Coordinates swap() {
+        int n = x;
+        x=y;
+        y = n;
+        return this;
+    }
+        public Coordinates invert() {
         if (h == 0) {
             h = GuiManager.getBF_CompDisplayedCellsY();
         }
@@ -357,13 +360,13 @@ public class Coordinates {
                 list.add(new Coordinates(true, c.x, c.y - 1));
             } else {
                 if (!checkInvalid(c.x + 1, c.y))
-                    list.add(Coordinates.get(true, c.x + 1, c.y));
+                    list.add(Coordinates.get(c.x + 1, c.y));
                 if (!checkInvalid(c.x - 1, c.y))
-                    list.add(Coordinates.get(true, c.x - 1, c.y));
+                    list.add(Coordinates.get(c.x - 1, c.y));
                 if (!checkInvalid(c.x, c.y + 1))
-                    list.add(Coordinates.get(true, c.x, c.y + 1));
+                    list.add(Coordinates.get(c.x, c.y + 1));
                 if (!checkInvalid(c.x, c.y - 1))
-                    list.add(Coordinates.get(true, c.x, c.y - 1));
+                    list.add(Coordinates.get(c.x, c.y - 1));
             }
 
         } else {
@@ -374,16 +377,16 @@ public class Coordinates {
                 list.add(new Coordinates(true, c.x + 1, c.y + 1));
             } else {
                 if (!checkInvalid(c.x + 1, c.y - 1))
-                    list.add(Coordinates.get(true, c.x + 1, c.y - 1));
+                    list.add(Coordinates.get(c.x + 1, c.y - 1));
 
                 if (!checkInvalid(c.x + 1, c.y + 1))
-                    list.add(Coordinates.get(true, c.x + 1, c.y + 1));
+                    list.add(Coordinates.get(c.x + 1, c.y + 1));
 
                 if (!checkInvalid(c.x - 1, c.y + 1))
-                    list.add(Coordinates.get(true, c.x - 1, c.y + 1));
+                    list.add(Coordinates.get(c.x - 1, c.y + 1));
 
                 if (!checkInvalid(c.x - 1, c.y - 1))
-                    list.add(Coordinates.get(true, c.x - 1, c.y - 1));
+                    list.add(Coordinates.get(c.x - 1, c.y - 1));
             }
         }
         return list;
@@ -526,11 +529,13 @@ public class Coordinates {
     }
 
     public int dst(Coordinates c) {
-        return (int) Math.round(dst_(c));
+        return PositionMaster.getDistance(
+         this, c);
     }
 
     public double dst_(Coordinates c) {
-        return Math.sqrt((x - c.x) * (x - c.x) + (y - c.y) * (y - c.y));
+        return PositionMaster.getExactDistance(
+         this, c);
     }
 
     public Coordinates offset(Coordinates coordinates) {

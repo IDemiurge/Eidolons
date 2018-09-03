@@ -10,8 +10,8 @@ public enum DIRECTION {
     RIGHT(false, 360, false, true, null),
     UP_LEFT(true, 135, true, false, false),
     UP_RIGHT(true, 45, true, true, false),
-    DOWN_RIGHT(true, 225, true, true, true),
-    DOWN_LEFT(true, 315, true, false, true),;
+    DOWN_RIGHT(true, 315, true, true, true),
+    DOWN_LEFT(true, 225, true, false, true),;
 
     public static final DIRECTION[] values = DIRECTION.values();
     public static final DIRECTION[] clockwise = {

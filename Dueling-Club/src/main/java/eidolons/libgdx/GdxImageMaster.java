@@ -59,14 +59,20 @@ public class GdxImageMaster extends LwjglApplication {
         new GdxImageMaster();
     }
 
-    public static Texture flip(String path, boolean x, boolean y, boolean write) {
+    public static Texture flip(String path, boolean x, boolean y, boolean write ) {
+        return flip(path, x, y, write, null);
+    }
+        public static Texture flip(String path, boolean x, boolean y, boolean write,
+        String newPath) {
         Texture texture = TextureCache.getOrCreate(path);
-        String suffix = "";
+        if (newPath == null) {
+            String suffix = "";
         if (x)
             suffix += " flip x";
         if (y)
             suffix += " flip y";
-        String newPath = StringMaster.cropFormat(path) + " " + suffix + StringMaster.getFormat(path);
+         newPath = StringMaster.cropFormat(path) + " " + suffix + StringMaster.getFormat(path);
+        }
         FileHandle handle = new FileHandle(
          PathFinder.getImagePath() +
           newPath);

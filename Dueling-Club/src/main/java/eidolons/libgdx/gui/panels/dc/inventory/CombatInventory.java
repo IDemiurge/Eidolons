@@ -11,6 +11,9 @@ import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
+import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -24,7 +27,6 @@ import main.system.GuiEventType;
 import main.system.graphics.FontMaster.FONT;
 import main.system.threading.WaitMaster;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 import static main.system.GuiEventType.SHOW_INVENTORY;
 import static main.system.GuiEventType.UPDATE_INVENTORY_PANEL;
 
@@ -40,7 +42,9 @@ public class CombatInventory extends TablePanel implements Blocking {
     private SymbolButton undoButton;
 
     public CombatInventory() {
-        TextureRegion textureRegion = new TextureRegion(getOrCreateR("UI/components/inventory_background.png"));
+        TextureRegion textureRegion = new TextureRegion(
+         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
+          570, 835));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 
@@ -51,9 +55,9 @@ public class CombatInventory extends TablePanel implements Blocking {
 
         final TablePanel<Actor> info = new TablePanel<>();
         addElement(info).pad(0, 20, 20, 20);
-        slotsText =info.addElement(null).left() ;
-        weightText =info.addElement(null).center() ;
-        goldText =info.addElement(null).right() ;
+        slotsText = info.addElement(null).left();
+        weightText = info.addElement(null).center();
+        goldText = info.addElement(null).right();
         info.setBackground(NinePatchFactory.getLightPanelDrawable());
         row();
         final TablePanel<Actor> lower = new TablePanel<>();
@@ -61,15 +65,15 @@ public class CombatInventory extends TablePanel implements Blocking {
 
         actionPointsText = lower.addElement(null).left();
 
-//        lower.addElement(
-         undoButton = new SymbolButton(STD_BUTTON.UNDO)
-//     TODO            ).fill(false).expand(0, 0).right()
-//                .pad(20, 0, 20, 0)
+        //        lower.addElement(
+        undoButton = new SymbolButton(STD_BUTTON.UNDO)
+        //     TODO            ).fill(false).expand(0, 0).right()
+        //                .pad(20, 0, 20, 0)
         ;
 
         lower.addElement(cancelButton = new SymbolButton(STD_BUTTON.CANCEL))
-                .fill(false).expand(0, 0).right()
-                .pad(20, 10, 20, 0);
+         .fill(false).expand(0, 0).right()
+         .pad(20, 10, 20, 0);
 
         lower.add(doneButton = new SymbolButton(STD_BUTTON.OK))
          .fill(false).expand(0, 0).right()
@@ -84,6 +88,7 @@ public class CombatInventory extends TablePanel implements Blocking {
     public StageWithClosable getStageWithClosable() {
         return (StageWithClosable) getStage();
     }
+
     private void bindListeners() {
         addListener(new InputListener() {
             @Override
@@ -104,7 +109,7 @@ public class CombatInventory extends TablePanel implements Blocking {
             if (param instanceof Boolean) {
                 close((Boolean) param);
             } else {
-                GuiEventManager.trigger(GuiEventType.GAME_PAUSED );
+                GuiEventManager.trigger(GuiEventType.GAME_PAUSED);
                 if (!isVisible())
                     open();
                 setUserObject(param);
@@ -119,7 +124,7 @@ public class CombatInventory extends TablePanel implements Blocking {
 
     private void initButtonListeners() {
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
-       doneButton.setRunnable(source.getDoneHandler());
+        doneButton.setRunnable(source.getDoneHandler());
         cancelButton.setRunnable(source.getCancelHandler());
         undoButton.setRunnable(source.getUndoHandler());
     }
@@ -137,7 +142,7 @@ public class CombatInventory extends TablePanel implements Blocking {
         super.updateAct(delta);
 
         final InventoryDataSource source = (InventoryDataSource) getUserObject();
-        String header="Free Mode";
+        String header = "Free Mode";
         cancelButton.setVisible(false);
         if (!ExplorationMaster.isExplorationOn()) {
             header = "Operations:\n" +
@@ -148,12 +153,12 @@ public class CombatInventory extends TablePanel implements Blocking {
          StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
          header,
          "\n**Drag'n'drop is [ON]**\n" +
-         "[Right click]: unequip or drop onto the ground\n" +
+          "[Right click]: unequip or drop onto the ground\n" +
           "[Double left-click]: default equip \n" +
           "[Alt-Click]: equip weapon in quick slot \n");
         controls.setBackground(NinePatchFactory.getLightPanelDrawable());
-            actionPointsText.setActor(controls
-             );
+        actionPointsText.setActor(controls
+        );
 
         weightText.setActor(new ValueContainer(
          StyleHolder.getSizedLabelStyle(FONT.MAIN, 1800),
@@ -174,12 +179,16 @@ public class CombatInventory extends TablePanel implements Blocking {
         return (InventoryDataSource) super.getUserObject();
     }
 
+    public void close() {
+        close(false);
+    }
+
     public void close(Boolean result) {
         if (result == null)
             result = false;
         if (!result)
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
-         "Inventory operations cancelled!");
+             "Inventory operations cancelled!");
         else {
             int x = getUserObject().getUnit().getX();
             int y = getUserObject().getUnit().getY();
@@ -187,12 +196,12 @@ public class CombatInventory extends TablePanel implements Blocking {
         }
 
         WaitMaster.receiveInput(InventoryTransactionManager.OPERATION, result);
-//        if (ExplorationMaster.isExplorationOn()) {
-//            GuiEventManager.trigger(GuiEventType.GAME_RESET );
-//        }
-//        setVisible(false);
-//        GuiEventManager.trigger(GuiEventType.GAME_RESUMED );
-        close();
+        //        if (ExplorationMaster.isExplorationOn()) {
+        //            GuiEventManager.trigger(GuiEventType.GAME_RESET );
+        //        }
+        //        setVisible(false);
+        //        GuiEventManager.trigger(GuiEventType.GAME_RESUMED );
+        getStageWithClosable().closeClosable(this);
     }
 
 

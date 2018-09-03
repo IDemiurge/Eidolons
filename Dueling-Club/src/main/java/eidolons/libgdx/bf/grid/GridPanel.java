@@ -1,7 +1,5 @@
 package eidolons.libgdx.bf.grid;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -606,7 +604,7 @@ public class GridPanel extends Group {
                     Vector2 v = GridMaster.getVectorForCoordinate(
                      object.getCoordinates(), false, false, this);
                     overlay.setPosition(v.x, v.y - GridMaster.CELL_H);
-                    addOverlay(overlay);
+                    addOverlay(overlay );
                 }
             }
 
@@ -818,21 +816,11 @@ public class GridPanel extends Group {
             }
         }
         wallMap.setVisible(WallMap.isOn());
-        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
-//        if (ctrl) { was necessary when shadeLightCells were added to Grid directly
-//            if (ShadowMap.isOn())
-//                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-//                    shadowMap.setZtoMax(sub);
-//                }
-//        }
+//        boolean ctrl = Gdx.input.isKeyPressed(Keys.CONTROL_LEFT);
+
         wallMap.setZIndex(Integer.MAX_VALUE);
         overlays.forEach(overlayView -> overlayView.setZIndex(Integer.MAX_VALUE));
-//        if (!ctrl) {
-//            if (ShadowMap.isOn())
-//                for (SHADE_LIGHT sub : shadowMap.getCells().keySet()) {
-//                    shadowMap.setZtoMax(sub);
-//                }
-//        }
+
 
         overlayManager.setZIndex(Integer.MAX_VALUE);
 

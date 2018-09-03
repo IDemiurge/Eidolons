@@ -1,6 +1,7 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
 
 /**
  * Created by JustMe on 7/25/2018.
@@ -35,5 +36,21 @@ public class AbstractCoordinates extends Coordinates {
     }
     protected boolean isAllowInvalidAdjacent() {
         return true;
+    }
+
+    public Coordinates getAdjacentCoordinate(DIRECTION direction) {
+        return getAdjacentCoordinate(true, direction);
+    }
+
+    @Override
+    public int dst(Coordinates c) {
+        return (int) Math.round(dst_(c));
+    }
+
+    @Override
+    public double dst_(Coordinates c) {
+        int xDiff = c.x - x;
+        int yDiff = c.y - y;
+        return  Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 }

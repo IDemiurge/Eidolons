@@ -3,6 +3,7 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
+import eidolons.game.battlecraft.logic.battlefield.vision.GammaMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.battlecraft.logic.dungeon.location.building.DungeonPlan;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
@@ -85,17 +86,23 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     protected void initWidthAndHeight(E dungeonWrapper) {
         GuiManager.setBattleFieldCellsX(dungeonWrapper.getDungeon().getCellsX());
         GuiManager.setBattleFieldCellsY(dungeonWrapper.getDungeon().getCellsY());
+        GuiManager.setCurrentLevelCellsX(dungeonWrapper.getWidth());
+        GuiManager.setCurrentLevelCellsY(dungeonWrapper.getHeight());
+        //TODO clean up this shit!
+
         PositionMaster.initDistancesCache();
         DirectionMaster.initCache(dungeonWrapper.getDungeon().getCellsX(),
          dungeonWrapper.getDungeon().getCellsY());
         Coordinates.resetCaches();
+        GammaMaster.resetCaches();
     }
 
     public E buildDungeon(String path, List<Node> nodeList) {
         Node typeNode = XML_Converter.getNodeByName(nodeList, DUNGEON_TYPE_NODE);
         ObjType type = null;
-
-        if (StringMaster.compareByChar(typeNode.getNodeName(), (DUNGEON_TYPE_NODE))) {
+        if (typeNode == null) {
+            type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
+        } else if (StringMaster.compareByChar(typeNode.getNodeName(), (DUNGEON_TYPE_NODE))) {
             String name = typeNode.getTextContent();
             if (name.contains(NameMaster.VERSION)) {
                 name = name.split(NameMaster.VERSION)[0];
@@ -134,7 +141,7 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
 
         } else if (StringMaster.compareByChar(n.getNodeName(), (CUSTOM_PARAMS_NODE))) {
             TypeBuilder.setParams(dungeon.getDungeon(), n);
-//                getDungeon().getGame().getDungeonMaster().setDungeon(getDungeon());
+            //                getDungeon().getGame().getDungeonMaster().setDungeon(getDungeon());
             //wtf?
 
             // TypeBuilder.setParams(type, n); // toBase()? TODO new type?

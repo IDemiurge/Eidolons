@@ -102,6 +102,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
 
      PROPS.CLASS_PERK_GROUP.name(),
      PROPS.FLAG_COLOR.name(),
+     PROPS.COLOR_THEME.name(),
      PROPS.DIFFICULTY.name(),
      PROPS.ITEM_RARITY.name(),
      PROPS.WEAPON_ATTACKS.name(),

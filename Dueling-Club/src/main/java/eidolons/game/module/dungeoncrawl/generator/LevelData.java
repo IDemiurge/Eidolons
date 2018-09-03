@@ -181,7 +181,7 @@ public class LevelData extends DataUnit<LEVEL_VALUES> {
     }
 
     public boolean isLoopBackAllowed() {
-        return false;
+        return true;
     }
 
     public boolean isPresetEntrancesAllowed() {

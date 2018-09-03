@@ -50,7 +50,7 @@ public class MusicMaster {
     MUSIC_SCOPE scope = MUSIC_SCOPE.MENU;
     MUSIC_VARIANT variant;
     MUSIC_THEME theme;
-    AMBIENCE ambience = AMBIENCE.FOREST_NIGHT;
+    AMBIENCE ambience = AMBIENCE.MIST;
     private boolean shuffle = true;
     private boolean autoplay = true;
     private boolean loopPlaylist = false;
@@ -486,18 +486,24 @@ public class MusicMaster {
 
     // SOUNDS VS THEME-FILES?!
     public enum AMBIENCE {
-        FOREST_NIGHT(),
-        FOREST_DAY,
-        TAVERN,
-        TEMPLE,
-        CASTLE,
-        EVIL,
-        DUNGEON,
-        CAVE,
         MINE,
-        MOUNTAINS,
-        NORTH,
-        SEA,;
+        PIRATE_SHIP,
+        INTERIOR,
+        MIST,
+        HAUNTED,
+        CAVE,
+        EVIL,
+
+
+//        FOREST_NIGHT(),
+//        FOREST_DAY,
+//        TAVERN,
+//        TEMPLE,
+//        CASTLE,
+//        DUNGEON,
+//        MOUNTAINS,
+//        NORTH,
+        ;
 
         AMBIENCE(ATMO_SOUND_TYPE... TYPES) {
 

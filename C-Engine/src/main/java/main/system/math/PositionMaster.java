@@ -280,6 +280,13 @@ public class PositionMaster {
         distances = new Double[w][h][w][h];
     }
 
+    public static int getLogicalY(int y) {
+        return getY()- y - 1;
+    }
+    public static int getOpenGlY(int y) {
+        return getY()- y - 1;
+    }
+
     public enum SHAPES {
         CONE, RECTANGLE {
             public boolean isRemoveBase() {

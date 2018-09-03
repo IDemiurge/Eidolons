@@ -20,6 +20,7 @@ import main.content.enums.GenericEnums.STD_BOOLS;
 import main.content.enums.entity.UnitEnums;
 import main.content.enums.entity.UnitEnums.STATUS;
 import main.content.enums.rules.VisionEnums.OUTLINE_TYPE;
+import main.content.enums.rules.VisionEnums.VISION_MODE;
 import main.content.values.parameters.G_PARAMS;
 import main.content.values.parameters.PARAMETER;
 import main.content.values.properties.G_PROPS;
@@ -576,5 +577,9 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
     public boolean isInvulnerable() {
         return checkProperty(G_PROPS.STD_BOOLS, STD_BOOLS.INVULNERABLE.name());
+    }
+
+    public VISION_MODE getVisionMode() {
+        return VISION_MODE.NORMAL_VISION;
     }
 }

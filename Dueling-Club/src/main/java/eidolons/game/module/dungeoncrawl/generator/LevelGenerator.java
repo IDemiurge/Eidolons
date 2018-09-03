@@ -16,6 +16,8 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.Loop;
+import main.system.auxiliary.log.LogMaster;
+import main.system.math.PositionMaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class LevelGenerator {
     public static final boolean REAL = true;
     public static final boolean LOGGING_OFF = false;
     private static final java.lang.String REAL_TEST_PLACE_TYPE_NAME = "Cemetery";
+    private static final int TRIES = 100;
     public static LOCATION_TYPE TEST_LOCATION_TYPE = LOCATION_TYPE.CEMETERY;
     public static LOCATION_TYPE[] TEST_LOCATION_TYPES = {
      LOCATION_TYPE.CEMETERY,
@@ -62,7 +65,8 @@ public class LevelGenerator {
     }
 
     public static void main(String[] args) {
-        TileMapper.setLoggingOff(true);
+        TileMapper.setLoggingOff(TEST_MODE);
+        LogMaster.setOff(true);
         realGeneration();
 
     }
@@ -82,7 +86,7 @@ public class LevelGenerator {
             TEST_LOCATION_TYPE = type; // java sucks
             try {
                 LevelData data = LevelDataMaker.generateData(SUBLEVEL_TYPE.COMMON, type);
-                DungeonLevel level = new LevelGenerator(5).generateLevel(
+                DungeonLevel level = new LevelGenerator(TRIES).generateLevel(
                  data, false);
                 levels.add(level);
             } catch (Exception e) {
@@ -120,6 +124,7 @@ public class LevelGenerator {
         while (loop.continues()) {
             try {
                 LevelModel model = generateLevelModel(data);
+                PositionMaster.initDistancesCache(model.getCurrentWidth(), model.getCurrentHeight());
                 RngFillMaster.fill(model, data);
                 if (data.isNatural())
                     ModelFinalizer.randomizeEdges(model);

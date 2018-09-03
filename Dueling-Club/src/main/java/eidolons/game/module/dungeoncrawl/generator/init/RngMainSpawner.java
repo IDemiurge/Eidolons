@@ -23,7 +23,6 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,24 +37,26 @@ public class RngMainSpawner {
     public static final boolean TEST_MODE = false;
     private static final float SINGLE_UNIT_BONUS_COEF = 1.5f;
     private static final int TEST_POWER = 250;
-    private static final SPAWN_GROUP_TYPE[] MANDATORY_SPAWN_GROUPS = {
-     SPAWN_GROUP_TYPE.BOSS,
-     SPAWN_GROUP_TYPE.GUARDS,
-     SPAWN_GROUP_TYPE.PATROL,
-     SPAWN_GROUP_TYPE.STALKER,
+    private static final UNIT_GROUP_TYPE[] MANDATORY_SPAWN_GROUPS = {
+     UNIT_GROUP_TYPE.BOSS,
+     UNIT_GROUP_TYPE.GUARDS,
+     UNIT_GROUP_TYPE.PATROL,
+     UNIT_GROUP_TYPE.STALKER,
+     UNIT_GROUP_TYPE.AMBUSH,
     };
-    private static final SPAWN_GROUP_TYPE[] ADDITIONAL_SPAWN_GROUPS = {
-     SPAWN_GROUP_TYPE.CROWD,
-     SPAWN_GROUP_TYPE.IDLERS,
+    private static final UNIT_GROUP_TYPE[] ADDITIONAL_SPAWN_GROUPS = {
+     UNIT_GROUP_TYPE.CROWD,
+     UNIT_GROUP_TYPE.IDLERS,
+     UNIT_GROUP_TYPE.PATROL,
     };
-    private static final float POWER_FILL_COEF = 1f;
+    private static final float POWER_FILL_COEF = 1.25f;
     Map<LevelBlock, Float> coefMap = new LinkedHashMap<>();
     private DungeonLevel level;
     private LevelData data;
 
     public static UNIT_GROUP getUnitGroup(
      LOCATION_TYPE locationType, LevelZone zone,
-     SPAWN_GROUP_TYPE groupType) {
+     UNIT_GROUP_TYPE groupType) {
         if (zone.getUnitGroupWeightMap() != null) {
             return zone.getUnitGroupWeightMap().getRandomByWeight();
         }
@@ -71,7 +72,7 @@ public class RngMainSpawner {
         return map.getRandomByWeight();
     }
 
-    private static int getMaxGroupsForType(SPAWN_GROUP_TYPE groupType) {
+    private static int getMaxGroupsForType(UNIT_GROUP_TYPE groupType) {
         return 2;
     }
 
@@ -235,14 +236,14 @@ public class RngMainSpawner {
 
     private void spawnMandatory() {
 
-        for (SPAWN_GROUP_TYPE groupType : MANDATORY_SPAWN_GROUPS) {
+        for (UNIT_GROUP_TYPE groupType : MANDATORY_SPAWN_GROUPS) {
             blocks:
             for (LevelBlock block : level.getBlocks()) {
                 if (!isBlockForGroup(block, groupType)) {
                     continue blocks;
                 }
                 if (block.getUnitGroups().size() > getMaxGroupsForBlock(block))
-                    for (SPAWN_GROUP_TYPE group_type : block.getUnitGroups().values()) {
+                    for (UNIT_GROUP_TYPE group_type : block.getUnitGroups().values()) {
                         if (group_type == groupType)
                             continue blocks;
                     }
@@ -281,8 +282,8 @@ public class RngMainSpawner {
             List<Coordinates> filledCells = block.getTileMap().getMap().keySet().stream().filter(
              c -> isSpawnSymbol(map.get(c))).collect(Collectors.toList());
             filledCells.forEach(c -> {
-                SPAWN_GROUP_TYPE type = new EnumMaster<SPAWN_GROUP_TYPE>()
-                 .retrieveEnumConst(SPAWN_GROUP_TYPE.class,
+                UNIT_GROUP_TYPE type = new EnumMaster<UNIT_GROUP_TYPE>()
+                 .retrieveEnumConst(UNIT_GROUP_TYPE.class,
                   map.get(c).name());
                 List<ObjType> units = getUnitsForGroup(getPowerCoef(block, type), type,
                  getUnitGroup(level.getLocationType(), block.getZone(), type), 3, 1);
@@ -317,8 +318,9 @@ public class RngMainSpawner {
         // control fill level
 
         //N per groupType, or? at least preferred, min/max
+        zones:
         for (LevelZone zone : level.getSubParts()) {
-            for (SPAWN_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
+            for (UNIT_GROUP_TYPE groupType : ADDITIONAL_SPAWN_GROUPS) {
                 List<LevelBlock> blocks = getBlocksForSpawn(groupType, zone);
                 if (blocks.isEmpty())
                     continue;
@@ -326,12 +328,15 @@ public class RngMainSpawner {
                 float current = calculatePowerFill(zone);
                 UNIT_GROUP group = getUnitGroup(level.getLocationType(), zone, groupType);
                 for (LevelBlock block : blocks) {
-                    if (checkDone() || (requiredFill < current)) {
-                        break;
+                    if ((requiredFill < current)) {
+                        continue zones;
                     }
                     current = calculatePowerFill(zone);
                     float powerCoef = getPowerCoef(block, groupType);
                     spawnForGroup(block, groupType, group, powerCoef);
+                    if (checkDone()) {
+                        return;
+                    }
                 }
             }
         }
@@ -343,7 +348,7 @@ public class RngMainSpawner {
           data.getFloatValue(LEVEL_VALUES.POWER_PER_SQUARE_MAX_MOD) / 100;
     }
 
-    private List<LevelBlock> getBlocksForSpawn(SPAWN_GROUP_TYPE groupType, LevelZone zone) {
+    private List<LevelBlock> getBlocksForSpawn(UNIT_GROUP_TYPE groupType, LevelZone zone) {
         return
          level.getBlocks().stream()
           .filter(block -> block.getZone() == zone)
@@ -385,15 +390,15 @@ public class RngMainSpawner {
     private float getPowerFillCoef(ROOM_TYPE roomType) {
         switch (roomType) {
             case THRONE_ROOM:
-                return 3;
+                return 3.25f;
             case GUARD_ROOM:
             case DEATH_ROOM:
-                return 2;
+                return 2.4f;
         }
-        return 1;
+        return 1.5f;
     }
 
-    private float getPowerCoef(LevelBlock block, SPAWN_GROUP_TYPE groupType) {
+    private float getPowerCoef(LevelBlock block, UNIT_GROUP_TYPE groupType) {
         float coef = 2f;
         switch (block.getRoomType()) {
             case THRONE_ROOM:
@@ -456,14 +461,14 @@ public class RngMainSpawner {
         return coef * random;
     }
 
-    private int getLimit(SPAWN_GROUP_TYPE group, LevelZone zone, int size) {
+    private int getLimit(UNIT_GROUP_TYPE group, LevelZone zone, int size) {
         int max =
          data.getIntValue(LEVEL_VALUES.valueOf("SPAWN_GROUP_COEF_" + group.name())) *
           size / 100;
         return RandomWizard.getRandomIntBetween(max / 2, max * 3 / 2) + 1;
     }
 
-    private boolean isBlockForGroup(LevelBlock block, SPAWN_GROUP_TYPE group) {
+    private boolean isBlockForGroup(LevelBlock block, UNIT_GROUP_TYPE group) {
         switch (group) {
             case GUARDS:
                 return block.getRoomType() == ROOM_TYPE.TREASURE_ROOM
@@ -476,30 +481,33 @@ public class RngMainSpawner {
                  || block.getRoomType() == ROOM_TYPE.DEATH_ROOM;
             case CROWD:
             case IDLERS:
-                return block.getRoomType() == ROOM_TYPE.COMMON_ROOM;
+                return block.getRoomType() == ROOM_TYPE.COMMON_ROOM
+                 || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
+                 || block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM;
             case STALKER:
-                return block.getRoomType() == ROOM_TYPE.CORRIDOR;
+                return block.getRoomType() == ROOM_TYPE.CORRIDOR
+                 || block.getRoomType() == ROOM_TYPE.SECRET_ROOM;
             case BOSS:
                 return block.getRoomType() == ROOM_TYPE.THRONE_ROOM;
         }
         return false;
     }
 
-    private void spawnForGroup(LevelBlock levelBlock, SPAWN_GROUP_TYPE groupType, UNIT_GROUP group, float powerCoef) {
+    private void spawnForGroup(LevelBlock levelBlock, UNIT_GROUP_TYPE groupType, UNIT_GROUP group, float powerCoef) {
         spawnForGroup(levelBlock, groupType, group, getMaxUnits(group, groupType, powerCoef),
          getMinUnits(group, groupType, powerCoef), powerCoef);
     }
 
 
-    private int getMinUnits(UNIT_GROUP group, SPAWN_GROUP_TYPE groupType, float powerCoef) {
+    private int getMinUnits(UNIT_GROUP group, UNIT_GROUP_TYPE groupType, float powerCoef) {
         return getMinMaxUnits(true, group, groupType, powerCoef);
     }
 
-    private int getMaxUnits(UNIT_GROUP group, SPAWN_GROUP_TYPE groupType, float powerCoef) {
+    private int getMaxUnits(UNIT_GROUP group, UNIT_GROUP_TYPE groupType, float powerCoef) {
         return getMinMaxUnits(false, group, groupType, powerCoef);
     }
 
-    private int getMinMaxUnits(boolean min, UNIT_GROUP group, SPAWN_GROUP_TYPE groupType, float powerCoef) {
+    private int getMinMaxUnits(boolean min, UNIT_GROUP group, UNIT_GROUP_TYPE groupType, float powerCoef) {
         float base = min ? getBaseMin(group) : getBaseMax(group);
         switch (groupType) {
             case GUARDS:
@@ -529,7 +537,7 @@ public class RngMainSpawner {
     }
 
     private List<ObjType> getUnitsForGroup(float powerCoef,
-                                           SPAWN_GROUP_TYPE groupType,
+                                           UNIT_GROUP_TYPE groupType,
                                            UNIT_GROUP group, int max, int minPreferred) {
         int powerLevel = Math.round(level.getPowerLevel() * powerCoef);
 
@@ -582,7 +590,7 @@ public class RngMainSpawner {
         return units;
     }
 
-    private boolean isOneOfAType(SPAWN_GROUP_TYPE groupType, WeightMap<String> map, int minPreferred) {
+    private boolean isOneOfAType(UNIT_GROUP_TYPE groupType, WeightMap<String> map, int minPreferred) {
         switch (groupType) {
             case PATROL:
             case AMBUSH:
@@ -595,7 +603,7 @@ public class RngMainSpawner {
         return false;
     }
 
-    private boolean isOneFromAboveRank(SPAWN_GROUP_TYPE group, int max) {
+    private boolean isOneFromAboveRank(UNIT_GROUP_TYPE group, int max) {
         switch (group) {
             case GUARDS:
                 return RandomWizard.chance(20 + max * 10);
@@ -608,7 +616,7 @@ public class RngMainSpawner {
     }
 
     private void spawnForGroup(LevelBlock levelBlock,
-                               SPAWN_GROUP_TYPE groupType,
+                               UNIT_GROUP_TYPE groupType,
                                UNIT_GROUP group, int max, int minPreferred, float powerCoef) {
         List<ObjType> units = getUnitsForGroup(powerCoef, groupType, group,
          max, minPreferred);
@@ -621,7 +629,6 @@ public class RngMainSpawner {
 
         log(1, groupType + " spawned: "
          + ContainerUtils.toStringContainer(unitsAtCoordinates));
-        levelBlock.getAiGroups().add(new ImmutablePair<>(unitsAtCoordinates, groupType));
     }
 
 
@@ -633,7 +640,7 @@ public class RngMainSpawner {
          c ->
           levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR).
          sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-          c.dst(center))).limit(units.size() * maxStack).
+          -c.dst(center)+RandomWizard.getRandomInt(5))).limit(units.size() * maxStack).
          collect(Collectors.toList());
         List<ObjAtCoordinate> list = new ArrayList<>();
         if (emptyCells.isEmpty())
@@ -672,16 +679,27 @@ public class RngMainSpawner {
     > alerted -
     Boss Ai - walks in small circles
      */
-    public enum SPAWN_GROUP_TYPE {
+    public enum UNIT_GROUP_TYPE {
         //this is gonna be used for fill probably too
-        GUARDS,
-        PATROL,
-        AMBUSH,
-        CROWD,
-        IDLERS,
-        STALKER, BOSS,
+        GUARDS(0.05f),
+        PATROL(1f),
+        AMBUSH(0.15f),
+        CROWD(0.3f),
+        IDLERS(0.2f),
+        STALKER(1.25f),
+        BOSS(0.1f),;
         //determines what? Except AI behavior -
         // N preference, power level, placement,
+
+        private float speedMod = 0;
+
+        UNIT_GROUP_TYPE(float speedMod) {
+            this.speedMod = speedMod;
+        }
+
+        public float getSpeedMod() {
+            return speedMod;
+        }
     }
 
 

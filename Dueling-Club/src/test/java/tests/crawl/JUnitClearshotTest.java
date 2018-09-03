@@ -79,7 +79,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
         PLAYER_VISION playerVision = game.getVisionMaster().getVisionController().getPlayerVisionMapper()
          .get(unit.getOwner(), sub);
 
-//check distance !
+        //check distance !
         if (blocked) {
             if (Bools.isTrue(clearshot)) {
                 fail("Fail: " + sub + "'s clearshot = " + clearshot);
@@ -181,17 +181,17 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
 
     protected boolean isInside(Coordinates c) {
         return getCoordinatesList(true).contains(c);
-//        int y = (game.getGrid().getHeight()  - getInnerHeight()) / 2;
-//        if (c.y < y)
-//            return false;
-//        if (c.y >= getInnerHeight() + y)
-//            return false;
-//        int x = (getGrid().getWidth()  - getInnerWidth()) / 2;
-//        if (c.x < x)
-//            return false;
-//        if (c.x >= getInnerWidth() + x)
-//            return false;
-//        return true;
+        //        int y = (game.getGrid().getHeight()  - getInnerHeight()) / 2;
+        //        if (c.y < y)
+        //            return false;
+        //        if (c.y >= getInnerHeight() + y)
+        //            return false;
+        //        int x = (getGrid().getWidth()  - getInnerWidth()) / 2;
+        //        if (c.x < x)
+        //            return false;
+        //        if (c.x >= getInnerWidth() + x)
+        //            return false;
+        //        return true;
     }
 
     protected boolean checkCoordinate(Coordinates c) {
@@ -215,7 +215,7 @@ public class JUnitClearshotTest extends JUnitSingleUnit {
                     game.getManager().getMainHero().setFacing(sub);
                     helper.refreshVisibility();
                     //game.getMaster().clearCaches(); TODO optimized version?
-//                    VisionManager.refresh();
+                    //                    VisionManager.refresh();
                     check(heroInside, checkInside, true);
                     check(heroInside, checkInside, false);
                 }

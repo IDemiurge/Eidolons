@@ -218,7 +218,7 @@ public class LevelValidator {
 
         float sizeGap = 0.2f;
         if (model.getData().getSublevelType()== SUBLEVEL_TYPE.BOSS)
-            sizeGap=0.5f;
+            sizeGap=0.4f;
         if (model.getData().getSublevelType()== SUBLEVEL_TYPE.PRE_BOSS)
             sizeGap=0.35f;
         if (h / maxDimension - 1 >= sizeGap)

@@ -36,6 +36,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
     protected boolean hovered;
     protected boolean active;
     protected int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
+    protected Boolean withinCamera;
+    protected float baseAlpha = 1; //real alpha fluctuates around this value
     ALPHA_TEMPLATE alphaTemplate;
     private float alphaPause;
     private boolean hoverResponsive;
@@ -43,31 +45,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     private float fluctuatingAlphaPauseDuration;
     private float fluctuatingFullAlphaDuration;
     private float fluctuatingAlphaRandomness, fluctuatingAlphaMin, fluctuatingAlphaMax;
-    protected Boolean withinCamera;
 
-    public enum BLENDING{
-        SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
-        OVERLAY(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
-        MULTIPLY(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
-        SATURATE(GL20.GL_DST_COLOR, GL20.GL_ONE),
-        DARKEN(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
-        SUBTRACT(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
-;
-
-       public   int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
-
-        BLENDING(int blendDstFunc, int blendSrcFunc) {
-            this.blendDstFunc = blendDstFunc;
-            this.blendSrcFunc = blendSrcFunc;
-        }
-
-        BLENDING(int blendDstFunc, int blendSrcFunc, int blendDstFuncAlpha, int blendSrcFuncAlpha) {
-            this.blendDstFunc = blendDstFunc;
-            this.blendSrcFunc = blendSrcFunc;
-            this.blendDstFuncAlpha = blendDstFuncAlpha;
-            this.blendSrcFuncAlpha = blendSrcFuncAlpha;
-        }
-    }
     public SuperActor() {
     }
 
@@ -111,21 +89,21 @@ public abstract class SuperActor extends GroupX implements Borderable {
     @Override
     public void setBorder(TextureRegion texture) {
 
-//        alphaGrowing = false;
-//        fluctuatingAlpha = 0.75f;
+        //        alphaGrowing = false;
+        //        fluctuatingAlpha = 0.75f;
 
         if (texture == null) {
             ActorMaster.addFadeOutAction(border, 0.65f, true);
-//            border = null;
+            //            border = null;
             borderTexture = null;
             setTeamColorBorder(false);
         } else {
             if (border != null) {
-            removeActor(border);
+                removeActor(border);
             }
             addActor(border = new Image(texture));
-            border.getColor().a=0;
-            ActorMaster.addFadeInAction(border, 0.65f );
+            border.getColor().a = 0;
+            ActorMaster.addFadeInAction(border, 0.65f);
 
             borderTexture = texture;
             updateBorderSize();
@@ -148,8 +126,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
     protected boolean isIgnored() {
         if (!isVisible())
             return true;
-//        if (getColor().a == 0)
-//            return true; TODO why was this here?.. not to draw?
+        //        if (getColor().a == 0)
+        //            return true; TODO why was this here?.. not to draw?
         if (isCullingOff())
             return false;
         return !isWithinCamera();
@@ -201,8 +179,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     @Override
     public void act(float delta) {
-//        if (isIgnored())
-//            return;
+        //        if (isIgnored())
+        //            return;
         if (isTransform()) {
             if (isTransformDisabled())
                 setTransform(false);
@@ -234,7 +212,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
             return;
         if (alphaPause > 0) {
             alphaPause = alphaPause - delta;
-            if (alphaPause >= 0) return;
+            if (alphaPause >= 0)
+                return;
             delta = delta - (-alphaPause);
             if (delta <= 0)
                 return;
@@ -260,14 +239,9 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     private float randomizeAlpha(float fluctuatingAlpha) {
         if (fluctuatingAlphaRandomness > 0) {
-//            if (RandomWizard.chance())
-            int alpha = (int) (fluctuatingAlphaRandomness * 100);
-            int mod =
-             RandomWizard.getRandomIntBetween(
-              -alpha, alpha);
-            return
-             fluctuatingAlpha +
-              fluctuatingAlpha / 100 * mod;
+            //            if (RandomWizard.chance())
+            return  fluctuatingAlpha* (1+ RandomWizard.getRandomFloatBetween(
+              -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness));
         }
         return fluctuatingAlpha;
     }
@@ -275,14 +249,16 @@ public abstract class SuperActor extends GroupX implements Borderable {
     protected float getAlphaFluctuation(float delta) {
         float fluctuation = delta * getAlphaFluctuationPerDelta();
         if (getFluctuatingAlpha() <= getAlphaFluctuationMin()) {
-            if (alphaGrowing) {
-                alphaPause = getFluctuatingFullAlphaDuration();
-            } else {
-                alphaPause = getFluctuatingAlphaPauseDuration();
-            }
-            alphaGrowing = !alphaGrowing;
-        } else if (fluctuatingAlpha >= getAlphaFluctuationMax())
-            alphaGrowing = !alphaGrowing;
+            alphaGrowing = true;
+            alphaPause = getFluctuatingAlphaPauseDuration()*(
+             1+ (RandomWizard.getRandomFloatBetween(
+              -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness))/2);
+        } else if (fluctuatingAlpha >= getAlphaFluctuationMax()) {
+            alphaGrowing = false;
+            alphaPause = getFluctuatingFullAlphaDuration()*(
+             1+ (RandomWizard.getRandomFloatBetween(
+              -fluctuatingAlphaRandomness, fluctuatingAlphaRandomness))/2);
+        }
 
         if (!alphaGrowing)
             return -fluctuation;
@@ -299,13 +275,13 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     protected float getAlphaFluctuationMin() {
         if (fluctuatingAlphaMin != 0)
-            return fluctuatingAlphaMin;
+            return fluctuatingAlphaMin*baseAlpha;
         return DEFAULT_ALPHA_MIN;
     }
 
     protected float getAlphaFluctuationMax() {
         if (fluctuatingAlphaMax != 0)
-            return fluctuatingAlphaMax;
+            return fluctuatingAlphaMax*baseAlpha;
         return DEFAULT_ALPHA_MAX;
     }
 
@@ -418,18 +394,28 @@ public abstract class SuperActor extends GroupX implements Borderable {
     }
 
     public enum ALPHA_TEMPLATE {
+
         MOON(0.1f, 0, 1, 0.5f),
         SUN(0.1f, 0, 5, 0.5f, 0.7f, 1f),
         TOP_LAYER(0.2f, 1, 2, 0.6f, 0.15f, 0.5f),
         LIGHT(0.24f, 3, 1, 2.6f, 0.1f, 0.5f),
+
         MOONLIGHT(0.4f, 5, 0.5F, 0.6f, 0.1f, 0.9f),
         CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
+
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
         ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),
         OVERLAYS(0.15f, 0, 1, 0.1f, 0.75f, 1f),
         UNIT_VIEW(0.23f, 0, 1, 0.0f, 0.80f, 1f), //EMBLEM COLOR & UNCONSCIOUS
+
+        SHADE_CELL_GAMMA_SHADOW(0.05f, 0.5f, 0.2f, 0, 0.5f, 0.8f),
+        SHADE_CELL_GAMMA_LIGHT(0.08f, 1.5f, 2.55f, 0.2f, 0.4f, 0.85f),
+        SHADE_CELL_LIGHT_EMITTER(0.10f, 1.5f, 2.5f, 0.2f, 0.85f, 1),
+        LIGHT_EMITTER_RAYS(0.23f, 1.25f, 0.5f, 0.4f, 0.35f, 1.5f),
+
+        SHADE_CELL_HIGHLIGHT(0.4f, 1.5f, 0.3f, 0.4f, 0.15f, 1),
         ;
         float alphaStep;
         float fluctuatingAlphaPauseDuration;
@@ -454,6 +440,38 @@ public abstract class SuperActor extends GroupX implements Borderable {
             this.fluctuatingFullAlphaDuration = fluctuatingFullAlphaDuration;
             this.fluctuatingAlphaRandomness = fluctuatingAlphaRandomness;
         }
+
+    }
+
+    public enum BLENDING {
+        SCREEN(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
+        OVERLAY(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),
+        MULTIPLY(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SATURATE(GL20.GL_DST_COLOR, GL20.GL_ONE),
+        DARKEN(GL20.GL_DST_COLOR, GL20.GL_ONE_MINUS_SRC_ALPHA),
+        SUBTRACT(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA),;
+
+        public int blendDstFunc, blendSrcFunc, blendDstFuncAlpha, blendSrcFuncAlpha;
+
+        BLENDING(int blendDstFunc, int blendSrcFunc) {
+            this.blendDstFunc = blendDstFunc;
+            this.blendSrcFunc = blendSrcFunc;
+        }
+
+        BLENDING(int blendDstFunc, int blendSrcFunc, int blendDstFuncAlpha, int blendSrcFuncAlpha) {
+            this.blendDstFunc = blendDstFunc;
+            this.blendSrcFunc = blendSrcFunc;
+            this.blendDstFuncAlpha = blendDstFuncAlpha;
+            this.blendSrcFuncAlpha = blendSrcFuncAlpha;
+        }
+    }
+
+    public float getBaseAlpha() {
+        return baseAlpha;
+    }
+
+    public void setBaseAlpha(float baseAlpha) {
+        this.baseAlpha = baseAlpha;
 
     }
 }

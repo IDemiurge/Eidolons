@@ -37,31 +37,6 @@ public class ScenarioGenerator {
         if (isRandomGenerationOn()) {
             return generateRandomLevelScenario(place);
         }
-        //dungeon level
-
-        //missions
-        //        TERRAIN_TYPE terrainType;
-        //        PLACE_TYPE type=null ;
-        //        LOCATION_TYPE
-        //        switch (type) {
-        //            case DUNGEON:
-        //                break;
-        //            case LOCATION:
-        //                break;
-        //            case BUILDING:
-        //                break;
-        //        }
-        //that's already about generating the missions!
-        //but this stuff will need to be saved() somehow too!
-        //temp directory for each Macro Game
-        //store levels, party data's etc
-
-        //how to import the LE branch?
-        //        MacroDataManager.saveLevel(level);
-        //        Mission surface;
-        //        Mission[] sub= new Mission[n];
-        //        Mission boss;
-
         int n = 1;
         String missions = "";
         String path = StrPathBuilder.build(
@@ -122,7 +97,7 @@ public class ScenarioGenerator {
         LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
          retrieveEnumConst(LOCATION_TYPE.class, locationTypeName);
 
-        int n = 1;
+        int n = 3;
         List<SUBLEVEL_TYPE> types =
          createSublevelTypes(n, locationType);
 
@@ -201,10 +176,10 @@ public class ScenarioGenerator {
                     list.add(SUBLEVEL_TYPE.COMMON);
                     break;
                 case 1:
-                    list.add(SUBLEVEL_TYPE.BOSS);
+                    list.add(SUBLEVEL_TYPE.PRE_BOSS);
                     break;
                 case 2:
-                    list.add(SUBLEVEL_TYPE.PRE_BOSS);
+                    list.add(SUBLEVEL_TYPE.BOSS);
                     break;
                 default:
                     list.add(SUBLEVEL_TYPE.COMMON);

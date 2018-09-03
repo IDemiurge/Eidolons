@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.mouse;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.Eidolons.SCOPE;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveMaster;
 
 /**
@@ -12,7 +13,7 @@ public class GlobalInputController implements InputProcessor {
     private static InputProcessor instance;
 
     public static InputProcessor getInstance() {
-        if (instance==null )
+        if (instance == null)
             instance = new GlobalInputController();
         return instance;
     }
@@ -25,10 +26,13 @@ public class GlobalInputController implements InputProcessor {
     public boolean keyDown(int keycode) {
 
         switch (keycode) {
-            case Keys.F3     :
+            case Keys.F3:
                 WeaveMaster.openWeave();
                 return true;
-            case Keys.F12:
+            case Keys.F4:
+                if (Eidolons.getScope() == SCOPE.MENU)
+                    return false;
+
                 Eidolons.exitToMenu();
                 return true;
         }

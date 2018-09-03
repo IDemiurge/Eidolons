@@ -158,7 +158,7 @@ public class DataUnit<T extends Enum<T>> {
     }
 
     public void addCount(T stat, String val) {
-        addCount(stat, val, 0);
+        addCount(stat, val, 1);
     }
 
     public void addCount(T stat, String val, int max) {
@@ -233,7 +233,9 @@ public class DataUnit<T extends Enum<T>> {
     public String getData(Set<String> set, Boolean format) {
         String data = "";
         for (String v : set) {
-            data += v + DataUnitFactory.getPairSeparator(format) + values.get(v) + DataUnitFactory.getSeparator(format);
+            data += v + DataUnitFactory.getPairSeparator(format)
+             + values.get(v) + DataUnitFactory.getSeparator(format)
+            +"\n";
         }
         return data;
     }

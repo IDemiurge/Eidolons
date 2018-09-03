@@ -13,8 +13,6 @@ import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.EquipDataSource;
 
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
-
 public class InventoryPanel extends TablePanel {
 
     private InventorySlotsPanel inventorySlotsPanel;
@@ -28,11 +26,11 @@ public class InventoryPanel extends TablePanel {
     private Cell amuletSlot;
 
     public InventoryPanel() {
-        TextureRegion textureRegion = new TextureRegion(getOrCreateR("UI/components/inventory_background.png"));
+        TextureRegion textureRegion = new TextureRegion(
+         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
+          (int) GDX.size(525),(int) GDX.size(800)));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
-        TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
-         (int) GDX.size(525),(int) GDX.size(800));
 
         TablePanel upper = new TablePanel();
         inventorySlotsPanel = new InventorySlotsPanel();

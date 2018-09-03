@@ -94,6 +94,10 @@ public class RngFillMaster {
     }
 
     public static void bindCoordinates(LevelBlock block, Coordinates c1, Coordinates c2) {
+        if (c1==null )
+            return;
+        if (c2==null )
+            return;
         if (!block.getBoundCells().containsKey(c1)
          && !block.getBoundCells().containsKey(c2))
             main.system.auxiliary.log.LogMaster.log(1, block + " has " + c1 + " BOUND TO " + c2);

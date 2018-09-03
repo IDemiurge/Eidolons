@@ -2,18 +2,17 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
-import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.SPAWN_GROUP_TYPE;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import main.data.XLinkedMap;
-import main.data.XList;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
@@ -32,9 +31,8 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
     private TileMap originalTileMap;
     private LevelZone zone;
     private Map<Coordinates, Coordinates> boundCells;
-    private List aiGroups;
     private boolean customCoordinateList;
-    private Map<List<ObjAtCoordinate>, SPAWN_GROUP_TYPE> unitGroups;
+    private Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> unitGroups;
 
     public LevelBlock(Coordinates coordinates, LevelZone zone, ROOM_TYPE roomType, int width, int height, TileMap tileMap) {
         this.roomType = roomType;
@@ -46,6 +44,13 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
          tileMap.getMap()));
         this.coordinates = coordinates;
         this.zone = zone;
+        if (RandomWizard.chance(75)) {
+            setColorTheme(zone.getColorTheme());
+            setAltColorTheme(zone.getAltColorTheme());
+        } else {
+            setColorTheme(zone.getAltColorTheme());
+            setAltColorTheme(zone.getColorTheme());
+        }
     }
 
     public LevelBlock(LevelZone zone) {
@@ -79,7 +84,10 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
          toStringContainer(units, RngXmlMaster.SEPARATOR));
         xml += XML_Converter.wrap(RngXmlMaster.OBJECTS_NODE, ContainerUtils.
          toStringContainer(objects, RngXmlMaster.SEPARATOR));
-        //        xml += XML_Converter.wrap(RngXmlMaster.AI_GROUPS_NODE, aiGroupsData);
+
+
+        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME, colorTheme.toString());
+        xml += XML_Converter.wrap(RngXmlMaster.COLOR_THEME_ALT, altColorTheme.toString());
         return xml;
     }
 
@@ -142,12 +150,6 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         return boundCells;
     }
 
-    public List<Pair<List<ObjAtCoordinate>, SPAWN_GROUP_TYPE>> getAiGroups() {
-        if (aiGroups == null) {
-            aiGroups = new XList<Pair<List<ObjAtCoordinate>, SPAWN_GROUP_TYPE>>();
-        }
-        return aiGroups;
-    }
 
     public void offsetCoordinates() {
         offsetCoordinates(getCoordinates());
@@ -185,7 +187,7 @@ public class LevelBlock extends LevelLayer<LevelBlock> {
         this.customCoordinateList = customCoordinateList;
     }
 
-    public Map<List<ObjAtCoordinate>, SPAWN_GROUP_TYPE> getUnitGroups() {
+    public Map<List<ObjAtCoordinate>, UNIT_GROUP_TYPE> getUnitGroups() {
         if (unitGroups == null) {
             unitGroups = new XLinkedMap<>();
         }

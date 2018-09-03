@@ -68,7 +68,7 @@ public class TilesMaster {
                                     int bonusForSameDirection, int nullValue) {
         int i = 0;
         for (DIRECTION direction : new DIRECTION[]{d, d.rotate45(true), d.rotate45(false)}) {
-            ROOM_CELL cell = tileMap.getMap().get(c.getAdjacentCoordinate(direction));
+            ROOM_CELL cell = tileMap.getMap().get(c.getAdjacentCoordinate(true, direction));
             if (cell == null) {
                 i += nullValue;
             } else if (isPassable(cell) == passableOrNot) {

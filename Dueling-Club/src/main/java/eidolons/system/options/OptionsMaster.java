@@ -292,7 +292,7 @@ public class OptionsMaster {
                 Eidolons.setResolution(value);
                 break;
             case SHADOW_MAP_OFF:
-                ShadowMap.setOn(bool);
+                ShadowMap.setOn(!bool);
                 break;
         }
     }

@@ -22,8 +22,11 @@ import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.libgdx.texture.TextureCache;
+import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums.DUNGEONS_OBJ_TYPES;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.MAP_BACKGROUND;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
@@ -74,10 +77,10 @@ public class RngLocationBuilder extends LocationBuilder {
         master.setDungeonLevel(level);
         new RngLevelInitializer().init(level);
         Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
+        initWidthAndHeight(location);
         location.setEntranceData(entranceData);
         RngLevelPopulator.populate(level);
         spawnLevel(level);
-        initWidthAndHeight(location);
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
         //        initDynamicObjData();
@@ -123,7 +126,7 @@ public class RngLocationBuilder extends LocationBuilder {
          getParty();
 
         level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
-         getParty().getParamSum(PARAMS.POWER)*(1+party.getMembers().size())/party.getMembers().size());
+         getParty().getParamSum(PARAMS.POWER) * (1 + party.getMembers().size()) / party.getMembers().size());
 
         List<LevelZone> zones = new ArrayList<>();
         int n = 0;
@@ -160,7 +163,18 @@ public class RngLocationBuilder extends LocationBuilder {
     }
 
     private String getBaseDungeonTypeName(DungeonLevel level) {
-        return level.getLocationType().toString();
+        String s = StringMaster.getWellFormattedString(
+         level.getLocationType().toString());
+        if (DataManager.isTypeName(s
+         , DC_TYPE.DUNGEONS))
+            return s;
+        switch (level.getLocationType()) {
+            case CAVE:
+                return DUNGEONS_OBJ_TYPES.CAVERN.getName();
+            case TOWER:
+                return DUNGEONS_OBJ_TYPES.ARCANE_TOWER.getName();
+        }
+        return s;
     }
 
     protected void processNode(Node n, DungeonLevel level) {
@@ -282,7 +296,12 @@ public class RngLocationBuilder extends LocationBuilder {
          DC_TYPE.DUNGEONS);
         if (type == null) {
             type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
-            type.setProperty(PROPS.MAP_BACKGROUND, MAP_BACKGROUND.DUNGEON.getBackgroundFilePath());
+            if (!type.checkProperty(PROPS.MAP_BACKGROUND)
+             || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND)))
+            {
+                type.setProperty(PROPS.MAP_BACKGROUND, MAP_BACKGROUND.DUNGEON.getBackgroundFilePath());
+            }
+
         }
 
         node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
@@ -325,6 +344,12 @@ public class RngLocationBuilder extends LocationBuilder {
                 } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.BLOCK_ROOM_TYPE_NODE)) {
                     b.setRoomType(new EnumMaster<ROOM_TYPE>().
                      retrieveEnumConst(ROOM_TYPE.class, subNode.getTextContent()));
+                } else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME)) {
+                    b.setColorTheme(new EnumMaster<COLOR_THEME>().
+                     retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
+                }else if (StringMaster.compareByChar(subNode.getNodeName(), RngXmlMaster.COLOR_THEME_ALT)) {
+                    b.setAltColorTheme(new EnumMaster<COLOR_THEME>().
+                     retrieveEnumConst(COLOR_THEME.class, subNode.getTextContent()));
                 }
             }
         }

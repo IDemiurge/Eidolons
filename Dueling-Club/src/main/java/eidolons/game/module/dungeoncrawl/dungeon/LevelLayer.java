@@ -10,11 +10,11 @@ import java.util.List;
  * Created by JustMe on 7/20/2018.
  */
 public abstract class LevelLayer<T> {
-    List<T> subParts=    new ArrayList<>() ;
-
-    AMBIENCE ambience;
-    COLOR_THEME colorTheme;
-    int globalIllumination;
+    protected List<T> subParts = new ArrayList<>();
+    protected AMBIENCE ambience;
+    protected COLOR_THEME colorTheme;
+    protected int globalIllumination;
+    protected COLOR_THEME altColorTheme;
 
     public LevelLayer() {
     }
@@ -27,6 +27,7 @@ public abstract class LevelLayer<T> {
     }
 
     public abstract String toXml();
+
     public List<T> getSubParts() {
         return subParts;
     }
@@ -35,24 +36,31 @@ public abstract class LevelLayer<T> {
         return ambience;
     }
 
-    public COLOR_THEME getColorTheme() {
-        return colorTheme;
-    }
-
-    public int getGlobalIllumination() {
-        return globalIllumination;
-    }
-
     public void setAmbience(AMBIENCE ambience) {
         this.ambience = ambience;
+    }
+
+    public COLOR_THEME getColorTheme() {
+        return colorTheme;
     }
 
     public void setColorTheme(COLOR_THEME colorTheme) {
         this.colorTheme = colorTheme;
     }
 
+    public int getGlobalIllumination() {
+        return globalIllumination;
+    }
+
     public void setGlobalIllumination(int globalIllumination) {
         this.globalIllumination = globalIllumination;
     }
 
+    public COLOR_THEME getAltColorTheme() {
+        return altColorTheme;
+    }
+
+    public void setAltColorTheme(COLOR_THEME altColorTheme) {
+        this.altColorTheme = altColorTheme;
+    }
 }

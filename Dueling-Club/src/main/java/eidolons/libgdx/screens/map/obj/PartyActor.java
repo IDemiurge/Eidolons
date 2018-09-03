@@ -173,7 +173,8 @@ public class PartyActor extends MapActor {
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        party.setCoordinates(Coordinates.get(getX() + getWidth() / 2, getY() + getHeight() / 2));
+        party.setCoordinates(Coordinates.get(true,
+         (int)  (getX() + getWidth() / 2), (int) (getY() + getHeight() / 2)));
     }
 
     @Override

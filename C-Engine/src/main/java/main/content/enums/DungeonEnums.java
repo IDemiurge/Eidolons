@@ -1,9 +1,16 @@
 package main.content.enums;
 
+import main.content.enums.entity.OBJ_TYPE_ENUM;
+
 /**
  * Created by JustMe on 2/14/2017.
  */
 public class DungeonEnums {
+    public enum DUNGEONS_OBJ_TYPES implements OBJ_TYPE_ENUM {
+        CAVERN, RAVENWOOD,
+        RUINED_FORT, ARCANE_TOWER;
+    }
+
     public enum DUNGEON_CLASS {
         CAVE,
         DUNGEON,
@@ -105,10 +112,10 @@ public class DungeonEnums {
 
     }
 
+
     public enum DUNGEON_POPULATION {
         Cult,
     }
-
 
     public enum DUNGEON_SUBFOLDER {
         // ARCADE,
@@ -129,24 +136,15 @@ public class DungeonEnums {
 
         GLORY, TREASURE_HOARD, SUBLEVEL, BOSS, MAIN,
     }
-    public enum
-    LOCATION_TYPE_GROUP{
-        SURFACE,
-        WIDE,
-        AVERAGE,
-        NARROW,
-        NATURAL,
-        NATURAL_SURFACE,
-    }
+
     public enum LOCATION_TYPE {
         CEMETERY(true), CAVE, CRYPT, BARROW,
         HIVE, DUNGEON,
         SEWER, HELL, ASTRAL,
         TOWER, DEN, RUIN(true),
         CAMP(true), TEMPLE(true),
-        CASTLE(true),  HOUSE(true),
-        GROVE(true),
-        ;
+        CASTLE(true), HOUSE(true),
+        GROVE(true),;
 
         private boolean surface;
 
@@ -166,35 +164,45 @@ public class DungeonEnums {
         }
 
         public LOCATION_TYPE_GROUP getGroup() {
-                switch (this) {
-                    case BARROW:
-                    case CAVE:
-                    case DEN:
-                    case HIVE:
-                        return LOCATION_TYPE_GROUP.NATURAL;
-                    case CRYPT:
-                    case TOWER:
-                    case SEWER:
-                        return LOCATION_TYPE_GROUP.NARROW;
+            switch (this) {
+                case BARROW:
+                case CAVE:
+                case DEN:
+                case HIVE:
+                    return LOCATION_TYPE_GROUP.NATURAL;
+                case CRYPT:
+                case TOWER:
+                case SEWER:
+                    return LOCATION_TYPE_GROUP.NARROW;
 
-                    case ASTRAL:
-                    case DUNGEON:
-                    case HELL:
-                        return LOCATION_TYPE_GROUP.AVERAGE;
+                case ASTRAL:
+                case DUNGEON:
+                case HELL:
+                    return LOCATION_TYPE_GROUP.AVERAGE;
 
-                    case TEMPLE:
-                    case CASTLE:
-                        return LOCATION_TYPE_GROUP.WIDE;
+                case TEMPLE:
+                case CASTLE:
+                    return LOCATION_TYPE_GROUP.WIDE;
 
-                    case CAMP:
-                    case RUIN:
-                    case HOUSE:
-                    case GROVE:
-                    case CEMETERY:
-                        return LOCATION_TYPE_GROUP.SURFACE;
-                }
-                return LOCATION_TYPE_GROUP.NARROW;
+                case CAMP:
+                case RUIN:
+                case HOUSE:
+                case GROVE:
+                case CEMETERY:
+                    return LOCATION_TYPE_GROUP.SURFACE;
             }
+            return LOCATION_TYPE_GROUP.NARROW;
+        }
+    }
+
+    public enum
+    LOCATION_TYPE_GROUP {
+        SURFACE,
+        WIDE,
+        AVERAGE,
+        NARROW,
+        NATURAL,
+        NATURAL_SURFACE,
     }
 
     public enum MAP_BACKGROUND {

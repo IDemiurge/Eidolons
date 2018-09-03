@@ -10,7 +10,7 @@ import main.system.math.PositionMaster;
 
 public class LightEmittingEffect extends SpectrumEffect {
     private static final int REFLECTION_BONUS_PER_ADJACENT_WALL = 15;
-    private static final String REDUCTION_FOR_DISTANCE_MODIFIER = "/2";//"*2";
+    private static final String REDUCTION_FOR_DISTANCE_MODIFIER = "/2.5";//"*2";
     boolean debug;
     private Coordinates lastCoordinates;
 

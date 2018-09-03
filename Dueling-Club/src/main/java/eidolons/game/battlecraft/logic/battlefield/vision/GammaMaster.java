@@ -12,7 +12,10 @@ import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
+import main.system.SortMaster;
+import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
+import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +26,11 @@ import java.util.Map;
 public class GammaMaster {
 
     public static final boolean DEBUG_MODE = true;
-    private static final Float CELL_GAMMA_MODIFIER = 0.01F;
+    private static final Float CELL_GAMMA_MODIFIER = 0.004F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
-    private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.02f;
+    private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.013f;
     private static final Float CONCEALMENT_ALPHA_FACTOR = 0.02f;
+    private static Float[][] voidAlphaCache;
     private VisionMaster master;
     private Map<DC_Obj, Integer> cache = new HashMap<>();
     private boolean dirty;
@@ -51,18 +55,23 @@ public class GammaMaster {
         return 45;
     }
 
+    public static void resetCaches() {
+        voidAlphaCache = new Float[GuiManager.getBattleFieldWidth()][GuiManager.getBattleFieldHeight()];
+    }
+
     public int getGamma(Unit source, DC_Obj target) {
         if (target instanceof Entrance)
             return 200;
         Integer gamma = target.getGamma(source);
-        if (gamma !=null )
+        if (gamma != null)
             return gamma;
         return master.getIlluminationMaster().getIllumination(source, target)
-         -master.getIlluminationMaster().getConcealment(source, target);
+         - master.getIlluminationMaster().getConcealment(source, target);
     }
 
     public float getAlphaForShadowMapCell(int x, int y, SHADE_CELL type) {
-
+        if (type == SHADE_CELL.VOID)
+            return getVoidAlpha(x, y);
         if (type == SHADE_CELL.BLACKOUT) {
             return getBlackoutAlpha(x, y);
         }
@@ -83,15 +92,15 @@ public class GammaMaster {
         float alpha = 0;
         DC_Cell cell = Eidolons.game.getCellByCoordinate(
          Coordinates.get(x, y));
-        if (cell==null ){
+        if (cell == null) {
             if (type == SHADE_CELL.GAMMA_SHADOW)
                 return 1;
             return 0;
         }
         float gamma = getGammaForCell(cell);
-//        if (Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
-//            gamma = 0;
-//        }
+        //        if (Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)).getVisibilityLevel() == VISIBILITY_LEVEL.BLOCKED) {
+        //            gamma = 0;
+        //        }
 
         switch (type) {
 
@@ -103,48 +112,79 @@ public class GammaMaster {
                     return 0;
                 if (gamma < 0)
                     alpha = 1;
-                else
+                else {
                     alpha = 1 - gamma;
-                if (unit.getX()==x && unit.getY()==y){
-                    alpha = alpha/2;
+                    //                    alpha =(float) Math.min(Math.sqrt(alpha * 2), alpha / 3); // 1 - gamma;
+                }
+                if (unit.getX() == x && unit.getY() == y) {
+                    alpha = alpha / 3;
+                }
+                if (cell.isPlayerHasSeen()) {
+                    alpha = alpha * 2 / 3;
                 }
                 break;
             case GAMMA_LIGHT:
                 if (gamma < 0)
                     return 0;
-                alpha = (float) Math.min(Math.sqrt(gamma * 2), gamma / 3);
+                if (!(cell.getUnitVisionStatus() == UNIT_VISION.IN_PLAIN_SIGHT || cell.getUnitVisionStatus() == UNIT_VISION.IN_SIGHT)) {
+                    return 0;
+                }
+                alpha = (float) Math.min(Math.sqrt(gamma), gamma / 4);
                 alpha = Math.min(alpha, 0.5f);
+                if (unit.getX() == x && unit.getY() == y) {
+                    alpha = alpha / 3 * 2;
+                }
                 break;
             case LIGHT_EMITTER:
-                for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
-                    if (sub instanceof Unit)
-                        continue; //TODO illuminate some other way for units...
-                    if (sub.getCoordinates().x == x)
-                        if (sub.getCoordinates().y == y)
-                            if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
-                             PLAYER_VISION.DETECTED) {
-                                alpha += LIGHT_EMITTER_ALPHA_FACTOR *
-                                 master.getGame().getRules().getIlluminationRule()
-                                 .getLightEmission((DC_Obj) sub);
-                            }
-                }
-
-                if (alpha > 0) {
-                    break;
-                }
+               alpha= getLightEmitterAlpha(x, y);
                 break;
             case CONCEALMENT:
                 alpha =
-//             Eidolons.game.getCellByCoordinate(
-//              Coordinates.get(x, y)).getIntParam(
-//               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
+                 //             Eidolons.game.getCellByCoordinate(
+                 //              Coordinates.get(x, y)).getIntParam(
+                 //               PARAMS.CONCEALMENT)*CONCEALMENT_ALPHA_FACTOR;
                  master.getIlluminationMaster().getConcealment(unit, cell) * CONCEALMENT_ALPHA_FACTOR;
                 if (alpha > 0)
-                    alpha += getAlphaForShadowMapCell(x, y, SHADE_CELL.LIGHT_EMITTER) / 3;
+                    alpha += getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), SHADE_CELL.LIGHT_EMITTER) / 3;
                 break;
         }
 
         return MathMaster.minMax(alpha, 0, 1);
+    }
+
+    public float getLightEmitterAlpha(int x, int y) {
+      float alpha=0;
+
+      for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
+            if (sub instanceof Unit)
+                continue; //TODO illuminate some other way for units...
+            if (sub.getCoordinates().x == x)
+                if (sub.getCoordinates().y == y)
+                    if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
+                     PLAYER_VISION.DETECTED) {
+                        alpha += LIGHT_EMITTER_ALPHA_FACTOR *
+                         master.getGame().getRules().getIlluminationRule()
+                          .getLightEmission((DC_Obj) sub);
+                    }
+        }
+
+        return alpha;
+    }
+
+    private float getVoidAlpha(int x, int y) {
+        Float alpha = voidAlphaCache[x][y];
+        if (alpha != null)
+            return alpha;
+        alpha = 1f;
+        Coordinates c = Coordinates.get(x, y);
+        float dst =
+         (float) master.getGame().getCells().stream().sorted(new SortMaster<Obj>().getSorterByExpression_(
+          cell -> (int) (-1000 * cell.getCoordinates().dst_(Coordinates.get(x, y))
+          ))).findFirst().get().getCoordinates().dst_(c);
+        dst = (float) Math.sqrt(dst * 2);
+        alpha = alpha / (Math.max(1, dst));
+        voidAlphaCache[x][y] = alpha;
+        return alpha;
     }
 
     private float getHiglightAlpha(int x, int y) {
@@ -170,7 +210,7 @@ public class GammaMaster {
         return getGammaForCell(Eidolons.game.getCellByCoordinate(Coordinates.get(x, y)));
     }
 
-    public float getGammaForCell( DC_Cell cell  ) {
+    public float getGammaForCell(DC_Cell cell) {
 
         if (cell == null) {
             return 0;
@@ -180,7 +220,7 @@ public class GammaMaster {
         }
         if (cell.getGame().isDebugMode())
             if (cell.getGamma() == 0) {
-//            if ( cell.getIntParam("illumination")!=0 )
+                //            if ( cell.getIntParam("illumination")!=0 )
                 try {
                     return getGamma(master.getSeeingUnit(), cell);
                 } catch (Exception e) {
@@ -188,15 +228,15 @@ public class GammaMaster {
                 }
 
             }
-            if (isBlockedGammaOn())
-        if (cell.getUnitVisionStatus() == UNIT_VISION.BLOCKED)
-            return getBlockedGamma(cell);
+        if (isBlockedGammaOn())
+            if (cell.getUnitVisionStatus() == UNIT_VISION.BLOCKED)
+                return getBlockedGamma(cell);
 
 
-//        Unit unit =  master.getSeeingUnit();
+        //        Unit unit =  master.getSeeingUnit();
         return CELL_GAMMA_MODIFIER * (float)
          cell.getGamma();
-//        return new Random().nextInt(50)/100 + 0.5f;
+        //        return new Random().nextInt(50)/100 + 0.5f;
     }
 
     private boolean isBlockedGammaOn() {

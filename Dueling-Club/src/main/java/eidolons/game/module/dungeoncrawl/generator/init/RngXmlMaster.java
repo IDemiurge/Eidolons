@@ -25,4 +25,7 @@ public class RngXmlMaster {
     public static final String DIRECTION_MAP_NODE ="DIRECTION_MAP" ;
     public static final String BLOCK_ROOM_TYPE_NODE = "BLOCK_ROOM_TYPE";
     public static final String BOUND_NODE = "BOUND";
+    public static final String ENTRANCE_NODE = "ENTRANCES";
+    public static final String COLOR_THEME = "COLOR_THEME";
+    public static final String COLOR_THEME_ALT = "COLOR_THEME_ALT";
 }

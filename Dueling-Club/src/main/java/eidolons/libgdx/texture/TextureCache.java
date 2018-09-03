@@ -361,5 +361,11 @@ public class TextureCache {
         regionCache.put(path, r);
         return r;
     }
+
+    public static boolean isImage(String property) {
+        if (!isReturnEmptyOnFail())
+            return getOrCreate(property) != null;
+        return getOrCreate(property) == emptyTexture;
+    }
 }
 

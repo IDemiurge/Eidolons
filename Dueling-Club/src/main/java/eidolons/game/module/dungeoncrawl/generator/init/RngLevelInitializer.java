@@ -131,6 +131,7 @@ public class RngLevelInitializer {
 
     private boolean isCellTranslated(ROOM_CELL value) {
         switch (value) {
+            case VOID:
             case TRAP:
             case GUARDS:
             case PATROL:

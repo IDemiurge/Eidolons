@@ -5,6 +5,7 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.SortMaster;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.*;
@@ -16,10 +17,10 @@ public class ModelMaster {
 
     public static void resetExitCounterMap() {
         exitCounterMap = new HashMap<>();
-        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.SOUTH,1);
-        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.EAST,1);
-        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.WEST,1);
-        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.NORTH,1);
+        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.SOUTH, 1);
+        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.EAST, 1);
+        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.WEST, 1);
+        MapMaster.addToIntegerMap(exitCounterMap, FACING_DIRECTION.NORTH, 1);
     }
 
     public static boolean isRoomOnEdge(Room room, LevelModel model) {
@@ -187,17 +188,17 @@ public class ModelMaster {
          r.getCoordinates(), side, r, true, false);
         switch (side) { //distance from the corresponding edge...
             case NORTH:
-                return model.getTopMost() - coordinates.y - model.getCurrentHeight() / 2
-                 - exitCounterMap.get(FACING_DIRECTION.NORTH)*5;
+                return RandomWizard.getRandomInt(16) + model.getTopMost() - coordinates.y - model.getCurrentHeight() / 2
+                 - exitCounterMap.get(FACING_DIRECTION.NORTH) * 5;
             case WEST:
-                return model.getLeftMost() - coordinates.x - model.getCurrentWidth() / 2
-                 - exitCounterMap.get(FACING_DIRECTION.WEST)*5;
+                return RandomWizard.getRandomInt(14) + model.getLeftMost() - coordinates.x - model.getCurrentWidth() / 2
+                 - exitCounterMap.get(FACING_DIRECTION.WEST) * 5;
             case EAST:
-                return model.getRightMost() - coordinates.getX() - r.getWidth() - model.getCurrentWidth() / 2
-                 - exitCounterMap.get(FACING_DIRECTION.EAST)*5;
+                return RandomWizard.getRandomInt(9) - model.getRightMost() - coordinates.getX() - r.getWidth() - model.getCurrentWidth() / 2
+                 - exitCounterMap.get(FACING_DIRECTION.EAST) * 5;
             case SOUTH:
-                return model.getBottomMost() - coordinates.getY() - r.getHeight() - model.getCurrentHeight() / 2
-                 - exitCounterMap.get(FACING_DIRECTION.SOUTH)*5;
+                return RandomWizard.getRandomInt(8) - model.getBottomMost() - coordinates.getY() - r.getHeight() - model.getCurrentHeight() / 2
+                 - exitCounterMap.get(FACING_DIRECTION.SOUTH) * 5;
         }
         return null;
     }
@@ -219,7 +220,7 @@ public class ModelMaster {
     }
 
     public static void exitChosen(FACING_DIRECTION parentExit) {
-        MapMaster.addToIntegerMap(exitCounterMap, parentExit,1);
+        MapMaster.addToIntegerMap(exitCounterMap, parentExit, 1);
     }
 
 

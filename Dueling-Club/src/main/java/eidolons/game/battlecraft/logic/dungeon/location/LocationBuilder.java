@@ -30,7 +30,7 @@ public class LocationBuilder extends DungeonBuilder<Location> {
     public static final String ROOM_TYPE_NODE = "Room Type";
     public static final String COORDINATES_NODE = RngXmlMaster.COORDINATES_NODE;
     public static final String OBJ_NODE = "Objects";
-    public static final String ENTRANCE_NODE = "Entrances";
+    public static final String ENTRANCE_NODE = RngXmlMaster.ENTRANCE_NODE;
     public static final String EXIT_NODE = "Exits";
     public static final String ZONES_NODE = RngXmlMaster.ZONES_NODE;
     public static final String AI_GROUPS_NODE = StringMaster

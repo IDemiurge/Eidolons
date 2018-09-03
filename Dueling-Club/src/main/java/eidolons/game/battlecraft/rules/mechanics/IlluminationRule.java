@@ -123,11 +123,11 @@ public class IlluminationRule {
 
     }
 
-    public int getLightEmission(DC_Obj source) {
+    public static int getLightEmission(DC_Obj source) {
         int value =
          source.getIntParam(PARAMS.LIGHT_EMISSION, BASE_ILLUMINATION);
         if (source instanceof Unit) {
-            if (((Unit) source).isHero())
+            if (((Unit) source).isPlayerCharacter())
                 //                if (source.getGame().getVisionMaster().
                 //                 getIlluminationMaster().getIllumination(source) < 50)
                 value += 40;

@@ -44,6 +44,11 @@ import static eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.G
 public class Pregenerator implements Runnable {
 
 
+    public static final SUBLEVEL_TYPE[]  GENERATED_SUBLEVELS_ALL = {
+     SUBLEVEL_TYPE.COMMON,
+     SUBLEVEL_TYPE.PRE_BOSS,
+     SUBLEVEL_TYPE.BOSS,
+    };
     public static final SUBLEVEL_TYPE[][] GENERATED_SUBLEVELS = {
      {SUBLEVEL_TYPE.COMMON,},
      {SUBLEVEL_TYPE.PRE_BOSS,},
@@ -56,7 +61,7 @@ public class Pregenerator implements Runnable {
      AVRG_FILL_RATIO,
      //     AVRG_EXITS_DISTANCE,
     };
-    private static final int THREADS = 3;
+    private static final int THREADS = 1;
     private static final Boolean RANDOM = null ;
     public static LOCATION_TYPE[] LOCATION_TYPES = {
      LOCATION_TYPE.CAVE,
@@ -64,10 +69,20 @@ public class Pregenerator implements Runnable {
      LOCATION_TYPE.CEMETERY,
      LOCATION_TYPE.TOWER,
      LOCATION_TYPE.CRYPT,
-//     LOCATION_TYPE.TEMPLE,
-//     LOCATION_TYPE.CASTLE,
     };
-    public static final LOCATION_TYPE[] GENERATED_LOCATIONS = LOCATION_TYPES;
+    public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
+     {
+      LOCATION_TYPE.CAVE,
+      LOCATION_TYPE.DUNGEON,
+     },
+     {
+      LOCATION_TYPE.TOWER,
+      LOCATION_TYPE.CRYPT,
+     } ,
+     {
+      LOCATION_TYPE.CEMETERY,
+     }
+    };
     private static List<Pregenerator> running = new ArrayList<>();
     private static Map<PregeneratorData, List<GenerationStats>> analysisStats = new XLinkedMap<>();
     private PregeneratorData data;
@@ -126,10 +141,22 @@ public class Pregenerator implements Runnable {
          .toArray(new String[PREGENERATOR_VALUES.values().length]);
         factory.setValues(vals);
 
-        SUBLEVEL_TYPE[] sublevelTypes = GENERATED_SUBLEVELS[i];
-        LOCATION_TYPE[] locationTypes = GENERATED_LOCATIONS;
+        SUBLEVEL_TYPE[] sublevelTypes = GENERATED_SUBLEVELS_ALL;
+        LOCATION_TYPE[] locationTypes = GENERATED_LOCATIONS[i];
         return new PregeneratorData(factory.constructDataString(),
          sublevelTypes, locationTypes);
+    }
+
+    public static boolean isRunning() {
+        return running.size()>0;
+    }
+
+    public static List<Pregenerator> getRunning() {
+        return running;
+    }
+
+    public static void setRunning(List<Pregenerator> running) {
+        Pregenerator.running = running;
     }
 
     private void logResults(GenerationStats stat) {

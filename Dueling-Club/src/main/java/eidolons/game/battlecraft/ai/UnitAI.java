@@ -70,7 +70,8 @@ public class UnitAI {
     private boolean attached;
     private int engagementDuration;
     private List<DC_ActiveObj> usedActions;
-//    private CHARACTER_TYPE characterType;
+    private float explorationMoveSpeedMod=1;
+    //    private CHARACTER_TYPE characterType;
 //    private INCLINATION_TYPE characterType;
 //    private IMPULSE_TYPE impulseType;
 //    Map<IMPULSE_TYPE, Integer> impulseMap;
@@ -555,6 +556,14 @@ public class UnitAI {
             usedActions = new ArrayList<>();
         }
         return usedActions;
+    }
+
+    public float getExplorationMoveSpeedMod() {
+        return explorationMoveSpeedMod;
+    }
+
+    public void setExplorationMoveSpeedMod(float explorationMoveSpeedMod) {
+        this.explorationMoveSpeedMod = explorationMoveSpeedMod;
     }
 
     public enum AI_BEHAVIOR_MODE {

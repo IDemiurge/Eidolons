@@ -171,7 +171,11 @@ public abstract class DC_HeroAttachedObj extends DC_Obj implements AttachedObj {
         if (getGame() == null) {
             return;
         }
-        setHero((Unit) getGame().getObjectById(heroId));
+        try {
+            setHero((Unit) getGame().getObjectById(heroId));
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
     }
 
     protected void initProp(PROPERTY prop) {

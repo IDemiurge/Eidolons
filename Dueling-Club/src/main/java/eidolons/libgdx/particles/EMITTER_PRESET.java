@@ -28,8 +28,8 @@ public enum EMITTER_PRESET {
     CAST_celestial3,
 
 
-    DARK_MIST("mist\\dark mist"),
-    DARK_MIST_LITE("mist\\dark mist2 light"),
+    DARK_MIST("mist","dark mist"),
+    DARK_MIST_LITE("mist","dark mist2 light"),
     SMOKE_TEST("Smoke_Test1.pt"),
     DARK_SOULS("dark souls"),
     DARK_SOULS2("dark souls2"),
@@ -40,26 +40,26 @@ public enum EMITTER_PRESET {
 
     //TODO sub-emitters
 
-    SNOW("snow\\snow"),
-    SNOW_TIGHT("snow\\snow tight"),
-    SNOW_TIGHT2("snow\\snow tight2"),
-    SNOWFALL_SMALL("snow\\snowfall small"),
-    SNOWFALL("snow\\snowfall"),
-    SNOWFALL_THICK("snow\\snowfall thick"),
-    WISPS("woods\\wisps"),
-    LEAVES("woods\\leaves"),
-    STARS("woods\\stars"),
+    SNOW("snow","snow"),
+    SNOW_TIGHT("snow","snow tight"),
+    SNOW_TIGHT2("snow","snow tight2"),
+    SNOWFALL_SMALL("snow","snowfall small"),
+    SNOWFALL("snow","snowfall"),
+    SNOWFALL_THICK("snow","snowfall thick"),
+    WISPS("woods","wisps"),
+    LEAVES("woods","leaves"),
+    STARS("woods","stars"),
 
-    MIST_WHITE("mist\\conceal west wind"),
-    MIST_WHITE2("mist\\conceal west wind2"),
-    MIST_WHITE3("mist\\conceal west wind3"),
-    MIST_WIND("mist\\white mist wind"),
-    MIST_COLD("mist\\cold wind"),
-    MIST_CYAN("mist\\cyan mist2"),
-    MIST_SAND_WIND("mist\\sand wind"),
+    MIST_WHITE("mist","conceal west wind"),
+    MIST_WHITE2("mist","conceal west wind2"),
+    MIST_WHITE3("mist","conceal west wind3"),
+    MIST_WIND("mist","white mist wind"),
+    MIST_COLD("mist","cold wind"),
+    MIST_CYAN("mist","cyan mist2"),
+    MIST_SAND_WIND("mist","sand wind"),
 
-    MIST_BLACK("black mist\\clouds wind light2"),
-    MIST_TRUE("mist\\MIST TRUE");
+    MIST_BLACK("black mist","clouds wind light2"),
+    MIST_TRUE("mist","MIST TRUE");
     public String path;
 
     EMITTER_PRESET() {
@@ -69,8 +69,8 @@ public enum EMITTER_PRESET {
          parts[0], realName));
     }
 
-    EMITTER_PRESET(String path) {
-        this.setPath(path);
+    EMITTER_PRESET(String... pathParts) {
+        this.setPath(StrPathBuilder.build(pathParts));
     }
 
 

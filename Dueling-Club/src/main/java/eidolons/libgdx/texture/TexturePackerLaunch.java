@@ -48,9 +48,9 @@ public class TexturePackerLaunch {
     };
 
     static String mainFolders[] = {
-     "gen",
-//     "ui",
-     "main",
+//     "gen",
+     "ui",
+//     "main",
     };
 
     static String mainFoldersExceptions[] = {

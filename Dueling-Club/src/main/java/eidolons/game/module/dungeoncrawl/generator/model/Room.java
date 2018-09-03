@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYP
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
@@ -319,5 +320,17 @@ public class Room extends RoomModel {
             cells[exitCoordinates.get(i).x][exitCoordinates.get(i).y] = exitCell;
             i++;
         }
+    }
+
+    public List<Coordinates> getCoordinatesList() {
+        return  new ArrayList<>(TileMapper.createTileMap(this).getMapModifiable().keySet());
+    }
+
+    @Override
+    public String toString() {
+        return type + " at " +
+         getCoordinates() +
+         " with exit "
+         + exitTemplate + ": \n" + getCellsString();
     }
 }

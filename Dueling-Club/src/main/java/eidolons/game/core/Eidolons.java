@@ -223,7 +223,7 @@ public class Eidolons {
         if (party == null)
             if (CoreEngine.isMacro()) {
                 if (MacroGame.game == null) {
-                    return  null ;
+                    return null;
                 }
                 return MacroGame.game.getPlayerParty().getParty();
             }
@@ -268,21 +268,22 @@ public class Eidolons {
     public static void exitToMenu() {
         try {
             DC_Game.game.getMetaMaster().gameExited();
-            if (MacroGame.game!=null ){
+            if (MacroGame.game != null) {
                 MacroGame.game.getLoop().setExited(true);
 
             }
+
+            getScreen().reset();
+            gameExited();
+            GameMenu.menuOpen = false;
+            GdxMaster.setInputProcessor(new InputAdapter());
+            showMainMenu();
+            MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
             //            DialogMaster.confirm("Game exit failed!");
             //            exitGame();
         }
-        getScreen().reset();
-        gameExited();
-        GameMenu.menuOpen = false;
-        GdxMaster. setInputProcessor(new InputAdapter());
-        showMainMenu();
-        MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
     }
 
     public static void showMainMenu() {
@@ -372,7 +373,7 @@ public class Eidolons {
     }
 
     public static void screenSet(SCREEN_TYPE type) {
-        if (screenType!=null )
+        if (screenType != null)
             previousScreenType = screenType;
         screenType = type;
     }

@@ -242,4 +242,7 @@ public class SpectrumEffect extends DC_Effect {
         this.reductionForDistanceModifier = reductionForDistance;
     }
 
+    public Set<Coordinates> getCache() {
+        return cache;
+    }
 }

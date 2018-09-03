@@ -2,10 +2,10 @@ package eidolons.game.battlecraft.ai;
 
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.ai.UnitAI.AI_BEHAVIOR_MODE;
-import eidolons.game.battlecraft.ai.advanced.behavior.BehaviorMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.building.MapBlock;
 import eidolons.game.module.dungeoncrawl.ai.AggroMaster.ENGAGEMENT_LEVEL;
 import eidolons.game.module.dungeoncrawl.ai.Patrol;
+import eidolons.game.module.dungeoncrawl.generator.init.RngMainSpawner.UNIT_GROUP_TYPE;
 import eidolons.game.module.herocreator.logic.party.Party;
 import main.content.enums.EncounterEnums.ENCOUNTER_TYPE;
 import main.data.XStack;
@@ -37,6 +37,7 @@ public class GroupAI {
     private boolean clockwisePatrol;
     private boolean backAndForth;
     private Patrol patrol;
+    UNIT_GROUP_TYPE type=UNIT_GROUP_TYPE.CROWD;
 
     public GroupAI() {
 
@@ -65,18 +66,22 @@ public class GroupAI {
             Unit unit = (Unit) obj;
             if (leader == null) {
                 leader = unit;
+                if (originCoordinates == null) {
+                    originCoordinates = leader.getCoordinates();
+                }
             }
             UnitAI unitAI = unit.getUnitAI();
             if (!members.contains(unit)) {
                 members.add(unit);
             }
             unitAI.setGroupAI(this);
-
-            if (originCoordinates == null) {
-                originCoordinates = leader.getCoordinates();
-            }
+            initNewMemberAi(unitAI);
         }
 
+    }
+
+    private void initNewMemberAi(UnitAI unitAI) {
+        unitAI.setExplorationMoveSpeedMod(type.getSpeedMod());
     }
 
     public Unit getLeader() {
@@ -92,6 +97,14 @@ public class GroupAI {
 
     public void setLeader(Unit leader) {
         this.leader = leader;
+    }
+
+    public UNIT_GROUP_TYPE getType() {
+        return type;
+    }
+
+    public void setType(UNIT_GROUP_TYPE type) {
+        this.type = type;
     }
 
     public Patrol getPatrol() {
@@ -190,7 +203,9 @@ public class GroupAI {
     }
 
     public Coordinates getOriginCoordinates() {
-
+        if (originCoordinates==null) {
+            originCoordinates = leader.getCoordinates();
+        }
         return originCoordinates;
     }
 

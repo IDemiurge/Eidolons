@@ -34,6 +34,7 @@ public class PathFinder {
     private static Lock initLock = new ReentrantLock();
     private static volatile boolean isInitialized = false;
     private static String jarName;
+    private static String spritesPath;
 
     private static void _init() {
         ClassLoader classLoader = PathFinder.class.getClassLoader();
@@ -243,7 +244,7 @@ public class PathFinder {
 
     public static String getVfxPath() {
         init();
-        return getImagePath() + "mini" + PathUtils.getPathSeparator() + "sfx" + PathUtils.getPathSeparator();
+        return getImagePath() +  "vfx" + PathUtils.getPathSeparator();
     }
 
     public static String getSpritesPath() {
@@ -255,7 +256,7 @@ public class PathFinder {
     public static String getSpritesPathNew() {
         init();
         return getImagePath() + PathUtils.getPathSeparator() +
-         "main" + PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
+          PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
     }
 
     public static String getParticlePresetPath() {
@@ -301,7 +302,7 @@ public class PathFinder {
     private static String getSpritesPathMain() {
         init();
         return
-         "main" + PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
+          "sprites" + PathUtils.getPathSeparator();
     }
 
     public static String getVideoPath() {
@@ -342,7 +343,15 @@ public class PathFinder {
         return "ui" + PathUtils.getPathSeparator();
 
     }
+    public static String getShadeLightPath() {
+        return StrPathBuilder.build(
+         "ui", "Outlines", "shadows" ) + PathUtils.getPathSeparator();
+    }
 
+    public static String getOutlinesPath() {
+        return StrPathBuilder.build(
+         "ui", "Outlines") + PathUtils.getPathSeparator();
+    }
     public static String getMacroUiPath() {
         return StrPathBuilder.build(
          "ui", "macro") + PathUtils.getPathSeparator();
@@ -420,5 +429,11 @@ public class PathFinder {
     public static String getMetaDataUnitPath() {
         return StrPathBuilder.build(PathFinder.getXML_PATH(),
          "meta data.txt");
+    }
+    public static String getHitSpritesPath() {
+        if (spritesPath == null)
+            spritesPath = StrPathBuilder.build(getSpritesPathNew(),
+             "hit");
+        return spritesPath;
     }
 }

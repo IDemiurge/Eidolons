@@ -30,6 +30,13 @@ public class SightMaster {
     private Map<DC_Obj, DequeImpl<Coordinates>> cache = new HashMap<>();
     private Map<DC_Obj, DequeImpl<Coordinates>> cacheSecondary = new HashMap<>();
 
+    public DequeImpl<Coordinates> getCachedSpectrumCoordinates(DC_Obj obj){
+        if (!cache.containsKey(obj)) {
+            return new DequeImpl<>();
+        }
+        return cache.get(obj);
+
+    }
     public SightMaster(VisionMaster visionManager) {
         master = visionManager;
     }
@@ -194,15 +201,15 @@ public class SightMaster {
         cache.remove(obj);
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinatesSecondary(Unit source) {
+    private DequeImpl<Coordinates> getVisibleCoordinatesSecondary(BattleFieldObject source) {
         return getVisibleCoordinates(source, true);
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinates(Unit source) {
+    private DequeImpl<Coordinates> getVisibleCoordinates(BattleFieldObject source) {
         return getVisibleCoordinates(source, false);
     }
 
-    private DequeImpl<Coordinates> getVisibleCoordinates(Unit source, boolean extended) {
+    private DequeImpl<Coordinates> getVisibleCoordinates(BattleFieldObject source, boolean extended) {
         VISION_MODE mode = source.getVisionMode();
         switch (mode) {
             case INFRARED_VISION:
@@ -219,7 +226,7 @@ public class SightMaster {
         return null;
     }
 
-    public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(Unit source,
+    public DequeImpl<Coordinates> getVisibleCoordinatesNormalSight(BattleFieldObject source,
                                                                    boolean extended) {
         return getSpectrumCoordinates(null, null, null, source, true, null, extended);
     }
@@ -277,13 +284,13 @@ public class SightMaster {
         return (verticalDistance == 0);
     }
 
-    public UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, Unit activeUnit) {
+    public UNIT_VISION getUnitVisibilityStatus(DC_Obj unit, BattleFieldObject activeUnit) {
         clearCacheForUnit(activeUnit);
         return getUnitVisionStatusPrivate(unit, activeUnit);
     }
 
 
-    protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, Unit activeUnit) {
+    protected UNIT_VISION getUnitVisionStatusPrivate(DC_Obj unit, BattleFieldObject activeUnit) {
 
         Boolean result = checkInSightSector(activeUnit, unit);
         if (result == null) {
@@ -298,7 +305,7 @@ public class SightMaster {
     }
 
 
-    protected Boolean checkInSightSector(Unit source, DC_Obj target) {
+    protected Boolean checkInSightSector(BattleFieldObject source, DC_Obj target) {
         if (VisionManager.isVisionHacked() && source.isMine()) {
             return true;
         }

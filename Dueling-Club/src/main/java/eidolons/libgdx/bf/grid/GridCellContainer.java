@@ -1,5 +1,7 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -267,6 +269,14 @@ public class GridCellContainer extends GridCell {
     }
 
     private boolean isStaticZindex() {
+        if (Gdx.input.isKeyPressed(Keys.TAB)
+         || Gdx.input.isKeyPressed(Keys.ALT_LEFT)
+         || Gdx.input.isKeyPressed(Keys.ALT_RIGHT)) {
+            return false;
+        }
+//        if (staticZindexAlways)
+//            return true;
+
         return true;
     }
 

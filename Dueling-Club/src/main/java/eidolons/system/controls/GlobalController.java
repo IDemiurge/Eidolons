@@ -49,9 +49,9 @@ public class GlobalController implements Controller {
             case Keys.F3:
                 WeaveMaster.openWeave();
                 break;
-            case Keys.F12:
-                Eidolons.exitToMenu();
-                break;
+//            case Keys.F4: already implemented?
+//                Eidolons.exitToMenu();
+//                break;
             case Keys.ESCAPE:
                 escape();
                 break;

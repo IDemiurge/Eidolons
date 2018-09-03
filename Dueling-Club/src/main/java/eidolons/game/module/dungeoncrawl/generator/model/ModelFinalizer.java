@@ -1,6 +1,8 @@
 package eidolons.game.module.dungeoncrawl.generator.model;
 
+import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.EXIT_TEMPLATE;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.GRAPH_NODE_ATTRIBUTE;
@@ -13,17 +15,17 @@ import eidolons.game.module.dungeoncrawl.generator.graph.LevelGraphNode;
 import eidolons.game.module.dungeoncrawl.generator.level.ZoneCreator;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TilesMaster;
-import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.system.SortMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.data.ListMaster;
+import main.system.auxiliary.data.MapMaster;
 import main.system.datatypes.WeightMap;
+import main.system.math.PositionMaster;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static main.system.auxiliary.log.LogMaster.log;
@@ -38,9 +40,10 @@ import static main.system.auxiliary.log.LogMaster.log;
  */
 public class ModelFinalizer {
 
-    private final LevelModelBuilder builder;
     RoomTemplateMaster templateMaster;
     RoomAttacher attacher;
+    LevelModel model;
+    private LevelModelBuilder builder;
     private int maxRooms;
 
     public ModelFinalizer(RoomTemplateMaster templateMaster, RoomAttacher attacher, LevelModelBuilder builder) {
@@ -53,40 +56,42 @@ public class ModelFinalizer {
         model.offsetCoordinates();
         Map<Coordinates, ROOM_CELL> modelMap = TileMapper.createTileMap(model).getMapModifiable();
         for (Room room : model.getRoomMap().values()) {
+            LevelBlock block = model.getBlocks().get(room);
             Map<Coordinates, ROOM_CELL> map = TileMapper.createTileMap(room).getMap();
             List<Coordinates> edgeCells = map.keySet().stream()
              .filter(c -> map.get(c) == ROOM_CELL.INDESTRUCTIBLE)
              .filter(c -> TilesMaster.getAdjacentCount(modelMap, c, ROOM_CELL.VOID) > 2)
              .collect(Collectors.toList());
-            int last =0;
+            int last = 0;
             for (Coordinates edgeCell : edgeCells) {
 
-                List<Coordinates> voidCells = TilesMaster.getAdjacentCells(modelMap,false, edgeCell, ROOM_CELL.VOID);
+                List<Coordinates> voidCells = TilesMaster.getAdjacentCells(modelMap, false, edgeCell, ROOM_CELL.VOID);
 
-//                if (RandomWizard.chance(84))
-                    if (RandomWizard.chance(50+last)) {
-                        last-=25;
-                    Coordinates cell = new RandomWizard<Coordinates>().getRandomListItem(voidCells);
-                    model.getAdditionalCells().put(cell, ROOM_CELL.INDESTRUCTIBLE);
-                    modelMap.put(cell, ROOM_CELL.INDESTRUCTIBLE);
-                        if (RandomWizard.chance(65))
-                    if (edgeCell.x == cell.x || edgeCell.y == cell.y) {
-                        Coordinates c = room.relative(edgeCell);
-                        room.getCells()[c.x][c.y] = ROOM_CELL.FLOOR.getSymbol();
-                    }
-                }
-                else last += 25;
-//                    for (Coordinates cell : voidCells) {
-//                        if (RandomWizard.chance(89)) {
-//                            continue;
-//                        }
-//                        model.getAdditionalCells().put(cell, ROOM_CELL.INDESTRUCTIBLE);
-//                        modelMap.put(cell, ROOM_CELL.INDESTRUCTIBLE);
-//                        if (edgeCell.x == cell.x || edgeCell.y == cell.y) {
-//                            Coordinates c = room.relative(edgeCell);
-//                            room.getCells()[c.x][c.y] = ROOM_CELL.FLOOR.getSymbol();
-//                        }
-//                    }
+                if (RandomWizard.chance(50 + last)) {
+                    last -= 25;
+                    Coordinates c = new RandomWizard<Coordinates>().getRandomListItem(voidCells);
+                    model.getBlocks().get(room).getCoordinatesList().add(c);
+                    block.getTileMap().getMapModifiable().put(c, ROOM_CELL.INDESTRUCTIBLE);
+
+                    if (edgeCell.x == c.x || edgeCell.y == c.y)
+                        if (RandomWizard.chance(85)) {
+                            block.getTileMap().getMapModifiable().put(edgeCell, ROOM_CELL.FLOOR);
+                            c = room.relative(edgeCell);
+                            room.getCells()[c.x][c.y] = ROOM_CELL.FLOOR.getSymbol();
+
+                        }
+                } else last += 25;
+                //                    for (Coordinates cell : voidCells) {
+                //                        if (RandomWizard.chance(89)) {
+                //                            continue;
+                //                        }
+                //                        model.getAdditionalCells().put(cell, ROOM_CELL.INDESTRUCTIBLE);
+                //                        modelMap.put(cell, ROOM_CELL.INDESTRUCTIBLE);
+                //                        if (edgeCell.x == cell.x || edgeCell.y == cell.y) {
+                //                            Coordinates c = room.relative(edgeCell);
+                //                            room.getCells()[c.x][c.y] = ROOM_CELL.FLOOR.getSymbol();
+                //                        }
+                //                    }
 
             }
         }
@@ -148,16 +153,59 @@ public class ModelFinalizer {
 
         //geometrically - try to find low-exit rooms that have a lot of void adjacent in between
 
-        for (Room room : model.getRoomMap().values()) {
-            for (Room room2 : model.getRoomMap().values()) {
-                if (room != room2)
-                    if (checkLoopBack(room, room2, model)) {
-                        connect(room, room2);
-                    }
+        int maxNewPath = (int) (model.getRoomMap().size() * 0.2f);
+        int remaining = maxNewPath;
+        Loop loop = new Loop(model.getRoomMap().keySet().size() * 10 * maxNewPath);
+        List<Room> rooms = new ArrayList<>(model.getRoomMap().values());
+        //            rooms.removeIf(r -> r.getType() == ROOM_TYPE.CORRIDOR);
+        Collections.sort(rooms, new SortMaster<Room>().getSorterByExpression_(r ->
+         r.getExits().length - r.getUsedExits().size()));
+        Map<Room, List<Room>> failed = new HashMap<>();
 
+        loop:
+        while (remaining > 0 && loop.continues()) {
+
+            for (Room room : new ArrayList<>(rooms)) {
+                for (Room room2 : new ArrayList<>(rooms)) {
+                    if (room == room2)
+                        continue;
+                    if (failed.get(room) != null)
+                        if (failed.get(room).contains(room2))
+                            continue;
+                    if (checkLoopBack(room, room2, model)) {
+                        if (connect(room, room2)) {
+                            remaining--;
+                            rooms.remove(room);
+                            rooms.remove(room2);
+                            continue loop;
+                        }
+                    }
+                    MapMaster.addToListMap(failed, room, room2);
+                    MapMaster.addToListMap(failed, room2, room);
+
+                }
+            }
+        }
+        model.rebuildCells();
+        System.out.println("Made " +
+         (maxNewPath - remaining) +
+         "additional connections for " +
+         model);
+        model.rebuildCells();
+    }
+
+    private boolean tryConnectViaLink(Room room, Room room2, FACING_DIRECTION side) {
+        Room link = builder.findFitting(room, EXIT_TEMPLATE.THROUGH, ROOM_TYPE.CORRIDOR, side, true);
+        {
+            if (link != null) {
+                System.out.println("LINKED VIA " + link);
+                builder.makeExits(side, side, room, link, room2, false, false);
+                return true;
             }
         }
 
+
+        return false;
     }
 
     private boolean checkLoopBack(Room room, Room room2, LevelModel model) {
@@ -165,7 +213,21 @@ public class ModelFinalizer {
 
         //we could instead *search* for closest room...
 
-        if (!(checkAligned(room, room2, true) || checkAligned(room, room2, false))) {
+        //        if (!(checkAligned(room, room2, true) || checkAligned(room, room2, false))) {
+        //            return false;
+        //        }
+
+        if (builder.roomLinkMap.containsKey(room))
+            if (builder.roomLinkMap.get(room).contains(room2)) {
+                return false;
+            }
+        if (builder.roomLinkMap.containsKey(room2))
+            if (builder.roomLinkMap.get(room2).contains(room)) {
+                return false;
+            }
+        List<Object> types = ListMaster.toList(room.getType(), room2.getType());
+        if (types.contains(ROOM_TYPE.ENTRANCE_ROOM) &&
+         types.contains(ROOM_TYPE.EXIT_ROOM)) {
             return false;
         }
         Coordinates c = room.getCoordinates();
@@ -175,6 +237,13 @@ public class ModelFinalizer {
         int diffY = (c.y < c2.y ? room : room2).getHeight() +
          Math.abs(c.y - c2.y);
         boolean xOrY = diffX < diffY;
+
+        float dst =
+         CoordinatesMaster.getMinDistanceBetweenGroups(room.getCoordinatesList(),
+          room2.getCoordinatesList(), 5);
+        if (dst > 5) {
+            return false;
+        }
         return !(
          model.getRoomMap().values().stream().anyMatch(r -> {
              if (r == room || r == room2)
@@ -184,57 +253,118 @@ public class ModelFinalizer {
 
     }
 
-    private boolean checkAligned(Room room, Room room2, boolean onXorY) {
+    private Set<Integer> getAligned(Room room, Room room2, boolean onXorY) {
         //from the smaller room, get the farthest aligned line -1 and see if it is close enough to center
         Map<Coordinates, ROOM_CELL> map = TileMapper.createTileMap(room).getMap();
         Map<Coordinates, ROOM_CELL> map2 = TileMapper.createTileMap(room2).getMap();
         List<Integer> coordinates = map.keySet().stream().map(c -> c.getXorY(onXorY)).collect(Collectors.toList());
         List<Integer> coordinates2 = map2.keySet().stream().map(c -> c.getXorY(onXorY)).collect(Collectors.toList());
 
-        List<Integer> aligned =
-         coordinates.stream().filter(c -> coordinates2.contains(c)).collect(Collectors.toList());
-
-        if (aligned.size() < 3)
-            return false;
-
-        //additional conditions? TODO
-        return true;
+        return new LinkedHashSet<>(
+         coordinates.stream().filter(c -> coordinates2.contains(c)).collect(Collectors.toList()));
     }
 
-    private void connect(Room room, Room room2) {
+    private boolean connect(Room room, Room room2) {
         //try place room? or just a line?
         //        List<Coordinates> toClear; //
         FACING_DIRECTION side;
-        if (checkAligned(room, room2, true)) {
+        Set<Integer> alignedX = getAligned(room, room2, true);
+        Set<Integer> alignedY = getAligned(room, room2, false);
+        List<Integer> aligned;
+        boolean onXorY;
+        if (alignedX.size() > alignedY.size()) {
+            aligned = new ArrayList<>(alignedX);
+            onXorY = true;
             side = room.getCoordinates().y < room2.getCoordinates().y ? FACING_DIRECTION.SOUTH : FACING_DIRECTION.NORTH;
         } else {
+            aligned = new ArrayList<>(alignedY);
+            onXorY = false;
             side = room.getCoordinates().x < room2.getCoordinates().x ? FACING_DIRECTION.EAST : FACING_DIRECTION.WEST;
 
         }
+        if (aligned.size() < 3)
+            return false;
 
-        Room link =
-         builder.findFitting(room, EXIT_TEMPLATE.THROUGH, ROOM_TYPE.CORRIDOR, side, false);
-        if (link == null) {
-            return;
-        }
-        Coordinates c = link.getCoordinates();
-        Coordinates offset = new AbstractCoordinates(0, 0);
-        while (true) {
-            //           TODO  if (new Traverser().checkTraversable(link, side, offset))
-            //                if (new Traverser().checkTraversable(room, side, offset)) {
-            //                    builder.addRoom(link, room);
-            //                    break;
-            //                }
-            int x = side.isVertical() ? 0 : 1;
-            int y = !side.isVertical() ? 0 : 1;
-            offset.offset(new AbstractCoordinates(x, y));
-            link.setCoordinates(c.getOffset(offset));
-        }
-        //if it fails, it's not critical...
+        System.out.println("CONNECTING " +
+         room + " with " + room2 + " on " + side
+         + "\n\n\n" + model);
+        //        if (tryConnectViaLink(room, room2, side)) {
+        //            return true;
+        //        }
+        //        System.out.println("MANUAL LINK FOR " +
+        //         room + " and " + room2);
+        List<Coordinates> list = room.getCoordinatesList();
+        Coordinates c = CoordinatesMaster.getFarmostCoordinateInDirection(
+         side.getDirection(), list);
+        //        list.addAll(room2.getCoordinatesList());
 
-        //builder.makeExits();
+        boolean middle = !RandomWizard.chance(aligned.size() * 9);
+        Integer line = 0;
+        if (middle) {
+            line = aligned.get(aligned.size() / 2);
+        } else line = (Integer) RandomWizard.getRandomListObject(aligned);
+        int n = side.isCloserToZero() ? -1 : 1;
+        int start = c.getXorY(!onXorY) - 1 * n;
+        c = CoordinatesMaster.getFarmostCoordinateInDirection(
+         side.getDirection().flip(), room2.getCoordinatesList());
+        int end = c.getXorY(!onXorY) + 1 * n;
+
+        n = start;
+        start = Math.min(start, end);
+        end = Math.max(n, end);
+
+        List<Coordinates> path = new ArrayList<>();
+        for (int i = start + 1; i <= end; i++) {
+            c = new AbstractCoordinates(i, line);
+            if (onXorY)
+                c.swap();
+            path.add(c);
+        }
+
+        for (Coordinates pathCoordinate : path) {
+            c = room.relative(pathCoordinate);
+            ROOM_CELL cell = ROOM_CELL.FLOOR;
+
+            boolean assigned = false;
+            if (CoordinatesMaster.isWithinBounds(c, 0, room.getWidth() - 1, 0, room.getHeight() - 1)) {
+                room.getCells()[c.x][c.y] = cell.getSymbol();
+                System.out.println("changed " +
+                 room + " on " + c);
+                assigned = true;
+            }
+            c = room2.relative(pathCoordinate);
+            if (CoordinatesMaster.isWithinBounds(c, 0, room2.getWidth() - 1, 0, room2.getHeight() - 1)) {
+                room2.getCells()[c.x][c.y] = cell.getSymbol();
+                System.out.println("changed " +
+                 room2 + " on " + c);
+                assigned = true;
+            }
+            if (assigned)
+                continue;
+            model.getAdditionalCells().put(pathCoordinate, cell);
+            System.out.println("between " + c);
+        }
+        room.getUsedExits().add(side);
+        room2.getUsedExits().add(side.flip());
+
+        //if it fails t0 Traverse, it's not critical...
+        //        Coordinates c = link.getCoordinates();
+        //        Coordinates offset = new AbstractCoordinates(0, 0);
+        //        while (true) {
+        //            //           TODO  if (new Traverser().checkTraversable(link, side, offset))
+        //            //                if (new Traverser().checkTraversable(room, side, offset)) {
+        //            //                    builder.addRoom(link, room);
+        //            //                    break;
+        //            //                }
+        //            int x = side.isVertical() ? 0 : 1;
+        //            int y = !side.isVertical() ? 0 : 1;
+        //            offset.offset(new AbstractCoordinates(x, y));
+        //            link.setCoordinates(c.getOffset(offset));
+        //        }
+
         //make exits
 
+        return true;
     }
 
     private Room chooseAltRoom(GraphPath path, Room room, LevelModel model) {
@@ -260,6 +390,7 @@ public class ModelFinalizer {
     }
 
     public void finalize(LevelModel model) {
+        this.model = model;
         log(1, "FINALIZING: \n" + model);
         maxRooms =
          //model.getRoomMap().size() + 4;
@@ -267,6 +398,8 @@ public class ModelFinalizer {
         tryBuildUnbuiltGraphNodes(builder, model);
 
         tryAdditionalBuild(model);
+
+        PositionMaster.initDistancesCache(model.getCurrentWidth(), model.getCurrentHeight());
 
         if (model.getData().isLoopBackAllowed())
             try {
@@ -281,10 +414,8 @@ public class ModelFinalizer {
                 main.system.ExceptionMaster.printStackTrace(e);
             }
 
-        if (model.getData().getLocationType().getGroup() == LOCATION_TYPE_GROUP.NATURAL
-         ) {
-            randomizeEdges(model);
-        }
+        //      now after fill()  if (model.getData().getLocationType().getGroup() == LOCATION_TYPE_GROUP.NATURAL
+        //         ) {            randomizeEdges(model);        }
     }
 
     private boolean checkBuildDone(LevelModel model, LevelData data) {

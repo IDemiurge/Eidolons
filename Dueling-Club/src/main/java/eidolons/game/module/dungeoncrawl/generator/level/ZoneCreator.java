@@ -7,6 +7,7 @@ import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.system.auxiliary.RandomWizard;
@@ -31,7 +32,12 @@ public class ZoneCreator {
             DUNGEON_STYLE style = getStyle(zone_type, data.getLocationType());
             ROOM_TEMPLATE_GROUP group = getRoomGroup(data
              , zone_type, style);
-            list.add(new LevelZone(zone_type, group, style, i));
+            LevelZone zone = new LevelZone(zone_type, group, style, i);
+            COLOR_THEME[] colors = getColors(style);
+            zone.setColorTheme(colors[0]);
+            if (colors.length>1)
+                zone.setAltColorTheme(colors[1]);
+            list.add(zone);
         }
         return list;
     }
@@ -40,7 +46,7 @@ public class ZoneCreator {
                                                     ZONE_TYPE zone_type,
                                                     DUNGEON_STYLE style) {
 
-//TODO check style sync
+        //TODO check style sync
         return new RandomWizard<ROOM_TEMPLATE_GROUP>().getRandomArrayItem(data.getTemplateGroups());
     }
 
@@ -77,6 +83,73 @@ public class ZoneCreator {
         return list;
     }
 
+    private static COLOR_THEME[] getColors(DUNGEON_STYLE style) {
+        boolean b = RandomWizard.random();
+        switch (style) {
+            case Stony:
+                return
+                 b? new COLOR_THEME[]{
+                  COLOR_THEME.PURPLE,
+                  COLOR_THEME.YELLOW,
+                 }
+                 :new COLOR_THEME[]{
+                  COLOR_THEME.CYAN,
+                  COLOR_THEME.PINK,
+                 };
+            case Somber:
+                return
+                 b? new COLOR_THEME[]{
+                  COLOR_THEME.PURPLE,
+                  COLOR_THEME.BLUE,
+                 }
+                  :new COLOR_THEME[]{
+                  COLOR_THEME.BLUE,
+                  COLOR_THEME.CYAN,
+                 };
+            case Brimstone:
+                return
+                 b? new COLOR_THEME[]{
+                  COLOR_THEME.ORANGE,
+                  COLOR_THEME.YELLOW,
+                 }
+                  :new COLOR_THEME[]{
+                  COLOR_THEME.RED,
+                  COLOR_THEME.ORANGE,
+                 };
+            case Cold:
+                return
+                 b? new COLOR_THEME[]{
+                  COLOR_THEME.CYAN,
+                  COLOR_THEME.BLUE,
+                 }
+                  :new COLOR_THEME[]{
+                  COLOR_THEME.BLUE,
+                  COLOR_THEME.LIGHT,
+                 };
+            case Arcane:
+                return
+                 b? new COLOR_THEME[]{
+                  COLOR_THEME.PURPLE,
+                  COLOR_THEME.CYAN,
+                 }
+                  :new COLOR_THEME[]{
+                  COLOR_THEME.BLUE,
+                  COLOR_THEME.PINK,
+                 };
+            case DarkElegance:
+
+                return
+                 b? new COLOR_THEME[]{
+                  COLOR_THEME.PURPLE,
+                  COLOR_THEME.LIGHT,
+                 }
+                  :new COLOR_THEME[]{
+                  COLOR_THEME.DARK,
+                  COLOR_THEME.PURPLE,
+                 };
+        }
+        return getColors(DUNGEON_STYLE.Somber);
+    }
 
     private static DUNGEON_STYLE getStyle(ZONE_TYPE zone_type,
                                           LOCATION_TYPE subdungeonType) {

@@ -1,6 +1,5 @@
 package eidolons.libgdx.screens.menu;
 
-import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -95,13 +94,17 @@ public class MainMenuHandler {
                 return startMicro(getScenarioTypes(getScenarioGroup(true)),
                  true);
             case SELECT_SCENARIO:
+                return startMicro(getScenarioTypes(),
+                 null);
             case PLAY:
                 //          TODO   case STANDOFF:
                 //            case SKIRMISH:
-                if (!DC_Engine.isRngSupported())
-                    return startMicro(getScenarioTypes(),
-                     null);
-                break;
+                //                if (!DC_Engine.isRngSupported())
+                if ( CoreEngine.isFastMode())
+                    break;
+                return startMicro(getScenarioTypes(),
+                 null);
+            //                break;
             case MAP_PREVIEW:
                 AdventureInitializer.launchAdventureGame(null);
                 return null;

@@ -95,4 +95,9 @@ public class SuperContainer extends SuperActor {
     public void setColor(float r, float g, float b, float a) {
         getContent().setColor(r, g, b, a);
     }
+
+    @Override
+    public Color getColor() {
+        return getContent().getColor();
+    }
 }
