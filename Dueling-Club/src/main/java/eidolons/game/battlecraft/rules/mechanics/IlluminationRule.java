@@ -38,9 +38,10 @@ public class IlluminationRule {
             main.system.auxiliary.log.LogMaster.log(1, "IlluminationRule already applied!");
             return;
         }
+
         for (Obj obj : DC_Game.game.getObjects(C_OBJ_TYPE.LIGHT_EMITTERS)) {
-            if (isOutsideBoundaries(obj))
-                continue;
+               if (isOutsideBoundaries(obj))
+                    continue;
             LightEmittingEffect effect = getLightEmissionEffect((DC_Obj) obj);
             if (effect != null) {
                 //                effect.setFormula(new Formula(getLightEmission((DC_Obj) obj) + ""));

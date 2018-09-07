@@ -269,6 +269,8 @@ public class AI_Manager extends AiMaster {
                     group.add(member);
 
                 }
+                if (group.getMembers().isEmpty())
+                    continue;
                 Unit leader = group.getMembers().stream().sorted(SortMaster.getObjSorterByExpression(
                  unit -> unit.getIntParam(PARAMS.POWER)
                 )).findFirst().get();

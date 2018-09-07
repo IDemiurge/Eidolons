@@ -30,18 +30,18 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+
+import static main.system.auxiliary.log.LogMaster.*;
 //a folder tree per music theme!
 //standard path structure
 
 public class MusicMaster {
-    public static final int PERIOD = 3500;
+    public static final int PERIOD = 500; //millis
     public static final String MASTER_PATH = PathFinder.getMusicPath() + "\\main\\";
     public static final boolean MASTER_MODE = true;
+    public static final String AMBIENT_FOLDER = "atmo";
 
-    public static final String MOMENT_PATH = "\\music\\moments\\";
-    public static final String ATMO_PATH = "\\music\\atmo\\";
-    public static final String MUSIC_PATH = "\\music\\";
-    static Map<MUSIC_SCOPE, Integer> indexMap;
+    static Map<MUSIC_SCOPE, Integer> indexMap; //what was the idea?..
     static Map<MUSIC_SCOPE, List<Integer>> indexListMap;
     private static MusicMaster instance;
     private static Boolean on;
@@ -55,17 +55,25 @@ public class MusicMaster {
     private boolean autoplay = true;
     private boolean loopPlaylist = false;
     private Map<String, Music> musicCache = new XLinkedMap<>();
+
     private Music playedMusic;
+    private Music playedAmbient;
     private boolean stopped;
     private boolean running;
 
     private Map<MUSIC_SCOPE, Music> trackCache = new XLinkedMap<>();
 
+
+    private Map<MUSIC_SCOPE, Playlist> playlists = new XLinkedMap<>();
+
     private Thread thread;
     private boolean interruptOnSet;
     private boolean mainThemePlayed;
+
+    private Float musicVolume;
+    private Float ambientVolume;
     // IDEA: map music per scope to resume()
-// TODO AMBIENT SOUNDS -
+    // TODO AMBIENT SOUNDS -
 
 
     private MusicMaster() {
@@ -133,22 +141,16 @@ public class MusicMaster {
 
     }
 
-    public static void resetVolume() {
-        if (getInstance().getPlayedMusic() != null)
-            getInstance().getPlayedMusic().setVolume(getInstance().getVolume());
-    }
-
     public static void preload(MUSIC_SCOPE scope) {
         if (isOn())
             if (isMusicPreloadOn()) {
                 String path = MASTER_PATH;
-            if (scope!=null )
-                path = StrPathBuilder.build(path, scope.name());
+                if (scope != null)
+                    path = StrPathBuilder.build(path, scope.name());
 
                 for (File sub : FileManager.getFilesFromDirectory(
                  path, false, true)) {
-                    if (isMusic(sub.getName()))
-                    {
+                    if (isMusic(sub.getName())) {
                         getInstance().getMusic(sub.getPath());
 
                     }
@@ -175,10 +177,33 @@ public class MusicMaster {
         return on;
     }
 
+    public void resetVolume() {
+        resetVolume(getVolume());
+
+    }
+    public void resetAmbientVolume() {
+        resetAmbientVolume(getAmbientVolume());
+
+    }
+
+    private void resetVolume(Float volume) {
+        if (getPlayedMusic() != null) {
+            getPlayedMusic().setVolume(volume);
+        }
+    }
+    private void resetAmbientVolume(Float volume) {
+        if (getPlayedAmbient() != null) {
+            getPlayedAmbient().setVolume(volume);
+        }
+    }
+
+    public Music getPlayedAmbient() {
+        return playedAmbient;
+    }
+
     public void scopeChanged(MUSIC_SCOPE scope) {
         setScope(scope);
-        if (!isRunning())
-        {
+        if (!isRunning()) {
             startLoop();
         }
         if (!isOn())
@@ -189,7 +214,7 @@ public class MusicMaster {
         if (isStreaming())
             playedMusic = trackCache.get(scope);
         else
-            playedMusic=null;
+            playedMusic = null;
         if (playedMusic == null) {
             checkNewMusicToPlay();
         }
@@ -267,6 +292,8 @@ public class MusicMaster {
             if (files.isEmpty()) {
                 //change?
                 folder = StringMaster.cropLastPathSegment(folder);
+                if (folder.isEmpty())
+                    break;
                 continue;
             }
 
@@ -287,16 +314,37 @@ public class MusicMaster {
     }
 
     private void checkAmbience() {
-        if (ambience != null) {
-//            getAmbienceFolder();
+        if (!isAmbientOn())
+            return;
+        if (playedAmbient == null || !playedAmbient.isPlaying()) {
+            boolean alt = false;
+            boolean global = true; //TODO
+            AMBIENCE newAmbience = AmbientMaster.getCurrentAmbience(alt, global);
+            if (ambience != newAmbience) {
+                ambience = newAmbience;
+                playedAmbient = new PreloadedMusic(ambience.getPath());
+                log(1,"playedAmbient= " +ambience.getPath());
 
+                Float volume = getAmbientVolume();
+                playedAmbient.setVolume(volume);
+            }
+
+            log(1,"playing Ambient: " +ambience.getPath());
+            playedAmbient.play();
         }
+    }
+
+    private boolean isAmbientOn() {
+        if (scope == MUSIC_SCOPE.MENU) {
+            return false;
+        }
+        return true;
     }
 
     private String getMusicFolder() {
         if (MASTER_MODE) {
             if (Eidolons.game != null && Eidolons.game.isStarted())
-                if (scope==MUSIC_SCOPE.BATTLE)
+                if (scope == MUSIC_SCOPE.BATTLE)
                     return MASTER_PATH + "battle";
             if (scope == MUSIC_SCOPE.MENU) {
                 mainThemePlayed = true;
@@ -349,7 +397,7 @@ public class MusicMaster {
                      main.system.ExceptionMaster.printStackTrace(e);
                  }
              }
-//        MusicMaster.this.running=false;
+             //        MusicMaster.this.running=false;
          }, "Music Thread");
         thread.start();
         running = true;
@@ -386,7 +434,7 @@ public class MusicMaster {
         try {
             playedMusic.play();
             trackCache.put(this.scope, playedMusic);
-            main.system.auxiliary.log.LogMaster.log(1,"Music playing: " +path);
+            log(1, "Music playing: " + path);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -403,15 +451,26 @@ public class MusicMaster {
                 playedMusic = Gdx.audio.newMusic(file);
             }
             musicCache.put(path, playedMusic);
-            main.system.auxiliary.log.LogMaster.log(1,"Music loaded " +path);
+            log(1, "Music loaded " + path);
         }
-//what if music was disposed?
+        //what if music was disposed?
         return playedMusic;
     }
 
+    public Float getAmbientVolume() {
+        if (ambientVolume == null) {
+            ambientVolume = OptionsMaster.getSoundOptions().
+             getFloatValue(SOUND_OPTION.AMBIENCE_VOLUME) / 100;
+        }
+        return ambientVolume * SoundMaster.getMasterVolume() / 100;
+    }
+
     private Float getVolume() {
-        return new Float(OptionsMaster.getSoundOptions().
-         getIntValue(SOUND_OPTION.MUSIC_VOLUME)) / 100 * SoundMaster.getMasterVolume() / 100;
+        if (musicVolume == null) {
+            musicVolume = OptionsMaster.getSoundOptions().
+             getFloatValue(SOUND_OPTION.MUSIC_VOLUME) / 100;
+        }
+        return musicVolume * SoundMaster.getMasterVolume() / 100;
     }
 
     public void setScope(MUSIC_SCOPE scope) {
@@ -474,12 +533,11 @@ public class MusicMaster {
     }
 
     public void autoScope() {
-        if (DC_Game.game==null )
+        if (DC_Game.game == null)
             scopeChanged(MUSIC_SCOPE.MENU);
-        else
-        {
-//            if (MacroGame)
-            scopeChanged(ExplorationMaster.isExplorationOn()? MUSIC_SCOPE.ATMO: MUSIC_SCOPE.BATTLE);
+        else {
+            //            if (MacroGame)
+            scopeChanged(ExplorationMaster.isExplorationOn() ? MUSIC_SCOPE.ATMO : MUSIC_SCOPE.BATTLE);
         }
     }
 
@@ -494,19 +552,22 @@ public class MusicMaster {
         CAVE,
         EVIL,
 
-
-//        FOREST_NIGHT(),
-//        FOREST_DAY,
-//        TAVERN,
-//        TEMPLE,
-//        CASTLE,
-//        DUNGEON,
-//        MOUNTAINS,
-//        NORTH,
+        //        FOREST_NIGHT(),
+        //        FOREST_DAY,
+        //        TAVERN,
+        //        TEMPLE,
+        //        CASTLE,
+        //        DUNGEON,
+        //        MOUNTAINS,
+        //        NORTH,
         ;
 
         AMBIENCE(ATMO_SOUND_TYPE... TYPES) {
 
+        }
+
+        public String getPath() {
+            return StrPathBuilder.build(PathFinder.getMusicPath(), AMBIENT_FOLDER, name() + AmbientMaster.FORMAT);
         }
     }
 
@@ -536,7 +597,7 @@ public class MusicMaster {
         WELCOME; // VARIANTS?
 
         public String getCorePath() {
-            return MOMENT_PATH + name();
+            return  name();
         }
     }
 

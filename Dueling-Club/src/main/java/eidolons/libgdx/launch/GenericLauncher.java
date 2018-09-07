@@ -265,8 +265,7 @@ public class GenericLauncher extends Game {
                     if (!Eidolons.initScenario(new ScenarioMetaMaster(data.getName())))
                         return; // INIT FAILED
                     DC_Engine.gameStartInit();
-                    if (MusicMaster.isOn())
-                        MusicMaster.preload(MUSIC_SCOPE.ATMO);
+                    MusicMaster.preload(MUSIC_SCOPE.ATMO);
                     Eidolons.mainGame.getMetaMaster().getGame().initAndStart();
                     firstInitDone = true;
                 });

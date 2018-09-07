@@ -54,14 +54,14 @@ public class Pregenerator implements Runnable {
      {SUBLEVEL_TYPE.PRE_BOSS,},
      {SUBLEVEL_TYPE.BOSS,}
     };
-    public static final boolean TEST_MODE = true;
+    public static final boolean TEST_MODE = false;
     public static final boolean NO_VALIDATION = false;
     public static final GEN_STAT[] averageValues = {
      AVRG_RATE,
      AVRG_FILL_RATIO,
      //     AVRG_EXITS_DISTANCE,
     };
-    private static final int THREADS = 1;
+    private static final int THREADS = 3;
     private static final Boolean RANDOM = null ;
     public static LOCATION_TYPE[] LOCATION_TYPES = {
      LOCATION_TYPE.CAVE,

@@ -2,6 +2,7 @@ package eidolons.libgdx.particles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
@@ -18,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by JustMe on 1/27/2017.
@@ -25,6 +28,7 @@ import java.io.InputStreamReader;
 public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
     public String path;
+    private static List<String> broken=    new ArrayList<>() ;
 
     public ParticleEffectX(String path) {
         this.path = path;
@@ -54,7 +58,9 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
          Gdx.files.internal(imagePath));
 
     }
-
+    protected Texture loadTexture (FileHandle file) {
+        return new Texture(file, false);
+    }
     public ParticleEffectX() {
         super();
     }
@@ -103,6 +109,13 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     public void loadEmitters(FileHandle effectFile) {
+        if (!effectFile.exists()){
+            if (broken.contains(effectFile.path()))
+                return;
+            broken.add(effectFile.path());
+            main.system.auxiliary.log.LogMaster.log(1,"no such emitter preset: " +effectFile.path());
+            return;
+        }
         InputStream input = effectFile.read();
         getEmitters().clear();
         BufferedReader reader = null;
@@ -148,4 +161,5 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
             e.toggle(fieldName);
         }
     }
+
 }

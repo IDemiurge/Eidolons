@@ -198,12 +198,17 @@ public class OptionsMaster {
     }
 
     private static void applySoundOptions_(SoundOptions soundOptions) {
+        MusicMaster master = MusicMaster.getInstance();
+        if (master == null) {
+            return;
+        }
         for (Object sub : soundOptions.getValues().keySet()) {
             new EnumMaster<SOUND_OPTION>().
              retrieveEnumConst(SOUND_OPTION.class,
               soundOptions.getValues().get(sub).toString());
             SOUND_OPTION key = soundOptions.getKey((sub.toString()));
             String value = soundOptions.getValue(key);
+
             if (!NumberUtils.isInteger(value)) {
                 switch (key) {
                     case SOUNDS_OFF:
@@ -214,21 +219,23 @@ public class OptionsMaster {
                         MusicMaster.resetSwitcher();
                         break;
                     case MUSIC_VARIANT:
-                        MusicMaster.getInstance().setVariant(
+                        master.setVariant(
                          new EnumMaster<MUSIC_VARIANT>().retrieveEnumConst(MUSIC_VARIANT.class,
                           soundOptions.getValue(key)));
                         break;
                 }
             } else {
                 Integer integer = Integer.valueOf(value.toLowerCase());
-                Float v = new Float(integer) / 100;
                 switch (key) {
+                    case AMBIENCE_VOLUME:
+                        master. resetAmbientVolume( );
+                        break;
                     case MASTER_VOLUME:
                         SoundMaster.setMasterVolume(integer);
-                        MusicMaster.resetVolume();
+                        master.resetVolume();
                         break;
                     case MUSIC_VOLUME:
-                        MusicMaster.resetVolume();
+                        master.resetVolume( );
                         //auto
                         break;
                 }

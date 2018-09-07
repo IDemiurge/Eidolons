@@ -151,7 +151,7 @@ public class ZoneCreator {
         return getColors(DUNGEON_STYLE.Somber);
     }
 
-    private static DUNGEON_STYLE getStyle(ZONE_TYPE zone_type,
+    public static DUNGEON_STYLE getStyle(ZONE_TYPE zone_type,
                                           LOCATION_TYPE subdungeonType) {
         boolean alt = false;
         switch (zone_type) {

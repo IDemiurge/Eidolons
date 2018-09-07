@@ -12,6 +12,7 @@ import main.system.auxiliary.TimeMaster;
  * Created by JustMe on 11/15/2017.
  */
 public class PreloadedMusic implements Music {
+    private final String path;
     Sound sound;
     private boolean playing;
     private long id;
@@ -21,6 +22,7 @@ public class PreloadedMusic implements Music {
     private float volume;
 
     public PreloadedMusic(String path) {
+        this.path = path;
         FileHandle file = Gdx.files.getFileHandle(path, FileType.Absolute);
         this.sound = Gdx.audio.newSound(file);
         if (sound instanceof OpenALSound) {
@@ -28,6 +30,10 @@ public class PreloadedMusic implements Music {
         }
     }
 
+    @Override
+    public String toString() {
+        return path+ ":  " + super.toString();
+    }
 
     public void play() {
         if (playing)

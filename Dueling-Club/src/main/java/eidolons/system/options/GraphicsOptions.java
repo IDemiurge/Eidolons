@@ -33,6 +33,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
 //        GAMMA(),
 
         AMBIENCE(true),
+        AMBIENCE_DENSITY(50, 0, 100),
         VIDEO(true),
         AMBIENCE_MOVE_SUPPORTED(true),
 

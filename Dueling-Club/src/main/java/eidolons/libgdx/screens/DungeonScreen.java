@@ -183,9 +183,7 @@ public class DungeonScreen extends GameScreen {
 
         soundMaster = new DC_SoundMaster(this);
 
-        if (MusicMaster.isOn()) {
-            MusicMaster.getInstance().scopeChanged(ATMO);
-        }
+        MusicMaster.getInstance().scopeChanged(ATMO);
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());

@@ -65,8 +65,21 @@ public class GridCell extends Group implements Borderable {
 
         addListener(new BattleClickListener() {
             @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (getTapCount()>1){
+                    if (!isAlt()) {
+                        if (!DefaultActionHandler.
+                         leftClickCell(false, isControl(), getGridX(), getGridY()))
+                            DefaultActionHandler.
+                             leftClickCell(true, isControl(), getGridX(), getGridY());
+                    }
+                }
+            }
+
+            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
+                return super.touchDown(event, x, y, pointer, button);
             }
 
             @Override
@@ -94,6 +107,7 @@ public class GridCell extends Group implements Borderable {
 
                     GuiEventManager.trigger(RADIAL_MENU_CLOSE);
                 }
+                super.touchUp(event, x, y, pointer, button);
             }
         });
 

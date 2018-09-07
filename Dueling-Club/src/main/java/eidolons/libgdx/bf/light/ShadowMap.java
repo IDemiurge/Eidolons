@@ -133,7 +133,8 @@ public class ShadowMap extends GroupX {
                             BattleFieldObject obj = iterator.next();
                             if (obj instanceof Unit)
                                 continue;
-                            LightEmittingEffect effect = DC_Game.game.getRules().getIlluminationRule().getEffectCache().get(obj);
+                            LightEmittingEffect effect = DC_Game.game.getRules().getIlluminationRule().
+                             getLightEmissionEffect(obj);
                             if (effect == null) {
                                 continue;
                             }

@@ -8,7 +8,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
-import main.content.enums.rules.VisionEnums.PLAYER_VISION;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
@@ -19,6 +18,8 @@ import main.system.math.PositionMaster;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static main.system.auxiliary.log.LogMaster.log;
 
 /**
  * Created by JustMe on 2/22/2017.
@@ -136,7 +137,7 @@ public class GammaMaster {
                 }
                 break;
             case LIGHT_EMITTER:
-               alpha= getLightEmitterAlpha(x, y);
+                alpha = getLightEmitterAlpha(x, y);
                 break;
             case CONCEALMENT:
                 alpha =
@@ -153,19 +154,39 @@ public class GammaMaster {
     }
 
     public float getLightEmitterAlpha(int x, int y) {
-      float alpha=0;
+        float alpha = 0;
 
-      for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
+        for (Obj sub : DC_Game.game.getRules().getIlluminationRule().getEffectCache().keySet()) {
             if (sub instanceof Unit)
                 continue; //TODO illuminate some other way for units...
             if (sub.getCoordinates().x == x)
-                if (sub.getCoordinates().y == y)
-                    if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
-                     PLAYER_VISION.DETECTED) {
-                        alpha += LIGHT_EMITTER_ALPHA_FACTOR *
+                if (sub.getCoordinates().y == y) {
+                    UNIT_VISION visionStatus = ((DC_Obj) sub).getUnitVisionStatus(Eidolons.getMainHero());
+                    if (visionStatus !=
+                     UNIT_VISION.BLOCKED)
+                    //                        if (((DC_Obj) sub).getPlayerVisionStatus(false) ==
+                    //                         PLAYER_VISION.DETECTED)
+                    {
+                        float dst = 1 + (float) Coordinates.get(
+                         x, y).dst_(Eidolons.getMainHero().getCoordinates());
+
+                        double value = LIGHT_EMITTER_ALPHA_FACTOR / Math.sqrt(dst/2) *
                          master.getGame().getRules().getIlluminationRule()
                           .getLightEmission((DC_Obj) sub);
+
+                        if (visionStatus == UNIT_VISION.IN_PLAIN_SIGHT) {
+                            value *= 1.5f;
+                        }
+                        if (visionStatus == UNIT_VISION.IN_SIGHT) {
+                            value *= 1.25f;
+                        }
+
+                        alpha += value;
+                        log(1, x + " " + y + " has " + alpha + " light alpha with " + sub);
+                    } else {
+                        sub.getCoordinates();
                     }
+                }
         }
 
         return alpha;

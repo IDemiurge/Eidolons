@@ -27,6 +27,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private Coordinates target;
     private boolean test;
     private float speed = 1;
+    private Float lastAlpha;
 
     public EmitterActor(EMITTER_PRESET fx) {
         this(fx.getPath());
@@ -39,7 +40,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     }
 
     public EmitterActor(String path) {
-//        path =PathFinder.getVfxPath() + "templates\\sprite test";
+        //        path =PathFinder.getVfxPath() + "templates\\sprite test";
         this.path = path;
         effect = EmitterPools.getEffect(path);
     }
@@ -75,7 +76,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     public void act(float delta) {
         super.act(delta);
         effect.setPosition(getX(), getY());
-//        effect.update(delta); TODO now drawing with alpha!
+        //        effect.update(delta); TODO now drawing with alpha!
 
     }
 
@@ -88,12 +89,24 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     }
 
     public void updatePosition(float x, float y) {
-        main.system.auxiliary.log.LogMaster.log(1,this + " from " +
+        main.system.auxiliary.log.LogMaster.log(1, this + " from " +
          getX() +
          " " +
          getY() +
-         " pos set to " +x +" " + y);
+         " pos set to " + x + " " + y);
         setPosition(x, y);
+    }
+
+    public void offsetAlpha(float alpha) {
+        if (alpha==0)
+            hide();
+        if (lastAlpha != null)
+            effect.getEmitters().forEach(e ->
+             e.getTransparency().scale(1 / lastAlpha));
+
+        lastAlpha = alpha;
+        effect.getEmitters().forEach(e -> //e.getTransparency().setScaling()
+         e.getTransparency().scale(alpha));
     }
 
     @Override
@@ -101,19 +114,19 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
         return sfx;
     }
 
-public void hide(){
-    effect.getEmitters().forEach(e ->
-    {
-        e.allowCompletion();
-    });
-}
+    public void hide() {
+        effect.getEmitters().forEach(e ->
+        {
+            e.allowCompletion();
+        });
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         effect.setPosition(getX(), getY());
         float delta = Gdx.graphics.getDeltaTime() * speed;
         effect.draw(batch, delta);
-
     }
 
     @Override

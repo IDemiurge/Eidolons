@@ -640,11 +640,12 @@ public class RngMainSpawner {
          c ->
           levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR).
          sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
-          -c.dst(center)+RandomWizard.getRandomInt(5))).limit(units.size() * maxStack).
+          -c.dst(center))).limit(units.size() * maxStack).
          collect(Collectors.toList());
         List<ObjAtCoordinate> list = new ArrayList<>();
         if (emptyCells.isEmpty())
             return list;
+        Collections.shuffle(emptyCells);
         Iterator<Coordinates> iterator = emptyCells.listIterator();
         for (ObjType unit : units) {
             if (!iterator.hasNext())

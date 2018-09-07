@@ -247,6 +247,9 @@ public class PathFinder {
         return getImagePath() +  "vfx" + PathUtils.getPathSeparator();
     }
 
+    public static String getParticlePresetPath() {
+        return getVfxPath();
+    }
     public static String getSpritesPath() {
         init();
         return getImagePath() + PathUtils.getPathSeparator() +
@@ -259,10 +262,6 @@ public class PathFinder {
           PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
     }
 
-    public static String getParticlePresetPath() {
-        init();
-        return getImagePath() + PathUtils.getPathSeparator() + "mini" + PathUtils.getPathSeparator() + "sfx" + PathUtils.getPathSeparator();
-    }
 
     public static String getMusicPath() {
         init();

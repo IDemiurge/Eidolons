@@ -12,10 +12,9 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.FloatActionLimited;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.grid.OverlayView;
-import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
@@ -31,7 +30,7 @@ import java.util.List;
 /**
  * Created by JustMe on 9/1/2018.
  */
-public class LightEmitter extends GroupX {
+public class LightEmitter extends SuperActor {
 
     public static final DIRECTION[] defaultRayDirections = {
      DIRECTION.RIGHT, DIRECTION.LEFT
@@ -42,7 +41,7 @@ public class LightEmitter extends GroupX {
      DIRECTION.DOWN_LEFT, DIRECTION.UP_LEFT,
      DIRECTION.UP_RIGHT, DIRECTION.UP,
     };
-    private static final boolean TEST_MODE = true;
+    private static final boolean TEST_MODE = false;
     private final float OFFSET_Y = 14;
     private final LightEmittingEffect effect;
     Map<DIRECTION, FadeImageContainer> rays = new XLinkedMap<>();
@@ -55,6 +54,7 @@ public class LightEmitter extends GroupX {
     private FadeImageContainer overlay;
     private LIGHT_RAY type;
     private float baseAlpha;
+    private Boolean withinCamera;
 
     public LightEmitter(BattleFieldObject obj, LightEmittingEffect effect) {
         this.overlaying = obj.isOverlaying();
@@ -103,13 +103,13 @@ public class LightEmitter extends GroupX {
     }
 
     public void update() {
-        //update vals
+        //TODO only diag/ no diags option
         List<DIRECTION> directionList = new ArrayList<>();
         if (overlaying) {
             directionList.add(direction);
-                        boolean random = RandomWizard.random();
+            boolean random = RandomWizard.random();
             //      only 1 ray for now...      directionList.add(direction.rotate45(random));
-                        directionList.add(direction.rotate45(!random));
+            directionList.add(direction.rotate45(!random));
         } else {
             directionList = new ArrayList<>(Arrays.asList(priorityOfRayDirections));
             if (isRandomLightDirection())
@@ -127,8 +127,8 @@ public class LightEmitter extends GroupX {
                 continue;
             }
             FadeImageContainer ray = rays.get(d);
-            if (!checkCellFree(c)) {
-                if (ray != null) {
+            if (ray != null) {
+                 if (!checkCellFree(c)) {
                     freeRays++;
                     ray.fadeOut();
                     ActorMaster.addRemoveAfter(ray);
@@ -149,18 +149,54 @@ public class LightEmitter extends GroupX {
             FadeImageContainer ray = rays.get(d);
 
             Color c = ShadeLightCell.getLightColor(getUserObject());
+            float a = ray.getColor().a;
             ray.setColor(c);
-            Dimension dim = GridMaster.getOffsetsForOverlaying(d,
-             (int) ray.getWidth(),
-             (int) ray.getHeight());
-            //or by cell size?
-            int offsetX = dim.width;
-            int offsetY = dim.height;
+            ray.getColor().a = a;
+            float x = getWidth() / 2;
+            float y = getHeight() / 2;
+            if (overlaying) {
+                Dimension dim = GridMaster.getOffsetsForOverlaying(direction,
+                 64,
+                 64);
+                x = (float) dim.getWidth() + 32;
+                y = (float) dim.getHeight() + 32;
+            }
 
-            //      GdxMaster.centerHeight(ray) +
-            boolean diag = d.isDiagonal();
-            ray.setPosition(offsetX * getOffsetCoef(true, diag, offsetX > 0) + GdxMaster.centerWidth(ray) * 2 * getWidth() / center.getWidth(),
-             offsetY * getOffsetCoef(false, diag, offsetY > 0) + GdxMaster.centerHeight(ray) * 2 * getWidth() / center.getWidth());
+            float offsetX = d.isDiagonal() ? ray.getWidth() / 2 : -ray.getWidth() / 2;
+            if (d.growX != null) {
+                offsetX = d.growX ? 0 : -ray.getWidth();
+            }
+
+            float offsetY = d.isDiagonal() ? ray.getHeight() / 2 : -ray.getHeight() / 2;
+            if (d.growY != null) {
+                offsetY = d.growY ? -ray.getHeight() : 0;
+            }
+            ray.setPosition(x + offsetX, y + offsetY);
+
+            /*
+
+            float offsetX = ray.getWidth() / 2;
+            if (d.growX != null) {
+                if (d.isDiagonal()) {
+                    offsetX = d.growX ? 0 : -ray.getWidth();
+                } else {
+                    offsetX =  d.growX ? 0 :  ray.getWidth()  ;
+                }
+            }
+
+            float offsetY = ray.getHeight() / 2;
+            if (d.growY != null) {
+                if (d.isDiagonal())
+                    offsetY = d.growY ? -ray.getHeight() : 0;
+                else
+                    offsetY =  d.growY ?  ray.getHeight()   : 0;
+            }
+            if (!d.isDiagonal()) {
+                ray.setPosition(x - offsetX, y - offsetY);
+            } else
+                ray.setPosition(x + offsetX, y + offsetY);
+             */
+
             if (!overlaying)
                 ray.setY(ray.getY() + OFFSET_Y);
             ray.setBaseAlpha(baseAlpha / (i + 1));
@@ -181,7 +217,7 @@ public class LightEmitter extends GroupX {
     private float getOffsetCoef(boolean x, boolean diagonal, boolean greater) {
         float c = getOffsetCoef(x);
         if (diagonal) {
-            c= c*1.25f;
+            c = c * 1.25f;
         }
         if (greater)
             return 1 / c;
@@ -221,14 +257,25 @@ public class LightEmitter extends GroupX {
 
     @Override
     public void act(float delta) {
+        if (isIgnored()){
+             return;
+        }
         super.act(delta);
         rotate(delta);
 
         if (alphaAction.getTime() < alphaAction.getDuration()) {
             getColor().a = alphaAction.getValue();
-            rays.values().forEach(ray-> ray.setFluctuatingAlpha(alphaAction.getValue()));
+            rays.values().forEach(ray -> ray.setFluctuatingAlpha(alphaAction.getValue()));
             center.setFluctuatingAlpha(alphaAction.getValue());
         }
+    }
+
+    protected boolean isIgnored() {
+        if (withinCamera != null)
+            return !withinCamera;
+        withinCamera = getController().isWithinCamera(this);
+        getController().addCachedPositionActor(this);
+        return !withinCamera;
     }
 
     private void rotate(float delta) {
@@ -268,11 +315,14 @@ public class LightEmitter extends GroupX {
         return ray;
     }
 
+    public float getBaseAlpha() {
+        return baseAlpha;
+    }
+
     public void setBaseAlpha(float baseAlpha) {
-        if (TEST_MODE){
-            baseAlpha=1f;
-        } else
-        if (overlaying) {
+        if (TEST_MODE) {
+            baseAlpha = 1f;
+        } else if (overlaying) {
             baseAlpha *= 1.75f;
         }
         this.baseAlpha = baseAlpha;
@@ -283,10 +333,10 @@ public class LightEmitter extends GroupX {
         addAction(alphaAction);
         alphaAction.setTarget(this);
         alphaAction.setDuration(0.4f + (Math.abs(getColor().a - baseAlpha)) / 2);
-    }
 
-    public float getBaseAlpha() {
-        return baseAlpha;
+   main.system.auxiliary.log.LogMaster.log(1,baseAlpha + " alpha for " +
+    getUserObject().getNameAndCoordinate() +
+    " set in " + alphaAction.getDuration());
     }
 
     public enum LIGHT_RAY {

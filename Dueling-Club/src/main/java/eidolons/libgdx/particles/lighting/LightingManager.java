@@ -1,8 +1,6 @@
 package eidolons.libgdx.particles.lighting;
 
 import eidolons.entity.obj.BattleFieldObject;
-import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 
 /**
@@ -21,9 +19,6 @@ public class LightingManager {
 
     public LightingManager(DequeImpl<BattleFieldObject> units, int rows, int cols) {
         lightMap = new LightMap(units, rows, cols);
-        GuiEventManager.bind(GuiEventType.BF_CREATED, p -> {
-            //TODO init emitterMap and lightMap
-        });
     }
 
     public static boolean isMouse_light() {

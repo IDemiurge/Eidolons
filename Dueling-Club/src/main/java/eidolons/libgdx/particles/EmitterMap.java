@@ -11,6 +11,8 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
+import eidolons.system.options.OptionsMaster;
 import main.content.CONTENT_CONSTS.COLOR_THEME;
 import main.game.bf.Coordinates;
 import main.system.auxiliary.RandomWizard;
@@ -32,6 +34,7 @@ public class EmitterMap extends Group {
     private static int yDistanceFog = 2;
 
     private static Boolean on;
+    private static Integer globalShowChanceCoef;
     Map<Coordinates, Ambience> map = new LinkedHashMap<>();
     String presetPath;
     private final Pool<Ambience> ambiencePool = new Pool<Ambience>() {
@@ -40,6 +43,8 @@ public class EmitterMap extends Group {
             return new Ambience(presetPath);
         }
     };
+    Coordinates topLeft;
+    Coordinates bottomRight;
     private int showChance;
     private Color color;
     private boolean hideAroundPC = HIDE_SMOKE_AROUND_MAIN_HERO;
@@ -47,6 +52,8 @@ public class EmitterMap extends Group {
     private float distanceX = xDistanceFog;
     private float distanceY = yDistanceFog;
     private float timer;
+    private Float baseAlpha;
+    private boolean hidden;
 
     public EmitterMap(String presetPath, int showChance, Color colorHue) {
         this.presetPath = presetPath;
@@ -69,20 +76,47 @@ public class EmitterMap extends Group {
     }
 
 
-//    public boolean contains(ParticleInterface actor) {
-//        return emitters.contains(actor);
-//    }
+    //    public boolean contains(ParticleInterface actor) {
+    //        return emitters.contains(actor);
+    //    }
 
     public void init() {
-        for (int x = 0; x + getDistanceX() <=
-         DungeonScreen.getInstance().getGridPanel().getRows(); x += getDistanceX())
-            for (int y = 0; y + getDistanceY() <=
-             DungeonScreen.getInstance().getGridPanel().getCols(); y += getDistanceY()) {
-
+        int x1 = 0;
+        int x2 = DungeonScreen.getInstance().getGridPanel().getRows();
+        int y1 = 0;
+        int y2 = DungeonScreen.getInstance().getGridPanel().getCols();
+        if (topLeft != null) {
+            x1 = topLeft.x;
+            y1 = topLeft.y;
+        }
+        if (bottomRight != null) {
+            x2 = bottomRight.x;
+            y2 = bottomRight.y;
+        }
+        for (int x = x1; x + getDistanceX() <=
+         x2; x += getDistanceX())
+            for (int y = y1; y + getDistanceY() <=
+             y2; y += getDistanceY()) {
                 add(Coordinates.get(x, y));
 
             }
 
+    }
+
+    public void setTopLeft(Coordinates topLeft) {
+        this.topLeft = topLeft;
+    }
+
+    public void setBottomRight(Coordinates bottomRight) {
+        this.bottomRight = bottomRight;
+    }
+
+    public Coordinates getTopLeft() {
+        return topLeft;
+    }
+
+    public Coordinates getBottomRight() {
+        return bottomRight;
     }
 
     public void update() {
@@ -92,10 +126,12 @@ public class EmitterMap extends Group {
         if (DC_Game.game.getPlayer(true).getHeroObj() == null) {
             return;
         }
+        if (hidden)
+            return;
         if (map.isEmpty())
             init();
         for (Coordinates c1 : map.keySet()) {
-            if (!RandomWizard.chance(showChance)) {
+            if (!RandomWizard.chance(showChance* getGlobalShowChanceCoef()/100)) {
                 hide(c1);
                 continue;
             }
@@ -106,7 +142,10 @@ public class EmitterMap extends Group {
               < getMinDistance()) {
                 hide(c1);
             } else
-                show(c1);
+            {
+                    show(c1);
+
+            }
         }
     }
 
@@ -145,6 +184,11 @@ public class EmitterMap extends Group {
         }
     }
 
+    public void hide() {
+        hidden = true;
+        map.values().forEach(ambience -> ambience.hide());
+    }
+
     private void hide(Coordinates c) {
         Ambience ambience = map.get(c);
         if (ambience == null) {
@@ -152,6 +196,17 @@ public class EmitterMap extends Group {
         }
         ambience.clearActions();
         ambience.hide();
+    }
+
+    public void show() {
+        hidden = false;
+        map.values().forEach(ambience -> {
+             addActor(ambience);
+             if (ambience.getEffect().isComplete()) {
+                 ambience.reset();
+             }
+         });
+
     }
 
     private void add(Coordinates c) {
@@ -169,15 +224,15 @@ public class EmitterMap extends Group {
         ambience.setPosition(v.x, v.y);
         ambience.added();
 
-        if (color!=null )
-        ambience.getEffect().getEmitters().forEach(emitter -> {
-            try {
-                tint(emitter, color, 0.85f);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+        if (color != null)
+            ambience.getEffect().getEmitters().forEach(emitter -> {
+                try {
+                    tint(emitter, color, 0.85f);
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
 
-        });
+            });
         if (!getChildren().contains(ambience, true))
             addActor(ambience);
         //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
@@ -226,5 +281,23 @@ public class EmitterMap extends Group {
 
     public void setShowChance(int showChance) {
         this.showChance = showChance;
+    }
+
+
+    public float getBaseAlpha() {
+        return baseAlpha;
+    }
+
+    public void setBaseAlpha(float baseAlpha) {
+        this.baseAlpha = baseAlpha;
+        map.values().forEach(ambience -> ambience.offsetAlpha(baseAlpha));
+    }
+
+    public static Integer getGlobalShowChanceCoef() {
+        if (globalShowChanceCoef == null) {
+            globalShowChanceCoef = OptionsMaster.getGraphicsOptions().getIntValue(
+             GRAPHIC_OPTION.AMBIENCE_DENSITY) ;
+        }
+        return globalShowChanceCoef;
     }
 }

@@ -128,7 +128,6 @@ public class RngLocationBuilder extends LocationBuilder {
         level.setPowerLevel(getGame().getMetaMaster().getPartyManager().
          getParty().getParamSum(PARAMS.POWER) * (1 + party.getMembers().size()) / party.getMembers().size());
 
-        List<LevelZone> zones = new ArrayList<>();
         int n = 0;
 
         for (Node node : XML_Converter.getNodeListFromFirstChild(XML_Converter.getDoc(xml), true)) {
@@ -150,13 +149,12 @@ public class RngLocationBuilder extends LocationBuilder {
                         }
                     }
                 }
-                zones.add(zone);
+                level.getSubParts().add(zone);
             } else {
                 processNode(node, level);
             }
         }
 
-        level.getSubParts().addAll(zones);
         //        style, ambi, color, ill, id
         //spawn(); TODO so lvls are really all except units
         return level;
@@ -296,14 +294,12 @@ public class RngLocationBuilder extends LocationBuilder {
          DC_TYPE.DUNGEONS);
         if (type == null) {
             type = DataManager.getRandomType(DC_TYPE.DUNGEONS, null);
-            if (!type.checkProperty(PROPS.MAP_BACKGROUND)
-             || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND)))
-            {
-                type.setProperty(PROPS.MAP_BACKGROUND, MAP_BACKGROUND.DUNGEON.getBackgroundFilePath());
-            }
-
         }
-
+        if (!type.checkProperty(PROPS.MAP_BACKGROUND)
+         || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND)))
+        {
+            type.setProperty(PROPS.MAP_BACKGROUND, MAP_BACKGROUND.DUNGEON.getBackgroundFilePath());
+        }
         node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
         if (node != null) {
             type.setValue(PARAMS.BF_HEIGHT.name(), node.getTextContent());

@@ -2,6 +2,7 @@ package main.system;
 
 import main.system.auxiliary.StringMaster;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -21,12 +22,19 @@ public class PathUtils {
         if (path.charAt(0) == '/') {
             path = path.substring(1);
         }
+        List<String> segments = null;
         if (path.contains("/")) {
             if (!path.contains(Pattern.quote(PATH_SEPARATOR))) {
-                return Arrays.asList(path.split("/"));
+                segments =  Arrays.asList(path.split("/"));
             }
         }
-        return Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
+        if (segments == null)
+            segments =      Arrays.asList(path.split(Pattern.quote(PATH_SEPARATOR)));
+
+        segments = new ArrayList<>(segments);
+        segments.removeIf(s -> s.isEmpty());
+
+        return segments;
     }
 
     public static List<String> getPathSegments(String path) {

@@ -22,6 +22,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.datatypes.WeightMap;
+import main.system.launch.CoreEngine;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -170,7 +171,11 @@ public class ScenarioGenerator {
 
     private static List<SUBLEVEL_TYPE> createSublevelTypes(int n, LOCATION_TYPE locationType) {
         List<SUBLEVEL_TYPE> list = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
+            if (CoreEngine.isFastMode()){
+                list.add(SUBLEVEL_TYPE.BOSS);
+            } else
             switch (i) {
                 case 0:
                     list.add(SUBLEVEL_TYPE.COMMON);

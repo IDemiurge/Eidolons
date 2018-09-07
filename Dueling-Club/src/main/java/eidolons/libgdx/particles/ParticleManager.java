@@ -2,6 +2,8 @@ package eidolons.libgdx.particles;
 
 import com.badlogic.gdx.math.Vector2;
 import eidolons.game.battlecraft.logic.dungeon.universal.Dungeon;
+import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.libgdx.particles.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
@@ -28,8 +30,25 @@ public class ParticleManager extends GroupX {
     List<EmitterMap> emitterMaps = new ArrayList<>();
     List<EmitterActor> dynamicVfx = new ArrayList<>();
     Map<String, EmitterMap> cache = new HashMap<>();
+
+    SmartAmbienceMap ambienceMap;
+
     public ParticleManager() {
-        GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
+
+        GuiEventManager.bind(GuiEventType.GAME_STARTED, p -> {
+            DC_Game game = (DC_Game) p.get();
+            DungeonLevel level = game.getDungeonMaster().getDungeonLevel();
+            if (level != null) {
+                addActor(ambienceMap = new SmartAmbienceMap(level));
+            }
+        });
+            GuiEventManager.bind(MapEvent.PREPARE_TIME_CHANGED, p -> {
+            if (ambienceMap!=null ){
+                ambienceMap.update((DAY_TIME) p.get());
+                addActor(ambienceMap);
+                return;
+            }
+
             GuiEventManager.trigger(GuiEventType.INIT_AMBIENCE,
              new AmbienceDataSource(getTemplate(dungeon_), (DAY_TIME) p.get()));
         });
@@ -58,6 +77,9 @@ public class ParticleManager extends GroupX {
             });
 
         GuiEventManager.bind(GuiEventType.INIT_AMBIENCE, p -> {
+
+
+
             AmbienceDataSource dataSource = (AmbienceDataSource) p.get();
             clearChildren();
             emitterMaps.clear();
@@ -112,7 +134,7 @@ public class ParticleManager extends GroupX {
             case BARROW:
                 return AMBIENCE_TEMPLATE.CRYPT;
         }
-        return AMBIENCE_TEMPLATE.SURFACE;
+        return AMBIENCE_TEMPLATE.DEEP_MIST;
     }
 
     public static boolean isAmbienceOn() {

@@ -1,9 +1,12 @@
 package eidolons.libgdx.texture;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import main.system.auxiliary.NumberUtils;
+import main.system.auxiliary.StringMaster;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +54,25 @@ public class SmartTextureAtlas extends TextureAtlas {
             if (region.name.equalsIgnoreCase(name)) matched.add(new AtlasRegion(region));
         }
         return matched;
+    }
+
+    @Override
+    public Sprite createSprite(String name) {
+        Sprite sprite = super.createSprite(name);
+        if (sprite == null) {
+            String format = StringMaster.getFormat(name);
+            name = StringMaster.cropFormat(name);
+            String last = StringMaster.getLastPart(name, "_");
+            if (NumberUtils.isInteger(last))
+            {
+                sprite = super.createSprite(StringMaster.cropLast(name, "_")+format);
+            }
+            if (sprite == null)
+            {
+                sprite = super.createSprite(StringMaster.getStringBeforeNumerals(name) + format);
+            }
+        }
+        return sprite;
     }
 
     @Override

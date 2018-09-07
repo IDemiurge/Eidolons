@@ -20,10 +20,11 @@ public class SoundOptions extends Options<SOUND_OPTION, SOUND_OPTION> {
         FOOTSTEPS_OFF(false),
         MUSIC_OFF(false),
         MASTER_VOLUME(100, 0, 100),
-        MUSIC_VOLUME(100, 0, 100),
-        VOICE_VOLUME(100, 0, 100),
+        MUSIC_VOLUME(65, 0, 100),
+        VOICE_VOLUME(75, 0, 100),
+        AMBIENCE_VOLUME(50, 0, 100),
 //        EFFECT_VOLUME(100, 0, 100),
-        MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values())  ;
+        MUSIC_VARIANT(MusicMaster.MUSIC_VARIANT.values());
         private Boolean exclusive;
         private Integer min;
         private Integer max;

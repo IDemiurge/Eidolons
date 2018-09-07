@@ -365,7 +365,7 @@ public class TextureCache {
     public static boolean isImage(String property) {
         if (!isReturnEmptyOnFail())
             return getOrCreate(property) != null;
-        return getOrCreate(property) == emptyTexture;
+        return getOrCreate(property) != emptyTexture;
     }
 }
 

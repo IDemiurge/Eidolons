@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.particles.Emitter.EMITTER_VALS_SCALED;
 import eidolons.libgdx.particles.EmitterPresetMaster.EMITTER_VALUE_GROUP;
+import eidolons.libgdx.texture.SmartTextureAtlas;
 import eidolons.libgdx.texture.TexturePackerLaunch;
 import eidolons.system.utils.GdxUtil;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.NumberUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
@@ -35,7 +37,7 @@ import java.util.Map;
 public class EmitterMaster extends GdxUtil {
     public static final String ATLAS_VFX_PREFIX = "atlas";
     private static final int MAX_IMAGE_SIZE = 200;
-    static Map<String, String> map = new HashMap<>();
+    static Map<VFX_ATLAS,Map<String, String>> maps = new HashMap<>();
     static Map<String, String> broken = new HashMap<>();
     static String[] exceptions = {
      "custom", "atlas", "atlases", "broken", "templates", "workspace", "export", "target"
@@ -44,7 +46,7 @@ public class EmitterMaster extends GdxUtil {
     private static boolean pack = true;
     private static boolean overwriteImage = false;
     private static boolean sizeImages = false;
-    private static boolean test = false;
+    private static boolean test = true;
     private static Map<VFX_ATLAS, TextureAtlas> atlasMap = new HashMap<>();
 
 
@@ -58,7 +60,7 @@ public class EmitterMaster extends GdxUtil {
                 case SPELL:
                 case MAP:
                 case MISC:
-                    //                    continue ;
+                    continue;
             }
             main:
             for (File sub : files) {
@@ -102,24 +104,31 @@ public class EmitterMaster extends GdxUtil {
                         continue;
                     }
 
-
+                Map<String, String> map = maps.get(type);
+                if (map==null ){
+                    maps.put(type, map = new HashMap<>());
+                }
                 try {
                     for (String s : ContainerUtils.openContainer(imagePath, "\n")) {
                         String imageName = StringMaster.getLastPathSegment(s);
+                        if (isProcessImageNames())
+                            imageName = processImageName(imageName);
                         imagesData += imageName + "\n";
 
                         String newPath = map.get(imageName);
                         if (newPath == null) {
-                            newPath = imagesPath + PathUtils.getPathSeparator() + imageName;
+                            newPath = imagesPath + PathUtils.getPathSeparator() +
+                             (imageName);
                             map.put(imageName, newPath);
                         }
                         if (writeImage) {
                             Texture texture = (new Texture(s));
                             FileHandle handle = new FileHandle(newPath);
-                            if (!handle.exists() || overwriteImage)
+                            if (!handle.exists() || overwriteImage) {
                                 GdxImageMaster.writeImage(handle, texture);
-                            main.system.auxiliary.log.LogMaster.log(1,
-                             path + " vfx image written: " + newPath);
+                                main.system.auxiliary.log.LogMaster.log(1,
+                                 path + " vfx image written: " + newPath);
+                            }
                         }
                     }
 
@@ -151,9 +160,27 @@ public class EmitterMaster extends GdxUtil {
             }
 
         }
-        main.system.auxiliary.log.LogMaster.log(1, broken.size() + " vfx imagepath broken: " + broken);
+        main.system.auxiliary.log.LogMaster.log(1, broken.size() + " vfx imagepath broken: "
+         + broken);
 
         System.exit(0);
+    }
+
+    private static boolean isProcessImageNames() {
+        return false;
+    }
+
+    private static String processImageName(String imageName) {
+        String format = StringMaster.getFormat(imageName);
+        imageName = StringMaster.cropFormat(imageName);
+        String last = StringMaster.getLastPart(imageName, "_");
+        while (NumberUtils.isInteger(last)) {
+            int n = NumberUtils.getInteger(last);
+            imageName = StringMaster.cropLast(imageName, "_")
+             + n;
+            last = StringMaster.getLastPart(imageName, "_");
+        }
+        return imageName + format;
     }
 
     public static void main(String[] args) {
@@ -169,6 +196,7 @@ public class EmitterMaster extends GdxUtil {
     }
 
     private static VFX_ATLAS getAtlasType(String path) {
+        path = path.toLowerCase().replace(PathFinder.getVfxPath().toLowerCase(), "");
         String folder = PathUtils.getPathSegments(path).get(0).toLowerCase();
         if (folder.equalsIgnoreCase("atlas")) {
             folder = PathUtils.getPathSegments(path).get(1).toLowerCase();
@@ -176,6 +204,7 @@ public class EmitterMaster extends GdxUtil {
         switch (folder) {
             case "mist":
             case "snow":
+            case "ambience":
             case "woods":
                 return VFX_ATLAS.AMBIENCE;
 
@@ -190,6 +219,7 @@ public class EmitterMaster extends GdxUtil {
             case "hit":
             case "impact":
             case "missile":
+            case "spell":
                 return VFX_ATLAS.SPELL;
 
             case "smokes":
@@ -224,7 +254,7 @@ public class EmitterMaster extends GdxUtil {
         VFX_ATLAS type = getAtlasType(path);
         TextureAtlas atlas = atlasMap.get(type);
         if (atlas == null) {
-            atlas = new TextureAtlas(getVfxAtlasPathFull(type)); //  Assets.get().getManager().get
+            atlas = new SmartTextureAtlas(getVfxAtlasPathFull(type)); //  Assets.get().getManager().get
             atlasMap.put(type, atlas);
         }
         return atlas;

@@ -64,7 +64,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.ANIM_MISSILE_SPRITE,
     };
     public static final String SPRITE_PATH =
-     "img\\mini\\sprites\\";
+     PathFinder.getSpritesPath();
 
     public static final VALUE[] SFX_IDS = {
      PROPS.ANIM_SFX_CAST,
@@ -74,8 +74,8 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
      PROPS.ANIM_SFX_AFTEREFFECT,
      PROPS.ANIM_MISSILE_SFX,
     };
-    public static final String SFX_PATH =
-     "img\\mini\\sfx\\";
+    public static final String VFX_PATH =
+     PathFinder.getVfxPath();
     public static final String[] SINGLE_RES_FILE_IDS = {};
     public static final String[] RES_FILE_KEYS = {};
     public static final String[] SINGLE_RES_FOLDER_IDS = {G_PROPS.SOUNDSET.name(),};
@@ -417,7 +417,7 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
             String id = StringMaster.getWellFormattedString(val.name());
             editorMap.put(id, new FileChooser(false, true) {
                 protected String getDefaultFileLocation() {
-                    return PathFinder.getEnginePathPlusNewResourceProject() + SFX_PATH;
+                    return PathFinder.getEnginePathPlusNewResourceProject() + VFX_PATH;
                 }
 
             });

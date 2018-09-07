@@ -70,6 +70,8 @@ import main.game.bf.GraveyardManager;
 import main.game.core.game.Game;
 import main.game.core.game.GenericGame;
 import main.game.logic.battle.player.Player;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.auxiliary.log.Chronos;
 import main.system.datatypes.DequeImpl;
 import main.system.entity.IdManager;
@@ -287,6 +289,9 @@ public class DC_Game extends GenericGame {
 
 
         Chronos.logTimeElapsedForMark("GAME_START");
+        if (first) {
+            GuiEventManager.trigger(GuiEventType.GAME_STARTED, this);
+        }
     }
 
     public void startGameLoop() {
@@ -323,7 +328,6 @@ public class DC_Game extends GenericGame {
         else
             exploreLoop.startInNewThread();
         if (isStarted())
-            if (MusicMaster.isOn())
                 musicMaster.scopeChanged(MUSIC_SCOPE.ATMO);
         getStateManager().newRound();
 
@@ -337,7 +341,6 @@ public class DC_Game extends GenericGame {
         else
              loop.startInNewThread() ;
 
-        if (MusicMaster.isOn())
             musicMaster.scopeChanged(MUSIC_SCOPE.BATTLE);
     }
 

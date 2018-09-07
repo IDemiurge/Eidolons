@@ -14,6 +14,8 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TabbedPanel;
+import eidolons.libgdx.particles.EmitterMaster;
+import eidolons.libgdx.particles.ParticleEffectX;
 import eidolons.libgdx.screens.map.editor.EditorControlPanel.MAP_EDITOR_MOUSE_MODE;
 import main.data.filesys.PathFinder;
 import main.system.GuiEventManager;
@@ -62,8 +64,12 @@ public class EmitterPalette extends TabbedPanel {
 //        int columns = (int) (getWidth() / 64);
         defaults().padLeft(200).top().right().width(GdxMaster.getWidth() - 300);
         Map<String, List<File>> presets = new LinkedHashMap<>();
-        List<File> subfolders = FileManager.getFilesFromDirectory(
-         PathFinder.getVfxPath(), true);
+        String path = PathFinder.getVfxPath();
+
+        if (ParticleEffectX.isEmitterAtlasesOn()){
+            path=StrPathBuilder.build(path, EmitterMaster.ATLAS_VFX_PREFIX);
+        }
+        List<File> subfolders = FileManager.getFilesFromDirectory(path, true);
         subfolders.forEach(file -> {
             if (!file.isDirectory()) {
                 MapMaster.addToListMap(presets, "main", file);

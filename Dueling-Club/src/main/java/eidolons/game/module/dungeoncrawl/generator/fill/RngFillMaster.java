@@ -98,9 +98,9 @@ public class RngFillMaster {
             return;
         if (c2==null )
             return;
-        if (!block.getBoundCells().containsKey(c1)
-         && !block.getBoundCells().containsKey(c2))
-            main.system.auxiliary.log.LogMaster.log(1, block + " has " + c1 + " BOUND TO " + c2);
+//        if (!block.getBoundCells().containsKey(c1)
+//         && !block.getBoundCells().containsKey(c2))
+//            main.system.auxiliary.log.LogMaster.log(1, block + " has " + c1 + " BOUND TO " + c2);
         //overwrite though...
         block.getBoundCells().put(c2, c1);
         block.getBoundCells().put(c1, c2);
