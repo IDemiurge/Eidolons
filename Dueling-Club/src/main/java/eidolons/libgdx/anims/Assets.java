@@ -44,7 +44,7 @@ public class Assets {
                                             FileHandle file, ParticleEffectParameter param) {
                      ParticleEffectX fx = createEmitter(file.path());
 //                 ParticleEffect fx=super.load(am, fileName, file, param);
-                     main.system.auxiliary.log.LogMaster.log(1, fileName + file.path() + " loaded...");
+                     main.system.auxiliary.log.LogMaster.log(1, fileName + file.path() + " loaded!");
                      return fx;
                  }
 
@@ -68,7 +68,7 @@ public class Assets {
                 TextureAtlas atlas = new SmartTextureAtlas(data);
                 new ReflectionMaster<TextureAtlasData>()
                  .setValue("data", null, this);
-                main.system.auxiliary.log.LogMaster.log(1, fileName + " loaded...");
+                main.system.auxiliary.log.LogMaster.log(1, fileName + " loaded!");
                 return atlas;
             }
         });

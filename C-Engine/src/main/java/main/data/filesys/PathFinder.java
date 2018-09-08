@@ -257,8 +257,7 @@ public class PathFinder {
 
     public static String getSpritesPathNew() {
         init();
-        return getImagePath() + PathUtils.getPathSeparator() +
-          PathUtils.getPathSeparator() + "sprites" + PathUtils.getPathSeparator();
+        return   "sprites" + PathUtils.getPathSeparator();
     }
 
 

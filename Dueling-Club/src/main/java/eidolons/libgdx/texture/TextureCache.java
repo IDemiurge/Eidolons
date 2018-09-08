@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxImageMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
 import main.system.PathUtils;
@@ -363,6 +364,8 @@ public class TextureCache {
     }
 
     public static boolean isImage(String property) {
+        if (!GdxMaster.isLwjglThread())
+            return ImageManager.isImage(property);
         if (!isReturnEmptyOnFail())
             return getOrCreate(property) != null;
         return getOrCreate(property) != emptyTexture;
