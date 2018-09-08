@@ -242,12 +242,12 @@ public class ShadowMap extends GroupX {
     }
 
     public enum SHADE_CELL {
-        GAMMA_SHADOW(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "shadow neu.png")),
+        GAMMA_SHADOW(0.75f, StrPathBuilder.build("UI", "outlines", "shadows", "shadow neu.png")),
         GAMMA_LIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "light.png")),
         LIGHT_EMITTER(0, StrPathBuilder.build("UI", "outlines", "shadows", "light emitter.png")),
         CONCEALMENT(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "concealment.png")),
         BLACKOUT(0, StrPathBuilder.build("UI", "outlines", "shadows", "blackout.png")),
-        HIGLIGHT(1, StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),
+        HIGLIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),
         VOID(0, StrPathBuilder.build("UI", "outlines", "shadows",   "void.png")),;
         public float defaultAlpha;
         private String texturePath;

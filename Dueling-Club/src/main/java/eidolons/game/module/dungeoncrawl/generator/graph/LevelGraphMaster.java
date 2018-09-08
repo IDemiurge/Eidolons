@@ -229,7 +229,7 @@ public class LevelGraphMaster {
     }
 
     private List<LevelGraphNode> getNodesForZone(LevelZone zone) {
-        int radius = 4;
+        int radius = 4; //dijkstra?
         switch (zone.getType()) {
             case BOSS_AREA:
                 break;

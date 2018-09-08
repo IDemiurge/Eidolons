@@ -20,6 +20,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 
@@ -89,7 +90,7 @@ public class LightEmitter extends SuperActor {
             //                overlay.setPosition(GdxMaster.centerWidth(overlay),
             //                 GdxMaster.centerHeight(overlay));
         }
-
+        setTransform(false);
         setUserObject(obj);
     }
 
@@ -106,6 +107,9 @@ public class LightEmitter extends SuperActor {
         //TODO only diag/ no diags option
         List<DIRECTION> directionList = new ArrayList<>();
         if (overlaying) {
+            if (direction == null) {
+                direction = DirectionMaster.getRandomDirection();
+            }
             directionList.add(direction);
             boolean random = RandomWizard.random();
             //      only 1 ray for now...      directionList.add(direction.rotate45(random));
@@ -128,7 +132,7 @@ public class LightEmitter extends SuperActor {
             }
             FadeImageContainer ray = rays.get(d);
             if (ray != null) {
-                 if (!checkCellFree(c)) {
+                if (!checkCellFree(c)) {
                     freeRays++;
                     ray.fadeOut();
                     ActorMaster.addRemoveAfter(ray);
@@ -145,9 +149,12 @@ public class LightEmitter extends SuperActor {
 
         }
         int i = 0;
+        if (center != null) {
+            center.setTransform(false);
+        }
         for (DIRECTION d : rays.keySet()) {
             FadeImageContainer ray = rays.get(d);
-
+            ray.setTransform(false);
             Color c = ShadeLightCell.getLightColor(getUserObject());
             float a = ray.getColor().a;
             ray.setColor(c);
@@ -172,30 +179,6 @@ public class LightEmitter extends SuperActor {
                 offsetY = d.growY ? -ray.getHeight() : 0;
             }
             ray.setPosition(x + offsetX, y + offsetY);
-
-            /*
-
-            float offsetX = ray.getWidth() / 2;
-            if (d.growX != null) {
-                if (d.isDiagonal()) {
-                    offsetX = d.growX ? 0 : -ray.getWidth();
-                } else {
-                    offsetX =  d.growX ? 0 :  ray.getWidth()  ;
-                }
-            }
-
-            float offsetY = ray.getHeight() / 2;
-            if (d.growY != null) {
-                if (d.isDiagonal())
-                    offsetY = d.growY ? -ray.getHeight() : 0;
-                else
-                    offsetY =  d.growY ?  ray.getHeight()   : 0;
-            }
-            if (!d.isDiagonal()) {
-                ray.setPosition(x - offsetX, y - offsetY);
-            } else
-                ray.setPosition(x + offsetX, y + offsetY);
-             */
 
             if (!overlaying)
                 ray.setY(ray.getY() + OFFSET_Y);
@@ -257,13 +240,14 @@ public class LightEmitter extends SuperActor {
 
     @Override
     public void act(float delta) {
-        if (isIgnored()){
-             return;
+        boolean alphaChanging = alphaAction.getTime() < alphaAction.getDuration();
+
+        if (!alphaChanging && isIgnored()) {
+            return;
         }
         super.act(delta);
         rotate(delta);
-
-        if (alphaAction.getTime() < alphaAction.getDuration()) {
+        if (alphaChanging) {
             getColor().a = alphaAction.getValue();
             rays.values().forEach(ray -> ray.setFluctuatingAlpha(alphaAction.getValue()));
             center.setFluctuatingAlpha(alphaAction.getValue());
@@ -323,7 +307,7 @@ public class LightEmitter extends SuperActor {
         if (TEST_MODE) {
             baseAlpha = 1f;
         } else if (overlaying) {
-            baseAlpha *= 1.75f;
+            baseAlpha *= 2f;
         }
         this.baseAlpha = baseAlpha;
 
@@ -334,13 +318,18 @@ public class LightEmitter extends SuperActor {
         alphaAction.setTarget(this);
         alphaAction.setDuration(0.4f + (Math.abs(getColor().a - baseAlpha)) / 2);
 
-   main.system.auxiliary.log.LogMaster.log(1,baseAlpha + " alpha for " +
-    getUserObject().getNameAndCoordinate() +
-    " set in " + alphaAction.getDuration());
+        main.system.auxiliary.log.LogMaster.log(1, baseAlpha + " alpha for " +
+         getUserObject().getNameAndCoordinate() +
+         " set in " + alphaAction.getDuration());
     }
 
     public enum LIGHT_RAY {
         MOON, SUN, FIRE, MAGIC, SHADOW
+    }
+
+    @Override
+    public void setTransform(boolean transform) {
+        super.setTransform(transform);
     }
 
     class LightContainer extends FadeImageContainer {
@@ -350,6 +339,13 @@ public class LightEmitter extends SuperActor {
 
         public LightContainer(String path) {
             super(path);
+        }
+
+        @Override
+        public void setTransform(boolean transform) {
+            if (transform)
+                return;
+            super.setTransform(transform);
         }
 
         @Override

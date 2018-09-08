@@ -107,8 +107,8 @@ public class ShadeLightCell extends SuperContainer {
 
     @Override
     protected boolean isTransformDisabled() {
-        if (type == SHADE_CELL.LIGHT_EMITTER)
-            return false;
+//        if (type == SHADE_CELL.LIGHT_EMITTER)
+//            return false;
         return true;
     }
 

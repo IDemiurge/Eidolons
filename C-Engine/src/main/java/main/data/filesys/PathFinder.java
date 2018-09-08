@@ -15,7 +15,6 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PathFinder {
 
     public static final String PATH_SEPARATOR = PathUtils.getPathSeparator();
-    private static final String BG_PATH = "big" + PATH_SEPARATOR;
     private static final String PRESENTATION = "presentation" + PathUtils.getPathSeparator();
     private static final String RES_FOLDER_NAME = "resources";
     public static String MICRO_MODULE_NAME = "duel-club";
@@ -168,7 +167,7 @@ public class PathFinder {
 
     public static String getBgPicsPath() {
         init();
-        return BG_PATH;
+        return StrPathBuilder.build("main","background");
     }
 
     public static String getTYPES_PATH() {

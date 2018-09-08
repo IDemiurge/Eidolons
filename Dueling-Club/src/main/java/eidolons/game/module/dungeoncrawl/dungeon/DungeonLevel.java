@@ -10,6 +10,7 @@ import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMap;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileMapper;
 import main.content.CONTENT_CONSTS.FLIP;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
+import main.content.enums.DungeonEnums.LOCATION_TYPE_GROUP;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.data.xml.XML_Converter;
 import main.entity.type.ObjAtCoordinate;
@@ -325,4 +326,9 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
          / model.getCurrentWidth() / model.getCurrentHeight();
     }
 
+    public boolean isBoundObjectsSupported() {
+        if (locationType.getGroup()== LOCATION_TYPE_GROUP.NATURAL)
+            return false;
+        return true;
+    }
 }

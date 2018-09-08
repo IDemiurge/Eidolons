@@ -122,9 +122,9 @@ public class HqPanel extends TablePanel implements Blocking {
         add(partyMembers).left().colspan(3);
         row();
 
-        add(heroViewPanel).left();
+        add(heroViewPanel).left().padRight(20).width(565);
 
-        add(infoTable).center().padLeft(65);
+        add(infoTable).center(); //.padLeft(65);
         add(hqTabs);
         row();
 
@@ -135,7 +135,6 @@ public class HqPanel extends TablePanel implements Blocking {
     private TablePanel createInfoTable() {
         infoTable = new TablePanel<>();
         infoTable.top();
-        add(header).top();
         infoTable.add(heroValues).left();
         infoTable.add(heroXp).right(). row();
         infoTable.add(dynamicParams).center().colspan(2) . row();
@@ -154,8 +153,12 @@ public class HqPanel extends TablePanel implements Blocking {
         HqNewMasteryPanel newMastery = new HqNewMasteryPanel();
 //        newMastery.setPosition();
         infoTable.addActor(newMastery);
-        infoTable.row();
-        infoTable.addActor(scrolledValuePanel=new HqScrolledValuePanel());
+
+        if (isScrollValuesOn()) {
+            infoTable.row();
+            infoTable.addActor(scrolledValuePanel=new HqScrolledValuePanel());
+        }
+
         infoTable.row();
         infoTable.add(controlPanel).padTop(100).bottom().center().colspan(2).row();
 
@@ -163,6 +166,11 @@ public class HqPanel extends TablePanel implements Blocking {
         infoTable.setSize(400, 800);
         return infoTable;
     }
+
+    private boolean isScrollValuesOn() {
+        return false;
+    }
+
     private HqTabs createTabs() {
         return new HqTabs();
     }

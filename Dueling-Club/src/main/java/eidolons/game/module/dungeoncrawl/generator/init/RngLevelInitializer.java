@@ -122,12 +122,15 @@ public class RngLevelInitializer {
             createEntity(c, ROOM_CELL.WALL, block);
         }
         addObj(block, type, c);
+        if (dungeonLevel.isBoundObjectsSupported())
         if (block.getBoundCells().get(c) != null) {
+            clear(block, block.getBoundCells().get(c));
             addObj(block, type, block.getBoundCells().get(c));
         }
         main.system.auxiliary.log.LogMaster.log(1, value + " at " + c +
          " translated to obj: " + type);
     }
+
 
     private boolean isCellTranslated(ROOM_CELL value) {
         switch (value) {
@@ -163,12 +166,20 @@ public class RngLevelInitializer {
         return true;
     }
 
+    private void clear(LevelBlock block, Coordinates coordinates) {
+        dungeonLevel.getObjects().removeIf(at -> at.getCoordinates().equals(coordinates));
+        block.getObjects().removeIf(at -> at.getCoordinates().equals(coordinates));
+    }
     private void addObj(LevelBlock block, ObjType type, Coordinates c) {
         ObjAtCoordinate objAt = new ObjAtCoordinate(type, c);
         block.getObjects().add(0, objAt);
-        if (EntityCheckMaster.isWall(type)){
-            if (dungeonLevel.getObjects().stream().anyMatch(at-> at.getCoordinates().equals(c))) {
-                return ;
+        if (dungeonLevel.getObjects().stream().anyMatch(at -> at.getCoordinates().equals(c))) {
+            if (EntityCheckMaster.isWall(type)) {
+                return;
+            }
+            else {
+                main.system.auxiliary.log.LogMaster.log(1,">>> DUPLICATE OBJ ON " +c+
+                "; last = " + type);
             }
         }
         dungeonLevel.getObjects().add(objAt);

@@ -14,11 +14,14 @@ public class HqHeroViewPanel extends HqElement {
 
     FadeImageContainer preview;
     Image border;
+    HqHeroHeader header;
 
     public HqHeroViewPanel() {
         Group stack;
         add(stack = new Group()).left().bottom();
         left().bottom();
+
+        stack.addActor(header = new HqHeroHeader());
         stack.addActor(preview = new FadeImageContainer());
         stack.addActor(border = new Image(TextureCache.getOrCreateR(VISUALS.FULL_CHARACTER_FRAME.getImgPath())));
 
@@ -28,14 +31,12 @@ public class HqHeroViewPanel extends HqElement {
         setSize(border.getImageWidth(), border.getImageHeight());
         preview.setPosition((border.getImageWidth() - 500) / 2
          , (border.getImageHeight() - 700) / 2);
-
     }
 
     @Override
     protected void update(float delta) {
         preview.setImage(dataSource.getFullPreviewImagePath());
-
+        setSize(border.getImageWidth(), border.getImageHeight());
     }
-    //emblem?
 
 }

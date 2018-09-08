@@ -257,6 +257,8 @@ public class MusicMaster {
         resume();
     }
 
+
+    //???
     private void checkUpdateTypes() {
         if (scope == MUSIC_SCOPE.ATMO) {
             scope = MUSIC_SCOPE.BATTLE;
@@ -310,7 +312,7 @@ public class MusicMaster {
             cachedPlayList.addAll(playList);
             break;
         }
-        checkUpdateTypes();
+//       TODO what was the idea? checkUpdateTypes();
     }
 
     private void checkAmbience() {

@@ -61,10 +61,9 @@ public class MainMenuHandler {
             case CAVE:
             case DUNGEON:
             case TOWER:
+            case TEMPLE:
                 return true;
 
-            case TEMPLE:
-                break;
             case CASTLE:
                 break;
         }
@@ -100,10 +99,10 @@ public class MainMenuHandler {
                 //          TODO   case STANDOFF:
                 //            case SKIRMISH:
                 //                if (!DC_Engine.isRngSupported())
-                if ( CoreEngine.isFastMode())
+//                if ( CoreEngine.isFastMode())
                     break;
-                return startMicro(getScenarioTypes(),
-                 null);
+//                return startMicro(getScenarioTypes(),
+//                 null);
             //                break;
             case MAP_PREVIEW:
                 AdventureInitializer.launchAdventureGame(null);

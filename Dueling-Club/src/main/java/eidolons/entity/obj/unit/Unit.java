@@ -1431,7 +1431,9 @@ public class Unit extends DC_UnitModel {
         }
         return ai;
     }
-
+    public int getMaxVisionDistanceTowards(Coordinates c) {
+        return getSightRangeTowards(c)*2+1;
+    }
     public int getSightRangeTowards(DC_Obj target) {
         return getSightRangeTowards(target.getCoordinates());
     }

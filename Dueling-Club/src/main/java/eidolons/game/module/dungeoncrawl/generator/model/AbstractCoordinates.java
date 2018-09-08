@@ -19,6 +19,14 @@ public class AbstractCoordinates extends Coordinates {
         this(c.x, c.y);
     }
 
+    public AbstractCoordinates(boolean allowinvalid, int x, int y) {
+        super(allowinvalid, x, y);
+    }
+
+    public AbstractCoordinates(boolean custom, String s) {
+        super(custom, s);
+    }
+
     public Coordinates getOffsetByX(int i) {
         return new AbstractCoordinates(x + i, y);
     }

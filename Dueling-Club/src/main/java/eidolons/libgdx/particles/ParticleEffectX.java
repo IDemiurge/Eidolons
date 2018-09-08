@@ -14,6 +14,7 @@ import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
+import main.system.launch.CoreEngine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -109,6 +110,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     public void loadEmitters(FileHandle effectFile) {
+        if (CoreEngine.isMacro())
         if (!effectFile.exists()){
             if (broken.contains(effectFile.path()))
                 return;

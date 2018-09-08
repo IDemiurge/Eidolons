@@ -1,6 +1,8 @@
 package main.content.enums;
 
 import main.content.enums.entity.OBJ_TYPE_ENUM;
+import main.data.filesys.PathFinder;
+import main.system.auxiliary.StrPathBuilder;
 
 /**
  * Created by JustMe on 2/14/2017.
@@ -36,7 +38,7 @@ public class DungeonEnums {
         HALL("Marble Column(3);", MAP_BACKGROUND.DARK_CASTLE),
         GRAVEYARD("Gravestone(4);"
          // "Desecrated Grave(2);Fresh Grave(2);Gravestone(2);Statue(2);"
-         , MAP_BACKGROUND.CEMETARY),
+         , MAP_BACKGROUND.CEMETERY),
         RUINS("Ruined Structure(2);Ruined Column(2);Ruined Gateway(2)", MAP_BACKGROUND.RUINS),
         DEEP_WOOD("Shrub(2);Ancient Oak(3);", MAP_BACKGROUND.RUINS),
         ROCKY("Mossy Boulder(2);Sleek Rock(2);", MAP_BACKGROUND.SHEOTH),
@@ -81,8 +83,8 @@ public class DungeonEnums {
         FOREST("Tree Sapling(2);Oak(2);Fallen Tree(1);Shrub(3);Mossy Boulder(1);Sleek Rock(1);", MAP_BACKGROUND.CAVE),
         DEAD_FOREST("Fallen Tree(1);Shrub(2);Mossy Boulder(1);Sleek Rock(1);Dead Tree(4);", MAP_BACKGROUND.DARK_FOREST),
         DARK_FOREST("Fallen Tree(1);Shrub(2);Mossy Boulder(1);Sleek Rock(1);Oak(2);Dead Tree(3);", MAP_BACKGROUND.DARK_FOREST),
-        CEMETARY("Gravestone(4);", MAP_BACKGROUND.CEMETARY),
-        CEMETARY_WOODS("Gravestone(2);Sleek Rock(1);Mossy Boulder(1);Dead Tree(2);", MAP_BACKGROUND.CEMETARY),
+        CEMETARY("Gravestone(4);", MAP_BACKGROUND.CEMETERY),
+        CEMETARY_WOODS("Gravestone(2);Sleek Rock(1);Mossy Boulder(1);Dead Tree(2);", MAP_BACKGROUND.CEMETERY),
         DUNGEON_HALL("Marble Column(4);", MAP_BACKGROUND.FORGOTTEN_CITY),
 
         DUNGEON("Stalactite(3);Stalagmite(4);", MAP_BACKGROUND.CAVE),
@@ -206,39 +208,42 @@ public class DungeonEnums {
     }
 
     public enum MAP_BACKGROUND {
-        // CITY_OF_GODS("big\\death combat\\city of gods.jpg"),
-        SHEOTH("big\\death combat\\sheoth.jpg"),
-        PIRATE_BAY("big\\Pirate Bay3.jpg"),
-        DUNGEON("main\\background\\dungeon.png"),
-        DARK_FOREST("big\\dark forest.jpg"),
-        LABYRINTH("big\\dungeons\\labyrinth.jpg"),
-        CAVE("big\\dungeons\\cave.jpg"),
-        UNDERCITY("big\\dungeons\\undercity.jpg"),
-        FORGOTTEN_CITY("big\\dungeons\\forgotten city.jpg"),
-        MISTY_MOUNTAINS("big\\dungeons\\Misty Mountains.jpg"),
-        CEMETARY("big\\dungeons\\cemetary.jpg"),
-        DEAD_CITY("big\\dungeons\\dead city.jpg"),
-        MANSION("big\\dungeons\\MANSION.jpg"),
-        RUINS("big\\dungeon\\ruins.jpg"),
-        CASTLE("big\\dungeons\\castle.jpg"),
-        DARK_CASTLE("big\\dungeons\\dark castle.jpg"),
+        SHEOTH("big","death combat","sheoth.jpg"),
+        PIRATE_BAY("big","Pirate Bay3.jpg"),
+        DARK_FOREST("big","dark forest.jpg"),
+        LABYRINTH("big","dungeons","labyrinth.jpg"),
+        UNDERCITY("big","dungeons","undercity.jpg"),
+        FORGOTTEN_CITY("big","dungeons","forgotten city.jpg"),
+        MISTY_MOUNTAINS("big","dungeons","Misty Mountains.jpg"),
+        DEAD_CITY("big","dungeons","dead city.jpg"),
+        MANSION("big","dungeons","MANSION.jpg"),
+        RUINS("big","dungeon","ruins.jpg"),
+        CASTLE("big","dungeons","castle.jpg"),
+        DARK_CASTLE("big","dungeons","dark castle.jpg"),
 
-        // ARENA("big\\Arena.jpg")
-        // SANCTUARY("big\\death combat\\forgotten city.jpg"),
-        // HIDDEN_CITY("big\\death combat\\Hidden City.jpg"),
-        // PIRATE_COAST("big\\death combat\\Pirate Coast.jpg"),
-        // SECRET_ENCLAVE("big\\death combat\\secret enclave.jpg"),
-        // KYNTHOS("big\\new\\kynthos.jpg"),
-        // FELMARSH("big\\new\\felmarsh.jpg"),
-        // RAVENWOOD("big\\new\\ravenwood.jpg"),
-        // NORDHEIM("big\\new\\nordheim.jpg"),
-        // MISTY_MOUNTAINS("big\\death combat\\Misty Mountains Onyx Spire.jpg"),
+        // ARENA("big","Arena.jpg")
+        // SANCTUARY("big","death combat","forgotten city.jpg"),
+        // HIDDEN_CITY("big","death combat","Hidden City.jpg"),
+        // PIRATE_COAST("big","death combat","Pirate Coast.jpg"),
+        // SECRET_ENCLAVE("big","death combat","secret enclave.jpg"),
+        // KYNTHOS("big","new","kynthos.jpg"),
+        // FELMARSH("big","new","felmarsh.jpg"),
+        // RAVENWOOD("big","new","ravenwood.jpg"),
+        // NORDHEIM("big","new","nordheim.jpg"),
+        // MISTY_MOUNTAINS("big","death combat","Misty Mountains Onyx Spire.jpg"),
 
-        ;
+        CAVE(PathFinder.getBgPicsPath(),"dungeon.png"),
+        ELVEN_RUINS(PathFinder.getBgPicsPath(), "RUINS.jpg"),
+        RAVENWOOD(PathFinder.getBgPicsPath(), "RAVENWOOD.jpg"),
+        TUNNEL(PathFinder.getBgPicsPath(), "Ironhelm Tunnel.jpg"),
+        CEMETERY(PathFinder.getBgPicsPath(), "CEMETERY.jpg"),
+        TOWER(PathFinder.getBgPicsPath(), "moon valley.jpg"),
+
+        SPIDER_GROVE(PathFinder.getBgPicsPath(), "spider grove.png");
         private String backgroundFilePath;
 
-        MAP_BACKGROUND(String backgroundFilePath) {
-            this.backgroundFilePath = backgroundFilePath;
+        MAP_BACKGROUND(String... backgroundPathSegments) {
+            this.backgroundFilePath = StrPathBuilder.build(backgroundPathSegments);
         }
 
         public String getBackgroundFilePath() {

@@ -298,7 +298,7 @@ public class RngLocationBuilder extends LocationBuilder {
         if (!type.checkProperty(PROPS.MAP_BACKGROUND)
          || !TextureCache.isImage(type.getProperty(PROPS.MAP_BACKGROUND)))
         {
-            type.setProperty(PROPS.MAP_BACKGROUND, MAP_BACKGROUND.DUNGEON.getBackgroundFilePath());
+            type.setProperty(PROPS.MAP_BACKGROUND, getBackground(level.getLocationType()).getBackgroundFilePath());
         }
         node = XML_Converter.find(n, PARAMS.BF_HEIGHT.name());
         if (node != null) {
@@ -310,6 +310,39 @@ public class RngLocationBuilder extends LocationBuilder {
         }
         level.setDungeonType(type);
 
+    }
+
+    private MAP_BACKGROUND getBackground(LOCATION_TYPE locationType) {
+        switch (locationType) {
+            case CRYPT:
+            case CEMETERY:
+                return MAP_BACKGROUND.CEMETERY;
+
+            case DUNGEON:
+                return MAP_BACKGROUND.TUNNEL;
+
+            case GROVE:
+                return MAP_BACKGROUND.RAVENWOOD;
+
+            case HIVE:
+            case DEN:
+                return MAP_BACKGROUND.SPIDER_GROVE;
+            case CAVE:
+            case BARROW:
+                return MAP_BACKGROUND.CAVE;
+//            case SHIP:
+//                return MAP_BACKGROUND.SHIP;
+
+            case TEMPLE:
+            case CASTLE:
+            case TOWER:
+                return MAP_BACKGROUND.TOWER;
+
+
+            case RUIN:
+                return MAP_BACKGROUND.ELVEN_RUINS;
+        }
+        return MAP_BACKGROUND.CAVE;
     }
 
     protected LevelBlock createBlock(Node node, LevelZone zone) {

@@ -19,8 +19,6 @@ import main.system.math.PositionMaster;
 import java.util.HashMap;
 import java.util.Map;
 
-import static main.system.auxiliary.log.LogMaster.log;
-
 /**
  * Created by JustMe on 2/22/2017.
  */
@@ -29,7 +27,7 @@ public class GammaMaster {
     public static final boolean DEBUG_MODE = true;
     private static final Float CELL_GAMMA_MODIFIER = 0.004F;
     private static final Float UNIT_GAMMA_MODIFIER = 5F;
-    private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.013f;
+    private static final Float LIGHT_EMITTER_ALPHA_FACTOR = 0.02f;
     private static final Float CONCEALMENT_ALPHA_FACTOR = 0.02f;
     private static Float[][] voidAlphaCache;
     private VisionMaster master;
@@ -169,8 +167,11 @@ public class GammaMaster {
                     {
                         float dst = 1 + (float) Coordinates.get(
                          x, y).dst_(Eidolons.getMainHero().getCoordinates());
+                        if (dst > Eidolons.getMainHero().
+                         getMaxVisionDistanceTowards(sub.getCoordinates()))
+                            continue;
 
-                        double value = LIGHT_EMITTER_ALPHA_FACTOR / Math.sqrt(dst/2) *
+                        double value = LIGHT_EMITTER_ALPHA_FACTOR / Math.sqrt(dst) *
                          master.getGame().getRules().getIlluminationRule()
                           .getLightEmission((DC_Obj) sub);
 
@@ -182,7 +183,7 @@ public class GammaMaster {
                         }
 
                         alpha += value;
-                        log(1, x + " " + y + " has " + alpha + " light alpha with " + sub);
+                        //                        log(1, x + " " + y + " has " + alpha + " light alpha with " + sub);
                     } else {
                         sub.getCoordinates();
                     }

@@ -289,9 +289,7 @@ public class DC_Game extends GenericGame {
 
 
         Chronos.logTimeElapsedForMark("GAME_START");
-        if (first) {
-            GuiEventManager.trigger(GuiEventType.GAME_STARTED, this);
-        }
+        GuiEventManager.trigger(GuiEventType.GAME_STARTED, this);
     }
 
     public void startGameLoop() {
