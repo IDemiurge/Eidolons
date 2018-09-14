@@ -44,15 +44,9 @@ public class AutoAttackEffect extends DC_Effect implements OneshotEffect {
         return DC_PriorityManager.getAttackPriority(attack, target);
     }
 
-    private DC_ActiveObj pickAttack() {
-        List<DC_ActiveObj> subActions = new ArrayList<>();
-        for (DC_ActiveObj attack : getActiveObj().getSubActions()) {
-            if (attack.canBeActivated(ref, true)) {
-                if (attack.canBeTargeted(target)) {
-                    subActions.add(attack);
-                }
-            }
-        }
+        private DC_ActiveObj pickAttack() {
+        List<DC_ActiveObj> subActions =getActiveObj().getValidSubactions(ref, target);
+
         if (subActions.size() == 1) {
             return subActions.get(0);
         }

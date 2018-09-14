@@ -40,7 +40,6 @@ public class LevelGenerator {
     public static final boolean TEST_MODE = false;
     public static final boolean REAL = true;
     public static final boolean LOGGING_OFF = false;
-    private static final java.lang.String REAL_TEST_PLACE_TYPE_NAME = "Cemetery";
     private static final int TRIES = 100;
     public static LOCATION_TYPE TEST_LOCATION_TYPE = LOCATION_TYPE.CEMETERY;
     public static LOCATION_TYPE[] TEST_LOCATION_TYPES = {

@@ -20,26 +20,31 @@ public class RealTimeThread extends Thread {
         this.loop = exploreGameLoop;
 
     }
+
     @Override
     public void run() {
         realTimeLogic();
     }
 
-    protected   void realTimeLogic() {
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
-        Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
-        if (!CoreEngine.isGraphicsOff())
-            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
-                Gdx.app.postRunnable(() ->
-                 {
-                     try {
-                         AnimMaster.getInstance().getConstructor().preconstructAll(unit);
-                     } catch (Exception e) {
-                         main.system.ExceptionMaster.printStackTrace(e);
-                     }
-                 }
-                );
-            });
+    protected void realTimeLogic() {
+        try {
+            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getPartyMaster().reset();
+            Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().reset();
+            if (!CoreEngine.isGraphicsOff())
+                Eidolons.getGame().getDungeonMaster().getExplorationMaster().getAiMaster().getAllies().forEach(unit -> {
+                    Gdx.app.postRunnable(() ->
+                            {
+                                try {
+                                    AnimMaster.getInstance().getConstructor().preconstructAll(unit);
+                                } catch (Exception e) {
+                                    main.system.ExceptionMaster.printStackTrace(e);
+                                }
+                            }
+                    );
+                });
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
 
         while (true) {
 
@@ -48,7 +53,7 @@ public class RealTimeThread extends Thread {
                 return;
             if (loop.isExited())
                 return;
-            if (loop.isStopped()){
+            if (loop.isStopped()) {
                 return;
             }
             if (Eidolons.getGame().isPaused()) continue;
@@ -56,7 +61,7 @@ public class RealTimeThread extends Thread {
             if (ExplorationMaster.isRealTimePaused()) continue;
             try {
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster().
-                 getTimeMaster().checkTimedEvents();
+                        getTimeMaster().checkTimedEvents();
 
                 MacroTimeMaster.getInstance().timedCheck();
             } catch (Exception e) {

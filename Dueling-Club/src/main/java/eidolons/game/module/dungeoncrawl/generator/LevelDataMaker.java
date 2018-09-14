@@ -508,9 +508,6 @@ public class LevelDataMaker {
     private static ROOM_TEMPLATE_GROUP[] getTemplatesForLocationType(LOCATION_TYPE locationType) {
         if (LevelGenerator.TEST_MODE)
             locationType = LevelGenerator.TEST_LOCATION_TYPE;
-        //        return new ROOM_TEMPLATE_GROUP[]{
-        //         ROOM_TEMPLATE_GROUP.CRYPT,
-        //        };
         switch (locationType) {
             case CAMP:
                 return new ROOM_TEMPLATE_GROUP[]{

@@ -11,7 +11,7 @@ import static eidolons.system.audio.MusicMaster.AMBIENCE.CAVE;
 
 /**
  * Created by JustMe on 9/6/2018.
- *
+ * <p>
  * ambient tracks are looped per zone?
  */
 public class AmbientMaster {
@@ -19,38 +19,41 @@ public class AmbientMaster {
     public static final String FORMAT = ".mp3";
     private static final AMBIENCE DEFAULT_AMBIENCE = EVIL;
 
-    public static AMBIENCE getCurrentAmbience(boolean alt, boolean global){
+    public static AMBIENCE getCurrentAmbience(boolean alt, boolean global) {
         Unit hero = Eidolons.getMainHero();
-        if (hero==null )
+        if (hero == null)
             return DEFAULT_AMBIENCE;
         DUNGEON_STYLE style;
         LOCATION_TYPE locationType;
-        if (hero.getGame().getDungeonMaster().getDungeonLevel()!=null ){
-            locationType =hero.getGame().getDungeonMaster().getDungeonLevel().getLocationType();
-              style = hero.getGame().getDungeonMaster().getDungeonLevel().
-             getBlockForCoordinate(hero.getCoordinates()).getStyle();
-        } else {
+        try {
+            locationType = hero.getGame().getDungeonMaster().getDungeonLevel()
+                    .getLocationType();
+            style = hero.getGame().getDungeonMaster().getDungeonLevel().
+                    getBlockForCoordinate(hero.getCoordinates()).getStyle();
+        } catch (Exception e) {
             style = hero.getGame().getDungeon().getStyle();
             locationType = hero.getGame().getDungeon().getDungeonSubtype();
         }
-        if (global){
+
+
+        if (global) {
             switch (locationType) {
                 case CEMETERY:
-                    return alt ? MIST: HAUNTED;
+                    return alt ? MIST : HAUNTED;
                 case CAVE:
-                    return alt ? MINE: CAVE;
+                    return alt ? MINE : CAVE;
                 case BARROW:
                 case CRYPT:
-                    return alt ? HAUNTED: CAVE;
+                    return alt ? HAUNTED : CAVE;
                 case DUNGEON:
-                    return alt ? CAVE: MINE;
+                    return alt ? CAVE : MINE;
 
                 case TOWER:
-                    return alt ? EVIL: MIST;
+                    return alt ? EVIL : MIST;
                 case RUIN:
-                    return alt ? MIST: EVIL;
+                    return alt ? MIST : EVIL;
                 case CASTLE:
-                    return alt ? INTERIOR: MINE;
+                    return alt ? INTERIOR : MINE;
 
                 case SEWER:
                     break;
@@ -69,10 +72,10 @@ public class AmbientMaster {
                 case GROVE:
                     break;
             }
-        }else
-        switch (style) {
-            //TODO
-        }
+        } else
+            switch (style) {
+                //TODO
+            }
         return MIST;
     }
 }

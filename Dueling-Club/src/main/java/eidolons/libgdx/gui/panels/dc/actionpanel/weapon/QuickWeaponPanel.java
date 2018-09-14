@@ -5,7 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.ActionInput;
+import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActorMaster;
+import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.controls.Clicker;
@@ -178,6 +180,16 @@ public class QuickWeaponPanel extends TablePanel {
                     //                    }
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
                     if (attack == null) {
+                        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                                "Cannot attack with this!",
+                                attack.getOwnerObj());
+                        return false;
+                    }
+                    if (attack.getValidSubactions().isEmpty()){
+
+                        FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
+                                "Cannot make any attack with this!",
+                                attack.getOwnerObj());
                         return false;
                     }
                     attack.setAutoSelectionOn(true);

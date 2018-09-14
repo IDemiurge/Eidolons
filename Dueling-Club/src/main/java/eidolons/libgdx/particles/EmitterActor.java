@@ -28,6 +28,7 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
     private boolean test;
     private float speed = 1;
     private Float lastAlpha;
+    private boolean broken;
 
     public EmitterActor(EMITTER_PRESET fx) {
         this(fx.getPath());
@@ -90,23 +91,23 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
 
     public void updatePosition(float x, float y) {
         main.system.auxiliary.log.LogMaster.log(1, this + " from " +
-         getX() +
-         " " +
-         getY() +
-         " pos set to " + x + " " + y);
+                getX() +
+                " " +
+                getY() +
+                " pos set to " + x + " " + y);
         setPosition(x, y);
     }
 
     public void offsetAlpha(float alpha) {
-        if (alpha==0)
+        if (alpha == 0)
             hide();
         if (lastAlpha != null)
             effect.getEmitters().forEach(e ->
-             e.getTransparency().scale(1 / lastAlpha));
+                    e.getTransparency().scale(1 / lastAlpha));
 
         lastAlpha = alpha;
         effect.getEmitters().forEach(e -> //e.getTransparency().setScaling()
-         e.getTransparency().scale(alpha));
+                e.getTransparency().scale(alpha));
     }
 
     @Override
@@ -123,10 +124,23 @@ public class EmitterActor extends SuperActor implements ParticleInterface {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (broken) {
+            return;
+        }
         super.draw(batch, parentAlpha);
         effect.setPosition(getX(), getY());
         float delta = Gdx.graphics.getDeltaTime() * speed;
-        effect.draw(batch, delta);
+        if (ParticleEffectX.TEST_MODE)
+            try {
+                effect.draw(batch, delta);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+                main.system.auxiliary.log.LogMaster.log(1," EMITTER FAILED: "
+                + path);
+                broken = true;
+            }
+            else
+                effect.draw(batch, delta);
     }
 
     @Override

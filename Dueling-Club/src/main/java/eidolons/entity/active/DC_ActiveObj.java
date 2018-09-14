@@ -888,5 +888,20 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
             return false;
         return CoreEngine.isTargetingResultCachingOn();
     }
+
+    public List<DC_ActiveObj> getValidSubactions( ) {
+        return getValidSubactions(getRef(), getOwnerObj().getId());
+    }
+        public List<DC_ActiveObj> getValidSubactions(Ref ref, Integer target) {
+       List<DC_ActiveObj> subActions=new ArrayList<>();
+        for (DC_ActiveObj attack : getSubActions()) {
+            if (attack.canBeActivated(ref, true)) {
+                if (attack.canBeTargeted(target)) {
+                    subActions.add(attack);
+                }
+            }
+        }
+        return subActions;
+    }
 }
 

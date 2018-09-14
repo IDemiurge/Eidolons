@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffect {
 
+    public static final boolean TEST_MODE = true;
     public String path;
     private static List<String> broken=    new ArrayList<>() ;
 
