@@ -2,6 +2,7 @@ package eidolons.libgdx.gui.panels;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import eidolons.libgdx.GdxMaster;
 
 /**
  * Created by JustMe on 2/11/2018.
@@ -15,7 +16,10 @@ public class TablePanelX<T extends Actor> extends TablePanel<T> {
 
     public TablePanelX() {
     }
-
+    protected void initResolutionScaling() {
+        float coef = (float) Math.pow(GdxMaster.getFontSizeMod(),0.3f);
+        setScale(coef, coef);
+    }
     @Override
     public void setSize(float width, float height) {
         setFixedSize(true);

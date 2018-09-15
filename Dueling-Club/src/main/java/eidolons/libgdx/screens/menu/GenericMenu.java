@@ -10,6 +10,7 @@ import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
 import eidolons.libgdx.texture.TextureCache;
@@ -27,19 +28,20 @@ import java.util.Map;
 /**
  * Created by JustMe on 11/28/2017.
  */
-public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanel implements Blocking {
+public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX implements Blocking {
     protected Map<T, TextButton> cache = new HashMap<>();
     OptionsWindow optionsWindow;
     private T currentItem;
     private T previousItem;
     private List<MenuItem<T>> defaultItems;
-List <TextButton>   buttons=    new ArrayList<>() ;
+    List<TextButton> buttons = new ArrayList<>();
+
     public GenericMenu() {
         Drawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
-         "UI", "components", "generic", "game menu", "background.png"));
+                "UI", "components", "generic", "game menu", "background.png"));
         setBackground(texture);
         addButtons();
-
+        initResolutionScaling();
     }
 
     public Map<T, TextButton> getCache() {
@@ -82,7 +84,7 @@ List <TextButton>   buttons=    new ArrayList<>() ;
         if (defaultItems == null) {
             defaultItems = getFullItemList();
             defaultItems.removeIf(item ->
-             isHidden((T) item)
+                    isHidden((T) item)
             );
         }
 
@@ -143,8 +145,8 @@ List <TextButton>   buttons=    new ArrayList<>() ;
         TextButton button = getCache().get(sub);
         if (button == null || sub == null) {
             button = new TextButton((name),
-             StyleHolder.getTextButtonStyle(getButtonStyle(),
-              getFontStyle(), getFontColor(), getFontSize()));
+                    StyleHolder.getTextButtonStyle(getButtonStyle(),
+                            getFontStyle(), getFontColor(), getFontSize()));
             getCache().put(sub, button);
             button.addListener(getClickListener(sub));
         }
@@ -201,6 +203,7 @@ List <TextButton>   buttons=    new ArrayList<>() ;
             sub.setChecked(false);
         }
     }
+
     protected abstract Boolean clicked(MenuItem sub);
 
     public void open() {
@@ -226,17 +229,17 @@ List <TextButton>   buttons=    new ArrayList<>() ;
 
     public void setCurrentItem(T currentItem) {
         main.system.auxiliary.log.LogMaster.log(1, "setCurrentItem " +
-         this.currentItem +
-         " to " +
-         currentItem);
+                this.currentItem +
+                " to " +
+                currentItem);
         this.currentItem = currentItem;
     }
 
     public void setPreviousItem(T previousItem) {
         main.system.auxiliary.log.LogMaster.log(1, "setPreviousItem " +
-         this.previousItem +
-         " to " +
-         previousItem);
+                this.previousItem +
+                " to " +
+                previousItem);
         this.previousItem = previousItem;
     }
 }

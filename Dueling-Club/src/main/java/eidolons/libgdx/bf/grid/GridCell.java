@@ -22,6 +22,7 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
+import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderMaster;
 import eidolons.libgdx.texture.TextureManager;
 import main.game.bf.Coordinates;
@@ -58,7 +59,7 @@ public class GridCell extends Group implements Borderable {
         setSize(GridMaster.CELL_W, GridMaster.CELL_H);
 
         cordsText = new Label(getGridX() + ":" + getGridY(),
-         StyleHolder.getAVQLabelStyle());
+         StyleHolder.getDebugLabelStyle());
         cordsText.setPosition(getWidth() / 2 - cordsText.getWidth() / 2, getHeight() / 2 - cordsText.getHeight() / 2);
         cordsText.setVisible(false);
         addActor(cordsText);
@@ -124,18 +125,19 @@ public class GridCell extends Group implements Borderable {
          (this)) {
             return;
         }
-        if (spriteCacheOn) {
+       /* if (spriteCacheOn) {
             TextureManager.drawFromSpriteCache(TextureManager.getCellSpriteCacheId(
              getGridX(), getGridY()
             ));
-        }
-        if (parentAlpha == ShaderMaster.SUPER_DRAW)
+        }*/
+        if (parentAlpha == ShaderMaster.SUPER_DRAW || batch.getShader()== GrayscaleShader.getGrayscaleShader()) {
             super.draw(batch, 1);
-        else
+        } else {
             ShaderMaster.drawWithCustomShader(this,
-             batch,
-             !getUserObject().isPlayerHasSeen() ?
-              DarkShader.getShader() : null, true);
+                    batch,
+                    !getUserObject().isPlayerHasSeen() ?
+                            DarkShader.getShader() : null, true);
+        }
 
     }
 

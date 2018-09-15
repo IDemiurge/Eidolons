@@ -4,11 +4,13 @@ import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
+import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
 import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.herocreator.logic.HeroCreator;
 import main.content.DC_TYPE;
 import main.data.DataManager;
@@ -53,18 +55,16 @@ public class StackingRule implements ActionRule {
             boolean result = DC_Game.game.getOverlayingObjects(c).size() < MAX_OVERLAYING_ON_CELL;
             if (!result) {
                 LogMaster.log(1, c
-                 + "******* Cell already has max number of overlaying Objects!");
+                        + "******* Cell already has max number of overlaying Objects!");
             }
 
             return result;
             // TODO limit number of overlays?
         }
-        try {
-            return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, 0, otherUnits);
-        } catch (Exception e) {
-            main.system.ExceptionMaster.printStackTrace(e);
-        }
-        return false;
+        if (unit instanceof Entrance)
+            return true;
+
+        return instance.canBeMovedOnto(maxSpaceTakenPercentage, unit, c, 0, otherUnits);
     }
 
     public static void actionMissed(DC_ActiveObj action) {
@@ -73,9 +73,9 @@ public class StackingRule implements ActionRule {
         Ref ref = action.getRef();
         Obj target = ref.getTargetObj();
         Set<BattleFieldObject> units = action.getGame().getObjectsAt(
-         action.getOwnerObj().getCoordinates());
+                action.getOwnerObj().getCoordinates());
         units.addAll(action.getGame().getObjectsAt(
-         target.getCoordinates()));
+                target.getCoordinates()));
         units.remove(action.getOwnerObj());
         units.remove(target);
         if (units.isEmpty()) {
@@ -119,10 +119,10 @@ public class StackingRule implements ActionRule {
         DequeImpl<? extends Entity> units = new DequeImpl<>(otherUnits);
         for (BattleFieldObject u : game.getObjectsOnCoordinate(z, c, false, false, false)) {
             if (!units.contains(u)) {
-                if ( u.isDead())
+                if (u.isDead())
                     continue;
                 if (u.isWall())
-                        return false;
+                    return false;
                 if (!u.isNeutral() && !u.isMine())
                     if (game.getVisionMaster().checkInvisible(u)) {
                         continue;
@@ -182,9 +182,15 @@ public class StackingRule implements ActionRule {
             if (UnitAnalyzer.isWall(u)) {
                 return false;
             }
-            if (u.isDead())
+            if (u instanceof Entrance) {
+                continue;
+            }
+            if (u.isDead()) {
+                if (u instanceof Structure)
+                    continue;
+
                 girth += u.getIntParam(PARAMS.GIRTH) / CORPSE_GIRTH_FACTOR;
-            else
+            } else
                 girth += u.getIntParam(PARAMS.GIRTH);
 //           TODO  if (DoorMaster.isDoor((BattleFieldObject) u)) {
         }

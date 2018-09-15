@@ -26,6 +26,7 @@ import eidolons.libgdx.bf.grid.GridUnitView;
 import eidolons.libgdx.bf.grid.QueueView;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import eidolons.libgdx.gui.generic.GearCluster;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.dc.clock.ClockActor;
 import eidolons.libgdx.gui.tooltips.DynamicTooltip;
@@ -44,7 +45,7 @@ import java.util.Map;
 
 import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
-public class InitiativePanel extends Group {
+public class InitiativePanel extends GroupX {
     public final static int imageSize = 104;
     private final int maxSize = 25;
     private final int visualSize = 10;
@@ -69,7 +70,7 @@ public class InitiativePanel extends Group {
         resetZIndices();
         gears.setPosition(80, -33);
 
-
+        initResolutionScaling();
     }
 
     public static boolean isLeftToRight() {

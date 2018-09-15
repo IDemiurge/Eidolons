@@ -42,6 +42,9 @@ public class AtbCalculator {
         float cost = AtbMaster.getReadinessCost(action);
         clone = getClone();
         AtbUnit atbUnit = clone.getAtbUnit(action.getOwnerObj());
+        if (atbUnit==null ){
+            return 0;
+        }
         atbUnit.setAtbReadiness(atbUnit.getAtbReadiness()
          - cost/AtbController.TIME_LOGIC_MODIFIER);
         clone.processAtbRelevantEvent();

@@ -283,36 +283,27 @@ public class DungeonScreen extends GameScreen {
         setBlocked(checkBlocked());
         cameraTimer.act(delta);
         cameraShift();
-        //cam.update();
         if (canShowScreen()) {
             if (DC_Game.game != null)
                 if (DC_Game.game.getGameLoop() instanceof RealTimeGameLoop) {
-//              if (realTimeGameLoop != null)        realTimeGameLoop.act(delta);
                     if (!isBlocked())
                         ((RealTimeGameLoop) Eidolons.game.getGameLoop()).act(delta);
                 }
 
             if (backTexture != null) {
-//                if (OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.SPRITE_CACHE_ON)) {
-//                    TextureManager.drawFromSpriteCache(TextureManager.getBackgroundId());
-//                } else {
                     guiStage.getBatch().begin();
                     float colorBits = GdxColorMaster.WHITE.toFloatBits();
                     if (guiStage.getBatch().getColor().toFloatBits() != colorBits)
                         guiStage.getBatch().setColor(colorBits); //gotta reset the alpha...
                     guiStage.getBatch().draw(backTexture, 0, 0, GdxMaster.getWidth(), GdxMaster.getHeight());
                     guiStage.getBatch().end();
-//                }
             }
-            gridStage.setDebugAll(false);
             gridStage.draw();
 
 
-            guiStage.setDebugAll(false);
             guiStage.draw();
 
             if (dialogsStage != null) {
-                dialogsStage.setDebugAll(false);
                 dialogsStage.act(delta);
                 if (dialogsStage.isDone()) {
                     final ChainedStage dialogsStage = this.dialogsStage;

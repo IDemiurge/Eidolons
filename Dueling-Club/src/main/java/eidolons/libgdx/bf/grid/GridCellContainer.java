@@ -14,6 +14,7 @@ import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
+import main.system.SortMaster;
 import main.system.auxiliary.data.MapMaster;
 
 import java.util.ArrayList;
@@ -83,6 +84,9 @@ public class GridCellContainer extends GridCell {
                 list.add((GenericGridView) actor);
             }
         }
+        list.sort(new SortMaster<GenericGridView>().getSorterByExpression_(
+                v ->  indexMap.containsKey(v) ? -(Integer) MapMaster.getKeyForValue_(indexMap, v) : -Integer.MAX_VALUE
+        ));
         return list;
     }
 

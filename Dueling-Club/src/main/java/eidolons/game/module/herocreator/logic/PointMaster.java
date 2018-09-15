@@ -3,6 +3,7 @@ package eidolons.game.module.herocreator.logic;
 import eidolons.content.DC_ContentValsManager;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.herocreator.logic.skills.SkillMaster;
 import main.content.ContentValsManager;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
@@ -55,8 +56,27 @@ public class PointMaster {
         return pool>= getCost(entity, modifyParam);
     }
 
+    public static void increaseAttribute(PARAMETER arg, Unit hero, int i) {
+        increase(arg, hero, i, false);
+    }
+
+    public static void increaseMastery(PARAMETER arg, Unit hero, int i) {
+        increase(arg, hero, i, true);
+    }
+    public static void increase(PARAMETER arg, Unit hero, int i, boolean mastery) {
+        arg = DC_ContentValsManager
+                .getBaseAttr(arg);
+        for (int j = 0; j < i; j++) {
+            PointMaster.increased(arg, hero);
+            hero.modifyParameter(arg, 1, true);
+            if (mastery) {
+                SkillMaster.masteryIncreased(hero, arg);
+            }
+        }
+    }
     public static void increased(PARAMETER arg,   Unit hero) {
         PARAMS pool = arg.isMastery() ? PARAMS.MASTERY_POINTS : PARAMS.ATTR_POINTS;
         hero.modifyParameter(pool, -getCost(hero, arg));
     }
+
 }

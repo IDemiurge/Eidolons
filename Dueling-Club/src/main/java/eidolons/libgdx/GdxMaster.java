@@ -28,7 +28,8 @@ import java.util.List;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
-    public static final float fontSizeAdjustCoef = 0.25f;
+    public static final float fontSizeAdjustCoef = 0.2f;
+    public static final float sizeAdjustCoef = 0.25f;
     private static final int DEFAULT_WIDTH = 1600;
     private static final int DEFAULT_HEIGHT = 900;
     private static final int DEFAULT_WIDTH_FULLSCREEN = 1680;
@@ -37,6 +38,7 @@ public class GdxMaster {
     private static int height;
     private static Float fontSizeMod;
     private static InputProcessor globalInputProcessor;
+    private static float fontSizeModSquareRoot;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -57,11 +59,12 @@ public class GdxMaster {
     }
 
     public static int adjustFontSize(float size) {
-        return (int) adjustSize(size);
+        return (int) ( adjustSize(size, fontSizeAdjustCoef) + size
+                        * (GdxMaster.getFontSizeModSquareRoot() - 1) *fontSizeAdjustCoef);
     }
 
     public static float adjustSize(float size) {
-        return adjustSize(size, fontSizeAdjustCoef);
+        return adjustSize(size, sizeAdjustCoef);
     }
         public static float adjustSize(float size,float coef) {
         return size
@@ -164,6 +167,7 @@ public class GdxMaster {
                 fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH_FULLSCREEN / GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
             else
                 fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH / GdxMaster.DEFAULT_HEIGHT;
+            fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
         }
         if (fontSizeMod < 0) {
             fontSizeMod = Float.valueOf(1);
@@ -268,4 +272,9 @@ public class GdxMaster {
 
         }
     }
+
+    public static float getFontSizeModSquareRoot() {
+        return fontSizeModSquareRoot;
+    }
+
 }

@@ -236,7 +236,7 @@ public class DungeonEnums {
         ELVEN_RUINS(PathFinder.getBgPicsPath(), "RUINS.jpg"),
         RAVENWOOD(PathFinder.getBgPicsPath(), "RAVENWOOD.jpg"),
         TUNNEL(PathFinder.getBgPicsPath(), "Ironhelm Tunnel.jpg"),
-        CEMETERY(PathFinder.getBgPicsPath(), "CEMETERY.jpg"),
+        CEMETERY(PathFinder.getBgPicsPath(), "OLD CEMETERY.png"),
         TOWER(PathFinder.getBgPicsPath(), "moon valley.jpg"),
 
         SPIDER_GROVE(PathFinder.getBgPicsPath(), "spider grove.png");

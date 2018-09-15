@@ -65,6 +65,10 @@ public class StyleHolder {
         return getSizedColoredLabelStyle(0, fontStyle, size, color);
     }
 
+    public static Label.LabelStyle getDebugLabelStyle() {
+        return getSizedColoredLabelStyle(0.2f, FONT.MAIN, 15, GdxColorMaster.GOLDEN_WHITE);
+    }
+
     public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
                                                              FONT fontStyle,
                                                              Integer size, Color color) {

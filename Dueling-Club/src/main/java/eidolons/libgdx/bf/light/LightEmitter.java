@@ -23,6 +23,7 @@ import main.game.bf.directions.DIRECTION;
 import main.game.bf.directions.DirectionMaster;
 import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
+import org.python.modules.math;
 
 import java.awt.*;
 import java.util.*;
@@ -104,7 +105,9 @@ public class LightEmitter extends SuperActor {
     }
 
     public void update() {
-        //TODO only diag/ no diags option
+        if (freeRays>0 || isDynamicUpdates())
+        {
+        //TODO only diag/ no diags option for orderly lights
         List<DIRECTION> directionList = new ArrayList<>();
         if (overlaying) {
             if (direction == null) {
@@ -148,6 +151,7 @@ public class LightEmitter extends SuperActor {
             }
 
         }
+        }
         int i = 0;
         if (center != null) {
             center.setTransform(false);
@@ -182,13 +186,11 @@ public class LightEmitter extends SuperActor {
 
             if (!overlaying)
                 ray.setY(ray.getY() + OFFSET_Y);
-            ray.setBaseAlpha(baseAlpha / (i + 1));
             i++;
         }
         if (overlay != null) {
             overlay.setZIndex(Integer.MAX_VALUE);
         }
-        center.setBaseAlpha(baseAlpha);
         center.setZIndex(Integer.MAX_VALUE);
 
     }
@@ -196,22 +198,8 @@ public class LightEmitter extends SuperActor {
     private boolean isRandomLightDirection() {
         return true;
     }
-
-    private float getOffsetCoef(boolean x, boolean diagonal, boolean greater) {
-        float c = getOffsetCoef(x);
-        if (diagonal) {
-            c = c * 1.25f;
-        }
-        if (greater)
-            return 1 / c;
-        return c;
-    }
-
-    private float getOffsetCoef(boolean x) {
-        if (overlaying) {
-            return x ? 1.15f : 1.25f;
-        }
-        return x ? 0.8f : 1.1f;
+    private boolean isDynamicUpdates() {
+        return false;
     }
 
     @Override
@@ -223,13 +211,6 @@ public class LightEmitter extends SuperActor {
         if (effect.getCache() != null)
             if (!effect.getCache().contains(c))
                 return false;
-        //        DC_Cell cell = DC_Game.game.getCellByCoordinate(c);
-        //        try {
-        //             getUnitVisibilityStatus(cell, getUserObject()) == UNIT_VISION.BLOCKED)
-        //                return false;
-        //        } catch (Exception e) {
-        //TODO find a better way
-        //        }
         for (BattleFieldObject obj : DC_Game.game.getObjectsAt(c)) {
             if (obj.isWall()) {
                 return false;
@@ -317,6 +298,13 @@ public class LightEmitter extends SuperActor {
         addAction(alphaAction);
         alphaAction.setTarget(this);
         alphaAction.setDuration(0.4f + (Math.abs(getColor().a - baseAlpha)) / 2);
+
+        for (int i = 0; i < rays.size(); i++) {
+            LightContainer ray = (LightContainer) rays.values().toArray()[i];
+            ray.setBaseAlpha((float) (baseAlpha / math.sqrt(i + 1)));
+        }
+        if (center != null)
+            center.setBaseAlpha(baseAlpha);
 
         main.system.auxiliary.log.LogMaster.log(1, baseAlpha + " alpha for " +
          getUserObject().getNameAndCoordinate() +

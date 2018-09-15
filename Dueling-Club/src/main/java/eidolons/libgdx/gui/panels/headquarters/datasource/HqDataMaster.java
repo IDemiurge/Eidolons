@@ -348,13 +348,10 @@ public class HqDataMaster {
                 applyItemOperation(hero, operation, args);
                 break;
             case ATTRIBUTE_INCREMENT:
-                PointMaster.increased((PARAMETER) args[0], hero);
-                hero.modifyParameter((PARAMETER) args[0], 1, true);
+                PointMaster.increaseAttribute((PARAMETER) args[0], hero, 1);
                 break;
             case MASTERY_INCREMENT:
-                hero.modifyParameter((PARAMETER) args[0], 1, true);
-                PointMaster.increased((PARAMETER) args[0], hero);
-                SkillMaster.masteryIncreased(hero, (PARAMETER) args[0]);
+                PointMaster.increaseMastery((PARAMETER) args[0], hero, 1);
                 break;
             case NEW_MASTERY:
                 hero.getType().addProperty(PROPS.UNLOCKED_MASTERIES,

@@ -46,7 +46,7 @@ public class UnitViewTooltip extends ValueTooltip {
     protected void exited() {
         super.exited();
         if (view.isHoverResponsive() || view instanceof OverlayView) // quick fix to ignore passive UnitViews
-            //TODO check if toActor is not just a child of the UnitView, like arrow or emblem!
+            //(done) TODO check if toActor is not just a child of the UnitView, like arrow or emblem!
             GuiEventManager.trigger(GuiEventType.GRID_OBJ_HOVER_OFF, view);
     }
 

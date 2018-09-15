@@ -10,6 +10,7 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SymbolButton;
 import eidolons.libgdx.gui.panels.dc.actionpanel.datasource.ActiveQuickSlotsDataSource;
@@ -27,7 +28,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
-public class ActionPanel extends Group {
+public class ActionPanel extends GroupX {
     public final static int IMAGE_SIZE = 60;
     private static final String BACKGROUND_PATH = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
     private static final float SPELL_OFFSET_Y = -6;
@@ -115,7 +116,10 @@ public class ActionPanel extends Group {
         setY(-IMAGE_SIZE);
         bindEvents();
         initListeners();
+
+        initResolutionScaling();
     }
+
 
     public ActionPanel(int x, int y) {
         this();
@@ -227,8 +231,9 @@ public class ActionPanel extends Group {
     }
 
     public void update() {
-        setX(GdxMaster.centerWidth(this)-(1600-getWidth())/2);
         leftOrbPanel.setUpdateRequired(true);
         rigthOrbPanel.setUpdateRequired(true);
+        initResolutionScaling();
+        setX((float) (GdxMaster.centerWidth(this)-(1600*Math.pow(GdxMaster.getFontSizeMod(), 0.2f)-getWidth())/2));
     }
 }

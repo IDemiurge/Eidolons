@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.AfterAction;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.utils.Array;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import main.system.auxiliary.ClassMaster;
 
@@ -13,6 +14,12 @@ import main.system.auxiliary.ClassMaster;
  * Created by JustMe on 3/2/2018.
  */
 public class GroupX extends Group {
+
+
+    protected void initResolutionScaling() {
+        float coef = (float) Math.pow(GdxMaster.getFontSizeMod(),0.3f);
+        setScale(coef, coef);
+    }
 
     public void addAt(float x, float y, Actor actor) {
         super.addActor(actor);

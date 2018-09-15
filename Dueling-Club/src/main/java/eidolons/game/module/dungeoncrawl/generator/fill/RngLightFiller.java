@@ -14,7 +14,7 @@ public class RngLightFiller extends RngFiller {
     }
 
     protected int getWrapByExitChance(Room room) {
-        return 50;
+        return 0;
     }
 
     protected int getWrapPreExitChance(Room room) {
