@@ -126,33 +126,18 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
                                                  List<String> partyTypes) {
 
         List<Coordinates> list = new ArrayList<>();
-        // TODO
         if (CoreEngine.isArcaneVault() || CoreEngine.isLevelEditor()) {
             origin = Coordinates.get(PositionMaster.getMiddleIndex(false), PositionMaster
              .getMiddleIndex(true));
         } else {
             if (me != null) {
                 if (me) {
-//                    if (PartyHelper.getParty() != null) {
-//                        Unit mh = PartyHelper.getParty().getMiddleHero();
-//                        if (mh != null) {
-//                            int index = partyTypes.indexOf(mh.getName());
-//                            if (index > -1) {
-//                                String s = partyTypes.remove(index);
-//                                partyTypes.add(0, s);
-//                            }
-//                        }
-//                    }
-//TODO formation!
                     if (origin == null)
                         origin = getPlayerSpawnCoordinates();
                 } else {
 
                     origin = getEnemySpawningCoordinates();
                     if (origin == null) {
-                        // getGame().getDungeon().getDefaultEnemyCoordinates();
-                        // for
-                        // more control... TODO
                         origin = getEnemyTestPartyCoordinates();
                     }
                 }
@@ -162,15 +147,7 @@ public class Positioner<E extends DungeonWrapper> extends DungeonHandler<E> {
         unitCache = new HashMap<>(partyTypes.size(), 1f);
         for (String type : partyTypes) {
             ObjType objType = DataManager.getType(type, C_OBJ_TYPE.UNITS_CHARS);
-            // DIRECTION[] prefs = {
-            // DIRECTION.LEFT, DIRECTION.RIGHT,
-            // };
             Coordinates c = getFirstLayerCenterCoordinate(origin, objType, false);
-            if (!DC_Game.game.isSimulation()) {
-//                if (unitGroups.get(side) != null) {
-//                    unitGroups.get(side).put(c, objType); // facing? TODO
-//                }
-            }
             MapMaster.addToListMap(unitCache, c, objType);
             list.add(c);
         }

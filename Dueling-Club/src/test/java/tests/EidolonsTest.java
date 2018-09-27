@@ -67,7 +67,8 @@ public class EidolonsTest {
 
             MultiLauncher launcher = new MultiLauncher(getPlayerParty(),
              getEnemyParty(),
-             getDungeonPath());
+             getDungeonPath(),
+                    isTestMeta());
             launcher.setAfterEngineInit(() -> resources = new JUnitResources());
             launcher.launch();
 
@@ -77,6 +78,10 @@ public class EidolonsTest {
         atbHelper = new AtbHelper(game);
         checker = new CheckHelper(game);
         utils = new JUnitUtils(game);
+    }
+
+    protected boolean isTestMeta() {
+        return false;
     }
 
     protected String getLaunchArgString() {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.data.ability.construct.VariableManager;
@@ -24,7 +25,8 @@ public class SmartAmbienceMap extends GroupX {
 
     DungeonLevel level;
     Map<DAY_TIME, Map<LevelBlock, List<EmitterMap>>> caches = new HashMap<>();
-    private List<EmitterMap> maps;
+    private List<EmitterMap> maps=    new ArrayList<>() ;
+    private Integer emitterCountControlCoef;
 
     public SmartAmbienceMap(DungeonLevel level) {
         this.level = level;
@@ -91,7 +93,20 @@ public class SmartAmbienceMap extends GroupX {
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+    public void act(float delta) {
+        float n = 0;
+        if (maps != null)
+        for (EmitterMap map : maps) {
+            n+=map.getActiveCount();
+        }
+        n= n/GdxMaster.getFontSizeMod();
+        emitterCountControlCoef = (int) (Math.round(200 / Math.sqrt(n+1) - 10 * n));
+        super.act(delta);
     }
+
+    public Integer getEmitterCountControlCoef() {
+        return emitterCountControlCoef;
+    }
+
+
 }

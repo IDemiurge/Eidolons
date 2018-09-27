@@ -204,4 +204,6 @@ public class DungeonBuilder<E extends DungeonWrapper> extends DungeonHandler<E> 
     }
 
 
+    public void initLevel() {
+    }
 }

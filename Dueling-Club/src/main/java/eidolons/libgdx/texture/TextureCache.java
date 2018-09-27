@@ -36,7 +36,7 @@ public class TextureCache {
     private static boolean altTexturesOn = true;
     private static Texture emptyTexture;
     private static Map<String, TextureRegion> regionCache = new HashMap<>(300);
-    private static Map<TextureRegion, Drawable> drawableMap = new HashMap<>(300);
+    private static Map<TextureRegion, TextureRegionDrawable> drawableMap = new HashMap<>(300);
     private static boolean returnEmptyOnFail = true;
     private Map<String, Texture> cache;
     private Map<Texture, Texture> greyscaleCache;
@@ -107,6 +107,9 @@ public class TextureCache {
     }
 
     public static TextureRegion getOrCreateR(String path) {
+        return getOrCreateR(path, false);
+    }
+        public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas) {
 
         if (path == null) {
             main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
@@ -128,7 +131,7 @@ public class TextureCache {
              (PathUtils.getPathSegments(name), "/");
             name = name.substring(0, name.length() - 1);
 
-            if (atlasesOn)
+            if (atlasesOn && !overrideNoAtlas)
             {
                 region = getInstance().uiAtlas.findRegion(name);
                 if (region == null) {
@@ -143,10 +146,12 @@ public class TextureCache {
                 }
             }
             if (region != null) {
+
                 regionCache.put(path, region);
                 counter.incrementAndGet();
-                //cache!
-                return region;
+                overrideNoAtlas = checkOverrideNoAtlas(region, path);
+                if (!overrideNoAtlas)
+                    return region;
             }
         }
 
@@ -154,6 +159,22 @@ public class TextureCache {
         if (region.getTexture() != emptyTexture)
             regionCache.put(path, region);
         return region;
+    }
+
+    private static boolean checkOverrideNoAtlas(TextureRegion region, String path) {
+        if (region.getRegionWidth()>2000) {
+            return true;
+        }
+        if (region.getRegionHeight()>2000) {
+            return true;
+        }
+        String name = StringMaster.getLastPathSegment(path).toLowerCase();
+        switch (name) {
+            case "logo fullscreen.png":
+            case "weapon background.png":
+                return true;
+        }
+        return false;
     }
 
     private static boolean checkAltTexture(String path) {
@@ -193,8 +214,8 @@ public class TextureCache {
         return getInstance()._createTexture(path, putIntoCache);
     }
 
-    public static Drawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
-        Drawable drawable = drawableMap.get(originalTexture);
+    public static TextureRegionDrawable getOrCreateTextureRegionDrawable(TextureRegion originalTexture) {
+        TextureRegionDrawable drawable = drawableMap.get(originalTexture);
         if (drawable == null) {
             drawable = new TextureRegionDrawable(originalTexture);
             drawableMap.put(originalTexture, drawable);
@@ -203,7 +224,7 @@ public class TextureCache {
         return drawable;
     }
 
-    public static Drawable getOrCreateTextureRegionDrawable(String imagePath) {
+    public static TextureRegionDrawable getOrCreateTextureRegionDrawable(String imagePath) {
         if (imagePath == null)
             return null;
         return getOrCreateTextureRegionDrawable(getOrCreateR(imagePath));

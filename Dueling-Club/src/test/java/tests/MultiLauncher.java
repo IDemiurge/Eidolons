@@ -1,6 +1,8 @@
 package tests;
 
 import eidolons.game.battlecraft.DC_Engine;
+import eidolons.game.battlecraft.logic.meta.TestMetaMaster;
+import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.GameFactory.GAME_SUBCLASS;
 import eidolons.game.core.launch.TestLauncher;
@@ -15,11 +17,19 @@ public class MultiLauncher {
 
     String playerParty, enemyParty, dungeonPath;
     Runnable afterEngineInit;
+    private boolean testMeta;
 
     public MultiLauncher(String playerParty, String enemyParty, String dungeonPath) {
         this.playerParty = playerParty;
         this.enemyParty = enemyParty;
         this.dungeonPath = dungeonPath;
+    }
+
+    public MultiLauncher(String playerParty, String enemyParty, String dungeonPath, boolean testMeta) {
+        this.playerParty = playerParty;
+        this.enemyParty = enemyParty;
+        this.dungeonPath = dungeonPath;
+        this.testMeta = testMeta;
     }
 
     public static void launch(String playerParty, String enemyParty, String dungeonPath) {
@@ -44,11 +54,26 @@ public class MultiLauncher {
 
         FAST_DC.setLauncher(launcher);
         DC_Game game = launcher.initDC_Game();
+        if (isTestMeta())
+            game.setMetaMaster(new TestMetaMaster());
+        else if (dungeonPath != null) {
+            game.setMetaMaster(new ScenarioMetaMaster(dungeonPath));
+        }
+
         game.start(true);
     }
 
+
     public void setAfterEngineInit(Runnable afterEngineInit) {
         this.afterEngineInit = afterEngineInit;
+    }
+
+    public boolean isTestMeta() {
+        return testMeta;
+    }
+
+    public void setTestMeta(boolean testMeta) {
+        this.testMeta = testMeta;
     }
 
 

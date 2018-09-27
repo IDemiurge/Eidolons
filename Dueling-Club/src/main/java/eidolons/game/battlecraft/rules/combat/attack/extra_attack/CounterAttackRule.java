@@ -8,6 +8,7 @@ import eidolons.game.battlecraft.rules.combat.attack.Attack;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.UnitEnums;
 import main.entity.obj.ActiveObj;
+import main.system.auxiliary.log.LogMaster;
 
 /**
  * Created by JustMe on 3/16/2017.
@@ -41,8 +42,8 @@ public class CounterAttackRule {
     }
 
     public ActiveObj tryCounter(Attack attack, boolean checkAnimationFinished) {
-        if (checkAnimationFinished) {
-        }
+//        if (checkAnimationFinished) {
+//        }
 
         ActiveObj counter = null;
         if (attack.getAttackedUnit() != null)
@@ -60,7 +61,11 @@ public class CounterAttackRule {
     }
 
     private ActiveObj counter(DC_ActiveObj action, Unit attacked) {
-        return game.getActionManager().activateCounterAttack(action,
-         attacked);
+//        game.getLog().combatLog();
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " tries to counter-attack against " + action.getOwnerObj());
+        ActiveObj activeObj = game.getActionManager().activateCounterAttack(action,
+                attacked);
+        game.getLogManager().log(LogMaster.LOG.GAME_INFO, attacked+ " makes a counter-attack:" + activeObj );
+        return activeObj;
     }
 }

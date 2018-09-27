@@ -322,7 +322,7 @@ public class MusicMaster {
             boolean alt = false;
             boolean global = true; //TODO
             AMBIENCE newAmbience = AmbientMaster.getCurrentAmbience(alt, global);
-            if (ambience != newAmbience) {
+            if (playedAmbient == null ||ambience != newAmbience) {
                 ambience = newAmbience;
                 playedAmbient = new PreloadedMusic(ambience.getPath());
                 log(1,"playedAmbient= " +ambience.getPath());
@@ -340,6 +340,8 @@ public class MusicMaster {
         if (scope == MUSIC_SCOPE.MENU) {
             return false;
         }
+        if (scope==MUSIC_SCOPE.BATTLE)
+            return false;
         return true;
     }
 

@@ -62,6 +62,7 @@ public enum EMITTER_PRESET {
 
     MIST_BLACK("black mist","clouds wind light2"),
     MIST_TRUE("mist","MIST TRUE"),
+    MIST_TRUE2("mist","MIST TRUE2"),
     MIST_ARCANE("ambient", "MIST ARCANE"),
     MIST_NEW("ambient", "MIST NEW2"),
     THUNDER_CLOUDS("ambient", "THUNDER CLOUDS"),

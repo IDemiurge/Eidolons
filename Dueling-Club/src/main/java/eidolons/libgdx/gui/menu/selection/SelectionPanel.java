@@ -1,6 +1,7 @@
 package eidolons.libgdx.gui.menu.selection;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import eidolons.game.core.Eidolons;
@@ -12,6 +13,7 @@ import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.TextButtonX;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.shaders.ShaderMaster;
 import main.swing.generic.components.G_Panel.VISUALS;
@@ -56,7 +58,9 @@ public abstract class SelectionPanel extends TablePanel {
         addActor(title);
         row();
         addNormalSize(listPanel).left();
-        addNormalSize(infoPanel.getActor()).right();
+        TablePanel<Actor> container = new TablePanelX<>(getWidth()-listPanel.getWidth(), getHeight());
+        addNormalSize(container).right();
+        container.addNormalSize(infoPanel.getActor()).center();
 
         row();
         addElement(null).bottom().size(getWidth(), 70);

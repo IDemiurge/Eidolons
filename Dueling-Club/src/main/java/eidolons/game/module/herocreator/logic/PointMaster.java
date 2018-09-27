@@ -64,8 +64,8 @@ public class PointMaster {
         increase(arg, hero, i, true);
     }
     public static void increase(PARAMETER arg, Unit hero, int i, boolean mastery) {
-        arg = DC_ContentValsManager
-                .getBaseAttr(arg);
+        if (arg.isAttribute())
+            arg = DC_ContentValsManager.getBaseAttr(arg);
         for (int j = 0; j < i; j++) {
             PointMaster.increased(arg, hero);
             hero.modifyParameter(arg, 1, true);

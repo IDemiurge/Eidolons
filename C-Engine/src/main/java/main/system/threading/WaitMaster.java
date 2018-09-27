@@ -35,6 +35,12 @@ public class WaitMaster {
         }
         return waitForInput(operation);
     }
+    public static Object waitForInputIfNotWaiting(WAIT_OPERATIONS operation) {
+        if (getWaiters().get(operation) != null) {
+            return false;
+        }
+        return waitForInput(operation);
+    }
 
     public static Object waitForInput(WAIT_OPERATIONS operation) {
         return waitForInput(operation, null);

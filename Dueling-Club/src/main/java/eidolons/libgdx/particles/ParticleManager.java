@@ -172,4 +172,11 @@ public class ParticleManager extends GroupX {
     public static void init(Dungeon dungeon) {
         dungeon_ = dungeon;
     }
+
+    public   Integer getEmitterCountControlCoef() {
+        if (ambienceMap!=null ){
+            return ambienceMap.getEmitterCountControlCoef();
+        }
+        return 100;
+    }
 }

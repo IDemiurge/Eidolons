@@ -69,7 +69,7 @@ public class ToolTipManager extends TablePanel {
 
     private void requestedShow(Object object) {
         if (tooltip == object) {
-            if (isLogged()) LogMaster.log(1, "Update ignored: " + tooltip.getUserObject());
+            if (isLogged()) LogMaster.log(1, "Update ignored " );
             return;
         }
         if (isRemoveImmediately(actorCell.getActor())) {
@@ -82,10 +82,11 @@ public class ToolTipManager extends TablePanel {
         tooltip = (Tooltip) object;
         toWait = getTimeToWaitForTooltip(tooltip);
         if (toWait == 0) {
-            if (isLogged()) LogMaster.log(1, "Immediate show: " + tooltip.getUserObject());
+            if (isLogged()) LogMaster.log(1, "Immediate show: " );
             show();
-        } else if (isLogged()) LogMaster.log(1, "Wait for tooltip: " + tooltip.getUserObject());
+        } else if (isLogged()) LogMaster.log(1, "Wait for tooltip: " );
 
+        initTooltipPosition();
     }
 
     private void show() {
@@ -179,7 +180,8 @@ public class ToolTipManager extends TablePanel {
                         if (isLogged()) LogMaster.log(1, "tooltipTimer out!" + tooltipTimer);
                         tooltipTimer = 0;
                         toWait = 0;
-                        show();
+                        if (tooltip.showing)
+                            show();
                     }
                 }
             }
@@ -192,9 +194,6 @@ public class ToolTipManager extends TablePanel {
             setVisible(false);
         } else {
             setVisible(true);
-            if (actorCell.getActor() != null) {
-                initTooltipPosition();
-            }
         }
 
     }
@@ -228,11 +227,21 @@ public class ToolTipManager extends TablePanel {
             actorCell.padLeft((-x) / 2 - getPreferredPadding());
         }
         x = v2.x + tooltip.getPrefWidth() + getPreferredPadding();
+        boolean right=true ;
         if (x > GdxMaster.getWidth()) {
             actorCell.right();
             actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());
+            right = true;
         }
-
+        Vector2 offset = tooltip.getDefaultOffset();
+        if (offset != null) {
+            int difX = right? -2 : 1;
+            int difY = bot? -2 : 1;
+            setPosition(getX() + offset.x*difX, getY() + offset.y*difY);
+            if (right){
+                setX(getX()-getWidth());
+            }
+        }
 
     }
 

@@ -53,8 +53,8 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
  */
 public class GuiStage extends StageX implements StageWithClosable {
 
-    protected final LabelX actionTooltip = new LabelX("", 16);
-    protected final LabelX infoTooltip = new LabelX("", 16);
+    protected final LabelX actionTooltip = new LabelX("", 16+ (int)GdxMaster.getFontSizeModSquareRoot());
+    protected final LabelX infoTooltip = new LabelX("", 16+(int)GdxMaster.getFontSizeModSquareRoot());
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
     protected OverlayTextPanel textPanel;

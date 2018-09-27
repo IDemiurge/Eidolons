@@ -1,7 +1,9 @@
 package eidolons.game.battlecraft.logic.dungeon.location;
 
+import eidolons.ability.UnitTrainingMaster;
 import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.battlefield.DC_ObjInitializer;
@@ -33,6 +35,7 @@ import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.data.DataManager;
 import main.data.filesys.PathFinder;
 import main.data.xml.XML_Converter;
+import main.entity.obj.MicroObj;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
@@ -79,12 +82,19 @@ public class RngLocationBuilder extends LocationBuilder {
         Location location = new Location((LocationMaster) getMaster(), new Dungeon(level.getDungeonType()));
         initWidthAndHeight(location);
         location.setEntranceData(entranceData);
-        RngLevelPopulator.populate(level);
-        spawnLevel(level);
         location.setLevelFilePath(path.replace(PathFinder.getDungeonLevelFolder(), ""));
         location.initEntrances();
+        level.getObjects().removeIf(c -> c.getCoordinates().equals(location.getMainEntrance().getCoordinates())
+                ||  c.getCoordinates().equals(location.getMainExit().getCoordinates())
+        );
         //        initDynamicObjData();
         return location;
+    }
+
+    @Override
+    public void initLevel() {
+        RngLevelPopulator.populate(getMaster().getDungeonLevel());
+        spawnLevel(getMaster().getDungeonLevel());
     }
 
     public void spawnLevel(DungeonLevel level) {
@@ -95,8 +105,9 @@ public class RngLocationBuilder extends LocationBuilder {
             main.system.auxiliary.log.LogMaster.log(1, at + " spawed");
         }
         for (ObjAtCoordinate at : level.getUnits()) {
-            game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
-             game.getPlayer(false));
+            Unit unit = (Unit) game.createUnit(at.getType(), at.getCoordinates().x, at.getCoordinates().y,
+                    game.getPlayer(false));
+            UnitTrainingMaster.train(unit);
             main.system.auxiliary.log.LogMaster.log(1, at + " unit spawed");
         }
 

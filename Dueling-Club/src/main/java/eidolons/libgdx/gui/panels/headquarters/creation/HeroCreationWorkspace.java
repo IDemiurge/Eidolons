@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.EUtils;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
@@ -50,7 +51,8 @@ public class HeroCreationWorkspace extends HqElement implements SelectableItemDi
         super(WIDTH, HEIGHT);
         addActor(
          new Image(TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
-          BACKGROUND_NINE_PATCH.PATTERN, WIDTH, HEIGHT)));
+          BACKGROUND_NINE_PATCH.PATTERN, (int) (WIDTH* GdxMaster.getWidthModSquareRoot(1.3f)),
+                 (int) (HEIGHT* GdxMaster.getHeightModSquareRoot(1.2f)))));
 
         displayableContainer = add(displayed = new HcIntro()).width(SELECTION_WIDTH)
          .top().pad(50,20,20,20)

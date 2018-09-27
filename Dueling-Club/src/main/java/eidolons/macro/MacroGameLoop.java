@@ -13,7 +13,6 @@ import eidolons.libgdx.screens.SCREEN_TYPE;
 import eidolons.libgdx.screens.map.MapScreen;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
-import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
@@ -27,8 +26,9 @@ import main.system.threading.WaitMaster;
 public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
 
     private static final int REAL_TIME_LOGIC_PERIOD = 350;
-    MacroTimeMaster timeMaster;
-    MacroGame macroGame;
+    private MacroTimeMaster timeMaster;
+    private MacroGame macroGame;
+    private Place lastEnteredPlace;
 
     public MacroGameLoop(MacroGame game) {
         super();
@@ -145,12 +145,17 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
     public void act(float delta) {
         if (isPaused())
             return;
-        Place entered = checkBattleStarts();
+//        Place entered = checkBattleStarts();
+//        if (isAutoEnterCombat())
+//            if (entered != null) {
+//                combatStarts(entered);
+//                return;
+//            }
         if (isAutoEnterCombat())
-            if (entered != null) {
-                combatStarts(entered);
+        for (Place sub : macroGame.getPlaces()) {
+            if (tryEnter(sub))
                 return;
-            }
+        }
         timeMaster.act(delta);
     }
 
@@ -158,18 +163,23 @@ public class MacroGameLoop extends GameLoop implements RealTimeGameLoop {
         return CoreEngine.isFastMode();
     }
 
-    public void tryEnter(Place sub) {
+    public boolean tryEnter(Place sub) {
         Coordinates c = macroGame.getPlayerParty().getCoordinates();
-        if (AdventureInitializer.isTestMode()|| sub.getCoordinates().dst(c) < 150) {
+        if (sub != lastEnteredPlace)
+         if (AdventureInitializer.isTestMode()
+                 || (sub.getCoordinates().dst(c) < 100  && macroGame.getPlayerParty().isHasMoved())) {
             combatStarts(sub);
+            lastEnteredPlace= sub;
+             return true;
         }
+        return false;
     }
 
     public void combatStarts(Place entered) {
-        setPaused(true);
-        stop();
         Eidolons.onThisOrNonGdxThread(() -> {
             startBattle(entered);
+            setPaused(true);
+            stop();
         });
     }
 

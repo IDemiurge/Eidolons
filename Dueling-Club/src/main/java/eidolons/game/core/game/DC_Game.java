@@ -398,7 +398,7 @@ public class DC_Game extends GenericGame {
              || !XML_Reader.isMacro())
              && !CoreEngine.isItemGenerationOff()
              ) {
-                itemGenerator = new ItemGenerator(true);
+                itemGenerator = new ItemGenerator(CoreEngine.isFastMode());
                 itemGenerator.init();
             }
 

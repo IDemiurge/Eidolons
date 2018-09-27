@@ -4,6 +4,7 @@ import eidolons.content.PARAMS;
 import eidolons.content.PROPS;
 import eidolons.content.ValuePages;
 import eidolons.entity.obj.unit.Unit;
+import main.content.enums.entity.BfObjEnums;
 import main.content.enums.system.AiEnums;
 import main.content.enums.system.AiEnums.AI_TYPE;
 import main.content.values.parameters.PARAMETER;
@@ -49,23 +50,6 @@ public class UnitAnalyzer {
             return true;
         }
         return u.checkProperty(G_PROPS.CLASSIFICATIONS, "Flying");
-    }
-
-    public static boolean isDoor(Entity u) {
-        if (u.checkProperty(G_PROPS.BF_OBJECT_TYPE, "Door")) {
-            return true;
-        }
-        return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Door");
-    }
-
-    public static boolean isWall(Entity u) {
-        if (u.checkProperty(G_PROPS.BF_OBJECT_TYPE, "Wall")) {
-            return true;
-        }
-        if (u.checkProperty(G_PROPS.BF_OBJECT_TAGS, "Wall")) {
-            return true;
-        }
-        return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Wall");
     }
 
     public static boolean checkDualWielding(Unit unit) {

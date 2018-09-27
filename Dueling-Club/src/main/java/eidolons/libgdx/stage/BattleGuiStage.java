@@ -60,7 +60,7 @@ public class BattleGuiStage extends GuiStage {
     }
 
     private boolean isNewUnitInfoPanel() {
-        return true;
+        return false;
     }
 
     @Override

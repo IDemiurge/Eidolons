@@ -117,6 +117,9 @@ public class WorldGenerator {
         for (String sub : ContainerUtils.openContainer(world.getProperty(MACRO_PROPS.FACTIONS))) {
             boolean me = world.checkProperty(MACRO_PROPS.PLAYER_FACTION, sub);
             ObjType type = DataManager.getType(sub, MACRO_OBJ_TYPES.FACTIONS);
+            if (type == null) {
+                type = new ObjType(sub, MACRO_OBJ_TYPES.FACTIONS);
+            }
             FLAG_COLOR color =
              new EnumMaster<FLAG_COLOR>().retrieveEnumConst
               (FLAG_COLOR.class, type.getProperty(PROPS.FLAG_COLOR));

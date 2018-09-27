@@ -45,11 +45,13 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         resetObjCells();
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
+                if (game.getMetaMaster()!= null )
+                if (game.getMetaMaster().isRngDungeon())
                 if (game.getMetaMaster().getDungeonMaster().getDungeonLevel() != null) {
                     if (game.getMetaMaster().getDungeonMaster().getDungeonLevel().isVoid(i, j))
                         continue;
                 }
-                cellsSet.add(cells[i][j] = new DC_Cell( i, j, game));
+                cellsSet.add(cells[i][j] = new DC_Cell(i, j, game));
                 coordinates.add(Coordinates.get(i, j));
             }
         }
@@ -57,16 +59,15 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
 
-
     public BattleFieldObject[] getObjects(int x_, int y_) {
-            return getObjects(x_, y_, true);
-        }
+        return getObjects(x_, y_, true);
+    }
 
     public BattleFieldObject[] getObjects(int x_, int y_, Boolean overlayingIncluded_Not_Only) {
-        BattleFieldObject[] array = getObjCells( )[x_][y_];
+        BattleFieldObject[] array = getObjCells()[x_][y_];
         if (array == null) {
-            Set<BattleFieldObject> set =game.getMaster().getObjectsOnCoordinate(
-             Coordinates.get(x_, y_), null );
+            Set<BattleFieldObject> set = game.getMaster().getObjectsOnCoordinate(
+                    Coordinates.get(x_, y_), null);
 //            list.addAll(
 //            game.getMaster().getObjectsOnCoordinate(
 //             Coordinates.get(x_, y_), true));
@@ -75,14 +76,15 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
                 array = new BattleFieldObject[0];
             else
                 array = set.toArray(new BattleFieldObject[set.size()]);
-            getObjCells( )[x_][y_] = array;
+            getObjCells()[x_][y_] = array;
         }
         return array;
     }
+
     public BattleFieldObject[][][] getObjCells(Boolean overlayingIncluded_Not_Only) {
-        if (overlayingIncluded_Not_Only==null )
+        if (overlayingIncluded_Not_Only == null)
             return objCellsOverlaying;
-        return overlayingIncluded_Not_Only? objCellsAll:objCellsNoOverlaying;
+        return overlayingIncluded_Not_Only ? objCellsAll : objCellsNoOverlaying;
     }
 
     public void resetObjCells() {
@@ -90,6 +92,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
         objCellsOverlaying = new BattleFieldObject[w][h][];
         objCellsAll = new BattleFieldObject[w][h][];
     }
+
     public BattleFieldObject[][][] getObjCells() {
         return objCellsNoOverlaying;
     }
@@ -104,6 +107,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     public void addUnitObj(Obj targetObj) {
         //TODO
     }
+
     @Override
     public Obj getTopObj(Coordinates c) {
         return null;
@@ -155,7 +159,7 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
             }
             Coordinates c = Coordinates.get(X, Y);
             Set<BattleFieldObject> objects = game.getMaster().
-             getObjectsOnCoordinate(c, false);
+                    getObjectsOnCoordinate(c, false);
             for (BattleFieldObject obj : objects) {
                 if (obj.isObstructing(source, game.getCellByCoordinate(c))) {
                     return false;
@@ -168,9 +172,9 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     }
 
     /**
-     * @param xy source x or y
-     * @param xy1 line start
-     * @param xy2 line end
+     * @param xy     source x or y
+     * @param xy1    line start
+     * @param xy2    line end
      * @param source obj
      * @param x_y
      * @return
@@ -248,9 +252,17 @@ public class DC_BattleFieldGrid implements BattleFieldGrid {
     @Override
     public boolean canMoveOnto(Entity obj, Coordinates c) {
         return game.getRules().getStackingRule().canBeMovedOnto(obj,
-         c, dungeon.getZ(), null);
+                c, dungeon.getZ(), null);
     }
 
+
+    public DC_Cell getCell(int x, int y) {
+        try {
+            return cells[x][y];
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public DC_Cell getCell(Coordinates coordinates) {
         return cells[coordinates.x][coordinates.y];

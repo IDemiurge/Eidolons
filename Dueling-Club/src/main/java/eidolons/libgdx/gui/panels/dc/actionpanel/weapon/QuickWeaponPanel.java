@@ -46,7 +46,7 @@ public class QuickWeaponPanel extends TablePanel {
         this.offhand = offhand;
         addActor(background = new ImageContainer(
          StrPathBuilder.build(PathFinder.getComponentsPath(),
-          "dc", "quick weapon", "background.png")));
+          "dc", "quick weapon", "weapon background.png")));
         addActor(weapon = new FadeImageContainer());
         String suffix = offhand ? " offhand" : "";
         addActor(border = new ImageContainer(

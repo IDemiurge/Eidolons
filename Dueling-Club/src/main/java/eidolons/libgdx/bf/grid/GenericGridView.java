@@ -1,15 +1,22 @@
 package eidolons.libgdx.bf.grid;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
+import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.bf.light.LightEmitter;
 import eidolons.libgdx.bf.overlays.HpBar;
+import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.texture.TextureCache;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
 import main.system.images.ImageManager.STD_IMAGES;
@@ -22,13 +29,14 @@ import java.util.function.Supplier;
  */
 public class GenericGridView extends UnitView {
     public static final int ARROW_ROTATION_OFFSET = 90;
-    protected Image arrow;
+    protected GroupX arrow;
     protected Image emblemLighting;
     protected Image icon;
     protected int arrowRotation;
     protected float alpha = 1f;
     protected boolean cellBackground;
     protected LastSeenView lastSeenView;
+    protected FadeImageContainer torch;
 
     public GenericGridView(UnitViewOptions o) {
         super(o);
@@ -56,7 +64,30 @@ public class GenericGridView extends UnitView {
     protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
 
         if (arrowTexture != null) {
-            arrow = new Image(arrowTexture);
+            arrow = new GroupX();
+            arrow.addActor(new Image(arrowTexture));
+            arrow.setSize(arrowTexture.getRegionWidth(), arrowTexture.getRegionHeight());
+            arrow.addActor(torch = new FadeImageContainer(StrPathBuilder.build("ui", "unit light directional.png")){
+                @Override
+                public boolean isAlphaFluctuationOn() {
+                    return getBaseAlpha()>0;
+                }
+
+                @Override
+                public void setBaseAlpha(float baseAlpha) {
+                    super.setBaseAlpha(baseAlpha/2);
+                }
+
+                @Override
+                public void setColor(Color color) {
+                    super.setColor(color);
+                }
+            });
+            torch.setPosition(GdxMaster.centerWidth(torch)-7, arrow.getHeight()-torch.getHeight());
+            torch.setColor(GdxColorMaster.FIRE);
+            torch.getColor().a=0;
+            torch.setAlphaTemplate(ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS);
+
             addActor(arrow);
 //            arrow.setPosition(getWidth() / 2 - arrow.getWidth() / 2, 0);
             arrow.setOrigin(getWidth() / 2  , getHeight() / 2 );

@@ -38,6 +38,7 @@ public class MacroParty extends MapObj {
     private Area area;
     private Place currentExploration;
     private float routeProgress;
+    private boolean hasMoved;
 
     public MacroParty(ObjType macroPartyType, MacroGame macroGame,
                       MacroRef ref) {
@@ -414,5 +415,13 @@ public class MacroParty extends MapObj {
 
     public Party getParty() {
         return party;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
+    public boolean isHasMoved() {
+        return hasMoved;
     }
 }

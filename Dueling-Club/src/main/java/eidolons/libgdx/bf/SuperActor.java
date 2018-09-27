@@ -413,7 +413,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
         SHADE_CELL_GAMMA_SHADOW(0.05f, 0.5f, 0.2f, 0, 0.5f, 0.8f),
         SHADE_CELL_GAMMA_LIGHT(0.08f, 1.5f, 2.55f, 0.2f, 0.4f, 0.85f),
         SHADE_CELL_LIGHT_EMITTER(0.10f, 1.5f, 2.5f, 0.2f, 0.85f, 1),
-        LIGHT_EMITTER_RAYS(0.23f, 1.25f, 0.5f, 0.4f, 0.35f, 1.5f),
+        LIGHT_EMITTER_RAYS(0.15f, 1.0f, 0.5f, 0.4f, 0.25f, 1.0f),
 
         SHADE_CELL_HIGHLIGHT(0.4f, 1.5f, 0.3f, 0.4f, 0.15f, 1),
         ;

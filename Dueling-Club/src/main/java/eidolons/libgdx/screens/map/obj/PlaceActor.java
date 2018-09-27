@@ -57,7 +57,7 @@ public class PlaceActor extends MapActor {
     }
 
     private float getDefaultSize() {
-        return GdxMaster.adjustSize(80) * getScaleMod();
+        return GdxMaster.adjustSizeBySquareRoot(80, 0.1f) * getScaleMod();
     }
 
     private float getScaleMod() {
@@ -69,7 +69,7 @@ public class PlaceActor extends MapActor {
     }
 
     private float getHoveredSize() {
-        return GdxMaster.adjustSize(120) * getScaleMod();
+        return GdxMaster.adjustSizeBySquareRoot(120, 0.1f ) * getScaleMod();
     }
 
     public void minimize() {

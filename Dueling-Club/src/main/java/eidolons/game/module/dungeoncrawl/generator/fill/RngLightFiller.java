@@ -31,7 +31,7 @@ public class RngLightFiller extends RngFiller {
     }
     @Override
     public float getFillCoef() {
-        return 0.5f;
+        return 0.3f;
     }
 
     @Override

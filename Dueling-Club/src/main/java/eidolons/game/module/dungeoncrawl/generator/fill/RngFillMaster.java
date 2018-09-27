@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
  * Created by JustMe on 7/25/2018.
  */
 public class RngFillMaster {
+    public static final boolean BOUND_SUPPORTED = false;
+
     public static void fill(LevelModel model, LevelData data) {
         new BlockCreator().createBlocks(model);
 

@@ -72,7 +72,7 @@ public class GameLoop {
     public void start() {
         stopped = false;
         if (!CoreEngine.isGraphicsOff()) {
-            WaitMaster.waitForInput(WAIT_OPERATIONS.GUI_READY);
+            WaitMaster.waitForInputIfNotWaiting(WAIT_OPERATIONS.GUI_READY);
         }
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_LOOP_STARTED, true);

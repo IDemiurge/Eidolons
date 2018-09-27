@@ -662,10 +662,10 @@ public class AttackCalculator {
 
     private int     initSneakMods(Obj obj, int rangedMod) {
         int mod = obj.getIntParam(PARAMS.SNEAK_ATTACK_MOD) * rangedMod / 100;
-        atkMap.put(MOD_IDENTIFIER.SNEAK, mod);
+        MapMaster.addToIntegerMap(atkMap, MOD_IDENTIFIER.SNEAK, mod);
         addModifier(PARAMS.ATTACK_MOD, mod);
         int dmg_mod = obj.getIntParam(PARAMS.SNEAK_DAMAGE_MOD) * rangedMod / 100;
-        posMap.put(MOD_IDENTIFIER.SNEAK, dmg_mod);
+        MapMaster.addToIntegerMap(posMap, MOD_IDENTIFIER.SNEAK, dmg_mod);
         addModifier(PARAMS.DAMAGE_MOD, dmg_mod);
         // TODO add up Mod and Bonus for AtkMap!
         mod = obj.getIntParam(PARAMS.SNEAK_ATTACK_BONUS) * rangedMod / 100;

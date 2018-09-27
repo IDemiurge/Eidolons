@@ -6,13 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
-public class ButtonStyled extends Image implements EventListener {
+public class ButtonStyled extends ImageContainer implements EventListener {
 
     Runnable runnable;
 
@@ -23,16 +24,8 @@ public class ButtonStyled extends Image implements EventListener {
     }
 
     public ButtonStyled(STD_BUTTON b) {
-        super(TextureCache.getOrCreate(b.path)
-//         !b.isVersioned() ?
-//          new Image(
-//           TextureCache.getOrCreate(b.path))
-//          :null ,
-//
-//          b.isVersioned() ?
-//           StyleHolder.getCustomButtonStyle(b.path)
-//           : StyleHolder.getTextButtonStyle()
-        );
+        super(b.path);
+        initResolutionScaling();
     }
 
     public ButtonStyled(String name) {

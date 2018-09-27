@@ -55,7 +55,7 @@ public class OutcomePanel extends TablePanel implements EventListener {
     public OutcomePanel(OutcomeDatasource outcomeDatasource) {
         addListener(this);
         Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
-         NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, 980, 600);
+                NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
         TextureRegion textureRegion =new TextureRegion(background);
         setBackground(new TextureRegionDrawable(textureRegion));
 
@@ -71,16 +71,16 @@ public class OutcomePanel extends TablePanel implements EventListener {
 
         addActor(picture);
         picture.setAlign(Align.center);
-
+        picture.setScale(GdxMaster.getFontSizeModSquareRoot());
         picture.setPosition(
-         MigMaster.center(textureRegion.getRegionWidth(), picture.getWidth()),
-         MigMaster.center(textureRegion.getRegionHeight(), picture.getHeight()
+         MigMaster.center(textureRegion.getRegionWidth(), picture.getWidth()*picture.getScaleX()),
+         MigMaster.center(textureRegion.getRegionHeight(), picture.getHeight()*picture.getScaleY()
          ));
 
         String messageText = VICTORY_MESSAGE;
         if (outcome != null)
             messageText = outcome ? VICTORY_MESSAGE : DEFEAT_MESSAGE;
-        message = new Label(messageText, StyleHolder.getSizedLabelStyle(FONT.AVQ, 22));
+        message = new Label(messageText, StyleHolder.getSizedColoredLabelStyle(0.25f, FONT.AVQ, 22));
         addActor(message);
         message.setAlignment(Align.top);
         message.setPosition(

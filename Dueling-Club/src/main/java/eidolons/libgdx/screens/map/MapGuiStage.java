@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import eidolons.libgdx.shaders.VignetteShader;
 import eidolons.macro.entity.party.MacroParty;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
@@ -47,27 +48,9 @@ public class MapGuiStage extends GuiStage {
 
     public MapGuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
-
         if (isVignetteOn()) {
-            vignette = new SuperContainer(
-             new Image(TextureCache.getOrCreateR(vignettePath)),
-             true) {
-                @Override
-                protected float getAlphaFluctuationMin() {
-                    return 0.3f;
-                }
-
-                @Override
-                protected float getAlphaFluctuationMax() {
-                    return 1;
-                }
-            };
-            vignette.getContent().setWidth(GdxMaster.getWidth());
-            vignette.getContent().setHeight(GdxMaster.getHeight());
-            vignette.setAlphaTemplate(ALPHA_TEMPLATE.VIGNETTE);
-
-            addActor(vignette);
-            vignette.setTouchable(Touchable.disabled);
+            addActor(  vignette =
+                    VignetteShader.createVignetteActor());
         }
         addActor(lights = new LightLayer(true));
         init();

@@ -19,6 +19,8 @@ public class GroupX extends Group {
     protected void initResolutionScaling() {
         float coef = (float) Math.pow(GdxMaster.getFontSizeMod(),0.3f);
         setScale(coef, coef);
+        setWidth(getWidth()*getScaleX());
+        setHeight(getHeight()*getScaleY());
     }
 
     public void addAt(float x, float y, Actor actor) {

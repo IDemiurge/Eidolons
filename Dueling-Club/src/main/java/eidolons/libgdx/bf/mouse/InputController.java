@@ -30,8 +30,9 @@ import static com.badlogic.gdx.Input.Keys.CONTROL_LEFT;
  */
 public abstract class InputController implements InputProcessor {
     protected static final float MARGIN = 300;
-    protected static float zoomStep = OptionsMaster.getControlOptions().
-     getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
+    private static float zoomStep_ = OptionsMaster.getControlOptions().
+            getIntValue(CONTROL_OPTION.ZOOM_STEP) / new Float(100);
+    protected float zoomStep;
     protected OrthographicCamera camera;
     protected boolean isLeftClick = false;
     protected boolean alt = false;
@@ -48,6 +49,7 @@ public abstract class InputController implements InputProcessor {
     private Set<SuperActor> cachedPosActors = new HashSet<>();
     private static boolean unlimitedZoom;
     private static boolean dragOff;
+    private float defaultZoom = 1;
 
 
     public InputController(OrthographicCamera camera) {
@@ -57,10 +59,37 @@ public abstract class InputController implements InputProcessor {
         height = GdxMaster.getHeight() * getZoom();
         halfWidth = width / 2;
         halfHeight = height / 2;
+        try {
+            initZoom();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+    }
+
+    protected void initZoom() {
+        defaultZoom = Math.min(getWidth() * getPreferredMinimumOfScreenToFitOnDisplay()
+                / GdxMaster.getWidth(), 1f);
+        defaultZoom = Math.min(getHeight() * getPreferredMinimumOfScreenToFitOnDisplay()
+                / GdxMaster.getHeight(), defaultZoom);
+        camera.zoom = defaultZoom;
+
+
+        zoomStep = zoomStep_ * defaultZoom;
+
+        width = GdxMaster.getWidth() * camera.zoom;
+        height = GdxMaster.getHeight() * camera.zoom;
+        halfWidth = width / 2;
+        halfHeight = height / 2;
+
+
+    }
+
+    protected float getPreferredMinimumOfScreenToFitOnDisplay() {
+        return 0.66f;
     }
 
     public static void setZoomStep(float zoomStep) {
-        InputController.zoomStep = zoomStep;
+        InputController.zoomStep_ = zoomStep;
     }
 
     public static void setUnlimitedZoom(boolean unlimitedZoom) {
@@ -212,9 +241,9 @@ public abstract class InputController implements InputProcessor {
     protected void tryPullCameraY(int screenY) {
         float diffY = (yTouchPos - screenY) * camera.zoom;
         camera.position.y = MathMaster.getMinMax(
-         camera.position.y - diffY,
-         halfHeight - getMargin(),
-         getHeight() - halfHeight + getMargin());
+                camera.position.y - diffY,
+                halfHeight - getMargin(),
+                getHeight() - halfHeight + getMargin());
         yTouchPos = screenY;
         cameraChanged();
     }
@@ -222,9 +251,9 @@ public abstract class InputController implements InputProcessor {
     protected void tryPullCameraX(int screenX) {
         float diffX = (xTouchPos - screenX) * camera.zoom;
         camera.position.x = MathMaster.getMinMax(
-         camera.position.x + diffX,//-getMargin(),
-         halfWidth - getMargin(),
-         getWidth() - halfWidth + getMargin());
+                camera.position.x + diffX,//-getMargin(),
+                halfWidth - getMargin(),
+                getWidth() - halfWidth + getMargin());
         xTouchPos = screenX;
         cameraChanged();
     }
@@ -265,8 +294,8 @@ public abstract class InputController implements InputProcessor {
 
     protected void zoom(int i) {
         if (!isUnlimitedZoom())
-        if (!checkZoom(i))
-            return;
+            if (!checkZoom(i))
+                return;
         if (!alt && !ctrl) {
             if (i == 1) {
 
@@ -279,7 +308,7 @@ public abstract class InputController implements InputProcessor {
             }
         }
         if (camera.zoom < 0)
-            camera.zoom = 1;
+            camera.zoom = defaultZoom;
         width = GdxMaster.getWidth() * camera.zoom;
         height = GdxMaster.getHeight() * camera.zoom;
         halfWidth = width / 2;
@@ -319,7 +348,8 @@ public abstract class InputController implements InputProcessor {
 
         return false;
     }
-        public boolean isWithinCamera(float x, float y, float width, float height) {
+
+    public boolean isWithinCamera(float x, float y, float width, float height) {
         float xPos = Math.abs(camera.position.x - x) - width;
         if (xPos > halfWidth)
             return false;

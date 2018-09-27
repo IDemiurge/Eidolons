@@ -1,5 +1,7 @@
 package eidolons.libgdx.stage;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.game.core.Eidolons;
@@ -7,6 +9,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -15,6 +18,7 @@ import eidolons.libgdx.particles.AmbienceDataSource.AMBIENCE_TEMPLATE;
 import eidolons.libgdx.particles.EMITTER_PRESET;
 import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.layers.LightLayer;
+import eidolons.libgdx.shaders.VignetteShader;
 import eidolons.libgdx.texture.TextureCache;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -22,6 +26,7 @@ import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.MapEvent;
+import main.system.auxiliary.RandomWizard;
 import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
@@ -31,33 +36,16 @@ import java.util.List;
  * Created by JustMe on 3/16/2018.
  */
 public class GuiVisualEffects extends GroupX {
-    private final String vignettePath = "ui\\macro\\vignette.png";
     private   DungeonLevel level;
     LightLayer lightLayer;
     private SuperContainer vignette;
     private List<EmitterActor> emitters;
+    private int emitterTypesCount;
 
     public GuiVisualEffects() {
         if (isVignetteOn()) {
-            vignette = new SuperContainer(
-             new Image(TextureCache.getOrCreateR(vignettePath)),
-             true) {
-                @Override
-                protected float getAlphaFluctuationMin() {
-                    return 0.3f;
-                }
-
-                @Override
-                protected float getAlphaFluctuationMax() {
-                    return 1;
-                }
-            };
-            vignette.getContent().setWidth(GdxMaster.getWidth());
-            vignette.getContent().setHeight(GdxMaster.getHeight());
-            vignette.setAlphaTemplate(ALPHA_TEMPLATE.VIGNETTE);
-
-            addActor(vignette);
-            vignette.setTouchable(Touchable.disabled);
+            addActor(  vignette =
+                    VignetteShader.createVignetteActor());
         }
         //        initEmitters();
         addActor(lightLayer = new LightLayer(true));
@@ -78,6 +66,7 @@ public class GuiVisualEffects extends GroupX {
 
         });
     }
+
 
     private boolean isCustomEmitters() {
         return true;
@@ -203,7 +192,11 @@ public class GuiVisualEffects extends GroupX {
     }
 
     private void createEmitters(boolean bottom, EMITTER_PRESET preset, int gap) {
+        emitterTypesCount++;
+        int chance = (int) (80-emitterTypesCount*10-emitterTypesCount*5*GdxMaster.getFontSizeModSquareRoot());
         for (int i = 0; i < GdxMaster.getWidth(); i += gap) {
+            if (!RandomWizard.chance(chance))
+                continue;
             EmitterActor actor = new EmitterActor(preset);
             addActor(actor);
             emitters.add(actor);
@@ -211,6 +204,7 @@ public class GuiVisualEffects extends GroupX {
             int y = bottom ? 0 : GdxMaster.getHeight() - 100;
             actor.start();
             actor.setPosition(x, y);
+            actor.act(RandomWizard.getRandomFloatBetween(0, 2));
         }
     }
 

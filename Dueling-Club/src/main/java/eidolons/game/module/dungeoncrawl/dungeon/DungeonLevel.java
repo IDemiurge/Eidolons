@@ -3,6 +3,7 @@ package eidolons.game.module.dungeoncrawl.dungeon;
 import eidolons.content.PARAMS;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
+import eidolons.game.module.dungeoncrawl.generator.fill.RngFillMaster;
 import eidolons.game.module.dungeoncrawl.generator.init.RngXmlMaster;
 import eidolons.game.module.dungeoncrawl.generator.model.LevelModel;
 import eidolons.game.module.dungeoncrawl.generator.test.LevelStats;
@@ -329,6 +330,6 @@ public class DungeonLevel extends LevelLayer<LevelZone> {
     public boolean isBoundObjectsSupported() {
         if (locationType.getGroup()== LOCATION_TYPE_GROUP.NATURAL)
             return false;
-        return true;
+        return RngFillMaster.BOUND_SUPPORTED;
     }
 }

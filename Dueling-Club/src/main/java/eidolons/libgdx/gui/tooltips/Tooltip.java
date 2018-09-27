@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.tooltips;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import eidolons.libgdx.GdxMaster;
@@ -219,5 +220,9 @@ public abstract class Tooltip<T extends Actor> extends TablePanel<T> {
     public void addTo(Actor container) {
         actor = container;
         container.addListener(getController());
+    }
+
+    public Vector2 getDefaultOffset() {
+        return null;
     }
 }

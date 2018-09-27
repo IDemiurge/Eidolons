@@ -18,6 +18,8 @@ import com.kotcrab.vis.ui.building.utilities.Alignment;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.bf.mouse.GlobalInputController;
 import eidolons.libgdx.screens.DungeonScreen;
+import eidolons.system.options.GraphicsOptions;
+import eidolons.system.options.OptionsMaster;
 import main.data.filesys.PathFinder;
 import main.system.auxiliary.ClassMaster;
 
@@ -28,7 +30,7 @@ import java.util.List;
  * Created by JustMe on 8/30/2017.
  */
 public class GdxMaster {
-    public static final float fontSizeAdjustCoef = 0.2f;
+    public static final float fontSizeAdjustCoef = 0.15f;
     public static final float sizeAdjustCoef = 0.25f;
     private static final int DEFAULT_WIDTH = 1600;
     private static final int DEFAULT_HEIGHT = 900;
@@ -37,8 +39,14 @@ public class GdxMaster {
     private static int width;
     private static int height;
     private static Float fontSizeMod;
+    private static Float widthMod;
+    private static Float heightMod;
+    private static Float widthModSquareRoot;
+    private static Float heightModSquareRoot;
     private static InputProcessor globalInputProcessor;
     private static float fontSizeModSquareRoot;
+    private static Float userFontScale;
+    private static Float userUiScale;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -48,31 +56,43 @@ public class GdxMaster {
         }
         return list;
     }
+
     public static float adjustPos(boolean x, float pos) {
         if (true) //temp
             return pos;
         if (x)
             return pos
-             - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
+                    - (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
         return pos
-         + (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
+                + (pos * (GdxMaster.getFontSizeMod() - 1) * fontSizeAdjustCoef) / 2;
     }
 
     public static int adjustFontSize(float size) {
-        return (int) ( adjustSize(size, fontSizeAdjustCoef) + size
-                        * (GdxMaster.getFontSizeModSquareRoot() - 1) *fontSizeAdjustCoef);
+        return (int) (adjustSize(size, fontSizeAdjustCoef) + size
+                * (GdxMaster.getFontSizeModSquareRoot() - 1) * fontSizeAdjustCoef);
     }
 
     public static float adjustSize(float size) {
         return adjustSize(size, sizeAdjustCoef);
     }
-        public static float adjustSize(float size,float coef) {
+
+    public static float adjustSize(float size, float coef) {
         return size
-         + size
-         * (GdxMaster.getFontSizeMod() - 1) * coef;
+                + size
+                * (GdxMaster.getFontSizeMod() - 1) * coef;
     }
+
+    public static float adjustSizeBySquareRoot(float size) {
+        return adjustSizeBySquareRoot(size, sizeAdjustCoef);
+    }
+    public static float adjustSizeBySquareRoot(float size, float coef) {
+        return size
+                + size
+                * (GdxMaster.getFontSizeModSquareRoot() - 1) * coef;
+    }
+
     public static float adjustSizePlain(float size) {
-        return size* GdxMaster.getFontSizeMod();
+        return size * GdxMaster.getFontSizeMod();
     }
 
     public static float centerHeightScreen(Actor actor) {
@@ -120,7 +140,7 @@ public class GdxMaster {
 
     public static Vector3 getCursorPosition() {
         return DungeonScreen.getInstance().getGridStage().getCamera().
-         unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
     }
 
     public static Vector2 getCursorPosition(Actor actor) {
@@ -163,27 +183,68 @@ public class GdxMaster {
 
     public static float getFontSizeMod() {
         if (fontSizeMod == null) {
-            if (Eidolons.isFullscreen())
-                fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH_FULLSCREEN / GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
-            else
-                fontSizeMod = new Float(getWidth() * getHeight()) / GdxMaster.DEFAULT_WIDTH / GdxMaster.DEFAULT_HEIGHT;
-            fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
+                fontSizeMod = new Float(getWidth() * getHeight()) / getDefaultWidth()/ getDefaultHeight();
+                fontSizeModSquareRoot = (float) Math.sqrt(fontSizeMod);
         }
         if (fontSizeMod < 0) {
             fontSizeMod = Float.valueOf(1);
         }
-        return fontSizeMod;
+        return fontSizeMod * getUserFontScale();
     }
 
+    private static int getDefaultWidth() {
+        return Eidolons.isFullscreen()? GdxMaster.DEFAULT_WIDTH
+                : GdxMaster.DEFAULT_WIDTH_FULLSCREEN;
+    }
+    private static int getDefaultHeight() {
+        return Eidolons.isFullscreen()? GdxMaster.DEFAULT_HEIGHT
+                : GdxMaster.DEFAULT_HEIGHT_FULLSCREEN;
+    }
+
+    public static Float getWidthMod() {
+        if (widthMod == null) {
+            widthMod = new Float(getWidth() ) / getDefaultWidth() ;
+        }
+        return widthMod;
+    }
+
+    public static Float getHeightMod() {
+        if (heightMod == null) {
+            heightMod = new Float(getHeight() ) / getDefaultHeight() ;
+        }
+        return heightMod;
+    }
+
+    public static Float getWidthModSquareRoot() {
+        if (widthModSquareRoot == null) {
+            widthModSquareRoot = new Float(getWidth() ) / getDefaultWidth() ;
+        }
+        return widthModSquareRoot;
+    }
+
+    public static Float getHeightModSquareRoot() {
+        if (heightModSquareRoot == null) {
+            heightModSquareRoot = new Float(getHeight() ) / getDefaultHeight() ;
+        }
+        return heightModSquareRoot;
+    }
+
+    public static Float getWidthModSquareRoot(float coef) {
+        return getWidthModSquareRoot()*coef;
+    }
+
+    public static Float getHeightModSquareRoot(float coef) {
+        return getHeightModSquareRoot()*coef;
+    }
     public static void takeScreenShot() {
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(),
-         Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+                Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(
-         new FileHandle(PathFinder.getImagePath() + "big\\screenshots\\" +
-          main.system.auxiliary.TimeMaster.getTimeStamp() + (".png")), pixmap);
+                new FileHandle(PathFinder.getImagePath() + "big\\screenshots\\" +
+                        main.system.auxiliary.TimeMaster.getTimeStamp() + (".png")), pixmap);
         pixmap.dispose();
     }
 
@@ -199,7 +260,7 @@ public class GdxMaster {
             main.system.auxiliary.log.LogMaster.log(0, ">>>>> setInputProcessor: " + inputController);
 
         inputController = new InputMultiplexer(inputController,
-         GlobalInputController.getInstance()) ;
+                GlobalInputController.getInstance());
         Gdx.input.setInputProcessor(inputController);
     }
 
@@ -240,9 +301,8 @@ public class GdxMaster {
     }
 
 
-
     public static Group getFirstParentOfClass(Actor child, Class clazz) {
-        Group actor =child. getParent();
+        Group actor = child.getParent();
         while (true) {
             actor = actor.getParent();
             if (actor == null) {
@@ -257,17 +317,17 @@ public class GdxMaster {
     }
 
 
-    public static Array<Actor> getAllChildren(Group group ) {
-            Array<Actor> list = new Array<>();
-            addChildren(list, group );
-            return list;
+    public static Array<Actor> getAllChildren(Group group) {
+        Array<Actor> list = new Array<>();
+        addChildren(list, group);
+        return list;
     }
 
-    private static void addChildren(Array<Actor> list, Group group ) {
+    private static void addChildren(Array<Actor> list, Group group) {
         for (Actor sub : group.getChildren()) {
-            list.add(sub );
+            list.add(sub);
             if (sub instanceof Group) {
-                addChildren(list, ((Group) sub) );
+                addChildren(list, ((Group) sub));
             }
 
         }
@@ -277,4 +337,25 @@ public class GdxMaster {
         return fontSizeModSquareRoot;
     }
 
+    public static Float getUserFontScale() {
+        if (userFontScale == null) {
+            userFontScale = OptionsMaster.getGraphicsOptions().getFloatValue(GraphicsOptions.GRAPHIC_OPTION.FONT_SIZE) / 100;
+        }
+        return userFontScale;
+    }
+
+    public static void setUserFontScale(Float userFontScale) {
+        GdxMaster.userFontScale = userFontScale;
+    }
+
+    public static void setUserUiScale(Float userUiScale) {
+        if (userUiScale == null) {
+            userUiScale = OptionsMaster.getGraphicsOptions().getFloatValue(GraphicsOptions.GRAPHIC_OPTION.UI_SCALE) / 100;
+        }
+        GdxMaster.userUiScale = userUiScale;
+    }
+
+    public static Float getUserUiScale() {
+        return userUiScale;
+    }
 }

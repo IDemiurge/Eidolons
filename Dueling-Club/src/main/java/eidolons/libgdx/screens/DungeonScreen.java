@@ -178,7 +178,6 @@ public class DungeonScreen extends GameScreen {
     protected void afterLoad() {
 
         cam = (OrthographicCamera) viewPort.getCamera();
-        controller = new DungeonInputController(cam);
         particleManager = new ParticleManager();
 
         soundMaster = new DC_SoundMaster(this);
@@ -187,6 +186,7 @@ public class DungeonScreen extends GameScreen {
 
         final BFDataCreatedEvent param = ((BFDataCreatedEvent) data.getParams().get());
         gridPanel = new GridPanel(param.getGridW(), param.getGridH()).init(param.getObjects());
+        controller = new DungeonInputController(cam);
 
         gridStage.addActor(gridPanel);
         gridStage.addActor(particleManager);
@@ -459,5 +459,9 @@ public class DungeonScreen extends GameScreen {
             return;
         }
         cameraTimer.setPeriod(intValue);
+    }
+
+    public ParticleManager getParticleManager() {
+        return particleManager;
     }
 }

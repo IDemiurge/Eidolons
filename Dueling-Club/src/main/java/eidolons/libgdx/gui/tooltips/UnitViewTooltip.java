@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.tooltips;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.libgdx.GdxMaster;
@@ -18,6 +19,9 @@ public class UnitViewTooltip extends ValueTooltip {
         this.view = view;
     }
 
+    public Vector2 getDefaultOffset() {
+        return new Vector2(128 , 128 );
+    }
     @Override
     protected boolean isBattlefield() {
         return true;

@@ -54,7 +54,7 @@ public class Pregenerator implements Runnable {
      {SUBLEVEL_TYPE.PRE_BOSS,},
      {SUBLEVEL_TYPE.BOSS,}
     };
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = true;
     public static final boolean NO_VALIDATION = false;
     public static final GEN_STAT[] averageValues = {
      AVRG_RATE,
@@ -72,11 +72,11 @@ public class Pregenerator implements Runnable {
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
      {
-      LOCATION_TYPE.TOWER,
+             LOCATION_TYPE.DUNGEON,
       LOCATION_TYPE.CRYPT,
      } ,
      {
-      LOCATION_TYPE.DUNGEON,
+             LOCATION_TYPE.TOWER,
       LOCATION_TYPE.CEMETERY,
      },
      {

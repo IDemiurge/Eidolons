@@ -119,4 +119,8 @@ public class ScenarioMetaMaster extends MetaGameMaster<ScenarioMeta> {
             return getMetaDataManager().getMissionName();
         return getPartyManager().getParty().getMission();
     }
+
+    protected String getScenarioInfo() {
+        return getMetaGame().getMission().getName();
+    }
 }

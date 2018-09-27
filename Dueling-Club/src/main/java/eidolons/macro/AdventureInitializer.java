@@ -29,7 +29,7 @@ public class AdventureInitializer {
     private static String scenario = "Mistfall";
     private static MetaGameMaster metaMaster;
     private static boolean load;
-    private static boolean testMode =true;
+    private static boolean testMode =false;
 
     public static void setScenario(String scenario) {
         AdventureInitializer.scenario = scenario;

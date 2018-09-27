@@ -43,6 +43,7 @@ public class EntityCheckMaster {
     public static boolean isWall(Entity entity) {
         return entity.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.WALL.toString());
     }
+
     public static BACKGROUND getBackground(Entity hero) {
         return new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, hero
          .getProperty(G_PROPS.BACKGROUND));
@@ -56,6 +57,17 @@ public class EntityCheckMaster {
     public static GENDER getGender(Entity hero) {
         return new EnumMaster<GENDER>().retrieveEnumConst(GENDER.class, hero
          .getProperty(G_PROPS.GENDER));
+    }
+
+    public static boolean isDoor(Entity u) {
+        if (u.checkProperty(G_PROPS.BF_OBJECT_TYPE, "Door")) {
+            return true;
+        }
+        return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, "Door");
+    }
+
+    public static boolean isEntrance(Entity u) {
+        return u.checkProperty(G_PROPS.BF_OBJECT_GROUP, BF_OBJECT_GROUP.ENTRANCE.name());
     }
 
 }

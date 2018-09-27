@@ -62,9 +62,12 @@ public class StyleHolder {
 
     public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle,
                                                              Integer size, Color color) {
-        return getSizedColoredLabelStyle(0, fontStyle, size, color);
+        return getSizedColoredLabelStyle(0.12f, fontStyle, size, color);
     }
-
+    public static LabelStyle getSizedColoredLabelStyle(float i, FONT fontStyle,
+                                                       Integer size) {
+        return getSizedColoredLabelStyle(i, fontStyle,size, GdxColorMaster.GOLDEN_WHITE);
+    }
     public static Label.LabelStyle getDebugLabelStyle() {
         return getSizedColoredLabelStyle(0.2f, FONT.MAIN, 15, GdxColorMaster.GOLDEN_WHITE);
     }
@@ -277,5 +280,6 @@ public class StyleHolder {
     public static LabelStyle getHqLabelStyle(int fontSize) {
         return getSizedLabelStyle(FONT.METAMORPH,fontSize );
     }
+
 
 }

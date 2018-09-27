@@ -890,13 +890,13 @@ public abstract class DC_ActiveObj extends DC_Obj implements ActiveObj, Interrup
     }
 
     public List<DC_ActiveObj> getValidSubactions( ) {
-        return getValidSubactions(getRef(), getOwnerObj().getId());
+        return getValidSubactions(getRef(), null );
     }
         public List<DC_ActiveObj> getValidSubactions(Ref ref, Integer target) {
        List<DC_ActiveObj> subActions=new ArrayList<>();
         for (DC_ActiveObj attack : getSubActions()) {
             if (attack.canBeActivated(ref, true)) {
-                if (attack.canBeTargeted(target)) {
+                if (target==null || attack.canBeTargeted(target)) {
                     subActions.add(attack);
                 }
             }

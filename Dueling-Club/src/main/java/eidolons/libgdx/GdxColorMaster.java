@@ -39,6 +39,7 @@ public class GdxColorMaster {
     public static final Color YELLOW = getColor(165, 185, 55, 1f);
     public static final Color DARK_ORANGE = getColor(195, 105, 25, 1f);
     public static final Color ORANGE = getColor(225, 135, 55, 1f);
+    public static final Color FIRE = getColor(255, 115, 75, 1f);
     public static final Color WHITE = new Color(1, 1, 1, 1f);
     public static final Color GOLDEN_WHITE = getColor(252, 238, 210, 1f);
     public static final Color GOLDEN_GRAY = getColor(233, 218, 192, 1f);

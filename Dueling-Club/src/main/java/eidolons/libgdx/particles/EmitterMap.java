@@ -54,6 +54,8 @@ public class EmitterMap extends Group {
     private float timer;
     private Float baseAlpha;
     private boolean hidden;
+    private float timeBeforeUpdate;
+    private int activeCount;
 
     public EmitterMap(String presetPath, int showChance, Color colorHue) {
         this.presetPath = presetPath;
@@ -163,14 +165,15 @@ public class EmitterMap extends Group {
     public void act(float delta) {
         super.act(delta);
         timer += delta;
-        if (timer >= getUpdatePeriod()) {
+        if (timer >= timeBeforeUpdate) {
             timer = 0;
+            timeBeforeUpdate = getUpdatePeriod();
             update();
         }
     }
 
     private float getUpdatePeriod() {
-        return 10;
+        return RandomWizard.getRandomIntBetween(5, 12);
     }
 
     private void show(Coordinates c) {
@@ -194,8 +197,14 @@ public class EmitterMap extends Group {
         if (ambience == null) {
             return;
         }
+        if (ambience.isIgnored()){
+            return;
+        }
+
         ambience.clearActions();
         ambience.hide();
+        activeCount--;
+        activeCount = Math.max(0, activeCount);
     }
 
     public void show() {
@@ -206,7 +215,8 @@ public class EmitterMap extends Group {
                  ambience.reset();
              }
          });
-
+        activeCount++;
+        activeCount = Math.min(map.keySet().size(), activeCount);
     }
 
     private void add(Coordinates c) {
@@ -235,9 +245,11 @@ public class EmitterMap extends Group {
             });
         if (!getChildren().contains(ambience, true))
             addActor(ambience);
-        //DungeonScreen.getInstance().getAmbienceStage().addActor(fog);
-        ambience.setVisible(true);
-        ambience.getEffect().start();
+        ambience.setVisible(false);
+    }
+
+    public int getActiveCount() {
+        return activeCount;
     }
 
     private void tint(ParticleEmitter emitter, Color color, float v) {
@@ -298,6 +310,6 @@ public class EmitterMap extends Group {
             globalShowChanceCoef = OptionsMaster.getGraphicsOptions().getIntValue(
              GRAPHIC_OPTION.AMBIENCE_DENSITY) ;
         }
-        return globalShowChanceCoef;
+        return globalShowChanceCoef * DungeonScreen.getInstance().getParticleManager().getEmitterCountControlCoef()/100;
     }
 }

@@ -95,7 +95,11 @@ public class MapObjStage extends Stage {
         //sort by x:y?
 
         Actor hovered = null;
-        places.sort(getPlacesSorter());
+        try {
+            places.sort(getPlacesSorter());
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
         for (PlaceActor sub : places) {
             sub.setZIndex(Integer.MAX_VALUE);
             if (sub.isHovered())
@@ -138,7 +142,7 @@ public class MapObjStage extends Stage {
                 setMainParty(party);
                 setMainPartyActor(partyActor);
                 MapScreen.getInstance().getGuiStage().setMainPartyMarker(
-                 PartyActorFactory.getParty(party));
+                        PartyActorFactory.getParty(party));
                 try {
                     MapScreen.getInstance().centerCamera();
                 } catch (Exception e) {

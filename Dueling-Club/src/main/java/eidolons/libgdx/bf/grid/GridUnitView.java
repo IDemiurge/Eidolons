@@ -3,6 +3,7 @@ package eidolons.libgdx.bf.grid;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.panels.dc.InitiativePanel;
@@ -24,6 +25,8 @@ public class GridUnitView extends GenericGridView {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (mainHero) {
+            //TODO so we still have this issue when the hero is drawn on 0-0 momentarily when they start/end moving...
+
 //            Vector2 assumed = GridMaster.getCenteredPos(getUserObject().getCoordinates());
 //            if (getActionsOfClass(MoveByActionLimited.class).size > 0) {
                 //set pos, don't draw
@@ -187,7 +190,7 @@ public class GridUnitView extends GenericGridView {
         super.setPosition(x, y);
     }
 
-    public Image getArrow() {
+    public Actor getArrow() {
         return arrow;
     }
 

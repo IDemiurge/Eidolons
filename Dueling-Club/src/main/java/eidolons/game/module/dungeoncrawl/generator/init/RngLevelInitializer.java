@@ -2,7 +2,9 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.game.battlecraft.logic.battlefield.CoordinatesMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.battlecraft.logic.dungeon.location.RestoredDungeonLevel;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
@@ -14,6 +16,7 @@ import main.entity.EntityCheckMaster;
 import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.bf.Coordinates;
+import main.system.auxiliary.RandomWizard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -57,13 +60,13 @@ public class RngLevelInitializer {
         boolean upward; //towers!..
         LevelBlock entrance = dungeonLevel.getBlocks().stream().filter(block -> block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM).collect(Collectors.toList()).get(0);
         dungeonLevel.setEntranceType(RngBfObjProvider.getWeightMap(ROOM_CELL.ENTRANCE,
-         entrance.getZone().getStyle()).getRandomByWeight());
+                entrance.getZone().getStyle()).getRandomByWeight());
 
 
         entrance = dungeonLevel.getBlocks().stream().filter(block -> block.getRoomType()
-         == ROOM_TYPE.EXIT_ROOM).collect(Collectors.toList()).get(0);
+                == ROOM_TYPE.EXIT_ROOM).collect(Collectors.toList()).get(0);
         dungeonLevel.setExitType(RngBfObjProvider.getWeightMap(ROOM_CELL.EXIT,
-         entrance.getZone().getStyle()).getRandomByWeight());
+                entrance.getZone().getStyle()).getRandomByWeight());
     }
 
     private void assignBlockTileMaps(DungeonLevel level) {
@@ -87,7 +90,7 @@ public class RngLevelInitializer {
                 block.setWidth(w);
                 block.setHeight(h);
                 block.setCoordinates(CoordinatesMaster.
-                 getUpperLeftCornerCoordinates(block.getCoordinatesList()));
+                        getUpperLeftCornerCoordinates(block.getCoordinatesList()));
             }
         }
     }
@@ -97,14 +100,23 @@ public class RngLevelInitializer {
 
     public void initTileMapBlock(LevelBlock block) {
         for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
-
             createEntity(coordinates, block.getTileMap().getMap().get(coordinates), block);
         }
-
-        //        addLocks();
-        //        setupAiGroups();
-        //        saveLevel();
-    }
+        if (dungeonLevel.isBoundObjectsSupported()) {
+            for (Coordinates c : block.getBoundCells().keySet()) {
+                Coordinates bound = block.getBoundCells().get(c);
+                Coordinates random = RandomWizard.random() ? c : bound;
+                ObjAtCoordinate type = block.getObjects().stream().filter(at -> at.getCoordinates().equals(random)).findFirst().orElse(null);
+                if (type == null)
+                    continue;
+                clear(block, block.getBoundCells().get(c));
+                addObj(block, type.getType(), block.getBoundCells().get(c));
+            }
+        }
+    //        addLocks();
+    //        setupAiGroups();
+    //        saveLevel();
+}
 
     private void createEntity(Coordinates c, ROOM_CELL value, LevelBlock block) {
         //just write into new xml?
@@ -115,20 +127,15 @@ public class RngLevelInitializer {
         ObjType type = chooseType(c, value, block);
         if (type == null) {
             main.system.auxiliary.log.LogMaster.log(1, value + " at " + c +
-             " can't be translated to obj!");
+                    " can't be translated to obj!");
             return;
         }
         if (EntityCheckMaster.isOverlaying(type)) {
             createEntity(c, ROOM_CELL.WALL, block);
         }
         addObj(block, type, c);
-        if (dungeonLevel.isBoundObjectsSupported())
-        if (block.getBoundCells().get(c) != null) {
-            clear(block, block.getBoundCells().get(c));
-            addObj(block, type, block.getBoundCells().get(c));
-        }
         main.system.auxiliary.log.LogMaster.log(1, value + " at " + c +
-         " translated to obj: " + type);
+                " translated to obj: " + type);
     }
 
 
@@ -170,17 +177,18 @@ public class RngLevelInitializer {
         dungeonLevel.getObjects().removeIf(at -> at.getCoordinates().equals(coordinates));
         block.getObjects().removeIf(at -> at.getCoordinates().equals(coordinates));
     }
+
     private void addObj(LevelBlock block, ObjType type, Coordinates c) {
         ObjAtCoordinate objAt = new ObjAtCoordinate(type, c);
         block.getObjects().add(0, objAt);
-     if (!EntityCheckMaster.isOverlaying(type))
-         if (dungeonLevel.getObjects().stream().anyMatch(at -> at.getCoordinates().equals(c))) {
-            if (EntityCheckMaster.isWall(type)) {
-                return;
-            }
-            else {
-                main.system.auxiliary.log.LogMaster.log(1,">>> DUPLICATE OBJ ON " +c+
-                "; last = " + type);
+        if (!EntityCheckMaster.isOverlaying(type)) {
+            if (dungeonLevel.getObjects().stream().anyMatch(at -> at.getCoordinates().equals(c))) {
+                if (EntityCheckMaster.isWall(type)) {
+                    return;
+                } else {
+                    main.system.auxiliary.log.LogMaster.log(1, ">>> DUPLICATE OBJ ON " + c +
+                            "; last = " + type);
+                }
             }
         }
         dungeonLevel.getObjects().add(objAt);

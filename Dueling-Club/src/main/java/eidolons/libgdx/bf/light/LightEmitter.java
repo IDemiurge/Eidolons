@@ -35,28 +35,29 @@ import java.util.List;
 public class LightEmitter extends SuperActor {
 
     public static final DIRECTION[] defaultRayDirections = {
-     DIRECTION.RIGHT, DIRECTION.LEFT
+            DIRECTION.RIGHT, DIRECTION.LEFT
     };
     public static final DIRECTION[] priorityOfRayDirections = {
-     DIRECTION.RIGHT, DIRECTION.LEFT,
-     DIRECTION.DOWN, DIRECTION.DOWN_RIGHT,
-     DIRECTION.DOWN_LEFT, DIRECTION.UP_LEFT,
-     DIRECTION.UP_RIGHT, DIRECTION.UP,
+            DIRECTION.RIGHT, DIRECTION.LEFT,
+            DIRECTION.DOWN, DIRECTION.DOWN_RIGHT,
+            DIRECTION.DOWN_LEFT, DIRECTION.UP_LEFT,
+            DIRECTION.UP_RIGHT, DIRECTION.UP,
     };
     private static final boolean TEST_MODE = false;
     private final float OFFSET_Y = 14;
     private final LightEmittingEffect effect;
-    Map<DIRECTION, FadeImageContainer> rays = new XLinkedMap<>();
-    boolean overlaying;
-    int gridX, gridY;
-    DIRECTION direction;
-    FadeImageContainer center;
-    int freeRays = 2;
-    FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
+    private Map<DIRECTION, FadeImageContainer> rays = new XLinkedMap<>();
+    private boolean overlaying;
+    private int gridX, gridY;
+    private DIRECTION direction;
+    private FadeImageContainer center;
+    private int freeRays = 2;
+    private FloatActionLimited alphaAction = (FloatActionLimited) ActorMaster.getAction(FloatActionLimited.class);
     private FadeImageContainer overlay;
     private LIGHT_RAY type;
     private float baseAlpha;
     private Boolean withinCamera;
+    private boolean alphaChanging;
 
     public LightEmitter(BattleFieldObject obj, LightEmittingEffect effect) {
         this.overlaying = obj.isOverlaying();
@@ -66,33 +67,37 @@ public class LightEmitter extends SuperActor {
         this.type = LIGHT_RAY.FIRE;
         this.effect = effect;
         String imagePath = StrPathBuilder.build(PathFinder.getShadeLightPath(),
-         "rays", type.name(), "center" + (overlaying ? " overlaying.png"
-          : ".png"));
-        center = new LightContainer(imagePath);
+                "rays", type.name(), "center" + (overlaying ? " overlaying.png"
+                        : ".png"));
+        center = new LightRay(imagePath);
         setSize(128, 128);
         if (isAddCenterLight()) {
             addActor(center);
             ALPHA_TEMPLATE template = ALPHA_TEMPLATE.SHADE_CELL_LIGHT_EMITTER;
             center.setAlphaTemplate(template);
             center.setPosition(GdxMaster.centerWidth(center),
-             GdxMaster.centerHeight(center) + OFFSET_Y);
+                    GdxMaster.centerHeight(center) + OFFSET_Y);
             center.setOrigin(center.getWidth() / 2, center.getHeight() / 2);
         }
-        if (overlaying) {
+        if (overlaying && isAddOverlayObj()) {
             overlay = new FadeImageContainer(obj.getImagePath());
             overlay.setScale(OverlayView.SCALE, OverlayView.SCALE);
             addActor(overlay);
             Dimension dim = GridMaster.getOffsetsForOverlaying(direction,
-             (int) 64,
-             (int) 64);
+                    (int) 64,
+                    (int) 64);
             //get grid?
             overlay.setPosition((float) dim.getWidth(),
-             (float) dim.getHeight());
+                    (float) dim.getHeight());
             //                overlay.setPosition(GdxMaster.centerWidth(overlay),
             //                 GdxMaster.centerHeight(overlay));
         }
         setTransform(false);
         setUserObject(obj);
+    }
+
+    private boolean isAddOverlayObj() {
+        return false;
     }
 
     @Override
@@ -105,52 +110,51 @@ public class LightEmitter extends SuperActor {
     }
 
     public void update() {
-        if (freeRays>0 || isDynamicUpdates())
-        {
-        //TODO only diag/ no diags option for orderly lights
-        List<DIRECTION> directionList = new ArrayList<>();
-        if (overlaying) {
-            if (direction == null) {
-                direction = DirectionMaster.getRandomDirection();
-            }
-            directionList.add(direction);
-            boolean random = RandomWizard.random();
-            //      only 1 ray for now...      directionList.add(direction.rotate45(random));
-            directionList.add(direction.rotate45(!random));
-        } else {
-            directionList = new ArrayList<>(Arrays.asList(priorityOfRayDirections));
-            if (isRandomLightDirection())
-                Collections.shuffle(directionList);
-            for (DIRECTION d : rays.keySet()) {
-                directionList.add(0, d);
-            }
-        }
-        for (DIRECTION d : directionList) {
-            if (d == null)
-                continue;
-            //                d = DirectionMaster.getRandomDirection();
-            Coordinates c = Coordinates.get(gridX, gridY).getAdjacentCoordinate(d);
-            if (c == null) {
-                continue;
-            }
-            FadeImageContainer ray = rays.get(d);
-            if (ray != null) {
-                if (!checkCellFree(c)) {
-                    freeRays++;
-                    ray.fadeOut();
-                    ActorMaster.addRemoveAfter(ray);
-                    rays.remove(d);
+        if (freeRays > 0 || isDynamicUpdates()) {
+            //TODO only diag/ no diags option for orderly lights
+            List<DIRECTION> directionList = new ArrayList<>();
+            if (overlaying) {
+                if (direction == null) {
+                    direction = DirectionMaster.getRandomDirection();
                 }
+                directionList.add(direction);
+                boolean random = RandomWizard.random();
+                //      only 1 ray for now...      directionList.add(direction.rotate45(random));
+                directionList.add(direction.rotate45(!random));
             } else {
-                if (freeRays > 0) {
-                    ray = createRay(d, overlaying, type);
-                    addActor(ray);
-                    rays.put(d, ray);
-                    freeRays--;
+                directionList = new ArrayList<>(Arrays.asList(priorityOfRayDirections));
+                if (isRandomLightDirection())
+                    Collections.shuffle(directionList);
+                for (DIRECTION d : rays.keySet()) {
+                    directionList.add(0, d);
                 }
             }
+            for (DIRECTION d : directionList) {
+                if (d == null)
+                    continue;
+                //                d = DirectionMaster.getRandomDirection();
+                Coordinates c = Coordinates.get(gridX, gridY).getAdjacentCoordinate(d);
+                if (c == null) {
+                    continue;
+                }
+                FadeImageContainer ray = rays.get(d);
+                if (ray != null) {
+                    if (!checkCellFree(c)) {
+                        freeRays++;
+                        ray.fadeOut();
+                        ActorMaster.addRemoveAfter(ray);
+                        rays.remove(d);
+                    }
+                } else {
+                    if (freeRays > 0) {
+                        ray = createRay(d, overlaying, type);
+                        addActor(ray);
+                        rays.put(d, ray);
+                        freeRays--;
+                    }
+                }
 
-        }
+            }
         }
         int i = 0;
         if (center != null) {
@@ -158,17 +162,12 @@ public class LightEmitter extends SuperActor {
         }
         for (DIRECTION d : rays.keySet()) {
             FadeImageContainer ray = rays.get(d);
-            ray.setTransform(false);
-            Color c = ShadeLightCell.getLightColor(getUserObject());
-            float a = ray.getColor().a;
-            ray.setColor(c);
-            ray.getColor().a = a;
             float x = getWidth() / 2;
             float y = getHeight() / 2;
             if (overlaying) {
                 Dimension dim = GridMaster.getOffsetsForOverlaying(direction,
-                 64,
-                 64);
+                        64,
+                        64);
                 x = (float) dim.getWidth() + 32;
                 y = (float) dim.getHeight() + 32;
             }
@@ -198,6 +197,7 @@ public class LightEmitter extends SuperActor {
     private boolean isRandomLightDirection() {
         return true;
     }
+
     private boolean isDynamicUpdates() {
         return false;
     }
@@ -221,8 +221,9 @@ public class LightEmitter extends SuperActor {
 
     @Override
     public void act(float delta) {
-        boolean alphaChanging = alphaAction.getTime() < alphaAction.getDuration();
-
+        boolean b = alphaAction.getTime() < alphaAction.getDuration();
+        boolean changed = b != alphaChanging;
+        alphaChanging = b;
         if (!alphaChanging && isIgnored()) {
             return;
         }
@@ -230,8 +231,7 @@ public class LightEmitter extends SuperActor {
         rotate(delta);
         if (alphaChanging) {
             getColor().a = alphaAction.getValue();
-            rays.values().forEach(ray -> ray.setFluctuatingAlpha(alphaAction.getValue()));
-            center.setFluctuatingAlpha(alphaAction.getValue());
+//            setAlpha(alphaAction.getValue(), changed);
         }
     }
 
@@ -248,10 +248,10 @@ public class LightEmitter extends SuperActor {
     }
 
     public FadeImageContainer createRay(DIRECTION direction, boolean overlaying
-     , LIGHT_RAY rayType) {
+            , LIGHT_RAY rayType) {
         String imagePath = StrPathBuilder.build(PathFinder.getShadeLightPath(),
-         "rays", rayType.name(), direction + (overlaying ? " overlaying.png"
-          : ".png"));
+                "rays", rayType.name(), direction + (overlaying ? " overlaying.png"
+                        : ".png"));
         Texture texture = TextureCache.getOrCreate(imagePath);
         if (texture.getWidth() == 64) {
             DIRECTION d = DIRECTION.DOWN;
@@ -262,20 +262,23 @@ public class LightEmitter extends SuperActor {
                 d = DIRECTION.RIGHT;
             }
             String existing = StrPathBuilder.build(PathFinder.getShadeLightPath(),
-             "rays", rayType.name(), d + (overlaying ? " overlaying.png"
-              : ".png"));
+                    "rays", rayType.name(), d + (overlaying ? " overlaying.png"
+                            : ".png"));
 
             if (direction.isDiagonal()) {
                 GdxImageMaster.flip(existing, !d.isVertical(), d.isVertical(), true, imagePath);
             }
             texture = GdxImageMaster.flip(existing, d.isGrowX() == direction.isGrowX(),
-             d.isGrowY() == direction.isGrowY(), true, imagePath);
+                    d.isGrowY() == direction.isGrowY(), true, imagePath);
         }
         Image image = new Image(texture);
-        FadeImageContainer ray = new LightContainer(image);
+        FadeImageContainer ray = new LightRay(image);
         ALPHA_TEMPLATE template = ALPHA_TEMPLATE.LIGHT_EMITTER_RAYS;
         ray.setAlphaTemplate(template);
 
+        ray.setTransform(false);
+        Color c = ShadeLightCell.getLightColor(getUserObject());
+        ray.setColor(c);
 
         return ray;
     }
@@ -284,11 +287,32 @@ public class LightEmitter extends SuperActor {
         return baseAlpha;
     }
 
+    public void setBaseAlphaForChildren(float alpha) {
+        for (int i = 0; i < rays.size(); i++) {
+            LightRay ray = (LightRay) rays.values().toArray()[i];
+            ray.setBaseAlpha((float) (alpha / math.sqrt(i + 1)));
+        }
+        if (center != null)
+            center.setBaseAlpha(alpha);
+    }
+
+    public void setAlpha(float alpha, boolean changed) {
+        for (int i = 0; i < rays.size(); i++) {
+            LightRay ray = (LightRay) rays.values().toArray()[i];
+            float a = ray.getColor().a * alpha / 2 + (float) (alpha / math.sqrt(i + 1));
+            if (changed) ray.setFluctuatingAlpha(a);
+            ray.getColor().a = a;
+        }
+        if (center != null) {
+            if (changed) center.setFluctuatingAlpha(alpha);
+            center.getColor().a = center.getColor().a * alpha / 2 + alpha / 2;
+        }
+    }
+
+
     public void setBaseAlpha(float baseAlpha) {
         if (TEST_MODE) {
             baseAlpha = 1f;
-        } else if (overlaying) {
-            baseAlpha *= 2f;
         }
         this.baseAlpha = baseAlpha;
 
@@ -299,16 +323,11 @@ public class LightEmitter extends SuperActor {
         alphaAction.setTarget(this);
         alphaAction.setDuration(0.4f + (Math.abs(getColor().a - baseAlpha)) / 2);
 
-        for (int i = 0; i < rays.size(); i++) {
-            LightContainer ray = (LightContainer) rays.values().toArray()[i];
-            ray.setBaseAlpha((float) (baseAlpha / math.sqrt(i + 1)));
-        }
-        if (center != null)
-            center.setBaseAlpha(baseAlpha);
+        setBaseAlphaForChildren(baseAlpha);
 
         main.system.auxiliary.log.LogMaster.log(1, baseAlpha + " alpha for " +
-         getUserObject().getNameAndCoordinate() +
-         " set in " + alphaAction.getDuration());
+                getUserObject().getNameAndCoordinate() +
+                " set in " + alphaAction.getDuration());
     }
 
     public enum LIGHT_RAY {
@@ -320,12 +339,12 @@ public class LightEmitter extends SuperActor {
         super.setTransform(transform);
     }
 
-    class LightContainer extends FadeImageContainer {
-        public LightContainer(Image image) {
+    class LightRay extends FadeImageContainer {
+        public LightRay(Image image) {
             super(image);
         }
 
-        public LightContainer(String path) {
+        public LightRay(String path) {
             super(path);
         }
 

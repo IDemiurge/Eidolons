@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters.creation.selection;
 
+import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.EUtils;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
@@ -10,6 +11,7 @@ import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.gui.panels.headquarters.creation.selection.HcDeitySelectionPanel.HcDeityElement;
 import main.content.DC_TYPE;
+import main.content.enums.GenericEnums;
 import main.content.values.properties.G_PROPS;
 import main.content.values.properties.PROPERTY;
 import main.data.DataManager;
@@ -46,9 +48,18 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
 
     @Override
     protected SelectableItemData[] initDataArray() {
-        List<ObjType> types = DataManager.getFilteredTypes(DC_TYPE.DEITIES, getUserObject().toString(), G_PROPS.ASPECT);
-        return types.stream().map(type -> new SelectableItemData(type.getName(), type))
-         .collect(Collectors.toList()).toArray(new SelectableItemData[types.size()]);
+        if (getUserObject() instanceof GenericEnums.ASPECT){
+            List<ObjType> types = DataManager.getFilteredTypes(DC_TYPE.DEITIES, getUserObject().toString(), G_PROPS.ASPECT);
+            return types.stream().map(type -> new SelectableItemData(type.getName(), type))
+                    .collect(Collectors.toList()).toArray(new SelectableItemData[types.size()]);
+        } else {
+            Unit hero = (Unit) getUserObject();
+            String deities = hero.getProperty(G_PROPS.DEITY);
+            deities= StringMaster.replace(true, deities, ";", StringMaster.OR);
+            List<ObjType> types = DataManager.getFilteredTypes(DC_TYPE.DEITIES, getUserObject().toString(), G_PROPS.ASPECT);
+            return types.stream().map(type -> new SelectableItemData(type.getName(), type))
+                    .collect(Collectors.toList()).toArray(new SelectableItemData[types.size()]);
+        }
     }
 
     private void clicked(Entity entity) {

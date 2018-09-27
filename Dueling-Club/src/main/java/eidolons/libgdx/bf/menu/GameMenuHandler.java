@@ -1,6 +1,7 @@
 package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
+import eidolons.game.core.game.DC_Game;
 import eidolons.macro.global.persist.Loader;
 import eidolons.macro.global.persist.Saver;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
@@ -31,6 +32,10 @@ public class GameMenuHandler {
             case HERO_INFO:
                 GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
                  HelpMaster.getWelcomeText());
+                break;
+            case MAP_INFO:
+                GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
+                        DC_Game.game.getMetaMaster().getDungeonInfo());
                 break;
             case OUTER_WORLD:
                 //TODO save and send log!

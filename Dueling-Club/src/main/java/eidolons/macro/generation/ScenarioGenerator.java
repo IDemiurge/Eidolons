@@ -8,6 +8,7 @@ import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
+import main.content.enums.DungeonEnums;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.DungeonEnums.SUBLEVEL_TYPE;
 import main.content.values.properties.MACRO_PROPS;
@@ -98,6 +99,7 @@ public class ScenarioGenerator {
         LOCATION_TYPE locationType = new EnumMaster<LOCATION_TYPE>().
          retrieveEnumConst(LOCATION_TYPE.class, locationTypeName);
 
+        locationType=checkAltLocationType(locationType);
         int n = 3;
         List<SUBLEVEL_TYPE> types =
          createSublevelTypes(n, locationType);
@@ -131,6 +133,28 @@ public class ScenarioGenerator {
         return scenarioType;
     }
 
+    private static LOCATION_TYPE checkAltLocationType(LOCATION_TYPE locationType) {
+        switch (locationType) {
+            case SEWER:
+            case HELL:
+            case ASTRAL:
+                return LOCATION_TYPE.TOWER;
+            case CASTLE:
+                return LOCATION_TYPE.TEMPLE;
+            case BARROW:
+              return  LOCATION_TYPE.CRYPT;
+            case HIVE:
+            case DEN:
+            case RUIN:
+            case CAMP:
+            case HOUSE:
+            case GROVE:
+                return LOCATION_TYPE.CAVE;
+        }
+
+        return locationType;
+    }
+
     private static boolean isUsePregenerated() {
         return true;
     }
@@ -149,11 +173,18 @@ public class ScenarioGenerator {
         List<File> levels = FileManager.getFilesFromDirectory(getPath(locationType), false);
         levels = levels.stream().filter(file -> file.getName()
          .startsWith(getLevelName(locationType, type))).collect(Collectors.toList());
+     if (levels.isEmpty()){
+         return getAltPregenLevel(type, locationType);
+     }
         if (isSequentialPregenChoice()){
             int index=getNextSequentialPregenIndex(locationType, type, levels.size());
             return levels.get(index).getName();
         } else
         return FileManager.getRandomFile(levels).getName();
+    }
+
+    private static String getAltPregenLevel(SUBLEVEL_TYPE type, LOCATION_TYPE locationType) {
+        return choosePregenLevel(SUBLEVEL_TYPE.COMMON, LOCATION_TYPE.CAVE);
     }
 
     private static int getNextSequentialPregenIndex(LOCATION_TYPE locationType, SUBLEVEL_TYPE type, int size) {

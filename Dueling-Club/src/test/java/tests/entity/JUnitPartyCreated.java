@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by JustMe on 3/6/2017.
  */
-public class JUnitPartyCreated extends EidolonsTest {
+public class JUnitPartyCreated extends JUnitScenario {
 
 
     protected Unit unit;

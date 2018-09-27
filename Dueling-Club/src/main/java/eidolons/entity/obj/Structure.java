@@ -4,6 +4,7 @@ import eidolons.entity.handlers.bf.BfObjInitializer;
 import eidolons.entity.handlers.bf.structure.StructureMaster;
 import eidolons.entity.handlers.bf.structure.StructureResetter;
 import eidolons.game.battlecraft.logic.battlefield.FacingMaster;
+import eidolons.game.battlecraft.logic.dungeon.location.LocationMaster;
 import eidolons.game.core.game.DC_Game;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -32,6 +33,15 @@ public class Structure extends BattleFieldObject {
     public Structure(ObjType type, int x, int y, Player owner, DC_Game game, Ref ref) {
         this(type, owner, game, ref);
         setCoordinates(Coordinates.get(x, y));
+        if (isWall()) {
+            try {
+                if (getCoordinates().equals(((LocationMaster) game.getDungeonMaster()).getDungeonWrapper().
+                        getMainEntrance().getCoordinates())) {
+                    setCoordinates(Coordinates.get(0, 0));
+                }
+            } catch (Exception e) {
+            }
+        }
     }
 
     public boolean isWall() {

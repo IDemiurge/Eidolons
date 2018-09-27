@@ -2,6 +2,7 @@ package eidolons.game.battlecraft.logic.dungeon.location;
 
 import eidolons.game.battlecraft.logic.dungeon.universal.*;
 import eidolons.game.core.game.DC_Game;
+import main.system.launch.CoreEngine;
 
 /**
  * Created by JustMe on 5/8/2017.
@@ -22,6 +23,8 @@ public class LocationMaster extends DungeonMaster<Location> {
     }
 
     private boolean isRngDungeon() {
+        if (CoreEngine.isjUnit())
+            return false;
         return getGame().getMetaMaster().isRngDungeon();
     }
 
@@ -50,4 +53,6 @@ public class LocationMaster extends DungeonMaster<Location> {
     public LocationInitializer getInitializer() {
         return (LocationInitializer) super.getInitializer();
     }
+
+
 }

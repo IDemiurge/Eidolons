@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxColorMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
@@ -37,11 +38,14 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
     List<TextButton> buttons = new ArrayList<>();
 
     public GenericMenu() {
-        Drawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
+        TextureRegionDrawable texture = TextureCache.getOrCreateTextureRegionDrawable(StrPathBuilder.build(
                 "UI", "components", "generic", "game menu", "background.png"));
+        //TODO initResolutionScaling();
+//        setSize(texture.getRegion().getRegionWidth()*getScaleX(), texture.getRegion().getRegionHeight()*getScaleY());
+//        texture.setMinWidth(getWidth());
+//        texture.setMinHeight(getHeight());
         setBackground(texture);
         addButtons();
-        initResolutionScaling();
     }
 
     public Map<T, TextButton> getCache() {
@@ -112,7 +116,7 @@ public abstract class GenericMenu<T extends MenuItem<T>> extends TablePanelX imp
                 button = getBackButton();
             } else
                 button = getButton((T) sub, StringMaster.getWellFormattedString(sub.toString()));
-            addNormalSize(button).top().pad(10, 10, 10, 10);
+            add(button).top().pad(10, 10, 10, 10);
             buttons.add(button);
             row();
         }

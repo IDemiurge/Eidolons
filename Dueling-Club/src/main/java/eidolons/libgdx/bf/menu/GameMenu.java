@@ -128,6 +128,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
     public enum GAME_MENU_ITEM implements MenuItem<GAME_MENU_ITEM> {
         QUICK_HELP,
         HERO_INFO,
+        MAP_INFO,
         MANUAL,
         //        SEND_FEEDBACK,
 //        SEND_LOG,
@@ -140,7 +141,7 @@ public class GameMenu extends GenericMenu<GAME_MENU_ITEM> {
         SAVE(true),
         LOAD(true),
         RESUME,
-        INFO(QUICK_HELP, HERO_INFO, MANUAL),
+        INFO(QUICK_HELP, HERO_INFO, MAP_INFO, MANUAL),
         WEBSITE(true),
         ABOUT(true), LAUNCH_GAME(true),
         MAIN_MENU(true),

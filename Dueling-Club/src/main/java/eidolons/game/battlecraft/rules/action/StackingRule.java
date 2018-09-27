@@ -8,7 +8,6 @@ import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.rules.RuleKeeper;
 import eidolons.game.battlecraft.rules.RuleKeeper.RULE;
-import eidolons.game.battlecraft.rules.UnitAnalyzer;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
 import eidolons.game.module.herocreator.logic.HeroCreator;
@@ -179,10 +178,10 @@ public class StackingRule implements ActionRule {
             if (u == unit) {
                 continue;
             }
-            if (UnitAnalyzer.isWall(u)) {
+            if (EntityCheckMaster.isWall(u)) {
                 return false;
             }
-            if (u instanceof Entrance) {
+            if (EntityCheckMaster.isEntrance(u)) {
                 continue;
             }
             if (u.isDead()) {

@@ -1,6 +1,14 @@
 package eidolons.libgdx.shaders;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import eidolons.libgdx.GdxMaster;
+import eidolons.libgdx.TiledNinePatchGenerator;
+import eidolons.libgdx.bf.SuperActor;
+import eidolons.libgdx.bf.generic.SuperContainer;
+import eidolons.libgdx.texture.TextureCache;
 import org.lwjgl.opengl.Display;
 
 /**
@@ -68,6 +76,7 @@ public class VignetteShader {
      "}";
     private static boolean used;
     private static ShaderProgram shader;
+    private static final String vignettePath = "ui\\macro\\vignette.png";
 
     public static boolean isUsed() {
         return used;
@@ -86,5 +95,29 @@ public class VignetteShader {
             shader.setUniformf("resolution", Display.getWidth(), Display.getHeight());
         }
         return shader;
+    }
+
+    public static SuperContainer createVignetteActor() {
+        TextureRegion texture=null;
+        if (isTiledVignette()){
+            texture = new TextureRegion(TiledNinePatchGenerator.getOrCreateNinePatch(TiledNinePatchGenerator.NINE_PATCH.VIGNETTE,
+                    TiledNinePatchGenerator.BACKGROUND_NINE_PATCH.TRANSPARENT, GdxMaster.getWidth(), GdxMaster.getHeight()));
+        } else
+            texture = TextureCache.getOrCreateR(vignettePath);
+
+        SuperContainer vignette = new SuperContainer(
+                new Image(texture),
+                true);
+
+
+        vignette.getContent().setWidth(GdxMaster.getWidth());
+        vignette.getContent().setHeight(GdxMaster.getHeight());
+        vignette.setAlphaTemplate(SuperActor.ALPHA_TEMPLATE.VIGNETTE);
+
+        vignette.setTouchable(Touchable.disabled);
+        return vignette;
+    }
+    private static boolean isTiledVignette() {
+        return true;
     }
 }

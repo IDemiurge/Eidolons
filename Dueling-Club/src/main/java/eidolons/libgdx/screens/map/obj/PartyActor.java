@@ -28,6 +28,7 @@ public class PartyActor extends MapActor {
     private Image ironBorder;
     private MoveToAction orderAction;
     private MacroParty party;
+    private boolean moving;
 
 
     public PartyActor(PartyActorParameters parameters) {
@@ -113,6 +114,8 @@ public class PartyActor extends MapActor {
             steerableParty = new SteerableParty(this);
         try {
             steerableParty.moveTo(x, y, speed);
+            party.setHasMoved(true);
+            setMoving(true);
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
@@ -163,11 +166,18 @@ public class PartyActor extends MapActor {
     public void act(float delta) {
 //        FreeTravelMaster.getInstance(). check(this);
         super.act(delta);
-        if (!marker)
+        if (!marker) {
             party.setCoordinates(Coordinates.get(getX() + getWidth() / 2, getY() + getHeight() / 2));
+        } else {
+            setVisible(isMarkerVisible());
+        }
 //        party.getCoordinates().setX(); Coordinates(getX()+getWidth()/2, getY()+getHeight()/2));
         if (steerableParty != null)
             steerableParty.act(delta);
+    }
+
+    private boolean isMarkerVisible() {
+        return false;
     }
 
     @Override
@@ -195,4 +205,11 @@ public class PartyActor extends MapActor {
         return emblem;
     }
 
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
 }

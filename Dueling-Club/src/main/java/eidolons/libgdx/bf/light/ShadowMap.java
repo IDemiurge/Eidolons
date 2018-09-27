@@ -211,6 +211,8 @@ public class ShadowMap extends GroupX {
 
                             lightEmitter.update();
                         }
+
+
                     }
 
                 }

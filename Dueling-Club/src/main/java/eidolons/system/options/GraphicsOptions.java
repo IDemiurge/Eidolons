@@ -43,6 +43,8 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
         VSYNC(true),
         SHADOW_MAP_OFF(false),
         UI_EMITTERS(false),
+        FONT_SIZE(100, 50, 200),
+        UI_SCALE(100, 50, 200),
         SPRITE_CACHE_ON(false){
             @Override
             public boolean isDevOnly() {

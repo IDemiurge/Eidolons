@@ -301,6 +301,12 @@ public class OptionsMaster {
             case SHADOW_MAP_OFF:
                 ShadowMap.setOn(!bool);
                 break;
+            case FONT_SIZE:
+                GdxMaster.setUserFontScale(Float.valueOf(value)/100);
+                break;
+            case UI_SCALE:
+                GdxMaster.setUserUiScale(Float.valueOf(value)/100);
+                break;
         }
     }
 

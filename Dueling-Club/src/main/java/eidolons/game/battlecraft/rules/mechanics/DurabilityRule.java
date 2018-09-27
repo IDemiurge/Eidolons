@@ -42,7 +42,7 @@ public class DurabilityRule extends DC_RuleImpl {
         }
         MATERIAL m2 = weapon.getMaterial();
         int self_damage_mod = 100;
-        if (armor != null) {
+        if (armor != null && blocked>0) {
             self_damage_mod = armor.getIntParam(DC_ContentValsManager
              .getArmorSelfDamageParamForDmgType(damage_type));
             reduceDurability(false, armor, weapon, m1, m2, damage, blocked, self_damage_mod);
@@ -72,10 +72,10 @@ public class DurabilityRule extends DC_RuleImpl {
             if (self_damage_mod == 0)
                 self_damage_mod = 100;
 
-        int armor_vs_weapon = m1.getHardness() - m2.getHardness();
+        int armor_vs_weapon = m2.getHardness() - m1.getHardness();
 
         int armor_amount =Math.max(blocked, damage/3) * self_damage_mod / 100;
-        armor_amount = MathMaster.addFactor(armor_amount, armor_vs_weapon);
+//        armor_amount = MathMaster.addFactor(armor_amount, armor_vs_weapon); TODO outdated?
         if (armor_amount <= 0)
             return;
         durabilityReductionEffect =

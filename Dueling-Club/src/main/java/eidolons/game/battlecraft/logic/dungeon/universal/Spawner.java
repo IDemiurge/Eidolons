@@ -55,8 +55,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
 
     @Refactor
     public void spawn() {
-//        List<MicroObj> units = DC_ObjInitializer.createUnits(player, unitData);
-//        initFacing(units, player, mode);
         for (Object player1 : getBattleMaster().getPlayerManager().getPlayers()) {
 
             DC_Player player = (DC_Player) player1;
@@ -69,8 +67,6 @@ public class Spawner<E extends DungeonWrapper> extends DungeonHandler<E> {
             spawn(data, player, getSpawnMode(player, true));
         }
         spawnDone();
-
-        //initEmblem
 
     }
 

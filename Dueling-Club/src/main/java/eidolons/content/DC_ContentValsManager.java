@@ -380,7 +380,10 @@ public class DC_ContentValsManager extends ContentValsManager {
     }
 
     public static PARAMETER getBaseAttr(PARAMETER param) {
-        return ContentValsManager.getPARAM(StringMaster.BASE + param.toString());
+        PARAMETER base = ContentValsManager.getPARAM(StringMaster.BASE + param.toString());
+        if (base!=null )
+            return base;
+        return param;
     }
 
     public static Object getHeaderValues(OBJ_TYPE obj_TYPE_ENUM) {
