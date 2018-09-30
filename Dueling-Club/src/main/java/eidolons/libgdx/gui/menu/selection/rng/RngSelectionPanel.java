@@ -1,6 +1,8 @@
 package eidolons.libgdx.gui.menu.selection.rng;
 
 import eidolons.game.core.Eidolons;
+import eidolons.libgdx.gui.menu.selection.ItemInfoPanel;
+import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.scenario.ScenarioSelectionPanel;
 import eidolons.macro.generation.ScenarioGenerator;
 import main.entity.Entity;
@@ -27,4 +29,11 @@ public class RngSelectionPanel extends ScenarioSelectionPanel {
          }
         );
     }
+
+    @Override
+    protected ItemInfoPanel createInfoPanel() {
+        return new RngInfoPanel(null);
+    }
+
+
 }

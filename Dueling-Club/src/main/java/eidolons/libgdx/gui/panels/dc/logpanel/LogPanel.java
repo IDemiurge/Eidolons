@@ -83,7 +83,6 @@ public class LogPanel extends ScrollTextPanel {
          "dc",
          "dialog",
          "log"
-
          , "log background.png");
     }
 

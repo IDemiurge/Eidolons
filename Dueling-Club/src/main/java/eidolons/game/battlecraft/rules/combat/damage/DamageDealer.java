@@ -25,6 +25,7 @@ import main.game.logic.event.EventType;
 import main.game.logic.event.EventType.CONSTRUCTED_EVENT_TYPE;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
+import main.system.launch.CoreEngine;
 import main.system.text.EntryNodeMaster.ENTRY_TYPE;
 
 /**
@@ -427,6 +428,7 @@ public class DamageDealer {
         }
         processDamageEvent(null, ref, damageDealt, STANDARD_EVENT_TYPE.UNIT_HAS_BEEN_DEALT_PURE_DAMAGE);
 
+        if (!CoreEngine.isGraphicsOff())
         if (HpBar.isResetOnLogicThread())
             DungeonScreen.getInstance().getGridPanel().getGridManager().
              checkHpBarReset(attacked);

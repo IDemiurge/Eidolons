@@ -241,7 +241,7 @@ public class UnitShop {
         if (materialType != null) {
             itemType = chooseQualityForItem(materialType, costLimit, unit, baseType, canExceed);
         } else {
-            if (baseType.getOBJ_TYPE_ENUM() != DC_TYPE.ITEMS)
+            if (baseType==null || baseType.getOBJ_TYPE_ENUM() != DC_TYPE.ITEMS)
                 return false;
             List<ObjType> types = DataManager.getUpgradedTypes(baseType);
 //            types = (List<ObjType>) SortMaster.sortByValue(types, PARAMS.GOLD_COST, true);

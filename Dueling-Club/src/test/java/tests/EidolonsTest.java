@@ -4,6 +4,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.ai.AI_Manager;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.core.launch.PresetLauncher;
 import eidolons.game.core.launch.PresetLauncher.LAUNCH;
 import eidolons.libgdx.launch.MainLauncher;
 import eidolons.libgdx.screens.menu.MainMenu.MAIN_MENU_ITEM;
@@ -42,37 +43,21 @@ public class EidolonsTest {
         return "";
     }
 
+    @Deprecated
     @Before
     public void init() {
-        LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
-        CoreEngine.setGraphicsOff(isGraphicsOff());
-        CoreEngine.setjUnit(true);
-        if (isSelectiveXml())
-            CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
-        AI_Manager.setOff(isAiOff());
-        DC_Engine.setTrainingOff(isTrainingOff());
+        commonInit();
+
         if (isScenario()) {
-            new MainLauncher().main(new String[]{
-             getLaunchArgString()
-            });
-            WaitMaster.waitForInputAnew(WAIT_OPERATIONS.GAME_LOOP_STARTED);
+            scenarioInit();
         } else if (isOldLauncher()) {
-            FAST_DC.main(new String[]{
-             FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
-             getPlayerParty(),
-             getEnemyParty(),
-             getDungeonPath()
-            });
+            oldInit();
         } else {
-
-            MultiLauncher launcher = new MultiLauncher(getPlayerParty(),
-             getEnemyParty(),
-             getDungeonPath(),
-                    isTestMeta());
-            launcher.setAfterEngineInit(() -> resources = new JUnitResources());
-            launcher.launch();
-
+            newInit();
         }
+    }
+
+    private void afterInit() {
         game = Eidolons.game;
         helper = new DcHelper(game);
         atbHelper = new AtbHelper(game);
@@ -80,13 +65,55 @@ public class EidolonsTest {
         utils = new JUnitUtils(game);
     }
 
+    private void commonInit() {
+        LogMaster.setOff(isLoggingOff()); //log everything* or nothing to speed up
+        CoreEngine.setGraphicsOff(isGraphicsOff());
+        CoreEngine.setjUnit(true);
+        if (isSelectiveXml())
+            CoreEngine.setSelectivelyReadTypes(getXmlTypesToRead());
+        AI_Manager.setOff(isAiOff());
+        DC_Engine.setTrainingOff(isTrainingOff());
+    }
+
+    protected void newInit() {
+        commonInit();
+        MultiLauncher launcher = new MultiLauncher(getPlayerParty(),
+                getEnemyParty(),
+                getDungeonPath(),
+                isTestMeta());
+        launcher.setAfterEngineInit(() -> resources = new JUnitResources());
+        launcher.launch();
+        afterInit();
+    }
+
+    protected void scenarioInit() {
+        commonInit();
+        new MainLauncher().main(new String[]{
+                getLaunchArgString()
+        });
+        WaitMaster.waitForInputAnew(WAIT_OPERATIONS.GAME_LOOP_STARTED);
+
+        afterInit();
+    }
+
+    protected void oldInit() {
+        commonInit();
+        FAST_DC.main(new String[]{
+                FAST_DC.PRESET_OPTION_ARG + StringMaster.wrapInParenthesis(LAUNCH.JUnit.name()),
+                getPlayerParty(),
+                getEnemyParty(),
+                getDungeonPath()
+        });
+        afterInit();
+    }
+
     protected boolean isTestMeta() {
-        return false;
+        return true;
     }
 
     protected String getLaunchArgString() {
         return MAIN_MENU_ITEM.PLAY.name() + "," +
-         getScenarioIndex() + "," + getHeroIndex();
+                getScenarioIndex() + "," + getHeroIndex();
     }
 
     protected Integer getScenarioIndex() {

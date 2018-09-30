@@ -18,7 +18,7 @@ public class RngLightFiller extends RngFiller {
     }
 
     protected int getWrapPreExitChance(Room room) {
-        return 80;
+        return 65;
     }
     @Override
     public LEVEL_VALUES getFillCoefConst() {
@@ -31,7 +31,7 @@ public class RngLightFiller extends RngFiller {
     }
     @Override
     public float getFillCoef() {
-        return 0.3f;
+        return 0.1f;
     }
 
     @Override
@@ -64,13 +64,13 @@ public class RngLightFiller extends RngFiller {
         switch (room.getType()) {
             case THRONE_ROOM:
             case COMMON_ROOM:
-                return 50;
+                return 40;
             case TREASURE_ROOM:
             case GUARD_ROOM:
-                return 50;
+                return 30;
             case ENTRANCE_ROOM:
             case EXIT_ROOM:
-                return 80;
+                return 60;
         }
         return 0;
     }

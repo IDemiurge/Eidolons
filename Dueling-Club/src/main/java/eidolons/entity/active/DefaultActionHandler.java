@@ -55,6 +55,9 @@ public class DefaultActionHandler {
 
     private static boolean turnToMotion(Unit source, Coordinates coordinates) {
         DC_ActiveObj action = getTurnToAction(source, coordinates);
+        if (action == null) {
+            return false;
+        }
         Context context = new Context(source, null);
         return activate(context, action);
     }

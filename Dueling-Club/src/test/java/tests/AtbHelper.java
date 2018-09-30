@@ -25,7 +25,6 @@ public class AtbHelper {
         if (game.getTurnManager() instanceof AtbTurnManager) {
             controller = ((AtbTurnManager) game.getTurnManager())
              .getAtbController();
-
         }
     }
 

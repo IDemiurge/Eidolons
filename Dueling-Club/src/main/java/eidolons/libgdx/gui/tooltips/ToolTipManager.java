@@ -204,6 +204,9 @@ public class ToolTipManager extends TablePanel {
         v2 = getStage().screenToStageCoordinates(v2);
 
         actorCell.left().top();
+
+        actorCell.pad(0);
+
         float y = (v2.y - tooltip.getPrefHeight() - getPreferredPadding());
         boolean bot = false;
         if (y < 0) {
@@ -233,16 +236,20 @@ public class ToolTipManager extends TablePanel {
             actorCell.padRight((x - GdxMaster.getWidth()) / 2 - getPreferredPadding());
             right = true;
         }
+
         Vector2 offset = tooltip.getDefaultOffset();
         if (offset != null) {
-            int difX = right? -2 : 1;
-            int difY = bot? -2 : 1;
-            setPosition(getX() + offset.x*difX, getY() + offset.y*difY);
-            if (right){
-                setX(getX()-getWidth());
+            int difX = right? -3 : 2;
+//            int difY = bot? -3 : 2;
+            if (right) {
+                actorCell.padRight(actorCell.getPadRight() + offset.x*difX+actorCell.getActorWidth());
+            } else {
+                actorCell.padLeft(actorCell.getPadLeft() + offset.x*difX+actorCell.getActorWidth());
             }
+//            if (right){
+//                actorCell.setActorX(actorCell.getActorX()-actorCell.getActorWidth()*2);
+//            }
         }
-
     }
 
     private boolean isLogged() {

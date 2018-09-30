@@ -14,8 +14,4 @@ public class CombatTest extends TwoUnitsTest{
 
     }
 
-    @Override
-    protected boolean isGraphicsOff() {
-        return super.isGraphicsOff();
-    }
 }

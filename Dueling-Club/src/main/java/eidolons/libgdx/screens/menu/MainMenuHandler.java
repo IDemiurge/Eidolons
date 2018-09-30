@@ -56,12 +56,12 @@ public class MainMenuHandler {
 
     private static boolean isRngLocationSupported(LOCATION_TYPE locationType) {
         switch (locationType) {
-            case CEMETERY:
+//            case CEMETERY:
             case CRYPT:
             case CAVE:
             case DUNGEON:
-            case TOWER:
-            case TEMPLE:
+//            case TOWER:
+//            case TEMPLE:
                 return true;
 
             case CASTLE:

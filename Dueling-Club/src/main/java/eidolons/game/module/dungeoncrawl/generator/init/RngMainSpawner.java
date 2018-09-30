@@ -482,8 +482,7 @@ public class RngMainSpawner {
             case CROWD:
             case IDLERS:
                 return block.getRoomType() == ROOM_TYPE.COMMON_ROOM
-                 || block.getRoomType() == ROOM_TYPE.EXIT_ROOM
-                 || block.getRoomType() == ROOM_TYPE.ENTRANCE_ROOM;
+                 || block.getRoomType() == ROOM_TYPE.EXIT_ROOM;
             case STALKER:
                 return block.getRoomType() == ROOM_TYPE.CORRIDOR
                  || block.getRoomType() == ROOM_TYPE.SECRET_ROOM;

@@ -32,6 +32,11 @@ public class ValueTooltip extends Tooltip {
     }
 
     @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return null;
+    }
+
+    @Override
     public float getMaxWidth() {
         return GdxMaster.getWidth()/3;
     }

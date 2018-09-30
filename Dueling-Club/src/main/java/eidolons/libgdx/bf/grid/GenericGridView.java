@@ -14,6 +14,7 @@ import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.bf.light.LightEmitter;
 import eidolons.libgdx.bf.overlays.HpBar;
 import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.generic.NoHitGroup;
 import eidolons.libgdx.screens.map.layers.LightLayer;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
@@ -29,7 +30,7 @@ import java.util.function.Supplier;
  */
 public class GenericGridView extends UnitView {
     public static final int ARROW_ROTATION_OFFSET = 90;
-    protected GroupX arrow;
+    protected NoHitGroup arrow;
     protected Image emblemLighting;
     protected Image icon;
     protected int arrowRotation;
@@ -64,7 +65,7 @@ public class GenericGridView extends UnitView {
     protected void init(TextureRegion arrowTexture, int arrowRotation, Texture iconTexture, TextureRegion emblem) {
 
         if (arrowTexture != null) {
-            arrow = new GroupX();
+            arrow = new NoHitGroup();
             arrow.addActor(new Image(arrowTexture));
             arrow.setSize(arrowTexture.getRegionWidth(), arrowTexture.getRegionHeight());
             arrow.addActor(torch = new FadeImageContainer(StrPathBuilder.build("ui", "unit light directional.png")){

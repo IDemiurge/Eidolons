@@ -1,6 +1,6 @@
 ENEMY_PARTY=,
 PLAYER_PARTY=,
 PLAYER_UNITS=,
-FIRST_DUNGEON=test\clearshot test rectangle.xml,
+FIRST_DUNGEON=TEST\empty.xml,
 DUNGEONS=,
 ENEMIES=,

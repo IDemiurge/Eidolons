@@ -35,6 +35,7 @@ import main.game.logic.event.Rule;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
+import main.system.launch.CoreEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class DC_StateManager extends StateManager {
     private StatesKeeper keeper;
     private OBJ_TYPE[] toBaseIgnoredTypes = {DC_TYPE.SPELLS, DC_TYPE.ACTIONS};
     private boolean savingOn = ConfigMaster.getInstance()
-     .getBoolean("SAVING_ON_DEFAULT");
+            .getBoolean("SAVING_ON_DEFAULT");
 
     private Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
@@ -89,9 +90,9 @@ public class DC_StateManager extends StateManager {
                     resetting = false;
                 }
             } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace( e);
+                main.system.ExceptionMaster.printStackTrace(e);
 
-        } finally {
+            } finally {
                 resetLock.unlock();
             }
         }
@@ -105,7 +106,7 @@ public class DC_StateManager extends StateManager {
     private void resetAll() {
         if (getGame().getDungeonMaster().getExplorationMaster() != null) {
             getGame().getDungeonMaster().getExplorationMaster()
-             .getAggroMaster().checkStatusUpdate();
+                    .getAggroMaster().checkStatusUpdate();
         }
 
         getGame().getDroppedItemManager().reset();
@@ -116,7 +117,7 @@ public class DC_StateManager extends StateManager {
 
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
             if (getGame().getDungeonMaster().getExplorationMaster().
-             getResetter().isResetNotRequired()) {
+                    getResetter().isResetNotRequired()) {
                 getGame().getBfObjects().forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
                 triggerOnResetGuiEvents();
                 return;
@@ -128,8 +129,8 @@ public class DC_StateManager extends StateManager {
         if (getGame().isStarted()) {
             checkCellBuffs();
         }
-
-        triggerOnResetGuiEvents();
+        if (!CoreEngine.isGraphicsOff())
+            triggerOnResetGuiEvents();
 
         if (savingOn) {
             keeper.save();
@@ -374,7 +375,7 @@ public class DC_StateManager extends StateManager {
         game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<"
         );
         main.system.auxiliary.log.LogMaster.log(1, "Units= " +
-         getGame().getUnits());
+                getGame().getUnits());
         newTurnTick();
         Ref ref = new Ref(getGame());
         ref.setAmount(state.getRound());
