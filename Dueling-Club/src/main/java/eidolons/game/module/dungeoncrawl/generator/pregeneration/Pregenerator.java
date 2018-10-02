@@ -44,42 +44,42 @@ import static eidolons.game.module.dungeoncrawl.generator.test.GenerationStats.G
 public class Pregenerator implements Runnable {
 
 
-    public static final SUBLEVEL_TYPE[]  GENERATED_SUBLEVELS_ALL = {
-     SUBLEVEL_TYPE.COMMON,
-     SUBLEVEL_TYPE.PRE_BOSS,
-     SUBLEVEL_TYPE.BOSS,
+    public static final SUBLEVEL_TYPE[] GENERATED_SUBLEVELS_ALL = {
+            SUBLEVEL_TYPE.COMMON,
+            SUBLEVEL_TYPE.PRE_BOSS,
+            SUBLEVEL_TYPE.BOSS,
     };
     public static final SUBLEVEL_TYPE[][] GENERATED_SUBLEVELS = {
-     {SUBLEVEL_TYPE.COMMON,},
-     {SUBLEVEL_TYPE.PRE_BOSS,},
-     {SUBLEVEL_TYPE.BOSS,}
+            {SUBLEVEL_TYPE.COMMON,},
+            {SUBLEVEL_TYPE.PRE_BOSS,},
+            {SUBLEVEL_TYPE.BOSS,}
     };
-    public static final boolean TEST_MODE = false  ;
+    public static final boolean TEST_MODE = false;
     public static final boolean NO_VALIDATION = false;
     public static final GEN_STAT[] averageValues = {
-     AVRG_RATE,
-     AVRG_FILL_RATIO,
-     //     AVRG_EXITS_DISTANCE,
+            AVRG_RATE,
+            AVRG_FILL_RATIO,
+            //     AVRG_EXITS_DISTANCE,
     };
     private static final int THREADS = 2;
-    private static final Boolean RANDOM = null ;
+    private static final Boolean RANDOM = null;
     public static LOCATION_TYPE[] LOCATION_TYPES = {
-     LOCATION_TYPE.CAVE,
-     LOCATION_TYPE.DUNGEON,
-     LOCATION_TYPE.CEMETERY,
-     LOCATION_TYPE.TOWER,
-     LOCATION_TYPE.CRYPT,
+            LOCATION_TYPE.CAVE,
+            LOCATION_TYPE.DUNGEON,
+            LOCATION_TYPE.CEMETERY,
+            LOCATION_TYPE.TOWER,
+            LOCATION_TYPE.CRYPT,
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
-     {
-             LOCATION_TYPE.DUNGEON,
-      LOCATION_TYPE.CRYPT,
-     } ,
-     {
-             LOCATION_TYPE.TOWER,
-      LOCATION_TYPE.CEMETERY,
-             LOCATION_TYPE.CAVE,
-     },
+            {
+                    LOCATION_TYPE.DUNGEON,
+                    LOCATION_TYPE.CRYPT,
+            },
+            {
+                    LOCATION_TYPE.TOWER,
+                    LOCATION_TYPE.CEMETERY,
+                    LOCATION_TYPE.CAVE,
+            },
     };
     private static List<Pregenerator> running = new ArrayList<>();
     private static Map<PregeneratorData, List<GenerationStats>> analysisStats = new XLinkedMap<>();
@@ -124,9 +124,9 @@ public class Pregenerator implements Runnable {
             }
 
         String path = StrPathBuilder.build(PathFinder.getRandomLevelPath(),
-         "pregenerated", "reports");
+                "pregenerated", "reports");
         String name = NameMaster.getUniqueVersionedFileName("report.txt",
-         path);
+                path);
         FileManager.write(text, StrPathBuilder.build(path, name));
         System.out.println(" " + text);
         //pregen data
@@ -137,17 +137,17 @@ public class Pregenerator implements Runnable {
         factory.setValueNames(PregeneratorData.PREGENERATOR_VALUES.values());
 
         String[] vals = Arrays.stream(PREGENERATOR_VALUES.values()).map(v -> v.getDefaultValue() + "").collect(Collectors.toList())
-         .toArray(new String[PREGENERATOR_VALUES.values().length]);
+                .toArray(new String[PREGENERATOR_VALUES.values().length]);
         factory.setValues(vals);
 
         SUBLEVEL_TYPE[] sublevelTypes = GENERATED_SUBLEVELS_ALL;
         LOCATION_TYPE[] locationTypes = GENERATED_LOCATIONS[i];
         return new PregeneratorData(factory.constructDataString(),
-         sublevelTypes, locationTypes);
+                sublevelTypes, locationTypes);
     }
 
     public static boolean isRunning() {
-        return running.size()>0;
+        return running.size() > 0;
     }
 
     public static List<Pregenerator> getRunning() {
@@ -164,9 +164,9 @@ public class Pregenerator implements Runnable {
         text += stat.toString() + "\n\n\n";
 
         String path = StrPathBuilder.build(PathFinder.getRandomLevelPath(),
-         "pregenerated", "reports");
+                "pregenerated", "reports");
         String name = NameMaster.getUniqueVersionedFileName("single report.txt",
-         path);
+                path);
         FileManager.write(text, StrPathBuilder.build(path, name));
         System.out.println(" " + text);
         //pregen data
@@ -175,7 +175,7 @@ public class Pregenerator implements Runnable {
     @Override
     public void run() {
         randomizationMod = data.getFloatValue(
-         PREGENERATOR_VALUES.RANDOMIZATION_MOD) / 100;
+                PREGENERATOR_VALUES.RANDOMIZATION_MOD) / 100;
         for (SUBLEVEL_TYPE type : data.sublevelTypes) {
             for (LOCATION_TYPE locationType : data.locationTypes) {
                 stats = new GenerationStats(locationType, type);
@@ -203,9 +203,9 @@ public class Pregenerator implements Runnable {
                             valid++;
                         } else {
                             System.out.println(successful.size() + "th Success: \n" +
-                             "Rate =" + level.getRate() +
-                             "\n" +
-                             "" + level);
+                                    "Rate =" + level.getRate() +
+                                    "\n" +
+                                    "" + level);
                             successful.add(level);
                             saveLevel(level);
                         }
@@ -216,12 +216,12 @@ public class Pregenerator implements Runnable {
                         main.system.ExceptionMaster.printStackTrace(e);
                     }
                     if (successful.size() >= data.getIntValue(
-                     PREGENERATOR_VALUES.LEVELS_REQUIRED))
+                            PREGENERATOR_VALUES.LEVELS_REQUIRED))
                         break;
                 }
 
                 stats.setValue(GEN_STAT.SUCCESS_RATE, "" + (successful.size() * 100 /
-                 generated));
+                        generated));
                 logResults(stats);
                 MapMaster.addToListMap(analysisStats, data, stats);
                 //successMap.put(locationType)
@@ -303,7 +303,7 @@ public class Pregenerator implements Runnable {
 
     private String getPath(LOCATION_TYPE locationType) {
         return StrPathBuilder.build(PathFinder.getRandomLevelPath(),
-         "pregenerated", locationType.name());
+                "pregenerated", locationType.name());
     }
 
     public void generateMainLevelPool() {

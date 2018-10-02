@@ -140,13 +140,16 @@ public class DungeonEnums {
     }
 
     public enum LOCATION_TYPE {
-        CEMETERY(true), CAVE, CRYPT, BARROW,
-        HIVE, DUNGEON,
+        CEMETERY(true), CAVE, CRYPT,
+       DUNGEON,        TOWER, TEMPLE(true),
+        CASTLE(true),
+
+
+        HOUSE(true),
+        GROVE(true),DEN, RUIN(true),
+        CAMP(true),  BARROW,
         SEWER, HELL, ASTRAL,
-        TOWER, DEN, RUIN(true),
-        CAMP(true), TEMPLE(true),
-        CASTLE(true), HOUSE(true),
-        GROVE(true),;
+        HIVE, ;
 
         private boolean surface;
 
