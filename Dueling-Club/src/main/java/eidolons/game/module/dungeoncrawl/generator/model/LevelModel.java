@@ -250,6 +250,7 @@ public class LevelModel {
             room.getCoordinates().offset(offset);
             newMap.put(room.getCoordinates(), room);
         }
+        getAdditionalCells().keySet().forEach(c-> c.offset(offset));
         roomMap = newMap;
 
         occupiedCells.forEach(c -> c.offset(offset));

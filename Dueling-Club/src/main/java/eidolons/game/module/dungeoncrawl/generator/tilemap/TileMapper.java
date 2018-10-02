@@ -223,17 +223,17 @@ public class TileMapper {
     }
 
     public TileMap joinTileMaps() {
-        model.offsetCoordinates();
 //        model.assignAdditionalCoordinates();
         Map<Coordinates, ROOM_CELL> map = new XLinkedMap<>();
         for (LevelBlock block : model.getBlocks().values()) {
             for (Coordinates coordinates : block.getTileMap().getMap().keySet()) {
                 map.put(coordinates
-                 //                  .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
+                  .getOffset(new AbstractCoordinates(-model.getLeftMost(), -model.getTopMost()))
                  ,
                  block.getTileMap().getMap().get(coordinates));
             }
         }
+        model.offsetCoordinates();
 
         return new TileMap(map);
     }

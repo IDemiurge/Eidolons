@@ -1,5 +1,6 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
+import eidolons.entity.item.DC_HeroItemObj;
 import main.entity.Entity;
 import main.system.auxiliary.data.MapMaster;
 
@@ -26,4 +27,14 @@ public class SimCache {
         return (Entity) MapMaster .getKeyForValue_(map, sim);
     }
 
+    public Entity getById(String subString) {
+        Integer id = Integer.valueOf(subString);
+        for (Entity entity : map.keySet()) {
+            if (entity.getId().equals(id)) {
+                return entity;
+            }
+
+        }
+        return null;
+    }
 }

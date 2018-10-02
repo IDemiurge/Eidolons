@@ -31,7 +31,7 @@ import java.util.List;
  * Created by JustMe on 3/25/2017.
  */
 public abstract class BfObjInitializer<T extends BattleFieldObject> extends
- EntityInitializer<T> {
+        EntityInitializer<T> {
     public boolean initialized;
     public boolean dynamicValuesReady;
 
@@ -62,7 +62,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
     protected void addDefaultFacing() {
         if (getEntity().getOwner() != null)
             getEntity().setFacing(
-             DC_MovementManager.getDefaultFacingDirection(getEntity().getOwner().isMe()));
+                    DC_MovementManager.getDefaultFacingDirection(getEntity().getOwner().isMe()));
     }
 
     public void addDefaultValues() {
@@ -72,14 +72,14 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
 
     public DequeImpl<? extends DC_HeroItemObj> initContainedItems(PROPS prop,
                                                                   DequeImpl<? extends DC_HeroItemObj> list, boolean quick) {
-        if (getEntity().isLoaded()){
+        if (getEntity().isLoaded()) {
             return getLoadedItemContainer(prop);
         }
         if (StringMaster.isEmpty(getProperty(prop))) {
             if (list == null) {
                 return new DequeImpl<>();
             }
-            if (list.isEmpty()  ) {
+            if (list.isEmpty()) {
                 return new DequeImpl<>();
             }
         }
@@ -93,31 +93,38 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                 DC_HeroItemObj item = null;
                 if (NumberUtils.isInteger(subString)) {
                     Integer id = NumberUtils
-                     .getInteger(subString);
-                    item = (DC_HeroItemObj) game.getObjectById(id);
-                    if (game.isSimulation()) {
+                            .getInteger(subString);
+                    if (!game.isSimulation()) {
+                        item = (DC_HeroItemObj) game.getObjectById(id);
+                    } else {
                         item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(id);
-                        if (HqMaster.getSimCache().getSim(item) ==null )
-                         {
+                        if (item == null) {
+                            try {
+                                item = (DC_HeroItemObj) HqMaster.getSimCache().getById(subString);
+                            } catch (Exception e) {
+                                main.system.ExceptionMaster.printStackTrace(e);
+                                continue;
+                            }
+                        } else if (HqMaster.getSimCache().getSim(item) == null) {
                             HqMaster.getSimCache().addSim(item, ItemFactory.createItemObj(item.getType(), getEntity().getOriginalOwner(), getGame(), getRef(),
-                             quick));
-                        } 
-                        Integer durability =null ;
-                        if (item instanceof DC_QuickItemObj){
-                            if (((DC_QuickItemObj) item).getWrappedWeapon()!=null ){
-                                  durability = ((DC_QuickItemObj) item).getWrappedWeapon()
-                                   .getIntParam(PARAMS.C_DURABILITY);
+                                    quick));
+                        }
+                        Integer durability = null;
+                        if (item instanceof DC_QuickItemObj) {
+                            if (((DC_QuickItemObj) item).getWrappedWeapon() != null) {
+                                durability = ((DC_QuickItemObj) item).getWrappedWeapon()
+                                        .getIntParam(PARAMS.C_DURABILITY);
                             }
                         }
                         item = (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
-                        if (durability!=null )
+                        if (durability != null)
                             item.setParam(PARAMS.C_DURABILITY, durability);
                     }
                 } else {
-                    ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProp (prop));
+                    ObjType type = DataManager.getType(subString, DC_ContentValsManager.getTypeForProp(prop));
 
                     item = ItemFactory.createItemObj(type, getEntity().getOriginalOwner(), getGame(), getRef(),
-                     quick);
+                            quick);
                 }
 
                 if (item != null) {
@@ -125,7 +132,7 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                     items.add(item);
                 } else {
                     LogMaster.log(1, getName()
-                     + " has null item in item container " + prop);
+                            + " has null item in item container " + prop);
                 }
 
             }

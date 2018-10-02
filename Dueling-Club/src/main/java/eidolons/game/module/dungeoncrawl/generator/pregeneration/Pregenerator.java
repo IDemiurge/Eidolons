@@ -54,7 +54,7 @@ public class Pregenerator implements Runnable {
      {SUBLEVEL_TYPE.PRE_BOSS,},
      {SUBLEVEL_TYPE.BOSS,}
     };
-    public static final boolean TEST_MODE = false;
+    public static final boolean TEST_MODE = false  ;
     public static final boolean NO_VALIDATION = false;
     public static final GEN_STAT[] averageValues = {
      AVRG_RATE,
@@ -72,13 +72,13 @@ public class Pregenerator implements Runnable {
     };
     public static final LOCATION_TYPE[][] GENERATED_LOCATIONS = {
      {
-             LOCATION_TYPE.CAVE,
-      LOCATION_TYPE.CRYPT,
              LOCATION_TYPE.DUNGEON,
+      LOCATION_TYPE.CRYPT,
      } ,
      {
              LOCATION_TYPE.TOWER,
       LOCATION_TYPE.CEMETERY,
+             LOCATION_TYPE.CAVE,
      },
     };
     private static List<Pregenerator> running = new ArrayList<>();
@@ -98,7 +98,8 @@ public class Pregenerator implements Runnable {
     public static void main(String[] args) {
         //logging off - or into a file...
         LogMaster.setOff(true);
-        TileMapper.setLoggingOff(true);
+        if (!TEST_MODE)
+            TileMapper.setLoggingOff(true);
         if (TEST_MODE) {
             new Pregenerator(Pregenerator.getData(0)).run();
         } else {

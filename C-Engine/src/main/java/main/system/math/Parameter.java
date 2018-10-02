@@ -20,6 +20,10 @@ public class Parameter extends DynamicValue {
         this.base = base;
     }
 
+    /**
+     *
+     * @param obj_ref example: "{SOURCE_STRENGTH} "
+     */
     public Parameter(String obj_ref) {
         super(obj_ref);
     }

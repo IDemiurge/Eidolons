@@ -1,5 +1,6 @@
 package eidolons.macro;
 
+import eidolons.game.battlecraft.logic.meta.adventure.AdventureMetaMaster;
 import eidolons.game.battlecraft.logic.meta.adventure.AdventurePartyManager;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.battlecraft.logic.meta.scenario.dialogue.DialogueFactory;
@@ -43,31 +44,7 @@ public class AdventureInitializer {
         {
             load = true;
         }
-        metaMaster = new ScenarioMetaMaster(scenario) {
-            @Override
-            public boolean isRngDungeon() {
-                return true;
-            }
-
-            @Override
-            protected PartyManager createPartyManager() {
-                return new AdventurePartyManager(this, load);
-            }
-
-            @Override
-            protected DialogueFactory createDialogueFactory() {
-                return new DialogueFactory(){
-                    protected String getFileRootPath() {
-                        return
-                         PathUtils.buildPath(
-                         "adventure" ,
-                          "dialogue"
-                          , TextMaster.getLocale(),
-                          PathUtils.getPathSeparator());
-                    }
-                };
-            }
-        };
+        metaMaster = new AdventureMetaMaster(scenario, load);
         if (!CoreEngine.isMapEditor()) {
             metaMaster.init();
             if (metaMaster.getPartyManager().getParty() == null)

@@ -363,7 +363,7 @@ public class GameLoop {
             return;
         }
 
-        WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput);
+        WaitMaster.receiveInputIfWaiting(WAIT_OPERATIONS.ACTION_INPUT, actionInput, false);
     }
 
     public Unit getActiveUnit() {

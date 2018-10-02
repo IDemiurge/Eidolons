@@ -407,9 +407,9 @@ public abstract class RngFiller implements RngFillerInterface {
                 LevelBlock block = model.getBlocks().get(room);
                 if (RandomWizard.chance(getWrapPreExitChance(room))) {
                     int degrees = side.flip().getDirection().getDegrees();
-                    DIRECTION d = DirectionMaster.getDirectionByDegree(degrees - 45);
+                    DIRECTION d = DirectionMaster.getDirectionByDegree(degrees - 135);
                     Coordinates c1 = exit.getAdjacentCoordinate(d);
-                    d = DirectionMaster.getDirectionByDegree(degrees + 45);
+                    d = DirectionMaster.getDirectionByDegree(degrees + 135);
                     Coordinates c2 = exit.getAdjacentCoordinate(d);
                     tryFillWithBound(block, c1, c2);
                 } else if (RandomWizard.chance(getWrapByExitChance(room))) {

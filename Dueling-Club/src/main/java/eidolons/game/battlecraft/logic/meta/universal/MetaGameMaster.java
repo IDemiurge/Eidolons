@@ -29,7 +29,7 @@ import static main.system.auxiliary.StringMaster.wrapInParenthesis;
 /**
  * Created by JustMe on 5/7/2017.
  *
- * Does everything TO the Game
+ * Does everything TO the *DC_Game
  * It kind of "owns" the Game
  *
  */
@@ -46,14 +46,11 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DC_Game game;
     DialogueManager dialogueManager;
     DialogueActorMaster dialogueActorMaster;
-    private boolean rngDungeon;
 
 
     public MetaGameMaster(String data) {
         this.data = data;
         initHandlers();
-
-
     }
 
     protected IntroFactory createIntroFactory() {
@@ -64,8 +61,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return new DialogueFactory();
     }
 
-
-    //from data? if save
     protected abstract DC_Game createGame();
 
     protected abstract PartyManager<E> createPartyManager();
@@ -195,9 +190,6 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     }
 
-    public void setRngDungeon(boolean rngDungeon) {
-        this.rngDungeon = rngDungeon;
-    }
 
     public boolean isRngDungeon() {
         ObjType type = DataManager.getType(getData(), DC_TYPE.SCENARIOS);
@@ -206,7 +198,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
              type.getGroup().equalsIgnoreCase("Random");
         }
         //        getMetaGame().isRestarted()
-        return rngDungeon;
+        return false;
     }
 
     public String getDungeonInfo() {

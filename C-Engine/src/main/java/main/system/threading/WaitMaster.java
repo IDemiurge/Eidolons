@@ -80,10 +80,13 @@ public class WaitMaster {
     }
 
     public static boolean receiveInputIfWaiting(WAIT_OPERATIONS operation, Object input) {
+        return receiveInputIfWaiting(operation, input, true);
+    }
+    public static boolean receiveInputIfWaiting(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {
         if (getWaiters().get(operation) == null) {
             return false;
         }
-        return receiveInput(operation, input);
+        return receiveInput(operation, input,removeWaiter);
     }
 
     public static boolean receiveInput(WAIT_OPERATIONS operation, Object input, boolean removeWaiter) {

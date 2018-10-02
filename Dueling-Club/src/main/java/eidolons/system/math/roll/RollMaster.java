@@ -43,7 +43,7 @@ public class RollMaster {
     public static final String STD_DETECTION = "{target_Detection};{stealth}";
     public static final String STD_STEALTH = "{Detection};{target_stealth}";
     public static final String STD_DEFENSE = "{Attack};2*{target_Defense}";
-    public static final String STD_IMMATERIAL = "{Willpower};{target_Spellpower}";
+    public static final String STD_IMMATERIAL = "{Spirit}*5+12;{target_Spellpower}+12";
     public static final String STD_DISPEL = "{spell_spell_difficulty}+{source_Mastery}+{source_Spellpower};{target_spell_difficulty}+{summoner_Mastery}+{summoner_Spellpower}";
     public static final String STD_UNLOCK = "{source_pick lock};{target_lock level}";
     public static final String STD_DISARM_TRAP = "{source_trap_skill};{target_trap level}";
