@@ -115,6 +115,8 @@ public abstract class BfObjInitializer<T extends BattleFieldObject> extends
                                 durability = ((DC_QuickItemObj) item).getWrappedWeapon()
                                         .getIntParam(PARAMS.C_DURABILITY);
                             }
+                        } else {
+                            durability = item.getIntParam(PARAMS.C_DURABILITY);
                         }
                         item = (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
                         if (durability != null)

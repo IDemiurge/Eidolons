@@ -345,9 +345,16 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                     if (game.isSimulation()) {
                         if (item == null || !item.isSimulation()) {
                             if (item == null)
+                            {
                                 item = (DC_HeroItemObj) ((SimulationGame) game).getRealGame().getObjectById(StringMaster.toInt(property));
+                            }
                             if (item != null)
-                                HqMaster.getSimCache().addSim(item, item = createItem(prop, item.getType()));
+                            {
+                                DC_HeroItemObj simItem = createItem(prop, item.getType());
+                                HqMaster.getSimCache().addSim(item, simItem) ;
+                                Integer durability = item.getIntParam(PARAMS.C_DURABILITY);
+                                simItem.setParam(PARAMS.C_DURABILITY, durability);
+                            }
                         }
                     }
                 } else if (initialized) {
