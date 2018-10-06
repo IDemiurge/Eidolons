@@ -5,12 +5,12 @@ import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.game.module.herocreator.logic.skills.SkillMaster;
+import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import main.content.DC_TYPE;
 import main.data.DataManager;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.threading.WaitMaster;
-import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public abstract class PartyManager<E extends MetaGame> extends MetaGameHandler<E
          GuiEventType.SHOW_SELECTION_PANEL, DataManager.toTypeList(members, DC_TYPE.CHARS));
 
         selectedHero = (String) WaitMaster.
-         waitForInput(WAIT_OPERATIONS.SELECTION);
+         waitForInput(HeroSelectionPanel.WAIT_OPERATION);
         main.system.auxiliary.log.LogMaster.log(1, "+++++++++selectedHero = " + selectedHero);
         return selectedHero;
     }

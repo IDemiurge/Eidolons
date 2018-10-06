@@ -7,14 +7,13 @@ import eidolons.game.module.herocreator.CharacterCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.system.DC_Formulas;
 import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
 import main.content.VALUE;
 import main.content.values.parameters.PARAMETER;
 import main.entity.Entity;
 import main.entity.type.ObjType;
-import main.system.auxiliary.EnumMaster;
 import main.system.sound.SoundMaster.STD_SOUNDS;
 
 import java.util.HashMap;
@@ -30,14 +29,15 @@ public class HeroLevelManager {
 
     public static void levelUpByXp(Unit hero) {
         FloatingTextMaster.getInstance().createFloatingText(
-         TEXT_CASES.LEVEL_UP, "Level Up!",hero);
+         TEXT_CASES.LEVEL_UP, "Level Up!", hero);
         levelUp(hero, null);
-        EUtils.showInfoText(hero.getName()+"is now Level " +hero.getLevel());
+        EUtils.showInfoText(hero.getName() + "is now Level " + hero.getLevel());
         EUtils.playSound(STD_SOUNDS.LEVEL_UP);
         EUtils.showVFX(EMITTER_PRESET.IMPACT_scare,
          GridMaster.getCenteredPos(hero.getCoordinates())
-         );
+        );
     }
+
     public static void levelUp(Unit hero, Boolean dc_hc_macro) {
         boolean auto = false;
         if (dc_hc_macro == null) {
@@ -145,6 +145,7 @@ public class HeroLevelManager {
         // .getParameter()), amount);
         // }
     }
+
     private static void checkLevelUp(Unit hero) {
 
         int level = hero.getLevel();
@@ -153,24 +154,31 @@ public class HeroLevelManager {
         }
     }
 
+    public static void addGold(Unit hero, int gold) {
+        hero.modifyParameter(PARAMS.GOLD, gold);
+        FloatingTextMaster.getInstance().createFloatingText(
+         TEXT_CASES.GOLD, gold + " gold", hero);
+        EUtils.showInfoText("Gold gained: " + gold);
+    }
+
     public static void addXp(Unit hero, int xp) {
         hero.modifyParameter(PARAMS.XP, xp);
         hero.modifyParameter(PARAMS.TOTAL_XP, xp, true);
         checkLevelUp(hero);
         FloatingTextMaster.getInstance().createFloatingText(
-         TEXT_CASES.XP, xp+" xp",hero);
+         TEXT_CASES.XP, xp + " xp", hero);
 
-        EUtils.showVFX(new EnumMaster<EMITTER_PRESET>().getRandomEnumConst(EMITTER_PRESET.class),
-         GridMaster.getCenteredPos(hero.getCoordinates())
-        );
+        //      TODO   EUtils.showVFX(new EnumMaster<EMITTER_PRESET>().getRandomEnumConst(EMITTER_PRESET.class),
+        //         GridMaster.getCenteredPos(hero.getCoordinates())
+        //        );
         EUtils.showInfoText("Experience gained: " + xp);
     }
 
     public static void addXpForKill(Unit unit, Unit killer) {
-        int divider=Math.max(1, killer.getLevel()-unit.getLevel());
-        int xp = (int) (Math.round ((unit.getIntParam(PARAMS.POWER)/10+
-                 (Math.sqrt(unit.getIntParam(PARAMS.POWER))*
-                  unit.getIntParam(PARAMS.POWER))/50)/divider));
+        int divider = Math.max(1, killer.getLevel() - unit.getLevel());
+        int xp = (int) (Math.round((unit.getIntParam(PARAMS.POWER) / 10 +
+         (Math.sqrt(unit.getIntParam(PARAMS.POWER)) *
+          unit.getIntParam(PARAMS.POWER)) / 50) / divider));
 
         addXp(killer, xp);
     }

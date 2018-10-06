@@ -176,7 +176,7 @@ public class SunActor extends GroupX {
 
     private String getPath() {
         return StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "suns") + PathUtils.getPathSeparator()
+         , "components", "time panel", "suns") + PathUtils.getPathSeparator()
          + getNameRoot() + PathUtils.getPathSeparator();
 
     }

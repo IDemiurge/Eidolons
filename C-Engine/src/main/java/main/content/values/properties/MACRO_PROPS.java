@@ -123,6 +123,12 @@ public enum MACRO_PROPS implements PROPERTY {
     // FACTIONS
 
     // ARMY
+    QUEST_GROUP(null, false, "quest"),
+    QUEST_TYPE(null, false, "quest"),
+    QUEST_TIME_LIMIT(null, false, "quest"),
+    QUEST_LEVEL(null, false, "quest"),
+    QUEST_REWARD_TYPE(null, false, "quest"),
+
     ;
 
     private Metainfo metainfo;

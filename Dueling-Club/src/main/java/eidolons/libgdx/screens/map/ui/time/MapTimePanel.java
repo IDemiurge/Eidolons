@@ -80,7 +80,7 @@ public class MapTimePanel extends GroupX {
     }
 
     public String getPath() {
-        return StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel") + PathUtils.getPathSeparator();
+        return StrPathBuilder.build(PathFinder.getMacroUiPath(), "components", "time panel") + PathUtils.getPathSeparator();
     }
 
     public void init() {

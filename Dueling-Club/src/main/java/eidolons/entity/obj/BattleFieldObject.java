@@ -332,14 +332,6 @@ public class BattleFieldObject extends DC_Obj implements BfObj, ChangeableType {
     }
 
     public void resetCurrentValues() {
-        if (!isSimulation())
-        if (getGame().getBattleMaster() != null) {
-            try {
-                getGame().getBattleMaster().getOptionManager().applyDifficultyMods(this);
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-        }
         Arrays.stream(ValuePages.UNIT_DYNAMIC_PARAMETERS_CORE).forEach(p -> {
             if (p==PARAMS.N_OF_ACTIONS)
                 if (DC_Engine.isAtbMode())

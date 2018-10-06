@@ -1,6 +1,7 @@
 package main.elements.conditions;
 
 
+import main.data.ability.OmittedConstructor;
 import main.entity.Ref;
 import main.entity.obj.Obj;
 
@@ -12,6 +13,11 @@ public class ObjComparison extends ConditionImpl {
     public ObjComparison(String arg1, String arg2) {
         this.arg1 = arg1;
         this.arg2 = arg2;
+    }
+    @OmittedConstructor
+    public ObjComparison(Integer id, String arg1) {
+        this.arg1 = arg1;
+        this.id = id;
     }
 
     // example: dispel buffs on target: /*

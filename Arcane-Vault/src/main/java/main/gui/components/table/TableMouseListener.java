@@ -100,6 +100,12 @@ public class TableMouseListener extends DefaultCellEditor implements MouseListen
     };
     public static final String[] SINGLE_ENUM_LIST_IDS = {
 
+     MACRO_PROPS.QUEST_GROUP.name(), MACRO_PROPS.QUEST_TYPE.name(),
+     MACRO_PROPS.QUEST_REWARD_TYPE.name(),
+     MACRO_PROPS.QUEST_TIME_LIMIT.name(),
+     MACRO_PROPS.QUEST_LEVEL.name(),
+
+
      PROPS.CLASS_PERK_GROUP.name(),
      PROPS.FLAG_COLOR.name(),
      PROPS.COLOR_THEME.name(),

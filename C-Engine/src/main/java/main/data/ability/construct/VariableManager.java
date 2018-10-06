@@ -119,6 +119,9 @@ public class VariableManager {
 
     public static String substitute(String text, Object... vars) {
         for (Object sub : vars) {
+            if (sub == null) {
+                continue;
+            }
             text = StringMaster.replaceFirst(text, VARIABLE, sub.toString());
         }
         return text;

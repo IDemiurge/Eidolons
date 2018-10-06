@@ -1,13 +1,21 @@
 package eidolons.ability.effects.oneshot.dialog;
 
 import eidolons.ability.InventoryTransactionManager;
+import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
+import main.entity.Ref;
+import main.entity.Ref.KEYS;
+import main.game.logic.event.Event;
+import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.math.Formula;
 import main.system.threading.WaitMaster;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryDialogEffect extends DialogEffect {
     protected Formula numberOfOperations;
@@ -24,6 +32,8 @@ public class InventoryDialogEffect extends DialogEffect {
 
     @Override
     public boolean applyThis() {
+        hero = (Unit) ref.getSourceObj();
+        List<DC_HeroItemObj> before = new ArrayList<>(hero.getInventory());
         getGame().getInventoryTransactionManager().setActive(true);
         Integer operations = numberOfOperations.getInt(ref);
 //        getGame().getInventoryManager().setHero(getSource());
@@ -31,15 +41,39 @@ public class InventoryDialogEffect extends DialogEffect {
 //        CharacterCreator.getHeroManager().addHero(getSource());
 
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
-         new InventoryDataSource((Unit) ref.getSourceObj()));
+         new InventoryDataSource(hero));
         if (ExplorationMaster.isExplorationOn())
+        {
+            firePickupEvents(before);
             return true;
+        }
         boolean result = (boolean) WaitMaster.waitForInputAnew(
          InventoryTransactionManager.OPERATION);
         getGame().getInventoryTransactionManager().setActive(false);
-        if (!result)
+        if (!result) {
             ref.getActive().setCancelled(true);
+        } else {
+            firePickupEvents(before);
+        }
         return result;
+    }
+
+    private void firePickupEvents(List<DC_HeroItemObj> before) {
+        for (DC_HeroItemObj item : before) {
+            if (!hero.getInventory().contains(item)){
+                Ref ref = hero.getRef().getCopy();
+                ref.setObj(KEYS.ITEM, item);
+                getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_ACQUIRED, ref));
+            }
+        }
+
+        for (DC_HeroItemObj item : hero.getInventory()) {
+            if (!before.contains(item)){
+                Ref ref = hero.getRef().getCopy();
+                ref.setObj(KEYS.ITEM, item);
+                getGame().fireEvent(new Event(STANDARD_EVENT_TYPE.ITEM_LOST, ref));
+            }
+        }
     }
 
     @Deprecated

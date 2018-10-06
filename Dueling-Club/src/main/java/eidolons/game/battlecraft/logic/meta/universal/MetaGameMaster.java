@@ -12,6 +12,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
+import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.macro.AdventureInitializer;
 import eidolons.macro.global.persist.Loader;
@@ -22,6 +23,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.auxiliary.log.FileLogger.SPECIAL_LOG;
 import main.system.auxiliary.log.SpecialLogger;
+import main.system.launch.CoreEngine;
 
 import static main.system.auxiliary.StringMaster.getWellFormattedString;
 import static main.system.auxiliary.StringMaster.wrapInParenthesis;
@@ -46,6 +48,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected DC_Game game;
     DialogueManager dialogueManager;
     DialogueActorMaster dialogueActorMaster;
+    private QuestMaster questMaster;
 
 
     public MetaGameMaster(String data) {
@@ -86,14 +89,11 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public void init() {
         game = Eidolons.game;
-        if (game == null)
-        {
+        if (game == null) {
             Simulation.init(false, this);
             game = createGame();
             Simulation.setRealGame(game);
-        }
-        else
-        {
+        } else {
             game.setMetaMaster(this);
         }
 
@@ -103,11 +103,25 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (AdventureInitializer.isLoad())
             Loader.loadCharacters();
         if (partyManager.initPlayerParty() != null) {
-            if (getBattleMaster().getOptionManager().chooseDifficulty(getMetaGame().isDifficultyReset()))
-                return;
+            if (isQuestsEnabled())
+                if (!getQuestMaster().initQuests())
+                {
+                    Eidolons.getMainGame().setAborted(true);
+                    return;
+                }
+            if (!getBattleMaster().getOptionManager().chooseDifficulty(getMetaGame().isDifficultyReset()))
+                Eidolons.getMainGame().setAborted(true);
         }
-        Eidolons.getMainGame().setAborted(true);
 
+    }
+
+    private boolean isQuestsEnabled() {
+        if (!isRngDungeon())
+            return false;
+        if (CoreEngine.isMacro()) {
+            return false;
+        }
+        return true;
     }
 
     public void preStart() {
@@ -179,7 +193,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public void gameExited() {
-
+        PartyManager.setSelectedHero(null);
         try {
             GuiEventManager.cleanUp();
         } catch (Exception e) {
@@ -230,4 +244,12 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     protected String getScenarioInfo() {
         return "No info!";
     }
+
+    public QuestMaster getQuestMaster() {
+        if (questMaster == null) {
+            questMaster = new QuestMaster();
+        }
+        return questMaster;
+    }
+
 }

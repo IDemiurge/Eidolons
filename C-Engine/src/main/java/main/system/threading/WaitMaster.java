@@ -139,6 +139,7 @@ public class WaitMaster {
         TEST_MODE,
         TEST_GAME_STARTED,
         CUSTOM_SELECT,
+        HERO_SELECTION,
         ACTION_COMPLETE,
         UNIT_OBJ_INIT,
         READING_DONE,

@@ -30,6 +30,7 @@ import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
+import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.awt.*;
@@ -52,7 +53,11 @@ public class ShadeLightCell extends SuperContainer {
 
 
     public ShadeLightCell(SHADE_CELL type) {
-        super(new Image(TextureCache.getOrCreateR(getTexturePath(type))));
+        this(type, null);
+    }
+
+    public ShadeLightCell(SHADE_CELL type, Object arg ) {
+        super(new Image(TextureCache.getOrCreateR(getTexturePath(type, arg))));
         this.type = type;
         randomize();
         baseAlpha = 0;
@@ -74,9 +79,12 @@ public class ShadeLightCell extends SuperContainer {
 
     }
 
-    private static String getTexturePath(SHADE_CELL type) {
+    private static String getTexturePath(SHADE_CELL type, Object arg) {
         switch (type) {
             //                    TODO varied enough already?
+            case SHARDS:
+                String path = StringMaster.cropFormat(type.getTexturePath());
+                return path + " "+ arg  + ".png";
             case VOID:
                 return FileManager.getRandomFilePathVariant(
                  PathFinder.getImagePath(),

@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.texture.TextureCache;
@@ -51,14 +50,38 @@ public class ButtonStyled extends ImageContainer implements EventListener {
 //    }
 
     public enum STD_BUTTON {
-        OK("UI/components/generic/buttons/ok.png"),
-        CANCEL("UI/components/generic/buttons/no.png"),
-        UNDO("UI/components/generic/buttons/back.png"),
-        NEXT("UI/components/generic/buttons/forward.png"),
-        MENU("UI/components/generic/buttons/button.png"),
-        UNARMED("UI/components/dc/quick weapon/unarmed.png"),
+        OK(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" ,
+         "ok.png")),
+        CANCEL(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" ,
+         "no.png")),
+        UNDO(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" ,
+         "back.png")),
+        NEXT(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" ,
+         "forward.png")),
+        MENU(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" ,
+         "button.png")),
+        HELP(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" , "question.png")),
 
-        HELP("UI/components/generic/buttons/question.png") ,
+        UNARMED(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components","dc" ,          "quick weapon" ,"unarmed.png")),
+        PULL(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+          "buttons" ,
+          "special" ,
+          "pull.png")),
+
         OPTIONS(VISUALS.MENU_BUTTON.getImgPath()) {
             @Override
             public boolean isVersioned() {
@@ -66,10 +89,12 @@ public class ButtonStyled extends ImageContainer implements EventListener {
             }
         },
         //        NEXT, LEVEL_UP,
-        PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "pause.png")),
-        SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED UP.png")),
-        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "component", "time panel", "SPEED DOWN.png")),
-        STAT("UI\\components\\hq\\stats\\cross.png"),
+        PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(), "components", "time panel", "pause.png")),
+        SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "components", "time panel", "SPEED UP.png")),
+        SPEED_DOWN(StrPathBuilder.build(PathFinder.getMacroUiPath(), "components", "time panel", "SPEED DOWN.png")),
+
+        STAT(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "hq" ,"stats" ,"cross.png")),
         HIGHLIGHT(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic", "tabs", "highlight.png")),
         SPELLBOOK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
          "bottom panel", "spellbook btn.png")),
@@ -85,6 +110,10 @@ public class ButtonStyled extends ImageContainer implements EventListener {
 
         public boolean isVersioned() {
             return true;
+        }
+
+        public String getPath() {
+            return path;
         }
 
         public Drawable getTexture() {

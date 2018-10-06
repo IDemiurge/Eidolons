@@ -159,70 +159,29 @@ public class GenericEnums {
 
     }
     public enum DIFFICULTY {
-        NEOPHYTE(100, 175, 75, 300, 350),
-        NOVICE(125, 150, 85, 200, 250),
-        DISCIPLE(150, 125, 100, 150, 175),
-        ADEPT(200, 100, 100, 100, 125),
-        CHAMPION(300, 75, 150, 85, 100),
-        AVATAR(450, 50, 200, 70, 85);
-        private int powerPercentage;
-        private int roundsToFightMod;
-        private int healthPercentageEnemy;
-        private int healthPercentageAlly;
-        private int healthPercentageMainHero;
-        private int durabilityDamageMod;
+        NEOPHYTE(50, 25 ),
+        NOVICE(65, 35 ),
+        DISCIPLE(80, 50 ),
+        ADEPT(100, 75),
+        CHAMPION(125, 100),
+        AVATAR(150, 150);
+
+        private int attributePercentage;
+        private int masteryPercentage;
 
 
-        DIFFICULTY(int powerPercentage,
-                   int roundsToFightMod, int healthPercentageEnemy,
-                   int healthPercentageAlly, int healthPercentageMainHero
 
-        ) {
-            this.powerPercentage = powerPercentage;
-            this.roundsToFightMod = roundsToFightMod;
-            this.healthPercentageEnemy = healthPercentageEnemy;
-            this.healthPercentageAlly = healthPercentageAlly;
-            this.healthPercentageMainHero = healthPercentageMainHero;
+        DIFFICULTY(int attributePercentage, int masteryPercentage) {
+            this.attributePercentage = attributePercentage;
+            this.masteryPercentage = masteryPercentage;
         }
 
-        DIFFICULTY(int power, int roundsToFightMod) {
-            this.roundsToFightMod = roundsToFightMod;
-            this.setPowerPercentage(power);
+        public int getAttributePercentage() {
+            return attributePercentage;
         }
 
-        public int getPowerPercentage() {
-            return powerPercentage;
-        }
-
-        public void setPowerPercentage(int powerPercentage) {
-            this.powerPercentage = powerPercentage;
-        }
-
-        public int getRoundsToFightMod() {
-            return roundsToFightMod;
-        }
-
-        public int getHealthPercentageEnemy() {
-            return healthPercentageEnemy;
-        }
-
-
-        public int getHealthPercentageAlly() {
-            return healthPercentageAlly;
-        }
-
-
-        public int getHealthPercentageMainHero() {
-            return healthPercentageMainHero;
-        }
-
-
-        public int getDurabilityDamageMod() {
-            return healthPercentageEnemy;
-        }
-
-        public void setDurabilityDamageMod(int durabilityDamageMod) {
-            this.durabilityDamageMod = durabilityDamageMod;
+        public int getMasteryPercentage() {
+            return masteryPercentage;
         }
     }
 

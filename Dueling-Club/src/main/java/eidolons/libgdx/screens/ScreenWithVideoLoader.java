@@ -13,6 +13,7 @@ import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import eidolons.libgdx.gui.menu.selection.difficulty.DifficultySelectionPanel;
 import eidolons.libgdx.gui.menu.selection.hero.HeroSelectionPanel;
 import eidolons.libgdx.gui.menu.selection.manual.ManualPanel;
+import eidolons.libgdx.gui.menu.selection.quest.QuestSelectionPanel;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
@@ -26,12 +27,15 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.launch.CoreEngine;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import static main.system.GuiEventType.*;
 
 public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     private static final Object DIFFICULTY_PANEL_ARG = 1;
+    private static final Object QUEST_PANEL_ARG = 2;
     private static Boolean videoEnabled;
     protected VideoMaster video;
     protected boolean looped;
@@ -42,7 +46,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         //TODO loader here, but need data!
         super();
         if (isLoadingWithVideo())
-                initVideo();
+            initVideo();
         looped = true;
         underText = new Label(LoadingStage.getBottonText(), StyleHolder.getHqLabelStyle(20));
         getOverlayStage().addActor(underText);
@@ -74,15 +78,15 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     }
 
     private void selectionPanelEvent(EventCallbackParam p) {
-        if (p.get() != DIFFICULTY_PANEL_ARG) {
-            if (selectionPanel != null)
-                selectionPanel.cancel(false);
-            if (p.get() == null) {
-                selectionPanelClosed();
-                updateInputController();
-                return;
-            }
+        if (p.get() == null) {
+            selectionPanelClosed();
+            updateInputController();
+            return;
+        } else if (!(p.get() instanceof Integer)) {
+//            if (selectionPanel != null) TODO why was it necessary?
+//                selectionPanel.cancel(false);
         }
+
         selectionPanel =
          createSelectionPanel(p);
         addSelectionPanel(selectionPanel);
@@ -103,6 +107,9 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_DIFFICULTY_SELECTION_PANEL, p -> {
             GuiEventManager.trigger(SHOW_SELECTION_PANEL, DIFFICULTY_PANEL_ARG);
+        });
+        GuiEventManager.bind(true, GuiEventType.SHOW_QUEST_SELECTION, p -> {
+            GuiEventManager.trigger(SHOW_SELECTION_PANEL, QUEST_PANEL_ARG, p.get());
         });
         GuiEventManager.bind(true, GuiEventType.SHOW_MANUAL_PANEL, p -> {
             if (manualPanel != null) {
@@ -182,6 +189,12 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         if (p.get() == DIFFICULTY_PANEL_ARG) {
             return new DifficultySelectionPanel();
         }
+        if (p.get() instanceof Collection) {
+            Iterator iterator = ((Collection) p.get()).iterator();
+            if (iterator.next() == QUEST_PANEL_ARG) {
+                return new QuestSelectionPanel(() -> (List<? extends Entity>) iterator.next());
+            }
+        }
         return new HeroSelectionPanel(() -> (List<? extends Entity>) p.get());
 
     }
@@ -208,15 +221,15 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
 
     protected void initVideo() {
         if (isVideoEnabled())
-        try {
-            video = new VideoMaster();
-        } catch (Exception e) {
-            main.system.auxiliary.log.LogMaster.log(1, "VIDEO INIT FAILED!");
-            main.system.ExceptionMaster.printStackTrace(e);
-        } finally {
-            videoEnabled = false;
-            //            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
-        }
+            try {
+                video = new VideoMaster();
+            } catch (Exception e) {
+                main.system.auxiliary.log.LogMaster.log(1, "VIDEO INIT FAILED!");
+                main.system.ExceptionMaster.printStackTrace(e);
+            } finally {
+                videoEnabled = false;
+                //            OptionsMaster.getGraphicsOptions().setValue(GRAPHIC_OPTION.VIDEO, false);
+            }
     }
 
     private void playVideo() {

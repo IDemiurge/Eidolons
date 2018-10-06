@@ -37,10 +37,7 @@ import main.system.GuiEventType;
 import main.system.datatypes.DequeImpl;
 import main.system.launch.CoreEngine;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -56,6 +53,8 @@ public class DC_StateManager extends StateManager {
 
     private Lock resetLock = new ReentrantLock();
     private volatile boolean resetting = false;
+    private Set<BattleFieldObject> objectsToReset;
+    private Set<Unit> unitsToReset;
 
     public DC_StateManager(DC_GameState state) {
         this(state, false);
@@ -84,9 +83,9 @@ public class DC_StateManager extends StateManager {
             try {
                 resetLock.lock();
                 if (!resetting) {
+                    objectsToReset = new LinkedHashSet<>(getGame().getBfObjects());
+                    unitsToReset = new LinkedHashSet<>(getGame().getUnits());
                     resetAll();
-                    if (DC_Engine.isAtbMode()) {
-                    }
                     resetting = false;
                 }
             } catch (Exception e) {
@@ -118,7 +117,7 @@ public class DC_StateManager extends StateManager {
             getGame().getDungeonMaster().getExplorationMaster().getResetter().resetAll();
             if (getGame().getDungeonMaster().getExplorationMaster().
                     getResetter().isResetNotRequired()) {
-                getGame().getBfObjects().forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
+                objectsToReset.forEach(obj -> obj.setBufferedCoordinates(obj.getCoordinates()));
                 triggerOnResetGuiEvents();
                 return;
             } else
@@ -139,7 +138,7 @@ public class DC_StateManager extends StateManager {
 
 
     private void triggerOnResetGuiEvents() {
-        List<BattleFieldObject> list = new ArrayList<>(getGame().getBfObjects());
+        List<BattleFieldObject> list = new ArrayList<>(objectsToReset);
         list.removeIf(obj -> {
             if (!VisionManager.checkVisible(obj))
                 return true;
@@ -150,12 +149,20 @@ public class DC_StateManager extends StateManager {
         GuiEventManager.trigger(GuiEventType.HP_BAR_UPDATE_MANY, list);
     }
 
+    /**
+     * 
+     * @param unit
+     */
     public void reset(Unit unit) {
         unit.toBase();
+        //TODO refactor to unity
         checkCounterRules(unit);
         applyEffects(Effect.ZERO_LAYER, unit);
+
         unit.resetObjects();
         unit.resetRawValues();
+        if (!getGame().isSimulation())
+            applyDifficulty(unit);
         applyEffects(Effect.BASE_LAYER, unit);
         unit.afterEffects();
         applyEffects(Effect.SECOND_LAYER, unit);
@@ -166,9 +173,17 @@ public class DC_StateManager extends StateManager {
         unit.resetPercentages();
     }
 
+    protected void applyDifficulty( ) {
+        if (!getGame().isSimulation())
+            unitsToReset.forEach(unit -> applyDifficulty(unit));
+    }
+    private void applyDifficulty(Unit unit) {
+        getGame().getBattleMaster().getOptionManager().applyDifficulty(unit);
+    }
+
 
     public void checkContinuousRules() {
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : unitsToReset) {
             checkContinuousRules(unit);
         }
     }
@@ -178,7 +193,7 @@ public class DC_StateManager extends StateManager {
     }
 
     public void checkCounterRules() {
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : unitsToReset) {
             checkCounterRules(unit);
         }
     }
@@ -199,7 +214,7 @@ public class DC_StateManager extends StateManager {
 
     public void applyEndOfTurnDamage() {
         if (getGame().getRules().getDamageRules() != null) {
-            for (Unit unit : getGame().getUnits()) {
+            for (Unit unit : unitsToReset) {
                 for (DamageCounterRule rule : getGame().getRules().getDamageRules()) {
                     rule.apply(unit);
                 }
@@ -232,14 +247,18 @@ public class DC_StateManager extends StateManager {
     }
 
     protected void resetCurrentValues() {
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : unitsToReset) {
             if (!checkUnitIgnoresReset(unit))
                 unit.resetCurrentValues();
         }
     }
 
+    public void applyEffects(int layer) {
+        applyEffects(layer, objectsToReset);
+    }
+
     public void afterEffects() {
-        for (BattleFieldObject obj : getGame().getBfObjects()) {
+        for (BattleFieldObject obj : objectsToReset) {
             if (!checkUnitIgnoresReset(obj)) {
                 obj.afterEffects();
 
@@ -273,10 +292,12 @@ public class DC_StateManager extends StateManager {
     }
 
 
-    public void resetUnitObjects() {
-        for (Unit unit : getGame().getUnits()) {
+    public void  resetUnitObjects() {
+        for (Unit unit : unitsToReset) {
             if (!checkUnitIgnoresReset(unit))
+            {
                 unit.resetObjects();
+            }
         }
     }
 
@@ -299,7 +320,7 @@ public class DC_StateManager extends StateManager {
     }
 
     public void resetRawValues() {
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : unitsToReset) {
             if (!unit.isDead()) {
                 unit.resetRawValues();
             }
@@ -308,7 +329,7 @@ public class DC_StateManager extends StateManager {
 
 
     protected void afterBuffRuleEffects() {
-        for (Unit unit : getGame().getUnits()) {
+        for (Unit unit : unitsToReset) {
             if (!checkUnitIgnoresReset(unit))
                 unit.afterBuffRuleEffects();
         }
@@ -327,7 +348,7 @@ public class DC_StateManager extends StateManager {
     }
 
     private void checkCellBuffs() {
-        for (BattleFieldObject unit : getGame().getBfObjects()) {
+        for (BattleFieldObject unit : objectsToReset) {
             if (unit.isDead()) {
                 continue;
             }
@@ -375,7 +396,7 @@ public class DC_StateManager extends StateManager {
         game.getLogManager().log("            >>>Round #" + (state.getRound() + 1) + "<<<"
         );
         main.system.auxiliary.log.LogMaster.log(1, "Units= " +
-                getGame().getUnits());
+                unitsToReset);
         newTurnTick();
         Ref ref = new Ref(getGame());
         ref.setAmount(state.getRound());
@@ -449,7 +470,7 @@ public class DC_StateManager extends StateManager {
                 getGame().getStructures().remove(obj);
             }
             if (obj instanceof Unit) {
-                getGame().getUnits().remove(obj);
+                unitsToReset.remove(obj);
             }
 
             removeAttachedObjects((Unit) obj);

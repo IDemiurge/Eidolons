@@ -31,6 +31,7 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.shaders.ShaderMaster;
@@ -75,6 +76,7 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected DragManager dragManager;
     private Entity draggedEntity;
     private FullLogPanel logPanel;
+    private QuestProgressPanel questProgressPanel;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -128,6 +130,9 @@ public class GuiStage extends StageX implements StageWithClosable {
         setDebugAll(false);
 
         addActor(dragManager = DragManager.getInstance());
+        addActor(questProgressPanel = new QuestProgressPanel());
+        questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
+         GdxMaster.getHeight()-questProgressPanel.getHeight()-GdxMaster.adjustHeight(300));
         setBlackoutIn(true);
     }
 
@@ -290,6 +295,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (p.get() == null) {
                 hideTooltip(infoTooltip, 1f);
             } else {
+//                textToShow.add() queue!
                 infoTooltipContainer.setContents(infoTooltip);
                 hideTooltip(actionTooltip, 1f);
                 showTooltip(p.get().toString(), infoTooltip, 2f);

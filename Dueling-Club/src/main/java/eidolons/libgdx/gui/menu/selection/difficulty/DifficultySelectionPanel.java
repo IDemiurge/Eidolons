@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 public class DifficultySelectionPanel extends SelectionPanel {
 
-    public static final main.system.threading.WaitMaster.WAIT_OPERATIONS WAIT_OPERATION = WAIT_OPERATIONS.CUSTOM_SELECT;
+    public static final WAIT_OPERATIONS WAIT_OPERATION = WAIT_OPERATIONS.CUSTOM_SELECT;
 
     @Override
     public WAIT_OPERATIONS getWaitOperation() {
@@ -61,11 +61,8 @@ public class DifficultySelectionPanel extends SelectionPanel {
         String text = TextMaster.readResource
          ("info", "difficulty", dif.name() + ".txt");
         text = VariableManager.substitute(text,
-         dif.getPowerPercentage(),
-         dif.getRoundsToFightMod(),
-         dif.getHealthPercentageEnemy(),
-         dif.getHealthPercentageAlly(),
-         dif.getHealthPercentageMainHero()
+         dif.getAttributePercentage(),
+         dif.getMasteryPercentage()
         );
 
         return new SelectableItemData(dif.name(),

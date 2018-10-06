@@ -4,6 +4,7 @@ import eidolons.content.DC_ContentValsManager;
 import eidolons.content.DC_ContentValsManager.ATTRIBUTE;
 import eidolons.content.PARAMS;
 import eidolons.entity.obj.unit.Unit;
+import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
 import eidolons.system.DC_ConditionMaster;
 import eidolons.system.DC_Formulas;
 import main.content.ContentValsManager;
@@ -54,6 +55,9 @@ public class DC_Attributes {
                 if (DC_ConditionMaster.checkLiving(hero)) {
                     hero.modifyParameter(PARAMS.ENDURANCE_REGEN, DC_Formulas
                      .getEnduranceRegenFromVitality(amount), modifierKey);
+                }
+                if (ExplorationMaster.isExplorationOn()) {
+                    hero.modifyParameter(PARAMS.STAMINA_REGEN, amount/5, false);
                 }
                 break;
             case AGILITY:

@@ -14,6 +14,7 @@ public class Trigger {
     protected Integer basis;
     protected EVENT_TYPE eventType;
     protected Ability abilities;
+    protected Runnable callback;
     protected boolean replacing = false;
     protected boolean altering = false;
     private boolean saving = false;
@@ -24,17 +25,23 @@ public class Trigger {
     private Event event;
 
     public Trigger(EVENT_TYPE eventType, Condition conditions, Ability abilities) {
-        // construct abilities?
-        this.conditions = conditions;
-        this.eventType = eventType;
-        this.abilities = abilities;
-        game = abilities.getRef().getGame();
-        basis = abilities.getRef().getTarget();
-        init();
+        this(eventType, conditions, abilities, abilities.getRef().getGame(),
+         abilities.getRef().getTarget());
     }
 
-    public void init() {
-        abilities.getEffects().setTrigger(this);
+    public Trigger(EVENT_TYPE eventType, Condition conditions ) {
+        this(eventType, conditions,null, Game.game, null);
+    }
+    public Trigger( EVENT_TYPE eventType, Condition conditions, Ability abilities, Game game, Integer basis ) {
+        this.conditions = conditions;
+        this.basis = basis;
+        this.eventType = eventType;
+        this.abilities = abilities;
+        this.game = game;
+
+        if (abilities != null) {
+            abilities.getEffects().setTrigger(this);
+        }
     }
 
     @Override
@@ -46,6 +53,11 @@ public class Trigger {
         if (LogMaster.TRIGGER_DEBUG_ON)
             LogMaster.log(LogMaster.TRIGGER_DEBUG, toString()
              + " has been triggered!");
+        if (callback!=null )
+            callback.run();
+        if (abilities==null )
+            return true;
+
         abilities.setForceTargeting(forceTargeting);
         if (removeAfterTriggers) {
             remove();
@@ -185,6 +197,10 @@ public class Trigger {
 
     public boolean isRemoveOnReset() {
         return true;
+    }
+
+    public void setCallback(Runnable callback) {
+        this.callback = callback;
     }
 
     public String toXml() {

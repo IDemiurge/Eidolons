@@ -1,20 +1,18 @@
 package eidolons.game.battlecraft.logic.battlefield.vision;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Cell;
 import eidolons.entity.obj.DC_Obj;
-import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.logic.dungeon.location.Location;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.Entrance;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL;
 import main.content.enums.rules.VisionEnums.UNIT_VISION;
 import main.entity.obj.Obj;
 import main.game.bf.Coordinates;
-import main.system.SortMaster;
 import main.system.graphics.GuiManager;
 import main.system.math.MathMaster;
 import main.system.math.PositionMaster;
@@ -263,6 +261,16 @@ public class GammaMaster {
                         return 1;
             }
         }
+        if (master.getGame().getMetaMaster().getQuestMaster() != null) {
+            for (DungeonQuest quest : master.getGame().getMetaMaster().getQuestMaster().getQuests()) {
+                if (quest.getCoordinate()!=null ){
+                    if (quest.getCoordinate().getX() == x)
+                        if (quest.getCoordinate().getY() == y)
+                            return 1;
+                }
+            }
+        }
+
         return 0;
     }
 

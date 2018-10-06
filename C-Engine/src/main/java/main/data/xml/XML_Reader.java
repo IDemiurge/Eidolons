@@ -10,6 +10,7 @@ import main.data.XLinkedMap;
 import main.data.filesys.PathFinder;
 import main.entity.type.ObjType;
 import main.game.core.game.Game;
+import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.MapMaster;
 import main.system.auxiliary.log.Chronos;
@@ -122,9 +123,7 @@ public class XML_Reader {
                         XML_File xmlFile = readFile(file);
                         if (xmlFile == null)
                             continue;
-                        getFiles().add(xmlFile);
-                        Document doc = XML_Converter.getDoc(xmlFile.contents);
-                        loadMap(xmlFile.type == null ? xmlFile.name : xmlFile.type.getName(), doc);
+                        loadFile(xmlFile);
                     } catch (Exception e) {
                         brokenXml = true;
                         main.system.auxiliary.log.LogMaster.log(1, file + " is broken!");
@@ -145,6 +144,13 @@ public class XML_Reader {
                         }
                     });*/
         }
+    }
+
+    private static void loadFile(XML_File xmlFile) {
+        getFiles().add(xmlFile);
+        Document doc = XML_Converter.getDoc(xmlFile.contents);
+        loadMap(xmlFile.type == null ? xmlFile.name :
+         xmlFile.type.getName(), doc);
     }
 
     private static boolean checkFile(File file) {
@@ -259,6 +265,12 @@ public class XML_Reader {
         return brokenXml;
     }
 
+    public static void readTypeFile(boolean macro, OBJ_TYPE type) {
+        String path = StrPathBuilder.build((macro ? PathFinder.getMACRO_TYPES_PATH()
+         : PathFinder.getTYPES_PATH()), type.getName() + ".xml");
+        XML_File xml = readFile(FileManager.getFile(path));
+        loadFile(xml);
+    }
     public static void loadXml(boolean macro) {
         if (macro) {
             loadXml(PathFinder.getMACRO_TYPES_PATH());

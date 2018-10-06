@@ -30,10 +30,6 @@ public class OverlayTextPanel extends LogPanel implements Blocking {
         super.fadeOut();
     }
 
-    @Override
-    protected float getFadeOutDuration() {
-        return 1;
-    }
 
     protected int getInitialYOffset() {
         return -450;

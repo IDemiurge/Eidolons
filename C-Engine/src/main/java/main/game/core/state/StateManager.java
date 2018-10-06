@@ -8,9 +8,12 @@ import main.entity.type.ObjType;
 import main.game.core.game.Game;
 import main.game.core.game.GameManager;
 import main.game.logic.event.Event;
-import main.system.auxiliary.log.LogMaster;
+import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.log.LOG_CHANNEL;
+import main.system.auxiliary.log.LogMaster;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 
@@ -45,10 +48,15 @@ public abstract class StateManager {
         state.getTriggers().removeIf(trigger -> trigger.isRemoveOnReset());
         getManager().checkForChanges(false);
         allToBase();
+        applyModifications();
+    }
+
+    protected void applyModifications() {
         checkCounterRules();
         applyEffects(Effect.ZERO_LAYER);
         resetUnitObjects();
         resetRawValues();
+        applyDifficulty();
         applyEffects(Effect.BASE_LAYER);
         afterEffects();
         applyEffects(Effect.SECOND_LAYER);
@@ -58,6 +66,8 @@ public abstract class StateManager {
         resetCurrentValues();
         makeSnapshotsOfUnitStates();
     }
+
+    protected abstract void applyDifficulty();
 
     protected abstract void makeSnapshotsOfUnitStates();
 
@@ -88,19 +98,20 @@ public abstract class StateManager {
 
 
     public void applyEffects(int layer) {
-        applyEffects(layer, null);
+        applyEffects(layer, new ArrayList<>());
     }
 
-    public void applyEffects(int layer, Obj unit) {
+    public void applyEffects(int layer, Obj... unit) {
+        applyEffects(layer, new ListMaster<Obj>().asList(unit));
+    }
+    public void applyEffects(int layer, Collection<? extends Obj> units) {
         if (state.getEffects().size() == 0) {
             return;
         }
         for (Effect effect : state.effects) {
             if (effect.getLayer() == layer) {
-                if (unit != null) {
-                    if (effect.getRef().getTargetObj() != unit) {
+                    if (!units.contains(effect.getRef().getTargetObj())) {
                         continue;
-                    }
                 }
                 Obj target = effect.getRef().getTargetObj();
                 if (checkObjIgnoresToBase(target))

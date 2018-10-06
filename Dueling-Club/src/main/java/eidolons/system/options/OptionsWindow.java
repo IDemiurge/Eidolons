@@ -18,6 +18,7 @@ import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.system.options.Options.OPTION;
@@ -27,6 +28,7 @@ import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.launch.CoreEngine;
 
 import java.util.Map;
@@ -43,12 +45,13 @@ public class OptionsWindow extends VisWindow {
 
     private OptionsWindow(
     ) {
-        super("Options", new WindowStyle(StyleHolder.getHqLabelStyle(20).font
+        super("Options", new WindowStyle(StyleHolder.getHqLabelStyle(
+         GdxMaster.adjustFontSize(20)).font
          , StyleHolder.getDefaultLabelStyle().fontColor,
          new NinePatchDrawable(NinePatchFactory.getLightPanelFilled())
         ));
         setVisible(false);
-        setSize(800, 600);
+        setSize(GdxMaster.adjustSize(800), GdxMaster.adjustSize(600));
         closeOnEscape();
 
     }
@@ -218,7 +221,7 @@ public class OptionsWindow extends VisWindow {
             this.title = StringMaster.getWellFormattedString(group.toString());
             Options options = optionsMap.get(group);
             content = new Table();
-            content.defaults().pad(4);
+            content.defaults().pad(GdxMaster.adjustSize(8));
             final Map values = options.getValues();
             for (Object v : values.keySet()) {
                 final OPTION option = options.getKey(v.toString());
@@ -231,6 +234,7 @@ public class OptionsWindow extends VisWindow {
                         continue;
                 VisLabel label = new VisLabel(option.getName());
                 content.add(label).left();
+                label.setStyle(StyleHolder.getSizedLabelStyle(FONT.NYALA, 16));
                 String optionType = options.getValueClass(option).getSimpleName();
                 final String optionStr = option.toString();
                 switch (optionType) {
@@ -260,6 +264,7 @@ public class OptionsWindow extends VisWindow {
                                 selectBox.setSelected(options.getValue(optionStr));
                             }
                         });
+                        selectBox.getStyle().font=label.getStyle().font;
                     }
                     break;
                     case "Integer": { // aka slider
@@ -288,6 +293,7 @@ public class OptionsWindow extends VisWindow {
                                 slider.setValue(options.getIntValue(optionStr));
                             }
                         });
+                        slider.setScale(GdxMaster.adjustFontSize(1));
                     }
                     break;
                     case "Boolean": { // aka checkbox
@@ -312,6 +318,7 @@ public class OptionsWindow extends VisWindow {
                                 checkBox.setChecked(options.getBooleanValue((Enum) option));
                             }
                         });
+                        checkBox.getStyle().font=label.getStyle().font;
                     }
                     break;
                     default: {

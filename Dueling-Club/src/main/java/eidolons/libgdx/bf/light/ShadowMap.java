@@ -8,13 +8,18 @@ import eidolons.ability.effects.common.LightEmittingEffect;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.libgdx.bf.GridMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.bf.grid.GridCellContainer;
 import eidolons.libgdx.bf.grid.GridPanel;
 import eidolons.libgdx.gui.generic.GroupX;
 import main.game.bf.Coordinates;
+import main.game.bf.directions.DIRECTION;
+import main.game.bf.directions.DirectionMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.math.PositionMaster;
 
@@ -28,6 +33,7 @@ import static eidolons.libgdx.bf.light.ShadowMap.SHADE_CELL.*;
 public class ShadowMap extends GroupX {
 
     public static final SHADE_CELL[] SHADE_CELL_VALUES = {
+     SHARDS,
      VOID,
      GAMMA_SHADOW,
      GAMMA_LIGHT,
@@ -60,9 +66,10 @@ public class ShadowMap extends GroupX {
         return true;
     }
 
-    public static  float getInitialAlphaCoef() {
+    public static float getInitialAlphaCoef() {
         return 0.8f;
     }
+
     public static ALPHA_TEMPLATE getTemplateForShadeLight(SHADE_CELL type) {
         switch (type) {
             case VOID:
@@ -107,10 +114,25 @@ public class ShadowMap extends GroupX {
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
                     if (grid.getCells()[x][y] == null) {
-                        if (type != VOID)
+                        if (type == SHARDS) {
+                            Object direction = null;
+                            Integer degrees = getDirectionForShards(x, y);
+                            if (degrees == null) {
+                                continue;
+                            }
+                            if (degrees < 0) {
+                                direction = ""; //isle
+                            } else {
+                                direction = DirectionMaster.getDirectionByDegree(degrees);
+                            }
+
+                            ShadeLightCell shards = new ShadeLightCell(type,
+                             direction);
+                            getCells(type)[x][y] = shards;
+                            addShadowMapElement(shards, x, y, type.defaultAlpha);
+                        } else if (type != VOID)
                             continue;
-                    } else
-                    if (type==VOID)
+                    } else if (type == VOID)
                         continue;
                     if (type != LIGHT_EMITTER) {
                         ShadeLightCell cell = new ShadeLightCell(type);
@@ -152,6 +174,52 @@ public class ShadowMap extends GroupX {
 
     }
 
+    private Integer getDirectionForShards(int x, int y) {
+        AbstractCoordinates c = new AbstractCoordinates(x, y);
+        List<DIRECTION> adj = new ArrayList<>();
+        for (DIRECTION d : DIRECTION.clockwise) {
+            Coordinates cc = c.getAdjacentCoordinate(d);
+            int n = 0;
+            GridCellContainer cell=null ;
+            try {
+                cell = grid.getCells()[cc.x][cc.y];
+            } catch (Exception e) {
+            }
+            if (cell != null) {
+                adj.add(d);
+                n++;
+            } else {
+                n = 0;
+            }
+            if (n > 2) {
+                return adj.get(adj.size() - 2).getDegrees();//check corner
+            }
+
+        }
+        if (adj.size()>4){
+            if (RandomWizard.chance(adj.size()*5)) {
+                return -1;
+            }
+        }
+        if (adj.isEmpty()) {
+            if (RandomWizard.chance(10)) {
+                return -1;
+            }
+            return null;
+        }
+        if (adj.size() < 3) {
+            adj.removeIf(direction -> direction.isDiagonal());
+        }
+        if (adj.isEmpty()) {
+            if (RandomWizard.chance(40)) {
+                return -1;
+            }
+            return null;
+        }
+        Collections.shuffle(adj);
+        return adj.get(0).getDegrees();
+    }
+
     private void addShadowMapElement(Group element, int x, int y, float defaultAlpha) {
         addActor(element);
         float offsetX = (GridMaster.CELL_W - element.getWidth()) / 2;
@@ -178,19 +246,19 @@ public class ShadowMap extends GroupX {
 
     public void update() {
         if (!isOn())
-            return ;
+            return;
         for (SHADE_CELL type : SHADE_CELL_VALUES) {
             for (int x = 0; x < grid.getCols(); x++) {
                 for (int y = 0; y < grid.getRows(); y++) {
                     ShadeLightCell cell = getCells(type)[x][y];
                     if (cell != null) {
-                        if (type==VOID) {
-                            if (cell.getBaseAlpha()!=0) {
+                        if (type == VOID) {
+                            if (cell.getBaseAlpha() != 0) {
                                 continue;
                             }
                         }
-                        float  alpha = DC_Game.game.getVisionMaster().
-                             getGammaMaster().getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), type);
+                        float alpha = DC_Game.game.getVisionMaster().
+                         getGammaMaster().getAlphaForShadowMapCell(x, PositionMaster.getLogicalY(y), type);
                         if (Math.abs(cell.getBaseAlpha() - alpha) > 0.1f) {
                             cell.setBaseAlpha(alpha);
 
@@ -204,7 +272,7 @@ public class ShadowMap extends GroupX {
                         if (list == null)
                             continue; //for void
                         for (LightEmitter lightEmitter : list) {
-                            float  alpha = DC_Game.game.getVisionMaster().
+                            float alpha = DC_Game.game.getVisionMaster().
                              getGammaMaster().getLightEmitterAlpha(x, PositionMaster.getLogicalY(y));
                             if (Math.abs(lightEmitter.getBaseAlpha() - alpha) > 0.1f)
                                 lightEmitter.setBaseAlpha(alpha);
@@ -250,7 +318,8 @@ public class ShadowMap extends GroupX {
         CONCEALMENT(0.5f, StrPathBuilder.build("UI", "outlines", "shadows", "concealment.png")),
         BLACKOUT(0, StrPathBuilder.build("UI", "outlines", "shadows", "blackout.png")),
         HIGLIGHT(0, StrPathBuilder.build("UI", "outlines", "shadows", "highlight.png")),
-        VOID(0, StrPathBuilder.build("UI", "outlines", "shadows",   "void.png")),;
+        VOID(0, StrPathBuilder.build("UI", "outlines", "shadows", "void.png")),
+        SHARDS(0, StrPathBuilder.build("UI", "outlines", "shadows", "shards.png")),;
         public float defaultAlpha;
         private String texturePath;
 

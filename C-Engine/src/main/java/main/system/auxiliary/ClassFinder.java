@@ -204,6 +204,7 @@ public class ClassFinder {
         }
         File[] files = directory.listFiles();
         for (File file : files) {
+            if (ignoredpaths != null)
             if (Arrays.asList(ignoredpaths).contains(file.getPath())) {
                 continue;
             }

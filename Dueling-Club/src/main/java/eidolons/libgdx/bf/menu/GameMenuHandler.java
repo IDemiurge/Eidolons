@@ -2,9 +2,9 @@ package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.macro.global.persist.Loader;
 import eidolons.macro.global.persist.Saver;
-import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.system.text.HelpMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -49,6 +49,12 @@ public class GameMenuHandler {
             case RESTART:
                 Eidolons.restart();
                 break;
+            case QUESTS:
+                 Eidolons.onThisOrNonGdxThread(()-> {
+                Eidolons.getGame().getMetaMaster().getQuestMaster().initQuests();
+                Eidolons.getGame().getMetaMaster().getQuestMaster().updateQuests();
+                     });
+                return null ;
             case PASS_TIME:
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster()
                  .getTimeMaster().playerWaits();
@@ -74,7 +80,7 @@ public class GameMenuHandler {
                 menu.openOptionsMenu();
 //                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
                 return null ;
-            case INFO:
+            case CLICK_ME:
                 break;
             case WEBSITE:
                 break;

@@ -1,6 +1,5 @@
 package eidolons.game.core.master;
 
-import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.unit.Unit;
@@ -8,11 +7,14 @@ import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.meta.universal.PartyHelper;
 import eidolons.game.battlecraft.rules.combat.damage.DamageCalculator;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.explore.DungeonCrawler;
 import eidolons.game.module.herocreator.logic.HeroLevelManager;
 import eidolons.system.audio.DC_SoundMaster;
 import main.ability.AbilityObj;
 import main.content.C_OBJ_TYPE;
 import main.content.DC_TYPE;
+import main.content.enums.GenericEnums.STD_BOOLS;
+import main.entity.EntityCheckMaster;
 import main.entity.Ref;
 import main.entity.Ref.KEYS;
 import main.entity.obj.Attachment;
@@ -66,7 +68,14 @@ public class DeathMaster extends Master {
                 return;
             }
         } else
+        {
+            if (killed.checkBool(STD_BOOLS.FAUX)){
+                if (EntityCheckMaster.isWall(killed)) {
+                    DungeonCrawler.secretFound(killed, (Unit) killer);
+                }
+            }
             return;
+        }
             Unit unit = (Unit) killed;
 
             HeroLevelManager.addXpForKill(unit,(Unit) killer );

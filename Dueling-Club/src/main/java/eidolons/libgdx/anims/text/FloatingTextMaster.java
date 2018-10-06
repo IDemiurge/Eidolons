@@ -84,6 +84,8 @@ public class FloatingTextMaster {
                  ? GdxColorMaster.GOLDEN_WHITE
                  : GdxColorMaster.RED;
 
+            case GOLD:
+                return GdxColorMaster.YELLOW;
             case XP:
                 return GdxColorMaster.LILAC;
             case LEVEL_UP:
@@ -253,6 +255,7 @@ public class FloatingTextMaster {
 
     private LabelStyle getFontStyle(TEXT_CASES aCase, Object arg) {
         switch (aCase) {
+            case GOLD:
             case XP:
                 StyleHolder.getSizedLabelStyle(FONT.MAIN, 20);
             case LEVEL_UP:return
@@ -470,7 +473,10 @@ public class FloatingTextMaster {
                 };
             }
         }, DURABILITY_LOSS
-        , XP, LEVEL_UP
+        ,
+        XP,
+        GOLD,
+        LEVEL_UP
         ;
         public boolean atOrigin;
         String name = StringMaster.getWellFormattedString(name());

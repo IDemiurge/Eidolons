@@ -1,12 +1,9 @@
 package eidolons.libgdx.gui.panels.dc.logpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.libgdx.gui.panels.dc.logpanel.text.ScrollTextPanel;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StrPathBuilder;
 import main.system.graphics.ColorManager;
 
 import static main.system.GuiEventType.LOG_ENTRY_ADDED;
@@ -78,12 +75,13 @@ public class LogPanel extends ScrollTextPanel {
     }
 
     protected String getBgPath() {
-        return new StrPathBuilder().build_("UI",
-         "components",
-         "dc",
-         "dialog",
-         "log"
-         , "log background.png");
+//        return new StrPathBuilder().build_("UI",
+//         "components",
+//         "dc",
+//         "dialog",
+//         "log"
+//         , "log background.png");
+        return null;
     }
 
 

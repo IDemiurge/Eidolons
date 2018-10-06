@@ -2,9 +2,11 @@ package eidolons.libgdx.gui.panels.dc.logpanel.text;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.GdxMaster;
-import eidolons.libgdx.gui.generic.GroupX;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.panels.ScrollPanel;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StringMaster;
@@ -13,7 +15,7 @@ import main.system.graphics.FontMaster.FONT;
 /**
  * Created by JustMe on 11/29/2017.
  */
-public class ScrollTextPanel extends GroupX {
+public class ScrollTextPanel extends TablePanelX {
     protected boolean updatePos = false;
     protected float offsetX = 20;
     protected ScrollPanel<Message> scrollPanel;
@@ -86,9 +88,14 @@ public class ScrollTextPanel extends GroupX {
                 defaultHeight = bg.getHeight();
             bg.setFillParent(true);
             addActor(bg);
+        } else {
+            setBackground(getNinePatch());
         }
     }
 
+    protected Drawable getNinePatch() {
+        return NinePatchFactory.getLightDecorPanelFilledDrawable();
+    }
 
 
     protected int getFontSize() {

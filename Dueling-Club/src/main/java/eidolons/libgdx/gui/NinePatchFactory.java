@@ -9,6 +9,12 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class NinePatchFactory {
 
+    private static final String LIGHT_DECOR_PANEL_PATH =
+     StrPathBuilder.build(PathFinder.getComponentsPath(),
+      "ninepatch", "std", "light ninepatch decor.png");
+    private static final String LIGHT_DECOR_FILLED_PANEL_PATH =
+     StrPathBuilder.build(PathFinder.getComponentsPath(),
+      "ninepatch", "std", "light ninepatch decor filled.png");
     private static final String LIGHT_PANEL_PATH =
      StrPathBuilder.build(PathFinder.getComponentsPath(),
       "ninepatch", "std", "light ninepatch.png");
@@ -75,6 +81,19 @@ public class NinePatchFactory {
     }
     public static NinePatchDrawable getLightPanelFilledDrawable() {
         return new NinePatchDrawable(getLightPanelFilled());
+    }
+    public static NinePatchDrawable getLightDecorPanelFilledDrawable() {
+        return new NinePatchDrawable(getLightDecorPanelFilled());
+    }
+
+    private static NinePatch getLightDecorPanel() {
+        return new NinePatch(getOrCreateR(
+         LIGHT_DECOR_PANEL_PATH), 10, 10, 10, 10);
+    }
+
+    private static NinePatch getLightDecorPanelFilled() {
+        return new NinePatch(getOrCreateR(
+         LIGHT_DECOR_FILLED_PANEL_PATH), 10, 10, 10, 10);
     }
     public static NinePatchDrawable getLightPanelDrawable() {
         return new NinePatchDrawable(getLightPanel());

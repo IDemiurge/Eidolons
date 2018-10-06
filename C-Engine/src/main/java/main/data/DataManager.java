@@ -935,10 +935,10 @@ public class DataManager {
         return list;
     }
 
-    public static ObjType getRandomType(DC_TYPE TYPE) {
+    public static ObjType getRandomType(OBJ_TYPE TYPE) {
         return getRandomType(TYPE, null);
     }
-    public static ObjType getRandomType(DC_TYPE TYPE, String group) {
+    public static ObjType getRandomType(OBJ_TYPE TYPE, String group) {
         List<ObjType> list = getTypesGroup(TYPE, group);
         return list.get(RandomWizard.getRandomIndex(list));
     }

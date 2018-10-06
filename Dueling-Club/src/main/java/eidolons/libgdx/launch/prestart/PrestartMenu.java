@@ -51,7 +51,7 @@ public class PrestartMenu extends GameMenu {
             case ABOUT:
             case LAUNCH_GAME:
                 return false;
-            case INFO:
+            case CLICK_ME:
             case RESTART:
             case RESUME:
             case PASS_TIME:

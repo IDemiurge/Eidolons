@@ -21,9 +21,6 @@ public class ScriptTrigger extends Trigger {
         return false;
     }
 
-    @Override
-    public void init() {
-    }
 
     public String getScriptText() {
         return scriptText;

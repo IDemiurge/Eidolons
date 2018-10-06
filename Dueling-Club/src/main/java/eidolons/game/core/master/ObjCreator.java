@@ -7,6 +7,7 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
 import eidolons.game.module.dungeoncrawl.objects.Door;
 import eidolons.game.module.dungeoncrawl.objects.LockObj;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
 import main.content.enums.entity.BfObjEnums.BF_OBJECT_GROUP;
@@ -14,6 +15,7 @@ import main.content.values.properties.G_PROPS;
 import main.data.DataManager;
 import main.entity.Ref;
 import main.entity.obj.MicroObj;
+import main.entity.type.ObjAtCoordinate;
 import main.entity.type.ObjType;
 import main.game.logic.battle.player.Player;
 import main.system.GuiEventManager;
@@ -53,7 +55,7 @@ public class ObjCreator extends Master {
         BattleFieldObject obj = null;
 
         if (type.checkProperty(G_PROPS.BF_OBJECT_GROUP, BfObjEnums.BF_OBJECT_GROUP.ENTRANCE.toString())) {
-//       TODO      obj = new Entrance(x, y, type, getGame().getDungeon(), null);
+            //       TODO      obj = new Entrance(x, y, type, getGame().getDungeon(), null);
             return null;
         } else if (type.getOBJ_TYPE_ENUM() == DC_TYPE.BF_OBJ) {
             obj = newStructure(type, x, y, owner, ref);
@@ -75,6 +77,19 @@ public class ObjCreator extends Master {
             obj.afterEffects();
         }
         obj.setOriginalType(type.getType());
+
+        for (DungeonQuest quest : game.getMetaMaster().getQuestMaster().getQuests()) {
+            if (quest.getArg() instanceof ObjAtCoordinate) {
+                if (((ObjAtCoordinate) quest.getArg()).getType().equals(obj.getType())) {
+                    if (((ObjAtCoordinate) quest.getArg()).getCoordinates().equals(obj.getCoordinates())) {
+                        quest.setArg(obj.getId());
+                    }
+
+                }
+
+            }
+        }
+
         return obj;
 
     }
@@ -85,7 +100,7 @@ public class ObjCreator extends Master {
         }
         String unitGroup = type.getProperty(
          type.getOBJ_TYPE_ENUM().getSubGroupingKey()
-//         G_PROPS.UNIT_GROUP
+         //         G_PROPS.UNIT_GROUP
         );
         List<ObjType> list = DataManager.getTypesSubGroup(type.getOBJ_TYPE_ENUM(), unitGroup);
 

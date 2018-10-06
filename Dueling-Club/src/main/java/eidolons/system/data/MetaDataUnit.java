@@ -20,6 +20,7 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
         if (instance == null) {
             instance = new MetaDataUnit(
              FileManager.readFile(PathFinder.getMetaDataUnitPath()) );
+            instance.addToInt(META_DATA.TIMES_LAUNCHED,1);
         }
         return instance;
     }
@@ -30,6 +31,11 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
 
     public enum META_DATA{
         LAST_PREGEN_LVL_INDEX_MAP,
+
+        TIMES_LAUNCHED,
+        TIME_PLAYED,
+        CRASHED,
+
 
     }
 }

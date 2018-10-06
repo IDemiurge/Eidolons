@@ -148,7 +148,7 @@ public class MoonActor extends Group {
 
     private String getPath() {
         return StrPathBuilder.build(PathFinder.getMacroUiPath()
-         , "component", "time panel", "moons") + PathUtils.getPathSeparator();
+         , "components", "time panel", "moons") + PathUtils.getPathSeparator();
     }
 
     public void setActive(boolean active) {

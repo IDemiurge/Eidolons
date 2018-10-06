@@ -3,6 +3,7 @@ package eidolons.libgdx.gui.panels.dc.logpanel;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import eidolons.libgdx.GdxMaster;
 
 public class SimpleLogPanel extends LogPanel {
     private MovableHeader movableHeader;
@@ -38,12 +39,13 @@ public class SimpleLogPanel extends LogPanel {
             }
         });
 
-        addActor(movableHeader);
+//        addActor(movableHeader);
 
         extendButton = new ExtendButton();
         addActor(extendButton);
 
-        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2, getHeight() - movableHeader.getHeight() + 4);
+        extendButton.setPosition(getWidth() / 2 - extendButton.getWidth() / 2,
+         getHeight() + 1);
 
         extendButton.addCaptureListener(new InputListener() {
             @Override
@@ -54,7 +56,8 @@ public class SimpleLogPanel extends LogPanel {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                setHeight(Math.min(Math.max(getHeight() + y, 250), 600));
+                setHeight(Math.min(Math.max(getHeight() + y, GdxMaster.adjustHeight(150)),
+                 GdxMaster.adjustHeight(800)));
                 updatePos = true;
             }
         });

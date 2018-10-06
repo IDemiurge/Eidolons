@@ -68,7 +68,7 @@ public class GdxMaster {
     }
 
     public static int adjustFontSize(float size) {
-        return (int) (adjustSize(size, fontSizeAdjustCoef) + size
+        return Math.round (adjustSize(size, fontSizeAdjustCoef) + size
                 * (GdxMaster.getFontSizeModSquareRoot() - 1) * fontSizeAdjustCoef);
     }
 
@@ -80,6 +80,17 @@ public class GdxMaster {
         return size
                 + size
                 * (GdxMaster.getFontSizeMod() - 1) * coef;
+    }
+
+    public static float adjustHeight(float size ) {
+        return size
+         + size
+         * (GdxMaster.getHeightMod() - 1) * sizeAdjustCoef;
+    }
+    public static float adjustWidth(float size ) {
+        return size
+         + size
+         * (GdxMaster.getWidthMod() - 1) * sizeAdjustCoef;
     }
 
     public static float adjustSizeBySquareRoot(float size) {

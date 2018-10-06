@@ -21,8 +21,6 @@ import eidolons.game.core.Eidolons;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.actions.MoveByActionLimited;
-import eidolons.libgdx.anims.text.FloatingTextMaster;
-import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
 import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.grid.GenericGridView;
 import eidolons.libgdx.bf.grid.GridCellContainer;
@@ -77,8 +75,8 @@ public class OverlaysManager extends SuperActor {
     }
 
     public void clearTooltip(Entity e) {
-//        main.system.auxiliary.log.LogMaster.log(1, "Removing mapping for " + e
-//         + ":\n " + tooltipMap.get(e) + ";\n " + overlayMap.get(e));
+        //        main.system.auxiliary.log.LogMaster.log(1, "Removing mapping for " + e
+        //         + ":\n " + tooltipMap.get(e) + ";\n " + overlayMap.get(e));
         tooltipMap.remove(e);
         overlayMap.remove(e);
     }
@@ -94,7 +92,7 @@ public class OverlaysManager extends SuperActor {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 checkShowTooltip(x, y);
-//                super.enter(event, x, y, pointer, fromActor);
+                //                super.enter(event, x, y, pointer, fromActor);
             }
 
             @Override
@@ -178,79 +176,6 @@ public class OverlaysManager extends SuperActor {
         };
     }
 
-    public ClickListener getOverlayListener(OVERLAY overlay, Actor parent,
-                                            float xPos, float yPos) {
-//cache for easy remove?
-        Vector2 pos = parent.stageToLocalCoordinates(new Vector2(xPos, yPos));
-        int width = getOverlayWidth(overlay, parent);
-        int height = getOverlayHeight(overlay, parent);
-        return new SmartClickListener(parent) {
-            private boolean checkPos(float x, float y) {
-                if (Math.abs(pos.x - x) > width)
-                    return false;
-                if (Math.abs(pos.y - y) > height)
-                    return false;
-                return true;
-            }
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (!checkPos(x, y))
-                    return;
-                super.enter(event, x, y, pointer, fromActor);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                if (!checkPos(x, y))
-                    return;
-                super.exit(event, x, y, pointer, toActor);
-            }
-
-            @Override
-            protected void exited() {
-                super.exited();
-                overlayExited(overlay, parent);
-            }
-
-            @Override
-            protected void entered() {
-                super.entered();
-                overlayEntered(overlay, parent);
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (!checkPos(x, y))
-                    return false;
-                return overlayTouchDown(overlay, parent, pointer, button);
-            }
-        };
-    }
-
-    private void overlayEntered(OVERLAY overlay, Actor parent) {
-        switch (overlay) {
-            case HP_BAR:
-                GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, new ValueTooltip("This is a tooltip!!"));
-                break;
-        }
-    }
-
-    private void overlayExited(OVERLAY overlay, Actor parent) {
-        GuiEventManager.trigger(GuiEventType.SHOW_TOOLTIP, null);
-    }
-
-    private boolean overlayTouchDown(OVERLAY overlay, Actor parent, int pointer, int button) {
-        switch (overlay) {
-            case HP_BAR:
-                FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.REQUIREMENT,
-                 "!!!!", null);
-
-        }
-
-        return true;
-    }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
@@ -268,7 +193,7 @@ public class OverlaysManager extends SuperActor {
         batch.setColor(1, 1, 1, 1);
         drawOverlays(batch);
 
-//        drawHoverObj(batch);
+        //        drawHoverObj(batch);
 
     }
 
@@ -311,7 +236,7 @@ public class OverlaysManager extends SuperActor {
                             drawOverlaysForView(((GenericGridView) c), batch, x, y);
                         else {
                             //TODO grave/corpse???
-//                            clearTooltip((Entity) c.getUserObject());
+                            //                            clearTooltip((Entity) c.getUserObject());
 
                         }
                     }
@@ -324,9 +249,9 @@ public class OverlaysManager extends SuperActor {
     }
 
     private void drawOverlaysForView(GenericGridView actor, Batch batch, int x, int y) {
-//        TODO  if (actor.isHovered()) {
+        //        TODO  if (actor.isHovered()) {
         //emblem etc?
-//        }
+        //        }
         BattleFieldObject obj = actor.getUserObject();
 
         if (actor.getHpBar() != null)
@@ -338,9 +263,9 @@ public class OverlaysManager extends SuperActor {
         } else if (checkOverlayForObj(STEALTH, obj, actor)) {
             drawOverlay(actor, STEALTH, batch, obj, x, y);
         }
-//        if (checkOverlayForObj(BAG, obj)) {
-//            drawOverlay(actor, BAG, batch);
-//        }
+        //        if (checkOverlayForObj(BAG, obj)) {
+        //            drawOverlay(actor, BAG, batch);
+        //        }
     }
 
     private void drawOverlaysForCell(GridCellContainer container, int x, int y,
@@ -475,14 +400,14 @@ public class OverlaysManager extends SuperActor {
         }
 
 
-//        ClickListener listener = listenerCaches.get(overlay).get(parent);
-//        if (listener == null) {
-//            listener = getOverlayListener(overlay, parent, v.x, v.y);
-//            listenerCaches.get(overlay).put(parent, listener);
-//        }
-//        if (!parent.getListeners().contains(listener, true)) {
-//            parent.addListener(listener);
-//        }
+        //        ClickListener listener = listenerCaches.get(overlay).get(parent);
+        //        if (listener == null) {
+        //            listener = getOverlayListener(overlay, parent, v.x, v.y);
+        //            listenerCaches.get(overlay).put(parent, listener);
+        //        }
+        //        if (!parent.getListeners().contains(listener, true)) {
+        //            parent.addListener(listener);
+        //        }
     }
 
     private Tooltip getTooltip(OVERLAY overlay, Actor parent, int x, int y) {
@@ -496,7 +421,8 @@ public class OverlaysManager extends SuperActor {
             case BAG:
                 return new ValueTooltip("Dropped items");
             case HP_BAR:
-
+                if (!isHpTooltipOn())
+                    break;
                 BattleFieldObject data = (BattleFieldObject) parent.getUserObject();
                 String text = data.getName() + " has " +
                  data.getIntParam(PARAMS.TOUGHNESS_PERCENTAGE) / MathMaster.MULTIPLIER + "% Toughness and " +
@@ -524,10 +450,14 @@ public class OverlaysManager extends SuperActor {
          getWellFormattedString(overlay.name()));
     }
 
+    private boolean isHpTooltipOn() {
+        return false;
+    }
+
     private boolean isTooltipRequired(OVERLAY overlay) {
         switch (overlay) {
             case HP_BAR:
-                return true;
+                return isHpTooltipOn();
         }
         return true;
     }

@@ -148,7 +148,7 @@ public abstract class DC_HeroItemObj extends DC_HeroAttachedObj implements HeroI
         if (integer != 0) {
             mod = mod * integer / 100;
         }
-        mod = mod * getGame().getBattleMaster().getOptionManager().getDifficulty().getDurabilityDamageMod() / 100;
+//     TODO    mod = mod * getGame().getBattleMaster().getOptionManager().getDifficulty().getDurabilityDamageMod() / 100;
         amount = amount * mod / 100;
         return reduceDurability(amount, simulation);
 

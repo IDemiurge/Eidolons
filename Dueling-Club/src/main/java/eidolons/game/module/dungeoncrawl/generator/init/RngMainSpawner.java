@@ -2,14 +2,18 @@ package eidolons.game.module.dungeoncrawl.generator.init;
 
 import eidolons.content.PARAMS;
 import eidolons.game.battlecraft.logic.dungeon.location.LocationBuilder.ROOM_TYPE;
+import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
 import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.LEVEL_VALUES;
 import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ROOM_CELL;
+import eidolons.game.module.dungeoncrawl.generator.GeneratorEnums.ZONE_TYPE;
 import eidolons.game.module.dungeoncrawl.generator.LevelData;
 import eidolons.game.module.dungeoncrawl.generator.model.AbstractCoordinates;
 import eidolons.game.module.dungeoncrawl.generator.tilemap.TileConverter.DUNGEON_STYLE;
+import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.game.module.dungeoncrawl.quest.QuestCreator;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
 import main.content.enums.entity.UnitEnums.UNIT_GROUP;
@@ -187,6 +191,9 @@ public class RngMainSpawner {
             level.setPowerLevel(TEST_POWER);
         }
         //some meta data to take from?
+
+        log(1, "Spawning for quests ");
+        spawnForQuests();
         log(1, "Spawning for symbols ");
         spawnForSymbols();
         log(1, "Spawning  Mandatory ");
@@ -196,6 +203,51 @@ public class RngMainSpawner {
 
         reportSpawning();
 
+    }
+
+    private void spawnForQuests() {
+        List<DungeonQuest> quests = null;
+        try {
+            quests = Eidolons.getGame().getMetaMaster().getQuestMaster().getQuests();
+        } catch (Exception e) {
+            return;
+        }
+        for (DungeonQuest quest : quests) {
+            switch (quest.getType()) {
+                case BOSS:
+                    spawnQuestBoss(quest);
+                    break;
+                case HUNT:
+                    spawnQuestMob(quest);
+                    break;
+            }
+
+        }
+    }
+
+    private void spawnQuestMob(DungeonQuest quest) {
+    }
+
+    private void spawnQuestBoss(DungeonQuest quest) {
+        LevelZone zone=new RandomWizard<LevelZone>().getRandomListItem(level.getZones());
+        for (LevelZone levelZone : level.getZones()) {
+            if (levelZone.getType()== ZONE_TYPE.BOSS_AREA)
+            {
+                zone = levelZone;
+                break;
+            }
+        }
+        ObjType type = QuestCreator.getBossType(level.getPowerLevel(), quest,
+        zone.getStyle());
+        List<ObjType> units = new ArrayList<>();
+        units.add(type);
+
+        LevelBlock block= getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone).get(0);
+        List<ObjAtCoordinate> list = spawnUnits(block, units);
+        ObjAtCoordinate objAt = list.get(0);
+
+        quest.setArg(objAt);
+        quest.setCoordinate(objAt.getCoordinates());
     }
 
     private void reportSpawning() {
@@ -552,6 +604,7 @@ public class RngMainSpawner {
             if (loop.ended())
                 break;
             String unit = (oneFromAboveRank ? altMap : map).getRandomByWeight();
+
             ObjType type = DataManager.getType(unit, DC_TYPE.UNITS);
 
             int pouvoir = type.getIntParam(PARAMS.POWER);

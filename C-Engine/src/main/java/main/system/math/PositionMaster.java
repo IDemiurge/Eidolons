@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PositionMaster {
 
-    private static Double distances[][][][] = new Double[50][50][50][50];
+    private static Double distances[][]  = new Double[50][50];
 
     public static Coordinates getMiddleCoordinate(FACING_DIRECTION side) {
         switch (side) {
@@ -101,11 +101,11 @@ public class PositionMaster {
     public static double getExactDistance(Coordinates coordinates1, Coordinates coordinates2) {
         if (coordinates1.x < 0 || coordinates1.y < 0 || coordinates2.x < 0 || coordinates2.y < 0)
             return 0;
-        Double result = distances[coordinates1.x][coordinates1.y][coordinates2.x][coordinates2.y];
-        if (result != null)
-            return result;
         int x = getX_Diff(coordinates1, coordinates2);
         int y = getY_Diff(coordinates1, coordinates2);
+        Double result = distances[ x][ y] ;
+        if (result != null)
+            return result;
         if (x == 0) {
             return y;
         }
@@ -114,7 +114,7 @@ public class PositionMaster {
         }
 
         result = Math.sqrt(x * x + y * y);
-        distances[coordinates1.x][coordinates1.y][coordinates2.x][coordinates2.y] = result;
+        distances[x][y] = result;
         return result;
     }
 
@@ -277,7 +277,7 @@ public class PositionMaster {
          GuiManager.getBF_CompDisplayedCellsY());
     }
         public static void initDistancesCache(int w, int h) {
-        distances = new Double[w][h][w][h];
+        distances = new Double[w][h] ;
     }
 
     public static int getLogicalY(int y) {

@@ -161,6 +161,10 @@ public class DataUnit<T extends Enum<T>> {
         addCount(stat, val, 1);
     }
 
+    public void addToInt(T stat, int n) {
+        setValue(stat, (getIntValue(stat) + n) + "");
+    }
+
     public void addCount(T stat, String val, int max) {
         addValue(stat, val);
         if (val.contains(": ")) {
@@ -235,7 +239,7 @@ public class DataUnit<T extends Enum<T>> {
         for (String v : set) {
             data += v + DataUnitFactory.getPairSeparator(format)
              + values.get(v) + DataUnitFactory.getSeparator(format)
-            +"\n";
+             + "\n";
         }
         return data;
     }

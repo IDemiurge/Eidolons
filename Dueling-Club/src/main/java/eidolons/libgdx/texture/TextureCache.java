@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
@@ -16,6 +15,7 @@ import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 import main.system.images.ImageManager;
+import main.system.launch.CoreEngine;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static final boolean uiAtlasesOn = true;
+    private static final boolean uiAtlasesOn = !CoreEngine.isFastMode();
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);

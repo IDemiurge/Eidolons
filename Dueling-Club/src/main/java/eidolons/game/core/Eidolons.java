@@ -10,7 +10,6 @@ import eidolons.entity.active.DC_ActiveObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.EidolonsGame;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
-import eidolons.game.battlecraft.logic.meta.universal.PartyManager;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.core.game.DC_GameManager;
 import eidolons.game.core.game.DC_GameObjMaster;
@@ -200,7 +199,6 @@ public class Eidolons {
     public static void gameExited() {
         //        DC_Game toFinilize = game;
         GenericLauncher.setFirstInitDone(false);
-        PartyManager.setSelectedHero(null);
         game.getMetaMaster().gameExited();
 
         SpecialLogger.getInstance().appendSpecialLog(SPECIAL_LOG.MAIN,

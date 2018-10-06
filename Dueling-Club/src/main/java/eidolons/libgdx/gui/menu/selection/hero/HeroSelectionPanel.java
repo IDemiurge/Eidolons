@@ -5,6 +5,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import main.entity.Entity;
+import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -14,6 +15,8 @@ import java.util.function.Supplier;
  */
 public class HeroSelectionPanel extends SelectionPanel {
 
+    public static final WAIT_OPERATIONS WAIT_OPERATION =
+     WAIT_OPERATIONS.HERO_SELECTION;
     protected Supplier<List<? extends Entity>> dataSupplier;
 
     public HeroSelectionPanel(Supplier<List<? extends Entity>> dataSupplier) {
@@ -29,6 +32,15 @@ public class HeroSelectionPanel extends SelectionPanel {
     }
     protected boolean isReadyToBeInitialized() {
         return false;
+    }
+
+    @Override
+    public WAIT_OPERATIONS getWaitOperation() {
+        return WAIT_OPERATION;
+    }
+    @Override
+    public void closed(Object selection) {
+        super.closed(selection);
     }
 
     @Override

@@ -393,7 +393,9 @@ public class DamageDealer {
         boolean unconscious = attacked instanceof Unit && attacked.getGame().getRules().getUnconsciousRule().checkStatusUpdate((Unit) attacked, (DC_ActiveObj) ref.getActive());
 
         if (!dead) {
-            dead = attacked.checkBool(STD_BOOLS.FAUX);
+            if (attacked.checkBool(STD_BOOLS.FAUX)){
+                dead = true;
+            }
         }
         if (dead) {
             // will start new entry... a good preCheck

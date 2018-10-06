@@ -8,7 +8,6 @@ import eidolons.entity.obj.attach.DC_FeatObj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.Simulation;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
-import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.values.parameters.ParamMap;
 import main.content.values.properties.PropMap;
 import main.entity.type.ObjType;
@@ -119,29 +118,9 @@ public class HeroDataModel extends Unit {
         //full reset?
     }
 
-    @Override
-    public DC_HeroItemObj getItem(ITEM_SLOT slot) {
-        return super.getItem(slot);
-    }
-
     public DC_FeatObj getFeat(boolean skill, ObjType type) {
         return (DC_FeatObj) getGame().getSimulationObj(this, type,
          skill ? PROPS.SKILLS : PROPS.CLASSES);
-    }
-
-    @Override
-    public void addItemToInventory(DC_HeroItemObj item) {
-        super.addItemToInventory(item);
-    }
-
-    @Override
-    public boolean dropItemFromInventory(DC_HeroItemObj item) {
-        return super.dropItemFromInventory(item);
-    }
-
-    @Override
-    public boolean equip(DC_HeroItemObj item, ITEM_SLOT slot) {
-        return super.equip(item, slot);
     }
 
     public enum HERO_OPERATION {

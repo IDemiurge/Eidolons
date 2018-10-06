@@ -40,7 +40,7 @@ public class StyleHolder {
     private static final String DOWN = "_down";
     private static final String UP = "_up";
     private static final String CHECKED = "_down";
-    private static final int DEFAULT_SIZE = 14;
+    private static final int DEFAULT_SIZE = 16;
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
     static Map<STD_BUTTON, Map<LabelStyle, TextButtonStyle>> textButtonStyleMap = new HashMap<>();
     private static Label.LabelStyle defaultLabelStyle;
