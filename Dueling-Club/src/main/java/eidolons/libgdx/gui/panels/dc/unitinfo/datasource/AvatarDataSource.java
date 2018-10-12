@@ -10,4 +10,8 @@ public interface AvatarDataSource {
     String getParam1();
 
     String getParam2();
+
+    TextureRegion getLargeImage();
+
+    TextureRegion getFullSizeImage();
 }

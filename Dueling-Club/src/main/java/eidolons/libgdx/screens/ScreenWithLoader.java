@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.libgdx.GdxMaster;
@@ -75,7 +73,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
     public Batch getBatch() {
         if (batch == null) {
-            batch = new SpriteBatch();
+            batch = CustomSpriteBatch.getInstance();
         }
         return batch;
     }
@@ -110,6 +108,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
 
             }
         loadingAssetsDone(param);
+        GdxMaster.setDefaultCursor();
 
     }
 
@@ -119,6 +118,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             setWaitingForInput(true);
             this.param = param;
             updateInputController();
+            GdxMaster.setDefaultCursor();
         } else done(this.param);
     }
 
@@ -149,24 +149,13 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         this.hideLoader();
         afterLoad();
         updateInputController();
-        initCursor();
+        GdxMaster.setDefaultCursor();
         triggerInitialEvents();
     }
 
     protected void triggerInitialEvents() {
     }
 
-    protected void initCursor() {
-        Gdx.graphics.setSystemCursor(SystemCursor.Ibeam);
-    }
-
-    protected void initLoadingCursor() {
-
-//         cursor = Gdx.graphics.newCursor(myPixmap, 0, 0);
-//        Gdx.graphics.setCursor(cursor);
-        Gdx.graphics.setSystemCursor(SystemCursor.Crosshair);
-//        cursor.dispose();
-    }
 
     protected abstract void afterLoad();
 
@@ -197,6 +186,8 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
         checkShader();
+
+
         renderLoader(delta);
         waited(delta);
         checkShaderReset();
@@ -347,7 +338,7 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
     public void initLoadingStage(ScreenData meta) {
         this.loadingStage = new LoadingStage(meta);
         loadingStage.setViewport(new ScreenViewport(new OrthographicCamera( )));
-        initLoadingCursor();
+
     }
 
     public void reset() {

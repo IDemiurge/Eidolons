@@ -28,12 +28,12 @@ public class StyleHolder {
     public static final FONT DEFAULT_FONT_FLOAT_TEXT = FONT.MAIN;
     public static final int DEFAULT_FONT_SIZE_FLOAT_TEXT = 18;
     //    private static String FONT_CHARS = "";
-//
-//    static {
-//
-//        for (int i = 0x20; i < 0x7B; i++) FONT_CHARS += (char) i;
-//        for (int i = 0x401; i < 0x452; i++) FONT_CHARS += (char) i;
-//    }
+    //
+    //    static {
+    //
+    //        for (int i = 0x20; i < 0x7B; i++) FONT_CHARS += (char) i;
+    //        for (int i = 0x401; i < 0x452; i++) FONT_CHARS += (char) i;
+    //    }
     final static String FONT_CHARS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
     private static final String DISABLED = "_disabled";
     private static final String OVER = "_over";
@@ -42,6 +42,7 @@ public class StyleHolder {
     private static final String CHECKED = "_down";
     private static final int DEFAULT_SIZE = 16;
     private static final Color DEFAULT_COLOR = new Color(ColorManager.GOLDEN_WHITE.getRGB());
+    private static final float SMART_FONT_SIZE_COEF = 0.15f;
     static Map<STD_BUTTON, Map<LabelStyle, TextButtonStyle>> textButtonStyleMap = new HashMap<>();
     private static Label.LabelStyle defaultLabelStyle;
     private static Label.LabelStyle avqLabelStyle;
@@ -62,28 +63,29 @@ public class StyleHolder {
 
     public static Label.LabelStyle getSizedColoredLabelStyle(FONT fontStyle,
                                                              Integer size, Color color) {
-        return getSizedColoredLabelStyle(0.12f, fontStyle, size, color);
+        return getSizedColoredLabelStyle(SMART_FONT_SIZE_COEF, fontStyle, size, color);
     }
+
     public static LabelStyle getSizedColoredLabelStyle(float i, FONT fontStyle,
                                                        Integer size) {
-        return getSizedColoredLabelStyle(i, fontStyle,size, GdxColorMaster.GOLDEN_WHITE);
+        return getSizedColoredLabelStyle(i, fontStyle, size, GdxColorMaster.GOLDEN_WHITE);
     }
+
     public static Label.LabelStyle getDebugLabelStyle() {
-        return getSizedColoredLabelStyle(0.2f, FONT.MAIN, 15, GdxColorMaster.GOLDEN_WHITE);
+        return getSizedColoredLabelStyle(SMART_FONT_SIZE_COEF, FONT.MAIN, 15, GdxColorMaster.GOLDEN_WHITE);
     }
 
     public static Label.LabelStyle getSizedColoredLabelStyle(float adjustSizeCoef,
                                                              FONT fontStyle,
                                                              Integer size, Color color) {
-        if (size>100)
-            size = size/100;
+        if (size > 100)
+            size = size / 100;
         else //quick fix to enable static size
-        if (adjustSizeCoef > 0)
-            if (GdxMaster.getFontSizeMod() != 1)
-            {
-                int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
-                size += mod;
-            }
+            if (adjustSizeCoef > 0)
+                if (GdxMaster.getFontSizeMod() != 1) {
+                    int mod = Math.round(size * (GdxMaster.getFontSizeMod() - 1) * adjustSizeCoef);
+                    size += mod;
+                }
         Map<Pair<Integer, Color>, LabelStyle> map = getSizedColoredLabelStyleMap(fontStyle, size, color);
 
         ImmutablePair<Integer, Color> pair = new ImmutablePair<>(size, color);
@@ -137,8 +139,7 @@ public class StyleHolder {
     }
 
     public static int getDefaultSize() {
-
-        return Math.round(DEFAULT_SIZE * GdxMaster.getFontSizeMod());
+        return GdxMaster.adjustFontSize(DEFAULT_SIZE);
     }
 
     private static BitmapFont getFont(FONT font, Color color, int size) {
@@ -165,15 +166,15 @@ public class StyleHolder {
 
     public static Label.LabelStyle getAVQLabelStyle() {
         return getLabelStyle(FONT.AVQ, DEFAULT_COLOR);
-//        if (avqLabelStyle == null) {
-//            avqLabelStyle = new Label.LabelStyle(new BitmapFont(
-//             new FileHandle(
-//              PathFinder.getFontPath()+ FONT.AVQ.path
-//             )
-//            ),
-//             DEFAULT_COLOR);
-//        }
-//        return avqLabelStyle;
+        //        if (avqLabelStyle == null) {
+        //            avqLabelStyle = new Label.LabelStyle(new BitmapFont(
+        //             new FileHandle(
+        //              PathFinder.getFontPath()+ FONT.AVQ.path
+        //             )
+        //            ),
+        //             DEFAULT_COLOR);
+        //        }
+        //        return avqLabelStyle;
     }
 
     public static TextButton.TextButtonStyle getDefaultTextButtonStyle() {
@@ -186,18 +187,26 @@ public class StyleHolder {
     public static TextButtonStyle getHqTextButtonStyle(STD_BUTTON button, int size) {
         return getTextButtonStyle(button, FONT.METAMORPH, DEFAULT_COLOR, size);
     }
+
     public static TextButton.TextButtonStyle getHqTextButtonStyle(
-       int size) {
+     int size) {
         return getTextButtonStyle(FONT.METAMORPH, DEFAULT_COLOR, size);
     }
-        public static TextButton.TextButtonStyle getTextButtonStyle(
-         FONT FONT, Color color, int size) {
+
+    public static TextButton.TextButtonStyle getTextButtonStyle(
+     FONT FONT, Color color, int size) {
         return getTextButtonStyle(null, FONT, color, size);
     }
 
     public static TextButton.TextButtonStyle getMenuTextButtonStyle(
-      int size) {
+     int size) {
         return getTextButtonStyle(STD_BUTTON.MENU, FontMaster.FONT.METAMORPH, DEFAULT_COLOR, size);
+    }
+
+    public static TextButton.TextButtonStyle getButtonStyle(
+     STD_BUTTON button ) {
+        return getTextButtonStyle(button, FONT.AVQ, GdxColorMaster.getDefaultTextColor(),
+         20);
     }
         public static TextButton.TextButtonStyle getTextButtonStyle(
          STD_BUTTON button, FONT FONT, Color color, int size) {
@@ -230,11 +239,11 @@ public class StyleHolder {
         }
 
         style.font = getFont(FONT, color, size);
-        style.fontColor=new Color(color);
-        style.disabledFontColor= new Color(color);
-        style.checkedFontColor= new Color(color);
+        style.fontColor = new Color(color);
+        style.disabledFontColor = new Color(color);
+        style.checkedFontColor = new Color(color);
         style.overFontColor = new Color(color);
-        style.downFontColor= new Color(color);
+        style.downFontColor = new Color(color);
 
         style.fontColor.mul(0.95f);
         style.disabledFontColor.mul(0.65f);
@@ -242,15 +251,15 @@ public class StyleHolder {
         style.overFontColor.mul(1.11f);
         style.downFontColor.mul(1.15f);
 
-        style.fontColor.a=1 ;
-        style.disabledFontColor.a=1;
-        style.checkedFontColor.a=1;
-        style.overFontColor.a=1 ;
-        style.downFontColor.a=1 ;
+        style.fontColor.a = 1;
+        style.disabledFontColor.a = 1;
+        style.checkedFontColor.a = 1;
+        style.overFontColor.a = 1;
+        style.downFontColor.a = 1;
 
-//        style.fontColor = DEFAULT_COLOR;
-//        style.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
-//        style.checkedFontColor = new Color(0xFF_00_00_FF);
+        //        style.fontColor = DEFAULT_COLOR;
+        //        style.overFontColor = new Color(DEFAULT_COLOR).add(50, 50, 50, 0);
+        //        style.checkedFontColor = new Color(0xFF_00_00_FF);
 
         map.put(labelStyle, style);
         return style;
@@ -265,10 +274,10 @@ public class StyleHolder {
         return style;
     }
 
-    public static TextButtonStyle getHqTabStyle( ) {
-        TextButtonStyle  style = getTextButtonStyle(STD_BUTTON.HIGHLIGHT,
+    public static TextButtonStyle getHqTabStyle() {
+        TextButtonStyle style = getTextButtonStyle(STD_BUTTON.HIGHLIGHT,
          FONT.METAMORPH, GdxColorMaster.GOLDEN_GRAY, 20);
-       return style;
+        return style;
     }
 
     public static TextButtonStyle getDefaultTabStyle() {
@@ -278,7 +287,7 @@ public class StyleHolder {
     }
 
     public static LabelStyle getHqLabelStyle(int fontSize) {
-        return getSizedLabelStyle(FONT.METAMORPH,fontSize );
+        return getSizedLabelStyle(FONT.METAMORPH, fontSize);
     }
 
 

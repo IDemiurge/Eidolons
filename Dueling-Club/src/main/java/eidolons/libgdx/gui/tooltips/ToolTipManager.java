@@ -24,7 +24,6 @@ import eidolons.libgdx.stage.GuiStage;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.entity.Entity;
-import main.entity.obj.Obj;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.log.LogMaster;
@@ -199,14 +198,15 @@ public class ToolTipManager extends TablePanel {
     }
 
     private void initTooltipPosition() {
-        final Tooltip tooltip = (Tooltip) actorCell.getActor();
         Vector2 v2 = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         v2 = getStage().screenToStageCoordinates(v2);
 
         actorCell.left().top();
 
         actorCell.pad(0);
-
+        if (tooltip == null) {
+            return;
+        }
         float y = (v2.y - tooltip.getPrefHeight() - getPreferredPadding());
         boolean bot = false;
         if (y < 0) {
@@ -253,7 +253,7 @@ public class ToolTipManager extends TablePanel {
     }
 
     private boolean isLogged() {
-        return true;
+        return false;
     }
 
     private float getPreferredPadding() {

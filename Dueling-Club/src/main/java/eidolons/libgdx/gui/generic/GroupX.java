@@ -18,6 +18,8 @@ public class GroupX extends Group {
 
     protected void initResolutionScaling() {
         float coef = (float) Math.pow(GdxMaster.getFontSizeMod(),0.3f);
+        if (coef<1)
+            coef = 1;
         setScale(coef, coef);
         setWidth(getWidth()*getScaleX());
         setHeight(getHeight()*getScaleY());
@@ -120,5 +122,9 @@ if (recursive)
             removeAction(sub);
         }
         ActorMaster.addFadeInAction(this, getFadeInDuration());
+    }
+
+    public void offset(float dX, float dY) {
+        setPosition(getX() + dX, getY() + dY);
     }
 }

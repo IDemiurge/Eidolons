@@ -64,7 +64,7 @@ public class LightEmitter extends SuperActor {
         this.gridX = obj.getX();
         this.gridY = obj.getY();
         this.direction = obj.getDirection();
-        this.type = LIGHT_RAY.FIRE;
+        this.type = LIGHT_RAY.WHITE;
         this.effect = effect;
         String imagePath = StrPathBuilder.build(PathFinder.getShadeLightPath(),
                 "rays", type.name(), "center" + (overlaying ? " overlaying.png"
@@ -331,7 +331,7 @@ public class LightEmitter extends SuperActor {
     }
 
     public enum LIGHT_RAY {
-        MOON, SUN, FIRE, MAGIC, SHADOW
+          FIRE, MOON, SUN, WHITE, MAGIC, SHADOW
     }
 
     @Override
@@ -357,7 +357,8 @@ public class LightEmitter extends SuperActor {
 
         @Override
         public boolean isAlphaFluctuationOn() {
-            return alphaAction.getTime() >= alphaAction.getDuration();
+            return true;
+//            return alphaAction.getTime() >= alphaAction.getDuration();
         }
     }
 

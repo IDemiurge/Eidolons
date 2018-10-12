@@ -71,6 +71,9 @@ public class NinePatchFactory {
         return new NinePatch(getOrCreateR(
          LIGHT_PANEL_FILLED_SMALL_PATH), 5, 5, 5, 5);
     }
+    public static NinePatchDrawable getLightPanelFilledSmallDrawable() {
+        return new NinePatchDrawable(getLightPanelFilledSmall());
+    }
     public static NinePatch getLightPanelFilled() {
         return new NinePatch(getOrCreateR(
          LIGHT_PANEL_FILLED_PATH), 10, 10, 10, 10);

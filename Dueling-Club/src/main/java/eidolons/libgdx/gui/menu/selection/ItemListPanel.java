@@ -16,7 +16,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -25,7 +25,6 @@ import main.entity.type.ObjType;
 import main.game.bf.directions.FACING_DIRECTION;
 import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.ListMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
@@ -86,7 +85,7 @@ public abstract class ItemListPanel extends TablePanel {
         TextButton button = getCache().get(sub);
 
         if (button == null || sub == null) {
-            button = new TextButtonX((sub.name),
+            button = new SmartButton((sub.name),
              StyleHolder.getTextButtonStyle(getButtonStyle(),
               getFontStyle(), getFontColor(), getFontSize())) {
 
@@ -283,7 +282,7 @@ public abstract class ItemListPanel extends TablePanel {
 
     public static class SelectableItemData {
         public static final String DEFAULT_SELECTED_BORDER = BORDER.NEO_INFO_SELECT_HIGHLIGHT.getImagePath();
-        public String previewImagePath;
+        public String fullsizeImagePath;
         public String description;
         String name;
         String imagePath;
@@ -296,8 +295,8 @@ public abstract class ItemListPanel extends TablePanel {
         private boolean selectionUnderneath;
 
         public SelectableItemData(String name,
-                                  String description, String previewImagePath, String imagePath) {
-            this.previewImagePath = previewImagePath;
+                                  String description, String fullsizeImagePath, String imagePath) {
+            this.fullsizeImagePath = fullsizeImagePath;
             this.description = description;
             this.name = name;
             this.imagePath = imagePath;
@@ -306,7 +305,7 @@ public abstract class ItemListPanel extends TablePanel {
         public SelectableItemData(Entity entity) {
             name = entity.getName();
             imagePath = entity.getImagePath();
-            previewImagePath = ImageManager.getFullSizeImage(entity);
+            fullsizeImagePath = ImageManager.getFullSizeImage(entity);
             description = entity.getDescription();
             this.entity = entity;
         }
@@ -320,7 +319,7 @@ public abstract class ItemListPanel extends TablePanel {
             this.entity = entity;
             imagePath=entity.getImagePath();
             description=entity.getDescription();
-            previewImagePath = StringMaster.getAppendedImageFile(entity.getImagePath(), " full", true);
+            fullsizeImagePath = ImageManager.getFullSizeImage(entity);
             emblem = entity.getEmblemPath();
         }
 
@@ -357,12 +356,12 @@ public abstract class ItemListPanel extends TablePanel {
             this.imagePath = imagePath;
         }
 
-        public String getPreviewImagePath() {
-            return previewImagePath;
+        public String getFullsizeImagePath() {
+            return fullsizeImagePath;
         }
 
-        public void setPreviewImagePath(String previewImagePath) {
-            this.previewImagePath = previewImagePath;
+        public void setFullsizeImagePath(String fullsizeImagePath) {
+            this.fullsizeImagePath = fullsizeImagePath;
         }
 
         public String getDescription() {

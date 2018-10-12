@@ -3,7 +3,7 @@ package eidolons.libgdx.gui.panels.headquarters.creation.selection.misc;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.headquarters.creation.HcElement;
 import eidolons.libgdx.gui.panels.headquarters.creation.HcHeroModel;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
@@ -31,8 +31,8 @@ public class HcFullPortraitPanel extends HcElement {
     private String current;
 
     public HcFullPortraitPanel() {
-        add(new TextButtonX("Previous", STD_BUTTON.MENU, () -> previous()));
-        add(new TextButtonX("Next", STD_BUTTON.MENU, () -> next())).row();
+        add(new SmartButton("Previous", STD_BUTTON.MENU, () -> previous()));
+        add(new SmartButton("Next", STD_BUTTON.MENU, () -> next())).row();
         add(new ImageContainer(Images.SEPARATOR)).colspan(2).row();
         add(portrait = new FadeImageContainer(getDefaultPortrait()) {
             @Override
@@ -46,7 +46,7 @@ public class HcFullPortraitPanel extends HcElement {
             }
         }).colspan(2).row();
         add(new ImageContainer(Images.SEPARATOR)).colspan(2).row();
-        add(new TextButtonX("Random", STD_BUTTON.MENU, () -> random())).colspan(2);
+        add(new SmartButton("Random", STD_BUTTON.MENU, () -> random())).colspan(2);
 
        update();
     }

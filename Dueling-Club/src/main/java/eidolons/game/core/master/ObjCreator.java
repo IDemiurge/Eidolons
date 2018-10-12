@@ -4,9 +4,7 @@ import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.Structure;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.game.DC_Game;
-import eidolons.game.module.dungeoncrawl.objects.ContainerObj;
-import eidolons.game.module.dungeoncrawl.objects.Door;
-import eidolons.game.module.dungeoncrawl.objects.LockObj;
+import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
 import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums;
@@ -82,7 +80,7 @@ public class ObjCreator extends Master {
             if (quest.getArg() instanceof ObjAtCoordinate) {
                 if (((ObjAtCoordinate) quest.getArg()).getType().equals(obj.getType())) {
                     if (((ObjAtCoordinate) quest.getArg()).getCoordinates().equals(obj.getCoordinates())) {
-                        quest.setArg(obj.getId());
+                        quest.setArg(obj );
                     }
 
                 }
@@ -123,6 +121,8 @@ public class ObjCreator extends Master {
          type.getProperty(G_PROPS.BF_OBJECT_GROUP));
         if (group != null) {
             switch (group) {
+                case HANGING: 
+                    return new InteractiveObj(type, x, y);
                 case DOOR:
                     return new Door(type, x, y, owner, getGame(), ref);
                 case LOCK:

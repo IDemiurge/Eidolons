@@ -5,7 +5,7 @@ import eidolons.game.core.EUtils;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
@@ -20,7 +20,7 @@ import main.system.GuiEventType;
 /**
  * Created by JustMe on 6/25/2018.
  */
-public class HcNameAndGenderPanel extends SelectionTable<TextButtonX> {
+public class HcNameAndGenderPanel extends SelectionTable<SmartButton> {
 
     public HcNameAndGenderPanel() {
         super(2, 36);
@@ -51,12 +51,12 @@ public class HcNameAndGenderPanel extends SelectionTable<TextButtonX> {
     public void init() {
         TablePanelX<Actor> upper = new TablePanelX<>();
         add(upper).colspan(wrap);
-        upper.add(new TextButtonX("Male",
+        upper.add(new SmartButton("Male",
          StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT, 22), () -> {
             HeroCreationMaster.modified(G_PROPS.GENDER, "Male");
             randomize();
         })).top();
-        upper.add(new TextButtonX("Female",
+        upper.add(new SmartButton("Female",
          StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT, 22), () -> {
             HeroCreationMaster.modified(G_PROPS.GENDER, "Female");
             randomize();
@@ -70,7 +70,7 @@ public class HcNameAndGenderPanel extends SelectionTable<TextButtonX> {
         super.init();
         add(new ImageContainer(Images.SEPARATOR)).colspan(wrap);
         row();
-        add(new TextButtonX("Randomize", STD_BUTTON.MENU, () -> randomize())).colspan(3);
+        add(new SmartButton("Randomize", STD_BUTTON.MENU, () -> randomize())).colspan(3);
     }
 
     protected int getDynamicWrap(int i) {
@@ -95,12 +95,12 @@ public class HcNameAndGenderPanel extends SelectionTable<TextButtonX> {
     }
 
     @Override
-    protected TextButtonX createElement(SelectableItemData datum) {
-        TextButtonX btn = new TextButtonX(datum.getName(), STD_BUTTON.HIGHLIGHT, () -> {
+    protected SmartButton createElement(SelectableItemData datum) {
+        SmartButton btn = new SmartButton(datum.getName(), STD_BUTTON.HIGHLIGHT, () -> {
         });
         btn.setRunnable(() -> {
             selected(datum);
-            for (TextButtonX actor : actors) {
+            for (SmartButton actor : actors) {
                 if (actor != btn)
                     actor.setChecked(false);
             }
@@ -126,7 +126,7 @@ public class HcNameAndGenderPanel extends SelectionTable<TextButtonX> {
 
 
     @Override
-    protected TextButtonX[] initActorArray() {
-        return new TextButtonX[size];
+    protected SmartButton[] initActorArray() {
+        return new SmartButton[size];
     }
 }

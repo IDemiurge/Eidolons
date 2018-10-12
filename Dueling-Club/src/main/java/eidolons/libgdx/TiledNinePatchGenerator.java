@@ -234,7 +234,7 @@ public class TiledNinePatchGenerator implements ApplicationListener {
     }
 
     public enum NINE_PATCH_PADDING {
-        SAURON(40, 30, 20, 20),;
+        SAURON(40, 30, 20, 20), FRAME(60, 60,55 ,55 );
         public int top;
         public int bottom;
         public int left;

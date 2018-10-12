@@ -11,6 +11,9 @@ import eidolons.libgdx.gui.panels.dc.inventory.InventoryClickHandlerImpl;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import main.content.DC_TYPE;
+import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_REMAINS;
+import main.data.DataManager;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -27,12 +30,23 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
     private final DC_Obj container;
     private String containerImagePath;
     private List<DC_HeroItemObj> items;
+    private CharSequence containerName;
 
     public ContainerClickHandler(
      String containerImagePath,
      List<DC_HeroItemObj> items, Unit unit, DC_Obj container) {
-        super(  HqDataMaster.getInstance(unit), HqDataMaster.getHeroModel(unit));
+        super(HqDataMaster.getInstance(unit), HqDataMaster.getHeroModel(unit));
         this.containerImagePath = containerImagePath;
+        this.containerName = container.getName();
+        if (container instanceof DC_Cell) {
+            this.containerName = "Dropped Items";
+            try {
+                this.containerImagePath = DataManager.getType(BF_OBJ_SUB_TYPES_REMAINS.REMAINS.getName(),
+                 DC_TYPE.BF_OBJ).getImagePath();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+        }
         this.items = items;
         this.container = container;
     }
@@ -66,7 +80,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 
     public void takeAllClicked() {
         for (DC_HeroItemObj item : new ArrayList<>(items)) {
-            if (item==null )
+            if (item == null)
                 continue;
             if (sim.isInventoryFull()) {
                 FloatingTextMaster.getInstance().createFloatingText(TEXT_CASES.DEFAULT,
@@ -74,7 +88,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
                 return;
             }
             items.remove(item);
-            if (container instanceof DC_Cell){
+            if (container instanceof DC_Cell) {
                 item.getGame().getDroppedItemManager().pickedUp(item);
             }
             dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
@@ -84,7 +98,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
 
     private void pickUp(DC_HeroItemObj item) {
         items.remove(item);
-        if (container instanceof DC_Cell){
+        if (container instanceof DC_Cell) {
             item.getGame().getDroppedItemManager().pickedUp(item);
         }
         dataMaster.operation(sim, HERO_OPERATION.PICK_UP, item);
@@ -111,7 +125,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         return containerImagePath;
     }
 
-    public void setContainerImagePath(String containerImagePath) {
-        this.containerImagePath = containerImagePath;
+    public CharSequence getContainerName() {
+        return containerName;
     }
+
 }

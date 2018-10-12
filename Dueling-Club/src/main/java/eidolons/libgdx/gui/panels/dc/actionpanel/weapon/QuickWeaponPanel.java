@@ -5,15 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.ActionInput;
-import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.controls.Clicker;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
-import eidolons.libgdx.gui.panels.TablePanel;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
+import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.unitinfo.tooltips.WeaponTooltip;
 import eidolons.libgdx.gui.tooltips.ScaleAndTextTooltip;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
@@ -29,7 +28,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * <p>
  * set default extra attacks
  */
-public class QuickWeaponPanel extends TablePanel {
+public class QuickWeaponPanel extends TablePanelX {
 
     protected static final float WEAPON_POS_X = 12;
     protected ImageContainer border;
@@ -37,7 +36,7 @@ public class QuickWeaponPanel extends TablePanel {
     protected ImageContainer background;
     protected WeaponDataSource dataSource;
     protected WeaponDataSource dataSourceAlt;
-    protected TextButtonX toggleUnarmed;
+    protected SmartButton toggleUnarmed;
     protected boolean unarmed;
     protected QuickAttackRadial radial;
     protected boolean offhand;
@@ -45,9 +44,9 @@ public class QuickWeaponPanel extends TablePanel {
     public QuickWeaponPanel(boolean offhand) {
         this.offhand = offhand;
         addActor(
- background = new ImageContainer(
-         StrPathBuilder.build(PathFinder.getComponentsPath(),
-          "dc", "quick weapon", "weapon background.png")));
+         background = new ImageContainer(
+          StrPathBuilder.build(PathFinder.getComponentsPath(),
+           "dc", "quick weapon", "weapon background.png")));
         addActor(weapon = new FadeImageContainer());
         String suffix = offhand ? " offhand" : "";
         addActor(border = new ImageContainer(
@@ -63,7 +62,7 @@ public class QuickWeaponPanel extends TablePanel {
         background.setPosition(10, 10);
         weapon.setPosition(WEAPON_POS_X, 0);
         weapon.setFadeDuration(0.2f);
-        addActor(toggleUnarmed = new TextButtonX(STD_BUTTON.UNARMED));
+        addActor(toggleUnarmed = new SmartButton(STD_BUTTON.UNARMED));
         pack();
         if (offhand)
             toggleUnarmed.setPosition(0, background.getHeight() - toggleUnarmed.getHeight() / 2);
@@ -182,15 +181,15 @@ public class QuickWeaponPanel extends TablePanel {
                     DC_ActiveObj attack = getDataSource().getOwnerObj().getAttackAction(offhand);
                     if (attack == null) {
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                                "Cannot attack with this!",
-                                attack.getOwnerObj());
+                         "Cannot attack with this!",
+                         attack.getOwnerObj());
                         return false;
                     }
-                    if (attack.getValidSubactions().isEmpty()){
+                    if (attack.getValidSubactions().isEmpty()) {
 
                         FloatingTextMaster.getInstance().createFloatingText(FloatingTextMaster.TEXT_CASES.REQUIREMENT,
-                                "Cannot make any attack with this!",
-                                attack.getOwnerObj());
+                         "Cannot make any attack with this!",
+                         attack.getOwnerObj());
                         return false;
                     }
                     attack.setAutoSelectionOn(true);

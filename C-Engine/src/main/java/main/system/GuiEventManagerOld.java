@@ -9,14 +9,15 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static main.system.GuiEventType.DISPOSE_TEXTURES;
 import static main.system.GuiEventType.SCREEN_LOADED;
 import static main.system.GuiEventType.SWITCH_SCREEN;
 
 public class GuiEventManagerOld {
-    private static final GuiEventType[] savedBindings = {
+    private static final GuiEventType[] savedBindings = new GuiEventType[]{
      SWITCH_SCREEN,
      SCREEN_LOADED,
-
+     DISPOSE_TEXTURES,
     };
     private static GuiEventManagerOld instance;
     private static boolean isInitialized;

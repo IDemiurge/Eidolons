@@ -12,14 +12,21 @@ import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 public class InventorySlotsPanel extends TablePanel {
 
     public static final int ROWS = 3;
-    public static final int COLUMNS = 7;
+    public static final int COLUMNS = 8;
     public static final int SIZE = ROWS * COLUMNS;
+    int rows;
+    int cols;
 
     public InventorySlotsPanel() {
-        setFixedSize(true);
-        setSize(COLUMNS * 64, ROWS * 64);
-        defaults().space(0);
+        this(ROWS, COLUMNS);
+    }
 
+    public InventorySlotsPanel(int rows, int cols) {
+        this.rows = rows;
+        this.cols = cols;
+            setFixedSize(true);
+            setSize(COLUMNS * 64, ROWS * 64);
+            defaults().space(0);
     }
 
     @Override
@@ -37,7 +44,7 @@ public class InventorySlotsPanel extends TablePanel {
             }
             add(valueContainer).size(64,64);
 //             .expand(0, 0) ;
-            if ((i + 1) % COLUMNS == 0) {
+            if ((i + 1) % cols == 0) {
                 row();
             }
         }

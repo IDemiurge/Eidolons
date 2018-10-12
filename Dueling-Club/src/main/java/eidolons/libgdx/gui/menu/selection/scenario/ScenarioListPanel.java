@@ -21,7 +21,7 @@ public class ScenarioListPanel extends ItemListPanel {
             SelectableItemData item = new SelectableItemData(sub);
             list.add(item);
             item.setDescription(HelpMaster.getScenarioInfoText(item.getName(), null));
-            item.setPreviewImagePath(item.getEntity().getProperty(G_PROPS.FULLSIZE_IMAGE));
+            item.setFullsizeImagePath(item.getEntity().getProperty(G_PROPS.FULLSIZE_IMAGE));
         }
 
         return list;

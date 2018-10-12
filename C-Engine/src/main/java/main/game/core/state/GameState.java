@@ -36,7 +36,7 @@ public abstract class GameState {
     protected DequeImpl<Trigger> triggers = new DequeImpl<>();
     protected DequeImpl<Effect> effects = new DequeImpl<>();
     protected DequeImpl<Attachment> attachments = new DequeImpl<>();
-    //TODO remove spaghetti!
+    //TODO remove spaghetti! who aggregates whom?!
     protected StateManager manager;
     protected Game game;
     private int round = ROUND_NOT_SET;

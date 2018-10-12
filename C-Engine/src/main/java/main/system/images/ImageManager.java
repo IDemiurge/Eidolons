@@ -1235,10 +1235,18 @@ public class ImageManager {
         String path = StringMaster.cropFormat(entity.getImagePath()) + " full" + format;
         if (isImage(path))
             return path;
-        return entity.getImagePath();
+        return null;
 
     }
 
+    public static String getLargeImage(Entity entity) {
+        String format = StringMaster.getFormat(entity.getImagePath());
+        String path = StringMaster.cropFormat(entity.getImagePath()) + " large" + format;
+        if (isImage(path))
+            return path;
+        return null;
+
+    }
     public enum ALIGNMENT {
         NORTH, SOUTH, EAST, WEST, CENTER, NORTH_WEST, SOUTH_EAST, NORTH_EAST, SOUTH_WEST
     }

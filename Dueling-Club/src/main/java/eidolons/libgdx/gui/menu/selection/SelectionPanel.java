@@ -10,7 +10,7 @@ import eidolons.libgdx.GDX;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
@@ -33,8 +33,8 @@ import java.util.List;
 public abstract class SelectionPanel extends TablePanel {
     protected ItemListPanel listPanel;
     protected SelectableItemDisplayer infoPanel;
-    protected TextButtonX backButton;
-    protected TextButtonX startButton;
+    protected SmartButton backButton;
+    protected SmartButton startButton;
     protected SelectionInputListener listener;
     Label title;
 
@@ -48,8 +48,8 @@ public abstract class SelectionPanel extends TablePanel {
         infoPanel = createInfoPanel();
         title = new Label(getTitle(), StyleHolder.getSizedLabelStyle(FONT.METAMORPH, 20));
         listPanel.setInfoPanel(infoPanel);
-        backButton = new TextButtonX(STD_BUTTON.CANCEL, () -> cancel());
-        startButton = new TextButtonX(getDoneText(), STD_BUTTON.MENU, () -> tryDone());
+        backButton = new SmartButton(STD_BUTTON.CANCEL, () -> cancel());
+        startButton = new SmartButton(getDoneText(), STD_BUTTON.MENU, () -> tryDone());
 
         listPanel.addActor(title); //trick for pos
         title.pack();
@@ -126,6 +126,8 @@ public abstract class SelectionPanel extends TablePanel {
         listener = new SelectionInputListener(this);
 
         startButton.setY(GdxMaster.getHeight() / 2 - infoPanel.getActor().getHeight() / 2 + 80);
+
+        if (isAutoDoneEnabled())
         if (CoreEngine.isMacro()
          || ListMaster.isNotEmpty(MainLauncher.presetNumbers)) {
             listPanel.updateAct(0);
@@ -135,6 +137,7 @@ public abstract class SelectionPanel extends TablePanel {
 
     @Override
     public void setStage(Stage stage) {
+        if (listener!=null )
         if (stage != null) {
             stage.addListener(listener);
         } else {

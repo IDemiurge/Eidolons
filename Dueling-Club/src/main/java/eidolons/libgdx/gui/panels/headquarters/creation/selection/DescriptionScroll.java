@@ -133,13 +133,13 @@ public class DescriptionScroll extends TablePanelX {
         title.setText(data.getName());
         description.setText(data.getDescription());
         if (isPreviewsOn()) {
-            preview.setImage(data.getPreviewImagePath());
+            preview.setImage(data.getFullsizeImagePath());
             if (ImageManager.isImage(data.getImagePath()))
                 preview2.setImage(data.getImagePath());
             else
                 preview2.setImage(
                  StringMaster.getAppendedImageFile(
-                  data.getPreviewImagePath(), " alt", true));
+                  data.getFullsizeImagePath(), " alt", true));
 
         }
         super.updateAct(delta);

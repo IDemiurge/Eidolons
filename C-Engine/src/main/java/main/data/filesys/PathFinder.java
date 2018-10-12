@@ -433,4 +433,17 @@ public class PathFinder {
              "hit");
         return spritesPath;
     }
+    public static String getTargetingCursorPath() {
+        return StrPathBuilder.build(getImagePath(), getUiPath(),
+         "cursor target.png");
+    }
+    public static String getLoadingCursorPath() {
+        return StrPathBuilder.build(getImagePath(), getUiPath(),
+         "cursor loading.png");
+    }
+
+    public static String getCursorPath() {
+        return StrPathBuilder.build(getImagePath(), getUiPath(),
+         "cursor.png");
+    }
 }

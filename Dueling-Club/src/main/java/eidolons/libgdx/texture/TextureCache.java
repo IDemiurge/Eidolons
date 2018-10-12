@@ -10,6 +10,8 @@ import eidolons.libgdx.GdxImageMaster;
 import eidolons.libgdx.GdxMaster;
 import eidolons.system.graphics.GreyscaleUtils;
 import main.data.filesys.PathFinder;
+import main.system.GuiEventManager;
+import main.system.GuiEventType;
 import main.system.PathUtils;
 import main.system.auxiliary.ContainerUtils;
 import main.system.auxiliary.StrPathBuilder;
@@ -29,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class TextureCache {
     private static final boolean atlasesOn = false;
-    private static final boolean uiAtlasesOn = !CoreEngine.isFastMode();
+    private static final boolean uiAtlasesOn = CoreEngine.isJar();
     private static TextureCache instance;
     private static Lock creationLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
@@ -46,7 +48,6 @@ public class TextureCache {
     private SmartTextureAtlas genAtlas;
     private Pattern pattern;
 
-
     private TextureCache() {
         this.imagePath = PathFinder.getImagePath();
         this.cache = new HashMap<>();
@@ -62,6 +63,23 @@ public class TextureCache {
         }
 
         pattern = Pattern.compile("^.*[/\\\\]([a-z _\\-0-9]*)\\..*$");
+
+        GuiEventManager.bind(GuiEventType.DISPOSE_TEXTURES, p -> {
+            dispose();
+        });
+    }
+
+    private static boolean checkRetainTexture(String s) {
+        String prefix = PathUtils.getPathSegments(s).get(0).toLowerCase();
+        switch (prefix) {
+            case "ui":
+            case "vfx":
+            case "sprites":
+            case "demo":
+                return true;
+        }
+        //        prefix = PathUtils.getPathSegments(s).get(1).toLowerCase();
+        return false;
     }
 
     private static void init() {
@@ -109,7 +127,8 @@ public class TextureCache {
     public static TextureRegion getOrCreateR(String path) {
         return getOrCreateR(path, false);
     }
-        public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas) {
+
+    public static TextureRegion getOrCreateR(String path, boolean overrideNoAtlas) {
 
         if (path == null) {
             main.system.auxiliary.log.LogMaster.log(1, "EMPTY TEXTURE REGION REQUEST!");
@@ -131,8 +150,7 @@ public class TextureCache {
              (PathUtils.getPathSegments(name), "/");
             name = name.substring(0, name.length() - 1);
 
-            if (atlasesOn && !overrideNoAtlas)
-            {
+            if (atlasesOn && !overrideNoAtlas) {
                 region = getInstance().uiAtlas.findRegion(name);
                 if (region == null) {
                     region = getInstance().mainAtlas.findRegion(name);
@@ -162,10 +180,10 @@ public class TextureCache {
     }
 
     private static boolean checkOverrideNoAtlas(TextureRegion region, String path) {
-        if (region.getRegionWidth()>2000) {
+        if (region.getRegionWidth() > 2000) {
             return true;
         }
-        if (region.getRegionHeight()>2000) {
+        if (region.getRegionHeight() > 2000) {
             return true;
         }
         String name = StringMaster.getLastPathSegment(path).toLowerCase();
@@ -276,6 +294,25 @@ public class TextureCache {
         return instance;
     }
 
+    public static boolean isImage(String property) {
+        if (!GdxMaster.isLwjglThread())
+            return ImageManager.isImage(property);
+        if (!isReturnEmptyOnFail())
+            return getOrCreate(property) != null;
+        return getOrCreate(property) != emptyTexture;
+    }
+
+    public void dispose() {
+        for (String s : cache.keySet()) {
+            if (checkRetainTexture(s))
+                continue;
+
+            cache.get(s).dispose();
+            cache.remove(s);
+
+        }
+    }
+
     private String getAltTexturePath(String filePath) {
         return filePath.replace(StrPathBuilder.build("gen", "entity"), StrPathBuilder.build("main"));
     }
@@ -382,14 +419,6 @@ public class TextureCache {
         TextureRegion r = new TextureRegion(texture);
         regionCache.put(path, r);
         return r;
-    }
-
-    public static boolean isImage(String property) {
-        if (!GdxMaster.isLwjglThread())
-            return ImageManager.isImage(property);
-        if (!isReturnEmptyOnFail())
-            return getOrCreate(property) != null;
-        return getOrCreate(property) != emptyTexture;
     }
 }
 

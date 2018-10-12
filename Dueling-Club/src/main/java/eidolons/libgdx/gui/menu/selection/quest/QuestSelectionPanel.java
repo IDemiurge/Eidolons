@@ -5,7 +5,6 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.menu.selection.SelectionPanel;
 import main.entity.Entity;
-import main.entity.type.ObjType;
 import main.system.threading.WaitMaster.WAIT_OPERATIONS;
 
 import java.util.List;
@@ -39,10 +38,6 @@ public class QuestSelectionPanel extends SelectionPanel {
     @Override
     public WAIT_OPERATIONS getWaitOperation() {
         return WAIT_OPERATION;
-    }
-
-    protected void questChosen(ObjType type) {
-
     }
 
     @Override

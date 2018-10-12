@@ -14,7 +14,6 @@ import main.system.PathUtils;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
-import main.system.launch.CoreEngine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +34,8 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     public ParticleEffectX(String path) {
         this.path = path;
 
+        if (broken.contains(path))
+            return;
         if (isEmitterAtlasesOn()) {
             FileHandle presetFile = Gdx.files.internal(  path);
             if (!presetFile.exists())
@@ -44,6 +45,7 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
                 load(presetFile, getEmitterAtlas());
                 return;
             } catch (Exception e) {
+                broken.add(path);
                 e.printStackTrace();
             }
         }
@@ -111,10 +113,8 @@ public class ParticleEffectX extends com.badlogic.gdx.graphics.g2d.ParticleEffec
     }
 
     public void loadEmitters(FileHandle effectFile) {
-        if (CoreEngine.isMacro())
+//        if (CoreEngine.isMacro())
         if (!effectFile.exists()){
-            if (broken.contains(effectFile.path()))
-                return;
             broken.add(effectFile.path());
             main.system.auxiliary.log.LogMaster.log(1,"no such emitter preset: " +effectFile.path());
             return;

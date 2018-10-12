@@ -31,6 +31,11 @@ public class RngSelectionPanel extends ScenarioSelectionPanel {
     }
 
     @Override
+    protected ItemListPanel createListPanel() {
+        return new RngListPanel();
+    }
+
+    @Override
     protected ItemInfoPanel createInfoPanel() {
         return new RngInfoPanel(null);
     }

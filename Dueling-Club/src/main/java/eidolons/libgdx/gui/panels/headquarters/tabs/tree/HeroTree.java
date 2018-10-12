@@ -10,7 +10,7 @@ import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.HqElement;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationWorkspace;
@@ -77,7 +77,7 @@ public abstract class HeroTree<N extends HtNode, N2 extends HtNode>
             add(rowContainer);
             row();
         }
-        add(new TextButtonX("Weave", STD_BUTTON.MENU, () -> WeaveMaster.openWeave()));
+        add(new SmartButton("Weave", STD_BUTTON.MENU, () -> WeaveMaster.openWeave()));
     }
 
     @Override

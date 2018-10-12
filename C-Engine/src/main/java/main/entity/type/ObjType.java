@@ -77,6 +77,16 @@ public class ObjType extends Entity {
         return (type != null) ? type : this;
     }
 
+    public boolean equalsAsBaseType(Object obj) {
+        if (super.equals(obj))
+            return true;
+        if (obj instanceof ObjType) {
+            return ((ObjType) obj).getName().equals(getName());
+
+        }
+        return false;
+    }
+
     @Override
     public void setRef(Ref ref) {
         this.ref = ref;

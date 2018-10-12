@@ -12,6 +12,14 @@ import java.util.List;
 
 /**
  * Created by JustMe on 9/23/2017.
+ *
+ * Nevers loses sight of the X that it's guarding! or maybe with y%
+ *
+ * idle => sleep ...
+ *
+ * create a limited pool of positions and go thru them...
+ *
+ *
  */
 public class GuardAi extends AiBehavior {
 

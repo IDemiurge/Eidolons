@@ -6,6 +6,7 @@ import main.elements.conditions.Condition;
 import main.elements.conditions.ObjComparison;
 import main.elements.triggers.Trigger;
 import main.entity.Ref.KEYS;
+import main.entity.obj.Obj;
 import main.game.logic.event.Event.EVENT_TYPE;
 import main.game.logic.event.Event.STANDARD_EVENT_TYPE;
 import main.system.GuiEventManager;
@@ -28,7 +29,7 @@ public class QuestResolver  extends QuestHandler{
 
     public   void questTaken(DungeonQuest quest){
 
-        Runnable runnable = getRunnable(quest);
+        Runnable runnable = getCompletionRunnable(quest);
         EVENT_TYPE event = getEvent(quest);
         Condition condition = getConditions(quest);
         Trigger trigger = new Trigger(event, condition);
@@ -37,7 +38,7 @@ public class QuestResolver  extends QuestHandler{
         Eidolons.getGame().getState().addTrigger(trigger);
 
         condition = getUpdateConditions(quest);
-        Trigger updateTrigger= new Trigger(event, condition);
+        Trigger updateTrigger= new QuestTrigger(event, condition);
         updateTrigger.setRemoveAfterTriggers(false);
         updateTrigger.setCallback(()->{
             quest.numberAchieved++;
@@ -47,19 +48,21 @@ public class QuestResolver  extends QuestHandler{
 
         Eidolons.getGame().getState().addTrigger(updateTrigger);
 
-        GuiEventManager.trigger(GuiEventType.QUEST_STARTED, quest);
     }
 
     private Condition getUpdateConditions(DungeonQuest quest) {
         switch (quest.getType()) {
             case BOSS:
-                return new ObjComparison((Integer) quest.getArg(), KEYS.TARGET.name());
+                return new ObjComparison(()->(Integer) quest.getArg(), KEYS.TARGET.name());
+            case HUNT:
+                return new DynamicCondition<Obj>(obj ->
+             (obj.getType()).equalsAsBaseType(quest.getArg()));
         }
 
         return null;
     }
     private Condition getConditions(DungeonQuest quest) {
-        new DynamicCondition<>(q -> {
+       return new DynamicCondition<>(q -> {
             if (q.getNumberRequired() <=
              q.getNumberAchieved())
                 return true;
@@ -67,7 +70,6 @@ public class QuestResolver  extends QuestHandler{
             return false;
         }, quest);
 
-        return null;
     }
 
     private EVENT_TYPE getEvent(DungeonQuest quest) {
@@ -83,7 +85,7 @@ public class QuestResolver  extends QuestHandler{
         return null;
     }
 
-    private Runnable getRunnable(DungeonQuest quest) {
+    private Runnable getCompletionRunnable(DungeonQuest quest) {
         QuestReward reward = quest.getReward();
         return () -> {
             GuiEventManager.trigger(GuiEventType.QUEST_ENDED, quest);

@@ -90,16 +90,23 @@ public class QuestCreator extends QuestHandler {
         return 0;
     }
 
-    public static ObjType getBossType(int powerLevel, DungeonQuest quest,
+    public static ObjType getQuestUnitType(int powerLevel,float powerRange, DungeonQuest quest,
                                       DUNGEON_STYLE style) {
+
+
         List<ObjType> pool = null;
         while (new Loop(20).continues()) {
             UNIT_GROUP unitGroup = RngMainSpawner.getUnitGroup(false, style);
             pool = DataManager.getFilteredTypes(DC_TYPE.UNITS,
              unitGroup.toString(), G_PROPS.UNIT_GROUP);
 
-            pool.removeIf(type -> Math.abs(1 -
-             type.getIntParam(PARAMS.POWER) / powerLevel) > 0.5f);
+            if (powerRange < 0) {
+                pool.removeIf(type ->
+                 (1 -type.getIntParam(PARAMS.POWER))/powerLevel < powerRange);
+            } else {
+                pool.removeIf(type -> Math.abs(1 -
+                 type.getIntParam(PARAMS.POWER) / powerLevel) > powerRange);
+            }
 
             if (!pool.isEmpty()) {
                 break;
@@ -110,8 +117,16 @@ public class QuestCreator extends QuestHandler {
          type -> type.getIntParam(PARAMS.POWER));
         return pool.get(0);
     }
-
+    public static ObjType getBossType(int powerLevel, DungeonQuest quest,
+                                      DUNGEON_STYLE style) {
+        return getQuestUnitType(powerLevel, 0.5f, quest, style);
+    }
+    public static ObjType getPreyType(int powerLevel, DungeonQuest quest,
+                                      DUNGEON_STYLE style) {
+        return getQuestUnitType(powerLevel, -0.25f, quest, style);
+    }
     public DungeonQuest create(ObjType result) {
         return new DungeonQuest(result);
     }
+
 }

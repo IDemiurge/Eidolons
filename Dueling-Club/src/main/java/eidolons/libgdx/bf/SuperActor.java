@@ -24,7 +24,6 @@ public abstract class SuperActor extends GroupX implements Borderable {
     public static final float DEFAULT_ALPHA_MIN = 0.2f;
     public static final float DEFAULT_ALPHA_MAX = 1f;
     protected static boolean alphaFluctuationOn = true;
-    private static boolean cullingOff;
     protected Image border = null;
     protected TextureRegion borderTexture;
     protected float fluctuatingAlpha = 1f;
@@ -51,14 +50,6 @@ public abstract class SuperActor extends GroupX implements Borderable {
 
     public SuperActor(ALPHA_TEMPLATE alphaTemplate) {
         setAlphaTemplate(alphaTemplate);
-    }
-
-    public static boolean isCullingOff() {
-        return cullingOff;
-    }
-
-    public static void setCullingOff(boolean cullingOff) {
-        SuperActor.cullingOff = cullingOff;
     }
 
     public void setAlphaTemplate(ALPHA_TEMPLATE alphaTemplate) {
@@ -128,8 +119,6 @@ public abstract class SuperActor extends GroupX implements Borderable {
             return true;
         //        if (getColor().a == 0)
         //            return true; TODO why was this here?.. not to draw?
-        if (isCullingOff())
-            return false;
         return !isWithinCamera();
     }
 
@@ -180,7 +169,7 @@ public abstract class SuperActor extends GroupX implements Borderable {
     @Override
     public void act(float delta) {
         //        if (isIgnored())
-        //            return;
+        //            return; do it in implementations!
         if (isTransform()) {
             if (isTransformDisabled())
                 setTransform(false);
@@ -404,6 +393,8 @@ public abstract class SuperActor extends GroupX implements Borderable {
         CLOUD(0.2f, 0, 2, 0.2f, 0.05f, 1f),
         HIGHLIGHT(0.15f, 0, 1, 0.1f, 0.15f, 1f),
         HIGHLIGHT_MAP(0.1f, 0, 1, 0.4f, 0.75f, 1f),
+
+        SHARD_OVERLAY(0.3f, 0.5F, 1, 0.3f, 0.75f, 1f),
 
         VIGNETTE(0.1f, 1, 0, 0.3f, 0.4f, 1f),
         ATB_POS(0.4f, 0, 0.5F, 0.2f, 0.6f, 1f),

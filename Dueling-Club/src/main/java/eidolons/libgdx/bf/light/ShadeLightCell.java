@@ -30,7 +30,6 @@ import main.entity.obj.Obj;
 import main.game.bf.directions.DIRECTION;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.RandomWizard;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 
 import java.awt.*;
@@ -82,9 +81,6 @@ public class ShadeLightCell extends SuperContainer {
     private static String getTexturePath(SHADE_CELL type, Object arg) {
         switch (type) {
             //                    TODO varied enough already?
-            case SHARDS:
-                String path = StringMaster.cropFormat(type.getTexturePath());
-                return path + " "+ arg  + ".png";
             case VOID:
                 return FileManager.getRandomFilePathVariant(
                  PathFinder.getImagePath(),

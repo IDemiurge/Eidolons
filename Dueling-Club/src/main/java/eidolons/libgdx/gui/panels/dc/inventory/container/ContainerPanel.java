@@ -1,28 +1,32 @@
 package eidolons.libgdx.gui.panels.dc.inventory.container;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import eidolons.ability.InventoryTransactionManager;
 import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH_PADDING;
+import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.LabelX;
+import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.dc.inventory.InventorySlotsPanel;
 import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.stage.Blocking;
 import eidolons.libgdx.stage.StageWithClosable;
-import eidolons.libgdx.texture.TextureCache;
 import main.system.GuiEventManager;
 import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.StringMaster;
+import main.system.graphics.FontMaster.FONT;
 import main.system.threading.WaitMaster;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,13 +38,14 @@ import static main.system.GuiEventType.SHOW_LOOT_PANEL;
  */
 public class ContainerPanel extends TablePanel implements Blocking {
 
-    Image portrait;
     private InventorySlotsPanel inventorySlotsPanel;
     private InventorySlotsPanel containerSlotsPanel;
-    private Image container;
-    private TextButtonX takeAllButton;
-    private LabelX playerLabel;
+    private FadeImageContainer portrait;
+    private FadeImageContainer container;
+    private SmartButton takeAllButton;
+    private LabelX heroLabel;
     private LabelX containerLabel;
+    private ValueContainer weightText;
 
     public ContainerPanel() {
         initListeners();
@@ -50,31 +55,22 @@ public class ContainerPanel extends TablePanel implements Blocking {
     public void clear() {
 
     }
-public enum ITEM_FILTERS{
-        ALL,
-    WEAPON,
-    ARMOR,
-    USABLE,
-    JEWELRY,
-    QUEST
-}
+
     private void initListeners() {
         clear();
-        setSize(800, 500);
-        addActor(
-         new Image(TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
-         BACKGROUND_NINE_PATCH.PATTERN, 800, 500)));
+
+        setBackground(new TextureRegionDrawable(new TextureRegion(
+         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON,
+          BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSizeBySquareRoot(900),
+          (int) GdxMaster.adjustSizeBySquareRoot(600)))));
 
         pad(NINE_PATCH_PADDING.SAURON);
 
-        inventorySlotsPanel = new InventorySlotsPanel();
-        containerSlotsPanel = new InventorySlotsPanel();
-
-        portrait = new Image();
-        container = new Image();
+        inventorySlotsPanel = new InventorySlotsPanel(4, 6);
+        containerSlotsPanel = new InventorySlotsPanel(4, 6);
 
         TablePanelX upper = new TablePanelX<>();
-        TablePanelX middle= new TablePanelX<>();
+        TablePanelX middle = new TablePanelX<>();
         TablePanelX lower = new TablePanelX<>();
 
         addElement(upper).pad(0, 30, 20, 20).row();
@@ -85,27 +81,43 @@ public enum ITEM_FILTERS{
         TablePanelX upperRight = new TablePanelX<>();
 
         upper.add(upperLeft);
+        upper.addEmpty((int) GdxMaster.adjustWidth(100), 100);
         upper.add(upperRight);
-        upperLeft.add(portrait).left().left().top();
-        upperLeft.add(playerLabel=new LabelX("", 20)).top();
 
-        upperRight.add(container).left().right().top();
-        upperRight.add(containerLabel=new LabelX("", 20)).top();
+        upperLeft.add(portrait = new FadeImageContainer()).left().left().top();
+        upperLeft.add(heroLabel = new LabelX("", 20)).top().right().colspan(2);
+
+        upperRight.add(containerLabel = new LabelX("", 20)).top().left().colspan(2);
+        upperRight.add(container = new FadeImageContainer()).right().top();
 
         TablePanelX filters = new TablePanelX<>();
         for (ITEM_FILTERS filter : ITEM_FILTERS.values()) {
-            filters.add(new TextButtonX(getButtonStyle(filter),
+            filters.add(new SmartButton(getButtonStyle(filter),
              () -> applyFilter(filter))).row();
         }
 
         middle.addElement(inventorySlotsPanel).left();
-        middle.addElement(filters).center();
+        middle.addElement(filters).center().width(GdxMaster.adjustWidth(100));
         middle.addElement(containerSlotsPanel).right();
 
 
-        takeAllButton =  new TextButtonX(
-         "Take All", StyleHolder.getHqTextButtonStyle(20), ()-> takeAll()) ;
-        add(takeAllButton);
+//        lower.add(heroInfo);
+//        ValueContainer controls = new ValueContainer(
+//         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1400),
+//         header,
+//         "\n**Drag'n'drop is [ON]**\n" +
+//          "[Right click]: unequip or drop onto the ground\n" +
+//          "[Double left-click]: default equip \n" +
+//          "[Alt-Click]: equip weapon in quick slot \n");
+//        controls.setBackground(NinePatchFactory.getLightPanelDrawable());
+
+        lower.add(weightText = new ValueContainer(
+         StyleHolder.getSizedLabelStyle(FONT.MAIN, 1800),
+         "Weight: ", "")).left().fillX().growX();
+
+        takeAllButton = new SmartButton(
+         "Take All", StyleHolder.getHqTextButtonStyle(20), () -> takeAll());
+        lower.add(takeAllButton).colspan(2). right().fillX().growX();
 
         GuiEventManager.bind(SHOW_LOOT_PANEL, (obj) -> {
             final Pair<InventoryDataSource, ContainerDataSource> param = (Pair<InventoryDataSource, ContainerDataSource>) obj.get();
@@ -114,18 +126,20 @@ public enum ITEM_FILTERS{
             } else {
                 open();
 
-                ContainerDataSource dataSource =
-                 (ContainerDataSource) getUserObject();
+                ContainerDataSource dataSource = param.getValue();
                 setUserObject(dataSource);
-                inventorySlotsPanel.setUserObject(dataSource);
-                containerSlotsPanel.setUserObject(param.getValue());
+                inventorySlotsPanel.setUserObject(param.getKey());
+
                 if (containerSlotsPanel.getListeners().size > 0)
                     inventorySlotsPanel.addListener(containerSlotsPanel.getListeners().first());
 
-                portrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
-                 StringMaster.getAppendedImageFile(
-                  dataSource.getHandler().getContainerImagePath(), ContainerMaster.OPEN)));
+                container.setImage(StringMaster.getAppendedImageFile(
+                 dataSource.getHandler().getContainerImagePath(), ContainerMaster.OPEN));
+                containerLabel.setText(dataSource.getHandler().getContainerName());
 
+                portrait.setImage(param.getKey().getUnit().getImagePath());
+                heroLabel.setText(param.getKey().getUnit().getName());
+                weightText.setValueText(param.getKey().getWeightInfo());
             }
         });
 
@@ -166,10 +180,9 @@ public enum ITEM_FILTERS{
 
     private void takeAll() {
         ContainerDataSource dataSource =
-         (ContainerDataSource)containerSlotsPanel. getUserObject();
+         (ContainerDataSource) containerSlotsPanel.getUserObject();
         dataSource.getHandler().takeAllClicked();
     }
-
 
     @Override
     public StageWithClosable getStageWithClosable() {
@@ -193,5 +206,14 @@ public enum ITEM_FILTERS{
     public void afterUpdateAct(float delta) {
         clear();
 
+    }
+
+    public enum ITEM_FILTERS {
+        ALL,
+        WEAPONS,
+        ARMOR,
+        USABLE,
+        JEWELRY,
+        QUEST
     }
 }

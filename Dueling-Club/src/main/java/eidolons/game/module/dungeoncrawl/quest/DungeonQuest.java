@@ -12,6 +12,7 @@ import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.StringMaster;
 
 /**
  * Created by JustMe on 10/5/2018.
@@ -24,8 +25,8 @@ public class DungeonQuest {
     private String progressTextTemplate;
 
     private  Integer timeLeft;
-    protected  Integer numberRequired;
-    protected   Integer numberAchieved;
+    protected  Integer numberRequired=0;
+    protected   Integer numberAchieved=0;
 
     private QuestReward reward;
     private QUEST_GROUP group;
@@ -36,6 +37,7 @@ public class DungeonQuest {
     LOCATION_TYPE locationType;
     private boolean complete;
     private Coordinates coordinate;
+    private String image;
 
     public DungeonQuest(ObjType type) {
         initValues(type);
@@ -46,16 +48,38 @@ public class DungeonQuest {
 
     public void update() {
         progressText = VariableManager.substitute(progressTextTemplate,
-         numberAchieved,
-         numberRequired,
+         getNumberTooltip(),
+         getDescriptor(),
          timeLeft
         );
         GuiEventManager.trigger(GuiEventType.QUEST_UPDATE, this);
     }
 
+    private String getNumberTooltip() {
+        if (numberRequired== 0 ){
+            return null;
+        }
+        return StringMaster.wrapInBraces(
+        numberAchieved+ " / "+
+         numberRequired);
+    }
+
+    private String getDescriptor() {
+        switch (type) {
+            case BOSS:
+            case HUNT:
+            case FIND:
+                return StringMaster.toStringForm(arg);
+            case ESCAPE:
+                break;
+        }
+        return null;
+    }
+
 
     private void initValues(ObjType type) {
         this.title = type.getName();
+        this.image = type.getImagePath();
         this.description = type.getDescription();
         this. progressTextTemplate = type.getProperty(G_PROPS.TOOLTIP);
         if (type.checkProperty(MACRO_PROPS.QUEST_TIME_LIMIT)){
@@ -89,6 +113,7 @@ public class DungeonQuest {
 
     public void setArg(Object arg) {
         this.arg = arg;
+        update();
     }
 
     public Object getArg() {
@@ -115,6 +140,10 @@ public class DungeonQuest {
         return numberRequired;
     }
 
+    public void setNumberRequired(Integer numberRequired) {
+        this.numberRequired = numberRequired;
+    }
+
     public Integer getNumberAchieved() {
         return numberAchieved;
     }
@@ -137,5 +166,13 @@ public class DungeonQuest {
 
     public void setCoordinate(Coordinates coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

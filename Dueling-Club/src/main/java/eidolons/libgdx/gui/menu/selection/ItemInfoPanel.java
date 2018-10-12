@@ -15,6 +15,7 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.texture.TextureCache;
 import main.system.auxiliary.StrPathBuilder;
+import main.system.auxiliary.StringMaster;
 import main.system.graphics.FontMaster.FONT;
 import main.system.images.ImageManager;
 
@@ -140,16 +141,16 @@ public class ItemInfoPanel extends TablePanel implements SelectableItemDisplayer
             return;
         super.updateAct(delta);
         description.setText(item.description);
-        if (item.imagePath == null)
+        if (StringMaster.isEmpty(item.imagePath))
             preview.setDrawable(null);
         else
             preview.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(item.imagePath));
 
-        if (item.previewImagePath == null)
+        if (item.fullsizeImagePath == null)
             fullsizePortrait.setDrawable(null);
         else
             fullsizePortrait.setDrawable(TextureCache.getOrCreateTextureRegionDrawable(
-             item.previewImagePath));
+             item.fullsizeImagePath));
 
         title.setText(getTitle());
         pack();

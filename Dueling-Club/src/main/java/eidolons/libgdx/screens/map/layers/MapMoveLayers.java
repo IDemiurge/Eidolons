@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
-import eidolons.libgdx.particles.EMITTER_PRESET;
-import eidolons.macro.MacroGame;
 import eidolons.libgdx.anims.ActorMaster;
-import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
+import eidolons.libgdx.particles.EMITTER_PRESET;
+import eidolons.libgdx.particles.EmitterActor;
 import eidolons.libgdx.screens.map.MapScreen;
+import eidolons.macro.MacroGame;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.game.bf.Coordinates;
 import main.game.bf.directions.DIRECTION;
@@ -40,21 +40,21 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         LIGHT_SPREAD.tinted = false;
         LIGHT_SPREAD_GOLDEN.tinted = false;
         LIGHT_SPREAD_SILVER.tinted = false;
-//        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
-//         DAY_TIME.MIDDAY, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
-//        };
+        //        MAP_MOVING_LAYER_TYPE.CLOUD_LARGE.times = new DAY_TIME[]{
+        //         DAY_TIME.MIDDAY, DAY_TIME.NIGHTFALL, DAY_TIME.MIDNIGHT, DAY_TIME.MORNING
+        //        };
 
         if (SNOW_ON) {
-        CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
-        CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
-        CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
-        CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
+            CLOUD_HEAVY.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
+            CLOUD_LARGE.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
+            CLOUD_LIGHT.setEmitterPaths(EMITTER_PRESET.SNOW.getPath());
+            CLOUD.setEmitterPaths(EMITTER_PRESET.SNOW_TIGHT2.getPath());
         }
 
         LIGHT_SPREAD_SILVER.areaGroup = MAP_AREA_GROUP.PEAK;
         LIGHT_SPREAD_GOLDEN.areaGroup = MAP_AREA_GROUP.PEAK;
         LIGHT_SPREAD.areaGroup = MAP_AREA_GROUP.PEAK;
-//
+        //
         LIGHT_SPREAD_SILVER.alphaTemplate = ALPHA_TEMPLATE.LIGHT;
         LIGHT_SPREAD.alphaTemplate = ALPHA_TEMPLATE.LIGHT;
         LIGHT_SPREAD_GOLDEN.alphaTemplate = ALPHA_TEMPLATE.LIGHT;
@@ -69,18 +69,18 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         LIGHT_SPREAD.spawnAreas = new MAP_AREA[]{
          MAP_AREA.BEYOND_EAST
         };
-//        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN.spawnAreas = new MAP_AREA[]{
-//         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-////         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
-//        };
-//        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED.spawnAreas = new MAP_AREA[]{
-////         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-//         MAP_AREA.BEYOND_EAST, MAP_AREA.BEYOND_SOUTH_EAST, MAP_AREA.BEYOND_NORTH_EAST,
-//        };
-//        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED.spawnAreas = new MAP_AREA[]{
-//         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
-//         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
-//        };
+        //        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN.spawnAreas = new MAP_AREA[]{
+        //         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+        ////         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        //        };
+        //        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_GOLDEN_SPECKLED.spawnAreas = new MAP_AREA[]{
+        ////         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+        //         MAP_AREA.BEYOND_EAST, MAP_AREA.BEYOND_SOUTH_EAST, MAP_AREA.BEYOND_NORTH_EAST,
+        //        };
+        //        MAP_MOVING_LAYER_TYPE.HEAVENLY_LIGHT_LARGE_SILVER_SPECKLED.spawnAreas = new MAP_AREA[]{
+        //         MAP_AREA.PALE_MOUNTAINS_WEST, MAP_AREA.PALE_MOUNTAINS_EAST, MAP_AREA.PALE_MOUNTAINS_SOUTH,
+        //         MAP_AREA.PALE_MOUNTAINS_NORTH, MAP_AREA.PALE_MOUNTAINS_SOUTH_SOUTH, MAP_AREA.PALE_MOUNTAINS_CENTER,
+        //        };
 
     }
 
@@ -100,10 +100,14 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
          StrPathBuilder.build("global", "map", "layers", "moving");
     }
 
+    public static boolean isDynamicRotationSupported() {
+        return false;
+    }
+
     private void spawn(MAP_MOVING_LAYER sub) {
         MAP_AREA mapArea = null;
         if (sub.spawnAreas == null || sub.spawnAreas.length == 0) {
-//            mapArea = MAP_AREA.values()[RandomWizard.getRandomInt(MAP_AREA.values().length)];
+            //            mapArea = MAP_AREA.values()[RandomWizard.getRandomInt(MAP_AREA.values().length)];
         } else mapArea =
          sub.spawnAreas[RandomWizard.getRandomInt(sub.spawnAreas.length)];
 
@@ -159,9 +163,9 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
             return;
         }
         spawn(container, mapArea);
-//alpha should reduce as it goes away
-//        container.setFluctuateAlpha(true);
-//        container.setFluctuatingAlpha(0);
+        //alpha should reduce as it goes away
+        //        container.setFluctuateAlpha(true);
+        //        container.setFluctuatingAlpha(0);
     }
 
     private MAP_AREA flipMapAreaOnWind(MAP_AREA mapArea) {
@@ -196,8 +200,8 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         if (MacroGame.getGame() == null)
             return;
 
-//        if (dirty)
-//            spawn();
+        //        if (dirty)
+        //            spawn();
         for (MAP_MOVING_LAYER sub : MAP_MOVING_LAYER.values()) {
             MapMaster.addToFloatMap(timerMap, sub, delta);
             for (DAY_TIME day_time : sub.times) {
@@ -225,8 +229,8 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
             MapMoveLayer sub = (MapMoveLayer) actor;
             MAP_MOVING_LAYER type = sub.getType();
-//            if (Math.abs(sub.getSpeed() )> 0) {
-//            }
+            //            if (Math.abs(sub.getSpeed() )> 0) {
+            //            }
             float x = sub.getContent().getX() + sub.getSpeed() * delta * getModX(type.direction);
             float y = sub.getContent().getY() + sub.getSpeed() * delta * getModY(type.direction);
             sub.getContent().setPosition(x, y);
@@ -239,10 +243,11 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
             else if (distance > maxDistance) {
                 remove(sub);
             }
-            if (type.rotation != 0) {
-                sub.setOrigin(Align.center);
-                sub.setRotation(sub.getRotation() + (type.rotation * delta) * sub.rotationMod);
-            }
+            if (isDynamicRotationSupported())
+                if (type.rotation != 0) {
+                    sub.setOrigin(Align.center);
+                    sub.setRotation(sub.getRotation() + (type.rotation * delta) * sub.rotationMod);
+                }
             //++ shakiness
             //checkRemove or reset
         }
@@ -369,13 +374,13 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         }
     }
 
-//    protected void tintDynamic(Color color, T sub) {
-//        Color c = new Color(color);
-//        tint(color, time);
-//        float percentage =
-//         MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
-//        color.lerp(tint(c, time.getNext()), percentage);
-//    }
+    //    protected void tintDynamic(Color color, T sub) {
+    //        Color c = new Color(color);
+    //        tint(color, time);
+    //        float percentage =
+    //         MacroGame.getGame().getLoop().getTimeMaster().getPercentageIntoNextDaytime();
+    //        color.lerp(tint(c, time.getNext()), percentage);
+    //    }
 
     protected boolean isTinted() {
         return true;
@@ -485,15 +490,15 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
 
     public enum MAP_MOVING_LAYER {
         //        CLOUD(MOVE_DIRECTION.WIND, 50, 3, MAP_AREA.WRAITH_MARSH, MAP_AREA.NEUGARD_SOUTH,
-//         MAP_AREA.NEUGARD_NORTH),
-//        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 30, 1.3f, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
-//         MAP_AREA.NEUGARD_NORTH),
-//        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 1.6f, 0.5f, 1f, 0.3f, MAP_AREA.SOUTH_WEST),
+        //         MAP_AREA.NEUGARD_NORTH),
+        //        CLOUD_HEAVY(MOVE_DIRECTION.WIND, 30, 1.3f, MAP_AREA.WISP_GROVE, MAP_AREA.NEUGARD_SOUTH,
+        //         MAP_AREA.NEUGARD_NORTH),
+        //        CLOUD_LARGE(MOVE_DIRECTION.WIND, 50, 1.6f, 0.5f, 1f, 0.3f, MAP_AREA.SOUTH_WEST),
         //        SHADOW,
-//        WAVE,
-//        SMOKE,
-//        WATER_REFLECTION,
-//        SUNSHINE,
+        //        WAVE,
+        //        SMOKE,
+        //        WATER_REFLECTION,
+        //        SUNSHINE,
         LIGHT_SPREAD_SILVER(MOVE_DIRECTION.SUN, 0, 10f, 0, 0, 0.2f, 0,
          0.15f, 1f, 2f, 20f, 0.4f, DAY_TIME.MORNING),
         LIGHT_SPREAD_GOLDEN(MOVE_DIRECTION.SUN, 0, 10f, 0, 0, 0.2f, 0,
@@ -527,7 +532,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
         public float alphaStep = 0.5f;
         public float fullAlphaDuration;
         //        String[] emitterChance;
-//        String[] emitterPaths;
+        //        String[] emitterPaths;
         public float pauseDuration;
         public float alphaRandomness;
         public Float maxDuration;
@@ -614,7 +619,7 @@ public class MapMoveLayers extends MapTimedLayer<MapMoveLayer> {
             return StrPathBuilder.build(getMainPath(), StringMaster.getWellFormattedString(name()) + ".png");
         }
 
-//AlphaFluctuation fluctuation;
+        //AlphaFluctuation fluctuation;
     }
 
     public enum MAP_MOVING_LAYER_TYPE {

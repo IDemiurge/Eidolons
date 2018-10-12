@@ -15,6 +15,7 @@ import eidolons.game.core.master.*;
 import eidolons.game.core.state.DC_GameState;
 import eidolons.game.core.state.DC_StateManager;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.AnimMaster;
 import eidolons.libgdx.anims.std.EventAnimCreator;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
@@ -290,6 +291,7 @@ public class DC_GameManager extends GameManager {
                 t.invokeClicked();
             }
         });
+        GdxMaster.setTargetingCursor();
         GuiEventManager.trigger(SELECT_MULTI_OBJECTS, p);
 
         for (Obj obj : new ArrayList<>(selectingSet)) {
@@ -313,6 +315,8 @@ public class DC_GameManager extends GameManager {
         setSelecting(true);
 
         Integer id = selectAwait();
+        GdxMaster.setDefaultCursor();
+
         if (id == null) {
             if (ref.getTarget() != null) {
                 return ref.getTarget();

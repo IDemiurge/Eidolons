@@ -830,6 +830,7 @@ public class DC_Game extends GenericGame {
             reinit();
         dungeonInit();
         battleInit();
+        metaMaster.reinit();
         start(true);
     }
 

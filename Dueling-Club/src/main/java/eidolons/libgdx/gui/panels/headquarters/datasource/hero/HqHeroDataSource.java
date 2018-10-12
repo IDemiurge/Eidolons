@@ -158,7 +158,12 @@ public class HqHeroDataSource extends EntityDataSource<HeroDataModel>
     public TextureRegion getAvatar() {
         return unitDataSource.getAvatar();
     }
-
+    public TextureRegion getLargeImage() {
+        return unitDataSource.getLargeImage();
+    }
+    public TextureRegion getFullSizeImage() {
+        return unitDataSource.getFullSizeImage();
+    }
     @Override
     public String getParam1() {
         return unitDataSource.getParam1();

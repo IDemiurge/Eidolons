@@ -2,27 +2,18 @@ package eidolons.game.battlecraft.logic.dungeon.universal;
 
 import eidolons.game.battlecraft.logic.battle.universal.*;
 import eidolons.game.battlecraft.logic.battle.universal.stats.BattleStatManager;
-import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.dungeoncrawl.dungeon.DungeonLevel;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelBlock;
-import eidolons.game.module.dungeoncrawl.dungeon.LevelZone;
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.dungeoncrawl.generator.init.RngLevelPopulator;
-import eidolons.game.module.dungeoncrawl.objects.ContainerMaster;
-import eidolons.game.module.dungeoncrawl.objects.DoorMaster;
+import eidolons.game.module.dungeoncrawl.objects.*;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj.DUNGEON_OBJ_TYPE;
-import eidolons.game.module.dungeoncrawl.objects.DungeonObjMaster;
-import eidolons.game.module.dungeoncrawl.objects.LockMaster;
 import eidolons.libgdx.particles.ParticleManager;
 import main.system.GuiEventManager;
-import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.GuiManager;
 import main.system.images.ImageManager;
 
 import static main.system.GuiEventType.UPDATE_DUNGEON_BACKGROUND;
-import static main.system.auxiliary.StringMaster.*;
 
 /*
  * 
@@ -41,6 +32,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
     private DoorMaster doorMaster;
     private LockMaster lockMaster;
     private ContainerMaster containerMaster;
+    private InteractiveObjMaster interactiveMaster;
     private DungeonLevel dungeonLevel;
 
 
@@ -58,6 +50,7 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
         doorMaster = new DoorMaster(this);
         lockMaster = new LockMaster(this);
         containerMaster = new ContainerMaster(this);
+        interactiveMaster = new InteractiveObjMaster(this);
     }
 
     protected DungeonBuilder<E> createBuilder() {
@@ -173,6 +166,8 @@ public abstract class DungeonMaster<E extends DungeonWrapper> {
                 return lockMaster;
             case CONTAINER:
                 return containerMaster;
+            case INTERACTIVE:
+                return interactiveMaster;
         }
         return null;
     }

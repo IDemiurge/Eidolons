@@ -1,11 +1,14 @@
 package eidolons.libgdx.gui.panels.quest;
 
 import eidolons.game.module.dungeoncrawl.quest.DungeonQuest;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import main.system.graphics.FontMaster.FONT;
+
+import static eidolons.libgdx.gui.panels.quest.QuestProgressPanel.WIDTH;
 
 /**
  * Created by JustMe on 10/6/2018.
@@ -17,8 +20,15 @@ public class QuestElement extends TablePanelX{
 
     public QuestElement(DungeonQuest quest) {
         this.quest = quest;
-        add(title = new LabelX(quest.getTitle(), StyleHolder.getHqLabelStyle(18)));
-        add(progress = new LabelX(quest.getProgressText(), StyleHolder.getSizedLabelStyle(FONT.NYALA, 16)));
+        pad(5);
+        float w = GdxMaster.adjustWidth(WIDTH);
+        //TODO icon
+        setWidth(w);
+        add(title = new LabelX(quest.getTitle(), StyleHolder.getHqLabelStyle(18))).left().width(w).row();
+
+        add(progress = new LabelX(quest.getProgressText(), StyleHolder
+         .getSizedLabelStyle(FONT.NYALA, 16))).padLeft(GdxMaster.adjustSize(10)).left().width(w);
+
         if (quest.getTimeLeft()!=null ){
 
         }

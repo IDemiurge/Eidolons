@@ -29,6 +29,7 @@ import eidolons.system.data.MetaDataUnit;
 import eidolons.system.data.MetaDataUnit.META_DATA;
 import eidolons.system.options.AnimationOptions.ANIMATION_OPTION;
 import eidolons.system.options.ControlOptions.CONTROL_OPTION;
+import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.Options.OPTION;
@@ -43,6 +44,7 @@ import main.system.auxiliary.StringMaster;
 import main.system.auxiliary.data.FileManager;
 import main.system.auxiliary.data.ListMaster;
 import main.system.auxiliary.data.MapMaster;
+import main.system.auxiliary.log.LogMaster;
 import main.system.graphics.FontMaster;
 import main.system.graphics.GuiManager;
 import main.system.launch.CoreEngine;
@@ -56,12 +58,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OptionsMaster {
-    static OptionsWindow optionsWindow;
     private static Map<OPTIONS_GROUP, Options> optionsMap = new HashMap<>();
     private static Map<OPTIONS_GROUP, Options> cachedMap;
     private static OptionsPanelSwing optionsPanel;
     private static boolean initialized;
-    private static JFrame optionsPanelFrame;
     private static JDialog modalOptionsPanelFrame;
 
     private static void applyAnimOptions(AnimationOptions animOptions) {
@@ -260,9 +260,6 @@ public class OptionsMaster {
     private static void applyGraphicsOptions_(GraphicsOptions graphicsOptions) {
 
         for (Object sub : graphicsOptions.getValues().keySet()) {
-            new EnumMaster<GRAPHIC_OPTION>().
-             retrieveEnumConst(GRAPHIC_OPTION.class,
-              graphicsOptions.getValues().get(sub).toString());
             GRAPHIC_OPTION key = graphicsOptions.getKey((sub.toString()));
             if (key == null)
                 continue;
@@ -279,8 +276,49 @@ public class OptionsMaster {
         }
     }
 
+    private static void applySystemOptions(SystemOptions systemOptions) {
+
+        for (Object sub : systemOptions.getValues().keySet()) {
+            SYSTEM_OPTION key = systemOptions.getKey((sub.toString()));
+            if (key == null)
+                continue;
+            String value = systemOptions.getValue(key);
+            boolean bool = Boolean.valueOf(value.toLowerCase());
+            //            Eidolons.getApplication().getGraphics(). setCursor();
+
+            try {
+                applySystemOption(key, value, bool);
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+
+        }
+    }
+
+    private static void applySystemOption(SYSTEM_OPTION key, String value, boolean bool) {
+        switch (key) {
+            case LOGGING:
+                break;
+            case LOG_TO_FILE:
+                LogMaster.setLogBufferOn(bool);
+                break;
+            case RESET_COSTS:
+                break;
+            case CACHE:
+                break;
+            case PRECONSTRUCT:
+                break;
+            case LAZY:
+                break;
+        }
+
+        }
+
     private static void applyOption(GRAPHIC_OPTION key, String value, boolean bool) {
         switch (key) {
+            case BRIGHTNESS:
+                GdxMaster.setBrightness(new Float(Integer.valueOf(value) / 100));
+                break;
             case FRAMERATE:
                 GenericLauncher launcher = Eidolons.getLauncher();
                 launcher.setForegroundFPS(Integer.valueOf(value));
@@ -492,6 +530,9 @@ public class OptionsMaster {
             if (MetaDataUnit.getInstance().getIntValue(META_DATA.TIMES_LAUNCHED) < 2)
                 autoAdjustOptions(OPTIONS_GROUP.GRAPHICS, optionsMap.get(OPTIONS_GROUP.GRAPHICS));
         }
+
+        autoAdjustOptions(OPTIONS_GROUP.SYSTEM, optionsMap.get(OPTIONS_GROUP.SYSTEM));
+
         OptionsMaster.cacheOptions();
         try {
             applyOptions();
@@ -527,7 +568,25 @@ public class OptionsMaster {
             case GRAPHICS:
                 options.setValue(GRAPHIC_OPTION.RESOLUTION, GDX.getDisplayResolutionString());
                 break;
+            case SYSTEM:
+                long memory = Runtime.getRuntime().maxMemory();
+                float level=0.9f;
+                if (memory >   3*(1024e3))
+                    level = 3f;
+              else   if (memory >   2*(1024e3))
+                    level = 2f;
+               else if (memory >   1.5f*(1024e3))
+                    level =  1.5f ;
+              else   if (memory >   1.25f*(1024e3))
+                    level =  1.25f ;
+              else   if (memory >   1.0f*(1024e3))
+                    level =  1.0f ;
+
+                    CoreEngine.setMemoryLevel(level);
+                break;
         }
+
+
     }
 
     private static Map<OPTIONS_GROUP, Options> initDefaults() {
@@ -559,6 +618,8 @@ public class OptionsMaster {
                 return SOUND_OPTION.class;
             case GAMEPLAY:
                 return GAMEPLAY_OPTION.class;
+            case SYSTEM:
+                return SYSTEM_OPTION.class;
         }
         return null;
     }
@@ -626,6 +687,8 @@ public class OptionsMaster {
             case GAMEPLAY:
                 return new GameplayOptions();
 
+            case SYSTEM:
+                return new SystemOptions();
         }
         return null;
     }
@@ -649,9 +712,8 @@ public class OptionsMaster {
         applyOptions();
     }
 
-    public static EngineOptions getEngineOptions() {
-        //        return (EngineOptions) getOptions(OPTIONS_GROUP.ENGINE);
-        return null;
+    public static SystemOptions getEngineOptions() {
+                return (SystemOptions) getOptions(OPTIONS_GROUP.SYSTEM);
     }
 
     public static ControlOptions getControlOptions() {
@@ -668,7 +730,7 @@ public class OptionsMaster {
 
 
     public enum OPTIONS_GROUP {
-        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION,
+        GRAPHICS, GAMEPLAY, CONTROLS, SOUND, ANIMATION, SYSTEM,
         //TUTORIAL, ENGINE,
     }
 

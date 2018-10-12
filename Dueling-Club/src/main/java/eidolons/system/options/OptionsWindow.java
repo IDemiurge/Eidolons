@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.kotcrab.vis.ui.VisUI;
@@ -48,11 +49,16 @@ public class OptionsWindow extends VisWindow {
         super("Options", new WindowStyle(StyleHolder.getHqLabelStyle(
          GdxMaster.adjustFontSize(20)).font
          , StyleHolder.getDefaultLabelStyle().fontColor,
-         new NinePatchDrawable(NinePatchFactory.getLightPanelFilled())
+         new NinePatchDrawable(NinePatchFactory.getLightDecorPanelFilledDrawable())
         ));
+
         setVisible(false);
         setSize(GdxMaster.adjustSize(800), GdxMaster.adjustSize(600));
+        pad(GdxMaster.adjustSize(12));
         closeOnEscape();
+        getTitleLabel().setAlignment(Align.center);
+        getTitleLabel().pack();
+        getTitleLabel().setY(getTitleLabel().getY()-getTitleLabel().getHeight()/2);
 
     }
 
@@ -88,7 +94,7 @@ public class OptionsWindow extends VisWindow {
         setVisible(true);
         clearChildren();
         Actor content = init();
-        add(content).expand().fill().left().top().row();
+        add(content).expand().fill().center().top().row();
         Table bottomMenu = createBottomPanel();
         add(bottomMenu).expandX().left().bottom();
 
@@ -223,6 +229,12 @@ public class OptionsWindow extends VisWindow {
             content = new Table();
             content.defaults().pad(GdxMaster.adjustSize(8));
             final Map values = options.getValues();
+
+            int columns=1;
+            if (values.size()>GdxMaster.adjustHeight(14)) {
+                columns=2;
+            }
+            int n =0;
             for (Object v : values.keySet()) {
                 final OPTION option = options.getKey(v.toString());
                 if (option == null)
@@ -325,7 +337,11 @@ public class OptionsWindow extends VisWindow {
                         Gdx.app.log("Options", "unknown option type:" + optionType);
                     }
                 }
-                content.row();
+                n++;
+                if (n>=columns){
+                    content.row();
+                    n=0;
+                }
             }
         }
 

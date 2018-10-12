@@ -132,6 +132,9 @@ public class IlluminationRule {
                 //                if (source.getGame().getVisionMaster().
                 //                 getIlluminationMaster().getIllumination(source) < 50)
                 value += 40;
+        } else {
+            if (source.isDead())
+                return 0;
         }
         Integer mod = source.getGame().getVisionMaster().getIlluminationMaster().
          getLightEmissionModifier();

@@ -52,7 +52,7 @@ public class HeroInfoPanel extends ItemInfoPanel {
         super.initHeader(header);
         emblem = new Image(getDefaultEmblem());
 //        header.addNormalSize(preview).left();
-        header.addElement(title).left();
+//        header.addElement(title).left().padTop(65);
 //        header.addNormalSize(emblem).colspan(2). right().padRight(20);
 //        header.pack();
         header.row();

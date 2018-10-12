@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Align;
 import eidolons.entity.item.DC_WeaponObj;
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.ValueContainer;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.dc.inventory.InventoryFactory;
@@ -12,8 +13,6 @@ import eidolons.libgdx.gui.tooltips.ValueTooltip;
 import main.system.text.TextWrapper;
 
 import java.util.List;
-
-import static eidolons.libgdx.texture.TextureCache.getOrCreateR;
 
 public class WeaponTooltip extends ValueTooltip {
 
@@ -38,10 +37,10 @@ public class WeaponTooltip extends ValueTooltip {
         String text = TextWrapper.processText(GdxMaster.getWidth() / 3, InventoryFactory.getTooltipsVals(source.getItem()), style);
         container = new ValueContainer(text);
         container.setStyle(style);
-        addElement(container);
+        addElement(container).left();
         row();
 
-        addElement(initTableValues(source.getMainParams()));
+        addElement(initTableValues(source.getMainParams())).left();
         row();
 
         if (source.getBuffs().size() > 0) {
@@ -51,7 +50,7 @@ public class WeaponTooltip extends ValueTooltip {
                 el.overrideImageSize(32, 32);
                 buffsTable.addElement(el);
             });
-            addElement(buffsTable).padTop(5);
+            addElement(buffsTable).padTop(5).left();
         }
 
     }
@@ -68,14 +67,20 @@ public class WeaponTooltip extends ValueTooltip {
             ValueContainer valueContainer = valueContainers.get(i);
             valueContainer.cropName();
             valueContainer.setNameAlignment(Align.left);
-            valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
+            valueContainer.background(NinePatchFactory.
+             getLightPanelFilledSmallDrawable());
             table.addElement(valueContainer);
             final int i1 = i + halfSize;
+
+
             if (i1 < valueContainers.size()) {
                 valueContainer = valueContainers.get(i1);
                 valueContainer.cropName();
                 valueContainer.setNameAlignment(Align.left);
-                valueContainer.setBorder(getOrCreateR("UI/components/infopanel/simple_value_border.png"));
+                valueContainer.background(NinePatchFactory.
+                 getLightPanelFilledSmallDrawable());
+//                valueContainer.setBorder(getOrCreateR(
+//                 "UI/components/infopanel/simple_value_border.png"));
                 table.addElement(valueContainer);
             }
 

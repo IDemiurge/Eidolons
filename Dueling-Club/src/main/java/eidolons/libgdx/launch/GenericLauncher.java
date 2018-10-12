@@ -11,6 +11,7 @@ import eidolons.game.battlecraft.DC_Engine;
 import eidolons.game.battlecraft.logic.meta.scenario.ScenarioMetaMaster;
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.Eidolons.SCOPE;
+import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.Assets;
 import eidolons.libgdx.gui.panels.headquarters.weave.WeaveScreen;
 import eidolons.libgdx.screens.*;
@@ -20,6 +21,7 @@ import eidolons.libgdx.texture.Images;
 import eidolons.macro.AdventureInitializer;
 import eidolons.system.audio.MusicMaster;
 import eidolons.system.audio.MusicMaster.MUSIC_SCOPE;
+import eidolons.system.data.MetaDataUnit;
 import eidolons.system.graphics.RESOLUTION;
 import eidolons.system.options.GraphicsOptions.GRAPHIC_OPTION;
 import eidolons.system.options.OptionsMaster;
@@ -56,7 +58,7 @@ public class GenericLauncher extends Game {
 
     @Override
     public void create() {
-
+        GdxMaster.setLoadingCursor();
         MusicMaster.preload(MUSIC_SCOPE.MENU);
         MusicMaster.getInstance().scopeChanged(MUSIC_SCOPE.MENU);
         GuiEventManager.bind(SWITCH_SCREEN, this::trySwitchScreen);
@@ -83,10 +85,22 @@ public class GenericLauncher extends Game {
 
     protected void screenInit() {
         ScreenData data = new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading...");
-        trySwitchScreen(new EventCallbackParam(data));
-        WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
-        WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
+        if (isFirstLoadingScreenShown()) {
+            try {
+                setScreen(new LoadingScreen());
+                render();
+            } catch (Exception e) {
+                main.system.ExceptionMaster.printStackTrace(e);
+            }
+            GuiEventManager.trigger(GuiEventType.SWITCH_SCREEN, new EventCallbackParam(data));
+        } else {
+            trySwitchScreen(new EventCallbackParam(data));
+        }
 
+    }
+
+    private boolean isFirstLoadingScreenShown() {
+        return false;
     }
 
     @Override
@@ -96,13 +110,18 @@ public class GenericLauncher extends Game {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        try {
+            MetaDataUnit.write();
+        } catch (Exception e) {
+            main.system.ExceptionMaster.printStackTrace(e);
+        }
+
         super.dispose();
-        System.exit(0);
 
     }
 
     protected boolean isStopOnInactive() {
-        return false;
+        return !CoreEngine.isFastMode();
     }
 
     public LwjglApplicationConfiguration getConf() {
@@ -116,7 +135,10 @@ public class GenericLauncher extends Game {
         conf.fullscreen = false;
         fullscreen = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.FULLSCREEN);
         conf.foregroundFPS = FRAMERATE;
-        conf.backgroundFPS = isStopOnInactive() ? -1 : FRAMERATE;
+        if (!CoreEngine.isJar())
+            conf.backgroundFPS = isStopOnInactive() ? 1 : FRAMERATE;
+        else
+            conf.backgroundFPS = isStopOnInactive() ? -1 : FRAMERATE;
         conf.vSyncEnabled = OptionsMaster.getGraphicsOptions().getBooleanValue(GRAPHIC_OPTION.VSYNC);
         initResolution(conf);
         initIcon(conf);
@@ -193,13 +215,6 @@ public class GenericLauncher extends Game {
 
         if (gameScreen != null) gameScreen.resize(width, height);
         else getScreen().resize(width, height);
-        //        if (VignetteShader.isUsed()) {
-        //            ShaderProgram program = VignetteShader.getShader();
-        //      try{
-        //        program.use();
-        //        program.setUniformf("resolution", Display.getWidth(), Display.getHeight());
-        //      }catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
-        //    }
     }
 
     @Override
@@ -229,6 +244,7 @@ public class GenericLauncher extends Game {
     }
 
     protected void switchScreen(Supplier<ScreenWithVideoLoader> factory, ScreenData meta) {
+        GdxMaster.setLoadingCursor();
         main.system.auxiliary.log.LogMaster.log(1, "switchScreen " + meta.getType());
         Eidolons.screenSet(meta.getType());
         final ScreenWithVideoLoader newScreen = factory.get();
@@ -237,17 +253,11 @@ public class GenericLauncher extends Game {
         newScreen.setData(meta);
         final Screen oldScreen = getScreen();
         setScreen(newScreen);
-        //        if (oldScreen instanceof MapScreen) {
-        //            // ?
-        //        } else
         {
             if (oldScreen != null)
                 oldScreen.dispose();
         }
 
-        //        if (newScreen instanceof MapScreen) {
-        //            return;
-        //        }
         triggerLoaded(meta);
     }
 
@@ -321,9 +331,16 @@ public class GenericLauncher extends Game {
                 case MAIN_MENU:
                     Eidolons.setScope(SCOPE.MENU);
                     switchScreen(AnimatedMenuScreen::new, newMeta);
+                    WaitMaster.receiveInput(WAIT_OPERATIONS.GDX_READY, true);
+                    WaitMaster.markAsComplete(WAIT_OPERATIONS.GDX_READY);
                     break;
             }
         }
+    }
+
+    private void initLoadingScreen() {
+
+        //   TODO  different kind of screen...
     }
 
     private void onScreenLoadDone(EventCallbackParam param) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.math.Vector2;
@@ -32,10 +33,10 @@ import java.util.List;
 public class GdxMaster {
     public static final float fontSizeAdjustCoef = 0.15f;
     public static final float sizeAdjustCoef = 0.25f;
-    private static final int DEFAULT_WIDTH = 1600;
+    private static final int DEFAULT_WIDTH = 1500;
     private static final int DEFAULT_HEIGHT = 900;
-    private static final int DEFAULT_WIDTH_FULLSCREEN = 1680;
-    private static final int DEFAULT_HEIGHT_FULLSCREEN = 1050;
+    private static final int DEFAULT_WIDTH_FULLSCREEN = 1600;
+    private static final int DEFAULT_HEIGHT_FULLSCREEN = 960;
     private static int width;
     private static int height;
     private static Float fontSizeMod;
@@ -47,6 +48,7 @@ public class GdxMaster {
     private static float fontSizeModSquareRoot;
     private static Float userFontScale;
     private static Float userUiScale;
+    private static Float brightness;
 
     public static List<Group> getAncestors(Actor actor) {
         List<Group> list = new ArrayList<>();
@@ -369,4 +371,51 @@ public class GdxMaster {
     public static Float getUserUiScale() {
         return userUiScale;
     }
+
+    public static Float getBrightness() {
+        if (brightness == null) {
+            brightness = OptionsMaster.getGraphicsOptions().getFloatValue(GraphicsOptions. GRAPHIC_OPTION.BRIGHTNESS) / 100;
+        }
+        return brightness;
+    }
+
+    public static void setBrightness(float brightness) {
+        GdxMaster.brightness = brightness;
+    }
+
+    public enum CURSOR{
+        DEFAULT,
+    TARGETING,
+    LOADING,
+    WAITING,
+    NO,
+
+}
+    private static void setCursor(Cursor cursor) {
+        Gdx.graphics.setCursor(cursor);
+        Gdx.input.setCursorPosition(Gdx.input.getX()+1,Gdx.input.getY()+1);
+    }
+
+    public static void setDefaultCursor() {
+        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getCursorPath()));
+        setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+    }
+
+    public static void setLoadingCursor() {
+        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getLoadingCursorPath()));
+        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+    }
+
+    public static void setTargetingCursor() {
+        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getTargetingCursorPath()));
+        setCursor(Gdx.graphics.newCursor(pm, 32, 32));
+    }
+//    protected static void setAttackTargetingCursor() {
+//        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getTargetingCursorPath()));
+//        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+//    }
+//    protected static void setSpellTargetingCursor() {
+//        Pixmap pm = new Pixmap(new FileHandle(PathFinder.getTargetingCursorPath()));
+//        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 0, 0));
+//    }
 }

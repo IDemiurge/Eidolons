@@ -15,14 +15,28 @@ public class DynamicCondition<T> extends ConditionImpl {
         this.predicate = predicate;
         this.arg = arg;
     }
+
+    @OmittedConstructor
+    public DynamicCondition(Predicate<T> predicate) {
+        this.predicate = predicate;
+    }
+
     @OmittedConstructor
     public DynamicCondition() {
     }
 
     @Override
     public boolean check(Ref ref) {
-        if (predicate == null) {
-            return predicate.test(arg);
+        if (predicate != null) {
+            if (arg == null) {
+                if (ref.getMatch() != null) {
+                    return predicate.test((T) ref.getMatchObj());
+                }
+                if (ref.getTarget() != null) {
+                    return predicate.test((T) ref.getTargetObj());
+                }
+            } else
+                return predicate.test(arg);
         }
         return false;
     }

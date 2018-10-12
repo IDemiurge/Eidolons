@@ -2,6 +2,7 @@ package eidolons.libgdx.bf.menu;
 
 import eidolons.game.core.Eidolons;
 import eidolons.game.core.game.DC_Game;
+import eidolons.game.module.dungeoncrawl.quest.QuestMaster;
 import eidolons.libgdx.bf.menu.GameMenu.GAME_MENU_ITEM;
 import eidolons.macro.global.persist.Loader;
 import eidolons.macro.global.persist.Saver;
@@ -35,26 +36,32 @@ public class GameMenuHandler {
                 break;
             case MAP_INFO:
                 GuiEventManager.trigger(GuiEventType.SHOW_TEXT_CENTERED,
-                        DC_Game.game.getMetaMaster().getDungeonInfo());
+                 DC_Game.game.getMetaMaster().getDungeonInfo());
                 break;
             case OUTER_WORLD:
                 //TODO save and send log!
                 Eidolons.exitGame();
             case EXIT:
             case MAIN_MENU:
-//                DC_Game.game.getBattleMaster().getOutcomeManager().next();
-//                DC_Game.game.exit(true);
-                Eidolons.  exitToMenu();
+                //                DC_Game.game.getBattleMaster().getOutcomeManager().next();
+                //                DC_Game.game.exit(true);
+                Eidolons.exitToMenu();
                 return false;
             case RESTART:
                 Eidolons.restart();
                 break;
             case QUESTS:
-                 Eidolons.onThisOrNonGdxThread(()-> {
-                Eidolons.getGame().getMetaMaster().getQuestMaster().initQuests();
-                Eidolons.getGame().getMetaMaster().getQuestMaster().updateQuests();
-                     });
-                return null ;
+                Eidolons.onThisOrNonGdxThread(() -> {
+                    if (QuestMaster.TEST_MODE) {
+                        Eidolons.getGame().getMetaMaster().getQuestMaster().initQuests();
+                        Eidolons.getGame().getMetaMaster().getQuestMaster().startedQuests();
+                        Eidolons.getGame().getMetaMaster().getQuestMaster().updateQuests();
+                    } else {
+                        GuiEventManager.trigger(GuiEventType.SHOW_QUESTS_INFO,
+                         Eidolons.getGame().getMetaMaster().getQuestMaster().getQuests()  );
+                    }
+                });
+                return null;
             case PASS_TIME:
                 Eidolons.getGame().getDungeonMaster().getExplorationMaster()
                  .getTimeMaster().playerWaits();
@@ -76,10 +83,10 @@ public class GameMenuHandler {
             case RESUME:
                 break;
             case OPTIONS:
-//                OptionsMaster.openMenu();
+                //                OptionsMaster.openMenu();
                 menu.openOptionsMenu();
-//                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
-                return null ;
+                //                GuiEventManager.trigger(GuiEventType.OPEN_OPTIONS, MainMenuStage.class);
+                return null;
             case CLICK_ME:
                 break;
             case WEBSITE:

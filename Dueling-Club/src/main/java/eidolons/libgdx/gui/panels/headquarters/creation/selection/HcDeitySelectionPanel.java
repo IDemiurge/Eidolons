@@ -5,7 +5,7 @@ import eidolons.game.core.EUtils;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.gui.panels.headquarters.creation.HeroCreationMaster;
@@ -99,13 +99,13 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
 
     public class HcDeityElement extends TablePanelX {
         private final Entity deity;
-        private final TextButtonX button;
+        private final SmartButton button;
 
         public HcDeityElement(Entity entity) {
             deity = entity;
             add(new ImageContainer(entity.getEmblemPath()));
 
-            add(button = new TextButtonX( entity.getName(),
+            add(button = new SmartButton( entity.getName(),
              StyleHolder.getHqTextButtonStyle(STD_BUTTON.HIGHLIGHT,  26), () -> clicked(entity)));
 
             add(new ImageContainer(entity.getEmblemPath()));
@@ -115,7 +115,7 @@ public class HcDeitySelectionPanel extends SelectionTable<HcDeityElement> {
             return deity;
         }
 
-        public TextButtonX getButton() {
+        public SmartButton getButton() {
             return button;
         }
     }

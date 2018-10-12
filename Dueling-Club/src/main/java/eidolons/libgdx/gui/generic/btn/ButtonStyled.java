@@ -1,25 +1,31 @@
 package eidolons.libgdx.gui.generic.btn;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import eidolons.libgdx.bf.generic.ImageContainer;
+import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import eidolons.libgdx.texture.TextureCache;
 import main.data.filesys.PathFinder;
-import main.swing.generic.components.G_Panel.VISUALS;
 import main.system.auxiliary.StrPathBuilder;
 import main.system.auxiliary.StringMaster;
 
-public class ButtonStyled extends ImageContainer implements EventListener {
+public class ButtonStyled extends ImageContainer {
 
     Runnable runnable;
 
     public ButtonStyled(STD_BUTTON b, Runnable runnable) {
         this(b);
         this.runnable = runnable;
-        addListener(this);
+        addListener(new SmartClickListener(this) {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            super.clicked(event, x, y);
+                            runnable.run();
+                        }
+                    }
+        );
+
+
     }
 
     public ButtonStyled(STD_BUTTON b) {
@@ -27,22 +33,7 @@ public class ButtonStyled extends ImageContainer implements EventListener {
         initResolutionScaling();
     }
 
-    public ButtonStyled(String name) {
-//         setStyle();
-        setName(name);
-    }
 
-    @Override
-    public boolean handle(Event e) {
-        if (runnable == null)
-            return true;
-        if (!(e instanceof InputEvent)) return false;
-        InputEvent event = (InputEvent) e;
-        if (event.getType() == Type.touchDown) {
-            runnable.run();
-        }
-        return true;
-    }
 
 //    @Override
 //    public void setDisabled(boolean isDisabled) {
@@ -78,16 +69,25 @@ public class ButtonStyled extends ImageContainer implements EventListener {
          "components","dc" ,          "quick weapon" ,"unarmed.png")),
         PULL(StrPathBuilder.build(PathFinder.getUiPath(),
          "components", "generic",
-          "buttons" ,
-          "special" ,
-          "pull.png")),
+          "buttons" ,"special" ,"pull.png")),
 
-        OPTIONS(VISUALS.MENU_BUTTON.getImgPath()) {
-            @Override
-            public boolean isVersioned() {
-                return false;
-            }
-        },
+        OPTIONS(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "generic",
+         "buttons" ,"special" ,"menu.png")),
+
+        ITEM_ALL(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "tiny", "all.png")),
+        ITEM_WEAPONS(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "tiny", "WEAPONS.png")),
+        ITEM_ARMOR(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "tiny", "ARMOR.png")),
+        ITEM_USABLE(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "tiny", "usable.png")),
+        ITEM_JEWELRY(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "tiny", "JEWELRY.png")),
+        ITEM_QUEST(StrPathBuilder.build(PathFinder.getUiPath(),
+         "components", "tiny", "quest items.png")),
+
         //        NEXT, LEVEL_UP,
         PAUSE(StrPathBuilder.build(PathFinder.getMacroUiPath(), "components", "time panel", "pause.png")),
         SPEED_UP(StrPathBuilder.build(PathFinder.getMacroUiPath(), "components", "time panel", "SPEED UP.png")),
@@ -99,8 +99,14 @@ public class ButtonStyled extends ImageContainer implements EventListener {
         SPELLBOOK(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
          "bottom panel", "spellbook btn.png")),
         INV(StrPathBuilder.build(PathFinder.getComponentsPath(), "dc",
-         "bottom panel", "INV btn.png"))
+         "bottom panel", "INV btn.png")),
+        EYE(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
+         "buttons", "special", "eye.png")),
+        CIRCLE(StrPathBuilder.build(PathFinder.getComponentsPath(), "generic",
+         "buttons","special", "circle.png")),
+
         ;
+
         String path;
         private Drawable texture;
 

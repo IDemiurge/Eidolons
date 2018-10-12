@@ -54,9 +54,10 @@ public class QuestSelector extends QuestHandler {
             }
             ObjType type = DataManager.getType(result.toString(), MACRO_OBJ_TYPES.QUEST);
             DungeonQuest quest = master.getCreator().create(type);
-            master.getResolver().questTaken(quest);
             list.add(quest);
         }
+        if (CoreEngine.isFastMode())
+            GuiEventManager.trigger(GuiEventType.SHOW_SELECTION_PANEL, null);
         return list;
     }
 }

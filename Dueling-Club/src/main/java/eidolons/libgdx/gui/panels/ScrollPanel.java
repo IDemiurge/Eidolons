@@ -15,8 +15,8 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
 
     private TablePanel table;
     private InnerScrollContainer<Table> innerScrollContainer;
-    private int instantOffsetY;
-    private int offsetY;
+    private float instantOffsetY;
+    private float offsetY;
     private boolean widgetPosChanged;
 
     public ScrollPanel() {
@@ -164,9 +164,10 @@ public class ScrollPanel<T extends Actor> extends Container<Container> {
             float step =
              new Float(NumberUtils.formatFloat(2,
               (float) Math.sqrt(Math.abs(offsetY)))) * 5;
-
             if (offsetY < 0) {
-                step *= -1;
+                step = Math.max(offsetY, -step);
+            } else {
+                step = Math.min(offsetY, step);
             }
 
             step += instantOffsetY;

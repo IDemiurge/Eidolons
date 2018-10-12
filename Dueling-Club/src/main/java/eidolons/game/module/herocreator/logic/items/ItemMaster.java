@@ -56,7 +56,7 @@ public class ItemMaster {
         switch (filter) {
             case ALL:
                 return true;
-            case WEAPON:
+            case WEAPONS:
                 return item.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS;
             case ARMOR:
                 return item.getOBJ_TYPE_ENUM() == DC_TYPE.ARMOR;

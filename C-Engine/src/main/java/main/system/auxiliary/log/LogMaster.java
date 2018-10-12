@@ -149,6 +149,7 @@ public class LogMaster {
     private static String fullLogFilePath;
     private static PrintStream exceptionPrintStream;
     private static PrintStream fullPrintStream;
+    private static boolean logBufferOn;
 
     public static Logger getInstance() {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClass()
@@ -365,11 +366,11 @@ public class LogMaster {
                         break;
                     }
 
-//                    case PHASE_ANIM_DEBUG: {
-//                        switcher = PHASE_ANIM_DEBUG_ON;
-//                        prefix = PHASE_ANIM_DEBUG_PREFIX;
-//                        break;
-//                    }
+                    //                    case PHASE_ANIM_DEBUG: {
+                    //                        switcher = PHASE_ANIM_DEBUG_ON;
+                    //                        prefix = PHASE_ANIM_DEBUG_PREFIX;
+                    //                        break;
+                    //                    }
                     case CORE_DEBUG_1: {
                         switcher = CORE_DEBUG_1_ON;
                         prefix = CORE_DEBUG_1_PREFIX;
@@ -405,20 +406,19 @@ public class LogMaster {
             if (switcher) {
                 log(prefix + s);
             }
-            addToLogBuffer(c, s);
+            if (isLogBufferOn())
+                addToLogBuffer(c, s);
             return;
         }
         if (priority >= PRIORITY) {
             log(s);
         }
         if (isLogBufferOn())
-        addToLogBuffer(null, s);
-//        LogFileMaster.checkWriteToFileNewThread(priority, s);
+            addToLogBuffer(null, s);
+        //        LogFileMaster.checkWriteToFileNewThread(priority, s);
     }
 
-    private static boolean isLogBufferOn() {
-        return false;
-    }
+
 
     private static Map<LOG_CHANNEL, StringBuilder> getLogBufferMap() {
         if (logBufferMap == null) {
@@ -433,6 +433,8 @@ public class LogMaster {
             logBufferMap.put(sub, new StringBuilder());
         }
         logBufferMap.put(null, new StringBuilder());
+
+        logBufferOn = true;
 
         FileManager.write("game init", getLogFilePath());
     }
@@ -531,6 +533,14 @@ public class LogMaster {
             }
         }
         return exceptionPrintStream;
+    }
+
+    public static boolean isLogBufferOn() {
+        return logBufferOn;
+    }
+
+    public static void setLogBufferOn(boolean logBufferOn) {
+        LogMaster.logBufferOn = logBufferOn;
     }
 
 

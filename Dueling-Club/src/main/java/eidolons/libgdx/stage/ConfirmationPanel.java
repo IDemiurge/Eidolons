@@ -9,7 +9,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.panels.TablePanelX;
 import eidolons.libgdx.shaders.ShaderMaster;
@@ -30,8 +30,8 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
     private String text;
 
     Label label;
-    TextButtonX ok;
-    TextButtonX cancel;
+    SmartButton ok;
+    SmartButton cancel;
     private boolean result;
 
     private ConfirmationPanel() {
@@ -42,10 +42,10 @@ public class ConfirmationPanel extends TablePanelX implements Blocking, InputPro
         TablePanel<Actor> btns = new TablePanel<>();
         add( btns)
          .center().colspan(2).fill().minWidth(400) ;
-        btns.addNormalSize(cancel = new TextButtonX(STD_BUTTON.CANCEL, () -> {
+        btns.addNormalSize(cancel = new SmartButton(STD_BUTTON.CANCEL, () -> {
             cancel();
         })).left();
-        btns. addNormalSize(ok = new TextButtonX(STD_BUTTON.OK, () -> {
+        btns. addNormalSize(ok = new SmartButton(STD_BUTTON.OK, () -> {
             ok();
         })).right();
         ok.setIgnoreConfirmBlock(true);

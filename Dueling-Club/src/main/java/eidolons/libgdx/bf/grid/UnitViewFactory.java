@@ -39,15 +39,7 @@ public class UnitViewFactory {
             }
         }
         view.setOutlinePathSupplier(() -> {
-            OUTLINE_TYPE type = null;
-//            if (bfObj instanceof Unit) {
-//                if (!VisionManager.checkVisible(bfObj)) {
-//                    type = OUTLINE_TYPE.DARK_OUTLINE;
-//                }
-//            }
-//            if (type == null)
-            type = bfObj.getOutlineTypeForPlayer();
-
+            OUTLINE_TYPE type = bfObj.getOutlineTypeForPlayer();
             if (type == null)
                 return null;
             String path = Eidolons.game.getVisionMaster().getVisibilityMaster()
@@ -94,38 +86,40 @@ public class UnitViewFactory {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (getTapCount() > 1)
-                    if (event.getButton() == 0)
-                        if (bfObj.isPlayerCharacter()) {
-                            HqMaster.openHqPanel();
-                            return;
-                        } else  //TODO control options
-//                            if (bfObj instanceof Unit) {
-//                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
-//                             new UnitDataSource((Unit) bfObj));
-//                            return;
-//                        } else
-                        {
-                            try {
-                                DefaultActionHandler.leftClickUnit(false, false, bfObj);
-                            } catch (Exception e) {
-                                main.system.ExceptionMaster.printStackTrace(e);
-                            }
-                        }
-                if (event.getButton() == Buttons.LEFT)
-                    if (isAlt() || isShift() || isControl())
-                        try {
-                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
+                tryDefaultAction(event);
                 super.clicked(event, x, y);
             }
-//
+
+            private void tryDefaultAction(InputEvent event) {
+                try {
+                    if (getTapCount() > 1)
+                        if (event.getButton() == 0)
+                            if (bfObj.isPlayerCharacter()) {
+                                HqMaster.openHqPanel();
+                                return;
+                            }
+                    //TODO control options
+                    //                            if (bfObj instanceof Unit) {
+                    //                            GuiEventManager.trigger(GuiEventType.SHOW_UNIT_INFO_PANEL,
+                    //                             new UnitDataSource((Unit) bfObj));
+                    //                            return;
+                    if (event.getButton() == Buttons.LEFT) {
+
+                        if (isAlt() || isShift() || isControl()) {
+                            DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                        } else {
+                            if (DefaultActionHandler.leftClickActor(bfObj))
+                                return;
+                        }
+                    }
+                } catch (Exception e) {
+                    main.system.ExceptionMaster.printStackTrace(e);
+                }
+            }
+            //
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
 
 
                 if (event.getButton() == Input.Buttons.RIGHT)

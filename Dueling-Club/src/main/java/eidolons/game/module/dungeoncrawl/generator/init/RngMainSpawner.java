@@ -27,6 +27,7 @@ import main.system.auxiliary.EnumMaster;
 import main.system.auxiliary.Loop;
 import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.WeightMap;
+import main.system.math.FuncMaster;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -226,8 +227,37 @@ public class RngMainSpawner {
     }
 
     private void spawnQuestMob(DungeonQuest quest) {
+        Integer n = quest.getNumberRequired();
+        if (n <= 0) {
+            n = QuestCreator.getNumberRequired(quest);
+            quest.setNumberRequired(n);
+        }
+        LevelZone zone=new FuncMaster<LevelZone>().getGreatest_(level.getZones(),
+         zone1 -> zone1.getSubParts().size());
+        ObjType type = QuestCreator.getPreyType(level.getPowerLevel(), quest,
+         zone.getStyle());
+        //field to draw units from?
+        quest.setArg(type);
+        int perGroup = 1 + level.getPowerLevel() / type.getIntParam(PARAMS.POWER) / 2;
+        int groups = n / perGroup;
+        for (LevelBlock block : zone.getSubParts()) {
+             List<ObjType> units = new ArrayList<>();
+            for (int i = 0; i < perGroup; i++) {
+                units.add(type);
+            }
+            List<ObjAtCoordinate> list = spawnUnits(block, units);
+            block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
+            groups--;
+            if (groups==0)
+                perGroup=n%perGroup;
+            if (groups<0)
+                break;
+        }
     }
 
+    private void spawnQuestUnits(DungeonQuest quest) {
+
+    }
     private void spawnQuestBoss(DungeonQuest quest) {
         LevelZone zone=new RandomWizard<LevelZone>().getRandomListItem(level.getZones());
         for (LevelZone levelZone : level.getZones()) {
@@ -244,6 +274,7 @@ public class RngMainSpawner {
 
         LevelBlock block= getBlocksForSpawn(UNIT_GROUP_TYPE.BOSS, zone).get(0);
         List<ObjAtCoordinate> list = spawnUnits(block, units);
+       block.getUnitGroups().put(list, UNIT_GROUP_TYPE.BOSS);
         ObjAtCoordinate objAt = list.get(0);
 
         quest.setArg(objAt);
@@ -688,12 +719,16 @@ public class RngMainSpawner {
         //TODO
         int maxStack = 2;
         AbstractCoordinates center = new AbstractCoordinates(levelBlock.getWidth() / 2, levelBlock.getHeight() / 2);
-        List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream().filter(
-         c ->
-          levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR).
+
+        List<Coordinates> emptyCells = levelBlock.getTileMap().getMap().keySet().stream()
+         .filter(c -> levelBlock.getTileMap().getMap().get(c) == ROOM_CELL.FLOOR).
+          filter(c-> checkCellForSpawn(c, levelBlock)).
          sorted(new SortMaster<Coordinates>().getSorterByExpression_(c ->
           -c.dst(center))).limit(units.size() * maxStack).
          collect(Collectors.toList());
+
+
+
         List<ObjAtCoordinate> list = new ArrayList<>();
         if (emptyCells.isEmpty())
             return list;
@@ -709,6 +744,16 @@ public class RngMainSpawner {
 
         }
         return list;
+    }
+
+    private boolean checkCellForSpawn(Coordinates c, LevelBlock levelBlock) {
+        for (ObjAtCoordinate at : levelBlock.getObjects()) {
+            if (at.getCoordinates().equals(c)) {
+
+            }
+        }
+
+        return true;
     }
 
     private void addUnit(ObjAtCoordinate at, LevelBlock levelBlock) {

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CoreEngine {
     public final static String[] classFolderPaths = {"main.elements", "main.ability", "eidolons.elements", "eidolons.ability"};
-    public static final String VERSION = "0.8.1";
+    public static final String VERSION = "0.8.2";
     public static final boolean DEV_MODE =true ;
     public static boolean EXE_MODE = true;
     public static boolean swingOn = false;
@@ -58,6 +58,7 @@ public class CoreEngine {
     private static boolean initialized;
     private static boolean crashSafeMode=true;
     private static boolean utility;
+    private static float memoryLevel;
 
     public static void systemInit() {
         Chronos.mark("SYSTEM INIT");
@@ -413,5 +414,13 @@ public class CoreEngine {
 
     public static void setUtility(boolean utility) {
         CoreEngine.utility = utility;
+    }
+
+    public static void setMemoryLevel(float memoryLevel) {
+        CoreEngine.memoryLevel = memoryLevel;
+    }
+
+    public static float getMemoryLevel() {
+        return memoryLevel;
     }
 }

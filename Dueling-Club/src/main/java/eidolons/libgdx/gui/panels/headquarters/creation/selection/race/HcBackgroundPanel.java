@@ -55,7 +55,7 @@ public class HcBackgroundPanel extends SelectionImageTable {
                  item = new SelectableItemData(sub.getName(), sub);
                 item.setSelectionUnderneath(true);
                 try {
-                    item.setPreviewImagePath(Images.getSketch(
+                    item.setFullsizeImagePath(Images.getSketch(
                      new EnumMaster<BACKGROUND>().retrieveEnumConst(BACKGROUND.class, sub.getProperty(G_PROPS.BACKGROUND))
                     ));
                 } catch (Exception e) {

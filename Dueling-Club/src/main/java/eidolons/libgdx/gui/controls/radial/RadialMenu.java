@@ -217,7 +217,7 @@ public class RadialMenu extends Group implements Closable {
         int yMax=0;
         int yMin=0;
 
-        radius = (int) (72 * coefficient);
+        radius = (int) (getRadiusBase() * coefficient);
         final List<RadialValueContainer> children = currentNode.getChildNodes();
         for (int i = 0; i < children.size(); i++) {
             final RadialValueContainer valueContainer = children.get(i);
@@ -252,6 +252,10 @@ public class RadialMenu extends Group implements Closable {
                 valueContainer.setPosition(v.x, v.y);
         }
         setSize(xMax-xMin,yMax-yMin);
+    }
+
+    protected double getRadiusBase() {
+        return 72;
     }
 
     protected boolean isMakeSecondRing(int size) {

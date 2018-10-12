@@ -83,7 +83,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             updateInputController();
             return;
         } else if (!(p.get() instanceof Integer)) {
-//            if (selectionPanel != null) TODO why was it necessary?
+//            if (selectionPanel != null)// TODO why was it necessary?
 //                selectionPanel.cancel(false);
         }
 
@@ -175,6 +175,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
          GdxMaster.centerHeight(selectionPanel));
 
         selectionPanel.fadeIn();
+
+        GdxMaster.setDefaultCursor();
     }
 
     protected void selectionPanelClosed() {
@@ -183,6 +185,7 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         } catch (Exception e) {
             main.system.ExceptionMaster.printStackTrace(e);
         }
+        GdxMaster.setLoadingCursor();
     }
 
     protected SelectionPanel createSelectionPanel(EventCallbackParam p) {

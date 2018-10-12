@@ -55,8 +55,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
     public OutcomePanel(OutcomeDatasource outcomeDatasource) {
         addListener(this);
         Texture background = TiledNinePatchGenerator.getOrCreateNinePatch(
-                NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
-        TextureRegion textureRegion =new TextureRegion(background);
+         NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN, (int) GdxMaster.adjustSize(980), (int) GdxMaster.adjustSize(600));
+        TextureRegion textureRegion = new TextureRegion(background);
         setBackground(new TextureRegionDrawable(textureRegion));
 
         outcome = outcomeDatasource.getOutcome();
@@ -73,8 +73,8 @@ public class OutcomePanel extends TablePanel implements EventListener {
         picture.setAlign(Align.center);
         picture.setScale(GdxMaster.getFontSizeModSquareRoot());
         picture.setPosition(
-         MigMaster.center(textureRegion.getRegionWidth(), picture.getWidth()*picture.getScaleX()),
-         MigMaster.center(textureRegion.getRegionHeight(), picture.getHeight()*picture.getScaleY()
+         MigMaster.center(textureRegion.getRegionWidth(), picture.getWidth() * picture.getScaleX()),
+         MigMaster.center(textureRegion.getRegionHeight(), picture.getHeight() * picture.getScaleY()
          ));
 
         String messageText = VICTORY_MESSAGE;
@@ -95,17 +95,17 @@ public class OutcomePanel extends TablePanel implements EventListener {
             stats.row();
         });
         addElement(stats);
-//        new ScrollPanel<>(stats);
+        //        new ScrollPanel<>(stats);
 
 
         final TablePanel<TextButton> buttonTable = new TablePanel<>();
 
-//        doneButton = buttonTable.addElement(
-//         new TextButton(outcome ? "Next" : "Restart",
-//          StyleHolder.getMenuTextButtonStyle(16))
-//        ).fill(false).expand(0, 0).right()
-//         .pad(20, 10, 20, 10);
-//        doneButton.getActor().addListener(this);
+        //        doneButton = buttonTable.addElement(
+        //         new TextButton(outcome ? "Next" : "Restart",
+        //          StyleHolder.getMenuTextButtonStyle(16))
+        //        ).fill(false).expand(0, 0).right()
+        //         .pad(20, 10, 20, 10);
+        //        doneButton.getActor().addListener(this);
 
         exitButton = buttonTable.addElement(
          new TextButton("Main Menu",
@@ -114,19 +114,19 @@ public class OutcomePanel extends TablePanel implements EventListener {
          .pad(20, 10, 20, 10);
         exitButton.getActor().addListener(this);
 
-//        continueButton = buttonTable.addElement(
-//         new TextButton("Explore",
-//          StyleHolder.getMenuTextButtonStyle(16))
-//        ).fill(false).expand(0, 0).right()
-//         .pad(20, 10, 20, 10);
-////         .size(50, 30);
-//        continueButton.getActor().addListener(this);
+        //        continueButton = buttonTable.addElement(
+        //         new TextButton("Explore",
+        //          StyleHolder.getMenuTextButtonStyle(16))
+        //        ).fill(false).expand(0, 0).right()
+        //         .pad(20, 10, 20, 10);
+        ////         .size(50, 30);
+        //        continueButton.getActor().addListener(this);
         addActor(buttonTable);
         buttonTable.setPosition(
          MigMaster.center(textureRegion.getRegionWidth(), buttonTable.getWidth()),
          55
         );
-//        addElement(buttonTable).pad(0, 20, 20, 20);
+        //        addElement(buttonTable).pad(0, 20, 20, 20);
     }
 
     @Override
@@ -146,45 +146,32 @@ public class OutcomePanel extends TablePanel implements EventListener {
         if (actor instanceof Label) {
             if (actor.getParent() instanceof TextButton) {
                 ActorMaster.addMoveToAction(this, getX(), GdxMaster.getHeight(), 1.5f);
-//                ActorMaster.addRemoveAfter(this);
-                final Boolean exit_continue_next =true;
-//                 doneButton.getActor().getLabel() == actor ? null :
-//                  exitButton.getActor().getLabel() == actor;
-//            ActorMaster.addAfter(this, new Action() {
-//
-//                @Override
-//                public boolean act(float delta) {
+                //                ActorMaster.addRemoveAfter(this);
+                final Boolean exit_continue_next = true;
                 if (exit_continue_next == null) {
                     if (!ExplorationMaster.isExplorationOn())
                         Eidolons.getGame().getMaster().nextLevel();
 
                     if (!Bools.isTrue(outcome))
                         Eidolons.restart();
-                    else
-                    {
 
-                        Eidolons.nextScenario();
-                    }
 
                 } else if (exit_continue_next) {
-//                        if (DialogMaster.confirm("Must you really go?.."))
+
                     if (CoreEngine.isMacro()) {
                         GuiEventManager.trigger(GuiEventType.BATTLE_FINISHED);
                     } else {
                         Eidolons.exitToMenu();
                     }
-//                    else DialogMaster.inform("Glad you're still with us! :)");
+
 
                 } else {
                     WaitMaster.receiveInput(WAIT_OPERATIONS.GAME_FINISHED,
                      false);
-//                        DialogMaster.inform("Feel free to roam around, until next round...))");
 
                 }
                 remove();
                 return true;
-//                }
-//            });
             }
 
         }

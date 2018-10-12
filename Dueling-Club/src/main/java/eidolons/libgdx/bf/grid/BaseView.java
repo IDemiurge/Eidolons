@@ -46,14 +46,6 @@ public class BaseView extends SuperActor {
                 if (button == Input.Buttons.LEFT) {
                     event.handle();
 
-
-                    if (isAlt())
-                        try {
-                            if (DefaultActionHandler.leftClickActor(event, getX(), getY()))
-                                return;
-                        } catch (Exception e) {
-                            main.system.ExceptionMaster.printStackTrace(e);
-                        }
                     GuiEventManager.trigger(TARGET_SELECTION, BaseView.this);
                 }
             }

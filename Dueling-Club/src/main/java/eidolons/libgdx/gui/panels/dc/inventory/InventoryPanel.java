@@ -28,7 +28,7 @@ public class InventoryPanel extends TablePanel {
     public InventoryPanel() {
         TextureRegion textureRegion = new TextureRegion(
          TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.SAURON, BACKGROUND_NINE_PATCH.PATTERN,
-          (int) GDX.size(525),(int) GDX.size(800)));
+          (int) GDX.size(525),(int) GDX.size(880)));
         TextureRegionDrawable drawable = new TextureRegionDrawable(textureRegion);
         setBackground(drawable);
 

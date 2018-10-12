@@ -1,6 +1,5 @@
 package eidolons.entity.active;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import eidolons.ability.conditions.special.ClearShotCondition;
 import eidolons.entity.obj.BattleFieldObject;
 import eidolons.entity.obj.DC_Obj;
@@ -13,6 +12,7 @@ import eidolons.game.core.ActionInput;
 import eidolons.game.core.EUtils;
 import eidolons.game.core.Eidolons;
 import eidolons.game.module.dungeoncrawl.objects.DungeonObj;
+import eidolons.game.module.dungeoncrawl.objects.InteractiveObj;
 import eidolons.system.options.GameplayOptions.GAMEPLAY_OPTION;
 import eidolons.system.options.OptionsMaster;
 import main.content.enums.entity.UnitEnums.FACING_SINGLE;
@@ -30,11 +30,15 @@ import java.util.List;
  * Created by JustMe on 8/30/2017.
  */
 public class DefaultActionHandler {
-    public static boolean leftClickActor(InputEvent event, float x, float y) {
 
+    public static boolean leftClickActor(DC_Obj userObject) {
+        if (userObject instanceof InteractiveObj) {
+            activate(new Context( Eidolons.getMainHero(),userObject), ((InteractiveObj) userObject).getDM().getDefaultAction(
+             Eidolons.getMainHero(),(DungeonObj) userObject));
+            return true;
+        }
         return false;
     }
-
     private static boolean moveToMotion(Unit source, Coordinates coordinates) {
 //        List<ActionPath> paths = source.getGame().getAiManager().getPathBuilder().getInstance(source)
 //         .build(new ListMaster<Coordinates>().getList(coordinates));

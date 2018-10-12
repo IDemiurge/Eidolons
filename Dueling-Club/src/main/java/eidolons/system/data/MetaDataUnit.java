@@ -16,11 +16,22 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
         super(text);
     }
 
-    public static MetaDataUnit getInstance() {
+    public static void write() {
+        getInstance().setValue(META_DATA.EXIT, "ok");
+        FileManager.write(PathFinder.getMetaDataUnitPath(), getInstance().getData());
+    }
+        public static MetaDataUnit getInstance() {
         if (instance == null) {
-            instance = new MetaDataUnit(
-             FileManager.readFile(PathFinder.getMetaDataUnitPath()) );
+            String data = FileManager.readFile(PathFinder.getMetaDataUnitPath());
+            if (data.isEmpty()) {
+                FileManager.write( "",PathFinder.getMetaDataUnitPath());
+            }
+            instance = new MetaDataUnit(data );
             instance.addToInt(META_DATA.TIMES_LAUNCHED,1);
+            if (!"ok".equalsIgnoreCase(instance.getValue(META_DATA.EXIT))){
+                instance.addToInt(META_DATA.CRASHED,1);
+            }
+            instance.setValue(META_DATA.EXIT, "?");
         }
         return instance;
     }
@@ -34,7 +45,7 @@ public class MetaDataUnit extends DataUnit<META_DATA> {
 
         TIMES_LAUNCHED,
         TIME_PLAYED,
-        CRASHED,
+        CRASHED, EXIT,
 
 
     }

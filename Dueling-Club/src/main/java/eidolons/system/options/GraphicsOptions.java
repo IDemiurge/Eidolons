@@ -51,7 +51,7 @@ public class GraphicsOptions extends Options<GRAPHIC_OPTION, GRAPHIC_OPTION> {
                 return true;
             }
         },
-        ;
+        BRIGHTNESS(80, 20, 100);
         private Boolean exclusive;
         private Integer min;
         private Integer max;

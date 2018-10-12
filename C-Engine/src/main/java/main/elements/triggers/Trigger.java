@@ -76,7 +76,7 @@ public class Trigger {
 
     public boolean check(Event event) {
 
-        Ref ref = getAbilities().getRef();
+        Ref ref = getRef(event);
         ref.setEvent(event);
         if (retainCondition != null) {
             if (!retainCondition.preCheck(ref)) {
@@ -115,6 +115,12 @@ public class Trigger {
         } else {
             return false;
         }
+    }
+
+    protected Ref getRef(Event event) {
+        if (getAbilities()==null )
+            return event.getRef();
+        return getAbilities().getRef();
     }
 
 

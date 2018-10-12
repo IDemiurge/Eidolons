@@ -168,6 +168,12 @@ public class UnitDataSource  implements
     public TextureRegion getAvatar() {
         return TextureCache.getOrCreateR(unit.getImagePath());
     }
+    public TextureRegion getLargeImage() {
+        return TextureCache.getOrCreateR(unit.getLargeImagePath());
+    }
+    public TextureRegion getFullSizeImage() {
+        return TextureCache.getOrCreateR(unit.getFullSizeImagePath());
+    }
 
     @Override
     public String getName() {

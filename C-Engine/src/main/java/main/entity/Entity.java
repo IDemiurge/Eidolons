@@ -507,6 +507,14 @@ public abstract class Entity extends DataModel implements OBJ {
         return getProperty(G_PROPS.IMAGE);
     }
 
+    public String getLargeImagePath() {
+            return ImageManager.getLargeImage(this);
+    }
+    public String getFullSizeImagePath() {
+        if (!checkProperty(G_PROPS.FULLSIZE_IMAGE))
+            return ImageManager.getFullSizeImage(this);
+        return getProperty(G_PROPS.FULLSIZE_IMAGE);
+    }
     public String getEmblemPath() {
         return getProperty(G_PROPS.EMBLEM);
     }

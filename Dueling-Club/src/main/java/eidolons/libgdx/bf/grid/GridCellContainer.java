@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import eidolons.game.core.Eidolons;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.datasource.GridCellDataSource;
 import eidolons.libgdx.screens.DungeonScreen;
 import main.game.bf.Coordinates;
@@ -203,8 +202,6 @@ public class GridCellContainer extends GridCell {
     protected boolean checkIgnored() {
         if (!isVisible())
             return true;
-        if (SuperActor.isCullingOff())
-            return false;
         if (Eidolons.game == null)
             return true;
         if (!Eidolons.game.isStarted())

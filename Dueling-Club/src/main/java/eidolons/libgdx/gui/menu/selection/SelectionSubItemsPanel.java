@@ -2,7 +2,7 @@ package eidolons.libgdx.gui.menu.selection;
 
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.gui.NinePatchFactory;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.menu.selection.ItemListPanel.SelectableItemData;
 import eidolons.libgdx.gui.panels.TablePanelX;
 
@@ -16,7 +16,7 @@ public class SelectionSubItemsPanel extends TablePanelX{
         setBackground(NinePatchFactory.getLightPanelFilledDrawable());
         this.panel = itemListPanel;
         for (String sub : items) {
-            TextButtonX line = new TextButtonX( sub,
+            SmartButton line = new SmartButton( sub,
              StyleHolder.getHqTextButtonStyle(16), ()-> clicked(item, sub) );
             add(line).center().row();
         }

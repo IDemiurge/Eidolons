@@ -15,44 +15,44 @@ import main.system.graphics.FontMaster.FONT;
 /**
  * Created by JustMe on 12/1/2017.
  */
-public class TextButtonX extends TextButton implements EventListener {
+public class SmartButton extends TextButton implements EventListener {
 
     private Runnable runnable;
     private boolean fixedSize;
     private boolean ignoreConfirmBlock;
 
-    public TextButtonX(String text, TextButtonStyle style) {
+    public SmartButton(String text, TextButtonStyle style) {
         this(text, style, null);
 
     }
 
-    public TextButtonX(STD_BUTTON button, Runnable runnable) {
+    public SmartButton(STD_BUTTON button, Runnable runnable) {
         this("", button, runnable);
     }
 
 
-    public TextButtonX(String text, STD_BUTTON button, Runnable runnable,
+    public SmartButton(String text, STD_BUTTON button, Runnable runnable,
                        FONT font, int size, Color color_) {
         this(text, StyleHolder.getTextButtonStyle(button,
          font, color_, size), runnable);
     }
 
-    public TextButtonX(String text, STD_BUTTON button, Runnable runnable) {
+    public SmartButton(String text, STD_BUTTON button, Runnable runnable) {
         this(text, button, runnable,
          FONT.MAGIC, 20, GdxColorMaster.GOLDEN_WHITE);
     }
 
-    public TextButtonX(String text, TextButtonStyle style, Runnable runnable) {
+    public SmartButton(String text, TextButtonStyle style, Runnable runnable) {
         super(text, style);
         this.runnable = runnable;
         addListener(this);
     }
 
-    public TextButtonX(STD_BUTTON button) {
+    public SmartButton(STD_BUTTON button) {
         this("", button, null);
     }
 
-    public TextButtonX(String text, Runnable runnable) {
+    public SmartButton(String text, Runnable runnable) {
         this(text, StyleHolder.getHqTextButtonStyle(16), runnable);
     }
 
@@ -72,7 +72,14 @@ public class TextButtonX extends TextButton implements EventListener {
             return getHeight();
         return super.getPrefHeight();
     }
-
+//    addListener(new SmartClickListener(this) {
+//        @Override
+//        public void clicked(InputEvent event, float x, float y) {
+//            super.clicked(event, x, y);
+//            runnable.run();
+//        }
+//    }
+//        );
     @Override
     public boolean handle(Event e) {
         if (runnable == null)

@@ -1,7 +1,7 @@
 package eidolons.libgdx.gui.panels.headquarters;
 
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
@@ -13,13 +13,13 @@ public class HqControlPanel extends HqElement{
 
     public HqControlPanel() {
 //        setFixedSize(true);
-        add(new TextButtonX(  STD_BUTTON.UNDO, () -> {
+        add(new SmartButton(  STD_BUTTON.UNDO, () -> {
             HqDataMaster.undo();
         }));
-        add(new TextButtonX( STD_BUTTON.OK, () -> {
+        add(new SmartButton( STD_BUTTON.OK, () -> {
             save();
         }));
-        add(new TextButtonX(  STD_BUTTON.CANCEL, () -> {
+        add(new SmartButton(  STD_BUTTON.CANCEL, () -> {
             close();
         }));
     }

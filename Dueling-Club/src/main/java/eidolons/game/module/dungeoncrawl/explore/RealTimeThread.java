@@ -16,7 +16,7 @@ public class RealTimeThread extends Thread {
     private final ExploreGameLoop loop;
 
     public RealTimeThread(ExploreGameLoop exploreGameLoop) {
-        super("");
+        super("RT thread - " + exploreGameLoop.getThreadName());
         this.loop = exploreGameLoop;
 
     }

@@ -11,7 +11,7 @@ import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.bf.generic.FadeImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
-import eidolons.libgdx.gui.generic.btn.TextButtonX;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.headquarters.HqActor;
 import eidolons.libgdx.gui.panels.headquarters.ValueTable;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
@@ -31,12 +31,12 @@ import java.util.List;
 public class HqNewMasteryPanel extends ValueTable<PARAMETER,
  GroupX>
  implements HqActor  {
-    private final TextButtonX cancelButton;
+    private final SmartButton cancelButton;
 
     public HqNewMasteryPanel() {
         super(6, DC_ContentValsManager.getMasteries().size());
         setVisible(false);
-        cancelButton = new TextButtonX(STD_BUTTON.CANCEL, ()->{
+        cancelButton = new SmartButton(STD_BUTTON.CANCEL, ()->{
             fadeOut();
         });
         initDefaultBackground();

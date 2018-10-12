@@ -208,6 +208,8 @@ public class Eidolons {
         mainHero = null;
         DC_Game.game = null;
         Game.game = null;
+
+        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES );
         //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
     }
 
@@ -257,14 +259,6 @@ public class Eidolons {
         }, "restart thread").start();
     }
 
-    public static void nextLevel() {
-        new Thread(() -> {
-            getGame().getMetaMaster().getBattleMaster().
-             getOutcomeManager().next();
-        }, "next level thread").start();
-
-    }
-
     public static void exitToMenu() {
         try {
             DC_Game.game.getMetaMaster().gameExited();
@@ -291,10 +285,6 @@ public class Eidolons {
          new ScreenData(SCREEN_TYPE.MAIN_MENU, "Loading..."));
 
         ScenarioLauncher.missionIndex = 0;
-    }
-
-    public static void nextScenario() {
-
     }
 
     public static void activateMainHeroAction(String action) {

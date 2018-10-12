@@ -18,13 +18,11 @@ import eidolons.game.core.game.DC_Game;
 import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.bf.Borderable;
 import eidolons.libgdx.bf.GridMaster;
-import eidolons.libgdx.bf.SuperActor;
 import eidolons.libgdx.bf.mouse.BattleClickListener;
 import eidolons.libgdx.screens.DungeonScreen;
 import eidolons.libgdx.shaders.DarkShader;
 import eidolons.libgdx.shaders.GrayscaleShader;
 import eidolons.libgdx.shaders.ShaderMaster;
-import eidolons.libgdx.texture.TextureManager;
 import main.game.bf.Coordinates;
 import main.system.GuiEventManager;
 
@@ -68,7 +66,7 @@ public class GridCell extends Group implements Borderable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (getTapCount()>1){
+                if (getTapCount() > 1) {
                     if (!isAlt()) {
                         if (!DefaultActionHandler.
                          leftClickCell(false, isControl(), getGridX(), getGridY()))
@@ -130,13 +128,13 @@ public class GridCell extends Group implements Borderable {
              getGridX(), getGridY()
             ));
         }*/
-        if (parentAlpha == ShaderMaster.SUPER_DRAW || batch.getShader()== GrayscaleShader.getGrayscaleShader()) {
+        if (parentAlpha == ShaderMaster.SUPER_DRAW || batch.getShader() == GrayscaleShader.getGrayscaleShader()) {
             super.draw(batch, 1);
         } else {
             ShaderMaster.drawWithCustomShader(this,
-                    batch,
-                    !getUserObject().isPlayerHasSeen() ?
-                            DarkShader.getShader() : null, true);
+             batch,
+             !getUserObject().isPlayerHasSeen() ?
+              DarkShader.getShader() : null, true);
         }
 
     }
@@ -157,11 +155,10 @@ public class GridCell extends Group implements Borderable {
         if (gridX == 0)
             if (gridY == 0)
                 gridX = 0;
-        if (!SuperActor.isCullingOff())
-            if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
-             ) {
-                return;
-            }
+        if (!DungeonScreen.getInstance().controller.isWithinCamera((this))
+         ) {
+            return;
+        }
         super.act(delta);
         if (DC_Game.game.isDebugMode()) {
             if (!cordsText.isVisible()) {

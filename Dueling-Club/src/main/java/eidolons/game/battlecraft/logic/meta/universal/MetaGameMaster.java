@@ -116,6 +116,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     private boolean isQuestsEnabled() {
+        if (!QuestMaster.ON)
+            return false;
         if (!isRngDungeon())
             return false;
         if (CoreEngine.isMacro()) {
@@ -252,4 +254,7 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         return questMaster;
     }
 
+    public void reinit() {
+        getQuestMaster().startQuests();
+    }
 }

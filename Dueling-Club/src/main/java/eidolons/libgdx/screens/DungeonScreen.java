@@ -59,7 +59,7 @@ import static main.system.GuiEventType.*;
  */
 public class DungeonScreen extends GameScreen {
     protected static float FRAMERATE_DELTA_CONTROL =
-     new Float(1) / GenericLauncher.FRAMERATE * 3;
+     new Float(1) / GenericLauncher.FRAMERATE  ; //*3 ?
     protected static DungeonScreen instance;
     protected static boolean cameraAutoCenteringOn = OptionsMaster.getControlOptions().
      getBooleanValue(CONTROL_OPTION.AUTO_CENTER_CAMERA_ON_HERO);
@@ -116,6 +116,8 @@ public class DungeonScreen extends GameScreen {
 
         WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED, true);
         WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_PRELOADED);
+
+        GdxMaster.setLoadingCursor();
     }
 
     @Override
@@ -231,6 +233,7 @@ public class DungeonScreen extends GameScreen {
 //        gridPanel.updateGui();
         getGuiStage().getBottomPanel().update();
         checkGraphicsUpdates();
+
     }
 
     public void cameraStop() {
@@ -332,14 +335,14 @@ public class DungeonScreen extends GameScreen {
     public void render(float delta) {
 
 
-        if (delta > FRAMERATE_DELTA_CONTROL) {
-            try {
-                Thread.sleep((long) (delta - FRAMERATE_DELTA_CONTROL));
-            } catch (InterruptedException e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
-            delta = FRAMERATE_DELTA_CONTROL;
-        }
+//        if (delta < FRAMERATE_DELTA_CONTROL) {
+//            try {
+//                Thread.sleep((long) (FRAMERATE_DELTA_CONTROL-delta  ));
+//            } catch (InterruptedException e) {
+//                main.system.ExceptionMaster.printStackTrace(e);
+//            }
+//            delta = FRAMERATE_DELTA_CONTROL;
+//        }
         if (speed != null) {
             delta = delta * speed;
         }

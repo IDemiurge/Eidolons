@@ -1,20 +1,22 @@
 package eidolons.system.options;
 
-import eidolons.system.options.EngineOptions.ENGINE_OPTION;
+import eidolons.system.options.SystemOptions.SYSTEM_OPTION;
 
 /**
  * Created by JustMe on 8/27/2017.
  */
-public class EngineOptions
- extends Options<ENGINE_OPTION,ENGINE_OPTION>
+public class SystemOptions
+ extends Options<SYSTEM_OPTION,SYSTEM_OPTION>
 {
 
-    protected Class<? extends ENGINE_OPTION> getOptionClass() {
-        return ENGINE_OPTION.class;
+    protected Class<? extends SYSTEM_OPTION> getOptionClass() {
+
+        return SYSTEM_OPTION.class;
     }
 
-    public  enum ENGINE_OPTION implements Options.OPTION {
-        LOGGING ,
+    public  enum SYSTEM_OPTION implements Options.OPTION {
+        LOGGING(true) ,
+        LOG_TO_FILE(true),
         RESET_COSTS(false),
         CACHE,
         PRECONSTRUCT,
@@ -28,21 +30,21 @@ public class EngineOptions
         Integer max;
         Object defaultValue;
 
-        ENGINE_OPTION() {
+        SYSTEM_OPTION() {
 
         }
 
-        ENGINE_OPTION(Integer defaultValue, Integer min, Integer max) {
+        SYSTEM_OPTION(Integer defaultValue, Integer min, Integer max) {
             this.defaultValue = defaultValue;
             this.max = max;
             this.min = min;
         }
 
-        ENGINE_OPTION(Object[] options) {
+        SYSTEM_OPTION(Object[] options) {
             this.options = options;
         }
 
-        ENGINE_OPTION(boolean defaultValue) {this.exclusive = defaultValue;
+        SYSTEM_OPTION(boolean defaultValue) {this.exclusive = defaultValue;
             this.defaultValue = defaultValue;
         }
 

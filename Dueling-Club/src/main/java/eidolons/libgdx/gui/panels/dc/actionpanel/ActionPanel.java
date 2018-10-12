@@ -1,13 +1,11 @@
 package eidolons.libgdx.gui.panels.dc.actionpanel;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import eidolons.content.PARAMS;
 import eidolons.entity.active.DC_ActionManager;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.core.Eidolons;
-import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.generic.ImageContainer;
 import eidolons.libgdx.gui.generic.GroupX;
@@ -30,9 +28,10 @@ import static main.system.GuiEventType.ACTION_PANEL_UPDATE;
 
 public class ActionPanel extends GroupX {
     public final static int IMAGE_SIZE = 60;
+    public static final float EMPTY_OFFSET = 220/2;
     private static final String BACKGROUND_PATH = StrPathBuilder.build(PathFinder.getComponentsPath(), "dc", "bottom panel", "background.png");
     private static final float SPELL_OFFSET_Y = -6;
-    private static final float OFFSET_X = 70;
+    private static final float OFFSET_X =  70+EMPTY_OFFSET;
     private static final float QUICK_SLOTS_OFFSET_X = 20;
     private static final float SPELL_OFFSET_X = 40;
     private static final float ORB_OFFSET_X = OFFSET_X + 76;
@@ -97,10 +96,10 @@ public class ActionPanel extends GroupX {
          leftOrbPanel.getY() + 32);
 
         addActor(orbOverlay = new ImageContainer(ORB_OVERLAY));
-        orbOverlay.setPosition(136, 56);
+        orbOverlay.setPosition(EMPTY_OFFSET+136, 56);
 
         addActor(bottomOverlay = new ImageContainer(BOTTOM_OVERLAY));
-        bottomOverlay.setPosition(80, -12);
+        bottomOverlay.setPosition(EMPTY_OFFSET+80, -12);
 
         buffPanelSimple = new BuffPanelSimple();
         buffPanelSimple.setPosition(actionOffset + 88, IMAGE_SIZE + 12);
@@ -234,6 +233,5 @@ public class ActionPanel extends GroupX {
         leftOrbPanel.setUpdateRequired(true);
         rigthOrbPanel.setUpdateRequired(true);
         initResolutionScaling();
-        setX((float) (GdxMaster.centerWidth(this)-(1600*Math.pow(GdxMaster.getFontSizeMod(), 0.2f)-getWidth())/2));
-    }
+        }
 }

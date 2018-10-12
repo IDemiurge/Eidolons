@@ -7,6 +7,7 @@ import eidolons.entity.active.DC_ActionManager.WEAPON_ATTACKS;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.game.battlecraft.DC_Engine;
 import eidolons.libgdx.bf.overlays.WallMap;
+import eidolons.libgdx.texture.Images;
 import main.content.CONTENT_CONSTS.OBJECT_ARMOR_TYPE;
 import main.content.DC_TYPE;
 import main.content.enums.DungeonEnums.LOCATION_TYPE;
@@ -175,6 +176,17 @@ public class ContentGenerator {
             ObjType newType = new ObjType(StringMaster.getWellFormattedString(type.name()),
              DC_TYPE.SCENARIOS);
             newType.setGroup("Random", true);
+            switch (type) {
+                case CAVE:
+                case CRYPT:
+
+                    default:
+                        newType.setImage(Images.EMPTY_SPELL);
+                        newType.setProperty(G_PROPS.FULLSIZE_IMAGE,
+                         "demo/previews/Ironhelm Tunnel.png");
+            }
+            newType.setProperty(PROPS.SUBDUNGEON_TYPE,
+             type.toString());
             DataManager.addType(newType);
         }
     }

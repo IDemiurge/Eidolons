@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import eidolons.entity.active.DC_ActiveObj;
 import eidolons.game.core.EUtils;
@@ -16,13 +17,15 @@ import eidolons.libgdx.anims.ActorMaster;
 import eidolons.libgdx.bf.SuperActor.ALPHA_TEMPLATE;
 import eidolons.libgdx.bf.generic.SuperContainer;
 import eidolons.libgdx.bf.menu.GameMenu;
+import eidolons.libgdx.gui.HideButton;
 import eidolons.libgdx.gui.LabelX;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.controls.radial.RadialMenu;
 import eidolons.libgdx.gui.controls.radial.RadialValueContainer;
-import eidolons.libgdx.gui.generic.btn.ButtonStyled;
+import eidolons.libgdx.gui.generic.GroupX;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
+import eidolons.libgdx.gui.generic.btn.SmartButton;
 import eidolons.libgdx.gui.panels.dc.inventory.container.ContainerPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.FullLogPanel;
 import eidolons.libgdx.gui.panels.dc.logpanel.SimpleLogPanel;
@@ -31,22 +34,27 @@ import eidolons.libgdx.gui.panels.dc.menus.outcome.OutcomePanel;
 import eidolons.libgdx.gui.panels.headquarters.HqMaster;
 import eidolons.libgdx.gui.panels.headquarters.HqPanel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import eidolons.libgdx.gui.panels.quest.QuestJournal;
 import eidolons.libgdx.gui.panels.quest.QuestProgressPanel;
 import eidolons.libgdx.gui.tooltips.ToolTipManager;
 import eidolons.libgdx.screens.map.layers.Blackout;
 import eidolons.libgdx.shaders.ShaderMaster;
+import eidolons.libgdx.texture.TextureCache;
 import eidolons.libgdx.utils.TextInputPanel;
 import eidolons.system.options.OptionsMaster;
 import eidolons.system.options.OptionsWindow;
+import main.data.filesys.PathFinder;
 import main.elements.targeting.SelectiveTargeting;
 import main.entity.Entity;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
+import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.system.GuiEventType.SHOW_QUESTS_INFO;
 import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
 
 /**
@@ -54,8 +62,8 @@ import static main.system.GuiEventType.SHOW_TEXT_CENTERED;
  */
 public class GuiStage extends StageX implements StageWithClosable {
 
-    protected final LabelX actionTooltip = new LabelX("", 16+ (int)GdxMaster.getFontSizeModSquareRoot());
-    protected final LabelX infoTooltip = new LabelX("", 16+(int)GdxMaster.getFontSizeModSquareRoot());
+    protected final LabelX actionTooltip = new LabelX("", 16 + (int) GdxMaster.getFontSizeModSquareRoot());
+    protected final LabelX infoTooltip = new LabelX("", 16 + (int) GdxMaster.getFontSizeModSquareRoot());
     protected RadialMenu radial;
     protected ContainerPanel containerPanel;
     protected OverlayTextPanel textPanel;
@@ -74,9 +82,10 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected boolean blocked;
     protected ConfirmationPanel confirmationPanel;
     protected DragManager dragManager;
-    private Entity draggedEntity;
-    private FullLogPanel logPanel;
-    private QuestProgressPanel questProgressPanel;
+    protected Entity draggedEntity;
+    protected FullLogPanel logPanel;
+    protected QuestProgressPanel questProgressPanel;
+    protected QuestJournal journal;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -90,11 +99,22 @@ public class GuiStage extends StageX implements StageWithClosable {
 
     protected void init() {
         initGameMenu();
-//        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
-//         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
-//        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
-//         GdxMaster.getHeight() - helpButton.getHeight());
-//        addActor(helpButton);
+        //        ButtonStyled helpButton = new ButtonStyled(STD_BUTTON.HELP, () ->
+        //         GuiEventManager.trigger(SHOW_TEXT_CENTERED, HelpMaster.getHelpText()));
+        //        helpButton.setPosition(menuButton.getX() - helpButton.getWidth(),
+        //         GdxMaster.getHeight() - helpButton.getHeight());
+        //        addActor(helpButton);
+
+        addActor(questProgressPanel = new QuestProgressPanel());
+        HideButton hideQuests = new HideButton(questProgressPanel);
+        addActor(hideQuests);
+
+        questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
+         GdxMaster.getHeight() - questProgressPanel.getHeight() - GdxMaster.adjustHeight(128));
+
+        hideQuests.setPosition(questProgressPanel.getX()
+          + GdxMaster.adjustSizeBySquareRoot(100),
+         questProgressPanel.getY() - 10 + questProgressPanel.getHeight());
 
 
         SimpleLogPanel log = new SimpleLogPanel();
@@ -102,7 +122,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(decorated);
         decorated.
          setPosition(GdxMaster.getWidth() - decorated.getWidth(), 0);
-       addActor(logPanel = new FullLogPanel(100, 200));
+        addActor(logPanel = new FullLogPanel(100, 200));
 
         radial = new RadialMenu();
         addActor(radial);
@@ -125,14 +145,15 @@ public class GuiStage extends StageX implements StageWithClosable {
          GdxMaster.centerHeight(hqPanel));
         hqPanel.setVisible(false);
 
+
+        addActor(journal = new QuestJournal());
+        journal.setPosition(GdxMaster.centerWidth(journal),
+         GdxMaster.centerHeight(journal));
+        journal.setVisible(false);
+
         initTooltipsAndMisc();
 
-        setDebugAll(false);
-
         addActor(dragManager = DragManager.getInstance());
-        addActor(questProgressPanel = new QuestProgressPanel());
-        questProgressPanel.setPosition(GdxMaster.right(questProgressPanel),
-         GdxMaster.getHeight()-questProgressPanel.getHeight()-GdxMaster.adjustHeight(300));
         setBlackoutIn(true);
     }
 
@@ -165,12 +186,25 @@ public class GuiStage extends StageX implements StageWithClosable {
         gameMenu = createGameMenu();
         addActor(gameMenu);
         gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
-
-        ButtonStyled menuButton = new ButtonStyled(STD_BUTTON.OPTIONS, () ->
+        GroupX group = new GroupX();
+        Image btnBg = new Image(TextureCache.getOrCreateR(
+         StrPathBuilder.build(PathFinder.getUiPath(),
+          "components", "generic",
+          "buttons", "special", "menu bg.png")
+        ));
+        group.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
+        group.addActor(btnBg);
+        SmartButton menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
          gameMenu.toggle());
-        menuButton.setPosition(GdxMaster.getWidth() - menuButton.getWidth(),
-         GdxMaster.getHeight() - menuButton.getHeight());
-        addActor(menuButton);
+
+        menuButton.setPosition(-8, 13);
+        //        (GdxMaster.centerWidth(menuButton),
+        //         GdxMaster.centerHeight(menuButton) );
+        group.addActor(menuButton);
+
+        addActor(group);
+        group.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
+         GdxMaster.getHeight() - btnBg.getHeight());
     }
 
     protected GameMenu createGameMenu() {
@@ -264,6 +298,12 @@ public class GuiStage extends StageX implements StageWithClosable {
             showText((String) p.get());
         });
 
+        GuiEventManager.bind(SHOW_QUESTS_INFO, p -> {
+            journal.setUserObject(p.get());
+            journal.setStage(this);
+            journal.fadeIn();
+            journal.open();
+        });
         GuiEventManager.bind(GuiEventType.FADE_OUT, p -> {
             blackout.fadeOut((Float) p.get());
         });
@@ -295,7 +335,7 @@ public class GuiStage extends StageX implements StageWithClosable {
             if (p.get() == null) {
                 hideTooltip(infoTooltip, 1f);
             } else {
-//                textToShow.add() queue!
+                //                textToShow.add() queue!
                 infoTooltipContainer.setContents(infoTooltip);
                 hideTooltip(actionTooltip, 1f);
                 showTooltip(p.get().toString(), infoTooltip, 2f);
@@ -382,7 +422,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         ActorMaster.addFadeOutAction(tooltip, dur, false);
         if (container == null)
             return;
-//        tooltip.clearActions();
+        //        tooltip.clearActions();
         container.setFluctuateAlpha(false);
 
     }
@@ -448,7 +488,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (tf == null)
             tf = new TextInputPanel(title, text, hint, textInputListener);
         tf.setPosition(GdxMaster.centerWidth(tf), GdxMaster.centerHeight(tf));
-//textInputListener.input(text);
+        //textInputListener.input(text);
         tf.setVisible(true);
 
     }
