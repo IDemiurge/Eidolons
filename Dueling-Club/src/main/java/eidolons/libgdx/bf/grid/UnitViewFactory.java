@@ -96,6 +96,7 @@ public class UnitViewFactory {
                         if (event.getButton() == 0)
                             if (bfObj.isPlayerCharacter()) {
                                 HqMaster.openHqPanel();
+                                event.stop();
                                 return;
                             }
                     //TODO control options
@@ -104,9 +105,9 @@ public class UnitViewFactory {
                     //                             new UnitDataSource((Unit) bfObj));
                     //                            return;
                     if (event.getButton() == Buttons.LEFT) {
-
                         if (isAlt() || isShift() || isControl()) {
                             DefaultActionHandler.leftClickUnit(isShift(), isControl(), bfObj);
+                            event.cancel();
                         } else {
                             if (DefaultActionHandler.leftClickActor(bfObj))
                                 return;

@@ -110,8 +110,12 @@ public class TablePanel<T extends Actor> extends Table {
     @Override
     public void setUserObject(Object userObject) {
         super.setUserObject(userObject);
-        getChildren().forEach(ch -> ch.setUserObject(userObject));
+        setUserObjectForChildren(userObject);
         updateRequired = true;
+    }
+
+    protected void setUserObjectForChildren(Object userObject) {
+        getChildren().forEach(ch -> ch.setUserObject(userObject));
     }
 
     public void setUpdateRequired(boolean updateRequired) {

@@ -13,11 +13,11 @@ import eidolons.libgdx.StyleHolder;
 import eidolons.libgdx.TiledNinePatchGenerator;
 import eidolons.libgdx.TiledNinePatchGenerator.BACKGROUND_NINE_PATCH;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
+import eidolons.libgdx.gui.NinePatchFactory;
 import eidolons.libgdx.gui.RollDecorator;
 import eidolons.libgdx.gui.RollDecorator.RollableGroup;
 import eidolons.libgdx.gui.generic.btn.ButtonStyled.STD_BUTTON;
 import eidolons.libgdx.gui.generic.btn.SmartButton;
-import eidolons.libgdx.gui.panels.ScrollPanel;
 import eidolons.libgdx.gui.panels.TablePanel;
 import eidolons.libgdx.gui.tooltips.SmartClickListener;
 import main.entity.Entity;
@@ -38,7 +38,6 @@ import java.util.*;
 public abstract class ItemListPanel extends TablePanel {
     protected SelectableItemData currentItem;
     protected List<SelectableItemData> items;
-    protected ScrollPanel scrollPanel;
     protected TextButton lastChecked;
     protected SelectableItemDisplayer infoPanel;
     protected Map<SelectableItemData, TextButton> cache = new HashMap<>();
@@ -55,20 +54,36 @@ public abstract class ItemListPanel extends TablePanel {
     protected void initBg() {
         //        setBackground(TextureCache.getOrCreateTextureRegionDrawable(getBackgroundPath()));
 
-        TextureRegion generated = new TextureRegion(
-         TiledNinePatchGenerator.getOrCreateNinePatch(NINE_PATCH.FRAME,
-          BACKGROUND_NINE_PATCH.PATTERN,
-          (int) GdxMaster.adjustSize(getDefaultWidth())
-          , getDefaultHeight()));
-        setSize(generated.getRegionWidth(), generated.getRegionHeight());
-        setFixedSize(true);
-        addActor(new Image(generated));
+        if (getNinePatch() != null) {
+            TextureRegion generated = new TextureRegion(
+             TiledNinePatchGenerator.getOrCreateNinePatch(getNinePatch(),
+              getNinePatchBackground(),
+             getDefaultWidth()
+              , getDefaultHeight()));
+            setSize(generated.getRegionWidth(), generated.getRegionHeight());
+            setFixedSize(true);
+            addActor(new Image(generated));
+        } else {
+            setBackground(NinePatchFactory.getLightDecorPanelFilledDrawable());
+            setSize( getDefaultWidth()
+             , getDefaultHeight());
+        }
+
     }
+
+    protected BACKGROUND_NINE_PATCH getNinePatchBackground() {
+        return BACKGROUND_NINE_PATCH.SEMI;
+    }
+    protected NINE_PATCH getNinePatch() {
+        return NINE_PATCH.FRAME;
+    }
+
     protected int getDefaultHeight() {
         return GdxMaster.getHeight() * 6 / 7;
     }
+
     protected int getDefaultWidth() {
-        return 410;
+        return (int) GdxMaster.adjustSize(410);
     }
 
     @Override
@@ -163,54 +178,57 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
     protected boolean clicked(TextButton textButton, SelectableItemData sub) {
-        currentItem = (sub);
-        infoPanel.setItem(sub);
         if (lastChecked != null)
             lastChecked.setChecked(false);
         lastChecked = textButton;
         textButton.setChecked(true);
-        if (sub.getSubItems() != null) {
-            if (sub.getSubItems().length > 0)
-                showSubItemPanel(sub );
-        } else
-        {
-            if (displayedSubitemPanel != null) {
-                displayedSubitemPanel.toggle(false);
-            }
-        }
+
+        selected(sub);
 
         return false;
     }
 
+    private void selected(SelectableItemData sub) {
+        currentItem = (sub);
+        infoPanel.setItem(sub);
+        if (sub.getSubItems() != null) {
+            if (sub.getSubItems().length > 0)
+                showSubItemPanel(sub);
+        } else {
+            if (displayedSubitemPanel != null) {
+                displayedSubitemPanel.toggle(false);
+            }
+        }
+    }
+
     protected void showSubItemPanel(SelectableItemData item) {
-        for (SelectableItemData sub: subCache.keySet())
-        {
-            if (sub!=item)
+        for (SelectableItemData sub : subCache.keySet()) {
+            if (sub != item)
                 subCache.get(sub).toggle(false);
         }
-         displayedSubitemPanel = subCache.get(item);
-        if (displayedSubitemPanel ==null ){
+        displayedSubitemPanel = subCache.get(item);
+        if (displayedSubitemPanel == null) {
 
             SelectionSubItemsPanel subItemsPanel = new SelectionSubItemsPanel(
              item.getSubItems(), item, this);
             displayedSubitemPanel = RollDecorator.decorate(subItemsPanel, FACING_DIRECTION.EAST, false);
             subCache.put(item, displayedSubitemPanel);
             addActor(displayedSubitemPanel);
-            displayedSubitemPanel.setPosition(getX()+(getWidth()-subItemsPanel.getWidth())/2,
-             cache.get(item).getY()-subItemsPanel.getHeight()/2);
+            displayedSubitemPanel.setPosition(getX() + (getWidth() - subItemsPanel.getWidth()) / 2,
+             cache.get(item).getY() - subItemsPanel.getHeight() / 2);
             displayedSubitemPanel.setZIndex(0);
         }
         displayedSubitemPanel.toggle(true);
     }
 
     protected EventListener getSubPanelListener(SelectableItemData item) {
-        return new SmartClickListener(this){
+        return new SmartClickListener(this) {
 
         };
     }
 
     protected void addButtons() {
-        buttons.forEach(button->  button.remove());
+        buttons.forEach(button -> button.remove());
         buttons.clear();
         for (SelectableItemData sub : items) {
             //            boolean selected = sub == currentItem;
@@ -246,7 +264,22 @@ public abstract class ItemListPanel extends TablePanel {
 
     public void setItems(List<SelectableItemData> items) {
         this.items = items;
+        if (!items.isEmpty())
+            if (isAutopickFirstItem())
+                if (currentItem == null) {
+                    try {
+                        selected(items.get(0));
+                    } catch (Exception e) {
+                        main.system.ExceptionMaster.printStackTrace(e);
+                        currentItem = items.get(0);
+                    }
+
+                }
         updateRequired = true;
+    }
+
+    protected boolean isAutopickFirstItem() {
+        return true;
     }
 
     public void setInfoPanel(SelectableItemDisplayer infoPanel) {
@@ -280,13 +313,15 @@ public abstract class ItemListPanel extends TablePanel {
     }
 
 
+
+
     public static class SelectableItemData {
         public static final String DEFAULT_SELECTED_BORDER = BORDER.NEO_INFO_SELECT_HIGHLIGHT.getImagePath();
         public String fullsizeImagePath;
         public String description;
         String name;
         String imagePath;
-        String borderSelected=DEFAULT_SELECTED_BORDER;
+        String borderSelected = DEFAULT_SELECTED_BORDER;
         String borderDisabled = BORDER.HIDDEN.getImagePath();
         String emblem;
         Entity entity;
@@ -309,6 +344,7 @@ public abstract class ItemListPanel extends TablePanel {
             description = entity.getDescription();
             this.entity = entity;
         }
+
         public SelectableItemData(String name, String imagePath) {
             this.name = name;
             this.imagePath = imagePath;
@@ -317,8 +353,8 @@ public abstract class ItemListPanel extends TablePanel {
         public SelectableItemData(String name, Entity entity) {
             this.name = name;
             this.entity = entity;
-            imagePath=entity.getImagePath();
-            description=entity.getDescription();
+            imagePath = entity.getImagePath();
+            description = entity.getDescription();
             fullsizeImagePath = ImageManager.getFullSizeImage(entity);
             emblem = entity.getEmblemPath();
         }
@@ -328,16 +364,24 @@ public abstract class ItemListPanel extends TablePanel {
             return subItems;
         }
 
-        public String getEmblem() {
-            return emblem;
-        }
-
         public void setSubItems(String[] subItems) {
             this.subItems = subItems;
         }
 
+        public String getEmblem() {
+            return emblem;
+        }
+
+        public void setEmblem(String emblem) {
+            this.emblem = emblem;
+        }
+
         public Entity getEntity() {
             return entity;
+        }
+
+        public void setEntity(ObjType entity) {
+            this.entity = entity;
         }
 
         public String getName() {
@@ -372,30 +416,21 @@ public abstract class ItemListPanel extends TablePanel {
             this.description = description;
         }
 
-        public void setBorderSelected(String borderSelected) {
-            this.borderSelected = borderSelected;
-        }
-
-        public void setBorderDisabled(String borderDisabled) {
-            this.borderDisabled = borderDisabled;
-        }
-
-        public void setEntity(ObjType entity) {
-            this.entity = entity;
-        }
-
-        public void setEmblem(String emblem) {
-            this.emblem = emblem;
-        }
-
         public String getBorderSelected() {
             return borderSelected;
+        }
+
+        public void setBorderSelected(String borderSelected) {
+            this.borderSelected = borderSelected;
         }
 
         public String getBorderDisabled() {
             return borderDisabled;
         }
 
+        public void setBorderDisabled(String borderDisabled) {
+            this.borderDisabled = borderDisabled;
+        }
 
         public boolean isSelectionUnderneath() {
             return selectionUnderneath;

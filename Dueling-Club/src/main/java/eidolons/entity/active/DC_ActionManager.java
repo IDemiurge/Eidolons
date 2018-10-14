@@ -290,7 +290,7 @@ public class DC_ActionManager implements ActionManager {
         ObjType type =  DataManager.getType(typeName, DC_TYPE.ACTIONS);
         if (type == null) {
             LogMaster.log(1, "no such active: " + typeName);
-            return null;
+            type = new ObjType(typeName, DataManager.getType(DUMMY_ACTION, DC_TYPE.ACTIONS));
         }
         Ref ref = Ref.getCopy(entity.getRef());
 

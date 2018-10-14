@@ -2,13 +2,10 @@ package eidolons.game.module.dungeoncrawl.quest;
 
 import eidolons.libgdx.gui.menu.selection.quest.QuestSelectionPanel;
 import main.content.enums.macro.MACRO_OBJ_TYPES;
-import main.content.enums.meta.QuestEnums;
-import main.content.values.properties.MACRO_PROPS;
 import main.data.DataManager;
 import main.entity.type.ObjType;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
-import main.system.auxiliary.StringMaster;
 import main.system.launch.CoreEngine;
 import main.system.threading.WaitMaster;
 
@@ -33,10 +30,7 @@ public class QuestSelector extends QuestHandler {
 
     public void selectDungeonQuests() {
 
-        String filter = QuestEnums.QUEST_GROUP.SCENARIO + StringMaster.OR + QuestEnums.QUEST_GROUP.RNG;
-
-        List<ObjType> filtered = DataManager.getFilteredTypes(MACRO_OBJ_TYPES.QUEST,
-         filter, MACRO_PROPS.QUEST_GROUP);
+        List<ObjType> filtered =master.getQuestTypePool();
 
         GuiEventManager.trigger(GuiEventType.SHOW_QUEST_SELECTION, filtered);
     }

@@ -53,6 +53,8 @@ public class XML_Reader {
     private static String customTypesPath;
 
     private static boolean brokenXml;
+    private static boolean macroLoaded;
+    private static boolean microLoaded;
 
     private static void constructTypeMap(Document doc, String key,
                                          Map<String, Set<String>> tabGroupMap,
@@ -224,8 +226,8 @@ public class XML_Reader {
         for (Node node : nodes) {
             // typeName = node.getNodeName();
             ObjType type = TypeBuilder.buildType(node, TYPE.toString());
-            if (game!=null )
-            game.initType(type);
+            if (game != null)
+                game.initType(type);
 
             if (incompleteTypes) {
                 ObjType parent = DataManager.getType(type.getProperty(G_PROPS.PARENT_TYPE), type
@@ -271,7 +273,19 @@ public class XML_Reader {
         XML_File xml = readFile(FileManager.getFile(path));
         loadFile(xml);
     }
+
     public static void loadXml(boolean macro) {
+        loadXml(macro, false);
+    }
+
+    public static void loadXml(boolean macro, boolean force) {
+        if (!force) {
+            if (macro) {
+                if (macroLoaded)
+                    return;
+            } else if (microLoaded)
+                return;
+        }
         if (macro) {
             loadXml(PathFinder.getMACRO_TYPES_PATH());
         } else {
@@ -281,7 +295,10 @@ public class XML_Reader {
                 loadXml(PathFinder.getTYPES_PATH());
             }
         }
-
+        if (macro)
+            macroLoaded = true;
+        else
+            microLoaded = true;
     }
 
     static public void readTypes(boolean macro) {

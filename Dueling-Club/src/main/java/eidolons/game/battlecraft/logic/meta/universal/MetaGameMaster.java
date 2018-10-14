@@ -30,10 +30,9 @@ import static main.system.auxiliary.StringMaster.wrapInParenthesis;
 
 /**
  * Created by JustMe on 5/7/2017.
- *
+ * <p>
  * Does everything TO the *DC_Game
  * It kind of "owns" the Game
- *
  */
 public abstract class MetaGameMaster<E extends MetaGame> {
 
@@ -46,9 +45,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     protected E metaGame;
     protected DC_Game game;
-    DialogueManager dialogueManager;
-    DialogueActorMaster dialogueActorMaster;
-    private QuestMaster questMaster;
+    protected DialogueManager dialogueManager;
+    protected DialogueActorMaster dialogueActorMaster;
+    protected  TownMaster townMaster;
 
 
     public MetaGameMaster(String data) {
@@ -85,6 +84,8 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         introFactory = createIntroFactory();
         dialogueManager = new DialogueManager(this);
         dialogueActorMaster = new DialogueActorMaster(this);
+
+        townMaster = new TownMaster(this);// createTownMaster();
     }
 
     public void init() {
@@ -103,9 +104,13 @@ public abstract class MetaGameMaster<E extends MetaGame> {
         if (AdventureInitializer.isLoad())
             Loader.loadCharacters();
         if (partyManager.initPlayerParty() != null) {
-            if (isQuestsEnabled())
-                if (!getQuestMaster().initQuests())
-                {
+            if (isTownEnabled()) {
+                if (!getTownMaster().initTownPhase()) {
+                    Eidolons.getMainGame().setAborted(true);
+                    return;
+                }
+            } else if (isQuestsEnabled())
+                if (!getQuestMaster().initQuests()) {
                     Eidolons.getMainGame().setAborted(true);
                     return;
                 }
@@ -115,6 +120,9 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     }
 
+    private boolean isTownEnabled() {
+        return true;
+    }
     private boolean isQuestsEnabled() {
         if (!QuestMaster.ON)
             return false;
@@ -129,15 +137,15 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     public void preStart() {
         partyManager.preStart();
         getBattleMaster().getOptionManager().selectDifficulty();
-//        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
+        //        getGame().getDataKeeper().setDungeonData(new DungeonData(getMetaGame()));
 
     }
 
     public void gameStarted() {
         partyManager.gameStarted();
-//   TODO remove lazy init hack?
-//        getDialogueFactory().init(this);
-//        getIntroFactory().init(this);
+        //   TODO remove lazy init hack?
+        //        getDialogueFactory().init(this);
+        //        getIntroFactory().init(this);
     }
 
     public DungeonMaster getDungeonMaster() {
@@ -219,17 +227,17 @@ public abstract class MetaGameMaster<E extends MetaGame> {
 
     public String getDungeonInfo() {
         if (getDungeonMaster().getDungeonLevel() != null) {
-            StringBuilder info=new StringBuilder(200);
+            StringBuilder info = new StringBuilder(200);
             DungeonLevel level = getDungeonMaster().getDungeonLevel();
             info.append("Randomly generated ");
-            info.append(getWellFormattedString(level.getLocationType().toString())+
-                    " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString()))+ "\n");
+            info.append(getWellFormattedString(level.getLocationType().toString()) +
+             " " + wrapInParenthesis(getWellFormattedString(level.getSublevelType().toString())) + "\n");
 
             LevelBlock block = level.getBlockForCoordinate(Eidolons.getMainHero().getCoordinates());
             LevelZone zone = block.getZone();
 
             info.append(getWellFormattedString(block.getRoomType().toString())
-                    +" " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
+             + " " + wrapInParenthesis(getWellFormattedString(zone.getStyle().toString())) + "\n");
 
             // objective?
             // units left?
@@ -248,13 +256,14 @@ public abstract class MetaGameMaster<E extends MetaGame> {
     }
 
     public QuestMaster getQuestMaster() {
-        if (questMaster == null) {
-            questMaster = new QuestMaster();
-        }
-        return questMaster;
+        return townMaster.getQuestMaster();
     }
 
     public void reinit() {
         getQuestMaster().startQuests();
+    }
+
+    public TownMaster getTownMaster() {
+        return townMaster;
     }
 }

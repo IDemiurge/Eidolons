@@ -70,6 +70,7 @@ public class Eidolons {
     private static SCOPE scope = SCOPE.MENU;
     private static SCREEN_TYPE screenType;
     private static SCREEN_TYPE previousScreenType;
+    private static boolean logicThreadBusy;
 
     public static boolean initScenario(ScenarioMetaMaster master) {
         mainGame = new EidolonsGame();
@@ -120,9 +121,10 @@ public class Eidolons {
 
     public static Unit getMainHero() {
         if (mainHero == null) {
-            if (game==null )
+            if (game == null)
                 return null;
-            mainHero = (Unit) game.getPlayer(true).getHeroObj();
+            mainHero = game.getMetaMaster().getPartyManager().getParty().getLeader();
+            //            mainHero = (Unit) game.getPlayer(true).getHeroObj();
         }
         return mainHero;
     }
@@ -209,7 +211,7 @@ public class Eidolons {
         DC_Game.game = null;
         Game.game = null;
 
-        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES );
+        GuiEventManager.trigger(GuiEventType.DISPOSE_TEXTURES);
         //        try{toFinilize.finilize();}catch(Exception e){main.system.ExceptionMaster.printStackTrace( e);}
     }
 
@@ -315,7 +317,18 @@ public class Eidolons {
     }
 
     public static void onNonGdxThread(Runnable o) {
-        SwingUtilities.invokeLater(o);
+        if (logicThreadBusy) {
+            new Thread(o, "single task thread").start();
+        } else
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    logicThreadBusy = true;
+                    o.run();
+                    logicThreadBusy = false;
+                }
+            });
+
     }
 
     public static RESOLUTION getResolution() {

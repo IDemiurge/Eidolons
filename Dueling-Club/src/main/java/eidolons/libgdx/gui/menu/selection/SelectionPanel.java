@@ -30,19 +30,20 @@ import java.util.List;
 /**
  * Created by JustMe on 11/29/2017.
  */
-public abstract class SelectionPanel extends TablePanel {
+public abstract class SelectionPanel extends TablePanelX {
     protected ItemListPanel listPanel;
     protected SelectableItemDisplayer infoPanel;
     protected SmartButton backButton;
     protected SmartButton startButton;
     protected SelectionInputListener listener;
-    Label title;
-
+    protected Label title;
+    protected Object data;
 
     public SelectionPanel() {
-        //        setBackground(TextureCache.getOrCreateTextureRegionDrawable
-        //         (getBackgroundPath()));
-        //        debug();
+        this(null);
+    }
+    public SelectionPanel(Object data) {
+        this.data = data;
         setSize(GdxMaster.getWidth(), GdxMaster.getHeight());
         listPanel = createListPanel();
         infoPanel = createInfoPanel();
@@ -54,7 +55,7 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.addActor(title); //trick for pos
         title.pack();
         title.setPosition(GdxMaster.centerWidth(title),
-         GdxMaster.getHeight() - GDX.size(200));
+         getTitlePosY());
         addActor(title);
         row();
         addNormalSize(listPanel).left();
@@ -82,6 +83,10 @@ public abstract class SelectionPanel extends TablePanel {
         listPanel.setZIndex(Integer.MAX_VALUE);
         title.setZIndex(Integer.MAX_VALUE);
 
+    }
+
+    protected float getTitlePosY() {
+        return GdxMaster.getHeight() - GDX.size(200);
     }
 
     protected boolean isDoneSupported() {

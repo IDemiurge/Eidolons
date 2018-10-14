@@ -106,6 +106,9 @@ public class DefaultActionHandler {
         if (c.y - source.getY() > 1) {
             return false;
         }
+        if (c.equals(source.getCoordinates())) {
+            return false;
+        }
 
         DC_UnitAction action = getMoveToCellAction(source, c);
         if (action == null) {

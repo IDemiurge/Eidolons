@@ -22,6 +22,7 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPE
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HeroOperation;
 import eidolons.libgdx.gui.panels.headquarters.datasource.hero.HqHeroDataSource;
 import eidolons.libgdx.gui.panels.headquarters.tabs.spell.HqSpellMaster;
+import eidolons.macro.entity.town.Shop;
 import eidolons.system.math.DC_MathManager;
 import eidolons.system.text.NameMaster;
 import main.content.DC_TYPE;
@@ -49,7 +50,7 @@ public class HqDataMaster {
     HeroDataModel heroModel;
     Stack<Pair<ParamMap, PropMap>> stack;
     private boolean dirty;
-    private Stack<List<HeroOperation>> undoStack=new Stack();
+    private Stack<List<HeroOperation>> undoStack = new Stack();
 
     public HqDataMaster(Unit hero) {
         this.hero = hero;
@@ -148,13 +149,22 @@ public class HqDataMaster {
                 return item;
             else {
                 //create sim item
-                return (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
+                DC_HeroItemObj simItem = (DC_HeroItemObj) HqMaster.getSimCache().getSim(item);
+                if (simItem == null) {
+                    return item;
+                }
+                return simItem;
             }
         } else {
             if (item.isSimulation())
-                //                return (DC_HeroItemObj) hero.getGame().getObjectById(item.getId());
-                return (DC_HeroItemObj) HqMaster.getSimCache().getReal(item);
-            else
+            //                return (DC_HeroItemObj) hero.getGame().getObjectById(item.getId());
+            {
+                DC_HeroItemObj realItem = (DC_HeroItemObj) HqMaster.getSimCache().getReal(item);
+                if (realItem == null) {
+                    return item;
+                }
+                return realItem;
+            } else
                 return item;
 
         }
@@ -198,6 +208,7 @@ public class HqDataMaster {
     public static void undo(Unit hero) {
         map.get(hero).undo_();
     }
+
     public static void redo(Unit hero) {
         map.get(hero).redo_();
     }
@@ -218,9 +229,9 @@ public class HqDataMaster {
     public void undo_(boolean all) {
         if (heroModel.getModificationList().isEmpty())
             return;
-        List<HeroOperation> list =new ArrayList<>( heroModel.getModificationList());
+        List<HeroOperation> list = new ArrayList<>(heroModel.getModificationList());
 
-       if (all)
+        if (all)
             list.clear();
         else
             list.remove(list.size() - 1);
@@ -232,7 +243,8 @@ public class HqDataMaster {
         undoStack.add(heroModel.getModificationList());
         setModificationList(list);
     }
-        public void setModificationList(List<HeroOperation> list) {
+
+    public void setModificationList(List<HeroOperation> list) {
         heroModel = createHeroDataModel(hero);
         heroModel.setModificationList(list);
         applyModifications(true);
@@ -244,6 +256,7 @@ public class HqDataMaster {
                 HeroCreationPanel.getInstance().setUserObject(new HqHeroDataSource(heroModel));
         }
     }
+
     private void redo_() {
         List<HeroOperation> list = undoStack.pop();
         setModificationList(list);
@@ -251,8 +264,7 @@ public class HqDataMaster {
 
 
     private HeroDataModel createHeroDataModel(Unit hero) {
-        if (HeroCreationMaster.isHeroCreationInProgress())
-        {
+        if (HeroCreationMaster.isHeroCreationInProgress()) {
             return new HcHeroModel(hero);
         }
         return new HeroDataModel(hero);
@@ -283,6 +295,18 @@ public class HqDataMaster {
     public void applyItemOperation(Unit hero, HERO_OPERATION operation, Object... args) {
         DC_HeroItemObj item = getItem(hero, args[0]);
         switch (operation) {
+            case SELL:
+            case BUY:
+                item = (DC_HeroItemObj) args[0]; //TODO fix?
+                Shop shop = (Shop) args[1];
+                if (operation == HERO_OPERATION.SELL) {
+                    shop.sellItemTo(item);
+                    hero.removeFromInventory(item);
+                } else {
+                    shop.buyItemFrom(item);
+                    hero.addItemToInventory(item);
+                }
+                break;
             case PICK_UP:
                 hero.addItemToInventory((DC_HeroItemObj) args[0]); //TODO fix pickup!
                 break;
@@ -322,13 +346,15 @@ public class HqDataMaster {
     public void applyOperation(Unit hero, HERO_OPERATION operation, Object... args) {
 
         switch (operation) {
+            case SET_PARAMETER:
+                break;
             case APPLY_TYPE:
                 String imagePath = hero.getImagePath();
                 hero.applyType((ObjType) args[0]);
                 for (PARAMETER item : DC_ContentValsManager.getAttributes()) {
-                    hero.getType(). modifyParameter((item), 5, null , true );
+                    hero.getType().modifyParameter((item), 5, null, true);
                 }
-                for (PARAMETER item : DC_ContentValsManager.DYNAMIC_PARAMETERS ) {
+                for (PARAMETER item : DC_ContentValsManager.DYNAMIC_PARAMETERS) {
                     hero.setParameter(DC_ContentValsManager.getPercentageParam(item),
                      DC_MathManager.PERCENTAGE);
                 }
@@ -338,6 +364,9 @@ public class HqDataMaster {
             case SET_PROPERTY:
                 hero.setProperty((PROPERTY) args[0], args[1].toString(), true);
                 break;
+            case BUY:
+            case SELL:
+
             case PICK_UP:
             case DROP:
             case UNEQUIP_JEWELRY:
@@ -378,8 +407,8 @@ public class HqDataMaster {
                 applySpellOperation(hero, operation, args);
                 break;
             case LEVEL_UP:
-                int i =1;
-                if (args.length>0)
+                int i = 1;
+                if (args.length > 0)
                     i = (int) args[0];
                 for (int j = 0; j < i; j++) {
                     HeroLevelManager.levelUp(hero);

@@ -39,12 +39,14 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
     private static Boolean videoEnabled;
     protected VideoMaster video;
     protected boolean looped;
-    private Label underText;
-    private HeroCreationPanel hcPanel;
+    protected Label underText;
+    protected HeroCreationPanel hcPanel;
 
     public ScreenWithVideoLoader() {
         //TODO loader here, but need data!
         super();
+
+
         if (isLoadingWithVideo())
             initVideo();
         looped = true;
@@ -83,8 +85,8 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
             updateInputController();
             return;
         } else if (!(p.get() instanceof Integer)) {
-//            if (selectionPanel != null)// TODO why was it necessary?
-//                selectionPanel.cancel(false);
+            //            if (selectionPanel != null)// TODO why was it necessary?
+            //                selectionPanel.cancel(false);
         }
 
         selectionPanel =
@@ -133,9 +135,10 @@ public abstract class ScreenWithVideoLoader extends ScreenWithLoader {
         });
     }
 
+
     private void showHeroCreationPanel(EventCallbackParam p) {
         if (p.get() == null) {
-            hcPanel.setVisible(false);
+            hcPanel.fadeOut();
             overlayStage.setActive(false);
             updateInputController();
         } else {

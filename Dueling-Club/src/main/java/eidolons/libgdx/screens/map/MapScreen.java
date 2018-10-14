@@ -88,12 +88,6 @@ public class MapScreen extends GameScreen {
             preloaded = true;
         });
 
-//        GuiEventManager.trigger(SHOW_SELECTION_PANEL,
-//         DataManager.getTypesGroup(DC_TYPE.SCENARIOS,
-//          StringMaster.getWellFormattedString(item.toString())));
-
-//        WaitMaster.receiveInput(WAIT_OPERATIONS.DUNGEON_SCREEN_READY, true);
-//        WaitMaster.markAsComplete(WAIT_OPERATIONS.DUNGEON_SCREEN_READY);
     }
 
 

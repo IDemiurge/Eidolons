@@ -23,6 +23,9 @@ public class AmbientMaster {
         Unit hero = Eidolons.getMainHero();
         if (hero == null)
             return DEFAULT_AMBIENCE;
+        if (Eidolons.getGame().getMetaMaster().getTownMaster().isInTown()){
+           return Eidolons.getGame().getMetaMaster().getTownMaster().getTown().getAmbience();
+        }
         DUNGEON_STYLE style;
         LOCATION_TYPE locationType;
         try {

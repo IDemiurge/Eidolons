@@ -7,26 +7,25 @@ import eidolons.libgdx.gui.panels.headquarters.tabs.tree.skill.SkillTreeTab;
 
 /**
  * Created by JustMe on 7/2/2018.
-
-
-
  */
-public class HcPreview extends HqTabs{
+public class HcPreview extends HqTabs {
 
     public HcPreview() {
         setSize(300, 600);
     }
 
-    protected Cell  addTabCell() {
-        return addElement(null).top().pad(20);
+
+    protected Cell createContentsCell() {
+        return super.createContentsCell().top();
     }
+
     @Override
     protected void initTabs() {
 
         addTab(new HcGeneralTab(), "General");
         addTab(new ClassTreeTab(), HQ_TAB.Class.name());
         addTab(new SkillTreeTab(), HQ_TAB.Skills.name());
-//        addTab(new HqSpellTab(), HQ_TAB.Spells.name());
+        //        addTab(new HqSpellTab(), HQ_TAB.Spells.name());
         resetCheckedTab();
     }
 }

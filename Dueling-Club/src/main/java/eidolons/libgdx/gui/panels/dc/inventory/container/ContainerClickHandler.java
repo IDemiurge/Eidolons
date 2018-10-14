@@ -3,7 +3,6 @@ package eidolons.libgdx.gui.panels.dc.inventory.container;
 import eidolons.entity.item.DC_HeroItemObj;
 import eidolons.entity.item.DC_InventoryManager.OPERATIONS;
 import eidolons.entity.obj.DC_Cell;
-import eidolons.entity.obj.DC_Obj;
 import eidolons.entity.obj.unit.Unit;
 import eidolons.libgdx.anims.text.FloatingTextMaster;
 import eidolons.libgdx.anims.text.FloatingTextMaster.TEXT_CASES;
@@ -15,26 +14,29 @@ import main.content.DC_TYPE;
 import main.content.enums.entity.BfObjEnums.BF_OBJ_SUB_TYPES_REMAINS;
 import main.data.DataManager;
 import main.entity.Entity;
+import main.entity.obj.Obj;
+import main.system.EventType;
 import main.system.GuiEventManager;
-import main.system.GuiEventType;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+
+import static main.system.GuiEventType.SHOW_LOOT_PANEL;
 
 /**
  * Created by JustMe on 11/16/2017.
  */
 public class ContainerClickHandler extends InventoryClickHandlerImpl {
-    private final DC_Obj container;
-    private String containerImagePath;
-    private List<DC_HeroItemObj> items;
-    private CharSequence containerName;
+    protected final  Obj container;
+    protected String containerImagePath;
+    protected Collection<DC_HeroItemObj> items;
+    protected CharSequence containerName;
 
     public ContainerClickHandler(
      String containerImagePath,
-     List<DC_HeroItemObj> items, Unit unit, DC_Obj container) {
+     Collection<DC_HeroItemObj> items, Unit unit, Obj container) {
         super(HqDataMaster.getInstance(unit), HqDataMaster.getHeroModel(unit));
         this.containerImagePath = containerImagePath;
         this.containerName = container.getName();
@@ -69,15 +71,18 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         return true;
     }
 
-    private void update() {
+    protected void update() {
         dataMaster.applyModifications();
         Pair<InventoryDataSource, ContainerDataSource> param =
          new ImmutablePair<>(new InventoryDataSource(sim.getHero()),
           new ContainerDataSource(container, sim.getHero()));
-        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL, param);
+        GuiEventManager.trigger(getGuiEvent(), param);
 
     }
 
+    protected EventType getGuiEvent() {
+        return SHOW_LOOT_PANEL;
+    }
     public void takeAllClicked() {
         for (DC_HeroItemObj item : new ArrayList<>(items)) {
             if (item == null)
@@ -96,7 +101,7 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         close();
     }
 
-    private void pickUp(DC_HeroItemObj item) {
+    protected void pickUp(DC_HeroItemObj item) {
         items.remove(item);
         if (container instanceof DC_Cell) {
             item.getGame().getDroppedItemManager().pickedUp(item);
@@ -105,8 +110,8 @@ public class ContainerClickHandler extends InventoryClickHandlerImpl {
         update();
     }
 
-    private void close() {
-        GuiEventManager.trigger(GuiEventType.SHOW_LOOT_PANEL,
+    protected void close() {
+        GuiEventManager.trigger(getGuiEvent(),
          null);
         dataMaster.applyModifications();
     }

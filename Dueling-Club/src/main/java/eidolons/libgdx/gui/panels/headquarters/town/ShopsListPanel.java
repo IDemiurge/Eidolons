@@ -1,4 +1,4 @@
-package eidolons.libgdx.gui.menu.selection.quest;
+package eidolons.libgdx.gui.panels.headquarters.town;
 
 import eidolons.libgdx.GdxMaster;
 import eidolons.libgdx.TiledNinePatchGenerator.NINE_PATCH;
@@ -7,30 +7,13 @@ import eidolons.libgdx.gui.menu.selection.ItemListPanel;
 import java.util.List;
 
 /**
- * Created by JustMe on 10/5/2018.
+ * Created by JustMe on 10/13/2018.
  */
-public class QuestListPanel extends ItemListPanel {
-    private boolean disabled;
+public class ShopsListPanel extends ItemListPanel {
 
     protected NINE_PATCH getNinePatch() {
-        return null;
+        return null ;
     }
-
-    @Override
-    public boolean isBlocked(SelectableItemData item) {
-        if (disabled)
-            return true;
-        return super.isBlocked(item);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
 
     protected int getDefaultHeight() {
         int h=0;

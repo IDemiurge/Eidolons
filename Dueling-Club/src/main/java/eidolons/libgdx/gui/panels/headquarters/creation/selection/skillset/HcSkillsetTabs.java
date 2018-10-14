@@ -27,8 +27,7 @@ public class HcSkillsetTabs extends HqTabs {
         super.tabSelected(tabName);
         setUserObject(new HqHeroDataSource(HeroCreationMaster.getModel()));
     }
-
-    protected Cell addTabCell() {
-        return addElement(null).top();
+    protected Cell createContentsCell() {
+        return    super.createContentsCell().top();
     }
 }

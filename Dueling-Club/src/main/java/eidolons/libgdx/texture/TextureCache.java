@@ -373,6 +373,10 @@ public class TextureCache {
     }
 
     public Texture _createTexture(String path, boolean putIntoCache) {
+        return _createTexture(path, putIntoCache, false);
+    }
+
+    public Texture _createTexture(String path, boolean putIntoCache, boolean recursion) {
         Path p = Paths.get(imagePath, path);
         String filePath = p.toString();
         Texture t = null;
@@ -392,6 +396,12 @@ public class TextureCache {
                     cache.put(path, t);
                 }
             } catch (Exception e) {
+                if (!recursion) {
+                    if (path.contains(".png"))
+                        return _createTexture(path.replace(".png", ".jpg"), putIntoCache, true);
+                    if (path.contains(".jpg"))
+                        return _createTexture(path.replace(".jpg", ".png"), putIntoCache, true);
+                }
                 main.system.ExceptionMaster.printStackTrace(e);
                 if (!isReturnEmptyOnFail())
                     return null;

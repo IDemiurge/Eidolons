@@ -354,6 +354,7 @@ public class UnitInitializer extends BfObjInitializer<Unit> {
                                 HqMaster.getSimCache().addSim(item, simItem) ;
                                 Integer durability = item.getIntParam(PARAMS.C_DURABILITY);
                                 simItem.setParam(PARAMS.C_DURABILITY, durability);
+                                item=simItem;
                             }
                         }
                     }

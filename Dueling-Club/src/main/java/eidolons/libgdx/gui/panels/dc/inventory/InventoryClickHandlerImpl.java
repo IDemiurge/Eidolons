@@ -12,6 +12,7 @@ import eidolons.libgdx.gui.panels.dc.inventory.datasource.InventoryDataSource;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HeroDataModel.HERO_OPERATION;
 import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
+import main.content.DC_TYPE;
 import main.content.enums.entity.ItemEnums.ITEM_SLOT;
 import main.content.enums.entity.ItemEnums.JEWELRY_TYPE;
 import main.content.values.properties.G_PROPS;
@@ -41,23 +42,27 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
         OPERATIONS operation = getOperation(cell_type, clickCount, rightClick,
          altClick, cellContents);
+        return handleOperation(operation, cell_type, cellContents);
+    }
+
+    protected boolean handleOperation(OPERATIONS operation, CELL_TYPE cell_type, Entity cellContents) {
         if (operation == null) {
+            //empty Clicked 
             if (cellContents == null || getDragged() != null)
                 singleClick(cell_type, cellContents);
-//            if (!rightClick) {
-//                singleClick(cell_type, cellContents);
-//                return true;
-//            }
+            //            if (!rightClick) { replace? 
+            //                singleClick(cell_type, cellContents);
+            //                return true;
+            //            }
         } else {
             Object arg = getSecondArg(operation, cellContents);
-            if (manager.canDoOperation(operation, cellContents, arg)) {
-                execute(operation, cellContents, arg);
-                return true;
-            }
+            if (!isBlocked())
+                if (canDoOperation(operation, cellContents, arg)) {
+                    execute(operation, cellContents, arg);
+                    return true;
+                }
         }
-
         return false;
-
     }
 
     public void singleClick(CELL_TYPE cell_type, Entity cellContents) {
@@ -76,13 +81,14 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return;
             }
             Object arg = getSlotArg(cell_type);
-//           if (arg==null )
-//               arg= getSecondArg(operation, dragged);
+            //           if (arg==null )
+            //               arg= getSecondArg(operation, dragged);
 
-            if (manager.canDoOperation(operation, getDragged(), arg)) {
-                execute(operation, getDragged(), arg);
-                setDragged(cellContents);
-            }
+            if (!isBlocked())
+                if (canDoOperation(operation, getDragged(), arg)) {
+                    execute(operation, getDragged(), arg);
+                    setDragged(cellContents);
+                }
 
         } else {
             setDragged(cellContents);
@@ -90,7 +96,34 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     }
 
-    private ITEM_SLOT getSlotArg(CELL_TYPE cell_type) {
+    protected boolean isBlocked() {
+        if (!manager.hasOperations() && !ExplorationMaster.isExplorationOn()) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
+        if (arg == null) {
+            switch (operation) {
+                case EQUIP:
+                    if (type.getOBJ_TYPE_ENUM() != DC_TYPE.JEWELRY)
+                        return false;
+            }
+        }
+        switch (operation) {
+            case EQUIP_QUICK_SLOT:
+                if (!HeroManager.isQuickItem(type)) {
+                    return false;
+                }
+        }
+        if (manager == null) {
+            return true;
+        }
+        return manager.hasOperations();
+    }
+
+    protected ITEM_SLOT getSlotArg(CELL_TYPE cell_type) {
         switch (cell_type) {
             case WEAPON_MAIN:
                 return ITEM_SLOT.MAIN_HAND;
@@ -103,7 +136,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return null;
     }
 
-    private OPERATIONS getDragOperation(CELL_TYPE cell_type, Entity cellContents, Entity dragged) {
+    protected OPERATIONS getDragOperation(CELL_TYPE cell_type, Entity cellContents, Entity dragged) {
         switch (cell_type) {
             case QUICK_SLOT:
                 return OPERATIONS.EQUIP_QUICK_SLOT;
@@ -121,10 +154,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
     }
 
 
-    private boolean checkContentMatches(CELL_TYPE cell_type, Entity dragged) {
+    protected boolean checkContentMatches(CELL_TYPE cell_type, Entity dragged) {
         switch (cell_type) {
             case WEAPON_OFFHAND:
-//                if (dragged)
+                //                if (dragged)
             case WEAPON_MAIN:
                 if (dragged instanceof DC_WeaponObj)
                     return HeroManager.canEquip(dataMaster.getHeroModel(), dragged,
@@ -150,22 +183,22 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return false;
     }
 
-    private void execute(OPERATIONS operation, Entity type, Object arg) {
+    protected void execute(OPERATIONS operation, Entity type, Object arg) {
 
         if (operation == OPERATIONS.DROP)
             GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT,
              type.getName() + " is dropped down!");
 
         HqDataMaster.operation(sim, getHqOperation(operation), type, arg);
-
-        manager.operationDone(operation);
+        if (manager != null)
+            manager.operationDone(operation);
         dirty = true;
         refreshPanel();
-//         new EnumMaster<HQ_OPERATION>().retrieveEnumConst(HQ_OPERATION.class, operation.name()),
-//         item);
+        //         new EnumMaster<HQ_OPERATION>().retrieveEnumConst(HQ_OPERATION.class, operation.name()),
+        //         item);
     }
 
-    private Object getSecondArg(OPERATIONS operation, Entity type) {
+    protected Object getSecondArg(OPERATIONS operation, Entity type) {
         if (operation == OPERATIONS.EQUIP) {
             if (type instanceof DC_JewelryObj) {
                 return null;
@@ -175,7 +208,7 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         return null;
     }
 
-    private HERO_OPERATION getHqOperation(OPERATIONS operation) {
+    protected HERO_OPERATION getHqOperation(OPERATIONS operation) {
         switch (operation) {
             case PICK_UP:
                 return HERO_OPERATION.PICK_UP;
@@ -189,6 +222,10 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 return HERO_OPERATION.EQUIP;
             case EQUIP_QUICK_SLOT:
                 return HERO_OPERATION.EQUIP_QUICK_SLOT;
+            case BUY:
+                return HERO_OPERATION.BUY;
+            case SELL:
+                return HERO_OPERATION.SELL;
         }
         return null;
     }
@@ -196,6 +233,11 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
 
     protected OPERATIONS getOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
                                       boolean altClick, Entity cellContents) {
+        return getInvOperation(cell_type, clickCount, rightClick, altClick, cellContents);
+    }
+
+    protected OPERATIONS getInvOperation(CELL_TYPE cell_type, int clickCount, boolean rightClick,
+                                         boolean altClick, Entity cellContents) {
         if (cell_type == null) {
             return null;
         }
@@ -235,7 +277,9 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
                 //preCheck can be unequipped
                 if (!ExplorationMaster.isExplorationOn())
                     GuiEventManager.trigger(GuiEventType.SHOW_INFO_TEXT, "Cannot (un)equip armor in combat!");
-
+                if (rightClick || clickCount > 1) {
+                    return OPERATIONS.UNEQUIP;
+                }
                 break;
             case CONTAINER:
             case INVENTORY:
@@ -287,13 +331,13 @@ public class InventoryClickHandlerImpl implements InventoryClickHandler {
         }
         GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY,
          new InventoryDataSource(dataMaster.getHeroModel()));
-//        refreshPanel();
+        //        refreshPanel();
 
     }
 
     public void refreshPanel() {
         GuiEventManager.trigger(GuiEventType.UPDATE_INVENTORY_PANEL);
-//        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, sim.getHero());
+        //        GuiEventManager.trigger(GuiEventType.SHOW_INVENTORY, sim.getHero());
     }
 
     @Override

@@ -16,6 +16,7 @@ import main.system.GuiEventType;
 public class DragManager extends FadeImageContainer {
     private static DragManager instance;
     private Entity draggedEntity;
+    private GuiStage guiStage;
 
     private DragManager() {
         setTouchable(Touchable.disabled);
@@ -104,7 +105,15 @@ public class DragManager extends FadeImageContainer {
     }
 
     public void checkDrawDraggedItemChanged(float delta) {
-        setDraggedEntity(((GuiStage) getStage()).getDraggedEntity());
+        setDraggedEntity(guiStage.getDraggedEntity());
         //additional - red cross if outside active zone
+    }
+
+    public void setGuiStage(GuiStage guiStage) {
+        this.guiStage = guiStage;
+    }
+
+    public GuiStage getGuiStage() {
+        return guiStage;
     }
 }

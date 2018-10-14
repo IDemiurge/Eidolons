@@ -1,12 +1,16 @@
 package eidolons.macro.entity.town;
 
+import eidolons.game.module.herocreator.logic.party.Party;
 import eidolons.macro.MacroGame;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.FactionObj;
 import eidolons.macro.map.Place;
-import eidolons.game.module.herocreator.logic.party.Party;
+import eidolons.system.audio.MusicMaster.AMBIENCE;
 import main.entity.type.ObjType;
+import main.system.auxiliary.RandomWizard;
 import main.system.datatypes.DequeImpl;
+
+import java.util.List;
 
 public class Town extends Place {
 
@@ -23,6 +27,7 @@ public class Town extends Place {
 
     FactionObj ownerFaction;
     private boolean readyToInit;
+    private List<ObjType> quests;
 
     public Town(MacroGame game, ObjType t, MacroRef ref) {
         super(game, t, ref);
@@ -122,4 +127,15 @@ public class Town extends Place {
         getTaverns().add(tavern);
     }
 
+    public void setQuests(List<ObjType> quests) {
+        this.quests = quests;
+    }
+
+    public List<ObjType> getQuests() {
+        return quests;
+    }
+
+    public AMBIENCE getAmbience() {
+        return RandomWizard.random()?  AMBIENCE.PIRATE_SHIP :  AMBIENCE.TOWN;
+    }
 }

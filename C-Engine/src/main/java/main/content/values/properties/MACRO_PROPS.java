@@ -47,13 +47,17 @@ public enum MACRO_PROPS implements PROPERTY {
     PARTIES(null, true, "region", "town", "place", "route"),
     AREA(true, null, false, "region", "party", "route", "town", "place"),
     PLACE_VISIBILITY_STATUS(true, null, false, "route", "town", "place"),
-    SHOP_ITEMS("shop", null), // true,
 
+    SHOP_ITEMS("shop", null), // true,
     SHOP_LEVEL("shop", null),
     SHOP_TYPE("shop", null),
     SHOP_ITEM_GROUPS("shop", null),
     SHOP_MODIFIER("shop", null),
+    SHOP_ITEM_MATERIALS("shops", null),
+    SHOP_ITEM_TEMPLATES("shops", null),
+
     SHOPS(null, true, "town", "place"),
+
     TOWN_HALL(null, false, "town"),
     TAVERNS(null, false, "town"),
     LINKED_PLACES(null, false, "route", "town", "place"),

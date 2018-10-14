@@ -52,7 +52,9 @@ public class DC_Engine extends CoreEngine {
     public static void dataInit() {
         Chronos.mark("DATA INIT");
         new DC_ContentValsManager().init();
-        CoreEngine.dataInit(false);
+
+//        CoreEngine.dataInit(!CoreEngine.isFastMode());
+        CoreEngine.dataInit(true );
         //read save game?
         DC_ContentValsManager.initTypeDynamicValues();
         Chronos.logTimeElapsedForMark("DATA INIT");

@@ -1,7 +1,11 @@
 package eidolons.macro.entity.town;
 
 import eidolons.content.PARAMS;
+import eidolons.entity.item.DC_HeroItemObj;
+import eidolons.entity.item.ItemFactory;
+import eidolons.game.battlecraft.logic.battle.universal.DC_Player;
 import eidolons.game.battlecraft.logic.meta.scenario.hq.ShopInterface;
+import eidolons.game.core.game.DC_Game;
 import eidolons.game.module.adventure.utils.SaveMasterOld;
 import eidolons.game.module.herocreator.logic.items.ItemGenerator;
 import eidolons.game.module.herocreator.logic.items.ItemMaster;
@@ -23,7 +27,10 @@ import main.data.xml.XML_Writer;
 import main.elements.conditions.PropCondition;
 import main.entity.Ref;
 import main.entity.type.ObjType;
-import main.system.auxiliary.*;
+import main.system.auxiliary.ContainerUtils;
+import main.system.auxiliary.EnumMaster;
+import main.system.auxiliary.Loop;
+import main.system.auxiliary.RandomWizard;
 import main.system.auxiliary.log.LOG_CHANNEL;
 import main.system.auxiliary.log.LogMaster;
 import main.system.entity.FilterMaster;
@@ -36,12 +43,12 @@ import java.util.List;
 
 public class Shop extends TownPlace implements ShopInterface {
     private static final int MAX_ITEM_GROUPS = 4;
-    List<ObjType> items;
+    List<DC_HeroItemObj> items;
     private SHOP_TYPE shopType;
     private SHOP_LEVEL shopLevel;
     private SHOP_MODIFIER shopModifier;
-    private int goldToSpend = 100;
-    private int spareGold = 20;
+    private int goldToSpendPercentage = 100;
+    private int spareGoldPercentage = 20;
 
     public Shop(MacroGame game, ObjType type, Ref ref) {
         super(game, type, ref);
@@ -72,6 +79,7 @@ public class Shop extends TownPlace implements ShopInterface {
         if (getIntParam(PARAMS.GOLD_MOD) == 0) {
             setParam(PARAMS.GOLD_MOD, ShopMaster.getBaseGoldCostMod(this), true);
         }
+
         if (getIntParam(MACRO_PARAMS.SHOP_INCOME) == 0) {
             setParam(MACRO_PARAMS.SHOP_INCOME,
              ShopMaster.getBaseGoldIncome(this), true);
@@ -109,17 +117,21 @@ public class Shop extends TownPlace implements ShopInterface {
             pool.addAll(getSpecialItems(group));
 
             i++;
-            goldToSpend = (100 - spareGold - i * 5) / item_groups.length; //
+            goldToSpendPercentage = (100 - spareGoldPercentage - i * 5)
+             / item_groups.length; //
             // some params from Shop ObjType?
-            Loop.startLoop(ShopMaster.getMaxItemsPerGroup(this));
-            while (!Loop.loopEnded() && !pool.isEmpty()) {
+            int max = ShopMaster.getMaxItemsPerGroup(this);
+            Loop.startLoop(pool.size());
+            while (!Loop.loopEnded() && !pool.isEmpty() && max > 0) {
                 int randomListIndex = RandomWizard.getRandomIndex(pool);
                 ObjType t = pool.get(randomListIndex);
                 if (t == null) {
                     continue;
-                }
-                if (!buyItem(t)) {
-                    break; // second loop based on cheapest items?
+                } //TODO check first, then create!!!
+                DC_HeroItemObj item = ItemFactory.createItemObj(t, DC_Player.NEUTRAL,
+                 DC_Game.game, new Ref(), false); // MacroGame.getGame()!
+                if (buyItem(item)) {
+                    max--; // second loop based on cheapest items?
                 }
             }
         }
@@ -145,7 +157,7 @@ public class Shop extends TownPlace implements ShopInterface {
                         continue;
                     }
                     for (QUALITY_LEVEL q : ShopMaster.getQualityLevels(this)) {
-                        filtered.add(ItemGenerator.getGeneratedItem(t,
+                        filtered.add(ItemGenerator.getOrCreateItemType(t,
                          material, q));
                     }
                 }
@@ -172,20 +184,24 @@ public class Shop extends TownPlace implements ShopInterface {
         // perhaps shops should getOrCreate "Level Ups" eventually too :)
     }
 
-    public void sellItem(ObjType t, int price) {
+    public void buyItemFrom(DC_HeroItemObj t) {
         items.remove(t);
-        // some should be infinite though... perhaps based on shop level?
+        // some items should be infinite though... perhaps based on shop level?
+        Integer price = t.getIntParam(PARAMS.GOLD_COST);
         modifyParameter(PARAMS.GOLD, price);
-        refreshGui();
+    }
+
+    public void sellItemTo(DC_HeroItemObj t) {
+        buyItem(t);
 
     }
 
-    public boolean buyItem(ObjType t) {
+    private boolean buyItem(DC_HeroItemObj t) {
         Integer cost = t.getIntParam(PARAMS.GOLD_COST);
 
         cost = MathMaster.addFactor(cost, getIntParam(PARAMS.GOLD_MOD));
 
-        if (cost > getIntParam(PARAMS.GOLD) * goldToSpend / 100) {
+        if (cost > getIntParam(PARAMS.GOLD) * goldToSpendPercentage / 100) {
             return false;
         }
         buyItem(t, cost);
@@ -193,7 +209,7 @@ public class Shop extends TownPlace implements ShopInterface {
         return true;
     }
 
-    public void buyItem(ObjType type, int cost) {
+    private void buyItem(DC_HeroItemObj type, int cost) {
         modifyParameter(PARAMS.GOLD, -cost);
         items.add(type);
         refreshGui();
@@ -248,6 +264,9 @@ public class Shop extends TownPlace implements ShopInterface {
         if (shopType == null) {
             shopType = new EnumMaster<SHOP_TYPE>().retrieveEnumConst(
              SHOP_TYPE.class, getProperty(MACRO_PROPS.SHOP_TYPE));
+            if (shopType == null) {
+                shopType = SHOP_TYPE.MISC;
+            }
         }
         return shopType;
     }
@@ -256,6 +275,9 @@ public class Shop extends TownPlace implements ShopInterface {
         if (shopLevel == null) {
             shopLevel = new EnumMaster<SHOP_LEVEL>().retrieveEnumConst(
              SHOP_LEVEL.class, getProperty(MACRO_PROPS.SHOP_LEVEL));
+            if (shopLevel == null) {
+                shopLevel = SHOP_LEVEL.COMMON;
+            }
         }
         return shopLevel;
     }
@@ -269,13 +291,9 @@ public class Shop extends TownPlace implements ShopInterface {
         return shopModifier;
     }
 
-    public Collection<? extends ObjType> getItems() {
+    public Collection<DC_HeroItemObj> getItems() {
         if (items == null) {
-            try {
-                initItems();
-            } catch (Exception e) {
-                main.system.ExceptionMaster.printStackTrace(e);
-            }
+            initItems();
         }
         return items;
     }

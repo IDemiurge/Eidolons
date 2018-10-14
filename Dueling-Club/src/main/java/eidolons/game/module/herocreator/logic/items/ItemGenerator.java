@@ -556,7 +556,14 @@ public class ItemGenerator implements GenericItemGenerator {
         return defaultGenerator;
     }
 
-    public static ObjType getGeneratedItem(ObjType t, MATERIAL material, QUALITY_LEVEL q) {
+    public static ObjType getOrCreateItemType(ObjType t, MATERIAL material, QUALITY_LEVEL q) {
+        ObjType item = getGeneratedItem(t, material, q);
+        if (item==null ){
+            item = generateItem_(q, material, t);
+        }
+        return item;
+    }
+        public static ObjType getGeneratedItem(ObjType t, MATERIAL material, QUALITY_LEVEL q) {
         return itemMaps.get(q).get(material).get(t);
     }
 
@@ -721,7 +728,7 @@ public class ItemGenerator implements GenericItemGenerator {
             return null;
         }
         if (type == (DC_TYPE.ITEMS)) {
-//            return getOrCreateItem(typeName);
+//            return getOrCreateItemType(typeName);
         }
         boolean weapon = type.equals(DC_TYPE.WEAPONS); //TODO generic C_TYPE for armor?
 //        String baseTypeName = typeName;
@@ -954,6 +961,9 @@ public class ItemGenerator implements GenericItemGenerator {
 
     }
 
+    public static ObjType generateItem_(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
+        return defaultGenerator.generateItem(quality, material, type);
+    }
     public ObjType generateItem(QUALITY_LEVEL quality, MATERIAL material, ObjType type) {
         PARAMS[] params = (type.getOBJ_TYPE_ENUM() == DC_TYPE.WEAPONS) ? WEAPON_PARAMS
          : ARMOR_PARAMS;

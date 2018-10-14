@@ -128,7 +128,7 @@ public class EditorControlPanel extends HorizontalFlowGroup {
         VIEW,
         SCRIPTS,
 
-        //SHOP OR TAVERN TO A PLACE/TOWN?
+        //SHOPS OR TAVERN TO A PLACE/TOWN?
         EDIT,
         SAVE,
         UNDO,

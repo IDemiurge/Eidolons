@@ -199,21 +199,15 @@ public class DC_Game extends GenericGame {
     @Override
     public void init() {
         Chronos.mark("GAME_INIT");
-        //TempEventManager.trigger("create-cell-object" + i + ":" + j, objects);
 
         initObjTypes();
-
-
-        //    TODO to battle init!
-        //            SpellGenerator.init();
-        //            ActionGenerator.init();
-        //to engine!
 
         if (PresetMaster.getPreset() != null) {
             PresetLauncher.launchPreset();
         }
 
         setInitialized(true);
+        keyManager = new DC_KeyManager(getManager());
         Chronos.logTimeElapsedForMark("GAME_INIT");
     }
 
@@ -230,14 +224,12 @@ public class DC_Game extends GenericGame {
             return new LocationMaster(this);
         return new TestDungeonMaster(this);
     }
-    // before all other masters?
 
     // after meta
     public void dungeonInit() {
     }
 
     public void battleInit() {
-        //            SpellGenerator.init();
         setSimulation(false);
         ActionGenerator.init();
 
@@ -269,11 +261,9 @@ public class DC_Game extends GenericGame {
         if (isDebugMode()) {
             debugMaster = new DebugMaster(getState());
         }
-        keyManager = new DC_KeyManager(getManager());
         keyManager.init();
         getGraveyardManager().init();//TODO in init?
         battleMaster.startGame();
-
 
         if (getMetaMaster() != null)
             getMetaMaster().gameStarted();

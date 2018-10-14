@@ -7,25 +7,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import eidolons.libgdx.StyleHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TabbedPanel<T extends Actor> extends TablePanel<T> {
+public class TabbedPanel<T extends Actor>  extends TablePanelX  {
     protected HashMap<String, T> tabsToNamesMap;
-    private List<T> tabs = new ArrayList<>();
-    private String selectedTab;
-    private ButtonGroup<Button> buttonGroup = new ButtonGroup<Button>() {
+    protected List<T> tabs = new ArrayList<>();
+    protected String selectedTab;
+    protected ButtonGroup<Button> buttonGroup = new ButtonGroup<Button>() {
         @Override
         public void setChecked(String tabName) {
             super.setChecked(tabName);
             selectedTab = tabName;
         }
     };
-    private Cell<T> panelLayout;
-    private TablePanel<Button> buttonLayout;
+    protected TablePanelX contentTable;
+    protected TablePanelX<Button> tabTable;
+    protected    Cell contentCell;
 
     public TabbedPanel() {
         tabsToNamesMap = new HashMap<>();
@@ -35,20 +37,34 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     }
 
     protected void clearTabs() {
-        buttonLayout.clearChildren();
+        tabTable.clearChildren();
         tabsToNamesMap.clear();
     }
 
-    private void initContainer() {
-        buttonLayout = new TablePanel<>();
-        add(buttonLayout).expand(0, 0).fill(0, 0).left();
-
+    protected void initContainer() {
+        tabTable = new TablePanelX<>();
+        addTabTable();
+        contentCell = createContentsCell();
         row();
-        panelLayout = addTabCell();
     }
 
-    protected Cell<T> addTabCell() {
-        return addElement(null);
+    protected void addTabTable() {
+        add(tabTable).expand(0, 0).fill(0, 0).align(getDefaultAlignment()).row();
+    }
+
+    protected int getDefaultAlignment() {
+        return Align.left;
+    }
+
+    protected int getDefaultTabAlignment() {
+        return Align.left;
+    }
+
+    protected Cell createContentsCell() {
+       return    addElement(contentTable = createContentsTable()).size(contentTable.getWidth(), contentTable.getHeight());
+    }
+    protected TablePanelX createContentsTable() {
+        return new TablePanelX<>();
     }
 
     @Override
@@ -67,7 +83,7 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
     public void addTab(T actor, String tabName) {
         TextButton b = new TextButton(tabName, getTabStyle());
 
-        if (buttonLayout == null) {
+        if (tabTable == null) {
             initContainer();
         }
 
@@ -82,23 +98,32 @@ public class TabbedPanel<T extends Actor> extends TablePanel<T> {
         );
 
         buttonGroup.add(b);
-        buttonLayout.add(b).left();
+        addTabActor(b);
 
         tabs.add(actor);
         buttonGroup.setChecked(tabName);
         tabsToNamesMap.put(tabName, actor);
     }
 
+    protected Cell<TextButton> addTabActor(TextButton b) {
+        return tabTable.add(b).align(getDefaultTabAlignment());
+    }
+
     public void tabSelected(String tabName) {
         buttonGroup.setChecked(tabName);
-        panelLayout.setActor(tabsToNamesMap.get(tabName));
+         setActor(tabsToNamesMap.get(tabName));
+    }
+
+    private void setActor(T t) {
+        contentTable.clearChildren();
+        contentTable.add(t).size(contentTable.getWidth(), contentTable.getHeight());
     }
 
     public void resetCheckedTab() {
         if (tabs.size() > 0) {
             buttonGroup.uncheckAll();
             buttonGroup.getButtons().first().setChecked(true);
-            panelLayout.setActor(tabs.get(0));
+             setActor(tabs.get(0));
         }
     }
 

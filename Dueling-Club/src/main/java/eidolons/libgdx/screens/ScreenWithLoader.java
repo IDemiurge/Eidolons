@@ -269,13 +269,17 @@ public abstract class ScreenWithLoader extends ScreenAdapter {
             introStage.act(delta);
             introStage.draw();
         } else if (loading) {
-            loadingStage.act(delta);
-            loadingStage.draw();
-            overlayStage.act(delta);
-            overlayStage.draw();
+            renderLoaderAndOverlays(delta);
 
         } else
             renderMain(delta);
+    }
+
+    protected void renderLoaderAndOverlays(float delta) {
+        loadingStage.act(delta);
+        loadingStage.draw();
+        overlayStage.act(delta);
+        overlayStage.draw();
     }
 
     protected void renderMain(float delta) {

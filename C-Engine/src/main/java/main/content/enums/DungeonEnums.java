@@ -235,10 +235,11 @@ public class DungeonEnums {
         // NORDHEIM("big","new","nordheim.jpg"),
         // MISTY_MOUNTAINS("big","death combat","Misty Mountains Onyx Spire.jpg"),
 
-        CAVE(PathFinder.getBgPicsPath(),"dungeon.png"),
+        CAVE(PathFinder.getBgPicsPath(),"ship flip.jpg"),
+        SHIP(PathFinder.getBgPicsPath(),"dungeon.png"),
         ELVEN_RUINS(PathFinder.getBgPicsPath(), "RUINS.jpg"),
         RAVENWOOD(PathFinder.getBgPicsPath(), "RAVENWOOD.jpg"),
-        TUNNEL(PathFinder.getBgPicsPath(), "Ironhelm Tunnel.jpg"),
+        TUNNEL(PathFinder.getBgPicsPath(), "Ironhelm Tunnel.png"),
         CEMETERY(PathFinder.getBgPicsPath(), "OLD CEMETERY.png"),
         TOWER(PathFinder.getBgPicsPath(), "moon valley.jpg"),
 

@@ -45,4 +45,8 @@ public class GDX {
         }
         return res.name();
     }
+
+    public static float height(float y) {
+        return GdxMaster.adjustHeight(y);
+    }
 }

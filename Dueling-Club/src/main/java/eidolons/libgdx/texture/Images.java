@@ -96,7 +96,9 @@ public class Images {
     public static final String HC_SCROLL_BACKGROUND = StrPathBuilder.build(
      PathFinder.getComponentsPath(), "hq","hc", "HC_SCROLL_BACKGROUND.jpg");
     public static final String SEPARATOR = StrPathBuilder.build(
-     PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png"); ;
+     PathFinder.getComponentsPath(), "generic","decor" ,"SEPARATOR.png");
+    public static final  String TINY_CHEST = "UI/components/tiny/chest.png";
+    public static final  String TINY_GOLD = "UI/components/tiny/gold.png";
 
     public static String getSketch(BACKGROUND background) {
         if (background == null) {

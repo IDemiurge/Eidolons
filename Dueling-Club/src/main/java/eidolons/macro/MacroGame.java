@@ -1,6 +1,8 @@
 package eidolons.macro;
 
 import eidolons.entity.DC_IdManager;
+import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
+import eidolons.libgdx.screens.map.editor.MapPointMaster;
 import eidolons.macro.entity.MacroRef;
 import eidolons.macro.entity.faction.Faction;
 import eidolons.macro.entity.faction.FactionObj;
@@ -13,8 +15,6 @@ import eidolons.macro.map.Place;
 import eidolons.macro.map.Region;
 import eidolons.macro.map.Route;
 import eidolons.macro.map.travel.RouteMaster;
-import eidolons.game.module.dungeoncrawl.explore.RealTimeGameLoop;
-import eidolons.libgdx.screens.map.editor.MapPointMaster;
 import main.content.OBJ_TYPE;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.DAY_TIME;
 import main.content.enums.macro.MACRO_CONTENT_CONSTS.WEATHER;
@@ -72,11 +72,15 @@ public class MacroGame extends Game {
         idManager = new DC_IdManager();
 
         initObjTypes();
-        world = WorldGenerator.generateWorld(ref);
+        world =  generateWorld( );
 
         pointMaster = MapPointMaster.getInstance();
         routeMaster = new RouteMaster();
 
+    }
+
+    protected World generateWorld() {
+        return WorldGenerator.generateWorld(ref);
     }
 
 

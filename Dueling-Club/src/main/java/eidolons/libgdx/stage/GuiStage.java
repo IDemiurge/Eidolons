@@ -52,6 +52,7 @@ import main.system.auxiliary.StrPathBuilder;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static main.system.GuiEventType.SHOW_QUESTS_INFO;
@@ -86,6 +87,8 @@ public class GuiStage extends StageX implements StageWithClosable {
     protected FullLogPanel logPanel;
     protected QuestProgressPanel questProgressPanel;
     protected QuestJournal journal;
+    protected SmartButton menuButton;
+    private boolean town;
 
     public GuiStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -154,6 +157,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         initTooltipsAndMisc();
 
         addActor(dragManager = DragManager.getInstance());
+        dragManager.setGuiStage(this);
         setBlackoutIn(true);
     }
 
@@ -187,6 +191,7 @@ public class GuiStage extends StageX implements StageWithClosable {
         addActor(gameMenu);
         gameMenu.setPosition(GdxMaster.centerWidth(gameMenu), GdxMaster.centerHeight(gameMenu));
         GroupX group = new GroupX();
+
         Image btnBg = new Image(TextureCache.getOrCreateR(
          StrPathBuilder.build(PathFinder.getUiPath(),
           "components", "generic",
@@ -194,15 +199,15 @@ public class GuiStage extends StageX implements StageWithClosable {
         ));
         group.setSize(btnBg.getImageWidth(), btnBg.getImageHeight());
         group.addActor(btnBg);
-        SmartButton menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
+         menuButton = new SmartButton(STD_BUTTON.OPTIONS, () ->
          gameMenu.toggle());
 
         menuButton.setPosition(-8, 13);
-        //        (GdxMaster.centerWidth(menuButton),
-        //         GdxMaster.centerHeight(menuButton) );
         group.addActor(menuButton);
 
         addActor(group);
+        group.setSize(btnBg.getWidth(),
+         btnBg.getHeight());
         group.setPosition(GdxMaster.getWidth() - btnBg.getWidth(),
          GdxMaster.getHeight() - btnBg.getHeight());
     }
@@ -237,12 +242,31 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (infoTooltipContainer != null)
             if (infoTooltipContainer.getActions().size == 0)
                 infoTooltipContainer.setFluctuateAlpha(true);
-
-
+        if (town) {
+            for (Actor actor : getRoot().getChildren()) {
+                if (getActorsForTown().contains(actor)) {
+                    continue;
+                }
+                actor.setVisible(false);
+            }
+        }
         super.act(delta);
         resetZIndices();
     }
 
+        public List<Actor>  getActorsForTown(){
+            return new ArrayList<>(Arrays.asList(new Actor[]{
+             dragManager,
+             confirmationPanel,
+             hqPanel,
+             getMenuButton().getParent(),
+             getGameMenu(),
+             getTooltips(),
+             blackout,
+             actionTooltipContainer,
+             infoTooltipContainer
+            }));
+    }
     protected boolean checkBlocked() {
         return confirmationPanel.isVisible() || textPanel.isVisible() ||
          HqPanel.getActiveInstance() != null || OptionsWindow.isActive()
@@ -527,6 +551,14 @@ public class GuiStage extends StageX implements StageWithClosable {
         return gameMenu;
     }
 
+    public ToolTipManager getTooltips() {
+        return tooltips;
+    }
+
+    public SmartButton getMenuButton() {
+        return menuButton;
+    }
+
     public OutcomePanel getOutcomePanel() {
         return outcomePanel;
     }
@@ -560,6 +592,10 @@ public class GuiStage extends StageX implements StageWithClosable {
         return draggedEntity;
     }
 
+    public DragManager getDragManager() {
+        return dragManager;
+    }
+
     public void setDraggedEntity(Entity draggedEntity) {
         this.draggedEntity = draggedEntity;
         dragManager.setDraggedEntity(draggedEntity);
@@ -570,5 +606,21 @@ public class GuiStage extends StageX implements StageWithClosable {
         if (getScrollFocus() != actor)
             EUtils.hideTooltip();
         return super.setScrollFocus(actor);
+    }
+
+    public void setTown(boolean town) {
+        this.town = town;
+        if (!town) {
+            for (Actor actor : getRoot().getChildren()) {
+                if (getActorsForTown().contains(actor)) {
+                    continue;
+                }
+                actor.setVisible(true);
+            }
+        }
+    }
+
+    public boolean isTown() {
+        return town;
     }
 }

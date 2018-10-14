@@ -56,6 +56,7 @@ public class ActionPanel extends GroupX {
 
     public ActionPanel() {
         background = new Image(TextureCache.getOrCreateR(BACKGROUND_PATH));
+        setSize(background.getImageWidth(), background.getImageHeight());
         addActor(background);
         quickSlotPanel = new QuickSlotPanel(IMAGE_SIZE);
 

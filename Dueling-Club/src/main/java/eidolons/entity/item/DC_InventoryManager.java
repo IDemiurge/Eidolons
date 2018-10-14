@@ -1,9 +1,6 @@
 package eidolons.entity.item;
 
 import eidolons.game.module.dungeoncrawl.explore.ExplorationMaster;
-import eidolons.game.module.herocreator.HeroManager;
-import main.content.DC_TYPE;
-import main.entity.Entity;
 
 /**
  * 2 properties?
@@ -46,32 +43,6 @@ public class DC_InventoryManager {
         setFreeMode(false);
     }
 
-
-    public boolean canDoOperation(OPERATIONS operation, Entity type, Object arg) {
-        if (arg == null) {
-            switch (operation) {
-                case EQUIP:
-                    if (type.getOBJ_TYPE_ENUM() != DC_TYPE.JEWELRY)
-                        return false;
-            }
-        }
-        switch (operation) {
-            case EQUIP_QUICK_SLOT:
-                if (!HeroManager.isQuickItem(type)) {
-                    return false;
-                }
-        }
-        if (!hasOperations() && !ExplorationMaster.isExplorationOn()) {
-            return false;
-        }
-
-//        String s = CharacterCreator.getHeroManager()
-//         .checkRequirements(getHero(), type, RequirementsManager.NORMAL_MODE);
-        // if (s != null) {
-        return true;
-    }
-
-
     public boolean operationDone(OPERATIONS operation) {
         if (ExplorationMaster.isExplorationOn()) {
             return true;
@@ -96,7 +67,7 @@ public class DC_InventoryManager {
     }
 
     public enum OPERATIONS {
-        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT,
+        PICK_UP, DROP, UNEQUIP, UNEQUIP_QUICK_SLOT, EQUIP, EQUIP_QUICK_SLOT, BUY, SELL
     }
 
 }

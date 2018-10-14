@@ -3,6 +3,7 @@ package eidolons.libgdx.stage;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import eidolons.entity.obj.unit.Unit;
@@ -21,6 +22,8 @@ import eidolons.libgdx.gui.panels.headquarters.datasource.HqDataMaster;
 import main.system.GuiEventManager;
 import main.system.GuiEventType;
 
+import java.util.List;
+
 import static eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel.EMPTY_OFFSET;
 
 /**
@@ -28,21 +31,21 @@ import static eidolons.libgdx.gui.panels.dc.actionpanel.ActionPanel.EMPTY_OFFSET
  */
 public class BattleGuiStage extends GuiStage {
 
+    public static OrthographicCamera camera;
     private final InitiativePanel initiativePanel;
     private final ActionPanel bottomPanel;
     private final GuiVisualEffects guiVisualEffects;
     private final CombatInventory combatInventory;
-    public static  OrthographicCamera camera;
-    private  UnitInfoPanelNew infoPanel;
+    private UnitInfoPanelNew infoPanel;
 
     public BattleGuiStage(ScreenViewport viewport, Batch batch) {
         super(viewport == null ?
-//         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
-//          GdxMaster.getHeight(), new OrthographicCamera())
+          //         new ScalingViewport(Scaling.stretch, GdxMaster.getWidth(),
+          //          GdxMaster.getHeight(), new OrthographicCamera())
           new FillViewport(GdxMaster.getWidth(),
-           GdxMaster.getHeight(),  new OrthographicCamera())
-//        new ScreenViewport( new OrthographicCamera())
-        : viewport,
+           GdxMaster.getHeight(), new OrthographicCamera())
+          //        new ScreenViewport( new OrthographicCamera())
+          : viewport,
          batch == null ? new SpriteBatch() :
           batch);
         addActor(guiVisualEffects = new GuiVisualEffects());
@@ -54,7 +57,7 @@ public class BattleGuiStage extends GuiStage {
 
         init();
 
-        addActor(infoPanel = UnitInfoPanelNew.getInstance() );
+        addActor(infoPanel = UnitInfoPanelNew.getInstance());
 
         combatInventory = new CombatInventory();
         combatInventory.setPosition(0, GdxMaster.getHeight() - combatInventory.getHeight());
@@ -63,7 +66,7 @@ public class BattleGuiStage extends GuiStage {
 
     }
 
-    public static  boolean isNewUnitInfoPanelWIP() {
+    public static boolean isNewUnitInfoPanelWIP() {
         return true;
     }
 
@@ -72,7 +75,7 @@ public class BattleGuiStage extends GuiStage {
         setDraggedEntity(null);
         super.outsideClick();
         if (combatInventory.isVisible()) {
-//            combatInventory.close(ExplorationMaster.isExplorationOn());
+            //            combatInventory.close(ExplorationMaster.isExplorationOn());
             InventoryDataSource dataSource = (InventoryDataSource) combatInventory.getUserObject();
             if (ExplorationMaster.isExplorationOn()) {
                 dataSource.getDoneHandler().run();
@@ -85,7 +88,7 @@ public class BattleGuiStage extends GuiStage {
         super.bindEvents();
         GuiEventManager.bind(GuiEventType.SHOW_UNIT_INFO_PANEL, (obj) -> {
             Unit unit = (Unit) obj.get();
-            if (isNewUnitInfoPanelWIP()){
+            if (isNewUnitInfoPanelWIP()) {
                 addActor(infoPanel = UnitInfoPanelNew.getInstance());
             }
             infoPanel.setUserObject(HqDataMaster.getHeroDataSource(unit));
@@ -96,8 +99,8 @@ public class BattleGuiStage extends GuiStage {
             outcomePanel = new OutcomePanel(new OutcomeDatasource((DC_Game) p.get()));
             addActor(outcomePanel);
             outcomePanel.setZIndex(getActors().size);
-//            outcomePanel.setColor(new Color(1, 1, 1, 0));
-//            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
+            //            outcomePanel.setColor(new Color(1, 1, 1, 0));
+            //            ActorMaster.addFadeInOrOut(outcomePanel, 2.5f);
             float y = GdxMaster.getHeight() -
              (GdxMaster.getHeight() - outcomePanel.getHeight() / 2);
             float x = (GdxMaster.getWidth() - outcomePanel.getWidth()) / 2;
@@ -114,16 +117,23 @@ public class BattleGuiStage extends GuiStage {
         if (outcomePanel != null)
             outcomePanel.setZIndex(Integer.MAX_VALUE);
     }
-public void update(){
 
+    public void update() {
         getBottomPanel().setX(
-         GdxMaster.getWidth()-logPanel.getWidth()-getBottomPanel().getWidth()/2-EMPTY_OFFSET);
-//     (float) (GdxMaster.centerWidth(this)-(1600*Math.pow(GdxMaster.getFontSizeMod(), 0.2f)-getWidth())/2));
+         (GdxMaster.getWidth() - logPanel.getWidth() - getBottomPanel().getWidth()) / 2 - EMPTY_OFFSET);
+    }
 
-}
+    @Override
+    public List<Actor> getActorsForTown() {
+        List<Actor> list = super.getActorsForTown();
+        list.add(guiVisualEffects);
+        return list;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        update();
     }
 
     public InitiativePanel getInitiativePanel() {

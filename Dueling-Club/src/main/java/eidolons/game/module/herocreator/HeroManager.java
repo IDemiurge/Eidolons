@@ -274,7 +274,8 @@ public class HeroManager {
             // return ITEM_SLOT.OFF_HAND;
 
         }
-        if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM))) {
+        if (!StringMaster.isEmpty(hero.getProperty(G_PROPS.ARMOR_ITEM))
+         && hero.getArmor()!=null ) {
             if (!promptItemSwap(hero.getArmor(), hero, type)) {
                 return null;
             }

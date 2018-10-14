@@ -124,6 +124,7 @@ public class InventoryPanel extends TablePanel {
         armorSlot.setActor(source.armor());
 
         amuletSlot.setActor(source.amulet());
+
     }
 
     @Override

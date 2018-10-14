@@ -564,7 +564,7 @@ public class MusicMaster {
         //        DUNGEON,
         //        MOUNTAINS,
         //        NORTH,
-        ;
+        TOWN();
 
         AMBIENCE(ATMO_SOUND_TYPE... TYPES) {
 
